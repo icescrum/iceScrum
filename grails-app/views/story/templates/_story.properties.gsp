@@ -1,4 +1,25 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils" %>
+%{--
+- Copyright (c) 2015 Kagilum.
+-
+- This file is part of iceScrum.
+-
+- iceScrum is free software: you can redistribute it and/or modify
+- it under the terms of the GNU Affero General Public License as published by
+- the Free Software Foundation, either version 3 of the License.
+-
+- iceScrum is distributed in the hope that it will be useful,
+- but WITHOUT ANY WARRANTY; without even the implied warranty of
+- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Affero General Public License
+- along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+-
+- Authors:
+-
+- Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
+--}%
 
 <form ng-submit="update(editableStory)"
       name='formHolder.storyForm'
@@ -20,15 +41,19 @@
         <div class="form-group">
             <label for="feature">${message(code: 'is.feature')}</label>
             <div ng-class="{'input-group':editableStory.feature.id, 'select2-border':editableStory.feature.id}">
-                <input type="hidden"
-                       ng-focus="editForm(true)"
-                       ng-disabled="!formHolder.editable"
-                       class="form-control"
-                       value="{{ editableStory.feature.id ? editableStory.feature : '' }}"
-                       name="feature"
-                       ng-model="editableStory.feature"
-                       ui-select2-tamere="selectFeatureOptions"
-                       data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
+                <ui-select ng-click="editForm(true)"
+                           ng-disabled="!formHolder.editable"
+                           class="form-control"
+                           name="feature"
+                           search-enabled="true"
+                           ng-model="editableStory.feature">
+                    <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
+                        <span style="border-left: 4px solid {{ $select.selected.color }}">{{ $select.selected.name }}</span>
+                    </ui-select-match>
+                    <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
+                        <span style="border-left: 4px solid {{ feature.color }}" ng-bind-html="feature.name | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
                 <span class="input-group-btn" ng-show="editableStory.feature.id">
                     <a href="#feature/{{ editableStory.feature.id }}"
                        title="{{ editableStory.feature.name }}"
@@ -42,27 +67,29 @@
             <div class="form-group"
                  ng-class="{ 'form-half' : editableStory.type == 2 }">
                 <label for="type">${message(code: 'is.story.type')}</label>
-                <select class="form-control"
-                        ng-focus="editForm(true)"
-                        ng-disabled="!formHolder.editable"
-                        name="type"
-                        ng-model="editableStory.type"
-                        ui-select2-tamere>
-                    <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}"/>
-                </select>
+                <ui-select class="form-control"
+                           ng-click="editForm(true)"
+                           ng-disabled="!formHolder.editable"
+                           name="type"
+                           ng-model="editableStory.type">
+                    <ui-select-match>{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
+                    <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                </ui-select>
             </div>
             <div class="form-half"
                  ng-show="editableStory.type == 2">
                 <label for="affectVersion">${message(code: 'is.story.affectVersion')}</label>
-                <input class="form-control"
-                       ng-focus="editForm(true)"
-                       ng-disabled="!formHolder.editable"
-                       type="hidden"
-                       value="{{ editableStory.affectVersion  }}"
-                       name="affectVersion"
-                       ng-model="editableStory.affectVersion"
-                       ui-select2-tamere="selectAffectionVersionOptions"
-                       data-placeholder="${message(code: 'is.ui.story.noaffectversion')}"/>
+                <ui-select class="form-control"
+                           ng-click="retrieveVersions(); editForm(true)"
+                           ng-disabled="!formHolder.editable"
+                           search-enabled="true"
+                           tagging
+                           tagging-tokens="SPACE|,"
+                           tagging-label=""
+                           ng-model="editableStory.affectVersion">
+                    <ui-select-match allow-clear="true" placeholder="is.ui.story.noaffectversion">{{ $select.selected }}</ui-select-match>
+                    <ui-select-choices repeat="version in versions">{{ version }}</ui-select-choices>
+                </ui-select>
             </div>
         </div>
         <div class="clearfix no-padding">
@@ -70,14 +97,17 @@
                  ng-class="{ 'form-half' : authorizedStory('updateEstimate', editableStory) }">
                 <label for="value">${message(code: 'is.story.value')}</label>
                 <div class="input-group">
-                    <select class="form-control"
-                            ng-focus="editForm(true)"
-                            ng-disabled="!formHolder.editable"
-                            name="value"
-                            ng-model="editableStory.value"
-                            ng-options="i for i in integerSuite"
-                            ui-select2-tamere>
-                    </select>
+                    <ui-select class="form-control"
+                               ng-click="editForm(true)"
+                               ng-disabled="!formHolder.editable"
+                               name="value"
+                               search-enabled="true"
+                               ng-model="editableStory.value">
+                        <ui-select-match>{{ $select.selected }}</ui-select-match>
+                        <ui-select-choices repeat="i in integerSuite | filter: $select.search">
+                            <span ng-bind-html="'' + i | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                     <span class="input-group-btn" ng-if="authorizedStory('update', editableStory)">
                         <button class="btn btn-default"
                                 type="button"
@@ -87,22 +117,23 @@
                 </div>
             </div>
             <div class="form-half"
-                 ng-show="authorizedStory('updateEstimate', editableStory)"
-                 ng-switch="isEffortCustom()">
+                 ng-show="authorizedStory('updateEstimate', editableStory)">
                 <label for="effort">${message(code: 'is.story.effort')}</label>
                 <div class="input-group">
-                    <select ng-switch-default
-                            class="form-control"
-                            ng-focus="editForm(true)"
-                            ng-disabled="!formHolder.editable"
-                            name="effort"
-                            ng-model="editableStory.effort"
-                            ui-select2-tamere>
-                        <option ng-show="isEffortNullable(story)" value="?">?</option>
-                        <option ng-repeat="i in effortSuite()" value="{{ i }}">{{ i }}</option>
-                    </select>
+                    <ui-select ng-if="!isEffortCustom()"
+                               class="form-control"
+                               ng-click="editForm(true)"
+                               ng-disabled="!formHolder.editable"
+                               name="effort"
+                               search-enabled="true"
+                               ng-model="editableStory.effort">
+                        <ui-select-match>{{ $select.selected }}</ui-select-match>
+                        <ui-select-choices repeat="i in effortSuite(isEffortNullable(story)) | filter: $select.search">
+                            <span ng-bind-html="'' + i | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                     <input type="number"
-                           ng-switch-when="true"
+                           ng-if="isEffortCustom()"
                            class="form-control"
                            ng-focus="editForm(true)"
                            ng-disabled="!formHolder.editable"
@@ -120,29 +151,36 @@
         <div class="form-group"
              ng-show="authorizedStory('updateParentSprint', editableStory)">
             <label for="parentSprint">${message(code: 'is.sprint')}</label>
-            <input type="hidden"
-                   ng-focus="editForm(true)"
-                   ng-disabled="!formHolder.editable"
-                   class="form-control"
-                   value="{{ editableStory.parentSprint.id ? editableStory.parentSprint : '' }}"
-                   name="parentSprint"
-                   ng-model="editableStory.parentSprint"
-                   ui-select2-tamere="selectParentSprintOptions"
-                   data-placeholder="${message(code: 'is.ui.story.noparentsprint')}"/>
+            <ui-select ng-click="retrieveParentSprintEntries(); editForm(true)"
+                       ng-disabled="!formHolder.editable"
+                       class="form-control"
+                       name="parentSprint"
+                       search-enabled="true"
+                       ng-model="editableStory.parentSprint">
+                <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.noparentsprint')}">
+                    {{ $select.selected.parentRelease.name }} - {{ $select.selected | parentSprintLabel }}
+                </ui-select-match>
+                <ui-select-choices group-by="groupSprintByParentRelease" repeat="parentSprintEntry in parentSprintEntries | filter: { orderNumber: $select.search }">
+                    <span ng-bind-html="parentSprintEntry | parentSprintLabel | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
         </div>
         <div class="form-group">
             <label for="dependsOn">${message(code: 'is.story.dependsOn')}</label>
             <div ng-class="{'input-group':editableStory.dependsOn.id}">
-                <input type="hidden"
-                       ng-focus="editForm(true)"
-                       ng-disabled="!formHolder.editable"
-                       style="width:100%;"
-                       class="form-control"
-                       value="{{ editableStory.dependsOn.id ? editableStory.dependsOn : '' }}"
-                       name="dependsOn"
-                       ng-model="editableStory.dependsOn"
-                       ui-select2-tamere="selectDependsOnOptions"
-                       data-placeholder="${message(code: 'is.ui.story.nodependence')}"/>
+                <ui-select class="form-control"
+                           ng-click="retrieveDependenceEntries(editableStory); editForm(true)"
+                           ng-disabled="!formHolder.editable"
+                           name="dependsOn"
+                           search-enabled="true"
+                           ng-model="editableStory.dependsOn">
+                    <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nodependence')}">
+                        {{ $select.selected | dependsOnLabel }}
+                    </ui-select-match>
+                    <ui-select-choices repeat="dependenceEntry in dependenceEntries | orFilter: { name: $select.search, uid: $select.search }">
+                        <span ng-bind-html="dependenceEntry | dependsOnLabel | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
                 <span class="input-group-btn" ng-show="editableStory.dependsOn.id">
                     <a href="#story/{{ editableStory.dependsOn.id }}"
                        title="{{ editableStory.dependsOn.name }}"
@@ -159,15 +197,17 @@
         </div>
         <div class="form-group">
             <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
-            <input type="hidden"
-                   ng-focus="editForm(true)"
-                   ng-disabled="!formHolder.editable"
-                   class="form-control"
-                   value="{{ editableStory.tags.join(',') }}"
-                   name="tags"
-                   ng-model="editableStory.tags"
-                   data-placeholder="${message(code: 'is.ui.backlogelement.notags')}"
-                   ui-select2-tamere="selectTagsOptions"/>
+            <ui-select ng-click="retrieveTags(); editForm(true)"
+                       ng-disabled="!formHolder.editable"
+                       class="form-control"
+                       multiple
+                       tagging
+                       tagging-tokens="SPACE|,"
+                       tagging-label=""
+                       ng-model="editableStory.tags">
+                <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
+                <ui-select-choices repeat="tag in tags">{{ tag }}</ui-select-choices>
+            </ui-select>
         </div>
         <div class="form-group">
             <label for="description">${message(code: 'is.backlogelement.description')}</label>

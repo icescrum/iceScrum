@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -76,26 +76,6 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
                 $scope.resetAcceptanceTestForm();
             }
         }
-    };
-    // Settings
-    function formatAcceptanceTestStateOption(state) {
-        var colorClass;
-        switch (parseInt(state.id)) {
-            case AcceptanceTestStatesByName.TOCHECK:
-                colorClass = 'text-default';
-                break;
-            case AcceptanceTestStatesByName.FAILED:
-                colorClass = 'text-danger';
-                break;
-            case AcceptanceTestStatesByName.SUCCESS:
-                colorClass = 'text-success';
-                break;
-        }
-        return "<div class='" + colorClass + "'><i class='fa fa-check'></i> " + state.text + "</div>";
-    }
-    $scope.selectAcceptanceTestStateOptions = {
-        formatResult: formatAcceptanceTestStateOption,
-        formatSelection: formatAcceptanceTestStateOption
     };
     // Init
     $scope.formHolder = {};

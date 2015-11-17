@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -42,7 +42,7 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
     };
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'FeatureService', 'FormService', function($scope, $state, $stateParams, $controller, FeatureService, FormService) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'FeatureService', 'FormService', 'ProjectService', function($scope, $state, $stateParams, $controller, FeatureService, FormService, ProjectService) {
     $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
     $scope.formHolder = {};
     $scope.feature = {};
@@ -70,7 +70,6 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             $scope.notifySuccess('todo.is.ui.feature.updated');
         });
     };
-    $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
     $scope.editForm = function(value) {
         if (value != $scope.isInEditingMode()) {
             $scope.setInEditingMode(value); // global
@@ -118,6 +117,14 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
     };
     $scope.formHover = function(value) {
         $scope.formHolder.formHover = value;
+    };
+    $scope.tags = [];
+    $scope.retrieveTags = function() {
+        if (_.isEmpty($scope.tags)) {
+            ProjectService.getTags().then(function (tags) {
+                $scope.tags = tags;
+            });
+        }
     };
 }]);
 

@@ -1,6 +1,6 @@
 <%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
-- Copyright (c) 2014 Kagilum SAS.
+- Copyright (c) 2015 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -21,11 +21,11 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal   name="formHolder.registerForm"
-            form="register()"
-            validate="true"
-            submitButton="${message(code:'is.button.register')}"
-            closeButton="${message(code:'is.button.cancel')}"
+<is:modal name="formHolder.registerForm"
+          form="register()"
+          validate="true"
+          submitButton="${message(code:'is.button.register')}"
+          closeButton="${message(code:'is.button.cancel')}"
             title="${message(code:'is.dialog.register')}">
         <p>
             <g:message code="is.dialog.register.description"/>
@@ -72,13 +72,13 @@
         </div>
         <div class="form-half">
             <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
-            <select required
-                    name="user.preferences.language"
-                    ui-select2
-                    class="form-control"
-                    ng-model="user.preferences.language">
-                <is:options values="${is.languages()}" />
-            </select>
+            <ui-select required
+                       name="user.preferences.language"
+                       class="form-control"
+                       ng-model="user.preferences.language">
+                <ui-select-match>{{ $select.selected.name }}</ui-select-match>
+                <ui-select-choices repeat="language in languages">{{ language.name }}</ui-select-choices>
+            </ui-select>
         </div>
     </div>
     <div class="row" ng-show="!editableUser.accountExternal">

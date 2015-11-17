@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -104,7 +104,7 @@
                            ng-maxlength="100"
                            ng-model="story.name"
                            ng-change="findDuplicates(story.name)"
-                           ng-readonly="!authorizedStory('create')"/>
+                           ng-disabled="!authorizedStory('create')"/>
                     <div ng-if="messageDuplicate"
                          class="help-block bg-warning"
                          ng-bind-html="messageDuplicate | sanitize"></div>
@@ -112,16 +112,14 @@
                 <div class="form-half">
                     <label for="story.template">${message(code: 'todo.is.ui.story.template')}</label>
                     <div ng-class="{'input-group': authorizedStory('updateTemplate')}">
-                        <select name="story.template"
-                                class="form-control"
-                                ng-model="story.template"
-                                ng-readonly="!authorizedStory('create')"
-                                ng-change="templateSelected()"
-                                data-placeholder="${message(code:'todo.is.ui.story.template.placeholder')}"
-                                ui-select2="selectTemplateOptions">
-                            <option value=""></option>
-                            <option ng-repeat="templateEntry in templateEntries" value="{{ templateEntry.id }}">{{ templateEntry.text }}</option>
-                        </select>
+                        <ui-select name="story.template"
+                                   class="form-control"
+                                   ng-model="story.template"
+                                   ng-disabled="!authorizedStory('create')"
+                                   on-select="templateSelected()">
+                            <ui-select-match allow-clear="true" placeholder="${message(code:'todo.is.ui.story.template.placeholder')}">{{ $select.selected.text }}</ui-select-match>
+                            <ui-select-choices repeat="templateEntry in templateEntries">{{ templateEntry.text }}</ui-select-choices>
+                        </ui-select>
                         <span class="input-group-btn"
                               ng-show="authorizedStory('updateTemplate')">
                             <button type="button"

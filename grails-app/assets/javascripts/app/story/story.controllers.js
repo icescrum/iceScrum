@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName) {
+controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', 'FeatureService', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName, FeatureService) {
     // Functions
     $scope.accept = function(story) {
         StoryService.accept(story)
@@ -68,33 +68,6 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
         return StoryService.authorizedStory(action, story);
     };
     // Settings
-    $scope.selectFeatureOptions = {
-        formatResult: function(object, container) {
-            container.css('border-left', '4px solid ' + object.color);
-            return object.text ? object.text : object.name;
-        },
-        formatSelection: function(object, container) {
-            container.css('border-color', object.color);
-            return object.text ? object.text : object.name;
-        },
-        allowClear: true,
-        createChoiceOnEmpty: false,
-        //important to preserve logic id='' server side
-        resultAsEmptyId: true,
-        initSelection: function(element, callback) {
-            callback(JSON.parse(element.val()));
-        },
-        ajax: {
-            url: 'feature/featureEntries',
-            cache: 'true',
-            data: function(term) {
-                return { term: term };
-            },
-            results: function(data) {
-                return { results: data };
-            }
-        }
-    };
     $scope.showNewTemplateModal = function(story) {
         $uibModal.open({
             templateUrl: 'story.template.new.html',
@@ -113,8 +86,12 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
     $scope.isEffortCustom = function() {
         return Session.getProject().planningPokerGameType == 2;
     };
-    $scope.effortSuite = function() {
+    $scope.effortSuite = function(isNullable) {
+        if (isNullable) {
+            return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuiteNullable : $scope.fibonacciSuiteNullable;
+        } else {
         return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
+        }
     };
     $scope.isEffortNullable = function(story) {
         return story.state <= StoryStatesByName.ESTIMATED;
@@ -264,12 +241,17 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
             });
         }
     };
+    // Init
+    $scope.features = [];
+    FeatureService.list.$promise.then(function(features) {
+        $scope.features = features;
+    });
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$uibModal', 'StoryService', 'StoryStates', 'FormService', 'ActorService',
-    function($scope, $controller, $state, $timeout, $filter, $stateParams, $uibModal, StoryService, StoryStates, FormService, ActorService) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', '$stateParams', '$uibModal', 'StoryService', 'StoryCodesByState', 'FormService', 'ActorService', 'ProjectService',
+    function($scope, $controller, $state, $timeout, $filter, $stateParams, $uibModal, StoryService, StoryCodesByState, FormService, ActorService, ProjectService) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
-
+        // Functions
         $scope.update = function(story) {
             StoryService.update(story)
                 .then(function(story) {
@@ -278,11 +260,9 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                     $scope.notifySuccess('todo.is.ui.story.updated');
                 });
         };
-
         $scope.like = function(story) {
             StoryService.like(story);
         };
-
         $scope.activities = function(story, all) {
             $scope.allActivities = all;
             StoryService.activities(story, all)
@@ -330,19 +310,15 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                     $scope.groupedActivities = groupedActivities;
                 });
         };
-
-        // edit;
         $scope.isDirty = function() {
             return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
         };
-
         $scope.editForm = function(value) {
             if (value != $scope.formHolder.editing) {
                 $scope.setInEditingMode(value); // global
                 $scope.resetStoryForm();
             }
         };
-
         $scope.resetStoryForm = function() {
             $scope.formHolder.editing = $scope.isInEditingMode();
             $scope.formHolder.editable = $scope.authorizedStory('update', $scope.story);
@@ -355,7 +331,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             }
             $scope.resetFormValidation($scope.formHolder.storyForm);
         };
-
         $scope.clickDescriptionPreview = function($event, template) {
             if ($event.target.nodeName != 'A' && $scope.formHolder.editable) {
                 $scope.showDescriptionTextarea = true;
@@ -367,7 +342,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
-
         $scope.focusDescriptionPreview = function($event) {
             if (!$scope.descriptionPreviewMouseDown) {
                 $timeout(function() {
@@ -375,7 +349,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 });
             }
         };
-
         $scope.blurDescription = function(template) {
             if (!$('.atwho-view:visible').length && $scope.formHolder.storyForm.description.$valid) { // ugly hack on atwho
                 $scope.showDescriptionTextarea = false;
@@ -384,107 +357,64 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
-
         $scope.attachmentQuery = function($flow, story) {
             //to add flow in storyDetailsCtrl scope
             $scope.flow = $flow;
             $flow.opts.target = 'attachment/story/' + story.id + '/flow';
             $flow.upload();
         };
-
+        $scope.groupSprintByParentRelease = function(sprint) {
+            return sprint.parentRelease.name;
+        };
+        $scope.retrieveDependenceEntries = function(story) {
+            if (_.isEmpty($scope.dependenceEntries)) {
+                StoryService.getDependenceEntries(story).then(function (dependenceEntries) {
+                    $scope.dependenceEntries = dependenceEntries;
+                });
+            }
+        };
+        $scope.retrieveParentSprintEntries = function() {
+            if (_.isEmpty($scope.parentSprintEntries)) {
+                StoryService.getParentSprintEntries().then(function (parentSprintEntries) {
+                    $scope.parentSprintEntries = parentSprintEntries;
+                });
+            }
+        };
+        $scope.retrieveTags = function() {
+            if (_.isEmpty($scope.tags)) {
+                ProjectService.getTags().then(function (tags) {
+                    $scope.tags = tags;
+                });
+            }
+        };
+        $scope.retrieveVersions = function() {
+            if (_.isEmpty($scope.versions)) {
+                ProjectService.getVersions().then(function (versions) {
+                    $scope.versions = versions;
+                });
+            }
+        };
+        // Init
         $scope.story = {};
-
         $scope.editableStory = {};
-
         $scope.editableStoryReference = {};
-
         $scope.allActivities = false;
-
         $scope.clazz = 'story';
-
         $scope.formHolder = {};
-
-        $scope.selectDependsOnOptions = {
-            formatSelection: function(object) {
-                return object.text ? object.text : object.name + ' (' + object.id + ')';
-            },
-            allowClear: true,
-            createChoiceOnEmpty: false,
-            resultAsEmptyId: true, //important to preserve logic id='' server side
-            initSelection: function(element, callback) {
-                callback(JSON.parse(element.val()));
-            },
-            ajax: {
-                // The URL can't be known yet (the story will be known only after promise completion
-                cache: 'true',
-                data: function(term) {
-                    return { term: term };
-                },
-                results: function(data) {
-                    return { results: data };
-                }
-            }
-        };
-
-        $scope.selectAffectionVersionOptions = {
-            allowClear: true,
-            createChoiceOnEmpty: true,
-            resultAsString: true,
-            createSearchChoice: function(term) {
-                return {id: term, text: term};
-            },
-            initSelection: function(element, callback) {
-                callback({id: element.val(), text: element.val()});
-            },
-            ajax: {
-                url: 'project/versions',
-                cache: 'true',
-                data: function(term) {
-                    return { term: term };
-                },
-                results: function(data) {
-                    return { results: data };
-                }
-            }
-        };
-
-        $scope.selectParentSprintOptions = {
-            formatSelection: function(object) {
-                return object.text ? object.text : object.parentReleaseName + ' - ' + $scope.message('is.sprint') + object.orderNumber;
-            },
-            allowClear: true,
-            createChoiceOnEmpty: false,
-            resultAsEmptyId: true, //important to preserve logic id='' server side
-            initSelection: function(element, callback) {
-                callback(JSON.parse(element.val()));
-            },
-            ajax: {
-                url: 'story/sprintEntries',
-                cache: 'true',
-                data: function(term) {
-                    return { term: term };
-                },
-                results: function(data) {
-                    return { results: data };
-                }
-            }
-        };
-
-        $scope.selectTagsOptions = angular.copy(FormService.selectTagsOptions);
-
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
-
+        $scope.dependenceEntries = [];
+        $scope.parentSprintEntries = [];
+        $scope.tags = [];
+        $scope.versions = [];
         $scope.atOptions = {
             tpl: "<li data-value='A[${uid}-${name}]'>${name}</li>",
             at: 'a'
         };
-
         var mapActors = function(actors) {
             return _.map(actors, function(actor) {
                 return {uid: actor.uid, name: actor.name };
             });
         };
-
         if (ActorService.list.$resolved) {
             $scope.atOptions.data = mapActors(ActorService.list);
         } else {
@@ -492,7 +422,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 $scope.atOptions.data = mapActors(actors);
             });
         }
-
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
                 event.preventDefault(); // cancel the state change
@@ -512,29 +441,24 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 });
             }
         });
-
         StoryService.get($stateParams.id).then(function(story) {
             $scope.story = story;
             $scope.selected = story;
             $scope.activities(story);
             // For edit
             $scope.resetStoryForm();
-            $scope.selectDependsOnOptions.ajax.url = 'story/' + $scope.story.id + '/dependenceEntries';
             // For header
             var list = StoryService.list;
             $scope.previous = FormService.previous(list, $scope.story);
             $scope.next = FormService.next(list, $scope.story);
             $scope.progressStates = [];
-
-            var width = 100 / _.filter(_.keys(StoryStates), function(key) {
-                    return key > 0
-                }).length;
-            _.each(StoryStates, function(state, key) {
-                var date = $scope.story[state.code.toLowerCase() + 'Date'];
+            var width = 100 / _.filter(_.keys(StoryCodesByState), function(key) { return key > 0 }).length;
+            _.each(StoryCodesByState, function(code, key) {
+                var date = $scope.story[code.toLowerCase() + 'Date'];
                 if (date != null) {
                     $scope.progressStates.push({
-                        name: state.code + ' ' + '(' + date + ')',
-                        code: state.code,
+                        name: code + ' (' + date + ')',
+                        code: code,
                         width: width
                     });
                 }
@@ -710,10 +634,6 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$uibModal'
                     }
                 }, 500);
             }
-        };
-        // Settings
-        $scope.selectTemplateOptions = {
-            allowClear: true
         };
         // Init
         $scope.formHolder = {};

@@ -1,4 +1,3 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils" %>
 %{--
 - Copyright (c) 2015 Kagilum.
 -
@@ -27,12 +26,15 @@
     <div class="row">
         <div class="form-half">
             <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
-            <is:localeTimeZone required="required"
-                               class="form-control"
-                               ng-required="isCurrentStep(4)"
-                               name="project.preferences.timezone"
-                               ng-model="project.preferences.timezone"
-                               ui-select2=""></is:localeTimeZone>
+                <ui-select required="required"
+                           class="form-control"
+                           ng-required="isCurrentStep(4)"
+                           name="project.preferences.timezone"
+                           search-enabled="true"
+                           ng-model="project.preferences.timezone">
+                    <ui-select-match>{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices repeat="timezone in timezones | filter: $select.search">{{ timezone.name| highlight: $select.search }}</ui-select-choices>
+                </ui-select>
         </div>
         <div class="form-half">
             <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>

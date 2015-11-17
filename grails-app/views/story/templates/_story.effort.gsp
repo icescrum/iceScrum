@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -26,19 +26,21 @@
           submitButton="${message(code:'default.button.update.label')}"
           closeButton="${message(code:'is.button.cancel')}"
           title="${message(code:'is.story.effort')}">
-    <div ng-switch="isEffortCustom()">
+    <div>
         <label for="effort">${message(code:'is.story.effort')}</label>
-        <select ng-switch-default
-                class="form-control"
-                name="effort"
-                ng-change="updateTable()"
-                ng-model="editableStory.effort"
-                ui-select2>
-            <option ng-show="isEffortNullable(editableStory)" value="?">?</option>
-            <option ng-repeat="i in effortSuite()" value="{{ i }}">{{ i }}</option>
-        </select>
+        <ui-select ng-if="!isEffortCustom()"
+                   class="form-control"
+                   name="effort"
+                   search-enabled="true"
+                   on-select="updateTable()"
+                   ng-model="editableStory.effort">
+            <ui-select-match>{{ $select.selected }}</ui-select-match>
+            <ui-select-choices repeat="i in effortSuite(isEffortNullable(editableStory)) | filter: $select.search">
+                <span ng-bind-html="'' + i | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
         <input type="number"
-               ng-switch-when="true"
+               ng-if="isEffortCustom()"
                class="form-control"
                ng-change="updateTable()"
                name="effort"

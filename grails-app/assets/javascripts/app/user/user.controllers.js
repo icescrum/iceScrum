@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -61,4 +61,8 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
     $scope.editableUser = {};
     $scope.formHolder = {};
     $scope.editableUser = angular.copy(Session.user);
+    $scope.languages = [];
+    Session.getLanguages().then(function(languages) {
+        $scope.languages = languages;
+    });
 }]);

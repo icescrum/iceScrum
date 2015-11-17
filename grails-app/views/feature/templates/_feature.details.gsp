@@ -1,6 +1,5 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils" %>
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -99,14 +98,14 @@
                 <div class="form-half">
                     <label for="type">${message(code:'is.feature.type')}</label>
                     <div class="input-group">
-                        <select class="form-control"
-                                ng-focus="editForm(true)"
-                                ng-disabled="!getShowFeatureForm(feature)"
-                                name="type"
-                                ng-model="editableFeature.type"
-                                ui-select2>
-                            <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}" />
-                        </select>
+                        <ui-select class="form-control"
+                                   ng-click="editForm(true)"
+                                   ng-disabled="!getShowFeatureForm(feature)"
+                                   name="type"
+                                   ng-model="editableFeature.type">
+                            <ui-select-match>{{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
+                            <ui-select-choices repeat="featureType in featureTypes">{{ featureType | i18n:'FeatureTypes' }}</ui-select-choices>
+                        </ui-select>
                         <span class="input-group-btn" ng-if="getShowFeatureForm(feature)">
                             <button colorpicker
                                     class="btn {{ editableFeature.color | contrastColor }}"
@@ -122,14 +121,17 @@
                 </div>
                 <div class="form-half">
                     <label for="value">${message(code:'is.feature.value')}</label>
-                    <select class="form-control"
-                            ng-focus="editForm(true)"
-                            ng-disabled="!getShowFeatureForm(feature)"
-                            name="value"
-                            ng-model="editableFeature.value"
-                            ng-options="i for i in integerSuite"
-                            ui-select2>
-                    </select>
+                    <ui-select class="form-control"
+                               ng-click="editForm(true)"
+                               ng-disabled="!getShowFeatureForm(feature)"
+                               name="value"
+                               search-enabled="true"
+                               ng-model="editableFeature.value">
+                        <ui-select-match>{{ $select.selected }}</ui-select-match>
+                        <ui-select-choices repeat="i in integerSuite | filter: $select.search">
+                            <span ng-bind-html="'' + i | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
             </div>
             <div class="form-group">
@@ -144,15 +146,17 @@
             </div>
             <div class="form-group">
                 <label for="tags">${message(code:'is.backlogelement.tags')}</label>
-                <input type="hidden"
-                       ng-focus="editForm(true)"
-                       ng-disabled="!getShowFeatureForm(feature)"
-                       class="form-control"
-                       value="{{ editableFeature.tags.join(',') }}"
-                       name="tags"
-                       ng-model="editableFeature.tags"
-                       data-placeholder="${message(code:'is.ui.backlogelement.notags')}"
-                       ui-select2="selectTagsOptions"/>
+                <ui-select class="form-control"
+                           ng-click="retrieveTags(); editForm(true)"
+                           ng-disabled="!getShowFeatureForm(feature)"
+                           multiple
+                           tagging
+                           tagging-tokens="SPACE|,"
+                           tagging-label=""
+                           ng-model="editableStory.tags">
+                    <ui-select-match placeholder="${message(code:'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
+                    <ui-select-choices repeat="tag in tags">{{ tag }}</ui-select-choices>
+                </ui-select>
             </div>
             <div class="form-group">
                 <label for="notes">${message(code:'is.backlogelement.notes')}</label>

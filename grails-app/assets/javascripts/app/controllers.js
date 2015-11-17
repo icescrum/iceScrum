@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -212,7 +212,14 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             $rootScope.$broadcast(SERVER_ERRORS.loginFailed);
         });
     };
-}]).controller('registerCtrl', ['$scope', 'User', 'UserService', '$state', function($scope, User, UserService, $state) {
+}]).controller('registerCtrl', ['$scope', '$state', 'User', 'UserService', 'Session', function($scope, $state, User, UserService, Session) {
+    // Functions
+    $scope.register = function() {
+        UserService.save($scope.user).then(function() {
+            $scope.$close($scope.user.username);
+        });
+    };
+    // Init
     $scope.user = new User();
     if ($state.params.token) {
         UserService.getInvitationUserMock($state.params.token).then(function(mockUser) {
@@ -220,24 +227,25 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             $scope.user.token = $state.params.token;
         });
     }
-    $scope.register = function() {
-        UserService.save($scope.user).then(function() {
-            $scope.$close($scope.user.username);
-        });
-    }
+    $scope.languages = [];
+    Session.getLanguages().then(function(languages) {
+        $scope.languages = languages;
+    });
 }]).controller('retrieveCtrl', ['$scope', 'User', 'UserService', function($scope, User, UserService) {
-    $scope.user = new User();
+    // Functions
     $scope.retrieve = function() {
         UserService.retrievePassword($scope.user).then(function() {
             $scope.$close();
         });
-    }
+    };
+    // Init
+    $scope.user = new User();
 
-}]).controller('backlogCtrl', ['$scope', '$controller', '$state', 'stories', 'backlogs', 'StoryService', '$filter', function($scope, $controller, $state, stories, backlogs, StoryService, $filter) {
+}]).controller('backlogCtrl', ['$scope', '$state', 'stories', 'backlogs', 'StoryService', '$filter', function($scope, $state, stories, backlogs, StoryService, $filter) {
+    // Functions
     $scope.goToNewStory = function() {
         $state.go('backlog.new');
     };
-
     $scope.goToStory = function(story, tabId) {
         var params = {id: story.id};
         var state = $scope.viewName + '.details';
@@ -247,7 +255,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         }
         $state.go(state, params);
     };
-
     $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id;
@@ -265,7 +272,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     $scope.refreshStories = function() {
         $scope.filteredAndSortedStories = $filter('orderBy')($scope.stories, $scope.orderBy.current.id, $scope.orderBy.reverse);
     };
-
     $scope.storySortableUpdate = function(startModel, destModel, start, end) {
         var story = destModel[end];
         var newRank = end + 1;
@@ -281,7 +287,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             });
         }
     };
-
+    // Init
     $scope.viewName = 'backlog';
     $scope.selectableOptions = {
         filter: ">.postit-container",
@@ -303,10 +309,8 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     $scope.stories = stories;
     $scope.backlogs = backlogs;
     $scope.filteredAndSortedStories = [];
-
     $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
     $scope.$watch('stories', $scope.refreshStories, true);
-
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -325,7 +329,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     $scope.storySortableOptions = {
         items: '.postit-container'
     };
-
 }]);
 
 controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function($scope, $state, FeatureService, features) {

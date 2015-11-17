@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -28,13 +28,16 @@
           title="${message(code:'is.story.value')}">
     <div>
         <label for="value">${message(code:'is.story.value')}</label>
-        <select class="form-control"
-                name="value"
-                ng-model="editableStory.value"
-                ng-options="i for i in integerSuite"
-                ng-change="updateTable()"
-                ui-select2>
-        </select>
+        <ui-select class="form-control"
+                   name="value"
+                   ng-model="editableStory.value"
+                   on-select="updateTable()"
+                   search-enabled="true">
+            <ui-select-match>{{ $select.selected }}</ui-select-match>
+            <ui-select-choices repeat="i in integerSuite | filter: $select.search">
+                <span ng-bind-html="'' + i | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
     </div>
     <div class="table-scrollable">
         <table class="table">

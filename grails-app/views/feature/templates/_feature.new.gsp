@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -67,7 +67,7 @@
                            ng-model="feature.name"
                            type="text"
                            class="form-control"
-                           ng-readonly="!authorizedFeature('create')"
+                           ng-disabled="!authorizedFeature('create')"
                            placeholder="${message(code: 'is.ui.feature.noname')}"/>
                 </div>
             </div>

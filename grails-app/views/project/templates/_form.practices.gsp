@@ -1,6 +1,5 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils" %>
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -37,14 +36,13 @@
         </div>
         <div class="form-half" ng-show="!project.preferences.noEstimation">
             <label for="estimationSuite">${message(code:'is.product.preferences.planification.estimationSuite')}</label>
-            <select class="form-control"
-                    name="type"
-                    id="estimationSuite"
-                    ng-disabled="project.preferences.noEstimation"
-                    ng-model="project.planningPokerGameType"
-                    ui-select2>
-                <is:options values="${is.internationalizeValues(map: BundleUtils.planningPokerGameSuites)}" />
-            </select>
+            <ui-select class="form-control"
+                       name="type"
+                       ng-disabled="project.preferences.noEstimation"
+                       ng-model="project.planningPokerGameType">
+                <ui-select-match>{{ $select.selected | i18n:'PlanningPokerGameSuites' }}</ui-select-match>
+                <ui-select-choices repeat="planningPokerType in planningPokerTypes">{{ planningPokerType | i18n:'PlanningPokerGameSuites' }}</ui-select-choices>
+            </ui-select>
         </div>
     </div>
     <h5>${message(code:"is.dialog.wizard.section.practices.sprint")}</h5>

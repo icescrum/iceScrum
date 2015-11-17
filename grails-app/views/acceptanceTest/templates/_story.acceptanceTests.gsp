@@ -1,6 +1,5 @@
-<%@ page import="org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState" %>
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -51,15 +50,19 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <select class="form-control"
-                                    ng-focus="editForm(true)"
-                                    ng-change="update(editableAcceptanceTest, story)"
-                                    name="state"
-                                    ng-model="editableAcceptanceTest.state"
-                                    ng-readonly="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)"
-                                    ui-select2="selectAcceptanceTestStateOptions">
-                                <is:options values="${is.internationalizeValues(map: AcceptanceTestState.asMap())}" />
-                            </select>
+                            <ui-select class="form-control"
+                                       ng-click="editForm(true)"
+                                       on-select="update(editableAcceptanceTest, story)"
+                                       name="state"
+                                       ng-model="editableAcceptanceTest.state"
+                                       ng-disabled="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)">
+                                <ui-select-match>
+                                    <span ng-class="$select.selected | acceptanceTestColor"><i class='fa fa-check'></i> {{ $select.selected | i18n:'AcceptanceTestStates' }}</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="acceptanceTestState in acceptanceTestStates">
+                                    <span ng-class="acceptanceTestState | acceptanceTestColor"><i class='fa fa-check'></i> {{ acceptanceTestState | i18n:'AcceptanceTestStates' }}</span>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                         <div class="col-sm-2 text-right">
                             <button class="btn btn-danger pull-right visible-deletable"

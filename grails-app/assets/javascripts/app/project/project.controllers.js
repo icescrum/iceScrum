@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, Session, $uibModal, $state) {
@@ -264,7 +265,7 @@ controllers.controller('projectListCtrl', ['$scope', '$controller', 'ProjectServ
     });
 }]);
 
-controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', function($scope, $http, $filter) {
+controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', 'Session', function($scope, $http, $filter, Session) {
     $scope.searchUsers = function(val, isPo) {
         return $http.get($scope.serverUrl + '/user/search', {
             params: {
@@ -348,6 +349,10 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', fun
     // Init
     $scope.po = {};
     $scope.sh = {};
+    $scope.timezones = [];
+    Session.getTimezones().then(function(timezones) {
+        $scope.timezones = timezones;
+    });
 }]);
 
 controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session) {

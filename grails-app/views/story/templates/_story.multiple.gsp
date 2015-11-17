@@ -1,6 +1,5 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils" %>
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -175,12 +174,17 @@
                 <div class="form-half">
                     <label for="feature">${message(code:'is.feature')}</label>
                     <div ng-class="{'input-group':storyPreview.feature.id, 'select2-border':storyPreview.feature.id}">
-                        <input type="hidden"
-                               class="form-control"
-                               name="feature"
-                               ng-model="storyPreview.feature"
-                               ui-select2="selectFeatureOptions"
-                               data-placeholder="${message(code: 'is.ui.story.nofeature')}"/>
+                        <ui-select class="form-control"
+                                   name="feature"
+                                   search-enabled="true"
+                                   ng-model="storyPreview.feature">
+                            <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
+                                <span style="border-left: 4px solid {{ $select.selected.color }}">{{ $select.selected.name }}</span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
+                                <span style="border-left: 4px solid {{ feature.color }}" ng-bind-html="feature.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
                         <span class="input-group-btn" ng-show="storyPreview.feature.id">
                             <a href="#feature/{{ storyPreview.feature.id }}"
                                title="{{ storyPreview.feature.name }}"
@@ -192,42 +196,44 @@
                 </div>
                 <div class="form-half">
                     <label for="type">${message(code:'is.story.type')}</label>
-                    <select class="form-control"
-                            required
-                            name="type"
-                            ng-model="storyPreview.type"
-                            data-placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}"
-                            ui-select2>
-                        <option></option>
-                        <is:options values="${is.internationalizeValues(map: BundleUtils.storyTypes)}" />
-                    </select>
+                    <ui-select class="form-control"
+                               required
+                               name="type"
+                               ng-model="storyPreview.type">
+                        <ui-select-match placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
+                        <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                    </ui-select>
                 </div>
             </div>
             <div class="clearfix no-padding">
                 <div class="form-group"
                      ng-class="{ 'form-half' : authorizedStories('updateEstimate', stories) }">
                     <label for="value">${message(code:'is.story.value')}</label>
-                    <select class="form-control"
-                            name="value"
-                            ng-model="storyPreview.value"
-                            ng-options="i for i in integerSuite"
-                            ui-select2>
-                    </select>
+                    <ui-select class="form-control"
+                               name="value"
+                               search-enabled="true"
+                               ng-model="storyPreview.value">
+                        <ui-select-match>{{ $select.selected }}</ui-select-match>
+                        <ui-select-choices repeat="i in integerSuite | filter: $select.search">
+                            <span ng-bind-html="'' + i | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
                 <div class="form-half"
-                     ng-show="authorizedStories('updateEstimate', stories)"
-                     ng-switch="isEffortCustom()">
+                     ng-show="authorizedStories('updateEstimate', stories)">
                     <label for="effort">${message(code:'is.story.effort')}</label>
-                    <select ng-switch-default
-                            class="form-control"
-                            name="effort"
-                            ng-model="storyPreview.effort"
-                            ui-select2>
-                        <option ng-show="isEffortNullable(topStory)" value="?">?</option>
-                        <option ng-repeat="i in effortSuite()" value="{{ i }}">{{ i }}</option>
-                    </select>
+                    <ui-select ng-if="!isEffortCustom()"
+                               class="form-control"
+                               name="effort"
+                               search-enabled="true"
+                               ng-model="storyPreview.effort">
+                        <ui-select-match>{{ $select.selected }}</ui-select-match>
+                        <ui-select-choices repeat="i in effortSuite(isEffortNullable(topStory)) | filter: $select.search">
+                            <span ng-bind-html="'' + i | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                     <input type="number"
-                           ng-switch-when="true"
+                           ng-if="isEffortCustom()"
                            class="form-control"
                            name="effort"
                            ng-model="storyPreview.effort"/>

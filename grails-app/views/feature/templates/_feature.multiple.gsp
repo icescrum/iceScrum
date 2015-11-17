@@ -1,6 +1,5 @@
-<%@ page import="org.icescrum.core.utils.BundleUtils" %>
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -115,15 +114,13 @@
                  class="clearfix no-padding">
                 <div class="form-half">
                     <label for="type">${message(code: 'is.feature.type')}</label>
-                    <select class="form-control"
-                            required
-                            name="type"
-                            ng-model="featurePreview.type"
-                            data-placeholder="${message(code: 'todo.is.ui.feature.type.placeholder')}"
-                            ui-select2>
-                        <option></option>
-                        <is:options values="${is.internationalizeValues(map: BundleUtils.featureTypes)}"/>
-                    </select>
+                    <ui-select class="form-control"
+                               required
+                               name="type"
+                               ng-model="featurePreview.type">
+                        <ui-select-match placeholder="${message(code: 'todo.is.ui.feature.type.placeholder')}">{{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
+                        <ui-select-choices repeat="featureType in featureTypes">{{ featureType | i18n:'FeatureTypes' }}</ui-select-choices>
+                    </ui-select>
                 </div>
             </div>
             <div ng-if="authorizedFeature('update')"

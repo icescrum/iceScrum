@@ -1,6 +1,6 @@
 <%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
-- Copyright (c) 2014 Kagilum SAS.
+- Copyright (c) 2015 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -114,12 +114,12 @@
                     </div>
                     <div class="form-half">
                         <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
-                        <select name="user.preferences.language"
-                                ui-select2
-                                class="form-control"
-                                ng-model="editableUser.preferences.language">
-                            <is:options values="${is.languages()}" />
-                        </select>
+                        <ui-select name="user.preferences.language"
+                                   class="form-control"
+                                   ng-model="editableUser.preferences.language">
+                            <ui-select-match>{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="language in languages">{{ language.name }}</ui-select-choices>
+                        </ui-select>
                     </div>
                 </div>
                 <div class="row" ng-show="!editableUser.accountExternal">

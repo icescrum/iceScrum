@@ -32,13 +32,13 @@
               novalidate>
             <div class="form-group">
                 <label for="sprint.parentRelease">${message(code:'is.sprint.parentRelease')}</label>
-                <select class="form-control"
-                        ng-model="sprint.parentRelease.id"
-                        ng-change="selectRelease(sprint.parentRelease.id)"
-                        ui-select2
-                        required>
-                    <option ng-repeat="release in releases" value="{{release.id}}">{{release.name}}</option>
-                </select>
+                <ui-select class="form-control"
+                           ng-model="sprint.parentRelease.id"
+                           on-select="selectRelease(sprint.parentRelease.id)"
+                           required>
+                    <ui-select-match>{{ $select.selected.name }}</ui-select-match>
+                    <ui-select-choices repeat="release in releases">{{release.name}}</ui-select-choices>
+                </ui-select>
             </div>
             <div class="clearfix no-padding">
                 <div class="form-half">
