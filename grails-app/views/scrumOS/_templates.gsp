@@ -68,7 +68,7 @@
     hotkey-description="${message(code:'todo.is.ui.open.view')} {{ menu.title }}"
     uib-tooltip="{{ menu.title }} ({{ menu.shortcut }})"
     tooltip-placement="bottom"
-    href='#/{{ menu.id }}'>
+    href="#/{{ menu.id != 'project' ? menu.id : '' }}">
     <span class="handle" data-as-sortable-item-handle>::</span>
     <i class="visible-xs {{ menu.icon }}"></i><span class="title">{{ menu.title }}</span>
 </a>

@@ -140,7 +140,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
         );
     };
     $scope.goToHome = function(){
-        $state.go('root');
+        window.location.href = $scope.serverUrl;
     };
     $scope.goToNewProject = function(){
         $state.go('newProject');

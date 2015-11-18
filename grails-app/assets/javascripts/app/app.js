@@ -22,6 +22,23 @@
  *
  */
 
+// Try to dectect as early as possible that the root misses as slash
+// to trigger a redirect and lose as little time as possible
+(function() {
+    if (window.location.hash == '') {
+        var fullPath = window.location.href;
+        if (fullPath[fullPath.length - 1] != '/' && fullPath.indexOf('/?') == -1) {
+            if (fullPath.indexOf('?') > -1) {
+                fullPath = fullPath.replace('?', '/?');
+            } else {
+                fullPath = fullPath + '/'
+            }
+            window.location.replace(fullPath);
+            throw new Error("Stopping page loading because a forward slash is missing, redirecting to the proper URL...");
+        }
+    }
+})();
+
 var isApp = angular.module('isApp', [
     'ngRoute',
     'ngAnimate',
@@ -49,8 +66,8 @@ var isApp = angular.module('isApp', [
     'nvd3'
 ]);
 
-isApp.config(['$stateProvider', '$httpProvider',
-        function ($stateProvider, $httpProvider) {
+isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
+        function ($stateProvider, $httpProvider, $urlRouterProvider) {
             $httpProvider.interceptors.push([
                 '$injector',
                 function ($injector) {
@@ -58,9 +75,16 @@ isApp.config(['$stateProvider', '$httpProvider',
                 }
             ]);
             $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+            $urlRouterProvider.when('', '/');
             $stateProvider
                 .state('root', {
-                    url:'',
+                    url: '/',
+                    controller: ['$state', function($state) {
+                        var isInProject = window.location.pathname.indexOf('/p/') != -1;
+                        $state.go(isInProject ? 'project' : 'home');
+                    }]
+                })
+                .state('home', { // should not be acceded directly, called by 'root'
                     templateUrl: 'home.html',
                     controller: 'homeCtrl'
                 })
@@ -98,8 +122,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                             });
                     }]
                 })
-                .state('project', {
-                    url: '/project',
+                .state('project', {  // should not be acceded directly, called by 'root'
                     templateUrl: 'openWindow/project',
                     controller: 'projectCtrl'
                 })
@@ -107,11 +130,11 @@ isApp.config(['$stateProvider', '$httpProvider',
                     url: "/project/new",
                     onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
                         var modal = $uibModal.open({
-                                keyboard: false,
-                                templateUrl: $rootScope.serverUrl + "/project/add",
-                                size: 'lg',
-                                controller: 'newProjectCtrl'
-                            });
+                            keyboard: false,
+                            templateUrl: $rootScope.serverUrl + "/project/add",
+                            size: 'lg',
+                            controller: 'newProjectCtrl'
+                        });
                         modal.result.then(
                             function(result) {
                                 $state.transitionTo('root');
