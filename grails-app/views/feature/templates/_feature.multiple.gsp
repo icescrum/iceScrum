@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="postits standalone">
-                    <div class="postit-container stack twisted">
+                    <div ellipsis class="postit-container stack twisted">
                         <div style="{{ topFeature.color | createGradientBackground }}"
                              class="postit feature {{ topFeature.color | contrastColor }} {{ featurePreview.type | featureType }}">
                             <div class="head">
@@ -37,14 +37,12 @@
                                 <span class="estimation">{{ topFeature.value ? topFeature.value : '' }}</span>
                             </div>
                             <div class="content">
-                                <h3 class="title"
+                                <h3 class="title ellipsis-el"
                                     ng-model="topFeature.name"
-                                    ng-bind-html="topFeature.name | sanitize"
-                                    ellipsis></h3>
-                                <div class="description"
+                                    ng-bind-html="topFeature.name | sanitize"></h3>
+                                <div class="description ellipsis-el"
                                      ng-model="topFeature.description"
-                                     ng-bind-html="topFeature.description | sanitize"
-                                     ellipsis></div>
+                                     ng-bind-html="topFeature.description | sanitize"></div>
                             </div>
                             <div class="tags">
                                 <a ng-repeat="tag in topFeature.tags" href="#"><span class="tag">{{ tag }}</span></a>

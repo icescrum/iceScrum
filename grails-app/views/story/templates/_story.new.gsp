@@ -31,21 +31,19 @@
     <div class="panel-body">
         <div class="help-block">${message(code:'is.ui.sandbox.help')}</div>
         <div class="postits standalone">
-            <div class="postit-container">
+            <div ellipsis class="postit-container">
                 <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
                      class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}">
                     <div class="head">
                         <span class="id">42</span>
                     </div>
                     <div class="content">
-                        <h3 class="title"
+                        <h3 class="title ellipsis-el"
                             ng-model="story.name"
-                            ng-bind-html="story.name | sanitize"
-                            ellipsis></h3>
-                        <div class="description-template"
+                            ng-bind-html="story.name | sanitize"></h3>
+                        <div class="description-template ellipsis-el"
                              ng-model="storyPreview.description"
-                             ng-bind-html="storyPreview.description | sanitize"
-                             ellipsis></div>
+                             ng-bind-html="storyPreview.description | sanitize"></div>
                     </div>
                     <div class="tags">
                         <a ng-repeat="tag in storyPreview.tags"><span class="tag">{{ tag }}</span></a>

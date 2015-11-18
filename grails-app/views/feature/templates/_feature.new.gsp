@@ -28,17 +28,16 @@
     <div class="right-properties new panel-body">
         <div class="help-block">${message(code:'is.ui.feature.help')}</div>
         <div class="postits standalone">
-            <div class="postit-container">
+            <div ellipsis class="postit-container">
                 <div style="{{ '#f9f157' | createGradientBackground }}"
                      class="postit feature {{ '#f9f157' | contrastColor }}">
                     <div class="head">
                         <span class="id">42</span>
                     </div>
                     <div class="content">
-                        <h3 class="title"
+                        <h3 class="title ellipsis-el"
                             ng-model="feature.name"
-                            ng-bind-html="feature.name | sanitize"
-                            ellipsis></h3>
+                            ng-bind-html="feature.name | sanitize"></h3>
                     </div>
                     <div class="tags"></div>
                     <div class="actions">

@@ -29,7 +29,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="postits standalone">
-                    <div class="postit-container stack twisted">
+                    <div ellipsis class="postit-container stack twisted">
                         <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
                              class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}  {{ storyPreview.type | storyType }}">
                             <div class="head">
@@ -42,14 +42,12 @@
                                 <span class="estimation ui-selectable-cancel" ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }} <i class="fa fa-dollar"></i></span>
                             </div>
                             <div class="content">
-                                <h3 class="title"
+                                <h3 class="title ellipsis-el"
                                     ng-model="topStory.name"
-                                    ng-bind-html="topStory.name | sanitize"
-                                    ellipsis></h3>
-                                <div class="description"
+                                    ng-bind-html="topStory.name | sanitize"></h3>
+                                <div class="description ellipsis-el"
                                      ng-model="topStory.description"
-                                     ng-bind-html="topStory.description | sanitize"
-                                     ellipsis></div>
+                                     ng-bind-html="topStory.description | sanitize"></div>
                             </div>
                             <div class="tags">
                                 <a ng-repeat="tag in topStory.tags" href><span class="tag">{{ tag }}</span></a>

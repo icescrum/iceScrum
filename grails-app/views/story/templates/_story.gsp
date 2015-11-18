@@ -26,6 +26,7 @@
      data-id="{{ story.id }}"
      ng-repeat="story in filteredAndSortedStories"
      ng-controller="storyCtrl"
+     ellipsis
      class="postit-container">
     <div style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
          class="postit story {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }} {{ story.type | storyType }}">
@@ -53,14 +54,14 @@
             </span>
         </div>
         <div class="content">
-            <h3 class="title"
+            <h3 class="title ellipsis-el"
                 ng-model="story.name"
                 ng-bind-html="story.name | sanitize"
-                ellipsis></h3>
-            <div class="description"
+                ></h3>
+            <div class="description ellipsis-el"
                  ng-model="story.description"
                  ng-bind-html="story.description | sanitize"
-                 ellipsis></div>
+                 ></div>
         </div>
         <div class="footer">
             <div class="tags">

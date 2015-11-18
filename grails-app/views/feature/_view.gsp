@@ -122,6 +122,7 @@
                  data-id="{{ feature.id }}"
                  ng-repeat="feature in features | orderBy:orderBy.current.id:orderBy.reverse"
                  ng-controller="featureCtrl"
+                 ellipsis
                  class="postit-container">
                 <div style="{{ feature.color | createGradientBackground }}"
                      class="postit story {{ feature.color | contrastColor }} {{ feature.type | featureType }}">
@@ -130,14 +131,12 @@
                         <span class="value" ng-if="feature.value">{{ feature.value }} <i class="fa fa-line-chart"></i></span>
                     </div>
                     <div class="content">
-                        <h3 class="title"
+                        <h3 class="title ellipsis-el"
                             ng-model="feature.name"
-                            ng-bind-html="feature.name | sanitize"
-                            ellipsis></h3>
-                        <div class="description"
+                            ng-bind-html="feature.name | sanitize"></h3>
+                        <div class="description ellipsis-el"
                              ng-model="feature.description"
-                             ng-bind-html="feature.description | sanitize"
-                             ellipsis></div>
+                             ng-bind-html="feature.description | sanitize"></div>
                     </div>
                     <div class="tags">
                         <a ng-repeat="tag in feature.tags" href="#"><span class="tag">{{ tag }}</span></a>
