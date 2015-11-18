@@ -241,7 +241,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     // Init
     $scope.user = new User();
 
-}]).controller('backlogCtrl', ['$scope', '$state', 'stories', 'backlogs', 'StoryService', '$filter', function($scope, $state, stories, backlogs, StoryService, $filter) {
+}]).controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories', 'StoryService', 'BacklogService', '$filter', function($scope, $state, backlogs, stories, StoryService, BacklogService, $filter) {
     // Functions
     $scope.goToNewStory = function() {
         $state.go('backlog.new');
@@ -270,8 +270,11 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     // Required instead of ng-repeat stories | filters
     // because for sortable we need to have the stories in a ng-model, so the expression must be assignable
     $scope.refreshStories = function() {
-        $scope.filteredAndSortedStories = $filter('orderBy')($scope.stories, $scope.orderBy.current.id, $scope.orderBy.reverse);
+        //grab only stories for the selected backlog
+        var filter = JSON.parse($scope.selectedBacklog.filter);
+        $scope.filteredAndSortedStories = $filter('orderBy')($filter('filter')($scope.stories, filter.story), $scope.orderBy.current.id, $scope.orderBy.reverse);
     };
+
     $scope.storySortableUpdate = function(startModel, destModel, start, end) {
         var story = destModel[end];
         var newRank = end + 1;
@@ -287,7 +290,17 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             });
         }
     };
+
+    $scope.setSelectedBacklog = function(backlog){
+        $scope.selectedBacklog = backlog;
+        StoryService.listByBacklog(backlog).then(function(stories){
+            StoryService.addStories(stories);
+            $scope.refreshStories();
+        });
+    };
+
     // Init
+    $scope.stories = stories;
     $scope.viewName = 'backlog';
     $scope.selectableOptions = {
         filter: ">.postit-container",
@@ -306,8 +319,9 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             }
         }
     };
-    $scope.stories = stories;
     $scope.backlogs = backlogs;
+    $scope.selectedBacklog = {};
+    $scope.setSelectedBacklog(backlogs[0]);
     $scope.filteredAndSortedStories = [];
     $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
     $scope.$watch('stories', $scope.refreshStories, true);

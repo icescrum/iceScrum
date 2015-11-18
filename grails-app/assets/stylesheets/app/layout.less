@@ -157,13 +157,11 @@ body > .container-fluid > .main {
       //col-md etc..
       > div {
         display: flex;
-        > div {
+        .panel {
           flex: 1;
           display: flex;
           flex-flow: column;
-          &.panel {
-            margin-bottom: 0;
-          }
+          margin-bottom: 0;
           > div.panel-heading {
           }
           > div.panel-body {
@@ -181,6 +179,7 @@ body > .container-fluid > .main {
     }
 
     > .content {
+      flex-flow:column;
       .make-md-column(12);
     }
     > [ui-view='details'] {
@@ -399,5 +398,36 @@ body > .container-fluid > .main {
   .markitup-preview {
     min-height:inherit;
     max-height:inherit;
+  }
+}
+
+#view-backlog {
+  .content {
+    .backlogs-list {
+      .btn {
+        .badge {
+          background: none;
+          display: inline-block;
+          text-align: right;
+          font-weight: bold;
+          top: 5px;
+          color: #000;
+          padding: 0;
+          margin: 0;
+        }
+      }
+    }
+    .backlogs-list-details {
+      flex: 1;
+      display: flex;
+      flex-flow: row;
+      overflow: hidden;
+      div.panel{
+        border-left-width: 0;
+      }
+      div.panel:first-of-type{
+        border-left-width:1px;
+      }
+    }
   }
 }

@@ -125,7 +125,7 @@ isApp.config(['$stateProvider', '$httpProvider',
                     templateUrl: 'openWindow/backlog',
                     controller: 'backlogCtrl',
                     resolve: {
-                        backlogs: ['BacklogService', 'Session', function(BacklogService) {
+                        backlogs: ['BacklogService', function(BacklogService) {
                             return BacklogService.list();
                         }],
                         stories: ['StoryService', function(StoryService) {

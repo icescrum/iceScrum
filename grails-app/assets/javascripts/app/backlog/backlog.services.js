@@ -21,7 +21,7 @@
  *
  */
 services.factory('Backlog', ['Resource', function($resource) {
-    return $resource('backlog');
+    return $resource('backlog/:id');
 }]);
 
 services.service("BacklogService", ['Backlog', 'Session', function(Backlog) {
@@ -31,5 +31,8 @@ services.service("BacklogService", ['Backlog', 'Session', function(Backlog) {
     };
     this.list = function() {
         return Backlog.query({shared: true}).$promise;
+    };
+    this.get = function(id) {
+        return Backlog.get({id:id}).$promise;
     };
 }]);

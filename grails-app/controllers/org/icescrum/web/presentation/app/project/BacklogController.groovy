@@ -38,13 +38,7 @@ class BacklogController {
     @Secured(['stakeHolder() or inProduct()'])
     def list(long product, boolean shared) {
         // Temporary stuff to make backlog work (default backlogs)
-        def backlogs = Backlog.findAllByProductAndSharedOrOwner(product, shared, springSecurityService.currentUser?.id).list()
-        def _product = Product.get(product)
-        backlogs << new Backlog(product: _product, shared: true, filter: "{story:{}}", name: 'All')
-        backlogs << new Backlog(product: _product, shared: true, filter: "{story:{state:[2,3]}}", name: 'backlog')
-        backlogs << new Backlog(product: _product, shared: true, filter: "{story:{state:1}}", name: 'sandbox')
-        backlogs << new Backlog(product: _product, shared: true, filter: "{story:{state:7}}", name: 'icebox')
-        // End of temporary stuff
+        def backlogs = Backlog.findAllByProductAndShared(Product.load(product), shared)
         withFormat {
             html { render(status: 200, contentType: 'application/json', text:backlogs as JSON) }
             json { renderRESTJSON(text: backlogs) }
@@ -52,10 +46,7 @@ class BacklogController {
         }
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def view(long product) {
-        // Temporary stuff to make backlog work : load stories manually, here only estimated ones
-        render(template: "view", model: [stories: Story.search(product, JSON.parse('{story:{state:3}}'))])
-        // End of temporary stuff
+    def view() {
+        render(template: "view")
     }
 }

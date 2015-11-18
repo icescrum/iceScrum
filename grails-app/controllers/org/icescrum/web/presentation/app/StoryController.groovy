@@ -24,6 +24,7 @@
 package org.icescrum.web.presentation.app
 
 import org.icescrum.core.domain.Actor
+import org.icescrum.core.domain.Backlog
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Activity
@@ -206,8 +207,8 @@ class StoryController {
     }
 
     @Secured('stakeHolder() or inProduct()')
-    def list(long product, def filter) {
-        def stories = Story.search(product, JSON.parse(BacklogController.filters.all)).sort { Story story -> story.id }
+    def list(long product, long backlog) {
+        def stories = backlog ? Story.search(product, JSON.parse(Backlog.get(backlog).filter)).sort { Story story -> story.id } : Story.findByBacklog(Product.load(product))
         withFormat {
             html { render(status:200, text:stories as JSON, contentType: 'application/json') }
             json { renderRESTJSON(text:stories) }

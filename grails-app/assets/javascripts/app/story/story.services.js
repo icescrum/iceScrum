@@ -279,5 +279,8 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return $http.get('story/sprintEntries').then(function(response) {
             return response.data;
         });
-    }
+    };
+    this.listByBacklog = function(backlog) {
+        return Story.query({backlog:backlog.id}).$promise
+    };
 }]);
