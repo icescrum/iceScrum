@@ -15,7 +15,7 @@ class TeamController {
     def securityService
 
     @Secured('isAuthenticated()')
-    def search(String term, Boolean create) {
+    def index(String term, Boolean create) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def teams = request.admin ? Team.findAllByNameLike(searchTerm, options) : Team.findAllByOwner(springSecurityService.currentUser.username, [sort: "name", order: "asc", cache:true], searchTerm)
         if (!teams.any { it.name == term } && create) {

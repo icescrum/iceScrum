@@ -63,7 +63,7 @@ services.service("TeamService", ['$q', '$http', '$rootScope', 'Team', 'Session',
         }
     };
     this.search = function(term, create) {
-        return $http.get($rootScope.serverUrl+ '/team/search', { params: { term: term, create: create } }).then(function(response){
+        return $http.get($rootScope.serverUrl + '/team', { params: { term: term, create: create } }).then(function(response){
             return response.data;
         })
     }

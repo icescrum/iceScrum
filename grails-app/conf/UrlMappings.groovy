@@ -310,7 +310,7 @@ class UrlMappings {
 
         "/team/" {
             controller = 'team'
-            action = [POST:"save"]
+            action = [GET: "index", POST: "save"]
         }
 
         "/team/$id" {
