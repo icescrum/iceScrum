@@ -21,7 +21,7 @@
  */
 services.service("HomeService", ['User', '$http', '$rootScope', 'FormService', function(User, $http, $rootScope, FormService) {
     this.getPanels = function() {
-        return FormService.httpGet('home/panel/list', {}, true);
+        return FormService.httpGet('home/panel', {}, true);
     };
     this.updatePositionPanel = function(_data) {
         $http({

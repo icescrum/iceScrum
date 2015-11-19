@@ -29,7 +29,7 @@ services.service("FeedService", ['Feed', function(Feed) {
         return Feed.save(feed).$promise;
     };
     this.list = function() {
-        return Feed.query({action: 'list'}).$promise;
+        return Feed.query().$promise;
     };
     this.merged = function() {
         return Feed.query({action: 'merged'}).$promise;

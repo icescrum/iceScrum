@@ -331,19 +331,12 @@ class UrlMappings {
 
         "/home/feed" {
             controller = 'home'
-            action = [POST:"saveFeed"]
+            action = [GET:'listFeeds', POST:"saveFeed"]
         }
-
         "/home/feed/merged" {
             controller = 'home'
             action = [GET:'mergedContentFeed']
         }
-
-        "/home/feed/list" {
-            controller = 'home'
-            action = [GET:'listFeeds']
-        }
-
         "/home/feed/$id" {
             controller = 'home'
             action = [DELETE:'deleteFeed']
@@ -351,25 +344,18 @@ class UrlMappings {
                 id(matches: /\d*/)
             }
         }
-
-        "/home/feed/$id/content" {
+        "/home/feed/$id/content" { // Not the REST resource which is returned, so not a REST action
             controller = 'home'
             action = [GET:'contentFeed']
+        }
+        "/home/feed/userFeed" {
+            controller = 'home'
+            action = [GET:"userFeed"]
         }
 
         "/home/panel" {
             controller = 'home'
-            action = [POST: "panelPosition"]
-        }
-
-        "/home/panel/list" {
-            controller = 'home'
-            action = [GET:"panels"]
-        }
-
-        "/home/feed/userFeed" {
-            controller = 'home'
-            action = [GET:"userFeed"]
+            action = [GET: "panel", POST: "panelPosition"]
         }
 
         "403"(controller: "errors", action: "error403")
