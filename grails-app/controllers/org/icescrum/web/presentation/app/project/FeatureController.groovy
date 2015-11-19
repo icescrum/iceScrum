@@ -33,7 +33,7 @@ import org.icescrum.core.domain.Story
 
 import static grails.async.Promises.task
 
-@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
+@Secured('inProduct() or stakeHolder()')
 class FeatureController {
 
     def featureService
@@ -48,6 +48,7 @@ class FeatureController {
         }
     }
 
+    @Secured('isAuthenticated()')
     def show(long id, long product) {
         Feature feature = Feature.withFeature(product, id)
         withFormat {
@@ -141,6 +142,7 @@ class FeatureController {
         forward controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName]
     }
 
+    @Secured('isAuthenticated()')
     def print(long product, String format) {
         def _product = Product.get(product)
         def values = featureService.productParkingLotValues(_product)
@@ -184,6 +186,7 @@ class FeatureController {
         redirect(uri:"/p/$feature.backlog.pkey/#/feature/$feature.id")
     }
 
+    @Secured('isAuthenticated()')
     def view() {
         render(template: "view")
     }

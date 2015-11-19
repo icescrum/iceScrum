@@ -106,7 +106,7 @@ class UtilsTagLib {
         uiDefinitionService.getDefinitions().each { String uiDefinitionId, UiDefinition uiDefinition ->
             def menuBar = uiDefinition.menuBar
             if (menuBar?.spaceDynamicBar) {
-                menuBar.show = menuBarSupport.spaceDynamicBar(uiDefinitionId, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space)
+                menuBar.show = menuBarSupport.spaceDynamicBar(uiDefinitionId, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space, uiDefinition.window.init)
             }
             def show = menuBar?.show
             if (show in Closure) {
