@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="activity.list.html">
-<div class="activities panel-body" ng-controller="storyDetailsActivitiesCtrl" ng-class="{'loading': selected.activities === undefined}">
+<div class="activities panel-body" ng-class="{'loading': selected.activities === undefined}">
     <div class="panel-loading">
         <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
     </div>

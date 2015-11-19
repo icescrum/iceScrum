@@ -163,7 +163,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             view: 'details'
                         },
                         views:{
-                            "details@backlog": {
+                            "details": {
                                 templateUrl: 'story.new.html',
                                 controller: 'storyNewCtrl'
                             }
@@ -180,7 +180,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             }]
                         },
                         views:{
-                            "details@backlog": {
+                            "details": {
                                 templateUrl: 'story.multiple.html',
                                 controller: 'storyMultipleCtrl'
                             }
@@ -198,7 +198,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             }]
                         },
                         views:{
-                            "details@backlog": {
+                            "details": {
                                 templateUrl: 'story.details.html',
                                 controller: 'storyDetailsCtrl'
                             }
@@ -207,8 +207,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         .state('backlog.details.tab', {
                             url: "/{tabId:.+}",
                             resolve:{
-                                //we add detailsStory to wait for dynamic resolution from parent state resolvedData not used only to wait for story.xxxx to be loaded
-                                data:['$stateParams', 'detailsStory', 'AcceptanceTestService', 'CommentService', 'TaskService', 'StoryService', function($stateParams, detailsStory, AcceptanceTestService, CommentService, TaskService, StoryService){
+                                data:['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'StoryService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, StoryService, detailsStory){
                                     if ($stateParams.tabId == 'tests')
                                         return AcceptanceTestService.list(detailsStory);
                                     else if($stateParams.tabId == 'tasks')
@@ -218,6 +217,10 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     else if($stateParams.tabId == 'activities')
                                         return StoryService.activities(detailsStory, false);
                                     return null;
+                                }],
+                                //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
+                                selected:['data', 'detailsStory', function(data, detailsStory){
+                                    return detailsStory;
                                 }]
                             },
                             views:{
@@ -234,13 +237,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                             tpl = 'activity.list.html';
                                         return tpl;
                                     },
-                                    controllerProvider: ['$stateParams', function($stateParams) {
-                                        if($stateParams.tabId == 'activities') {
-                                            return 'storyDetailsActivitiesCtrl';
-                                        } else {
-                                            return 'storyDetailsCtrl';
-                                        }
-                                    }]
+                                    controller:'storyDetailsTabCtrl'
                                 }
                             }
                         })
