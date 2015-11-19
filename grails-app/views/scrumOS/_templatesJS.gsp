@@ -40,27 +40,24 @@
 </div>
 <script type="text/javascript">
     angular.element(document).ready(function () {
-        //TODO setTimeout must be remove before PROD (it helps BATARANG to work)
-        setTimeout(function() {
-            var $injector = angular.element(document).injector();
-            var $rootScope = $injector.get('$rootScope');
-            var Session = $injector.get('Session');
-            var PushService = $injector.get('PushService');
-            var BundleService = $injector.get('BundleService');
-            $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions() as JSON});
-            $rootScope.initMessages(${i18nMessages});
-            BundleService.initBundles(${is.i18nBundle() as JSON});
-            $rootScope.storyTypes = ${BundleUtils.storyTypes.keySet() as JSON};
-            $rootScope.featureTypes = ${BundleUtils.featureTypes.keySet() as JSON}; 
-            $rootScope.acceptanceTestStates = ${BundleUtils.acceptanceTestStates.keySet() as JSON}; 
-            $rootScope.planningPokerTypes = ${BundleUtils.planningPokerGameSuites.keySet() as JSON}; 
-            var project = ${product as JSON};
-            project.startDate = new Date(project.startDate);
-            project.endDate = new Date(project.endDate);
-            Session.setProject(project);
-            Session.setUser(${user as JSON});
-            Session.create();
-            PushService.initPush(${product?.id});
-        }, 100);
+        var $injector = angular.element(document).injector();
+        var $rootScope = $injector.get('$rootScope');
+        var Session = $injector.get('Session');
+        var PushService = $injector.get('PushService');
+        var BundleService = $injector.get('BundleService');
+        $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions() as JSON});
+        $rootScope.initMessages(${i18nMessages});
+        BundleService.initBundles(${is.i18nBundle() as JSON});
+        $rootScope.storyTypes = ${BundleUtils.storyTypes.keySet() as JSON};
+        $rootScope.featureTypes = ${BundleUtils.featureTypes.keySet() as JSON};
+        $rootScope.acceptanceTestStates = ${BundleUtils.acceptanceTestStates.keySet() as JSON};
+        $rootScope.planningPokerTypes = ${BundleUtils.planningPokerGameSuites.keySet() as JSON};
+        var project = ${product as JSON};
+        project.startDate = new Date(project.startDate);
+        project.endDate = new Date(project.endDate);
+        Session.setProject(project);
+        Session.setUser(${user as JSON});
+        Session.create();
+        PushService.initPush(${product?.id});
     });
 </script>
