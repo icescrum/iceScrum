@@ -568,8 +568,8 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     refreshStories();
 }]);
 
-controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$uibModal', '$timeout', '$controller', 'StoryService', 'hotkeys',
-    function($scope, $state, $http, $uibModal, $timeout, $controller, StoryService, hotkeys) {
+controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeout', '$controller', 'StoryService', 'hotkeys',
+    function($scope, $state, $uibModal, $timeout, $controller, StoryService, hotkeys) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
         // Functions
         $scope.resetStoryForm = function() {
@@ -582,7 +582,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$uibModal'
         };
         $scope.templateSelected = function() {
             if ($scope.story.template) {
-                $http.get('story/templatePreview?template=' + $scope.story.template).success(function(storyPreview) {
+                StoryService.getTemplatePreview($scope.story.template).then(function(storyPreview) {
                     $scope.storyPreview = storyPreview;
                 });
             } else {
@@ -627,7 +627,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$http', '$uibModal'
                 $timeout.cancel($scope.timerDuplicate);
                 $scope.timerDuplicate = $timeout(function() {
                     if ($scope.lastSearchedTerm != trimmedTerm) {
-                        $http.get('story/findDuplicate?term=' + trimmedTerm).success(function(messageDuplicate) {
+                        StoryService.findDuplicates(trimmedTerm).then(function(messageDuplicate) {
                             $scope.lastSearchedTerm = trimmedTerm;
                             $scope.messageDuplicate = messageDuplicate ? messageDuplicate : '';
                         });

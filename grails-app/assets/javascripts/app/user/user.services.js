@@ -66,5 +66,10 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
             },
             data: info
         });
+    };
+    this.search = function(term) {
+        return $http.get($rootScope.serverUrl + '/user/search', { params: { value: term, invit: true } }).then(function(response) {
+            return response.data;
+        });
     }
 }]);

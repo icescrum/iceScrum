@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'FormService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', '$http', 'hotkeys', 'PushService',
-    function($scope, $state, $uibModal, Session, UserService, FormService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, $http, hotkeys, PushService) {
+controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', 'hotkeys', 'PushService',
+    function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, hotkeys, PushService) {
         $scope.app = {
             isFullScreen: false,
             loading: 10
@@ -274,7 +274,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         var filter = JSON.parse($scope.selectedBacklog.filter);
         $scope.filteredAndSortedStories = $filter('orderBy')($filter('filter')($scope.stories, filter.story), $scope.orderBy.current.id, $scope.orderBy.reverse);
     };
-
     $scope.storySortableUpdate = function(startModel, destModel, start, end) {
         var story = destModel[end];
         var newRank = end + 1;
@@ -290,7 +289,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             });
         }
     };
-
     $scope.setSelectedBacklog = function(backlog){
         $scope.selectedBacklog = backlog;
         StoryService.listByBacklog(backlog).then(function(stories){
@@ -298,7 +296,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             $scope.refreshStories();
         });
     };
-
     // Init
     $scope.stories = stories;
     $scope.viewName = 'backlog';

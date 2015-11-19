@@ -302,7 +302,7 @@ class StoryController {
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
-    def findDuplicate(long product) {
+    def findDuplicates(long product) {
         def stories = null
         Product _product = Product.withProduct(product)
         def terms = params.term?.tokenize()?.findAll { it.size() >= 5 }

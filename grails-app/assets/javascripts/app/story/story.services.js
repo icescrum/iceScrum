@@ -283,4 +283,14 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
     this.listByBacklog = function(backlog) {
         return Story.query({backlog:backlog.id}).$promise
     };
+    this.getTemplatePreview = function(templateId) {
+        return $http.get('story/templatePreview?template=' + templateId).then(function(response) {
+            return response.data;
+        });
+    };
+    this.findDuplicates = function(term) {
+        return $http.get('story/findDuplicates?term=' + term).then(function(response) {
+            return response.data;
+        });
+    }
 }]);

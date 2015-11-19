@@ -21,18 +21,11 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', function($scope, $http, $filter, Session) {
+controllers.controller('teamCtrl', ['$scope', '$filter', 'Session', 'TeamService', 'UserService', function($scope, $filter, Session, TeamService, UserService) {
 
     $scope.team = {};
     $scope.searchTeam = function(val, create){
-        return $http.get($scope.serverUrl+ '/team/search', {
-            params: {
-                term: val,
-                create: create
-            }
-        }).then(function(response){
-            return response.data;
-        });
+        return TeamService.search(val, create);
     };
 
     $scope.warning = { on: false };
@@ -99,13 +92,8 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
 
     $scope.member = {};
     $scope.searchMembers = function(val){
-        return $http.get($scope.serverUrl+ '/user/search', {
-            params: {
-                value: val,
-                invit:true
-            }
-        }).then(function(response) {
-            return _.chain(response.data)
+        return UserService.search(val).then(function(users) {
+            return _.chain(users)
                 .filter(function(member){
                     var found = false;
                     if ($scope.project){
@@ -149,7 +137,7 @@ controllers.controller('teamCtrl', ['$scope', '$http', '$filter', 'Session', fun
     };
 }]);
 
-controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', '$filter', 'TeamService', function($scope, $http, $filter, TeamService) {
+controllers.controller('manageTeamsModalCtrl', ['$scope', '$filter', 'TeamService', 'UserService', function($scope, $filter, TeamService, UserService) {
     // Functions
     $scope.selectTeam = function(team) {
         $scope.team = angular.copy(team);
@@ -231,13 +219,8 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$http', '$filter', 'T
     };
     $scope.member = {};
     $scope.searchMembers = function(val){
-        return $http.get($scope.serverUrl+ '/user/search', {
-            params: {
-                value: val,
-                invit:true
-            }
-        }).then(function(response) {
-            return _.chain(response.data)
+        return UserService.search(val).then(function(users) {
+            return _.chain(users)
                 .filter(function(member){
                     var found = false;
                     if (!found){

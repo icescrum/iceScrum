@@ -265,15 +265,10 @@ controllers.controller('projectListCtrl', ['$scope', '$controller', 'ProjectServ
     });
 }]);
 
-controllers.controller('abstractProjectCtrl', ['$scope', '$http', '$filter', 'Session', function($scope, $http, $filter, Session) {
+controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', 'UserService', function($scope, $filter, Session, UserService) {
     $scope.searchUsers = function(val, isPo) {
-        return $http.get($scope.serverUrl + '/user/search', {
-            params: {
-                value: val,
-                invit: true
-            }
-        }).then(function(response) {
-            return _.chain(response.data)
+        UserService.search(val).then(function(users) {
+            return _.chain(users)
                 .filter(function(u) {
                     var found = _.find($scope.project.productOwners, { email: u.email });
                     if (!found) {
