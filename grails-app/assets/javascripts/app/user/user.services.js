@@ -52,9 +52,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         return $http.post($rootScope.serverUrl + '/user/retrieve?user.username=' + user.username);
     };
     this.getInvitationUserMock = function(token) {
-        return $http.get($rootScope.serverUrl + '/user/invitationUserMock?token=' + token).then(function(response) {
-            return response.data;
-        });
+        return FormService.httpGet('user/invitationUserMock', { params: { token: token } }, true);
     };
     this.updateMenuPreferences = function(info) {
         $http({
@@ -68,8 +66,6 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         });
     };
     this.search = function(term) {
-        return $http.get($rootScope.serverUrl + '/user/search', { params: { value: term, invit: true } }).then(function(response) {
-            return response.data;
-        });
+        return FormService.httpGet('user/search', { params: { value: term, invit: true } }, true);
     }
 }]);

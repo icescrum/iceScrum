@@ -29,7 +29,7 @@ services.factory('Team', ['Resource', function($resource) {
         });
 }]);
 
-services.service("TeamService", ['$q', '$http', '$rootScope', 'Team', 'Session', function($q, $http, $rootScope, Team, Session) {
+services.service("TeamService", ['$q', 'FormService', 'Team', 'Session', function($q, FormService, Team, Session) {
     this.save = function (team) {
         team.class = 'team';
         return Team.save(team).$promise;
@@ -63,8 +63,6 @@ services.service("TeamService", ['$q', '$http', '$rootScope', 'Team', 'Session',
         }
     };
     this.search = function(term, create) {
-        return $http.get($rootScope.serverUrl + '/team', { params: { term: term, create: create } }).then(function(response){
-            return response.data;
-        })
+        return FormService.httpGet('team', { params: {  term: term, create: create } }, true);
     }
 }]);

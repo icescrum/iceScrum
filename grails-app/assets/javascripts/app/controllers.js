@@ -122,19 +122,21 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             $scope.showAuthModal();
         });
         $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
-            if (angular.isArray(error.data)) {
-                notifications.error("", error.data[0].text);
-            } else if (angular.isObject(error.data)) {
-                notifications.error("", error.data.text);
+            var data = error.data;
+            if (angular.isArray(data)) {
+                notifications.error("", data[0].text);
+            } else if (angular.isObject(data)) {
+                notifications.error("", data.text);
             } else {
                 notifications.error("", $scope.message('todo.is.ui.error.unknown'));
             }
         });
         $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
-            if (angular.isArray(error.data)) {
-                notifications.error($scope.message('todo.is.ui.error.server'), error.data[0].text);
-            } else if (angular.isObject(error.data)) {
-                notifications.error($scope.message('todo.is.ui.error.server'), error.data.text);
+            var data = error.data;
+            if (angular.isArray(data)) {
+                notifications.error($scope.message('todo.is.ui.error.server'), data[0].text);
+            } else if (angular.isObject(data)) {
+                notifications.error($scope.message('todo.is.ui.error.server'), data.text);
             } else {
                 notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
             }
@@ -200,8 +202,8 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         $state.go('userretrieve');
     };
     $scope.login = function(credentials) {
-        AuthService.login(credentials).then(function(stuff) {
-            var lastOpenedUrl = stuff.data.url;
+        AuthService.login(credentials).then(function(data) {
+            var lastOpenedUrl = data.url;
             var normalizedCurrentLocation = window.location.href.charAt(window.location.href.length - 1) == '/' ? window.location.href.substring(0, window.location.href.length - 1) : window.location.href;
             if (normalizedCurrentLocation == $rootScope.serverUrl && lastOpenedUrl) {
                 document.location = lastOpenedUrl;

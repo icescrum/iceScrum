@@ -35,8 +35,8 @@ controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, Ho
         forcePlaceholderSize: "> div",
         placeholder: '<div>&nbsp;</div>'
     };
-    HomeService.getPanels().then(function(callback) {
-        angular.forEach(callback.data, function(value, key) {
+    HomeService.getPanels().then(function(panels) {
+        angular.forEach(panels, function(value, key) {
             if (key % 2 == 0) {
                 $scope.panels_l.push(value);
             } else {

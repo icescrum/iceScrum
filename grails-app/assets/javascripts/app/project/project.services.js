@@ -24,7 +24,7 @@ services.factory('Project', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/project/:id/:action');
 }]);
 
-services.service("ProjectService", ['$http', 'Project', 'Session', 'TeamService', function($http, Project, Session, TeamService) {
+services.service("ProjectService", ['$http', 'Project', 'Session', 'TeamService', 'FormService', function($http, Project, Session, TeamService, FormService) {
     this.save = function(project) {
         project.class = 'product';
         return Project.save(project).$promise;
@@ -76,13 +76,9 @@ services.service("ProjectService", ['$http', 'Project', 'Session', 'TeamService'
         }
     };
     this.getVersions = function() {
-        return $http.get('project/versions').then(function(response) {
-            return response.data;
-        });
+        return FormService.httpGet('project/versions');
     };
     this.getTags = function() {
-        return $http.get('finder/tag').then(function(response) {
-            return response.data;
-        });
+        return FormService.httpGet('finder/tag');
     };
 }]);

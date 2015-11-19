@@ -32,10 +32,12 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 transformRequest: function(data) {
                     return angular.isObject(data) && String(data) !== '[object File]' ? FormService.formObjectData(data) : data;
                 }
-            })
+            }).then(function(response) {
+                return response.data;
+            });
         }
     };
-}]).service('Session', ['$timeout', '$http', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', function($timeout, $http, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType) {
+}]).service('Session', ['$timeout', '$http', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
     var self = this;
     self.user = new User();
     self.project = new Project();
@@ -181,16 +183,12 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
 
     this.getLanguages = function() {
-        return $http.get($rootScope.serverUrl + '/scrumOS/languages', { cache: true }).then(function(response) {
-            return response.data;
-        })
+        return FormService.httpGet('scrumOS/languages', { cache: true });
     };
     this.getTimezones = function() {
-        return $http.get($rootScope.serverUrl + '/scrumOS/timezones', { cache: true }).then(function(response) {
-            return response.data;
-        })
+        return FormService.httpGet('scrumOS/timezones', { cache: true });
     };
-}]).service('FormService', ['$filter', function($filter) {
+}]).service('FormService', ['$filter', '$http', '$rootScope', function($filter, $http, $rootScope) {
     var self = this;
     this.previous = function(list, element) {
         var ind = list.indexOf(element);
@@ -242,32 +240,13 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         }
         return query.length ? query.substr(0, query.length - 1) : query;
     };
-    this.selectTagsOptions = {
-        tags: [],
-        multiple: true,
-        array_tags: true,
-        tokenSeparators: [",", " "],
-        createSearchChoice: function(term) {
-            return {id: term, text: term};
-        },
-        formatSelection: function(object) {
-            return '<a href="#finder/?tag=' + object.text + '" onclick="document.location=this.href;"> <i class="fa fa-tag"></i> ' + object.text + '</a>';
-        },
-        ajax: {
-            url: 'finder/tag',
-            cache: 'true',
-            data: function(term) {
-                return {term: term};
-            },
-            results: function(data) {
-                var results = [];
-                angular.forEach(data, function(result) {
-                    results.push({id: result, text: result});
-                });
-                return {results: results};
-            }
-        }
-    };
+    this.httpGet = function(path, params, isAbsolute) {
+        var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
+        var paramObj = params || {};
+        return $http.get(fullPath, paramObj).then(function(response) {
+            return response.data;
+        });
+    }
 }]).service('BundleService', [function() {
     this.bundles = {};
     this.initBundles = function(bundles) {

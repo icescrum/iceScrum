@@ -103,10 +103,11 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                         data: $scope.changes
                     })
                     .then(function(response) {
-                            if (response.data && response.data.class == 'Product') {
-                                document.location = $scope.serverUrl + '/p/' + response.data.pkey + '/';
+                            var data = response.data;
+                            if (data && data.class == 'Product') {
+                                document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
                             } else {
-                                $scope.checkValidation(response.data);
+                                $scope.checkValidation(data);
                             }
                         }, function() {
                             $scope.progress = false;

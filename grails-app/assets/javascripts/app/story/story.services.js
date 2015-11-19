@@ -25,7 +25,7 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('story/:type/:typeId/:id/:action');
 }]);
 
-services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, StoryStatesByName, IceScrumEventType, PushService) {
+services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormService', 'StoryStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, FormService, StoryStatesByName, IceScrumEventType, PushService) {
     this.list = [];
     this.isListResolved = $q.defer();
     var self = this;
@@ -96,6 +96,9 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
             }
         }
         return promise ? promise : $q.when(obj.stories);
+    };
+    this.listByBacklog = function(backlog) {
+        return Story.query({backlog:backlog.id}).$promise;
     };
     this.get = function(id) {
         return self.isListResolved.promise.then(function() {
@@ -240,7 +243,6 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
                 });
         }
     };
-
     // Templates
     var cachedTemplateEntries;
     this.getTemplateEntries = function() {
@@ -248,7 +250,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         if (angular.isArray(cachedTemplateEntries)) {
             deferred.resolve(cachedTemplateEntries);
         } else {
-            $http.get('story/templateEntries').success(function(templateEntries) {
+            FormService.httpGet('story/templateEntries').then(function(templateEntries) {
                 cachedTemplateEntries = templateEntries;
                 deferred.resolve(templateEntries);
             });
@@ -271,26 +273,15 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'StoryState
         return Story.get({action: 'listByField', field: field}).$promise
     };
     this.getDependenceEntries = function(story) {
-        return $http.get('story/' + story.id + '/dependenceEntries').then(function(response) {
-            return response.data;
-        });
+        return FormService.httpGet('story/' + story.id + '/dependenceEntries');
     };
     this.getParentSprintEntries = function() {
-        return $http.get('story/sprintEntries').then(function(response) {
-            return response.data;
-        });
-    };
-    this.listByBacklog = function(backlog) {
-        return Story.query({backlog:backlog.id}).$promise
+        return FormService.httpGet('story/sprintEntries');
     };
     this.getTemplatePreview = function(templateId) {
-        return $http.get('story/templatePreview?template=' + templateId).then(function(response) {
-            return response.data;
-        });
+        return FormService.httpGet('story/templatePreview', { params: { template: templateId } });
     };
     this.findDuplicates = function(term) {
-        return $http.get('story/findDuplicates?term=' + term).then(function(response) {
-            return response.data;
-        });
+        return FormService.httpGet('story/findDuplicates', { params: { term: term } });
     }
 }]);

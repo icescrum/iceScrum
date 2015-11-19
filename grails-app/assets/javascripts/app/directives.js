@@ -320,17 +320,18 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
                 $http({
                     method: "get",
                     url: $rootScope.serverUrl + "/progress"
-                }).then(function (response) {
-                    scope.progress = response.data;
-                    if (!response.data.error && !response.data.complete) {
+                }).then(function(response) {
+                    var data = response.data;
+                    scope.progress = data;
+                    if (!data.error && !data.complete) {
                         status = $timeout(progress, 500);
                     }
-                    if (response.data.error){
+                    if (data.error){
                         scope.progress.type = 'danger';
-                    }else if (response.data.complete){
+                    } else if (data.complete) {
                         scope.progress.type = 'success';
                     }
-                }, function(){
+                }, function() {
                     scope.progress.type = 'danger';
                     scope.progress.label = scope.message(attrs.errorMessage?attrs.errorMessage:'todo.is.ui.error');
                     scope.progress.value = 100;
