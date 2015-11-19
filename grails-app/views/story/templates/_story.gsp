@@ -23,12 +23,13 @@
 
 <script type="text/ng-template" id="story.html">
 <div ng-class="{ 'ui-selected': isSelected(story) }"
-     data-id="{{ story.id }}"
-     ng-repeat="story in filteredAndSortedStories"
-     ng-controller="storyCtrl"
+     on-repeat-completed="backlog.storiesRendered = true"
+     ng-repeat="story in backlog.stories"
+     as-sortable-item
      ellipsis
      class="postit-container">
-    <div style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
+    <div ng-controller="storyCtrl"
+         style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
          class="postit story {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }} {{ story.type | storyType }}">
         <div class="head">
             <a href
@@ -37,7 +38,7 @@
                tooltip-append-to-body="true"
                ng-click="follow(story)"
                ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
-            <span class="id">{{ story.id }}</span>
+            <span class="id">{{ ::story.uid }}</span>
             <span class="value editable ui-selectable-cancel"
                   uib-tooltip="${message(code: 'is.story.value')}"
                   tooltip-append-to-body="true"
@@ -53,7 +54,7 @@
                 {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar"></i>
             </span>
         </div>
-        <div class="content">
+        <div class="content" as-sortable-item-handle>
             <h3 class="title ellipsis-el"
                 ng-model="story.name"
                 ng-bind-html="story.name | sanitize"
@@ -77,8 +78,7 @@
                     <ul class="uib-dropdown-menu" ng-include="'story.menu.html'"></ul>
                 </span>
                 <span class="action" ng-class="{'active':story.attachments.length}">
-                    <a href
-                       ng-click="goToStory(story)"
+                    <a href="#/{{ ::viewName }}/{{ ::story.id }}"
                        uib-tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-paperclip"></i>
@@ -86,8 +86,7 @@
                     </a>
                 </span>
                 <span class="action" ng-class="{'active':story.comments_count}">
-                    <a href
-                       ng-click="goToStory(story, 'comments')"
+                    <a href="#/{{ ::viewName }}/{{ ::story.id }}/comments"
                        uib-tooltip="{{ story.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
                        tooltip-append-to-body="true"
                        ng-switch="story.comments_count">
@@ -97,8 +96,7 @@
                     </a>
                 </span>
                 <span class="action" ng-class="{'active':story.tasks_count}">
-                    <a href
-                       ng-click="goToStory(story, 'tasks')"
+                    <a href="#/{{ ::viewName }}/{{ ::story.id }}/tasks"
                        uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                        tooltip-append-to-body="true">
                         <i class="fa fa-tasks"></i>
@@ -106,8 +104,7 @@
                     </a>
                 </span>
                 <span class="action" ng-class="{'active':story.acceptanceTests_count}">
-                    <a href
-                       ng-click="goToStory(story, 'tests')"
+                    <a href="#/{{ ::viewName }}/{{ ::story.id }}/tests"
                        uib-tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                        tooltip-append-to-body="true"
                        ng-switch="story.acceptanceTests_count">
@@ -118,12 +115,12 @@
                 </span>
             </div>
         </div>
-        <div ng-if="story.state > 1" class="progress">
-            <span class="status">{{ story.state < 6 ? story.state : 6 }}/6</span>
+        <div ng-if="tasksProgress(story)" class="progress">
+            <span class="status">{{ story.state < 6 ? story.state : 6 }}/{{ story.tasks_count }}</span>
             <div class="progress-bar" style="width: {{ story.state | stateProgress }}%">
             </div>
         </div>
-        <div ng-if="story.state > 1" class="state" title="{{ story.state | i18n:'StoryStates' }}">{{ story.state | i18n:'StoryStates' }}</div>
+        <div class="state" ng-class="{'hover-progress':tasksProgress(story)}" title="{{ story.state | i18n:'StoryStates' }}">{{ story.state | i18n:'StoryStates' }}</div>
     </div>
 </div>
 </script>

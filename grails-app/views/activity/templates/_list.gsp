@@ -20,9 +20,9 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="activity.list.html">
-<div class="activities panel-body">
-    <div class="empty-content" ng-show="selected.activities === undefined">
-        <i class="fa fa-refresh fa-spin"></i>
+<div class="activities panel-body" ng-controller="storyDetailsActivitiesCtrl" ng-class="{'loading': selected.activities === undefined}">
+    <div class="panel-loading">
+        <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
     </div>
     <div ng-repeat="groupedActivity in groupedActivities">
         <div class="activity">

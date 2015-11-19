@@ -21,21 +21,19 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div ng-if="story" class="tasks panel-body" ng-init="tasks(story)" ng-controller="taskCtrl">
+<div class="tasks panel-body" ng-init="tasks(selected)" ng-controller="taskCtrl" ng-class="{'loading': selected.tasks === undefined}">
+    <div class="panel-loading">
+        <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
+    </div>
     <table class="table">
-        <tr ng-show="story.tasks === undefined">
-            <td class="empty-content">
-                <i class="fa fa-refresh fa-spin"></i>
-            </td>
-        </tr>
-        <tr ng-repeat="task in story.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
+        <tr ng-repeat="task in selected.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
             <td class="content" ng-class="{'deletable': deletable}">
                 <div class="clearfix no-padding">
                     <div class="col-sm-1">
                         <button class="btn btn-default elemid hidden-deletable"
                                 disabled="disabled">{{ task.uid }}</button>
                         <button class="btn btn-danger visible-deletable"
-                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, story] })"
+                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, selected] })"
                                 tooltip-placement="left"
                                 tooltip-append-to-body="true"
                                 uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
@@ -55,7 +53,7 @@
                 <hr ng-if="!$last"/>
             </td>
         </tr>
-        <tr ng-show="!story.tasks.length">
+        <tr ng-show="selected.tasks !== undefined && !selected.tasks.length">
             <td class="empty-content">
                 <small>${message(code:'todo.is.ui.task.empty')}</small>
             </td>

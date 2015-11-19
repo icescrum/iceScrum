@@ -21,13 +21,11 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.list.html">
-<div ng-if="selected" class="comments panel-body">
-    <table ng-init="comments(selected)" class="table">
-        <tr ng-show="selected.comments === undefined">
-            <td class="empty-content">
-                <i class="fa fa-refresh fa-spin"></i>
-            </td>
-        </tr>
+<div class="comments panel-body" ng-class="{'loading': selected.comments === undefined}">
+    <div class="panel-loading">
+        <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
+    </div>
+    <table class="table">
         <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
             <td class="content">
                 <form name="formHolder.commentForm"
@@ -41,7 +39,7 @@
                                  ng-src="{{comment.poster | userAvatar}}"
                                  alt="{{comment.poster | userFullName}}"/>
                             <button class="btn btn-danger visible-deletable"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, story] })"
+                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, selected] })"
                                     tooltip-placement="left"
                                     tooltip-append-to-body="true"
                                     uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>

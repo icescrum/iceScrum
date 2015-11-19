@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', 'hotkeys', 'PushService',
-    function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, hotkeys, PushService) {
+controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', 'hotkeys', 'PushService', '$http',
+    function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, hotkeys, PushService, $http) {
         $scope.app = {
             isFullScreen: false,
             loading: 10
@@ -105,18 +105,26 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
 
         //fake loading
         var loadingAppProgress = $interval(function() {
-            if ($scope.app.loading <= 80) {
-                $scope.app.loading += 10;
+            if ($scope.app.loading <= 70) {
+                $scope.app.loading += 5;
             }
-        }, 100);
-        //real ready app
+        }, 10);
         $scope.$on(CONTENT_LOADED, function() {
-            $scope.app.loading = 90;
-            $timeout(function() {
-                $scope.app.loading = 100;
-                $interval.cancel(loadingAppProgress);
-                angular.element('#app-progress').remove();
-            }, 500);
+            $scope.app.loading = 70;
+            //real ajax loading
+            loadingAppProgress = $interval(function(){
+                if($http.pendingRequests.length > 0){
+                    $scope.app.loading = 100 - ((100 - $scope.app.loading) / $http.pendingRequests.length);
+                } else {
+                    $timeout(function() {
+                        $scope.app.loading = 100;
+                        $interval.cancel(loadingAppProgress);
+                        angular.element('#app-progress').remove();
+                    }, 10);
+                }
+            }, 10);
+
+
         });
         $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
             $scope.showAuthModal();
@@ -147,7 +155,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 $scope.app.isFullScreen = false;
             }
             else {
-                var el = angular.element('#main-content > div:first-of-type');
+                var el = angular.element('.main > div:first-of-type');
                 if (el.length > 0) {
                     Fullscreen.enable(el[0]);
                     $scope.app.isFullScreen = !$scope.app.isFullScreen;
@@ -243,105 +251,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
     // Init
     $scope.user = new User();
 
-}]).controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories', 'StoryService', 'BacklogService', '$filter', function($scope, $state, backlogs, stories, StoryService, BacklogService, $filter) {
-    // Functions
-    $scope.goToNewStory = function() {
-        $state.go('backlog.new');
-    };
-    $scope.goToStory = function(story, tabId) {
-        var params = {id: story.id};
-        var state = $scope.viewName + '.details';
-        if (tabId) {
-            params.tabId = tabId;
-            state += '.tab';
-        }
-        $state.go(state, params);
-    };
-    $scope.isSelected = function(story) {
-        if ($state.params.id) {
-            return $state.params.id == story.id;
-        } else if ($state.params.listId) {
-            return _.contains($state.params.listId.split(','), story.id.toString());
-        } else {
-            return false;
-        }
-    };
-    $scope.authorizedStory = function(action, story) {
-        return StoryService.authorizedStory(action, story);
-    };
-    // Required instead of ng-repeat stories | filters
-    // because for sortable we need to have the stories in a ng-model, so the expression must be assignable
-    $scope.refreshStories = function() {
-        //grab only stories for the selected backlog
-        var filter = JSON.parse($scope.selectedBacklog.filter);
-        $scope.filteredAndSortedStories = $filter('orderBy')($filter('filter')($scope.stories, filter.story), $scope.orderBy.current.id, $scope.orderBy.reverse);
-    };
-    $scope.storySortableUpdate = function(startModel, destModel, start, end) {
-        var story = destModel[end];
-        var newRank = end + 1;
-        if (story.rank != newRank) {
-            story.rank = newRank;
-            StoryService.update(story).then(function() {
-                angular.forEach(destModel, function(s, index) {
-                    var currentRank = index + 1;
-                    if (s.rank != currentRank) {
-                        s.rank = currentRank;
-                    }
-                });
-            });
-        }
-    };
-    $scope.setSelectedBacklog = function(backlog){
-        $scope.selectedBacklog = backlog;
-        StoryService.listByBacklog(backlog).then(function(stories){
-            StoryService.addStories(stories);
-            $scope.refreshStories();
-        });
-    };
-    // Init
-    $scope.stories = stories;
-    $scope.viewName = 'backlog';
-    $scope.selectableOptions = {
-        filter: ">.postit-container",
-        cancel: "a,.ui-selectable-cancel",
-        stop: function(e, ui, selectedItems) {
-            switch (selectedItems.length) {
-                case 0:
-                    $state.go($scope.viewName);
-                    break;
-                case 1:
-                    $state.go($scope.viewName + ($state.params.tabId ? '.details.tab' : '.details'), {id: selectedItems[0].id});
-                    break;
-                default:
-                    $state.go($scope.viewName + '.multiple', {listId: _.pluck(selectedItems, 'id').join(",")});
-                    break;
-            }
-        }
-    };
-    $scope.backlogs = backlogs;
-    $scope.selectedBacklog = {};
-    $scope.setSelectedBacklog(backlogs[0]);
-    $scope.filteredAndSortedStories = [];
-    $scope.$watchGroup(['orderBy.current.id', 'orderBy.reverse'], $scope.refreshStories);
-    $scope.$watch('stories', $scope.refreshStories, true);
-    $scope.orderBy = {
-        reverse: false,
-        status: false,
-        current: {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
-        values: [
-            {id: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
-            {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
-            {id: 'name', name: $scope.message('todo.is.ui.sort.name')},
-            {id: 'tasks_count', name: $scope.message('todo.is.ui.sort.tasks')},
-            {id: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
-            {id: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
-            {id: 'value', name: $scope.message('todo.is.ui.sort.value')},
-            {id: 'type', name: $scope.message('todo.is.ui.sort.type')}
-        ]
-    };
-    $scope.storySortableOptions = {
-        items: '.postit-container'
-    };
 }]);
 
 controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function($scope, $state, FeatureService, features) {

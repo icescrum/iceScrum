@@ -42,7 +42,7 @@
     <script type="text/javascript" src="${grailsApplication.config.grails.serverURL}/assets/pdfjs/pdf.js"></script>
     <g:layoutHead/>
 </head>
-<body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'ready': app.loading == 100, 'loading':app.loading < 100 }" class="loading flex">
+<body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'loading': app.loading != 100 }" class="flex loading">
 <div id="app-progress">
     <div>
         <uib-progressbar animate="true" value="app.loading" type="primary"></uib-progressbar>

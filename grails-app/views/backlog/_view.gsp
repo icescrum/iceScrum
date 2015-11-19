@@ -22,30 +22,21 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="backlogs-list">
-    <div class="btn-group">
-        <a ng-repeat="backlog in backlogs"
-           class="btn btn-default"
-           uib-tooltip="{{ backlog.name }}"
-           tooltip-append-to-body="true"
-            ng-click="setSelectedBacklog(backlog)"
-           tooltip-placement="top">{{ backlog.name }}
-            <span class="badge">{{ backlog.count }}</span>
-        </a>
-    </div>
-</div>
-<div class="backlogs-list-details">
-    <div class="panel panel-light">
-        <div class="panel-heading">
-            <div class="btn-group">
-                <a type="button"
-                   ng-if="authorizedStory('create')"
-                   uib-tooltip="${message(code:'default.button.create.label')}"
-                   tooltip-append-to-body="true"
-                   tooltip-placement="right"
-                   ng-click="goToNewStory()"
-                   class="btn btn-primary">
-                    <span class="fa fa-plus"></span>
-                </a>
+    <div class="btn-toolbar">
+        <div class="btn-group" ng-repeat="availableBacklog in availableBacklogs">
+            <button class="btn btn-default btn-backlog"
+                    ng-class="{'active':availableBacklog.active}"
+                    uib-tooltip="{{ availableBacklog.name }}"
+                    tooltip-append-to-body="true"
+                    ng-click="manageActiveBacklog(availableBacklog)"
+                    tooltip-placement="top">
+                <i class="fa" ng-class="{'fa-circle-o':!availableBacklog.active, 'fa-dot-circle-o':availableBacklog.active}"></i>
+                {{ availableBacklog.name }}
+                <span class="badge">{{ availableBacklog.count }}</span>
+            </button>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group btn-view visible-on-hover">
                 <button type="button"
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
                         tooltip-append-to-body="true"
@@ -54,56 +45,6 @@
                         class="btn btn-default">
                     <span class="fa fa-th" ng-class="{'fa-th-list': view.asList, 'fa-th': !view.asList}"></span>
                 </button>
-                <div class="btn-group"
-                     uib-dropdown
-                     is-open="orderBy.status"
-                     tooltip-append-to-body="true"
-                     uib-tooltip="${message(code:'todo.is.ui.sort')}">
-                    <button class="btn btn-default" uib-dropdown-toggle type="button">
-                        <span id="sort">{{ orderBy.current.name }}</span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="uib-dropdown-menu" role="menu">
-                        <li role="menuitem" ng-repeat="order in orderBy.values">
-                            <a ng-click="orderBy.current = order; orderBy.status = false;" href>{{ order.name }}</a>
-                        </li>
-                    </ul>
-                </div>
-                <button type="button" class="btn btn-default"
-                        ng-click="orderBy.reverse = !orderBy.reverse"
-                        uib-tooltip="${message(code:'todo.is.ui.order')}"
-                        tooltip-append-to-body="true">
-                    <span class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></span>
-                </button>
-            </div>
-            <div class="btn-group" tooltip-append-to-body="true" uib-dropdown uib-tooltip="${message(code:'todo.is.ui.export')}">
-                <button class="btn btn-default" uib-dropdown-toggle type="button">
-                    <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
-                </button>
-                <ul class="uib-dropdown-menu"
-                    role="menu">
-                    <g:each in="${is.exportFormats()}" var="format">
-                        <li role="menuitem">
-                            <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
-                               ng-click="print($event)">${format.name}</a>
-                        </li>
-                    </g:each>
-                    <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
-                </ul>
-            </div>
-            <div class="btn-group pull-right visible-on-hover">
-                <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
-                <g:if test="${params?.printable}">
-                    <button type="button"
-                            class="btn btn-default"
-                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="bottom"
-                            ng-click="print($event)"
-                            ng-href="{{ viewName }}/print"
-                            hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
-                    </button>
-                </g:if>
                 <g:if test="${params?.fullScreen}">
                     <button type="button"
                             class="btn btn-default"
@@ -124,16 +65,91 @@
                     </button>
                 </g:if>
             </div>
+            <a type="button"
+               ng-if="authorizedStory('create')"
+               uib-tooltip="${message(code:'default.button.create.label')}"
+               tooltip-append-to-body="true"
+               tooltip-placement="right"
+               ng-click="goToNewStory()"
+               class="btn btn-primary">${message(code: "is.ui.sandbox.toolbar.new")} ${message(code: "is.story")}</a>
         </div>
-        <div class="panel-body">
-            <div ui-selectable="selectableOptions"
-                 ui-selectable-list="stories"
-                 html-sortable="storySortableOptions"
-                 html-sortable-callback="storySortableUpdate(startModel, destModel, start, end)"
-                 ng-model="filteredAndSortedStories"
-                 ng-class="view.asList ? 'list-group' : 'grid-group'"
-                 class="postits"
-                 ng-include="'story.html'"></div>
+    </div>
+    <hr>
+</div>
+<div class="backlogs-list-details">
+    <div class="panel panel-light" ng-repeat="backlog in backlogs">
+        <div class="panel-heading">
+            <div class="btn-group">
+                <div class="btn-group"
+                     uib-dropdown
+                     is-open="backlog.orderBy.status"
+                     tooltip-append-to-body="true"
+                     uib-tooltip="${message(code:'todo.is.ui.sort')}">
+                    <button class="btn btn-default" uib-dropdown-toggle type="button">
+                        <span id="sort">{{ backlog.orderBy.current.name }}</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="uib-dropdown-menu" role="menu">
+                        <li role="menuitem" ng-repeat="order in backlog.orderBy.values">
+                            <a ng-click="changeBacklogOrder(backlog, order)" href>{{ order.name }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-default"
+                        ng-click="reverseBacklogOrder(backlog)"
+                        uib-tooltip="${message(code:'todo.is.ui.order')}"
+                        tooltip-append-to-body="true">
+                    <span class="fa fa-sort-amount{{ backlog.orderBy.reverse ? '-desc' : '-asc'}}"></span>
+                </button>
+            </div>
+            <div class="btn-group" tooltip-append-to-body="true" uib-dropdown uib-tooltip="${message(code:'todo.is.ui.export')}">
+                <g:if test="${params?.printable}">
+                    <button type="button"
+                            class="btn btn-default"
+                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                            tooltip-append-to-body="true"
+                            tooltip-placement="bottom"
+                            ng-click="print($event)"
+                            ng-href="{{ viewName }}/print"
+                            hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
+                    </button>
+                </g:if>
+                <button class="btn btn-default" uib-dropdown-toggle type="button">
+                    <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
+                </button>
+                <ul class="uib-dropdown-menu"
+                    role="menu">
+                    <g:each in="${is.exportFormats()}" var="format">
+                        <li role="menuitem">
+                            <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
+                               ng-click="print($event)">${format.name}</a>
+                        </li>
+                    </g:each>
+                    <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
+                </ul>
+            </div>
+            <div class="btn-group pull-right visible-on-hover">
+                <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
+                <button type="button"
+                        class="btn btn-default"
+                        tooltip-placement="bottom"
+                        ng-if="backlogs.length > 1"
+                        tooltip-append-to-body="true"
+                        ng-click="manageActiveBacklog(backlog)"
+                        uib-tooltip="${message(code:'is.ui.window.closeable')}">
+                    <span class="fa fa-times"></span>
+                </button>
+            </div>
+        </div>
+        <div class="panel-body" ng-class="{'loading': !backlog.storiesRendered}">
+            <div class="panel-loading">
+                <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
+            </div>
+            <div class="postits"
+                 as-sortable="backlogSortable"
+                 ng-model="backlog.stories"
+                 ng-class="view.asList ? 'list-group' : 'grid-group'" ng-include="'story.html'">
+            </div>
         </div>
     </div>
 </div>

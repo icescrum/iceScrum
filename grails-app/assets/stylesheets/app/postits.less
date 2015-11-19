@@ -5,6 +5,9 @@
 @import (reference) "./mixin.less";
 
 .postits {
+  .as-sortable-placeholder {
+    margin: 6px;
+  }
   &.standalone {
     .postit-container {
       font-family: "Myriad Pro", Arial, sans-serif;
@@ -107,8 +110,8 @@
         margin: 1px;
       }
       .postit {
-        width: 196px;
-        height: 145px;
+        width: 200px;
+        height: 150px;
         padding: 0 5px;
         position: relative;
         color: @gray;
@@ -116,6 +119,9 @@
         border-radius: 3px 3px 0px 0px;
         &.invert {
           color: @invert-color;
+          .hover-progress {
+            color: @gray;
+          }
           .head {
             a.follow {
               color: @invert-color;
@@ -241,7 +247,7 @@
           }
         }
         .progress {
-          height: 10px;
+          height: 13px;
           margin-bottom: 0;
           position: absolute;
           left: 0;
@@ -256,21 +262,23 @@
             background: rgba(255, 255, 255, 0.9);
           }
           .status {
-            top: 0.5px;
+            top: 3px;
             left: 5px;
             position: absolute;
-            font-size: 9px;
+            font-size:10px;
             line-height: 10px;
             display: none;
+            font-weight: bold;
           }
         }
         .state {
           right: 5px;
-          font-size: 9px;
+          bottom:0;
+          font-size: 10px;
           line-height: 10px;
-          color: @gray;
           position: absolute;
           margin-top: 1.5px;
+          font-weight: bold;
         }
         &:hover {
           .content {

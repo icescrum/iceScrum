@@ -47,11 +47,9 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('story', eventType, crudMethod);
     });
-    this.addStories = function(stories) {
+    this.mergeStories = function(stories) {
         angular.forEach(stories, function(story) {
-            if (_.chain(self.list).where({id: story.id}).isEmpty().value()) {
-                self.list.push(new Story(story));
-            }
+            crudMethods[IceScrumEventType.CREATE](story);
         });
         self.isListResolved.resolve(true);
     };
@@ -97,9 +95,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         }
         return promise ? promise : $q.when(obj.stories);
     };
-    this.listByBacklog = function(backlog) {
-        return Story.query({backlog:backlog.id}).$promise;
-    };
+    
     this.get = function(id) {
         return self.isListResolved.promise.then(function() {
             var story = _.find(self.list, function(rw) {
@@ -278,6 +274,14 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
     this.getParentSprintEntries = function() {
         return FormService.httpGet('story/sprintEntries');
     };
+    
+    this.listByBacklog = function(backlog) {
+        return Story.query({backlog:backlog.id}).$promise.then(function(stories){
+            self.mergeStories(stories);
+            return stories;
+        });
+    };
+    
     this.getTemplatePreview = function(templateId) {
         return FormService.httpGet('story/templatePreview', { params: { template: templateId } });
     };

@@ -21,14 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.acceptanceTests.html">
-<div ng-if="story" class="acceptanceTests panel-body" ng-init="acceptanceTests(story)" ng-controller="acceptanceTestCtrl">
+<div class="acceptanceTests panel-body" ng-controller="acceptanceTestCtrl" ng-class="{'loading': selected.acceptanceTests === undefined}">
+    <div class="panel-loading">
+        <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
+    </div>
     <table class="table">
-        <tr ng-show="story.acceptanceTests === undefined">
-            <td class="empty-content">
-                <i class="fa fa-refresh fa-spin"></i>
-            </td>
-        </tr>
-        <tr ng-repeat="acceptanceTest in story.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
+        <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
             <td class="content">
                 <form name="formHolder.acceptanceTestForm"
                       ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable, 'form-deletable':formHolder.deletable }"
@@ -41,7 +39,7 @@
                                 <input required
                                        ng-maxlength="255"
                                        ng-focus="editForm(true)"
-                                       ng-blur="update(editableAcceptanceTest, story)"
+                                       ng-blur="update(editableAcceptanceTest, selected)"
                                        type="text"
                                        name="name"
                                        ng-model="editableAcceptanceTest.name"
@@ -52,7 +50,7 @@
                         <div class="col-sm-4">
                             <ui-select class="form-control"
                                        ng-click="editForm(true)"
-                                       on-select="update(editableAcceptanceTest, story)"
+                                       on-select="update(editableAcceptanceTest, selected)"
                                        name="state"
                                        ng-model="editableAcceptanceTest.state"
                                        ng-disabled="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)">
@@ -66,7 +64,7 @@
                         </div>
                         <div class="col-sm-2 text-right">
                             <button class="btn btn-danger pull-right visible-deletable"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, story] })"
+                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, selected] })"
                                     tooltip-placement="left"
                                     tooltip-append-to-body="true"
                                     uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
@@ -82,7 +80,7 @@
                                   ng-model="editableAcceptanceTest.description"
                                   is-model-html="editableAcceptanceTest.description_html"
                                   ng-show="showAcceptanceTestDescriptionTextarea"
-                                  ng-blur="update(editableAcceptanceTest, story); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
+                                  ng-blur="update(editableAcceptanceTest, selected); showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
                                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                         <div class="markitup-preview important"
                              ng-show="!showAcceptanceTestDescriptionTextarea"
@@ -96,7 +94,7 @@
                 <hr ng-if="!$last"/>
             </td>
         </tr>
-        <tr ng-show="!story.acceptanceTests.length">
+        <tr ng-show="selected.acceptanceTests !== undefined && !selected.acceptanceTests.length">
             <td class="empty-content">
                 <small>${message(code:'todo.is.ui.acceptanceTest.empty')}</small>
             </td>

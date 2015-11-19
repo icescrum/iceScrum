@@ -6,35 +6,37 @@
 
 body {
   overflow: hidden;
-  &.ready > .main {
-    opacity: 1.0;
-    transition: opacity 0.25s ease-in-out;
-    -moz-transition: opacity 0.25s ease-in-out;
-    -webkit-transition: opacity 0.25s ease-in-out;
-  }
-  &.ready > #app-progress {
-    display: none;
-  }
-  &.loading > .main {
-    opacity: 0;
-  }
-  &.loading > #app-progress {
-    .make-row();
-    display: block;
-    height: 100%;
-    > div:first-of-type {
-      .make-xs-column(6);
-      .make-sm-column(4);
-      .make-xs-column-offset(3);
-      .make-sm-column-offset(4);
-      top: 50%;
-      margin-top: -9px;
-    }
-  }
   >.container-fluid {
+    opacity:1;
     display: flex;
     flex-flow: column;
     height: 100%;
+    -webkit-transition: opacity 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out;
+    -ms-transition: opacity 0.5s ease-in-out;
+    -o-transition: opacity 0.5s ease-in-out;
+  }
+  &.loading {
+    > #app-progress {
+      .make-row();
+      display: block;
+      height: 100%;
+      > div:first-of-type {
+        .make-xs-column(6);
+        .make-sm-column(4);
+        .make-xs-column-offset(3);
+        .make-sm-column-offset(4);
+        top: 50%;
+        margin-top: -9px;
+      }
+    }
+    > .container-fluid {
+      visibility: hidden;
+      opacity:0;
+    }
+  }
+  &:not(.loading) > #app-progress {
+    display: none;
   }
 }
 
@@ -162,9 +164,31 @@ body > .container-fluid > .main {
           display: flex;
           flex-flow: column;
           margin-bottom: 0;
+          position: relative;
           > div.panel-heading {
           }
           > div.panel-body {
+            div.panel-loading {
+              display:none;
+            }
+            &.loading > div.panel-loading {
+              position:absolute;
+              top:50%;
+              left:50%;
+              z-index:1000;
+              margin-left: -15px;
+              display: block;
+              opacity:1;
+            }
+            &.loading > div:not(.panel-loading) {
+              opacity: 0;
+            }
+            > div:not(.panel-loading) {
+              -webkit-transition: opacity 0.1s ease-in-out;
+              -moz-transition: opacity 0.1s ease-in-out;
+              -ms-transition: opacity 0.1s ease-in-out;
+              -o-transition: opacity 0.1s ease-in-out;
+            }
             flex: 1;
             padding-top: 0;
             margin-top: 20px;
@@ -404,16 +428,43 @@ body > .container-fluid > .main {
 #view-backlog {
   .content {
     .backlogs-list {
-      .btn {
-        .badge {
-          background: none;
-          display: inline-block;
-          text-align: right;
-          font-weight: bold;
-          top: 5px;
-          color: #000;
-          padding: 0;
-          margin: 0;
+      background: @panel-bg;
+      border:1px solid @btn-default-border;
+      border-bottom-width: 0;
+      hr {
+        margin: 15px 10% 0;
+        padding-bottom:1px;
+      }
+      .btn-toolbar {
+        padding:15px 20px;
+        padding-bottom: 0;
+        margin-left:0;
+        div:first-child {
+          margin-left:0;
+        }
+        .btn.btn-backlog {
+          i {
+            padding-right:12px;
+            margin-right:12px;
+            border-right: 1px solid @btn-default-border;
+          }
+          .badge {
+            background: none;
+            display: inline-block;
+            text-align: right;
+            font-weight: bold;
+            top: 5px;
+            color: #000;
+            padding: 0;
+            margin: 0;
+          }
+        }
+        .btn-group.btn-view {
+          margin-right:10px;
+          &.visible-on-hover {
+            opacity: 0;
+            transition: opacity 0.3s ease 0s;
+          }
         }
       }
     }
@@ -423,11 +474,49 @@ body > .container-fluid > .main {
       flex-flow: row;
       overflow: hidden;
       div.panel{
+        border-top-width: 0;
         border-left-width: 0;
       }
       div.panel:first-of-type{
         border-left-width:1px;
       }
     }
+    &:hover {
+      .backlogs-list {
+        .btn-toolbar {
+          .btn-group.btn-view {
+            &.visible-on-hover {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+div.panel-body {
+  div.panel-loading {
+    display: none;
+  }
+  &.loading > div.panel-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+    margin-left: -15px;
+    display: block;
+    opacity: 1;
+  }
+  &.loading > div:not(.panel-loading) {
+    opacity: 0;
+  }
+  > div:not(.panel-loading) {
+    -webkit-transition: opacity 0.1s ease-in-out;
+    -moz-transition: opacity 0.1s ease-in-out;
+    -ms-transition: opacity 0.1s ease-in-out;
+    -o-transition: opacity 0.1s ease-in-out;
   }
 }

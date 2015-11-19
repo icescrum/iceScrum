@@ -25,11 +25,10 @@
     <div id="story-header" class="panel-heading">
             <h3 class="panel-title row">
                 <div class="left-title">
-                    <a href
-                       uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                    <span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                        tooltip-append-to-body="true"
                        ng-click="follow(story)"
-                       ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
+                       ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></span>
                     <span>{{ story.name }}</span> <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
                 </div>
                 <div class="right-title">
@@ -41,7 +40,7 @@
                     <button class="btn btn-default elemid"
                             uib-tooltip="${message(code: 'is.permalink')}"
                             tooltip-append-to-body="true"
-                            ng-click="showCopyModal('${message(code:'is.permalink')}', story.uid)">{{ story.uid }}</button>
+                            ng-click="showCopyModal('${message(code:'is.permalink')}', story.uid)">{{ ::story.uid }}</button>
                     <button class="btn btn-default"
                             type="button"
                             ng-click="like(story)"
@@ -67,12 +66,17 @@
                        class="btn btn-default"
                        role="button"
                        tabindex="0"
-                       href="#backlog/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                       href="#{{ ::viewName }}/{{ ::previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
                     <a ng-if="next"
                        class="btn btn-default"
                        role="button"
                        tabindex="0"
-                       href="#backlog/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                       href="#{{ ::viewName }}/{{ ::next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    <a class="btn btn-default"
+                       href="#/{{ ::viewName }}"
+                       uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                        <i class="fa fa-times"></i>
+                    </a>
                 </div>
             </h3>
         <div class="progress-container">
@@ -89,17 +93,17 @@
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.tabId}">
-            <a href="#backlog/{{ story.id }}"
+            <a href="#{{ ::viewName }}/{{ ::story.id }}"
                href="#"><i class="fa fa-lg fa-edit"></i></a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'activities'}">
-            <a href="#backlog/{{ story.id }}/activities"
+            <a href="#{{ ::viewName }}/{{ ::story.id }}/activities"
                uib-tooltip="{{ story.activities && story.activities.length ? message('is.fluxiable.' + story.activities[0].code) : '' }}"
                tooltip-append-to-body="true"
                href="#"><i class="fa fa-lg fa-clock-o"></i></a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'comments'}">
-            <a href="#backlog/{{ story.id }}/comments"
+            <a href="#{{ ::viewName }}/{{ ::story.id }}/comments"
                uib-tooltip="{{ story.comments.length | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
                tooltip-append-to-body="true"
                ng-switch="story.comments_count">
@@ -109,7 +113,7 @@
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'tasks'}">
-            <a href="#backlog/{{ story.id }}/tasks"
+            <a href="#{{ ::viewName }}/{{ ::story.id }}/tasks"
                uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
                tooltip-append-to-body="true"
                ng-switch="story.comments_count">
@@ -118,7 +122,7 @@
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'tests'}">
-            <a href="#backlog/{{ story.id }}/tests"
+            <a href="#{{ ::viewName }}/{{ ::story.id }}/tests"
                uib-tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
                tooltip-append-to-body="true"
                ng-switch="story.acceptanceTests_count">

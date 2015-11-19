@@ -350,4 +350,13 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             });
         }
     };
-}]);
+}]).directive('onRepeatCompleted', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            if (scope.$last === true) {
+                scope.$evalAsync(attr.onRepeatCompleted);
+            }
+        }
+    }
+});

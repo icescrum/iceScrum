@@ -151,8 +151,9 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         backlogs: ['BacklogService', function(BacklogService) {
                             return BacklogService.list();
                         }],
-                        stories: ['StoryService', function(StoryService) {
-                            return StoryService.list;
+                        //we add backlogs to wait for dynamic resolution
+                        stories: ['StoryService', 'backlogs', function(StoryService, backlogs) {
+                            return StoryService.listByBacklog(backlogs[0]);
                         }]
                     }
                 })
@@ -190,6 +191,12 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         data:{
                             view: 'details'
                         },
+                        resolve:{
+                            //we add stories to wait for dynamic resolution from parent state
+                            detailsStory:['StoryService', '$stateParams', 'stories', function(StoryService, $stateParams, stories){
+                                return StoryService.get($stateParams.id);
+                            }]
+                        },
                         views:{
                             "details@backlog": {
                                 templateUrl: 'story.details.html',
@@ -199,6 +206,20 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     })
                         .state('backlog.details.tab', {
                             url: "/{tabId:.+}",
+                            resolve:{
+                                //we add detailsStory to wait for dynamic resolution from parent state resolvedData not used only to wait for story.xxxx to be loaded
+                                data:['$stateParams', 'detailsStory', 'AcceptanceTestService', 'CommentService', 'TaskService', 'StoryService', function($stateParams, detailsStory, AcceptanceTestService, CommentService, TaskService, StoryService){
+                                    if ($stateParams.tabId == 'tests')
+                                        return AcceptanceTestService.list(detailsStory);
+                                    else if($stateParams.tabId == 'tasks')
+                                        return TaskService.list(detailsStory);
+                                    else if($stateParams.tabId == 'comments')
+                                        return CommentService.list(detailsStory);
+                                    else if($stateParams.tabId == 'activities')
+                                        return StoryService.activities(detailsStory, false);
+                                    return null;
+                                }]
+                            },
                             views:{
                                 "details-tab": {
                                     templateUrl: function($stateParams) {
@@ -214,14 +235,11 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                         return tpl;
                                     },
                                     controllerProvider: ['$stateParams', function($stateParams) {
-                                        var tpl = '';
-                                        if ($stateParams.tabId == 'tests')
-                                            tpl = 'Tests';
-                                        else if($stateParams.tabId == 'tasks')
-                                            tpl = 'Tasks';
-                                        else if($stateParams.tabId == 'comments')
-                                            tpl = 'Comments';
-                                        return 'storyDetails'+tpl+'Ctrl';
+                                        if($stateParams.tabId == 'activities') {
+                                            return 'storyDetailsActivitiesCtrl';
+                                        } else {
+                                            return 'storyDetailsCtrl';
+                                        }
                                     }]
                                 }
                             }
