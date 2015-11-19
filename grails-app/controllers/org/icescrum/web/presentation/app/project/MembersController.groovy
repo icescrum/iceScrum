@@ -43,7 +43,8 @@ class MembersController {
 
     def getTeamEntries = {
         def user = springSecurityService.currentUser
-        def teams = request.admin ? Team.list() : Team.findAllByOwner(user.username, null)
+        def term = params.term ? '%' + params.term.trim().toLowerCase() + '%' : '%%';
+        def teams = request.admin ? Team.findAllByNameIlike(term) : Team.findAllByOwner(user.username, null, term)
         def teamEntries = teams.collect { team -> [id: team.id, text: team.name] }
         render(status: 200, contentType: 'application/json', text: teamEntries as JSON)
     }
