@@ -34,13 +34,24 @@ import org.icescrum.core.event.IceScrumEventType
 
 import javax.servlet.http.HttpServletResponse
 
-/**
- * Created by vbarrier on 03/04/2014.
- */
 class AttachmentController {
 
     def springSecurityService
     def attachmentableService
+
+    @Secured('isAuthenticated() and stakeHolder()')
+    def index() {
+        def attachmentable = getAttachmentableObject(params)
+        if (attachmentable) {
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: attachmentable.attachments as JSON) }
+                json { renderRESTJSON(text:attachmentable.attachments) }
+                xml  { renderRESTXML(text:attachmentable.attachments) }
+            }
+        } else {
+            returnError(text:message(code: 'todo.is.ui.backlogelement.attachments.error'))
+        }
+    }
 
     @Secured('isAuthenticated() and stakeHolder()')
     def show() {
@@ -67,20 +78,6 @@ class AttachmentController {
             }
         }
         response.status = HttpServletResponse.SC_NOT_FOUND
-    }
-
-    @Secured('isAuthenticated() and stakeHolder()')
-    def list() {
-        def attachmentable = getAttachmentableObject(params)
-        if (attachmentable) {
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: attachmentable.attachments as JSON) }
-                json { renderRESTJSON(text:attachmentable.attachments) }
-                xml  { renderRESTXML(text:attachmentable.attachments) }
-            }
-        } else {
-            returnError(text:message(code: 'todo.is.ui.backlogelement.attachments.error'))
-        }
     }
 
     @Secured('isAuthenticated() and stakeHolder()')

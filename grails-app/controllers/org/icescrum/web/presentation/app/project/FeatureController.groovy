@@ -39,6 +39,24 @@ class FeatureController {
     def featureService
     def springSecurityService
 
+    def index() {
+        def features = Feature.searchAllByTermOrTag(params.long('product'), params.term).sort { Feature feature -> feature.rank }
+        withFormat{
+            html { render(status: 200, text: features as JSON, contentType: 'application/json') }
+            json { renderRESTJSON(text:features) }
+            xml  { renderRESTXML(text:features) }
+        }
+    }
+
+    def show(long id, long product) {
+        Feature feature = Feature.withFeature(product, id)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: feature as JSON }
+            json { renderRESTJSON(text: feature) }
+            xml { renderRESTXML(text: feature) }
+        }
+    }
+
     @Secured('productOwner() and !archivedProduct()')
     def save() {
         def featureParams = params.feature
@@ -107,15 +125,6 @@ class FeatureController {
         }
     }
 
-    def list() {
-        def features = Feature.searchAllByTermOrTag(params.long('product'), params.term).sort { Feature feature -> feature.rank }
-        withFormat{
-            html { render(status: 200, text: features as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text:features) }
-            xml  { renderRESTXML(text:features) }
-        }
-    }
-
     @Secured('productOwner() and !archivedProduct()')
     def copyToBacklog() {
         List<Feature> features = Feature.withFeatures(params)
@@ -161,22 +170,6 @@ class FeatureController {
                 renderReport('features', format ? format.toUpperCase() : 'PDF', [[product: _product.name, features: data ?: null]], _product.name)
             }
         }
-    }
-
-    def index(long id, long product) {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
-        }
-        Feature feature = Feature.withFeature(product, id)
-        withFormat {
-            json { renderRESTJSON(text:feature) }
-            xml { renderRESTXML(text:feature) }
-        }
-    }
-
-    def show() {
-        redirect(action:'index', controller: controllerName, params:params)
     }
 
     @Secured('productOwner() and !archivedProduct()')

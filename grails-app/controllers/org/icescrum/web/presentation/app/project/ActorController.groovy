@@ -32,8 +32,27 @@ import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class ActorController {
+
     def actorService
     def springSecurityService
+
+    def index() {
+        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
+        withFormat {
+            html { render(status: 200, text: actors as JSON, contentType: 'application/json') }
+            json { renderRESTJSON(text: actors) }
+            xml { renderRESTXML(text: actors) }
+        }
+    }
+
+    def show(long id, long product) {
+        Actor actor = Actor.withActor(product, id)
+        withFormat {
+            html { render(status: 200, text: actor as JSON, contentType: 'application/json') }
+            json { renderRESTJSON(text: actor) }
+            xml { renderRESTXML(text: actor) }
+        }
+    }
 
     @Secured('productOwner() and !archivedProduct()')
     def save() {
@@ -97,31 +116,6 @@ class ActorController {
                 json { render(status: 204) }
                 xml { render(status: 204) }
             }
-        }
-    }
-
-    def list() {
-        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
-        withFormat {
-            html { render(status: 200, text: actors as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text: actors) }
-            xml { renderRESTXML(text: actors) }
-        }
-    }
-
-    def show() {
-        redirect(action: 'index', controller: controllerName, params: params)
-    }
-
-    def index(long id, long product) {
-        if (request?.format == 'html') {
-            render(status: 404)
-            return
-        }
-        Actor actor = Actor.withActor(product, id)
-        withFormat {
-            json { renderRESTJSON(text: actor) }
-            xml { renderRESTXML(text: actor) }
         }
     }
 

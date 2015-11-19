@@ -30,24 +30,26 @@ class TeamController {
         }
     }
 
-    @Secured('isAuthenticated()')
-    def listByUser(String term, Integer offset) {
-        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def limit = 9
-        def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache:true]
-        def user = springSecurityService.currentUser
-        def total = request.admin ? Team.countByNameLike(searchTerm, [cache:true]) : Team.countByOwnerOrSM(user.username, [cache:true], searchTerm)
-        def teams = request.admin ? Team.findAllByNameLike(searchTerm, options) : Team.findAllByOwnerOrSM(user.username, options, searchTerm)
-        def teamsAndTotal = [teams: teams, total: total]
-        withFormat{
-            html {
-                render(status:200, text:teamsAndTotal as JSON, contentType:'application/json')
-            }
-            json { renderRESTJSON(text:teamsAndTotal) }
-            xml  { renderRESTXML(text:teamsAndTotal) }
-        }
+    @Secured(['stakeHolder() or inProduct()'])
+    def show(long product) {
+        Product _product = Product.withProduct(product)
+        render(status:200, text: _product.firstTeam as JSON, contentType: 'application/json')
     }
 
+    @Secured('isAuthenticated()')
+    def save() {
+        def team = new Team(name: params.team.name)
+        try {
+            Team.withTransaction {
+                teamService.save(team, null, [springSecurityService.currentUser.id])
+                render(status:200, text:team as JSON, contentType:'application/json')
+            }
+        } catch (IllegalStateException ise) {
+            returnError(text: message(code: ise.message))
+        } catch (RuntimeException re) {
+            returnError(object: team, exception: re)
+        }
+    }
     @Secured(['isAuthenticated()', 'RUN_AS_PERMISSIONS_MANAGER'])
     def update(long id) {
         Team team = Team.withTeam(id)
@@ -107,24 +109,21 @@ class TeamController {
     }
 
     @Secured('isAuthenticated()')
-    def save() {
-        def team = new Team(name: params.team.name)
-        try {
-            Team.withTransaction {
-                teamService.save(team, null, [springSecurityService.currentUser.id])
-                render(status:200, text:team as JSON, contentType:'application/json')
+    def listByUser(String term, Integer offset) {
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def limit = 9
+        def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache:true]
+        def user = springSecurityService.currentUser
+        def total = request.admin ? Team.countByNameLike(searchTerm, [cache:true]) : Team.countByOwnerOrSM(user.username, [cache:true], searchTerm)
+        def teams = request.admin ? Team.findAllByNameLike(searchTerm, options) : Team.findAllByOwnerOrSM(user.username, options, searchTerm)
+        def teamsAndTotal = [teams: teams, total: total]
+        withFormat{
+            html {
+                render(status:200, text:teamsAndTotal as JSON, contentType:'application/json')
             }
-        } catch (IllegalStateException ise) {
-            returnError(text: message(code: ise.message))
-        } catch (RuntimeException re) {
-            returnError(object: team, exception: re)
+            json { renderRESTJSON(text:teamsAndTotal) }
+            xml  { renderRESTXML(text:teamsAndTotal) }
         }
-    }
-
-    @Secured(['stakeHolder() or inProduct()'])
-    def show(long product) {
-        Product _product = Product.withProduct(product)
-        render(status:200, text: _product.firstTeam as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')

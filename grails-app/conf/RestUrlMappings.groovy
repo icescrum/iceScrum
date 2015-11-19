@@ -32,11 +32,11 @@ class RestUrlMappings {
 
         "/ws/user" {
             controller = 'user'
-            action = [POST: "forceRestSave", GET: "list"]
+            action = [POST: "forceRestSave", GET: "index"]
         }
 
         "/ws/user/$id" {
-            action = [GET: "index", PUT: "update"]
+            action = [GET: "show", PUT: "update"]
             controller = 'user'
             constraints {
                 id(matches: /\d*/)
@@ -44,7 +44,7 @@ class RestUrlMappings {
         }
 
         "/ws/p/$product/$controller" {
-            action = [POST: "save", GET: "list"]
+            action = [POST: "save", GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -52,7 +52,7 @@ class RestUrlMappings {
 
         "/ws/p/$product/$id/sprint" {
             controller = 'sprint'
-            action = [GET: "list"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
@@ -61,7 +61,7 @@ class RestUrlMappings {
 
         "/ws/p/$product/task/$filter" {
             controller = 'task'
-            action = [GET: "list"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 filter(matches:/[A-Za-z]*/)
@@ -85,7 +85,7 @@ class RestUrlMappings {
 
         "/ws/p/$product/$sprint/task/$filter?" {
             controller = 'task'
-            action = [GET: "list"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 sprint(matches: /\d*/)
@@ -94,7 +94,7 @@ class RestUrlMappings {
 
         "/ws/p/$product/$story/acceptanceTest" {
             controller = 'acceptanceTest'
-            action = [GET: "list"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 story(matches: /\d*/)
@@ -102,7 +102,7 @@ class RestUrlMappings {
         }
 
         "/ws/p/$product/$controller/$id" {
-            action = [GET: "index", PUT: "update", DELETE: "delete"]
+            action = [GET: "show", PUT: "update", DELETE: "delete"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)

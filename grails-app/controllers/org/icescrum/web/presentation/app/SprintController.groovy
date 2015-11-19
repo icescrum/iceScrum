@@ -23,13 +23,11 @@
  */
 package org.icescrum.web.presentation.app
 
-import org.icescrum.core.domain.Release
-
-import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.Story
-
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.Story
 import org.icescrum.core.utils.ServicesUtils
 
 class SprintController {
@@ -37,6 +35,27 @@ class SprintController {
     def sprintService
     def storyService
     def springSecurityService
+
+    @Secured(['stakeHolder() or inProduct()'])
+    def index(long product, Long releaseId) {
+        Release release = releaseId ? Release.withRelease(product, releaseId) : Release.findCurrentOrNextRelease(product).list()[0]
+        def sprints = release?.sprints ?: []
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: sprints as JSON) }
+            json { renderRESTJSON(text: sprints) }
+            xml { renderRESTXML(text: sprints) }
+        }
+    }
+
+    @Secured('inProduct()')
+    def show(long product, long id) {
+        Sprint sprint = Sprint.withSprint(product, id)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: sprint as JSON }
+            json { renderRESTJSON(text: sprint) }
+            xml { renderRESTXML(text: sprint) }
+        }
+    }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def save(long product) {
@@ -142,32 +161,6 @@ class SprintController {
             }
             json { renderRESTJSON(text: sprint) }
             xml { renderRESTXML(text: sprint) }
-        }
-    }
-
-    @Secured('inProduct()')
-    def index(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: sprint as JSON }
-            json { renderRESTJSON(text: sprint) }
-            xml  { renderRESTXML(text: sprint) }
-        }
-    }
-
-    @Secured('inProduct()')
-    def show() {
-        redirect(action: 'index', controller: controllerName, params: params)
-    }
-
-    @Secured(['stakeHolder() or inProduct()'])
-    def list(long product, Long releaseId) {
-        Release release = releaseId ? Release.withRelease(product, releaseId) : Release.findCurrentOrNextRelease(product).list()[0]
-        def sprints = release?.sprints ?: []
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: sprints as JSON) }
-            json { renderRESTJSON(text: sprints) }
-            xml { renderRESTXML(text: sprints) }
         }
     }
 

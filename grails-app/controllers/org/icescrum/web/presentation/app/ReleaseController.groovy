@@ -37,6 +37,27 @@ class ReleaseController {
     def springSecurityService
     def featureService
 
+    @Secured(['stakeHolder() or inProduct()'])
+    def index(long product) {
+        Product _product = Product.withProduct(product)
+        def releases = _product.releases
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: releases as JSON }
+            json { renderRESTJSON(text: releases) }
+            xml { renderRESTXML(text: releases) }
+        }
+    }
+
+    @Secured('inProduct()')
+    def show(long product, long id) {
+        Release release = Release.withRelease(product, id)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: release as JSON }
+            json { renderRESTJSON(text: release) }
+            xml { renderRESTXML(text: release) }
+        }
+    }
+
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def save(long product) {
         Product _product = Product.withProduct(product)
@@ -157,35 +178,6 @@ class ReleaseController {
             html { render status: 200, contentType: 'application/json', text: sprints as JSON }
             json { renderRESTJSON(text: sprints, status: 201) }
             xml { renderRESTXML(text: sprints, status: 201) }
-        }
-    }
-
-    @Secured('inProduct()')
-    def index(long product, long id) {
-        if (request?.format == 'html') {
-            render(status: 404)
-            return
-        }
-        Release release = Release.withRelease(product, id)
-        withFormat {
-            json { renderRESTJSON(text: release) }
-            xml { renderRESTXML(text: release) }
-        }
-    }
-
-    @Secured('inProduct()')
-    def show() {
-        redirect(action: 'index', controller: controllerName, params: params)
-    }
-
-    @Secured(['stakeHolder() or inProduct()'])
-    def list(long product) {
-        Product _product = Product.withProduct(product)
-        def releases = _product.releases
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: releases as JSON }
-            json { renderRESTJSON(text: releases) }
-            xml { renderRESTXML(text: releases) }
         }
     }
 

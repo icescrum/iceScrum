@@ -117,7 +117,7 @@ class ProductUrlMappings {
         // Task
         "/p/$product/task" {
             controller = 'task'
-            action = [GET: "list", POST:"save"]
+            action = [GET: "index", POST:"save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -149,7 +149,7 @@ class ProductUrlMappings {
         // Story
         "/p/$product/story" {
             controller = 'story'
-            action = [GET: "list", POST:"save"]
+            action = [GET: "index", POST:"save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -188,7 +188,7 @@ class ProductUrlMappings {
         // Actor
         "/p/$product/actor" {
             controller = 'actor'
-            action = [GET: "list", POST:"save"]
+            action = [GET: "index", POST:"save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -204,7 +204,7 @@ class ProductUrlMappings {
         // Feature
         "/p/$product/feature" {
             controller = 'feature'
-            action = [GET: "list", POST:"save"]
+            action = [GET: "index", POST:"save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -227,7 +227,7 @@ class ProductUrlMappings {
         // Comment
         "/p/$product/comment/$type/$commentable" {
             controller = 'comment'
-            action = [GET: "list", POST:"save"]
+            action = [GET: "index", POST:"save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task'])
@@ -247,7 +247,7 @@ class ProductUrlMappings {
         // Acceptance test
         "/p/$product/acceptanceTest/story/$parentStory" {
             controller = 'acceptanceTest'
-            action = [GET: "list"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 parentStory(matches: /\d*/)
@@ -271,7 +271,7 @@ class ProductUrlMappings {
         // Backlog
         "/p/$product/backlog" {
             controller = 'backlog'
-            action = [GET: "list", POST:"save"]
+            action = [GET: "index", POST:"save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -294,7 +294,7 @@ class ProductUrlMappings {
         // Release
         "/p/$product/release" {
             controller = 'release'
-            action = [GET: "list", POST: "save"]
+            action = [GET: "index", POST: "save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -351,7 +351,7 @@ class ProductUrlMappings {
         }
         "/p/$product/sprint/release/$releaseId" {
             controller = 'sprint'
-            action = 'list'
+            action = 'index'
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 releaseId(matches: /[0-9A-Z]*/)

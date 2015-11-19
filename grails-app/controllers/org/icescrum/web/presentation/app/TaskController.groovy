@@ -35,31 +35,32 @@ class TaskController {
     def taskService
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def toolbar() {
-        def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
-        withTask(id, params.uid ? true : false) { Task task ->
-            def user = null
-            if (springSecurityService.isLoggedIn()) {
-                user = User.load(springSecurityService.principal.id)
-            }
-            def next = Task.findNextTaskInSprint(task).list()[0]
-            def previous = Task.findPreviousTaskInSprint(task).list()[0]
-            render(template: 'window/toolbar', model: [task: task, user: user, next: next, previous: previous])
-        }
-    }
-
-    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def shortURL(long product, long id) {
-        Product _product = Product.withProduct(product)
-        if (!springSecurityService.isLoggedIn() && _product.preferences.hidden) {
-            redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + is.createScrumLink(controller: 'task', params: [uid: id]))
+    def index() {
+        Sprint sprint = (Sprint) params.sprint ? Sprint.getInProduct(params.product.toLong(), params.sprint.toLong()).list() : Sprint.findCurrentOrNextSprint(params.product.toLong()).list()[0]
+        if (!sprint) {
+            returnError(text: message(code: 'is.sprint.error.not.exist'))
             return
         }
-        redirect(url: is.createScrumLink(controller: 'task', params: [uid: id]))
+        def tasks = null
+        if (params.filter == 'user') {
+            tasks = Task.getUserTasks(sprint.id, springSecurityService.principal.id).list()
+        } else if (params.filter == 'free') {
+            tasks = Task.getFreeTasks(sprint.id).list()
+        } else if (params.filter) {
+            render(status: 400)
+            return
+        } else {
+            tasks = Task.getAllTasksInSprint(sprint.id).list()
+        }
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: tasks as JSON }
+            json { renderRESTJSON(text: tasks) }
+            xml { renderRESTXML(text: tasks) }
+        }
     }
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def index() {
+    def show() {
         def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
         withTask(id, params.uid ? true : false) { Task task ->
             def product = task.parentProduct
@@ -168,6 +169,25 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
+    def delete() {
+        withTasks { List<Task> tasks ->
+            User user = (User) springSecurityService.currentUser
+            def idj = []
+            Task.withTransaction {
+                tasks.each {
+                    idj << [id: it.id]
+                    taskService.delete(it, user)
+                }
+            }
+            withFormat {
+                html { render(status: 200) }
+                json { render(status: 204) }
+                xml { render(status: 204) }
+            }
+        }
+    }
+
+    @Secured('inProduct() and !archivedProduct()')
     def take() {
         withTask { Task task ->
             User user = (User) springSecurityService.currentUser
@@ -209,25 +229,6 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def delete() {
-        withTasks { List<Task> tasks ->
-            User user = (User) springSecurityService.currentUser
-            def idj = []
-            Task.withTransaction {
-                tasks.each {
-                    idj << [id: it.id]
-                    taskService.delete(it, user)
-                }
-            }
-            withFormat {
-                html { render(status: 200) }
-                json { render(status: 204) }
-                xml { render(status: 204) }
-            }
-        }
-    }
-
-    @Secured('inProduct() and !archivedProduct()')
     def copy() {
         withTask { Task task ->
             User user = (User) springSecurityService.currentUser
@@ -248,39 +249,6 @@ class TaskController {
     }
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def show() {
-        redirect(action: 'index', controller: controllerName, params: params)
-    }
-
-    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def list() {
-        if (request?.format == 'html') {
-            render(status: 404)
-            return
-        }
-        Sprint sprint = (Sprint) params.sprint ? Sprint.getInProduct(params.product.toLong(), params.sprint.toLong()).list() : Sprint.findCurrentOrNextSprint(params.product.toLong()).list()[0]
-        if (!sprint) {
-            returnError(text: message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-        def tasks = null
-        if (params.filter == 'user') {
-            tasks = Task.getUserTasks(sprint.id, springSecurityService.principal.id).list()
-        } else if (params.filter == 'free') {
-            tasks = Task.getFreeTasks(sprint.id).list()
-        } else if (params.filter) {
-            render(status: 400)
-            return
-        } else {
-            tasks = Task.getAllTasksInSprint(sprint.id).list()
-        }
-        withFormat {
-            json { renderRESTJSON(text: tasks) }
-            xml { renderRESTXML(text: tasks) }
-        }
-    }
-
-    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def tasksStory(long id, long product) {
         def story = Story.withStory(product, id)
         withFormat {
@@ -290,47 +258,28 @@ class TaskController {
         }
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def mylyn() {
-        def sprint = (Sprint) params.id ? Sprint.getInProduct(params.product.toLong(), params.id.toLong()).list() : Sprint.findCurrentOrNextSprint(params.product.toLong()).list()
-        if (!sprint) {
-            returnError(text: message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-        def results
-        if (params.filter == 'user') {
-            results = Task.getUserTasks(sprint.id, springSecurityService.principal.id).list()
-        } else if (params.filter == 'free') {
-            results = Task.getFreeTasks(sprint.id).list()
-        } else {
-            results = Task.getAllTasksInSprint(sprint.id).list()
-        }
-        render(status: 200, contentType: 'text/xml') {
-            tasks {
-                for (t in results) {
-                    task(id: t.id) {
-                        description(t.name)
-                        responsible(t.responsible ? t.responsible.firstName + ' ' + t.responsible.lastName : ' ')
-                        status(g.message(code: BundleUtils.taskStates.get(t.state)))
-                        type(t.type == Task.TYPE_RECURRENT ? g.message(code: 'is.task.type.recurrent') : t.type == Task.TYPE_URGENT ? g.message(code: 'is.task.type.urgent') : t.parentStory.name)
-                    }
-                }
-            }
-        }
-    }
-
     @Secured('isAuthenticated()')
     def listByUser(Long product) {
         def user = springSecurityService.currentUser
         def options = [max: 8]
         def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
         def userTasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
-                                     : Task.findAllByResponsibleAndStateInListAndCreationDateBetween(user, taskStates, new Date() - 10, new Date(), options)
+                                        : Task.findAllByResponsibleAndStateInListAndCreationDateBetween(user, taskStates, new Date() - 10, new Date(), options)
         def tasksByProject = userTasks.groupBy {
             it.parentProduct
         }.collect { project, tasks ->
             [project: project, tasks: tasks]
         }
         render(status: 200, contentType: 'application/json', text: tasksByProject as JSON)
+    }
+
+    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
+    def shortURL(long product, long id) {
+        Product _product = Product.withProduct(product)
+        if (!springSecurityService.isLoggedIn() && _product.preferences.hidden) {
+            redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + is.createScrumLink(controller: 'task', params: [uid: id]))
+            return
+        }
+        redirect(url: is.createScrumLink(controller: 'task', params: [uid: id]))
     }
 }

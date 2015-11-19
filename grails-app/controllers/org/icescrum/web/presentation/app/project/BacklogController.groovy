@@ -36,7 +36,7 @@ class BacklogController {
     def springSecurityService
 
     @Secured(['stakeHolder() or inProduct()'])
-    def list(long product, boolean shared) {
+    def index(long product, boolean shared) {
         // Temporary stuff to make backlog work (default backlogs)
         def backlogs = Backlog.findAllByProductAndShared(Product.load(product), shared)
         withFormat {

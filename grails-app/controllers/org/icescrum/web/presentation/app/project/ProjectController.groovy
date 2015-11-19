@@ -62,11 +62,6 @@ class ProjectController {
     def securityService
 
     @Secured(['isAuthenticated()'])
-    def add() {
-        render(status:200, template: "dialogs/new")
-    }
-
-    @Secured(['isAuthenticated()'])
     def save() {
         def teamParams = params.product?.remove('team')
         def productPreferencesParams = params.product?.remove('preferences')
@@ -140,6 +135,68 @@ class ProjectController {
         }
     }
 
+    @Secured('scrumMaster() and !archivedProduct()')
+    def update(long product) {
+        Product _product = Product.withProduct(product)
+        def productPreferencesParams = params.productd?.remove('preferences')
+        def productParams = params.remove('productd')
+        try {
+            Product.withTransaction {
+                productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate);
+                bindData(_product, productParams, [include:['name','description','startDate','pkey','planningPokerGameType']])
+                bindData(_product.preferences, productPreferencesParams, [exclude: ['archived']])
+                if(!productPreferencesParams?.stakeHolderRestrictedViews){
+                    _product.preferences.stakeHolderRestrictedViews = null
+                }
+                productService.update(_product, _product.preferences.isDirty('hidden'), _product.isDirty('pkey') ? _product.getPersistentValue('pkey'): null)
+                entry.hook(id:"${controllerName}-${actionName}", model:[product:_product])
+                render(status: 200, contentType: 'application/json', text:_product as JSON)
+            }
+        } catch (RuntimeException e) {
+            returnError(exception:e, object:_product)
+            return
+        }
+    }
+
+    @Secured(['owner()'])
+    def delete(long product) {
+        try {
+            Product _product = Product.withProduct(product)
+            productService.delete(_product)
+            render(status: 200, contentType: 'application/json', text:[class:'Product',id:product] as JSON)
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
+        }
+    }
+
+    @Secured(['scrumMaster() and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    def updateTeam(long product) {
+        // Param extraction
+        def teamParams = params.productd?.remove('team')
+        def productParams = params.remove('productd')
+        def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
+        def stakeHolders = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
+        def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
+        def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
+        assert !stakeHolders.intersect(productOwners)
+        // Compute roles
+        def newMembers = []
+        productOwners.each { newMembers << [id: it, role: Authority.PRODUCTOWNER] }
+        stakeHolders.each { newMembers << [id: it, role: Authority.STAKEHOLDER] }
+        // Update product & team
+        Product _product = Product.withProduct(product)
+        _product.withTransaction {
+            def teamId = teamParams.id
+            if (teamId != _product.firstTeam.id && securityService.owner(null, springSecurityService.authentication)) {
+                productService.changeTeam(_product, Team.get(teamId))
+            }
+            productService.updateProductMembers(_product, newMembers)
+            productService.manageProductInvitations(_product, invitedProductOwners, invitedStakeHolders)
+        }
+        render(status: 200, contentType: 'application/json', text:_product as JSON)
+    }
+
     @Secured(['stakeHolder() or inProduct()'])
     def feed(long product) {
         //todo make cache
@@ -161,18 +218,6 @@ class ProjectController {
         render(contentType: 'text/xml', text:outFeed.outputString(feed))
     }
 
-    @Secured(['owner()'])
-    def delete(long product) {
-        try {
-            Product _product = Product.withProduct(product)
-            productService.delete(_product)
-            render(status: 200, contentType: 'application/json', text:[class:'Product',id:product] as JSON)
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.product.error.not.deleted')]] as JSON)
-        }
-    }
-
     @Secured(['permitAll()'])
     def available(long product, String property) {
         def result = false
@@ -184,11 +229,6 @@ class ProjectController {
             result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && (product ? Product.countByPkeyAndId(request.JSON.value, product) : Product.countByPkey(request.JSON.value)) == 0
         }
         render(status:200, text:[isValid: result, value:request.JSON.value] as JSON, contentType:'application/json')
-    }
-
-    @Secured(['scrumMaster() or productOwner()'])
-    def exportDialog() {
-        render(status:200, template: "dialogs/export")
     }
 
     @Secured(['scrumMaster() or productOwner()'])
@@ -207,34 +247,6 @@ class ProjectController {
                 }
                 session.progress.completeProgress(message(code:'todo.is.ui.progress.complete'))
             }
-        }
-    }
-
-    @Secured(['isAuthenticated()'])
-    def edit() {
-        render(status:200, template: "dialogs/edit")
-    }
-
-    @Secured('scrumMaster() and !archivedProduct()')
-    def update(long product) {
-        Product _product = Product.withProduct(product)
-        def productPreferencesParams = params.productd?.remove('preferences')
-        def productParams = params.remove('productd')
-        try {
-            Product.withTransaction {
-                productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate);
-                bindData(_product, productParams, [include:['name','description','startDate','pkey','planningPokerGameType']])
-                bindData(_product.preferences, productPreferencesParams, [exclude: ['archived']])
-                if(!productPreferencesParams?.stakeHolderRestrictedViews){
-                    _product.preferences.stakeHolderRestrictedViews = null
-                }
-                productService.update(_product, _product.preferences.isDirty('hidden'), _product.isDirty('pkey') ? _product.getPersistentValue('pkey'): null)
-                entry.hook(id:"${controllerName}-${actionName}", model:[product:_product])
-                render(status: 200, contentType: 'application/json', text:_product as JSON)
-            }
-        } catch (RuntimeException e) {
-            returnError(exception:e, object:_product)
-            return
         }
     }
 
@@ -288,11 +300,6 @@ class ProjectController {
         def addedAttachments = params.list('attachments')
         def attachments = manageAttachments(_product, keptAttachments, addedAttachments)
         render status: 200, contentType: 'application/json', text: attachments as JSON
-    }
-
-    def view(long product) {
-        Product _product = Product.withProduct(product)
-        render template: 'view', model: [product: _product]
     }
 
     // Cannot end with Flow because of f*cked up filter in SpringSecurity (AnnotationFilterInvocationDefinition.java:256)
@@ -488,12 +495,6 @@ class ProjectController {
             render(status:500)
         }
     }
-
-    @Secured(['isAuthenticated()'])
-    def importDialog() {
-        render(status:200, template: "dialogs/import")
-    }
-
     /**
      * Export the project elements in multiple format (PDF, DOCX, RTF, ODT)
      */
@@ -672,43 +673,6 @@ class ProjectController {
         }
     }
 
-    @Secured(['isAuthenticated()'])
-    def editMembers() {
-        render(status:200, template: "dialogs/editMembers")
-    }
-
-    @Secured(['scrumMaster() and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
-    def updateTeam(long product) {
-        // Param extraction
-        def teamParams = params.productd?.remove('team')
-        def productParams = params.remove('productd')
-        def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
-        def stakeHolders = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
-        def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
-        def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
-        assert !stakeHolders.intersect(productOwners)
-        // Compute roles
-        def newMembers = []
-        productOwners.each { newMembers << [id: it, role: Authority.PRODUCTOWNER] }
-        stakeHolders.each { newMembers << [id: it, role: Authority.STAKEHOLDER] }
-        // Update product & team
-        Product _product = Product.withProduct(product)
-        _product.withTransaction {
-            def teamId = teamParams.id
-            if (teamId != _product.firstTeam.id && securityService.owner(null, springSecurityService.authentication)) {
-                productService.changeTeam(_product, Team.get(teamId))
-            }
-            productService.updateProductMembers(_product, newMembers)
-            productService.manageProductInvitations(_product, invitedProductOwners, invitedStakeHolders)
-        }
-        render(status: 200, contentType: 'application/json', text:_product as JSON)
-    }
-
-    @Secured(['permitAll()'])
-    def listModal() {
-        render(status:200, template: "dialogs/list")
-    }
-
     @Secured(['permitAll()'])
     def listPublic(String term, Integer offset) {
         if (!offset) {
@@ -758,5 +722,40 @@ class ProjectController {
         activities.addAll(Activity.recentProductActivity(_product))
         activities = activities.sort {a, b -> b.dateCreated <=> a.dateCreated}
         render(status:200, text: activities as JSON, contentType:'application/json')
+    }
+
+    def view(long product) {
+        Product _product = Product.withProduct(product)
+        render template: 'view', model: [product: _product]
+    }
+
+    @Secured(['isAuthenticated()'])
+    def edit() {
+        render(status:200, template: "dialogs/edit")
+    }
+
+    @Secured(['isAuthenticated()'])
+    def editMembers() {
+        render(status:200, template: "dialogs/editMembers")
+    }
+
+    @Secured(['permitAll()'])
+    def listModal() {
+        render(status:200, template: "dialogs/list")
+    }
+
+    @Secured(['isAuthenticated()'])
+    def add() {
+        render(status:200, template: "dialogs/new")
+    }
+
+    @Secured(['isAuthenticated()'])
+    def importDialog() {
+        render(status:200, template: "dialogs/import")
+    }
+
+    @Secured(['scrumMaster() or productOwner()'])
+    def exportDialog() {
+        render(status:200, template: "dialogs/export")
     }
 }

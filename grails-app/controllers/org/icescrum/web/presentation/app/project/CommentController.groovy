@@ -35,29 +35,7 @@ class CommentController {
     def activityService
 
     @Secured('stakeHolder()')
-    def show() {
-        if (request?.format == 'html'){
-            render(status:404)
-            return
-        }
-        if (!params.id) {
-            returnError(text:message(code: 'is.comment.error.not.exist'))
-            return
-        }
-        def comment = Comment.get(params.long('id'))
-        if (!comment) {
-            returnError(text:message(code: 'is.comment.error.not.exist'))
-            return
-        }
-
-        withFormat {
-            json { renderRESTJSON(text:comment) }
-            xml  { renderRESTXML(text:comment) }
-        }
-    }
-
-    @Secured('stakeHolder()')
-    def list() {
+    def index() {
         def commentable = commentableObject
         if (commentable) {
             withFormat {
@@ -67,6 +45,24 @@ class CommentController {
             }
         } else {
             returnError(text:message(code: 'is.ui.backlogelement.comment.error'))
+        }
+    }
+
+    @Secured('stakeHolder()')
+    def show() {
+        if (!params.id) {
+            returnError(text:message(code: 'is.comment.error.not.exist'))
+            return
+        }
+        def comment = Comment.get(params.long('id'))
+        if (!comment) {
+            returnError(text:message(code: 'is.comment.error.not.exist'))
+            return
+        }
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: comment as JSON }
+            json { renderRESTJSON(text: comment) }
+            xml  { renderRESTXML(text: comment) }
         }
     }
 

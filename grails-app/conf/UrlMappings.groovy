@@ -96,7 +96,7 @@ class UrlMappings {
 
         "/user" {
             controller = 'user'
-            action = [GET: "list", POST:"save"]
+            action = [GET: "index", POST:"save"]
         }
 
         "/user/retrieve" {
@@ -106,7 +106,7 @@ class UrlMappings {
 
         "/user/$id" {
             controller = 'user'
-            action = [GET: "index", PUT:"update", POST:"update"]
+            action = [GET: "show", PUT:"update", POST:"update"]
             constraints {
                 id(matches: /\d*/)
             }
@@ -289,7 +289,7 @@ class UrlMappings {
 
         "/p/$product/attachment/$type/$attachmentable" {
             controller = 'attachment'
-            action = [GET: "list", POST:"save"]
+            action = [GET: "index", POST:"save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
