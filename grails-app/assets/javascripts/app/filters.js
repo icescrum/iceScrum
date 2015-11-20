@@ -22,6 +22,7 @@
  *
  */
 
+var contrastColorCache = {}, gradientBackgroundCache = {};
 var filters = angular.module('filters', []);
 
 filters
@@ -56,17 +57,24 @@ filters
     })
     .filter('contrastColor', function() {
         return function(bg) {
-            if (bg) {
+            if(bg && contrastColorCache[bg] != undefined){
+                return contrastColorCache[bg];
+            }
+            else if (bg && contrastColorCache[bg] == undefined) {
                 //convert hex to rgb
+                var color;
                 if (bg.indexOf('#') == 0){
                     var bigint = parseInt(bg.substring(1), 16);
                     var r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
-                    bg = 'rgb('+r+', '+g+', '+b+')';
+                    color = 'rgb('+r+', '+g+', '+b+')';
+                } else {
+                    color = bg;
                 }
                 //get r,g,b and decide
-                var rgb = bg.replace(/^(rgb|rgba)\(/,'').replace(/\)$/,'').replace(/\s/g,'').split(',');
+                var rgb = color.replace(/^(rgb|rgba)\(/,'').replace(/\)$/,'').replace(/\s/g,'').split(',');
                 var yiq = ((rgb[0]*299)+(rgb[1]*587)+(rgb[2]*114))/1000;
-                return (yiq >= 169) ? '' : 'invert';
+                contrastColorCache[bg] = (yiq >= 169) ? '' : 'invert';
+                return contrastColorCache[bg];
             } else {
                 return '';
             }
@@ -74,7 +82,10 @@ filters
     })
     .filter('createGradientBackground', function() {
         return function(color) {
-            if (color) {
+            if(color && gradientBackgroundCache[color] != undefined){
+                return gradientBackgroundCache[color];
+            }
+            else if (color) {
                 var ratio = 18;
                 var num = parseInt(color.substring(1),16),
                     ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
@@ -82,10 +93,11 @@ filters
                     R = ((num >> 16) & 255) + amt,
                     G = ((num >> 8) & 255) + amt,
                     B = (num & 255) + amt;
-                return "background-image: -moz-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                    "   background-image: -o-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                    "   background-image: -webkit-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                    "   background-image: linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",1) 0%, rgba("+R+","+G+","+B+",0.7) 100%);"
+                gradientBackgroundCache[color] = "background-image: -moz-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.7) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
+                    "   background-image: -o-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.7) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
+                    "   background-image: -webkit-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.7) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
+                    "   background-image: linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.7) 0%, rgba("+R+","+G+","+B+",0.7) 100%);";
+                return gradientBackgroundCache[color];
             }
         };
     })

@@ -185,6 +185,14 @@ class ProductUrlMappings {
                 product(matches: /[0-9A-Z]*/)
             }
         }
+        "/p/$product/story/listByBacklog/$backlog" {
+            controller = 'story'
+            action = 'index'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                backlog(matches: /\d+(,\d+)*/)
+            }
+        }
         // Actor
         "/p/$product/actor" {
             controller = 'actor'

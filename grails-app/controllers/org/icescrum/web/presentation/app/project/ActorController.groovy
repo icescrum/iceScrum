@@ -30,7 +30,7 @@ import org.icescrum.core.domain.Product
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
+@Secured('inProduct() or stakeHolder()')
 class ActorController {
 
     def actorService

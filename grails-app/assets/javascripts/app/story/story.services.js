@@ -22,7 +22,7 @@
  *
  */
 services.factory('Story', ['Resource', function($resource) {
-    return $resource('story/:type/:typeId/:id/:action');
+    return $resource('story/:type/:typeId/:id/:action/:backlog');
 }]);
 
 services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormService', 'StoryStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, FormService, StoryStatesByName, IceScrumEventType, PushService) {
@@ -276,7 +276,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
     };
     
     this.listByBacklog = function(backlog) {
-        return Story.query({backlog:backlog.id}).$promise.then(function(stories){
+        return Story.query({action: 'listByBacklog', backlog:backlog.id}).$promise.then(function(stories){
             self.mergeStories(stories);
             return stories;
         });
