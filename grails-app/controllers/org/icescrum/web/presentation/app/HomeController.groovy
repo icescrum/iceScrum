@@ -36,7 +36,7 @@ class HomeController {
     def springSecurityService
 
     @Secured(['permitAll()'])
-    def panels() {
+    def panel() {
         User user = (User) springSecurityService.currentUser
         def panels = user ? user.preferences.panels.collect { return [id: it.key, position: it.value] }.sort { it.position } : [[id: 'login'], [id: 'publicProjects']]
         render(status: 200, contentType: 'application/json', text: panels as JSON)
