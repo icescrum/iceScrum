@@ -154,8 +154,8 @@ body > .container-fluid > .main {
     &:not(.no-flex) {
       flex: 1;
       display: flex;
-      padding-top: 20px;
-      padding-bottom: 20px;
+      padding-top: 15px;
+      padding-bottom: 15px;
       //col-md etc..
       > div {
         display: flex;
@@ -191,7 +191,7 @@ body > .container-fluid > .main {
             }
             flex: 1;
             padding-top: 0;
-            margin-top: 20px;
+            margin-top: 15px;
             overflow-y: auto;
             overflow-x: hidden;
           }
@@ -221,11 +221,11 @@ body > .container-fluid > .main {
           > .panel-heading {
             padding: 0;
             > .panel-title {
-              padding: 15px 20px;
+              padding:15px;
             }
             > .progress-container {
-              padding-left: 20px;
-              padding-right: 20px;
+              padding-left: 15px;
+              padding-right: 15px;
             }
           }
         }
@@ -357,7 +357,7 @@ body > .container-fluid > .main {
           .panel-footer {
             padding: 0;
             > div:first-child {
-              padding: 15px 20px;
+              padding: 15px;
             }
           }
         }
@@ -436,7 +436,7 @@ body > .container-fluid > .main {
         padding-bottom:1px;
       }
       .btn-toolbar {
-        padding:15px 20px;
+        padding:15px;
         padding-bottom: 0;
         margin-left:0;
         div:first-child {
@@ -486,9 +486,13 @@ body > .container-fluid > .main {
       div.panel{
         border-top-width: 0;
         border-left-width: 0;
-      }
-      div.panel:first-of-type{
-        border-left-width:1px;
+        &:first-of-type {
+          border-left-width:1px;
+        }
+        .panel-body {
+          padding-left:9px;
+          padding-right:9px;
+        }
       }
     }
     &:hover {
@@ -506,8 +510,12 @@ body > .container-fluid > .main {
 
 }
 
+div.panel-heading {
+  padding:15px;
+}
 
 div.panel-body {
+  padding: 15px;
   div.panel-loading {
     display: none;
   }
