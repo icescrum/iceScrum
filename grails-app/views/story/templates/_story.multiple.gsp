@@ -245,13 +245,12 @@
                         type="submit">
                     ${message(code:'default.button.create.label')}
                 </button>
-                <button class="btn confirmation btn-default pull-right"
+                <a class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"
                         uib-tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
-                        type="button"
-                        ng-click="goToNewStory()">
+                        href="#/{{ ::viewName }}">
                     ${message(code:'is.button.cancel')}
-                </button>
+                </a>
             </div>
         </form>
     </div>

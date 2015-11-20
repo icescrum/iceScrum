@@ -22,19 +22,6 @@
  *
  */
 controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories', 'StoryService', '$filter', function($scope, $state, backlogs, stories, StoryService, $filter) {
-    // Functions
-    $scope.goToNewStory = function() {
-        $state.go('backlog.new');
-    };
-    $scope.goToStory = function(story, tabId) {
-        var params = {id: story.id};
-        var state = $scope.viewName + '.details';
-        if (tabId) {
-            params.tabId = tabId;
-            state += '.tab';
-        }
-        $state.go(state, params);
-    };
     $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id;

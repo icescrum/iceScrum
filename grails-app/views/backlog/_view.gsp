@@ -25,7 +25,7 @@
     <div class="btn-toolbar">
         <div class="btn-group" ng-repeat="availableBacklog in availableBacklogs">
             <button class="btn btn-default btn-backlog"
-                    ng-class="{'active':availableBacklog.active}"
+                    ng-class="{'actives':availableBacklog.active}"
                     uib-tooltip="{{ availableBacklog.name }}"
                     tooltip-append-to-body="true"
                     ng-click="manageActiveBacklog(availableBacklog)"
@@ -70,7 +70,7 @@
                uib-tooltip="${message(code:'default.button.create.label')}"
                tooltip-append-to-body="true"
                tooltip-placement="right"
-               ng-click="goToNewStory()"
+               href="#/{{ ::viewName }}/new"
                class="btn btn-primary">${message(code: "is.ui.sandbox.toolbar.new")} ${message(code: "is.story")}</a>
         </div>
     </div>

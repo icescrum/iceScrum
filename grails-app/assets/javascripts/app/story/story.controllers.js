@@ -24,6 +24,10 @@
 
 controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', 'FeatureService', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName, FeatureService) {
     // Functions
+    $scope.goToNewStory = function() {
+        $state.go('backlog.new');
+    };
+
     $scope.accept = function(story) {
         StoryService.accept(story)
             .then(function() {

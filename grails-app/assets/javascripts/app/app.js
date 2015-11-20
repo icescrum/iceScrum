@@ -219,8 +219,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     return null;
                                 }],
                                 //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
-                                selected:['data', 'selected', function(data, selected){
-                                    return selected;
+                                selected:['data', 'detailsStory', function(data, detailsStory){
+                                    return detailsStory;
                                 }]
                             },
                             views:{
