@@ -20,33 +20,33 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="attachment.list.html">
-    <tr ng-show="selected.attachments === undefined">
+    <tr ng-show="attachmentable.attachments === undefined">
         <td class="empty-content">
-            <i class="fa fa-refresh fa-spin"></i>
+            <i class="fa-2x fa-circle-o-notch fa-spin"></i>
         </td>
     </tr>
-    <tr ng-repeat="attachment in selected.attachments">
+    <tr ng-repeat="attachment in attachmentable.attachments">
         <td>
             <div class="col-sm-8">
                 <div class="filename" title="{{ attachment.filename }}">
-                    <i class="fa fa-{{ attachment.ext | fileicon }}"></i> <a href="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}">{{ attachment.filename }}</a></div>
+                    <i class="fa fa-{{ attachment.ext | fileicon }}"></i> <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}">{{ attachment.filename }}</a></div>
                 <div><small>{{ attachment.length | filesize }}</small></div>
             </div>
             <div class="col-sm-4 text-right">
                 <div class="btn-group">
-                    <a href="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}" uib-tooltip="${message(code: 'todo.is.ui.attachment.download')}" tooltip-append-to-body="true" class="btn btn-default btn-xs"><i class="fa fa-download"></i></a>
-                    <button ng-click="showPreview(attachment, selected, clazz)" type="button" class="btn btn-xs btn-default ng-hide" ng-show="isPreviewable(attachment)" uib-tooltip="${message(code: 'todo.is.ui.attachment.preview')}" tooltip-append-to-body="true"><i class="fa fa-search"></i></button>
-                    <button ng-if="authorizedAttachment('delete', attachment)" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [attachment, selected] })" uib-tooltip="${message(code: 'default.button.delete.label')}" tooltip-append-to-body="true" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
+                    <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}" uib-tooltip="${message(code: 'todo.is.ui.attachment.download')}" tooltip-append-to-body="true" class="btn btn-default btn-xs"><i class="fa fa-download"></i></a>
+                    <button ng-click="showPreview(attachment, attachmentable, clazz)" type="button" class="btn btn-xs btn-default ng-hide" ng-show="isPreviewable(attachment)" uib-tooltip="${message(code: 'todo.is.ui.attachment.preview')}" tooltip-append-to-body="true"><i class="fa fa-search"></i></button>
+                    <button ng-if="authorizedAttachment('delete', attachment)" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [attachment, attachmentable] })" uib-tooltip="${message(code: 'default.button.delete.label')}" tooltip-append-to-body="true" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
                 </div>
             </div>
             <div ng-show="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'picture'">
-                <a href="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}">
-                    <img ng-src="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}" width="100%"/>
+                <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}">
+                    <img ng-src="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}" width="100%"/>
                 </a>
             </div>
             <div ng-show="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'video'">
-                <a href="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}">
-                    <img ng-src="attachment/{{ clazz }}/{{ selected.id }}/{{ attachment.id }}" width="100%"/>
+                <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}">
+                    <img ng-src="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}" width="100%"/>
                 </a>
             </div>
         </td>
@@ -72,7 +72,7 @@
             </div>
         </td>
     </tr>
-    <tr ng-show="!selected.attachments && selected.attachments !== undefined">
+    <tr ng-show="attachmentable.attachments !== undefined && attachmentable.attachments.length == 0">
         <td class="empty-content">
             <small>${message(code:'todo.is.ui.attachment.empty')}</small>
         </td>

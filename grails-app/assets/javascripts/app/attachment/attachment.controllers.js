@@ -21,11 +21,11 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', function($scope, $uibModal, AttachmentService) {
+controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', function($scope, $uibModal, AttachmentService, attachmentable) {
     //manual save from flow js
     $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
         var attachment = JSON.parse(message);
-        AttachmentService.save(attachment, $scope.selected);
+        AttachmentService.save(attachment, $scope.attachmentable);
     });
     $scope['delete'] = function(attachment, attachmentable) {
         AttachmentService.delete(attachment, attachmentable);
@@ -102,4 +102,7 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
         }
 
     };
+
+    //init
+    $scope.attachmentable = attachmentable;
 }]);

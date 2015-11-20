@@ -256,6 +256,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
 controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$uibModal', 'StoryService', 'StoryCodesByState', 'FormService', 'ActorService', 'ProjectService', 'detailsStory',
     function($scope, $controller, $state, $timeout, $uibModal, StoryService, StoryCodesByState, FormService, ActorService, ProjectService, story) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
+        $controller('attachmentCtrl', { $scope: $scope, attachmentable:story });
         // Functions
         $scope.update = function(story) {
             StoryService.update(story)

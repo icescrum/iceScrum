@@ -261,7 +261,7 @@
                 <div class="drop-zone">
                     <h2>${message(code: 'todo.is.ui.drop.here')}</h2>
                 </div>
-                <table class="table table-striped attachments" ng-controller="attachmentCtrl">
+                <table class="table table-striped attachments">
                     <tbody ng-include="'attachment.list.html'"></tbody>
                 </table>
             </div>
