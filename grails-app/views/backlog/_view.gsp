@@ -25,12 +25,12 @@
     <div class="btn-toolbar">
         <div class="btn-group" ng-repeat="availableBacklog in availableBacklogs">
             <button class="btn btn-default btn-backlog"
-                    ng-class="{'actives':availableBacklog.active}"
+                    ng-class="{'shown':availableBacklog.shown}"
                     uib-tooltip="{{ availableBacklog.name }}"
                     tooltip-append-to-body="true"
-                    ng-click="manageActiveBacklog(availableBacklog)"
+                    ng-click="manageShownBacklog(availableBacklog)"
                     tooltip-placement="top">
-                <i class="fa" ng-class="{'fa-circle-o':!availableBacklog.active, 'fa-dot-circle-o':availableBacklog.active}"></i>
+                <i class="fa" ng-class="{'fa-circle-o':!availableBacklog.shown, 'fa-dot-circle-o':availableBacklog.shown}"></i>
                 {{ availableBacklog.name }}
                 <span class="badge">{{ availableBacklog.count }}</span>
             </button>
@@ -135,7 +135,7 @@
                         tooltip-placement="bottom"
                         ng-if="backlogs.length > 1"
                         tooltip-append-to-body="true"
-                        ng-click="manageActiveBacklog(backlog)"
+                        ng-click="manageShownBacklog(backlog)"
                         uib-tooltip="${message(code:'is.ui.window.closeable')}">
                     <span class="fa fa-times"></span>
                 </button>

@@ -214,8 +214,12 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             element.on('hover', function(){
                 _.each(element.find('.ellipsis-el'), function(el){
                     el = angular.element(el);
-                    el.data('jqae', null);
-                    el.ellipsis();
+                    var data = el.data('jqae');
+                    if(!data || (data && data.wrapperElement.parent().length == 0)){
+                        el.data('jqae', null);
+                        el.ellipsis();
+                        console.log('create');
+                    }
                 });
             });
         }

@@ -49,18 +49,14 @@ controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories'
         backlog.stories = $filter('orderBy')(filteredStories, backlog.orderBy.current.id, backlog.orderBy.reverse);
     };
 
-    $scope.manageActiveBacklog = function(backlog){
-        if(backlog.active){
-            backlog.active = false;
+    $scope.manageShownBacklog = function(backlog){
+        //remove
+        if(backlog.shown){
+            backlog.shown = null;
             _.remove($scope.backlogs, {id: backlog.id});
-        } else {
-            //max 2 backlogs so remove the first added
-            if($scope.backlogs.length >= $scope.maxParallelsBacklogs) {
-                $scope.backlogs[0].active = false;
-                $scope.backlogs = $scope.backlogs.slice(1);
-            }
-            $scope.backlogs.push(backlog);
-            backlog.active = true;
+        }
+        //add
+        else if(!backlog.shown) {
             backlog.storiesRendered = false;
             backlog.orderBy = {
                 status: false,
@@ -77,9 +73,18 @@ controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories'
                     {id: 'type', name: $scope.message('todo.is.ui.sort.type')}
                 ]
             };
+            var tmpBacklogs = _.sortByOrder($scope.backlogs, 'shown', 'desc');
+            var lastShown = _.first(tmpBacklogs);
+            backlog.shown = lastShown ? (lastShown.shown + 1) : 1;
             StoryService.listByBacklog(backlog).then(function(stories){
                 $scope.refreshSingleBacklog(backlog, stories);
             });
+            if($scope.backlogs.length == $scope.maxParallelsBacklogs) {
+                var removedBacklog = tmpBacklogs.pop();
+                removedBacklog.shown = null;
+            }
+            tmpBacklogs.push(backlog);
+            $scope.backlogs = _.sortBy(tmpBacklogs, 'id');
         }
     };
 
@@ -123,7 +128,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories'
     $scope.backlogs = [];
     $scope.maxParallelsBacklogs = 2;
     $scope.availableBacklogs = backlogs;
-    $scope.manageActiveBacklog(backlogs[0]);
+    $scope.manageShownBacklog(backlogs[0]);
     //Useful to keep stories from update
     $scope.stories = StoryService.list;
     $scope.$watch('stories', $scope.refreshBacklogs, true);
