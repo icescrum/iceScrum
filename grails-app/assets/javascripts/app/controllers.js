@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', 'hotkeys', 'PushService', '$http',
-    function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, hotkeys, PushService, $http) {
+controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$interval', '$timeout', 'hotkeys', 'PushService', '$http',
+    function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, Fullscreen, notifications, $interval, $timeout, hotkeys, PushService, $http) {
         $scope.notificationToggle = function(open) {
             if (open) {
                 UserService.getActivities($scope.currentUser)
@@ -121,7 +121,8 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         };
 
         $scope.app = {
-            loading: 10,
+            loading:true,
+            loadingPercent: 0,
             stateLoading:false,
             isFullScreen: false
         };
@@ -141,37 +142,37 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             dragEnd:function(){ $scope.menuDragging = false; }
         };
 
-        $scope.$on('$stateChangeStart', function(){
-            $scope.app.stateLoading = true;
-        });
-
-        $scope.$on('$stateChangeSuccess', function(){
-            //todo find another event
-            $scope.app.stateLoading = false;
-        });
-
-        //fake loading
-        var loadingAppProgress = $interval(function() {
-            if ($scope.app.loading <= 50) {
-                $scope.app.loading += 5;
+        //begin state loading app
+        $scope.$on('$viewContentLoading', function() {
+            $scope.app.loading = true;
+            if($scope.app.loadingPercent < 90) {
+                $scope.app.loadingPercent += 10;
             }
-        }, 50);
-
-        $scope.$on(CONTENT_LOADED, function() {
-            $scope.app.loading = 50;
-            //real ajax loading
-            loadingAppProgress = $interval(function(){
-                if($http.pendingRequests.length > 0){
-                    $scope.app.loading = 100 - ((100 - $scope.app.loading) / $http.pendingRequests.length);
-                } else {
-                    $timeout(function() {
-                        $scope.app.loading = 100;
-                        $interval.cancel(loadingAppProgress);
-                        angular.element('#app-loading').remove();
-                    }, 50);
-                }
-            }, 50);
         });
+
+        $scope.$on('$stateChangeStart', function() {
+            $scope.app.loading = true;
+            if($scope.app.loadingPercent != 100) {
+                $scope.app.loadingPercent += 10;
+            }
+        });
+
+        $scope.$on('$stateChangeSuccess', function() {
+            $scope.app.loading = false;
+            if($scope.app.loadingPercent != 100) {
+                $scope.app.loadingPercent = 100;
+            }
+        });
+
+        $scope.$watch(function() {
+            return $http.pendingRequests.length;
+        }, function(newVal) {
+            $scope.app.loading = newVal > 0;
+            if($scope.app.loading && $scope.app.loadingPercent < 100){
+                $scope.app.loadingPercent = 100 - ((100 - $scope.app.loadingPercent) / newVal);
+            }
+        });
+        //end state loading app
 
         $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
             $scope.showAuthModal();

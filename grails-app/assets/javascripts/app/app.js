@@ -420,7 +420,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', 'notifications', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, notifications, CONTENT_LOADED){
+    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', 'notifications', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, notifications){
 
         //used to handle click with shortcut hotkeys
         $rootScope.hotkeyClick = function(event, hotkey) {
@@ -570,12 +570,6 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             }
         };
 
-        $rootScope.$watch('$viewContentLoaded', function() {
-            $timeout(function() {
-                $rootScope.$broadcast(CONTENT_LOADED);
-            }, 50)
-        });
-
         // TODO Change ugly hack
         $rootScope.serverUrl = icescrum.grailsServer;
 
@@ -667,8 +661,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         CREATE: 'CREATE',
         UPDATE: 'UPDATE',
         DELETE: 'DELETE'
-    })
-    .constant('CONTENT_LOADED', 'loadingFinished');
+    });
 
 
 //TODO should be move

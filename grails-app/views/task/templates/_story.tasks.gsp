@@ -21,10 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div class="tasks panel-body" ng-init="tasks(selected)" ng-controller="taskCtrl" ng-class="{'loading': selected.tasks === undefined}">
-    <div class="panel-loading">
-        <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
-    </div>
+<div class="tasks panel-body" ng-controller="taskCtrl">
     <table class="table">
         <tr ng-repeat="task in selected.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
             <td class="content" ng-class="{'deletable': deletable}">

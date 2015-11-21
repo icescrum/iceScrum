@@ -51,7 +51,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories'
 
     $scope.manageShownBacklog = function(backlog){
         //remove
-        if(backlog.shown){
+        if(backlog.shown && $scope.backlogs.length > 1){
             backlog.shown = null;
             _.remove($scope.backlogs, {id: backlog.id});
         }

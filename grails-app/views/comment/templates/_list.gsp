@@ -21,10 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.list.html">
-<div class="comments panel-body" ng-class="{'loading': selected.comments === undefined}">
-    <div class="panel-loading">
-        <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
-    </div>
+<div class="comments panel-body">
     <table class="table">
         <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
             <td class="content">

@@ -142,9 +142,7 @@
             </div>
         </div>
         <div class="panel-body" ng-class="{'loading': !backlog.storiesRendered}">
-            <div class="panel-loading">
-                <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
-            </div>
+            <div class="panel-loading" ng-include="'loading.html'"></div>
             <div class="postits"
                  as-sortable="backlogSortable"
                  ng-model="backlog.stories"

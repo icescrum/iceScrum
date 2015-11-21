@@ -17,40 +17,48 @@ body {
     -o-transition: opacity 0.5s ease-in-out;
   }
   &.loading {
-    > #app-loading {
-      .make-row();
-      display: block;
-      margin: auto;
-      position: absolute;
-      top: 50%;
-      left:0; right:0;
-      .translate(0, -50%);
-      .logo {
-        height: 250px;
-        width: 250px;
-        margin-left: 50%;
-        .translate(-50%; 0);
-      }
-
-      > div:first-of-type {
-        .make-xs-column(6);
-        .make-sm-column(4);
-        .make-xs-column-offset(3);
-        .make-sm-column-offset(4);
+    cursor: progress;
+  }
+  &.loading {
+    &.splash-screen {
+      > #app-loading {
+        .make-row();
+        display: block;
+        margin: auto;
+        position: absolute;
         top: 50%;
-        margin-top: -9px;
+        left: 0;
+        right: 0;
+        .translate(0, -50%);
+        .logo {
+          height: 250px;
+          width: 250px;
+          margin-left: 50%;
+          .translate(-50%; 0);
+        }
+        .loading-circle {
+          stroke:@navbar-masthead-default-bg;
+          stroke-width: 10px;
+          stroke-linecap: butt;
+        }
+
+        > div:first-of-type {
+          .make-xs-column(6);
+          .make-sm-column(4);
+          .make-xs-column-offset(3);
+          .make-sm-column-offset(4);
+          top: 50%;
+          margin-top: -9px;
+        }
+      }
+      > .container-fluid {
+        visibility: hidden;
+        opacity: 0;
       }
     }
-    > .container-fluid {
-      visibility: hidden;
-      opacity:0;
-    }
   }
-  &:not(.loading) > #app-progress {
+  > #app-loading {
     display: none;
-  }
-  &.spin-loading {
-    cursor:progress;
   }
 }
 
@@ -332,9 +340,13 @@ body > .container-fluid > .main {
               top:50%;
               left:50%;
               z-index:1000;
-              margin-left: -15px;
+              margin-left: -50px;
               display: block;
               opacity:1;
+              .logo {
+                height:100px;
+                width:100px;
+              }
             }
             &.loading > div:not(.panel-loading) {
               opacity: 0;

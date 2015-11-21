@@ -21,10 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.acceptanceTests.html">
-<div class="acceptanceTests panel-body" ng-controller="acceptanceTestCtrl" ng-class="{'loading': selected.acceptanceTests === undefined}">
-    <div class="panel-loading">
-        <i class="fa-2x fa fa-circle-o-notch fa-spin"></i>
-    </div>
+<div class="acceptanceTests panel-body" ng-controller="acceptanceTestCtrl">
     <table class="table">
         <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
             <td class="content">
