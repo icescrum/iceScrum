@@ -107,8 +107,8 @@ class ProductUrlMappings {
             }
         }
         // new way to handle requests (REST Style)
-        "/p/$product/$controller/print/$format" {
-            action = print
+        "/p/$product/$controller/print/$format?" {
+            action = 'print'
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 format(matches: /[0-9A-Z]*/)

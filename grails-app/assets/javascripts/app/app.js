@@ -422,12 +422,6 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
     }]).
     run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', 'notifications', 'CONTENT_LOADED', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, notifications, CONTENT_LOADED){
 
-        $rootScope.$watch('$viewContentLoaded', function() {
-            $timeout(function() {
-                $rootScope.$broadcast(CONTENT_LOADED);
-            }, 500)
-        });
-
         //used to handle click with shortcut hotkeys
         $rootScope.hotkeyClick = function(event, hotkey) {
             if (hotkey.el && (hotkey.el.is( "a" ) || hotkey.el.is( "button" ))){
@@ -444,24 +438,6 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                 $download.attr('src', url);
             } else {
                 $download = $('<iframe>', { id: 'idown', src: url }).hide().appendTo('body');
-            }
-        };
-
-        // To be able to track state in views
-        $rootScope.$state = $state;
-
-        var messages = {};
-        $rootScope.initMessages = function(initMessages) {
-            messages = initMessages;
-        };
-
-        $rootScope.applicationMenus = [];
-        $rootScope.initApplicationMenus = function(initMenus) {
-            $rootScope.applicationMenus = initMenus;
-            var menusByVisibility = _.groupBy(initMenus, 'visible');
-            $rootScope.menus = {
-                visible: _.sortBy(menusByVisibility[true], 'position'),
-                hidden: _.sortBy(menusByVisibility[false], 'position')
             }
         };
 
@@ -534,14 +510,6 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             }
         };
 
-        $rootScope.integerSuite = [];
-        for (var i = 0; i < 100; i++) {
-            $rootScope.integerSuite.push(i);
-        }
-        $rootScope.integerSuiteNullable = ['?'].concat($rootScope.integerSuite);
-        $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
-        $rootScope.fibonacciSuiteNullable = ['?'].concat($rootScope.fibonacciSuite);
-
         $rootScope.showCopyModal = function(title, value) {
             $uibModal.open({
                 templateUrl: 'copy.html',
@@ -569,14 +537,6 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             var newDate = new Date(date);
             newDate.setMonth(date.getMonth() + months);
             return newDate;
-        };
-
-        // TODO Change ugly hack
-        $rootScope.serverUrl = icescrum.grailsServer;
-
-        //to switch between grid / list view
-        $rootScope.view = {
-            asList:false
         };
 
         $rootScope.showAuthModal = function(username) {
@@ -607,6 +567,46 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             $event.stopPropagation();
             if (holder) {
                 holder.opened = true;
+            }
+        };
+
+        $rootScope.$watch('$viewContentLoaded', function() {
+            $timeout(function() {
+                $rootScope.$broadcast(CONTENT_LOADED);
+            }, 50)
+        });
+
+        // TODO Change ugly hack
+        $rootScope.serverUrl = icescrum.grailsServer;
+
+        $rootScope.integerSuite = [];
+        for (var i = 0; i < 100; i++) {
+            $rootScope.integerSuite.push(i);
+        }
+        $rootScope.integerSuiteNullable = ['?'].concat($rootScope.integerSuite);
+        $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
+        $rootScope.fibonacciSuiteNullable = ['?'].concat($rootScope.fibonacciSuite);
+
+        //to switch between grid / list view
+        $rootScope.view = {
+            asList:false
+        };
+
+        // To be able to track state in views
+        $rootScope.$state = $state;
+
+        var messages = {};
+        $rootScope.initMessages = function(initMessages) {
+            messages = initMessages;
+        };
+
+        $rootScope.applicationMenus = [];
+        $rootScope.initApplicationMenus = function(initMenus) {
+            $rootScope.applicationMenus = initMenus;
+            var menusByVisibility = _.groupBy(initMenus, 'visible');
+            $rootScope.menus = {
+                visible: _.sortBy(menusByVisibility[true], 'position'),
+                hidden: _.sortBy(menusByVisibility[false], 'position')
             }
         };
     }])

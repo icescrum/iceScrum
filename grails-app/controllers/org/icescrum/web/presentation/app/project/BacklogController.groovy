@@ -29,6 +29,9 @@ import org.icescrum.core.domain.Backlog
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
+import org.icescrum.core.utils.BundleUtils
+
+import static grails.async.Promises.task
 
 @Secured(['stakeHolder() or inProduct()'])
 class BacklogController {
@@ -42,6 +45,34 @@ class BacklogController {
             html { render(status: 200, contentType: 'application/json', text:backlogs as JSON) }
             json { renderRESTJSON(text: backlogs) }
             xml  { renderRESTXML(text: backlogs) }
+        }
+    }
+
+    @Secured('stakeHolder() or inProduct()')
+    def print(long product, long id, String format) {
+        def _product = Product.get(product)
+        def backlog = Backlog.get(id)
+        def outputFileName = _product.name + '-' + backlog.name
+        def stories = Story.search(product, JSON.parse(backlog.filter)).sort { Story story -> story.id }
+        if (!stories) {
+            returnError(text: message(code: 'is.report.error.no.data'))
+        } else {
+            return task {
+                def data = []
+                stories.each {
+                    data << [
+                            uid          : it.uid,
+                            name         : it.name,
+                            description  : it.description,
+                            notes        : it.notes?.replaceAll(/<.*?>/, ''),
+                            type         : message(code: BundleUtils.storyTypes[it.type]),
+                            suggestedDate: it.suggestedDate,
+                            creator      : it.creator.firstName + ' ' + it.creator.lastName,
+                            feature      : it.feature?.name,
+                    ]
+                }
+                renderReport('backlog', format ? format.toUpperCase() : 'PDF', [[product: _product.name, stories: data ?: null]], outputFileName)
+            }
         }
     }
 

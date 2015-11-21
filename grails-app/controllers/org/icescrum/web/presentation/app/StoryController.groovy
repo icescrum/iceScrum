@@ -526,31 +526,6 @@ class StoryController {
         render(text: [fieldValues: fieldValues, stories: stories, count: count] as JSON, contentType: 'application/json', status: 200)
     }
 
-    def print(long product, String format) {
-        def _product = Product.get(product)
-        def stories = Story.findAllByBacklogAndStateBetween(_product, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, [cache: true, sort: 'rank'])
-        if (!stories) {
-            returnError(text: message(code: 'is.report.error.no.data'))
-        } else {
-            return task {
-                def data = []
-                stories.each {
-                    data << [
-                            uid          : it.uid,
-                            name         : it.name,
-                            description  : it.description,
-                            notes        : it.notes?.replaceAll(/<.*?>/, ''),
-                            type         : message(code: BundleUtils.storyTypes[it.type]),
-                            suggestedDate: it.suggestedDate,
-                            creator      : it.creator.firstName + ' ' + it.creator.lastName,
-                            feature      : it.feature?.name,
-                    ]
-                }
-                renderReport('backlog', format ? format.toUpperCase() : 'PDF', [[product: _product.name, stories: data ?: null]], _product.name)
-            }
-        }
-    }
-
     @Secured('isAuthenticated()')
     def openDialogDelete() {
         def dialog = g.render(template: 'dialogs/delete', model: [back: params.back ? params.back : '#backlog'])

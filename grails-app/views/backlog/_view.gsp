@@ -110,7 +110,7 @@
                             tooltip-append-to-body="true"
                             tooltip-placement="bottom"
                             ng-click="print($event)"
-                            ng-href="{{ viewName }}/print"
+                            ng-href="backlog/{{ ::backlog.id }}/print"
                             hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
                     </button>
                 </g:if>
@@ -121,7 +121,7 @@
                     role="menu">
                     <g:each in="${is.exportFormats()}" var="format">
                         <li role="menuitem">
-                            <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
+                            <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}&id={{ ::backlog.id }}"
                                ng-click="print($event)">${format.name}</a>
                         </li>
                     </g:each>

@@ -26,13 +26,6 @@ var controllers = angular.module('controllers', []);
 
 controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'CONTENT_LOADED', 'Fullscreen', 'notifications', '$interval', '$timeout', 'hotkeys', 'PushService', '$http',
     function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, CONTENT_LOADED, Fullscreen, notifications, $interval, $timeout, hotkeys, PushService, $http) {
-        $scope.app = {
-            isFullScreen: false,
-            loading: 10
-        };
-        $scope.currentUser = Session.user;
-        $scope.roles = Session.roles;
-
         $scope.notificationToggle = function(open) {
             if (open) {
                 UserService.getActivities($scope.currentUser)
@@ -88,67 +81,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             return PushService.push.connected ? 'connected' : 'disconnected'
         };
 
-        $scope.menuDragging = false;
-
-        $scope.menuSortableListeners = {
-            accept: function (sourceItemHandleScope, destSortableScope) { return true; },
-            itemMoved: function (event) {
-                UserService.updateMenuPreferences({id:event.source.itemScope.modelValue.id, position:event.dest.index + 1, hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden});
-            },
-            orderChanged: function(event) {
-                UserService.updateMenuPreferences({id:event.source.itemScope.modelValue.id, position:event.dest.index + 1, hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden});
-            },
-            containment: '#header',
-            dragStart:function(){ $scope.menuDragging = true; },
-            dragEnd:function(){ $scope.menuDragging = false; }
-        };
-
-        //fake loading
-        var loadingAppProgress = $interval(function() {
-            if ($scope.app.loading <= 70) {
-                $scope.app.loading += 5;
-            }
-        }, 10);
-        $scope.$on(CONTENT_LOADED, function() {
-            $scope.app.loading = 70;
-            //real ajax loading
-            loadingAppProgress = $interval(function(){
-                if($http.pendingRequests.length > 0){
-                    $scope.app.loading = 100 - ((100 - $scope.app.loading) / $http.pendingRequests.length);
-                } else {
-                    $timeout(function() {
-                        $scope.app.loading = 100;
-                        $interval.cancel(loadingAppProgress);
-                        angular.element('#app-progress').remove();
-                    }, 10);
-                }
-            }, 10);
-
-
-        });
-        $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
-            $scope.showAuthModal();
-        });
-        $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
-            var data = error.data;
-            if (angular.isArray(data)) {
-                notifications.error("", data[0].text);
-            } else if (angular.isObject(data)) {
-                notifications.error("", data.text);
-            } else {
-                notifications.error("", $scope.message('todo.is.ui.error.unknown'));
-            }
-        });
-        $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
-            var data = error.data;
-            if (angular.isArray(data)) {
-                notifications.error($scope.message('todo.is.ui.error.server'), data[0].text);
-            } else if (angular.isObject(data)) {
-                notifications.error($scope.message('todo.is.ui.error.server'), data.text);
-            } else {
-                notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
-            }
-        });
         $scope.fullScreen = function() {
             if (Fullscreen.isEnabled()) {
                 Fullscreen.cancel();
@@ -162,6 +94,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 }
             }
         };
+
         $scope.print = function(data) {
             var url = data;
             if (angular.isObject(data)) {
@@ -186,6 +119,86 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 }
             );
         };
+
+        $scope.app = {
+            loading: 10,
+            stateLoading:false,
+            isFullScreen: false
+        };
+        $scope.currentUser = Session.user;
+        $scope.roles = Session.roles;
+        $scope.menuDragging = false;
+        $scope.menuSortableListeners = {
+            accept: function (sourceItemHandleScope, destSortableScope) { return true; },
+            itemMoved: function (event) {
+                UserService.updateMenuPreferences({id:event.source.itemScope.modelValue.id, position:event.dest.index + 1, hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden});
+            },
+            orderChanged: function(event) {
+                UserService.updateMenuPreferences({id:event.source.itemScope.modelValue.id, position:event.dest.index + 1, hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden});
+            },
+            containment: '#header',
+            dragStart:function(){ $scope.menuDragging = true; },
+            dragEnd:function(){ $scope.menuDragging = false; }
+        };
+
+        $scope.$on('$stateChangeStart', function(){
+            $scope.app.stateLoading = true;
+        });
+
+        $scope.$on('$stateChangeSuccess', function(){
+            //todo find another event
+            $scope.app.stateLoading = false;
+        });
+
+        //fake loading
+        var loadingAppProgress = $interval(function() {
+            if ($scope.app.loading <= 70) {
+                $scope.app.loading += 5;
+            }
+        }, 10);
+
+        $scope.$on(CONTENT_LOADED, function() {
+            $scope.app.loading = 70;
+            //real ajax loading
+            loadingAppProgress = $interval(function(){
+                if($http.pendingRequests.length > 0){
+                    $scope.app.loading = 100 - ((100 - $scope.app.loading) / $http.pendingRequests.length);
+                } else {
+                    $timeout(function() {
+                        $scope.app.loading = 100;
+                        $interval.cancel(loadingAppProgress);
+                        angular.element('#app-progress').remove();
+                    }, 10);
+                }
+            }, 10);
+        });
+
+        $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
+            $scope.showAuthModal();
+        });
+
+        $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
+            var data = error.data;
+            if (angular.isArray(data)) {
+                notifications.error("", data[0].text);
+            } else if (angular.isObject(data)) {
+                notifications.error("", data.text);
+            } else {
+                notifications.error("", $scope.message('todo.is.ui.error.unknown'));
+            }
+        });
+
+        $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
+            var data = error.data;
+            if (angular.isArray(data)) {
+                notifications.error($scope.message('todo.is.ui.error.server'), data[0].text);
+            } else if (angular.isObject(data)) {
+                notifications.error($scope.message('todo.is.ui.error.server'), data.text);
+            } else {
+                notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
+            }
+        });
+
         hotkeys.bindTo($scope).add({
             combo: 'shift+l',
             description: $scope.message('is.button.connect'),
