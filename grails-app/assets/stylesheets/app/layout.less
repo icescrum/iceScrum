@@ -56,6 +56,144 @@ body {
 
 
 body > .container-fluid > .header {
+
+  .navbar-icescrum.navbar-default {
+    background-color: @navbar-masthead-default-bg;
+    border-color: @navbar-masthead-default-border;
+    border-radius: 0;
+
+    .navbar-brand {
+      color: @navbar-masthead-default-brand-color;
+      &:hover,
+      &:focus {
+        color: @navbar-masthead-default-brand-hover-color;
+        background-color: @navbar-masthead-default-brand-hover-bg;
+      }
+      > .caret {
+        border-top-color: @navbar-masthead-default-brand-color;
+        border-bottom-color: @navbar-masthead-default-brand-color;
+      }
+    }
+
+    .navbar-text {
+      color: @navbar-masthead-default-color;
+    }
+
+    .navbar-nav {
+      > li > a {
+        color: @navbar-masthead-default-link-color;
+
+        &:hover,
+        &:focus {
+          color: @navbar-masthead-default-link-hover-color;
+          background-color: @navbar-masthead-default-link-hover-bg;
+        }
+      }
+      > .active > a {
+        &,
+        &:hover,
+        &:focus {
+          color: @navbar-masthead-default-link-active-color;
+          background-color: @navbar-masthead-default-link-active-bg;
+        }
+      }
+      > .disabled > a {
+        &,
+        &:hover,
+        &:focus {
+          color: @navbar-masthead-default-link-disabled-color;
+          background-color: @navbar-masthead-default-link-disabled-bg;
+        }
+      }
+    }
+
+    .navbar-toggle {
+      border-color: @navbar-masthead-default-toggle-border-color;
+      &:hover,
+      &:focus {
+        background-color: @navbar-masthead-default-toggle-hover-bg;
+      }
+      .icon-bar {
+        background-color: @navbar-masthead-default-toggle-icon-bar-bg;
+      }
+    }
+
+    .navbar-collapse,
+    .navbar-form {
+      border-color: darken(@navbar-masthead-default-bg, 7%);
+    }
+
+    // Dropdown menu items
+    .navbar-nav {
+      // Remove background color from open dropdown
+      > .open > a {
+        &,
+        &:hover,
+        &:focus {
+          background-color: @navbar-masthead-default-link-active-bg;
+          color: @navbar-masthead-default-link-active-color;
+        }
+      }
+
+      @media (max-width: @grid-float-breakpoint-max) {
+        // Dropdowns get custom display when collapsed
+        .open .dropdown-menu {
+          > li > a {
+            color: @navbar-masthead-default-link-color;
+            &:hover,
+            &:focus {
+              color: @navbar-masthead-default-link-hover-color;
+              background-color: @navbar-masthead-default-link-hover-bg;
+            }
+          }
+          > .active > a {
+            &,
+            &:hover,
+            &:focus {
+              color: @navbar-masthead-default-link-active-color;
+              background-color: @navbar-masthead-default-link-active-bg;
+            }
+          }
+          > .disabled > a {
+            &,
+            &:hover,
+            &:focus {
+              color: @navbar-masthead-default-link-disabled-color;
+              background-color: @navbar-masthead-default-link-disabled-bg;
+            }
+          }
+        }
+      }
+    }
+
+
+    // Links in navbars
+    //
+    // Add a class to ensure links outside the navbar nav are colored correctly.
+
+    .navbar-link {
+      color: @navbar-masthead-default-link-color;
+      &:hover {
+        color: @navbar-masthead-default-link-hover-color;
+      }
+    }
+
+    .btn-link {
+      color: @navbar-masthead-default-link-color;
+      &:hover,
+      &:focus {
+        color: @navbar-masthead-default-link-hover-color;
+      }
+      &[disabled],
+      fieldset[disabled] & {
+        &:hover,
+        &:focus {
+          color: @navbar-masthead-default-link-disabled-color;
+        }
+      }
+    }
+  }
+
   .logo {
     margin-right: 5px;
     margin-left: -10px;
