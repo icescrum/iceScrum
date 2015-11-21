@@ -78,7 +78,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             });
         };
         $scope.getPushState = function() {
-            return PushService.push.connected ? 'connected' : 'disconnected'
+            return PushService.push.loading ? 'loading' : (PushService.push.connected ? 'connected' : 'disconnected');
         };
 
         $scope.fullScreen = function() {
@@ -152,13 +152,13 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
 
         //fake loading
         var loadingAppProgress = $interval(function() {
-            if ($scope.app.loading <= 70) {
+            if ($scope.app.loading <= 50) {
                 $scope.app.loading += 5;
             }
-        }, 10);
+        }, 50);
 
         $scope.$on(CONTENT_LOADED, function() {
-            $scope.app.loading = 70;
+            $scope.app.loading = 50;
             //real ajax loading
             loadingAppProgress = $interval(function(){
                 if($http.pendingRequests.length > 0){
@@ -167,10 +167,10 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                     $timeout(function() {
                         $scope.app.loading = 100;
                         $interval.cancel(loadingAppProgress);
-                        angular.element('#app-progress').remove();
-                    }, 10);
+                        angular.element('#app-loading').remove();
+                    }, 50);
                 }
-            }, 10);
+            }, 50);
         });
 
         $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {

@@ -363,4 +363,33 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             }
         }
     }
+}).directive('circle', function(){
+    var polarToCartesian = function(centerX, centerY, radius, angleInDegrees) {
+        var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
+
+        return {
+            x: centerX + (radius * Math.cos(angleInRadians)),
+            y: centerY + (radius * Math.sin(angleInRadians))
+        };
+    };
+    return {
+        restrict: 'A',
+        link: function(scope, elem, attrs) {
+            var coords = attrs.circleCoords.split(',');
+            _.each(coords, function(val, index){
+                coords[index] = parseInt(val);
+            });
+            var end = polarToCartesian(coords[0], coords[1], coords[2], coords[3]);
+            scope.$watch(attrs.circle, function(value){
+                    var endAngle = 360 * value / 100;
+                var start = polarToCartesian(coords[0], coords[1], coords[2], endAngle);
+                var arcSweep = endAngle - coords[3] <= 180 ? "0" : "1";
+                var d = [
+                    "M", start.x, start.y,
+                    "A", coords[2], coords[2], 0, arcSweep, 0, end.x, end.y
+                ].join(" ");
+                elem.attr('d', d);
+            });
+        }
+    }
 });

@@ -17,10 +17,21 @@ body {
     -o-transition: opacity 0.5s ease-in-out;
   }
   &.loading {
-    > #app-progress {
+    > #app-loading {
       .make-row();
       display: block;
-      height: 100%;
+      margin: auto;
+      position: absolute;
+      top: 50%;
+      left:0; right:0;
+      .translate(0, -50%);
+      .logo {
+        height: 250px;
+        width: 250px;
+        margin-left: 50%;
+        .translate(-50%; 0);
+      }
+
       > div:first-of-type {
         .make-xs-column(6);
         .make-sm-column(4);
@@ -45,6 +56,10 @@ body {
 
 
 body > .container-fluid > .header {
+  .logo {
+    margin-right: 5px;
+    margin-left: -10px;
+  }
   .navbar-masthead {
     margin-bottom: 0;
     .navbar-nav {
