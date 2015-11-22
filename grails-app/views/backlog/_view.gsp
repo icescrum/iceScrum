@@ -41,9 +41,9 @@
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
                         tooltip-append-to-body="true"
                         tooltip-placement="right"
-                        ng-click="view.asList = !view.asList"
+                        ng-click="app.asList = !app.asList"
                         class="btn btn-default">
-                    <span class="fa fa-th" ng-class="{'fa-th-list': view.asList, 'fa-th': !view.asList}"></span>
+                    <span class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></span>
                 </button>
                 <g:if test="${params?.fullScreen}">
                     <button type="button"
@@ -146,7 +146,7 @@
             <div class="postits"
                  as-sortable="backlogSortable"
                  ng-model="backlog.stories"
-                 ng-class="view.asList ? 'list-group' : 'grid-group'" ng-include="'story.html'">
+                 ng-class="app.asList ? 'list-group' : 'grid-group'" ng-include="'story.html'">
             </div>
         </div>
     </div>

@@ -78,7 +78,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             });
         };
         $scope.getPushState = function() {
-            return PushService.push.loading ? 'loading' : (PushService.push.connected ? 'connected' : 'disconnected');
+            return PushService.push.connected ? 'connected' : 'disconnected';
         };
 
         $scope.fullScreen = function() {
@@ -120,12 +120,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             );
         };
 
-        $scope.app = {
-            loading:true,
-            loadingPercent: 0,
-            stateLoading:false,
-            isFullScreen: false
-        };
         $scope.currentUser = Session.user;
         $scope.roles = Session.roles;
         $scope.menuDragging = false;

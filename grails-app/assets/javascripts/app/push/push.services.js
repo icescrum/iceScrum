@@ -84,8 +84,9 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 atmosphere.util.debug('Default transport is WebSocket, fallback is ' + request.fallbackTransport);
             }
         };
+
         options.onMessage = function(response) {
-            self.push.loading = true;
+            $rootScope.app.loading = true;
             var textBody = response.responseBody;
             try {
                 var jsonBody = atmosphere.util.parseJSON(textBody);
@@ -98,7 +99,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 }
                 throw e;
             } finally {
-                self.push.loading = false;
+                $rootScope.app.loading = false;
             }
         };
         options.onClose = function(response) {

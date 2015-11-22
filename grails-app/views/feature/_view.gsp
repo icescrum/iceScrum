@@ -37,9 +37,9 @@
                     uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
                     tooltip-append-to-body="true"
                     tooltip-placement="right"
-                    ng-click="view.asList = !view.asList"
+                    ng-click="app.asList = !app.asList"
                     class="btn btn-default">
-                <span class="fa fa-th" ng-class="{'fa-th-list': view.asList, 'fa-th': !view.asList}"></span>
+                <span class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></span>
             </button>
             <div class="btn-group"
                  uib-dropdown
@@ -116,7 +116,7 @@
         <div id="backlog-layout-window-${controllerName}"
              ui-selectable="selectableOptions"
              ui-selectable-list="features"
-             ng-class="view.asList ? 'list-group' : 'grid-group'"
+             ng-class="app.asList ? 'list-group' : 'grid-group'"
              class="postits">
             <div ng-class="{ 'ui-selected': isSelected(feature) }"
                  data-id="{{ feature.id }}"

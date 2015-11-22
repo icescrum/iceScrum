@@ -581,9 +581,11 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
         $rootScope.fibonacciSuiteNullable = ['?'].concat($rootScope.fibonacciSuite);
 
-        //to switch between grid / list view
-        $rootScope.view = {
-            asList:false
+        $rootScope.app = {
+            asList:false,
+            loading: true,
+            loadingPercent: 0,
+            isFullScreen: false
         };
 
         // To be able to track state in views
