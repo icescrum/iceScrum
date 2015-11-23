@@ -123,17 +123,19 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         $scope.currentUser = Session.user;
         $scope.roles = Session.roles;
         $scope.menuDragging = false;
+        var menuSortableChange = function(event) {
+            UserService.updateMenuPreferences({
+                id: event.source.itemScope.modelValue.id,
+                position: event.dest.index + 1,
+                hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden
+            });
+        };
         $scope.menuSortableListeners = {
-            accept: function (sourceItemHandleScope, destSortableScope) { return true; },
-            itemMoved: function (event) {
-                UserService.updateMenuPreferences({id:event.source.itemScope.modelValue.id, position:event.dest.index + 1, hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden});
-            },
-            orderChanged: function(event) {
-                UserService.updateMenuPreferences({id:event.source.itemScope.modelValue.id, position:event.dest.index + 1, hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden});
-            },
+            itemMoved: menuSortableChange,
+            orderChanged: menuSortableChange,
             containment: '#header',
-            dragStart:function(){ $scope.menuDragging = true; },
-            dragEnd:function(){ $scope.menuDragging = false; }
+            dragStart: function() { $scope.menuDragging = true; },
+            dragEnd: function() { $scope.menuDragging = false; }
         };
 
         //begin state loading app

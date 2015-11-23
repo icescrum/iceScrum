@@ -1,8 +1,10 @@
 <script type="text/ng-template" id="projects.html">
     <div class="panel panel-light" ng-controller="projectListCtrl">
-        <div class="panel-heading">
-            <h3 ng-if="type == 'public'" class="panel-title"><i class="fa fa-folder-open"></i> ${message(code: 'is.panel.project.public')}</h3>
-            <h3 ng-if="type == 'user'" class="panel-title"><i class="fa fa-folder-open-o"></i> ${message(code: 'is.panel.project.user')}</h3>
+        <div class="panel-heading" ng-if="type == 'public'">
+            <h3  class="panel-title"><i class="fa fa-folder-open"></i> ${message(code: 'is.panel.project.public')}</h3>
+        </div>
+        <div class="panel-heading" ng-if="type == 'user'" as-sortable-item-handle>
+            <h3 class="panel-title"><i class="fa fa-folder-open-o"></i> ${message(code: 'is.panel.project.user')}</h3>
         </div>
         <div class="panel-body">
             <uib-accordion>

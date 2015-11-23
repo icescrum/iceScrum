@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="mood.panel.html">
     <div class="panel panel-light">
-        <div class="panel-heading">
+        <div class="panel-heading" as-sortable-item-handle>
             <h3 class="panel-title"><i class="fa fa-smile-o"></i> ${message(code: 'is.panel.mood')}</h3>
         </div>
         <div class="panel-body" ng-controller="moodCtrl">

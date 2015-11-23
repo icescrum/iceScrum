@@ -355,7 +355,7 @@ class UrlMappings {
 
         "/home/panel" {
             controller = 'home'
-            action = [GET: "panel", POST: "panelPosition"]
+            action = [GET: "panel", POST: "updatePanelPosition"]
         }
 
         "403"(controller: "errors", action: "error403")

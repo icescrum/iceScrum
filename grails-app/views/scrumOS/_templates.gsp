@@ -77,7 +77,7 @@ loading.html">
     uib-tooltip="{{ menu.title }} ({{ menu.shortcut }})"
     tooltip-placement="bottom"
     href="#/{{ menu.id != 'project' ? menu.id : '' }}">
-    <span class="handle" data-as-sortable-item-handle>::</span>
+    <span class="handle" as-sortable-item-handle>::</span>
     <i class="visible-xs {{ menu.icon }}"></i><span class="title">{{ menu.title }}</span>
 </a>
 </script>

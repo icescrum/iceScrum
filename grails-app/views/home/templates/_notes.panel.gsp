@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="notes.panel.html">
     <div ng-controller="userCtrl" class="panel panel-light">
-        <div class="panel-heading">
+        <div class="panel-heading" as-sortable-item-handle>
             <h3 class="panel-title"><i class="fa fa-pencil-square-o"></i> ${message(code: 'is.panel.notes')}</h3>
         </div>
         <div class="panel-body">

@@ -1,6 +1,6 @@
 <script type="text/ng-template" id="tasks.panel.html">
     <div class="panel panel-light" ng-controller="userTaskCtrl">
-        <div class="panel-heading">
+        <div class="panel-heading" as-sortable-item-handle>
             <h3 class="panel-title"><i class="fa fa-tasks"></i> ${message(code: 'is.panel.mytask')}</h3>
         </div>
         <div class="panel-body">

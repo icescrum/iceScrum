@@ -21,11 +21,21 @@
 
 <script type="text/ng-template" id="home.html">
     <div id="view-home" class="view col-sm-12 no-flex">
-        <div class="col-md-6" ng-model='panels_l'>
-            <div ng-include="panel.id+'.panel.html'" data-d="{{ $index }}" id="{{ panel.id }}" ng-repeat="panel in panels_l"></div>
+        <div class="col-md-6"
+             as-sortable="panelSortableListeners"
+             ng-model='panelsLeft' >
+            <div ng-include="panel.id+'.panel.html'"
+                 as-sortable-item
+                 id="{{ panel.id }}"
+                 ng-repeat="panel in panelsLeft"></div>
         </div>
-        <div class="col-md-6" ng-model='panels_r'>
-            <div ng-include="panel.id+'.panel.html'" data-d="{{ $index }}" id="{{ panel.id }}" ng-repeat="panel in panels_r"></div>
+        <div class="col-md-6"
+             as-sortable="panelSortableListeners"
+             ng-model='panelsRight'>
+            <div ng-include="panel.id+'.panel.html'"
+                 as-sortable-item
+                 id="{{ panel.id }}"
+                 ng-repeat="panel in panelsRight"></div>
         </div>
     </div>
 </script>

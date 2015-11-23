@@ -20,14 +20,9 @@
  *
  */
 controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, HomeService) {
-    // Functions
-    $scope.sortablePanelUpdate = function(startModel, destModel, start, end) {
-        var $panels = $('#view-home').find('>>');
-        //HomeService.updatePositionPanel({id: destModel[end].id, position: pos});
-    };
     // Init
-    $scope.panels_l = [];
-    $scope.panels_r = [];
+    $scope.panelsLeft = [];
+    $scope.panelsRight = [];
     $scope.sortable_options = {
         handle: ".panel-heading",
         connectWith: 'panel',
@@ -35,13 +30,20 @@ controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, Ho
         forcePlaceholderSize: "> div",
         placeholder: '<div>&nbsp;</div>'
     };
-    HomeService.getPanels().then(function(panels) {
-        angular.forEach(panels, function(value, key) {
-            if (key % 2 == 0) {
-                $scope.panels_l.push(value);
-            } else {
-                $scope.panels_r.push(value);
-            }
+    var updatePosition = function(event) {
+        HomeService.updatePositionPanel({
+            id: event.source.itemScope.modelValue.id,
+            position: event.dest.index,
+            right: event.dest.sortableScope.modelValue === $scope.panelsRight
         });
+    };
+    $scope.panelSortableListeners = {
+        itemMoved: updatePosition,
+        orderChanged: updatePosition,
+        containment: '.main'
+    };
+    HomeService.getPanels().then(function(panels) {
+        $scope.panelsLeft = panels.panelsLeft;
+        $scope.panelsRight = panels.panelsRight;
     });
 }]);

@@ -21,7 +21,7 @@
 
 <script type="text/ng-template" id="feed.panel.html">
 <div ng-controller="FeedCtrl" class="panel panel-light">
-    <div class="panel-heading clearfix">
+    <div class="panel-heading clearfix" as-sortable-item-handle>
         <h3 class="panel-title">
             <i class="fa fa-rss"></i> ${message(code: 'is.panel.feed')}
             <button class="pull-right visible-on-hover btn btn-default btn-sm"

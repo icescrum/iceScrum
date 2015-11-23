@@ -38,17 +38,26 @@ class HomeController {
     @Secured(['permitAll()'])
     def panel() {
         User user = (User) springSecurityService.currentUser
-        def panels = user ? user.preferences.panels.collect { return [id: it.key, position: it.value] }.sort { it.position } : [[id: 'login'], [id: 'publicProjects']]
+        def panelsLeft
+        def panelsRight
+        if (user) {
+            panelsLeft = user.preferences.panelsLeft.collect { return [id: it.key, position: it.value] }.sort { it.position }
+            panelsRight = user.preferences.panelsRight.collect { return [id: it.key, position: it.value] }.sort { it.position }
+        } else {
+            panelsLeft = [[id: 'login']]
+            panelsRight = [[id: 'publicProjects']]
+        }
+        def panels = [panelsLeft: panelsLeft, panelsRight: panelsRight]
         render(status: 200, contentType: 'application/json', text: panels as JSON)
     }
 
-    def panelPosition(String id, String position) {
-        if (!id && !position) {
+    def updatePanelPosition(String id, String position, Boolean right) {
+        if (id == null || position == null || right == null) {
             returnError(text: message(code: 'is.user.preferences.error.panel'))
             return
         }
         try {
-            userService.panel((User) springSecurityService.currentUser, id, position)
+            userService.updatePanelPosition((User) springSecurityService.currentUser, id, position, right)
             render(status: 200)
         } catch (RuntimeException e) {
             returnError(text: message(code: 'is.user.preferences.error.panel'), exception: e)
