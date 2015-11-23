@@ -102,11 +102,23 @@ class HomeController {
 
     def listFeeds() {
         def user = (User) springSecurityService.currentUser
-        def feeds = Feed.findAllByUser(user);
+        def feeds = []
         if (grailsApplication.config.icescrum.feed.default.url != null && grailsApplication.config.icescrum.feed.default.title != null) {
             feeds << [feedUrl: grailsApplication.config.icescrum.feed.default.url, title: grailsApplication.config.icescrum.feed.default.title, id: "defaultFeed"]
         }
+        feeds.addAll(Feed.findAllByUser(user));
         render(status: 200, contentType: 'application/json', text: feeds as JSON)
+    }
+
+    def userFeed() {
+        User user = (User) springSecurityService.currentUser
+        def feed
+        if (user.preferences.feed != null) {
+            feed = user.preferences.feed
+        } else if (grailsApplication.config.icescrum.feed.default.url != null && grailsApplication.config.icescrum.feed.default.title != null) {
+            feed = [feedUrl: grailsApplication.config.icescrum.feed.default.url, title: grailsApplication.config.icescrum.feed.default.title, id: "defaultFeed"]
+        }
+        render(status: 200, contentType: 'application/json', text: feed as JSON)
     }
 
     def contentFeed(long id) {
@@ -122,17 +134,6 @@ class HomeController {
             jsonFeed.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
         }
         render(status: 200, contentType: "application/json", text: jsonFeed as JSON)
-    }
-
-    def userFeed() {
-        User user = (User) springSecurityService.currentUser
-        def feed
-        if (user.preferences.feed != null) {
-            feed = user.preferences.feed
-        } else if (grailsApplication.config.icescrum.feed.default.url != null && grailsApplication.config.icescrum.feed.default.title != null) {
-            feed = [feedUrl: grailsApplication.config.icescrum.feed.default.url, title: grailsApplication.config.icescrum.feed.default.title, id: "defaultFeed"]
-        }
-        render(status: 200, contentType: 'application/json', text: feed as JSON)
     }
 
     def mergedContentFeed() {

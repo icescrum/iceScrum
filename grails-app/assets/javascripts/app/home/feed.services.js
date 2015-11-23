@@ -23,7 +23,7 @@ services.factory('Feed', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/home/feed/:id/:action');
 }]);
 
-services.service("FeedService", ['Feed', function(Feed) {
+services.service("FeedService", ['Feed', 'FormService', function(Feed, FormService) {
     this.save = function(feed) {
         feed.class = 'feed';
         return Feed.save(feed).$promise;
@@ -31,17 +31,17 @@ services.service("FeedService", ['Feed', function(Feed) {
     this.list = function() {
         return Feed.query().$promise;
     };
-    this.merged = function() {
-        return Feed.query({action: 'merged'}).$promise;
-    };
-    this.content = function(feedUserSelect) {
-        return Feed.get({id: feedUserSelect, action: 'content'}).$promise;
-    };
     this.userFeed = function() {
         return Feed.get({action: 'userFeed'}).$promise;
     };
-    this.delete = function(feedToDelete) {
-        return Feed.delete({id: feedToDelete}).$promise;
+    this.delete = function(feed) {
+        return Feed.delete({id: feed.id}).$promise;
+    };
+    this.merged = function() {
+        return FormService.httpGet('home/feed/merged');
+    };
+    this.content = function(feed) {
+        return FormService.httpGet('home/feed/' + feed.id + '/content');
     };
 }]);
 

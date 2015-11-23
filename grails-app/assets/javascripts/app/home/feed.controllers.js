@@ -22,33 +22,42 @@
 controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function($scope, $filter, FeedService) {
     $scope.save = function(feed) {
         FeedService.save(feed).then(function(savedFeed) {
+            if (_.isEmpty($scope.holder.selectedFeed)) {
+                if (_.isEmpty($scope.feeds)) {
+                    $scope.holder.selectedFeed = savedFeed;
+                    $scope.selectFeed(savedFeed);
+                } else {
+                    $scope.selectFeed();
+                }
+                $scope.showSettings = false;
+            }
             $scope.feeds.push(savedFeed);
             $scope.feed = {};
             $scope.notifySuccess('todo.is.ui.feed.saved');
         });
     };
     $scope.selectFeed = function(selectedFeed) {
-        if (selectedFeed == "all") {
+        if (_.isEmpty(selectedFeed)) {
             FeedService.merged().then(function(allFeedsItems) {
                 $scope.feedChannel = {};
                 $scope.feedItems = $filter('orderBy')(allFeedsItems, '-item.pubDate');
                 $scope.disableDeleteButton = true;
             });
         } else {
-            $scope.disableDeleteButton = selectedFeed == "defaultFeed";
+            $scope.disableDeleteButton = selectedFeed.id == "defaultFeed";
             FeedService.content(selectedFeed).then(function(feed) {
                 $scope.feedChannel = feed.channel;
                 $scope.feedItems = feed.channel.items;
             });
         }
-        $scope.showSettings = false;
     };
-    $scope.delete = function(feedToDelete) {
-        FeedService.delete(feedToDelete).then(function() {
-            _.remove($scope.feeds, {id: parseInt(feedToDelete)});
+    $scope.delete = function(feed) {
+        FeedService.delete(feed).then(function() {
+            _.remove($scope.feeds, {id: feed.id});
             $scope.feedItems = [];
             $scope.feedChannel = {};
-            $scope.holder.selectedFeed = 'all';
+            $scope.holder.selectedFeed = null;
+            $scope.selectFeed();
             $scope.notifySuccess('todo.is.ui.feed.delete');
         })
     };
@@ -65,11 +74,11 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
     $scope.feedItems = [];
     $scope.feedChannel = {};
     $scope.feed = {};
-    $scope.holder = {selectedFeed: 'all'}; // Holder required to share the references across the ctrl chain, otherwise primitive values are copied and changes are not propagated
+    $scope.holder = {}; // Holder required to share the references across the ctrl chain, otherwise primitive values are copied and changes are not propagated
     $scope.feeds = [];
     FeedService.userFeed().then(function(feed) {
         if (feed.id) {
-            $scope.holder.selectedFeed = feed.id;
+            $scope.holder.selectedFeed = feed;
         }
         $scope.selectFeed($scope.holder.selectedFeed);
     });
