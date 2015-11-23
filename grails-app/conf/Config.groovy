@@ -40,8 +40,8 @@ import javax.naming.InitialContext
 grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http') ?: '8080'}/${appName}"
 
 /* Administration */
-icescrum.feed.default.url = null
-icescrum.feed.default.title = null
+icescrum.feed.default.url = "https://www.icescrum.com/blog/feed/"
+icescrum.feed.default.title = "iceScrum Blog"
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = true
 icescrum.invitation.enable = false
