@@ -29,7 +29,7 @@
             <div class="media-body">
                 <div class="text-muted pull-right">
                     <time timeago datetime="{{ groupedActivity.dateCreated }}">
-                        {{ groupedActivity.dateCreated }}
+                        {{ groupedActivity.dateCreated | dateTime }}
                     </time>
                     <i class="fa fa-clock-o"></i>
                 </div>

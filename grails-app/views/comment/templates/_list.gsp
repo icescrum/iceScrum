@@ -48,7 +48,7 @@
                         <div class="col-sm-5 form-group text-right">
                             <span class="dateCreated form-control-static text-muted">
                                 <time timeago datetime="{{ comment.dateCreated }}">
-                                    {{ comment.dateCreated }}
+                                    {{ comment.dateCreated | dateTime }}
                                 </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>
                             </span>
                         </div>
