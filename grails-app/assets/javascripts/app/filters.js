@@ -93,10 +93,10 @@ filters
                     R = ((num >> 16) & 255) + amt,
                     G = ((num >> 8) & 255) + amt,
                     B = (num & 255) + amt;
-                gradientBackgroundCache[color] = "background-image: -moz-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.7) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                    "   background-image: -o-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.7) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                    "   background-image: -webkit-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.7) 0%, rgba("+R+","+G+","+B+",0.7) 100%); " +
-                    "   background-image: linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.7) 0%, rgba("+R+","+G+","+B+",0.7) 100%);";
+                gradientBackgroundCache[color] = "background-image: -moz-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.8) 0%, rgba("+R+","+G+","+B+",0.8) 100%); " +
+                    "   background-image: -o-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.8) 0%, rgba("+R+","+G+","+B+",0.8) 100%); " +
+                    "   background-image: -webkit-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.8) 0%, rgba("+R+","+G+","+B+",0.8) 100%); " +
+                    "   background-image: linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.8) 0%, rgba("+R+","+G+","+B+",0.8) 100%);";
                 return gradientBackgroundCache[color];
             }
         };
