@@ -24,7 +24,7 @@
 <div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <i class="fa fa-sticky-note" style="color: #f9f157;"></i>
+            <i class="fa fa-sticky-note" style="color: {{ storyPreview.feature ? storyPreview.feature.color : '#f9f157' }}"></i>
             ${message(code: "is.ui.sandbox.toolbar.new")} ${message(code: "is.story")}
             <a class="pull-right visible-on-hover btn btn-default"
                     href="#/backlog"
