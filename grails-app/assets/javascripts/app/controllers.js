@@ -176,12 +176,14 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
 
         $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
             var data = error.data;
-            if (angular.isArray(data)) {
-                notifications.error("", data[0].text);
-            } else if (angular.isObject(data)) {
-                notifications.error("", data.text);
-            } else {
-                notifications.error("", $scope.message('todo.is.ui.error.unknown'));
+            if (!data.silent) {
+                if (angular.isArray(data)) {
+                    notifications.error("", data[0].text);
+                } else if (angular.isObject(data)) {
+                    notifications.error("", data.text);
+                } else {
+                    notifications.error("", $scope.message('todo.is.ui.error.unknown'));
+                }
             }
         });
 

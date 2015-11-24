@@ -70,26 +70,29 @@
             </div>
         </form>
         <div class="items" ng-switch-default>
-            <div ng-show="!hasFeeds()">
-                ${message(code: 'todo.is.ui.panel.feed.no.rss')}
-            </div>
-            <div ng-if="hasFeedChannel()">
-                <h5><strong>{{feedChannel.title}}</strong></h5>
-                <p class="text-left">{{ feedChannel.description }}</p>
-                <hr/>
-            </div>
-            <div ng-repeat="item in feedItems">
-                <strong>{{item.item.titlefeed}}</strong>
-                <div>
-                    <div class="text-muted pull-right">
-                        <time timeago datetime="{{ item.item.pubDate | dateToIso }}">
-                            {{ item.item.pubDate | dateTime }}
-                        </time>
-                    </div>
-                    <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
+            <div ng-if="holder.errorMessage" ng-bind-html="holder.errorMessage"></div>
+            <div ng-if="!holder.errorMessage">
+                <div ng-show="!hasFeeds()">
+                    ${message(code: 'todo.is.ui.panel.feed.no.rss')}
                 </div>
-                <p class="text-left">{{item.item.description }}</p>
-                <hr ng-if="!$last"/>
+                <div ng-if="hasFeedChannel()">
+                    <h5><strong>{{feedChannel.title}}</strong></h5>
+                    <p class="text-left">{{ feedChannel.description }}</p>
+                    <hr/>
+                </div>
+                <div ng-repeat="item in feedItems">
+                    <strong>{{item.item.titlefeed}}</strong>
+                    <div>
+                        <div class="text-muted pull-right">
+                            <time timeago datetime="{{ item.item.pubDate | dateToIso }}">
+                                {{ item.item.pubDate | dateTime }}
+                            </time>
+                        </div>
+                        <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
+                    </div>
+                    <p class="text-left">{{item.item.description }}</p>
+                    <hr ng-if="!$last"/>
+                </div>
             </div>
         </div>
     </div>

@@ -37,18 +37,23 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
         });
     };
     $scope.selectFeed = function(selectedFeed) {
+        var handleError = function(error) {
+            $scope.holder.errorMessage = error.data.text;
+        };
         if (_.isEmpty(selectedFeed)) {
             FeedService.merged().then(function(allFeedsItems) {
                 $scope.feedChannel = {};
                 $scope.feedItems = $filter('orderBy')(allFeedsItems, '-item.pubDate');
                 $scope.disableDeleteButton = true;
-            });
+                $scope.holder.errorMessage = null;
+            }).catch(handleError);
         } else {
             $scope.disableDeleteButton = selectedFeed.id == "defaultFeed";
             FeedService.content(selectedFeed).then(function(feed) {
                 $scope.feedChannel = feed.channel;
                 $scope.feedItems = feed.channel.items;
-            });
+                $scope.holder.errorMessage = null;
+            }).catch(handleError);
         }
     };
     $scope.delete = function(feed) {

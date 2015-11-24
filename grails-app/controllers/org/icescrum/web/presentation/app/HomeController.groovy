@@ -134,15 +134,21 @@ class HomeController {
         User user = (User) springSecurityService.currentUser
         Feed feed = Feed.findByUserAndId(user, id)
         userService.saveFeed(user, feed)
-        URL url = new URL(feed ? feed.feedUrl : grailsApplication.config.icescrum.feed.default.url)
-        def connection = url.openConnection()
-        def xmlFeed = new XmlSlurper().parse(connection.inputStream)
-        def channel = xmlFeed.channel
-        def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text()]]
-        channel.item.each { xmlItem ->
-            jsonFeed.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
+        def urlPath = feed ? feed.feedUrl : grailsApplication.config.icescrum.feed.default.url
+        URL url = new URL(urlPath)
+        try {
+            def connection = url.openConnection()
+            def xmlFeed = new XmlSlurper().parse(connection.inputStream)
+            def channel = xmlFeed.channel
+            def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text()]]
+            channel.item.each { xmlItem ->
+                jsonFeed.channel.items.add([item: [link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
+            }
+            render(status: 200, contentType: "application/json", text: jsonFeed as JSON)
+        } catch (Exception e) {
+            def text = '<a target="_blank" href="' + urlPath + '">' + urlPath + '</a><br/>' + message(code: 'todo.is.ui.panel.feed.error')
+            returnError(text: text, exception: e, silent: true)
         }
-        render(status: 200, contentType: "application/json", text: jsonFeed as JSON)
     }
 
     def mergedContentFeed() {
@@ -156,16 +162,23 @@ class HomeController {
         if (grailsApplication.config.icescrum.feed.default.url != null) {
              allUsersFeedUrls << grailsApplication.config.icescrum.feed.default.url
         }
-        allUsersFeedUrls.each { url ->
-            def connection = new URL(url).openConnection()
-            def xmlFeed = new XmlSlurper().parse(connection.inputStream)
-            def channel = xmlFeed.channel
-            def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate: channel.pubDate.text()]]
-            channel.item.each { xmlItem ->
-                jsonFeed.channel.items.add([item: [titlefeed: channel.title.text(), link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
+        def currentFeed
+        try {
+            allUsersFeedUrls.each { url ->
+                currentFeed = url
+                def connection = new URL(url).openConnection()
+                def xmlFeed = new XmlSlurper().parse(connection.inputStream)
+                def channel = xmlFeed.channel
+                def jsonFeed = [channel: [items: [], title: channel.title.text(), description: channel.description.text(), copyright: channel.copyright.text(), link: channel.link.text(), pubDate: channel.pubDate.text()]]
+                channel.item.each { xmlItem ->
+                    jsonFeed.channel.items.add([item: [titlefeed: channel.title.text(), link: xmlItem.link.text(), title: xmlItem.title.text(), description: xmlItem.description.text(), pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]])
+                }
+                allJsonFeed.addAll(jsonFeed.channel.items)
             }
-            allJsonFeed.addAll(jsonFeed.channel.items)
+            render(status: 200, contentType: "application/json", text: allJsonFeed as JSON)
+        } catch (Exception e) {
+            def text = '<a target="_blank" href="' + currentFeed + '">' + currentFeed + '</a><br/>' + message(code: 'todo.is.ui.panel.feed.error')
+            returnError(text: text, exception: e, silent: true)
         }
-        render(status: 200, contentType: "application/json", text: allJsonFeed as JSON)
     }
 }
