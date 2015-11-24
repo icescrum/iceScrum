@@ -459,7 +459,7 @@ class StoryController {
         if (template.save()) {
             render(text: [id: template.id, text: template.name] as JSON, contentType: 'application/json', status: 200)
         } else {
-            throw new RuntimeException(template.errors?.toString())
+            returnError(object: template, exception: new RuntimeException(template.errors.toString()))
         }
     }
 
