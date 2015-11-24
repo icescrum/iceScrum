@@ -22,7 +22,7 @@
 <script type="text/ng-template" id="home.html">
     <div id="view-home" class="view no-flex">
         <div class="content">
-            <div class="col-md-6"
+            <div class="panel-column"
                  as-sortable="panelSortableListeners"
                  ng-model='panelsLeft' >
                 <div ng-include="panel.id+'.panel.html'"
@@ -30,7 +30,7 @@
                      id="{{ panel.id }}"
                      ng-repeat="panel in panelsLeft"></div>
             </div>
-            <div class="col-md-6"
+            <div class="panel-column"
                  as-sortable="panelSortableListeners"
                  ng-model='panelsRight'>
                 <div ng-include="panel.id+'.panel.html'"

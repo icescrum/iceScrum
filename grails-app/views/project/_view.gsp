@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="no-flex" ng-controller="dashboardCtrl">
-    <div class="col-sm-6">
+    <div class="panel-column">
         <div class="panel panel-light" ng-controller="chartCtrl" ng-init="initProjectChart('burnup')">
             <div class="panel-heading">
                 <h3 class="panel-title">
@@ -72,76 +72,49 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
+                    <button class="btn btn-default btn-sm pull-right visible-on-hover"
+                            ng-if="authorizedRelease('update', release)"
+                            type="button">
+                        <span class="fa fa-pencil"></span>
+                    </button>
                 </h3>
             </div>
-            <div class="panel-body">
-                <textarea is-markitup
-                          class="form-control"
-                          name="vision"
-                          ng-model="editableRelease.vision"
-                          is-model-html="editableRelease.vision_html"
-                          ng-show="showVisionTextarea"
-                          ng-blur="showVisionTextarea = false; updateRelease(editableRelease)"
-                          placeholder="${message(code: 'todo.is.ui.release.novision')}"></textarea>
-                <div class="markitup-preview"
-                     ng-disabled="true"
-                     ng-show="!showVisionTextarea"
-                     ng-click="showVisionTextarea = authorizedRelease('update', editableRelease); editRelease(showVisionTextarea)"
-                     ng-class="{'placeholder': !editableRelease.vision_html}"
-                     tabindex="0"
-                     ng-bind-html="(editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
+            <div class="panel-body"
+                 ng-bind-html="(release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize">
             </div>
         </div>
         <div class="panel panel-light">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
+                    <button class="btn btn-default btn-sm pull-right visible-on-hover"
+                            ng-if="authorizedSprint('update', currentOrLastSprint)"
+                            type="button">
+                        <span class="fa fa-pencil"></span>
+                    </button>
                 </h3>
             </div>
-            <div class="panel-body">
-                <textarea is-markitup
-                          class="form-control"
-                          name="doneDefinition"
-                          ng-model="editableCurrentOrLastSprint.doneDefinition"
-                          is-model-html="editableCurrentOrLastSprint.doneDefinition_html"
-                          ng-show="showDoneDefinitionTextarea"
-                          ng-blur="showDoneDefinitionTextarea = false; updateSprint(editableCurrentOrLastSprint)"
-                          placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
-                <div class="markitup-preview"
-                     ng-disabled="true"
-                     ng-show="!showDoneDefinitionTextarea"
-                     ng-click="showDoneDefinitionTextarea = authorizedSprint('update', editableCurrentOrLastSprint); editSprint(showDoneDefinitionTextarea)"
-                     ng-class="{'placeholder': !editableCurrentOrLastSprint.doneDefinition_html}"
-                     tabindex="0"
-                     ng-bind-html="(editableCurrentOrLastSprint.doneDefinition_html ? editableCurrentOrLastSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
+            <div class="panel-body"
+                 ng-bind-html="(currentOrLastSprint.doneDefinition_html ? currentOrLastSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize">
             </div>
         </div>
         <div class="panel panel-light">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
+                    <button class="btn btn-default btn-sm pull-right visible-on-hover"
+                            ng-if="authorizedSprint('update', currentOrLastSprint)"
+                            type="button">
+                        <span class="fa fa-pencil"></span>
+                    </button>
                 </h3>
             </div>
-            <div class="panel-body">
-                <textarea is-markitup
-                          class="form-control"
-                          name="retrospective"
-                          ng-model="editableCurrentOrLastSprint.retrospective"
-                          is-model-html="editableCurrentOrLastSprint.retrospective_html"
-                          ng-show="showRetrospectiveTextarea"
-                          ng-blur="showRetrospectiveTextarea = false; updateSprint(editableCurrentOrLastSprint)"
-                          placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
-                <div class="markitup-preview"
-                     ng-disabled="true"
-                     ng-show="!showRetrospectiveTextarea"
-                     ng-click="showRetrospectiveTextarea = authorizedSprint('update', editableCurrentOrLastSprint); editSprint(showRetrospectiveTextarea)"
-                     ng-class="{'placeholder': !editableCurrentOrLastSprint.retrospective_html}"
-                     tabindex="0"
-                     ng-bind-html="(editableCurrentOrLastSprint.retrospective_html ? editableCurrentOrLastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
+            <div class="panel-body"
+                 ng-bind-html="(currentOrLastSprint.retrospective_html ? currentOrLastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize">
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="panel-column">
         <div class="panel panel-light">
             <div class="panel-heading">
                 <h3 class="panel-title">

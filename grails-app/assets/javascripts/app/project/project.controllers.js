@@ -157,48 +157,10 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     $scope.authorizedSprint = function(action, sprint) {
         return SprintService.authorizedSprint(action, sprint);
     };
-    $scope.updateRelease = function(release) {
-        if (!_.isEqual($scope.editableReleaseReference, $scope.editableRelease)) {
-            ReleaseService.update(release)
-                .then(function(updatedRelease) {
-                    angular.extend($scope.release, updatedRelease);
-                    $scope.editableRelease = $scope.release;
-                    $scope.editableReleaseReference = $scope.release;
-                    $scope.notifySuccess('todo.is.ui.release.updated');
-                });
-        }
-    };
-    $scope.updateSprint = function(sprint) {
-        if (!_.isEqual($scope.editableCurrentOrLastSprintReference, $scope.editableCurrentOrLastSprint)) {
-            SprintService.update(sprint, $scope.currentProject.id)
-                .then(function(updatedSprint) {
-                    angular.extend($scope.currentOrLastSprint, updatedSprint);
-                    $scope.editableCurrentOrLastSprint = $scope.currentOrLastSprint;
-                    $scope.editableCurrentOrLastSprintReference = $scope.currentOrLastSprint;
-                    $scope.notifySuccess('todo.is.ui.sprint.updated');
-                });
-        }
-    };
-    $scope.editRelease = function(isEditable) {
-        if (isEditable) {
-            $scope.editableRelease = angular.copy($scope.release);
-            $scope.editableReleaseReference = angular.copy($scope.release);
-        }
-    };
-    $scope.editSprint = function(isEditable) {
-        if (isEditable) {
-            $scope.editableCurrentOrLastSprint = angular.copy($scope.currentOrLastSprint);
-            $scope.editableCurrentOrLastSprintReference = angular.copy($scope.currentOrLastSprint);
-        }
-    };
     // Init
     $scope.activities = [];
     $scope.release = {};
-    $scope.editableRelease = {};
-    $scope.editableReleaseReference = {};
     $scope.currentOrLastSprint = {};
-    $scope.editableCurrentOrLastSprint = {};
-    $scope.editableCurrentOrLastSprintReference = {};
     $scope.listeners = [];
     $scope.projectMembersCount = 0;
     $scope.project = $scope.currentProject;
@@ -207,7 +169,6 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     });
     ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
         $scope.release = release;
-        $scope.editableRelease = release;
         if (release.id) {
             SprintService.list(release); // TODO push on sprints
         }
@@ -219,7 +180,6 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     // Needs a separate call because it may not be in the currentOrNextRelease
     SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
         $scope.currentOrLastSprint = sprint;
-        $scope.editableCurrentOrLastSprint = sprint;
         $scope.listeners.push(PushService.synchronizeItem('sprint', $scope.currentOrLastSprint));
     });
     $scope.$on('$destroy', function() {
