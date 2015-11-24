@@ -374,6 +374,19 @@ body > .container-fluid > .main {
     > .content {
       flex-flow:column;
       .make-md-column(12);
+      // TODO check or improve way to space columns in dashboard  home
+      [class*='col-'] {
+        // The last panel should not have a margin but in home we have intermediate div for template
+        // which prevents the use of last-child / last-of-type
+        .panel {
+          margin-bottom: 15px;
+        }
+        padding-right:0;
+      }
+      [class*='col-']:first-of-type {
+        padding-left:0;
+      }
+      // End TODO
     }
     > [ui-view='details'] {
       display: none;

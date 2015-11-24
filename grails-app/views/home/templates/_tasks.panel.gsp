@@ -23,11 +23,14 @@
                             {{ task.name }}
                         </uib-accordion-heading>
                         <table>
-                            <tr><td>${message(code: 'is.panel.task.Estimation')} : {{ task.creationDate}}</td></tr>
-                            <tr><td>${message(code: 'is.panel.task.Estimation')} : {{ task.estimation }}</td></tr>
-                            <tr><td>${message(code: 'is.panel.task.Etat')} : {{task.state | i18n:'TaskStates' }}</td></tr>
-                            <tr><td>${message(code: 'is.panel.task.Description')} : {{ task.description }}</td></tr>
-                            <tr><td>${message(code: 'is.panel.task.Story')} : {{ task.parentStory.name }}</td></tr>
+                            {{ task }}
+                            <tr><td>${message(code: 'is.task.estimation')} {{ task.estimation }}</td></tr>
+                            <tr><td>${message(code: 'is.task.state')} {{task.state | i18n:'TaskStates' }}</td></tr>
+                            <tr><td>${message(code: 'is.backlogelement.description')} {{ task.description }}</td></tr>
+                            <tr><td>${message(code: 'is.task.creator')} {{ task.creator }}</td></tr>
+                            <tr><td>${message(code: 'is.story')} {{ task.parentStory.name }}</td></tr>
+                            <tr><td>${message(code: 'is.task.type')} {{ task.type }}</td></tr>
+                            <tr><td>${message(code: 'is.sprint')} {{ task.parentSprint.name }}</td></tr>
                         </table>
                     </uib-accordion-group>
                 </uib-accordion>

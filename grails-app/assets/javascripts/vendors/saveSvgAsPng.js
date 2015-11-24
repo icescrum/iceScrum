@@ -205,7 +205,7 @@
             var image = new Image();
             image.onload = function() {
                 var canvas = document.createElement('canvas');
-                var offsetForTitle = 50; // Arbitrary offset that looks fine...
+                var offsetForTitle = 40; // Arbitrary offset that looks fine...
                 canvas.width = image.width;
                 canvas.height = image.height + offsetForTitle;
                 var context = canvas.getContext('2d');
