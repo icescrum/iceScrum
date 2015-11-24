@@ -74,7 +74,7 @@
                 <tr>
                     <th></th>
                     <th></th>
-                    <th class="text-right">${message(code:'todo.is.ui.team.scrumMaster')}</th>
+                    <th class="text-right">${message(code:'is.role.scrumMaster')}</th>
                 </tr>
                 </thead>
                 <tbody ng-repeat="member in team.members"

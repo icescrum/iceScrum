@@ -24,15 +24,13 @@ services.factory('Project', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/project/:id/:action');
 }]);
 
-services.service("ProjectService", ['$http', 'Project', 'Session', 'TeamService', 'FormService', function($http, Project, Session, TeamService, FormService) {
+services.service("ProjectService", ['Project', 'Session', 'FormService', function(Project, Session, FormService) {
     this.save = function(project) {
         project.class = 'product';
         return Project.save(project).$promise;
     };
-    this.countMembers = function(project) {
-        return TeamService.get(project).then(function(team) {
-            return _.union(_.map(team.scrumMasters, 'id'), _.map(team.members, 'id'), _.map(project.productOwners, 'id')).length;
-        });
+    this.countMembers = function(project) { // Requires the team to be loaded !
+        return _.union(_.map(project.team.scrumMasters, 'id'), _.map(project.team.members, 'id'), _.map(project.productOwners, 'id')).length;
     };
     this.updateTeam = function(project) {
         // Wrap the product inside a "productd" because by default the formObjectData function will turn it into a "product" object
@@ -71,6 +69,8 @@ services.service("ProjectService", ['$http', 'Project', 'Session', 'TeamService'
                 return Session.sm();
             case 'delete':
                 return Session.owner(project);
+            case 'edit':
+                return Session.authenticated();
             default:
                 return false;
         }

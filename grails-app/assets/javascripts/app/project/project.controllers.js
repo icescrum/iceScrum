@@ -22,6 +22,9 @@
  *
  */
 controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, Session, $uibModal, $state) {
+    $scope.authorizedProject = function(action, project) {
+        return ProjectService.authorizedProject(action, project);
+    };
     $scope.showProjectEditModal = function(view) {
         var childScope = $scope.$new();
         if (view) {
@@ -150,7 +153,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
     $scope.currentProject = Session.getProject();
 }]);
 
-controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'PushService', function($scope, ProjectService, ReleaseService, SprintService, PushService) {
+controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'PushService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, PushService, TeamService) {
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
     };
@@ -174,8 +177,12 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
         }
         $scope.listeners.push(PushService.synchronizeItem('release', $scope.release));
     });
-    ProjectService.countMembers($scope.currentProject).then(function(count) {
-        $scope.projectMembersCount = count;
+    TeamService.get($scope.currentProject).then(function(team) {
+        // That's ugly and repeated in TeamController...
+        team.members = _.map(team.members, function(member) {
+            member.scrumMaster = _.find(team.scrumMasters, { id: member.id }) ? true : false;
+            return member;
+        });
     });
     // Needs a separate call because it may not be in the currentOrNextRelease
     SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
@@ -189,11 +196,11 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     })
 }]);
 
-controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, ProjectService, ReleaseService, SprintService) {
+controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, TeamService) {
     $scope.selectProject = function(project) {
         $scope.project = project;
-        ProjectService.countMembers(project).then(function(count) {
-            $scope.projectMembersCount = count;
+        TeamService.get(project).then(function() {
+            $scope.projectMembersCount = ProjectService.countMembers(project);
         });
         ReleaseService.getCurrentOrNextRelease(project).then(function(release) {
             if (release.id != undefined) {

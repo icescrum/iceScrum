@@ -58,6 +58,7 @@
                                 <g:message code="is.projectmenu.submenu.user.home"/> <small class="text-muted">(SHIFT+H)</small>
                             </a>
                         </li>
+                        <li role="presentation" class="divider"></li>
                         <li role="presentation" class="dropdown-header">
                             ${message(code: 'todo.is.ui.projects')}
                         </li>
@@ -85,17 +86,17 @@
                             </li>
                         </g:if>
                         <g:if test="${product}">
-                            <li role="presentation" class="divider"></li>
-                            <li role="presentation" class="dropdown-header">
+                            <li ng-if="authorizedProject('edit')" role="presentation" class="divider"></li>
+                            <li ng-if="authorizedProject('edit')" role="presentation" class="dropdown-header">
                                 ${message(code: 'todo.is.ui.projects.current')}
                             </li>
-                            <li>
+                            <li ng-if="authorizedProject('edit')">
                                 <a hotkey="{ 'shift+e': hotkeyClick}" href ng-click="showProjectEditModal()">
                                     <g:message code="is.projectmenu.submenu.project.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                 </a>
                             </li>
                             <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
-                                <li>
+                                <li ng-if="authorizedProject('edit')">
                                     <a hotkey="{ 'shift+d': export}" href ng-click="export(currentProject)">
                                         <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
                                     </a>

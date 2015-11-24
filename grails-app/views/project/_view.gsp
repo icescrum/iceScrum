@@ -22,6 +22,64 @@
 --}%
 <div class="no-flex" ng-controller="dashboardCtrl">
     <div class="panel-column">
+        <div class="panel panel-light">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-home"></i> {{ project.name }} ({{ project.pkey }})
+                    <button class="btn btn-default btn-sm pull-right visible-on-hover"
+                            ng-if="authorizedProject('update', project)"
+                            ng-click="showProjectEditModal()"
+                            type="button">
+                        <span class="fa fa-pencil"></span>
+                    </button>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
+                        <div ng-if="project.stakeHolders.length">
+                            ${ message(code: 'todo.is.ui.project.stakeHolders')}
+                            <div ng-repeat="user in project.stakeHolders" ng-include="'user.item.html'"></div>
+                        </div>
+                        <div ng-if="project.productOwners.length">
+                            ${ message(code: 'todo.is.ui.project.productOwners')}
+                            <div ng-repeat="user in project.productOwners" ng-include="'user.item.html'"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 text-right">
+                        <h4><i class="fa fa-users"></i> {{ project.team.name }}</h4>
+                        <div ng-repeat="user in project.team.members" ng-class="{'strong': user.scrumMaster}" ng-include="'user.item.html'"></div>
+                    </div>
+                </div>
+                <div class="well">
+                    <div class="row project-info">
+                        <div class="col-md-6" style="text-align: left;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${ message(code: 'todo.is.ui.stories') }</div>
+                        <div class="col-md-6" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${ message(code: 'todo.is.ui.releases') }</div>
+                    </div>
+                    <uib-progress class="form-control-static form-bar"
+                                  tooltip-append-to-body="true"
+                                  uib-tooltip="{{ release.name }}"
+                                  tooltip-placement="top"
+                                  max="release.duration">
+                        <uib-bar ng-repeat="sprint in release.sprints"
+                                 class="{{ $last ? 'last-bar' : '' }}"
+                                 tooltip-append-to-body="true"
+                                 uib-tooltip-template="'sprint.tooltip.html'"
+                                 tooltip-placement="bottom"
+                                 type="{{ { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] }}"
+                                 value="sprint.duration">
+                            #{{ sprint.orderNumber }}
+                        </uib-bar>
+                        <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
+                    </uib-progress>
+                    <div class="row project-rel-dates">
+                        <div class="col-md-6">{{ release.startDate | date: message('is.date.format.short') }}</div>
+                        <div class="col-md-6 text-right">{{ release.endDate | date: message('is.date.format.short') }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="panel panel-light" ng-controller="chartCtrl" ng-init="initProjectChart('burnup')">
             <div class="panel-heading">
                 <h3 class="panel-title">
