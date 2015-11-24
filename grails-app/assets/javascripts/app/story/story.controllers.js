@@ -573,7 +573,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeo
         };
         $scope.templateSelected = function() {
             if ($scope.story.template) {
-                StoryService.getTemplatePreview($scope.story.template).then(function(storyPreview) {
+                StoryService.getTemplatePreview($scope.story.template.id).then(function(storyPreview) {
                     $scope.storyPreview = storyPreview;
                 });
             } else {
