@@ -47,6 +47,7 @@
                            ng-model="feed.feedUrl"/>
                 </div>
                 <button type="submit"
+                        ng-disabled="!feed.feedUrl"
                         class="btn btn-default">
                     ${message(code: 'is.button.add')}
                 </button>
@@ -81,16 +82,16 @@
                     <hr/>
                 </div>
                 <div ng-repeat="item in feedItems">
-                    <strong>{{item.item.titlefeed}}</strong>
+                    <strong ng-if="!hasFeedChannel()">{{item.feedTitle}}</strong>
                     <div>
                         <div class="text-muted pull-right">
-                            <time timeago datetime="{{ item.item.pubDate | dateToIso }}">
-                                {{ item.item.pubDate | dateTime }}
+                            <time timeago datetime="{{ item.pubDate | dateToIso }}">
+                                {{ item.pubDate | dateTime }}
                             </time>
                         </div>
-                        <h5><a target="_blank" href="{{item.item.link}}">{{item.item.title}}</a></h5>
+                        <h5><a target="_blank" href="{{item.link}}">{{item.title}}</a></h5>
                     </div>
-                    <p class="text-left">{{item.item.description }}</p>
+                    <p class="text-left">{{item.description }}</p>
                     <hr ng-if="!$last"/>
                 </div>
             </div>

@@ -41,17 +41,17 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
             $scope.holder.errorMessage = error.data.text;
         };
         if (_.isEmpty(selectedFeed)) {
-            FeedService.merged().then(function(allFeedsItems) {
+            FeedService.merged().then(function(mergedFeed) {
                 $scope.feedChannel = {};
-                $scope.feedItems = $filter('orderBy')(allFeedsItems, '-item.pubDate');
+                $scope.feedItems = $filter('orderBy')(mergedFeed, '-pubDate');
                 $scope.disableDeleteButton = true;
                 $scope.holder.errorMessage = null;
             }).catch(handleError);
         } else {
             $scope.disableDeleteButton = selectedFeed.id == "defaultFeed";
             FeedService.content(selectedFeed).then(function(feed) {
-                $scope.feedChannel = feed.channel;
-                $scope.feedItems = feed.channel.items;
+                $scope.feedChannel = feed;
+                $scope.feedItems = feed.items;
                 $scope.holder.errorMessage = null;
             }).catch(handleError);
         }
