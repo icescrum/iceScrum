@@ -21,7 +21,7 @@
                         </tr>
                     </table>
                     <div ng-controller="moodChartCtrl">
-                        <div class="panel-body" id="panel-chart-container">
+                        <div class="panel-body">
                             <nvd3 options="options" data="data"></nvd3>
                         </div>
                     </div>
