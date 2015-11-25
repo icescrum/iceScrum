@@ -151,12 +151,13 @@
                             <ul class="uib-dropdown-menu"
                                 ng-include="'feature.menu.html'"></ul>
                         </span>
-                        <span class="action"
-                              ng-class="{'active':feature.attachments.length}"
-                              uib-tooltip="{{ feature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
-                              tooltip-append-to-body="true">
-                            <a><i class="fa fa-paperclip"></i></a>
-                            <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
+                        <span class="action" ng-class="{'active':feature.attachments.length}">
+                            <a href="#/feature/{{ feature.id }}"
+                               uib-tooltip="{{ feature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
+                               tooltip-append-to-body="true">
+                                <i class="fa fa-paperclip"></i>
+                                <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
+                            </a>
                         </span>
                         <span class="action" ng-class="{'active':feature.stories_ids.length}">
                             <a href="#/feature/{{ feature.id }}/stories"
