@@ -312,9 +312,11 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     // Init
     $scope.po = {};
     $scope.sh = {};
-    $scope.timezones = [];
+    $scope.timezones = {};
+    $scope.timezoneKeys = [];
     Session.getTimezones().then(function(timezones) {
         $scope.timezones = timezones;
+        $scope.timezoneKeys = _.keys(timezones);
     });
 }]);
 
@@ -519,4 +521,10 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
     // Init
     $scope.formHolder = {};
     $scope.resetProjectForm();
+    $scope.timezones = {};
+    $scope.timezoneKeys = [];
+    Session.getTimezones().then(function(timezones) {
+        $scope.timezones = timezones;
+        $scope.timezoneKeys = _.keys(timezones);
+    });
 }]);

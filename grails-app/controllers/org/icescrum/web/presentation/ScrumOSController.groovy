@@ -285,7 +285,7 @@ class ScrumOSController {
     def timezones() {
         def timezones = TimeZone.availableIDs.sort().findAll {
             it.matches("^(Africa|America|Asia|Atlantic|Australia|Europe|Indian|Pacific)/.*")
-        }.collect {
+        }.collectEntries {
             TimeZone timeZone = TimeZone.getTimeZone(it)
             def offset = timeZone.rawOffset
             def offsetSign = offset < 0 ? '-' : '+'
@@ -294,7 +294,7 @@ class ScrumOSController {
             def calendar = Calendar.instance
             calendar.set(Calendar.HOUR_OF_DAY, hour)
             calendar.set(Calendar.MINUTE, min)
-            return [id: it, name: "$timeZone.ID (UTC$offsetSign${String.format('%tR', calendar)})"]
+            return [(it): "$timeZone.ID (UTC$offsetSign${String.format('%tR', calendar)})"]
         }
         render(timezones as JSON)
     }

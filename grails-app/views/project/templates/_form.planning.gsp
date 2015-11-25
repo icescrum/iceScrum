@@ -26,15 +26,17 @@
     <div class="row">
         <div class="form-half">
             <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
-                <ui-select required="required"
-                           class="form-control"
-                           ng-required="isCurrentStep(4)"
-                           name="project.preferences.timezone"
-                           search-enabled="true"
-                           ng-model="project.preferences.timezone">
-                    <ui-select-match>{{ $select.selected.name }}</ui-select-match>
-                    <ui-select-choices repeat="timezone in timezones | filter: $select.search">{{ timezone.name| highlight: $select.search }}</ui-select-choices>
-                </ui-select>
+            <ui-select required="required"
+                       class="form-control"
+                       ng-required="isCurrentStep(4)"
+                       name="project.preferences.timezone"
+                       search-enabled="true"
+                       ng-model="project.preferences.timezone">
+                <ui-select-match>{{ timezones[$select.selected] }}</ui-select-match>
+                <ui-select-choices repeat="timezoneKey in timezoneKeys | filter: $select.search">
+                    <span ng-bind-html="timezones[timezoneKey] | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
         </div>
         <div class="form-half">
             <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>
