@@ -22,12 +22,12 @@
 --}%
 <div>
     <button type="button"
-            class="btn btn-default"
+            class="btn btn-primary"
             ng-click="goToNewRelease()">
         ${message(code: 'todo.is.ui.release.new')}
     </button>
     <button type="button"
-            class="btn btn-default"
+            class="btn btn-primary"
             ng-click="goToNewSprint(release)">
         ${message(code: 'todo.is.ui.sprint.new')}
     </button>

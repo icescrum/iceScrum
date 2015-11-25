@@ -338,7 +338,7 @@ class ProductUrlMappings {
         }
         "/p/$product/sprint/$id" {
             controller = 'sprint'
-            action = [PUT: 'update', POST: 'update', DELETE: 'delete']
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)

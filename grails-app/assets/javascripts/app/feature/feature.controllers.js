@@ -42,25 +42,10 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
     };
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'FeatureService', 'FormService', 'ProjectService', function($scope, $state, $stateParams, $controller, FeatureService, FormService, ProjectService) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'FeatureService', 'FormService', 'ProjectService', 'detailsFeature', function($scope, $state, $stateParams, $controller, FeatureService, FormService, ProjectService, detailsFeature) {
     $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
-    $scope.formHolder = {};
-    $scope.feature = {};
-    $scope.editableFeature = {};
-    $scope.editableFeatureReference = {};
-    FeatureService.get($stateParams.id).then(function(feature) {
-        $scope.feature = feature;
-        $scope.selected = feature;
-        // For edit
-        $scope.resetFeatureForm();
-        // For header
-        $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
-        $scope.next = FormService.next(FeatureService.list, $scope.feature);
-    }).catch(function(e){
-        $state.go('^');
-        $scope.notifyError(e.message)
-    });
-    // Edit
+    $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsFeature, clazz: 'feature' });
+    // Functions
     $scope.isDirty = function() {
         return !_.isEqual($scope.editableFeature, $scope.editableFeatureReference);
     };
@@ -71,16 +56,15 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
         });
     };
     $scope.editForm = function(value) {
-        if (value != $scope.isInEditingMode()) {
+        if (value != $scope.formHolder.editing) {
             $scope.setInEditingMode(value); // global
             $scope.resetFeatureForm();
         }
     };
-    $scope.getShowFeatureForm = function(feature) {
-        return ($scope.isInEditingMode() || $scope.formHolder.formHover) && $scope.authorizedFeature('update', feature);
-    };
     $scope.resetFeatureForm = function() {
-        if ($scope.isInEditingMode()) {
+        $scope.formHolder.editing = $scope.isInEditingMode();
+        $scope.formHolder.editable = $scope.authorizedFeature('update', $scope.feature);
+        if ($scope.formHolder.editable) {
             $scope.editableFeature = angular.copy($scope.feature);
             $scope.editableFeatureReference = angular.copy($scope.feature);
         } else {
@@ -89,6 +73,18 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
         }
         $scope.resetFormValidation($scope.formHolder.featureForm);
     };
+    $scope.retrieveTags = function() {
+        if (_.isEmpty($scope.tags)) {
+            ProjectService.getTags().then(function (tags) {
+                $scope.tags = tags;
+            });
+        }
+    };
+    // Init
+    $scope.feature = detailsFeature;
+    $scope.editableFeature = {};
+    $scope.editableFeatureReference = {};
+    $scope.formHolder = {};
     $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
         if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
@@ -109,15 +105,6 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             });
         }
     });
-    $scope.clazz = 'feature';
-    $scope.attachmentQuery = function($flow, feature) {
-        $scope.flow = $flow;
-        $flow.opts.target = 'attachment/feature/' + feature.id + '/flow';
-        $flow.upload();
-    };
-    $scope.formHover = function(value) {
-        $scope.formHolder.formHover = value;
-    };
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -126,16 +113,9 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$stateParams'
             });
         }
     };
-}]);
-
-controllers.controller('featureDetailsStoryCtrl', ['$scope', '$controller', 'StoryService', function($scope, $controller, StoryService) {
-    $controller('featureDetailsCtrl', { $scope: $scope }); // inherit from featureDetailsCtrl
-    $scope.$watch('feature', function(){
-        $scope.selected = $scope.feature;
-        if (_.isEmpty($scope.selected.stories)) {
-            StoryService.listByType($scope.selected);
-        }
-    });
+    $scope.resetFeatureForm();
+    $scope.previous = FormService.previous(FeatureService.list, $scope.feature);
+    $scope.next = FormService.next(FeatureService.list, $scope.feature);
 }]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {

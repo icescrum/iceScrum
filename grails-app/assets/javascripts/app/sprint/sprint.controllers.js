@@ -123,8 +123,9 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'SprintService', 'ReleaseService', 'FormService', function($scope, $state, $stateParams, $controller, SprintService, ReleaseService, FormService) {
+controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $state, $stateParams, $controller, SprintService, ReleaseService, FormService, detailsSprint) {
     $controller('sprintCtrl', { $scope: $scope }); // inherit from sprintCtrl
+    $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsSprint, clazz: 'sprint' });
     // Functions
     $scope.isDirty = function() {
         return !_.isEqual($scope.editableSprint, $scope.editableSprintReference);
@@ -136,16 +137,15 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams',
         });
     };
     $scope.editForm = function(value) {
-        if (value != $scope.isInEditingMode()) {
+        if (value != $scope.formHolder.editing) {
             $scope.setInEditingMode(value); // global
             $scope.resetSprintForm();
         }
     };
-    $scope.getShowSprintForm = function(sprint) {
-        return ($scope.isInEditingMode() || $scope.formHolder.formHover) && $scope.authorizedSprint('update', sprint);
-    };
     $scope.resetSprintForm = function() {
-        if ($scope.isInEditingMode()) {
+        $scope.formHolder.editing = $scope.isInEditingMode();
+        $scope.formHolder.editable = $scope.authorizedSprint('update', $scope.sprint);
+        if ($scope.formHolder.editable) {
             $scope.editableSprint = angular.copy($scope.sprint);
             $scope.editableSprintReference = angular.copy($scope.sprint);
         } else {
@@ -173,14 +173,6 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams',
             });
         }
     });
-    $scope.attachmentQuery = function($flow, sprint) {
-        $scope.flow = $flow;
-        $flow.opts.target = 'attachment/sprint/' + sprint.id + '/flow';
-        $flow.upload();
-    };
-    $scope.formHover = function(value) {
-        $scope.formHolder.formHover = value;
-    };
     // Init
     $scope.$watchCollection('release.sprints', function(sprints) {
         if (!_.isUndefined(sprints)) {
@@ -200,25 +192,17 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams',
             $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $scope.formHolder = {};
-    $scope.sprint = {};
+    $scope.sprint = detailsSprint;
     $scope.editableSprint = {};
     $scope.editableSprintReference = {};
     $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $state.go
-    $scope.clazz = 'sprint'; // for attachments
-    SprintService.get($stateParams.id, $scope.project).then(function(sprint) {
-        $scope.sprint = sprint;
-        $scope.selected = sprint;
-        $scope.resetSprintForm();
-        ReleaseService.get(sprint.parentRelease.id, $scope.project).then(function (release) {
-            $scope.release = release;
-            $scope.maxEndDate = $scope.release.endDate;
-            var sortedSprints = _.sortBy($scope.release.sprints, 'orderNumber');
-            $scope.previous = FormService.previous(sortedSprints, $scope.sprint);
-            $scope.next = FormService.next(sortedSprints, $scope.sprint);
-        });
-    }).catch(function(e){
-        $state.go('^');
-        $scope.notifyError(e.message)
+    $scope.formHolder = {};
+    $scope.resetSprintForm();
+    ReleaseService.get($scope.sprint.parentRelease.id, $scope.project).then(function (release) {
+        $scope.release = release;
+        $scope.maxEndDate = $scope.release.endDate;
+        var sortedSprints = _.sortBy($scope.release.sprints, 'orderNumber');
+        $scope.previous = FormService.previous(sortedSprints, $scope.sprint);
+        $scope.next = FormService.next(sortedSprints, $scope.sprint);
     });
 }]);

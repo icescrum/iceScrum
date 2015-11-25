@@ -21,7 +21,8 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', function($scope, $uibModal, AttachmentService, attachmentable) {
+controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', function($scope, $uibModal, AttachmentService, attachmentable, clazz) {
+    // Functions
     //manual save from flow js
     $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
         var attachment = JSON.parse(message);
@@ -33,7 +34,6 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
     $scope.authorizedAttachment = function(action, attachment) {
         return AttachmentService.authorizedAttachment(action, attachment);
     };
-
     $scope.isPreviewable = function(attachment){
         var previewable;
         switch (attachment.ext){
@@ -102,7 +102,12 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
         }
 
     };
-
-    //init
+    $scope.attachmentQuery = function($flow, attachmentable) {
+        $scope.flow = $flow;
+        $flow.opts.target = 'attachment/' + $scope.clazz + '/' + attachmentable.id + '/flow';
+        $flow.upload();
+    };
+    // Init
     $scope.attachmentable = attachmentable;
+    $scope.clazz = clazz;
 }]);

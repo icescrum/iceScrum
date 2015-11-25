@@ -163,7 +163,7 @@
                             <a href="#/feature/{{ feature.id }}/stories"
                                uib-tooltip="{{ feature.stories_ids.length | orElse: 0  }} ${message(code:'todo.is.ui.feature.stories.count')}"
                                tooltip-append-to-body="true">
-                                <i class="fa fa-tasks"></i>
+                                <i class="fa fa-sticky-note"></i>
                                 <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>
                             </a>
                         </span>

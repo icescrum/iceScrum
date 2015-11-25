@@ -258,9 +258,9 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
 }]);
 
 controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$uibModal', 'StoryService', 'StoryCodesByState', 'FormService', 'ActorService', 'ProjectService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, $uibModal, StoryService, StoryCodesByState, FormService, ActorService, ProjectService, story) {
+    function($scope, $controller, $state, $timeout, $uibModal, StoryService, StoryCodesByState, FormService, ActorService, ProjectService, detailsStory) {
         $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
-        $controller('attachmentCtrl', { $scope: $scope, attachmentable:story });
+        $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsStory, clazz: 'story' });
         // Functions
         $scope.update = function(story) {
             StoryService.update(story)
@@ -320,12 +320,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
-        $scope.attachmentQuery = function($flow, story) {
-            //to add flow in storyDetailsCtrl scope
-            $scope.flow = $flow;
-            $flow.opts.target = 'attachment/story/' + story.id + '/flow';
-            $flow.upload();
-        };
         $scope.groupSprintByParentRelease = function(sprint) {
             return sprint.parentRelease.name;
         };
@@ -358,10 +352,9 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             }
         };
         // Init
-        $scope.story = story;
+        $scope.story = detailsStory;
         $scope.editableStory = {};
         $scope.editableStoryReference = {};
-        $scope.clazz = 'story';
         $scope.formHolder = {};
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.dependenceEntries = [];
@@ -403,7 +396,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 });
             }
         });
-
         $scope.resetStoryForm();
         // For header
         var list = StoryService.list;

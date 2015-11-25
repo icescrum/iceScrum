@@ -26,6 +26,18 @@ var controllers = angular.module('controllers', []);
 
 controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', 'UserService', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$interval', '$timeout', 'hotkeys', 'PushService', '$http',
     function($scope, $state, $uibModal, Session, UserService, SERVER_ERRORS, Fullscreen, notifications, $interval, $timeout, hotkeys, PushService, $http) {
+        $scope.displayDetailsView = function() {
+            var data = '';
+            if ($state.current.views) {
+                var isDetails = _.any(_.keys($state.current.views), function(viewName) {
+                    return _.startsWith(viewName, 'details');
+                });
+                if (isDetails) {
+                    data = 'with-details';
+                }
+            }
+            return data;
+        };
         $scope.notificationToggle = function(open) {
             if (open) {
                 UserService.getActivities($scope.currentUser)

@@ -117,8 +117,9 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
     });
 }]);
 
-controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'ReleaseService', 'FormService', function($scope, $state, $stateParams, $controller, ReleaseService, FormService) {
+controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $state, $stateParams, $controller, ReleaseService, FormService, detailsRelease) {
     $controller('releaseCtrl', { $scope: $scope }); // inherit from releaseCtrl
+    $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsRelease, clazz: 'release' });
     // Functions
     $scope.isDirty = function() {
         return !_.isEqual($scope.editableRelease, $scope.editableReleaseReference);
@@ -130,16 +131,15 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams'
         });
     };
     $scope.editForm = function(value) {
-        if (value != $scope.isInEditingMode()) {
+        if (value != $scope.formHolder.editing) {
             $scope.setInEditingMode(value); // global
             $scope.resetReleaseForm();
         }
     };
-    $scope.getShowReleaseForm = function(release) {
-        return ($scope.isInEditingMode() || $scope.formHolder.formHover) && $scope.authorizedRelease('update', release);
-    };
     $scope.resetReleaseForm = function() {
-        if ($scope.isInEditingMode()) {
+        $scope.formHolder.editing = $scope.isInEditingMode();
+            $scope.formHolder.editable = $scope.authorizedRelease('update', $scope.release);
+        if ($scope.formHolder.editable) {
             $scope.editableRelease = angular.copy($scope.release);
             $scope.editableReleaseReference = angular.copy($scope.release);
         } else {
@@ -167,14 +167,6 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams'
             });
         }
     });
-    $scope.attachmentQuery = function($flow, release) {
-        $scope.flow = $flow;
-        $flow.opts.target = 'attachment/release/' + release.id + '/flow';
-        $flow.upload();
-    };
-    $scope.formHover = function(value) {
-        $scope.formHolder.formHover = value;
-    };
     // Init
     $scope.$watchCollection('project.releases', function(releases) {
         if (!_.isUndefined(releases)) {
@@ -198,21 +190,13 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams'
             $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $scope.formHolder = {};
-    $scope.release = {};
+    $scope.release = detailsRelease;
     $scope.editableRelease = {};
     $scope.editableReleaseReference = {};
+    $scope.formHolder = {};
     $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $state.go
-    $scope.clazz = 'release'; // for attachments
-    ReleaseService.get($stateParams.id, $scope.project).then(function(release) {
-        $scope.release = release;
-        $scope.selected = release;
-        $scope.resetReleaseForm();
-        var sortedReleases = _.sortBy($scope.project.releases, 'orderNumber');
-        $scope.previous = FormService.previous(sortedReleases, $scope.release);
-        $scope.next = FormService.next(sortedReleases, $scope.release);
-    }).catch(function(e){
-        $state.go('^');
-        $scope.notifyError(e.message)
-    });
+    $scope.resetReleaseForm();
+    var sortedReleases = _.sortBy($scope.project.releases, 'orderNumber');
+    $scope.previous = FormService.previous(sortedReleases, $scope.release);
+    $scope.next = FormService.next(sortedReleases, $scope.release);
 }]);

@@ -159,10 +159,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                 })
                     .state('backlog.new', {
                         url: "/new",
-                        data:{
-                            view: 'details'
-                        },
-                        views:{
+                        views: {
                             "details": {
                                 templateUrl: 'story.new.html',
                                 controller: 'storyNewCtrl'
@@ -171,15 +168,12 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     })
                     .state('backlog.multiple', {
                         url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                        data:{
-                            view: 'details'
-                        },
-                        resolve:{
-                            listId:['$stateParams', function($stateParams){
+                        resolve: {
+                            listId: ['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
                             }]
                         },
-                        views:{
+                        views: {
                             "details": {
                                 templateUrl: 'story.multiple.html',
                                 controller: 'storyMultipleCtrl'
@@ -188,16 +182,13 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     })
                     .state('backlog.details', {
                         url: "/{id:int}",
-                        data:{
-                            view: 'details'
-                        },
-                        resolve:{
+                        resolve: {
                             //we add stories to wait for dynamic resolution from parent state
-                            detailsStory:['StoryService', '$stateParams', 'stories', function(StoryService, $stateParams, stories){
+                            detailsStory: ['StoryService', '$stateParams', 'stories', function(StoryService, $stateParams, stories){
                                 return StoryService.get($stateParams.id);
                             }]
                         },
-                        views:{
+                        views: {
                             "details": {
                                 templateUrl: 'story.details.html',
                                 controller: 'storyDetailsCtrl'
@@ -207,7 +198,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         .state('backlog.details.tab', {
                             url: "/{tabId:.+}",
                             resolve:{
-                                data:['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'StoryService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, StoryService, detailsStory){
+                                data: ['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'StoryService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, StoryService, detailsStory){
                                     if ($stateParams.tabId == 'tests')
                                         return AcceptanceTestService.list(detailsStory);
                                     else if($stateParams.tabId == 'tasks')
@@ -219,7 +210,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     return null;
                                 }],
                                 //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
-                                selected:['data', 'detailsStory', function(data, detailsStory){
+                                selected: ['data', 'detailsStory', function(data, detailsStory){
                                     return detailsStory;
                                 }]
                             },
@@ -253,11 +244,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                 })
                     .state('feature.new', {
                         url: '/new',
-                        data:{
-                            view: 'details'
-                        },
                         views: {
-                            "details@feature": {
+                            "details": {
                                 templateUrl: 'feature.new.html',
                                 controller: 'featureNewCtrl'
                             }
@@ -265,16 +253,13 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     })
                     .state('feature.multiple', {
                         url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                        data:{
-                            view: 'details'
-                        },
                         resolve:{
                             listId:['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
                             }]
                         },
                         views: {
-                            "details@feature": {
+                            "details": {
                                 templateUrl: 'feature.multiple.html',
                                 controller: 'featureMultipleCtrl'
                             }
@@ -282,11 +267,13 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     })
                     .state('feature.details', {
                         url: "/{id:int}",
-                        data:{
-                            view: 'details'
+                        resolve:{
+                            detailsFeature: ['FeatureService', '$stateParams', 'features', function(FeatureService, $stateParams, features){
+                                return FeatureService.get($stateParams.id);
+                            }]
                         },
                         views:{
-                            "details@feature": {
+                            "details": {
                                 templateUrl: 'feature.details.html',
                                 controller: 'featureDetailsCtrl'
                             }
@@ -294,13 +281,21 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     })
                         .state('feature.details.tab', {
                             url: "/{tabId:.+}",
-                            data:{
-                                view: 'details-list'
+                            resolve:{
+                                data: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
+                                    return StoryService.listByType(detailsFeature);
+                                }],
+                                //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
+                                selected: ['data', 'detailsFeature', function(data, detailsFeature) {
+                                    return detailsFeature;
+                                }]
                             },
                             views:{
-                                "details-list@feature": {
+                                "details-tab": {
                                     templateUrl: 'nested.stories.html',
-                                    controller:'featureDetailsStoryCtrl'
+                                    controller: ['$scope', 'selected', function($scope, selected) {
+                                        $scope.selected = selected;
+                                    }]
                                 }
                             }
                         })
@@ -311,11 +306,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                 })
                     .state('releasePlan.new', {
                         url: "/new",
-                        data:{
-                            view: 'details'
-                        },
                         views:{
-                            "details@releasePlan": {
+                            "details": {
                                 templateUrl: 'release.new.html',
                                 controller: 'releaseNewCtrl'
                             }
@@ -323,11 +315,13 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     })
                     .state('releasePlan.details', {
                         url: "/{id:int}",
-                        data:{
-                            view: 'details'
+                        resolve:{
+                            detailsRelease: ['ReleaseService', '$stateParams', 'Session', function(ReleaseService, $stateParams, Session){
+                                return ReleaseService.get($stateParams.id, Session.getProject());
+                            }]
                         },
                         views:{
-                            "details@releasePlan": {
+                            "details": {
                                 templateUrl: 'release.details.html',
                                 controller: 'releaseDetailsCtrl'
                             }
@@ -338,8 +332,10 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     })
                         .state('releasePlan.sprint.details', {
                             url: "/{id:int}",
-                            data:{
-                                view: 'details'
+                            resolve:{
+                                detailsSprint: ['SprintService', '$stateParams', 'Session', function(SprintService, $stateParams, Session){
+                                    return SprintService.get($stateParams.id, Session.getProject());
+                                }]
                             },
                             views:{
                                 "details@releasePlan": {
@@ -350,9 +346,6 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         })
                         .state('releasePlan.sprint.new', {
                             url: "/new",
-                            data:{
-                                view: 'details'
-                            },
                             views:{
                                 "details@releasePlan": {
                                     templateUrl: 'sprint.new.html',
