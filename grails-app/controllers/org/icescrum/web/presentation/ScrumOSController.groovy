@@ -276,8 +276,8 @@ class ScrumOSController {
                 locales << (arr.length > 3 ? new Locale(arr[1], arr[2]) : arr.length > 2 ? new Locale(arr[1]) : new Locale(""))
             }
         }
-        def returnLocales = locales.collect { locale ->
-            [id: locale.toString(), name: locale.getDisplayName(locale).capitalize()]
+        def returnLocales = locales.collectEntries { locale ->
+            [(locale.toString()): locale.getDisplayName(locale).capitalize()]
         }
         render(returnLocales as JSON)
     }

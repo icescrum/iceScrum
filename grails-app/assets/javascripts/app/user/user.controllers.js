@@ -61,8 +61,10 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
     $scope.editableUser = {};
     $scope.formHolder = {};
     $scope.editableUser = angular.copy(Session.user);
-    $scope.languages = [];
+    $scope.languages = {};
+    $scope.languageKeys = [];
     Session.getLanguages().then(function(languages) {
         $scope.languages = languages;
+        $scope.languageKeys = _.keys(languages);
     });
 }]);

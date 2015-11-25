@@ -249,9 +249,17 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             $scope.user.token = $state.params.token;
         });
     }
-    $scope.languages = [];
+    $scope.languages = {};
+    $scope.languageKeys = [];
     Session.getLanguages().then(function(languages) {
         $scope.languages = languages;
+        $scope.languageKeys = _.keys(languages);
+        if (!$scope.user.preferences) {
+            $scope.user.preferences = {};
+        }
+        if (!$scope.user.preferences.language) {
+            $scope.user.preferences.language = _.first($scope.languageKeys);
+        }
     });
 }]).controller('retrieveCtrl', ['$scope', 'User', 'UserService', function($scope, User, UserService) {
     // Functions

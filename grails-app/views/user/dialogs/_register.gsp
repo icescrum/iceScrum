@@ -76,8 +76,8 @@
                        name="user.preferences.language"
                        class="form-control"
                        ng-model="user.preferences.language">
-                <ui-select-match>{{ $select.selected.name }}</ui-select-match>
-                <ui-select-choices repeat="language in languages">{{ language.name }}</ui-select-choices>
+                <ui-select-match>{{ languages[$select.selected] }}</ui-select-match>
+                <ui-select-choices repeat="languageKey in languageKeys">{{ languages[languageKey] }}</ui-select-choices>
             </ui-select>
         </div>
     </div>
