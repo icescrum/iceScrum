@@ -85,8 +85,7 @@
                      class="progress-bar progress-bar-{{ progressState.code }}"
                      tooltip-placement="left"
                      tooltip-append-to-body="true"
-                     uib-tooltip="{{ progressState.name }}" style="width:{{ progressState.width }}%">
-                    {{ progressState.days }}
+                     uib-tooltip="{{ progressState.state | i18n: 'StoryStates' }} {{ progressState.date | dateTime }}" style="width:{{ progressState.width }}%">
                 </div>
             </div>
         </div>

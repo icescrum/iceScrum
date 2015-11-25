@@ -54,7 +54,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
         $scope.goToNewStory();
         var notif = $scope.notifySuccess('todo.is.ui.deleted', {
             actions: [{
-                label: 'Undo',
+                label: $scope.message('todo.is.ui.undo'),
                 fn: function() {
                     notif.data.close = angular.noop;
                     StoryService.list.push(story);
@@ -411,11 +411,12 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.next = FormService.next(list, $scope.story);
         $scope.progressStates = [];
         var width = 100 / _.filter(_.keys(StoryCodesByState), function(key) { return key > 0 }).length;
-        _.each(StoryCodesByState, function(code, key) {
+        _.each(StoryCodesByState, function(code, state) {
             var date = $scope.story[code.toLowerCase() + 'Date'];
             if (date != null) {
                 $scope.progressStates.push({
-                    name: code + ' (' + date + ')',
+                    state: state,
+                    date: date,
                     code: code,
                     width: width
                 });
