@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="sprint.new.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">${message(code: "is.ui.sprint.toolbar.new")} ${message(code: "is.sprint")}</h3>
+        <h3 class="panel-title">${message(code: "todo.is.ui.sprint.new")}</h3>
     </div>
     <div class="right-properties new panel-body">
         <div class="help-block">${message(code:'is.ui.sprint.help')}</div>

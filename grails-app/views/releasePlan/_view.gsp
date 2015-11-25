@@ -24,12 +24,12 @@
     <button type="button"
             class="btn btn-default"
             ng-click="goToNewRelease()">
-        New release
+        ${message(code: 'todo.is.ui.release.new')}
     </button>
     <button type="button"
             class="btn btn-default"
             ng-click="goToNewSprint(release)">
-        New Sprint
+        ${message(code: 'todo.is.ui.sprint.new')}
     </button>
     <div>
         <div ng-repeat="release in releases | orderBy: 'orderNumber'"

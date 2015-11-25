@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="feature.new.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">${message(code: "is.ui.feature.toolbar.new")} ${message(code: "is.feature")}</h3>
+        <h3 class="panel-title">${message(code: 'todo.is.ui.feature.new')}</h3>
     </div>
     <div class="right-properties new panel-body">
         <div class="help-block">${message(code:'is.ui.feature.help')}</div>

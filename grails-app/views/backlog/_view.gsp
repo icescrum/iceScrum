@@ -71,7 +71,7 @@
                tooltip-append-to-body="true"
                tooltip-placement="right"
                href="#/{{ ::viewName }}/new"
-               class="btn btn-primary">${message(code: "is.ui.sandbox.toolbar.new")} ${message(code: "is.story")}</a>
+               class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
         </div>
     </div>
     <hr>
