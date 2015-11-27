@@ -24,12 +24,12 @@
 <script type="text/ng-template" id="sprint.menu.html">
 <li ng-if="authorizedSprint('activate', sprint)">
     <a href ng-click="activate(sprint)">
-        ${message(code:'is.ui.timeline.menu.activate')}
+        ${message(code:'is.ui.releasePlan.menu.sprint.activate')}
     </a>
 </li>
 <li ng-if="authorizedSprint('close', sprint)">
     <a href ng-click="close(sprint)">
-        ${message(code:'is.ui.timeline.menu.close')}
+        ${message(code:'is.ui.releasePlan.menu.sprint.close')}
     </a>
 </li>
 <li ng-if="authorizedSprint('unPlan', sprint)">
@@ -39,7 +39,7 @@
 </li>
 <li ng-if="authorizedSprint('delete', sprint)">
     <a href ng-click="delete(sprint)">
-        ${message(code:'is.ui.timeline.menu.delete')}
+        ${message(code:'is.ui.releasePlan.menu.sprint.delete')}
     </a>
 </li>
 </script>

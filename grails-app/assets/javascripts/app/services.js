@@ -38,10 +38,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         }
     };
 }])
-.service('Session', ['$timeout', '$http', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
+.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
     var self = this;
     self.user = new User();
     self.project = new Project();
+    self.isProjectResolved = $q.defer();
     self.unreadActivitiesCount = 0;
     var defaultRoles = {
         productOwner: false,
@@ -147,17 +148,17 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         newRoles.stakeHolder = true;
         _.merge(self.roles, defaultRoles, newRoles);
     };
-    this.setProject = function(project) {
+    this.initProject = function(project) {
         _.extend(self.project, project);
+        self.isProjectResolved.resolve();
         PushService.registerListener('product', IceScrumEventType.UPDATE, function(updatedProject) {
-            var localProject = self.project;
-            if (updatedProject.pkey != localProject.pkey) {
+            if (updatedProject.pkey != self.project.pkey) {
                 $rootScope.notifyWarning('todo.is.ui.project.updated.pkey');
-                document.location = document.location.href.replace(localProject.pkey, updatedProject.pkey);
-            } else if (updatedProject.preferences.hidden && !localProject.preferences.hidden && !self.inProduct()) {
+                document.location = document.location.href.replace(self.project.pkey, updatedProject.pkey);
+            } else if (updatedProject.preferences.hidden && !self.project.preferences.hidden && !self.inProduct()) {
                 $rootScope.notifyWarning('todo.is.ui.project.updated.visibility');
                 reload();
-            } else if (updatedProject.preferences.archived != localProject.preferences.archived) {
+            } else if (updatedProject.preferences.archived != self.project.preferences.archived) {
                 if (updatedProject.preferences.archived == true) {
                     $rootScope.notifyWarning('todo.is.ui.project.updated.archived');
                 } else {
@@ -165,7 +166,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 }
                 reload();
             } else {
-                angular.extend(localProject, updatedProject);
+                self.updateProject(updatedProject);
             }
         });
         PushService.registerListener('product', IceScrumEventType.DELETE, function() {
@@ -173,8 +174,16 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             reload();
         });
     };
+    this.updateProject = function(project) {
+        _.extend(self.project, project);
+    };
     this.getProject = function() {
         return self.project;
+    };
+    this.getProjectPromise = function() {
+        return self.isProjectResolved.promise.then(function() {
+            return self.project;
+        });
     };
     this.getLanguages = function() {
         return FormService.httpGet('scrumOS/languages', { cache: true });

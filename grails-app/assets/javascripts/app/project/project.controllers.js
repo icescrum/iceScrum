@@ -464,7 +464,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         var p = $scope.prepareProject(project);
         ProjectService.updateTeam(p)
             .then(function(updatedProject) {
-                Session.setProject(updatedProject);
+                Session.updateProject(updatedProject);
                 $scope.resetTeamForm();
                 $scope.notifySuccess('todo.is.ui.project.members.updated');
             });
@@ -485,7 +485,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
         $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).where({hidden: true}).map('id').value().join(',');
         ProjectService.update(project)
             .then(function(updatedProject) {
-                Session.setProject(updatedProject);
+                Session.updateProject(updatedProject);
                 $scope.notifySuccess('todo.is.ui.project.general.updated');
                 $scope.resetProjectForm();
             });

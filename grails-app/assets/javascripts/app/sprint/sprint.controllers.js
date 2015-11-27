@@ -45,7 +45,6 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
     $scope['delete'] = function(sprint) {
         SprintService.delete(sprint, $scope.release)
             .then(function() {
-                $scope.goToNewSprint();
                 $scope.notifySuccess('todo.is.ui.deleted');
             });
     };

@@ -55,7 +55,7 @@
         var project = ${product as JSON};
         project.startDate = new Date(project.startDate);
         project.endDate = new Date(project.endDate);
-        Session.setProject(project);
+        Session.initProject(project);
         Session.setUser(${user as JSON});
         Session.create();
         PushService.initPush(${product?.id});

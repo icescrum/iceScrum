@@ -304,8 +304,11 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     templateUrl: 'openWindow/releasePlan',
                     controller: 'releasePlanCtrl',
                     resolve:{
-                        releases: ['ReleaseService', 'SprintService', 'Session', function(ReleaseService, SprintService, Session){
-                            return ReleaseService.list(Session.getProject()).then(function(releases) {
+                        project: ['Session', function(Session) {
+                            return Session.getProjectPromise();
+                        }],
+                        releases: ['ReleaseService', 'SprintService', 'project', function(ReleaseService, SprintService, project) {
+                            return ReleaseService.list(project).then(function(releases) {
                                 _.each(releases, function(release) {
                                     SprintService.list(release);
                                 });
@@ -326,8 +329,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     .state('releasePlan.details', {
                         url: "/{id:int}",
                         resolve:{
-                            detailsRelease: ['ReleaseService', '$stateParams', 'Session', function(ReleaseService, $stateParams, Session){
-                                return ReleaseService.get($stateParams.id, Session.getProject());
+                            detailsRelease: ['ReleaseService', '$stateParams', 'project', function(ReleaseService, $stateParams, project){
+                                return ReleaseService.get($stateParams.id, project);
                             }]
                         },
                         views:{
@@ -343,8 +346,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         .state('releasePlan.sprint.details', {
                             url: "/{id:int}",
                             resolve:{
-                                detailsSprint: ['SprintService', '$stateParams', 'Session', function(SprintService, $stateParams, Session){
-                                    return SprintService.get($stateParams.id, Session.getProject());
+                                detailsSprint: ['SprintService', '$stateParams', 'project', function(SprintService, $stateParams, project){
+                                    return SprintService.get($stateParams.id, project);
                                 }]
                             },
                             views:{
