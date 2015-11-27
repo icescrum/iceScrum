@@ -25,7 +25,7 @@ services.factory('Release', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/p/:projectId/release/:id/:action');
 }]);
 
-services.service("ReleaseService", ['$q', '$filter', 'Release', 'ReleaseStatesByName', 'Session', function($q, $filter, Release, ReleaseStatesByName, Session) {
+services.service("ReleaseService", ['$q', 'Release', 'ReleaseStatesByName', 'Session', function($q, Release, ReleaseStatesByName, Session) {
     var self = this;
     this.list = function(project) {
         if (_.isEmpty(project.releases)) {

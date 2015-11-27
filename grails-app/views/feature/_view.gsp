@@ -29,7 +29,7 @@
                uib-tooltip="${message(code:'default.button.create.label')}"
                tooltip-append-to-body="true"
                tooltip-placement="right"
-               href="#feature/new"
+               href="#{{ ::viewName }}/new"
                class="btn btn-primary">
                 <span class="fa fa-plus"></span>
             </a>
@@ -87,7 +87,7 @@
                         tooltip-append-to-body="true"
                         tooltip-placement="bottom"
                         ng-click="print($event)"
-                        ng-href="feature/print"
+                        ng-href="{{ ::viewName }}/print"
                         hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
                 </button>
             </g:if>
@@ -152,7 +152,7 @@
                                 ng-include="'feature.menu.html'"></ul>
                         </span>
                         <span class="action" ng-class="{'active':feature.attachments.length}">
-                            <a href="#/feature/{{ feature.id }}"
+                            <a href="#/{{ ::viewName }}/{{ feature.id }}"
                                uib-tooltip="{{ feature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-paperclip"></i>
@@ -160,7 +160,7 @@
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':feature.stories_ids.length}">
-                            <a href="#/feature/{{ feature.id }}/stories"
+                            <a href="#/{{ ::viewName }}/{{ feature.id }}/stories"
                                uib-tooltip="{{ feature.stories_ids.length | orElse: 0  }} ${message(code:'todo.is.ui.feature.stories.count')}"
                                tooltip-append-to-body="true">
                                 <i class="fa fa-sticky-note"></i>

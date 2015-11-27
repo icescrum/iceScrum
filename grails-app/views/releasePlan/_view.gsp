@@ -21,16 +21,18 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div>
-    <button type="button"
-            class="btn btn-primary"
-            ng-click="goToNewRelease()">
+    <a type="button"
+       class="btn btn-primary"
+       ng-if="authorizedRelease('create')"
+       href="#{{ ::viewName }}/new">
         ${message(code: 'todo.is.ui.release.new')}
-    </button>
-    <button type="button"
-            class="btn btn-primary"
-            ng-click="goToNewSprint(release)">
+    </a>
+    <a type="button"
+       class="btn btn-primary"
+       ng-if="authorizedSprint('create')"
+       href="#{{ ::viewName }}/sprint/new">
         ${message(code: 'todo.is.ui.sprint.new')}
-    </button>
+    </a>
     <div>
         <div ng-repeat="release in releases | orderBy: 'orderNumber'"
              style="margin:20px;"

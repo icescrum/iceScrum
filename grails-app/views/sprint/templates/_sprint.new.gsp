@@ -33,11 +33,11 @@
             <div class="form-group">
                 <label for="sprint.parentRelease">${message(code:'is.sprint.parentRelease')}</label>
                 <ui-select class="form-control"
-                           ng-model="sprint.parentRelease.id"
-                           on-select="selectRelease(sprint.parentRelease.id)"
+                           ng-model="sprint.parentRelease"
+                           on-select="selectRelease(sprint.parentRelease)"
                            required>
                     <ui-select-match>{{ $select.selected.name }}</ui-select-match>
-                    <ui-select-choices repeat="release in releases">{{release.name}}</ui-select-choices>
+                    <ui-select-choices repeat="editableRelease in editableReleases">{{ editableRelease.name }}</ui-select-choices>
                 </ui-select>
             </div>
             <div class="clearfix no-padding">

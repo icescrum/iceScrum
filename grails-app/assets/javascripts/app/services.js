@@ -37,7 +37,8 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             });
         }
     };
-}]).service('Session', ['$timeout', '$http', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
+}])
+.service('Session', ['$timeout', '$http', '$rootScope', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
     var self = this;
     self.user = new User();
     self.project = new Project();
@@ -50,13 +51,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         admin: false
     };
     self.roles = _.clone(defaultRoles);
-
     var reload = function() {
         $timeout(function() {
             document.location.reload(true);
         }, 2000);
     };
-
     this.create = function() {
         UserService.getCurrent()
             .then(function(data) {
@@ -70,7 +69,6 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 }
             });
     };
-
     this.setUser = function(user) {
         _.extend(self.user, user);
         PushService.registerListener('activity', IceScrumEventType.CREATE, function(activity) {
@@ -79,29 +77,28 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         PushService.registerListener('user', IceScrumEventType.UPDATE, function(user) {
             if (user.updatedRole) {
                 var updatedRole = user.updatedRole;
-                var project = updatedRole.product;
+                var updatedProject = updatedRole.product;
                 if (updatedRole.role == undefined) {
-                    $rootScope.notifyWarning($rootScope.message('is.user.role.removed.product') + ' ' + project.name);
-                    if (project.id == self.project.id) {
+                    $rootScope.notifyWarning($rootScope.message('is.user.role.removed.product') + ' ' + updatedProject.name);
+                    if (updatedProject.id == self.project.id) {
                         $timeout(function() {
                             document.location = $rootScope.serverUrl
                         }, 2000);
                     }
                 } else if (updatedRole.oldRole == undefined) {
-                    $rootScope.notifySuccess($rootScope.message('is.user.role.added.product') + ' ' + project.name);
-                    if (project.id == self.project.id) {
+                    $rootScope.notifySuccess($rootScope.message('is.user.role.added.product') + ' ' + updatedProject.name);
+                    if (updatedProject.id == self.project.id) {
                         reload();
                     }
                 } else {
-                    $rootScope.notifySuccess($rootScope.message('is.user.role.updated.product') + ' ' + project.name);
-                    if (project.id == self.project.id) {
+                    $rootScope.notifySuccess($rootScope.message('is.user.role.updated.product') + ' ' + updatedProject.name);
+                    if (updatedProject.id == self.project.id) {
                         reload();
                     }
                 }
             }
         });
     };
-
     this.poOrSm = function() {
         return self.roles.productOwner || self.roles.scrumMaster;
     };
@@ -150,7 +147,6 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         newRoles.stakeHolder = true;
         _.merge(self.roles, defaultRoles, newRoles);
     };
-
     this.setProject = function(project) {
         _.extend(self.project, project);
         PushService.registerListener('product', IceScrumEventType.UPDATE, function(updatedProject) {
@@ -177,25 +173,24 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             reload();
         });
     };
-
     this.getProject = function() {
         return self.project;
     };
-
     this.getLanguages = function() {
         return FormService.httpGet('scrumOS/languages', { cache: true });
     };
     this.getTimezones = function() {
         return FormService.httpGet('scrumOS/timezones', { cache: true });
     };
-}]).service('FormService', ['$filter', '$http', '$rootScope', function($filter, $http, $rootScope) {
+}])
+.service('FormService', ['$filter', '$http', '$rootScope', function($filter, $http, $rootScope) {
     var self = this;
     this.previous = function(list, element) {
-        var ind = list.indexOf(element);
+        var ind = _.findIndex(list, { id: element.id });
         return ind > 0 ? list[ind - 1] : null;
     };
     this.next = function(list, element) {
-        var ind = list.indexOf(element);
+        var ind = _.findIndex(list, { id: element.id });
         return ind + 1 <= list.length ? list[ind + 1] : null;
     };
     this.formObjectData = function(obj, prefix) {
@@ -247,7 +242,8 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             return response.data;
         });
     }
-}]).service('BundleService', [function() {
+}])
+.service('BundleService', [function() {
     this.bundles = {};
     this.initBundles = function(bundles) {
         this.bundles = bundles;

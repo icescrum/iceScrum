@@ -237,7 +237,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     templateUrl: 'openWindow/feature',
                     controller: 'featuresCtrl',
                     resolve:{
-                        features:['FeatureService', function(FeatureService){
+                        features: ['FeatureService', function(FeatureService){
                             return FeatureService.list;
                         }]
                     }
@@ -254,7 +254,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     .state('feature.multiple', {
                         url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
                         resolve:{
-                            listId:['$stateParams', function($stateParams){
+                            listId: ['$stateParams', function($stateParams){
                                 return $stateParams.listId.split(',');
                             }]
                         },
@@ -302,7 +302,17 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                 .state('releasePlan', {
                     url: "/releasePlan",
                     templateUrl: 'openWindow/releasePlan',
-                    controller: 'releasePlanCtrl'
+                    controller: 'releasePlanCtrl',
+                    resolve:{
+                        releases: ['ReleaseService', 'SprintService', 'Session', function(ReleaseService, SprintService, Session){
+                            return ReleaseService.list(Session.getProject()).then(function(releases) {
+                                _.each(releases, function(release) {
+                                    SprintService.list(release);
+                                });
+                                return releases;
+                            });
+                        }]
+                    }
                 })
                     .state('releasePlan.new', {
                         url: "/new",

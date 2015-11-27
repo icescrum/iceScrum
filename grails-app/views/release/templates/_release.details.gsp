@@ -45,16 +45,21 @@
                     </button>
                     <ul class="uib-dropdown-menu pull-right" ng-include="'release.menu.html'"></ul>
                 </div>
-                <a ng-if="previous"
+                <a ng-if="previousRelease"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#releasePlan/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="next"
+                   href="#{{ ::viewName }}/{{ ::previousRelease.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                <a ng-if="nextRelease"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#releasePlan/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="#{{ ::viewName }}/{{ ::nextRelease.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                <a class="btn btn-default"
+                   href="#/{{ ::viewName }}"
+                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                    <i class="fa fa-times"></i>
+                </a>
             </div>
         </h3>
     </div>

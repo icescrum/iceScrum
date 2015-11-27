@@ -45,16 +45,21 @@
                     </button>
                     <ul class="uib-dropdown-menu pull-right" ng-include="'sprint.menu.html'"></ul>
                 </div>
-                <a ng-if="previous"
+                <a ng-if="previousSprint"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#releasePlan/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="next"
+                   href="#{{ ::viewName }}/sprint/{{ ::previousSprint.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                <a ng-if="nextSprint"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#releasePlan/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="#{{ ::viewName }}/sprint/{{ ::nextSprint.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                <a class="btn btn-default"
+                   href="#/{{ ::viewName }}"
+                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                    <i class="fa fa-times"></i>
+                </a>
             </div>
         </h3>
     </div>
@@ -67,7 +72,7 @@
             <div class="panel-body">
                 <div class="clearfix no-padding">
                     <div class="form-group">
-                        <label for="sprint.parentRelease">${message(code:'is.sprint.parentRelease')}</label>
+                        <label for="sprint.parentRelease">${message(code:'is.release')}</label>
                         <div class="form-control-static">{{ sprint.parentRelease.name }}</div>
                     </div>
                     <div class="form-half">

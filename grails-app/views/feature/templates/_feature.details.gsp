@@ -38,26 +38,31 @@
                     </button>
                     <ul class="uib-dropdown-menu pull-right" ng-include="'feature.menu.html'"></ul>
                 </div>
-                <a ng-if="previous"
+                <a ng-if="previousFeature"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#feature/{{ previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="next"
+                   href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                <a ng-if="nextFeature"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#feature/{{ next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                <a class="btn btn-default"
+                   href="#{{ ::viewName }}"
+                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                    <i class="fa fa-times"></i>
+                </a>
             </div>
         </h3>
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.tabId}">
-            <a href="#feature/{{ ::feature.id }}"
+            <a href="#{{ ::viewName }}/{{ ::feature.id }}"
                href="#"><i class="fa fa-lg fa-edit"></i></a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'stories'}">
-            <a href="#feature/{{ ::feature.id }}/stories"
+            <a href="#{{ ::viewName }}/{{ ::feature.id }}/stories"
                uib-tooltip="{{ feature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}"
                tooltip-append-to-body="true">
                 <i class="fa fa-lg fa-sticky-note"></i>

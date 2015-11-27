@@ -399,8 +399,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.resetStoryForm();
         // For header
         var list = StoryService.list;
-        $scope.previous = FormService.previous(list, $scope.story);
-        $scope.next = FormService.next(list, $scope.story);
+        $scope.previousStory = FormService.previous(list, $scope.story);
+        $scope.nextStory = FormService.next(list, $scope.story);
         $scope.progressStates = [];
         var width = 100 / _.filter(_.keys(StoryCodesByState), function(key) { return key > 0 }).length;
         _.each(StoryCodesByState, function(code, state) {

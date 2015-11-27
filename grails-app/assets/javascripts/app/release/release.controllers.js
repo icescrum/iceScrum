@@ -117,7 +117,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
     });
 }]);
 
-controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $state, $stateParams, $controller, ReleaseService, FormService, detailsRelease) {
+controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $state, $controller, ReleaseService, FormService, detailsRelease) {
     $controller('releaseCtrl', { $scope: $scope }); // inherit from releaseCtrl
     $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsRelease, clazz: 'release' });
     // Functions
@@ -197,6 +197,6 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$stateParams'
     $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $state.go
     $scope.resetReleaseForm();
     var sortedReleases = _.sortBy($scope.project.releases, 'orderNumber');
-    $scope.previous = FormService.previous(sortedReleases, $scope.release);
-    $scope.next = FormService.next(sortedReleases, $scope.release);
+    $scope.previousRelease = FormService.previous(sortedReleases, $scope.release);
+    $scope.nextRelease = FormService.next(sortedReleases, $scope.release);
 }]);

@@ -57,11 +57,14 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
     $scope.endDateOptions = angular.copy($scope.startDateOptions);
 }]);
 
-controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', function($scope, $controller, $state, SprintService, ReleaseService, ReleaseStatesByName, hotkeys) {
+controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', function($scope, $controller, $state, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases) {
     $controller('sprintCtrl', { $scope: $scope }); // inherit from sprintCtrl
     // Functions
     $scope.resetSprintForm = function() {
         $scope.sprint = {parentRelease: {}};
+        if ($scope.release) {
+            $scope.sprint.parentRelease = $scope.release;
+        }
         $scope.resetFormValidation($scope.formHolder.sprintForm);
     };
     $scope.save = function(sprint, andContinue) {
@@ -76,8 +79,8 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
                 $scope.notifySuccess('todo.is.ui.sprint.saved');
             });
     };
-    $scope.selectRelease = function(releaseId) {
-        $scope.release = _.find($scope.releases, {id: parseInt(releaseId)});
+    $scope.selectRelease = function(release) {
+        $scope.release = _.find($scope.editableReleases, { id: release.id });
     };
     // Init
     $scope.$watchCollection('release.sprints', function(sprints) {
@@ -103,19 +106,16 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
             $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $scope.releases = [];
+    $scope.editableReleases = _.sortBy(_.filter(releases, function(release) {
+        return release.state < ReleaseStatesByName.DONE;
+    }), 'orderNumber');
+    if (!_.isEmpty($scope.editableReleases)) {
+        var firstRelease = _.first($scope.editableReleases);
+        $scope.sprint.parentRelease = firstRelease;
+        $scope.release = firstRelease;
+    }
     $scope.formHolder = {};
     $scope.resetSprintForm();
-    ReleaseService.list($scope.project).then(function(releases) {
-        $scope.releases = _.sortBy(_.filter(releases, function(release) {
-            return release.state < ReleaseStatesByName.DONE;
-        }), 'orderNumber');
-        if (!_.isEmpty($scope.releases)) {
-            var release = _.first($scope.releases);
-            $scope.sprint.parentRelease = { id: release.id };
-            $scope.release = release;
-        }
-    });
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],
@@ -123,7 +123,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams', '$controller', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $state, $stateParams, $controller, SprintService, ReleaseService, FormService, detailsSprint) {
+controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $state, $controller, SprintService, ReleaseService, FormService, detailsSprint) {
     $controller('sprintCtrl', { $scope: $scope }); // inherit from sprintCtrl
     $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsSprint, clazz: 'sprint' });
     // Functions
@@ -202,7 +202,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$stateParams',
         $scope.release = release;
         $scope.maxEndDate = $scope.release.endDate;
         var sortedSprints = _.sortBy($scope.release.sprints, 'orderNumber');
-        $scope.previous = FormService.previous(sortedSprints, $scope.sprint);
-        $scope.next = FormService.next(sortedSprints, $scope.sprint);
+        $scope.previousSprint = FormService.previous(sortedSprints, $scope.sprint);
+        $scope.nextSprint = FormService.next(sortedSprints, $scope.sprint);
     });
 }]);

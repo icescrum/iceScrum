@@ -62,16 +62,16 @@
                     </button>
                     <ul class="uib-dropdown-menu" ng-include="'story.menu.html'"></ul>
                 </div>
-                <a ng-if="previous"
+                <a ng-if="previousStory"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::previous.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="next"
+                   href="#{{ ::viewName }}/{{ ::previousStory.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                <a ng-if="nextStory"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::next.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="#{{ ::viewName }}/{{ ::nextStory.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a class="btn btn-default"
                    href="#/{{ ::viewName }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">

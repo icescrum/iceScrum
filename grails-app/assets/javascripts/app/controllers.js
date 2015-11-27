@@ -286,6 +286,25 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
 }]);
 
 controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function($scope, $state, FeatureService, features) {
+    // Functions
+    $scope.goToNewFeature = function() {
+        $state.go('feature.new');
+    };
+    $scope.isSelected = function(feature) {
+        if ($state.params.id) {
+            return $state.params.id == feature.id;
+        } else if ($state.params.listId) {
+            return _.contains($state.params.listId.split(','), feature.id.toString());
+        } else {
+            return false;
+        }
+    };
+    $scope.authorizedFeature = function(action) {
+        return FeatureService.authorizedFeature(action);
+    };
+    // Init
+    $scope.viewName = 'feature';
+    $scope.features = features;
     $scope.orderBy = {
         reverse: false,
         status: false,
@@ -296,9 +315,6 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
             {id: 'stories_ids.length', name: $scope.message('todo.is.ui.sort.stories')},
             {id: 'value', name: $scope.message('todo.is.ui.sort.value')}
         ]
-    };
-    $scope.goToNewFeature = function() {
-        $state.go('feature.new');
     };
     $scope.selectableOptions = {
         filter: "> .postit-container",
@@ -317,43 +333,21 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
             }
         }
     };
-    $scope.features = features;
-    $scope.isSelected = function(feature) {
-        if ($state.params.id) {
-            return $state.params.id == feature.id;
-        } else if ($state.params.listId) {
-            return _.contains($state.params.listId.split(','), feature.id.toString());
-        } else {
-            return false;
-        }
-    };
-    $scope.authorizedFeature = function(action) {
-        return FeatureService.authorizedFeature(action);
-    };
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'StoryService', 'Session', function($scope, $state, ReleaseService, SprintService, StoryService, Session) {
-    $scope.releases = [];
-    $scope.selectedSprintsModel = {};
-    $scope.selectedSprints = [];
-    ReleaseService.list(Session.getProject()).then(function(releases) {
-        $scope.releases = releases;
-        _.each($scope.releases, function(release) {
-            SprintService.list(release);
-        });
-    });
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'releases', function($scope, $state, ReleaseService, SprintService, releases) {
+    // Functions
+    $scope.authorizedRelease = function(action, release) {
+        return ReleaseService.authorizedRelease(action, release);
+    };
+    $scope.authorizedSprint = function(action, sprint) {
+        return SprintService.authorizedSprint(action, sprint);
+    };
     $scope.goToRelease = function(release) {
         $state.go('releasePlan.details', {id: release.id});
     };
-    $scope.goToNewRelease = function() {
-        $state.go('releasePlan.new');
-    };
     $scope.goToSprint = function(sprint) {
         $state.go('releasePlan.sprint.details', {id: sprint.id});
-    };
-    $scope.goToNewSprint  = function(release) {
-        $scope.release = release;
-        $state.go('releasePlan.sprint.new');
     };
     $scope.updateSelectedSprints = function() {
         var allSprintsSorted = _.chain($scope.releases).sortBy('orderNumber').map(function(release) {
@@ -365,10 +359,15 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
         $scope.selectedSprints = _.filter(allSprintsSorted, function(sprint) {
             return _.contains(selectedSprintsIds, sprint.id);
         });
-    }
+    };
+    // Init
+    $scope.viewName = 'releasePlan';
+    $scope.releases = releases;
+    $scope.selectedSprintsModel = {};
+    $scope.selectedSprints = [];
 }]);
 
-controllers.controller('sprintBacklogCtrl', ['$scope', '$state', 'StoryService', function($scope, $state, StoryService) {
+controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', function($scope, StoryService) {
     $scope.filteredAndSortedStories = [];
     StoryService.listByType($scope.sprint).then(function(stories) {
         $scope.filteredAndSortedStories = _.sortBy(stories, 'rank');
@@ -376,6 +375,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$state', 'StoryService',
 }]);
 
 controllers.controller('sprintPlanCtrl', ['$scope', function($scope) {
+    $scope.viewName = 'sprintPlan';
 }]);
 
 controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {
