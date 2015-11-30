@@ -349,21 +349,26 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.goToSprint = function(sprint) {
         $state.go('releasePlan.sprint.details', {id: sprint.id});
     };
-    $scope.updateSelectedSprints = function() {
+    $scope.isShownSprint = function(sprint) {
+        return _.contains($scope.selectedSprintsIds, sprint.id);
+    };
+    $scope.manageShownSprint = function(sprint) {
         var allSprintsSorted = _.chain($scope.releases).sortBy('orderNumber').map(function(release) {
             return _.sortBy(release.sprints, 'orderNumber');
         }).flatten().value();
-        var selectedSprintsIds = _.map(_.invert($scope.selectedSprintsModel, true)[true], function(sprintId) {
-            return parseInt(sprintId);
-        });
+        if ($scope.isShownSprint(sprint)) {
+            _.pull($scope.selectedSprintsIds, sprint.id);
+        } else {
+            $scope.selectedSprintsIds.push(sprint.id);
+        }
         $scope.selectedSprints = _.filter(allSprintsSorted, function(sprint) {
-            return _.contains(selectedSprintsIds, sprint.id);
+            return _.contains($scope.selectedSprintsIds, sprint.id);
         });
     };
     // Init
     $scope.viewName = 'releasePlan';
     $scope.releases = releases;
-    $scope.selectedSprintsModel = {};
+    $scope.selectedSprintsIds = [];
     $scope.selectedSprints = [];
 }]);
 

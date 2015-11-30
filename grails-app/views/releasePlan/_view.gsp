@@ -20,19 +20,22 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div>
-    <a type="button"
-       class="btn btn-primary"
-       ng-if="authorizedRelease('create')"
-       href="#{{ ::viewName }}/new">
-        ${message(code: 'todo.is.ui.release.new')}
-    </a>
-    <a type="button"
-       class="btn btn-primary"
-       ng-if="authorizedSprint('create')"
-       href="#{{ ::viewName }}/sprint/new">
-        ${message(code: 'todo.is.ui.sprint.new')}
-    </a>
+<div class="backlogs-list">
+    <div class="btn-toolbar">
+        <a type="button"
+           class="btn btn-primary"
+           ng-if="authorizedRelease('create')"
+           href="#{{ ::viewName }}/new">
+            ${message(code: 'todo.is.ui.release.new')}
+        </a>
+        <a type="button"
+           class="btn btn-primary"
+           ng-if="authorizedSprint('create')"
+           href="#{{ ::viewName }}/sprint/new">
+            ${message(code: 'todo.is.ui.sprint.new')}
+        </a>
+    </div>
+    <hr>
     <div>
         <div ng-repeat="release in releases | orderBy: 'orderNumber'"
              style="margin:20px;"
@@ -64,10 +67,9 @@
                      ng-click="goToSprint(sprint)"
                      uib-tooltip="{{ sprint.state | i18n: 'SprintStates' }} {{ sprint.startDate | date: message('is.date.format.short') }} -> {{ sprint.endDate | date: message('is.date.format.short') }}">
                     {{ sprint.orderNumber }}
-                    <input type="checkbox"
-                           ng-click="$event.stopPropagation()"
-                           ng-change="updateSelectedSprints()"
-                           ng-model="selectedSprintsModel[sprint.id]">
+                    <div ng-click="manageShownSprint(sprint)">
+                        <i class="fa" ng-class="isShownSprint(sprint) ? 'fa-dot-circle-o' : 'fa-circle-o'"></i>
+                    </div>
                     <div class="btn-group"
                          uib-dropdown
                          ng-if="authorizedSprint('update', sprint)"
@@ -83,15 +85,17 @@
         </div>
     </div>
 </div>
-<div class="panel panel-light pull-left"
-     ng-repeat="sprint in selectedSprints"
-     ng-controller="sprintBacklogCtrl">
-    <div class="panel-header">
-        {{ sprint.parentRelease.name }} {{ sprint.orderNumber }}
-    </div>
-    <div class="panel-body">
-        <div class="postits grid-group pull-left"
-             ng-include="'story.html'">
+<div class="backlogs-list-details">
+    <div class="panel panel-light pull-left"
+         ng-repeat="sprint in selectedSprints"
+         ng-controller="sprintBacklogCtrl">
+        <div class="panel-header">
+            {{ sprint.parentRelease.name }} {{ sprint.orderNumber }}
+        </div>
+        <div class="panel-body">
+            <div class="postits grid-group pull-left"
+                 ng-include="'story.html'">
+            </div>
         </div>
     </div>
 </div>
