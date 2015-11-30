@@ -335,7 +335,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     };
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'releases', function($scope, $state, ReleaseService, SprintService, releases) {
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ReleaseStatesByName', 'SprintStatesByName', 'releases', function($scope, $state, ReleaseService, SprintService, ReleaseStatesByName, SprintStatesByName, releases) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -370,6 +370,12 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.releases = releases;
     $scope.selectedSprintsIds = [];
     $scope.selectedSprints = [];
+    var currentOrNextSprit = _.find(_.sortBy(_.find(releases, { state: ReleaseStatesByName.IN_PROGRESS }).sprints, 'orderNumber'), function(sprint) {
+        return sprint.state < SprintStatesByName.DONE;
+    });
+    if (currentOrNextSprit) {
+        $scope.manageShownSprint(currentOrNextSprit);
+    }
 }]);
 
 controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', function($scope, StoryService) {

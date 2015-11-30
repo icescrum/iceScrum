@@ -95,7 +95,6 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         }
         return promise ? promise : $q.when(obj.stories);
     };
-    
     this.get = function(id) {
         return self.isListResolved.promise.then(function() {
             var story = _.find(self.list, function(rw) {
@@ -201,6 +200,12 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
             });
         }).$promise;
     };
+    this.listByBacklog = function(backlog) {
+        return Story.query({action: 'listByBacklog', backlog: backlog.id}).$promise.then(function(stories) {
+            self.mergeStories(stories);
+            return stories;
+        });
+    };
     this.authorizedStory = function(action, story) {
         switch (action) {
             case 'copy':
@@ -274,18 +279,10 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
     this.getParentSprintEntries = function() {
         return FormService.httpGet('story/sprintEntries');
     };
-    
-    this.listByBacklog = function(backlog) {
-        return Story.query({action: 'listByBacklog', backlog:backlog.id}).$promise.then(function(stories){
-            self.mergeStories(stories);
-            return stories;
-        });
-    };
-    
     this.getTemplatePreview = function(templateId) {
-        return FormService.httpGet('story/templatePreview', { params: { template: templateId } });
+        return FormService.httpGet('story/templatePreview', {params: {template: templateId}});
     };
     this.findDuplicates = function(term) {
-        return FormService.httpGet('story/findDuplicates', { params: { term: term } });
+        return FormService.httpGet('story/findDuplicates', {params: {term: term}});
     }
 }]);

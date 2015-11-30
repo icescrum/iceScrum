@@ -151,7 +151,6 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         backlogs: ['BacklogService', function(BacklogService) {
                             return BacklogService.list();
                         }],
-                        //we add backlogs to wait for dynamic resolution
                         stories: ['StoryService', 'backlogs', function(StoryService, backlogs) {
                             return StoryService.listByBacklog(backlogs[0]);
                         }]
@@ -199,14 +198,15 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             url: "/{tabId:.+}",
                             resolve:{
                                 data: ['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'StoryService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, StoryService, detailsStory){
-                                    if ($stateParams.tabId == 'tests')
+                                    if ($stateParams.tabId == 'tests') {
                                         return AcceptanceTestService.list(detailsStory);
-                                    else if($stateParams.tabId == 'tasks')
+                                    } else if($stateParams.tabId == 'tasks') {
                                         return TaskService.list(detailsStory);
-                                    else if($stateParams.tabId == 'comments')
+                                    } else if($stateParams.tabId == 'comments') {
                                         return CommentService.list(detailsStory);
-                                    else if($stateParams.tabId == 'activities')
+                                    } else if($stateParams.tabId == 'activities') {
                                         return StoryService.activities(detailsStory, false);
+                                    }
                                     return null;
                                 }],
                                 //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
@@ -268,6 +268,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     .state('feature.details', {
                         url: "/{id:int}",
                         resolve:{
+                            //we add features to wait for dynamic resolution from parent state
                             detailsFeature: ['FeatureService', '$stateParams', 'features', function(FeatureService, $stateParams, features){
                                 return FeatureService.get($stateParams.id);
                             }]
@@ -282,12 +283,10 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         .state('feature.details.tab', {
                             url: "/{tabId:.+}",
                             resolve:{
-                                data: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
-                                    return StoryService.listByType(detailsFeature);
-                                }],
-                                //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
-                                selected: ['data', 'detailsFeature', function(data, detailsFeature) {
-                                    return detailsFeature;
+                                selected: ['StoryService', 'detailsFeature', function(StoryService, detailsFeature) {
+                                    return StoryService.listByType(detailsFeature).then(function() {
+                                        return detailsFeature;
+                                    });
                                 }]
                             },
                             views:{
@@ -304,15 +303,13 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     templateUrl: 'openWindow/releasePlan',
                     controller: 'releasePlanCtrl',
                     resolve:{
-                        project: ['Session', function(Session) {
-                            return Session.getProjectPromise();
-                        }],
-                        releases: ['ReleaseService', 'SprintService', 'project', function(ReleaseService, SprintService, project) {
-                            return ReleaseService.list(project).then(function(releases) {
-                                _.each(releases, function(release) {
-                                    SprintService.list(release);
+                        releases: ['$q', 'ReleaseService', 'SprintService', 'Session', function($q, ReleaseService, SprintService, Session) {
+                            return Session.getProjectPromise().then(function(project) {                  // Wait for project
+                                return ReleaseService.list(project).then(function(releases) {            // Wait for releases
+                                    return $q.all(_.map(releases, SprintService.list)).then(function() { // Wait for sprints
+                                        return releases;                                                 // Finally resolve the releases
+                                    });
                                 });
-                                return releases;
                             });
                         }]
                     }
