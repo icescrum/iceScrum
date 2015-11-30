@@ -126,7 +126,9 @@
          ng-controller="sprintBacklogCtrl">
         <div class="panel-header">
             <h3 class="panel-title">
-                {{ sprint.parentRelease.name }} {{ sprint.orderNumber }}
+                <a href ng-click="goToSprint(sprint)">
+                    {{ sprint.parentRelease.name }} {{ sprint.orderNumber }}
+                </a>
             </h3>
         </div>
         <div class="panel-body">

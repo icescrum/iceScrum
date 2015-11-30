@@ -23,7 +23,14 @@
 <script type="text/ng-template" id="sprint.new.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">${message(code: "todo.is.ui.sprint.new")}</h3>
+        <h3 class="panel-title">
+            ${message(code: "todo.is.ui.sprint.new")}
+            <a class="pull-right visible-on-hover btn btn-default"
+               href="#/{{ ::viewName }}"
+               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                <i class="fa fa-times"></i>
+            </a>
+        </h3>
     </div>
     <div class="right-properties new panel-body">
         <div class="help-block">${message(code:'is.ui.sprint.help')}</div>

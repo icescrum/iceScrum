@@ -23,7 +23,14 @@
 <script type="text/ng-template" id="feature.multiple.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">${message(code: "is.ui.feature")} ({{ features.length }})</h3>
+        <h3 class="panel-title">
+            ${message(code: "is.ui.feature")} ({{ features.length }})
+            <a class="pull-right visible-on-hover btn btn-default"
+               href="#/{{ ::viewName }}"
+               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                <i class="fa fa-times"></i>
+            </a>
+        </h3>
     </div>
     <div class="panel-body">
         <div class="row">
@@ -124,10 +131,10 @@
             <div ng-if="authorizedFeature('update')"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
-                        uib-tooltip="${message(code: 'default.button.create.label')} (RETURN)"
+                        uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
                         tooltip-append-to-body="true"
                         type="submit">
-                    ${message(code: 'default.button.create.label')}
+                    ${message(code:'default.button.update.label')}
                 </button>
                 <button class="btn confirmation btn-default pull-right"
                         tooltip-append-to-body="true"
