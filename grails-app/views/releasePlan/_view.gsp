@@ -21,21 +21,6 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="backlogs-list">
-    <div class="btn-toolbar">
-        <a type="button"
-           class="btn btn-primary"
-           ng-if="authorizedRelease('create')"
-           href="#{{ ::viewName }}/new">
-            ${message(code: 'todo.is.ui.release.new')}
-        </a>
-        <a type="button"
-           class="btn btn-primary"
-           ng-if="authorizedSprint('create')"
-           href="#{{ ::viewName }}/sprint/new">
-            ${message(code: 'todo.is.ui.sprint.new')}
-        </a>
-    </div>
-    <hr/>
     <div>
         <div ng-repeat="release in releases | orderBy: 'orderNumber'"
              style="margin:10px; padding:10px; border:1px solid #DCDCDC"
@@ -89,7 +74,51 @@
                 </div>
             </div>
         </div>
+        <div class="btn-toolbar pull-right">
+            <div class="btn-group btn-view visible-on-hover">
+                <button type="button"
+                        uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
+                        tooltip-append-to-body="true"
+                        tooltip-placement="right"
+                        ng-click="app.asList = !app.asList"
+                        class="btn btn-default">
+                    <span class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></span>
+                </button>
+                <g:if test="${params?.fullScreen}">
+                    <button type="button"
+                            class="btn btn-default"
+                            ng-show="!app.isFullScreen"
+                            ng-click="fullScreen()"
+                            uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
+                            tooltip-append-to-body="true"
+                            tooltip-placement="bottom"
+                            hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
+                    </button>
+                    <button type="button"
+                            class="btn btn-default"
+                            ng-show="app.isFullScreen"
+                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                            tooltip-append-to-body="true"
+                            tooltip-placement="bottom"
+                            ng-click="fullScreen()"><span class="fa fa-compress"></span>
+                    </button>
+                </g:if>
+            </div>
+            <a type="button"
+               class="btn btn-primary"
+               ng-if="authorizedRelease('create')"
+               href="#{{ ::viewName }}/new">
+                ${message(code: 'todo.is.ui.release.new')}
+            </a>
+            <a type="button"
+               class="btn btn-primary"
+               ng-if="authorizedSprint('create')"
+               href="#{{ ::viewName }}/sprint/new">
+                ${message(code: 'todo.is.ui.sprint.new')}
+            </a>
+        </div>
     </div>
+    <hr style="clear: both"/>
 </div>
 <div class="backlogs-list-details">
     <div class="panel panel-light"
