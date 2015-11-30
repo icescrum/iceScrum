@@ -35,16 +35,18 @@
             ${message(code: 'todo.is.ui.sprint.new')}
         </a>
     </div>
-    <hr>
+    <hr/>
     <div>
         <div ng-repeat="release in releases | orderBy: 'orderNumber'"
-             style="margin:20px;"
+             style="margin:10px; padding:10px; border:1px solid #DCDCDC"
              class="pull-left"
              ng-controller="releaseCtrl">
-            <div ng-click="goToRelease(release)"
-                 class="pull-left"
+            <div class="pull-left"
                  uib-tooltip="{{ release.state | i18n: 'ReleaseStates' }}">
-                {{ release.name }}
+                <a href
+                   ng-click="goToRelease(release)">
+                   {{ release.name }}
+                </a>
                 <div class="btn-group"
                      uib-dropdown
                      ng-if="authorizedRelease('update', release)"
@@ -59,19 +61,23 @@
                     {{ release.startDate | date: message('is.date.format.short') }} -> {{ release.endDate | date: message('is.date.format.short') }}
                 </div>
             </div>
-            <div>
+            <div style="clear:both">
                 <div ng-repeat="sprint in release.sprints | orderBy: 'orderNumber'"
                      class="pull-left"
-                     style="margin:10px;"
+                     style="margin:5px; padding:10px; border: 1px solid #DCDCDC"
                      ng-controller="sprintCtrl"
-                     ng-click="goToSprint(sprint)"
                      uib-tooltip="{{ sprint.state | i18n: 'SprintStates' }} {{ sprint.startDate | date: message('is.date.format.short') }} -> {{ sprint.endDate | date: message('is.date.format.short') }}">
-                    {{ sprint.orderNumber }}
-                    <div ng-click="manageShownSprint(sprint)">
+                    <div ng-click="manageShownSprint(sprint)"
+                         style="margin: 0 4px;"
+                         class="pull-left">
                         <i class="fa" ng-class="isShownSprint(sprint) ? 'fa-dot-circle-o' : 'fa-circle-o'"></i>
                     </div>
-                    <div class="btn-group"
+                    <a href ng-click="goToSprint(sprint)">
+                        {{ sprint.orderNumber }}
+                    </a>
+                    <div class="btn-group pull-right"
                          uib-dropdown
+                         style="margin: 0 4px;"
                          ng-if="authorizedSprint('update', sprint)"
                          uib-tooltip="${message(code: 'todo.is.ui.actions')}"
                          tooltip-append-to-body="true">
@@ -86,14 +92,20 @@
     </div>
 </div>
 <div class="backlogs-list-details">
-    <div class="panel panel-light pull-left"
+    <div class="panel panel-light"
          ng-repeat="sprint in selectedSprints"
          ng-controller="sprintBacklogCtrl">
         <div class="panel-header">
-            {{ sprint.parentRelease.name }} {{ sprint.orderNumber }}
+            <h3 class="panel-title">
+                {{ sprint.parentRelease.name }} {{ sprint.orderNumber }}
+            </h3>
         </div>
         <div class="panel-body">
-            <div class="postits grid-group pull-left"
+            <div class="postits"
+                 as-sortable="sprintSortable"
+                 ng-model="sprint.stories"
+                 ng-class="app.asList ? 'list-group' : 'grid-group'"
+                 ng-init="backlog = sprint" %{-- TODO not good--}%
                  ng-include="'story.html'">
             </div>
         </div>

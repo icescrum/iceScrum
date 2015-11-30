@@ -105,6 +105,8 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
             $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
+    $scope.formHolder = {};
+    $scope.resetSprintForm();
     $scope.editableReleases = _.sortBy(_.filter(releases, function(release) {
         return release.state < ReleaseStatesByName.DONE;
     }), 'orderNumber');
@@ -113,8 +115,6 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
         $scope.sprint.parentRelease = firstRelease;
         $scope.release = firstRelease;
     }
-    $scope.formHolder = {};
-    $scope.resetSprintForm();
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],

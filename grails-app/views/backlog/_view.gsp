@@ -146,7 +146,8 @@
             <div class="postits"
                  as-sortable="backlogSortable"
                  ng-model="backlog.stories"
-                 ng-class="app.asList ? 'list-group' : 'grid-group'" ng-include="'story.html'">
+                 ng-class="app.asList ? 'list-group' : 'grid-group'"
+                 ng-include="'story.html'">
             </div>
         </div>
     </div>
