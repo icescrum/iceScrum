@@ -391,4 +391,17 @@ directives.directive('focusMe', ["$timeout", function($timeout) {
             });
         }
     }
-});
+}).directive('asSortableItemHandleIf', ['$compile', function ($compile) {
+    return {
+        restrict: 'A',
+        priority: 1000,
+        link: function link(scope, element, attrs) {
+            if (scope.$eval(attrs.asSortableItemHandleIf)) {
+                element.attr('as-sortable-item-handle', '');
+            }
+            element.removeAttr("as-sortable-item-handle-if"); // avoid indefinite loop
+            element.removeAttr("data-as-sortable-item-handle-if"); // same in case of data prefix
+            $compile(element)(scope);
+        }
+    };
+}]);
