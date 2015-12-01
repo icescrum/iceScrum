@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories', 'StoryService', '$filter', function($scope, $state, backlogs, stories, StoryService, $filter) {
+controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', 'backlogs', 'stories', function($scope, $state, $filter, StoryService, StoryStatesByName, backlogs, stories) {
     $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id;
@@ -34,34 +34,26 @@ controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories'
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };
-
     $scope.refreshBacklogs = function(stories) {
-        _.each($scope.backlogs, function(backlog){
+        _.each($scope.backlogs, function(backlog) {
             $scope.refreshSingleBacklog(backlog, stories);
         });
     };
-
-    $scope.refreshSingleBacklog = function(backlog, stories){
+    $scope.refreshSingleBacklog = function(backlog, stories) {
         var filter = JSON.parse(backlog.filter);
         var filteredStories = $filter('filter')(stories, filter.story, function(expected, actual) {
-            return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
+            return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
         backlog.stories = $filter('orderBy')(filteredStories, backlog.orderBy.current.id, backlog.orderBy.reverse);
+        backlog.sortable = backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse && StoryService.authorizedStory('rank') && backlog.name == 'Backlog'; // TODO fix
     };
-
-    $scope.manageShownBacklog = function(backlog){
-        //remove
-        if(backlog.shown && $scope.backlogs.length > 1){
+    $scope.manageShownBacklog = function(backlog) {
+        if (backlog.shown && $scope.backlogs.length > 1) {
             backlog.shown = null;
             _.remove($scope.backlogs, {id: backlog.id});
-        }
-        //add
-        else if(!backlog.shown) {
+        } else if (!backlog.shown) {
             backlog.storiesRendered = false;
             backlog.orderBy = {
-                status: false,
-                reverse: false,
-                current: {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
                 values: [
                     {id: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
                     {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
@@ -76,10 +68,11 @@ controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories'
             var tmpBacklogs = _.sortByOrder($scope.backlogs, 'shown', 'desc');
             var lastShown = _.first(tmpBacklogs);
             backlog.shown = lastShown ? (lastShown.shown + 1) : 1;
-            StoryService.listByBacklog(backlog).then(function(stories){
-                $scope.refreshSingleBacklog(backlog, stories);
+            StoryService.listByBacklog(backlog).then(function(stories) {
+                backlog.stories = stories;
+                $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse, status}, sortable and refresh the backlog
             });
-            if($scope.backlogs.length == $scope.maxParallelsBacklogs) {
+            if ($scope.backlogs.length == $scope.maxParallelsBacklogs) {
                 var removedBacklog = tmpBacklogs.pop();
                 removedBacklog.shown = null;
             }
@@ -87,18 +80,22 @@ controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories'
             $scope.backlogs = _.sortBy(tmpBacklogs, 'id');
         }
     };
-
-    $scope.changeBacklogOrder = function(backlog, order){
+    $scope.orderBacklogByRank = function(backlog) {
+        backlog.orderBy.reverse = false;
+        $scope.changeBacklogOrder(backlog, _.find(backlog.orderBy.values, {id: 'rank'}));
+    };
+    $scope.changeBacklogOrder = function(backlog, order) {
         backlog.orderBy.current = order;
         backlog.orderBy.status = false;
         $scope.refreshSingleBacklog(backlog, backlog.stories);
     };
-
-    $scope.reverseBacklogOrder = function(backlog){
+    $scope.reverseBacklogOrder = function(backlog) {
         backlog.orderBy.reverse = !backlog.orderBy.reverse;
         $scope.refreshSingleBacklog(backlog, backlog.stories);
     };
-
+    $scope.isSortableStory = function(story) {
+        return story.state < StoryStatesByName.DONE
+    };
     // Init
     $scope.viewName = 'backlog';
     $scope.selectableOptions = {
@@ -118,13 +115,27 @@ controllers.controller('backlogCtrl', ['$scope', '$state', 'backlogs', 'stories'
             }
         }
     };
-
-    $scope.backlogSortable = {
-        accept: function (sourceItemHandleScope, destSortableScope) { return true; },
-        itemMoved: function (event) { },
-        orderChanged: function(event) { }
+    var updateRank = function(event) {
+        var story = event.source.itemScope.modelValue;
+        var newStories = event.dest.sortableScope.modelValue;
+        var newRank = event.dest.index + 1;
+        if (story.rank != newRank) {
+            story.rank = newRank;
+            StoryService.update(story).then(function() {
+                angular.forEach(newStories, function(newStory, index) {
+                    var referenceStory = _.find(StoryService.list, { id: newStory.id }); // Update the reference stories rather than stories from sortable updated model to ensure propagation and prevent erasure
+                    var currentRank = index + 1;
+                    if (referenceStory.rank != currentRank) {
+                        referenceStory.rank = currentRank;
+                    }
+                });
+            });
+        }
     };
-
+    $scope.backlogSortable = {
+        itemMoved: updateRank,
+        orderChanged: updateRank
+    };
     $scope.backlogs = [];
     $scope.maxParallelsBacklogs = 2;
     $scope.availableBacklogs = backlogs;

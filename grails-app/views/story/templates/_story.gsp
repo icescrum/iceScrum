@@ -54,7 +54,7 @@
                 {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar"></i>
             </span>
         </div>
-        <div class="content" as-sortable-item-handle>
+        <div class="content" as-sortable-item-handle-if="isSortableStory(story)">
             <h3 class="title ellipsis-el"
                 ng-model="story.name"
                 ng-bind-html="story.name | sanitize"

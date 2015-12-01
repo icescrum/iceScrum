@@ -225,6 +225,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
             case 'accept':
                 return Session.po() && story.state == StoryStatesByName.SUGGESTED;
             case 'updateTemplate':
+            case 'rank':
                 return Session.po();
             case 'delete':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||

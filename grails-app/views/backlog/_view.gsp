@@ -80,6 +80,14 @@
     <div class="panel panel-light" ng-repeat="backlog in backlogs">
         <div class="panel-heading">
             <div class="btn-group">
+                <button type="button"
+                        class="btn"
+                        ng-class="backlog.sortable ? 'btn-success' : 'btn-danger'"
+                        ng-click="orderBacklogByRank(backlog)"
+                        uib-tooltip="${message(code:'todo.is.ui.changeRank')}"
+                        tooltip-append-to-body="true">
+                    <span class="fa fa-hand-pointer-o"></span>
+                </button>
                 <div class="btn-group"
                      uib-dropdown
                      is-open="backlog.orderBy.status"
@@ -143,8 +151,9 @@
         </div>
         <div class="panel-body" ng-class="{'loading': !backlog.storiesRendered}">
             <div class="panel-loading" ng-include="'loading.html'"></div>
-            <div class="postits"
+            <div class="postits {{ backlog.sortable ? '' : 'sortable-disabled' }}"
                  as-sortable="backlogSortable"
+                 is-disabled="!backlog.sortable"
                  ng-model="backlog.stories"
                  ng-class="app.asList ? 'list-group' : 'grid-group'"
                  ng-include="'story.html'">
