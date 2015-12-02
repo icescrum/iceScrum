@@ -22,17 +22,19 @@
 --}%
 
 <script type="text/ng-template" id="feature.menu.html">
-<li>
-    <a href ng-if="authorizedFeature('copyToBacklog')" ng-click="copyToBacklog(feature)">
+<li ng-if="authorizedFeature('copyToBacklog')">
+    <a href ng-click="copyToBacklog(feature)">
         <g:message code='is.ui.feature.menu.copy'/>
-    </a>
-    <a href ng-if="authorizedFeature('delete')" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
-        <g:message code='is.ui.feature.menu.delete'/>
     </a>
 </li>
 <li>
     <a href ng-click="showCopyModal('${message(code:'is.permalink')}', 'F' + feature.uid)">
         ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
+    </a>
+</li>
+<li ng-if="authorizedFeature('delete')">
+    <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
+        <g:message code='is.ui.feature.menu.delete'/>
     </a>
 </li>
 </script>

@@ -633,7 +633,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         "ESTIMATED": 3,
         "PLANNED": 4,
         "IN_PROGRESS": 5,
-        "DONE": 6,
+        "DONE": 7,
         "ICEBOX": -1
     })
     .constant('AcceptanceTestStatesByName', {

@@ -25,16 +25,39 @@
 controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', 'FeatureService', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName, FeatureService) {
     // Functions
     $scope.accept = function(story) {
-        StoryService.accept(story)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.story.accepted');
-            });
+        StoryService.accept(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.accepted');
+        });
     };
     $scope.acceptAs = function(story, target) {
-        StoryService.acceptAs(story, target)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.story.acceptedAs' + target);
-            });
+        StoryService.acceptAs(story, target).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.acceptedAs' + target);
+        });
+    };
+    $scope.returnToSandbox = function(story) {
+        StoryService.returnToSandbox(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.returnedToSandbox');
+        });
+    };
+    $scope.unPlan = function(story) {
+        StoryService.unPlan(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.unplanned');
+        });
+    };
+    $scope.shiftToNext = function(story) {
+        StoryService.shiftToNext(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.shiftedToNext');
+        });
+    };
+    $scope.unDone = function(story) {
+        StoryService.unDone(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.unDone');
+        });
+    };
+    $scope.accept = function(story) {
+        StoryService.accept(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.accepted');
+        });
     };
     $scope.follow = function(story) {
         StoryService.follow(story);

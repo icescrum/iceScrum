@@ -25,7 +25,7 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('story/:type/:typeId/:id/:action/:backlog');
 }]);
 
-services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormService', 'StoryStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, FormService, StoryStatesByName, IceScrumEventType, PushService) {
+services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, FormService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     this.list = [];
     this.isListResolved = $q.defer();
     var self = this;
@@ -113,6 +113,27 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
     this['delete'] = function(story) {
         return story.$delete(crudMethods[IceScrumEventType.DELETE]);
     };
+    this.accept = function(story) {
+        story.state = StoryStatesByName.ACCEPTED;
+        return this.update(story);
+    };
+    this.returnToSandbox = function(story) {
+        story.state = StoryStatesByName.SUGGESTED;
+        return this.update(story);
+    };
+    this.unPlan = function(story) {
+        story.parentSprint = {};
+        return this.update(story);
+    };
+    this.shiftToNext = function(story) {
+        return Story.update({shiftToNext: true}, story, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
+    this.done = function(story) {
+        return Story.update({id: story.id, action: 'done'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
+    this.unDone = function(story) {
+        return Story.update({id: story.id, action: 'unDone'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
     this.like = function(story) {
         return Story.update({id: story.id, action: 'like'}, {}, function(resultStory) {
             story.liked = resultStory.liked;
@@ -126,22 +147,18 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         }).$promise;
     };
     this.updateRank = function(story, newRank, relatedStories) {
-        if (story.rank != newRank) {
-            story.rank = newRank;
-            return self.update(story).then(function(story) {
-                angular.forEach(relatedStories, function(relatedStory, index) {
-                    // Update the reference stories rather than stories from sortable updated model to ensure propagation and prevent erasure
-                    var referenceStory = _.find(self.list, { id: relatedStory.id });
-                    var currentRank = index + 1;
-                    if (referenceStory.rank != currentRank) {
-                        referenceStory.rank = currentRank;
-                    }
-                });
-                return story;
+        story.rank = newRank;
+        return self.update(story).then(function(story) {
+            angular.forEach(relatedStories, function(relatedStory, index) {
+                // Update the reference stories rather than stories from sortable updated model to ensure propagation and prevent erasure
+                var referenceStory = _.find(self.list, { id: relatedStory.id });
+                var currentRank = index + 1;
+                if (referenceStory.rank != currentRank) {
+                    referenceStory.rank = currentRank;
+                }
             });
-        } else {
-            return $q.when(story);
-        }
+            return story;
+        });
     };
     this.activities = function(story, all) {
         var params = {action: 'activities', id: story.id};
@@ -151,10 +168,6 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         return Story.query(params, function(activities) {
             story.activities = activities;
         }).$promise;
-    };
-    this.accept = function(story) {
-        story.state = StoryStatesByName.ACCEPTED;
-        return this.update(story);
     };
     this.acceptAs = function(story, target) {
         return Story.update({id: story.id, action: 'acceptAs' + target}, {}, function() {
@@ -248,6 +261,16 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
             case 'delete':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
                     (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
+            case 'returnToSandbox':
+                return Session.po() && _.contains([StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED], story.state);
+            case 'unPlan':
+                return Session.poOrSm() && story.state >= StoryStatesByName.PLANNED && story.state < StoryStatesByName.DONE;
+            case 'shiftToNext':
+                return Session.poOrSm() && story.state >= StoryStatesByName.PLANNED && story.state <= StoryStatesByName.IN_PROGRESS;
+            case 'done':
+                return Session.po() && story.state == StoryStatesByName.IN_PROGRESS;
+            case 'unDone':
+                return Session.po() && story.state == StoryStatesByName.DONE && story.parentSprint.state == SprintStatesByName.IN_PROGRESS;
             default:
                 return false;
         }
