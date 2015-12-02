@@ -378,13 +378,6 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     }
 }]);
 
-controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', function($scope, StoryService) {
-    $scope.filteredAndSortedStories = [];
-    StoryService.listByType($scope.sprint).then(function(stories) {
-        $scope.filteredAndSortedStories = _.sortBy(stories, 'rank');
-    });
-}]);
-
 controllers.controller('sprintPlanCtrl', ['$scope', function($scope) {
     $scope.viewName = 'sprintPlan';
 }]);

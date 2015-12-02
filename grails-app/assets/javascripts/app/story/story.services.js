@@ -125,6 +125,24 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
             story.followers_count = resultStory.followers_count;
         }).$promise;
     };
+    this.updateRank = function(story, newRank, relatedStories) {
+        if (story.rank != newRank) {
+            story.rank = newRank;
+            return self.update(story).then(function(story) {
+                angular.forEach(relatedStories, function(relatedStory, index) {
+                    // Update the reference stories rather than stories from sortable updated model to ensure propagation and prevent erasure
+                    var referenceStory = _.find(self.list, { id: relatedStory.id });
+                    var currentRank = index + 1;
+                    if (referenceStory.rank != currentRank) {
+                        referenceStory.rank = currentRank;
+                    }
+                });
+                return story;
+            });
+        } else {
+            return $q.when(story);
+        }
+    };
     this.activities = function(story, all) {
         var params = {action: 'activities', id: story.id};
         if (all) {
@@ -226,7 +244,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
                 return Session.po() && story.state == StoryStatesByName.SUGGESTED;
             case 'updateTemplate':
             case 'rank':
-                return Session.po();
+                return Session.po() && (!story || story.state < StoryStatesByName.DONE);
             case 'delete':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
                     (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);

@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', 'backlogs', 'stories', function($scope, $state, $filter, StoryService, StoryStatesByName, backlogs, stories) {
+controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'backlogs', 'stories', function($scope, $state, $filter, StoryService, backlogs, stories) {
     $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id;
@@ -93,9 +93,6 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
         backlog.orderBy.reverse = !backlog.orderBy.reverse;
         $scope.refreshSingleBacklog(backlog, backlog.stories);
     };
-    $scope.isSortableStory = function(story) {
-        return story.state < StoryStatesByName.DONE
-    };
     // Init
     $scope.viewName = 'backlog';
     $scope.selectableOptions = {
@@ -119,18 +116,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
         var story = event.source.itemScope.modelValue;
         var newStories = event.dest.sortableScope.modelValue;
         var newRank = event.dest.index + 1;
-        if (story.rank != newRank) {
-            story.rank = newRank;
-            StoryService.update(story).then(function() {
-                angular.forEach(newStories, function(newStory, index) {
-                    var referenceStory = _.find(StoryService.list, { id: newStory.id }); // Update the reference stories rather than stories from sortable updated model to ensure propagation and prevent erasure
-                    var currentRank = index + 1;
-                    if (referenceStory.rank != currentRank) {
-                        referenceStory.rank = currentRank;
-                    }
-                });
-            });
-        }
+        StoryService.updateRank(story, newRank, newStories);
     };
     $scope.backlogSortable = {
         itemMoved: updateRank,
