@@ -45,7 +45,9 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
         backlog.stories = $filter('orderBy')(filteredStories, backlog.orderBy.current.id, backlog.orderBy.reverse);
-        backlog.sortable = backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse && StoryService.authorizedStory('rank') && backlog.name == 'Backlog'; // TODO fix
+        backlog.sortable = backlog.orderBy.current.id == 'rank' &&
+                           !backlog.orderBy.reverse && StoryService.authorizedStory('rank') &&
+                           (backlog.name == 'Backlog' || backlog.name == 'Sandbox'); // TODO fix
     };
     $scope.manageShownBacklog = function(backlog) {
         if (backlog.shown && $scope.backlogs.length > 1) {
