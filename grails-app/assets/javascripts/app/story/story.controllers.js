@@ -49,14 +49,14 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
             $scope.notifySuccess('todo.is.ui.story.shiftedToNext');
         });
     };
+    $scope.done = function(story) {
+        StoryService.done(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.done');
+        });
+    };
     $scope.unDone = function(story) {
         StoryService.unDone(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.unDone');
-        });
-    };
-    $scope.accept = function(story) {
-        StoryService.accept(story).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.accepted');
         });
     };
     $scope.follow = function(story) {
