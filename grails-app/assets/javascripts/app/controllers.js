@@ -287,9 +287,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
 
 controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function($scope, $state, FeatureService, features) {
     // Functions
-    $scope.goToNewFeature = function() {
-        $state.go('feature.new');
-    };
     $scope.isSelected = function(feature) {
         if ($state.params.id) {
             return $state.params.id == feature.id;

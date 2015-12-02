@@ -30,7 +30,6 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
     $scope['delete'] = function(feature) {
         FeatureService.delete(feature)
             .then(function() {
-                $scope.goToNewFeature();
                 $scope.notifySuccess('todo.is.ui.deleted');
             });
     };
@@ -159,7 +158,6 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
     $scope.deleteMultiple = function() {
         FeatureService.deleteMultiple(listId)
             .then(function() {
-                $scope.goToNewFeature();
                 $scope.notifySuccess('todo.is.ui.multiple.deleted');
             });
     };

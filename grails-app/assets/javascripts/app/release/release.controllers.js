@@ -55,7 +55,6 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', fu
     $scope['delete'] = function(release) {
         ReleaseService.delete(release, $scope.project)
             .then(function() {
-                $scope.goToNewRelease();
                 $scope.notifySuccess('todo.is.ui.deleted');
             });
     };

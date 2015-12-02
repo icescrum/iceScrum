@@ -24,21 +24,15 @@
 
 controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', 'FeatureService', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName, FeatureService) {
     // Functions
-    $scope.goToNewStory = function() {
-        $state.go('backlog.new');
-    };
-
     $scope.accept = function(story) {
         StoryService.accept(story)
             .then(function() {
-                $scope.goToNewStory();
                 $scope.notifySuccess('todo.is.ui.story.accepted');
             });
     };
     $scope.acceptAs = function(story, target) {
         StoryService.acceptAs(story, target)
             .then(function() {
-                $scope.goToNewStory();
                 $scope.notifySuccess('todo.is.ui.story.acceptedAs' + target);
             });
     };
@@ -51,7 +45,6 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
     $scope['delete'] = function(story) {
         //fake delete
         _.remove(StoryService.list, { id: story.id });
-        $scope.goToNewStory();
         var notif = $scope.notifySuccess('todo.is.ui.deleted', {
             actions: [{
                 label: $scope.message('todo.is.ui.undo'),
@@ -94,7 +87,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
         if (isNullable) {
             return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuiteNullable : $scope.fibonacciSuiteNullable;
         } else {
-        return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
+            return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
         }
     };
     $scope.isEffortNullable = function(story) {
@@ -491,7 +484,6 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
         // TODO cancellable delete ?
         StoryService.deleteMultiple(listId)
             .then(function() {
-                $scope.goToNewStory();
                 $scope.notifySuccess('todo.is.ui.multiple.deleted');
             });
     };
@@ -507,7 +499,6 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.acceptMultiple = function() {
         StoryService.acceptMultiple(listId)
             .then(function() {
-                $scope.goToNewStory();
                 $scope.notifySuccess('todo.is.ui.story.multiple.accepted');
             });
     };
@@ -520,7 +511,6 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.acceptAsMultiple = function(target) {
         StoryService.acceptAsMultiple(listId, target)
             .then(function() {
-                $scope.goToNewStory();
                 $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs' + target);
             });
     };

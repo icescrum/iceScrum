@@ -253,9 +253,9 @@
                     ${message(code:'default.button.update.label')}
                 </button>
                 <a class="btn confirmation btn-default pull-right"
-                        tooltip-append-to-body="true"
-                        uib-tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
-                        href="#/{{ ::viewName }}">
+                   tooltip-append-to-body="true"
+                   uib-tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
+                   href="#/{{ ::viewName }}">
                     ${message(code:'is.button.cancel')}
                 </a>
             </div>
