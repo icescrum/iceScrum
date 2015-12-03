@@ -278,6 +278,13 @@ environments {
     }
 }
 
+grails.cache.config = {
+    cache {
+        name 'feed'
+        timeToLiveSeconds 120
+    }
+}
+
 icescrum.securitydebug.enable = false
 
 /* log4j configuration */

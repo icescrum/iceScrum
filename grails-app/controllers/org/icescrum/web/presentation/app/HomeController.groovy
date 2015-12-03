@@ -25,6 +25,7 @@
 package org.icescrum.web.presentation.app
 
 import grails.converters.JSON
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Feed
 import org.icescrum.core.domain.User
@@ -125,20 +126,13 @@ class HomeController {
     }
 
     def contentFeed(long id) {
+        println "test"
         User user = (User) springSecurityService.currentUser
         Feed feed = Feed.findByUserAndId(user, id)
         userService.saveFeed(user, feed)
         def url = feed ? feed.feedUrl : grailsApplication.config.icescrum.feed.default.url
         try {
-            def channel = new XmlSlurper().parse(url).channel
-            def contentFeed = [title: channel.title.text(), description: channel.description.text()]
-            contentFeed.items = channel.item.collect { xmlItem ->
-                return [link: xmlItem.link.text(),
-                        title: xmlItem.title.text(),
-                        description: xmlItem.description.text(),
-                        pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]
-            }
-            render(status: 200, contentType: "application/json", text: contentFeed as JSON)
+            render(status: 200, contentType: "application/json", text: userService.getFeedContent(url) as JSON)
         } catch (Exception e) {
             def text = '<a target="_blank" href="' + url + '">' + url + '</a><br/>' + message(code: 'todo.is.ui.panel.feed.error')
             returnError(text: text, exception: e, silent: true)
@@ -160,15 +154,7 @@ class HomeController {
         try {
             allUsersFeedUrls.each { url ->
                 currentFeed = url
-                def channel = new XmlSlurper().parse(url).channel
-                def channelTitle = channel.title.text()
-                mergedContentFeed.addAll(channel.item.collect { xmlItem ->
-                    return [feedTitle: channelTitle,
-                            link: xmlItem.link.text(),
-                            title: xmlItem.title.text(),
-                            description: xmlItem.description.text(),
-                            pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]
-                })
+                mergedContentFeed.addAll(userService.getFeedContent(url).items)
             }
             render(status: 200, contentType: "application/json", text: mergedContentFeed as JSON)
         } catch (Exception e) {
@@ -176,4 +162,6 @@ class HomeController {
             returnError(text: text, exception: e, silent: true)
         }
     }
+
+
 }
