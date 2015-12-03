@@ -74,11 +74,6 @@
                                     </a>
                                 </span>
                             </div>
-                            <div class="progress">
-                                <span class="status">3/6</span>
-                                <div class="progress-bar" style="width:16.666666666666668%">
-                                </div>
-                            </div>
                             <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
                         </div>
                     </div>

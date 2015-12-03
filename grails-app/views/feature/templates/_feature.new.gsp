@@ -51,11 +51,6 @@
                         <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
                         <span class="action"><a><i class="fa fa-tasks"></i></a></span>
                     </div>
-                    <div class="progress">
-                        <span class="status">3/6</span>
-                        <div class="progress-bar" style="width:16.666666666666668%">
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
