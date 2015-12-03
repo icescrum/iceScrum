@@ -102,7 +102,7 @@
                            name="name"
                            type="text"
                            class="form-control"
-                           focus-me="true"
+                           autofocus
                            placeholder="${message(code: 'is.ui.story.noname')}"
                            ng-maxlength="100"
                            ng-model="story.name"

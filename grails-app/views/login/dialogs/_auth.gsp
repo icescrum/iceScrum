@@ -34,7 +34,7 @@
                type="text"
                id="credentials.j_username"
                class="form-control"
-               focus-me="true"
+               autofocus
                value="${params.username?:''}">
         <g:if test="${enableRegistration}">
             <span class="input-group-btn">

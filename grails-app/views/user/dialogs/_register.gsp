@@ -39,7 +39,7 @@
                    name="user.username"
                    ng-model="user.username"
                    ng-remote-validate="/user/available/username"
-                   focus-me="true"/>
+                   autofocus/>
         </div>
     </div>
     <div class="row">

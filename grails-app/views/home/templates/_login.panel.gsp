@@ -12,8 +12,7 @@
                         <div class="input-group">
                             <input required="" ng-model="credentials.j_username" type="text"
                                    id="credentials.j_username"
-                                   class="form-control ng-isolate-scope ng-dirty ng-valid-parse ng-valid ng-valid-required ng-touched"
-                                   focus-me="true" value="">
+                                   class="form-control ng-isolate-scope ng-dirty ng-valid-parse ng-valid ng-valid-required ng-touched" value="" autofocus>
                             <span class="input-group-btn">
                                 <a tabindex="-1"
                                    class="btn btn-default"

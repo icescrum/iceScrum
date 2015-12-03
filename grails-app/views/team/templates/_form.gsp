@@ -33,7 +33,7 @@
                 <input autocomplete="off"
                        type="text"
                        name="team.name"
-                       focus-me="true"
+                       autofocus
                        class="form-control"
                        uib-typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                        typeahead-loading="searching"
@@ -56,7 +56,7 @@
                            type="text"
                            name="member.search"
                            id="member.search"
-                           focus-me="true"
+                           autofocus
                            class="form-control"
                            ng-model="member.name"
                            uib-typeahead="member as member.name for member in searchMembers($viewValue)"

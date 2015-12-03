@@ -176,11 +176,9 @@
                     </div>
                 </g:if>
                 <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
-                    <div ng-switch="getUnreadActivities()"
-                         class="navbar-notif"
+                    <div class="navbar-notif"
                          uib-dropdown-toggle>
-                        <span class="fa fa-bolt text-muted" ng-switch-when="0"></span>
-                        <span class="fa fa-bolt" ng-switch-default></span>
+                        <span class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></span>
                         <span class="badge alert-info" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                     </div>
                     <div class="uib-dropdown-menu notifications selection-disable" ng-include="'notifications.panel.html'"></div>

@@ -90,7 +90,7 @@
                                class="form-control"
                                name="user.firstName"
                                ng-model="editableUser.firstName"
-                               focus-me="true"
+                               autofocus
                                required/>
                     </div>
                     <div class="form-half">

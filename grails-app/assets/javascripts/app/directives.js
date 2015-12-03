@@ -23,20 +23,7 @@
  */
 
 var directives = angular.module('directives', []);
-directives.directive('focusMe', ["$timeout", function($timeout) {
-    return {
-        scope: { trigger: '@focusMe' },
-        link: function(scope, element) {
-            scope.$watch('trigger', function(value) {
-                if(value === "true") {
-                    $timeout(function() {
-                        element[0].focus();
-                    });
-                }
-            });
-        }
-    };
-}]).directive('isMarkitup', ['$http', function($http) {
+directives.directive('isMarkitup', ['$http', function($http) {
     return {
         restrict: 'A',
         scope: {

@@ -41,7 +41,7 @@
                 <label for="name">${message(code:'is.release.name')}</label>
                 <input required
                        name="name"
-                       focus-me="true"
+                       autofocus
                        ng-model="release.name"
                        type="text"
                        class="form-control"

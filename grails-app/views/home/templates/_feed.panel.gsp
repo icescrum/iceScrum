@@ -39,7 +39,7 @@
             <div class="form-group">
                 <label class="col-sm-2">${message(code: 'todo.is.ui.panel.feed.input')}</label>
                 <div class="col-sm-7">
-                    <input focus-me="true"
+                    <input autofocus
                            name="name"
                            class="form-control"
                            type="text"

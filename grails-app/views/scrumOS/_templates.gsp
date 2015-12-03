@@ -52,7 +52,7 @@ loading.html">
 <script type="text/ng-template" id="copy.html">
 <is:modal title="{{ title }}">
     <p class="help-block">${ message(code: 'todo.is.ui.copy.instructions')}</p>
-    <input type="text" focus-me="true" select-on-focus class="form-control" value="{{ value }}"/>
+    <input type="text" autofocus select-on-focus class="form-control" value="{{ value }}"/>
 </is:modal>
 </script>
 
@@ -115,7 +115,7 @@ loading.html">
         </a>
         <a class="btn btn-danger"
            href="${createLink(controller:'logout')}">
-            ${message(code:'is.logout')} <i class="fa fa-sign-out"></i>
+            ${message(code:'is.logout')}
         </a>
     </div>
 </script>
@@ -124,8 +124,8 @@ loading.html">
         <i class="fa fa-refresh fa-spin"></i>
     </div>
     <div ng-repeat="groupedActivity in groupedUserActivities">
-        <div class="custom-list-header"><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">{{ groupedActivity.project.name }}</a></div>
-        <div class="media custom-list-item" ng-class="{ 'alert-info': activity.notRead }" ng-repeat="activity in groupedActivity.activities">
+        <div><h4><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">{{ groupedActivity.project.name }}</a></h4></div>
+        <div class="media" ng-class="{ 'unread': activity.notRead }" ng-repeat="activity in groupedActivity.activities">
             <div class="media-left">
                 <img height="36px"
                      ng-src="{{activity.poster | userAvatar}}"

@@ -28,7 +28,7 @@
           title="${message(code:'todo.is.ui.story.template.new')}">
     <div class="form-group">
         <label for="template.name">${message(code:'todo.is.ui.story.template.name')}</label>
-        <input focus-me="true"
+        <input autofocus
                class="form-control"
                ng-model="template.name"
                placeholder="${message(code:'todo.is.ui.story.template.name.placeholder')}"/>

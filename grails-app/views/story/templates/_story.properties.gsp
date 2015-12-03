@@ -218,7 +218,7 @@
                       ng-show="showDescriptionTextarea"
                       ng-blur="blurDescription('${is.generateStoryTemplate(newLine: '\\n')}')"
                       at="atOptions"
-                      focus-me="{{ showDescriptionTextarea }}"
+                      autofocus
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
             <div class="atwho-preview form-control-static important"
                  ng-disabled="!formHolder.editable"

@@ -257,15 +257,17 @@ body > .container-fluid > .header {
     cursor: pointer;
     .fa {
       font-size: 28px;
+      color:#fff;
+      &.empty {
+        color:#ccc;
+      }
     }
     .badge {
       position: absolute;
-      top: 16px;
-      left: 16px;
-      font-size: 0.8em;
-      color: #4d90fe;
-      border: 1px solid;
-      padding: 1px 5px;
+      top: 15px;
+      left: 5px;
+      background: none;
+      color: #fff;
     }
   }
   .notifications {
@@ -273,6 +275,19 @@ body > .container-fluid > .header {
     width: 500px;
     max-height: 500px;
     overflow: auto;
+    padding:15px;
+    .media {
+      opacity:0.5;
+      &.unread, &:hover {
+        opacity: 1;
+      }
+    }
+    h4 {
+      margin:0;
+      a {
+        color:#000;
+      }
+    }
   }
   .profile-panel {
     width: 400px;

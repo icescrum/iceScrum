@@ -68,7 +68,7 @@
                     <label for="name">${message(code:'is.feature.name')}</label>
                     <input required
                            name="name"
-                           focus-me="true"
+                           autofocus
                            ng-model="feature.name"
                            type="text"
                            class="form-control"

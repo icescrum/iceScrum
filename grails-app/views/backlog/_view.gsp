@@ -81,12 +81,11 @@
         <div class="panel-heading">
             <div class="btn-group">
                 <button type="button"
-                        class="btn"
-                        ng-class="backlog.sortable ? 'btn-success' : 'btn-danger'"
+                        class="btn btn-default"
                         ng-click="orderBacklogByRank(backlog)"
                         uib-tooltip="${message(code:'todo.is.ui.changeRank')}"
                         tooltip-append-to-body="true">
-                    <span class="fa fa-hand-pointer-o"></span>
+                    <span ng-class="backlog.sortable ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
                 </button>
                 <div class="btn-group"
                      uib-dropdown

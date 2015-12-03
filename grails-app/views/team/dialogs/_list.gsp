@@ -107,7 +107,7 @@
                                    type="text"
                                    name="member.search"
                                    id="member.search"
-                                   focus-me="true"
+                                   autofocus
                                    class="form-control"
                                    ng-model="member.name"
                                    uib-typeahead="member as member.name for member in searchMembers($viewValue)"

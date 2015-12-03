@@ -28,14 +28,14 @@
         <div class="col-sm-8 col-xs-8 form-group">
             <label for="name">${message(code:'is.product.name')}</label>
             <div class="input-group">
-                <input focus-me="true"
+                <input autofocus
                        name="name"
                        type="text"
                        class="form-control"
                        ng-model="project.name"
                        ng-blur="initPkey()"
                        ng-required="isCurrentStep(1)"
-                       ng-remote-validate="{{ checkProjectPropertyUrl }}/name">
+                       ng-remote-validate="{{ checkProjectPropertyUrl }}/name" autofocus>
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
                         <a class="btn btn-model"
