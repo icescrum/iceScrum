@@ -72,8 +72,8 @@
                            ng-disabled="!formHolder.editable"
                            name="type"
                            ng-model="editableStory.type">
-                    <ui-select-match>{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
-                    <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                    <ui-select-match><span class="fa fa-{{ $select.selected | storyTypeIcon }}"></span> {{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
+                    <ui-select-choices repeat="storyType in storyTypes"><i class="fa fa-{{ ::storyType | storyTypeIcon }}"></i> {{ ::storyType | i18n:'StoryTypes' }}</ui-select-choices>
                 </ui-select>
             </div>
             <div class="form-half"

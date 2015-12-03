@@ -97,8 +97,8 @@
                                        ng-disabled="!formHolder.editable"
                                        name="type"
                                        ng-model="editableFeature.type">
-                                <ui-select-match>{{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
-                                <ui-select-choices repeat="featureType in featureTypes">{{ featureType | i18n:'FeatureTypes' }}</ui-select-choices>
+                                <ui-select-match><i class="fa fa-{{ $select.selected | featureTypeIcon }}"></i> {{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
+                                <ui-select-choices repeat="featureType in featureTypes"><i class="fa fa-{{ ::featureType | featureTypeIcon }}"></i> {{ ::featureType | i18n:'FeatureTypes' }}</ui-select-choices>
                             </ui-select>
                             <span class="input-group-btn" ng-if="formHolder.editable">
                                 <button colorpicker

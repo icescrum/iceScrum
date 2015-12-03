@@ -38,21 +38,37 @@ filters
     }])
     .filter('storyType', function() {
         return function(type) {
-            if (type == 2) {
-                return 'defect';
-            } else if (type == 3) {
-                return 'functional';
-            } else {
-                return '';
+            switch(type) {
+                case 2:
+                    return 'defect';
+                case 3:
+                    return 'functional';
+                default:
+                    return '';
             }
         };
     })
+    .filter('storyTypeIcon', function() {
+        return function(type) {
+            switch(type) {
+                case 2:
+                    return 'bug';
+                case 3:
+                    return 'cogs';
+                default:
+                    return '';
+
+            }
+        }
+    })
     .filter('featureType', function() {
         return function(type) {
-            if (type == 1) {
-                return 'architectural';
-            }
-            return '';
+            return type == 1 ? 'architectural' : '';
+        };
+    })
+    .filter('featureTypeIcon', function() {
+        return function(type) {
+            return type == 1 ? 'cogs' : '';
         };
     })
     .filter('contrastColor', function() {
