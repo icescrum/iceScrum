@@ -72,7 +72,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
             backlog.shown = lastShown ? (lastShown.shown + 1) : 1;
             StoryService.listByBacklog(backlog).then(function(stories) {
                 backlog.stories = stories;
-                $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse, status}, sortable and refresh the backlog
+                $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable and refresh the backlog
             });
             if ($scope.backlogs.length == $scope.maxParallelsBacklogs) {
                 var removedBacklog = tmpBacklogs.pop();
@@ -88,7 +88,6 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
     };
     $scope.changeBacklogOrder = function(backlog, order) {
         backlog.orderBy.current = order;
-        backlog.orderBy.status = false;
         $scope.refreshSingleBacklog(backlog, backlog.stories);
     };
     $scope.reverseBacklogOrder = function(backlog) {

@@ -89,7 +89,6 @@
                 </button>
                 <div class="btn-group"
                      uib-dropdown
-                     is-open="backlog.orderBy.status"
                      tooltip-append-to-body="true"
                      uib-tooltip="${message(code:'todo.is.ui.sort')}">
                     <button class="btn btn-default" uib-dropdown-toggle type="button">

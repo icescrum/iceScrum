@@ -41,9 +41,15 @@
                     class="btn btn-default">
                 <span class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></span>
             </button>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click="orderByRank()"
+                    uib-tooltip="${message(code:'todo.is.ui.changeRank')}"
+                    tooltip-append-to-body="true">
+                <span ng-class="isSortableFeature() ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
+            </button>
             <div class="btn-group"
                  uib-dropdown
-                 is-open="orderBy.status"
                  tooltip-append-to-body="true"
                  uib-tooltip="${message(code:'todo.is.ui.sort')}">
                 <button class="btn btn-default" uib-dropdown-toggle type="button">
@@ -52,7 +58,7 @@
                 </button>
                 <ul class="uib-dropdown-menu" role="menu">
                     <li role="menuitem" ng-repeat="order in orderBy.values">
-                        <a ng-click="orderBy.current = order; orderBy.status = false;" href>{{ order.name }}</a>
+                        <a ng-click="orderBy.current = order" href>{{ order.name }}</a>
                     </li>
                 </ul>
             </div>
@@ -113,11 +119,14 @@
         </div>
     </div>
     <div class="panel-body">
-        <div id="backlog-layout-window-${controllerName}"
+        <div class="postits {{ isSortableFeature() ? '' : 'sortable-disabled' }}"
              ng-class="app.asList ? 'list-group' : 'grid-group'"
-             class="postits">
+             as-sortable="featureSortable"
+             is-disabled="!isSortableFeature()"
+             ng-model="features">
             <div ng-class="{ 'ui-selected': isSelected(feature) }"
                  data-id="{{ feature.id }}"
+                 as-sortable-item
                  ng-repeat="feature in features | orderBy:orderBy.current.id:orderBy.reverse"
                  ng-controller="featureCtrl"
                  ellipsis
@@ -125,10 +134,11 @@
                 <div style="{{ feature.color | createGradientBackground }}"
                      class="postit story {{ feature.color | contrastColor }} {{ feature.type | featureType }}">
                     <div class="head">
-                        <span class="id">{{ feature.id }}</span>
+                        <span class="id">{{ ::feature.id }} {{ feature.rank }}</span>
                         <span class="value" ng-if="feature.value">{{ feature.value }} <i class="fa fa-line-chart"></i></span>
                     </div>
-                    <div class="content">
+                    <div class="content"
+                         as-sortable-item-handle>
                         <h3 class="title ellipsis-el"
                             ng-model="feature.name"
                             ng-bind-html="feature.name | sanitize"></h3>

@@ -299,20 +299,37 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
+    $scope.orderByRank = function() {
+        $scope.orderBy.reverse = false;
+        $scope.orderBy.current = _.find($scope.orderBy.values, {id: 'rank'});
+    };
+    $scope.isSortableFeature = function() {
+        return $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse && FeatureService.authorizedFeature('rank')
+    };
     // Init
     $scope.viewName = 'feature';
     $scope.features = features;
+    var updateRank = function(event) {
+        var feature = event.source.itemScope.modelValue;
+        var newFeatures = event.dest.sortableScope.modelValue;
+        var newRank = event.dest.index + 1;
+        FeatureService.updateRank(feature, newRank, newFeatures);
+    };
+    $scope.featureSortable = {
+        itemMoved: updateRank,
+        orderChanged: updateRank
+    };
     $scope.orderBy = {
-        reverse: false,
-        status: false,
         current: {id: 'dateCreated', name: $scope.message('todo.is.ui.sort.date')},
         values: [
+            {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
             {id: 'dateCreated', name: $scope.message('todo.is.ui.sort.date')},
             {id: 'name', name: $scope.message('todo.is.ui.sort.name')},
             {id: 'stories_ids.length', name: $scope.message('todo.is.ui.sort.stories')},
             {id: 'value', name: $scope.message('todo.is.ui.sort.value')}
         ]
     };
+    $scope.orderByRank();
 }]);
 
 controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ReleaseStatesByName', 'SprintStatesByName', 'releases', function($scope, $state, ReleaseService, SprintService, ReleaseStatesByName, SprintStatesByName, releases) {

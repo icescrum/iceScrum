@@ -88,6 +88,18 @@ services.service("FeatureService", ['Feature', 'Session', 'PushService', 'IceScr
             });
         }).$promise;
     };
+    this.updateRank = function(feature, newRank, features) {
+        feature.rank = newRank;
+        return self.update(feature).then(function(updatedFeature) {
+            angular.forEach(features, function(f, index) {
+                var currentRank = index + 1;
+                if (f.rank != currentRank) {
+                    f.rank = currentRank;
+                }
+            });
+            return updatedFeature;
+        });
+    };
     this.copyToBacklogMultiple = function(ids) {
         return Feature.updateArray({ id: ids, action: 'copyToBacklog' }, {}).$promise;
     };
@@ -104,6 +116,7 @@ services.service("FeatureService", ['Feature', 'Session', 'PushService', 'IceScr
             case 'copyToBacklog':
             case 'upload':
             case 'update':
+            case 'rank':
             case 'delete':
                 return Session.po();
             default:
