@@ -46,7 +46,7 @@
                                    ng-switch="topStory.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
                                 <span class="id">{{ topStory.id }}</span>
                                 <span class="value" ng-if="topStory.value">{{ topStory.value }} <i class="fa fa-line-chart"></i></span>
-                                <span class="estimation ui-selectable-cancel" ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }} <i class="fa fa-dollar"></i></span>
+                                <span class="estimation" ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }} <i class="fa fa-dollar"></i></span>
                             </div>
                             <div class="content">
                                 <h3 class="title ellipsis-el"

@@ -313,23 +313,6 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
             {id: 'value', name: $scope.message('todo.is.ui.sort.value')}
         ]
     };
-    $scope.selectableOptions = {
-        filter: "> .postit-container",
-        cancel: "a",
-        stop: function(e, ui, selectedItems) {
-            switch (selectedItems.length) {
-                case 0:
-                    $state.go('feature');
-                    break;
-                case 1:
-                    $state.go($state.params.tabId ? 'feature.details.tab' : 'feature.details', {id: selectedItems[0].id});
-                    break;
-                default:
-                    $state.go('feature.multiple', {listId: _.pluck(selectedItems, 'id').join(",")});
-                    break;
-            }
-        }
-    };
 }]);
 
 controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ReleaseStatesByName', 'SprintStatesByName', 'releases', function($scope, $state, ReleaseService, SprintService, ReleaseStatesByName, SprintStatesByName, releases) {

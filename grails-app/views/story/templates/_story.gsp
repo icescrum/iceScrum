@@ -39,14 +39,14 @@
                ng-click="follow(story)"
                ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
             <span class="id">{{ ::story.uid }}</span>
-            <span class="value editable ui-selectable-cancel"
+            <span class="value editable"
                   uib-tooltip="${message(code: 'is.story.value')}"
                   tooltip-append-to-body="true"
                   ng-click="showEditValueModal(story)"
                   ng-if="story.value">
                     {{ story.value }} <i class="fa fa-line-chart"></i>
             </span>
-            <span class="estimation editable ui-selectable-cancel"
+            <span class="estimation editable"
                   uib-tooltip="${message(code: 'is.story.effort')}"
                   tooltip-append-to-body="true"
                   ng-if="story.state > 1"

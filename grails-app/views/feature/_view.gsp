@@ -114,8 +114,6 @@
     </div>
     <div class="panel-body">
         <div id="backlog-layout-window-${controllerName}"
-             ui-selectable="selectableOptions"
-             ui-selectable-list="features"
              ng-class="app.asList ? 'list-group' : 'grid-group'"
              class="postits">
             <div ng-class="{ 'ui-selected': isSelected(feature) }"

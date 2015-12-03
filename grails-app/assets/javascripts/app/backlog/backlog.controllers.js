@@ -97,23 +97,6 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
     };
     // Init
     $scope.viewName = 'backlog';
-    $scope.selectableOptions = {
-        filter: ">.postit-container",
-        cancel: "a,.ui-selectable-cancel",
-        stop: function(e, ui, selectedItems) {
-            switch (selectedItems.length) {
-                case 0:
-                    $state.go($scope.viewName);
-                    break;
-                case 1:
-                    $state.go($scope.viewName + ($state.params.tabId ? '.details.tab' : '.details'), {id: selectedItems[0].id});
-                    break;
-                default:
-                    $state.go($scope.viewName + '.multiple', {listId: _.pluck(selectedItems, 'id').join(",")});
-                    break;
-            }
-        }
-    };
     var updateRank = function(event) {
         var story = event.source.itemScope.modelValue;
         var newStories = event.dest.sortableScope.modelValue;
