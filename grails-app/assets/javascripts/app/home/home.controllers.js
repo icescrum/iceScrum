@@ -23,13 +23,6 @@ controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, Ho
     // Init
     $scope.panelsLeft = [];
     $scope.panelsRight = [];
-    $scope.sortable_options = {
-        handle: ".panel-heading",
-        connectWith: 'panel',
-        sortableClass: "sortable",
-        forcePlaceholderSize: "> div",
-        placeholder: '<div>&nbsp;</div>'
-    };
     var updatePosition = function(event) {
         HomeService.updatePositionPanel({
             id: event.source.itemScope.modelValue.id,
@@ -40,6 +33,9 @@ controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, Ho
     $scope.panelSortableListeners = {
         itemMoved: updatePosition,
         orderChanged: updatePosition,
+        accept: function (sourceItemHandleScope, destSortableScope) {
+            return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+        },
         containment: '.main'
     };
     HomeService.getPanels().then(function(panels) {

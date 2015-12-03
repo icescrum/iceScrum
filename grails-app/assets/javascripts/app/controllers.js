@@ -146,6 +146,9 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             itemMoved: menuSortableChange,
             orderChanged: menuSortableChange,
             containment: '#header',
+            accept: function (sourceItemHandleScope, destSortableScope) {
+                return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+            },
             dragStart: function() { $scope.menuDragging = true; },
             dragEnd: function() { $scope.menuDragging = false; }
         };

@@ -21,6 +21,10 @@
     padding: 0;
 }
 
+.select2-container.form-control[disabled] {
+    border: 1px solid transparent;
+}
+
 /**
  * Adjust Select2 inputs to fit Bootstrap 3 default .form-control appearance.
  */

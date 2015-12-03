@@ -150,6 +150,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
         $state.go('newProject');
     };
     // Init
+    $scope.sortableId = 'menu';
     $scope.currentProject = Session.getProject();
 }]);
 
