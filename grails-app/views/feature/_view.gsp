@@ -177,8 +177,8 @@
                         </span>
                     </div>
                     <div class="progress">
-                        <span class="status">3/6</span>
-                        <div class="progress-bar" style="width:16.666666666666668%">
+                        <span class="status">{{ feature.countDoneStories }}/{{ feature.stories_ids.length }}</span>
+                        <div class="progress-bar" style="width: {{ feature.countDoneStories | percentProgress:feature.stories_ids.length }}%">
                         </div>
                     </div>
                     <div class="state">{{ feature.state | i18n:'FeatureStates' }}</div>

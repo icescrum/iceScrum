@@ -260,6 +260,12 @@
           .progress-bar {
             text-align: left;
             background: rgba(255, 255, 255, 0.9);
+            &.bg-success {
+              .bg-variant(darken(@state-success-bg, 20%))
+            }
+            &.bg-danger {
+              .bg-variant(darken(@state-danger-bg, 20%))
+            }
           }
           .status {
             top: 3px;

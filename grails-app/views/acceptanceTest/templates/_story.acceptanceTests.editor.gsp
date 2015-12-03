@@ -46,10 +46,10 @@
                        ng-model="editableAcceptanceTest.state"
                        ng-disabled="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)">
                 <ui-select-match>
-                    <span ng-class="$select.selected | acceptanceTestColor"><i class='fa fa-check'></i> {{ $select.selected | i18n:'AcceptanceTestStates' }}</span>
+                    <span ng-class="'text-'+($select.selected | acceptanceTestColor)"><i class='fa fa-check'></i> {{ $select.selected | i18n:'AcceptanceTestStates' }}</span>
                 </ui-select-match>
                 <ui-select-choices repeat="acceptanceTestState in acceptanceTestStates">
-                    <span ng-class="acceptanceTestState | acceptanceTestColor"><i class='fa fa-check'></i> {{ acceptanceTestState | i18n:'AcceptanceTestStates' }}</span>
+                    <span ng-class="'text-'+(acceptanceTestState | acceptanceTestColor)"><i class='fa fa-check'></i> {{ acceptanceTestState | i18n:'AcceptanceTestStates' }}</span>
                 </ui-select-choices>
             </ui-select>
         </div>

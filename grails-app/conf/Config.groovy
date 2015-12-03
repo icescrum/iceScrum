@@ -101,7 +101,7 @@ icescrum.push.enable = true
 
 //remove total*
 icescrum.marshaller = [
-        story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed'],
+        story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed', 'countDoneTasks'],
                includeCount:['comments'],
                textile:['notes'],
                asShort:['state', 'effort','uid', 'name']],

@@ -287,33 +287,9 @@ filters
                 }
             }
         };
-    }).filter('stateProgress', ['StoryStatesByName', function(StoryStatesByName) {
-        return function(storyState) {
-            var percent;
-            switch (storyState) {
-                case StoryStatesByName.SUGGESTED:
-                    percent = 1;
-                    break;
-                case StoryStatesByName.ACCEPTED:
-                    percent = 2;
-                    break;
-                case StoryStatesByName.ESTIMATED:
-                    percent = 3;
-                    break;
-                case StoryStatesByName.PLANNED:
-                    percent = 4;
-                    break;
-                case StoryStatesByName.IN_PROGRESS:
-                    percent = 5;
-                    break;
-                case StoryStatesByName.DONE:
-                    percent = 6;
-                    break;
-                default:
-                    percent = 0;
-            }
-            var stateCount = 6;
-            return Math.floor((percent / stateCount) * 100);
+    }).filter('percentProgress', [function() {
+        return function(current, count) {
+            return Math.floor((current * 100) / count);
         }
     }]).filter('dateToIso', ['dateFilter', function(dateFilter) {
         return function (date) {
@@ -358,13 +334,13 @@ filters
             var colorClass;
             switch (state) {
                 case AcceptanceTestStatesByName.TOCHECK:
-                    colorClass = 'text-default';
+                    colorClass = 'default';
                     break;
                 case AcceptanceTestStatesByName.FAILED:
-                    colorClass = 'text-danger';
+                    colorClass = 'danger';
                     break;
                 case AcceptanceTestStatesByName.SUCCESS:
-                    colorClass = 'text-success';
+                    colorClass = 'success';
                     break;
             }
             return colorClass;

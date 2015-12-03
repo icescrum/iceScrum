@@ -114,8 +114,8 @@
             </div>
         </div>
         <div ng-if="tasksProgress(story)" class="progress">
-            <span class="status">{{ story.state < 6 ? story.state : 6 }}/{{ story.tasks_count }}</span>
-            <div class="progress-bar" style="width: {{ story.state | stateProgress }}%">
+            <span class="status">{{ story.countDoneTasks }}/{{ story.tasks_count }}</span>
+            <div class="progress-bar"  ng-class="'bg-'+(story.testState | acceptanceTestColor)" style="width: {{ story.countDoneTasks | percentProgress:story.tasks_count }}%">
             </div>
         </div>
         <div class="state" ng-class="{'hover-progress':tasksProgress(story)}" title="{{ story.state | i18n:'StoryStates' }}">{{ story.state | i18n:'StoryStates' }}</div>
