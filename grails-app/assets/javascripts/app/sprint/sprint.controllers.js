@@ -64,7 +64,10 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
     // Init
     $scope.sprintSortableOptions = {
         itemMoved: function(event) {
-            console.log("move");
+            var story = event.source.itemScope.modelValue;
+            var destScope = event.dest.sortableScope;
+            var newRank = event.dest.index + 1;
+            StoryService.plan(story, destScope.sprint, newRank);
         },
         orderChanged: function(event) {
             var story = event.source.itemScope.modelValue;

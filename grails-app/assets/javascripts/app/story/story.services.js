@@ -160,6 +160,13 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
             return story;
         });
     };
+    this.plan = function(story, sprint, rank) {
+        story.rank = rank;
+        story.parentSprint = { id: sprint.id };
+        return self.update(story).then(function(story) {
+            return story;
+        });
+    };
     this.activities = function(story, all) {
         var params = {action: 'activities', id: story.id};
         if (all) {
