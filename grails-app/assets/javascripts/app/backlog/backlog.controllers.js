@@ -95,17 +95,21 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
     };
     // Init
     $scope.viewName = 'backlog';
-    var updateRank = function(event) {
-        var story = event.source.itemScope.modelValue;
-        var newStories = event.dest.sortableScope.modelValue;
-        var newRank = event.dest.index + 1;
-        StoryService.updateRank(story, newRank, newStories);
-    };
     $scope.backlogSortableOptions = {
-        itemMoved: updateRank,
-        orderChanged: updateRank,
+        itemMoved: function(event) {
+            console.log("move");
+        },
+        orderChanged: function(event) {
+            var story = event.source.itemScope.modelValue;
+            var newStories = event.dest.sortableScope.modelValue;
+            var newRank = event.dest.index + 1;
+            StoryService.updateRank(story, newRank, newStories);
+        },
         accept: function (sourceItemHandleScope, destSortableScope) {
-            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+            var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+            // We don't check more that the fact that the dest backlog is also sorting
+            // because we know that the only backlogs that can be sorted (Sandbox & Backlog) can always be inter-sorted (accept <-> return to backlog)
+            return sameSortable && destSortableScope.backlog.sorting;
         }
     };
     $scope.sortableId = 'backlog';
