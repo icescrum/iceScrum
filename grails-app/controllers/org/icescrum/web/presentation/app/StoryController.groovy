@@ -127,9 +127,6 @@ class StoryController {
             if (storyParams.rank != null) {
                 props.rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
             }
-            if (storyParams.state != null) {
-                props.state = storyParams.state instanceof Number ? storyParams.state : storyParams.state.toInteger()
-            }
             if (storyParams.effort != null) {
                 if (storyParams.effort instanceof String) {
                     def effort = storyParams.effort.replaceAll(',', '.')
@@ -148,29 +145,6 @@ class StoryController {
                     story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
                     if (oldTags != story.tags) {
                         activityService.addActivity(story, user, Activity.CODE_UPDATE, story.name, 'tags', oldTags?.sort()?.join(','), story.tags?.sort()?.join(','))
-                    }
-                }
-                //for rest support
-                if ((request.format == 'xml' && storyParams.parentSprint == '') || storyParams.parentSprint?.id == '') {
-                    props.parentSprint = null
-                } else {
-                    def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
-                    if (sprintId != null && story.parentSprint?.id != sprintId) {
-                        def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
-                        if (sprint) {
-                            props.parentSprint = sprint
-                        } else {
-                            returnError(text: message(code: 'is.sprint.error.not.exist'))
-                            return
-                        }
-                    } else if (params.boolean('shiftToNext')) {
-                        def nextSprint = story.parentSprint.nextSprint
-                        if (nextSprint) {
-                            props.parentSprint = nextSprint
-                        } else {
-                            returnError(text: message(code: 'is.sprint.error.not.exist'))
-                            return
-                        }
                     }
                 }
                 bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
@@ -236,29 +210,92 @@ class StoryController {
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
+    def plan(long id, long product) {
+        def story = Story.withStory(product, id)
+        def storyParams = params.story
+        def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
+        def sprint = Sprint.withSprint(product, sprintId)
+        if (!sprint) {
+            returnError(text: message(code: 'is.sprint.error.not.exist'))
+            return
+        }
+        def rank
+        if (storyParams.rank) {
+            rank = storyParams.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
+        }
+        storyService.plan(sprint, story, rank)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
+            json { renderRESTJSON(text: story) }
+            xml { renderRESTXML(text: story) }
+        }
+    }
+
+    @Secured(['productOwner() and !archivedProduct()'])
+    def unPlan(long id, long product) {
+        def story = Story.withStory(product, id)
+        storyService.unPlan(story)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
+            json { renderRESTJSON(text: story) }
+            xml { renderRESTXML(text: story) }
+        }
+    }
+
+    @Secured(['productOwner() and !archivedProduct()'])
+    def shiftToNextSprint(long id, long product) {
+        def story = Story.withStory(product, id)
+        def nextSprint = story.parentSprint.nextSprint
+        if (!nextSprint) {
+            returnError(text: message(code: 'is.sprint.error.not.exist'))
+            return
+        }
+        storyService.plan(nextSprint, story, 1)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
+            json { renderRESTJSON(text: story) }
+            xml { renderRESTXML(text: story) }
+        }
+    }
+
+    @Secured(['productOwner() and !archivedProduct()'])
+    def acceptToBacklog(long id, long product) {
+        def story = Story.withStory(product, id)
+        def rank
+        if (params.story.rank) {
+            rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
+        }
+        storyService.acceptToBacklog(story, rank)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
+            json { renderRESTJSON(text: story) }
+            xml { renderRESTXML(text: story) }
+        }
+    }
+
+    @Secured(['productOwner() and !archivedProduct()'])
+    def returnToSandbox(long id, long product) {
+        def story = Story.withStory(product, id)
+        def rank
+        if (params.story.rank) {
+            rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
+        }
+        storyService.returnToSandbox(story, rank)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
+            json { renderRESTJSON(text: story) }
+            xml { renderRESTXML(text: story) }
+        }
+    }
+
+    @Secured(['productOwner() and !archivedProduct()'])
     def done(long id, long product) {
         def story = Story.withStory(product, id)
+        storyService.done(story)
         withFormat {
-            html {
-                def testsNotSuccess = story.acceptanceTests.findAll { AcceptanceTest test -> test.stateEnum != AcceptanceTestState.SUCCESS }
-                if (testsNotSuccess.size() > 0 && !params.boolean('confirm')) {
-                    def dialog = g.render(template: 'dialogs/confirmDone', model: [testsNotSuccess: testsNotSuccess.sort {
-                        it.uid
-                    }])
-                    render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-                    return
-                }
-                storyService.done(story)
-                render(status: 200, contentType: 'application/json', text: story as JSON)
-            }
-            json {
-                storyService.done(story)
-                renderRESTJSON(text: story)
-            }
-            xml {
-                storyService.done(story)
-                renderRESTXML(text: story)
-            }
+            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
+            json { renderRESTJSON(text: story) }
+            xml { renderRESTXML(text: story) }
         }
     }
 

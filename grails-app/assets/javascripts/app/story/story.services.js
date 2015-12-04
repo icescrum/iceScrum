@@ -113,20 +113,32 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
     this['delete'] = function(story) {
         return story.$delete(crudMethods[IceScrumEventType.DELETE]);
     };
-    this.accept = function(story) {
-        story.state = StoryStatesByName.ACCEPTED;
-        return this.update(story);
+    this.accept = function(story, rank) {
+        var params = {story: {}};
+        if (rank) {
+            params.story.rank = rank;
+        }
+        return Story.update({id: story.id, action: 'acceptToBacklog'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.returnToSandbox = function(story) {
-        story.state = StoryStatesByName.SUGGESTED;
-        return this.update(story);
+    this.returnToSandbox = function(story, rank) {
+        var params = {story: {}};
+        if (rank) {
+            params.story.rank = rank;
+        }
+        return Story.update({id: story.id, action: 'returnToSandbox'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
+    this.plan = function(story, sprint, rank) {
+        var params = {story: {parentSprint: {id: sprint.id }}};
+        if (rank) {
+            params.story.rank = rank;
+        }
+        return Story.update({id: story.id, action: 'plan'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.unPlan = function(story) {
-        story.parentSprint = {};
-        return this.update(story);
+        return Story.update({id: story.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.shiftToNext = function(story) {
-        return Story.update({shiftToNext: true}, story, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({id: story.id, action: 'shiftToNextSprint'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.done = function(story) {
         return Story.update({id: story.id, action: 'done'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
@@ -138,12 +150,14 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         return Story.update({id: story.id, action: 'like'}, {}, function(resultStory) {
             story.liked = resultStory.liked;
             story.likers_count = resultStory.likers_count;
+            crudMethods[IceScrumEventType.UPDATE](story);
         }).$promise;
     };
     this.follow = function(story) {
         return Story.update({id: story.id, action: 'follow'}, {}, function(resultStory) {
             story.followed = resultStory.followed;
             story.followers_count = resultStory.followers_count;
+            crudMethods[IceScrumEventType.UPDATE](story);
         }).$promise;
     };
     this.updateRank = function(story, newRank, relatedStories) {
@@ -157,13 +171,6 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
                     referenceStory.rank = currentRank;
                 }
             });
-            return story;
-        });
-    };
-    this.plan = function(story, sprint, rank) {
-        story.rank = rank;
-        story.parentSprint = { id: sprint.id };
-        return self.update(story).then(function(story) {
             return story;
         });
     };

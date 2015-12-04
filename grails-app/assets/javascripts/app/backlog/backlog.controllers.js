@@ -97,7 +97,15 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
     $scope.viewName = 'backlog';
     $scope.backlogSortableOptions = {
         itemMoved: function(event) {
-            console.log("move");
+            var story = event.source.itemScope.modelValue;
+            var newRank = event.dest.index + 1;
+            var sourceScope = event.source.sortableScope;
+            var destScope = event.dest.sortableScope;
+            if (sourceScope.backlog.name == 'Backlog' && destScope.backlog.name == 'Sandbox') { // TODO fix
+                StoryService.returnToSandbox(story, newRank);
+            } else if (sourceScope.backlog.name == 'Sandbox' && destScope.backlog.name == 'Backlog') { // TODO fix
+                StoryService.accept(story, newRank);
+            }
         },
         orderChanged: function(event) {
             var story = event.source.itemScope.modelValue;
