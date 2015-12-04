@@ -46,7 +46,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
         });
         backlog.stories = $filter('orderBy')(filteredStories, backlog.orderBy.current.id, backlog.orderBy.reverse);
         backlog.sortable = StoryService.authorizedStory('rank') && (backlog.name == 'Backlog' || backlog.name == 'Sandbox'); // TODO fix
-        backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse;
+        backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse ;
     };
     $scope.manageShownBacklog = function(backlog) {
         if (backlog.shown && $scope.backlogs.length > 1) {
@@ -101,7 +101,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
         var newRank = event.dest.index + 1;
         StoryService.updateRank(story, newRank, newStories);
     };
-    $scope.backlogSortable = {
+    $scope.backlogSortableOptions = {
         itemMoved: updateRank,
         orderChanged: updateRank,
         accept: function (sourceItemHandleScope, destSortableScope) {
