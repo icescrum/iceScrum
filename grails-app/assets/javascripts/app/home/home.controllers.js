@@ -30,14 +30,14 @@ controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, Ho
             right: event.dest.sortableScope.modelValue === $scope.panelsRight
         });
     };
-    $scope.panelSortableListeners = {
+    $scope.panelSortableOptions = {
         itemMoved: updatePosition,
         orderChanged: updatePosition,
         accept: function (sourceItemHandleScope, destSortableScope) {
-            return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
-        },
-        containment: '.main'
+            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+        }
     };
+    $scope.sortableId = 'home';
     HomeService.getPanels().then(function(panels) {
         $scope.panelsLeft = panels.panelsLeft;
         $scope.panelsRight = panels.panelsRight;

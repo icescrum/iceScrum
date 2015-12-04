@@ -26,11 +26,12 @@
         <div class="btn-toolbar">
             <div class="btn-group">
                 <button type="button"
+                        ng-if="isSortableFeature()"
                         class="btn btn-default"
                         ng-click="orderByRank()"
                         uib-tooltip="${message(code:'todo.is.ui.changeRank')}"
                         tooltip-append-to-body="true">
-                    <span ng-class="isSortableFeature() ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
+                    <span ng-class="isSortingFeature() ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
                 </button>
                 <div class="btn-group"
                      uib-dropdown
@@ -126,10 +127,10 @@
         </div>
     </div>
     <div class="panel-body">
-        <div class="postits {{ isSortableFeature() ? '' : 'sortable-disabled' }}"
+        <div class="postits {{ isSortingFeature() ? '' : 'sortable-disabled' }}"
              ng-class="app.asList ? 'list-group' : 'grid-group'"
-             as-sortable="featureSortable"
-             is-disabled="!isSortableFeature()"
+             as-sortable="featureSortableOptions"
+             is-disabled="!isSortingFeature()"
              ng-model="features">
             <div ng-class="{ 'ui-selected': isSelected(feature) }"
                  data-id="{{ feature.id }}"

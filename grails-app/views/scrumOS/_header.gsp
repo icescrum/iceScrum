@@ -46,7 +46,7 @@
             <ul class="nav navbar-nav scroll menubar"
                 ng-class="{'sortable':currentUser.id}"
                 is-disabled="!currentUser.id"
-                as-sortable="menuSortableListeners"
+                as-sortable="menuSortableOptions"
                 ng-model="menus.visible">
                 <li class="contextual-menu" uib-dropdown>
                     <a uib-dropdown-toggle>
@@ -146,7 +146,7 @@
                     <ul class="uib-dropdown-menu menubar"
                         ng-class="{'sortable':currentUser.id}"
                         is-disabled="!currentUser.id"
-                        as-sortable="menuSortableListeners"
+                        as-sortable="menuSortableOptions"
                         ng-model="menus.hidden">
                             <li ng-repeat="menu in menus.hidden"
                                 ng-include="'menuitem.item.html'"

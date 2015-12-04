@@ -81,11 +81,12 @@
         <div class="panel-heading">
             <div class="btn-group">
                 <button type="button"
+                        ng-if="backlog.sortable"
                         class="btn btn-default"
                         ng-click="orderBacklogByRank(backlog)"
                         uib-tooltip="${message(code:'todo.is.ui.changeRank')}"
                         tooltip-append-to-body="true">
-                    <span ng-class="backlog.sortable ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
+                    <span ng-class="backlog.sorting ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
                 </button>
                 <div class="btn-group"
                      uib-dropdown
@@ -149,9 +150,9 @@
         </div>
         <div class="panel-body" ng-class="{'loading': !backlog.storiesRendered}">
             <div class="panel-loading" ng-include="'loading.html'"></div>
-            <div class="postits {{ backlog.sortable ? '' : 'sortable-disabled' }}"
+            <div class="postits {{ backlog.sorting ? '' : 'sortable-disabled' }}"
                  as-sortable="backlogSortable"
-                 is-disabled="!backlog.sortable"
+                 is-disabled="!backlog.sorting"
                  ng-model="backlog.stories"
                  ng-class="app.asList ? 'list-group' : 'grid-group'"
                  ng-include="'story.html'">

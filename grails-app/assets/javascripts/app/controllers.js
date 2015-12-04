@@ -142,7 +142,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden
             });
         };
-        $scope.menuSortableListeners = {
+        $scope.menuSortableOptions = {
             itemMoved: menuSortableChange,
             orderChanged: menuSortableChange,
             containment: '#header',
@@ -307,7 +307,10 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
         $scope.orderBy.current = _.find($scope.orderBy.values, {id: 'rank'});
     };
     $scope.isSortableFeature = function() {
-        return $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse && FeatureService.authorizedFeature('rank')
+        return FeatureService.authorizedFeature('rank');
+    };
+    $scope.isSortingFeature = function() {
+        return $scope.isSortableFeature() && $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse;
     };
     // Init
     $scope.viewName = 'feature';
@@ -318,10 +321,14 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
         var newRank = event.dest.index + 1;
         FeatureService.updateRank(feature, newRank, newFeatures);
     };
-    $scope.featureSortable = {
+    $scope.featureSortableOptions = {
         itemMoved: updateRank,
-        orderChanged: updateRank
+        orderChanged: updateRank,
+        accept: function (sourceItemHandleScope, destSortableScope) {
+            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+        }
     };
+    $scope.sortableId = 'feature';
     $scope.orderBy = {
         current: {id: 'dateCreated', name: $scope.message('todo.is.ui.sort.date')},
         values: [

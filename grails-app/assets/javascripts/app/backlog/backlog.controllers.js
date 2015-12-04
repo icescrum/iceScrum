@@ -45,9 +45,8 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
         backlog.stories = $filter('orderBy')(filteredStories, backlog.orderBy.current.id, backlog.orderBy.reverse);
-        backlog.sortable = backlog.orderBy.current.id == 'rank' &&
-                           !backlog.orderBy.reverse && StoryService.authorizedStory('rank') &&
-                           (backlog.name == 'Backlog' || backlog.name == 'Sandbox'); // TODO fix
+        backlog.sortable = StoryService.authorizedStory('rank') && (backlog.name == 'Backlog' || backlog.name == 'Sandbox'); // TODO fix
+        backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse;
     };
     $scope.manageShownBacklog = function(backlog) {
         if (backlog.shown && $scope.backlogs.length > 1) {
@@ -72,7 +71,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
             backlog.shown = lastShown ? (lastShown.shown + 1) : 1;
             StoryService.listByBacklog(backlog).then(function(stories) {
                 backlog.stories = stories;
-                $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable and refresh the backlog
+                $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable, sorting and refresh the backlog
             });
             if ($scope.backlogs.length == $scope.maxParallelsBacklogs) {
                 var removedBacklog = tmpBacklogs.pop();
@@ -104,8 +103,12 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
     };
     $scope.backlogSortable = {
         itemMoved: updateRank,
-        orderChanged: updateRank
+        orderChanged: updateRank,
+        accept: function (sourceItemHandleScope, destSortableScope) {
+            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+        }
     };
+    $scope.sortableId = 'backlog';
     $scope.backlogs = [];
     $scope.maxParallelsBacklogs = 2;
     $scope.availableBacklogs = backlogs;

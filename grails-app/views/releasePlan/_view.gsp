@@ -142,9 +142,9 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div class="postits {{ isSortableSprint(sprint) ? '' : 'sortable-disabled' }}"
-                 as-sortable="sprintSortable"
-                 is-disabled="!isSortableSprint(sprint)"
+            <div class="postits {{ isSortingSprint(sprint) ? '' : 'sortable-disabled' }}"
+                 as-sortable="sprintSortableOptions"
+                 is-disabled="!isSortingSprint(sprint)"
                  ng-model="backlog.stories"
                  ng-class="app.asList ? 'list-group' : 'grid-group'"
                  ng-include="'story.html'">

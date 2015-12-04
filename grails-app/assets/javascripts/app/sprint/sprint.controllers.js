@@ -58,7 +58,7 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
 
 controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintStatesByName', function($scope, StoryService, SprintStatesByName) {
     // Functions
-    $scope.isSortableSprint = function(sprint) {
+    $scope.isSortingSprint = function(sprint) {
         return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
     };
     // Init
@@ -70,10 +70,14 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
             $scope.backlog = {stories: _.sortBy($scope.sprint.stories, 'rank')}; // I don't know why it is necessary... but it is
         });
     };
-    $scope.sprintSortable = {
+    $scope.sprintSortableOptions = {
         itemMoved: updateRank,
-        orderChanged: updateRank
+        orderChanged: updateRank,
+        accept: function (sourceItemHandleScope, destSortableScope) {
+            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+        }
     };
+    $scope.sortableId = 'sprint';
     StoryService.listByType($scope.sprint).then(function(stories) {
         $scope.backlog = {stories: _.sortBy(stories, 'rank')};
     });
