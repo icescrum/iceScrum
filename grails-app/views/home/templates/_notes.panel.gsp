@@ -13,7 +13,6 @@
                           ng-show="showNotesTextarea"
                           ng-blur="showNotesTextarea = false; update(editableUser)"
                           placeholder="${message(code: 'is.panel.notes.placeholder')}"></textarea>
-
                 <div class="markitup-preview"
                      ng-disabled="true"
                      ng-show="!showNotesTextarea"

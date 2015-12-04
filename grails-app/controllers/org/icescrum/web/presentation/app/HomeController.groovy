@@ -126,7 +126,6 @@ class HomeController {
     }
 
     def contentFeed(long id) {
-        println "test"
         User user = (User) springSecurityService.currentUser
         Feed feed = Feed.findByUserAndId(user, id)
         userService.saveFeed(user, feed)
@@ -162,6 +161,4 @@ class HomeController {
             returnError(text: text, exception: e, silent: true)
         }
     }
-
-
 }
