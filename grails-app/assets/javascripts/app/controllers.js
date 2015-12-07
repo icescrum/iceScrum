@@ -385,8 +385,9 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     }
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', function($scope) {
+controllers.controller('sprintPlanCtrl', ['$scope', 'sprint', function($scope, sprint) {
     $scope.viewName = 'sprintPlan';
+    $scope.sprint = sprint;
 }]);
 
 controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {

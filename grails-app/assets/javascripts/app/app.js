@@ -365,34 +365,26 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             }
                         })
                 .state('sprintPlan', {
-                    url: "/sprintPlan",
+                    url: "/sprintPlan/{id:int}",
+                    params: {
+                        id: {value: null, squash: true}
+                    },
                     templateUrl: 'openWindow/sprintPlan',
                     controller: 'sprintPlanCtrl',
                     resolve: {
                         project: ['Session', function(Session) {
                             return Session.getProjectPromise();
+                        }],
+                        sprint: ['SprintService', '$stateParams', 'project', function(SprintService, $stateParams, project) {
+                            return !$stateParams.id ? SprintService.getCurrentOrNextSprint(project) : SprintService.get($stateParams.id, project);
                         }]
                     }
                 })
-                    .state('sprintPlan.detailsCurrentOrNext', {
-                        url: "",
-                        resolve: {
-                            detailsSprint: ['SprintService', 'project', function(SprintService, project) {
-                                return SprintService.getCurrentOrNextSprint(project);
-                            }]
-                        },
-                        views: {
-                            "details": {
-                                templateUrl: 'sprint.details.html',
-                                controller: 'sprintDetailsCtrl'
-                            }
-                        }
-                    })
                     .state('sprintPlan.details', {
-                        url: "/{id:int}",
+                        url: "/sprint",
                         resolve: {
-                            detailsSprint: ['SprintService', '$stateParams', 'project', function(SprintService, $stateParams, project) {
-                                return SprintService.get($stateParams.id, project);
+                            detailsSprint: ['sprint', function(sprint) {
+                                return sprint;
                             }]
                         },
                         views: {
