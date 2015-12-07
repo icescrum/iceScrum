@@ -39,6 +39,9 @@ services.service("SprintService", ['$q', 'Sprint', 'SprintStatesByName', 'Sessio
     this.getCurrentOrLastSprint = function(project) {
         return Sprint.get({ projectId: project.id, action: 'findCurrentOrLastSprint' }).$promise;
     };
+    this.getCurrentOrNextSprint = function(project) {
+        return Sprint.get({ projectId: project.id, action: 'findCurrentOrNextSprint' }).$promise;
+    };
     this.update = function(sprint, release) {
         return Sprint.update({id: sprint.id, projectId: release.parentProduct.id}, sprint, function(sprint) {
             angular.extend(_.find(release.sprints, { id: sprint.id }), sprint);
