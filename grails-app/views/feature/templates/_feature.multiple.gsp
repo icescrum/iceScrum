@@ -38,7 +38,7 @@
                 <div class="postits standalone">
                     <div ellipsis class="postit-container stack twisted">
                         <div style="{{ topFeature.color | createGradientBackground }}"
-                             class="postit feature {{ topFeature.color | contrastColor }} {{ featurePreview.type | featureType }}">
+                             class="postit {{ topFeature.color | contrastColor }} {{ featurePreview.type | featureType }}">
                             <div class="head">
                                 <span class="id">{{ topFeature.id }}</span>
                                 <span class="estimation">{{ topFeature.value ? topFeature.value : '' }}</span>
