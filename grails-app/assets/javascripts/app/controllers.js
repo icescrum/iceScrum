@@ -385,9 +385,45 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     }
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', 'sprint', function($scope, sprint) {
+controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'TaskService', 'SprintStatesByName', 'sprint', 'tasks', function($scope, $state, StoryService, TaskService, SprintStatesByName, sprint, tasks) {
     $scope.viewName = 'sprintPlan';
+    // Functions
+    $scope.isSortingSprintPlan = function(sprint) {
+        return TaskService.authorizedTask('rank') && sprint.state < SprintStatesByName.DONE;
+    };
+    $scope.openSprint = function() {
+        $state.go('sprintPlan.details');
+    };
+    // Init
+    $scope.taskSortableOptions = {
+        itemMoved: function(event) {
+            var task = event.source.itemScope.modelValue;
+            var newRank = event.dest.index + 1;
+        },
+        orderChanged: function(event) {
+            var task = event.source.itemScope.modelValue;
+            var newRank = event.dest.index + 1;
+        },
+        accept: function (sourceItemHandleScope, destSortableScope) {
+            var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+            return sameSortable && destSortableScope.isSortingSprint(destSortableScope.sprint);
+        }
+    };
+    $scope.sortableId = 'sprintPlan';
     $scope.sprint = sprint;
+    $scope.backlog = {stories: _.sortBy(sprint.stories, 'rank')};
+    $scope.tasksByTypeByState = {};
+    $scope.tasksByStoryByState = {};
+    $scope.taskStates = [0, 1, 2];
+    var partitionedTasks = _.partition(tasks, function(task) {
+        return _.isNull(task.parentStory);
+    });
+    $scope.tasksByTypeByState = _.mapValues(_.groupBy(partitionedTasks[0], 'type'), function(tasks) {
+        return _.groupBy(tasks, 'state');
+    });
+    $scope.tasksByStoryByState = _.mapValues(_.groupBy(partitionedTasks[1], 'parentStory.id'), function(tasks) {
+        return _.groupBy(tasks, 'state');
+    });
 }]);
 
 controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {

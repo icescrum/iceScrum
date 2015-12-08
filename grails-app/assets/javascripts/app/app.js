@@ -375,13 +375,21 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         project: ['Session', function(Session) {
                             return Session.getProjectPromise();
                         }],
-                        sprint: ['SprintService', '$stateParams', 'project', function(SprintService, $stateParams, project) {
-                            return !$stateParams.id ? SprintService.getCurrentOrNextSprint(project) : SprintService.get($stateParams.id, project);
+                        sprint: ['$stateParams', '$q', 'SprintService', 'StoryService', 'TaskService', 'project', function($stateParams, $q, SprintService, StoryService, TaskService, project) {
+                            var promise = !$stateParams.id ? SprintService.getCurrentOrNextSprint(project) : SprintService.get($stateParams.id, project);
+                            return promise.then(function(sprint) {
+                                return StoryService.listByType(sprint).then(function(stories) {
+                                    return sprint;
+                                });
+                            })
+                        }],
+                        tasks: ['TaskService', 'sprint', function(TaskService, sprint) {
+                            return TaskService.list(sprint);
                         }]
                     }
                 })
                     .state('sprintPlan.details', {
-                        url: "/sprint",
+                        url: "/details",
                         resolve: {
                             detailsSprint: ['sprint', function(sprint) {
                                 return sprint;

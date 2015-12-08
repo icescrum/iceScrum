@@ -139,7 +139,7 @@ class ProductUrlMappings {
         }
         "/p/$product/task/$type/$id" {
             controller = 'task'
-            action = [GET: "tasksStory"]
+            action = [GET: "listByType"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)

@@ -249,12 +249,17 @@ class TaskController {
     }
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def tasksStory(long id, long product) {
-        def story = Story.withStory(product, id)
+    def listByType(long id, long product, String type) {
+        def tasks
+        if (type == 'story') {
+            tasks = Story.withStory(product, id).tasks
+        } else if (type == 'sprint') {
+            tasks = Sprint.withSprint(product, id).tasks
+        }
         withFormat {
-            html { render(status: 200, contentType: 'application/json', text: story.tasks as JSON) }
-            json { renderRESTJSON(text: story.tasks) }
-            xml { renderRESTXML(text: story.tasks) }
+            html { render(status: 200, contentType: 'application/json', text: tasks as JSON) }
+            json { renderRESTJSON(text: tasks) }
+            xml { renderRESTXML(text: tasks) }
         }
     }
 
