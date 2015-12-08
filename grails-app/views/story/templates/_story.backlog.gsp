@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -20,18 +20,14 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:render template="/story/templates/story" />
-<g:render template="/story/templates/story.backlog" />
-<g:render template="/story/templates/story.details" />
-<g:render template="/story/templates/story.multiple" />
-<g:render template="/story/templates/story.new" />
-<g:render template="/story/templates/story.menu" />
-<g:render template="/story/templates/story.template" />
-<g:render template="/story/templates/story.effort" />
-<g:render template="/story/templates/story.value" />
-<g:render template="/story/templates/nested.stories" />
 
-
-
-
-
+<script type="text/ng-template" id="story.backlog.html">
+<div ng-class="{ 'ui-selected': isSelected(story) }"
+     on-repeat-completed="backlog.storiesRendered = true"
+     ng-repeat="story in backlog.stories"
+     as-sortable-item
+     ellipsis
+     class="postit-container">
+    <div ng-include="'story.html'"></div>
+</div>
+</script>

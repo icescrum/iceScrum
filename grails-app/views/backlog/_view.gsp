@@ -155,7 +155,7 @@
                  is-disabled="!backlog.sorting"
                  ng-model="backlog.stories"
                  ng-class="app.asList ? 'list-group' : 'grid-group'"
-                 ng-include="'story.html'">
+                 ng-include="'story.backlog.html'">
             </div>
         </div>
     </div>

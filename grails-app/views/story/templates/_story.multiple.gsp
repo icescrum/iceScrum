@@ -38,7 +38,7 @@
                 <div class="postits standalone">
                     <div ellipsis class="postit-container stack twisted">
                         <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
-                             class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}  {{ storyPreview.type | storyType }}">
+                             class="postit {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}  {{ storyPreview.type | storyType }}">
                             <div class="head">
                                 <a class="follow"
                                    uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}"

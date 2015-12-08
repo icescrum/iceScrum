@@ -38,7 +38,7 @@
         <div class="postits standalone">
             <div ellipsis class="postit-container">
                 <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
-                     class="postit story {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}">
+                     class="postit {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}">
                     <div class="head">
                         <span class="id">42</span>
                     </div>
