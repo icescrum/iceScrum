@@ -23,7 +23,9 @@
 <script type="text/ng-template" id="feature.new.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">${message(code: 'todo.is.ui.feature.new')}
+        <h3 class="panel-title">
+            <i class="fa fa-sticky-note" style="color: #2d8ccc"></i>
+            ${message(code: 'todo.is.ui.feature.new')}
             <a class="pull-right visible-on-hover btn btn-default"
                href="#/{{ ::viewName }}"
                uib-tooltip="${message(code: 'is.ui.window.closeable')}">
@@ -35,8 +37,8 @@
         <div class="help-block">${message(code:'is.ui.feature.help')}</div>
         <div class="postits standalone">
             <div ellipsis class="postit-container">
-                <div style="{{ '#f9f157' | createGradientBackground }}"
-                     class="postit {{ '#f9f157' | contrastColor }}">
+                <div style="{{ '#2d8ccc' | createGradientBackground }}"
+                     class="postit {{ '#2d8ccc' | contrastColor }}">
                     <div class="head">
                         <span class="id">42</span>
                     </div>
