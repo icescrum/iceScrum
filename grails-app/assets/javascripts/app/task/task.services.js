@@ -75,6 +75,7 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
     this.authorizedTask = function(action, task) {
         switch (action) {
             case 'create':
+            case 'rank':
                 return Session.inProduct();
             case 'delete':
                 return Session.poOrSm() || Session.creator(task);

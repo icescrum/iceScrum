@@ -406,7 +406,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
         },
         accept: function (sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
-            return sameSortable && destSortableScope.isSortingSprint(destSortableScope.sprint);
+            return sameSortable && destSortableScope.isSortingSprintPlan(destSortableScope.sprint);
         }
     };
     $scope.sortableId = 'sprintPlan';
@@ -415,6 +415,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
     $scope.taskStates = [0, 1, 2];
+    $scope.taskTypes = [10, 11];
     var partitionedTasks = _.partition(tasks, function(task) {
         return _.isNull(task.parentStory);
     });
@@ -424,6 +425,20 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     $scope.tasksByStoryByState = _.mapValues(_.groupBy(partitionedTasks[1], 'parentStory.id'), function(tasks) {
         return _.groupBy(tasks, 'state');
     });
+    var fillGapsInDictionnary = function(dictionnary, firstLevelKeys, secondLevelKeys) {
+        _.each(firstLevelKeys, function(firstLevelKey) {
+            if (!dictionnary[firstLevelKey]) {
+                dictionnary[firstLevelKey] = {};
+            }
+            _.each(secondLevelKeys, function(secondLevelKey) {
+                if (!dictionnary[firstLevelKey][secondLevelKey]) {
+                    dictionnary[firstLevelKey][secondLevelKey] = [];
+                }
+            });
+        });
+    };
+    fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.taskStates);
+    fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.backlog.stories, 'id'), $scope.taskStates);
 }]);
 
 controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {

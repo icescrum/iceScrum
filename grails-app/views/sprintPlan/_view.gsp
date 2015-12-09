@@ -61,7 +61,7 @@
             </div>
         </h3>
     </div>
-    <table class="panel-body table grid-group postits sortable-disabled">
+    <table class="panel-body table">
         <thead>
             <tr>
                 <th style="width:16%; text-align:center;">
@@ -84,13 +84,13 @@
                     ${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}
                 </td>
                 <td style="width:28%"
+                    class="postits grid-group"
                     ng-model="tasksByTypeByState[11][taskState]"
                     as-sortable="taskSortableOptions"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByTypeByState[11][taskState] | orderBy: 'rank'"
+                    <div ng-repeat="task in tasksByTypeByState[11][taskState]"
                          as-sortable-item
                          ng-controller="taskCtrl"
-                         ellipsis
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>
@@ -101,13 +101,13 @@
                     ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}
                 </td>
                 <td style="width:28%"
+                    class="postits grid-group"
                     ng-model="tasksByTypeByState[10][taskState]"
                     as-sortable="taskSortableOptions"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByTypeByState[10][taskState] | orderBy: 'rank'"
+                    <div ng-repeat="task in tasksByTypeByState[10][taskState]"
                          as-sortable-item
                          ng-controller="taskCtrl"
-                         ellipsis
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>
@@ -115,23 +115,19 @@
             </tr>
             <tr ng-repeat="story in backlog.stories">
                 <td style="width:16%"
-                    as-sortable="{}"           %{-- TODO remove hack--}%
-                    ng-model="backlog.stories" %{-- TODO remove hack--}%
-                    is-disabled="true">        %{-- TODO remove hack--}%
-                    <div as-sortable-item %{-- TODO remove hack--}%
-                         ellipsis
-                         class="postit-container">
+                    class="postits grid-group">
+                    <div class="postit-container">
                         <div ng-include="'story.html'"></div>
                     </div>
                 </td>
                 <td style="width:28%"
+                    class="postits grid-group"
                     ng-model="tasksByStoryByState[story.id][taskState]"
                     as-sortable="taskSortableOptions"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByStoryByState[story.id][taskState] | orderBy: 'rank'"
+                    <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                          as-sortable-item
                          ng-controller="taskCtrl"
-                         ellipsis
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>

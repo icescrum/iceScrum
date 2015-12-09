@@ -23,6 +23,7 @@
 
 <script type="text/ng-template" id="feature.html">
 <div style="{{ feature.color | createGradientBackground }}"
+     ellipsis
      class="postit {{ feature.color | contrastColor }} {{ feature.type | featureType }}">
     <div class="head">
         <span class="id">{{ ::feature.id }}</span>

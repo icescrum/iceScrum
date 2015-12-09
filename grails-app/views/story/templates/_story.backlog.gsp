@@ -26,8 +26,7 @@
      on-repeat-completed="backlog.storiesRendered = true"
      ng-repeat="story in backlog.stories"
      as-sortable-item
-     ellipsis
      class="postit-container">
-    <div ng-include="'story.html'"></div>
+    <div ng-include="'story.html'" ng-init="sortableStory = authorizedStory('rank', story)"></div>
 </div>
 </script>

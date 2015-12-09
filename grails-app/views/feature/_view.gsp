@@ -137,7 +137,6 @@
                  as-sortable-item
                  ng-repeat="feature in features | orderBy:orderBy.current.id:orderBy.reverse"
                  ng-controller="featureCtrl"
-                 ellipsis
                  class="postit-container">
                 <div ng-include="'feature.html'"></div>
             </div>

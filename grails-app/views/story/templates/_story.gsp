@@ -23,6 +23,7 @@
 
 <script type="text/ng-template" id="story.html">
 <div ng-controller="storyCtrl"
+     ellipsis
      style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
      class="postit {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }} {{ story.type | storyType }}">
     <div class="head">
@@ -48,7 +49,7 @@
             {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar"></i>
         </span>
     </div>
-    <div class="content" as-sortable-item-handle-if="authorizedStory('rank', story)">
+    <div class="content" as-sortable-item-handle-if="sortableStory">
         <h3 class="title ellipsis-el"
             ng-model="story.name"
             ng-bind-html="story.name | sanitize"></h3>
