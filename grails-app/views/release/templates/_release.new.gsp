@@ -32,7 +32,7 @@
             </a>
         </h3>
     </div>
-    <div class="right-properties new panel-body">
+    <div class="panel-body">
         <div class="help-block">${message(code:'is.ui.release.help')}</div>
         <form ng-submit="save(release, false)"
               name='formHolder.releaseForm'

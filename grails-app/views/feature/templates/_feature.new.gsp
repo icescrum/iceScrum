@@ -31,7 +31,7 @@
             </a>
         </h3>
     </div>
-    <div class="right-properties new panel-body">
+    <div class="panel-body">
         <div class="help-block">${message(code:'is.ui.feature.help')}</div>
         <div class="postits standalone">
             <div ellipsis class="postit-container">
