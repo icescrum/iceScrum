@@ -94,6 +94,15 @@
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>
+                    <div class="postit-container">
+                        <a type="button"
+                           ng-if="taskState == 0"
+                           class="btn btn-primary"
+                           ng-click="openNewTaskByType(11)"
+                           href>
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
                 </td>
             </tr>
             <tr>
@@ -110,6 +119,15 @@
                          ng-controller="taskCtrl"
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
+                    </div>
+                    <div class="postit-container">
+                        <a type="button"
+                           ng-if="taskState == 0"
+                           ng-click="openNewTaskByType(10)"
+                           class="btn btn-primary "
+                           href>
+                            <i class="fa fa-plus"></i>
+                        </a>
                     </div>
                 </td>
             </tr>
@@ -130,6 +148,15 @@
                          ng-controller="taskCtrl"
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
+                    </div>
+                    <div class="postit-container">
+                        <a type="button"
+                           ng-click="openNewTaskByStory(story)"
+                           ng-if="taskState == 0"
+                           class="btn btn-primary"
+                           href>
+                            <i class="fa fa-plus"></i>
+                        </a>
                     </div>
                 </td>
             </tr>

@@ -25,7 +25,7 @@ services.factory('Task', [ 'Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action');
 }]);
 
-services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', 'PushService', function($q, Task, Session, IceScrumEventType, PushService) {
+services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
     var self = this;
     this.getCrudMethods = function(obj) {
         var crudMethods = {};
@@ -40,6 +40,9 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
                 }
             }
         };
+        crudMethods[IceScrumEventType.UPDATE] = function(task) {
+            angular.extend(_.find(obj.tasks, { id: task.id }), task);
+        };
         crudMethods[IceScrumEventType.DELETE] = function(task) {
             _.remove(obj.tasks, { id: task.id });
             obj.tasks_count = obj.tasks.length;
@@ -48,15 +51,30 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
     };
     this.save = function(task, obj) {
         task.class = 'task';
-        if (obj.class == 'Story') {
-            task.parentStory = {id: obj.id};
-        } else {
-            task.backlog = {id: obj.id};
-        }
         return Task.save(task, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
+    };
+    this.update = function(task, obj) {
+        return task.$update(self.getCrudMethods(obj)[IceScrumEventType.UPDATE]);
+    };
+    this.block = function(task, obj) {
+        task.blocked = true;
+        return self.update(task, obj);
+    };
+    this.unBlock = function(task, obj) {
+        task.blocked = false;
+        return self.update(task, obj);
+    };
+    this.take = function(task, obj) {
+        return Task.update({id: task.id, action: 'take'}, {}, self.getCrudMethods(obj)[IceScrumEventType.UPDATE]).$promise;
+    };
+    this.release = function(task, obj) {
+        return Task.update({id: task.id, action: 'unassign'}, {}, self.getCrudMethods(obj)[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(task, obj) {
         return task.$delete(self.getCrudMethods(obj)[IceScrumEventType.DELETE]);
+    };
+    this.copy = function(task, obj) {
+        return Task.update({id: task.id, action: 'copy'}, {}, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
     };
     this.list = function(obj) {
         if (_.isEmpty(obj.tasks)) {
@@ -75,10 +93,22 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
     this.authorizedTask = function(action, task) {
         switch (action) {
             case 'create':
+            case 'copy':
+                return Session.inProduct() && (!task || !task.parentStory || task.parentStory.state != StoryStatesByName.DONE);
             case 'rank':
-                return Session.inProduct();
+                return Session.sm() || Session.responsible(task) || Session.creator(task) && task.backlog.state == SprintStatesByName.IN_PROGRESS;
+            case 'update':
+                return (Session.sm() || Session.responsible(task) || Session.creator(task)) && task.state != TaskStatesByName.DONE;
             case 'delete':
-                return Session.poOrSm() || Session.creator(task);
+                return (Session.sm() || Session.responsible(task) || Session.creator(task));
+            case 'block':
+                return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE && task.backlog.state == SprintStatesByName.IN_PROGRESS;
+            case 'unBlock':
+                return task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE && task.backlog.state == SprintStatesByName.IN_PROGRESS;
+            case 'take':
+                return !Session.responsible(task) && task.state != TaskStatesByName.DONE;
+            case 'release':
+                return Session.responsible(task) && task.state != TaskStatesByName.DONE;
             default:
                 return false;
         }

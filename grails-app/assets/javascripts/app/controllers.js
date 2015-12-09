@@ -394,6 +394,12 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     $scope.openSprint = function() {
         $state.go('sprintPlan.details');
     };
+    $scope.openNewTaskByStory = function(story) {
+        $state.go('sprintPlan.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
+    };
+    $scope.openNewTaskByType = function(type) {
+        $state.go('sprintPlan.task.new', {taskTemplate: {type: type}});
+    };
     // Init
     $scope.taskSortableOptions = {
         itemMoved: function(event) {

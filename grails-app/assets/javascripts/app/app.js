@@ -402,6 +402,21 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             }
                         }
                     })
+                    .state('sprintPlan.task', {
+                        url: "/task"
+                    })
+                        .state('sprintPlan.task.new', {
+                            url: "/new",
+                            params: {
+                                taskTemplate: null
+                            },
+                            views: {
+                                "details@sprintPlan": {
+                                    templateUrl: 'task.new.html',
+                                    controller: 'taskNewCtrl'
+                                }
+                            }
+                        })
         }
     ])
     .config(['flowFactoryProvider', function (flowFactoryProvider) {
@@ -668,6 +683,11 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         "IN_PROGRESS": 5,
         "DONE": 7,
         "ICEBOX": -1
+    })
+    .constant('TaskStatesByName', {
+        "SUGGESTED": 0,
+        "ACCEPTED": 1,
+        "ESTIMATED": 2
     })
     .constant('AcceptanceTestStatesByName', {
         "TOCHECK": 1,

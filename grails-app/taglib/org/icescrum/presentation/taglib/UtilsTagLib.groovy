@@ -83,7 +83,7 @@ class UtilsTagLib {
     }
 
     def i18nBundle = {
-        def bundles = ['storyStates', 'storyTypes', 'taskStates', 'featureTypes', 'featureStates', 'sprintStates',
+        def bundles = ['storyStates', 'storyTypes', 'taskStates', 'taskTypes', 'featureTypes', 'featureStates', 'sprintStates',
                        'releaseStates', 'planningPokerGameSuites', 'acceptanceTestStates', 'moodFeelings']
         return bundles.collectEntries { bundleName -> [
             (bundleName.capitalize()): BundleUtils."$bundleName".collectEntries { k, v -> [(k): message(code: v)]}

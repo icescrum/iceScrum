@@ -23,38 +23,82 @@
  */
 controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
     // Functions
-    $scope.save = function(task, obj) {
-        TaskService.save(task, obj)
-            .then(function() {
-                $scope.resetTaskForm();
-                $scope.notifySuccess('todo.is.ui.task.saved');
-            });
+    $scope.take = function(task) {
+        TaskService.take(task);
+    };
+    $scope.release = function(task) {
+        TaskService.release(task);
+    };
+    $scope.copy = function(task) {
+        TaskService.copy(task);
+    };
+    $scope.block = function(task) {
+        TaskService.block(task);
+    };
+    $scope.unBlock = function(task) {
+        TaskService.unBlock(task);
     };
     // TODO cancellable delete
     $scope['delete'] = function(task, story) {
-        TaskService.delete(task, story)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.deleted');
-            });
+        TaskService.delete(task, story).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+        });
     };
     $scope.authorizedTask = function(action, task) {
         return TaskService.authorizedTask(action, task);
     };
+}]);
+
+controllers.controller('taskStoryNewCtrl', ['$scope', '$state', '$controller', 'TaskService', 'hotkeys', function($scope, $state, $controller, TaskService, hotkeys) {
+    $controller('taskCtrl', { $scope: $scope }); // inherit from taskCtrl
+    // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {};
         $scope.resetFormValidation($scope.formHolder.taskForm);
     };
-    $scope.disabledForm = function() {
-        return $scope.formHolder.taskForm.$dirty && !$scope.formHolder.taskForm.$invalid;
+    $scope.save = function(task, obj) {
+        task.parentStory = {id: obj.id};
+        TaskService.save(task, obj).then(function() {
+            $scope.resetTaskForm();
+            $scope.notifySuccess('todo.is.ui.task.saved');
+        });
     };
     // Init
     $scope.formHolder = {};
-    if ($scope.task === undefined) {
-        $scope.task = {};
-        $scope.deletable = false;
-    }  else {
-        $scope.deletable = $scope.authorizedTask('delete', $scope.task);
-    }
+    $scope.resetTaskForm();
+}]);
+
+controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'TaskService', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, TaskService, hotkeys, sprint) {
+    $controller('taskCtrl', { $scope: $scope }); // inherit from taskCtrl
+    // Functions
+    $scope.resetTaskForm = function() {
+        $scope.task = {backlog: {id: sprint.id}};
+        if ($stateParams.taskTemplate) {
+            angular.extend($scope.task, $stateParams.taskTemplate);
+        } else {
+            $scope.task.type = 11;
+        }
+        $scope.resetFormValidation($scope.formHolder.taskForm);
+    };
+    $scope.save = function(task, andContinue) {
+        TaskService.save(task, sprint).then(function(task) {
+            if (andContinue) {
+                $scope.resetTaskForm();
+            } else {
+                $scope.setInEditingMode(true);
+                $state.go('^.details', { id: task.id });
+            }
+            $scope.notifySuccess('todo.is.ui.task.saved');
+        });
+    };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetTaskForm();
+    hotkeys.bindTo($scope).add({
+        combo: 'esc',
+        allowIn: ['INPUT'],
+        callback: $scope.resetTaskForm
+    });
 }]);
 
 controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {

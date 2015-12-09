@@ -21,10 +21,10 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div class="tasks panel-body" ng-controller="taskCtrl">
+<div class="tasks panel-body">
     <table class="table">
         <tr ng-repeat="task in selected.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
-            <td class="content" ng-class="{'deletable': deletable}">
+            <td class="content {{:: authorizedTask('delete', task) ? 'deletable' : '' }}">
                 <div class="clearfix no-padding">
                     <div class="col-sm-1">
                         <button class="btn btn-default elemid hidden-deletable"
@@ -57,7 +57,7 @@
         </tr>
     </table>
 </div>
-<div class="panel-footer" ng-controller="taskCtrl">
+<div class="panel-footer" ng-controller="taskStoryNewCtrl">
     <div ng-if="authorizedTask('create')" ng-include="'story.task.new.html'"></div>
 </div>
 </script>

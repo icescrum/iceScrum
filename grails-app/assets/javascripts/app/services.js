@@ -124,6 +124,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     this.creator = function(item) {
         return this.authenticated && !_.isEmpty(item) && !_.isEmpty(item.creator) && self.user.id == item.creator.id;
     };
+    this.responsible = function(item) {
+        return this.authenticated && !_.isEmpty(item) && !_.isEmpty(item.responsible) && self.user.id == item.responsible.id;
+    };
     this.owner = function(item) {
         return !_.isEmpty(item) && !_.isEmpty(item.owner) && self.user.id == item.owner.id;
     };
