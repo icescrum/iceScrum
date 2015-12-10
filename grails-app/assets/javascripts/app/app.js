@@ -48,7 +48,6 @@ var isApp = angular.module('isApp', [
     'filters',
     'directives',
     'ui.router',
-    'ui.selectable',
     'ui.bootstrap',
     'ui.select',
     'monospaced.elastic',
