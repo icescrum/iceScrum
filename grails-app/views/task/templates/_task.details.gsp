@@ -76,14 +76,36 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label for="name">${message(code:'is.task.name')}</label>
-                    <input required
-                           ng-maxlength="100"
+                    <div class="input-group">
+                        <input required
+                               ng-maxlength="100"
+                               ng-focus="editForm(true)"
+                               ng-disabled="!formHolder.editable"
+                               name="name"
+                               ng-model="editableTask.name"
+                               type="text"
+                               class="form-control">
+                        <span class="input-group-btn" ng-if="formHolder.editable">
+                            <button colorpicker
+                                    class="btn {{ editableTask.color | contrastColor }}"
+                                    type="button"
+                                    style="background-color:{{ editableTask.color }};"
+                                    colorpicker-position="left"
+                                    ng-focus="editForm(true)"
+                                    value="#bf3d3d"
+                                    name="color"
+                                    ng-model="editableTask.color"><i class="fa fa-pencil"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="estimation">${message(code:'is.task.estimation')}</label>
+                    <input type="number"
+                           class="form-control"
                            ng-focus="editForm(true)"
                            ng-disabled="!formHolder.editable"
-                           name="name"
-                           ng-model="editableTask.name"
-                           type="text"
-                           class="form-control">
+                           name="estimation"
+                           ng-model="editableTask.estimation"/>
                 </div>
                 <div class="form-group">
                     <label for="description">${message(code:'is.backlogelement.description')}</label>
