@@ -28,6 +28,7 @@ import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
 import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.User
 import org.icescrum.core.support.ApplicationSupport
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.web.JQueryProvider
@@ -421,6 +422,15 @@ grails {
             ldap.authorities.groupSearchFilter = ""
             ldap.authorities.groupSearchBase = ""
             ldap.active = false
+
+            useSecurityEventListener = true
+            onInteractiveAuthenticationSuccessEvent = { e, appCtx ->
+                User.withTransaction {
+                    def user = User.lock(e.authentication.principal.id)
+                    user.lastLogin = new Date()
+                    user.save(flush:true)
+                }
+            }
         }
     }
 }
