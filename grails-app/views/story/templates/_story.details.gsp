@@ -32,7 +32,7 @@
                 <span>{{ story.name }}</span> <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
             </div>
             <div class="right-title">
-                <span uib-tooltip="${message(code: 'is.story.creator')} : {{ story.creator | userFullName }}"
+                <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}"
                       tooltip-append-to-body="true">
                     <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
                          height="30px"/>

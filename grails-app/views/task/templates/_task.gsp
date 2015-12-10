@@ -61,7 +61,7 @@
                 ng-include="'task.menu.html'"></ul>
         </span>
         <span class="action" ng-class="{'active':task.attachments.length}">
-            <a href="#/{{ ::viewName }}/{{ task.id }}"
+            <a href="#/{{ ::viewName }}/task/{{ task.id }}"
                uib-tooltip="{{ task.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
                tooltip-append-to-body="true">
                 <i class="fa fa-paperclip"></i>

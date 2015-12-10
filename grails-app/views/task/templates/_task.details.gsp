@@ -20,15 +20,26 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<script type="text/ng-template" id="feature.details.html">
+<script type="text/ng-template" id="task.details.html">
 <div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span>{{ feature.name }}</span>
+                <span>{{ task.name }}</span>
             </div>
             <div class="right-title">
-                <button class="btn btn-default elemid">{{ feature.uid }}</button>
+                <span uib-tooltip="${message(code: 'is.task.creator')} {{ task.creator | userFullName }}"
+                      tooltip-append-to-body="true">
+                    <img ng-src="{{ task.creator | userAvatar }}" alt="{{ task.creator | userFullName }}"
+                         height="30px"/>
+                </span>
+                <span ng-if="task.responsible"
+                      uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}"
+                      tooltip-append-to-body="true">
+                    <img ng-src="{{ task.responsible | userAvatar }}" alt="{{ task.responsible | userFullName }}"
+                         height="30px"/>
+                </span>
+                <button class="btn btn-default elemid">{{ task.uid }}</button>
                 <div class="btn-group"
                      uib-dropdown
                      uib-tooltip="${message(code: 'todo.is.ui.actions')}"
@@ -36,18 +47,18 @@
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
-                    <ul class="uib-dropdown-menu pull-right" ng-include="'feature.menu.html'"></ul>
+                    <ul class="uib-dropdown-menu pull-right" ng-include="'task.menu.html'"></ul>
                 </div>
-                <a ng-if="previousFeature"
+                <a ng-if="previousTask"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextFeature"
+                   href="#{{ ::viewName }}/{{ ::previousTask.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                <a ng-if="nextTask"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="#{{ ::viewName }}/{{ ::nextTask.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a class="btn btn-default"
                    href="#{{ ::viewName }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
@@ -56,77 +67,23 @@
             </div>
         </h3>
     </div>
-    <ul class="nav nav-tabs nav-justified">
-        <li role="presentation" ng-class="{'active':!$state.params.tabId}">
-            <a href="#{{ ::viewName }}/{{ ::feature.id }}"
-               href="#"><i class="fa fa-lg fa-edit"></i></a>
-        </li>
-        <li role="presentation" ng-class="{'active':$state.params.tabId == 'stories'}">
-            <a href="#{{ ::viewName }}/{{ ::feature.id }}/stories"
-               uib-tooltip="{{ feature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}"
-               tooltip-append-to-body="true">
-                <i class="fa fa-lg fa-sticky-note"></i>
-                <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>
-            </a>
-        </li>
-    </ul>
     <div ui-view="details-tab">
-        <form ng-submit="update(editableFeature)"
-              name='formHolder.featureForm'
+        <form ng-submit="update(editableTask)"
+              name='formHolder.taskForm'
               ng-class="{'form-editable':formHolder.editable, 'form-editing': formHolder.editing }"
               show-validation
               novalidate>
             <div class="panel-body">
                 <div class="form-group">
-                    <label for="name">${message(code:'is.feature.name')}</label>
+                    <label for="name">${message(code:'is.task.name')}</label>
                     <input required
                            ng-maxlength="100"
                            ng-focus="editForm(true)"
                            ng-disabled="!formHolder.editable"
                            name="name"
-                           ng-model="editableFeature.name"
+                           ng-model="editableTask.name"
                            type="text"
                            class="form-control">
-                </div>
-                <div class="clearfix no-padding">
-                    <div class="form-half">
-                        <label for="type">${message(code:'is.feature.type')}</label>
-                        <div class="input-group">
-                            <ui-select class="form-control"
-                                       ng-click="editForm(true)"
-                                       ng-disabled="!formHolder.editable"
-                                       name="type"
-                                       ng-model="editableFeature.type">
-                                <ui-select-match><i class="fa fa-{{ $select.selected | featureTypeIcon }}"></i> {{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
-                                <ui-select-choices repeat="featureType in featureTypes"><i class="fa fa-{{ ::featureType | featureTypeIcon }}"></i> {{ ::featureType | i18n:'FeatureTypes' }}</ui-select-choices>
-                            </ui-select>
-                            <span class="input-group-btn" ng-if="formHolder.editable">
-                                <button colorpicker
-                                        class="btn {{ editableFeature.color | contrastColor }}"
-                                        type="button"
-                                        style="background-color:{{ editableFeature.color }};"
-                                        colorpicker-position="top"
-                                        ng-focus="editForm(true)"
-                                        value="#bf3d3d"
-                                        name="color"
-                                        ng-model="editableFeature.color"><i class="fa fa-pencil"></i></button>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-half">
-                        <label for="value">${message(code:'is.feature.value')}</label>
-                        <ui-select class="form-control"
-                                   ng-click="editForm(true)"
-                                   ng-disabled="!formHolder.editable"
-                                   name="value"
-                                   search-enabled="true"
-                                   ng-model="editableFeature.value">
-                            <ui-select-match>{{ $select.selected }}</ui-select-match>
-                            <ui-select-choices repeat="i in integerSuite | filter: $select.search">
-                                <span ng-bind-html="'' + i | highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
                 </div>
                 <div class="form-group">
                     <label for="description">${message(code:'is.backlogelement.description')}</label>
@@ -136,7 +93,7 @@
                               ng-disabled="!formHolder.editable"
                               placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                               name="description"
-                              ng-model="editableFeature.description"></textarea>
+                              ng-model="editableTask.description"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tags">${message(code:'is.backlogelement.tags')}</label>
@@ -147,7 +104,7 @@
                                tagging
                                tagging-tokens="SPACE|,"
                                tagging-label=""
-                               ng-model="editableFeature.tags">
+                               ng-model="editableTask.tags">
                         <ui-select-match placeholder="${message(code:'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
                         <ui-select-choices repeat="tag in tags">{{ tag }}</ui-select-choices>
                     </ui-select>
@@ -158,8 +115,8 @@
                               class="form-control"
                               ng-maxlength="5000"
                               name="notes"
-                              ng-model="editableFeature.notes"
-                              is-model-html="editableFeature.notes_html"
+                              ng-model="editableTask.notes"
+                              is-model-html="editableTask.notes_html"
                               ng-show="showNotesTextarea"
                               ng-blur="showNotesTextarea = false"
                               placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
@@ -168,13 +125,13 @@
                          ng-show="!showNotesTextarea"
                          ng-click="showNotesTextarea = formHolder.editable"
                          ng-focus="editForm(true); showNotesTextarea = formHolder.editable"
-                         ng-class="{'placeholder': !editableFeature.notes_html}"
+                         ng-class="{'placeholder': !editableTask.notes_html}"
                          tabindex="0"
-                         ng-bind-html="(editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+                         ng-bind-html="(editableTask.notes_html ? editableTask.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
                 </div>
                 <div class="form-group">
-                    <label>${message(code:'is.backlogelement.attachment')} {{ feature.attachments.length > 0 ? '(' + feature.attachments.length + ')' : '' }}</label>
-                    <div ng-if="authorizedFeature('upload', feature)">
+                    <label>${message(code:'is.backlogelement.attachment')} {{ task.attachments.length > 0 ? '(' + task.attachments.length + ')' : '' }}</label>
+                    <div ng-if="authorizedTask('upload', task)">
                         <button type="button" class="btn btn-default"><i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
                     </div>
                     <div class="form-control-static">
@@ -187,7 +144,7 @@
             <div class="panel-footer" ng-if="formHolder.editing">
                 <div class="btn-toolbar">
                     <button class="btn btn-primary"
-                            ng-disabled="!isDirty() || formHolder.featureForm.$invalid"
+                            ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
                             uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
                             tooltip-append-to-body="true"
                             type="submit">

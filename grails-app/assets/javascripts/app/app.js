@@ -416,6 +416,20 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                 }
                             }
                         })
+                        .state('sprintPlan.task.details', {
+                            url: "/{taskId:int}",
+                            resolve: {
+                                detailsTask: ['$stateParams', 'tasks', function($stateParams, tasks) {
+                                    return _.find(tasks, {id: $stateParams.taskId})
+                                }]
+                            },
+                            views: {
+                                "details@sprintPlan": {
+                                    templateUrl: 'task.details.html',
+                                    controller: 'taskDetailsCtrl'
+                                }
+                            }
+                        })
         }
     ])
     .config(['flowFactoryProvider', function (flowFactoryProvider) {

@@ -101,6 +101,82 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     });
 }]);
 
+controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$controller', 'TaskService', 'FormService', 'ProjectService', 'sprint', 'detailsTask', function($scope, $state, $controller, TaskService, FormService, ProjectService, sprint, detailsTask) {
+    $controller('taskCtrl', { $scope: $scope }); // inherit from taskCtrl
+    $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsTask, clazz: 'task' });
+    // Functions
+    $scope.isDirty = function() {
+        return !_.isEqual($scope.editableTask, $scope.editableTaskReference);
+    };
+    $scope.update = function(task) {
+        TaskService.update(task, sprint).then(function() {
+            $scope.resetTaskForm();
+            $scope.notifySuccess('todo.is.ui.task.updated');
+        });
+    };
+    $scope.editForm = function(value) {
+        if (value != $scope.formHolder.editing) {
+            $scope.setInEditingMode(value); // global
+            $scope.resetTaskForm();
+        }
+    };
+    $scope.resetTaskForm = function() {
+        $scope.formHolder.editing = $scope.isInEditingMode();
+        $scope.formHolder.editable = $scope.authorizedTask('update', $scope.task);
+        if ($scope.formHolder.editable) {
+            $scope.editableTask = angular.copy($scope.task);
+            $scope.editableTaskReference = angular.copy($scope.task);
+        } else {
+            $scope.editableTask = $scope.task;
+            $scope.editableTaskReference = $scope.task;
+        }
+        $scope.resetFormValidation($scope.formHolder.taskForm);
+    };
+    $scope.retrieveTags = function() {
+        if (_.isEmpty($scope.tags)) {
+            ProjectService.getTags().then(function (tags) {
+                $scope.tags = tags;
+            });
+        }
+    };
+    // Init
+    $scope.task = detailsTask;
+    $scope.editableTask = {};
+    $scope.editableTaskReference = {};
+    $scope.formHolder = {};
+    $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
+    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+            event.preventDefault(); // cancel the state change
+            $scope.mustConfirmStateChange = false;
+            $scope.confirm({
+                message: 'todo.is.ui.dirty.confirm',
+                condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
+                callback: function() {
+                    if ($scope.flow != undefined && $scope.flow.isUploading()) {
+                        $scope.flow.cancel();
+                    }
+                    $state.go(toState, toParams)
+                },
+                closeCallback: function() {
+                    $scope.mustConfirmStateChange = true;
+                }
+            });
+        }
+    });
+    $scope.tags = [];
+    $scope.retrieveTags = function() {
+        if (_.isEmpty($scope.tags)) {
+            ProjectService.getTags().then(function (tags) {
+                $scope.tags = tags;
+            });
+        }
+    };
+    $scope.resetTaskForm();
+    //$scope.previousTask = FormService.previous(TaskService.list, $scope.task);
+    //$scope.nextTask = FormService.next(TaskService.list, $scope.task);
+}]);
+
 controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
     $scope.tasksByProject = [];
     TaskService.listByUser().then(function(tasksByProject) {

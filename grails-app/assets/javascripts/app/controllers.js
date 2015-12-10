@@ -425,12 +425,16 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     var partitionedTasks = _.partition(tasks, function(task) {
         return _.isNull(task.parentStory);
     });
-    $scope.tasksByTypeByState = _.mapValues(_.groupBy(partitionedTasks[0], 'type'), function(tasks) {
-        return _.groupBy(tasks, 'state');
-    });
-    $scope.tasksByStoryByState = _.mapValues(_.groupBy(partitionedTasks[1], 'parentStory.id'), function(tasks) {
-        return _.groupBy(tasks, 'state');
-    });
+    var groupByStateAndSort = function(tasksDictionnary) {
+        var tasksByState = _.mapValues(tasksDictionnary, function(tasks) {
+            return _.groupBy(tasks, 'state')
+        });
+        return _.mapValues(tasksByState, function(tasks) {
+            return _.sortBy(tasks, 'rank');
+        });
+    };
+    $scope.tasksByTypeByState = groupByStateAndSort(_.groupBy(partitionedTasks[0], 'type'));
+    $scope.tasksByStoryByState = groupByStateAndSort(_.groupBy(partitionedTasks[1], 'parentStory.id'));
     var fillGapsInDictionnary = function(dictionnary, firstLevelKeys, secondLevelKeys) {
         _.each(firstLevelKeys, function(firstLevelKey) {
             if (!dictionnary[firstLevelKey]) {
