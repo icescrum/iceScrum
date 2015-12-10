@@ -32,14 +32,16 @@
                 <is:fieldInformation noborder="true">
                     <g:message code="is.dialog.closeSprint.description"/>
                 </is:fieldInformation>
-                <g:each in="${stories}" var="story" status="u">
-                    <is:fieldRadio noborder="${(u + 1) == stories.size()?'true':'false'}" for="undonestory-${story.id}"
-                                   label="${story.id} - ${story.name.encodeAsHTML()} (${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})">
-                        <is:radio
-                                from="[(message(code: 'is.dialog.closeSprint.done')): '1', (message(code: 'is.dialog.closeSprint.notDone')): '0']"
-                                id="undonestory-${story.id}" value="0" name="story.id.${story.id}"/>
-                    </is:fieldRadio>
-                </g:each>
+                <div style="max-height:250px;overflow:auto;">
+                    <g:each in="${stories}" var="story" status="u">
+                        <is:fieldRadio noborder="${(u + 1) == stories.size()?'true':'false'}" for="undonestory-${story.id}"
+                                       label="${story.id} - ${story.name.encodeAsHTML()} (${story.effort} ${story.effort > 1 ? 'pts' : 'pt'})">
+                            <is:radio
+                                    from="[(message(code: 'is.dialog.closeSprint.done')): '1', (message(code: 'is.dialog.closeSprint.notDone')): '0']"
+                                    id="undonestory-${story.id}" value="0" name="story.id.${story.id}"/>
+                        </is:fieldRadio>
+                    </g:each>
+                </div>
             </g:if>
             <g:if test="${!sprint.deliveredVersion}">
                 <is:fieldInformation noborder="true">
