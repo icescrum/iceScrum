@@ -26,6 +26,11 @@
      ellipsis
      class="postit postit-small {{ task.color | contrastColor }}">
     <div class="head">
+        <img ng-src="{{ task.responsible | userAvatar }}"
+             ng-if="task.responsible"
+             class="responsible"
+             uib-tooltip="{{ task.responsible | userFullName }}"
+             tooltip-append-to-body="true">
         <span class="id">{{ ::task.uid }}</span>
         <span class="estimation editable"
               uib-tooltip="${message(code: 'is.task.estimation')}"
