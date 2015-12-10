@@ -27,14 +27,14 @@ directives.directive('isMarkitup', ['$http', function($http) {
     return {
         restrict: 'A',
         scope: {
-            show:  '=ngShow',
-            html:  '=isModelHtml',
+            show: '=ngShow',
+            html: '=isModelHtml',
             model: '=ngModel'
         },
-        link: function(scope, element, attrs) {
+        link: function(scope, element) {
             var settings = $.extend({
-                    resizeHandle:false,
-                    scrollContainer:'#main-content .details:first',
+                    resizeHandle: false,
+                    scrollContainer: '#main-content .details:first',
                     afterInsert: function() {
                         element.triggerHandler('input');
                     }
@@ -45,9 +45,9 @@ directives.directive('isMarkitup', ['$http', function($http) {
             container.hide();
 
             scope.$watch('show', function(value) {
-                if (value === true){
+                if (value === true) {
                     container.show();
-                    setTimeout(function(){
+                    setTimeout(function() {
                         element[0].focus();
                     }, 50);
                 } else {
@@ -59,8 +59,8 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 scope.$apply($http({
                     method: 'POST',
                     url: 'textileParser',
-                    headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
-                    data: 'data='+val
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                    data: 'data=' + val
                 }).success(function(data) {
                     scope.html = data;
                 }));
@@ -73,14 +73,14 @@ directives.directive('isMarkitup', ['$http', function($http) {
         link: function(scope, element, attrs) {
             scope.$watch(function() {
                 return scope.$eval(attrs.name);
-            }, function(form, oldForm) {
+            }, function(form) {
                 if (form == undefined) {
                     return;
                 }
                 var inputs = element.find('input[ng-model]:not([validation-watched]):not(.ui-select-search), textarea[ng-model]:not([validation-watched])');
                 angular.forEach(inputs, function(it) {
                     var input = angular.element(it);
-                    input.attr('validation-watched','');
+                    input.attr('validation-watched', '');
                     var container = input.parent();
                     if (container.hasClass('input-group')) {
                         container = container.parent();
@@ -138,50 +138,50 @@ directives.directive('isMarkitup', ['$http', function($http) {
             }, true);
         }
     }
-}]).directive('notMatch', function () {
+}]).directive('notMatch', function() {
     return {
         require: 'ngModel',
         restrict: 'A',
         scope: {
             notMatch: '='
         },
-        link: function(scope, elem, attrs, ngModel) {
-            ngModel.$validators.notMatch = function(modelValue, viewValue) {
+        link: function(scope, element, attrs, modelCtrl) {
+            modelCtrl.$validators.notMatch = function(modelValue, viewValue) {
                 var value = modelValue || viewValue;
                 var notMatch = scope.notMatch;
                 return value != notMatch;
             };
             scope.$watch('notMatch', function() {
-                ngModel.$validate();
+                modelCtrl.$validate();
             });
         }
     };
-}).directive('isMatch', function () {
+}).directive('isMatch', function() {
     return {
         require: 'ngModel',
         restrict: 'A',
         scope: {
             isMatch: '='
         },
-        link: function(scope, elem, attrs, ngModel) {
-            ngModel.$validators.isMatch = function(modelValue, viewValue) {
+        link: function(scope, element, attrs, modelCtrl) {
+            modelCtrl.$validators.isMatch = function(modelValue, viewValue) {
                 var value = modelValue || viewValue;
                 var isMatch = scope.isMatch;
                 return value === isMatch;
             };
             scope.$watch('isMatch', function() {
-                ngModel.$validate();
+                modelCtrl.$validate();
             });
         }
     };
 }).directive('formAutofillFix', ['$timeout', function($timeout) {
-    return function (scope, element, attrs) {
+    return function(scope, element, attrs) {
         element.prop('method', 'post');
         if (attrs.ngSubmit) {
-            $timeout(function () {
+            $timeout(function() {
                 element
                     .unbind('submit')
-                    .bind('submit', function (event) {
+                    .bind('submit', function(event) {
                         event.preventDefault();
                         element
                             .find('input, textarea, select')
@@ -193,16 +193,16 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     };
-}]).directive('ellipsis', [function () {
+}]).directive('ellipsis', [function() {
     return {
         restrict: 'A',
         priority: 100,
-        link: function (scope, element) {
-            element.on('hover', function(){
-                _.each(element.find('.ellipsis-el'), function(el){
+        link: function(scope, element) {
+            element.on('hover', function() {
+                _.each(element.find('.ellipsis-el'), function(el) {
                     el = angular.element(el);
                     var data = el.data('jqae');
-                    if(!data || (data && data.wrapperElement.parent().length == 0)){
+                    if (!data || (data && data.wrapperElement.parent().length == 0)) {
                         el.data('jqae', null);
                         el.ellipsis();
                     }
@@ -213,12 +213,12 @@ directives.directive('isMarkitup', ['$http', function($http) {
 }]).directive('timeago', [function() {
     return {
         restrict: 'A',
-        link: function (scope, element) {
+        link: function(scope, element) {
             element.data('hasTimeago', false);
-            scope.$watch("", function(value) {
+            scope.$watch("", function() {
                 // apply only once
                 if (!element.data('hasTimeago')) {
-                    element.data('hasTimeago',true);
+                    element.data('hasTimeago', true);
                     element.timeago();
                 }
             });
@@ -227,7 +227,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
 }]).directive('at', [function() {
     return {
         restrict: 'A',
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             element.data('hasAt', false);
             scope.$watch(function() {
                 // Cannot use isolated scope (e.g. scope { at: '=' } because there are already isolated scope on the element)
@@ -244,25 +244,25 @@ directives.directive('isMarkitup', ['$http', function($http) {
         }
     };
 }]).directive('capitalize', function() {
-        return {
-            require: 'ngModel',
-            link: function(scope, element, attrs, modelCtrl) {
-                var capitalize = function(inputValue) {
-                    if(inputValue == undefined) inputValue = '';
-                    if(attrs.noSpace){
-                        inputValue = inputValue.replace(/[\s]/g, '');
-                    }
-                    var capitalized = inputValue.toUpperCase();
-                    if(capitalized !== inputValue) {
-                        modelCtrl.$setViewValue(capitalized);
-                        modelCtrl.$render();
-                    }
-                    return capitalized;
-                };
-                modelCtrl.$parsers.push(capitalize);
-                capitalize(scope[attrs.ngModel]);
-            }
-        };
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+            var capitalize = function(inputValue) {
+                if (inputValue == undefined) inputValue = '';
+                if (attrs.noSpace) {
+                    inputValue = inputValue.replace(/[\s]/g, '');
+                }
+                var capitalized = inputValue.toUpperCase();
+                if (capitalized !== inputValue) {
+                    modelCtrl.$setViewValue(capitalized);
+                    modelCtrl.$render();
+                }
+                return capitalized;
+            };
+            modelCtrl.$parsers.push(capitalize);
+            capitalize(scope[attrs.ngModel]);
+        }
+    };
 }).directive('btnModel', function() {
     return {
         restrict: 'C',
@@ -274,34 +274,34 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     };
-}).directive('selectOnFocus', function () {
+}).directive('selectOnFocus', function() {
     return {
         restrict: 'A',
-        link: function (scope, element) {
-            element.on('focus', function () {
+        link: function(scope, element) {
+            element.on('focus', function() {
                 this.select();
             });
         }
     };
-}).directive('isProgress',['$rootScope', '$timeout', '$http', function($rootScope, $timeout, $http) {
+}).directive('isProgress', ['$rootScope', '$timeout', '$http', function($rootScope, $timeout, $http) {
     return {
         restrict: 'E',
         scope: {
-            start:'='
+            start: '='
         },
         templateUrl: 'is.progress.html',
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             var status;
 
             scope.progress = {
                 value: -1,
                 label: "",
-                type:'primary'
+                type: 'primary'
             };
 
-            scope.$watch('start', function( value ) {
+            scope.$watch('start', function(value) {
                 stopProgress();
-                if (value === true){
+                if (value === true) {
                     $timeout(progress, 500);
                 }
             });
@@ -316,19 +316,19 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     if (!data.error && !data.complete) {
                         status = $timeout(progress, 500);
                     }
-                    if (data.error){
+                    if (data.error) {
                         scope.progress.type = 'danger';
                     } else if (data.complete) {
                         scope.progress.type = 'success';
                     }
                 }, function() {
                     scope.progress.type = 'danger';
-                    scope.progress.label = scope.message(attrs.errorMessage?attrs.errorMessage:'todo.is.ui.error');
+                    scope.progress.label = scope.message(attrs.errorMessage ? attrs.errorMessage : 'todo.is.ui.error');
                     scope.progress.value = 100;
                 });
             };
 
-            var stopProgress = function(){
+            var stopProgress = function() {
                 if (angular.isDefined(status)) {
                     $timeout.cancel(status);
                     status = undefined;
@@ -340,19 +340,18 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     };
-}]).directive('onRepeatCompleted', function () {
+}]).directive('onRepeatCompleted', function() {
     return {
         restrict: 'A',
-        link: function (scope, element, attr) {
+        link: function(scope, element, attrs) {
             if (scope.$last === true) {
-                scope.$evalAsync(attr.onRepeatCompleted);
+                scope.$evalAsync(attrs.onRepeatCompleted);
             }
         }
     }
-}).directive('circle', function(){
+}).directive('circle', function() {
     var polarToCartesian = function(centerX, centerY, radius, angleInDegrees) {
-        var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
-
+        var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
         return {
             x: centerX + (radius * Math.cos(angleInRadians)),
             y: centerY + (radius * Math.sin(angleInRadians))
@@ -360,25 +359,25 @@ directives.directive('isMarkitup', ['$http', function($http) {
     };
     return {
         restrict: 'A',
-        link: function(scope, elem, attrs) {
+        link: function(scope, element, attrs) {
             var coords = attrs.circleCoords.split(',');
-            _.each(coords, function(val, index){
+            _.each(coords, function(val, index) {
                 coords[index] = parseInt(val);
             });
             var end = polarToCartesian(coords[0], coords[1], coords[2], coords[3]);
-            scope.$watch(attrs.circle, function(value){
-                    var endAngle = 360 * value / 100;
+            scope.$watch(attrs.circle, function(value) {
+                var endAngle = 360 * value / 100;
                 var start = polarToCartesian(coords[0], coords[1], coords[2], endAngle);
                 var arcSweep = endAngle - coords[3] <= 180 ? "0" : "1";
                 var d = [
                     "M", start.x, start.y,
                     "A", coords[2], coords[2], 0, arcSweep, 0, end.x, end.y
                 ].join(" ");
-                elem.attr('d', d);
+                element.attr('d', d);
             });
         }
     }
-}).directive('asSortableItemHandleIf', ['$compile', function ($compile) {
+}).directive('asSortableItemHandleIf', ['$compile', function($compile) {
     return {
         restrict: 'A',
         priority: 1000,
