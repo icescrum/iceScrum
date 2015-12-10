@@ -33,7 +33,6 @@
 *= require_full_tree vendors/jquery
 *= require_full_tree vendors/font-awesome
 *= require_full_tree vendors/angular
-*= require_full_tree vendors/jquery-ui
 *= require_full_tree vendors/d3
 *= require_full_tree app
 

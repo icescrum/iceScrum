@@ -25,15 +25,13 @@
 //= encoding          UTF-8
 //= require           atmosphere-meteor
 
-//= require           vendors/jquery/jquery-1.11.0.min
+//= require           vendors/jquery/jquery-2.1.4.min
 //= require           vendors/jquery/jquery-migrate-1.2.1.min
 //= require_full_tree vendors/jquery
 
 //= require_full_tree vendors/d3
 
 //= require           vendors/bootstrap/bootstrap.min
-
-//= require           vendors/jquery-ui/jquery-ui-1.10.4.custom.min
 
 //= require           vendors/angular/angular.min
 //= require           vendors/angular/angular-route.min

@@ -28,101 +28,16 @@
         <gettingStarted>https://www.icescrum.com/documentation/getting-started-with-icescrum</gettingStarted>
         <forum>https://www.icescrum.com/forums/</forum>
         <library>
-            <name>Simile Timeline</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>Markitup</name>
-            <version>1.1.8</version>
-        </library>
-        <library>
-            <name>DD_belatedPNG</name>
-            <version>0.0.8</version>
-        </library>
-        <library>
-            <name>jQuery DnD</name>
-            <version>0.1</version>
-        </library>
-        <library>
-            <name>jQuery doTimeout</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>jQuery dropMenu</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>jQuery eventLine</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>jQuery history</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>jQuery hotkeys</name>
-            <version>N/C</version>
-        </library>
-        <library>
             <name>jQuery iceScrum</name>
-            <version>5.2</version>
-        </library>
-        <library>
-            <name>jQuery iceScrum postit</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>jQuery iceScrum multiFilesUpload</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>jQuery iceScrum progress</name>
-            <version>1.0</version>
-        </library>
-
-        <library>
-            <name>jQuery Pnotify</name>
-            <version>1.0.0</version>
-        </library>
-        <library>
-            <name>jQuery tipTip</name>
-            <version>1.3</version>
-        </library>
-        <library>
-            <name>jQuery alphanumeric</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>jQuery jqplot</name>
-            <version>1.0.0b1_r746</version>
+            <version>7.1</version>
         </library>
         <library>
             <name>jQuery</name>
-            <version>1.8.1</version>
+            <version>2.1.4</version>
         </library>
         <library>
-            <name>jQuery cookie</name>
-            <version>1.2</version>
-        </library>
-        <library>
-            <name>jQuery mousewheel</name>
-            <version>1.0</version>
-        </library>
-        <library>
-            <name>jQuery jeditable</name>
-            <version>1.7.1</version>
-        </library>
-        <library>
-            <name>jQuery alphanumeric</name>
-            <version>N/C</version>
-        </library>
-        <library>
-            <name>jQuery UI</name>
-            <version>1.8.23</version>
-        </library>
-        <library>
-            <name>jQuery UI - timepicker</name>
-            <version>0.9.9</version>
+            <name>AngularJS</name>
+            <version>1.4.8</version>
         </library>
     </version>
     <license><![CDATA[
