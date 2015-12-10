@@ -36,12 +36,12 @@ hibernate {
 environments {
     development {
         dataSource {
-            driverClassName="com.mysql.jdbc.Driver"
+            /*driverClassName="com.mysql.jdbc.Driver"
             dialect="org.hibernate.dialect.MySQL5InnoDBDialect"
             url="jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
             username="root"
             password="root"
-            /*driverClassName = "oracle.jdbc.driver.OracleDriver"
+            driverClassName = "oracle.jdbc.driver.OracleDriver"
             dialect = "org.hibernate.dialect.Oracle10gDialect"
             username = "kagilum"
             password = "kagilum"
@@ -49,7 +49,7 @@ environments {
             url = "jdbc:oracle:thin:@192.168.0.10:1521:XE"*/
             //dbCreate = "update"
             dbCreate = "update" // one of 'create', 'create-drop','update'
-            //url = "jdbc:hsqldb:file:devDba"
+            url = "jdbc:hsqldb:file:devDba"
             loggingSql = false
         }
     }
