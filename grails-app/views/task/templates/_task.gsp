@@ -39,7 +39,7 @@
         </span>
     </div>
     <div class="content"
-         as-sortable-item-handle>
+         as-sortable-item-handle-if="sortableStory = authorizedTask('rank', task)">
         <h3 class="title ellipsis-el"
             ng-model="task.name"
             ng-bind-html="task.name | sanitize"></h3>

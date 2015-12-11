@@ -134,7 +134,8 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-repeat="story in backlog.stories">
+            <tr ng-repeat="story in backlog.stories"
+                ng-class="{'sortable-disabled': !isSortingStory(story)}">
                 <td style="width:16%"
                     class="postits grid-group">
                     <div class="postit-container">
@@ -145,7 +146,7 @@
                     class="postits grid-group"
                     ng-model="tasksByStoryByState[story.id][taskState]"
                     as-sortable="taskSortableOptions"
-                    is-disabled="!isSortingSprintPlan(sprint)"
+                    is-disabled="!isSortingSprintPlan(sprint) || !isSortingStory(story)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                          as-sortable-item

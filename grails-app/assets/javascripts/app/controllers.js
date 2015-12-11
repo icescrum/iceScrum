@@ -385,11 +385,14 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     }
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'sprint', 'tasks', function($scope, $state, StoryService, TaskService, Session, SprintStatesByName, sprint, tasks) {
+controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', 'tasks', function($scope, $state, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint, tasks) {
     $scope.viewName = 'sprintPlan';
     // Functions
     $scope.isSortingSprintPlan = function(sprint) {
         return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
+    };
+    $scope.isSortingStory = function(story) {
+        return story.state < StoryStatesByName.DONE;
     };
     $scope.openSprint = function() {
         $state.go('sprintPlan.details');
@@ -413,7 +416,8 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
         },
         accept: function (sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
-            return sameSortable;
+            var isSortableDest = destSortableScope.story ? $scope.isSortingStory(destSortableScope.story) : true;
+            return sameSortable && isSortableDest;
         }
     };
     $scope.sortableId = 'sprintPlan';
