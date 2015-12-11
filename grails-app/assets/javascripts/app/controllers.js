@@ -408,11 +408,20 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
         itemMoved: function(event) {
             var task = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
+            var destScope = event.dest.sortableScope;
+            var newState = destScope.taskState;
+            var newType = destScope.taskType;
+            var newStory = destScope.story;
+            task.rank = newRank;
+            task.type = newType;
+            task.state = newState;
+            task.parentStory = newStory ? {id: newStory.id} : null;
+            TaskService.update(task, sprint);
         },
         orderChanged: function(event) {
             var task = event.source.itemScope.modelValue;
-            var newRank = event.dest.index + 1;
-            TaskService.updateRank(task, sprint, newRank);
+            task.rank = event.dest.index + 1;
+            TaskService.update(task, sprint);
         },
         accept: function (sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;

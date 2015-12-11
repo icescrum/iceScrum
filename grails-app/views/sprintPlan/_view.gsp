@@ -87,6 +87,7 @@
                 <td style="width:28%"
                     class="postits grid-group"
                     ng-model="tasksByTypeByState[11][taskState]"
+                    ng-init="taskType = 11"
                     as-sortable="taskSortableOptions"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
@@ -114,6 +115,7 @@
                 <td style="width:28%"
                     class="postits grid-group"
                     ng-model="tasksByTypeByState[10][taskState]"
+                    ng-init="taskType = 10"
                     as-sortable="taskSortableOptions"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
