@@ -129,6 +129,25 @@
                         </div>
                     </div>
                 </div>
+                <div ng-controller="chartCtrl"
+                     ng-init="openReleaseChart('burndown', release)">
+                    <div uib-dropdown
+                         class="pull-right">
+                        <button class="btn btn-default btn-sm"
+                                uib-tooltip="${message(code:'todo.is.ui.charts')}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                uib-dropdown-toggle>
+                            <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
+                        </button>
+                        <ul class="uib-dropdown-menu">
+                            <li><a href ng-click="openReleaseChart('burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>
+                            <li><a href ng-click="openReleaseChart('parkingLot', release)">${message(code: 'is.chart.releaseParkingLot')}</a></li>
+                            <li><a href ng-click="openMoodChart('releaseUserMood')">${message(code: 'is.chart.releaseUserMood')}</a></li>
+                        </ul>
+                    </div>
+                    <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
+                </div>
                 <div class="form-group">
                     <label for="vision">${message(code:'is.ui.releasePlan.toolbar.vision')}</label>
                     <textarea is-markitup

@@ -123,7 +123,7 @@
         </div>
     </div>
     <div class="panel-column">
-        <div class="panel panel-light" ng-controller="chartCtrl" ng-init="initProjectChart('burnup')">
+        <div class="panel panel-light" ng-controller="chartCtrl" ng-init="openProjectChart('burnup')">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>

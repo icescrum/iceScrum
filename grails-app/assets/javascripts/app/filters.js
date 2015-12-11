@@ -345,4 +345,8 @@ filters
             }
             return colorClass;
         }
+    }]).filter('merge', [function() {
+        return function (object, defaultObject) {
+            return _.merge(object, defaultObject);
+        }
     }]);

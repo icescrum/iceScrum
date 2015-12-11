@@ -516,7 +516,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, $scope.initOptions, options);
+        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, options);
         ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
@@ -583,7 +583,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         };
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, defaultSprintOptions);
-        SprintService.openChart(sprint, $scope.currentProject, chartName).then(function(chart) {
+        SprintService.openChart(sprint, $scope.currentProject ? $scope.currentProject : Session.getProject(), chartName).then(function(chart) {
             $scope.options = _.merge($scope.options, chart.options);
             $scope.data = chart.data;
         });
@@ -642,7 +642,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         }
         $scope.cleanData();
         $scope.options = _.merge({}, defaultOptions, options);
-        MoodService.openChart(chartName, $scope.currentProject).then(function(chart) {
+        MoodService.openChart(chartName, $scope.currentProject ? $scope.currentProject : Session.getProject()).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
             if (chart.labelsX  ||  chart.labelsY) {
@@ -650,10 +650,6 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                 $scope.labelsY = chart.labelsY;
             }
         });
-    };
-    $scope.initProjectChart = function(chart, options, project) {
-        $scope.initOptions = options ? options : {};
-        $scope.openProjectChart(chart ? chart : 'burnup', project);
     };
     $scope.cleanData = function() {
         $scope.data = [];

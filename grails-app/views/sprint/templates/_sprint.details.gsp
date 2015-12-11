@@ -71,10 +71,6 @@
               novalidate>
             <div class="panel-body">
                 <div class="clearfix no-padding">
-                    <div class="form-group">
-                        <label for="sprint.parentRelease">${message(code:'is.release')}</label>
-                        <div class="form-control-static">{{ sprint.parentRelease.name }}</div>
-                    </div>
                     <div class="form-half">
                         <label for="sprint.startDate">${message(code:'is.sprint.startDate')}</label>
                         <div ng-class="{'input-group': authorizedSprint('update', sprint)}">
@@ -123,6 +119,27 @@
                             </span>
                         </div>
                     </div>
+                </div>
+                <div ng-controller="chartCtrl"
+                     ng-init="openSprintChart('burnupTasks', sprint)">
+                    <div uib-dropdown
+                         class="pull-right">
+                        <button class="btn btn-default btn-sm"
+                                uib-tooltip="${message(code:'todo.is.ui.charts')}"
+                                tooltip-append-to-body="true"
+                                type="button"
+                                uib-dropdown-toggle>
+                            <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
+                        </button>
+                        <ul class="uib-dropdown-menu">
+                            <li><a href ng-click="openSprintChart('burndownRemaining', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>
+                            <li><a href ng-click="openSprintChart('burnupTasks', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a></li>
+                            <li><a href ng-click="openSprintChart('burnupPoints', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a></li>
+                            <li><a href ng-click="openSprintChart('burnupStories', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a></li>
+                            <li><a href ng-click="openMoodChart('sprintUserMood')">${message(code: 'is.chart.sprintUserMood')}</a></li>
+                        </ul>
+                    </div>
+                    <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
                 </div>
                 <div class="form-group">
                     <label for="goal">${message(code:'is.ui.sprintPlan.toolbar.goal')}</label>
