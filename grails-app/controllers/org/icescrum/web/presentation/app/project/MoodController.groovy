@@ -1,4 +1,4 @@
-/*
+    /*
  * Copyright (c) 2015 Kagilum.
  *
  * This file is part of iceScrum.
@@ -94,8 +94,7 @@ class MoodController {
         // Mood by user
         def moodsByUser = values.groupBy { it.user }
         def computedValues = moodsByUser.collect { user, moods ->
-            return [key   : user.firstName + (user.lastName ? (' ' + user.lastName) : ''),
-                    values: moods.collect { mood -> return [mood.feelingDay.time, mood.feeling] }]
+            return [key: '', values: moods.collect { mood -> return [mood.feelingDay.time, mood.feeling] }]
         }
         // Mean mood
         def moodsByDay = values.groupBy { it.feelingDay }
@@ -131,7 +130,7 @@ class MoodController {
             }
         }
         def computedValues = meanMoodByUser.collect { user, means ->
-            return [key: user.firstName + (user.lastName ? (' ' + user.lastName) : ''), values: means]
+            return [key: '', values: means]
         }
         def listOfMoodBySprint = [:]
         def meanOfmoodBySprint = [:]
