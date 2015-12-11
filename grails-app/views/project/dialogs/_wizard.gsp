@@ -198,13 +198,13 @@
         <is:fieldDatePicker noborder="${privateOption?'true':''}" for="productstartDate"
                             label="is.dialog.wizard.project.startDate">
             <is:datePicker id="productstartDate" defaultDate="${product.startDate}"
-                           onSelect="jQuery.icescrum.updateWizardDate(this);" name="product.startDate" mode="read-input"
+                           onSelect="jQuery.icescrum.updateWizardDate();" name="product.startDate" mode="read-input"
                            changeMonth="true" changeYear="true"/>
         </is:fieldDatePicker>
 
         <is:fieldDatePicker for="firstSprint" label="is.dialog.wizard.firstSprint">
             <is:datePicker id="firstSprint" name="firstSprint" defaultDate="${product.startDate}"
-                           minDate="${product.startDate}" maxDate="${product.endDate - 1}" mode="read-input"
+                           onSelect="jQuery.icescrum.updateWizardDate();" minDate="${product.startDate}" maxDate="${product.endDate - 1}" mode="read-input"
                            changeMonth="true" changeYear="true"/>
         </is:fieldDatePicker>
 
@@ -217,7 +217,7 @@
 
         <is:fieldDatePicker for="productendDate" label="is.dialog.wizard.project.endDate">
             <is:datePicker id="productendDate" name="product.endDate" defaultDate="${product.endDate}"
-                           minDate="${product.startDate}" mode="read-input" changeMonth="true" changeYear="true"/>
+                           onSelect="jQuery.icescrum.updateWizardDate();" minDate="${product.startDate}" mode="read-input" changeMonth="true" changeYear="true"/>
         </is:fieldDatePicker>
 
         <is:fieldArea for="vision" label="is.release.vision" noborder="true" optional="true">

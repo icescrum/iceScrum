@@ -1,19 +1,34 @@
 (function($) {
     $.extend($.icescrum, {
-                updateWizardDate:function(datepicker) {
-                    var startDate = $(datepicker).datepicker('getDate');
-                    var endDateProject = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
-                    var endDate = new Date(startDate.getTime() + 90 * 24 * 60 * 60 * 1000);
-                    var endDateFirstSprint = new Date(startDate.getTime() + 88 * 24 * 60 * 60 * 1000);
-                    var $endDate = $('#datepicker-productendDate');
-                    var $firstSprint = $('#datepicker-firstSprint');
-                    $endDate.datepicker('option', {minDate:endDateProject,defaultDate:endDate,maxDate:null});
-                    $endDate.datepicker('setDate', endDate);
-                    $endDate.datepicker('option', {minDate:startDate,defaultDate:startDate,maxDate:endDateFirstSprint});
-                    $endDate.datepicker('setDate', startDate);
-                }
-            });
+                updateWizardDate:function() {
+                    var $productStart = $('#datepicker-productstartDate');
+                    var productStartDate = $productStart.datepicker('getDate');
 
+                    var $sprintStart = $('#datepicker-firstSprint');
+                    var sprintStartDate = $sprintStart.datepicker('getDate');
+
+                    var $releaseEnd = $('#datepicker-productendDate');
+                    var releaseEndDate = $releaseEnd.datepicker('getDate');
+
+                    if(productStartDate > sprintStartDate){
+                        sprintStartDate = productStartDate;
+                    }
+
+                    if(sprintStartDate > releaseEndDate){
+                        releaseEndDate = new Date(sprintStartDate.getTime() + (2 * 24 * 60 * 60 * 1000));
+                    }
+
+                    $productStart.datepicker('option', {minDate:null,defaultDate:productStartDate,maxDate:null});
+                    $productStart.datepicker('setDate', productStartDate);
+
+                    $sprintStart.datepicker('option', {minDate:productStartDate,defaultDate:sprintStartDate,maxDate:null});
+                    $sprintStart.datepicker('setDate', sprintStartDate);
+
+                    $releaseEnd.datepicker('option', {minDate:new Date(sprintStartDate.getTime() + (2 * 24 * 60 * 60 * 1000)),defaultDate:releaseEndDate,maxDate:null});
+                    $releaseEnd.datepicker('setDate', releaseEndDate);
+            }
+    });
+                                                                  
     $.fn.isWizard = function(options) {
         options = $.extend({
                     disableNext: [],
