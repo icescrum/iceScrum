@@ -25,6 +25,7 @@ eventCreateWarStart = {warname, stagingDir ->
         entry(key: 'scm.version', value: getRevision())
         entry(key: 'build.date', value: new Date())
         if (System.getProperty("app.version.suffix")){
+            println "app.version.suffix has been set to: ${System.getProperty("app.version.suffix")}"
             entry(key: 'app.version', value: ' '+System.getProperty("app.version.suffix"), operation:'+')
         }
     }
