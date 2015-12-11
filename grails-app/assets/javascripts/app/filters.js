@@ -349,4 +349,20 @@ filters
         return function (object, defaultObject) {
             return _.merge(object, defaultObject);
         }
+    }]).filter('taskStateIcon', ['TaskStatesByName', function(TaskStatesByName) {
+        return function (state) {
+            var iconByState = 'fa-hourglass-';
+            switch (state) {
+                case TaskStatesByName.WAIT:
+                    iconByState += 'start';
+                    break;
+                case TaskStatesByName.IN_PROGRESS:
+                    iconByState += 'half';
+                    break;
+                case TaskStatesByName.DONE:
+                    iconByState += 'end';
+                    break;
+            }
+            return iconByState;
+        }
     }]);

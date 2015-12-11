@@ -34,7 +34,7 @@
         <span class="id">{{ ::task.uid }}</span>
         <span class="estimation editable"
               uib-tooltip="${message(code: 'is.task.estimation')}">
-            {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa fa-dollar"></i>
+            {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
         </span>
     </div>
     <div class="content"

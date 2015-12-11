@@ -701,9 +701,9 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         "ICEBOX": -1
     })
     .constant('TaskStatesByName', {
-        "SUGGESTED": 0,
-        "ACCEPTED": 1,
-        "ESTIMATED": 2
+        "WAIT": 0,
+        "IN_PROGRESS": 1,
+        "DONE": 2
     })
     .constant('AcceptanceTestStatesByName', {
         "TOCHECK": 1,
