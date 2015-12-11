@@ -426,11 +426,10 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
         return _.isNull(task.parentStory);
     });
     var groupByStateAndSort = function(tasksDictionnary) {
-        var tasksByState = _.mapValues(tasksDictionnary, function(tasks) {
-            return _.groupBy(tasks, 'state')
-        });
-        return _.mapValues(tasksByState, function(tasks) {
-            return _.sortBy(tasks, 'rank');
+        return _.mapValues(tasksDictionnary, function(tasks) {
+            return _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
+                return _.sortBy(tasks, 'rank');
+            });
         });
     };
     $scope.tasksByTypeByState = groupByStateAndSort(_.groupBy(partitionedTasks[0], 'type'));
