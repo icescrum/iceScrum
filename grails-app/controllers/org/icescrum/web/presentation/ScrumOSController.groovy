@@ -56,7 +56,7 @@ class ScrumOSController {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
         if(params.ended && params.tourName){
             def tourName = "display${params.tourName.capitalize()}Tour"
-            if(user.preferences.hasProperty(tourName)){
+            if(user?.preferences?.hasProperty(tourName)){
                 user.preferences."$tourName" = false
             }
             render(status:200)
