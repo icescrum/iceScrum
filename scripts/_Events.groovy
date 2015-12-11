@@ -28,6 +28,10 @@ eventCreateWarStart = {warname, stagingDir ->
             println "app.version.suffix has been set to: ${System.getProperty("app.version.suffix")}"
             entry(key: 'app.version', value: ' '+System.getProperty("app.version.suffix"), operation:'+')
         }
+        else if (System.getProperty("app.version.cloud")){
+            println "app.version.pro has been set to: Pro Cloud"
+            entry(key: 'app.version', value: ' Pro Cloud', operation:'+')
+        }
     }
 }
 
