@@ -109,7 +109,7 @@
                 </div>
                 <div class="form-group">
                     <label for="description">${message(code:'is.backlogelement.description')}</label>
-                    <textarea class="form-control"
+                    <textarea class="form-control important"
                               ng-maxlength="3000"
                               ng-focus="editForm(true)"
                               ng-disabled="!formHolder.editable"
@@ -142,7 +142,7 @@
                               ng-show="showNotesTextarea"
                               ng-blur="showNotesTextarea = false"
                               placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
-                    <div class="markitup-preview"
+                    <div class="markitup-preview important"
                          ng-disabled="!formHolder.editable"
                          ng-show="!showNotesTextarea"
                          ng-click="showNotesTextarea = formHolder.editable"

@@ -77,7 +77,9 @@ services.service("ReleaseService", ['$q', 'Release', 'ReleaseStatesByName', 'Ses
         return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'close'}, {}).$promise;
     };
     this.generateSprints = function(release) {
-        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'generateSprints'}, {}).$promise;
+        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'generateSprints'}, {}).$promise.then(function(sprints){
+            release.sprints = sprints;
+        });
     };
     this.autoPlan = function(release) {
         return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'autoPlan'}, {}).$promise;

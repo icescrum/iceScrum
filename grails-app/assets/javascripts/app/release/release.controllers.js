@@ -38,7 +38,7 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', fu
         });
     };
     $scope.generateSprints = function(release) {
-        ReleaseService.generateSprints(release).then(function() {
+        ReleaseService.generateSprints(release).then(function(sprints) {
             $scope.notifySuccess('todo.is.ui.release.generatedSprints');
         });
     };

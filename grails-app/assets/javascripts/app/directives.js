@@ -381,7 +381,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
     return {
         restrict: 'A',
         priority: 1000,
-        link: function link(scope, element, attrs) {
+        link: function(scope, element, attrs) {
             if (scope.$eval(attrs.asSortableItemHandleIf)) {
                 element.attr('as-sortable-item-handle', '');
             }
@@ -390,4 +390,137 @@ directives.directive('isMarkitup', ['$http', function($http) {
             $compile(element)(scope);
         }
     };
+}]).directive('projectTimeline', ['ProjectService', '$window',function(ProjectService, $window){
+    return {
+        restrict: 'A',
+        link:function(scope, element, attrs){
+            var margin = {top: 0, right: 15, bottom: 15, left: 15},
+                width = element.width() - margin.left - margin.right,
+                height = element.height() - margin.top - margin.bottom,
+                brush, x;
+
+            var rootSvg = d3.select(element[0])
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom);
+
+            var svg = rootSvg
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            scope.$watch(attrs.projectTimeline, function(project){
+                x.domain([new Date(_.first(project.releases).startDate), new Date(_.last(project.releases).endDate)]);
+
+                var releaseMargin = 15;
+                svg.select(".releases")
+                    .selectAll('rect')
+                    .data(project.releases)
+                    .enter()
+                    .append("rect")
+                    .attr("y", releaseMargin)
+                    .attr("height", height - releaseMargin*2)
+                    .attr('x', function(d) { return x(d.startDate); })
+                    .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
+                    .attr("class", function(d){ return "release release-"+({ 1: 'default', 2: 'progress', 3: 'done' }[d.state]); });
+
+                var sprintMargin = 10;
+                svg.select(".sprints")
+                    .selectAll('rect')
+                    .data(ProjectService.getAllSprintsSorted(project))
+                    .enter()
+                    .append("rect")
+                    .attr("y", sprintMargin+releaseMargin)
+                    .attr('x', function(d) { return x(d.startDate); })
+                    .attr("height", height - releaseMargin*2-sprintMargin*2)
+                    .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
+                    .attr("class", function(d){ return "sprint sprint-"+({ 1: 'default', 2: 'progress', 3: 'done' }[d.state]); });
+
+                svg.select(".axis")
+                    .call(d3.svg.axis()
+                        .scale(x)
+                        .orient("bottom"))
+                    .selectAll("text")
+                    .attr('y', 7)
+                    .attr('x', -15)
+                    .style("text-anchor", null);
+
+                //should be added as parameter
+                var currentOrNextSprint = ProjectService.getCurrentOrNextSprint(project);
+                if(currentOrNextSprint){
+                    d3.select(".brush").transition()
+                        .call(brush.extent([currentOrNextSprint.startDate,currentOrNextSprint.endDate]))
+                        .call(brush.event);
+                }
+            });
+
+            //background
+            svg.append("rect")
+                .attr("class", "timeline-background")
+                .attr("width", width)
+                .attr("height", height);
+
+            //x date axis
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")");
+
+            //group releases
+            var releases = svg.append("g")
+                .attr("class", "releases");
+
+            //group sprints
+            var sprints = svg.append("g")
+                .attr("class", "sprints");
+
+            //brush rect
+            svg.append("g")
+                .attr("class", "brush");
+
+            //x axis
+            x = d3.time.scale()
+                .range([0, width]);
+
+            //brush selector
+            brush = d3.svg.brush()
+                .x(x)
+                .on("brushend", brushended);
+
+            svg.selectAll(".brush")
+                .call(brush)
+                .call(brush.event);
+
+            svg.selectAll(".brush").selectAll("rect")
+                .attr("height", height);
+
+            //snap to sprint
+            function brushended() {
+                if (!d3.event.sourceEvent) return; // only transition after input
+                var extent0 = brush.extent(),
+                    extent1 = extent0.map(d3.time.day.round);
+                // if empty when rounded, use floor & ceil instead
+                if (extent1[0] >= extent1[1]) {
+                    var release, sprint;
+                    release = _.find(releases.selectAll("rect").data(), function(release) {
+                        return release.startDate <= extent1[0] && release.endDate >= extent1[1];
+                    });
+                    if(release){
+                        sprint = _.find(sprints.selectAll("rect").data(), function(sprint) {
+                            return sprint.startDate <= extent1[0] && sprint.endDate >= extent1[1];
+                        });
+                    }
+                    var result = sprint ? sprint : release ? release : null;
+                    extent1[0] = result ? result.startDate : d3.time.day.floor(extent0[0]);
+                    extent1[1] = result ? result.endDate : d3.time.day.ceil(extent0[1]);
+                } else {
+                    var ssprints = _.filter(sprints.selectAll("rect").data(), function(sprint) {
+                        return sprint.startDate >= extent1[0] && sprint.endDate <= extent1[1];
+                    });
+                    console.log(ssprints);
+                }
+                d3.select(this).transition()
+                    .call(brush.extent(extent1))
+                    .call(brush.event);
+            }
+        }
+    }
 }]);

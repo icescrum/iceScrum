@@ -24,7 +24,7 @@ services.factory('Project', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/project/:id/:action');
 }]);
 
-services.service("ProjectService", ['Project', 'Session', 'FormService', function(Project, Session, FormService) {
+services.service("ProjectService", ['Project', 'Session', 'FormService', 'ReleaseStatesByName', 'SprintStatesByName', function(Project, Session, FormService, ReleaseStatesByName, SprintStatesByName) {
     this.save = function(project) {
         project.class = 'product';
         return Project.save(project).$promise;
@@ -81,4 +81,14 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
     this.getTags = function() {
         return FormService.httpGet('finder/tag');
     };
+    this.getAllSprintsSorted = function(project){
+        return _.chain(project.releases).sortBy('orderNumber').map(function(release) {
+            return _.sortBy(release.sprints, 'orderNumber');
+        }).flatten().value();
+    };
+    this.getCurrentOrNextSprint = function(project){
+        return _.find(_.sortBy(_.find(project.releases, { state: ReleaseStatesByName.IN_PROGRESS }).sprints, 'orderNumber'), function(sprint) {
+            return sprint.state < SprintStatesByName.DONE;
+        });
+    }
 }]);

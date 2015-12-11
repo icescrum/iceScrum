@@ -144,7 +144,7 @@
                 <div class="form-group">
                     <label for="goal">${message(code:'is.ui.sprintPlan.toolbar.goal')}</label>
                     <textarea name="goal"
-                              class="form-control"
+                              class="form-control important"
                               ng-focus="editForm(true)"
                               ng-maxlength="5000"
                               msd-elastic

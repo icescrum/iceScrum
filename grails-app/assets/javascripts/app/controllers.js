@@ -342,7 +342,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     $scope.orderByRank();
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ReleaseStatesByName', 'SprintStatesByName', 'releases', function($scope, $state, ReleaseService, SprintService, ReleaseStatesByName, SprintStatesByName, releases) {
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ReleaseStatesByName', 'SprintStatesByName', 'ProjectService', 'project', function($scope, $state, ReleaseService, SprintService, ReleaseStatesByName, SprintStatesByName, ProjectService, project) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -360,9 +360,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
         return _.contains($scope.selectedSprintsIds, sprint.id);
     };
     $scope.manageShownSprint = function(sprint) {
-        var allSprintsSorted = _.chain($scope.releases).sortBy('orderNumber').map(function(release) {
-            return _.sortBy(release.sprints, 'orderNumber');
-        }).flatten().value();
+        var allSprintsSorted = ProjectService.getAllSprintsSorted(project);
         if ($scope.isShownSprint(sprint)) {
             _.pull($scope.selectedSprintsIds, sprint.id);
         } else {
@@ -374,12 +372,11 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     };
     // Init
     $scope.viewName = 'releasePlan';
-    $scope.releases = releases;
+    $scope.project = project;
+    $scope.releases = project.releases;
     $scope.selectedSprintsIds = [];
     $scope.selectedSprints = [];
-    var currentOrNextSprit = _.find(_.sortBy(_.find(releases, { state: ReleaseStatesByName.IN_PROGRESS }).sprints, 'orderNumber'), function(sprint) {
-        return sprint.state < SprintStatesByName.DONE;
-    });
+    var currentOrNextSprit = ProjectService.getCurrentOrNextSprint(project);
     if (currentOrNextSprit) {
         $scope.manageShownSprint(currentOrNextSprit);
     }
