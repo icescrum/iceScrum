@@ -185,7 +185,7 @@
           .responsible {
             display: block;
             position: absolute;
-            right: 4px;
+            right: 26px;
             height: 19px;
             width: 19px;
           }
@@ -317,7 +317,7 @@
       }
       position: relative;
       .postit {
-        &.defect:after, &.functional:after, &.architectural:after {
+        &.defect:after, &.functional:after, &.architectural:after, &.task-blocked:after {
           content: "";
           position: absolute;
           top: 0;
@@ -327,10 +327,11 @@
           border-style: solid;
           display: block;
           -webkit-box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+          box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
           width: 0;
           z-index: 1;
         }
-        &.defect:before, &.functional:before, &.architectural:before {
+        &.defect:before, &.functional:before, &.architectural:before, &.task-blocked:before {
           font: normal normal normal 14px/1 FontAwesome;
           font-size: 12px;
           text-rendering: auto;
@@ -342,11 +343,15 @@
           right: 1px;
           position: absolute;
         }
-        &.defect:after {
+        &.defect:after, &.task-blocked:after {
           border-color: @brand-danger @brand-danger transparent transparent;
         }
         &.defect:before {
           content: "\f188";
+        }
+        &.task-blocked:before {
+          padding-right: 4px;
+          content: "\f12a";
         }
         &.functional:after {
           border-color: @brand-info @brand-info transparent transparent;

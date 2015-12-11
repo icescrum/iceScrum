@@ -24,6 +24,7 @@
 <script type="text/ng-template" id="task.html">
 <div style="{{ task.color | createGradientBackground }}"
      ellipsis
+     ng-class="{'task-blocked': task.blocked}"
      class="postit postit-small {{ task.color | contrastColor }}">
     <div class="head">
         <img ng-src="{{ task.responsible | userAvatar }}"
