@@ -409,6 +409,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
         orderChanged: function(event) {
             var task = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
+            TaskService.updateRank(task, sprint, newRank);
         },
         accept: function (sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;

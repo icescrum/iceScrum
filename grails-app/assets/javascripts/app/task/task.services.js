@@ -56,6 +56,10 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
     this.update = function(task, obj) {
         return task.$update(self.getCrudMethods(obj)[IceScrumEventType.UPDATE]);
     };
+    this.updateRank = function(task, obj, rank) {
+        task.rank = rank;
+        return self.update(task, obj);
+    };
     this.block = function(task, obj) {
         task.blocked = true;
         return self.update(task, obj);
