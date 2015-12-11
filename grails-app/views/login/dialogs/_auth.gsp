@@ -43,8 +43,6 @@
                    type="button"
                    href
                    ng-click="showRegisterModal()"
-                   tooltip-placement="top"
-                   tooltip-append-to-body="true"
                    uib-tooltip="${message(code:'is.button.register')}">
                     <i class="fa fa-user-plus"></i>
                 </a>
@@ -68,8 +66,6 @@
                    type="button"
                    href
                    ng-click="showRetrieveModal()"
-                   tooltip-placement="top"
-                   tooltip-append-to-body="true"
                    uib-tooltip="${message(code:'is.dialog.retrieve')}">
                     <i class="fa fa-question"></i>
                 </a>

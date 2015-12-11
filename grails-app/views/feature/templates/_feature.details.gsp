@@ -31,8 +31,7 @@
                 <button class="btn btn-default elemid">{{ feature.uid }}</button>
                 <div class="btn-group"
                      uib-dropdown
-                     uib-tooltip="${message(code: 'todo.is.ui.actions')}"
-                     tooltip-append-to-body="true">
+                     uib-tooltip="${message(code: 'todo.is.ui.actions')}">
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
@@ -63,8 +62,7 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'stories'}">
             <a href="#{{ ::viewName }}/{{ ::feature.id }}/stories"
-               uib-tooltip="{{ feature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}"
-               tooltip-append-to-body="true">
+               uib-tooltip="{{ feature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}">
                 <i class="fa fa-lg fa-sticky-note"></i>
                 <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>
             </a>
@@ -189,12 +187,10 @@
                     <button class="btn btn-primary"
                             ng-disabled="!isDirty() || formHolder.featureForm.$invalid"
                             uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
-                            tooltip-append-to-body="true"
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
                     <button class="btn confirmation btn-default"
-                            tooltip-append-to-body="true"
                             uib-tooltip="${message(code:'is.button.cancel')}"
                             type="button"
                             ng-click="editForm(false)">

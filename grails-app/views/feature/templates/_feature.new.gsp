@@ -77,7 +77,6 @@
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.featureForm.$invalid"
                         uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
-                        tooltip-append-to-body="true"
                         hotkey="{'shift+return': hotkeyClick }"
                         hotkey-allow-in="INPUT"
                         type='button'
@@ -87,7 +86,6 @@
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.featureForm.$invalid"
                         uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
-                        tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'default.button.create.label')}
                 </button>

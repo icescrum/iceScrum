@@ -42,7 +42,6 @@
                             <div class="head">
                                 <a class="follow"
                                    uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-                                   tooltip-append-to-body="true"
                                    ng-switch="topStory.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
                                 <span class="id">{{ topStory.id }}</span>
                                 <span class="value" ng-if="topStory.value">{{ topStory.value }} <i class="fa fa-line-chart"></i></span>
@@ -61,19 +60,17 @@
                             </div>
                             <div class="actions">
                                 <span class="action">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
+                                    <a uib-tooltip="${message(code: 'todo.is.ui.actions')}">
                                         <i class="fa fa-cog"></i>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topStory.attachments.length}">
-                                    <a uib-tooltip="{{ topStory.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
-                                       tooltip-append-to-body="true">
+                                    <a uib-tooltip="{{ topStory.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
                                         <i class="fa fa-paperclip"></i>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topStory.comments_count}">
                                     <a uib-tooltip="{{ topStory.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
-                                       tooltip-append-to-body="true"
                                        ng-switch="topStory.comments_count">
                                         <i class="fa fa-comment-o" ng-switch-when="0"></i>
                                         <i class="fa fa-comment" ng-switch-default></i>
@@ -81,15 +78,13 @@
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topStory.tasks_count}">
-                                    <a uib-tooltip="{{ topStory.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
-                                       tooltip-append-to-body="true">
+                                    <a uib-tooltip="{{ topStory.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}">
                                         <i class="fa fa-tasks"></i>
                                         <span class="badge" ng-show="topStory.tasks_count">{{ topStory.tasks_count }}</span>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
                                     <a uib-tooltip="{{ topStory.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
-                                       tooltip-append-to-body="true"
                                        ng-switch="topStory.acceptanceTests_count">
                                         <i class="fa fa-check-square-o" ng-switch-when="0"></i>
                                         <i class="fa fa-check-square" ng-switch-default></i>
@@ -243,12 +238,10 @@
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
-                        tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'default.button.update.label')}
                 </button>
                 <a class="btn confirmation btn-default pull-right"
-                   tooltip-append-to-body="true"
                    uib-tooltip="${message(code:'is.button.cancel')} (ESCAPE)"
                    href="#/{{ ::viewName }}">
                     ${message(code:'is.button.cancel')}

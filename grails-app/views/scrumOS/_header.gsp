@@ -194,7 +194,6 @@
                         class="btn btn-default"
                         ng-click="showAuthModal()"
                         uib-tooltip="${message(code:'is.button.connect')} (SHIFT+L)"
-                        tooltip-append-to-body="true"
                         tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
             </div>
         </div>

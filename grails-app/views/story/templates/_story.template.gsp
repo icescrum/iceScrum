@@ -37,7 +37,7 @@
 </script>
 
 <script type="text/ng-template" id="story.template.edit.html">
-<is:modal title="${message(code:'todo.is.ui.story.template.edit')}">
+<is:modal title="${message(code:'todo.is.ui.story.template.manage')}">
     <table class="table table-striped">
         <tr ng-repeat="templateEntry in templateEntries">
             <td>
@@ -46,8 +46,6 @@
             <td>
                 <button class="btn btn-xs btn-danger pull-right"
                         type="button"
-                        tooltip-placement="left"
-                        tooltip-append-to-body="true"
                         uib-tooltip="${message(code:'default.button.delete.label')}"
                         ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteTemplate, args: [templateEntry] })"><span class="fa fa-times"></span></button>
             </td>

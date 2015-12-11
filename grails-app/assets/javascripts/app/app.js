@@ -448,6 +448,9 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             duration: 4500
         });
     }])
+    .config(['$uibTooltipProvider', function ($uibTooltipProvider) {
+        $uibTooltipProvider.options({appendToBody: true});
+    }])
     .config(['uibDatepickerConfig', function (uibDatepickerConfig) {
         angular.extend(uibDatepickerConfig, {
             startingDay: 1 // TODO make it i18n

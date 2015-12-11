@@ -62,8 +62,6 @@
                         <div class="col-sm-2 text-right">
                             <button class="btn btn-danger pull-right visible-deletable"
                                     ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, selected] })"
-                                    tooltip-placement="left"
-                                    tooltip-append-to-body="true"
                                     uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
                             </button>
                         </div>

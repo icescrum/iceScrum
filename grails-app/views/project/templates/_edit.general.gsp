@@ -34,7 +34,6 @@
         <button type="button"
                 role="button"
                 class="btn btn-default"
-                tooltip-append-to-body="true"
                 uib-tooltip="${ message(code:'is.button.cancel')}"
                 ng-click="resetProjectForm()">
             ${ message(code:'is.button.cancel')}

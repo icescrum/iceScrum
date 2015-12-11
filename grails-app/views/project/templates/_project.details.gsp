@@ -16,13 +16,10 @@
             <div class="col-md-4" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${ message(code: 'todo.is.ui.releases') }</div>
         </div>
         <uib-progress class="form-control-static form-bar"
-                      tooltip-append-to-body="true"
                       uib-tooltip="{{ release.name }}"
-                      tooltip-placement="top"
                       max="release.duration">
             <uib-bar ng-repeat="sprint in release.sprints"
                      class="{{ $last ? 'last-bar' : '' }}"
-                     tooltip-append-to-body="true"
                      uib-tooltip-template="'sprint.tooltip.html'"
                      tooltip-placement="bottom"
                      type="{{ { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] }}"

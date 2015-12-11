@@ -30,20 +30,17 @@
         <a href
            class="follow"
            uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-           tooltip-append-to-body="true"
            ng-click="follow(story)"
            ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
         <span class="id">{{ ::story.uid }}</span>
         <span class="value editable"
               uib-tooltip="${message(code: 'is.story.value')}"
-              tooltip-append-to-body="true"
               ng-click="showEditValueModal(story)"
               ng-if="story.value">
             {{ story.value }} <i class="fa fa-line-chart"></i>
         </span>
         <span class="estimation editable"
               uib-tooltip="${message(code: 'is.story.effort')}"
-              tooltip-append-to-body="true"
               ng-if="story.state > 1"
               ng-click="showEditEffortModal(story)">
             {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar"></i>
@@ -64,16 +61,14 @@
         <div class="actions">
             <span uib-dropdown class="action">
                 <a uib-dropdown-toggle
-                   uib-tooltip="${message(code: 'todo.is.ui.actions')}"
-                   tooltip-append-to-body="true">
+                   uib-tooltip="${message(code: 'todo.is.ui.actions')}">
                     <i class="fa fa-cog"></i>
                 </a>
                 <ul class="uib-dropdown-menu" ng-include="'story.menu.html'"></ul>
             </span>
             <span class="action" ng-class="{'active':story.attachments.length}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}"
-                   uib-tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
-                   tooltip-append-to-body="true">
+                   uib-tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
                     <i class="fa fa-paperclip"></i>
                     <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
                 </a>
@@ -81,7 +76,6 @@
             <span class="action" ng-class="{'active':story.comments_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/comments"
                    uib-tooltip="{{ story.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
-                   tooltip-append-to-body="true"
                    ng-switch="story.comments_count">
                     <i class="fa fa-comment-o" ng-switch-when="0"></i>
                     <i class="fa fa-comment" ng-switch-default></i>
@@ -90,8 +84,7 @@
             </span>
             <span class="action" ng-class="{'active':story.tasks_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/tasks"
-                   uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}"
-                   tooltip-append-to-body="true">
+                   uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}">
                     <i class="fa fa-tasks"></i>
                     <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
                 </a>
@@ -99,7 +92,6 @@
             <span class="action" ng-class="{'active':story.acceptanceTests_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/tests"
                    uib-tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
-                   tooltip-append-to-body="true"
                    ng-switch="story.acceptanceTests_count">
                     <i class="fa fa-check-square-o" ng-switch-when="0"></i>
                     <i class="fa fa-check-square" ng-switch-default></i>

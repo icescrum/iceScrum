@@ -110,7 +110,6 @@ loading.html">
            class="btn btn-default"
            hotkey="{'U':showProfile}"
            uib-tooltip="${message(code:'is.dialog.profile')} (U)"
-           tooltip-append-to-body="true"
            ng-click="showProfile()">${message(code:'is.dialog.profile')}
         </a>
         <a class="btn btn-danger"

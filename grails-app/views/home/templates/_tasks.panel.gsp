@@ -10,9 +10,7 @@
                     <button type="button"
                             class="pull-right btn btn-xs btn-default"
                             ng-click="$event.stopPropagation(); openProject(entry.project)"
-                            uib-tooltip="${message(code:'todo.is.ui.project.open')}"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="top">
+                            uib-tooltip="${message(code:'todo.is.ui.project.open')}">
                         <span class="fa fa-expand"></span>
                     </button>
                 </h5>

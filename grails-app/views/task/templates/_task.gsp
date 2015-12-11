@@ -30,12 +30,10 @@
         <img ng-src="{{ task.responsible | userAvatar }}"
              ng-if="task.responsible"
              class="responsible"
-             uib-tooltip="{{ task.responsible | userFullName }}"
-             tooltip-append-to-body="true">
+             uib-tooltip="{{ task.responsible | userFullName }}">
         <span class="id">{{ ::task.uid }}</span>
         <span class="estimation editable"
-              uib-tooltip="${message(code: 'is.task.estimation')}"
-              tooltip-append-to-body="true">
+              uib-tooltip="${message(code: 'is.task.estimation')}">
             {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa fa-dollar"></i>
         </span>
     </div>
@@ -54,8 +52,7 @@
     <div class="actions">
         <span uib-dropdown class="action">
             <a uib-dropdown-toggle
-               uib-tooltip="${message(code: 'todo.is.ui.actions')}"
-               tooltip-append-to-body="true">
+               uib-tooltip="${message(code: 'todo.is.ui.actions')}">
                 <i class="fa fa-cog"></i>
             </a>
             <ul class="uib-dropdown-menu"
@@ -63,8 +60,7 @@
         </span>
         <span class="action" ng-class="{'active':task.attachments.length}">
             <a href="#/{{ ::viewName }}/task/{{ task.id }}"
-               uib-tooltip="{{ task.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}"
-               tooltip-append-to-body="true">
+               uib-tooltip="{{ task.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
                 <i class="fa fa-paperclip"></i>
                 <span class="badge" ng-show="task.attachments.length">{{ task.attachments.length }}</span>
             </a>

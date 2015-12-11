@@ -26,7 +26,6 @@
             <i class="fa fa-rss"></i> ${message(code: 'is.panel.feed')}
             <button class="pull-right visible-on-hover btn btn-default btn-sm"
                     ng-click="toggleSettings()"
-                    tooltip-append-to-body="true"
                     uib-tooltip="${message(code: 'todo.is.ui.setting')}">
                 <i class="fa fa-cog"></i>
             </button>

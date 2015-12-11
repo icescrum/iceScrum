@@ -64,7 +64,6 @@
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.newTeamForm.$dirty || formHolder.newTeamForm.$invalid"
                                 uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
-                                tooltip-append-to-body="true"
                                 type="submit">
                             ${message(code:'default.button.create.label')}
                         </button>
@@ -139,22 +138,17 @@
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid"
                                 uib-tooltip="${message(code:'default.button.update.label')}"
-                                tooltip-append-to-body="true"
                                 type="submit">
                             ${message(code:'default.button.update.label')}
                         </button>
                         <button class="btn btn-default pull-right"
-                                tooltip-append-to-body="true"
                                 uib-tooltip="${message(code:'is.button.cancel')}"
                                 type="button"
                                 ng-click="cancel()">
                             ${message(code:'is.button.cancel')}
                         </button>
                         <button ng-if="authorizedTeam('delete', team) && team.products_count == 0" class="btn btn-danger pull-left"
-                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [team] })"
-                                tooltip-placement="left"
-                                tooltip-append-to-body="true"
-                                uib-tooltip="${message(code:'default.button.delete.label')}">
+                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [team] })">
                             ${message(code:'default.button.delete.label')}
                         </button>
                     </div>

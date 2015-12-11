@@ -34,9 +34,20 @@
             </div>
             <div class="col-sm-4 text-right">
                 <div class="btn-group">
-                    <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}" uib-tooltip="${message(code: 'todo.is.ui.attachment.download')}" tooltip-append-to-body="true" class="btn btn-default btn-xs"><i class="fa fa-download"></i></a>
-                    <button ng-click="showPreview(attachment, attachmentable, clazz)" type="button" class="btn btn-xs btn-default ng-hide" ng-show="isPreviewable(attachment)" uib-tooltip="${message(code: 'todo.is.ui.attachment.preview')}" tooltip-append-to-body="true"><i class="fa fa-search"></i></button>
-                    <button ng-if="authorizedAttachment('delete', attachment)" ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [attachment, attachmentable] })" uib-tooltip="${message(code: 'default.button.delete.label')}" tooltip-append-to-body="true" type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
+                    <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}"
+                       uib-tooltip="${message(code: 'todo.is.ui.attachment.download')}"
+                       class="btn btn-default btn-xs"><i class="fa fa-download"></i></a>
+                    <button ng-click="showPreview(attachment, attachmentable, clazz)" type="button"
+                            class="btn btn-xs btn-default ng-hide" ng-show="isPreviewable(attachment)"
+                            uib-tooltip="${message(code: 'todo.is.ui.attachment.preview')}">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <button ng-if="authorizedAttachment('delete', attachment)"
+                            ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [attachment, attachmentable] })"
+                            uib-tooltip="${message(code: 'default.button.delete.label')}"
+                            type="button" class="btn btn-danger btn-xs">
+                        <i class="fa fa-close"></i>
+                    </button>
                 </div>
             </div>
             <div ng-show="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'picture'">
@@ -64,10 +75,10 @@
                     </div>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-xs btn-warning ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.pause')}" tooltip-append-to-body="true" type="button" ng-click="file.pause()"  ng-show="!file.paused && file.isUploading()"><i class="fa fa-pause"></i></button>
-                    <button class="btn btn-xs btn-warning ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.resume')}" tooltip-append-to-body="true" type="button" ng-click="file.resume()" ng-show="file.paused"><i class="fa fa-play"></i></button>
-                    <button class="btn btn-xs btn-danger ng-hide"  uib-tooltip="${message(code: 'is.button.cancel')}" tooltip-append-to-body="true" type="button" ng-click="file.cancel()" ng-show="file.isComplete()"><i class="fa fa-close"></i></button>
-                    <button class="btn btn-xs btn-info ng-hide"    uib-tooltip="${message(code: 'todo.is.ui.attachment.retry')}" tooltip-append-to-body="true" type="button" ng-click="file.retry()"  ng-show="file.error"><i class="fa fa-refresh"></i></button>
+                    <button class="btn btn-xs btn-warning ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.pause')}" type="button" ng-click="file.pause()"  ng-show="!file.paused && file.isUploading()"><i class="fa fa-pause"></i></button>
+                    <button class="btn btn-xs btn-warning ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.resume')}" type="button" ng-click="file.resume()" ng-show="file.paused"><i class="fa fa-play"></i></button>
+                    <button class="btn btn-xs btn-danger ng-hide"  uib-tooltip="${message(code: 'is.button.cancel')}" type="button" ng-click="file.cancel()" ng-show="file.isComplete()"><i class="fa fa-close"></i></button>
+                    <button class="btn btn-xs btn-info ng-hide"    uib-tooltip="${message(code: 'todo.is.ui.attachment.retry')}" type="button" ng-click="file.retry()"  ng-show="file.error"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
         </td>

@@ -28,22 +28,19 @@
                 <span>{{ task.name }}</span>
             </div>
             <div class="right-title">
-                <span uib-tooltip="${message(code: 'is.task.creator')} {{ task.creator | userFullName }}"
-                      tooltip-append-to-body="true">
+                <span uib-tooltip="${message(code: 'is.task.creator')} {{ task.creator | userFullName }}">
                     <img ng-src="{{ task.creator | userAvatar }}" alt="{{ task.creator | userFullName }}"
                          height="30px"/>
                 </span>
                 <span ng-if="task.responsible"
-                      uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}"
-                      tooltip-append-to-body="true">
+                      uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
                     <img ng-src="{{ task.responsible | userAvatar }}" alt="{{ task.responsible | userFullName }}"
                          height="30px"/>
                 </span>
                 <button class="btn btn-default elemid">{{ task.uid }}</button>
                 <div class="btn-group"
                      uib-dropdown
-                     uib-tooltip="${message(code: 'todo.is.ui.actions')}"
-                     tooltip-append-to-body="true">
+                     uib-tooltip="${message(code: 'todo.is.ui.actions')}">
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
@@ -168,12 +165,10 @@
                     <button class="btn btn-primary"
                             ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
                             uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
-                            tooltip-append-to-body="true"
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
                     <button class="btn confirmation btn-default"
-                            tooltip-append-to-body="true"
                             uib-tooltip="${message(code:'is.button.cancel')}"
                             type="button"
                             ng-click="editForm(false)">

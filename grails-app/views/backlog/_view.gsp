@@ -27,9 +27,7 @@
             <button class="btn btn-default btn-backlog"
                     ng-class="{'shown':availableBacklog.shown}"
                     uib-tooltip="{{ availableBacklog.name }}"
-                    tooltip-append-to-body="true"
-                    ng-click="manageShownBacklog(availableBacklog)"
-                    tooltip-placement="top">
+                    ng-click="manageShownBacklog(availableBacklog)">
                 <i class="fa" ng-class="{'fa-circle-o':!availableBacklog.shown, 'fa-dot-circle-o':availableBacklog.shown}"></i>
                 {{ availableBacklog.name }}
                 <span class="badge">{{ availableBacklog.count }}</span>
@@ -39,8 +37,6 @@
             <div class="btn-group btn-view visible-on-hover">
                 <button type="button"
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
-                        tooltip-append-to-body="true"
-                        tooltip-placement="right"
                         ng-click="app.asList = !app.asList"
                         class="btn btn-default">
                     <span class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></span>
@@ -51,25 +47,18 @@
                             ng-show="!app.isFullScreen"
                             ng-click="fullScreen()"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="bottom"
                             hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
                     </button>
                     <button type="button"
                             class="btn btn-default"
                             ng-show="app.isFullScreen"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="bottom"
                             ng-click="fullScreen()"><span class="fa fa-compress"></span>
                     </button>
                 </g:if>
             </div>
             <a type="button"
                ng-if="authorizedStory('create')"
-               uib-tooltip="${message(code:'default.button.create.label')}"
-               tooltip-append-to-body="true"
-               tooltip-placement="right"
                href="#/{{ ::viewName }}/new"
                class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
         </div>
@@ -84,13 +73,11 @@
                         ng-if="backlog.sortable"
                         class="btn btn-default"
                         ng-click="orderBacklogByRank(backlog)"
-                        uib-tooltip="${message(code:'todo.is.ui.changeRank')}"
-                        tooltip-append-to-body="true">
+                        uib-tooltip="${message(code:'todo.is.ui.changeRank')}">
                     <span ng-class="backlog.sorting ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
                 </button>
                 <div class="btn-group"
                      uib-dropdown
-                     tooltip-append-to-body="true"
                      uib-tooltip="${message(code:'todo.is.ui.sort')}">
                     <button class="btn btn-default" uib-dropdown-toggle type="button">
                         <span id="sort">{{ backlog.orderBy.current.name }}</span>
@@ -104,24 +91,23 @@
                 </div>
                 <button type="button" class="btn btn-default"
                         ng-click="reverseBacklogOrder(backlog)"
-                        uib-tooltip="${message(code:'todo.is.ui.order')}"
-                        tooltip-append-to-body="true">
+                        uib-tooltip="${message(code:'todo.is.ui.order')}">
                     <span class="fa fa-sort-amount{{ backlog.orderBy.reverse ? '-desc' : '-asc'}}"></span>
                 </button>
             </div>
-            <div class="btn-group" tooltip-append-to-body="true" uib-dropdown uib-tooltip="${message(code:'todo.is.ui.export')}">
+            <div class="btn-group" uib-dropdown>
                 <g:if test="${params?.printable}">
                     <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="bottom"
                             ng-click="print($event)"
                             ng-href="backlog/{{ ::backlog.id }}/print"
                             hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
                     </button>
                 </g:if>
-                <button class="btn btn-default" uib-dropdown-toggle type="button">
+                <button class="btn btn-default"
+                        uib-tooltip="${message(code:'todo.is.ui.export')}"
+                        uib-dropdown-toggle type="button">
                     <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
                 </button>
                 <ul class="uib-dropdown-menu"
@@ -139,9 +125,7 @@
                 <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
                 <button type="button"
                         class="btn btn-default"
-                        tooltip-placement="bottom"
                         ng-if="backlogs.length > 1"
-                        tooltip-append-to-body="true"
                         ng-click="manageShownBacklog(backlog)"
                         uib-tooltip="${message(code:'is.ui.window.closeable')}">
                     <span class="fa fa-times"></span>

@@ -36,7 +36,6 @@
                 <div>{{groupedActivity.poster | userFullName}}</div>
                 <div ng-switch="activity.onClick !== undefined" ng-repeat="activity in groupedActivity.activities">
                     <span uib-tooltip="{{ activity.dateCreated }}"
-                          tooltip-append-to-body="true"
                           class="{{ activity | activityIcon}}"
                           ng-class="{ 'important-activity' : activity.important }"></span>
                     <span ng-switch-default>

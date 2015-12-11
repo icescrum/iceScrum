@@ -86,8 +86,6 @@
                 <div class="btn-group pull-right visible-on-hover">
                     <button type="button"
                             class="btn btn-default"
-                            tooltip-placement="bottom"
-                            tooltip-append-to-body="true"
                             ng-click="manageShownSprint(sprint)"
                             uib-tooltip="${message(code:'is.ui.window.closeable')}">
                         <span class="fa fa-times"></span>

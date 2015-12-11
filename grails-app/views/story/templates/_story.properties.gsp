@@ -272,12 +272,10 @@
             <button class="btn btn-primary"
                     ng-disabled="!isDirty() || formHolder.storyForm.$invalid"
                     uib-tooltip="${message(code: 'default.button.update.label')} (RETURN)"
-                    tooltip-append-to-body="true"
                     type="submit">
                 ${message(code: 'default.button.update.label')}
             </button>
             <button class="btn confirmation btn-default"
-                    tooltip-append-to-body="true"
                     uib-tooltip="${message(code: 'is.button.cancel')}"
                     type="button"
                     ng-click="editForm(false)">

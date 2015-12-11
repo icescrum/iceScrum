@@ -37,8 +37,6 @@
                                  alt="{{comment.poster | userFullName}}"/>
                             <button class="btn btn-danger visible-deletable"
                                     ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, selected] })"
-                                    tooltip-placement="left"
-                                    tooltip-append-to-body="true"
                                     uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
                             </button>
                         </div>

@@ -38,8 +38,7 @@
                 <button class="btn btn-default elemid">{{ sprint.id }}</button>
                 <div class="btn-group"
                      uib-dropdown
-                     uib-tooltip="${message(code: 'todo.is.ui.actions')}"
-                     tooltip-append-to-body="true">
+                     uib-tooltip="${message(code: 'todo.is.ui.actions')}">
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
@@ -126,7 +125,6 @@
                          class="pull-right">
                         <button class="btn btn-default btn-sm"
                                 uib-tooltip="${message(code:'todo.is.ui.charts')}"
-                                tooltip-append-to-body="true"
                                 type="button"
                                 uib-dropdown-toggle>
                             <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
@@ -171,12 +169,10 @@
                     <button class="btn btn-primary"
                             ng-disabled="!isDirty() || formHolder.sprintForm.$invalid"
                             uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
-                            tooltip-append-to-body="true"
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
                     <button class="btn confirmation btn-default"
-                            tooltip-append-to-body="true"
                             uib-tooltip="${message(code:'is.button.cancel')}"
                             type="button"
                             ng-click="editForm(false)">

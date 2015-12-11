@@ -93,7 +93,7 @@ class UtilsTagLib {
     def errors = {
         def trueError = grailsApplication.config.icescrum.errors?.find{ it.error }
         if (grailsApplication.config.icescrum.errors){
-            out << """<a class="show-warning" ng-click="showAbout()" href tooltip-append-to-body="true" tooltip-placement="right" tooltip="${g.message(code:'is.warning')}"><i class="text-danger fa ${trueError ? 'fa-warning' : 'fa-cloud-download'}"></i></a>"""
+            out << """<a class="show-warning" ng-click="showAbout()" href tooltip-placement="right" uib-tooltip="${g.message(code:'is.warning')}"><i class="text-danger fa ${trueError ? 'fa-warning' : 'fa-cloud-download'}"></i></a>"""
         }
     }
 

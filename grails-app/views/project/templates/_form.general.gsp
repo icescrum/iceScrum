@@ -40,7 +40,6 @@
                     <span class="input-group-btn">
                         <a class="btn btn-model"
                            uib-tooltip="{{project.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.ui.product.preferences.project.public')}' }}"
-                           tooltip-append-to-body="true"
                            type="button"
                            ng-model="project.preferences.hidden"
                            ng-click="project.preferences.hidden = !project.preferences.hidden;"

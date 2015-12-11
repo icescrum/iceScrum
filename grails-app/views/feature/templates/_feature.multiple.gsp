@@ -56,19 +56,17 @@
                             </div>
                             <div class="actions">
                                 <span class="action">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.actions')}" tooltip-append-to-body="true">
+                                    <a uib-tooltip="${message(code: 'todo.is.ui.actions')}">
                                         <i class="fa fa-cog"></i>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topFeature.attachments.length}">
-                                    <a uib-tooltip="{{ topFeature.attachments.length | orElse: 0 }} ${message(code: 'todo.is.ui.backlogelement.attachments.count')}"
-                                       tooltip-append-to-body="true">
+                                    <a uib-tooltip="{{ topFeature.attachments.length | orElse: 0 }} ${message(code: 'todo.is.ui.backlogelement.attachments.count')}">
                                         <i class="fa fa-paperclip"></i>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                                    <a uib-tooltip="{{ topFeature.stories_ids.length | orElse: 0 }} ${message(code: 'todo.is.ui.feature.stories.count')}"
-                                       tooltip-append-to-body="true">
+                                    <a uib-tooltip="{{ topFeature.stories_ids.length | orElse: 0 }} ${message(code: 'todo.is.ui.feature.stories.count')}">
                                         <i class="fa fa-tasks"></i>
                                         <span class="badge" ng-show="topFeature.stories_ids.length">{{ topFeature.stories_ids.length }}</span>
                                     </a>
@@ -127,12 +125,10 @@
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
-                        tooltip-append-to-body="true"
                         type="submit">
                     ${message(code:'default.button.update.label')}
                 </button>
                 <a class="btn confirmation btn-default pull-right"
-                   tooltip-append-to-body="true"
                    uib-tooltip="${message(code: 'is.button.cancel')} (ESCAPE)"
                    href="#/{{ ::viewName }}">
                     ${message(code: 'is.button.cancel')}

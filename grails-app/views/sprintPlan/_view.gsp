@@ -33,8 +33,6 @@
                     <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="bottom"
                             ng-click="print($event)"
                             ng-href="{{ ::viewName }}/print"
                             hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
@@ -46,16 +44,12 @@
                             ng-show="!app.isFullScreen"
                             ng-click="fullScreen()"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="bottom"
                             hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
                     </button>
                     <button type="button"
                             class="btn btn-default"
                             ng-show="app.isFullScreen"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                            tooltip-append-to-body="true"
-                            tooltip-placement="bottom"
                             ng-click="fullScreen()"><span class="fa fa-compress"></span>
                     </button>
                 </g:if>
