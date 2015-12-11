@@ -385,11 +385,11 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     }
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'TaskService', 'SprintStatesByName', 'sprint', 'tasks', function($scope, $state, StoryService, TaskService, SprintStatesByName, sprint, tasks) {
+controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'sprint', 'tasks', function($scope, $state, StoryService, TaskService, Session, SprintStatesByName, sprint, tasks) {
     $scope.viewName = 'sprintPlan';
     // Functions
     $scope.isSortingSprintPlan = function(sprint) {
-        return TaskService.authorizedTask('rank') && sprint.state < SprintStatesByName.DONE;
+        return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
     };
     $scope.openSprint = function() {
         $state.go('sprintPlan.details');
@@ -413,7 +413,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
         },
         accept: function (sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
-            return sameSortable && destSortableScope.isSortingSprintPlan(destSortableScope.sprint);
+            return sameSortable;
         }
     };
     $scope.sortableId = 'sprintPlan';

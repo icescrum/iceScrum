@@ -21,7 +21,8 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<div class="panel panel-light">
+<div class="panel panel-light"
+     ng-class="{'sortable-disabled': !isSortingSprintPlan(sprint)}">
     <div class="panel-heading">
         <h3 class="panel-title">
             <a href ng-click="openSprint()">
@@ -87,6 +88,7 @@
                     class="postits grid-group"
                     ng-model="tasksByTypeByState[11][taskState]"
                     as-sortable="taskSortableOptions"
+                    is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByTypeByState[11][taskState]"
                          as-sortable-item
@@ -113,6 +115,7 @@
                     class="postits grid-group"
                     ng-model="tasksByTypeByState[10][taskState]"
                     as-sortable="taskSortableOptions"
+                    is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByTypeByState[10][taskState]"
                          as-sortable-item
@@ -142,6 +145,7 @@
                     class="postits grid-group"
                     ng-model="tasksByStoryByState[story.id][taskState]"
                     as-sortable="taskSortableOptions"
+                    is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                          as-sortable-item
