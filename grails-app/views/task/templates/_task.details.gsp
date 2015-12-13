@@ -21,7 +21,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="task.details.html">
-<div class="panel panel-light">
+<div class="panel panel-light"
+     flow-init
+     flow-drop
+     flow-files-submitted="attachmentQuery($flow, task)"
+     flow-drop-enabled="authorizedTask('upload', task)"
+     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
+     flow-drag-leave="dropClass='panel panel-light'"
+     ng-class="authorizedTask('upload', task) && dropClass">
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
@@ -151,12 +158,10 @@
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ task.attachments.length > 0 ? '(' + task.attachments.length + ')' : '' }}</label>
                     <div ng-if="authorizedTask('upload', task)">
-                        <button type="button" class="btn btn-default"><i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
+                        <button type="button" class="btn btn-default" flow-btn><i
+                                class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
                     </div>
-                    <div class="form-control-static">
-                        <table class="table table-striped attachments">
-                            <tbody ng-include="'attachment.list.html'"></tbody>
-                        </table>
+                    <div class="form-control-static" ng-include="'attachment.list.html'">
                     </div>
                 </div>
             </div>

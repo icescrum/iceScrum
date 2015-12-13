@@ -22,13 +22,13 @@
 --}%
 <script type="text/ng-template" id="release.details.html">
 <div class="panel panel-light"
+     flow-init
      flow-drop
      flow-files-submitted="attachmentQuery($flow, release)"
      flow-drop-enabled="authorizedRelease('upload', release)"
-     flow-drag-enter="class='panel panel-default drop-enabled'"
-     flow-drag-leave="class='panel panel-default'"
-     flow-init
-     ng-class="authorizedRelease('upload', release) && class">
+     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
+     flow-drag-leave="dropClass='panel panel-light'"
+     ng-class="authorizedRelease('upload', release) && dropClass">
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
@@ -169,15 +169,10 @@
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ release.attachments.length > 0 ? '(' + release.attachments.length + ')' : '' }}</label>
                     <div ng-if="authorizedRelease('upload', release)">
-                        <button type="button" flow-btn class="btn btn-default"><i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
+                        <button type="button" class="btn btn-default" flow-btn><i
+                                class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
                     </div>
-                    <div class="form-control-static">
-                        <div class="drop-zone">
-                            <h2>${message(code:'todo.is.ui.drop.here')}</h2>
-                        </div>
-                        <table class="table table-striped attachments">
-                            <tbody ng-include="'attachment.list.html'"></tbody>
-                        </table>
+                    <div class="form-control-static" ng-include="'attachment.list.html'">
                     </div>
                 </div>
             </div>

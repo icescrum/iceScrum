@@ -254,16 +254,10 @@
         <div class="form-group">
             <label>${message(code: 'is.backlogelement.attachment')} {{ story.attachments.length > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
             <div ng-if="authorizedStory('upload', story)">
-                <button type="button" class="btn btn-default"><i
+                <button type="button" class="btn btn-default" flow-btn><i
                         class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
             </div>
-            <div class="form-control-static">
-                <div class="drop-zone">
-                    <h2>${message(code: 'todo.is.ui.drop.here')}</h2>
-                </div>
-                <table class="table table-striped attachments">
-                    <tbody ng-include="'attachment.list.html'"></tbody>
-                </table>
+            <div class="form-control-static" ng-include="'attachment.list.html'">
             </div>
         </div>
     </div>

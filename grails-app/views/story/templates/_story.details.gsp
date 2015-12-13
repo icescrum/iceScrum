@@ -21,7 +21,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.details.html">
-<div class="panel panel-light">
+<div class="panel panel-light"
+     flow-init
+     flow-drop
+     flow-files-submitted="attachmentQuery($flow, story)"
+     flow-drop-enabled="authorizedStory('upload', story)"
+     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
+     flow-drag-leave="dropClass='panel panel-light'"
+     ng-class="authorizedStory('upload', story) && dropClass">
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
@@ -31,7 +38,7 @@
                 <span>{{ story.name }}</span> <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
             </div>
             <div class="right-title">
-                <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}"
+                <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
                     <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
                          height="30px"/>
                 </span>

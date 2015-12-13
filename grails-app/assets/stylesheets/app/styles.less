@@ -819,18 +819,16 @@ a[data-toggle="tab"] button {
 
 .drop-enabled {
   .drop-zone {
-    .make-md-column(5);
-    .make-lg-column(4);
     background-color: #fff;
-    border: 3px dashed @gray;
     color: @gray-darker;
-    position: fixed;
+    position: absolute;
     display: block;
     opacity: 0.9;
-    top: @fromTop;
     z-index: 100;
     bottom: 0;
     right: 0;
+    left: 0;
+    top: 0;
     h2 {
       text-align: center;
       .vertical-align();
