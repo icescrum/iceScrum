@@ -331,13 +331,14 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     $scope.sortableId = 'feature';
     $scope.orderBy = {
         current: {id: 'dateCreated', name: $scope.message('todo.is.ui.sort.date')},
-        values: [
+        values: _.sortBy([
             {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
             {id: 'dateCreated', name: $scope.message('todo.is.ui.sort.date')},
             {id: 'name', name: $scope.message('todo.is.ui.sort.name')},
             {id: 'stories_ids.length', name: $scope.message('todo.is.ui.sort.stories')},
-            {id: 'value', name: $scope.message('todo.is.ui.sort.value')}
-        ]
+            {id: 'value', name: $scope.message('todo.is.ui.sort.value')},
+            {id: 'state', name: $scope.message('todo.is.ui.sort.state')}
+        ], 'name')
     };
     $scope.orderByRank();
 }]);

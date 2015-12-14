@@ -55,7 +55,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
         } else if (!backlog.shown) {
             backlog.storiesRendered = false;
             backlog.orderBy = {
-                values: [
+                values: _.sortBy([
                     {id: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
                     {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
                     {id: 'name', name: $scope.message('todo.is.ui.sort.name')},
@@ -63,8 +63,9 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
                     {id: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
                     {id: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
                     {id: 'value', name: $scope.message('todo.is.ui.sort.value')},
-                    {id: 'type', name: $scope.message('todo.is.ui.sort.type')}
-                ]
+                    {id: 'type', name: $scope.message('todo.is.ui.sort.type')},
+                    {id: 'state', name: $scope.message('todo.is.ui.sort.state')}
+                ], 'name')
             };
             var tmpBacklogs = _.sortByOrder($scope.backlogs, 'shown', 'desc');
             var lastShown = _.first(tmpBacklogs);
