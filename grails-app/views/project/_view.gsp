@@ -77,11 +77,11 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
-                    <button class="btn btn-default btn-sm pull-right visible-on-hover"
-                            ng-if="authorizedRelease('update', release)"
-                            type="button">
+                    <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                       href="#/releasePlan/{{ release.id }}"
+                       ng-if="authorizedRelease('update', release)">
                         <span class="fa fa-pencil"></span>
-                    </button>
+                    </a>
                 </h3>
             </div>
             <div class="panel-body"
