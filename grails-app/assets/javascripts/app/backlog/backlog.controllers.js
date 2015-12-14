@@ -44,7 +44,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
         var filteredStories = $filter('filter')(stories, filter.story, function(expected, actual) {
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
-        backlog.stories = $filter('orderBy')(filteredStories, backlog.orderBy.current.id, backlog.orderBy.reverse);
+        backlog.stories = $filter('orderBy')(filteredStories, [backlog.orderBy.current.id, 'id'], backlog.orderBy.reverse); // Hack sort by ID to ensure that ordering is stable
         backlog.sortable = StoryService.authorizedStory('rank') && (backlog.name == 'Backlog' || backlog.name == 'Sandbox'); // TODO fix
         backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse ;
     };
