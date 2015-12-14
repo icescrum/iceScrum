@@ -217,14 +217,15 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                 "details-tab": {
                                     templateUrl: function($stateParams) {
                                         var tpl;
-                                        if ($stateParams.tabId == 'tests')
+                                        if ($stateParams.tabId == 'tests') {
                                             tpl = 'story.acceptanceTests.html';
-                                        else if($stateParams.tabId == 'tasks')
+                                        } else if($stateParams.tabId == 'tasks') {
                                             tpl = 'story.tasks.html';
-                                        else if($stateParams.tabId == 'comments')
+                                        } else if($stateParams.tabId == 'comments') {
                                             tpl = 'comment.list.html';
-                                        else if($stateParams.tabId == 'activities')
+                                        } else if($stateParams.tabId == 'activities') {
                                             tpl = 'activity.list.html';
+                                        }
                                         return tpl;
                                     },
                                     controller:'storyDetailsTabCtrl'
@@ -430,6 +431,35 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                 }
                             }
                         })
+                            .state('sprintPlan.task.details.tab', {
+                                url: "/{tabId:.+}",
+                                resolve: {
+                                    data: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
+                                        if ($stateParams.tabId == 'comments') {
+                                            return CommentService.list(detailsTask);
+                                        }
+                                        return null;
+                                    }],
+                                    //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
+                                    selected: ['data', 'detailsTask', function(data, detailsTask) {
+                                        return detailsTask;
+                                    }]
+                                },
+                                views: {
+                                    "details-tab": {
+                                        templateUrl: function($stateParams) {
+                                            var tpl;
+                                            if ($stateParams.tabId == 'comments') {
+                                                tpl = 'comment.list.html';
+                                            }
+                                            return tpl;
+                                        },
+                                        controller: ['$scope', 'selected', function($scope, selected) {
+                                            $scope.selected = selected;
+                                        }]
+                                    }
+                                }
+                            })
         }
     ])
     .config(['flowFactoryProvider', function (flowFactoryProvider) {

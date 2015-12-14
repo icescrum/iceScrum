@@ -745,28 +745,26 @@ div.panel-body {
 }
 
 // TODO REMOVE HACK
-#view-sprintPlan {
-  table {
-    width: 100%;
-    border-spacing: 0;
-    thead, tbody, tr, th, td { display: block; }
-    thead tr {
-      width: 100%
-    }
-    tr:after {  /* clearing float */
-      content: ' ';
-      display: block;
-      visibility: hidden;
-      clear: both;
-    }
-    tbody {
-      max-height: 100vh;
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-    tbody td, thead th {
-      float: left;
-    }
+#view-sprintPlan > .content table {
+  width: 100%;
+  border-spacing: 0;
+  thead, tbody, tr, th, td { display: block; }
+  thead tr {
+    width: 100%
+  }
+  tr:after {  /* clearing float */
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+  }
+  tbody {
+    max-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  tbody td, thead th {
+    float: left;
   }
 }
 // END TODO REMOVE HACK

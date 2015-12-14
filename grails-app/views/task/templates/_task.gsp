@@ -38,7 +38,7 @@
         </span>
     </div>
     <div class="content"
-         as-sortable-item-handle-if="sortableStory = authorizedTask('rank', task)">
+         as-sortable-item-handle-if="authorizedTask('rank', task)">
         <h3 class="title ellipsis-el"
             ng-model="task.name"
             ng-bind-html="task.name | sanitize"></h3>
@@ -59,10 +59,19 @@
                 ng-include="'task.menu.html'"></ul>
         </span>
         <span class="action" ng-class="{'active':task.attachments.length}">
-            <a href="#/{{ ::viewName }}/task/{{ task.id }}"
+            <a href="#/{{ ::viewName }}/task/{{ ::task.id }}"
                uib-tooltip="{{ task.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
                 <i class="fa fa-paperclip"></i>
                 <span class="badge" ng-show="task.attachments.length">{{ task.attachments.length }}</span>
+            </a>
+        </span>
+        <span class="action" ng-class="{'active':task.comments_count}">
+            <a href="#/{{ ::viewName }}/task/{{ ::task.id }}/comments"
+               uib-tooltip="{{ task.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
+               ng-switch="task.comments_count">
+                <i class="fa fa-comment-o" ng-switch-when="0"></i>
+                <i class="fa fa-comment" ng-switch-default></i>
+                <span class="badge" ng-show="task.comments_count">{{ task.comments_count }}</span>
             </a>
         </span>
         <span class="action" ng-if="authorizedTask('take', task)">

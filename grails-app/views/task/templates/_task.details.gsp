@@ -71,6 +71,21 @@
             </div>
         </h3>
     </div>
+    <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" ng-class="{'active':!$state.params.tabId}">
+            <a href="#{{ ::viewName }}/task/{{ ::task.id }}"
+               href="#"><i class="fa fa-lg fa-edit"></i></a>
+        </li>
+        <li role="presentation" ng-class="{'active':$state.params.tabId == 'comments'}">
+            <a href="#{{ ::viewName }}/task/{{ ::task.id }}/comments"
+               uib-tooltip="{{ task.comments.length | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
+               ng-switch="task.comments_count">
+                <i class="fa fa-lg fa-comment-o" ng-switch-when="0"></i>
+                <i class="fa fa-lg fa-comment" ng-switch-default></i>
+                <span class="badge" ng-show="task.comments_count">{{ task.comments_count }}</span>
+            </a>
+        </li>
+    </ul>
     <div ui-view="details-tab">
         <form ng-submit="update(editableTask)"
               name='formHolder.taskForm'

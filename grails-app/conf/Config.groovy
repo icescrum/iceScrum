@@ -112,6 +112,7 @@ icescrum.marshaller = [
                   textile:['description']],
         team: [include:['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
         task:[exclude:['impediment','participants'],
+              includeCount:['comments'],
               include:['tags', 'attachments']],
         user:[exclude: ['password','accountExpired','accountLocked','passwordExpired'],
               asShort:['firstName', 'lastName'],
