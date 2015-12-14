@@ -83,15 +83,6 @@
                     <div class="form-half">
                         <label for="release.startDate">${message(code:'is.release.startDate')}</label>
                         <div ng-class="{'input-group': authorizedRelease('update', release)}">
-                            <span class="input-group-btn"
-                                  ng-if="authorizedRelease('update', release)">
-                                <button type="button"
-                                        class="btn btn-default"
-                                        ng-focus="editForm(true)"
-                                        ng-click="openDatepicker($event, startDateOptions)">
-                                    <i class="fa fa-calendar"></i>
-                                </button>
-                            </span>
                             <input type="text"
                                    class="form-control"
                                    required
@@ -102,13 +93,22 @@
                                    min-date="minStartDate"
                                    max-date="maxStartDate"
                                    is-open="startDateOptions.opened"/>
+                            <span class="input-group-btn"
+                                  ng-if="authorizedRelease('update', release)">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        ng-focus="editForm(true)"
+                                        ng-click="openDatepicker($event, startDateOptions)">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
                         </div>
                     </div>
                     <div class="form-half">
-                        <label for="release.endDate" class="text-right">${message(code:'is.release.endDate')}</label>
+                        <label for="release.endDate">${message(code:'is.release.endDate')}</label>
                         <div ng-class="{'input-group': authorizedRelease('update', release)}">
                             <input type="text"
-                                   class="form-control text-right"
+                                   class="form-control"
                                    required
                                    ng-focus="editForm(true)"
                                    name="release.endDate"

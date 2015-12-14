@@ -73,15 +73,6 @@
                     <div class="form-half">
                         <label for="sprint.startDate">${message(code:'is.sprint.startDate')}</label>
                         <div ng-class="{'input-group': authorizedSprint('update', sprint)}">
-                            <span class="input-group-btn"
-                                  ng-if="authorizedSprint('update', sprint)">
-                                <button type="button"
-                                        class="btn btn-default"
-                                        ng-focus="editForm(true)"
-                                        ng-click="openDatepicker($event, startDateOptions)">
-                                    <i class="fa fa-calendar"></i>
-                                </button>
-                            </span>
                             <input type="text"
                                    class="form-control"
                                    required
@@ -92,13 +83,22 @@
                                    min-date="minStartDate"
                                    max-date="maxStartDate"
                                    is-open="startDateOptions.opened"/>
+                            <span class="input-group-btn"
+                                  ng-if="authorizedSprint('update', sprint)">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        ng-focus="editForm(true)"
+                                        ng-click="openDatepicker($event, startDateOptions)">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
                         </div>
                     </div>
                     <div class="form-half">
-                        <label for="sprint.endDate" class="text-right">${message(code:'is.sprint.endDate')}</label>
+                        <label for="sprint.endDate">${message(code:'is.sprint.endDate')}</label>
                         <div ng-class="{'input-group': authorizedSprint('update', sprint)}">
                             <input type="text"
-                                   class="form-control text-right"
+                                   class="form-control"
                                    required
                                    ng-focus="editForm(true)"
                                    name="sprint.endDate"
