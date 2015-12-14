@@ -92,11 +92,11 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
-                    <button class="btn btn-default btn-sm pull-right visible-on-hover"
-                            ng-if="authorizedSprint('update', currentOrLastSprint)"
-                            type="button">
+                    <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                       href="#/sprintPlan/{{ currentOrLastSprint.id }}/details"
+                       ng-if="authorizedSprint('update', currentOrLastSprint)">
                         <span class="fa fa-pencil"></span>
-                    </button>
+                    </a>
                 </h3>
             </div>
             <div class="panel-body"
@@ -107,11 +107,11 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
-                    <button class="btn btn-default btn-sm pull-right visible-on-hover"
-                            ng-if="authorizedSprint('update', currentOrLastSprint)"
-                            type="button">
+                    <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                       href="#/sprintPlan/{{ currentOrLastSprint.id }}/details"
+                       ng-if="authorizedSprint('update', currentOrLastSprint)">
                         <span class="fa fa-pencil"></span>
-                    </button>
+                    </a>
                 </h3>
             </div>
             <div class="panel-body"
