@@ -196,7 +196,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         .state('backlog.details.tab', {
                             url: "/{tabId:.+}",
                             resolve: {
-                                data: ['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'StoryService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, StoryService, detailsStory){
+                                data: ['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'ActivityService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, ActivityService, detailsStory){
                                     if ($stateParams.tabId == 'tests') {
                                         return AcceptanceTestService.list(detailsStory);
                                     } else if($stateParams.tabId == 'tasks') {
@@ -204,7 +204,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     } else if($stateParams.tabId == 'comments') {
                                         return CommentService.list(detailsStory);
                                     } else if($stateParams.tabId == 'activities') {
-                                        return StoryService.activities(detailsStory, false);
+                                        return ActivityService.activities(detailsStory, false);
                                     }
                                     return null;
                                 }],
@@ -228,7 +228,12 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                         }
                                         return tpl;
                                     },
-                                    controller:'storyDetailsTabCtrl'
+                                    controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
+                                        $scope.selected = selected;
+                                        if($stateParams.tabId == 'activities') {
+                                            $controller('activityCtrl', { $scope: $scope, selected: selected });
+                                        }
+                                    }]
                                 }
                             }
                         })
@@ -434,9 +439,11 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             .state('sprintPlan.task.details.tab', {
                                 url: "/{tabId:.+}",
                                 resolve: {
-                                    data: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
+                                    data: ['$stateParams', 'ActivityService', 'CommentService', 'detailsTask', function($stateParams, ActivityService, CommentService, detailsTask) {
                                         if ($stateParams.tabId == 'comments') {
                                             return CommentService.list(detailsTask);
+                                        } else if($stateParams.tabId == 'activities') {
+                                            return ActivityService.activities(detailsTask, false);
                                         }
                                         return null;
                                     }],
@@ -451,11 +458,16 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                             var tpl;
                                             if ($stateParams.tabId == 'comments') {
                                                 tpl = 'comment.list.html';
+                                            } else if ($stateParams.tabId == 'activities') {
+                                                tpl = 'activity.list.html';
                                             }
                                             return tpl;
                                         },
-                                        controller: ['$scope', 'selected', function($scope, selected) {
+                                        controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
                                             $scope.selected = selected;
+                                            if($stateParams.tabId == 'activities') {
+                                                $controller('activityCtrl', { $scope: $scope, selected: selected });
+                                            }
                                         }]
                                     }
                                 }

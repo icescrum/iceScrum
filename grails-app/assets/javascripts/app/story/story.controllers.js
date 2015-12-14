@@ -432,65 +432,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         });
     }]);
 
-controllers.controller('storyDetailsTabCtrl', ['$scope','$state', 'selected', 'StoryService', function($scope, $state, selected, StoryService) {
-    $scope.selected = selected;
-
-    //activities are ugly but it's working..
-    if($state.params.tabId == 'activities') {
-        $scope.activities = function(story, all) {
-            $scope.allActivities = all;
-            StoryService.activities(story, all).then(manageActivities);
-        };
-        var manageActivities = function(activities) {
-            var groupedActivities = [];
-            angular.forEach(activities, function(activity) {
-                var tabId;
-                if (activity.code == 'comment') {
-                    tabId = 'comments'
-                } else if (activity.code.indexOf("acceptanceTest") > -1 ) {
-                    tabId = 'tests'
-                } else if (activity.code.indexOf("task") > -1) {
-                    tabId = 'tasks'
-                }
-                if (tabId) {
-                    activity.onClick = function() {
-                        if ($state.params.tabId) {
-                            $state.go('.', { tabId: tabId, id: story.id });
-                        } else {
-                            $state.go('.tab', { tabId: tabId, id: story.id });
-                        }
-                    }
-                }
-                activity.count = 1;
-                if (_.isEmpty(groupedActivities) ||
-                    _.last(groupedActivities).poster.id != activity.poster.id ||
-                    new Date(_.last(groupedActivities).dateCreated).getTime() - 86400000 > new Date(activity.dateCreated).getTime()) {
-                    groupedActivities.push({
-                        poster: activity.poster,
-                        dateCreated: activity.dateCreated,
-                        activities: [activity]
-                    });
-                } else {
-                    var lastActivity = _.last(_.last(groupedActivities).activities);
-                    if (activity.code == lastActivity.code
-                        && activity.parentType == lastActivity.parentType
-                        && activity.field == lastActivity.field) {
-                        lastActivity.count += 1;
-                        lastActivity.beforeValue = activity.beforeValue;
-                    } else {
-                        _.last(groupedActivities).activities.push(activity);
-                    }
-                }
-            });
-            $scope.groupedActivities = groupedActivities;
-        };
-        //init
-        $scope.allActivities = false;
-        $scope.groupedActivities = {};
-        manageActivities($scope.selected.activities);
-    }
-}]);
-
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', function($scope, $controller, StoryService, listId) {
     $controller('storyCtrl', { $scope: $scope }); // inherit from storyCtrl
     // Functions

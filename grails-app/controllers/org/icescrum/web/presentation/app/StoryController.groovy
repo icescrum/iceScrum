@@ -360,23 +360,6 @@ class StoryController {
         redirect(url: is.createScrumLink(controller: 'story', params: [uid: id]))
     }
 
-    @Secured('stakeHolder()')
-    def activities(long id, boolean all, long product) {
-        def story = Story.withStory(product, id)
-        withFormat {
-            def activities = story.activity
-            if (!all) {
-                def selectedActivities = activities.findAll { it.important }
-                def remainingActivities = activities - selectedActivities
-                activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
-                activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
-            }
-            html { render(status: 200, contentType: 'application/json', text: activities as JSON) }
-            json { renderRESTJSON(text: activities) }
-            xml { renderRESTXML(text: activities) }
-        }
-    }
-
     @Secured('stakeHolder() and !archivedProduct()')
     def listByType(long id, long product, String type) {
         def stories

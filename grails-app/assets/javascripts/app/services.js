@@ -205,13 +205,13 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         var ind = _.findIndex(list, { id: element.id });
         return ind + 1 <= list.length ? list[ind + 1] : null;
     };
+    this.decapitalize = function(str) {
+        return str.charAt(0).toLowerCase() + str.substring(1);
+    };
     this.formObjectData = function(obj, prefix) {
         var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
         _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
-        function decapitalize(str) {
-            return str.charAt(0).toLowerCase() + str.substring(1);
-        }
-        _prefix = decapitalize(_prefix);
+        _prefix = self.decapitalize(_prefix);
         for (name in obj) {
             value = obj[name];
             if (value instanceof Array && !_.endsWith(name, '_ids')) {

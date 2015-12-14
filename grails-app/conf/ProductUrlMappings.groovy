@@ -232,6 +232,16 @@ class ProductUrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
+        // Activity
+        "/p/$product/activity/$type/$fluxiableId" {
+            controller = 'activity'
+            action = [GET: "index"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+                fluxiableId(matches: /\d*/)
+            }
+        }
         // Comment
         "/p/$product/comment/$type/$commentable" {
             controller = 'comment'

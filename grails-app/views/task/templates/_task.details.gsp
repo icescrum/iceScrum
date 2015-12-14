@@ -76,6 +76,11 @@
             <a href="#{{ ::viewName }}/task/{{ ::task.id }}"
                href="#"><i class="fa fa-lg fa-edit"></i></a>
         </li>
+        <li role="presentation" ng-class="{'active':$state.params.tabId == 'activities'}">
+            <a href="#{{ ::viewName }}/task/{{ ::task.id }}/activities"
+               uib-tooltip="{{ task.activities && task.activities.length ? message('is.fluxiable.' + task.activities[0].code) : '' }}"
+               href="#"><i class="fa fa-lg fa-clock-o"></i></a>
+        </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'comments'}">
             <a href="#{{ ::viewName }}/task/{{ ::task.id }}/comments"
                uib-tooltip="{{ task.comments.length | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
