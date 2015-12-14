@@ -65,6 +65,20 @@
                 <span class="badge" ng-show="task.attachments.length">{{ task.attachments.length }}</span>
             </a>
         </span>
+        <span class="action" ng-if="authorizedTask('take', task)">
+            <a href
+               ng-click="take(task)"
+               uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.take')}">
+                <i class="fa fa-user-plus"></i>
+            </a>
+        </span>
+        <span class="action" ng-if="authorizedTask('release', task)">
+            <a href
+               ng-click="release(task)"
+               uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.unassign')}">
+                <i class="fa fa-user-times"></i>
+            </a>
+        </span>
     </div>
 </div>
 </script>
