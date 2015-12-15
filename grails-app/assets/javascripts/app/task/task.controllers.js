@@ -38,7 +38,6 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
     $scope.unBlock = function(task) {
         TaskService.unBlock(task);
     };
-    // TODO cancellable delete
     $scope['delete'] = function(task, obj) {
         TaskService.delete(task, obj).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');

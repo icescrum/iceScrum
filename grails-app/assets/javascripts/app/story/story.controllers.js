@@ -445,7 +445,6 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
         return _.sum(stories, 'acceptanceTests_count');
     };
     $scope.deleteMultiple = function() {
-        // TODO cancellable delete ?
         StoryService.deleteMultiple(listId)
             .then(function() {
                 $scope.notifySuccess('todo.is.ui.multiple.deleted');
@@ -534,7 +533,6 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeo
                 size: 'sm',
                 controller: ["$scope", function($scope) {
                     $scope.templateEntries = parentScope.templateEntries;
-                    // TODO cancellable delete
                     $scope.deleteTemplate = function(templateEntry) {
                         StoryService.deleteTemplate(templateEntry.id)
                             .then(function() {

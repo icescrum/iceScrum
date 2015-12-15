@@ -17,23 +17,23 @@ class TeamController {
     @Secured('isAuthenticated()')
     def index(String term, Boolean create) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def teams = request.admin ? Team.findAllByNameLike(searchTerm, options) : Team.findAllByOwner(springSecurityService.currentUser.username, [sort: "name", order: "asc", cache:true], searchTerm)
+        def teams = request.admin ? Team.findAllByNameIlike(searchTerm, options) : Team.findAllByOwner(springSecurityService.currentUser.username, [sort: "name", order: "asc", cache: true], searchTerm)
         if (!teams.any { it.name == term } && create) {
             teams.add(0, [name: params.term, members: [], scrumMasters: []])
         }
-        withFormat{
+        withFormat {
             html {
-                render(status:200, text:teams as JSON, contentType:'application/json')
+                render(status: 200, text: teams as JSON, contentType: 'application/json')
             }
-            json { renderRESTJSON(text:teams) }
-            xml  { renderRESTXML(text:teams) }
+            json { renderRESTJSON(text: teams) }
+            xml { renderRESTXML(text: teams) }
         }
     }
 
     @Secured(['stakeHolder() or inProduct()'])
     def show(long product) {
         Product _product = Product.withProduct(product)
-        render(status:200, text: _product.firstTeam as JSON, contentType: 'application/json')
+        render(status: 200, text: _product.firstTeam as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')
@@ -42,7 +42,7 @@ class TeamController {
         try {
             Team.withTransaction {
                 teamService.save(team, null, [springSecurityService.currentUser.id])
-                render(status:200, text:team as JSON, contentType:'application/json')
+                render(status: 200, text: team as JSON, contentType: 'application/json')
             }
         } catch (IllegalStateException ise) {
             returnError(text: message(code: ise.message))
@@ -55,8 +55,8 @@ class TeamController {
         Team team = Team.withTeam(id)
         def auth = springSecurityService.authentication
         // Cannot check by annotation/request because we are not in a project context (URL)
-        if (!securityService.owner(team, auth) && !securityService.scrumMaster(team, auth)){
-            render(status:403)
+        if (!securityService.owner(team, auth) && !securityService.scrumMaster(team, auth)) {
+            render(status: 403)
             return
         }
         def newMembers = []
@@ -74,12 +74,12 @@ class TeamController {
                 if (team.name != params.team.name) {
                     team.name = params.team.name
                     if (!team.save()) {
-                        returnError(object:team, exception: new RuntimeException(team.errors.toString()))
+                        returnError(object: team, exception: new RuntimeException(team.errors.toString()))
                     }
                 }
                 productService.updateTeamMembers(team, newMembers)
                 productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
-                if (request.admin && newOwnerId && newOwnerId != team.owner.id){
+                if (request.admin && newOwnerId && newOwnerId != team.owner.id) {
                     def newOwner = User.get(newOwnerId)
                     securityService.changeOwner(newOwner, team)
                     team.products.each { Product product ->
@@ -87,7 +87,7 @@ class TeamController {
                     }
                 }
             }
-            render(status:200, text:team as JSON, contentType:'application/json')
+            render(status: 200, text: team as JSON, contentType: 'application/json')
         } catch (IllegalStateException ise) {
             returnError(text: message(code: ise.message))
         } catch (RuntimeException re) {
@@ -100,8 +100,8 @@ class TeamController {
         Team team = Team.withTeam(id)
         def auth = springSecurityService.authentication
         // Cannot check by annotation/request because we are not in a project context (URL)
-        if (!securityService.owner(team, auth)){
-            render(status:403)
+        if (!securityService.owner(team, auth)) {
+            render(status: 403)
             return
         }
         teamService.delete(team)
@@ -112,22 +112,22 @@ class TeamController {
     def listByUser(String term, Integer offset) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def limit = 9
-        def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache:true]
+        def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache: true]
         def user = springSecurityService.currentUser
-        def total = request.admin ? Team.countByNameLike(searchTerm, [cache:true]) : Team.countByOwnerOrSM(user.username, [cache:true], searchTerm)
-        def teams = request.admin ? Team.findAllByNameLike(searchTerm, options) : Team.findAllByOwnerOrSM(user.username, options, searchTerm)
+        def total = request.admin ? Team.countByNameIlike(searchTerm, [cache: true]) : Team.countByOwnerOrSM(user.username, [cache: true], searchTerm)
+        def teams = request.admin ? Team.findAllByNameIlike(searchTerm, options) : Team.findAllByOwnerOrSM(user.username, options, searchTerm)
         def teamsAndTotal = [teams: teams, total: total]
-        withFormat{
+        withFormat {
             html {
-                render(status:200, text:teamsAndTotal as JSON, contentType:'application/json')
+                render(status: 200, text: teamsAndTotal as JSON, contentType: 'application/json')
             }
-            json { renderRESTJSON(text:teamsAndTotal) }
-            xml  { renderRESTXML(text:teamsAndTotal) }
+            json { renderRESTJSON(text: teamsAndTotal) }
+            xml { renderRESTXML(text: teamsAndTotal) }
         }
     }
 
     @Secured('isAuthenticated()')
     def manage() {
-        render(status:200, template: "dialogs/list")
+        render(status: 200, template: "dialogs/list")
     }
 }

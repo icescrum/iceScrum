@@ -37,7 +37,6 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
                 $scope.notifySuccess('todo.is.ui.comment.saved');
             });
     };
-    // TODO cancellable delete
     $scope['delete'] = function(comment, commentable) {
         CommentService.delete(comment, commentable)
             .then(function() {

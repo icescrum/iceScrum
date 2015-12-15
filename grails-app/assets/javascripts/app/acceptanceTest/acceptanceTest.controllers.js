@@ -40,7 +40,6 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
                 $scope.notifySuccess('todo.is.ui.acceptanceTest.saved');
             });
     };
-    // TODO cancellable delete
     $scope['delete'] = function(acceptanceTest, story) {
         AcceptanceTestService.delete(acceptanceTest, story)
             .then(function() {

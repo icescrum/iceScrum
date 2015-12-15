@@ -135,6 +135,12 @@
                         ${message(code: 'todo.is.ui.team.no.members')}
                     </div>
                     <div class="btn-toolbar">
+                        <button ng-if="authorizedTeam('delete', team) && team.products_count == 0"
+                                class="btn btn-danger"
+                                type="button"
+                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [team] })">
+                            ${message(code:'default.button.delete.label')}
+                        </button>
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid"
                                 uib-tooltip="${message(code:'default.button.update.label')}"
@@ -146,10 +152,6 @@
                                 type="button"
                                 ng-click="cancel()">
                             ${message(code:'is.button.cancel')}
-                        </button>
-                        <button ng-if="authorizedTeam('delete', team) && team.products_count == 0" class="btn btn-danger pull-left"
-                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [team] })">
-                            ${message(code:'default.button.delete.label')}
                         </button>
                     </div>
                 </form>

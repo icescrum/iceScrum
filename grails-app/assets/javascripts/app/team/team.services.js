@@ -29,19 +29,16 @@ services.factory('Team', ['Resource', function($resource) {
         });
 }]);
 
-services.service("TeamService", ['$q', 'FormService', 'Team', 'Session', function($q, FormService, Team, Session) {
-    this.save = function (team) {
+services.service("TeamService", ['$q', 'Team', 'Session', function($q, Team, Session) {
+    this.save = function(team) {
         team.class = 'team';
         return Team.save(team).$promise;
     };
-    this.update = function (team) {
-        return Team.update({ id: team.id }, { team: team }).$promise;
+    this.update = function(team) {
+        return Team.update({id: team.id}, {team: team}).$promise;
     };
     this['delete'] = function(team) {
         return team.$delete();
-    };
-    this.listByUser = function(term, offset) {
-        return Team.listByUser({ term: term, offset: offset }).$promise;
     };
     this.authorizedTeam = function(action, team) {
         switch (action) {
@@ -55,7 +52,7 @@ services.service("TeamService", ['$q', 'FormService', 'Team', 'Session', functio
     };
     this.get = function(project) {
         if (_.isEmpty(project.team)) {
-            return Team.get({ id: project.id, type: 'project' }, function(team) {
+            return Team.get({id: project.id, type: 'project'}, function(team) {
                 project.team = team;
             }).$promise;
         } else {
@@ -63,6 +60,9 @@ services.service("TeamService", ['$q', 'FormService', 'Team', 'Session', functio
         }
     };
     this.search = function(term, create) {
-        return FormService.httpGet('team', { params: {  term: term, create: create } }, true);
-    }
+        return Team.query({term: term, create: create}).$promise;
+    };
+    this.listByUser = function(term, offset) {
+        return Team.listByUser({term: term, offset: offset}).$promise;
+    };
 }]);

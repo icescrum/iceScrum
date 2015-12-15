@@ -26,7 +26,6 @@ controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', fun
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
-    // TODO cancellable delete
     $scope['delete'] = function(feature) {
         FeatureService.delete(feature)
             .then(function() {
@@ -154,7 +153,6 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
     $scope.sumStories = function(features) {
         return _.sum(features, function(feature) { return feature.stories_ids.length; });
     };
-    // TODO cancellable delete ?
     $scope.deleteMultiple = function() {
         FeatureService.deleteMultiple(listId)
             .then(function() {

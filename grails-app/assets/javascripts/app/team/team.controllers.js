@@ -21,7 +21,47 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('teamCtrl', ['$scope', '$filter', 'Session', 'TeamService', 'UserService', function($scope, $filter, Session, TeamService, UserService) {
+
+controllers.controller('abstractTeamCtrl', ['$scope', '$filter', 'Session', 'TeamService', 'UserService', function($scope, $filter, Session, TeamService, UserService) {
+    // Functions
+    $scope.removeTeamMember = function(member) {
+        _.remove($scope.team.members, {email: member.email});
+        _.remove($scope.team.scrumMasters, {email: member.email});
+    };
+    $scope.scrumMasterChanged = function(member) {
+        if (member.scrumMaster) {
+            $scope.team.scrumMasters.push(member);
+        } else {
+            _.remove($scope.team.scrumMasters, {email: member.email}); // equality on email because invited members have no id
+        }
+    };
+    $scope.searchMembers = function(val) {
+        return UserService.search(val).then(function(users) {
+            return _.chain(users)
+                .filter(function(member) {
+                    var found = false;
+                    if ($scope.project) {
+                        found = _.find($scope.project.stakeHolders, {email: member.email});
+                    }
+                    if (!found) {
+                        found = _.find($scope.team.members, {email: member.email});
+                    }
+                    return !found;
+                })
+                .map(function(member) {
+                    member.name = $filter('userFullName')(member);
+                    return member;
+                })
+                .value();
+        });
+    };
+    // Init
+    $scope.team = {};
+    $scope.member = {};
+}]);
+
+controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session', 'TeamService', 'UserService', function($scope, $controller, $filter, Session, TeamService, UserService) {
+    $controller('abstractTeamCtrl', {$scope: $scope});
     // Functions
     $scope.searchTeam = function(val, create) {
         return TeamService.search(val, create);
@@ -80,26 +120,6 @@ controllers.controller('teamCtrl', ['$scope', '$filter', 'Session', 'TeamService
             $scope.member = {};
         }
     };
-    $scope.searchMembers = function(val) {
-        return UserService.search(val).then(function(users) {
-            return _.chain(users)
-                .filter(function(member) {
-                    var found = false;
-                    if ($scope.project) {
-                        found = _.find($scope.project.stakeHolders, {email: member.email});
-                    }
-                    if (!found) {
-                        found = _.find($scope.team.members, {email: member.email});
-                    }
-                    return !found;
-                })
-                .map(function(member) {
-                    member.name = $filter('userFullName')(member);
-                    return member;
-                })
-                .value();
-        });
-    };
     $scope.addTeamMember = function(member) {
         var po = _.find($scope.project.productOwners, {email: member.email});
         if (po) {
@@ -110,20 +130,7 @@ controllers.controller('teamCtrl', ['$scope', '$filter', 'Session', 'TeamService
         $scope.team.members.push(member);
         $scope.member = {};
     };
-    $scope.removeTeamMember = function(member) {
-        _.remove($scope.team.members, {email: member.email});
-        _.remove($scope.team.scrumMasters, {email: member.email});
-    };
-    $scope.scrumMasterChanged = function(member) {
-        if (member.scrumMaster) {
-            $scope.team.scrumMasters.push(member);
-        } else {
-            _.remove($scope.team.scrumMasters, {email: member.email}); // equality on email because invited members have no id
-        }
-    };
     // Init
-    $scope.team = {};
-    $scope.member = {};
     $scope.warning = {on: false};
     if ($scope.teamPromise) {
         $scope.teamPromise.then(function(team) {
@@ -132,7 +139,8 @@ controllers.controller('teamCtrl', ['$scope', '$filter', 'Session', 'TeamService
     }
 }]);
 
-controllers.controller('manageTeamsModalCtrl', ['$scope', '$filter', 'TeamService', 'UserService', function($scope, $filter, TeamService, UserService) {
+controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filter', 'TeamService', 'UserService', function($scope, $controller, $filter, TeamService, UserService) {
+    $controller('abstractTeamCtrl', {$scope: $scope});
     // Functions
     $scope.selectTeam = function(team) {
         $scope.team = angular.copy(team);
@@ -157,30 +165,26 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$filter', 'TeamServic
         }
     };
     $scope.save = function(team) {
-        TeamService.save(team)
-            .then(function(team) {
-                $scope.newTeam = {};
-                $scope.team = team;
-                $scope.teams.push(team);
-                $scope.resetFormValidation($scope.formHolder.newTeamForm);
-                $scope.notifySuccess('todo.is.ui.team.saved');
-            });
+        TeamService.save(team).then(function(team) {
+            $scope.newTeam = {};
+            $scope.team = team;
+            $scope.teams.push(team);
+            $scope.resetFormValidation($scope.formHolder.newTeamForm);
+            $scope.notifySuccess('todo.is.ui.team.saved');
+        });
     };
     $scope.update = function(team) {
-        TeamService.update(team)
-            .then(function(returnedTeam) {
-                $scope.resetFormValidation($scope.formHolder.updateTeamForm);
-                angular.extend(_.find($scope.teams, {id: team.id}), returnedTeam);
-                $scope.notifySuccess('todo.is.ui.team.updated');
-            });
+        TeamService.update(team).then(function(returnedTeam) {
+            $scope.resetFormValidation($scope.formHolder.updateTeamForm);
+            angular.extend(_.find($scope.teams, {id: team.id}), returnedTeam);
+            $scope.notifySuccess('todo.is.ui.team.updated');
+        });
     };
     $scope.delete = function(team) {
-        // TODO cancellable delete
-        TeamService.delete(team)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.deleted');
-                $scope.team = {};
-            });
+        TeamService.delete(team).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+            $scope.team = {};
+        });
     };
     $scope.cancel = function() {
         $scope.team = {};
@@ -199,6 +203,13 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$filter', 'TeamServic
             $scope.teams = teamsAndTotal.teams;
         });
     };
+    $scope.teamMembersEditable = function() {
+        return true;
+    };
+    $scope.addTeamMember = function(member) {
+        $scope.team.members.push(member);
+        $scope.member = {};
+    };
     // Init
     $scope.totalTeams = 0;
     $scope.currentPage = 1;
@@ -206,45 +217,6 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$filter', 'TeamServic
     $scope.teamSearch = '';
     $scope.teams = [];
     $scope.formHolder = {};
-    $scope.team = {};
     $scope.newTeam = {};
     $scope.searchTeams();
-
-    // Member management TODO remove duplication with controller above
-    $scope.teamMembersEditable = function() {
-        return true;
-    };
-    $scope.member = {};
-    $scope.searchMembers = function(val) {
-        return UserService.search(val).then(function(users) {
-            return _.chain(users)
-                .filter(function(member) {
-                    var found = false;
-                    if (!found) {
-                        found = _.find($scope.team.members, {email: member.email});
-                    }
-                    return !found;
-                })
-                .map(function(member) {
-                    member.name = $filter('userFullName')(member);
-                    return member;
-                })
-                .value();
-        });
-    };
-    $scope.addTeamMember = function(member) {
-        $scope.team.members.push(member);
-        $scope.member = {};
-    };
-    $scope.removeTeamMember = function(member) {
-        _.remove($scope.team.members, {email: member.email});
-        _.remove($scope.team.scrumMasters, {email: member.email});
-    };
-    $scope.scrumMasterChanged = function(member) {
-        if (member.scrumMaster) {
-            $scope.team.scrumMasters.push(member);
-        } else {
-            _.remove($scope.team.scrumMasters, {email: member.email}); // equality on email because invited members have no id
-        }
-    };
 }]);
