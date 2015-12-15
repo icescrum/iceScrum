@@ -60,32 +60,12 @@ class TaskController {
     }
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def show() {
-        def id = params.uid?.toInteger() ?: params.id?.toLong() ?: null
-        withTask(id, params.uid ? true : false) { Task task ->
-            def product = task.parentProduct
-            def user = springSecurityService.currentUser
-            if (product.preferences.hidden && !user) {
-                redirect(controller: 'login', params: [ref: "p/${product.pkey}#task/$task.id"])
-                return
-            } else if (product.preferences.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product, springSecurityService.authentication, false)) {
-                render(status: 403)
-                return
-            } else {
-                withFormat {
-                    json { renderRESTJSON(text: task) }
-                    xml { renderRESTXML(text: task) }
-                    html {
-                        def permalink = createLink(absolute: true, mapping: "shortURLTASK", params: [product: product.pkey], id: task.uid)
-                        render(view: 'window/details', model: [
-                                task        : task,
-                                permalink   : permalink,
-                                taskStateCode: BundleUtils.taskStates[task.state],
-                                taskTypeCode: BundleUtils.taskTypes[task.type]
-                        ])
-                    }
-                }
-            }
+    def show(long id, long product) {
+        Task task = Task.withTask(product, id)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: task as JSON }
+            json { renderRESTJSON text: task }
+            xml { renderRESTXML text: task }
         }
     }
 
@@ -127,124 +107,111 @@ class TaskController {
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def update() {
+    def update(long id, long product) {
         def taskParams = params.task
         if (!taskParams) {
             returnError(text: message(code: 'todo.is.ui.no.data'))
             return
         }
-        withTask { Task task ->
-            User user = (User) springSecurityService.currentUser
-            if (taskParams.estimation instanceof String) {
-                try {
-                    taskParams.estimation = taskParams.estimation in ['?', ""] ? null : taskParams.estimation.replace(/,/, '.').toFloat()
-                } catch (NumberFormatException e) {
-                    returnError(text: message(code: 'is.task.error.estimation.number'))
-                    return
-                }
+        Task task = Task.withTask(product, id)
+        User user = (User) springSecurityService.currentUser
+        if (taskParams.estimation instanceof String) {
+            try {
+                taskParams.estimation = taskParams.estimation in ['?', ""] ? null : taskParams.estimation.replace(/,/, '.').toFloat()
+            } catch (NumberFormatException e) {
+                returnError(text: message(code: 'is.task.error.estimation.number'))
+                return
             }
-            if (!taskParams.backlog) {
-                taskParams.backlog = taskParams.sprint
-            }
-            def props = [:]
-            Integer rank = taskParams.rank instanceof String ? taskParams.rank.toInteger() : taskParams.rank
-            if (rank != null) {
-                props.rank = rank
-            }
-            Integer state = taskParams.state instanceof String ? taskParams.state.toInteger() : taskParams.state
-            if (state != null) {
-                props.state = state
-            }
-            Task.withTransaction {
-                bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']])
-                taskService.update(task, user, false, props)
-                task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
-                withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                    json { renderRESTJSON(text: task) }
-                    xml { renderRESTXML(text: task) }
-                }
+        }
+        if (!taskParams.backlog) {
+            taskParams.backlog = taskParams.sprint
+        }
+        def props = [:]
+        Integer rank = taskParams.rank instanceof String ? taskParams.rank.toInteger() : taskParams.rank
+        if (rank != null) {
+            props.rank = rank
+        }
+        Integer state = taskParams.state instanceof String ? taskParams.state.toInteger() : taskParams.state
+        if (state != null) {
+            props.state = state
+        }
+        Task.withTransaction {
+            bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']])
+            taskService.update(task, user, false, props)
+            task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
+            withFormat {
+                html { render(status: 200, contentType: 'application/json', text: task as JSON) }
+                json { renderRESTJSON(text: task) }
+                xml { renderRESTXML(text: task) }
             }
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def delete() {
-        withTasks { List<Task> tasks ->
-            User user = (User) springSecurityService.currentUser
-            def idj = []
-            Task.withTransaction {
-                tasks.each {
-                    idj << [id: it.id]
-                    taskService.delete(it, user)
-                }
+        List<Task> tasks = Task.withTasks(params)
+        User user = (User) springSecurityService.currentUser
+        Task.withTransaction {
+            tasks.each {
+                taskService.delete(it, user)
             }
-            withFormat {
-                html { render(status: 200) }
-                json { render(status: 204) }
-                xml { render(status: 204) }
-            }
+        }
+        def data = tasks.size() > 1 ? tasks.collect { [id: it.id] } : (tasks ? [id: tasks.first().id] : [:])
+        withFormat {
+            html { render(status: 200, text: data as JSON) }
+            json { render(status: 204) }
+            xml { render(status: 204) }
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def take() {
-        withTask { Task task ->
-            User user = (User) springSecurityService.currentUser
-            Task.withTransaction {
-                task.responsible = user
-                taskService.update(task, user)
-            }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                json { renderRESTJSON(text: task) }
-                xml { renderRESTXML(text: task) }
-            }
+    def take(long id, long product) {
+        Task task = Task.withTask(product, id)
+        User user = (User) springSecurityService.currentUser
+        Task.withTransaction {
+            task.responsible = user
+            taskService.update(task, user)
+        }
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: task as JSON) }
+            json { renderRESTJSON(text: task) }
+            xml { renderRESTXML(text: task) }
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def unassign() {
-        withTask { Task task ->
-            User user = (User) springSecurityService.currentUser
-            if (task.responsible?.id != user.id) {
-                returnError(text: message(code: 'is.task.error.unassign.not.responsible'))
-                return
-            }
-            if (task.state == Task.STATE_DONE) {
-                returnError(text: message(code: 'is.task.error.done'))
-                return
-            }
-            Task.withTransaction {
-                task.responsible = null
-                task.state = Task.STATE_WAIT
-                taskService.update(task, user)
-            }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                json { renderRESTJSON(text: task) }
-                xml { renderRESTXML(text: task) }
-            }
+    def unassign(long id, long product) {
+        Task task = Task.withTask(product, id)
+        User user = (User) springSecurityService.currentUser
+        if (task.responsible?.id != user.id) {
+            returnError(text: message(code: 'is.task.error.unassign.not.responsible'))
+            return
+        }
+        if (task.state == Task.STATE_DONE) {
+            returnError(text: message(code: 'is.task.error.done'))
+            return
+        }
+        Task.withTransaction {
+            task.responsible = null
+            task.state = Task.STATE_WAIT
+            taskService.update(task, user)
+        }
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: task as JSON) }
+            json { renderRESTJSON(text: task) }
+            xml { renderRESTXML(text: task) }
         }
     }
 
     @Secured('inProduct() and !archivedProduct()')
-    def copy() {
-        withTask { Task task ->
-            User user = (User) springSecurityService.currentUser
-            def copiedTask = taskService.copy(task, user)
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: copiedTask as JSON) }
-                json { renderRESTJSON(text: copiedTask, status: 201) }
-                xml { renderRESTXML(text: copiedTask, status: 201) }
-            }
-        }
-    }
-
-    @Secured('inProduct() and !archivedProduct()')
-    def attachments() {
-        withTask { task ->
-            manageAttachmentsNew(task)
+    def copy(long id, long product) {
+        Task task = Task.withTask(product, id)
+        User user = (User) springSecurityService.currentUser
+        def copiedTask = taskService.copy(task, user)
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: copiedTask as JSON) }
+            json { renderRESTJSON(text: copiedTask, status: 201) }
+            xml { renderRESTXML(text: copiedTask, status: 201) }
         }
     }
 

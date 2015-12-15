@@ -174,12 +174,6 @@ class FeatureController {
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
-    def attachments(long id, long product) {
-        Feature feature = Feature.withFeature(product, id)
-        manageAttachmentsNew(feature)
-    }
-
     @Secured(['permitAll()'])
     def permalink(long id, long product){
         Feature feature = Feature.withFeature(product, id)
