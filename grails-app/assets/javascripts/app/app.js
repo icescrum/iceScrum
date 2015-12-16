@@ -219,19 +219,21 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                         var tpl;
                                         if ($stateParams.tabId == 'tests') {
                                             tpl = 'story.acceptanceTests.html';
-                                        } else if($stateParams.tabId == 'tasks') {
+                                        } else if ($stateParams.tabId == 'tasks') {
                                             tpl = 'story.tasks.html';
-                                        } else if($stateParams.tabId == 'comments') {
+                                        } else if ($stateParams.tabId == 'comments') {
                                             tpl = 'comment.list.html';
-                                        } else if($stateParams.tabId == 'activities') {
+                                        } else if ($stateParams.tabId == 'activities') {
                                             tpl = 'activity.list.html';
                                         }
                                         return tpl;
                                     },
                                     controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
                                         $scope.selected = selected;
-                                        if($stateParams.tabId == 'activities') {
-                                            $controller('activityCtrl', { $scope: $scope, selected: selected });
+                                        if ($stateParams.tabId == 'activities') {
+                                            $controller('activityCtrl', {$scope: $scope, selected: selected});
+                                        } else if ($stateParams.tabId == 'tasks') {
+                                            $controller('taskStoryCtrl', {$scope: $scope});
                                         }
                                     }]
                                 }

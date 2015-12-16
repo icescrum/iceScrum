@@ -21,50 +21,60 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+
+controllers.controller('taskStoryCtrl', ['$scope', '$state', '$controller', 'TaskService', function($scope, $state, $controller, TaskService) {
+    // Does not inheritate from taskCtrl, it is on purpose because this is a different context and fewer actions are offered
     // Functions
-    $scope.take = function(task) {
-        TaskService.take(task);
+    $scope.resetTaskForm = function() {
+        $scope.task = {};
+        $scope.resetFormValidation($scope.formHolder.taskForm);
     };
-    $scope.release = function(task) {
-        TaskService.release(task);
+    $scope.save = function(task, story) {
+        task.parentStory = {id: story.id};
+        TaskService.save(task, story).then(function() {
+            $scope.resetTaskForm();
+            $scope.notifySuccess('todo.is.ui.task.saved');
+        });
     };
-    $scope.copy = function(task) {
-        TaskService.copy(task);
-    };
-    $scope.block = function(task) {
-        TaskService.block(task);
-    };
-    $scope.unBlock = function(task) {
-        TaskService.unBlock(task);
-    };
-    $scope['delete'] = function(task, obj) {
-        TaskService.delete(task, obj).then(function() {
+    $scope['delete'] = function(task, story) {
+        TaskService.delete(task, story).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
     $scope.authorizedTask = function(action, task) {
         return TaskService.authorizedTask(action, task);
     };
-}]);
-
-controllers.controller('taskStoryNewCtrl', ['$scope', '$state', '$controller', 'TaskService', 'hotkeys', function($scope, $state, $controller, TaskService, hotkeys) {
-    $controller('taskCtrl', { $scope: $scope }); // inherit from taskCtrl
-    // Functions
-    $scope.resetTaskForm = function() {
-        $scope.task = {};
-        $scope.resetFormValidation($scope.formHolder.taskForm);
-    };
-    $scope.save = function(task, obj) {
-        task.parentStory = {id: obj.id};
-        TaskService.save(task, obj).then(function() {
-            $scope.resetTaskForm();
-            $scope.notifySuccess('todo.is.ui.task.saved');
-        });
-    };
     // Init
     $scope.formHolder = {};
     $scope.resetTaskForm();
+}]);
+
+controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+    // We assume that we are always in the context of a sprint!!
+    // Functions
+    $scope.take = function(task) {
+        TaskService.take(task, $scope.sprint);
+    };
+    $scope.release = function(task) {
+        TaskService.release(task, $scope.sprint);
+    };
+    $scope.copy = function(task) {
+        TaskService.copy(task, $scope.sprint);
+    };
+    $scope.block = function(task) {
+        TaskService.block(task, $scope.sprint);
+    };
+    $scope.unBlock = function(task) {
+        TaskService.unBlock(task, $scope.sprint);
+    };
+    $scope['delete'] = function(task) {
+        TaskService.delete(task, $scope.sprint).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+        });
+    };
+    $scope.authorizedTask = function(action, task) {
+        return TaskService.authorizedTask(action, task);
+    };
 }]);
 
 controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'TaskService', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, TaskService, hotkeys, sprint) {

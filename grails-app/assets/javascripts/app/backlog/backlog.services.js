@@ -25,14 +25,7 @@ services.factory('Backlog', ['Resource', function($resource) {
 }]);
 
 services.service("BacklogService", ['Backlog', 'Session', function(Backlog) {
-    this.save = function(backlog) {
-        backlog.class = 'backlog';
-        return Backlog.save(backlog).$promise;
-    };
     this.list = function() {
         return Backlog.query({shared: true}).$promise;
-    };
-    this.get = function(id) {
-        return Backlog.get({id:id}).$promise;
     };
 }]);

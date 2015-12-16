@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="story.tasks.html">
 <div class="tasks panel-body">
     <table class="table">
-        <tr ng-repeat="task in selected.tasks | orderBy:'dateCreated'" ng-controller="taskCtrl">
+        <tr ng-repeat="task in selected.tasks | orderBy:'dateCreated'">
             <td class="content {{:: authorizedTask('delete', task) ? 'deletable' : '' }}">
                 <div class="clearfix no-padding">
                     <div class="col-sm-1">
@@ -55,7 +55,7 @@
         </tr>
     </table>
 </div>
-<div class="panel-footer" ng-controller="taskStoryNewCtrl">
+<div class="panel-footer">
     <div ng-if="authorizedTask('create')" ng-include="'story.task.new.html'"></div>
 </div>
 </script>
