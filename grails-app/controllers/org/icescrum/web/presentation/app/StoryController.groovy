@@ -42,7 +42,7 @@ class StoryController {
 
     @Secured('stakeHolder() or inProduct()')
     def index(long product, long backlog) {
-        def stories = backlog ? Story.search(product, JSON.parse(Backlog.get(backlog).filter)).sort { Story story -> story.id } : Story.findByBacklog(Product.load(product))
+        def stories = backlog ? Story.search(product, JSON.parse(Backlog.get(backlog).filter)).sort { Story story -> story.id } : Story.findAllByBacklog(Product.load(product))
         withFormat {
             html { render(status: 200, text: stories as JSON, contentType: 'application/json') }
             json { renderRESTJSON(text: stories) }
