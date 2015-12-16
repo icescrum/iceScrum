@@ -424,8 +424,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         .state('sprintPlan.task.details', {
                             url: "/{taskId:int}",
                             resolve: {
-                                detailsTask: ['$stateParams', 'tasks', function($stateParams, tasks) {
-                                    return _.find(tasks, {id: $stateParams.taskId})
+                                detailsTask: ['$stateParams', 'sprint', function($stateParams, sprint) {
+                                    return _.find(sprint.tasks, {id: $stateParams.taskId})
                                 }]
                             },
                             views: {
