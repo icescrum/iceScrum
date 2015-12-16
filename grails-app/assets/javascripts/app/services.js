@@ -315,6 +315,7 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
             },
             query: {
                 method: 'get',
+                cache: true, // TODO REMOVE IT
                 isArray: true,
                 interceptor: arrayInterceptor
             }
