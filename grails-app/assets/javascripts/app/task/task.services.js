@@ -49,29 +49,29 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
         };
         return crudMethods;
     };
-    this.save = function(task, obj) {
+    this.save = function(task, sprintOrStory) {
         task.class = 'task';
-        return Task.save(task, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
+        return Task.save(task, self.getCrudMethods(sprintOrStory)[IceScrumEventType.CREATE]).$promise;
     };
     this.update = function(task, obj) {
         return task.$update(self.getCrudMethods(obj)[IceScrumEventType.UPDATE]);
     };
-    this.block = function(task, obj) {
+    this.block = function(task, sprint) {
         task.blocked = true;
-        return self.update(task, obj);
+        return self.update(task, sprint);
     };
-    this.unBlock = function(task, obj) {
+    this.unBlock = function(task, sprint) {
         task.blocked = false;
-        return self.update(task, obj);
+        return self.update(task, sprint);
     };
-    this.take = function(task, obj) {
-        return Task.update({id: task.id, action: 'take'}, {}, self.getCrudMethods(obj)[IceScrumEventType.UPDATE]).$promise;
+    this.take = function(task, sprint) {
+        return Task.update({id: task.id, action: 'take'}, {}, self.getCrudMethods(sprint)[IceScrumEventType.UPDATE]).$promise;
     };
-    this.release = function(task, obj) {
-        return Task.update({id: task.id, action: 'unassign'}, {}, self.getCrudMethods(obj)[IceScrumEventType.UPDATE]).$promise;
+    this.release = function(task, sprint) {
+        return Task.update({id: task.id, action: 'unassign'}, {}, self.getCrudMethods(sprint)[IceScrumEventType.UPDATE]).$promise;
     };
-    this['delete'] = function(task, obj) {
-        return task.$delete(self.getCrudMethods(obj)[IceScrumEventType.DELETE]);
+    this['delete'] = function(task, sprintOrStory) {
+        return task.$delete(self.getCrudMethods(sprintOrStory)[IceScrumEventType.DELETE]);
     };
     this.copy = function(task, obj) {
         return Task.update({id: task.id, action: 'copy'}, {}, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
@@ -102,9 +102,9 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
             case 'delete':
                 return (Session.sm() || Session.responsible(task) || Session.creator(task));
             case 'block':
-                return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE && task.backlog.state == SprintStatesByName.IN_PROGRESS;
+                return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE;
             case 'unBlock':
-                return task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE && task.backlog.state == SprintStatesByName.IN_PROGRESS;
+                return task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE;
             case 'take':
                 return !Session.responsible(task) && task.state != TaskStatesByName.DONE;
             case 'release':
