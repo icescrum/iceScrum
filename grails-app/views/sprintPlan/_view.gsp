@@ -73,7 +73,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody ng-controller="taskCtrl">
+        <tbody ng-controller="taskSprintCtrl">
             <tr>
                 <td style="width:16%">
                     ${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}

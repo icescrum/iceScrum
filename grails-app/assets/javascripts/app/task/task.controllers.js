@@ -23,7 +23,6 @@
  */
 
 controllers.controller('taskStoryCtrl', ['$scope', '$state', '$controller', 'TaskService', function($scope, $state, $controller, TaskService) {
-    // Does not inheritate from taskCtrl, it is on purpose because this is a different context and fewer actions are offered
     // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {};
@@ -49,8 +48,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$state', '$controller', 'Tas
     $scope.resetTaskForm();
 }]);
 
-controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
-    // We assume that we are always in the context of a sprint!!
+controllers.controller('taskSprintCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task, $scope.sprint);
@@ -78,7 +76,7 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
 }]);
 
 controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'TaskService', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, TaskService, hotkeys, sprint) {
-    $controller('taskCtrl', { $scope: $scope }); // inherit from taskCtrl
+    $controller('taskSprintCtrl', {$scope: $scope});
     // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {backlog: {id: sprint.id}};
@@ -95,7 +93,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
                 $scope.resetTaskForm();
             } else {
                 $scope.setInEditingMode(true);
-                $state.go('^.details', { id: task.id });
+                $state.go('^.details', {id: task.id});
             }
             $scope.notifySuccess('todo.is.ui.task.saved');
         });
@@ -111,8 +109,8 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
 }]);
 
 controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$controller', 'TaskService', 'FormService', 'ProjectService', 'sprint', 'detailsTask', function($scope, $state, $controller, TaskService, FormService, ProjectService, sprint, detailsTask) {
-    $controller('taskCtrl', { $scope: $scope }); // inherit from taskCtrl
-    $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsTask, clazz: 'task' });
+    $controller('taskSprintCtrl', {$scope: $scope});
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions
     $scope.isDirty = function() {
         return !_.isEqual($scope.editableTask, $scope.editableTaskReference);
@@ -143,7 +141,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$controller', 'T
     };
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
-            ProjectService.getTags().then(function (tags) {
+            ProjectService.getTags().then(function(tags) {
                 $scope.tags = tags;
             });
         }
@@ -176,7 +174,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$controller', 'T
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
-            ProjectService.getTags().then(function (tags) {
+            ProjectService.getTags().then(function(tags) {
                 $scope.tags = tags;
             });
         }
