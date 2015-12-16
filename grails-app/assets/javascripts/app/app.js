@@ -477,7 +477,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
     .config(['flowFactoryProvider', function (flowFactoryProvider) {
         flowFactoryProvider.defaults = {
             target: 'attachment/save',
-            simultaneousUploads: 4
+            //only one at the time => prevent staleObjectException
+            simultaneousUploads: 1
         };
         flowFactoryProvider.on('catchAll', function (event) {
             console.log('catchAll', arguments);
