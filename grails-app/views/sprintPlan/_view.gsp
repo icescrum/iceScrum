@@ -131,7 +131,8 @@
             <tr ng-repeat="story in backlog.stories"
                 ng-class="{'sortable-disabled': !isSortingStory(story)}">
                 <td style="width:16%"
-                    class="postits grid-group">
+                    class="postits grid-group"
+                    ng-controller="storyCtrl">
                     <div class="postit-container">
                         <div ng-include="'story.html'"></div>
                     </div>

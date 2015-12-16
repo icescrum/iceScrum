@@ -135,6 +135,7 @@
         <div class="panel-body" ng-class="{'loading': !backlog.storiesRendered}">
             <div class="panel-loading" ng-include="'loading.html'"></div>
             <div class="postits {{ backlog.sorting ? '' : 'sortable-disabled' }}"
+                 ng-controller="storyCtrl"
                  as-sortable="backlogSortableOptions"
                  is-disabled="!backlog.sorting"
                  ng-model="backlog.stories"

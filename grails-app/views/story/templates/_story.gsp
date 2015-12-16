@@ -22,8 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="story.html">
-<div ng-controller="storyCtrl"
-     ellipsis
+<div ellipsis
      style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
      class="postit {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }} {{ story.type | storyType }}">
     <div class="head">
