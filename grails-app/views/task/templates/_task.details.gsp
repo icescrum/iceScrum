@@ -44,6 +44,20 @@
                     <img ng-src="{{ task.responsible | userAvatar }}" alt="{{ task.responsible | userFullName }}"
                          height="30px"/>
                 </span>
+                <button type="button"
+                        ng-if="authorizedTask('take', task)"
+                        class="btn btn-default"
+                        ng-click="take(task)"
+                        uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.take')}">
+                    <i class="fa fa-user-plus"></i>
+                </button>
+                <button type="button"
+                        ng-if="authorizedTask('release', task)"
+                        class="btn btn-default"
+                        ng-click="release(task)"
+                        uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.unassign')}">
+                    <i class="fa fa-user-times"></i>
+                </button>
                 <button class="btn btn-default elemid">{{ task.uid }}</button>
                 <div class="btn-group"
                      uib-dropdown
