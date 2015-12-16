@@ -73,7 +73,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody ng-controller="taskCtrl">
             <tr>
                 <td style="width:16%">
                     ${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}
@@ -87,7 +87,6 @@
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByTypeByState[11][taskState]"
                          as-sortable-item
-                         ng-controller="taskCtrl"
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>
@@ -115,7 +114,6 @@
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByTypeByState[10][taskState]"
                          as-sortable-item
-                         ng-controller="taskCtrl"
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>
@@ -146,7 +144,6 @@
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                          as-sortable-item
-                         ng-controller="taskCtrl"
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>
