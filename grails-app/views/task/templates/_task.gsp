@@ -32,7 +32,7 @@
              class="responsible"
              uib-tooltip="{{ task.responsible | userFullName }}">
         <span class="id">{{ ::task.uid }}</span>
-        <span class="estimation editable"
+        <span class="remaining-time editable"
               uib-tooltip="${message(code: 'is.task.estimation')}">
             {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
         </span>
