@@ -35,10 +35,6 @@
                 <span>{{ task.name }}</span>
             </div>
             <div class="right-title">
-                <span uib-tooltip="${message(code: 'is.task.creator')} {{ task.creator | userFullName }}">
-                    <img ng-src="{{ task.creator | userAvatar }}" alt="{{ task.creator | userFullName }}"
-                         height="30px"/>
-                </span>
                 <span ng-if="task.responsible"
                       uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
                     <img ng-src="{{ task.responsible | userAvatar }}" alt="{{ task.responsible | userFullName }}"

@@ -383,13 +383,12 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         sprint: ['$stateParams', '$q', 'SprintService', 'StoryService', 'TaskService', 'project', function($stateParams, $q, SprintService, StoryService, TaskService, project) {
                             var promise = !$stateParams.id ? SprintService.getCurrentOrNextSprint(project) : SprintService.get($stateParams.id, project);
                             return promise.then(function(sprint) {
-                                return StoryService.listByType(sprint).then(function(stories) {
-                                    return sprint;
+                                return StoryService.listByType(sprint).then(function() {
+                                    return TaskService.list(sprint).then(function() {
+                                        return sprint;
+                                    });
                                 });
                             })
-                        }],
-                        tasks: ['TaskService', 'sprint', function(TaskService, sprint) {
-                            return TaskService.list(sprint);
                         }]
                     }
                 })

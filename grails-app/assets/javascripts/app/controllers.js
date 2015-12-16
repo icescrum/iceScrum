@@ -383,7 +383,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     }
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', 'tasks', function($scope, $state, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint, tasks) {
+controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', function($scope, $state, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint) {
     $scope.viewName = 'sprintPlan';
     // Functions
     $scope.isSortingSprintPlan = function(sprint) {
@@ -400,6 +400,34 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     };
     $scope.openNewTaskByType = function(type) {
         $state.go('sprintPlan.task.new', {taskTemplate: {type: type}});
+    };
+    $scope.refreshTasks = function(tasks) {
+        var partitionedTasks = _.partition(tasks, function(task) {
+            return _.isNull(task.parentStory);
+        });
+        var groupByStateAndSort = function(tasksDictionnary) {
+            return _.mapValues(tasksDictionnary, function(tasks) {
+                return _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
+                    return _.sortBy(tasks, 'rank');
+                });
+            });
+        };
+        $scope.tasksByTypeByState = groupByStateAndSort(_.groupBy(partitionedTasks[0], 'type'));
+        $scope.tasksByStoryByState = groupByStateAndSort(_.groupBy(partitionedTasks[1], 'parentStory.id'));
+        var fillGapsInDictionnary = function(dictionnary, firstLevelKeys, secondLevelKeys) {
+            _.each(firstLevelKeys, function(firstLevelKey) {
+                if (!dictionnary[firstLevelKey]) {
+                    dictionnary[firstLevelKey] = {};
+                }
+                _.each(secondLevelKeys, function(secondLevelKey) {
+                    if (!dictionnary[firstLevelKey][secondLevelKey]) {
+                        dictionnary[firstLevelKey][secondLevelKey] = [];
+                    }
+                });
+            });
+        };
+        fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.taskStates);
+        fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.backlog.stories, 'id'), $scope.taskStates);
     };
     // Init
     $scope.taskSortableOptions = {
@@ -432,34 +460,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     $scope.backlog = {stories: _.sortBy(sprint.stories, 'rank')};
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
-    $scope.taskStates = [0, 1, 2];
-    $scope.taskTypes = [10, 11];
-    var partitionedTasks = _.partition(tasks, function(task) {
-        return _.isNull(task.parentStory);
-    });
-    var groupByStateAndSort = function(tasksDictionnary) {
-        return _.mapValues(tasksDictionnary, function(tasks) {
-            return _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
-                return _.sortBy(tasks, 'rank');
-            });
-        });
-    };
-    $scope.tasksByTypeByState = groupByStateAndSort(_.groupBy(partitionedTasks[0], 'type'));
-    $scope.tasksByStoryByState = groupByStateAndSort(_.groupBy(partitionedTasks[1], 'parentStory.id'));
-    var fillGapsInDictionnary = function(dictionnary, firstLevelKeys, secondLevelKeys) {
-        _.each(firstLevelKeys, function(firstLevelKey) {
-            if (!dictionnary[firstLevelKey]) {
-                dictionnary[firstLevelKey] = {};
-            }
-            _.each(secondLevelKeys, function(secondLevelKey) {
-                if (!dictionnary[firstLevelKey][secondLevelKey]) {
-                    dictionnary[firstLevelKey][secondLevelKey] = [];
-                }
-            });
-        });
-    };
-    fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.taskStates);
-    fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.backlog.stories, 'id'), $scope.taskStates);
+    $scope.$watch('sprint.tasks', $scope.refreshTasks, true); // Init and watch
 }]);
 
 controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {

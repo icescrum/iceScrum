@@ -50,6 +50,8 @@
         BundleService.initBundles(${is.i18nBundle() as JSON});
         $rootScope.storyTypes = ${BundleUtils.storyTypes.keySet() as JSON};
         $rootScope.featureTypes = ${BundleUtils.featureTypes.keySet() as JSON};
+        $rootScope.taskStates = ${BundleUtils.taskStates.keySet() as JSON};
+        $rootScope.taskTypes = ${BundleUtils.taskTypes.keySet() as JSON};
         $rootScope.acceptanceTestStates = ${BundleUtils.acceptanceTestStates.keySet() as JSON};
         $rootScope.planningPokerTypes = ${BundleUtils.planningPokerGameSuites.keySet() as JSON};
         var project = ${product as JSON};
