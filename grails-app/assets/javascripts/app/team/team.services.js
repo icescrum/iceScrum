@@ -29,7 +29,7 @@ services.factory('Team', ['Resource', function($resource) {
         });
 }]);
 
-services.service("TeamService", ['$q', 'Team', 'Session', function($q, Team, Session) {
+services.service("TeamService", ['$q', 'Team', 'Session', 'FormService', function($q, Team, Session, FormService) {
     this.save = function(team) {
         team.class = 'team';
         return Team.save(team).$promise;
@@ -63,6 +63,9 @@ services.service("TeamService", ['$q', 'Team', 'Session', function($q, Team, Ses
         return Team.query({term: term, create: create}).$promise;
     };
     this.listByUser = function(term, offset) {
-        return Team.listByUser({term: term, offset: offset}).$promise;
+        return Team.query({action: 'listByUser', term: term, offset: offset}).$promise;
+    };
+    this.countByUser = function(term) {
+        return FormService.httpGet('team/countByUser', {params:{term: term}}, true);
     };
 }]);

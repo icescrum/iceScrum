@@ -311,13 +311,11 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
             },
             get: {
                 method: 'get',
-                cache: true,
                 interceptor: singleInterceptor
             },
             query: {
                 method: 'get',
                 isArray: true,
-                cache: true,
                 interceptor: arrayInterceptor
             }
         };

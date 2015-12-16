@@ -184,6 +184,7 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
         TeamService.delete(team).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
             $scope.team = {};
+            $scope.searchTeams();
         });
     };
     $scope.cancel = function() {
@@ -198,9 +199,11 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
     };
     $scope.searchTeams = function() {
         var offset = $scope.teamsPerPage * ($scope.currentPage - 1);
-        TeamService.listByUser($scope.teamSearch, offset).then(function(teamsAndTotal) {
-            $scope.totalTeams = teamsAndTotal.total;
-            $scope.teams = teamsAndTotal.teams;
+        TeamService.listByUser($scope.teamSearch, offset).then(function(teams) {
+            $scope.teams = teams;
+        });
+        TeamService.countByUser($scope.teamSearch).then(function(data) {
+            $scope.totalTeams = data.count;
         });
     };
     $scope.teamMembersEditable = function() {

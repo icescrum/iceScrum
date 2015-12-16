@@ -114,15 +114,24 @@ class TeamController {
         def limit = 9
         def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache: true]
         def user = springSecurityService.currentUser
-        def total = request.admin ? Team.countByNameIlike(searchTerm, [cache: true]) : Team.countByOwnerOrSM(user.username, [cache: true], searchTerm)
         def teams = request.admin ? Team.findAllByNameIlike(searchTerm, options) : Team.findAllByOwnerOrSM(user.username, options, searchTerm)
-        def teamsAndTotal = [teams: teams, total: total]
         withFormat {
-            html {
-                render(status: 200, text: teamsAndTotal as JSON, contentType: 'application/json')
-            }
-            json { renderRESTJSON(text: teamsAndTotal) }
-            xml { renderRESTXML(text: teamsAndTotal) }
+            html { render(status: 200, text: teams as JSON, contentType: 'application/json') }
+            json { renderRESTJSON(text: teams) }
+            xml { renderRESTXML(text: teams) }
+        }
+    }
+
+    @Secured('isAuthenticated()')
+    def countByUser(String term) {
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def user = springSecurityService.currentUser
+        def count = request.admin ? Team.countByNameIlike(searchTerm, [cache: true]) : Team.countByOwnerOrSM(user.username, [cache: true], searchTerm)
+        def jsonCount = [count: count]
+        withFormat {
+            html { render(status: 200, text: jsonCount as JSON, contentType: 'application/json') }
+            json { renderRESTJSON(text: jsonCount) }
+            xml { renderRESTXML(text: jsonCount) }
         }
     }
 
