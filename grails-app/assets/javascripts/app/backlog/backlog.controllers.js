@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'backlogs', 'stories', function($scope, $state, $filter, StoryService, backlogs, stories) {
+controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'backlogs', function($scope, $state, $filter, StoryService, backlogs) {
     $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id;
@@ -34,14 +34,14 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };
-    $scope.refreshBacklogs = function(stories) {
+    $scope.refreshBacklogs = function() {
         _.each($scope.backlogs, function(backlog) {
-            $scope.refreshSingleBacklog(backlog, stories);
+            $scope.refreshSingleBacklog(backlog);
         });
     };
-    $scope.refreshSingleBacklog = function(backlog, stories) {
+    $scope.refreshSingleBacklog = function(backlog) {
         var filter = JSON.parse(backlog.filter);
-        var filteredStories = $filter('filter')(stories, filter.story, function(expected, actual) {
+        var filteredStories = $filter('filter')($scope.stories, filter.story, function(expected, actual) {
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
         backlog.stories = $filter('orderBy')(filteredStories, [backlog.orderBy.current.id, 'id'], backlog.orderBy.reverse); // Hack sort by ID to ensure that ordering is stable
@@ -70,9 +70,9 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
             var tmpBacklogs = _.sortByOrder($scope.backlogs, 'shown', 'desc');
             var lastShown = _.first(tmpBacklogs);
             backlog.shown = lastShown ? (lastShown.shown + 1) : 1;
-            StoryService.listByBacklog(backlog).then(function(stories) {
-                backlog.stories = stories;
-                $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable, sorting and refresh the backlog
+            $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable, sorting and refresh the backlog from local data (storyService.list)
+            StoryService.listByBacklog(backlog).then(function() { // Will update the story list (through the watch) if story are missing locally
+                $scope.orderBacklogByRank(backlog);
             });
             if ($scope.backlogs.length == $scope.maxParallelsBacklogs) {
                 var removedBacklog = tmpBacklogs.pop();
@@ -88,11 +88,11 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
     };
     $scope.changeBacklogOrder = function(backlog, order) {
         backlog.orderBy.current = order;
-        $scope.refreshSingleBacklog(backlog, backlog.stories);
+        $scope.refreshSingleBacklog(backlog);
     };
     $scope.reverseBacklogOrder = function(backlog) {
         backlog.orderBy.reverse = !backlog.orderBy.reverse;
-        $scope.refreshSingleBacklog(backlog, backlog.stories);
+        $scope.refreshSingleBacklog(backlog);
     };
     // Init
     $scope.viewName = 'backlog';

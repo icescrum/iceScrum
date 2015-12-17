@@ -149,9 +149,6 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     resolve: {
                         backlogs: ['BacklogService', function(BacklogService) {
                             return BacklogService.list();
-                        }],
-                        stories: ['StoryService', 'backlogs', function(StoryService, backlogs) {
-                            return StoryService.listByBacklog(backlogs[0]);
                         }]
                     }
                 })
@@ -181,9 +178,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     .state('backlog.details', {
                         url: "/{id:int}",
                         resolve: {
-                            //we add stories to wait for dynamic resolution from parent state
-                            detailsStory: ['StoryService', '$stateParams', 'stories', function(StoryService, $stateParams, stories){
-                                return StoryService.get($stateParams.id);
+                            detailsStory: ['StoryService', '$stateParams', function(StoryService, $stateParams){
+                                return StoryService.get($stateParams.id); // ARGH THE STORY IS NOT HERE
                             }]
                         },
                         views: {
