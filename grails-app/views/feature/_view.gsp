@@ -113,6 +113,7 @@
     </div>
     <div class="panel-body">
         <div class="postits {{ isSortingFeature() ? '' : 'sortable-disabled' }}"
+             ng-controller="featureCtrl"
              ng-class="app.asList ? 'list-group' : 'grid-group'"
              as-sortable="featureSortableOptions"
              is-disabled="!isSortingFeature()"
@@ -121,7 +122,6 @@
                  data-id="{{ feature.id }}"
                  as-sortable-item
                  ng-repeat="feature in features | orderBy:orderBy.current.id:orderBy.reverse"
-                 ng-controller="featureCtrl"
                  class="postit-container">
                 <div ng-include="'feature.html'"></div>
             </div>

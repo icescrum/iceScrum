@@ -22,33 +22,31 @@
  *
  */
 
-controllers.controller('featureCtrl', ['$scope', '$state', 'FeatureService', function($scope, $state, FeatureService) {
+controllers.controller('featureCtrl', ['$scope', 'FeatureService', function($scope, FeatureService) {
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
     $scope['delete'] = function(feature) {
-        FeatureService.delete(feature)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.deleted');
-            });
+        FeatureService.delete(feature).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+        });
     };
     $scope.copyToBacklog = function(feature) {
-        FeatureService.copyToBacklog(feature)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.feature.copied.to.backlog');
-            });
+        FeatureService.copyToBacklog(feature).then(function() {
+            $scope.notifySuccess('todo.is.ui.feature.copied.to.backlog');
+        });
     };
 }]);
 
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'FormService', 'ProjectService', 'detailsFeature', function($scope, $state, $controller, FeatureService, FormService, ProjectService, detailsFeature) {
-    $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
-    $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsFeature, clazz: 'feature' });
+    $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature'});
     // Functions
     $scope.isDirty = function() {
         return !_.isEqual($scope.editableFeature, $scope.editableFeatureReference);
     };
     $scope.update = function(feature) {
-        FeatureService.update(feature).then(function(feature) {
+        FeatureService.update(feature).then(function() {
             $scope.resetFeatureForm();
             $scope.notifySuccess('todo.is.ui.feature.updated');
         });
@@ -73,7 +71,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     };
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
-            ProjectService.getTags().then(function (tags) {
+            ProjectService.getTags().then(function(tags) {
                 $scope.tags = tags;
             });
         }
@@ -106,7 +104,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
-            ProjectService.getTags().then(function (tags) {
+            ProjectService.getTags().then(function(tags) {
                 $scope.tags = tags;
             });
         }
@@ -117,7 +115,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
 }]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {
-    $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
+    $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.resetFeatureForm = function() {
         $scope.feature = {};
@@ -129,7 +127,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
                 $scope.resetFeatureForm();
             } else {
                 $scope.setInEditingMode(true);
-                $state.go('^.details', { id: feature.id });
+                $state.go('^.details', {id: feature.id});
             }
             $scope.notifySuccess('todo.is.ui.feature.saved');
         });
@@ -145,31 +143,30 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
 }]);
 
 controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId', 'FeatureService', function($scope, $controller, listId, FeatureService) {
-    $controller('featureCtrl', { $scope: $scope }); // inherit from featureCtrl
+    $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.sumValues = function(features) {
         return _.sum(features, 'value');
     };
     $scope.sumStories = function(features) {
-        return _.sum(features, function(feature) { return feature.stories_ids.length; });
+        return _.sum(features, function(feature) {
+            return feature.stories_ids.length;
+        });
     };
     $scope.deleteMultiple = function() {
-        FeatureService.deleteMultiple(listId)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.multiple.deleted');
-            });
+        FeatureService.deleteMultiple(listId).then(function() {
+            $scope.notifySuccess('todo.is.ui.multiple.deleted');
+        });
     };
     $scope.updateMultiple = function(updatedFields) {
-        FeatureService.updateMultiple(listId, updatedFields)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
-            });
+        FeatureService.updateMultiple(listId, updatedFields).then(function() {
+            $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
+        });
     };
     $scope.copyToBacklogMultiple = function() {
-        FeatureService.copyToBacklogMultiple(listId)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.feature.multiple.copied.to.backlog');
-            });
+        FeatureService.copyToBacklogMultiple(listId).then(function() {
+            $scope.notifySuccess('todo.is.ui.feature.multiple.copied.to.backlog');
+        });
     };
     // Init
     $scope.ids = listId;
@@ -180,7 +177,7 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
         $scope.features = features;
         $scope.topFeature = _.first(features);
         $scope.featurePreview = {
-            type: _.every(features, { type: $scope.topFeature.type }) ? $scope.topFeature.type : null
+            type: _.every(features, {type: $scope.topFeature.type}) ? $scope.topFeature.type : null
         };
     });
 }]);
