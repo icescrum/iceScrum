@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('taskStoryCtrl', ['$scope', '$state', '$controller', 'TaskService', function($scope, $state, $controller, TaskService) {
+controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
     // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {};

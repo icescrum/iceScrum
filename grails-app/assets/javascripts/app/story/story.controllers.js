@@ -473,7 +473,6 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.stories = [];
     $scope.features = [];
     FeatureService.list.$promise.then(function(features) {
-        console.log('toto')
         $scope.features = features;
     });
     $scope.allFollowed = function(stories) {

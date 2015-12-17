@@ -23,20 +23,15 @@
  */
 controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', function($scope, $uibModal, AttachmentService, attachmentable, clazz) {
     // Functions
-    //manual save from flow js
-    $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
-        var attachment = JSON.parse(message);
-        AttachmentService.save(attachment, $scope.attachmentable);
-    });
-    $scope['delete'] = function(attachment, attachmentable) {
+    $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
         AttachmentService.delete(attachment, attachmentable);
     };
     $scope.authorizedAttachment = function(action, attachment) {
         return AttachmentService.authorizedAttachment(action, attachment);
     };
-    $scope.isPreviewable = function(attachment){
+    $scope.isPreviewable = function(attachment) {
         var previewable;
-        switch (attachment.ext){
+        switch (attachment.ext) {
             case 'pdf':
                 previewable = 'pdf';
                 break;
@@ -47,33 +42,20 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
             case 'bmp':
                 previewable = 'picture';
                 break;
-            /*case 'mp3':
-            case 'wave':
-            case 'aac':
-                previewable = 'audio';
-                break;
-            case 'avi':
-            case 'flv':
-            case 'mp4':
-            case 'mpg':
-            case 'mpeg':
-                previewable = 'video';
-                break;*/
             default :
                 previewable = false;
         }
         return previewable;
     };
-
-    $scope.showPreview = function(attachment, attachmentable, type){
+    $scope.showPreview = function(attachment, attachmentable, type) {
         var previewType = $scope.isPreviewable(attachment);
-        if(previewType == 'pdf'){
+        if (previewType == 'pdf') {
             $uibModal.open({
                 templateUrl: "attachment.preview.pdf.html",
-                size:'lg',
-                controller:[ '$scope', 'PDFViewerService', function($scope, pdf) {
+                size: 'lg',
+                controller: ['$scope', 'PDFViewerService', function($scope, pdf) {
                     $scope.title = attachment.filename;
-                    $scope.pdfURL = "attachment/"+type+"/"+attachmentable.id+"/"+ attachment.id;
+                    $scope.pdfURL = "attachment/" + type + "/" + attachmentable.id + "/" + attachment.id;
                     $scope.scale = 1.5;
                     $scope.viewer = pdf.Instance("viewer");
                     $scope.nextPage = function() {
@@ -88,13 +70,13 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
                     };
                 }]
             });
-        } else if (previewType == 'picture'){
+        } else if (previewType == 'picture') {
             $uibModal.open({
                 templateUrl: "attachment.preview.picture.html",
-                size:'lg',
-                controller:[ '$scope', function($scope) {
+                size: 'lg',
+                controller: ['$scope', function($scope) {
                     $scope.title = attachment.filename;
-                    $scope.srcURL = "attachment/"+type+"/"+attachmentable.id+"/"+ attachment.id;
+                    $scope.srcURL = "attachment/" + type + "/" + attachmentable.id + "/" + attachment.id;
                 }]
             });
         } else {
@@ -110,4 +92,9 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
     // Init
     $scope.attachmentable = attachmentable;
     $scope.clazz = clazz;
+    //manual save from flow js
+    $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
+        var attachment = JSON.parse(message);
+        AttachmentService.save(attachment, $scope.attachmentable);
+    });
 }]);
