@@ -528,7 +528,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', 'notifications', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, notifications){
+    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications){
 
         //used to handle click with shortcut hotkeys
         $rootScope.hotkeyClick = function(event, hotkey) {
@@ -718,7 +718,16 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             if (!scrollableContainerSelector) {
                 scrollableContainerSelector = '.panel-body';
             }
+            var scrollSpeed = 0;
             var destScrollableContainer; // Store the dest container because it cannot be retrieved (mouse must be on panel to get the element) and used (mouse is out of panel when we must scroll) in the same move
+            var scheduledScroll = null;
+            var cancelScheduledScroll = function() {
+                scrollSpeed = 0;
+                if (scheduledScroll) {
+                    $interval.cancel(scheduledScroll);
+                    scheduledScroll = null;
+                }
+            };
             return {
                 dragMove: function(itemPosition, containment, eventObj) {
                     if (eventObj) {
@@ -747,7 +756,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         })(eventObj);
                         // Retrieve scrollable container, very likely stored during a previous move, and scroll if needed (for the moment scroll occurs only when moving)
                         if (destScrollableContainer) {
-                            var marginAroundCursor = 20;
+                            var marginAroundCursor = 30;
                             var targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
                             var containerRect = destScrollableContainer.getBoundingClientRect();
                             var topDifference = containerRect.top - targetY + marginAroundCursor;
@@ -758,11 +767,24 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                 var computeSpeed = function(difference) {
                                     return Math.floor(difference / 4); // Magic formula
                                 };
-                                var scrollSpeed = cursorUpperThanPanel ? computeSpeed(topDifference) : computeSpeed(bottomDifference);
-                                destScrollableContainer.scrollTop = destScrollableContainer.scrollTop - scrollSpeed;
+                                scrollSpeed = cursorUpperThanPanel ? computeSpeed(topDifference) : computeSpeed(bottomDifference);
+                                var moveScroll = function() {
+                                    destScrollableContainer.scrollTop = destScrollableContainer.scrollTop - scrollSpeed;
+                                };
+                                moveScroll();
+                                // With the solution above, scroll occurs only when moving the cursor so we define a recurring callback to sustain the scroll when not moving
+                                if (!scheduledScroll) {
+                                    var timeInterval = 4; // 4 ms scheduledScroll between each automatic scroll
+                                    scheduledScroll = $interval(moveScroll, timeInterval);
+                                }
+                            } else if (scheduledScroll != null) {
+                                cancelScheduledScroll();
                             }
                         }
                     }
+                },
+                dragEnd: function() {
+                    cancelScheduledScroll(); // Prevent persistent scroll in case of release out of sortable container
                 }
             }
         };
