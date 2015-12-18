@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'backlogs', function($scope, $state, $filter, StoryService, backlogs) {
+controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, StoryService, StoryStatesByName, backlogs) {
     $scope.isSelected = function(story) {
         if ($state.params.id) {
             return $state.params.id == story.id;
@@ -44,9 +44,17 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
         var filteredStories = $filter('filter')($scope.stories, filter.story, function(expected, actual) {
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
-        backlog.stories = $filter('orderBy')(filteredStories, [backlog.orderBy.current.id, 'id'], backlog.orderBy.reverse); // Hack sort by ID to ensure that ordering is stable
+        var sortOrder = [backlog.orderBy.current.id];
+        if (backlog.name == 'All' && backlog.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
+            var sortByStateGroupingByBacklogState = function(story) {
+                var orderCriteria = story.state == StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state; // Ignore the differences betweed accepted and estimated
+                return -orderCriteria; // "minus" the state to make done stories more prioritary
+            };
+            sortOrder.unshift(sortByStateGroupingByBacklogState);
+        }
+        backlog.stories = $filter('orderBy')(filteredStories, sortOrder, backlog.orderBy.reverse);
         backlog.sortable = StoryService.authorizedStory('rank') && (backlog.name == 'Backlog' || backlog.name == 'Sandbox'); // TODO fix
-        backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse ;
+        backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse;
     };
     $scope.manageShownBacklog = function(backlog) {
         if (backlog.shown && $scope.backlogs.length > 1) {
@@ -114,7 +122,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
             var newRank = event.dest.index + 1;
             StoryService.updateRank(story, newRank, newStories);
         },
-        accept: function (sourceItemHandleScope, destSortableScope) {
+        accept: function(sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
             // We don't check more that the fact that the dest backlog is also sorting
             // because we know that the only backlogs that can be sorted (Sandbox & Backlog) can always be inter-sorted (accept <-> return to backlog)
