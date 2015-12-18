@@ -23,7 +23,7 @@
 
 <script type="text/ng-template" id="story.menu.html">
 <li ng-if="authorizedStory('accept', story)">
-    <a href ng-click="accept(story)">
+    <a href ng-click="acceptToBacklog(story)">
         ${message(code: 'is.ui.backlog.menu.acceptAsStory')}
     </a>
 </li>

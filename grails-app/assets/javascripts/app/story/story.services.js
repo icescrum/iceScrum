@@ -113,7 +113,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
     this['delete'] = function(story) {
         return story.$delete(crudMethods[IceScrumEventType.DELETE]);
     };
-    this.accept = function(story, rank) {
+    this.acceptToBacklog = function(story, rank) {
         var params = {story: {}};
         if (rank) {
             params.story.rank = rank;

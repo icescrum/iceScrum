@@ -105,7 +105,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryServ
             if (sourceScope.backlog.name == 'Backlog' && destScope.backlog.name == 'Sandbox') { // TODO fix
                 StoryService.returnToSandbox(story, newRank);
             } else if (sourceScope.backlog.name == 'Sandbox' && destScope.backlog.name == 'Backlog') { // TODO fix
-                StoryService.accept(story, newRank);
+                StoryService.acceptToBacklog(story, newRank);
             }
         },
         orderChanged: function(event) {

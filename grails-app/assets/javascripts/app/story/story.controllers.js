@@ -24,8 +24,8 @@
 
 controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName) {
     // Functions
-    $scope.accept = function(story) {
-        StoryService.accept(story).then(function() {
+    $scope.acceptToBacklog = function(story) {
+        StoryService.acceptToBacklog(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.accepted');
         });
     };
