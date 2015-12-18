@@ -53,5 +53,57 @@
              ng-model="story.description"
              ng-bind-html="story.description | sanitize"></div>
     </div>
+    <div class="footer">
+        <div class="tags">
+            <a ng-repeat="tag in story.tags" href="#"><span class="tag">{{ tag }}</span></a>
+        </div>
+        <div class="actions">
+            <span uib-dropdown class="action">
+                <a uib-dropdown-toggle
+                   uib-tooltip="${message(code: 'todo.is.ui.actions')}">
+                    <i class="fa fa-cog"></i>
+                </a>
+                <ul class="uib-dropdown-menu" ng-include="'story.menu.html'"></ul>
+            </span>
+            <span class="action" ng-class="{'active':story.attachments.length}">
+                <a href="#/{{ ::viewName }}/{{ ::story.id }}"
+                   uib-tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
+                    <i class="fa fa-paperclip"></i>
+                    <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
+                </a>
+            </span>
+            <span class="action" ng-class="{'active':story.comments_count}">
+                <a href="#/{{ ::viewName }}/{{ ::story.id }}/comments"
+                   uib-tooltip="{{ story.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
+                   ng-switch="story.comments_count">
+                    <i class="fa fa-comment-o" ng-switch-when="0"></i>
+                    <i class="fa fa-comment" ng-switch-default></i>
+                    <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
+                </a>
+            </span>
+            <span class="action" ng-class="{'active':story.tasks_count}">
+                <a href="#/{{ ::viewName }}/{{ ::story.id }}/tasks"
+                   uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}">
+                    <i class="fa fa-tasks"></i>
+                    <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
+                </a>
+            </span>
+            <span class="action" ng-class="{'active':story.acceptanceTests_count}">
+                <a href="#/{{ ::viewName }}/{{ ::story.id }}/tests"
+                   uib-tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
+                   ng-switch="story.acceptanceTests_count">
+                    <i class="fa fa-check-square-o" ng-switch-when="0"></i>
+                    <i class="fa fa-check-square" ng-switch-default></i>
+                    <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
+                </a>
+            </span>
+        </div>
+    </div>
+    <div ng-if="tasksProgress(story)" class="progress">
+        <span class="status">{{ story.countDoneTasks }}/{{ story.tasks_count }}</span>
+        <div class="progress-bar"  ng-class="'bg-'+(story.testState | acceptanceTestColor)" style="width: {{ story.countDoneTasks | percentProgress:story.tasks_count }}%">
+        </div>
+    </div>
+    <div class="state" ng-class="{'hover-progress':tasksProgress(story)}" title="{{ story.state | i18n:'StoryStates' }}">{{ story.state | i18n:'StoryStates' }}</div>
 </div>
 </script>
