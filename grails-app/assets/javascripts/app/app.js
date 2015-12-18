@@ -528,7 +528,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             }
         };
     }]).
-    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', 'notifications', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, notifications){
+    run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', 'notifications', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, notifications){
 
         //used to handle click with shortcut hotkeys
         $rootScope.hotkeyClick = function(event, hotkey) {
@@ -711,6 +711,59 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             $rootScope.menus = {
                 visible: _.sortBy(menusByVisibility[true], 'position'),
                 hidden: _.sortBy(menusByVisibility[false], 'position')
+            }
+        };
+
+        $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
+            if (!scrollableContainerSelector) {
+                scrollableContainerSelector = '.panel-body';
+            }
+            var destScrollableContainer; // Store the dest container because it cannot be retrieved (mouse must be on panel to get the element) and used (mouse is out of panel when we must scroll) in the same move
+            return {
+                dragMove: function(itemPosition, containment, eventObj) {
+                    if (eventObj) {
+                        // This HORRIBLE SOUP isolated in a private function gets the dest panel body and stores it in a captured variable.
+                        // There may be a better way but it is the way ng-sortable does it
+                        (function(eventObj) {
+                            var destX = eventObj.pageX - $document[0].documentElement.scrollLeft;
+                            var destY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
+                            $document[0].elementFromPoint(destX, destY); // This is done twice on purpose, ng-sortable does it like that (don't know why though...)
+                            var destElement = angular.element($document[0].elementFromPoint(destX, destY)); // Gets the DOM element under the cursor
+                            function fetchScope(element) {
+                                var scope;
+                                while (!scope && element.length) {
+                                    scope = element.data('_scope');
+                                    if (!scope) {
+                                        element = element.parent();
+                                    }
+                                }
+                                return scope;
+                            }
+
+                            var destScope = fetchScope(destElement); // Retrieve the closest scope from the DOM element
+                            if (destScope) {
+                                destScrollableContainer = jQuery(destScope.element).closest(scrollableContainerSelector)[0]; // Store the dest scrollable container for later use (uses jQuery, yikes)
+                            }
+                        })(eventObj);
+                        // Retrieve scrollable container, very likely stored during a previous move, and scroll if needed (for the moment scroll occurs only when moving)
+                        if (destScrollableContainer) {
+                            var marginAroundCursor = 20;
+                            var targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
+                            var containerRect = destScrollableContainer.getBoundingClientRect();
+                            var topDifference = containerRect.top - targetY + marginAroundCursor;
+                            var bottomDifference = containerRect.bottom - targetY - marginAroundCursor;
+                            var cursorUpperThanPanel = topDifference > 0;
+                            var cursorLowerThanPanel = bottomDifference < 0;
+                            if (cursorUpperThanPanel || cursorLowerThanPanel) {
+                                var computeSpeed = function(difference) {
+                                    return Math.floor(difference / 4); // Magic formula
+                                };
+                                var scrollSpeed = cursorUpperThanPanel ? computeSpeed(topDifference) : computeSpeed(bottomDifference);
+                                destScrollableContainer.scrollTop = destScrollableContainer.scrollTop - scrollSpeed;
+                            }
+                        }
+                    }
+                }
             }
         };
     }])

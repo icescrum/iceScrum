@@ -23,7 +23,7 @@
     <div id="view-home" class="view no-flex">
         <div class="content">
             <div class="panel-column"
-                 as-sortable="panelSortableOptions"
+                 as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
                  ng-model='panelsLeft' >
                 <div ng-include="panel.id+'.panel.html'"
                      as-sortable-item
@@ -31,7 +31,7 @@
                      ng-repeat="panel in panelsLeft"></div>
             </div>
             <div class="panel-column"
-                 as-sortable="panelSortableOptions"
+                 as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
                  ng-model='panelsRight'>
                 <div ng-include="panel.id+'.panel.html'"
                      as-sortable-item

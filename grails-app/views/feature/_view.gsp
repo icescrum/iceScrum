@@ -115,7 +115,7 @@
         <div class="postits {{ isSortingFeature() ? '' : 'sortable-disabled' }}"
              ng-controller="featureCtrl"
              ng-class="app.asList ? 'list-group' : 'grid-group'"
-             as-sortable="featureSortableOptions"
+             as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
              is-disabled="!isSortingFeature()"
              ng-model="features">
             <div ng-class="{ 'ui-selected': isSelected(feature) }"

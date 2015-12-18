@@ -136,7 +136,7 @@
             <div class="panel-loading" ng-include="'loading.html'"></div>
             <div class="postits {{ backlog.sorting ? '' : 'sortable-disabled' }}"
                  ng-controller="storyCtrl"
-                 as-sortable="backlogSortableOptions"
+                 as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!backlog.sorting"
                  ng-model="backlog.stories"
                  ng-class="app.asList ? 'list-group' : 'grid-group'"

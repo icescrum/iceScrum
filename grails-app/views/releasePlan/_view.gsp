@@ -96,7 +96,7 @@
         <div class="panel-body">
             <div class="postits {{ isSortingSprint(sprint) ? '' : 'sortable-disabled' }}"
                  ng-controller="storyCtrl"
-                 as-sortable="sprintSortableOptions"
+                 as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!isSortingSprint(sprint)"
                  ng-model="backlog.stories"
                  ng-class="app.asList ? 'list-group' : 'grid-group'"

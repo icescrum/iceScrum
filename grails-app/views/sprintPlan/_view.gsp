@@ -82,7 +82,7 @@
                     class="postits grid-group"
                     ng-model="tasksByTypeByState[11][taskState]"
                     ng-init="taskType = 11"
-                    as-sortable="taskSortableOptions"
+                    as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByTypeByState[11][taskState]"
@@ -109,7 +109,7 @@
                     class="postits grid-group"
                     ng-model="tasksByTypeByState[10][taskState]"
                     ng-init="taskType = 10"
-                    as-sortable="taskSortableOptions"
+                    as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByTypeByState[10][taskState]"
@@ -140,7 +140,7 @@
                 <td style="width:28%"
                     class="postits grid-group"
                     ng-model="tasksByStoryByState[story.id][taskState]"
-                    as-sortable="taskSortableOptions"
+                    as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint) || !isSortingStory(story)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
