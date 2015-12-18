@@ -220,8 +220,8 @@ class StoryController {
             return
         }
         def rank
-        if (storyParams.rank) {
-            rank = storyParams.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
+        if (storyParams?.rank) {
+            rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
         }
         storyService.plan(sprint, story, rank)
         withFormat {
@@ -262,7 +262,7 @@ class StoryController {
     def acceptToBacklog(long id, long product) {
         def story = Story.withStory(product, id)
         def rank
-        if (params.story.rank) {
+        if (params.story?.rank) {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
         storyService.acceptToBacklog(story, rank)
@@ -277,7 +277,7 @@ class StoryController {
     def returnToSandbox(long id, long product) {
         def story = Story.withStory(product, id)
         def rank
-        if (params.story.rank) {
+        if (params.story?.rank) {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
         storyService.returnToSandbox(story, rank)
@@ -314,12 +314,6 @@ class StoryController {
     def acceptAsFeature() {
         def stories = Story.withStories(params)?.reverse()
         def features = storyService.acceptToFeature(stories)
-        //case one story & d&d from sandbox to backlog
-        if (params.rank?.isInteger()) {
-            Feature feature = (Feature) features.first()
-            feature.rank = params.int('rank')
-            featureService.update(feature)
-        }
         withFormat {
             html { render status: 200, contentType: 'application/json', text: features as JSON }
             json { renderRESTJSON(text: features) }
