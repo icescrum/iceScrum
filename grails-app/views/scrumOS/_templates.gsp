@@ -45,7 +45,7 @@ loading.html">
 
 <script type="text/ng-template" id="select.member.html">
 <a>
-    <span ng-show="!match.model.id">${message(code:'todo.is.ui.user.will.be.invited')} </span><span>{{ match.model.firstName }} {{ match.model.lastName }}</span>
+    <span ng-show="!match.model.id">${message(code:'todo.is.ui.user.will.be.invited')} </span><span>{{ match.model | userFullName }}</span>
 </a>
 </script>
 
@@ -74,7 +74,7 @@ loading.html">
 <script type="text/ng-template" id="menuitem.item.html">
 <a  hotkey="{ '{{ menu.shortcut }}' : hotkeyClick }"
     hotkey-description="${message(code:'todo.is.ui.open.view')} {{ menu.title }}"
-    uib-tooltip="{{ menu.title }} ({{ menu.shortcut }})"
+    uib-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
     tooltip-placement="bottom"
     href="#/{{ menu.id != 'project' ? menu.id : '' }}">
     <span class="handle" as-sortable-item-handle>::</span>
@@ -92,7 +92,7 @@ loading.html">
         </div>
         <div class="media-body">
             <div>
-                {{currentUser | userFullName}} ({{ currentUser.username }})
+                {{ (currentUser | userFullName) + ' (' + currentUser.username + ')' }}
             </div>
             <div class="text-muted">
                 <div>{{currentUser.email}}</div>

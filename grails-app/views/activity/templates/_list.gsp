@@ -39,11 +39,11 @@
                           class="{{ activity | activityIcon}}"
                           ng-class="{ 'important-activity' : activity.important }"></span>
                     <span ng-switch-default>
-                        {{ message('is.fluxiable.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
+                        {{ message('is.fluxiable.' + activity.code) + ' ' + (activity.field ? activity.field : '') + ' ' + (activity.count > 1 ? '(x' + activity.count + ')' : '')}}
                     </span>
                     <span ng-switch-when="true">
                         <a href ng-click="activity.onClick()">
-                            {{ message('is.fluxiable.' + activity.code )}} {{ activity.field ? activity.field : ''}} {{ activity.count > 1 ? '(x' + activity.count + ')' : ''}}
+                            {{ message('is.fluxiable.' + activity.code ) + ' ' + (activity.field ? activity.field : '') + ' ' +  (activity.count > 1 ? '(x' + activity.count + ')' : '')}}
                         </a>
                     </span>
                     <span ng-if="activity.beforeValue != null || activity.afterValue != null">

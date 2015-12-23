@@ -26,7 +26,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">
             <a href ng-click="openSprint()">
-                {{ sprint.parentRelease.name }} {{ sprint.orderNumber }}
+                {{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}
             </a>
             <div class="btn-group pull-right visible-on-hover">
                 <g:if test="${params?.printable}">

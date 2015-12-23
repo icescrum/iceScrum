@@ -69,9 +69,9 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'stories'}">
             <a href="#{{ ::viewName }}/{{ ::feature.id }}/stories"
-               uib-tooltip="{{ feature.stories_ids.length | orElse: 0 }} ${message(code:'todo.is.ui.feature.stories.count')}">
+               uib-tooltip="${message(code:'todo.is.ui.stories')}">
                 <i class="fa fa-lg fa-sticky-note"></i>
-                <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>
+                <span class="badge">{{ feature.stories_ids.length || '' }}</span>
             </a>
         </li>
     </ul>

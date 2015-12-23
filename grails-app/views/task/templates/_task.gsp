@@ -60,18 +60,16 @@
         </span>
         <span class="action" ng-class="{'active':task.attachments.length}">
             <a href="#/{{ ::viewName }}/task/{{ ::task.id }}"
-               uib-tooltip="{{ task.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
+               uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
                 <i class="fa fa-paperclip"></i>
-                <span class="badge" ng-show="task.attachments.length">{{ task.attachments.length }}</span>
+                <span class="badge">{{ task.attachments.length || '' }}</span>
             </a>
         </span>
         <span class="action" ng-class="{'active':task.comments_count}">
             <a href="#/{{ ::viewName }}/task/{{ ::task.id }}/comments"
-               uib-tooltip="{{ task.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
-               ng-switch="task.comments_count">
-                <i class="fa fa-comment-o" ng-switch-when="0"></i>
-                <i class="fa fa-comment" ng-switch-default></i>
-                <span class="badge" ng-show="task.comments_count">{{ task.comments_count }}</span>
+               uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                <span class="badge">{{ task.comments_count || '' }}</span>
             </a>
         </span>
         <span class="action" ng-if="authorizedTask('take', task)">

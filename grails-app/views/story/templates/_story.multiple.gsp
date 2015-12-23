@@ -38,11 +38,12 @@
                 <div class="postits standalone">
                     <div ellipsis class="postit-container stack twisted">
                         <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
-                             class="postit {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}  {{ storyPreview.type | storyType }}">
+                             class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                             <div class="head">
                                 <a class="follow"
-                                   uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-                                   ng-switch="topStory.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
+                                   uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}">
+                                    <i class="fa" ng-class="topStory.followed ? 'fa-star' : 'fa-star-o'"></i>
+                                </a>
                                 <span class="id">{{ topStory.id }}</span>
                                 <span class="value" ng-if="topStory.value">{{ topStory.value }} <i class="fa fa-line-chart"></i></span>
                                 <span class="estimation" ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }} <i class="fa fa-dollar"></i></span>
@@ -65,30 +66,26 @@
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topStory.attachments.length}">
-                                    <a uib-tooltip="{{ topStory.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
+                                    <a uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
                                         <i class="fa fa-paperclip"></i>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topStory.comments_count}">
-                                    <a uib-tooltip="{{ topStory.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
-                                       ng-switch="topStory.comments_count">
-                                        <i class="fa fa-comment-o" ng-switch-when="0"></i>
-                                        <i class="fa fa-comment" ng-switch-default></i>
-                                        <span class="badge" ng-show="topStory.comments_count">{{ topStory.comments_count }}</span>
+                                    <a uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                                        <i class="fa" ng-class="topStory.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                                        <span class="badge">{{ topStory.comments_count || '' }}</span>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topStory.tasks_count}">
-                                    <a uib-tooltip="{{ topStory.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}">
+                                    <a uib-tooltip="${message(code:'todo.is.ui.tasks')}">
                                         <i class="fa fa-tasks"></i>
-                                        <span class="badge" ng-show="topStory.tasks_count">{{ topStory.tasks_count }}</span>
+                                        <span class="badge">{{ topStory.tasks_count || '' }}</span>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
-                                    <a uib-tooltip="{{ topStory.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
-                                       ng-switch="topStory.acceptanceTests_count">
-                                        <i class="fa fa-check-square-o" ng-switch-when="0"></i>
-                                        <i class="fa fa-check-square" ng-switch-default></i>
-                                        <span class="badge" ng-if="topStory.acceptanceTests_count">{{ topStory.acceptanceTests_count }}</span>
+                                    <a uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
+                                        <i class="fa" ng-class="topStory.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                                        <span class="badge">{{ topStory.acceptanceTests_count || '' }}</span>
                                     </a>
                                 </span>
                             </div>

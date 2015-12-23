@@ -23,6 +23,6 @@
 <script type="text/ng-template" id="sprint.tooltip.html">
     <p ng-if="sprint.goal">{{ sprint.goal }}</p>
     <p ng-if="sprint.state">{{ sprint.state | i18n:'SprintStates' }}</p>
-    <p ng-if="sprint.capacity || sprint.velocity">{{ sprint.velocity }} / {{ sprint.capacity }} (${message(code: 'is.sprint.velocity')} / ${message(code: 'is.sprint.capacity')})</p>
+    <p ng-if="sprint.capacity || sprint.velocity">{{ sprint.velocity + '/' + sprint.capacity }} (${message(code: 'is.sprint.velocity')} / ${message(code: 'is.sprint.capacity')})</p>
     <p>{{ sprint.startDate | date: message('is.date.format.short')  }} <i class="fa fa-arrow-right"></i> {{ sprint.endDate | date: message('is.date.format.short') }}</p>
 </script>

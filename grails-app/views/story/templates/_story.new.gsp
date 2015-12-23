@@ -70,17 +70,15 @@
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                            <a uib-tooltip="{{ storyPreview.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}">
+                            <a uib-tooltip="${message(code:'todo.is.ui.tasks')}">
                                 <i class="fa fa-tasks"></i>
-                                <span class="badge" ng-show="storyPreview.tasks_count">{{ storyPreview.tasks_count }}</span>
+                                <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
                             </a>
                         </span>
                         <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                            <a uib-tooltip="{{ storyPreview.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
-                               ng-switch="storyPreview.acceptanceTests_count">
-                                <i class="fa fa-check-square-o" ng-switch-when="0"></i>
-                                <i class="fa fa-check-square" ng-switch-default></i>
-                                <span class="badge" ng-if="storyPreview.acceptanceTests_count">{{ storyPreview.acceptanceTests_count }}</span>
+                            <a uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
+                                <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                                <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
                             </a>
                         </span>
                     </div>

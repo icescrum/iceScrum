@@ -82,7 +82,7 @@
          ng-controller="sprintBacklogCtrl">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <a href="#/{{ ::viewName }}/sprint/{{ ::sprint.id }}">{{ sprint.parentRelease.name }} {{ sprint.orderNumber }}</a>
+                <a href="#/{{ ::viewName }}/sprint/{{ ::sprint.id }}">{{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}</a>
                 <div class="btn-group pull-right visible-on-hover">
                     <button type="button"
                             class="btn btn-default"

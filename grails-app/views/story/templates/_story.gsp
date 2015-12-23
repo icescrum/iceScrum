@@ -24,13 +24,14 @@
 <script type="text/ng-template" id="story.html">
 <div ellipsis
      style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
-     class="postit {{ (story.feature ? story.feature.color : '#f9f157') | contrastColor }} {{ story.type | storyType }}">
+     class="postit {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
         <a href
            class="follow"
            uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-           ng-click="follow(story)"
-           ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></a>
+           ng-click="follow(story)">
+            <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
+        </a>
         <span class="id">{{ ::story.uid }}</span>
         <span class="value editable"
               uib-tooltip="${message(code: 'is.story.value')}"
@@ -61,43 +62,43 @@
             <span story-menu class="action"></span>
             <span class="action" ng-class="{'active':story.attachments.length}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}"
-                   uib-tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
+                   uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
                     <i class="fa fa-paperclip"></i>
-                    <span class="badge" ng-show="story.attachments.length">{{ story.attachments.length }}</span>
+                    <span class="badge">{{ story.attachments.length || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.comments_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/comments"
-                   uib-tooltip="{{ story.comments_count | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
-                   ng-switch="story.comments_count">
-                    <i class="fa fa-comment-o" ng-switch-when="0"></i>
-                    <i class="fa fa-comment" ng-switch-default></i>
-                    <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
+                   uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                    <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                    <span class="badge">{{ story.comments_count  || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.tasks_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/tasks"
-                   uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}">
+                   uib-tooltip="${message(code:'todo.is.ui.tasks')}">
                     <i class="fa fa-tasks"></i>
-                    <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
+                    <span class="badge">{{ story.tasks_count || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.acceptanceTests_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/tests"
-                   uib-tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
-                   ng-switch="story.acceptanceTests_count">
-                    <i class="fa fa-check-square-o" ng-switch-when="0"></i>
-                    <i class="fa fa-check-square" ng-switch-default></i>
-                    <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
+                   uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
+                    <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                    <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
                 </a>
             </span>
         </div>
     </div>
     <div ng-if="tasksProgress(story)" class="progress">
-        <span class="status">{{ story.countDoneTasks }}/{{ story.tasks_count }}</span>
-        <div class="progress-bar"  ng-class="'bg-'+(story.testState | acceptanceTestColor)" style="width: {{ story.countDoneTasks | percentProgress:story.tasks_count }}%">
+        <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
+        <div class="progress-bar"
+             ng-class="'bg-'+(story.testState | acceptanceTestColor)"
+             style="width: {{ story.countDoneTasks | percentProgress:story.tasks_count }}%">
         </div>
     </div>
-    <div class="state" ng-class="{'hover-progress':tasksProgress(story)}" title="{{ story.state | i18n:'StoryStates' }}">{{ story.state | i18n:'StoryStates' }}</div>
+    <div class="state"
+         ng-class="{'hover-progress':tasksProgress(story)}">{{ story.state | i18n:'StoryStates' }}
+    </div>
 </div>
 </script>

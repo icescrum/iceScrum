@@ -43,7 +43,7 @@
         <table class="table">
             <tr>
                 <th ng-repeat="value in values">
-                    {{ value }} ({{ count[$index] }})
+                    {{ value + ' (' + count[$index] + ')' }}
                 </th>
             </tr>
             <tr ng-repeat="storyRow in storyRows">

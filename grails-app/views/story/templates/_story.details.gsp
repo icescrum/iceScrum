@@ -33,8 +33,9 @@
         <h3 class="panel-title row">
             <div class="left-title">
                 <span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-                      ng-click="follow(story)"
-                      ng-switch="story.followed"><i class="fa fa-star-o" ng-switch-default></i><i class="fa fa-star" ng-switch-when="true"></i></span>
+                      ng-click="follow(story)">
+                    <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
+                </span>
                 <span>{{ story.name }}</span> <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
             </div>
             <div class="right-title">
@@ -48,13 +49,11 @@
                 <button class="btn btn-default"
                         type="button"
                         ng-click="like(story)"
-                        ng-switch="story.liked"
                         role="button"
                         tabindex="0"
-                        uib-tooltip="{{ story.likers_count }} ${message(code: 'todo.is.ui.likers')}">
-                    <i class="fa fa-thumbs-o-up" ng-switch-default></i>
-                    <i class="fa fa-thumbs-up" ng-switch-when="true"></i>
-                    <span class="badge" ng-show="story.likers_count">{{ story.likers_count }}</span>
+                        uib-tooltip="${message(code: 'todo.is.ui.likes')}">
+                    <i class="fa" ng-class="story.liked ? 'fa-thumbs-up' : 'fa-thumbs-o-up'"></i>
+                    <span class="badge">{{ story.likers_count || '' }}</span>
                 </button>
                 <div class="btn-group"
                      uib-dropdown
@@ -86,7 +85,8 @@
                 <div ng-repeat="progressState in progressStates"
                      class="progress-bar progress-bar-{{ progressState.code }}"
                      tooltip-placement="left"
-                     uib-tooltip="{{ progressState.state | i18n: 'StoryStates' }} {{ progressState.date | dateTime }}" style="width:{{ progressState.width }}%">
+                     uib-tooltip="{{ (progressState.state | i18n: 'StoryStates') + ' ' + (progressState.date | dateTime) }}"
+                     style="width:{{ progressState.width }}%">
                 </div>
             </div>
         </div>
@@ -103,27 +103,23 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'comments'}">
             <a href="#{{ ::viewName }}/{{ ::story.id }}/comments"
-               uib-tooltip="{{ story.comments.length | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
-               ng-switch="story.comments_count">
-                <i class="fa fa-lg fa-comment-o" ng-switch-when="0"></i>
-                <i class="fa fa-lg fa-comment" ng-switch-default></i>
-                <span class="badge" ng-show="story.comments_count">{{ story.comments_count }}</span>
+               uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                <span class="badge">{{ story.comments_count || '' }}</span>
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'tasks'}">
             <a href="#{{ ::viewName }}/{{ ::story.id }}/tasks"
-               uib-tooltip="{{ story.tasks_count | orElse: 0 }} ${message(code:'todo.is.ui.tasks.count')}">
+               uib-tooltip="${message(code:'todo.is.ui.tasks')}">
                 <i class="fa fa-lg fa-tasks"></i>
-                <span class="badge" ng-show="story.tasks_count">{{ story.tasks_count }}</span>
+                <span class="badge">{{ story.tasks_count || '' }}</span>
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'tests'}">
             <a href="#{{ ::viewName }}/{{ ::story.id }}/tests"
-               uib-tooltip="{{ story.acceptanceTests_count | orElse: 0 }} ${message(code:'todo.is.ui.acceptanceTests.count')}"
-               ng-switch="story.acceptanceTests_count">
-                <i class="fa fa-lg fa-check-square-o" ng-switch-when="0"></i>
-                <i class="fa fa-lg fa-check-square" ng-switch-default></i>
-                <span class="badge" ng-if="story.acceptanceTests_count">{{ story.acceptanceTests_count }}</span>
+               uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
+                <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                <span class="badge">{{ story.acceptanceTests_count || '' }}</span>
             </a>
         </li>
     </ul>

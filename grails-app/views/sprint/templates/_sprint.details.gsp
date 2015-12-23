@@ -32,7 +32,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span>{{ sprint.parentRelease.name }} {{ sprint.orderNumber}} </span>
+                <span>{{ sprint.parentRelease.name + ' ' + sprint.orderNumber}} </span>
             </div>
             <div class="right-title">
                 <button class="btn btn-default elemid">{{ sprint.id }}</button>

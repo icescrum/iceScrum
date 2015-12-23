@@ -38,7 +38,7 @@
                 <div class="postits standalone">
                     <div ellipsis class="postit-container stack twisted">
                         <div style="{{ topFeature.color | createGradientBackground }}"
-                             class="postit {{ topFeature.color | contrastColor }} {{ featurePreview.type | featureType }}">
+                             class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                             <div class="head">
                                 <span class="id">{{ topFeature.id }}</span>
                                 <span class="estimation">{{ topFeature.value ? topFeature.value : '' }}</span>
@@ -61,14 +61,14 @@
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topFeature.attachments.length}">
-                                    <a uib-tooltip="{{ topFeature.attachments.length | orElse: 0 }} ${message(code: 'todo.is.ui.backlogelement.attachments.count')}">
+                                    <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                         <i class="fa fa-paperclip"></i>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                                    <a uib-tooltip="{{ topFeature.stories_ids.length | orElse: 0 }} ${message(code: 'todo.is.ui.feature.stories.count')}">
+                                    <a uib-tooltip="${message(code: 'todo.is.ui.stories')}">
                                         <i class="fa fa-tasks"></i>
-                                        <span class="badge" ng-show="topFeature.stories_ids.length">{{ topFeature.stories_ids.length }}</span>
+                                        <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
                                     </a>
                                 </span>
                             </div>

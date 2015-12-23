@@ -22,7 +22,8 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<is:modal title="${message(code:'is.dialog.wizard')}" class="wizard" footer="false">
+
+<is:modal title="{{ (project.name ? project.name : '${message(code:'is.dialog.wizard')}') + ' ' + (project.pkey ? project.pkey : '') }}" class="wizard" footer="false">
     <form name="newProjectForm"
           ng-init="project.preferences.hidden = ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.default)};"
           show-validation

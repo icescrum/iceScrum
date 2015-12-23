@@ -93,11 +93,9 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'comments'}">
             <a href="#{{ ::viewName }}/task/{{ ::task.id }}/comments"
-               uib-tooltip="{{ task.comments.length | orElse: 0 }} ${message(code:'todo.is.ui.comments.count')}"
-               ng-switch="task.comments_count">
-                <i class="fa fa-lg fa-comment-o" ng-switch-when="0"></i>
-                <i class="fa fa-lg fa-comment" ng-switch-default></i>
-                <span class="badge" ng-show="task.comments_count">{{ task.comments_count }}</span>
+               uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                <span class="badge">{{ task.comments_count || '' }}</span>
             </a>
         </li>
     </ul>

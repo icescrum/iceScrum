@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="feature.html">
 <div style="{{ feature.color | createGradientBackground }}"
      ellipsis
-     class="postit {{ feature.color | contrastColor }} {{ feature.type | featureType }}">
+     class="postit {{ (feature.color | contrastColor) + ' ' + (feature.type | featureType) }}">
     <div class="head">
         <span class="id">{{ ::feature.id }}</span>
         <span class="value" ng-if="feature.value">{{ feature.value }} <i class="fa fa-line-chart"></i></span>
@@ -52,21 +52,21 @@
         </span>
         <span class="action" ng-class="{'active':feature.attachments.length}">
             <a href="#/{{ ::viewName }}/{{ ::feature.id }}"
-               uib-tooltip="{{ feature.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">
+               uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
                 <i class="fa fa-paperclip"></i>
-                <span class="badge" ng-show="feature.attachments.length">{{ feature.attachments.length }}</span>
+                <span class="badge">{{ feature.attachments.length || '' }}</span>
             </a>
         </span>
         <span class="action" ng-class="{'active':feature.stories_ids.length}">
             <a href="#/{{ ::viewName }}/{{ ::feature.id }}/stories"
-               uib-tooltip="{{ feature.stories_ids.length | orElse: 0  }} ${message(code:'todo.is.ui.feature.stories.count')}">
+               uib-tooltip="${message(code:'todo.is.ui.stories')}">
                 <i class="fa fa-sticky-note"></i>
-                <span class="badge" ng-show="feature.stories_ids.length">{{ feature.stories_ids.length }}</span>
+                <span class="badge">{{ feature.stories_ids.length || '' }}</span>
             </a>
         </span>
     </div>
     <div class="progress">
-        <span class="status">{{ feature.countDoneStories }}/{{ feature.stories_ids.length }}</span>
+        <span class="status">{{ feature.countDoneStories + '/' + feature.stories_ids.length }}</span>
         <div class="progress-bar" style="width: {{ feature.countDoneStories | percentProgress:feature.stories_ids.length }}%">
         </div>
     </div>

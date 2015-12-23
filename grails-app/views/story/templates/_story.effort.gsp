@@ -50,7 +50,7 @@
         <table class="table">
             <tr>
                 <th ng-repeat="effort in efforts">
-                    {{ effort }} ({{ count[$index] }})
+                    {{ effort + ' (' + count[$index] + ')' }}
                 </th>
             </tr>
             <tr ng-repeat="storyRow in storyRows">
