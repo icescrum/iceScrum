@@ -58,13 +58,7 @@
             <a ng-repeat="tag in story.tags" href="#"><span class="tag">{{ tag }}</span></a>
         </div>
         <div class="actions">
-            <span uib-dropdown class="action">
-                <a uib-dropdown-toggle
-                   uib-tooltip="${message(code: 'todo.is.ui.actions')}">
-                    <i class="fa fa-cog"></i>
-                </a>
-                <ul class="uib-dropdown-menu" ng-include="'story.menu.html'"></ul>
-            </span>
+            <span story-menu class="action"></span>
             <span class="action" ng-class="{'active':story.attachments.length}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}"
                    uib-tooltip="{{ story.attachments.length | orElse: 0 }} ${message(code:'todo.is.ui.backlogelement.attachments.count')}">

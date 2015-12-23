@@ -523,4 +523,17 @@ directives.directive('isMarkitup', ['$http', function($http) {
             }
         }
     }
+}]).directive('storyMenu', ['$compile', function($compile) { // For 140 stories, reduce display time by 1 s. and initial watchers by 1700 by loading menu only on first hover
+    return {
+        restrict: 'A',
+        link: function(scope, element) {
+            element.closest('.postit').one('mouseenter', function() {
+                var newElement = element.clone();
+                newElement.removeAttr('story-menu');
+                newElement.attr('uib-dropdown', '');
+                newElement.html('<a uib-dropdown-toggle><i class="fa fa-cog"></i></a><ul class="uib-dropdown-menu" ng-include="\'story.menu.html\'"></ul>');
+                element.replaceWith(angular.element($compile(newElement)(scope)));
+            });
+        }
+    }
 }]);
