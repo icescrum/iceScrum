@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Kagilum.
+ * Copyright (c) 2015 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -26,17 +26,12 @@ package org.icescrum.web.presentation.app
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
-import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
-import org.icescrum.core.utils.BundleUtils
-
-import static grails.async.Promises.task
 
 class StoryController {
 
     def storyService
     def taskService
     def acceptanceTestService
-    def featureService
     def springSecurityService
     def activityService
 
@@ -51,12 +46,13 @@ class StoryController {
     }
 
     @Secured(['inProduct()'])
-    def show(long id, long product) {
-        def story = Story.withStory(product, id)
+    def show() {
+        def stories = Story.withStories(params)
+        def returnData = stories.size() > 1 ? stories : stories.first()
         withFormat {
-            html { render status: 200, contentType: 'application/json', text: story as JSON }
-            json { renderRESTJSON(text: story) }
-            xml { renderRESTXML(text: story) }
+            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
+            json { renderRESTJSON(text: returnData) }
+            xml { renderRESTXML(text: returnData) }
         }
     }
 

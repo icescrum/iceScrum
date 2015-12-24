@@ -179,7 +179,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         url: "/{id:int}",
                         resolve: {
                             detailsStory: ['StoryService', '$stateParams', function(StoryService, $stateParams){
-                                return StoryService.get($stateParams.id); // ARGH THE STORY IS NOT HERE
+                                return StoryService.get($stateParams.id);
                             }]
                         },
                         views: {

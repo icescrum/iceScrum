@@ -27,7 +27,6 @@ services.factory('Story', ['Resource', function($resource) {
 
 services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, FormService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     this.list = [];
-    this.isListResolved = $q.defer();
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(story) {
@@ -51,61 +50,35 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         angular.forEach(stories, function(story) {
             crudMethods[IceScrumEventType.CREATE](story);
         });
-        self.isListResolved.resolve(true);
     };
     this.save = function(story) {
         story.class = 'story';
         return Story.save(story, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.listByType = function(obj) {
-        var alreadyLoadedStories = [];
+        obj.stories = [];
         var mustLoad = false;
-        var promise;
-        angular.forEach(obj.stories_ids, function(story) {
-            var alreadyLoadedStory = _.find(self.list, {id: story.id});
-            if (!_.isEmpty(alreadyLoadedStory)) {
-                alreadyLoadedStories.push(alreadyLoadedStory);
+        _.each(obj.stories_ids, function(story) {
+            var foundStory = _.find(self.list, {id: story.id});
+            if (foundStory) {
+                obj.stories.push(foundStory);
             } else {
                 mustLoad = true;
             }
         });
-        if (alreadyLoadedStories.length > 0) {
-            obj.stories = alreadyLoadedStories;
-        }
+        var promise;
         if (mustLoad) {
-            promise = Story.query({typeId: obj.id, type: obj.class.toLowerCase()}, function(data) {
-                if (obj.stories === undefined) {
-                    obj.stories = [];
-                }
-                angular.forEach(data, function(story) {
-                    if (_.isEmpty(self.list)) {
-                        self.isListResolved.resolve(true);
-                    }
-                    if (_.chain(obj.stories).where({id: story.id}).isEmpty().value()) {
-                        var newStory = new Story(story);
-                        obj.stories.push(newStory);
-                        self.list.push(newStory);
-                    }
-                });
+            promise = Story.query({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
+                obj.stories = stories;
+                self.mergeStories(stories);
+                return stories;
             }).$promise;
-        } else {
-            if (obj.stories === undefined) {
-                obj.stories = [];
-            }
         }
         return promise ? promise : $q.when(obj.stories);
     };
     this.get = function(id) {
-        return self.isListResolved.promise.then(function() {
-            var story = _.find(self.list, function(rw) {
-                return rw.id == id;
-            });
-            if (story) {
-                return story;
-            } else {
-                throw Error('todo.is.ui.story.does.not.exist');
-            }
-        });
+        var story = _.find(self.list, {id: id});
+        return story ? $q.when(story) : Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.update = function(story) {
         return Story.update(story, crudMethods[IceScrumEventType.UPDATE]).$promise;
@@ -128,7 +101,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         return Story.update({id: story.id, action: 'returnToSandbox'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.plan = function(story, sprint, rank) {
-        var params = {story: {parentSprint: {id: sprint.id }}};
+        var params = {story: {parentSprint: {id: sprint.id}}};
         if (rank) {
             params.story.rank = rank;
         }
@@ -165,7 +138,7 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         return self.update(story).then(function(story) {
             angular.forEach(relatedStories, function(relatedStory, index) {
                 // Update the reference stories rather than stories from sortable updated model to ensure propagation and prevent erasure
-                var referenceStory = _.find(self.list, { id: relatedStory.id });
+                var referenceStory = _.find(self.list, {id: relatedStory.id});
                 var currentRank = index + 1;
                 if (referenceStory.rank != currentRank) {
                     referenceStory.rank = currentRank;
@@ -194,11 +167,17 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         }).$promise;
     };
     this.getMultiple = function(ids) {
-        return self.isListResolved.promise.then(function() {
-            return _.filter(self.list, function(story) {
-                return _.contains(ids, story.id.toString());
-            });
+        var foundStories = [];
+        var notFoundStoryIds = [];
+        _.each(ids, function(id) {
+            var foundStory = _.find(self.list, {id: parseInt(id)});
+            if (foundStory) {
+                foundStories.push(foundStory);
+            } else {
+                notFoundStoryIds.push(id);
+            }
         });
+        return notFoundStoryIds.length > 0 ? Story.query({id: notFoundStoryIds}, self.mergeStories).$promise : $q.when(foundStories);
     };
     this.updateMultiple = function(ids, updatedFields) {
         return Story.updateArray({id: ids}, {story: updatedFields}, function(stories) {
