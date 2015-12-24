@@ -25,7 +25,7 @@ services.factory('Feature', [ 'Resource', function($resource) {
     return $resource('feature/:id/:action');
 }]);
 
-services.service("FeatureService", ['Feature', 'Session', 'PushService', 'IceScrumEventType', function(Feature, Session, PushService, IceScrumEventType) {
+services.service("FeatureService", ['$state', 'Feature', 'Session', 'PushService', 'IceScrumEventType', function($state, Feature, Session, PushService, IceScrumEventType) {
     var self = this;
     this.list = Feature.query();
     var crudMethods = {};
@@ -41,6 +41,10 @@ services.service("FeatureService", ['Feature', 'Session', 'PushService', 'IceScr
         angular.extend(_.find(self.list, { id: feature.id }), feature);
     };
     crudMethods[IceScrumEventType.DELETE] = function(feature) {
+        if ($state.includes("feature.details", {id: feature.id}) ||
+            ($state.includes("feature.multiple") && _.contains($state.params.listId.split(','), feature.id.toString()))) {
+            $state.go('feature');
+        }
         _.remove(self.list, { id: feature.id });
     };
     _.each(crudMethods, function(crudMethod, eventType) {

@@ -25,7 +25,7 @@ services.factory('Task', [ 'Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action');
 }]);
 
-services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
+services.service("TaskService", ['$q', '$state', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
     var self = this;
     this.getCrudMethods = function(obj) {
         var crudMethods = {};
@@ -44,6 +44,10 @@ services.service("TaskService", ['$q', 'Task', 'Session', 'IceScrumEventType', '
             angular.extend(_.find(obj.tasks, { id: task.id }), task);
         };
         crudMethods[IceScrumEventType.DELETE] = function(task) {
+            if ($state.includes("sprintPlan.task.details", {taskId: task.id}) ||
+                ($state.includes("sprintPlan.task.multiple") && _.contains($state.params.taskListId.split(','), task.id.toString()))) {
+                $state.go('sprintPlan');
+            }
             _.remove(obj.tasks, { id: task.id });
             obj.tasks_count = obj.tasks.length;
         };

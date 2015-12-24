@@ -25,7 +25,7 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('story/:type/:typeId/:id/:action/:backlog');
 }]);
 
-services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, Story, Session, FormService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
+services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', 'FormService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, $state, Story, Session, FormService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     this.list = [];
     var self = this;
     var crudMethods = {};
@@ -41,6 +41,10 @@ services.service("StoryService", ['$q', '$http', 'Story', 'Session', 'FormServic
         angular.extend(_.find(self.list, {id: story.id}), story);
     };
     crudMethods[IceScrumEventType.DELETE] = function(story) {
+        if ($state.includes("backlog.details", {id: story.id}) ||
+            ($state.includes("backlog.multiple") && _.contains($state.params.listId.split(','), story.id.toString()))) {
+            $state.go('backlog');
+        }
         _.remove(self.list, {id: story.id});
     };
     _.each(crudMethods, function(crudMethod, eventType) {

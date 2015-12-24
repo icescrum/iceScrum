@@ -25,7 +25,7 @@ services.factory('Sprint', ['Resource', function($resource) {
     return $resource(icescrum.grailsServer + '/p/:projectId/sprint/:type/:id/:action');
 }]);
 
-services.service("SprintService", ['$q', 'Sprint', 'SprintStatesByName', 'Session', function($q, Sprint, SprintStatesByName, Session) {
+services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'Session', function($q, $state, Sprint, SprintStatesByName, Session) {
     this.list = function(release) {
         if (_.isEmpty(release.sprints)) {
             return Sprint.query({ projectId: release.parentProduct.id, type: 'release', id: release.id }, function(data) {
@@ -73,6 +73,9 @@ services.service("SprintService", ['$q', 'Sprint', 'SprintStatesByName', 'Sessio
     };
     this['delete'] = function(sprint, release) {
         return sprint.$delete({projectId: release.parentProduct.id}, function() {
+            if ($state.includes("releasePlan.sprint.details", {id: sprint.id})) {
+                $state.go('releasePlan');
+            }
             _.remove(release.sprints, {id: sprint.id});
         });
     };
