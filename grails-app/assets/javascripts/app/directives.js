@@ -198,7 +198,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
         restrict: 'A',
         priority: 100,
         link: function(scope, element) {
-            element.on('hover', function() {
+            element.on('mouseenter', function() {
                 _.each(element.find('.ellipsis-el'), function(el) {
                     el = angular.element(el);
                     var data = el.data('jqae');
@@ -385,8 +385,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             if (scope.$eval(attrs.asSortableItemHandleIf)) {
                 element.attr('as-sortable-item-handle', '');
             }
-            element.removeAttr("as-sortable-item-handle-if"); // avoid indefinite loop
-            element.removeAttr("data-as-sortable-item-handle-if"); // same in case of data prefix
+            element.removeAttr("as-sortable-item-handle-if"); // avoid infinite loop
             $compile(element)(scope);
         }
     };
@@ -533,6 +532,25 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 newElement.attr('uib-dropdown', '');
                 newElement.html('<a uib-dropdown-toggle><i class="fa fa-cog"></i></a><ul class="uib-dropdown-menu" ng-include="\'story.menu.html\'"></ul>');
                 element.replaceWith(angular.element($compile(newElement)(scope)));
+            });
+        }
+    }
+}]).directive('fastTooltip', ['$compile', function($compile) { // For 140 stories, reduce display time by 0,8 s.
+    return {
+        restrict: 'A',
+        link: function(scope, element) {
+            element.on('mouseenter', function() { // Executed on each mouseenter because new dom elements may have appeared since the last time (e.g. with ng-if)
+                var tooltipAttr = 'fast-tooltip-el';
+                _.each(element.find('[' + tooltipAttr + ']'), function(tooltipElement) {
+                    tooltipElement = angular.element(tooltipElement);
+                    var newTooltipElement = tooltipElement.clone();
+                    // Tooltip content must be a static string, it cannot be an angular expression "{{ foo }}"
+                    // because the original expression and the associated watcher will be lost in the process so the value will never be synced if it changes
+                    var tooltipContent = newTooltipElement.attr(tooltipAttr);
+                    newTooltipElement.removeAttr(tooltipAttr); // Remove attr to prevent doing it again on next mouseenter for elements already processed
+                    newTooltipElement.attr('uib-tooltip', tooltipContent);
+                    tooltipElement.replaceWith(angular.element($compile(newTooltipElement)(scope)));
+                });
             });
         }
     }

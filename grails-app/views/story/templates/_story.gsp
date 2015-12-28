@@ -23,24 +23,25 @@
 
 <script type="text/ng-template" id="story.html">
 <div ellipsis
+     fast-tooltip
      style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
      class="postit {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
         <a href
            class="follow"
-           uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+           uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}" %{-- Cannot use fast-tooltip-el, see comments in the directive --}%
            ng-click="follow(story)">
             <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
         </a>
         <span class="id">{{ ::story.uid }}</span>
         <span class="value editable"
-              uib-tooltip="${message(code: 'is.story.value')}"
+              fast-tooltip-el="${message(code: 'is.story.value')}"
               ng-click="showEditValueModal(story)"
               ng-if="story.value">
             {{ story.value }} <i class="fa fa-line-chart"></i>
         </span>
         <span class="estimation editable"
-              uib-tooltip="${message(code: 'is.story.effort')}"
+              fast-tooltip-el="${message(code: 'is.story.effort')}"
               ng-if="story.state > 1"
               ng-click="showEditEffortModal(story)">
             {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar"></i>
@@ -62,28 +63,28 @@
             <span story-menu class="action"></span>
             <span class="action" ng-class="{'active':story.attachments.length}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}"
-                   uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                   fast-tooltip-el="${message(code:'todo.is.ui.backlogelement.attachments')}">
                     <i class="fa fa-paperclip"></i>
                     <span class="badge">{{ story.attachments.length || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.comments_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/comments"
-                   uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                   fast-tooltip-el="${message(code:'todo.is.ui.comments')}">
                     <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                     <span class="badge">{{ story.comments_count  || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.tasks_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/tasks"
-                   uib-tooltip="${message(code:'todo.is.ui.tasks')}">
+                   fast-tooltip-el="${message(code:'todo.is.ui.tasks')}">
                     <i class="fa fa-tasks"></i>
                     <span class="badge">{{ story.tasks_count || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.acceptanceTests_count}">
                 <a href="#/{{ ::viewName }}/{{ ::story.id }}/tests"
-                   uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
+                   fast-tooltip-el="${message(code:'todo.is.ui.acceptanceTests')}">
                     <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
                     <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
                 </a>
