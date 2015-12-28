@@ -401,8 +401,8 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     $scope.openNewTaskByType = function(type) {
         $state.go('sprintPlan.task.new', {taskTemplate: {type: type}});
     };
-    $scope.refreshTasks = function(tasks) {
-        var partitionedTasks = _.partition(tasks, function(task) {
+    $scope.refreshTasks = function() {
+        var partitionedTasks = _.partition($scope.sprint.tasks, function(task) {
             return _.isNull(task.parentStory);
         });
         var groupByStateAndSort = function(tasksDictionnary) {
@@ -573,10 +573,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                 y: function(entry) { return entry[1]; },
                 xScale: d3.time.scale.utc(),
                 xAxis: {
-                    tickFormat: function(d) {
-                        // TODO USE date format from i18n
-                        return $filter('date')(new Date(d), 'dd-MM-yyyy');
-                    }
+                    tickFormat: $filter('dateShorter')
                 }
             }
         };
@@ -604,10 +601,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
                     y: function (entry) { return entry[1]; },
                     xScale: d3.time.scale.utc(),
                     xAxis: {
-                        tickFormat: function(d) {
-                            // TODO USE date format from i18n
-                            return $filter('date')(new Date(d), 'dd-MM-yyyy');
-                        }
+                        tickFormat: $filter('dateShorter')
                     },
                     yAxis: {
                         tickFormat: function(entry) {

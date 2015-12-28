@@ -26,7 +26,6 @@
         <div class="btn-group" ng-repeat="availableBacklog in availableBacklogs">
             <button class="btn btn-default btn-backlog"
                     ng-class="{'shown':availableBacklog.shown}"
-                    uib-tooltip="{{ availableBacklog.name }}"
                     ng-click="manageShownBacklog(availableBacklog)">
                 <i class="fa" ng-class="{'fa-circle-o':!availableBacklog.shown, 'fa-dot-circle-o':availableBacklog.shown}"></i>
                 {{ availableBacklog.name }}

@@ -299,6 +299,10 @@ filters
         return function (date) {
             return dateFilter(date, $rootScope.message('is.date.format.short.time'));
         };
+    }]).filter('dateShorter', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
+        return function (date) {
+            return dateFilter(date, $rootScope.message('is.date.format.shorter'));
+        };
     }]).filter('orElse', [function() {
         return function (value, defaultValue) {
             return (!_.isUndefined(value) && !_.isNull(value)) ? value : defaultValue;

@@ -60,10 +60,7 @@ controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$
             },
             xScale: d3.time.scale.utc(),
             xAxis: {
-                tickFormat: function(d) {
-                    // TODO USE date format from i18n
-                    return $filter('date')(new Date(d), 'dd-MM-yyyy');
-                }
+                tickFormat: $filter('dateShorter')
             },
             yAxis: {
                 tickFormat: function(d) {

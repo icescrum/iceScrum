@@ -37,8 +37,7 @@
             <div class="right-title">
                 <button class="btn btn-default elemid">{{ feature.uid }}</button>
                 <div class="btn-group"
-                     uib-dropdown
-                     uib-tooltip="${message(code: 'todo.is.ui.actions')}">
+                     uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
@@ -65,7 +64,9 @@
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.tabId}">
             <a href="#{{ ::viewName }}/{{ ::feature.id }}"
-               href="#"><i class="fa fa-lg fa-edit"></i></a>
+               uib-tooltip="${message(code:'todo.is.ui.details')}">
+                <i class="fa fa-lg fa-edit"></i>
+            </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'stories'}">
             <a href="#{{ ::viewName }}/{{ ::feature.id }}/stories"

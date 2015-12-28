@@ -56,8 +56,7 @@
                     <span class="badge">{{ story.likers_count || '' }}</span>
                 </button>
                 <div class="btn-group"
-                     uib-dropdown
-                     uib-tooltip="${message(code: 'todo.is.ui.actions')}">
+                     uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
@@ -94,12 +93,15 @@
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.tabId}">
             <a href="#{{ ::viewName }}/{{ ::story.id }}"
-               href="#"><i class="fa fa-lg fa-edit"></i></a>
+               uib-tooltip="${message(code:'todo.is.ui.details')}">
+                <i class="fa fa-lg fa-edit"></i>
+            </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'activities'}">
             <a href="#{{ ::viewName }}/{{ ::story.id }}/activities"
-               uib-tooltip="{{ story.activities && story.activities.length ? message('is.fluxiable.' + story.activities[0].code) : '' }}"
-               href="#"><i class="fa fa-lg fa-clock-o"></i></a>
+               uib-tooltip="{{ story.activities && story.activities.length ? message('is.fluxiable.' + story.activities[0].code) : '' }}">
+                <i class="fa fa-lg fa-clock-o"></i>
+            </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.tabId == 'comments'}">
             <a href="#{{ ::viewName }}/{{ ::story.id }}/comments"

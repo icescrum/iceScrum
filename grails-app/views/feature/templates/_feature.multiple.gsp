@@ -55,11 +55,7 @@
                                 <a ng-repeat="tag in topFeature.tags" href="#"><span class="tag">{{ tag }}</span></a>
                             </div>
                             <div class="actions">
-                                <span class="action">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.actions')}">
-                                        <i class="fa fa-cog"></i>
-                                    </a>
-                                </span>
+                                <span class="action"><a><i class="fa fa-cog"></i></a></span>
                                 <span class="action" ng-class="{'active':topFeature.attachments.length}">
                                     <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                         <i class="fa fa-paperclip"></i>

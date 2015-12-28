@@ -37,8 +37,7 @@
             <div class="right-title">
                 <button class="btn btn-default elemid">{{ sprint.id }}</button>
                 <div class="btn-group"
-                     uib-dropdown
-                     uib-tooltip="${message(code: 'todo.is.ui.actions')}">
+                     uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>

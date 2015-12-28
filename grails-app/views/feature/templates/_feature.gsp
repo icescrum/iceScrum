@@ -27,7 +27,11 @@
      class="postit {{ (feature.color | contrastColor) + ' ' + (feature.type | featureType) }}">
     <div class="head">
         <span class="id">{{ ::feature.id }}</span>
-        <span class="value" ng-if="feature.value">{{ feature.value }} <i class="fa fa-line-chart"></i></span>
+        <span class="value"
+              uib-tooltip="${message(code: 'is.feature.value')}"
+              ng-if="feature.value">
+            {{ feature.value }} <i class="fa fa-line-chart"></i>
+        </span>
     </div>
     <div class="content"
          as-sortable-item-handle>
@@ -43,8 +47,7 @@
     </div>
     <div class="actions">
         <span uib-dropdown class="action">
-            <a uib-dropdown-toggle
-               uib-tooltip="${message(code: 'todo.is.ui.actions')}">
+            <a uib-dropdown-toggle>
                 <i class="fa fa-cog"></i>
             </a>
             <ul class="uib-dropdown-menu"
