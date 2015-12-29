@@ -22,15 +22,6 @@
  *
  */
 controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, StoryService, StoryStatesByName, backlogs) {
-    $scope.isSelected = function(story) {
-        if ($state.params.id) {
-            return $state.params.id == story.id;
-        } else if ($state.params.listId) {
-            return _.contains($state.params.listId.split(','), story.id.toString());
-        } else {
-            return false;
-        }
-    };
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };

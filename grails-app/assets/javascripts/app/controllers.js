@@ -283,13 +283,13 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
 
 }]);
 
-controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'features', function($scope, $state, FeatureService, features) {
+controllers.controller('selectableCtrl', ['$scope', '$state', function($scope, $state) {
     // Functions
-    $scope.isSelected = function(feature) {
+    $scope.isSelected = function(selectable) {
         if ($state.params.id) {
-            return $state.params.id == feature.id;
+            return $state.params.id == selectable.id;
         } else if ($state.params.listId) {
-            return _.contains($state.params.listId.split(','), feature.id.toString());
+            return _.contains($state.params.listId.split(','), selectable.id.toString());
         } else {
             return false;
         }
@@ -300,9 +300,30 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     $scope.toggleSelectableMultiple = function() {
         $scope.app.selectableMultiple = !$scope.app.selectableMultiple;
         if ($state.params.listId != undefined) {
-            $state.go('feature');
+            $state.go($scope.viewName);
         }
     };
+    // Init
+    $scope.selectableOptions = {
+        selectionUpdated: function(selectedIds) {
+            switch (selectedIds.length) {
+                case 0:
+                    $state.go($scope.viewName);
+                    break;
+                case 1:
+                    $state.go($scope.viewName + '.details' + ($state.params.tabId ? '.tab' : ''), {id: selectedIds});
+                    break;
+                default:
+                    $state.go($scope.viewName + '.multiple', {listId: selectedIds.join(",")});
+                    break;
+            }
+        }
+    };
+}]);
+
+controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService', 'features', function($scope, $controller, FeatureService, features) {
+    $controller('selectableCtrl', {$scope: $scope});
+    // Functions
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
@@ -343,21 +364,6 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
             {id: 'value', name: $scope.message('todo.is.ui.sort.value')},
             {id: 'state', name: $scope.message('todo.is.ui.sort.state')}
         ], 'name')
-    };
-    $scope.selectableOptions = {
-        selectionUpdated: function(selectedIds) {
-            switch (selectedIds.length) {
-                case 0:
-                    $state.go('feature');
-                    break;
-                case 1:
-                    $state.go($state.params.tabId ? 'feature.details.tab' : 'feature.details', {id: selectedIds});
-                    break;
-                default:
-                    $state.go('feature.multiple', {listId: selectedIds.join(",")});
-                    break;
-            }
-        }
     };
     $scope.orderByRank();
 }]);

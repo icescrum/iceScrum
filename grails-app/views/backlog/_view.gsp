@@ -73,7 +73,7 @@
                         class="btn btn-default"
                         ng-click="orderBacklogByRank(backlog)"
                         uib-tooltip="${message(code:'todo.is.ui.changeRank')}">
-                    <span ng-class="backlog.sorting ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
+                    <span ng-class="backlog.sorting ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                 </button>
                 <div class="btn-group"
                      uib-dropdown
