@@ -7,8 +7,7 @@
             <form novalidate role="form" ng-submit="login(credentials)" ng-controller="loginCtrl">
                 <div class="form-group">
                     <div class="col-md-9">
-                        <label align="text-center"
-                               for="credentials.j_username">${message(code: 'is.user.username')}</label>
+                        <label for="credentials.j_username">${message(code: 'is.user.username')}</label>
                         <div class="input-group">
                             <input required="" ng-model="credentials.j_username" type="text"
                                    id="credentials.j_username"
@@ -26,9 +25,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-9">
-                            <label for="credentials.j_password"
-                                   align="text-center">${message(code: 'is.user.password')}</label>
-
+                            <label for="credentials.j_password">${message(code: 'is.user.password')}</label>
                             <div class="input-group">
                                 <input required="" ng-model="credentials.j_password" type="password"
                                        id="credentials.j_password"
