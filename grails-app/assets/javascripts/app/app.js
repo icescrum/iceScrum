@@ -114,7 +114,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             controller: 'retrieveCtrl'
                         });
                         modal.result.then(
-                            function(result) {
+                            function() {
                                 $state.transitionTo('root');
                             }, function() {
                                 $state.transitionTo('root');
@@ -135,7 +135,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             controller: 'newProjectCtrl'
                         });
                         modal.result.then(
-                            function(result) {
+                            function() {
                                 $state.transitionTo('root');
                             }, function(){
                                 $state.transitionTo('root');
@@ -693,7 +693,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             asList:false,
             loading: true,
             loadingPercent: 0,
-            isFullScreen: false
+            isFullScreen: false,
+            selectableMultiple: false
         };
 
         // To be able to track state in views

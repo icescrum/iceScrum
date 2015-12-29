@@ -30,7 +30,7 @@
                         class="btn btn-default"
                         ng-click="orderByRank()"
                         uib-tooltip="${message(code:'todo.is.ui.changeRank')}">
-                    <span ng-class="isSortingFeature() ? 'text-success' : 'text-danger'" class=" fa fa-hand-pointer-o"></span>
+                    <span ng-class="isSortingFeature() ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                 </button>
                 <div class="btn-group"
                      uib-dropdown
@@ -72,6 +72,12 @@
                     <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
                 </ul>
             </div>
+            <button type="button"
+                    class="btn btn-default"
+                    ng-click="toggleSelectableMultiple()"
+                    uib-tooltip="${message(code:'todo.is.ui.selectable.multiple')}">
+                <span class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></span>
+            </button>
             <a type="button"
                ng-if="authorizedFeature('create')"
                href="#/{{ ::viewName }}/new"
@@ -91,7 +97,7 @@
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
                         ng-click="app.asList = !app.asList"
                         class="btn btn-default">
-                    <span class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></span>
+                    <span class="fa" ng-class="app.asList ? 'fa-th-list' : 'fa-th'"></span>
                 </button>
                 <g:if test="${params?.fullScreen}">
                     <button type="button"

@@ -554,7 +554,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     }
-}]).directive('selectable', ['$document', function($document) {
+}]).directive('selectable', ['$document', '$rootScope', function($document, $rootScope) {
     return {
         restrict: 'A',
         scope: {
@@ -569,7 +569,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             element.on('click', function(event) { // Listen only on the container element rather than on each element: allow deselecting and avoid the need to listen to new elements
                 $document[0].getSelection().removeAllRanges(); // prevents text-selection when doing shift + click
                 var selectedIds = [];
-                if (!event.ctrlKey && !event.metaKey && !event.shiftKey) {
+                if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !$rootScope.app.selectableMultiple) {
                     element.find(selectedSelector).removeClass(selectedClass);
                 }
                 var selectableElement = angular.element(event.target).closest('[' + selectedIdAttr + ']');

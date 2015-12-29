@@ -123,7 +123,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 }]
             });
             modal.result.then(
-                function(result) {
+                function() {
                     $scope.downloadFile("");
                 },
                 function() {
@@ -182,7 +182,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         });
         //end state loading app
 
-        $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
+        $scope.$on(SERVER_ERRORS.notAuthenticated, function() {
             $scope.showAuthModal();
         });
         $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
@@ -296,6 +296,12 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     };
     $scope.hasSelected = function() {
         return $state.params.id != undefined || $state.params.listId != undefined;
+    };
+    $scope.toggleSelectableMultiple = function() {
+        $scope.app.selectableMultiple = !$scope.app.selectableMultiple;
+        if ($state.params.listId != undefined) {
+            $state.go('feature');
+        }
     };
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);

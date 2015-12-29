@@ -169,6 +169,7 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
         });
     };
     // Init
+    $scope.app.selectableMultiple = true;
     $scope.ids = listId;
     $scope.topFeature = {};
     $scope.featurePreview = {};
