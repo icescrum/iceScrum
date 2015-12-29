@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="story.backlog.html">
-<div ng-class="{ 'ui-selected': isSelected(story) }"
+<div ng-class="{ 'is-selected': isSelected(story) }"
      on-repeat-completed="backlog.storiesRendered = true"
      ng-repeat="story in backlog.stories"
      as-sortable-item

@@ -146,7 +146,7 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
             itemMoved: menuSortableChange,
             orderChanged: menuSortableChange,
             containment: '#header',
-            accept: function (sourceItemHandleScope, destSortableScope) {
+            accept: function(sourceItemHandleScope, destSortableScope) {
                 return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
             },
             dragStart: function() { $scope.menuDragging = true; },
@@ -156,30 +156,27 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         //begin state loading app
         $scope.$on('$viewContentLoading', function() {
             $scope.app.loading = true;
-            if($scope.app.loadingPercent < 90) {
+            if ($scope.app.loadingPercent < 90) {
                 $scope.app.loadingPercent += 10;
             }
         });
-
         $scope.$on('$stateChangeStart', function() {
             $scope.app.loading = true;
-            if($scope.app.loadingPercent != 100) {
+            if ($scope.app.loadingPercent != 100) {
                 $scope.app.loadingPercent += 10;
             }
         });
-
         $scope.$on('$stateChangeSuccess', function() {
             $scope.app.loading = false;
-            if($scope.app.loadingPercent != 100) {
+            if ($scope.app.loadingPercent != 100) {
                 $scope.app.loadingPercent = 100;
             }
         });
-
         $scope.$watch(function() {
             return $http.pendingRequests.length;
         }, function(newVal) {
             $scope.app.loading = newVal > 0;
-            if($scope.app.loading && $scope.app.loadingPercent < 100){
+            if ($scope.app.loading && $scope.app.loadingPercent < 100) {
                 $scope.app.loadingPercent = 100 - ((100 - $scope.app.loadingPercent) / newVal);
             }
         });
@@ -188,7 +185,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
         $scope.$on(SERVER_ERRORS.notAuthenticated, function(event, e) {
             $scope.showAuthModal();
         });
-
         $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
             var data = error.data;
             if (!data.silent) {
@@ -201,7 +197,6 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 }
             }
         });
-
         $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
             var data = error.data;
             if (angular.isArray(data)) {
@@ -299,6 +294,9 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
             return false;
         }
     };
+    $scope.hasSelected = function() {
+        return $state.params.id != undefined || $state.params.listId != undefined;
+    };
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
@@ -324,7 +322,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
     $scope.featureSortableOptions = {
         itemMoved: updateRank,
         orderChanged: updateRank,
-        accept: function (sourceItemHandleScope, destSortableScope) {
+        accept: function(sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         }
     };
@@ -339,6 +337,21 @@ controllers.controller('featuresCtrl', ['$scope', '$state', 'FeatureService', 'f
             {id: 'value', name: $scope.message('todo.is.ui.sort.value')},
             {id: 'state', name: $scope.message('todo.is.ui.sort.state')}
         ], 'name')
+    };
+    $scope.selectableOptions = {
+        selectionUpdated: function(selectedIds) {
+            switch (selectedIds.length) {
+                case 0:
+                    $state.go('feature');
+                    break;
+                case 1:
+                    $state.go($state.params.tabId ? 'feature.details.tab' : 'feature.details', {id: selectedIds});
+                    break;
+                default:
+                    $state.go('feature.multiple', {listId: selectedIds.join(",")});
+                    break;
+            }
+        }
     };
     $scope.orderByRank();
 }]);
@@ -449,7 +462,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
             task.rank = event.dest.index + 1;
             TaskService.update(task, sprint);
         },
-        accept: function (sourceItemHandleScope, destSortableScope) {
+        accept: function(sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
             var isSortableDest = destSortableScope.story ? $scope.isSortingStory(destSortableScope.story) : true;
             return sameSortable && isSortableDest;
@@ -597,8 +610,8 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             options = {
                 chart: {
                     type: 'lineChart',
-                    x: function (entry) { return entry[0]; },
-                    y: function (entry) { return entry[1]; },
+                    x: function(entry) { return entry[0]; },
+                    y: function(entry) { return entry[1]; },
                     xScale: d3.time.scale.utc(),
                     xAxis: {
                         tickFormat: $filter('dateShorter')
@@ -638,7 +651,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         MoodService.openChart(chartName, $scope.currentProject ? $scope.currentProject : Session.getProject()).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
-            if (chart.labelsX  ||  chart.labelsY) {
+            if (chart.labelsX || chart.labelsY) {
                 $scope.labelsX = chart.labelsX;
                 $scope.labelsY = chart.labelsY;
             }

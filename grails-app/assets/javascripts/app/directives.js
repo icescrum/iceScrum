@@ -554,4 +554,25 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     }
+}]).directive('selectable', [function() {
+    return {
+        restrict: 'A',
+        scope: {
+            selectable: '='
+        },
+        link: function(scope, element) {
+            var selectableOptions = scope.selectable;
+            // Listen only on the container element rather than on each element: allow deselecting and avoid the need to listen to new elements
+            element.on('click', function(event) { // "click" event is triggered on postit only when clicking, not when dragging, which is good!
+                var selectedIds = [];
+                element.find('[selectable-id].is-selected').removeClass('is-selected');
+                var selectableItem = angular.element(event.target).closest('[selectable-id]');
+                if (selectableItem.length != 0) {
+                    selectableItem.addClass('is-selected');
+                    selectedIds = element.find('[selectable-id].is-selected').attr('selectable-id');
+                }
+                selectableOptions.selectionUpdated(selectedIds);
+            });
+        }
+    }
 }]);
