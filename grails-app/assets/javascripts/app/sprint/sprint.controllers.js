@@ -162,7 +162,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 
         return !_.isEqual($scope.editableSprint, $scope.editableSprintReference);
     };
     $scope.update = function(sprint) {
-        SprintService.update(sprint, $scope.release).then(function(sprint) {
+        SprintService.update(sprint, $scope.release).then(function() {
             $scope.resetSprintForm();
             $scope.notifySuccess('todo.is.ui.sprint.updated');
         });

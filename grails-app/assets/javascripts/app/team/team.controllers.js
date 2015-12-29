@@ -60,7 +60,7 @@ controllers.controller('abstractTeamCtrl', ['$scope', '$filter', 'Session', 'Tea
     $scope.member = {};
 }]);
 
-controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session', 'TeamService', 'UserService', function($scope, $controller, $filter, Session, TeamService, UserService) {
+controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session', 'TeamService', function($scope, $controller, $filter, Session, TeamService) {
     $controller('abstractTeamCtrl', {$scope: $scope});
     // Functions
     $scope.searchTeam = function(val, create) {
@@ -139,7 +139,7 @@ controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session
     }
 }]);
 
-controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filter', 'TeamService', 'UserService', function($scope, $controller, $filter, TeamService, UserService) {
+controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filter', 'TeamService', function($scope, $controller, $filter, TeamService) {
     $controller('abstractTeamCtrl', {$scope: $scope});
     // Functions
     $scope.selectTeam = function(team) {

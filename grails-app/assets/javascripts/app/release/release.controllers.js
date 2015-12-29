@@ -38,7 +38,7 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', fu
         });
     };
     $scope.generateSprints = function(release) {
-        ReleaseService.generateSprints(release).then(function(sprints) {
+        ReleaseService.generateSprints(release).then(function() {
             $scope.notifySuccess('todo.is.ui.release.generatedSprints');
         });
     };
@@ -124,7 +124,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller',
         return !_.isEqual($scope.editableRelease, $scope.editableReleaseReference);
     };
     $scope.update = function(release) {
-        ReleaseService.update(release, $scope.project).then(function(release) {
+        ReleaseService.update(release, $scope.project).then(function() {
             $scope.resetReleaseForm();
             $scope.notifySuccess('todo.is.ui.release.updated');
         });

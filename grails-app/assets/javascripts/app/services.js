@@ -72,7 +72,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
     this.setUser = function(user) {
         _.extend(self.user, user);
-        PushService.registerListener('activity', IceScrumEventType.CREATE, function(activity) {
+        PushService.registerListener('activity', IceScrumEventType.CREATE, function() {
             self.unreadActivitiesCount += 1;
         });
         PushService.registerListener('user', IceScrumEventType.UPDATE, function(user) {
