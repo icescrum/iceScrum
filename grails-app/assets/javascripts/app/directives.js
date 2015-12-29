@@ -554,7 +554,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     }
-}]).directive('selectable', [function() {
+}]).directive('selectable', ['$document', function($document) {
     return {
         restrict: 'A',
         scope: {
@@ -565,17 +565,51 @@ directives.directive('isMarkitup', ['$http', function($http) {
             var selectedClass = 'is-selected';
             var selectedIdAttr = 'selectable-id';
             var selectedSelector = '[' + selectedIdAttr + '].' + selectedClass;
+            var lastSelected;
             element.on('click', function(event) { // Listen only on the container element rather than on each element: allow deselecting and avoid the need to listen to new elements
+                $document[0].getSelection().removeAllRanges(); // prevents text-selection when doing shift + click
                 var selectedIds = [];
-                if (!event.ctrlKey && !event.metaKey) {
+                if (!event.ctrlKey && !event.metaKey && !event.shiftKey) {
                     element.find(selectedSelector).removeClass(selectedClass);
                 }
                 var selectableElement = angular.element(event.target).closest('[' + selectedIdAttr + ']');
                 if (selectableElement.length != 0) {
-                    selectableElement.toggleClass(selectedClass);
+                    if (lastSelected && event.shiftKey) { // Dark magic to emulate shift+click behavior observed in OS
+                        var elementsBetween = function(el1, el2) {
+                            var elements = el1.parent().children('[' + selectedIdAttr + ']');
+                            var index1 = elements.index(el1);
+                            var index2 = elements.index(el2);
+                            var slice = [];
+                            if (index1 != -1 && index2 != -1 && index1 != index2) {
+                                var sortedIndexes = [index1, index2].sort();
+                                slice = elements.slice(sortedIndexes[0], sortedIndexes[1] + 1);
+                            }
+                            return slice;
+                        };
+                        var selectedElementsNextTo = function(el) {
+                            var notSelectedSelector = '[' + selectedIdAttr + ']:not(.' + selectedClass + ')';
+                            var before = el.prevUntil(notSelectedSelector);
+                            var after = el.nextUntil(notSelectedSelector);
+                            return jQuery.merge(before, after);
+                        };
+                        _.each(selectedElementsNextTo(lastSelected), function(el) {
+                            angular.element(el).removeClass(selectedClass);
+                        });
+                        _.each(elementsBetween(selectableElement, lastSelected), function(el) {
+                            el = angular.element(el);
+                            if (!el.hasClass(selectedClass)) {
+                                el.addClass(selectedClass);
+                            }
+                        });
+                    } else {
+                        selectableElement.toggleClass(selectedClass);
+                        lastSelected = selectableElement.hasClass(selectedClass) ? selectableElement : null;
+                    }
                     selectedIds = _.map(element.find(selectedSelector), function(selected) {
                         return angular.element(selected).attr(selectedIdAttr);
                     });
+                } else {
+                    lastSelected = null;
                 }
                 selectableOptions.selectionUpdated(selectedIds);
             });
