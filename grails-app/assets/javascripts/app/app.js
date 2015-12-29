@@ -748,10 +748,9 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                 }
                                 return scope;
                             }
-
                             var destScope = fetchScope(destElement); // Retrieve the closest scope from the DOM element
                             if (destScope) {
-                                destScrollableContainer = jQuery(destScope.element).closest(scrollableContainerSelector)[0]; // Store the dest scrollable container for later use (uses jQuery, yikes)
+                                destScrollableContainer = angular.element(destScope.element).closest(scrollableContainerSelector)[0]; // Store the dest scrollable container for later use
                             }
                         })(eventObj);
                         // Retrieve scrollable container, very likely stored during a previous move, and scroll if needed (for the moment scroll occurs only when moving)
