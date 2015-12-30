@@ -171,13 +171,6 @@ uiDefinitions = {
             ]
         }
     }
-    'user' {
-        window {
-            space = null
-            title 'is.user'
-            init 'profile'
-        }
-    }
     'finder' {
         icon = ' fa fa-search'
         menuBar {

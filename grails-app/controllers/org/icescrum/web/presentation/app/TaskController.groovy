@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Kagilum.
+ * Copyright (c) 2015 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -26,11 +26,9 @@ package org.icescrum.web.presentation.app
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
-import org.icescrum.core.utils.BundleUtils
 
 class TaskController {
 
-    def securityService
     def springSecurityService
     def taskService
 
@@ -245,13 +243,15 @@ class TaskController {
         render(status: 200, contentType: 'application/json', text: tasksByProject as JSON)
     }
 
+    // TODO fix permalink
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def shortURL(long product, long id) {
         Product _product = Product.withProduct(product)
+        def link = createLink(controller: 'scrumOS', action: 'index', params: [product: _product.pkey]) + '#task?uid=' + id
         if (!springSecurityService.isLoggedIn() && _product.preferences.hidden) {
-            redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + is.createScrumLink(controller: 'task', params: [uid: id]))
+            redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + link)
             return
         }
-        redirect(url: is.createScrumLink(controller: 'task', params: [uid: id]))
+        redirect(url: link)
     }
 }

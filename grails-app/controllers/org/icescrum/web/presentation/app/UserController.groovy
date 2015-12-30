@@ -35,8 +35,6 @@ import org.springframework.security.acls.domain.BasePermission
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
@@ -45,7 +43,6 @@ import org.springframework.mail.MailException
 class UserController {
 
     def userService
-    def securityService
     def springSecurityService
     def grailsApplication
 
@@ -59,61 +56,13 @@ class UserController {
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured(["hasRole('ROLE_ADMIN')"])
     def show(long id) {
         User user = User.withUser(id)
         withFormat {
-            html {
-                def permalink = createLink(absolute: true, mapping: "profile", id: params.id)
-                def stories = Story.findAllByCreator(user, [order: 'desc', sort: 'lastUpdated', max: 150])
-                def activities = Activity.findAllByPoster(user, [order: 'desc', sort: 'dateCreated', max: 15, cache:false])
-                def tasks = Task.findAllByResponsibleAndState(user, Task.STATE_BUSY, [order: 'desc', sort: 'lastUpdated'])
-                def inProgressTasks = tasks.size()
-
-                def currentAuth = springSecurityService.authentication
-                def pId
-                tasks = tasks.findAll {
-                    pId = it.backlog.parentRelease.parentProduct.id
-                    securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
-                }
-
-                stories = stories.findAll {
-                    pId = it.backlog.id
-                    securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
-                }
-
-                //Refactor using SpringSecurity ACL on all domains
-                def taskDeletePattern = 'taskDelete'
-                def taskPattern = 'task'
-                def deletePattern = 'delete'
-                activities = activities.findAll {
-                    if (it.code == taskDeletePattern) {
-                        pId = Story.get(it.cachedId)?.backlog
-                    } else if (it.code.startsWith(taskPattern)) {
-                        pId = Task.get(it.cachedId)?.backlog?.parentRelease?.parentProduct
-                    } else if (it.code == deletePattern) {
-                        pId = Product.get(it.cachedId)
-                    } else {
-                        pId = Story.get(it.cachedId)?.backlog
-                    }
-                    securityService.stakeHolder(pId, currentAuth, false) || securityService.inProduct(pId, currentAuth)
-                }
-
-
-                render template: 'window/profile', model: [permalink: permalink,
-                                                           user: user,
-                                                           inProgressTasks: inProgressTasks,
-                                                           stories: stories,
-                                                           activities: activities,
-                                                           tasks: tasks
-                ]
-            }
-            json {
-                renderRESTJSON(text:user)
-            }
-            xml  {
-                renderRESTXML(text:user)
-            }
+            html { render status: 200, contentType: 'application/json', text: user as JSON }
+            json { renderRESTJSON(text:user) }
+            xml  { renderRESTXML(text:user) }
         }
     }
 
@@ -331,11 +280,6 @@ class UserController {
         } catch (RuntimeException e) {
             returnError(text:message(code: 'is.user.preferences.error.menuBar'), exception:e)
         }
-    }
-
-    @Secured('isAuthenticated()')
-    def profileURL() {
-        redirect(url: is.createScrumLink(controller: 'user', action: 'profile', id: params.id))
     }
 
     @Secured(['permitAll()'])

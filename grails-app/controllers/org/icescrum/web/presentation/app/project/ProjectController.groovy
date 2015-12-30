@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -208,7 +208,7 @@ class ProjectController {
         builder.feed(description: "${_product.description?:''}",title: "$_product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}") {
           activities.each() { a ->
                 entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.label.encodeAsHTML()}") {e ->
-                    e.link = a.code != Activity.CODE_DELETE ? "${is.createScrumLink(absolute: true, controller: 'story', id: a.parentRef)}" : "${is.createScrumLink(absolute: true, controller: 'project')}"
+                    e.link = "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}" // TODO put story permalink if activity not delete story
                     e.publishedDate = a.dateCreated
                 }
             }

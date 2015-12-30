@@ -50,22 +50,6 @@ class ProductUrlMappings {
                 id(matches: /[0-9]*/)
             }
         }
-        // User
-        name profile: "/profile/$id/" {
-            controller = 'user'
-            action = 'profileURL'
-            constraints {
-                id(matches: /[a-zA-Z0-9]*/)
-            }
-        }
-        "/$action/user/$actionWindow/$id" {
-            controller = 'scrumOS'
-            window = 'user'
-            constraints {
-                actionWindow(matches: /[a-zA-Z]*/)
-                action(matches: /[a-zA-Z]*/)
-            }
-        }
         // Scrum OS & generic
         "/p/$product/$action/$window?/$actionWindow?/$id?" {
             controller = 'scrumOS'
