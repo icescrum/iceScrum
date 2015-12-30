@@ -56,6 +56,14 @@
                     </button>
                 </g:if>
             </div>
+            <div class="btn-group btn-view">
+                <button type="button"
+                        class="btn btn-default"
+                        ng-click="toggleSelectableMultiple()"
+                        uib-tooltip="${message(code:'todo.is.ui.selectable.multiple')}">
+                    <span class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></span>
+                </button>
+            </div>
             <a type="button"
                ng-if="authorizedStory('create')"
                href="#/{{ ::viewName }}/new"
@@ -64,7 +72,8 @@
     </div>
     <hr>
 </div>
-<div class="backlogs-list-details">
+<div class="backlogs-list-details"
+     selectable="selectableOptions">
     <div class="panel panel-light" ng-repeat="backlog in backlogs">
         <div class="panel-heading">
             <div class="btn-group">
@@ -133,7 +142,7 @@
         </div>
         <div class="panel-body" ng-class="{'loading': !backlog.storiesRendered}">
             <div class="panel-loading" ng-include="'loading.html'"></div>
-            <div class="postits {{ backlog.sorting ? '' : 'sortable-disabled' }}"
+            <div class="postits {{ (backlog.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }} "
                  ng-controller="storyCtrl"
                  as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!backlog.sorting"

@@ -21,7 +21,8 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', 'StoryService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, StoryService, StoryStatesByName, backlogs) {
+controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controller', 'StoryService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, $controller, StoryService, StoryStatesByName, backlogs) {
+    $controller('selectableCtrl', {$scope: $scope});
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };

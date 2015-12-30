@@ -23,6 +23,7 @@
 
 <script type="text/ng-template" id="story.backlog.html">
 <div ng-class="{ 'is-selected': isSelected(story) }"
+     selectable-id="{{ story.id }}"
      on-repeat-completed="backlog.storiesRendered = true"
      ng-repeat="story in backlog.stories"
      as-sortable-item
