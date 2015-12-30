@@ -38,7 +38,7 @@
               name='formHolder.sprintForm'
               novalidate>
             <div class="form-group">
-                <label for="sprint.parentRelease">${message(code:'is.sprint.parentRelease')}</label>
+                <label for="sprint.parentRelease">${message(code:'is.release')}</label>
                 <ui-select class="form-control"
                            ng-model="sprint.parentRelease"
                            on-select="selectRelease(sprint.parentRelease)"

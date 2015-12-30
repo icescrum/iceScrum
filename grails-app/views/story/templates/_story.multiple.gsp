@@ -146,9 +146,9 @@
                 <br>
                 <div class="table-responsive">
                     <table class="table">
-                        <tr><td>${message(code: 'is.ui.story.total.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
-                        <tr><td>${message(code: 'is.ui.story.total.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>
-                        <tr><td>${message(code: 'is.ui.story.total.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td></tr>
+                        <tr><td>${message(code: 'is.story.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
+                        <tr><td>${message(code: 'todo.is.ui.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>
+                        <tr><td>${message(code: 'todo.is.ui.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td></tr>
                     </table>
                 </div>
             </div>

@@ -139,7 +139,7 @@
                     <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
                 </div>
                 <div class="form-group">
-                    <label for="goal">${message(code:'is.ui.sprintPlan.toolbar.goal')}</label>
+                    <label for="goal">${message(code:'is.sprint.goal')}</label>
                     <textarea name="goal"
                               class="form-control important"
                               ng-focus="editForm(true)"

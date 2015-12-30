@@ -63,7 +63,7 @@
                 role="button"
                 class="btn btn-danger"
                 ng-click="archive(project)">
-            ${message(code: 'is.projectmenu.submenu.project.archive')}
+            ${message(code: 'is.dialog.project.archive.button')}
         </button>
     </div>
     <div class="btn-toolbar pull-right">

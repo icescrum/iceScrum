@@ -170,7 +170,7 @@
                 <h3 class="panel-title">
                     <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
                     <small class="pull-right">
-                        <g:link class="rss" data-toggle="tooltip" title="${message(code:'todo.is.ui.rss')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
+                        <g:link class="rss" uib-tooltip="${message(code: 'todo.is.ui.feed')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
                             <i class="fa fa-rss fa-lg visible-on-hover"></i>
                         </g:link>
                     </small>

@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<is:modal title="${message(code: 'is.dialog.browse.projects')}"
+<is:modal title="${message(code: 'is.projectmenu.submenu.project.browse')}"
           form="openProject(project)"
           submitButton="${message(code:'todo.is.ui.open')}"
           class="split-modal"
@@ -51,7 +51,7 @@
         </ul>
         <div class="right-panel col-sm-9" ng-switch="projects != undefined && projects.length == 0">
             <div ng-switch-when="true">
-                ${ message(code: 'is.dialog.browse.noproject') }
+                ${ message(code: 'todo.is.ui.project.noproject') }
             </div>
             <div class="col-md-12" ng-switch-default>
                 <div ng-include="'project.details.html'"></div>
