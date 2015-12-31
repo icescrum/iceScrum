@@ -29,7 +29,7 @@
     <div class="row">
         <ul class="left-panel col-sm-3 nav nav-list">
             <div class="input-group">
-                <input type="text" ng-model="projectSearch" ng-change="searchProjects()" ng-model-options="{debounce: 300}" class="form-control" placeholder="todo.is.ui.search">
+                <input type="text" ng-model="projectSearch" ng-change="searchProjects()" ng-model-options="{debounce: 300}" class="form-control" placeholder="${message(code:'todo.is.ui.search')}">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
                 </span>
