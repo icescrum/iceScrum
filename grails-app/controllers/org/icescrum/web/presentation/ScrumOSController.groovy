@@ -270,12 +270,15 @@ class ScrumOSController {
         }
         //Default language
         locales << new Locale("en")
-        new File(i18n).eachFile {
-            def arr = it.name.split("[_.]")
-            if (arr[1] != 'svn' && arr[1] != 'properties' && arr[0].startsWith('messages')) {
-                locales << (arr.length > 3 ? new Locale(arr[1], arr[2]) : arr.length > 2 ? new Locale(arr[1]) : new Locale(""))
-            }
-        }
+        // TODO re-enable real locale management
+        //new File(i18n).eachFile {
+        //    def arr = it.name.split("[_.]")
+        //    if (arr[1] != 'svn' && arr[1] != 'properties' && arr[0].startsWith('messages')) {
+        //        locales << (arr.length > 3 ? new Locale(arr[1], arr[2]) : arr.length > 2 ? new Locale(arr[1]) : new Locale(""))
+        //    }
+        //}
+        locales.addAll(new Locale('en', 'US'), new Locale('fr'))
+        // End TODO
         def returnLocales = locales.collectEntries { locale ->
             [(locale.toString()): locale.getDisplayName(locale).capitalize()]
         }
