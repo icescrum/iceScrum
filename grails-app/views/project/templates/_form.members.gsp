@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<script type="text/ng-template" id="form.members.project.html"><h4>${message(code:"is.dialog.wizard.section.product.members")}</h4>
+<script type="text/ng-template" id="form.members.project.html"><h4>${message(code:"todo.is.ui.project.members")}</h4>
 <div class="row">
         <div class="col-sm-4" ng-if="projectMembersEditable(project)">
             <label for="productOwners.search">${message(code:'todo.is.ui.select.productowner')}</label>

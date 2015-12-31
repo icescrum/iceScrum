@@ -28,8 +28,7 @@
       novalidate
       ng-submit='update(project)'
       name="formHolder.editProjectForm">
-    <h4>${message(code:"is.dialog.wizard.section.administration")}</h4>
-    <p class="help-block">${message(code:'is.dialog.wizard.section.project.administration.help')}</p>
+    <h4>${message(code:"todo.is.ui.project.administration")}</h4>
     <div class="row">
         <div class="form-half">
             <label for="webservices" class="checkbox-inline">

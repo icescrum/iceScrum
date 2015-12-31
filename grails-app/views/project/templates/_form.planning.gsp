@@ -21,8 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.planning.project.html">
-    <h4>${message(code:"is.dialog.wizard.section.planning")}</h4>
-    <p class="help-block">${message(code:'is.dialog.wizard.section.project.planning.help')}</p>
+    <h4>${message(code:"todo.is.ui.project.planning")}</h4>
     <div class="row">
         <div class="form-half">
             <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
@@ -32,7 +31,7 @@
                        name="project.preferences.timezone"
                        search-enabled="true"
                        ng-model="project.preferences.timezone">
-                <ui-select-match>{{ timezones[$select.selected] }}</ui-select-match>
+                <ui-select-match placeholder="${message(code:'todo.is.ui.project.notimezone')}">{{ timezones[$select.selected] }}</ui-select-match>
                 <ui-select-choices repeat="timezoneKey in timezoneKeys | filter: $select.search">
                     <span ng-bind-html="timezones[timezoneKey] | highlight: $select.search"></span>
                 </ui-select-choices>
