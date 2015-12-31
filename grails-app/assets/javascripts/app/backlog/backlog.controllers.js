@@ -36,7 +36,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
         var filteredStories = $filter('filter')($scope.stories, filter.story, function(expected, actual) {
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
-        var sortOrder = [backlog.orderBy.current.id];
+        var sortOrder = [backlog.orderBy.current.id, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
         if (backlog.name == 'All' && backlog.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
             var sortByStateGroupingByBacklogState = function(story) {
                 var orderCriteria = story.state == StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state; // Ignore the differences betweed accepted and estimated
@@ -70,10 +70,8 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
             var tmpBacklogs = _.sortByOrder($scope.backlogs, 'shown', 'desc');
             var lastShown = _.first(tmpBacklogs);
             backlog.shown = lastShown ? (lastShown.shown + 1) : 1;
-            $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable, sorting and refresh the backlog from local data (storyService.list)
-            StoryService.listByBacklog(backlog).then(function() { // Will update the story list (through the watch) if story are missing locally
-                $scope.orderBacklogByRank(backlog);
-            });
+            $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable, sorting and init the backlog from client data (storyService.list)
+            StoryService.listByBacklog(backlog); // Retrieve server data, stories that were missing will be automatically added through the watch on storyService.list
             if ($scope.backlogs.length == $scope.maxParallelsBacklogs) {
                 var removedBacklog = tmpBacklogs.pop();
                 removedBacklog.shown = null;
