@@ -156,7 +156,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
             $uibModal.open({
                 templateUrl: 'story.effort.html',
                 controller: ['$scope', '$timeout', function($scope, $timeout) {
-                    $scope.editableStory = angular.copy(parentScope.story);
+                    $scope.editableStory = angular.copy(story);
                     $scope.isEffortCustom = parentScope.isEffortCustom;
                     $scope.effortSuite = parentScope.effortSuite;
                     $scope.isEffortNullable = parentScope.isEffortNullable;
@@ -212,12 +212,11 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
     };
     $scope.showEditValueModal = function(story) {
         if (StoryService.authorizedStory('update', story)) {
-            var parentScope = $scope;
             $uibModal.open({
                 templateUrl: 'story.value.html',
                 controller: ["$scope", '$timeout', function($scope, $timeout) {
-                    $scope.editableStory = angular.copy(parentScope.story);
-                    $scope.initialValue = parentScope.story.value;
+                    $scope.editableStory = angular.copy(story);
+                    $scope.initialValue = $scope.editableStory.value;
                     var initialValues = [];
                     var initialStoriesByValue = [];
                     var initialCount = [];
