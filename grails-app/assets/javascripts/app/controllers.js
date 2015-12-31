@@ -305,6 +305,7 @@ controllers.controller('selectableCtrl', ['$scope', '$state', function($scope, $
     };
     // Init
     $scope.selectableOptions = {
+        notSelectableSelector: '.action',
         selectionUpdated: function(selectedIds) {
             switch (selectedIds.length) {
                 case 0:
