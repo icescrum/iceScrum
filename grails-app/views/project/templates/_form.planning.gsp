@@ -71,7 +71,7 @@
                        name="project.initialize"
                        id="initializeProject"
                        ng-model="project.initialize">
-                ${message(code:'is.product.preferences.sprint.initialize')}
+                ${message(code:'todo.is.ui.project.planning.initialize')}
             </label>
         </div>
     </div>
@@ -143,7 +143,7 @@
             <textarea is-markitup
                       name="project.vision"
                       class="form-control"
-                      placeholder="${message(code: 'todo.is.ui.product.vision.placeholder')}"
+                      placeholder="${message(code: 'todo.is.ui.release.novision')}"
                       ng-model="project.vision"
                       ng-show="showVisionTextarea"
                       ng-blur="showVisionTextarea = false"
@@ -154,7 +154,7 @@
                  ng-click="showVisionTextarea = true"
                  ng-focus="showVisionTextarea = true"
                  ng-class="{'placeholder': !project.vision_html}"
-                 ng-bind-html="(project.vision_html ? project.vision_html : '<p>${message(code: 'todo.is.ui.product.vision.placeholder')}</p>') | sanitize"></div>
+                 ng-bind-html="(project.vision_html ? project.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
         </div>
     </div>
 </script>
