@@ -28,7 +28,7 @@
                     ng-class="{'shown':availableBacklog.shown}"
                     ng-click="manageShownBacklog(availableBacklog)">
                 <i class="fa" ng-class="{'fa-circle-o':!availableBacklog.shown, 'fa-dot-circle-o':availableBacklog.shown}"></i>
-                {{ availableBacklog.name }}
+                {{ availableBacklog.isDefault ? message(availableBacklog.name) : availableBacklog.name }}
                 <span class="badge">{{ availableBacklog.count }}</span>
             </button>
         </div>

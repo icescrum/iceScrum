@@ -132,7 +132,7 @@ icescrum.marshaller = [
                  asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
                  exclude:['cliches']
         ],
-        backlog: [include:['count']],
+        backlog: [include:['count', 'isDefault']],
         activity: [include: ['important']],
         userpreferences:[asShort:['activity', 'language', 'emailsSettings']],
         productpreferences:[asShort:['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks', 'assignOnCreateTask',
