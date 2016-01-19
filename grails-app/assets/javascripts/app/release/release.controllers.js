@@ -169,9 +169,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller',
     // Init
     $scope.$watchCollection('project.releases', function(releases) {
         if (!_.isUndefined(releases)) {
-            var previousRelease = _.findLast(_.sortBy(releases, 'orderNumber'), function(release) {
-                return release.orderNumber < $scope.release.orderNumber;
-            });
+            var previousRelease = _.last(releases);
             if (_.isEmpty(previousRelease)) {
                 $scope.minStartDate = $scope.project.startDate;
             } else {
@@ -195,7 +193,6 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.formHolder = {};
     $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $state.go
     $scope.resetReleaseForm();
-    var sortedReleases = _.sortBy($scope.project.releases, 'orderNumber');
-    $scope.previousRelease = FormService.previous(sortedReleases, $scope.release);
-    $scope.nextRelease = FormService.next(sortedReleases, $scope.release);
+    $scope.previousRelease = FormService.previous($scope.project.releases, $scope.release);
+    $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);
 }]);
