@@ -162,7 +162,8 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 
         return !_.isEqual($scope.editableSprint, $scope.editableSprintReference);
     };
     $scope.update = function(sprint) {
-        SprintService.update(sprint, $scope.release).then(function() {
+        SprintService.update(sprint, $scope.release).then(function(updatedSprint) {
+            $scope.sprint = angular.extend($scope.sprint, updatedSprint); // explicit update is needed because if we are not in the context of a release then the sprint is stored nowhere so SprintService cannot update it
             $scope.resetSprintForm();
             $scope.notifySuccess('todo.is.ui.sprint.updated');
         });

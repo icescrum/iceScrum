@@ -71,19 +71,20 @@
                 <div class="clearfix no-padding">
                     <div class="form-half">
                         <label for="sprint.startDate">${message(code:'is.sprint.startDate')}</label>
-                        <div ng-class="{'input-group': authorizedSprint('update', sprint)}">
+                        <div ng-class="{'input-group': authorizedSprint('updateStartDate', sprint)}">
                             <input type="text"
                                    class="form-control"
                                    required
                                    ng-focus="editForm(true)"
                                    name="sprint.startDate"
+                                   ng-disabled="!authorizedSprint('updateStartDate', sprint)"
                                    ng-model="editableSprint.startDate"
                                    uib-datepicker-popup
                                    min-date="minStartDate"
                                    max-date="maxStartDate"
                                    is-open="startDateOptions.opened"/>
                             <span class="input-group-btn"
-                                  ng-if="authorizedSprint('update', sprint)">
+                                  ng-if="authorizedSprint('updateStartDate', sprint)">
                                 <button type="button"
                                         class="btn btn-default"
                                         ng-focus="editForm(true)"
@@ -95,19 +96,20 @@
                     </div>
                     <div class="form-half">
                         <label for="sprint.endDate">${message(code:'is.sprint.endDate')}</label>
-                        <div ng-class="{'input-group': authorizedSprint('update', sprint)}">
+                        <div ng-class="{'input-group': authorizedSprint('updateEndDate', sprint)}">
                             <input type="text"
                                    class="form-control"
                                    required
                                    ng-focus="editForm(true)"
                                    name="sprint.endDate"
+                                   ng-disabled="!authorizedSprint('updateEndDate', sprint)"
                                    ng-model="editableSprint.endDate"
                                    uib-datepicker-popup
                                    min-date="minEndDate"
                                    max-date="maxEndDate"
                                    is-open="endDateOptions.opened"/>
                             <span class="input-group-btn"
-                                  ng-if="authorizedSprint('update', sprint)">
+                                  ng-if="authorizedSprint('updateEndDate', sprint)">
                                 <button type="button"
                                         class="btn btn-default"
                                         ng-focus="editForm(true)"
@@ -143,10 +145,49 @@
                     <textarea name="goal"
                               class="form-control important"
                               ng-focus="editForm(true)"
+                              ng-disabled="!formHolder.editable"
                               ng-maxlength="5000"
                               msd-elastic
                               ng-model="editableSprint.goal"
                               placeholder="${message(code: 'todo.is.ui.sprint.nogoal')}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="doneDefinition">${message(code: 'is.sprint.doneDefinition')}</label>
+                    <textarea is-markitup
+                              class="form-control"
+                              name="doneDefinition"
+                              ng-model="editableSprint.doneDefinition"
+                              is-model-html="editableSprint.doneDefinition_html"
+                              ng-show="showDoneDefinitionTextarea"
+                              ng-blur="showDoneDefinitionTextarea = false"
+                              placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
+                    <div class="markitup-preview"
+                         ng-disabled="!formHolder.editable"
+                         ng-show="!showDoneDefinitionTextarea"
+                         ng-click="showDoneDefinitionTextarea = formHolder.editable"
+                         ng-focus="editForm(true); showDoneDefinitionTextarea = formHolder.editable"
+                         ng-class="{'placeholder': !editableSprint.doneDefinition_html}"
+                         tabindex="0"
+                         ng-bind-html="(editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
+                </div>
+                <div class="form-group" ng-if="sprint.state > 1">
+                    <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
+                    <textarea is-markitup
+                              class="form-control"
+                              name="retrospective"
+                              ng-model="editableSprint.retrospective"
+                              is-model-html="editableSprint.retrospective_html"
+                              ng-show="showRetrospectiveTextarea"
+                              ng-blur="showRetrospectiveTextarea = false"
+                              placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
+                    <div class="markitup-preview"
+                         ng-disabled="!formHolder.editable"
+                         ng-show="!showRetrospectiveTextarea"
+                         ng-click="showRetrospectiveTextarea = formHolder.editable"
+                         ng-focus="editForm(true); showRetrospectiveTextarea = formHolder.editable"
+                         ng-class="{'placeholder': !editableSprint.retrospective_html}"
+                         tabindex="0"
+                         ng-bind-html="(editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments.length > 0 ? '(' + sprint.attachments.length + ')' : '' }}</label>

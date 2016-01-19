@@ -44,7 +44,10 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     };
     this.update = function(sprint, release) {
         return Sprint.update({id: sprint.id, projectId: release.parentProduct.id}, sprint, function(sprint) {
-            angular.extend(_.find(release.sprints, { id: sprint.id }), sprint);
+            var existingSprint = _.find(release.sprints, {id: sprint.id});
+            if (existingSprint) {
+                angular.extend(existingSprint, sprint);
+            }
         }).$promise;
     };
     this.save = function(sprint, release) {
@@ -85,6 +88,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.authorizedSprint = function(action, sprint) {
         switch (action) {
             case 'create':
+            case 'update':
                 return Session.poOrSm();
             case 'activate':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.WAIT && sprint.activable;
@@ -92,8 +96,10 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
                 return Session.poOrSm() && sprint.state == SprintStatesByName.WAIT;
             case 'close':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.IN_PROGRESS;
+            case 'updateStartDate':
+                return Session.poOrSm() && sprint.state < SprintStatesByName.IN_PROGRESS;
+            case 'updateEndDate':
             case 'unPlan':
-            case 'update':
                 return Session.poOrSm() && sprint.state != SprintStatesByName.DONE;
             default:
                 return false;
