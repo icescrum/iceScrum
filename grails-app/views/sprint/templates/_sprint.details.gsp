@@ -141,11 +141,12 @@
                     <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
                 </div>
                 <div class="form-group">
-                    <label for="name">${message(code:'is.sprint.deliveredVersion')}</label>
-                    <input name="name"
+                    <label for="deliveredVersion">${message(code:'is.sprint.deliveredVersion')}</label>
+                    <input name="deliveredVersion"
                            ng-focus="editForm(true)"
                            ng-model="editableSprint.deliveredVersion"
                            type="text"
+                           ng-maxlength="255"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.sprint.nodeliveredversion')}"/>
                 </div>
