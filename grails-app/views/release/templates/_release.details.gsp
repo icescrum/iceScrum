@@ -74,6 +74,7 @@
                         <input required
                                name="name"
                                ng-focus="editForm(true)"
+                               ng-disabled="!formHolder.editable"
                                ng-model="editableRelease.name"
                                type="text"
                                class="form-control"
@@ -81,19 +82,20 @@
                     </div>
                     <div class="form-half">
                         <label for="release.startDate">${message(code:'is.release.startDate')}</label>
-                        <div ng-class="{'input-group': authorizedRelease('update', release)}">
+                        <div ng-class="{'input-group': authorizedRelease('updateDates', release)}">
                             <input type="text"
                                    class="form-control"
                                    required
                                    ng-focus="editForm(true)"
                                    name="release.startDate"
+                                   ng-disabled="!authorizedRelease('updateDates', release)"
                                    ng-model="editableRelease.startDate"
                                    uib-datepicker-popup
                                    min-date="minStartDate"
                                    max-date="maxStartDate"
                                    is-open="startDateOptions.opened"/>
                             <span class="input-group-btn"
-                                  ng-if="authorizedRelease('update', release)">
+                                  ng-if="authorizedRelease('updateDates', release)">
                                 <button type="button"
                                         class="btn btn-default"
                                         ng-focus="editForm(true)"
@@ -105,18 +107,19 @@
                     </div>
                     <div class="form-half">
                         <label for="release.endDate">${message(code:'is.release.endDate')}</label>
-                        <div ng-class="{'input-group': authorizedRelease('update', release)}">
+                        <div ng-class="{'input-group': authorizedRelease('updateDates', release)}">
                             <input type="text"
                                    class="form-control"
                                    required
                                    ng-focus="editForm(true)"
                                    name="release.endDate"
+                                   ng-disabled="!authorizedRelease('updateDates', release)"
                                    ng-model="editableRelease.endDate"
                                    uib-datepicker-popup
                                    min-date="minEndDate"
                                    is-open="endDateOptions.opened"/>
                             <span class="input-group-btn"
-                                  ng-if="authorizedRelease('update', release)">
+                                  ng-if="authorizedRelease('updateDates', release)">
                                 <button type="button"
                                         class="btn btn-default"
                                         ng-focus="editForm(true)"

@@ -90,10 +90,6 @@ class ReleaseController {
     def update(long product, long id) {
         def releaseParams = params.release
         Release release = Release.withRelease(product, id)
-        if (release.state == Release.STATE_DONE) {
-            returnError(text: message(code: 'is.release.error.update.state.done'))
-            return
-        }
         def startDate = releaseParams.startDate ? ServicesUtils.parseDateISO8601(releaseParams.startDate) : release.startDate
         def endDate = releaseParams.endDate ? ServicesUtils.parseDateISO8601(releaseParams.endDate) : release.endDate
         Release.withTransaction {

@@ -81,14 +81,19 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'Releas
     this.getTags = function() {
         return FormService.httpGet('finder/tag');
     };
-    this.getAllSprintsSorted = function(project){
+    this.getAllSprintsSorted = function(project) {
         return _.chain(project.releases).sortBy('orderNumber').map(function(release) {
             return _.sortBy(release.sprints, 'orderNumber');
         }).flatten().value();
     };
-    this.getCurrentOrNextSprint = function(project){
-        return _.find(_.sortBy(_.find(project.releases, { state: ReleaseStatesByName.IN_PROGRESS }).sprints, 'orderNumber'), function(sprint) {
-            return sprint.state < SprintStatesByName.DONE;
-        });
+    this.getCurrentOrNextSprint = function(project) {
+        var currentRelease = _.find(project.releases, {state: ReleaseStatesByName.IN_PROGRESS});
+        if (currentRelease) {
+            return _.find(_.sortBy(currentRelease.sprints, 'orderNumber'), function(sprint) {
+                return sprint.state < SprintStatesByName.DONE;
+            });
+        } else {
+            return null;
+        }
     }
 }]);

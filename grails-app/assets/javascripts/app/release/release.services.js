@@ -100,10 +100,10 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     };
     this.authorizedRelease = function(action, release) {
         switch (action) {
-            case 'update':
             case 'generateSprints':
             case 'autoPlan':
             case 'unPlan':
+            case 'updateDates':
                 return Session.poOrSm() && release.state != ReleaseStatesByName.DONE;
             case 'activate':
                 return Session.poOrSm() && release.state == ReleaseStatesByName.WAIT && release.activable;
@@ -112,6 +112,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
             case 'delete':
                 return Session.poOrSm() && release.state == ReleaseStatesByName.WAIT;
             case 'create':
+            case 'update':
                 return Session.poOrSm();
             case 'upload':
                 return Session.inProduct();
