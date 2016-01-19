@@ -141,6 +141,15 @@
                     <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
                 </div>
                 <div class="form-group">
+                    <label for="name">${message(code:'is.sprint.deliveredVersion')}</label>
+                    <input name="name"
+                           ng-focus="editForm(true)"
+                           ng-model="editableSprint.deliveredVersion"
+                           type="text"
+                           class="form-control"
+                           placeholder="${message(code: 'todo.is.ui.sprint.nodeliveredversion')}"/>
+                </div>
+                <div class="form-group">
                     <label for="goal">${message(code:'is.sprint.goal')}</label>
                     <textarea name="goal"
                               class="form-control important"
