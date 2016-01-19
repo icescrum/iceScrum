@@ -561,6 +561,35 @@ directives.directive('isMarkitup', ['$http', function($http) {
             selectable: '='
         },
         link: function(scope, element) {
+            // Scroll to selection on refresh
+            element.scope().$on('selectable-refresh', function() {
+                var scrollableContainerSelector = '.panel-body';
+                element.find(scrollableContainerSelector).addBack(scrollableContainerSelector).each(function(i, container) {
+                    container = $(container);
+                    var selectedElements = container.find('.is-selected');
+                    if (selectedElements.length > 0) {
+                        var anySelectedVisible = _.any(selectedElements, function(selectedElement) {
+                            selectedElement = angular.element(selectedElement);
+                            var containerTop = 0; // Use relative positions
+                            var containerBottom = container.height();
+                            var elTop = selectedElement.position().top;
+                            var elBottom = elTop + selectedElement.height();
+                            return elBottom > containerTop && elBottom < containerBottom || elTop < containerBottom && elTop > containerTop;
+                        });
+                        if (!anySelectedVisible) {
+                            var firstSelected = selectedElements.first();
+                            var offset = 45; // Hardcoded offset to compensate panel-heading & margin, TODO use dynamic offset
+                            var currentScroll = container.scrollTop(); // current scroll reduces the firstSelected top position, we must add it back to get the initial position
+                            var scrollTop = firstSelected.position().top - offset + currentScroll;
+                            // Rely on jquery animate :/
+                            container.animate({
+                                scrollTop: scrollTop
+                            }, 400);
+                        }
+                    }
+                });
+            });
+            // Selection / deselection on click
             var selectableOptions = scope.selectable;
             var selectedClass = 'is-selected';
             var selectedIdAttr = 'selectable-id';

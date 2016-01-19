@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controller', 'StoryService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, $controller, StoryService, StoryStatesByName, backlogs) {
+controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controller', '$timeout', 'StoryService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, $controller, $timeout, StoryService, StoryStatesByName, backlogs) {
     $controller('selectableCtrl', {$scope: $scope});
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
@@ -47,6 +47,9 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
         backlog.stories = $filter('orderBy')(filteredStories, sortOrder, backlog.orderBy.reverse);
         backlog.sortable = StoryService.authorizedStory('rank') && (backlog.name == 'Backlog' || backlog.name == 'Sandbox'); // TODO fix
         backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse;
+        $timeout(function() { // Timeout to wait for story rendering
+            $scope.$emit('selectable-refresh');
+        }, 0);
     };
     $scope.manageShownBacklog = function(backlog) {
         if (backlog.shown && $scope.backlogs.length > 1) {
