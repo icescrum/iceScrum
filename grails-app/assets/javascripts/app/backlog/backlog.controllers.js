@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controller', '$timeout', 'StoryService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, $controller, $timeout, StoryService, StoryStatesByName, backlogs) {
+controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controller', '$timeout', 'StoryService', 'BacklogService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, $controller, $timeout, StoryService, BacklogService, StoryStatesByName, backlogs) {
     $controller('selectableCtrl', {$scope: $scope});
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
@@ -37,7 +37,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
         var sortOrder = [backlog.orderBy.current.id, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
-        if (backlog.name == 'All' && backlog.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
+        if (BacklogService.isAll(backlog) && backlog.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
             var sortByStateGroupingByBacklogState = function(story) {
                 var orderCriteria = story.state == StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state; // Ignore the differences betweed accepted and estimated
                 return -orderCriteria; // "minus" the state to make done stories more prioritary
@@ -45,7 +45,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
             sortOrder.unshift(sortByStateGroupingByBacklogState);
         }
         backlog.stories = $filter('orderBy')(filteredStories, sortOrder, backlog.orderBy.reverse);
-        backlog.sortable = StoryService.authorizedStory('rank') && (backlog.name == 'Backlog' || backlog.name == 'Sandbox'); // TODO fix
+        backlog.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog)); // TODO fix
         backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse;
         $timeout(function() { // Timeout to wait for story rendering
             $scope.$emit('selectable-refresh');
@@ -103,9 +103,9 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
             var newRank = event.dest.index + 1;
             var sourceScope = event.source.sortableScope;
             var destScope = event.dest.sortableScope;
-            if (sourceScope.backlog.name == 'Backlog' && destScope.backlog.name == 'Sandbox') { // TODO fix
+            if (BacklogService.isBacklog(sourceScope.backlog) && BacklogService.isSandbox(destScope.backlog)) {
                 StoryService.returnToSandbox(story, newRank);
-            } else if (sourceScope.backlog.name == 'Sandbox' && destScope.backlog.name == 'Backlog') { // TODO fix
+            } else if (BacklogService.isSandbox(sourceScope.backlog) && BacklogService.isBacklog(destScope.backlog)) {
                 StoryService.acceptToBacklog(story, newRank);
             }
         },

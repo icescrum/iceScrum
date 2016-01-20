@@ -28,4 +28,14 @@ services.service("BacklogService", ['Backlog', 'Session', function(Backlog) {
     this.list = function() {
         return Backlog.query({shared: true}).$promise;
     };
+    // The functions below are a hack to identify "known" backlogs, we should do better (e.g. new attribute)
+    this.isAll = function(backlog) {
+        return backlog.filter == '{"story":{}}'
+    };
+    this.isSandbox = function(backlog) {
+        return backlog.filter == '{"story":{"state":1}}'
+    };
+    this.isBacklog = function(backlog) {
+        return backlog.filter == '{"story":{"state":[2,3]}}'
+    };
 }]);
