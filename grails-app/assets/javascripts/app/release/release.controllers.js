@@ -152,7 +152,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller',
             event.preventDefault(); // cancel the state change
             $scope.mustConfirmStateChange = false;
             $scope.confirm({
-                message: 'todo.is.ui.dirty.confirm',
+                message: $scope.message('todo.is.ui.dirty.confirm'),
                 condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
                 callback: function() {
                     if ($scope.flow != undefined && $scope.flow.isUploading()) {

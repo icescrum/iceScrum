@@ -157,7 +157,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$controller', 'T
             event.preventDefault(); // cancel the state change
             $scope.mustConfirmStateChange = false;
             $scope.confirm({
-                message: 'todo.is.ui.dirty.confirm',
+                message: $scope.message('todo.is.ui.dirty.confirm'),
                 condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
                 callback: function() {
                     if ($scope.flow != undefined && $scope.flow.isUploading()) {
@@ -180,8 +180,8 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$controller', 'T
         }
     };
     $scope.resetTaskForm();
-    //$scope.previousTask = FormService.previous(TaskService.list, $scope.task);
-    //$scope.nextTask = FormService.next(TaskService.list, $scope.task);
+    $scope.previousTask = FormService.previous(TaskService.list, $scope.task);
+    $scope.nextTask = FormService.next(TaskService.list, $scope.task);
 }]);
 
 controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
