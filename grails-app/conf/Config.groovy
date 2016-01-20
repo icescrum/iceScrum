@@ -105,7 +105,7 @@ icescrum.marshaller = [
         story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed', 'countDoneTasks'],
                includeCount:['comments'],
                textile:['notes'],
-               asShort:['state', 'effort','uid', 'name']],
+               asShort:['state', 'effort','uid', 'name', 'rank']],
         comment: [textile:['body'], include: ['poster']],
         product: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
                   exclude:['cliches'],

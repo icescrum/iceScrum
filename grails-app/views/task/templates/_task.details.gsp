@@ -66,12 +66,12 @@
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::previousTask.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                   href="#{{ ::viewName }}/task/{{ ::previousTask.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
                 <a ng-if="nextTask"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::nextTask.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="#{{ ::viewName }}/task/{{ ::nextTask.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a class="btn btn-default"
                    href="#{{ ::viewName }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">

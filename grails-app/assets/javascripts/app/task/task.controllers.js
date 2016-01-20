@@ -108,7 +108,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     });
 }]);
 
-controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$controller', 'TaskService', 'FormService', 'ProjectService', 'sprint', 'detailsTask', function($scope, $state, $controller, TaskService, FormService, ProjectService, sprint, detailsTask) {
+controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'TaskService', 'FormService', 'ProjectService', 'sprint', 'detailsTask', function($scope, $state, $filter, $controller, TaskService, FormService, ProjectService, sprint, detailsTask) {
     $controller('taskSprintCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions
@@ -180,8 +180,9 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$controller', 'T
         }
     };
     $scope.resetTaskForm();
-    $scope.previousTask = FormService.previous(TaskService.list, $scope.task);
-    $scope.nextTask = FormService.next(TaskService.list, $scope.task);
+    var sortedTasks = $filter('orderBy')(sprint.tasks, [function(task) { return - task.type }, 'parentStory.rank', 'state']);
+    $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
+    $scope.nextTask = FormService.next(sortedTasks, $scope.task);
 }]);
 
 controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
