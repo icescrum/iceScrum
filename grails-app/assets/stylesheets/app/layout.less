@@ -220,10 +220,17 @@ body > .container-fluid > .header {
           margin-top: -2px;
         }
         &.menuitem.active {
-          border-left: 1px solid transparent;
-          border-right: 1px solid transparent;
-          border-top: 1px solid transparent;
-          border-bottom: 4px solid #fff;
+          &:after {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            display: inline-block;
+            margin-left: -8px;
+            content: '';
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid @view-bg;
+            border-left: 8px solid transparent;
+          }
         }
         > a {
           padding-bottom: 5px;
@@ -315,7 +322,7 @@ body > .container-fluid > .main {
   display: flex;
   //view
   > .view {
-    background: #fafafa;
+    background: @view-bg;
     > .navbar-toolbar {
       padding: 5px 5px 0;
       border: none;

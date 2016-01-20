@@ -93,7 +93,7 @@ class ReleaseController {
         def startDate = releaseParams.startDate ? ServicesUtils.parseDateISO8601(releaseParams.startDate) : release.startDate
         def endDate = releaseParams.endDate ? ServicesUtils.parseDateISO8601(releaseParams.endDate) : release.endDate
         Release.withTransaction {
-            bindData(release, releaseParams, [include: ['name', 'goal', 'vision']])
+            bindData(release, releaseParams, [include: ['name', 'vision']])
             releaseService.update(release, startDate, endDate)
         }
         withFormat {
