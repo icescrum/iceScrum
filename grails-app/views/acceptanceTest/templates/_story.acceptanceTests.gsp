@@ -97,6 +97,6 @@
     </table>
 </div>
 <div class="panel-footer" ng-controller="acceptanceTestCtrl">
-    <div ng-include="'story.acceptanceTest.editor.html'"></div>
+    <div ng-if="authorizedAcceptanceTest('create', {parentStory: selected})" ng-include="'story.acceptanceTest.editor.html'"></div>
 </div>
 </script>

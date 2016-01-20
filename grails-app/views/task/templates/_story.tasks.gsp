@@ -56,6 +56,6 @@
     </table>
 </div>
 <div class="panel-footer">
-    <div ng-if="authorizedTask('create')" ng-include="'story.task.new.html'"></div>
+    <div ng-if="authorizedTask('create', {parentStory: selected})" ng-include="'story.task.new.html'"></div>
 </div>
 </script>
