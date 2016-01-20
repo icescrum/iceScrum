@@ -396,22 +396,35 @@ directives.directive('isMarkitup', ['$http', function($http) {
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
                 width = element.width() - margin.left - margin.right,
                 height = element.height() - margin.top - margin.bottom,
-                brush, x;
+                brush, x, xAxis, releases, sprints, sprintMargin = 10, releaseMargin = 15, extent1;
 
-            var rootSvg = d3.select(element[0])
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom);
+            var rootSvg = d3.select(element[0]).append("svg");
+            var svg = rootSvg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            var svg = rootSvg
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            //x axis
+            x = d3.time.scale().domain([new Date(), new Date()]).range([0, 0]);
+            xAxis = d3.svg.axis().scale(x).orient("bottom");
+
+            svg.select(".axis")
+                .call(xAxis)
+                .selectAll("text")
+                .attr('y', 7)
+                .attr('x', -10)
+                .style("text-anchor", null);
+
+            svg.append("rect").attr("class", "timeline-background");
+            svg.append("g").attr("class", "x axis");
+            releases = svg.append("g").attr("class", "releases");
+            sprints = svg.append("g").attr("class", "sprints");
+            svg.append("g").attr("class", "brush");
+
+            //brush selector
+            brush = d3.svg.brush().x(x).on("brushend", brushended);
+            svg.selectAll(".brush").call(brush).call(brush.event);
 
             scope.$watch(attrs.projectTimeline, function(project){
                 x.domain([new Date(_.first(project.releases).startDate), new Date(_.last(project.releases).endDate)]);
-
-                var releaseMargin = 15;
-                svg.select(".releases")
+                releases
                     .selectAll('rect')
                     .data(project.releases)
                     .enter()
@@ -422,8 +435,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
                     .attr("class", function(d){ return "release release-"+({ 1: 'default', 2: 'progress', 3: 'done' }[d.state]); });
 
-                var sprintMargin = 10;
-                svg.select(".sprints")
+                sprints
                     .selectAll('rect')
                     .data(ProjectService.getAllSprintsSorted(project))
                     .enter()
@@ -434,68 +446,24 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
                     .attr("class", function(d){ return "sprint sprint-"+({ 1: 'default', 2: 'progress', 3: 'done' }[d.state]); });
 
-                svg.select(".axis")
-                    .call(d3.svg.axis()
-                        .scale(x)
-                        .orient("bottom"))
-                    .selectAll("text")
-                    .attr('y', 7)
-                    .attr('x', -15)
-                    .style("text-anchor", null);
-
+                render();
                 //should be added as parameter
                 var currentOrNextSprint = ProjectService.getCurrentOrNextSprint(project);
                 if(currentOrNextSprint){
+                    extent1 = [currentOrNextSprint.startDate,currentOrNextSprint.endDate];
                     d3.select(".brush").transition()
-                        .call(brush.extent([currentOrNextSprint.startDate,currentOrNextSprint.endDate]))
+                        .call(brush.extent(extent1))
                         .call(brush.event);
                 }
             });
 
-            //background
-            svg.append("rect")
-                .attr("class", "timeline-background")
-                .attr("width", width)
-                .attr("height", height);
-
-            //x date axis
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")");
-
-            //group releases
-            var releases = svg.append("g")
-                .attr("class", "releases");
-
-            //group sprints
-            var sprints = svg.append("g")
-                .attr("class", "sprints");
-
-            //brush rect
-            svg.append("g")
-                .attr("class", "brush");
-
-            //x axis
-            x = d3.time.scale()
-                .range([0, width]);
-
-            //brush selector
-            brush = d3.svg.brush()
-                .x(x)
-                .on("brushend", brushended);
-
-            svg.selectAll(".brush")
-                .call(brush)
-                .call(brush.event);
-
-            svg.selectAll(".brush").selectAll("rect")
-                .attr("height", height);
-
             //snap to sprint
             function brushended() {
                 if (!d3.event.sourceEvent) return; // only transition after input
-                var extent0 = brush.extent(),
-                    extent1 = extent0.map(d3.time.day.round);
+                var extent0 = brush.extent();
+                //global var
+                extent1 = extent0.map(d3.time.day.round);
+
                 // if empty when rounded, use floor & ceil instead
                 if (extent1[0] >= extent1[1]) {
                     var release, sprint;
@@ -520,6 +488,35 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .call(brush.extent(extent1))
                     .call(brush.event);
             }
+
+            function render() {
+                width = element.width() - margin.left - margin.right;
+                x.range([0, width]);
+                xAxis.scale(x);
+
+                rootSvg.attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom);
+                svg.select('.timeline-background').attr("width", width).attr("height", height+ margin.top + margin.bottom);
+                svg.select('.x.axis').attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')').call(xAxis);
+                svg.selectAll(".brush").selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15*2);
+
+                releases.selectAll('rect')
+                    .attr('x', function(d) { return x(d.startDate); })
+                    .attr("width",  function(d) {return x(d.endDate) - x(d.startDate); });
+                sprints.selectAll('rect')
+                    .attr('x', function(d) { return x(d.startDate); })
+                    .attr("width",  function(d) { return x(d.endDate) - x(d.startDate); });
+
+                if(extent1){
+                    console.log(extent1);
+                    d3.select(".brush").transition()
+                        .call(brush.extent(extent1))
+                        .call(brush.event);
+                }
+            }
+
+            d3.select(window).on('resize', function(){
+                render();
+            });
         }
     }
 }]).directive('storyMenu', ['$compile', function($compile) { // For 140 stories, reduce display time by 1 s. and initial watchers by 1700 by loading menu only on first hover
