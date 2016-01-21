@@ -98,7 +98,8 @@ services.service("TaskService", ['$q', '$state', 'Task', 'Session', 'IceScrumEve
         switch (action) {
             case 'create':
             case 'copy':
-                return Session.inProduct() && (!task || !task.parentStory || task.parentStory.state != StoryStatesByName.DONE);
+                return Session.inProduct() &&
+                      (!task || !task.parentStory && task.backlog.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
             case 'rank':
                 return Session.sm() || Session.responsible(task) || Session.creator(task); // no check on sprint & story state because rank cannot be called from there
             case 'update':
