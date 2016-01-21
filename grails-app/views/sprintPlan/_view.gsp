@@ -25,34 +25,49 @@
      ng-class="{'sortable-disabled': !isSortingSprintPlan(sprint)}">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <a href ng-click="openSprint()">
-                {{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}
-            </a>
-            <div class="btn-group pull-right visible-on-hover">
-                <g:if test="${params?.printable}">
-                    <button type="button"
-                            class="btn btn-default"
-                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                            ng-click="print($event)"
-                            ng-href="{{ ::viewName }}/print"
-                            hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
+            <div class="btn-toolbar">
+                <a href ng-click="openSprint()">
+                    {{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}
+                </a>
+                <div class="btn-group pull-right"
+                     uib-dropdown
+                     uib-tooltip="${message(code:'todo.is.ui.filters')}">
+                    <button class="btn btn-default" uib-dropdown-toggle type="button">
+                        <span>{{ currentSprintFilter.name }}</span>
+                        <span class="caret"></span>
                     </button>
-                </g:if>
-                <g:if test="${params?.fullScreen}">
-                    <button type="button"
-                            class="btn btn-default"
-                            ng-show="!app.isFullScreen"
-                            ng-click="fullScreen()"
-                            uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                            hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
-                    </button>
-                    <button type="button"
-                            class="btn btn-default"
-                            ng-show="app.isFullScreen"
-                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                            ng-click="fullScreen()"><span class="fa fa-compress"></span>
-                    </button>
-                </g:if>
+                    <ul class="uib-dropdown-menu" role="menu">
+                        <li role="menuitem" ng-repeat="sprintFilter in sprintFilters">
+                            <a ng-click="changeSprintFilter(sprintFilter)" href>{{ sprintFilter.name }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-group pull-right visible-on-hover">
+                    <g:if test="${params?.printable}">
+                        <button type="button"
+                                class="btn btn-default"
+                                uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                                ng-click="print($event)"
+                                ng-href="{{ ::viewName }}/print"
+                                hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
+                        </button>
+                    </g:if>
+                    <g:if test="${params?.fullScreen}">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-show="!app.isFullScreen"
+                                ng-click="fullScreen()"
+                                uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
+                                hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
+                        </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-show="app.isFullScreen"
+                                uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                                ng-click="fullScreen()"><span class="fa fa-compress"></span>
+                        </button>
+                    </g:if>
+                </div>
             </div>
         </h3>
     </div>
@@ -85,7 +100,7 @@
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByTypeByState[11][taskState]"
+                    <div ng-repeat="task in tasksByTypeByState[11][taskState] | filter: currentSprintFilter.filter"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
@@ -112,7 +127,7 @@
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByTypeByState[10][taskState]"
+                    <div ng-repeat="task in tasksByTypeByState[10][taskState] | filter: currentSprintFilter.filter"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
@@ -143,7 +158,7 @@
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint) || !isSortingStory(story)"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
+                    <div ng-repeat="task in tasksByStoryByState[story.id][taskState] | filter: currentSprintFilter.filter"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>

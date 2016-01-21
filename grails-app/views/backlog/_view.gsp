@@ -88,7 +88,7 @@
                      uib-dropdown
                      uib-tooltip="${message(code:'todo.is.ui.sort')}">
                     <button class="btn btn-default" uib-dropdown-toggle type="button">
-                        <span id="sort">{{ backlog.orderBy.current.name }}</span>
+                        <span>{{ backlog.orderBy.current.name }}</span>
                         <span class="caret"></span>
                     </button>
                     <ul class="uib-dropdown-menu" role="menu">

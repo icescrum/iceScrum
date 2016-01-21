@@ -37,7 +37,7 @@
                      uib-tooltip="${message(code:'todo.is.ui.sort')}">
                     <button class="btn btn-default"
                             uib-dropdown-toggle type="button">
-                        <span id="sort">{{ orderBy.current.name }}</span>
+                        <span>{{ orderBy.current.name }}</span>
                         <span class="caret"></span>
                     </button>
                     <ul class="uib-dropdown-menu" role="menu">

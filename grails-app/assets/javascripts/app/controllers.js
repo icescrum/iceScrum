@@ -413,7 +413,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     $scope.viewName = 'sprintPlan';
     // Functions
     $scope.isSortingSprintPlan = function(sprint) {
-        return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
+        return Session.authenticated() && sprint.state < SprintStatesByName.DONE && $scope.isAllSprintFilter();
     };
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
@@ -455,6 +455,15 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
         fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.taskStates);
         fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.backlog.stories, 'id'), $scope.taskStates);
     };
+    $scope.changeSprintFilter = function(sprintFilter) {
+        $scope.currentSprintFilter = sprintFilter;
+    };
+    $scope.setAllSprintFilter = function() {
+        $scope.changeSprintFilter(_.find($scope.sprintFilters, {id: 'allTasks'}));
+    };
+    $scope.isAllSprintFilter = function() {
+        return $scope.currentSprintFilter.id == 'allTasks';
+    };
     // Init
     $scope.taskSortableOptions = {
         itemMoved: function(event) {
@@ -481,6 +490,13 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
             return sameSortable && isSortableDest;
         }
     };
+    $scope.sprintFilters = [
+        {id: 'allTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.allTasks'), filter: {}},
+        {id: 'myTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.myTasks'), filter: {responsible: {id: Session.user.id}}},
+        {id: 'freeTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.freeTasks'), filter: {responsible: null}},
+        {id: 'blockedTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.blockedTasks'), filter: {blocked: true}}
+    ];
+    $scope.setAllSprintFilter();
     $scope.sortableId = 'sprintPlan';
     $scope.sprint = sprint;
     $scope.backlog = {stories: _.sortBy(sprint.stories, 'rank')};
