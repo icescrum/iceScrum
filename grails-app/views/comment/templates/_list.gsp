@@ -26,16 +26,16 @@
         <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
             <td class="content">
                 <form name="formHolder.commentForm"
-                      ng-class="{'form-deletable': formHolder.deletable, 'form-editable': formHolder.editable, 'form-editing': formHolder.editing }"
+                      ng-class="{'toggle-container': formHolder.deletable, 'form-editable': formHolder.editable, 'form-editing': formHolder.editing }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding">
                         <div class="col-sm-1">
                             <img height="30px"
-                                 class="hidden-deletable"
+                                 class="toggle-hidden"
                                  ng-src="{{comment.poster | userAvatar}}"
                                  alt="{{comment.poster | userFullName}}"/>
-                            <button class="btn btn-danger visible-deletable"
+                            <button class="btn btn-danger toggle-visible"
                                     ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, selected] })"
                                     uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
                             </button>

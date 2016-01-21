@@ -24,12 +24,12 @@
 <div class="tasks panel-body">
     <table class="table">
         <tr ng-repeat="task in selected.tasks | orderBy:'dateCreated'">
-            <td class="content {{:: authorizedTask('delete', task) ? 'deletable' : '' }}">
+            <td class="content {{:: authorizedTask('delete', task) ? 'toggle-container' : '' }}">
                 <div class="clearfix no-padding">
                     <div class="col-sm-1">
-                        <button class="btn btn-default elemid hidden-deletable"
+                        <button class="btn btn-default elemid toggle-hidden"
                                 disabled="disabled">{{ task.uid }}</button>
-                        <button class="btn btn-danger visible-deletable"
+                        <button class="btn btn-danger toggle-visible"
                                 ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, selected] })"
                                 uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
                         </button>

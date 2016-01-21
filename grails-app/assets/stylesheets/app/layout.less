@@ -519,27 +519,18 @@ body > .container-fluid > .main {
             }
           }
 
-          .form-deletable, .deletable {
-            .visible-deletable {
-              .responsive-invisibility();
-            }
-            .hidden-deletable {
-              .responsive-visibility();
-            }
-            &:hover .visible-deletable {
-              .responsive-visibility();
-            }
-            &:hover .hidden-deletable {
-              .responsive-invisibility();
-            }
+          .toggle-visible {
+            .responsive-invisibility();
           }
-
-          form:not(.form-deletable) {
-            .visible-deletable {
-              .responsive-invisibility();
-            }
-            .hidden-deletable {
+          .toggle-hidden {
+            .responsive-visibility();
+          }
+          .toggle-container:hover {
+            .toggle-visible {
               .responsive-visibility();
+            }
+            .toggle-hidden {
+              .responsive-invisibility();
             }
           }
 

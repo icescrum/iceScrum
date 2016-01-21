@@ -26,7 +26,7 @@
         <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
             <td class="content">
                 <form name="formHolder.acceptanceTestForm"
-                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable, 'form-deletable':formHolder.deletable }"
+                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable, 'toggle-container':formHolder.deletable }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding form-group">
@@ -60,7 +60,7 @@
                             </ui-select>
                         </div>
                         <div class="col-sm-2 text-right">
-                            <button class="btn btn-danger pull-right visible-deletable"
+                            <button class="btn btn-danger pull-right toggle-visible"
                                     ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, selected] })"
                                     uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
                             </button>
