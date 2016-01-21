@@ -30,7 +30,7 @@ services.service("TaskService", ['$q', '$state', 'Task', 'Session', 'IceScrumEve
     this.getCrudMethods = function(obj) {
         var crudMethods = {};
         crudMethods[IceScrumEventType.CREATE] = function(task) {
-            if (obj.class == 'Story' ? task.parentStory.id == obj.id : task.backlog.id == obj.id) {
+            if (obj.class == 'Story' ? task.parentStory.id == obj.id : task.sprint.id == obj.id) {
                 var existingTask = _.find(obj.tasks, {id: task.id});
                 if (existingTask) {
                     angular.extend(existingTask, task);
@@ -99,13 +99,13 @@ services.service("TaskService", ['$q', '$state', 'Task', 'Session', 'IceScrumEve
             case 'create':
             case 'copy':
                 return Session.inProduct() &&
-                      (!task || !task.parentStory && task.backlog.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
+                      (!task || !task.parentStory && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
             case 'rank':
                 return Session.sm() || Session.responsible(task) || Session.creator(task); // no check on sprint & story state because rank cannot be called from there
             case 'update':
                 return (Session.sm() || Session.responsible(task) || Session.creator(task)) && task.state != TaskStatesByName.DONE;
             case 'delete':
-                return (Session.sm() || Session.responsible(task) || Session.creator(task));
+                return (Session.sm() || Session.responsible(task) || Session.creator(task)) && (!task.sprint || task.sprint.state != SprintStatesByName.DONE);
             case 'block':
                 return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE;
             case 'unBlock':

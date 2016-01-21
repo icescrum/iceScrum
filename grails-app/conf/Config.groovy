@@ -113,7 +113,7 @@ icescrum.marshaller = [
         team: [include:['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
         task:[exclude:['impediment','participants'],
               includeCount:['comments'],
-              include:['tags', 'attachments']],
+              include:['tags', 'attachments', 'sprint']],
         user:[exclude: ['password','accountExpired','accountLocked','passwordExpired'],
               asShort:['firstName', 'lastName'],
               textile:['notes']],

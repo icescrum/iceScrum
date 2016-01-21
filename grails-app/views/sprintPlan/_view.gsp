@@ -90,7 +90,7 @@
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>
-                    <div ng-if="authorizedTask('create', {backlog: sprint})" class="postit-container">
+                    <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
                         <a type="button"
                            ng-if="taskState == 0"
                            class="btn btn-primary"
@@ -117,7 +117,7 @@
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
                     </div>
-                    <div ng-if="authorizedTask('create', {backlog: sprint})" class="postit-container">
+                    <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
                         <a type="button"
                            ng-if="taskState == 0"
                            ng-click="openNewTaskByType(10)"
