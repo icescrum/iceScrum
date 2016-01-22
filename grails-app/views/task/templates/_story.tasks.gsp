@@ -33,13 +33,12 @@
                                 ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, selected] })"
                                 uib-tooltip="${message(code:'default.button.delete.label')}"><span class="fa fa-times"></span>
                         </button>
-
                     </div>
                     <div class="form-group col-sm-8">
                         <span class="name form-control-static">{{ task.name }}</span>
                     </div>
                     <div class="form-group col-sm-3">
-                        <span class="estimation form-control-static text-right">{{ task.estimation }}</span>
+                        <span class="remaining-time form-control-static text-right">{{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i></span>
                     </div>
                 </div>
                 <div class="clearfix no-padding" ng-if="task.description">
