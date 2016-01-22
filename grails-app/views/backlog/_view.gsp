@@ -60,7 +60,7 @@
                 <button type="button"
                         class="btn btn-default"
                         ng-click="toggleSelectableMultiple()"
-                        uib-tooltip="${message(code:'todo.is.ui.selectable.multiple')}">
+                        uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.multiple.disable/)}' : '${message(code: /todo.is.ui.selectable.multiple.enable/)}' }}">
                     <span class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></span>
                 </button>
             </div>
@@ -81,7 +81,7 @@
                         ng-if="backlog.sortable"
                         class="btn btn-default"
                         ng-click="orderBacklogByRank(backlog)"
-                        uib-tooltip="${message(code:'todo.is.ui.changeRank')}">
+                        uib-tooltip="{{ backlog.sorting ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                     <span ng-class="backlog.sorting ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                 </button>
                 <div class="btn-group"
@@ -137,6 +137,13 @@
                         ng-click="manageShownBacklog(backlog)"
                         uib-tooltip="${message(code:'is.ui.window.closeable')}">
                     <span class="fa fa-times"></span>
+                </button>
+            </div>
+            <div ng-if="backlog.sortable && !backlog.sorting" class="toolbar-warning">
+                <i class="fa fa-exclamation-triangle"></i>
+                ${message(code: 'todo.is.ui.sortable.backlog.warning')}
+                <button type="button" class="btn btn-default btn-sm" ng-click="orderBacklogByRank(backlog)">
+                    <span class="text-danger fa fa-hand-pointer-o"></span>
                 </button>
             </div>
         </div>

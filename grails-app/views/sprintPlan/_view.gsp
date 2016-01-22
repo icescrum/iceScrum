@@ -30,16 +30,18 @@
                     {{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}
                 </a>
                 <div class="btn-group pull-right"
-                     uib-dropdown
-                     uib-tooltip="${message(code:'todo.is.ui.filters')}">
+                     uib-dropdown>
                     <button type="button"
                             ng-if="isSortableSprintPlan(sprint)"
                             class="btn btn-default"
                             ng-click="setAllSprintFilter()"
-                            uib-tooltip="${message(code:'todo.is.ui.order')}">
+                            uib-tooltip="{{ isSortableSprintPlan(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                         <span ng-class="isSortingSprintPlan(sprint) ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                     </button>
-                    <button class="btn btn-default" uib-dropdown-toggle type="button">
+                    <button class="btn btn-default"
+                            uib-dropdown-toggle
+                            uib-tooltip="${message(code:'todo.is.ui.filters')}"
+                            type="button">
                         <span>{{ currentSprintFilter.name }}</span>
                         <span class="caret"></span>
                     </button>
@@ -75,6 +77,13 @@
                         </button>
                     </g:if>
                 </div>
+            </div>
+            <div ng-if="isSortableSprintPlan(sprint) && !isSortingSprintPlan(sprint)" class="toolbar-warning">
+                <i class="fa fa-exclamation-triangle"></i>
+                ${message(code: 'todo.is.ui.sortable.sprintPlan.warning')}
+                <button type="button" class="btn btn-default btn-sm" ng-click="setAllSprintFilter()">
+                    <span class="text-danger fa fa-hand-pointer-o"></span>
+                </button>
             </div>
         </h3>
     </div>
