@@ -409,7 +409,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     }
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', function($scope, $state, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint) {
+controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint) {
     $scope.viewName = 'sprintPlan';
     // Functions
     $scope.isSortableSprintPlan = function(sprint) {
@@ -437,7 +437,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'UserService', 'St
         var groupByStateAndSort = function(tasksDictionnary) {
             return _.mapValues(tasksDictionnary, function(tasks) {
                 return _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
-                    return _.sortBy(tasks, 'rank');
+                    return _.sortBy($filter('filter')(tasks, $scope.currentSprintFilter.filter), 'rank');
                 });
             });
         };
@@ -460,12 +460,18 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'UserService', 'St
     };
     $scope.changeSprintFilter = function(sprintFilter) {
         $scope.currentSprintFilter = sprintFilter;
+        $scope.refreshTasks();
         var editableUser = angular.copy(Session.user);
         editableUser.preferences.filterTask = sprintFilter.id;
         UserService.update(editableUser);
     };
     $scope.setAllSprintFilter = function() {
         $scope.changeSprintFilter(_.find($scope.sprintFilters, {id: 'allTasks'}));
+    };
+    $scope.storyFilter = function(story) {
+        return $scope.currentSprintFilter.id == 'allTasks' || _.any($scope.tasksByStoryByState[story.id], function(tasks) {
+            return tasks.length > 0;
+        });
     };
     // Init
     $scope.taskSortableOptions = {

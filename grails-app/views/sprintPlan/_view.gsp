@@ -107,7 +107,7 @@
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByTypeByState[11][taskState] | filter: currentSprintFilter.filter"
+                    <div ng-repeat="task in tasksByTypeByState[11][taskState]"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
@@ -134,7 +134,7 @@
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByTypeByState[10][taskState] | filter: currentSprintFilter.filter"
+                    <div ng-repeat="task in tasksByTypeByState[10][taskState]"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
@@ -150,7 +150,7 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-repeat="story in backlog.stories"
+            <tr ng-repeat="story in backlog.stories | filter: storyFilter"
                 ng-class="{'sortable-disabled': !isSortingStory(story)}">
                 <td style="width:16%"
                     class="postits grid-group"
@@ -165,7 +165,7 @@
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint) || !isSortingStory(story)"
                     ng-repeat="taskState in taskStates">
-                    <div ng-repeat="task in tasksByStoryByState[story.id][taskState] | filter: currentSprintFilter.filter"
+                    <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
