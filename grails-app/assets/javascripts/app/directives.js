@@ -389,7 +389,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             $compile(element)(scope);
         }
     };
-}]).directive('projectTimeline', ['ProjectService', '$window',function(ProjectService, $window){
+}]).directive('projectTimeline', ['ProjectService', '$timeout',function(ProjectService, $timeout){
     return {
         restrict: 'A',
         link:function(scope, element, attrs){
@@ -402,7 +402,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             var svg = rootSvg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             //x axis
-            x = d3.time.scale().domain([new Date(), new Date()]).range([0, 0]);
+            x = d3.time.scale().domain([]).range([0, 0]);
             xAxis = d3.svg.axis().scale(x).orient("bottom");
 
             svg.select(".axis")
@@ -423,7 +423,8 @@ directives.directive('isMarkitup', ['$http', function($http) {
             svg.selectAll(".brush").call(brush).call(brush.event);
 
             scope.$watch(attrs.projectTimeline, function(project){
-                x.domain([new Date(_.first(project.releases).startDate), new Date(_.last(project.releases).endDate)]);
+                console.log(_.first(project.releases).startDate, _.last(project.releases).endDate);
+                x.domain([_.first(project.releases).startDate, _.last(project.releases).endDate]);
                 releases
                     .selectAll('rect')
                     .data(project.releases)
@@ -462,27 +463,29 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 if (!d3.event.sourceEvent) return; // only transition after input
                 var extent0 = brush.extent();
                 //global var
-                extent1 = extent0.map(d3.time.day.round);
-
-                // if empty when rounded, use floor & ceil instead
-                if (extent1[0] >= extent1[1]) {
-                    var release, sprint;
-                    release = _.find(releases.selectAll("rect").data(), function(release) {
-                        return release.startDate <= extent1[0] && release.endDate >= extent1[1];
+                extent1 = extent0.map(d3.time.day.utc);
+                var findSprintsOrAReleaseInRange = function(dates){
+                    var res;
+                    res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
+                        return sprint.startDate >= dates[0] && sprint.endDate <= dates[1];
                     });
-                    if(release){
-                        sprint = _.find(sprints.selectAll("rect").data(), function(sprint) {
-                            return sprint.startDate <= extent1[0] && sprint.endDate >= extent1[1];
+                    if(!res.length){
+                        res = _.find(releases.selectAll("rect").data(), function(release) {
+                            return release.startDate <= dates[0] && release.endDate >= dates[0];
                         });
+                        if(res){
+                            var _res = _.find(sprints.selectAll("rect").data(), function(sprint) {
+                                return sprint.startDate <= dates[0] && sprint.endDate >= dates[0];
+                            });
+                            //always get an array
+                            res =  _res ? [_res] : [res];
+                        }
                     }
-                    var result = sprint ? sprint : release ? release : null;
-                    extent1[0] = result ? result.startDate : d3.time.day.floor(extent0[0]);
-                    extent1[1] = result ? result.endDate : d3.time.day.ceil(extent0[1]);
-                } else {
-                    var ssprints = _.filter(sprints.selectAll("rect").data(), function(sprint) {
-                        return sprint.startDate >= extent1[0] && sprint.endDate <= extent1[1];
-                    });
-                    console.log(ssprints);
+                    return res;
+                };
+                var result = findSprintsOrAReleaseInRange(extent1);
+                if(result && result.length > 0){
+                    extent1 = [new Date(_.first(result).startDate), new Date(_.last(result).endDate)];
                 }
                 d3.select(this).transition()
                     .call(brush.extent(extent1))
@@ -514,9 +517,14 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 }
             }
 
-            d3.select(window).on('resize', function(){
-                render();
+            //register render on resize
+            d3.select(window).on('resize', render);
+            //Register render when details view changed
+            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded',function() {
+                $timeout(render, 100);
             });
+            //Destroy listener when removed
+            scope.$on('$destroy', function() {  registeredRootScopeRender(); });
         }
     }
 }]).directive('storyMenu', ['$compile', function($compile) { // For 140 stories, reduce display time by 1 s. and initial watchers by 1700 by loading menu only on first hover
