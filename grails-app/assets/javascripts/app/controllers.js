@@ -409,11 +409,14 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     }
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', function($scope, $state, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint) {
+controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', function($scope, $state, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint) {
     $scope.viewName = 'sprintPlan';
     // Functions
+    $scope.isSortableSprintPlan = function(sprint) {
+        return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
+    };
     $scope.isSortingSprintPlan = function(sprint) {
-        return Session.authenticated() && sprint.state < SprintStatesByName.DONE && $scope.isAllSprintFilter();
+        return $scope.isSortableSprintPlan(sprint) && $scope.currentSprintFilter.id == 'allTasks';
     };
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
@@ -457,12 +460,12 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
     };
     $scope.changeSprintFilter = function(sprintFilter) {
         $scope.currentSprintFilter = sprintFilter;
+        var editableUser = angular.copy(Session.user);
+        editableUser.preferences.filterTask = sprintFilter.id;
+        UserService.update(editableUser);
     };
     $scope.setAllSprintFilter = function() {
         $scope.changeSprintFilter(_.find($scope.sprintFilters, {id: 'allTasks'}));
-    };
-    $scope.isAllSprintFilter = function() {
-        return $scope.currentSprintFilter.id == 'allTasks';
     };
     // Init
     $scope.taskSortableOptions = {
@@ -496,7 +499,8 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', 'StoryService', 'T
         {id: 'freeTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.freeTasks'), filter: {responsible: null}},
         {id: 'blockedTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.blockedTasks'), filter: {blocked: true}}
     ];
-    $scope.setAllSprintFilter();
+    var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
+    $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
     $scope.sortableId = 'sprintPlan';
     $scope.sprint = sprint;
     $scope.backlog = {stories: _.sortBy(sprint.stories, 'rank')};

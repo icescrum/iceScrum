@@ -134,7 +134,7 @@ icescrum.marshaller = [
         ],
         backlog: [include:['count', 'isDefault']],
         activity: [include: ['important']],
-        userpreferences:[asShort:['activity', 'language', 'emailsSettings']],
+        userpreferences:[asShort:['activity', 'language', 'emailsSettings', 'filterTask']],
         productpreferences:[asShort:['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks', 'assignOnCreateTask',
                                      'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment:[include: ['filename']],

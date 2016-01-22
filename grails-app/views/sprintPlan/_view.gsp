@@ -32,6 +32,13 @@
                 <div class="btn-group pull-right"
                      uib-dropdown
                      uib-tooltip="${message(code:'todo.is.ui.filters')}">
+                    <button type="button"
+                            ng-if="isSortableSprintPlan(sprint)"
+                            class="btn btn-default"
+                            ng-click="setAllSprintFilter()"
+                            uib-tooltip="${message(code:'todo.is.ui.order')}">
+                        <span ng-class="isSortingSprintPlan(sprint) ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
+                    </button>
                     <button class="btn btn-default" uib-dropdown-toggle type="button">
                         <span>{{ currentSprintFilter.name }}</span>
                         <span class="caret"></span>
