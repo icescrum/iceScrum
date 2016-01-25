@@ -29,7 +29,7 @@
                         ng-if="isSortableFeature()"
                         class="btn btn-default"
                         ng-click="orderByRank()"
-                        uib-tooltip="{{ isSortableFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
+                        uib-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                     <span ng-class="isSortingFeature() ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                 </button>
                 <div class="btn-group"

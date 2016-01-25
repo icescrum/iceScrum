@@ -509,10 +509,23 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
     $scope.sortableId = 'sprintPlan';
     $scope.sprint = sprint;
-    $scope.backlog = {stories: _.sortBy(sprint.stories, 'rank')};
+    $scope.backlog = sprint;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
-    $scope.$watch('sprint.tasks', $scope.refreshTasks, true); // Init and watch
+    $scope.allStories = StoryService.list;
+    $scope.$watch('sprint.tasks', function(newValue, oldValue) {
+        if (oldValue !== newValue) { // Prevent trigger watch on watch creation
+            $scope.refreshTasks();
+        }
+    }, true);
+    $scope.$watch('allStories', function(newValue, oldValue) {
+        if (oldValue !== newValue) { // Prevent trigger watch on watch creation
+            StoryService.listByType(sprint).then(function() {
+                TaskService.list(sprint); // Reload tasks and cascade to sprint.tasks watch that will take care of refreshing
+            });
+        }
+    }, true);
+    $scope.refreshTasks(); // Init
 }]);
 
 controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {

@@ -61,24 +61,18 @@ services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', '
     };
     this.listByType = function(obj) {
         obj.stories = [];
-        var mustLoad = false;
         _.each(obj.stories_ids, function(story) {
             var foundStory = _.find(self.list, {id: story.id});
             if (foundStory) {
                 obj.stories.push(foundStory);
-            } else {
-                mustLoad = true;
             }
         });
-        var promise;
-        if (mustLoad) {
-            promise = Story.query({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
-                obj.stories = stories;
-                self.mergeStories(stories);
-                return stories;
-            }).$promise;
-        }
-        return promise ? promise : $q.when(obj.stories);
+        var promise = Story.query({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
+            obj.stories = stories;
+            self.mergeStories(stories);
+            return stories;
+        }).$promise;
+        return obj.stories.length > 0 ? $q.when(obj.stories) : promise;
     };
     this.get = function(id) {
         var story = _.find(self.list, {id: id});

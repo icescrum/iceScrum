@@ -81,18 +81,14 @@ services.service("TaskService", ['$q', '$state', 'Task', 'Session', 'IceScrumEve
         return Task.update({id: task.id, action: 'copy'}, {}, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
     };
     this.list = function(obj) {
-        if (_.isEmpty(obj.tasks)) {
-            return Task.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
-                obj.tasks = data;
-                obj.tasks_count = obj.tasks.length;
-                var crudMethods = self.getCrudMethods(obj);
-                _.each(crudMethods, function(crudMethod, eventType) {
-                    PushService.registerListener('task', eventType, crudMethod);
-                });
-            }).$promise;
-        } else {
-            return $q.when(obj.tasks);
-        }
+        return Task.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
+            obj.tasks = data;
+            obj.tasks_count = obj.tasks.length;
+            var crudMethods = self.getCrudMethods(obj);
+            _.each(crudMethods, function(crudMethod, eventType) {
+                PushService.registerListener('task', eventType, crudMethod);
+            });
+        }).$promise;
     };
     this.authorizedTask = function(action, task) {
         switch (action) {

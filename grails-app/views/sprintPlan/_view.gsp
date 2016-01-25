@@ -22,7 +22,7 @@
 --}%
 
 <div class="panel panel-light"
-     ng-class="{'sortable-disabled': !isSortingSprintPlan(sprint)}">
+     ng-class="{'sortable-disabled': !isSortingSprintPlan(sprint), 'sprint-not-done': sprint.state != 3}">
     <div class="panel-heading">
         <h3 class="panel-title">
             <div class="btn-toolbar">
@@ -35,7 +35,7 @@
                             ng-if="isSortableSprintPlan(sprint)"
                             class="btn btn-default"
                             ng-click="setAllSprintFilter()"
-                            uib-tooltip="{{ isSortableSprintPlan(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
+                            uib-tooltip="{{ isSortingSprintPlan(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                         <span ng-class="isSortingSprintPlan(sprint) ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                     </button>
                     <button class="btn btn-default"
@@ -159,8 +159,8 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-repeat="story in backlog.stories | filter: storyFilter"
-                ng-class="{'sortable-disabled': !isSortingStory(story)}">
+            <tr ng-repeat="story in backlog.stories | filter: storyFilter | orderBy: 'rank'"
+                ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">
                 <td style="width:16%"
                     class="postits grid-group"
                     ng-controller="storyCtrl">

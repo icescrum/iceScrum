@@ -180,7 +180,7 @@
                          tabindex="0"
                          ng-bind-html="(editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
                 </div>
-                <div class="form-group" ng-if="sprint.state > 1">
+                <div class="form-group" ng-if="sprint.state > 2">
                     <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
                     <textarea is-markitup
                               class="form-control"
