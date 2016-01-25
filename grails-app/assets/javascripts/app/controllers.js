@@ -412,6 +412,12 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
 controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint) {
     $scope.viewName = 'sprintPlan';
     // Functions
+    $scope.isSelected = function(selectable) {
+        return $state.params.taskId ? $state.params.taskId == selectable.id : false;
+    };
+    $scope.hasSelected = function() {
+        return $state.params.taskId != undefined;
+    };
     $scope.isSortableSprintPlan = function(sprint) {
         return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
     };
@@ -497,6 +503,19 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
             var isSortableDest = destSortableScope.story ? $scope.isSortingStory(destSortableScope.story) : true;
             return sameSortable && isSortableDest;
+        }
+    };
+    $scope.selectableOptions = {
+        notSelectableSelector: '.action, button, a',
+        selectionUpdated: function(selectedIds) {
+            switch (selectedIds.length) {
+                case 0:
+                    $state.go($scope.viewName);
+                    break;
+                case 1:
+                    $state.go($scope.viewName + '.task.details' + ($state.params.tabId ? '.tab' : ''), {taskId: selectedIds});
+                    break;
+            }
         }
     };
     $scope.sprintFilters = [

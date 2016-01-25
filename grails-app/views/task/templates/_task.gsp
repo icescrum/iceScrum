@@ -51,8 +51,7 @@
     </div>
     <div class="actions">
         <span uib-dropdown class="action">
-            <a uib-dropdown-toggle
-               uib-tooltip="${message(code: 'todo.is.ui.actions')}">
+            <a uib-dropdown-toggle>
                 <i class="fa fa-cog"></i>
             </a>
             <ul class="uib-dropdown-menu"

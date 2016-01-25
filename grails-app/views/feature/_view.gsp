@@ -133,7 +133,7 @@
              is-disabled="!isSortingFeature()"
              ng-model="features">
             <div ng-class="{ 'is-selected': isSelected(feature) }"
-                 selectable-id="{{ feature.id }}"
+                 selectable-id="{{ ::feature.id }}"
                  as-sortable-item
                  ng-repeat="feature in features | orderBy:orderBy.current.id:orderBy.reverse"
                  class="postit-container">

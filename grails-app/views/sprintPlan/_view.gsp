@@ -87,7 +87,8 @@
             </div>
         </h3>
     </div>
-    <table class="panel-body table">
+    <table class="panel-body table"
+           selectable="selectableOptions">
         <thead>
             <tr>
                 <th style="width:16%; text-align:center;">
@@ -111,12 +112,15 @@
                 </td>
                 <td style="width:28%"
                     class="postits grid-group"
+                    ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByTypeByState[11][taskState]"
                     ng-init="taskType = 11"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByTypeByState[11][taskState]"
+                         ng-class="{ 'is-selected': isSelected(task) }"
+                         selectable-id="{{ ::task.id }}"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
@@ -138,12 +142,15 @@
                 </td>
                 <td style="width:28%"
                     class="postits grid-group"
+                    ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByTypeByState[10][taskState]"
                     ng-init="taskType = 10"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByTypeByState[10][taskState]"
+                         ng-class="{ 'is-selected': isSelected(task) }"
+                         selectable-id="{{ ::task.id }}"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
@@ -170,11 +177,14 @@
                 </td>
                 <td style="width:28%"
                     class="postits grid-group"
+                    ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByStoryByState[story.id][taskState]"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint) || !isSortingStory(story)"
                     ng-repeat="taskState in taskStates">
                     <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
+                         ng-class="{ 'is-selected': isSelected(task) }"
+                         selectable-id="{{ ::task.id }}"
                          as-sortable-item
                          class="postit-container">
                         <div ng-include="'task.html'"></div>
