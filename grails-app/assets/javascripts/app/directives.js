@@ -605,12 +605,12 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 if (!selectableOptions.notSelectableSelector || target.closest(selectableOptions.notSelectableSelector).length == 0) {
                     $document[0].getSelection().removeAllRanges(); // prevents text-selection when doing shift + click
                     var selectedIds = [];
-                    if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !$rootScope.app.selectableMultiple) {
+                    if (!selectableOptions.multiple || (!event.ctrlKey && !event.metaKey && !event.shiftKey && !$rootScope.app.selectableMultiple)) {
                         element.find(selectedSelector).removeClass(selectedClass);
                     }
                     var selectableElement = target.closest('[' + selectedIdAttr + ']');
                     if (selectableElement.length != 0) {
-                        if (lastSelected && event.shiftKey) { // Dark magic to emulate shift+click behavior observed in OS
+                        if (lastSelected && event.shiftKey && selectableOptions.multiple) { // Dark magic to emulate shift+click behavior observed in OS
                             var elementsBetween = function(el1, el2) {
                                 var elements = el1.parent().children('[' + selectedIdAttr + ']');
                                 var index1 = elements.index(el1);

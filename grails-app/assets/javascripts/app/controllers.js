@@ -306,6 +306,7 @@ controllers.controller('selectableCtrl', ['$scope', '$state', function($scope, $
     // Init
     $scope.selectableOptions = {
         notSelectableSelector: '.action, button, a',
+        multiple: true,
         selectionUpdated: function(selectedIds) {
             switch (selectedIds.length) {
                 case 0:
@@ -507,6 +508,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
     };
     $scope.selectableOptions = {
         notSelectableSelector: '.action, button, a',
+        multiple: false,
         selectionUpdated: function(selectedIds) {
             switch (selectedIds.length) {
                 case 0:
