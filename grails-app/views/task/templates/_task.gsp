@@ -23,7 +23,6 @@
 
 <script type="text/ng-template" id="task.html">
 <div style="{{ task.color | createGradientBackground }}"
-     ellipsis
      ng-class="{'task-blocked': task.blocked}"
      class="postit postit-small {{ task.color | contrastColor }}">
     <div class="head">
@@ -39,12 +38,9 @@
     </div>
     <div class="content"
          as-sortable-item-handle-if="authorizedTask('rank', task)">
-        <h3 class="title ellipsis-el"
+        <h3 class="title"
             ng-model="task.name"
             ng-bind-html="task.name | sanitize"></h3>
-        <div class="description ellipsis-el"
-             ng-model="task.description"
-             ng-bind-html="task.description | sanitize"></div>
     </div>
     <div class="tags">
         <a ng-repeat="tag in task.tags" href="#"><span class="tag">{{ tag }}</span></a>

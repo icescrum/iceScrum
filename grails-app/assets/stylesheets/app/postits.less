@@ -104,7 +104,7 @@
       }
       .postit {
         width: 200px;
-        height: 150px;
+        height: 160px;
         padding: 0 5px;
         position: relative;
         color: @gray;
@@ -187,7 +187,7 @@
           }
         }
         .content {
-          height: 65px;
+          height: 82px;
           text-shadow: 0 1px 0 #fff;
           padding-right: 10px;
           padding-left: 10px;
@@ -211,17 +211,14 @@
           }
         }
         .tags {
-          height: 20px;
-          padding-top: 2px;
+          height: 18px;
           text-align: right;
-          padding-right: 5px;
           a:hover {
             text-decoration: none;
             .tag {
               background-color: rgba(255, 255, 255, 1);
             }
           }
-          margin-right: -4px;
           .tag {
             color: @gray;
             margin-right: 4px;
@@ -232,7 +229,7 @@
           }
         }
         .actions {
-          padding-top: 4px;
+          text-align: center;
           > .action {
             width: 33px;
             text-align: center;
@@ -363,13 +360,26 @@
         }
         ////// TODO REMOVE
         &.postit-small {
-          width: 180px;
-          height: 135px;
+          width: 175px;
+          height: 115px;
           .content {
             h3.title {
               font-size: 15px;
+              display: block; /* Fallback for non-webkit */
+              display: -webkit-box;
+              max-width: 400px;
+              height: @font-size-postit-small*@line-height-postit-small*@lines-to-show-postit-small; /* Fallback for non-webkit */
+              margin: 0 auto;
+              font-size: @font-size-postit-small;
+              line-height: @line-height-postit-small;
+              -webkit-line-clamp: @lines-to-show-postit-small;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
-            height: 60px;
+            height:@font-size-postit-small*@line-height-postit-small*@lines-to-show-postit-small;
+            padding-left:5px;
+            padding-right:5px;
           }
         }
         // END TODO REMOVE
