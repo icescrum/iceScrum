@@ -82,8 +82,8 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'Releas
         return FormService.httpGet('finder/tag');
     };
     this.getAllSprintsSorted = function(project) {
-        return _.chain(project.releases).sortBy('orderNumber').map(function(release) {
-            return _.sortBy(release.sprints, 'orderNumber');
+        return _.chain(project.releases).map(function(release) {
+            return release.sprints;
         }).flatten().value();
     };
     this.getCurrentOrNextSprint = function(project) {

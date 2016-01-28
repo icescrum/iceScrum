@@ -358,6 +358,20 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                 }
                             }
                         })
+                        .state('releasePlan.sprint.list', {
+                            url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                            resolve: {
+                                listId: ['$stateParams', function($stateParams){
+                                    return $stateParams.listId.split(',');
+                                }]
+                            },
+                            views: {
+                                "details@releasePlan": {
+                                    templateUrl: 'sprint.multiple.html',
+                                    controller: 'sprintMultipleCtrl'
+                                }
+                            }
+                        })
                         .state('releasePlan.sprint.new', {
                             url: "/new",
                             views: {
