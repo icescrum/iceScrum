@@ -389,9 +389,14 @@ directives.directive('isMarkitup', ['$http', function($http) {
             $compile(element)(scope);
         }
     };
-}]).directive('projectTimeline', ['ProjectService', '$timeout',function(ProjectService, $timeout){
+}]).directive('timeline', ['ProjectService', '$timeout',function(ProjectService, $timeout){
     return {
         restrict: 'A',
+        scope: {
+            onSelect: '=',
+            timeline: '=',
+            selected: '='
+        },
         link:function(scope, element, attrs){
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
                 width = element.width() - margin.left - margin.right,
@@ -422,7 +427,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             brush = d3.svg.brush().x(x).on("brushend", brushended);
             svg.selectAll(".brush").call(brush).call(brush.event);
 
-            scope.$watch(attrs.projectTimeline, function(project){
+            scope.$watch('timeline', function(project){
                 x.domain([_.first(project.releases).startDate, _.last(project.releases).endDate]);
                 releases
                     .selectAll('rect')
@@ -449,7 +454,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 render();
              });
 
-            scope.$watch(attrs.selected, function(selected){
+            scope.$watch('selected', function(selected){
                 var selectedDates = [new Date(), new Date()];
                 if(selected && attrs.selected.length > 0){
                     selectedDates = [_.first(selected).startDate, _.last(selected).endDate];
@@ -487,11 +492,12 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 var result = findSprintsOrAReleaseInRange(extent1);
                 if(result && result.length > 0){
                     extent1 = [_.first(result).startDate, _.last(result).endDate];
+                    scope.onSelect(result);
                 }
                 d3.select(this).transition()
                     .call(brush.extent(extent1))
                     .call(brush.event);
-            }
+                }
 
             function render() {
                 width = element.width() - margin.left - margin.right;

@@ -388,10 +388,16 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.viewName = 'releasePlan';
     $scope.project = project;
     $scope.releases = project.releases;
-    debugger;
-    var currentOrNextSprint = ProjectService.getCurrentOrNextSprint(project);
-    if(currentOrNextSprint){
-        $scope.goToSprint(currentOrNextSprint);
+    $scope.timelineSelected = function(selectedElements) {
+        if(selectedElements.length == 0){
+            $state.go('releasePlan');
+        } else if(selectedElements.length == 1 && selectedElements[0].class == 'Release'){
+            $scope.goToRelease(selectedElements[0]);
+        } else if(selectedElements.length == 1 && selectedElements[0].class == 'Sprint'){
+            $scope.goToSprint(selectedElements[0]);
+        } else {
+            $state.go('releasePlan.sprint.list', {listIds:_.map(selectedElements, function(el) {return el.id;})});
+        }
     }
 }]);
 
