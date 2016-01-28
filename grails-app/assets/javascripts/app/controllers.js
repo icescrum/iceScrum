@@ -481,8 +481,15 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
         });
     };
     // Init
+    var fixTaskRank = function(tasks) {
+       _.each(tasks, function(task, index) {
+            task.rank = index + 1;
+        });
+    };
     $scope.taskSortableOptions = {
         itemMoved: function(event) {
+            fixTaskRank(event.source.sortableScope.modelValue);
+            fixTaskRank(event.dest.sortableScope.modelValue);
             var task = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
             var destScope = event.dest.sortableScope;
@@ -496,6 +503,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
             TaskService.update(task, sprint);
         },
         orderChanged: function(event) {
+            fixTaskRank(event.dest.sortableScope.modelValue);
             var task = event.source.itemScope.modelValue;
             task.rank = event.dest.index + 1;
             TaskService.update(task, sprint);

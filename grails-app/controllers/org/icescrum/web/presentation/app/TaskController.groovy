@@ -135,6 +135,11 @@ class TaskController {
         }
         Task.withTransaction {
             bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']])
+            if (taskParams.parentStory && !taskParams.type) {
+                task.type = null
+            } else if (taskParams.type && !taskParams.parentStory) {
+                task.parentStory = null
+            }
             taskService.update(task, user, false, props)
             task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
             withFormat {
