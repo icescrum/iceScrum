@@ -131,20 +131,6 @@ services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', '
             crudMethods[IceScrumEventType.UPDATE](story);
         }).$promise;
     };
-    this.updateRank = function(story, newRank, relatedStories) {
-        story.rank = newRank;
-        return self.update(story).then(function(story) {
-            angular.forEach(relatedStories, function(relatedStory, index) {
-                // Update the reference stories rather than stories from sortable updated model to ensure propagation and prevent erasure
-                var referenceStory = _.find(self.list, {id: relatedStory.id});
-                var currentRank = index + 1;
-                if (referenceStory.rank != currentRank) {
-                    referenceStory.rank = currentRank;
-                }
-            });
-            return story;
-        });
-    };
     this.activities = function(story, all) {
         var params = {action: 'activities', id: story.id};
         if (all) {

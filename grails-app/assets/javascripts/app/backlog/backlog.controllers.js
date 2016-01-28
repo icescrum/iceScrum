@@ -97,12 +97,19 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
     };
     // Init
     $scope.viewName = 'backlog';
+    var fixStoryRank = function(stories) {
+        _.each(stories, function(story, index) {
+            story.rank = index + 1;
+        });
+    };
     $scope.backlogSortableOptions = {
         itemMoved: function(event) {
             var story = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
             var sourceScope = event.source.sortableScope;
             var destScope = event.dest.sortableScope;
+            fixStoryRank(sourceScope.modelValue);
+            fixStoryRank(destScope.modelValue);
             if (BacklogService.isBacklog(sourceScope.backlog) && BacklogService.isSandbox(destScope.backlog)) {
                 StoryService.returnToSandbox(story, newRank);
             } else if (BacklogService.isSandbox(sourceScope.backlog) && BacklogService.isBacklog(destScope.backlog)) {
@@ -110,10 +117,10 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
             }
         },
         orderChanged: function(event) {
+            fixStoryRank(event.dest.sortableScope.modelValue);
             var story = event.source.itemScope.modelValue;
-            var newStories = event.dest.sortableScope.modelValue;
-            var newRank = event.dest.index + 1;
-            StoryService.updateRank(story, newRank, newStories);
+            story.rank = event.dest.index + 1;
+            StoryService.update(story);
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;

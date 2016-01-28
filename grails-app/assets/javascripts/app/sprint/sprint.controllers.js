@@ -62,20 +62,25 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
         return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
     };
     // Init
+    var fixStoryRank = function(stories) {
+        _.each(stories, function(story, index) {
+            story.rank = index + 1;
+        });
+    };
     $scope.sprintSortableOptions = {
         itemMoved: function(event) {
-            var story = event.source.itemScope.modelValue;
             var destScope = event.dest.sortableScope;
+            fixStoryRank(event.source.sortableScope.modelValue);
+            fixStoryRank(destScope.modelValue);
+            var story = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
             StoryService.plan(story, destScope.sprint, newRank);
         },
         orderChanged: function(event) {
+            fixStoryRank(event.dest.sortableScope.modelValue);
             var story = event.source.itemScope.modelValue;
-            var newStories = event.dest.sortableScope.modelValue;
-            var newRank = event.dest.index + 1;
-            StoryService.updateRank(story, newRank, newStories).then(function() {
-                $scope.backlog = {stories: _.sortBy($scope.sprint.stories, 'rank')}; // I don't know why it is necessary... but it is
-            });
+            story.rank = event.dest.index + 1;
+            StoryService.update(story);
         },
         accept: function (sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
