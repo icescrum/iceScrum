@@ -370,7 +370,7 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
     $scope.orderByRank();
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ReleaseStatesByName', 'SprintStatesByName', 'ProjectService', 'project', function($scope, $state, ReleaseService, SprintService, ReleaseStatesByName, SprintStatesByName, ProjectService, project) {
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'project', function($scope, $state, ReleaseService, SprintService, ProjectService, project) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -384,29 +384,14 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.goToSprint = function(sprint) {
         $state.go('releasePlan.sprint.details', {id: sprint.id});
     };
-    $scope.isShownSprint = function(sprint) {
-        return _.contains($scope.selectedSprintsIds, sprint.id);
-    };
-    $scope.manageShownSprint = function(sprint) {
-        var allSprintsSorted = ProjectService.getAllSprintsSorted(project);
-        if ($scope.isShownSprint(sprint)) {
-            _.pull($scope.selectedSprintsIds, sprint.id);
-        } else {
-            $scope.selectedSprintsIds.push(sprint.id);
-        }
-        $scope.selectedSprints = _.filter(allSprintsSorted, function(sprint) {
-            return _.contains($scope.selectedSprintsIds, sprint.id);
-        });
-    };
     // Init
     $scope.viewName = 'releasePlan';
     $scope.project = project;
     $scope.releases = project.releases;
-    $scope.selectedSprintsIds = [];
-    $scope.selectedSprints = [];
-    var currentOrNextSprit = ProjectService.getCurrentOrNextSprint(project);
-    if (currentOrNextSprit) {
-        $scope.manageShownSprint(currentOrNextSprit);
+    debugger;
+    var currentOrNextSprint = ProjectService.getCurrentOrNextSprint(project);
+    if(currentOrNextSprint){
+        $scope.goToSprint(currentOrNextSprint);
     }
 }]);
 

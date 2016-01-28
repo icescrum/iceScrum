@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="backlogs-list">
-    <div class="timeline" project-timeline="project"></div>
+    <div class="timeline" project-timeline="project" selected="selectedSprints"></div>
     <hr>
 </div>
 

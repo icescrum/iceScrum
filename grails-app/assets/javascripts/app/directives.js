@@ -423,7 +423,6 @@ directives.directive('isMarkitup', ['$http', function($http) {
             svg.selectAll(".brush").call(brush).call(brush.event);
 
             scope.$watch(attrs.projectTimeline, function(project){
-                console.log(_.first(project.releases).startDate, _.last(project.releases).endDate);
                 x.domain([_.first(project.releases).startDate, _.last(project.releases).endDate]);
                 releases
                     .selectAll('rect')
@@ -448,14 +447,16 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .attr("class", function(d){ return "sprint sprint-"+({ 1: 'default', 2: 'progress', 3: 'done' }[d.state]); });
 
                 render();
-                //should be added as parameter
-                var currentOrNextSprint = ProjectService.getCurrentOrNextSprint(project);
-                if(currentOrNextSprint){
-                    extent1 = [currentOrNextSprint.startDate,currentOrNextSprint.endDate];
-                    d3.select(".brush").transition()
-                        .call(brush.extent(extent1))
-                        .call(brush.event);
+             });
+
+            scope.$watch(attrs.selected, function(selected){
+                var selectedDates = [new Date(), new Date()];
+                if(selected && attrs.selected.length > 0){
+                    selectedDates = [_.first(selected).startDate, _.last(selected).endDate];
                 }
+                d3.select(".brush").transition()
+                    .call(brush.extent(selectedDates))
+                    .call(brush.event);
             });
 
             //snap to sprint
@@ -485,7 +486,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 };
                 var result = findSprintsOrAReleaseInRange(extent1);
                 if(result && result.length > 0){
-                    extent1 = [new Date(_.first(result).startDate), new Date(_.last(result).endDate)];
+                    extent1 = [_.first(result).startDate, _.last(result).endDate];
                 }
                 d3.select(this).transition()
                     .call(brush.extent(extent1))
@@ -510,7 +511,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .attr("width",  function(d) { return x(d.endDate) - x(d.startDate); });
 
                 if(extent1){
-                    console.log(extent1);
+                    //console.log(extent1);
                     d3.select(".brush").transition()
                         .call(brush.extent(extent1))
                         .call(brush.event);
