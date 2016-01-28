@@ -343,10 +343,12 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
     $scope.viewName = 'feature';
     $scope.features = features;
     var updateRank = function(event) {
+        _.each(event.dest.sortableScope.modelValue, function(feature, index) {
+            feature.rank = index + 1;
+        });
         var feature = event.source.itemScope.modelValue;
-        var newFeatures = event.dest.sortableScope.modelValue;
-        var newRank = event.dest.index + 1;
-        FeatureService.updateRank(feature, newRank, newFeatures);
+        feature.rank = event.dest.index + 1;
+        FeatureService.update(feature);
     };
     $scope.featureSortableOptions = {
         itemMoved: updateRank,
