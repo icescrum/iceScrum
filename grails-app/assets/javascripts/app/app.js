@@ -376,6 +376,18 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                         }
                                     }
                                 })
+                            .state('releasePlan.release.sprint.multiple', {
+                                url: "/{listId:[0-9]+(?:[\,][0-9]+)+}"
+                            })
+                                .state('releasePlan.release.sprint.multiple.details', {
+                                    url: "/details",
+                                    views: {
+                                        "details@releasePlan": {
+                                            templateUrl: 'sprint.multiple.html',
+                                            controller: 'sprintMultipleCtrl'
+                                        }
+                                    }
+                                })
                 .state('sprintPlan', {
                     url: "/sprintPlan/{id:int}",
                     params: {

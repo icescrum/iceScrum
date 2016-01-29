@@ -243,3 +243,6 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 
         $scope.nextSprint = FormService.next(sortedSprints, $scope.sprint);
     });
 }]);
+
+controllers.controller('sprintMultipleCtrl', ['$scope', function($scope) {
+}]);

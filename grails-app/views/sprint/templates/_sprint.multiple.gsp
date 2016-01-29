@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2015 Kagilum.
+- Copyright (c) 2016 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -20,8 +20,14 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:render template="/sprint/templates/sprint.details" />
-<g:render template="/sprint/templates/sprint.menu" />
-<g:render template="/sprint/templates/sprint.multiple" />
-<g:render template="/sprint/templates/sprint.new" />
-<g:render template="/sprint/templates/sprint.tooltip" />
+<script type="text/ng-template" id="sprint.multiple.html">
+<div class="panel panel-light">
+    <div class="panel-heading">
+        <h3 class="panel-title row">
+            {{ sprints.length }}
+        </h3>
+    </div>
+    <div ui-view="details-tab">
+    </div>
+</div>
+</script>

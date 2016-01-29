@@ -396,21 +396,31 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
         } else if (selectedElements.length == 1 && selectedElements[0].class == 'Release') {
             var release = selectedElements[0];
             $state.go('releasePlan.release.details', {id: release.id});
-        } else if (selectedElements.length >= 1 && selectedElements[0].class == 'Sprint') {
+        } else if (selectedElements.length == 1 && selectedElements[0].class == 'Sprint') {
             var sprint = selectedElements[0];
             var releaseId = sprint.parentRelease.id;
             $state.go('releasePlan.release.sprint.withId.details', {id: releaseId, sprintId: sprint.id});
+        } else {
+            var releaseId = selectedElements[0].parentRelease.id;
+            $state.go('releasePlan.release.sprint.multiple.details', {id: releaseId, listId: _.map(selectedElements, 'id')});
         }
     };
-
-    $scope.$watchGroup([function() { return $state.params.id; }, function() { return $state.params.sprintId; }, function() { return $state.$current.self.name; }], function(newValues) {
-        var releaseId = newValues[0];
-        var sprintId = newValues[1];
-        var stateName = newValues[2];
+    $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.id; }, function() { return $state.params.sprintId; }, function() { return $state.params.listId; }], function(newValues) {
+        var stateName = newValues[0];
+        var releaseId = newValues[1];
+        var sprintId = newValues[2];
+        var sprintListId = newValues[3];
         var release = _.find($scope.releases, {id: releaseId});
         if (release && stateName.indexOf('.sprint') != -1) {
             if (sprintId) {
                 $scope.sprints = [_.find(release.sprints, {id: sprintId})]
+            } else if (sprintListId) {
+                var ids = _.map(sprintListId.split(','), function(id) {
+                    return parseInt(id);
+                });
+                $scope.sprints = _.filter(release.sprints, function(sprint) {
+                    return _.contains(ids, sprint.id);
+                })
             } else {
                 $scope.sprints = [_.last(release.sprints)]; // TODO FIX
             }
