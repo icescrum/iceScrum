@@ -330,8 +330,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     .state('releasePlan.release', {
                         url: "/{id:int}",
                         resolve: {
-                            detailsRelease: ['ReleaseService', '$stateParams', 'project', function(ReleaseService, $stateParams, project){
-                                return ReleaseService.get($stateParams.id, project);
+                            detailsRelease: ['$stateParams', 'releases', function($stateParams, releases){
+                                return _.find(releases, {id: $stateParams.id})
                             }],
                             sprints: ['detailsRelease', function(detailsRelease) {
                                 return detailsRelease.sprints;
@@ -362,8 +362,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             .state('releasePlan.release.sprint.withId', {
                                 url: "/{sprintId:int}",
                                 resolve: {
-                                    detailsSprint: ['SprintService', '$stateParams', 'project', function(SprintService, $stateParams, project){
-                                        return SprintService.get($stateParams.sprintId, project);
+                                    detailsSprint: ['$stateParams', 'detailsRelease', function($stateParams, detailsRelease) {
+                                        return _.find(detailsRelease.sprints, {id: $stateParams.sprintId});
                                     }]
                                 }
                             })
