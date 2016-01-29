@@ -372,7 +372,7 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
     $scope.orderByRank();
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'project', function($scope, $state, ReleaseService, SprintService, ProjectService, project) {
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'project', '$stateParams', function($scope, $state, ReleaseService, SprintService, ProjectService, project, $stateParams) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -380,27 +380,43 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.authorizedSprint = function(action, sprint) {
         return SprintService.authorizedSprint(action, sprint);
     };
-    $scope.goToRelease = function(release) {
-        $state.go('releasePlan.details', {id: release.id});
-    };
-    $scope.goToSprint = function(sprint) {
-        $state.go('releasePlan.sprint.details', {id: sprint.id});
-    };
     // Init
     $scope.viewName = 'releasePlan';
     $scope.project = project;
     $scope.releases = project.releases;
+    $scope.sprints = [];
     $scope.timelineSelected = function(selectedElements) {
-        if(selectedElements.length == 0){
+        if (selectedElements.length == 0) {
             $state.go('releasePlan');
-        } else if(selectedElements.length == 1 && selectedElements[0].class == 'Release'){
-            $scope.goToRelease(selectedElements[0]);
-        } else if(selectedElements.length == 1 && selectedElements[0].class == 'Sprint'){
-            $scope.goToSprint(selectedElements[0]);
-        } else {
-            $state.go('releasePlan.sprint.list', {listIds:_.map(selectedElements, function(el) {return el.id;})});
+        } else if (selectedElements.length == 1 && selectedElements[0].class == 'Release') {
+            var release = selectedElements[0];
+            $state.go('releasePlan.release.details', {id: release.id});
+        } else if (selectedElements.length >= 1 && selectedElements[0].class == 'Sprint') {
+            var sprint = selectedElements[0];
+            var releaseId = sprint.parentRelease.id;
+            $state.go('releasePlan.release.sprint.withId.details', {id: releaseId, sprintId: sprint.id});
         }
-    }
+    };
+    $scope.$watchGroup([function() { return $state.params.id; }, function() { return $state.params.sprintId; }, function() { return $state.$current.self.name; }], function(newValues) {
+        var releaseId = newValues[0];
+        var sprintId = newValues[1];
+        var stateName = newValues[2];
+        var release = _.find($scope.releases, {id: releaseId});
+        if (release && stateName.indexOf('.sprint') != -1) {
+            if (sprintId) {
+                $scope.sprints = [_.find(release.sprints, {id: sprintId})]
+            } else {
+                $scope.sprints = [_.last(release.sprints)]; // TODO FIX
+            }
+        } else {
+            if (!release) {
+                release = _.first($scope.releases); // TODO FIX
+            }
+            if (release) {
+                $scope.sprints = release.sprints
+            }
+        }
+    });
 }]);
 
 controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint) {

@@ -327,60 +327,55 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             }
                         }
                     })
-                    .state('releasePlan.details', {
+                    .state('releasePlan.release', {
                         url: "/{id:int}",
                         resolve: {
                             detailsRelease: ['ReleaseService', '$stateParams', 'project', function(ReleaseService, $stateParams, project){
                                 return ReleaseService.get($stateParams.id, project);
+                            }],
+                            sprints: ['detailsRelease', function(detailsRelease) {
+                                return detailsRelease.sprints;
                             }]
-                        },
-                        views: {
-                            "details": {
-                                templateUrl: 'release.details.html',
-                                controller: 'releaseDetailsCtrl'
-                            }
                         }
                     })
-                    .state('releasePlan.sprint', {
-                        url: "/sprint"
-                    })
-                        .state('releasePlan.sprint.details', {
-                            url: "/{id:int}",
-                            resolve: {
-                                detailsSprint: ['SprintService', '$stateParams', 'project', function(SprintService, $stateParams, project){
-                                    return SprintService.get($stateParams.id, project);
-                                }]
-                            },
+                        .state('releasePlan.release.details', {
+                            url: "/details",
                             views: {
                                 "details@releasePlan": {
-                                    templateUrl: 'sprint.details.html',
-                                    controller: 'sprintDetailsCtrl'
+                                    templateUrl: 'release.details.html',
+                                    controller: 'releaseDetailsCtrl'
                                 }
                             }
                         })
-                        .state('releasePlan.sprint.list', {
-                            url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                            resolve: {
-                                listId: ['$stateParams', function($stateParams){
-                                    return $stateParams.listId.split(',');
-                                }]
-                            },
-                            views: {
-                                "details@releasePlan": {
-                                    templateUrl: 'sprint.multiple.html',
-                                    controller: 'sprintMultipleCtrl'
-                                }
-                            }
+                        .state('releasePlan.release.sprint', {
+                            url: "/sprint"
                         })
-                        .state('releasePlan.sprint.new', {
-                            url: "/new",
-                            views: {
-                                "details@releasePlan": {
-                                    templateUrl: 'sprint.new.html',
-                                    controller: 'sprintNewCtrl'
+                            .state('releasePlan.release.sprint.new', {
+                                url: "/new",
+                                views: {
+                                    "details@releasePlan": {
+                                        templateUrl: 'sprint.new.html',
+                                        controller: 'sprintNewCtrl'
+                                    }
                                 }
-                            }
-                        })
+                            })
+                            .state('releasePlan.release.sprint.withId', {
+                                url: "/{sprintId:int}",
+                                resolve: {
+                                    detailsSprint: ['SprintService', '$stateParams', 'project', function(SprintService, $stateParams, project){
+                                        return SprintService.get($stateParams.sprintId, project);
+                                    }]
+                                }
+                            })
+                                .state('releasePlan.release.sprint.withId.details', {
+                                    url: "/details",
+                                    views: {
+                                        "details@releasePlan": {
+                                            templateUrl: 'sprint.details.html',
+                                            controller: 'sprintDetailsCtrl'
+                                        }
+                                    }
+                                })
                 .state('sprintPlan', {
                     url: "/sprintPlan/{id:int}",
                     params: {

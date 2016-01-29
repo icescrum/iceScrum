@@ -78,19 +78,11 @@
 </style>
 <div class="backlogs-list-details">
     <div class="panel panel-light"
-         ng-repeat="sprint in selectedSprints"
+         ng-repeat="sprint in sprints"
          ng-controller="sprintBacklogCtrl">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <a href="#/{{ ::viewName }}/sprint/{{ ::sprint.id }}">{{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}</a>
-                <div class="btn-group pull-right visible-on-hover">
-                    <button type="button"
-                            class="btn btn-default"
-                            ng-click="manageShownSprint(sprint)"
-                            uib-tooltip="${message(code:'is.ui.window.closeable')}">
-                        <span class="fa fa-times"></span>
-                    </button>
-                </div>
+                {{ release.name + ' ' + sprint.orderNumber }}
             </h3>
         </div>
         <div class="panel-body">
