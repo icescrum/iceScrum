@@ -427,11 +427,11 @@ directives.directive('isMarkitup', ['$http', function($http) {
             brush = d3.svg.brush().x(x).on("brushend", brushended);
             svg.selectAll(".brush").call(brush).call(brush.event);
 
-            scope.$watch('timeline', function(project){
-                x.domain([_.first(project.releases).startDate, _.last(project.releases).endDate]);
+            scope.$watch('timeline', function(_releases){
+                x.domain([_.first(_releases).startDate, _.last(_releases).endDate]);
                 releases
                     .selectAll('rect')
-                    .data(project.releases)
+                    .data(_releases)
                     .enter()
                     .append("rect")
                     .attr("y", releaseMargin)
@@ -440,9 +440,11 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
                     .attr("class", function(d){ return "release release-"+({ 1: 'default', 2: 'progress', 3: 'done' }[d.state]); });
 
+                console.log(ProjectService.getAllSprints(_releases));
+
                 sprints
                     .selectAll('rect')
-                    .data(ProjectService.getAllSprintsSorted(project))
+                    .data(ProjectService.getAllSprints(_releases))
                     .enter()
                     .append("rect")
                     .attr("y", sprintMargin+releaseMargin)

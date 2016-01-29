@@ -372,7 +372,7 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
     $scope.orderByRank();
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'project', '$stateParams', function($scope, $state, ReleaseService, SprintService, ProjectService, project, $stateParams) {
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, project, releases) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -383,8 +383,13 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     // Init
     $scope.viewName = 'releasePlan';
     $scope.project = project;
+
+    //TODO bug fix: releases MAY BE empty on refresh
+    project.releases = releases;
+
     $scope.releases = project.releases;
     $scope.sprints = [];
+
     $scope.timelineSelected = function(selectedElements) {
         if (selectedElements.length == 0) {
             $state.go('releasePlan');
@@ -397,6 +402,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
             $state.go('releasePlan.release.sprint.withId.details', {id: releaseId, sprintId: sprint.id});
         }
     };
+
     $scope.$watchGroup([function() { return $state.params.id; }, function() { return $state.params.sprintId; }, function() { return $state.$current.self.name; }], function(newValues) {
         var releaseId = newValues[0];
         var sprintId = newValues[1];
