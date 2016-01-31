@@ -377,7 +377,26 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     }
-}).directive('asSortableItemHandleIf', ['$compile', function($compile) {
+})
+    .directive('inputGroupFixWdith', ['$window', '$timeout',function($window, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var resizer = function(){
+                element.css('width', element.parent().parent().width() - attrs.inputGroupFixWdith + 'px');
+            };
+            var promiseWindowResize;
+            angular.element($window).on('resize', function(){
+                if(promiseWindowResize){
+                    $timeout.cancel(promiseWindowResize);
+                }
+                promiseWindowResize = $timeout(resizer, 150, false);
+            });
+            resizer();
+        }
+    };
+}])
+    .directive('asSortableItemHandleIf', ['$compile', function($compile) {
     return {
         restrict: 'A',
         priority: 1000,

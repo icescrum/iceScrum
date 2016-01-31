@@ -41,7 +41,7 @@
         <div class="form-group">
             <label for="feature">${message(code: 'is.feature')}</label>
             <div ng-class="{'input-group':editableStory.feature.id}">
-                <ui-select ng-click="editForm(true)"
+                <ui-select input-group-fix-wdith="30" ng-click="editForm(true)"
                            ng-disabled="!formHolder.editable"
                            class="form-control"
                            name="feature"
