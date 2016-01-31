@@ -308,11 +308,24 @@ body > .container-fluid > .header {
       }
     }
   }
-  li.project a {
-    .text-overflow();
-    width: 185px;
-    &.active {
-      font-weight: bold;
+  .main-dropdown-menu {
+    max-width: 250px;
+    li.project a {
+      .text-overflow();
+      &.active {
+        font-weight: bold;
+      }
+    }
+    li.project-name {
+      padding: 4px 10px 4px 10px;
+      background: @dropdown-divider-bg;
+      margin-top: -6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: right;
+      +.divider{
+        margin-top:0;
+      }
     }
   }
 }

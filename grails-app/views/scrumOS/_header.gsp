@@ -50,9 +50,15 @@
                 ng-model="menus.visible">
                 <li class="contextual-menu" uib-dropdown>
                     <a uib-dropdown-toggle>
-                        ${pageScope.variables?.space ? pageScope.space.object.name.encodeAsJavaScript() : message(code:'is.projectmenu.title')}&nbsp;<i class="fa fa-caret-down"></i>
+                        ${message(code:'todo.is.ui.main.menu')} <i class="fa fa-caret-down"></i>
                     </a>
-                    <ul class="uib-dropdown-menu">
+                    <ul class="uib-dropdown-menu main-dropdown-menu">
+                        <g:if test="${product}">
+                            <li class="project-name">
+                                ${message(code:'todo.is.ui.project')} <b>${product.name}</b>
+                            </li>
+                            <li role="presentation" class="divider"></li>
+                        </g:if>
                         <li>
                             <a hotkey="{ 'shift+h': goToHome}" href ng-click="goToHome()">
                                 <g:message code="is.projectmenu.submenu.user.home"/> <small class="text-muted">(SHIFT+H)</small>
