@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2015 Kagilum SAS
+- Copyright (c) 2016 Kagilum SAS
 -
 - This file is part of iceScrum.
 -
@@ -17,8 +17,17 @@
 -
 - Authors:
 -
-- Stephane Maldini (stephane.maldini@icescrum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<script type="text/javascript">
-  document.location="${createLink(controller: 'login', action: 'auth', params:[ref:ref])}"
-</script>
+<head>
+  <title>${message(code:'todo.is.ui.401')}</title>
+  <meta name='layout' content='error'/>
+  <meta http-equiv="refresh" content="3; URL=${createLink(controller: 'login', action: 'auth', params:[ref:ref])}">
+</head>
+<body>
+<h1>Oops!</h1>
+<h2>${message(code:'todo.is.ui.401')}</h2>
+<div class="error-details">
+  ${message(code:'todo.is.ui.401.details')}
+</div>
+</body>

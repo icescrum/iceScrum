@@ -16,14 +16,12 @@
  * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authors: Vincent Barrier (vbarrier@kagilum.com)
- *  Stéphane Maldini (stephane.maldini@icescrum.com)
  *
  */
 
 package org.icescrum.web.presentation
 
 import grails.converters.JSON
-import grails.plugin.springsecurity.annotation.Secured
 
 class ErrorsController {
 
@@ -33,23 +31,23 @@ class ErrorsController {
         if (springSecurityService.isAjax(request))
             render(status: 403, text: [error: message(code: 'is.error.denied')])
         else{
-            render(status: 403, text: message(code: 'is.error.denied'))
+            render(status: 403, view: '403.gsp', model:[homeUrl:grailsApplication.config.grails.serverURL, supportEmail:grailsApplication.config.icescrum.alerts.errors.to])
         }
     }
 
     def error404() {
         if (springSecurityService.isAjax(request))
-            render(status: 404, text: '')
+            render(status: 404)
         else {
-            render(status: 404, text:'')
+            render(status: 404, view: '404.gsp', model:[homeUrl:grailsApplication.config.grails.serverURL, supportEmail:grailsApplication.config.icescrum.alerts.errors.to])
         }
     }
 
     def error401() {
         if (springSecurityService.isAjax(request))
-            render(status: 401, text: '')
+            render(status: 401)
         else {
-            render(template: 'error401', status: 401, model: [ref: params.ref])
+            render(status: 401, view: '401.gsp', model:[ref: params.ref])
         }
     }
 

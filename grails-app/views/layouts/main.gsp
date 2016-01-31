@@ -1,4 +1,3 @@
-<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -

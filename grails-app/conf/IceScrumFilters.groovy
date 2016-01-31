@@ -54,7 +54,7 @@ class IceScrumFilters {
                 if (params.product && !(actionName == 'save' && controllerName == 'project')) {
                     params.product = params.product.decodeProductKey()
                     if (!params.product) {
-                        render(status: 404)
+                        forward(controller:"errors", action:"error404")
                         return false
                     }
                 }
@@ -67,7 +67,7 @@ class IceScrumFilters {
             before = {
                 if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
                     if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        render(status: 403)
+                        forward(controller:"errors", action:"error403")
                         return false
                     }
                 }
@@ -78,7 +78,7 @@ class IceScrumFilters {
             before = {
                 if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
                     if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        render(status: 403)
+                        forward(controller:"errors", action:"error403")
                         return false
                     }
                 }
@@ -100,7 +100,7 @@ class IceScrumFilters {
             before = {
                 if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
                     if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        render(status: 403)
+                        forward(controller:"errors", action:"error403")
                         return false
                     }
                 }
@@ -110,7 +110,7 @@ class IceScrumFilters {
         userRegistrationEnable(controller:'user', action:'register'){
             before = {
                 if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
-                    render(status: 403)
+                    forward(controller:"errors", action:"error403")
                     return false
                 }
             }
@@ -120,7 +120,7 @@ class IceScrumFilters {
             before = {
                 if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
                     if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        render(status: 403)
+                        forward(controller:"errors", action:"error403")
                         return false
                     }
                 }
@@ -130,7 +130,7 @@ class IceScrumFilters {
         userRetrieveEnable(controller:'user', action:'retrieve'){
             before = {
                 if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)) {
-                    render(status: 403)
+                    forward(controller:"errors", action:"error403")
                     return false
                 }
             }
