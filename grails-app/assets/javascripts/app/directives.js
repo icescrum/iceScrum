@@ -587,6 +587,19 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     }
+}]).directive('unavailableFeature', ['$uibModal', function($uibModal) {
+    return {
+        restrict: 'A',
+        link: function(scope, element) {
+            element.on('click', function() {
+                $uibModal.open({
+                    template: '<div class="modal-header"><h4 class="modal-title">More coming soon!</h4></div><div class="modal-body"><b>This useful feature is still in development. We will release it very soon!</b></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="$close()">Close</button></div>',
+                    size: 'sm'
+                });
+                return false;
+            });
+        }
+    }
 }]).directive('selectable', ['$document', '$rootScope', function($document, $rootScope) {
     return {
         restrict: 'A',

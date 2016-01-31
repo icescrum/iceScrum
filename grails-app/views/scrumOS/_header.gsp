@@ -168,7 +168,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="${message(code:'todo.is.ui.search')}">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
+                                <button class="btn btn-default" type="button" unavailable-feature><span class="fa fa-search"></span></button>
                             </span>
                         </div>
                     </form>
