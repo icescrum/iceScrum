@@ -82,7 +82,9 @@
          ng-controller="sprintBacklogCtrl">
         <div class="panel-heading">
             <h3 class="panel-title">
-                {{ release.name + ' ' + sprint.orderNumber }}
+                <a href="#/sprintPlan/{{ sprint.id }}/details">
+                    ${message(code: 'is.sprint')} {{ sprint.orderNumber + ' - ' + (sprint.state | i18n: 'SprintStates') }}
+                </a>
             </h3>
         </div>
         <div class="panel-body">

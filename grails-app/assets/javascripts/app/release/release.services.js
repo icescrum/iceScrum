@@ -89,7 +89,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     };
     this['delete'] = function(release, project) {
         return release.$delete({projectId: project.id}, function() {
-            if ($state.includes("releasePlan.details", {id: release.id})) {
+            if ($state.includes("releasePlan.release.details", {id: release.id})) {
                 $state.go('releasePlan');
             }
             _.remove(project.releases, {id: release.id});
