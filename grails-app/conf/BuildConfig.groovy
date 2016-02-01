@@ -71,13 +71,12 @@ grails.project.dependency.resolution = {
         grailsCentral()
         grailsHome()
         mavenCentral()
-        mavenRepo "http://repository.codehaus.org"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
     }
     dependencies {
         build 'com.lowagie:itext:2.1.7'
-        runtime 'mysql:mysql-connector-java:5.1.36'
+        runtime 'mysql:mysql-connector-java:5.1.38'
         //runtime "com.kagilum:kagilum-licenseable:2.0"
         //runtime "com.kagilum:icescrum-plugin-bugtracker:2.0"
     }
