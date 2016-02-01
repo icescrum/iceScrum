@@ -24,9 +24,9 @@
 package org.icescrum.web.security
 
 import javax.servlet.http.HttpServletRequest
-import grails.plugin.springsecurity.web.authentication.RequestHolderAuthenticationFilter
+import grails.plugin.springsecurity.web.authentication.GrailsUsernamePasswordAuthenticationFilter
 
-class ScrumAuthenticationProcessingFilter extends RequestHolderAuthenticationFilter {
+class ScrumAuthenticationProcessingFilter extends GrailsUsernamePasswordAuthenticationFilter {
   @Override
   protected String obtainPassword(HttpServletRequest request) {
      String password = super.obtainPassword(request)
