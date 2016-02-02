@@ -47,14 +47,15 @@
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/sprint/{{ ::previousSprint.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                   href="#{{:: viewName + '/' + (viewName == 'releasePlan' ? 'sprint/' : '') + previousSprint.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
                 <a ng-if="nextSprint"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/sprint/{{ ::nextSprint.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="#{{:: viewName + '/' + (viewName == 'releasePlan' ? 'sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a class="btn btn-default"
-                   href="#/{{ ::viewName }}"
+                   href
+                   ng-click="$state.go('^')"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>
                 </a>
