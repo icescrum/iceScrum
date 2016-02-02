@@ -71,7 +71,6 @@ grails.project.dependency.resolution = {
         grailsCentral()
         grailsHome()
         mavenCentral()
-        mavenRepo "http://repo.spring.io/libs-release"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
     }
