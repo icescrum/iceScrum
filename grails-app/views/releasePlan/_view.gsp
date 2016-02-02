@@ -81,10 +81,11 @@
          ng-repeat="sprint in sprints"
          ng-controller="sprintBacklogCtrl">
         <div class="panel-heading">
-            <h3 class="panel-title">
+            <h3 class="panel-title small-title">
                 <a href="#/sprintPlan/{{ sprint.id }}/details">
                     ${message(code: 'is.sprint')} {{ sprint.orderNumber + ' - ' + (sprint.state | i18n: 'SprintStates') }}
                 </a>
+                <span class="pull-right">{{ ((sprint.velocity + '/') | orElse: '') + sprint.capacity }} <i class="fa fa-dollar"></i></span>
             </h3>
         </div>
         <div class="panel-body">

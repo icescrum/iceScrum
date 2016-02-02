@@ -26,7 +26,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">
             <div class="btn-toolbar">
-                <a href ng-click="openSprint()">
+                <a href ng-click="openSprint(sprint)">
                     {{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}
                 </a>
                 <div class="btn-group pull-right"
@@ -89,8 +89,8 @@
     </div>
     <table class="panel-body table"
            selectable="selectableOptions">
-        <thead>
-            <tr>
+        <thead ng-switch="sprint.state >= 3">
+            <tr ng-switch-default>
                 <th style="width:16%; text-align:center;">
                     Type
                 </th>
@@ -104,20 +104,28 @@
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
+            <tr ng-switch-when="true">
+                <th style="width:16%; text-align:center;">
+                    Type
+                </th>
+                <th style="width:84%; text-align:center;">
+                    <span>${message(code: 'is.task.state.done')}</span>
+                </th>
+            </tr>
         </thead>
         <tbody ng-controller="taskSprintCtrl">
             <tr>
                 <td style="width:16%">
                     ${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}
                 </td>
-                <td style="width:28%"
+                <td style="{{ (sprint.state >= 3) ? 'width:84%' : 'width:28%' }}"
                     class="postits grid-group"
                     ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByTypeByState[11][taskState]"
                     ng-init="taskType = 11"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
-                    ng-repeat="taskState in taskStates">
+                    ng-repeat="taskState in sprintTaskStates">
                     <div ng-repeat="task in tasksByTypeByState[11][taskState]"
                          ng-class="{ 'is-selected': isSelected(task) }"
                          selectable-id="{{ ::task.id }}"
@@ -140,14 +148,14 @@
                 <td style="width:16%">
                     ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}
                 </td>
-                <td style="width:28%"
+                <td style="{{ (sprint.state >= 3) ? 'width:84%' : 'width:28%' }}"
                     class="postits grid-group"
                     ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByTypeByState[10][taskState]"
                     ng-init="taskType = 10"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
-                    ng-repeat="taskState in taskStates">
+                    ng-repeat="taskState in sprintTaskStates">
                     <div ng-repeat="task in tasksByTypeByState[10][taskState]"
                          ng-class="{ 'is-selected': isSelected(task) }"
                          selectable-id="{{ ::task.id }}"
@@ -175,13 +183,13 @@
                         <div ng-include="'story.html'"></div>
                     </div>
                 </td>
-                <td style="width:28%"
+                <td style="{{ (sprint.state >= 3) ? 'width:84%' : 'width:28%' }}"
                     class="postits grid-group"
                     ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByStoryByState[story.id][taskState]"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint) || !isSortingStory(story)"
-                    ng-repeat="taskState in taskStates">
+                    ng-repeat="taskState in sprintTaskStates">
                     <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                          ng-class="{ 'is-selected': isSelected(task) }"
                          selectable-id="{{ ::task.id }}"

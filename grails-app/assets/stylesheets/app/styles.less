@@ -200,12 +200,13 @@ table {
 
 /** White background for disabled inputs **/
 .form-control[disabled] {
-  & {
-    background: none;
+  background: none;
+  border-color: transparent;
+  cursor: text;
+  box-shadow: none;
+  resize: none;
+  &:hover {
     border-color: transparent;
-    cursor: text;
-    box-shadow: none;
-    resize: none;
   }
 }
 .select2-container.select2-container-disabled {
@@ -358,6 +359,9 @@ form .alert.alert-danger {
     padding-bottom: 0;
     .panel-title {
       font-size: 20px;
+      &.small-title {
+        font-size: 15px;
+      }
     }
     .panel-border {
       border-top: 1px solid #eee;

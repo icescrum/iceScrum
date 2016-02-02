@@ -435,7 +435,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     });
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, sprint) {
+controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {
     $scope.viewName = 'sprintPlan';
     // Functions
     $scope.isSelected = function(selectable) {
@@ -453,8 +453,8 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
     };
-    $scope.openSprint = function() {
-        $state.go('sprintPlan.details');
+    $scope.openSprint = function(sprint) {
+        $state.go('sprintPlan.details', {id: sprint.id});
     };
     $scope.openNewTaskByStory = function(story) {
         $state.go('sprintPlan.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
@@ -463,6 +463,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
         $state.go('sprintPlan.task.new', {taskTemplate: {type: type}});
     };
     $scope.refreshTasks = function() {
+        $scope.sprintTaskStates = $scope.sprint.state < SprintStatesByName.DONE ? $scope.taskStates : [TaskStatesByName.DONE];
         var partitionedTasks = _.partition($scope.sprint.tasks, function(task) {
             return _.isNull(task.parentStory);
         });
@@ -487,8 +488,8 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
                 });
             });
         };
-        fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.taskStates);
-        fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.backlog.stories, 'id'), $scope.taskStates);
+        fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.sprintTaskStates);
+        fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.backlog.stories, 'id'), $scope.sprintTaskStates);
     };
     $scope.changeSprintFilter = function(sprintFilter) {
         $scope.currentSprintFilter = sprintFilter;

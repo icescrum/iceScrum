@@ -27,7 +27,8 @@
             {{ sprints.length }}
         </h3>
     </div>
-    <div ui-view="details-tab">
+    <div class="panel-body">
+        
     </div>
 </div>
 </script>
