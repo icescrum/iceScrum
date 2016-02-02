@@ -53,12 +53,6 @@
                         ${message(code:'todo.is.ui.main.menu')} <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="uib-dropdown-menu main-dropdown-menu">
-                        <g:if test="${product}">
-                            <li class="project-name">
-                                ${message(code:'todo.is.ui.project')} <b>${product.name}</b>
-                            </li>
-                            <li role="presentation" class="divider"></li>
-                        </g:if>
                         <li>
                             <a hotkey="{ 'shift+h': goToHome}" href ng-click="goToHome()">
                                 <g:message code="is.projectmenu.submenu.user.home"/> <small class="text-muted">(SHIFT+H)</small>
@@ -94,7 +88,7 @@
                         <g:if test="${product}">
                             <li ng-if="authorizedProject('edit')" role="presentation" class="divider"></li>
                             <li ng-if="authorizedProject('edit')" role="presentation" class="dropdown-header">
-                                ${message(code: 'todo.is.ui.projects.current')}
+                                ${message(code: 'todo.is.ui.projects.current')} <span class="current-project-name"><b>${product.name}</b></span>
                             </li>
                             <li ng-if="authorizedProject('edit')">
                                 <a hotkey="{ 'shift+e': hotkeyClick}" href ng-click="showProjectEditModal()">

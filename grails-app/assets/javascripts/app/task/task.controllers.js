@@ -185,7 +185,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);
 }]);
 
-controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+controllers.controller('userTaskCtrl', ['$scope', 'TaskService', '$rootScope', function($scope, TaskService, $rootScope) {
     $scope.tasksByProject = [];
     TaskService.listByUser().then(function(tasksByProject) {
         $scope.tasksByProject = tasksByProject;

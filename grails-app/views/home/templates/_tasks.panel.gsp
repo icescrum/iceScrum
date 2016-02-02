@@ -4,25 +4,13 @@
             <h3 class="panel-title"><i class="fa fa-tasks"></i> ${message(code: 'is.panel.mytask')}</h3>
         </div>
         <div class="panel-body">
-            <div ng-repeat="entry in tasksByProject">
-                <h5>
-                    {{ entry.project.name }}
-                    <button type="button"
-                            class="pull-right btn btn-xs btn-default"
-                            ng-click="$event.stopPropagation(); openProject(entry.project)"
-                            uib-tooltip="${message(code:'todo.is.ui.project.open')}">
-                        <span class="fa fa-expand"></span>
-                    </button>
-                </h5>
-                <uib-accordion>
-                    <uib-accordion-group ng-repeat="task in entry.tasks">
-                        <uib-accordion-heading>
-                            <button class="btn btn-xs btn-default ng-binding" disabled="disabled">{{ task.uid }}</button>
-                            {{ task.name }}
-                        </uib-accordion-heading>
-                    </uib-accordion-group>
-                </uib-accordion>
-            </div>
+                <div ng-repeat="entry in tasksByProject" class="postits grid-group">
+                    <div ng-repeat="task in entry.tasks" class="postit-container">
+                        <a href="{{ ::serverUrl }}/p/{{ ::entry.project.pkey }}-T{{ ::task.id }}" style="text-decoration: none;">
+                            <div ng-include="'task.light.html'"></div>
+                        </a>
+                    </div>
+                </div>
         </div>
     </div>
 </script>

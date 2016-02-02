@@ -234,11 +234,11 @@
             width: 33px;
             text-align: center;
             display: inline-block;
-            > a {
+            > * {
               visibility: hidden;
             }
             &.active {
-              > a {
+              > * {
                 visibility: visible;
               }
             }
@@ -297,7 +297,7 @@
             }
           }
           .actions {
-            > .action a {
+            > .action * {
               visibility: visible;
             }
           }
@@ -358,7 +358,6 @@
         &.architectural:before {
           content: "\f085";
         }
-        ////// TODO REMOVE
         &.postit-small {
           width: 175px;
           height: 115px;
@@ -382,7 +381,6 @@
             padding-right:5px;
           }
         }
-        // END TODO REMOVE
       }
     }
   }
@@ -470,13 +468,13 @@
             min-width: 40px;
             display: inline-block;
             text-align: left;
-            & > a {
+            & > * {
               font-size: 16px;
               .badge {
                 font-size: @font-size-base;
               }
             }
-            &:not(:first-of-type):not(.active) > a > i:not(:hover), & > a.disabled i {
+            &:not(:first-of-type):not(.active) > * > i:not(:hover), & > .disabled i {
               color: @gray-light;
             }
           }

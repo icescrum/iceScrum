@@ -28,14 +28,16 @@
                 <div ng-include="panel.id+'.panel.html'"
                      as-sortable-item
                      id="{{ panel.id }}"
+                     class="panel-{{ panel.id }}"
                      ng-repeat="panel in panelsLeft"></div>
             </div>
-            <div class="panel-column"
+            <div class="panel-column panel-{{ panel.id }}"
                  as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
                  ng-model='panelsRight'>
                 <div ng-include="panel.id+'.panel.html'"
                      as-sortable-item
                      id="{{ panel.id }}"
+                     class="panel-{{ panel.id }}"
                      ng-repeat="panel in panelsRight"></div>
             </div>
         </div>

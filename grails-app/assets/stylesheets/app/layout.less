@@ -316,16 +316,10 @@ body > .container-fluid > .header {
         font-weight: bold;
       }
     }
-    li.project-name {
-      padding: 4px 10px 4px 10px;
-      background: @dropdown-divider-bg;
-      margin-top: -6px;
-      font-size: 11px;
-      font-weight: 700;
-      text-align: right;
-      +.divider{
-        margin-top:0;
-      }
+    li span.current-project-name {
+      display: inline-block;
+      float: right;
+      clear: both;
     }
   }
 }
@@ -802,3 +796,12 @@ div.panel-body {
   }
 }
 // END TODO REMOVE HACK
+
+#view-home {
+  .panel-tasks {
+    .panel-body {
+      max-height: 275px;
+      overflow:auto;
+    }
+  }
+}

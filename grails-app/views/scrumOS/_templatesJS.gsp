@@ -27,6 +27,7 @@
     <g:render template="/project/templates"/>
     <g:render template="/team/templates"/>
     <g:render template="/sprint/templates"/>
+    <g:render template="/task/templates/task.light"/>
     <g:if test="${params.product}">
         <g:render template="/story/templates"/>
         <g:render template="/task/templates"/>
