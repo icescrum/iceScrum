@@ -80,7 +80,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
                     $scope.resetReleaseForm();
                 } else {
                     $scope.setInEditingMode(true);
-                    $state.go('^.details', { id: release.id });
+                    $state.go('^.release.details', { id: release.id });
                 }
                 $scope.notifySuccess('todo.is.ui.release.saved');
             });

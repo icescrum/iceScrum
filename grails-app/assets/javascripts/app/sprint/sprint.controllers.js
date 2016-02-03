@@ -110,7 +110,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
                     $scope.resetSprintForm();
                 } else {
                     $scope.setInEditingMode(true);
-                    $state.go('^.details', { id: sprint.id });
+                    $state.go('^.withId.details', { id: $scope.release.id, sprintId: sprint.id });
                 }
                 $scope.notifySuccess('todo.is.ui.sprint.saved');
             });
@@ -244,5 +244,23 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 
     });
 }]);
 
-controllers.controller('sprintMultipleCtrl', ['$scope', function($scope) {
+controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detailsRelease', function($scope, SprintService, detailsRelease) {
+    // Init
+    var mean = function(list) {
+        return _.round(_.sum(list) / (list ? list.length : 0));
+    };
+    $scope.release = detailsRelease;
+    $scope.$watch('sprints', function(sprints) {
+        if (sprints.length) {
+            $scope.startDate = _.first(sprints).startDate;
+            $scope.endDate = _.last(sprints).endDate;
+            var storyCounts = _.map(sprints, function(sprint) {
+                return sprint.stories_ids.length;
+            });
+            $scope.sumStory = _.sum(storyCounts);
+            $scope.meanStory = mean(storyCounts);
+            $scope.meanVelocity = mean(_.map(sprints, 'velocity'));
+            $scope.meanCapacity = mean(_.map(sprints, 'capacity'));
+        }
+    }, true);
 }]);
