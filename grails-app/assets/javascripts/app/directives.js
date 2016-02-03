@@ -377,17 +377,16 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     }
-})
-    .directive('inputGroupFixWdith', ['$window', '$timeout',function($window, $timeout) {
+}).directive('inputGroupFixWdith', ['$window', '$timeout', function($window, $timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var resizer = function(){
+            var resizer = function() {
                 element.css('width', element.parent().parent().width() - attrs.inputGroupFixWdith + 'px');
             };
             var promiseWindowResize;
-            angular.element($window).on('resize', function(){
-                if(promiseWindowResize){
+            angular.element($window).on('resize', function() {
+                if (promiseWindowResize) {
                     $timeout.cancel(promiseWindowResize);
                 }
                 promiseWindowResize = $timeout(resizer, 150, false);
@@ -395,8 +394,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             resizer();
         }
     };
-}])
-    .directive('asSortableItemHandleIf', ['$compile', function($compile) {
+}]).directive('asSortableItemHandleIf', ['$compile', function($compile) {
     return {
         restrict: 'A',
         priority: 1000,
@@ -408,7 +406,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             $compile(element)(scope);
         }
     };
-}]).directive('timeline', ['ProjectService', '$timeout',function(ProjectService, $timeout){
+}]).directive('timeline', ['ProjectService', '$timeout', function(ProjectService, $timeout) {
     return {
         restrict: 'A',
         scope: {
@@ -416,7 +414,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             timeline: '=',
             selected: '='
         },
-        link:function(scope, element, attrs){
+        link: function(scope, element, attrs) {
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
                 width = element.width() - margin.left - margin.right,
                 height = element.height() - margin.top - margin.bottom,
@@ -446,7 +444,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             brush = d3.svg.brush().x(x).on("brushend", brushended);
             svg.selectAll(".brush").call(brush).call(brush.event);
 
-            scope.$watch('timeline', function(_releases){
+            scope.$watch('timeline', function(_releases) {
                 x.domain([_.first(_releases).startDate, _.last(_releases).endDate]);
                 releases
                     .selectAll('rect')
@@ -454,30 +452,26 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .enter()
                     .append("rect")
                     .attr("y", releaseMargin)
-                    .attr("height", height - releaseMargin*2)
+                    .attr("height", height - releaseMargin * 2)
                     .attr('x', function(d) { return x(d.startDate); })
                     .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
-                    .attr("class", function(d){ return "release release-"+({ 1: 'default', 2: 'progress', 3: 'done' }[d.state]); });
-
-                console.log(ProjectService.getAllSprints(_releases));
-
+                    .attr("class", function(d) { return "release release-" + ({1: 'default', 2: 'progress', 3: 'done'}[d.state]); });
                 sprints
                     .selectAll('rect')
                     .data(ProjectService.getAllSprints(_releases))
                     .enter()
                     .append("rect")
-                    .attr("y", sprintMargin+releaseMargin)
+                    .attr("y", sprintMargin + releaseMargin)
                     .attr('x', function(d) { return x(d.startDate); })
-                    .attr("height", height - releaseMargin*2-sprintMargin*2)
+                    .attr("height", height - releaseMargin * 2 - sprintMargin * 2)
                     .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
-                    .attr("class", function(d){ return "sprint sprint-"+({ 1: 'default', 2: 'progress', 3: 'done' }[d.state]); });
-
+                    .attr("class", function(d) { return "sprint sprint-" + ({1: 'default', 2: 'progress', 3: 'done'}[d.state]); });
                 render();
-             });
+            });
 
-            scope.$watch('selected', function(selected){
+            scope.$watch('selected', function(selected) {
                 var selectedDates = [new Date(), new Date()];
-                if(selected && attrs.selected.length > 0){
+                if (selected && attrs.selected.length > 0) {
                     selectedDates = [_.first(selected).startDate, _.last(selected).endDate];
                 }
                 d3.select(".brush").transition()
@@ -491,34 +485,34 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 var extent0 = brush.extent();
                 //global var
                 extent1 = extent0.map(d3.time.day.utc);
-                var findSprintsOrAReleaseInRange = function(dates){
+                var findSprintsOrAReleaseInRange = function(dates) {
                     var res;
                     res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
                         return sprint.startDate >= dates[0] && sprint.endDate <= dates[1];
                     });
-                    if(!res.length){
+                    if (!res.length) {
                         res = _.find(releases.selectAll("rect").data(), function(release) {
                             return release.startDate <= dates[0] && release.endDate >= dates[0];
                         });
-                        if(res){
+                        if (res) {
                             var _res = _.find(sprints.selectAll("rect").data(), function(sprint) {
                                 return sprint.startDate <= dates[0] && sprint.endDate >= dates[0];
                             });
                             //always get an array
-                            res =  _res ? [_res] : [res];
+                            res = _res ? [_res] : [res];
                         }
                     }
                     return res;
                 };
                 var result = findSprintsOrAReleaseInRange(extent1);
-                if(result && result.length > 0){
+                if (result && result.length > 0) {
                     extent1 = [_.first(result).startDate, _.last(result).endDate];
                     scope.onSelect(result);
                 }
                 d3.select(this).transition()
                     .call(brush.extent(extent1))
                     .call(brush.event);
-                }
+            }
 
             function render() {
                 width = element.width() - margin.left - margin.right;
@@ -526,19 +520,18 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 xAxis.scale(x);
 
                 rootSvg.attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom);
-                svg.select('.timeline-background').attr("width", width).attr("height", height+ margin.top + margin.bottom);
+                svg.select('.timeline-background').attr("width", width).attr("height", height + margin.top + margin.bottom);
                 svg.select('.x.axis').attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')').call(xAxis);
-                svg.selectAll(".brush").selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15*2);
+                svg.selectAll(".brush").selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15 * 2);
 
                 releases.selectAll('rect')
                     .attr('x', function(d) { return x(d.startDate); })
-                    .attr("width",  function(d) {return x(d.endDate) - x(d.startDate); });
+                    .attr("width", function(d) { return x(d.endDate) - x(d.startDate); });
                 sprints.selectAll('rect')
                     .attr('x', function(d) { return x(d.startDate); })
-                    .attr("width",  function(d) { return x(d.endDate) - x(d.startDate); });
+                    .attr("width", function(d) { return x(d.endDate) - x(d.startDate); });
 
-                if(extent1){
-                    //console.log(extent1);
+                if (extent1) {
                     d3.select(".brush").transition()
                         .call(brush.extent(extent1))
                         .call(brush.event);
@@ -548,11 +541,11 @@ directives.directive('isMarkitup', ['$http', function($http) {
             //register render on resize
             d3.select(window).on('resize', render);
             //Register render when details view changed
-            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded',function() {
+            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function() {
                 $timeout(render, 100);
             });
             //Destroy listener when removed
-            scope.$on('$destroy', function() {  registeredRootScopeRender(); });
+            scope.$on('$destroy', function() { registeredRootScopeRender(); });
         }
     }
 }]).directive('storyMenu', ['$compile', function($compile) { // For 140 stories, reduce display time by 1 s. and initial watchers by 1700 by loading menu only on first hover
