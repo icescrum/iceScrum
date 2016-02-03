@@ -38,7 +38,7 @@
     </a>
 </li>
 <li ng-if="authorizedRelease('autoPlan', release)">
-    <a href ng-click="autoPlan(release)">
+    <a href ng-click="showAutoPlanModal({callback: autoPlan, args: [release]})">
         ${message(code:'is.ui.releasePlan.toolbar.autoPlan')}
     </a>
 </li>

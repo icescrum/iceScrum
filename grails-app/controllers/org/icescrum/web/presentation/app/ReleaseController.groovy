@@ -138,10 +138,9 @@ class ReleaseController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def autoPlan(long product, long id) {
+    def autoPlan(long product, long id, Double capacity) {
         Release release = Release.withRelease(product, id)
-        def capacity = params.capacity instanceof String ? params.capacity.replaceAll(',', '.').toBigDecimal() : params.capacity
-        def plannedStories = storyService.autoPlan(release, capacity)
+        def plannedStories = storyService.autoPlan(release.sprints.asList(), capacity)
         withFormat {
             html { render status: 200, contentType: 'application/json', text: plannedStories as JSON }
             json { renderRESTJSON(text: plannedStories, status: 201) }

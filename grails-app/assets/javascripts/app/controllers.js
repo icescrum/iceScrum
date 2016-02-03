@@ -89,6 +89,20 @@ controllers.controller('appCtrl', ['$scope', '$state', '$uibModal', 'Session', '
                 controller: 'manageTeamsModalCtrl'
             });
         };
+        $scope.showAutoPlanModal = function(options) {
+            $uibModal.open({
+                templateUrl: 'sprint.autoPlan.html',
+                size: 'sm',
+                controller: ["$scope", function($scope) {
+                    $scope.modelHolder = {};
+                    $scope.submit = function(capacity) {
+                        options.args.push(capacity);
+                        options.callback.apply(options.callback, options.args);
+                        $scope.$close(true);
+                    };
+                }]
+            });
+        };
         $scope.getPushState = function() {
             return PushService.push.connected ? 'connected' : 'disconnected';
         };

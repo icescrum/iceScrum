@@ -32,6 +32,11 @@
         ${message(code:'is.ui.releasePlan.menu.sprint.close')}
     </a>
 </li>
+<li ng-if="authorizedSprint('autoPlan', sprint)">
+    <a href ng-click="showAutoPlanModal({callback: autoPlan, args: [sprint]})">
+        ${message(code:'is.ui.releasePlan.toolbar.autoPlan')}
+    </a>
+</li>
 <li ng-if="authorizedSprint('unPlan', sprint)">
     <a href ng-click="unPlan(sprint)">
         ${message(code:'is.ui.releasePlan.menu.sprint.dissociateAll')}

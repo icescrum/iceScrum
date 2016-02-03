@@ -81,8 +81,8 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
             release.sprints = sprints;
         });
     };
-    this.autoPlan = function(release) {
-        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'autoPlan'}, {}).$promise;
+    this.autoPlan = function(release, capacity) {
+        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}).$promise;
     };
     this.unPlan = function(release) {
         return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'unPlan'}, {}).$promise;

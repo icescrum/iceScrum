@@ -125,15 +125,26 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def unPlan(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
-        def unPlanAllStories = storyService.unPlanAll([sprint])
+    def autoPlan(Double capacity) {
+        def sprints = Sprint.withSprints(params)
+        storyService.autoPlan(sprints, capacity)
+        def returnData = sprints.size() > 1 ? sprints : sprints.first()
         withFormat {
-            html {
-                render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprint: sprint] as JSON)
-            }
-            json { renderRESTJSON(text: sprint) }
-            xml { renderRESTXML(text: sprint) }
+            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
+            json { renderRESTJSON(text: returnData) }
+            xml { renderRESTXML(text: returnData) }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def unPlan() {
+        def sprints = Sprint.withSprints(params)
+        storyService.unPlanAll(sprints)
+        def returnData = sprints.size() > 1 ? sprints : sprints.first()
+        withFormat {
+            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
+            json { renderRESTJSON(text: returnData) }
+            xml { renderRESTXML(text: returnData) }
         }
     }
 
@@ -142,9 +153,7 @@ class SprintController {
         Sprint sprint = Sprint.withSprint(product, id)
         sprintService.activate(sprint)
         withFormat {
-            html {
-                render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON)
-            }
+            html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON) }
             json { renderRESTJSON(text: sprint) }
             xml { renderRESTXML(text: sprint) }
         }
@@ -156,9 +165,7 @@ class SprintController {
         def unDoneStories = sprint.stories.findAll { it.state != Story.STATE_DONE }
         sprintService.close(sprint)
         withFormat {
-            html {
-                render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON)
-            }
+            html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON) }
             json { renderRESTJSON(text: sprint) }
             xml { renderRESTXML(text: sprint) }
         }
@@ -189,10 +196,10 @@ class SprintController {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurndownRemainingValues(sprint)
         def computedValues = [[key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
-                               values: values.findAll{ it.remainingTime != null }.collect { return [it.label, it.remainingTime]}]]
+                               values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime]}]]
         if (values.first()?.idealTime) {
             computedValues << [key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal"),
-                               values: values.findAll{ it.idealTime != null }.collect { return [it.label, it.idealTime]}]
+                               values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime]}]
         }
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
                                yAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
@@ -207,9 +214,9 @@ class SprintController {
         def values = sprintService.sprintBurnupTasksValues(sprint)
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasksDone.name"),
-                 values: values.findAll{ it.tasksDone != null }.collect { return [it.label, it.tasksDone]}],
+                 values: values.findAll { it.tasksDone != null }.collect { return [it.label, it.tasksDone]}],
                 [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasks.name"),
-                 values: values.findAll{ it.tasks != null }.collect { return [it.label, it.tasks]}]
+                 values: values.findAll { it.tasks != null }.collect { return [it.label, it.tasks]}]
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
                                yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
@@ -224,9 +231,9 @@ class SprintController {
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
-                 values: values.findAll{ it.totalPoints != null }.collect { return [it.label, it.totalPoints]}],
+                 values: values.findAll { it.totalPoints != null }.collect { return [it.label, it.totalPoints]}],
                 [key: message(code: "is.chart.sprintBurnupPointsChart.serie.pointsDone.name"),
-                 values: values.findAll{ it.pointsDone != null }.collect { return [it.label, it.pointsDone]}]
+                 values: values.findAll { it.pointsDone != null }.collect { return [it.label, it.pointsDone]}]
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
                                yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
@@ -241,9 +248,9 @@ class SprintController {
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),
-                 values: values.findAll{ it.stories != null }.collect { return [it.label, it.stories]}],
+                 values: values.findAll { it.stories != null }.collect { return [it.label, it.stories]}],
                 [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.storiesDone.name"),
-                 values: values.findAll{ it.storiesDone != null }.collect { return [it.label, it.storiesDone]}]
+                 values: values.findAll { it.storiesDone != null }.collect { return [it.label, it.storiesDone]}]
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
                                yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],

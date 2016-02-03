@@ -338,8 +338,8 @@ class ProductUrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/release/$id/$action" {
-            controller = 'release'
+        "/p/$product/sprint/$id/$action" {
+            controller = 'sprint'
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)

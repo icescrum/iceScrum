@@ -20,9 +20,22 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:render template="/sprint/templates/sprint.autoPlan" />
-<g:render template="/sprint/templates/sprint.details" />
-<g:render template="/sprint/templates/sprint.menu" />
-<g:render template="/sprint/templates/sprint.multiple" />
-<g:render template="/sprint/templates/sprint.new" />
-<g:render template="/sprint/templates/sprint.tooltip" />
+
+<script type="text/ng-template" id="sprint.autoPlan.html">
+<is:modal form="submit(modelHolder.capacity)"
+          submitButton="${message(code:'is.dialog.promptCapacityAutoPlan.button')}"
+          closeButton="${message(code:'is.button.cancel')}"
+          title="${message(code:'is.dialog.promptCapacityAutoPlan.title')}">
+    <p class="help-block">
+        ${message(code: 'is.dialog.promptCapacityAutoPlan.description')}
+    </p>
+    <div class="form-group">
+        <label for="capacity">${message(code:'is.dialog.promptCapacityAutoPlan.capacity')}</label>
+        <input autofocus
+               name="capacity"
+               type="number"
+               class="form-control"
+               ng-model="modelHolder.capacity"/>
+    </div>
+</is:modal>
+</script>

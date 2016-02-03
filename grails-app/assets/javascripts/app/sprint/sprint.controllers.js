@@ -37,6 +37,11 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
             $scope.notifySuccess('todo.is.ui.sprint.closed');
         });
     };
+    $scope.autoPlan = function(sprint, capacity) {
+        SprintService.autoPlan(sprint, capacity, $scope.project).then(function() {
+            $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
+        });
+    };
     $scope.unPlan = function(sprint) {
         SprintService.unPlan(sprint, $scope.project).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.unPlanned');
@@ -245,6 +250,20 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 
 }]);
 
 controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detailsRelease', function($scope, SprintService, detailsRelease) {
+    // Functions
+    $scope.authorizedSprints = function(action, sprints) {
+        return SprintService.authorizedSprints(action, sprints);
+    };
+    $scope.autoPlanMultiple = function(sprints, capacity) {
+        SprintService.autoPlanMultiple(sprints, capacity, $scope.release).then(function() {
+            $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
+        });
+    };
+    $scope.unPlanMultiple = function(sprints) {
+        SprintService.unPlanMultiple(sprints, $scope.release).then(function() {
+            $scope.notifySuccess('todo.is.ui.sprint.unPlanned');
+        });
+    };
     // Init
     var mean = function(list) {
         return _.round(_.sum(list) / (list ? list.length : 0));

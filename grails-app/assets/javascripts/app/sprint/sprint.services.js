@@ -71,6 +71,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.close = function(sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'close'}, {}).$promise;
     };
+    this.autoPlan = function(sprint, capacity, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'autoPlan'}, {capacity: capacity}).$promise;
+    };
     this.unPlan = function(sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'unPlan'}, {}).$promise;
     };
@@ -81,6 +84,12 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             }
             _.remove(release.sprints, {id: sprint.id});
         });
+    };
+    this.autoPlanMultiple = function(sprints, capacity, release) {
+        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}).$promise;
+    };
+    this.unPlanMultiple = function(sprints, release) {
+        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'unPlan'}, {}).$promise;
     };
     this.openChart = function(sprint, project, chart) {
         return Sprint.get({ id: sprint.id, projectId: project.id, action: chart}).$promise;
@@ -99,10 +108,17 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             case 'updateStartDate':
                 return Session.poOrSm() && sprint.state < SprintStatesByName.IN_PROGRESS;
             case 'updateEndDate':
+            case 'autoPlan':
             case 'unPlan':
                 return Session.poOrSm() && sprint.state != SprintStatesByName.DONE;
             default:
                 return false;
         }
+    };
+    this.authorizedSprints = function(action, sprints) {
+        var self = this;
+        return _.every(sprints, function(sprint) {
+            return self.authorizedSprint(action, sprint);
+        });
     };
 }]);
