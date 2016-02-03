@@ -38,7 +38,7 @@
                         <span class="name form-control-static">{{ task.name }}</span>
                     </div>
                     <div class="form-group col-sm-3">
-                        <span class="remaining-time form-control-static text-right">{{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i></span>
+                        <span class="form-control-static text-right">{{ task.estimation != undefined ? task.estimation : '?' }} <i class="small-icon fa {{ task.state | taskStateIcon }}"></i></span>
                     </div>
                 </div>
                 <div class="clearfix no-padding" ng-if="task.description">
