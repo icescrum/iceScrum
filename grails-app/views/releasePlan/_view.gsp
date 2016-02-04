@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="backlogs-list">
-    <div class="timeline" timeline="releases" on-select="timelineSelected"></div>
+    <div class="timeline" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
     <hr>
 </div>
 
@@ -63,6 +63,10 @@
     stroke: #999;
     fill-opacity: .075;
     shape-rendering: crispEdges;
+}
+
+.timeline .sprint {
+    stroke: #dbdbdb;
 }
 
 .timeline .release-default, .timeline .sprint-default {

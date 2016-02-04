@@ -414,16 +414,15 @@ directives.directive('isMarkitup', ['$http', function($http) {
             timeline: '=',
             selected: '='
         },
-        link: function(scope, element, attrs) {
+        link: function(scope, element) {
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
                 width = element.width() - margin.left - margin.right,
                 height = element.height() - margin.top - margin.bottom,
-                brush, x, xAxis, releases, sprints, sprintMargin = 10, releaseMargin = 15, extent1;
+                brush, x, xAxis, releases, sprints, sprintMargin = 10, releaseMargin = 15, extent;
 
             var rootSvg = d3.select(element[0]).append("svg");
             var svg = rootSvg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            //x axis
             x = d3.time.scale().domain([]).range([0, 0]);
             xAxis = d3.svg.axis().scale(x).orient("bottom");
 
@@ -440,14 +439,12 @@ directives.directive('isMarkitup', ['$http', function($http) {
             sprints = svg.append("g").attr("class", "sprints");
             svg.append("g").attr("class", "brush");
 
-            //brush selector
             brush = d3.svg.brush().x(x).on("brushend", brushended);
             svg.selectAll(".brush").call(brush).call(brush.event);
 
             scope.$watch('timeline', function(_releases) {
                 x.domain([_.first(_releases).startDate, _.last(_releases).endDate]);
-                releases
-                    .selectAll('rect')
+                releases.selectAll('rect')
                     .data(_releases)
                     .enter()
                     .append("rect")
@@ -456,8 +453,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .attr('x', function(d) { return x(d.startDate); })
                     .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
                     .attr("class", function(d) { return "release release-" + ({1: 'default', 2: 'progress', 3: 'done'}[d.state]); });
-                sprints
-                    .selectAll('rect')
+                sprints.selectAll('rect')
                     .data(ProjectService.getAllSprints(_releases))
                     .enter()
                     .append("rect")
@@ -470,21 +466,19 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
 
             scope.$watch('selected', function(selected) {
-                var selectedDates = [new Date(), new Date()];
-                if (selected && attrs.selected.length > 0) {
-                    selectedDates = [_.first(selected).startDate, _.last(selected).endDate];
-                }
-                d3.select(".brush").transition()
-                    .call(brush.extent(selectedDates))
-                    .call(brush.event);
+                extent = selected && selected.length > 0 ? [_.first(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()]; // Global var
+                refreshBrush();
             });
 
-            //snap to sprint
+            function refreshBrush() {
+                d3.select(".brush").transition()
+                    .call(brush.extent(extent))
+                    .call(brush.event);
+            }
+
+            // Snap to sprint
             function brushended() {
-                if (!d3.event.sourceEvent) return; // only transition after input
-                var extent0 = brush.extent();
-                //global var
-                extent1 = extent0.map(d3.time.day.utc);
+                if (!d3.event.sourceEvent) return; // Only transition after input
                 var findSprintsOrAReleaseInRange = function(dates) {
                     var res;
                     res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
@@ -498,20 +492,17 @@ directives.directive('isMarkitup', ['$http', function($http) {
                             var _res = _.find(sprints.selectAll("rect").data(), function(sprint) {
                                 return sprint.startDate <= dates[0] && sprint.endDate >= dates[0];
                             });
-                            //always get an array
-                            res = _res ? [_res] : [res];
+                            res = _res ? [_res] : [res]; // Always get an array
                         }
                     }
                     return res;
                 };
-                var result = findSprintsOrAReleaseInRange(extent1);
-                if (result && result.length > 0) {
-                    extent1 = [_.first(result).startDate, _.last(result).endDate];
-                    scope.onSelect(result);
+                var selectedItems = findSprintsOrAReleaseInRange(brush.extent().map(d3.time.day.utc));
+                if (selectedItems.length > 0) {
+                    scope.onSelect(selectedItems);
+                    extent = [_.first(selectedItems).startDate, _.last(selectedItems).endDate];
+                    refreshBrush();
                 }
-                d3.select(this).transition()
-                    .call(brush.extent(extent1))
-                    .call(brush.event);
             }
 
             function render() {
@@ -531,21 +522,14 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .attr('x', function(d) { return x(d.startDate); })
                     .attr("width", function(d) { return x(d.endDate) - x(d.startDate); });
 
-                if (extent1) {
-                    d3.select(".brush").transition()
-                        .call(brush.extent(extent1))
-                        .call(brush.event);
+                if (extent) {
+                    refreshBrush();
                 }
             }
 
-            //register render on resize
-            d3.select(window).on('resize', render);
-            //Register render when details view changed
-            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function() {
-                $timeout(render, 100);
-            });
-            //Destroy listener when removed
-            scope.$on('$destroy', function() { registeredRootScopeRender(); });
+            d3.select(window).on('resize', render); // Register render on resize
+            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function() {  $timeout(render, 100); }); // Register render when details view changed
+            scope.$on('$destroy', function() { registeredRootScopeRender(); }); // Destroy listener when removed
         }
     }
 }]).directive('storyMenu', ['$compile', function($compile) { // For 140 stories, reduce display time by 1 s. and initial watchers by 1700 by loading menu only on first hover

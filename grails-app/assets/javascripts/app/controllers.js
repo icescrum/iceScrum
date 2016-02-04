@@ -404,19 +404,19 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.releases = project.releases;
     $scope.sprints = [];
 
-    $scope.timelineSelected = function(selectedElements) {
-        if (selectedElements.length == 0) {
+    $scope.timelineSelected = function(selectedItems) { // Timeline -> URL
+        if (selectedItems.length == 0) {
             $state.go('releasePlan');
-        } else if (selectedElements.length == 1 && selectedElements[0].class == 'Release') {
-            var release = selectedElements[0];
+        } else if (selectedItems.length == 1 && selectedItems[0].class == 'Release') {
+            var release = selectedItems[0];
             $state.go('releasePlan.release.details', {id: release.id});
-        } else if (selectedElements.length == 1 && selectedElements[0].class == 'Sprint') {
-            var sprint = selectedElements[0];
+        } else if (selectedItems.length == 1 && selectedItems[0].class == 'Sprint') {
+            var sprint = selectedItems[0];
             var releaseId = sprint.parentRelease.id;
             $state.go('releasePlan.release.sprint.withId.details', {id: releaseId, sprintId: sprint.id});
         } else {
-            var releaseId = selectedElements[0].parentRelease.id;
-            $state.go('releasePlan.release.sprint.multiple.details', {id: releaseId, listId: _.map(selectedElements, 'id')});
+            var releaseId = selectedItems[0].parentRelease.id;
+            $state.go('releasePlan.release.sprint.multiple.details', {id: releaseId, listId: _.map(selectedItems, 'id')});
         }
     };
     $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.id; }, function() { return $state.params.sprintId; }, function() { return $state.params.listId; }], function(newValues) {
@@ -438,12 +438,14 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
             } else {
                 $scope.sprints = [_.last(release.sprints)]; // TODO FIX
             }
+            $scope.selectedItems = $scope.sprints; // URL -> Timeline
         } else {
             if (!release) {
                 release = _.first($scope.releases); // TODO FIX
             }
             if (release) {
-                $scope.sprints = release.sprints
+                $scope.sprints = release.sprints;
+                $scope.selectedItems = [release]; // URL -> Timeline
             }
         }
     });
