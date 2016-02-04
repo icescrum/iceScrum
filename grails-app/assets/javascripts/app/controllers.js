@@ -386,7 +386,7 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
     $scope.orderByRank();
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, project, releases) {
+controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -436,12 +436,23 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
                     return _.contains(ids, sprint.id);
                 })
             } else {
-                $scope.sprints = [_.last(release.sprints)]; // TODO FIX
+                var sprint = _.find(release.sprints, function(sprint) {
+                    return sprint.state == SprintStatesByName.WAIT || sprint.state == SprintStatesByName.IN_PROGRESS;
+                });
+                if (!sprint) {
+                    sprint = _.last(release.sprints)
+                }
+                $scope.sprints = [sprint];
             }
             $scope.selectedItems = $scope.sprints; // URL -> Timeline
         } else {
             if (!release) {
-                release = _.first($scope.releases); // TODO FIX
+                release = _.find($scope.releases, function(release) {
+                    return release.state == ReleaseStatesByName.WAIT || release.state == ReleaseStatesByName.IN_PROGRESS;
+                });
+                if (!release) {
+                    release = _.last($scope.releases);
+                }
             }
             if (release) {
                 $scope.sprints = release.sprints;
