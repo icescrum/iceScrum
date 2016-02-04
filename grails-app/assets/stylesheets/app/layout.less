@@ -66,9 +66,10 @@ body {
 body > .container-fluid > .header {
 
   .navbar-icescrum.navbar-default {
+    z-index: 100;
+    border-radius: 0;
     background-color: @navbar-masthead-default-bg;
     border-color: @navbar-masthead-default-border;
-    border-radius: 0;
 
     .navbar-brand {
       color: @navbar-masthead-default-brand-color;
@@ -800,8 +801,11 @@ div.panel-body {
 #view-home {
   .panel-tasks {
     .panel-body {
-      max-height: 275px;
+      max-height: 230px;
       overflow:auto;
+      .list-group-header {
+        background: #fff;
+      }
     }
   }
 }
