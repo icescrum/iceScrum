@@ -421,7 +421,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 sprintMargin = 10, releaseMargin = 15,
                 x = d3.time.scale(),
                 xAxis = d3.svg.axis(),
-                extent; // Global variable
+                extent; // Global var
             var rootSvg = d3.select(element[0]).append("svg").attr("height", elementHeight);
             var svg = rootSvg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             var timelineBackground = svg.append("rect").attr("class", "timeline-background").attr("height", elementHeight);
@@ -503,9 +503,9 @@ directives.directive('isMarkitup', ['$http', function($http) {
 
             scope.$watch('timeline', render, true);
             scope.$watch('selected', function(selected) {
-                extent = selected && selected.length > 0 ? [_.first(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()]; // Global var
+                extent = selected && selected.length > 0 ? [_.first(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()];
                 refreshBrush();
-            });
+            }, true);
             d3.select(window).on('resize', render); // Register render on resize
             var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function() {  $timeout(render, 100); }); // Register render when details view changed
             scope.$on('$destroy', function() { registeredRootScopeRender(); }); // Destroy listener when removed
