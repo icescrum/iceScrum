@@ -425,22 +425,22 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
         var sprintId = newValues[2];
         var sprintListId = newValues[3];
         var release = _.find($scope.releases, {id: releaseId});
-        if (release && stateName.indexOf('.sprint') != -1) {
+        if (release && stateName.indexOf('.sprint') != -1 && stateName.indexOf('.new') == -1) {
             if (sprintId) {
-                $scope.sprints = [_.find(release.sprints, {id: sprintId})]
+                $scope.sprints = [_.find(release.sprints, {id: sprintId})];
             } else if (sprintListId) {
                 var ids = _.map(sprintListId.split(','), function(id) {
                     return parseInt(id);
                 });
                 $scope.sprints = _.filter(release.sprints, function(sprint) {
                     return _.contains(ids, sprint.id);
-                })
+                });
             } else {
                 var sprint = _.find(release.sprints, function(sprint) {
                     return sprint.state == SprintStatesByName.WAIT || sprint.state == SprintStatesByName.IN_PROGRESS;
                 });
                 if (!sprint) {
-                    sprint = _.last(release.sprints)
+                    sprint = _.last(release.sprints);
                 }
                 $scope.sprints = [sprint];
             }

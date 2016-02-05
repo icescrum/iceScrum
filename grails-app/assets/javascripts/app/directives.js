@@ -416,8 +416,6 @@ directives.directive('isMarkitup', ['$http', function($http) {
         },
         link: function(scope, element) {
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
-                width = element.width() - margin.left - margin.right,
-                height = element.height() - margin.top - margin.bottom,
                 brush, x, xAxis, releases, sprints, sprintMargin = 10, releaseMargin = 15, extent;
 
             var rootSvg = d3.select(element[0]).append("svg");
@@ -439,31 +437,52 @@ directives.directive('isMarkitup', ['$http', function($http) {
             sprints = svg.append("g").attr("class", "sprints");
             svg.append("g").attr("class", "brush");
 
-            brush = d3.svg.brush().x(x).on("brushend", brushended);
+            brush = d3.svg.brush().x(x).on("brushend", snapToSprint);
             svg.selectAll(".brush").call(brush).call(brush.event);
 
-            scope.$watch('timeline', function(_releases) {
+            function render() {
+                var _releases = scope.timeline;
+
+                var elementWidth = element.width();
+                var width = elementWidth - margin.left - margin.right;
+                var elementHeight = element.height();
+                var height = elementHeight - margin.top - margin.bottom;
+
                 x.domain([_.first(_releases).startDate, _.last(_releases).endDate]);
-                releases.selectAll('rect')
-                    .data(_releases)
-                    .enter()
-                    .append("rect")
+                x.range([0, width]);
+                xAxis.scale(x);
+
+                rootSvg.attr("width", elementWidth).attr("height", elementHeight);
+                svg.select('.timeline-background').attr("width", width).attr("height", elementHeight);
+                svg.select('.x.axis').attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')').call(xAxis);
+                svg.selectAll(".brush").selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15 * 2);
+
+                var classByState = {1: 'default', 2: 'progress', 3: 'done'};
+                var getX = function(d) { return x(d.startDate); };
+                var getWidth = function(d) { return x(d.endDate) - x(d.startDate); };
+
+                var releaseSelector = releases.selectAll('rect').data(_releases);
+                releaseSelector.exit().remove();
+                releaseSelector.enter().append("rect")
                     .attr("y", releaseMargin)
                     .attr("height", height - releaseMargin * 2)
-                    .attr('x', function(d) { return x(d.startDate); })
-                    .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
-                    .attr("class", function(d) { return "release release-" + ({1: 'default', 2: 'progress', 3: 'done'}[d.state]); });
-                sprints.selectAll('rect')
-                    .data(ProjectService.getAllSprints(_releases))
-                    .enter()
-                    .append("rect")
+                    .attr("class", function(d) { return "release release-" + classByState[d.state]; });
+                releaseSelector.attr('x', getX).attr("width", getWidth);
+
+                var sprintSelector = sprints.selectAll('rect').data(ProjectService.getAllSprints(_releases));
+                sprintSelector.exit().remove();
+                sprintSelector.enter().append("rect")
                     .attr("y", sprintMargin + releaseMargin)
-                    .attr('x', function(d) { return x(d.startDate); })
                     .attr("height", height - releaseMargin * 2 - sprintMargin * 2)
-                    .attr('width', function(d) { return x(d.endDate) - x(d.startDate); })
-                    .attr("class", function(d) { return "sprint sprint-" + ({1: 'default', 2: 'progress', 3: 'done'}[d.state]); });
-                render();
-            });
+                    .attr("class", function(d) { return "sprint sprint-" + classByState[d.state]; });
+                sprintSelector.attr('x', getX).attr("width", getWidth);
+
+                if (extent) {
+                    refreshBrush();
+                }
+            }
+
+            scope.$watch('timeline', render, true);
 
             scope.$watch('selected', function(selected) {
                 extent = selected && selected.length > 0 ? [_.first(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()]; // Global var
@@ -476,8 +495,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     .call(brush.event);
             }
 
-            // Snap to sprint
-            function brushended() {
+            function snapToSprint() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
                 var findSprintsOrAReleaseInRange = function(dates) {
                     var res;
@@ -492,7 +510,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                             var _res = _.find(sprints.selectAll("rect").data(), function(sprint) {
                                 return sprint.startDate <= dates[0] && sprint.endDate >= dates[0];
                             });
-                            res = _res ? [_res] : [res]; // Always get an array
+                            res = _res ? [_res] : [res]; // Always return an array
                         }
                     }
                     return res;
@@ -501,28 +519,6 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 if (selectedItems.length > 0) {
                     scope.onSelect(selectedItems);
                     extent = [_.first(selectedItems).startDate, _.last(selectedItems).endDate];
-                    refreshBrush();
-                }
-            }
-
-            function render() {
-                width = element.width() - margin.left - margin.right;
-                x.range([0, width]);
-                xAxis.scale(x);
-
-                rootSvg.attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom);
-                svg.select('.timeline-background').attr("width", width).attr("height", height + margin.top + margin.bottom);
-                svg.select('.x.axis').attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')').call(xAxis);
-                svg.selectAll(".brush").selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15 * 2);
-
-                releases.selectAll('rect')
-                    .attr('x', function(d) { return x(d.startDate); })
-                    .attr("width", function(d) { return x(d.endDate) - x(d.startDate); });
-                sprints.selectAll('rect')
-                    .attr('x', function(d) { return x(d.startDate); })
-                    .attr("width", function(d) { return x(d.endDate) - x(d.startDate); });
-
-                if (extent) {
                     refreshBrush();
                 }
             }

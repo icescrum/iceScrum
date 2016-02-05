@@ -23,8 +23,18 @@
 <script type="text/ng-template" id="sprint.multiple.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">
-            ${ message(code: 'todo.is.ui.sprints') } ({{ sprints.length }})
+        <h3 class="panel-title row">
+            <div class="left-title">
+                ${ message(code: 'todo.is.ui.sprints') } ({{ sprints.length }})
+            </div>
+            <div class="right-title">
+                <a class="btn visible-on-hover btn-default"
+                   href
+                   ng-click="$state.go('^')"
+                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
         </h3>
     </div>
     <div class="panel-body">
