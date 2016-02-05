@@ -98,7 +98,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
     });
 }]);
 
-controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', function($scope, $controller, $state, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases) {
+controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', 'detailsRelease', function($scope, $controller, $state, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases, detailsRelease) {
     $controller('sprintCtrl', { $scope: $scope }); // inherit from sprintCtrl
     // Functions
     $scope.resetSprintForm = function() {
@@ -124,7 +124,8 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
         $scope.release = _.find($scope.editableReleases, { id: release.id });
     };
     // Init
-    $scope.$watchCollection('release.sprints', function(sprints) {
+    var sprintWatcher = function() {
+        var sprints = $scope.release.sprints;
         if (!_.isUndefined(sprints)) {
             if (_.isEmpty(sprints)) {
                 $scope.minStartDate = $scope.release.startDate;
@@ -136,7 +137,9 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
             var hypotheticalEndDate = $scope.immutableAddDaysToDate($scope.sprint.startDate, sprintDuration);
             $scope.sprint.endDate = _.min([hypotheticalEndDate, $scope.release.endDate]);
         }
-    });
+    };
+    $scope.$watchCollection('release.sprints', sprintWatcher);
+    $scope.$watch('release', sprintWatcher);
     $scope.$watchCollection('[sprint.startDate, sprint.endDate]', function(newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
@@ -152,11 +155,8 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     $scope.editableReleases = _.sortBy(_.filter(releases, function(release) {
         return release.state < ReleaseStatesByName.DONE;
     }), 'orderNumber');
-    if (!_.isEmpty($scope.editableReleases)) {
-        var firstRelease = _.first($scope.editableReleases);
-        $scope.sprint.parentRelease = firstRelease;
-        $scope.release = firstRelease;
-    }
+    $scope.sprint.parentRelease = detailsRelease;
+    $scope.release = detailsRelease;
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],
