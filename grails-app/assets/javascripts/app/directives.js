@@ -434,6 +434,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
 
             function render() {
                 var _releases = scope.timeline;
+                if (!scope.timeline) return;
                 var elementWidth = element.width();
                 var width = elementWidth - margin.left - margin.right;
                 x.domain([_.first(_releases).startDate, _.last(_releases).endDate]);

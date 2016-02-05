@@ -459,6 +459,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
                 $scope.selectedItems = [release]; // URL -> Timeline
             }
         }
+        $scope.release = release;
     });
 }]);
 
