@@ -416,85 +416,63 @@ directives.directive('isMarkitup', ['$http', function($http) {
         },
         link: function(scope, element) {
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
-                brush, x, xAxis, releases, sprints, sprintMargin = 10, releaseMargin = 15, extent;
-
-            var rootSvg = d3.select(element[0]).append("svg");
+                elementHeight = element.height(),
+                height = elementHeight - margin.top - margin.bottom,
+                sprintMargin = 10, releaseMargin = 15,
+                x = d3.time.scale(),
+                xAxis = d3.svg.axis(),
+                extent; // Global variable
+            var rootSvg = d3.select(element[0]).append("svg").attr("height", elementHeight);
             var svg = rootSvg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            x = d3.time.scale().domain([]).range([0, 0]);
-            xAxis = d3.svg.axis().scale(x).orient("bottom");
-
-            svg.select(".axis")
-                .call(xAxis)
-                .selectAll("text")
-                .attr('y', 7)
-                .attr('x', -10)
-                .style("text-anchor", null);
-
-            svg.append("rect").attr("class", "timeline-background");
-            svg.append("g").attr("class", "x axis");
-            releases = svg.append("g").attr("class", "releases");
-            sprints = svg.append("g").attr("class", "sprints");
-            svg.append("g").attr("class", "brush");
-
-            brush = d3.svg.brush().x(x).on("brushend", snapToSprint);
-            svg.selectAll(".brush").call(brush).call(brush.event);
+            var timelineBackground = svg.append("rect").attr("class", "timeline-background").attr("height", elementHeight);
+            var xAxisSelector = svg.append("g").attr("class", "x axis").attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')');
+            var releases = svg.append("g").attr("class", "releases");
+            var sprints = svg.append("g").attr("class", "sprints");
+            var brush = d3.svg.brush().x(x).on("brushend", snapToSprint);
+            var brushSelector = svg.append("g").attr("class", "brush").call(brush).call(brush.event);
+            brushSelector.selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15 * 2);
 
             function render() {
                 var _releases = scope.timeline;
-
                 var elementWidth = element.width();
                 var width = elementWidth - margin.left - margin.right;
-                var elementHeight = element.height();
-                var height = elementHeight - margin.top - margin.bottom;
-
                 x.domain([_.first(_releases).startDate, _.last(_releases).endDate]);
                 x.range([0, width]);
                 xAxis.scale(x);
-
-                rootSvg.attr("width", elementWidth).attr("height", elementHeight);
-                svg.select('.timeline-background').attr("width", width).attr("height", elementHeight);
-                svg.select('.x.axis').attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')').call(xAxis);
-                svg.selectAll(".brush").selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15 * 2);
-
-                var classByState = {1: 'default', 2: 'progress', 3: 'done'};
-                var getX = function(d) { return x(d.startDate); };
-                var getWidth = function(d) { return x(d.endDate) - x(d.startDate); };
+                xAxisSelector.call(xAxis);
+                rootSvg.attr("width", elementWidth);
+                timelineBackground.attr("width", width);
 
                 var releaseSelector = releases.selectAll('rect').data(_releases);
+                var sprintSelector = sprints.selectAll('rect').data(ProjectService.getAllSprints(_releases));
+                // Remove
                 releaseSelector.exit().remove();
+                sprintSelector.exit().remove();
+                // Insert
+                var classByState = {1: 'default', 2: 'progress', 3: 'done'};
                 releaseSelector.enter().append("rect")
                     .attr("y", releaseMargin)
                     .attr("height", height - releaseMargin * 2)
                     .attr("class", function(d) { return "release release-" + classByState[d.state]; });
-                releaseSelector.attr('x', getX).attr("width", getWidth);
-
-                var sprintSelector = sprints.selectAll('rect').data(ProjectService.getAllSprints(_releases));
-                sprintSelector.exit().remove();
                 sprintSelector.enter().append("rect")
                     .attr("y", sprintMargin + releaseMargin)
                     .attr("height", height - releaseMargin * 2 - sprintMargin * 2)
                     .attr("class", function(d) { return "sprint sprint-" + classByState[d.state]; });
+                // Update
+                var getX = function(d) { return x(d.startDate); };
+                var getWidth = function(d) { return x(d.endDate) - x(d.startDate); };
+                releaseSelector.attr('x', getX).attr("width", getWidth);
                 sprintSelector.attr('x', getX).attr("width", getWidth);
 
                 if (extent) {
                     refreshBrush();
                 }
             }
-
-            scope.$watch('timeline', render, true);
-
-            scope.$watch('selected', function(selected) {
-                extent = selected && selected.length > 0 ? [_.first(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()]; // Global var
-                refreshBrush();
-            });
-
             function refreshBrush() {
-                d3.select(".brush").transition()
+                brushSelector.transition()
                     .call(brush.extent(extent))
                     .call(brush.event);
             }
-
             function snapToSprint() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
                 var findSprintsOrAReleaseInRange = function(dates) {
@@ -523,6 +501,11 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 }
             }
 
+            scope.$watch('timeline', render, true);
+            scope.$watch('selected', function(selected) {
+                extent = selected && selected.length > 0 ? [_.first(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()]; // Global var
+                refreshBrush();
+            });
             d3.select(window).on('resize', render); // Register render on resize
             var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function() {  $timeout(render, 100); }); // Register render when details view changed
             scope.$on('$destroy', function() { registeredRootScopeRender(); }); // Destroy listener when removed
