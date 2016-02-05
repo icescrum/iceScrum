@@ -676,6 +676,14 @@ directives.directive('isMarkitup', ['$http', function($http) {
         restrict: 'A',
         link:function (scope, element, attrs) {
             var headers = [], $cloneHeaders = [], offset;
+            var nativeStickyEnable = function() {
+                var prop = 'position:',
+                    el = document.createElement('test'),
+                    mStyle = el.style;
+                mStyle.cssText = prop + ['-webkit-', '-moz-', '-ms-', '-o-', ''].join('sticky;' + prop) + 'sticky;';
+                return (mStyle['position'].indexOf('sticky') !== -1);
+            }();
+
             scope.$watchCollection(attrs.stickyWatch,function(){
                 headers = angular.element('.list-group-header:not(.cloned)');
                 $cloneHeaders = [];
@@ -697,6 +705,12 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     var $header = angular.element(header);
                     var top = $header.offset().top;
                     var $previous = null;
+                    if(nativeStickyEnable){
+                        $header.addClass('native-sticky')
+                               .css('top', '-'+element.css('padding-top'))
+                               .css('z-index', index + 1);
+                        return;
+                    }
                     if(index == 0){
                         position();
                         $parent = $header.parent();
@@ -707,7 +721,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     if((offset - top) > 0){
                         if($header.css('visibility') != 'hidden'){
                             var $clone = $header.clone();
-                            $clone.css('position','fixed').css('overflow-y','hidden').css('top', offset+'px').css('z-index', index)
+                            $clone.css('position','fixed').css('overflow-y','hidden').css('top', offset+'px').css('z-index', index + 1)
                                 .addClass('cloned').addClass('sticky-'+index).data('height', $header.height())
                                 .width($parent.innerWidth() - (element.outerWidth() - $header.innerWidth()));
                             $cloneHeaders.push($clone);
@@ -738,14 +752,16 @@ directives.directive('isMarkitup', ['$http', function($http) {
             };
 
             //events stuff
-            var scrollBinder = element.bind("scroll", render);
-            var resizeBinder = angular.element($window).bind("resize", position);
-            var mainScrollBinder = angular.element('.main > .view').bind("scroll", position);
-            scope.$on('$destroy', function() {
-                scrollBinder();
-                resizeBinder();
-                mainScrollBinder();
-            });
+            if(!nativeStickyEnable){
+                var scrollBinder = element.bind("scroll", render);
+                var resizeBinder = angular.element($window).bind("resize", position);
+                var mainScrollBinder = angular.element('.main > .view').bind("scroll", position);
+                scope.$on('$destroy', function() {
+                    scrollBinder();
+                    resizeBinder();
+                    mainScrollBinder();
+                });
+            }
         }
     };
 }]);
