@@ -28,14 +28,22 @@ services.factory('Release', ['Resource', function($resource) {
 services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByName', 'Session', function($q, $state, Release, ReleaseStatesByName, Session) {
     var self = this;
     this.list = function(project) {
-        if (_.isEmpty(project.releases)) {
-            return Release.query({projectId: project.id}, function(data) {
-                project.releases = data;
-                project.releases_count = project.releases.length;
-            }).$promise;
-        } else {
-            return $q.when(project.releases);
-        }
+        var promise = Release.query({projectId: project.id}, function(newReleases) {
+            if (angular.isArray(project.releases)) {
+                _.each(newReleases, function(newRelease) {
+                    var existingRelease = _.find(project.releases, {id: newRelease.id});
+                    if (existingRelease) {
+                        angular.extend(existingRelease, newRelease);
+                    } else {
+                        project.releases.push(new Release(newRelease));
+                    }
+                });
+            } else {
+                project.releases = newReleases;
+            }
+            project.releases_count = project.releases.length;
+        }).$promise;
+        return _.isEmpty(project.releases) ? promise : $q.when(project.releases);
     };
     this.getCurrentOrNextRelease = function(project) {
         return Release.get({projectId: project.id, action: 'findCurrentOrNextRelease'}).$promise;

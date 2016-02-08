@@ -25,10 +25,21 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('story/:type/:typeId/:id/:action/:backlog');
 }]);
 
-services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', 'FormService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, $state, Story, Session, FormService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
+services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, $state, Story, Session, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     this.list = [];
     var self = this;
     var crudMethods = {};
+    var refreshReleasesAndSprints = function(oldStory, newStory) {
+        var oldSprint = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
+        var newSprint = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
+        if (Session.getProject().releases && (oldSprint || newSprint)) { // No need to do anything if releases are not loaded or no parent sprint
+            if (oldSprint != newSprint || oldStory.effort != newStory.effort || oldStory.state != newStory.state) {
+                ReleaseService.list(Session.getProject()).then(function(releases) { // Refreshes all the releases & sprints, which is probably overkill
+                    $q.all(_.map(releases, SprintService.list));
+                });
+            }
+        }
+    };
     crudMethods[IceScrumEventType.CREATE] = function(story) {
         var existingStory = _.find(self.list, {id: story.id});
         if (existingStory) {
@@ -38,7 +49,9 @@ services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', '
         }
     };
     crudMethods[IceScrumEventType.UPDATE] = function(story) {
-        angular.extend(_.find(self.list, {id: story.id}), story);
+        var existingStory = _.find(self.list, {id: story.id});
+        refreshReleasesAndSprints(existingStory, story); // Must be done before local update to have proper before/after values and know if refresh must occur
+        angular.extend(existingStory, story);
     };
     crudMethods[IceScrumEventType.DELETE] = function(story) {
         if ($state.includes("backlog.details", {id: story.id}) ||

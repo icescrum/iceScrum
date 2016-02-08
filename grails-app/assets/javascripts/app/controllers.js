@@ -398,7 +398,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     $scope.viewName = 'releasePlan';
     $scope.project = project;
 
-    //TODO bug fix: releases MAY BE empty on refresh
+    // TODO bug fix: project.releases MAY BE empty on refresh that's why we assign it manually
     project.releases = releases;
 
     $scope.releases = project.releases;

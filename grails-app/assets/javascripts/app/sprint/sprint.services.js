@@ -27,14 +27,22 @@ services.factory('Sprint', ['Resource', function($resource) {
 
 services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'Session', function($q, $state, Sprint, SprintStatesByName, Session) {
     this.list = function(release) {
-        if (_.isEmpty(release.sprints)) {
-            return Sprint.query({ projectId: release.parentProduct.id, type: 'release', id: release.id }, function(data) {
-                release.sprints = data;
-                release.sprints_count = release.sprints.length;
-            }).$promise;
-        } else {
-            return $q.when(release.sprints);
-        }
+        var promise = Sprint.query({ projectId: release.parentProduct.id, type: 'release', id: release.id }, function(newSprints) {
+            if (angular.isArray(release.sprints)) {
+                _.each(newSprints, function(newSprint) {
+                    var existingSprint = _.find(release.sprints, {id: newSprint.id});
+                    if (existingSprint) {
+                        angular.extend(existingSprint, newSprint);
+                    } else {
+                        release.sprints.push(new Sprint(newSprint));
+                    }
+                });
+            } else {
+                release.sprints = newSprints;
+            }
+            release.sprints_count = release.sprints.length;
+        }).$promise;
+        return _.isEmpty(release.sprints) ? promise : $q.when(release.sprints);
     };
     this.getCurrentOrLastSprint = function(project) {
         return Sprint.get({ projectId: project.id, action: 'findCurrentOrLastSprint' }).$promise;
