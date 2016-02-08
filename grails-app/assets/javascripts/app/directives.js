@@ -435,13 +435,13 @@ directives.directive('isMarkitup', ['$http', function($http) {
             function render() {
                 var _releases = scope.timeline;
                 if (!scope.timeline) return;
-                var elementWidth = element.width();
+                rootSvg.attr("width", element.width());
+                var elementWidth = element.width(); // WARNING: element.width must be recomputed after rootSvg.attr("width", ...) because it changes if the right panel has lateral padding (e.g. with .new form which has .panel-body padding)
                 var width = elementWidth - margin.left - margin.right;
                 x.domain([_.first(_releases).startDate, _.last(_releases).endDate]);
                 x.range([0, width]);
                 xAxis.scale(x);
                 xAxisSelector.call(xAxis);
-                rootSvg.attr("width", elementWidth);
                 timelineBackground.attr("width", width);
 
                 var releaseSelector = releases.selectAll('rect').data(_releases);
