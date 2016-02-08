@@ -547,14 +547,19 @@ directives.directive('isMarkitup', ['$http', function($http) {
 }]).directive('unavailableFeature', ['$uibModal', function($uibModal) {
     return {
         restrict: 'A',
+        scope: {
+            unavailableFeature: '='
+        },
         link: function(scope, element) {
-            element.on('click', function() {
-                $uibModal.open({
-                    template: '<div class="modal-header"><h4 class="modal-title">Feature Coming Soon</h4></div><div class="modal-body"><b>This useful feature is still in development. We will release it very soon!</b></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="$close()">Close</button></div>',
-                    size: 'sm'
+            if (scope.unavailableFeature) {
+                element.on('click', function() {
+                    $uibModal.open({
+                        template: '<div class="modal-header"><h4 class="modal-title">Feature Coming Soon</h4></div><div class="modal-body"><b>This useful feature is still in development. We will release it very soon!</b></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="$close()">Close</button></div>',
+                        size: 'sm'
+                    });
+                    return false;
                 });
-                return false;
-            });
+            }
         }
     }
 }]).directive('selectable', ['$document', '$rootScope', function($document, $rootScope) {

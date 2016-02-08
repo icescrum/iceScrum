@@ -20,8 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<script type="text/ng-template" id="
-loading.html">
+<script type="text/ng-template" id="loading.html">
     <svg class="logo loading" width="100%" height="100%" x="0px" y="0px" viewBox="0 0 150 150" style="enable-background:new 0 0 150 150;" xml:space="preserve">
         <path class="logois logois1" fill="#42A9E0" d="M77.345,118.476c0,0-44.015-24.76-47.161-26.527c-3.146-1.771-0.028-3.523-0.028-3.523  l49.521-27.854c0,0,46.335,26.058,49.486,27.833c3.154,1.771,0.008,3.545,0.008,3.545S83.921,117.4,81.978,118.492  C79.676,119.787,77.345,118.476,77.345,118.476z"/>
         <path class="logois logois2" fill="1C3660" d="M77.349,107.287c0,0-44.019-24.758-47.165-26.527s0-3.539,0-3.539L79.68,49.38  c0,0,46.332,26.062,49.482,27.834c3.154,1.775,0.008,3.547,0.008,3.547s-45.193,25.422-47.16,26.525  C79.676,108.599,77.349,107.287,77.349,107.287z"/>
@@ -76,6 +75,7 @@ loading.html">
     hotkey-description="${message(code:'todo.is.ui.open.view')} {{ menu.title }}"
     uib-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
     tooltip-placement="bottom"
+    unavailable-feature="menu.id == 'finder'"
     href="#/{{ menu.id != 'project' ? menu.id : '' }}">
     <span class="handle" as-sortable-item-handle>::</span>
     <i class="visible-xs {{ menu.icon }}"></i><span class="title">{{ menu.title }}</span>

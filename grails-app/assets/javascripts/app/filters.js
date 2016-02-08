@@ -325,6 +325,25 @@ filters
                 return items;
             }
         }
+    }]).filter('search', ['$rootScope', function($rootScope) {
+        return function(items, fields) {
+            var term = $rootScope.app.search;
+            if (!_.isEmpty(items) && !_.isEmpty(term) && !_.isEmpty(fields)) {
+                var searchTerm = _.deburr(_.trim(term.toLowerCase()));
+                return _.filter(items, function(item) {
+                    return _.any(fields, function (field) {
+                        var value = _.get(item, field);
+                        if (!_.isEmpty(value) && _.isString(value)) {
+                            return _.deburr(value.toLowerCase()).indexOf(searchTerm) != -1;
+                        } else {
+                            return false;
+                        }
+                    });
+                });
+            } else {
+                return items;
+            }
+        }
     }]).filter('dependsOnLabel', [function() {
         return function(dependsOn) {
             if (dependsOn) {
