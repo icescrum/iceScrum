@@ -26,6 +26,7 @@ var controllers = angular.module('controllers', []);
 
 controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http) {
     $controller('headerCtrl', {$scope: $scope});
+    $controller('searchCtrl', {$scope: $scope});
     // Functions
     $scope.displayDetailsView = function() {
         var data = '';
@@ -229,6 +230,64 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             if (!Session.authenticated()) {
                 $scope.showAuthModal();
             }
+        }
+    });
+}]);
+
+controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', 'ProjectService', 'FeatureService', function($scope, $filter, $q, $location, ProjectService, FeatureService) {
+    // Functions
+    $scope.searchContext = function(term) {
+        return $scope.loadContexts().then(function() {
+            var filteredResult = _.filter($scope.contexts, function(context) {
+                return _.deburr(context.term.toLowerCase()).indexOf(_.deburr(term.toLowerCase())) != -1;
+            });
+            var context = $scope.app.context;
+            if (context) {
+                _.remove(filteredResult, {type: context.type, id: context.id});
+            }
+            return filteredResult;
+        });
+    };
+    $scope.setContext = function(context) {
+        $location.search('context', context.type + ':' + context.id);
+        $scope.app.context = context;
+        $scope.app.search = null;
+    };
+    $scope.clearContext = function() {
+        $location.search('context', null);
+        $scope.app.context = null;
+    };
+    $scope.loadContexts = function() {
+        return $q.all([ProjectService.getTags(), FeatureService.list.$promise]).then(function(data) {
+            var tags = data[0];
+            var features = data[1];
+            var contexts = _.map(tags, function(tag) {
+                return {type: 'tag', id: tag, term: tag};
+            });
+            contexts = contexts.concat(_.map(features, function(feature) {
+                return {type: 'feature', id: feature.uid.toString(), term: feature.name};
+            }));
+            $scope.contexts = contexts;
+        });
+    };
+    // Init
+    var context = $location.search().context;
+    if (context === true || !context || context.indexOf(':') == -1) { // ?context with no value returns true, we don't want that
+        $scope.clearContext();
+    } else {
+        var contextFields = context.split(':');
+        var type = contextFields[0];
+        var id = contextFields[1];
+        $scope.app.context = {type: type, id: id}; // Partial context as soon as possible
+        $scope.loadContexts().then(function() {
+            $scope.app.context = _.find($scope.contexts, $scope.app.context); // Load the full context to get the name in case of feature
+        });
+    }
+    // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
+    $scope.$on('$stateChangeSuccess', function() {
+        var context = $scope.app.context;
+        if (context) {
+            $location.search('context', context.type + ':' + context.id);
         }
     });
 }]);

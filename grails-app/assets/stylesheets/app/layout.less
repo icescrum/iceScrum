@@ -248,7 +248,13 @@ body > .container-fluid > .header {
     }
     .navbar-right {
       form.navbar-form {
-        max-width: 200px;
+        .form-control {
+          max-width: 150px;
+        }
+        .context {
+          .text-overflow();
+          max-width: 150px;
+        }
       }
       margin-right: 0;
     }

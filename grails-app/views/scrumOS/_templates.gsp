@@ -151,3 +151,9 @@
         <small>${message(code:'todo.is.ui.activities.empty')}</small>
     </div>
 </script>
+
+<script type="text/ng-template" id="search.context.html">
+<a class="text-ellipsis">
+    <i class="fa" ng-class="match.model.type == 'feature' ? 'fa-sticky-note' : 'fa-tag'"></i> {{ match.model.term }}
+</a>
+</script>

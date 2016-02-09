@@ -21,6 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+
 <nav class="navbar navbar-masthead navbar-icescrum navbar-default" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -31,9 +32,9 @@
                 <span class="icon-bar"></span>
             </button>
             <div class="hidden-xs"
-               hotkey="{'I': showAbout}"
-               hotkey-description="${message(code: 'is.about')}"
-               ng-click="showAbout()">
+                 hotkey="{'I': showAbout}"
+                 hotkey-description="${message(code: 'is.about')}"
+                 ng-click="showAbout()">
                 <svg class="logo" ng-class="getPushState()" width="100%" height="100%" x="0px" y="0px" viewBox="0 0 150 150" style="enable-background:new 0 0 150 150;" xml:space="preserve">
                     <path class="logois logois1" fill="#42A9E0" d="M77.345,118.476c0,0-44.015-24.76-47.161-26.527c-3.146-1.771-0.028-3.523-0.028-3.523  l49.521-27.854c0,0,46.335,26.058,49.486,27.833c3.154,1.771,0.008,3.545,0.008,3.545S83.921,117.4,81.978,118.492  C79.676,119.787,77.345,118.476,77.345,118.476z"/>
                     <path class="logois logois2" fill="1C3660" d="M77.349,107.287c0,0-44.019-24.758-47.165-26.527s0-3.539,0-3.539L79.68,49.38  c0,0,46.332,26.062,49.482,27.834c3.154,1.775,0.008,3.547,0.008,3.547s-45.193,25.422-47.16,26.525  C79.676,108.599,77.349,107.287,77.349,107.287z"/>
@@ -113,7 +114,7 @@
                                     <a class="${product?.id == curProduct.id ? 'active' : ''}"
                                        href="${product?.id == curProduct.id ? '' : createLink(controller: "scrumOS", params: [product:curProduct.pkey])+'/'}"
                                        title="${curProduct.name.encodeAsHTML()}">
-                                       ${curProduct.name.encodeAsHTML()}
+                                        ${curProduct.name.encodeAsHTML()}
                                     </a>
                                 </li>
                             </g:each>
@@ -148,10 +149,10 @@
                         is-disabled="!currentUser.id"
                         as-sortable="menuSortableOptions"
                         ng-model="menus.hidden">
-                            <li ng-repeat="menu in menus.hidden"
-                                ng-include="'menuitem.item.html'"
-                                as-sortable-item
-                                ng-class="{'active':$state.includes(menu.id)}" class="menuitem"></li>
+                        <li ng-repeat="menu in menus.hidden"
+                            ng-include="'menuitem.item.html'"
+                            as-sortable-item
+                            ng-class="{'active':$state.includes(menu.id)}" class="menuitem"></li>
                     </ul>
                 </li>
             </ul>
@@ -160,9 +161,28 @@
                 <g:if test="${product}">
                     <form class="navbar-form pull-left" role="search">
                         <div class="input-group">
-                            <input ng-model="app.search" type="text" class="form-control" placeholder="${message(code:'todo.is.ui.search')}">
+                            <span class="input-group-btn" ng-if="app.context">
+                                <button class="btn btn-default context"
+                                        type="button"
+                                        ng-click="clearContext()">
+                                    <i class="fa" ng-class="app.context.type == 'feature' ? 'fa-sticky-note' : 'fa-tag'"></i>
+                                    {{ app.context.term }}
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </span>
+                            <input autocomplete="off"
+                                   type="text"
+                                   name="app.search"
+                                   class="form-control"
+                                   ng-model="app.search"
+                                   placeholder="${message(code:'todo.is.ui.search')}"
+                                   uib-typeahead="context.term for context in searchContext($viewValue)"
+                                   typeahead-on-select="setContext($item)"
+                                   typeahead-loading="searchingContext"
+                                   typeahead-wait-ms="250"
+                                   typeahead-template-url="search.context.html">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" unavailable-feature><span class="fa fa-search"></span></button>
+                                <button class="btn btn-default" type="button"><i class="fa" ng-class="{ 'fa-search': !searchingContext, 'fa-refresh': searchingContext }"></i></button>
                             </span>
                         </div>
                     </form>
