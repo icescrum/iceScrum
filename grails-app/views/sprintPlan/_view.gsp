@@ -174,7 +174,7 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-repeat="story in backlog.stories | filter: storyFilter | search: ['name', 'description', 'notes'] | orderBy: 'rank'"
+            <tr ng-repeat="story in backlog.stories | filter: storyFilter | search: ['name', 'description', 'notes', 'uid'] | orderBy: 'rank'"
                 ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">
                 <td style="width:16%"
                     class="postits grid-group"

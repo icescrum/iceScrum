@@ -329,12 +329,12 @@ filters
         return function(items, fields) {
             var term = $rootScope.app.search;
             if (!_.isEmpty(items) && !_.isEmpty(term) && !_.isEmpty(fields)) {
-                var searchTerm = _.deburr(_.trim(term.toLowerCase()));
+                var searchTerm = _.deburr(_.trim(term.toString().toLowerCase()));
                 return _.filter(items, function(item) {
                     return _.any(fields, function (field) {
                         var value = _.get(item, field);
-                        if (!_.isEmpty(value) && _.isString(value)) {
-                            return _.deburr(value.toLowerCase()).indexOf(searchTerm) != -1;
+                        if (!_.isUndefined(value)) {
+                            return _.deburr(value.toString().toLowerCase()).indexOf(searchTerm) != -1;
                         } else {
                             return false;
                         }
