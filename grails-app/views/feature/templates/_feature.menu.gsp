@@ -22,9 +22,14 @@
 --}%
 
 <script type="text/ng-template" id="feature.menu.html">
+<li>
+    <a href ng-click="setFeatureContext(feature)">
+        ${message(code: 'todo.is.ui.context.set')}
+    </a>
+</li>
 <li ng-if="authorizedFeature('copyToBacklog')">
     <a href ng-click="copyToBacklog(feature)">
-        <g:message code='is.ui.feature.menu.copy'/>
+        ${message(code: 'is.ui.feature.menu.copy')}
     </a>
 </li>
 <li>
@@ -34,7 +39,7 @@
 </li>
 <li ng-if="authorizedFeature('delete')">
     <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
-        <g:message code='is.ui.feature.menu.delete'/>
+        ${message(code: 'is.ui.feature.menu.delete')}
     </a>
 </li>
 </script>

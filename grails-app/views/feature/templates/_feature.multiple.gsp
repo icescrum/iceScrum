@@ -52,7 +52,7 @@
                                      ng-bind-html="topFeature.description | sanitize"></div>
                             </div>
                             <div class="tags">
-                                <a ng-repeat="tag in topFeature.tags" href="#"><span class="tag">{{ tag }}</span></a>
+                                <a ng-repeat="tag in topFeature.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
                             </div>
                             <div class="actions">
                                 <span class="action"><a><i class="fa fa-cog"></i></a></span>

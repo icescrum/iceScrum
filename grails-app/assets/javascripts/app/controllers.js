@@ -252,6 +252,12 @@ controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', '$
         $location.search('context', context ? context.type + ':' + context.id : null);
         $window.location.reload();
     };
+    $scope.setFeatureContext = function(feature) {
+        $scope.setContext({type: 'feature', id: feature.id});
+    };
+    $scope.setTagContext = function(tag) {
+        $scope.setContext({type: 'tag', id: tag});
+    };
     $scope.loadContexts = function() {
         var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the controller because it will init the service systematically and call Feature.query which require authentication
         return $q.all([ProjectService.getTags(), FeatureService.list.$promise]).then(function(data) {

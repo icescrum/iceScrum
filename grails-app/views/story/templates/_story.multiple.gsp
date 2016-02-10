@@ -57,7 +57,7 @@
                                      ng-bind-html="topStory.description | sanitize"></div>
                             </div>
                             <div class="tags">
-                                <a ng-repeat="tag in topStory.tags" href><span class="tag">{{ tag }}</span></a>
+                                <a ng-repeat="tag in topStory.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
                             </div>
                             <div class="actions">
                                 <span class="action"><a><i class="fa fa-cog"></i></a></span>

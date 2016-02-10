@@ -44,7 +44,7 @@
             ng-bind-html="task.name | sanitize"></h3>
     </div>
     <div class="tags">
-        <a ng-repeat="tag in task.tags" href="#"><span class="tag">{{ tag }}</span></a>
+        <a ng-repeat="tag in task.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
     </div>
     <div class="actions">
         <span uib-dropdown class="action">
