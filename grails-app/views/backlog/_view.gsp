@@ -80,7 +80,7 @@
                 <button type="button"
                         ng-if="backlog.sortable"
                         class="btn btn-default"
-                        ng-click="orderBacklogByRank(backlog)"
+                        ng-click="enableSortable(backlog)"
                         uib-tooltip="{{ backlog.sorting ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                     <span ng-class="backlog.sorting ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                 </button>
@@ -142,7 +142,7 @@
             <div ng-if="backlog.sortable && !backlog.sorting" class="toolbar-warning">
                 <i class="fa fa-exclamation-triangle"></i>
                 ${message(code: 'todo.is.ui.sortable.backlog.warning')}
-                <button type="button" class="btn btn-default btn-sm" ng-click="orderBacklogByRank(backlog)">
+                <button type="button" class="btn btn-default btn-sm" ng-click="enableSortable(backlog)">
                     <span class="text-danger fa fa-hand-pointer-o"></span>
                 </button>
             </div>

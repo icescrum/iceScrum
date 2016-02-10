@@ -138,6 +138,15 @@ class ProductUrlMappings {
                 product(matches: /[0-9A-Z]*/)
             }
         }
+        "/p/$product/story/$type/$typeId" {
+            controller = 'story'
+            action = 'index'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                typeId(matches: /\d*/)
+                type(inList: ['actor', 'feature', 'sprint', 'backlog'])
+            }
+        }
         "/p/$product/story/$id" {
             controller = 'story'
             action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
@@ -153,28 +162,11 @@ class ProductUrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/story/$type/$id" {
-            controller = 'story'
-            action = [GET: "listByType"]
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                id(matches: /\d*/)
-                type(inList: ['actor', 'feature', 'sprint'])
-            }
-        }
         "/p/$product/story/listByField" {
             controller = 'story'
             action = 'listByField'
             constraints {
                 product(matches: /[0-9A-Z]*/)
-            }
-        }
-        "/p/$product/story/listByBacklog/$backlog" {
-            controller = 'story'
-            action = 'index'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                backlog(matches: /\d+(,\d+)*/)
             }
         }
         // Actor

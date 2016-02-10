@@ -36,8 +36,31 @@ class StoryController {
     def activityService
 
     @Secured('stakeHolder() or inProduct()')
-    def index(long product, long backlog) {
-        def stories = backlog ? Story.search(product, JSON.parse(Backlog.get(backlog).filter)).sort { Story story -> story.id } : Story.findAllByBacklog(Product.load(product))
+    def index(long product, long typeId, String type) {
+        def options = [story: [:]]
+        if (type) {
+            if (type == 'backlog') {
+                options = JSON.parse(Backlog.get(typeId).filter)
+            } else if (type == 'actor') {
+                options.story.actor = "$typeId"
+            } else if (type == 'feature') {
+                options.story.feature = "$typeId"
+            } else if (type == 'sprint') {
+                options.story.parentSprint = "$typeId"
+            }
+        }
+        if (params.context) {
+            if (params.context.type == 'tag') {
+                options.tag = params.context.id
+            } else if (params.context.type == 'feature') {
+                if (!options.story.feature) {
+                    options.story.feature = params.context.id
+                } else if (options.story.feature != params.context.id) { // If it tries to load the stories of another feature, return nothing!
+                    options.story = null
+                }
+            }
+        }
+        def stories = Story.search(product, options).sort { Story story -> story.id }
         withFormat {
             html { render(status: 200, text: stories as JSON, contentType: 'application/json') }
             json { renderRESTJSON(text: stories) }
@@ -350,23 +373,6 @@ class StoryController {
             return
         }
         redirect(url: link)
-    }
-
-    @Secured('stakeHolder() and !archivedProduct()')
-    def listByType(long id, long product, String type) {
-        def stories
-        if (type == 'actor') {
-            stories = Actor.withActor(product, id).stories
-        } else if (type == 'feature') {
-            stories = Feature.withFeature(product, id).stories
-        } else if (type == 'sprint') {
-            stories = Sprint.withSprint(product, id).stories
-        }
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: stories as JSON) }
-            json { renderRESTJSON(text: stories) }
-            xml { renderRESTXML(text: stories) }
-        }
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')

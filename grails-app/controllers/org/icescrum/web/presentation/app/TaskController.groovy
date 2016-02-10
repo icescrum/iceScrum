@@ -39,16 +39,19 @@ class TaskController {
             returnError(text: message(code: 'is.sprint.error.not.exist'))
             return
         }
-        def tasks = null
-        if (params.filter == 'user') {
-            tasks = Task.getUserTasks(sprint.id, springSecurityService.principal.id).list()
-        } else if (params.filter == 'free') {
-            tasks = Task.getFreeTasks(sprint.id).list()
-        } else if (params.filter) {
-            render(status: 400)
-            return
-        } else {
-            tasks = Task.getAllTasksInSprint(sprint.id).list()
+        def tasks = Task.getAllTasksInSprint(sprint.id).list()
+        if (params.context) {
+            tasks = tasks.findAll { Task task ->
+                if (task.type) {
+                    if (params.context.type == 'tag') {
+                        return task.tags.contains(params.context.id)
+                    } else if (params.context.type == 'feature') {
+                        return false
+                    }
+                } else {
+                    return true
+                }
+            }
         }
         withFormat {
             html { render status: 200, contentType: 'application/json', text: tasks as JSON }

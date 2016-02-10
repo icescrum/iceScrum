@@ -22,10 +22,10 @@
  *
  */
 services.factory('Story', ['Resource', function($resource) {
-    return $resource('story/:type/:typeId/:id/:action/:backlog');
+    return $resource('story/:type/:typeId/:id/:action');
 }]);
 
-services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, $state, Story, Session, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
+services.service("StoryService", ['$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, $rootScope, $state, Story, Session, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     this.list = [];
     var self = this;
     var crudMethods = {};
@@ -39,6 +39,22 @@ services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', '
                 });
             }
         }
+    };
+    var queryWithContext = function(parameters, success, error) {
+        if (!parameters) {
+            parameters = {};
+        }
+        if ($rootScope.app.context) {
+            _.merge(parameters,  {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
+        }
+        var args = [parameters];
+        if (success) {
+            args.push(success);
+        }
+        if (error) {
+            args.push(error);
+        }
+        return Story.query.apply(this, args);
     };
     crudMethods[IceScrumEventType.CREATE] = function(story) {
         var existingStory = _.find(self.list, {id: story.id});
@@ -80,7 +96,7 @@ services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', '
                 obj.stories.push(foundStory);
             }
         });
-        var promise = Story.query({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
+        var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
             obj.stories = stories;
             self.mergeStories(stories);
             return stories;
@@ -222,10 +238,10 @@ services.service("StoryService", ['$q', '$http', '$state', 'Story', 'Session', '
         }).$promise;
     };
     this.listByBacklog = function(backlog) {
-        return Story.query({action: 'listByBacklog', backlog: backlog.id}).$promise.then(function(stories) {
+        return queryWithContext({type: 'backlog', typeId: backlog.id}, function(stories) {
             self.mergeStories(stories);
             return stories;
-        });
+        }).$promise;
     };
     this.authorizedStory = function(action, story) {
         switch (action) {

@@ -34,7 +34,7 @@
                     <button type="button"
                             ng-if="isSortableSprintPlan(sprint)"
                             class="btn btn-default"
-                            ng-click="setAllSprintFilter()"
+                            ng-click="enableSortable()"
                             uib-tooltip="{{ isSortingSprintPlan(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                         <span ng-class="isSortingSprintPlan(sprint) ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                     </button>
@@ -81,7 +81,7 @@
             <div ng-if="isSortableSprintPlan(sprint) && !isSortingSprintPlan(sprint)" class="toolbar-warning">
                 <i class="fa fa-exclamation-triangle"></i>
                 ${message(code: 'todo.is.ui.sortable.sprintPlan.warning')}
-                <button type="button" class="btn btn-default btn-sm" ng-click="setAllSprintFilter()">
+                <button type="button" class="btn btn-default btn-sm" ng-click="enableSortable()">
                     <span class="text-danger fa fa-hand-pointer-o"></span>
                 </button>
             </div>

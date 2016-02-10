@@ -25,7 +25,7 @@ services.factory('Task', [ 'Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action');
 }]);
 
-services.service("TaskService", ['$q', '$state', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
+services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, $rootScope, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
     var self = this;
     this.getCrudMethods = function(obj) {
         var crudMethods = {};
@@ -81,7 +81,8 @@ services.service("TaskService", ['$q', '$state', 'Task', 'Session', 'IceScrumEve
         return Task.update({id: task.id, action: 'copy'}, {}, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
     };
     this.list = function(obj) {
-        return Task.query({ typeId: obj.id, type: obj.class.toLowerCase() }, function(data) {
+        var params = $rootScope.app.context ? {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id} : {};
+        return Task.query(params, {typeId: obj.id, type: obj.class.toLowerCase()}, function(data) {
             obj.tasks = data;
             obj.tasks_count = obj.tasks.length;
             var crudMethods = self.getCrudMethods(obj);

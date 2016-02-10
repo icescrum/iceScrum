@@ -46,7 +46,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
         }
         backlog.stories = $filter('orderBy')(filteredStories, sortOrder, backlog.orderBy.reverse);
         backlog.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog)); // TODO fix
-        backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse;
+        backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse && !$scope.app.context;
         $timeout(function() { // Timeout to wait for story rendering
             $scope.$emit('selectable-refresh');
         }, 0);
@@ -94,6 +94,12 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
     $scope.reverseBacklogOrder = function(backlog) {
         backlog.orderBy.reverse = !backlog.orderBy.reverse;
         $scope.refreshSingleBacklog(backlog);
+    };
+    $scope.enableSortable = function(backlog) {
+        if ($scope.app.context) {
+            $scope.setContext(null);
+        }
+        $scope.orderBacklogByRank(backlog)
     };
     // Init
     $scope.viewName = 'backlog';

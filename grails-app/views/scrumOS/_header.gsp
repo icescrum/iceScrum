@@ -164,7 +164,7 @@
                             <span class="input-group-btn" ng-if="app.context">
                                 <button class="btn btn-default context"
                                         type="button"
-                                        ng-click="clearContext()">
+                                        ng-click="setContext(null)">
                                     <i class="fa" ng-class="app.context.type == 'feature' ? 'fa-sticky-note' : 'fa-tag'"></i>
                                     {{ app.context.term }}
                                     <i class="fa fa-times"></i>

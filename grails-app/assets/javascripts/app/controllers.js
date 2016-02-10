@@ -234,10 +234,10 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
 }]);
 
-controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', 'ProjectService', 'FeatureService', function($scope, $filter, $q, $location, ProjectService, FeatureService) {
+controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', '$window', '$injector', 'Session', 'ProjectService', function($scope, $filter, $q, $location, $window, $injector, Session, ProjectService) {
     // Functions
     $scope.searchContext = function(term) {
-        return $scope.loadContexts().then(function() {
+        return !Session.authenticated() ? [] : $scope.loadContexts().then(function() {
             var filteredResult = _.filter($scope.contexts, function(context) {
                 return _.deburr(context.term.toLowerCase()).indexOf(_.deburr(term.toLowerCase())) != -1;
             });
@@ -249,15 +249,11 @@ controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', 'P
         });
     };
     $scope.setContext = function(context) {
-        $location.search('context', context.type + ':' + context.id);
-        $scope.app.context = context;
-        $scope.app.search = null;
-    };
-    $scope.clearContext = function() {
-        $location.search('context', null);
-        $scope.app.context = null;
+        $location.search('context', context ? context.type + ':' + context.id : null);
+        $window.location.reload();
     };
     $scope.loadContexts = function() {
+        var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the controller because it will init the service systematically and call Feature.query which require authentication
         return $q.all([ProjectService.getTags(), FeatureService.list.$promise]).then(function(data) {
             var tags = data[0];
             var features = data[1];
@@ -273,7 +269,8 @@ controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', 'P
     // Init
     var context = $location.search().context;
     if (context === true || !context || context.indexOf(':') == -1) { // ?context with no value returns true, we don't want that
-        $scope.clearContext();
+        $location.search('context', null);
+        $scope.app.context = null;
     } else {
         var contextFields = context.split(':');
         var type = contextFields[0];
