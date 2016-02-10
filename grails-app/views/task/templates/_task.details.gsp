@@ -159,10 +159,12 @@
                                multiple
                                tagging
                                tagging-tokens="SPACE|,"
-                               tagging-label=""
+                               tagging-label="${message(code: 'toto.is.ui.tag.create')}"
                                ng-model="editableTask.tags">
-                        <ui-select-match placeholder="${message(code:'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
-                        <ui-select-choices repeat="tag in tags">{{ tag }}</ui-select-choices>
+                        <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
+                        <ui-select-choices repeat="tag in tags | filter: $select.search">
+                            <span ng-bind-html="tag | highlight: $select.search"></span>
+                        </ui-select-choices>
                     </ui-select>
                 </div>
                 <div class="form-group">
