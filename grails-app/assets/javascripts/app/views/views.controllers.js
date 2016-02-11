@@ -77,7 +77,11 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
         return FeatureService.authorizedFeature('rank');
     };
     $scope.isSortingFeature = function() {
-        return $scope.isSortableFeature() && $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse;
+        return $scope.isSortableFeature() && $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse && !$scope.hasContextOrSearch();
+    };
+    $scope.enableSortable = function() {
+        $scope.clearContextAndSearch();
+        $scope.orderByRank();
     };
     // Init
     $scope.viewName = 'feature';
@@ -202,7 +206,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
         return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
     };
     $scope.isSortingSprintPlan = function(sprint) {
-        return $scope.isSortableSprintPlan(sprint) && $scope.currentSprintFilter.id == 'allTasks' && !$scope.app.context;
+        return $scope.isSortableSprintPlan(sprint) && $scope.currentSprintFilter.id == 'allTasks' && !$scope.hasContextOrSearch();
     };
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
@@ -253,9 +257,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
         UserService.update(editableUser);
     };
     $scope.enableSortable = function() {
-        if ($scope.app.context) {
-            $scope.setContext(null);
-        }
+        $scope.clearContextAndSearch();
         $scope.changeSprintFilter(_.find($scope.sprintFilters, {id: 'allTasks'}));
     };
     $scope.storyFilter = function(story) {

@@ -126,7 +126,7 @@
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in sprintTaskStates">
-                    <div ng-repeat="task in tasksByTypeByState[11][taskState]"
+                    <div ng-repeat="task in tasksByTypeByState[11][taskState] | search"
                          ng-class="{ 'is-selected': isSelected(task) }"
                          selectable-id="{{ ::task.id }}"
                          as-sortable-item
@@ -156,7 +156,7 @@
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                     is-disabled="!isSortingSprintPlan(sprint)"
                     ng-repeat="taskState in sprintTaskStates">
-                    <div ng-repeat="task in tasksByTypeByState[10][taskState]"
+                    <div ng-repeat="task in tasksByTypeByState[10][taskState] | search"
                          ng-class="{ 'is-selected': isSelected(task) }"
                          selectable-id="{{ ::task.id }}"
                          as-sortable-item
@@ -174,7 +174,7 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-repeat="story in backlog.stories | filter: storyFilter | search: ['name', 'description', 'notes', 'uid'] | orderBy: 'rank'"
+            <tr ng-repeat="story in backlog.stories | filter: storyFilter | search | orderBy: 'rank'"
                 ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">
                 <td style="width:16%"
                     class="postits grid-group"

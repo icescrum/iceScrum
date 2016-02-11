@@ -326,14 +326,15 @@ filters
             }
         }
     }]).filter('search', ['$rootScope', function($rootScope) {
-        return function(items, fields) {
+        return function(items) {
             var term = $rootScope.app.search;
+            var fields = ['name', 'description', 'notes', 'uid']; // Hardcoded for the moment because it is always the same
             if (!_.isEmpty(items) && !_.isEmpty(term) && !_.isEmpty(fields)) {
                 var searchTerm = _.deburr(_.trim(term.toString().toLowerCase()));
                 return _.filter(items, function(item) {
                     return _.any(fields, function (field) {
                         var value = _.get(item, field);
-                        if (!_.isUndefined(value)) {
+                        if (!_.isUndefined(value) && !_.isNull(value)) {
                             return _.deburr(value.toString().toLowerCase()).indexOf(searchTerm) != -1;
                         } else {
                             return false;

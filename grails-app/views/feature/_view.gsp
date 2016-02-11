@@ -28,7 +28,7 @@
                 <button type="button"
                         ng-if="isSortableFeature()"
                         class="btn btn-default"
-                        ng-click="orderByRank()"
+                        ng-click="enableSortable()"
                         uib-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                     <span ng-class="isSortingFeature() ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                 </button>
@@ -119,7 +119,7 @@
         <div ng-if="isSortableFeature() && !isSortingFeature()" class="toolbar-warning">
             <i class="fa fa-exclamation-triangle"></i>
             ${message(code: 'todo.is.ui.sortable.feature.warning')}
-            <button type="button" class="btn btn-default btn-sm" ng-click="orderByRank()">
+            <button type="button" class="btn btn-default btn-sm" ng-click="enableSortable()">
                 <span class="text-danger fa fa-hand-pointer-o"></span>
             </button>
         </div>
@@ -135,7 +135,7 @@
             <div ng-class="{ 'is-selected': isSelected(feature) }"
                  selectable-id="{{ ::feature.id }}"
                  as-sortable-item
-                 ng-repeat="feature in features | orderBy:orderBy.current.id:orderBy.reverse"
+                 ng-repeat="feature in features | search | orderBy:orderBy.current.id:orderBy.reverse"
                  class="postit-container">
                 <div ng-include="'feature.html'"></div>
             </div>

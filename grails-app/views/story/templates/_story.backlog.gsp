@@ -25,7 +25,7 @@
 <div ng-class="{ 'is-selected': isSelected(story) }"
      selectable-id="{{ ::story.id }}"
      on-repeat-completed="backlog.storiesRendered = true"
-     ng-repeat="story in backlog.stories | search: ['name', 'description', 'notes', 'uid']"
+     ng-repeat="story in backlog.stories | search"
      as-sortable-item
      class="postit-container">
     <div ng-include="'story.html'" ng-init="sortableStory = authorizedStory('rank', story)"></div>

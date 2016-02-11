@@ -178,11 +178,12 @@
                                    placeholder="${message(code:'todo.is.ui.search')}"
                                    uib-typeahead="context.term for context in searchContext($viewValue)"
                                    typeahead-on-select="setContext($item)"
-                                   typeahead-loading="searchingContext"
                                    typeahead-wait-ms="250"
                                    typeahead-template-url="search.context.html">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa" ng-class="{ 'fa-search': !searchingContext, 'fa-refresh': searchingContext }"></i></button>
+                                <button class="btn btn-default" type="button" ng-click="app.search = null">
+                                    <i class="fa" ng-class="app.search ? 'fa-times' : 'fa-search'"></i>
+                                </button>
                             </span>
                         </div>
                     </form>
