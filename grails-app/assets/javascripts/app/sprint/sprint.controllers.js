@@ -115,7 +115,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
                     $scope.resetSprintForm();
                 } else {
                     $scope.setInEditingMode(true);
-                    $state.go('^.withId.details', { id: $scope.release.id, sprintId: sprint.id });
+                    $state.go('^.withId.details', { releaseId: $scope.release.id, sprintId: sprint.id });
                 }
                 $scope.notifySuccess('todo.is.ui.sprint.saved');
             });
@@ -197,7 +197,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 
         $scope.resetFormValidation($scope.formHolder.sprintForm);
     };
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+        if ($scope.mustConfirmStateChange && fromParams.sprintId != toParams.sprintId) {
             event.preventDefault(); // cancel the state change
             $scope.mustConfirmStateChange = false;
             $scope.confirm({

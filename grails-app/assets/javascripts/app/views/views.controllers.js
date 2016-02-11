@@ -139,17 +139,17 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
             $state.go('releasePlan');
         } else if (selectedItems.length == 1 && selectedItems[0].class == 'Release') {
             var release = selectedItems[0];
-            $state.go('releasePlan.release.details', {id: release.id});
+            $state.go('releasePlan.release.details', {releaseId: release.id});
         } else if (selectedItems.length == 1 && selectedItems[0].class == 'Sprint') {
             var sprint = selectedItems[0];
             var releaseId = sprint.parentRelease.id;
-            $state.go('releasePlan.release.sprint.withId.details', {id: releaseId, sprintId: sprint.id});
+            $state.go('releasePlan.release.sprint.withId.details', {releaseId: releaseId, sprintId: sprint.id});
         } else {
             var releaseId = selectedItems[0].parentRelease.id;
-            $state.go('releasePlan.release.sprint.multiple.details', {id: releaseId, listId: _.map(selectedItems, 'id')});
+            $state.go('releasePlan.release.sprint.multiple.details', {releaseId: releaseId, sprintListId: _.map(selectedItems, 'id')});
         }
     };
-    $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.id; }, function() { return $state.params.sprintId; }, function() { return $state.params.listId; }], function(newValues) {
+    $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.releaseId; }, function() { return $state.params.sprintId; }, function() { return $state.params.sprintListId; }], function(newValues) {
         var stateName = newValues[0];
         var releaseId = newValues[1];
         var sprintId = newValues[2];
@@ -212,7 +212,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
         return story.state < StoryStatesByName.DONE;
     };
     $scope.openSprint = function(sprint) {
-        $state.go('sprintPlan.details', {id: sprint.id});
+        $state.go('sprintPlan.details', {sprintId: sprint.id});
     };
     $scope.openNewTaskByStory = function(story) {
         $state.go('sprintPlan.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});

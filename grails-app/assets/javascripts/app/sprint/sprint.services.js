@@ -87,7 +87,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     };
     this['delete'] = function(sprint, release) {
         return sprint.$delete({projectId: release.parentProduct.id}, function() {
-            if ($state.includes("releasePlan.release.sprint.withId.details", {id: release.id, sprintId: sprint.id})) {
+            if ($state.includes("releasePlan.release.sprint.withId.details", {releaseId: release.id, sprintId: sprint.id})) {
                 $state.go('releasePlan');
             }
             _.remove(release.sprints, {id: sprint.id});

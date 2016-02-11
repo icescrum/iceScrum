@@ -80,7 +80,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
                     $scope.resetReleaseForm();
                 } else {
                     $scope.setInEditingMode(true);
-                    $state.go('^.release.details', { id: release.id });
+                    $state.go('^.release.details', { releaseId: release.id });
                 }
                 $scope.notifySuccess('todo.is.ui.release.saved');
             });
@@ -148,7 +148,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller',
         $scope.resetFormValidation($scope.formHolder.releaseForm);
     };
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+        if ($scope.mustConfirmStateChange && fromParams.releaseId != toParams.releaseId) {
             event.preventDefault(); // cancel the state change
             $scope.mustConfirmStateChange = false;
             $scope.confirm({

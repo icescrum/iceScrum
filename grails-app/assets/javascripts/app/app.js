@@ -328,10 +328,10 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         }
                     })
                     .state('releasePlan.release', {
-                        url: "/{id:int}",
+                        url: "/{releaseId:int}",
                         resolve: {
                             detailsRelease: ['$stateParams', 'releases', function($stateParams, releases){
-                                return _.find(releases, {id: $stateParams.id})
+                                return _.find(releases, {id: $stateParams.releaseId})
                             }],
                             sprints: ['detailsRelease', function(detailsRelease) {
                                 return detailsRelease.sprints;
@@ -377,7 +377,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     }
                                 })
                             .state('releasePlan.release.sprint.multiple', {
-                                url: "/{listId:[0-9]+(?:[\,][0-9]+)+}"
+                                url: "/{sprintListId:[0-9]+(?:[\,][0-9]+)+}"
                             })
                                 .state('releasePlan.release.sprint.multiple.details', {
                                     url: "/details",
@@ -389,9 +389,9 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     }
                                 })
                 .state('sprintPlan', {
-                    url: "/sprintPlan/{id:int}",
+                    url: "/sprintPlan/{sprintId:int}",
                     params: {
-                        id: {value: null, squash: true}
+                        sprintId: {value: null, squash: true}
                     },
                     templateUrl: 'openWindow/sprintPlan',
                     controller: 'sprintPlanCtrl',
@@ -400,7 +400,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             return Session.getProjectPromise();
                         }],
                         sprint: ['$stateParams', '$q', 'SprintService', 'StoryService', 'TaskService', 'project', function($stateParams, $q, SprintService, StoryService, TaskService, project) {
-                            var promise = !$stateParams.id ? SprintService.getCurrentOrNextSprint(project) : SprintService.get($stateParams.id, project);
+                            var promise = !$stateParams.sprintId ? SprintService.getCurrentOrNextSprint(project) : SprintService.get($stateParams.sprintId, project);
                             return promise.then(function(sprint) {
                                 return StoryService.listByType(sprint).then(function() {
                                     return TaskService.list(sprint).then(function() {
@@ -475,7 +475,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                         templateUrl: function($stateParams) {
                                             var tpl;
                                             if ($stateParams.tabId == 'comments') {
-                                                tpl = 'comment.list.html';
+                                                    tpl = 'comment.list.html';
                                             } else if ($stateParams.tabId == 'activities') {
                                                 tpl = 'activity.list.html';
                                             }
