@@ -234,7 +234,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
 }]);
 
-controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', 'Session', 'ProjectService', 'StoryService', function($scope, $q, $location, $injector, $state, Session, ProjectService, StoryService) {
+controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'ProjectService', 'StoryService', function($scope, $q, $location, $injector, $state, $timeout, Session, ProjectService, StoryService) {
     // Functions
     $scope.searchContext = function(term) {
         return !Session.authenticated() ? [] : $scope.loadContexts().then(function() {
@@ -249,9 +249,13 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         });
     };
     $scope.setContext = function(context) {
-        $location.search('context', context ? context.type + ':' + context.id : null);
+        if (context) {
+            $location.search('context', context.type + ':' + context.id);
+            $scope.app.search = null; // Remove the context that has been typed in the input
+        } else {
+            $location.search('context', null);
+        }
         $scope.app.context = context;
-        $scope.app.search = null;
         StoryService.list.splice(0, StoryService.list.length);
         $state.reload();
     };
@@ -300,16 +304,17 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
     }
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
         if (fromState.name && toState.name) {
-            if (!fromState.name.split('.')[0] === toState.name.split('.')[0]) {
+            if (fromState.name.split('.')[0] !== toState.name.split('.')[0]) {
                 $scope.app.search = null;
             }
         }
-    });
-    // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
-    $scope.$on('$stateChangeSuccess', function() {
+        // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
         var context = $scope.app.context;
         if (context) {
-            $location.search('context', context.type + ':' + context.id);
+            $timeout(function() {
+                $location.replace(); // Prevent the state without the ?context... part to be save in browser history, must be in timeout to avoid that all changes during the current digest are lost
+                $location.search('context', context.type + ':' + context.id);
+            });
         }
     });
 }]);
