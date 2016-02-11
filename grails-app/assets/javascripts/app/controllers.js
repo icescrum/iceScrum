@@ -234,7 +234,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
 }]);
 
-controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', '$window', '$injector', 'Session', 'ProjectService', function($scope, $filter, $q, $location, $window, $injector, Session, ProjectService) {
+controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', '$window', '$injector', '$timeout', 'Session', 'ProjectService', function($scope, $filter, $q, $location, $window, $injector, $timeout, Session, ProjectService) {
     // Functions
     $scope.searchContext = function(term) {
         return !Session.authenticated() ? [] : $scope.loadContexts().then(function() {
@@ -250,7 +250,9 @@ controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', '$
     };
     $scope.setContext = function(context) {
         $location.search('context', context ? context.type + ':' + context.id : null);
-        $window.location.reload();
+        $timeout(function() {
+            $window.location.reload();
+        });
     };
     $scope.setFeatureContext = function(feature) {
         $scope.setContext({type: 'feature', id: feature.id});
