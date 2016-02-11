@@ -176,9 +176,9 @@
                                    class="form-control"
                                    ng-model="app.search"
                                    placeholder="${message(code:'todo.is.ui.search')}"
+                                   ng-model-options="{ debounce: 300 }"
                                    uib-typeahead="context.term for context in searchContext($viewValue)"
                                    typeahead-on-select="setContext($item)"
-                                   typeahead-wait-ms="250"
                                    typeahead-template-url="search.context.html">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button" ng-click="app.search = null">

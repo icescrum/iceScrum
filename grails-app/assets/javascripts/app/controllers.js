@@ -297,6 +297,13 @@ controllers.controller('searchCtrl', ['$scope', '$filter', '$q', '$location', '$
             $scope.app.context = _.find($scope.contexts, $scope.app.context); // Load the full context to get the name in case of feature
         });
     }
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
+        if (fromState.name && toState.name) {
+            if (!fromState.name.split('.')[0] === toState.name.split('.')[0]) {
+                $scope.app.search = null;
+            }
+        }
+    });
     // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
     $scope.$on('$stateChangeSuccess', function() {
         var context = $scope.app.context;
