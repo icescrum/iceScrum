@@ -160,13 +160,13 @@
             <div class="navbar-right">
                 <g:if test="${product}">
                     <form class="navbar-form pull-left" role="search">
-                        <div class="input-group">
+                        <div class="input-group search">
                             <span class="input-group-btn" ng-if="app.context">
-                                <button class="btn btn-default context"
+                                <button class="btn btn-default"
                                         type="button"
                                         ng-click="setContext(null)">
                                     <i class="fa" ng-class="app.context.type == 'feature' ? 'fa-sticky-note' : 'fa-tag'"></i>
-                                    {{ app.context.term }}
+                                    <span class="context">{{ ::app.context.term }}</span>
                                     <i class="fa fa-times"></i>
                                 </button>
                             </span>
