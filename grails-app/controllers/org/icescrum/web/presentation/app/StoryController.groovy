@@ -168,6 +168,18 @@ class StoryController {
                 }
                 bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
                 storyService.update(story, props)
+                // Independently manage the sprint change
+                def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
+                if (sprintId != null && story.parentSprint?.id != sprintId) {
+                    def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
+                    if (sprint) {
+                        storyService.plan(sprint, story)
+                    } else {
+                        returnError(text: message(code: 'is.sprint.error.not.exist'))
+                        return
+                    }
+                }
+                // TODO Unplan
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
@@ -230,6 +242,7 @@ class StoryController {
 
     @Secured(['productOwner() and !archivedProduct()'])
     def plan(long id, long product) {
+        // Separate method to manage changing the rank and the state at the same time (too complicated to manage them properly in the update method)
         def story = Story.withStory(product, id)
         def storyParams = params.story
         def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()

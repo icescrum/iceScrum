@@ -87,7 +87,7 @@
                            tagging-tokens="SPACE|,"
                            tagging-label=""
                            ng-model="editableStory.affectVersion">
-                    <ui-select-match allow-clear="true" placeholder="is.ui.story.noaffectversion">{{ $select.selected }}</ui-select-match>
+                    <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.noaffectversion')}">{{ $select.selected }}</ui-select-match>
                     <ui-select-choices repeat="version in versions">{{ version }}</ui-select-choices>
                 </ui-select>
             </div>
