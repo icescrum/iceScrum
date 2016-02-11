@@ -81,8 +81,11 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         return Task.update({id: task.id, action: 'copy'}, {}, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
     };
     this.list = function(obj) {
-        var params = $rootScope.app.context ? {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id} : {};
-        return Task.query(params, {typeId: obj.id, type: obj.class.toLowerCase()}, function(data) {
+        var params = {typeId: obj.id, type: obj.class.toLowerCase()};
+        if ($rootScope.app.context) {
+            _.merge(params, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
+        }
+        return Task.query(params, function(data) {
             obj.tasks = data;
             obj.tasks_count = obj.tasks.length;
             var crudMethods = self.getCrudMethods(obj);
@@ -104,7 +107,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             case 'delete':
                 return (Session.sm() || Session.responsible(task) || Session.creator(task)) && (!task.sprint || task.sprint.state != SprintStatesByName.DONE);
             case 'block':
-                return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE;
+                return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE && task.sprint.state == SprintStatesByName.IN_PROGRESS;
             case 'unBlock':
                 return task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE;
             case 'take':

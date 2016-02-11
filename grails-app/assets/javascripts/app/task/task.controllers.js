@@ -93,7 +93,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
                 $scope.resetTaskForm();
             } else {
                 $scope.setInEditingMode(true);
-                $state.go('^.details', {id: task.id});
+                $state.go('^.details', {taskId: task.id});
             }
             $scope.notifySuccess('todo.is.ui.task.saved');
         });
@@ -180,7 +180,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
         }
     };
     $scope.resetTaskForm();
-    var sortedTasks = $filter('orderBy')(sprint.tasks, [function(task) { return - task.type }, 'parentStory.rank', 'state']);
+    var sortedTasks = $filter('orderBy')(sprint.tasks, [function(task) { return - task.type }, 'parentStory.rank', 'state', 'rank']);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);
 }]);

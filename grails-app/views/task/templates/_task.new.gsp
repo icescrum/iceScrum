@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <form ng-submit="save(task, sprint, false)"
+        <form ng-submit="save(task, false)"
               name='formHolder.taskForm'
               novalidate>
             <div class="clearfix no-padding">
