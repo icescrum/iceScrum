@@ -131,7 +131,8 @@
                         </div>
                     </div>
                 </div>
-                <div ng-controller="chartCtrl"
+                <div class="chart"
+                     ng-controller="chartCtrl"
                      ng-init="openReleaseChart('burndown', release)">
                     <div uib-dropdown
                          class="pull-right">

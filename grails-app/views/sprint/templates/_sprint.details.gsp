@@ -121,7 +121,8 @@
                         </div>
                     </div>
                 </div>
-                <div ng-controller="chartCtrl"
+                <div class="chart"
+                     ng-controller="chartCtrl"
                      ng-init="openSprintChart('burnupTasks', sprint)">
                     <div uib-dropdown
                          class="pull-right">
