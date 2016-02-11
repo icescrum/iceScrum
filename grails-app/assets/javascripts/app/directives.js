@@ -669,26 +669,22 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 return (mStyle['position'].indexOf('sticky') !== -1);
             }();
 
-            nativeStickyEnable = false;
-
-            if(!nativeStickyEnable){
-                scope.$watchCollection(attrs.stickyWatch,function(){
-                    headers = element.find('.list-group-header:not(.cloned), tr.header:not(.cloned)');
-                    $cloneHeaders = [];
-                    render();
-                    //events stuff
-                    var scrollBinder = element.bind("scroll", render);
-                    var resizeBinder = angular.element($window).bind("resize", position);
-                    var mainScrollBinder = angular.element('.main > .view').bind("scroll", position);
-                    scope.$on('$destroy', function() {
-                        scrollBinder();
-                        resizeBinder();
-                        mainScrollBinder();
-                    });
+            scope.$watchCollection(attrs.stickyWatch,function(){
+                headers = element.find('.list-group-header:not(.cloned), tr.header:not(.cloned)');
+                $cloneHeaders = [];
+                render();
+                //events stuff
+                var scrollBinder = element.bind("scroll", render);
+                var resizeBinder = angular.element($window).bind("resize", position);
+                var mainScrollBinder = angular.element('.main > .view').bind("scroll", position);
+                scope.$on('$destroy', function() {
+                    scrollBinder();
+                    resizeBinder();
+                    mainScrollBinder();
                 });
-            }
+            });
 
-            var position = function(init){
+            var position = function(){
                 if(headers.length){
                     offset = element.offset().top;
                     if($cloneHeaders.length){

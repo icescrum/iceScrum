@@ -87,39 +87,38 @@
             </div>
         </h3>
     </div>
-    <table class="panel-body table"
-           selectable="selectableOptions">
-        <thead ng-switch="sprint.state >= 3">
-            <tr ng-switch-default>
-                <th style="width:16%; text-align:center;">
+    <div class="panel-body" sticky-list sticky-watch="tasksByTypeByState">
+        <table class="table" selectable="selectableOptions">
+            <thead ng-switch="sprint.state >= 3">
+            <tr class="header" ng-switch-default>
+                <th style="text-align:center;">
                     Type
                 </th>
-                <th style="width:28%; text-align:center;">
+                <th style="text-align:center;">
                     <span>${message(code: 'is.task.state.wait')}</span>
                 </th>
-                <th style="width:28%; text-align:center;">
+                <th style="text-align:center;">
                     <span>${message(code: 'is.task.state.inprogress')}</span>
                 </th>
-                <th style="width:28%; text-align:center;">
+                <th style="text-align:center;">
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
             <tr ng-switch-when="true">
-                <th style="width:16%; text-align:center;">
+                <th style="text-align:center;">
                     Type
                 </th>
-                <th style="width:84%; text-align:center;">
+                <th style="text-align:center;">
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
-        </thead>
-        <tbody ng-controller="taskSprintCtrl">
+            </thead>
+            <tbody ng-controller="taskSprintCtrl">
             <tr>
-                <td style="width:16%">
+                <td>
                     ${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}
                 </td>
-                <td style="{{ (sprint.state >= 3) ? 'width:84%' : 'width:28%' }}"
-                    class="postits grid-group"
+                <td class="postits grid-group"
                     ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByTypeByState[11][taskState]"
                     ng-init="taskType = 11"
@@ -145,11 +144,10 @@
                 </td>
             </tr>
             <tr>
-                <td style="width:16%">
+                <td>
                     ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}
                 </td>
-                <td style="{{ (sprint.state >= 3) ? 'width:84%' : 'width:28%' }}"
-                    class="postits grid-group"
+                <td class="postits grid-group"
                     ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByTypeByState[10][taskState]"
                     ng-init="taskType = 10"
@@ -176,15 +174,13 @@
             </tr>
             <tr ng-repeat="story in backlog.stories | filter: storyFilter | search | orderBy: 'rank'"
                 ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">
-                <td style="width:16%"
-                    class="postits grid-group"
+                <td class="postits grid-group"
                     ng-controller="storyCtrl">
                     <div class="postit-container">
                         <div ng-include="'story.html'"></div>
                     </div>
                 </td>
-                <td style="{{ (sprint.state >= 3) ? 'width:84%' : 'width:28%' }}"
-                    class="postits grid-group"
+                <td class="postits grid-group"
                     ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByStoryByState[story.id][taskState]"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
@@ -208,6 +204,7 @@
                     </div>
                 </td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
