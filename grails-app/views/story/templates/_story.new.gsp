@@ -51,7 +51,7 @@
                              ng-bind-html="storyPreview.description | sanitize"></div>
                     </div>
                     <div class="tags">
-                        <a ng-repeat="tag in storyPreview.tags"><span class="tag">{{ tag }}</span></a>
+                        <a ng-repeat="tag in storyPreview.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
                     </div>
                     <div class="actions">
                         <span class="action">
@@ -106,7 +106,7 @@
                          class="help-block bg-warning"
                          ng-bind-html="messageDuplicate | sanitize"></div>
                 </div>
-                <div class="form-half">
+                <div class="form-half" ng-if="templateEntries.length > 0">
                     <label for="story.template">${message(code: 'todo.is.ui.story.template')}</label>
                     <div ng-class="{'input-group': authorizedStory('updateTemplate')}">
                         <ui-select name="story.template"
