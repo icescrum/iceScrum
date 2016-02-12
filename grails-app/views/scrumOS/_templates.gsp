@@ -78,7 +78,7 @@
     unavailable-feature="menu.id == 'search'"
     href="#/{{ menu.id != 'project' ? menu.id : '' }}">
     <span class="handle" as-sortable-item-handle>::</span>
-    <i class="visible-xs {{ menu.icon }}"></i><span class="title">{{ menu.title }}</span>
+    <i class="{{ menu.icon }}"></i> <span class="title">{{ menu.title }}</span>
 </a>
 </script>
 
