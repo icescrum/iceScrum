@@ -25,7 +25,7 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('story/:type/:typeId/:id/:action');
 }]);
 
-services.service("StoryService", ['$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($q, $http, $rootScope, $state, Story, Session, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
+services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     this.list = [];
     var self = this;
     var crudMethods = {};
@@ -89,15 +89,19 @@ services.service("StoryService", ['$q', '$http', '$rootScope', '$state', 'Story'
         return Story.save(story, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.listByType = function(obj) {
-        if (!_.isArray(obj.stories)) {
-            obj.stories = [];
-        }
+        obj.stories = [];
+        _.each(obj.stories_ids, function(story) {
+            var foundStory = _.find(self.list, {id: story.id});
+            if (foundStory) {
+                obj.stories.push(foundStory);
+            }
+        });
         var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
             obj.stories = stories;
             self.mergeStories(stories);
             return stories;
         }).$promise;
-        return obj.stories.length > 0 ? $q.when(obj.stories) : promise;
+        return obj.stories.length == obj.stories_ids.length ? $q.when(obj.stories) : promise;
     };
     this.get = function(id) {
         var story = _.find(self.list, {id: id});
