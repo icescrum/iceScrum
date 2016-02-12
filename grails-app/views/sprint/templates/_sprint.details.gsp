@@ -151,6 +151,25 @@
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.sprint.nodeliveredversion')}"/>
                 </div>
+                <div class="form-group" ng-if="sprint.state > 2">
+                    <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
+                    <textarea is-markitup
+                              class="form-control"
+                              name="retrospective"
+                              ng-model="editableSprint.retrospective"
+                              is-model-html="editableSprint.retrospective_html"
+                              ng-show="showRetrospectiveTextarea"
+                              ng-blur="showRetrospectiveTextarea = false"
+                              placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
+                    <div class="markitup-preview"
+                         ng-disabled="!formHolder.editable"
+                         ng-show="!showRetrospectiveTextarea"
+                         ng-click="showRetrospectiveTextarea = formHolder.editable"
+                         ng-focus="editForm(true); showRetrospectiveTextarea = formHolder.editable"
+                         ng-class="{'placeholder': !editableSprint.retrospective_html}"
+                         tabindex="0"
+                         ng-bind-html="(editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
+                </div>
                 <div class="form-group">
                     <label for="goal">${message(code:'is.sprint.goal')}</label>
                     <textarea name="goal"
@@ -180,25 +199,6 @@
                          ng-class="{'placeholder': !editableSprint.doneDefinition_html}"
                          tabindex="0"
                          ng-bind-html="(editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
-                </div>
-                <div class="form-group" ng-if="sprint.state > 2">
-                    <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
-                    <textarea is-markitup
-                              class="form-control"
-                              name="retrospective"
-                              ng-model="editableSprint.retrospective"
-                              is-model-html="editableSprint.retrospective_html"
-                              ng-show="showRetrospectiveTextarea"
-                              ng-blur="showRetrospectiveTextarea = false"
-                              placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
-                    <div class="markitup-preview"
-                         ng-disabled="!formHolder.editable"
-                         ng-show="!showRetrospectiveTextarea"
-                         ng-click="showRetrospectiveTextarea = formHolder.editable"
-                         ng-focus="editForm(true); showRetrospectiveTextarea = formHolder.editable"
-                         ng-class="{'placeholder': !editableSprint.retrospective_html}"
-                         tabindex="0"
-                         ng-bind-html="(editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments.length > 0 ? '(' + sprint.attachments.length + ')' : '' }}</label>
