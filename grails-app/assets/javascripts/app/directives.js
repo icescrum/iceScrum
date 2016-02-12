@@ -717,7 +717,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                         if($header.css('visibility') != 'hidden'){
                             var $clone = $header.clone();
                             $clone.data('height', $header.height())
-                                .css('position','fixed').css('overflow-y','hidden').css('z-index', index + 1)
+                                .css('top', offset+'px').css('position','fixed').css('overflow-y','hidden').css('z-index', index + 1)
                                 .addClass('cloned').addClass('sticky-'+index)
                                 .width(element.outerWidth() - (element.outerWidth() - $header.innerWidth()));
 
