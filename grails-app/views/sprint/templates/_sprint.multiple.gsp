@@ -29,8 +29,7 @@
             </div>
             <div class="right-title">
                 <a class="btn visible-on-hover btn-default"
-                   href
-                   ng-click="$state.go('^')"
+                   href="{{:: $state.href('^') }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>
                 </a>

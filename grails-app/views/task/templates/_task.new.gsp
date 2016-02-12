@@ -27,7 +27,7 @@
             <i class="fa fa-sticky-note" style="color: #f9f157"></i>
             ${message(code: 'todo.is.ui.task.new')}
             <a class="pull-right visible-on-hover btn btn-default"
-               href="#/{{ ::viewName }}"
+               href="{{:: $state.href('^.^') }}"
                uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
             </a>

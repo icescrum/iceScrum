@@ -89,13 +89,9 @@ services.service("StoryService", ['$q', '$http', '$rootScope', '$state', 'Story'
         return Story.save(story, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.listByType = function(obj) {
-        obj.stories = [];
-        _.each(obj.stories_ids, function(story) {
-            var foundStory = _.find(self.list, {id: story.id});
-            if (foundStory) {
-                obj.stories.push(foundStory);
-            }
-        });
+        if (!_.isArray(obj.stories)) {
+            obj.stories = [];
+        }
         var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
             obj.stories = stories;
             self.mergeStories(stories);

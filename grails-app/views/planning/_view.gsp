@@ -72,7 +72,8 @@
     <hr>
 </div>
 <div ng-if="releases.length > 0"
-     class="backlogs-list-details">
+     class="backlogs-list-details"
+     selectable="selectableOptions">
     <div class="panel panel-light"
          ng-repeat="sprint in sprints"
          ng-controller="sprintBacklogCtrl">
@@ -90,7 +91,7 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div class="postits {{ isSortingSprint(sprint) ? '' : 'sortable-disabled' }}"
+            <div class="postits {{ (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
                  ng-controller="storyCtrl"
                  as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!isSortingSprint(sprint)"

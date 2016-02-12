@@ -73,8 +73,7 @@
                    tabindex="0"
                    href="#{{ ::viewName }}/task/{{ ::nextTask.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a class="btn btn-default"
-                   href
-                   ng-click="$state.go('^.^')"
+                   href="{{:: $state.href('^.^') }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>
                 </a>

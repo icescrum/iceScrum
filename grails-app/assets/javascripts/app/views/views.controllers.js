@@ -117,7 +117,16 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
 }]);
 
 controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
-    // Functions
+    $scope.isSelected = function(selectable) {
+        if ($state.params.id) {
+            return $state.params.id == selectable.id;
+        } else {
+            return false;
+        }
+    };
+    $scope.hasSelected = function() {
+        return $state.params.id != undefined;
+    };
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
     };
@@ -127,13 +136,10 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     // Init
     $scope.viewName = 'planning';
     $scope.project = project;
-
     // TODO bug fix: project.releases MAY BE empty on refresh that's why we assign it manually
     project.releases = releases;
-
     $scope.releases = project.releases;
     $scope.sprints = [];
-
     $scope.timelineSelected = function(selectedItems) { // Timeline -> URL
         if (selectedItems.length == 0) {
             $state.go('planning');
@@ -191,6 +197,35 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
         }
         $scope.release = release;
     });
+    $scope.selectableOptions = {
+        notSelectableSelector: '.action, button, a',
+        multiple: false,
+        selectionUpdated: function(selectedIds) {
+            var stateName = $state.current.name;
+            var storyIndexInStateName = stateName.indexOf('story');
+            if (selectedIds.length == 0 && storyIndexInStateName != -1) {
+                $state.go(stateName.slice(0, storyIndexInStateName - 1));
+            } else {
+                var newStateName;
+                var newStateParams = {id: selectedIds};
+                if (_.startsWith(stateName, 'planning.release.sprint.multiple')) {
+                    newStateName = 'planning.release.sprint.multiple.story.details';
+                } else if (_.startsWith(stateName, 'planning.release.sprint.withId')) {
+                    newStateName = 'planning.release.sprint.withId.story.details';
+                } else if (stateName === 'planning.release.sprint') {
+                    // Special case when there is no sprintId in the state params so we must retrieve it manually
+                    newStateName = 'planning.release.sprint.withId.story.details';
+                    newStateParams.sprintId = $scope.selectedItems[0].id;
+                } else {
+                    newStateName = 'planning.release.story.details';
+                    if (stateName === 'planning' || stateName == 'planning.new') { // Special case when there is no releasedID in the state params so we must retrieve it manually
+                        newStateParams.releaseId = $scope.selectedItems[0].id;
+                    }
+                }
+                $state.go(newStateName, newStateParams);
+            }
+        }
+    };
 }]);
 
 controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {

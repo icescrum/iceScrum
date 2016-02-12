@@ -26,7 +26,7 @@
         <h3 class="panel-title">
             ${message(code: "todo.is.ui.sprint.new")}
             <a class="pull-right visible-on-hover btn btn-default"
-               href="#/{{ ::viewName }}"
+               href="{{:: $state.href('^.^') }}"
                uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
             </a>
