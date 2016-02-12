@@ -70,6 +70,12 @@
      class="backlogs-list">
     <div class="timeline" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
     <div class="btn-toolbar">
+        <div class="btn-group" ng-if="hasPreviousVisibleSprints()">
+            <button class="btn btn-default"
+                    ng-click="visibleSprintsPrevious()">
+                <i class="fa fa-step-backward"></i>
+            </button>
+        </div>
         <div class="btn-group" ng-if="authorizedRelease('create')">
             <a type="button"
                class="btn btn-primary"
@@ -85,6 +91,12 @@
                 ${message(code: 'todo.is.ui.sprint.new')}
             </a>
         </div>
+        <div class="btn-group pull-right" ng-if="hasNextVisibleSprints()">
+            <button class="btn btn-default"
+                    ng-click="visibleSprintsNext()">
+                <i class="fa fa-step-forward"></i>
+            </button>
+        </div>
     </div>
     <hr>
 </div>
@@ -92,7 +104,7 @@
      class="backlogs-list-details"
      selectable="selectableOptions">
     <div class="panel panel-light"
-         ng-repeat="sprint in sprints"
+         ng-repeat="sprint in visibleSprints"
          ng-controller="sprintBacklogCtrl">
         <div class="panel-heading">
             <h3 class="panel-title small-title">

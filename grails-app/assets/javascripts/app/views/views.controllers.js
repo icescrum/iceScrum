@@ -133,8 +133,28 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     $scope.authorizedSprint = function(action, sprint) {
         return SprintService.authorizedSprint(action, sprint);
     };
+    $scope.hasPreviousVisibleSprints = function() {
+        return $scope.visibleSprintOffset > 0;
+    };
+    $scope.hasNextVisibleSprints = function() {
+        return $scope.visibleSprintMax + $scope.visibleSprintOffset + 1 <= $scope.sprints.length;
+    };
+    $scope.visibleSprintsPrevious = function() {
+        $scope.visibleSprintOffset--;
+        $scope.computeVisibleSprints();
+    };
+    $scope.visibleSprintsNext = function() {
+        $scope.visibleSprintOffset++;
+        $scope.computeVisibleSprints();
+    };
+    $scope.computeVisibleSprints = function() {
+        $scope.visibleSprints = $scope.sprints.slice($scope.visibleSprintOffset, $scope.visibleSprintMax + $scope.visibleSprintOffset);
+    };
     // Init
     $scope.viewName = 'planning';
+    $scope.visibleSprintMax = 3;
+    $scope.visibleSprintOffset = 0;
+    $scope.visibleSprints = [];
     $scope.project = project;
     // TODO bug fix: project.releases MAY BE empty on refresh that's why we assign it manually
     project.releases = releases;
@@ -196,6 +216,8 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
             }
         }
         $scope.release = release;
+        $scope.visibleSprintOffset = 0;
+        $scope.computeVisibleSprints();
     });
     $scope.selectableOptions = {
         notSelectableSelector: '.action, button, a',
