@@ -789,13 +789,21 @@ div.panel-body {
 }
 
 #view-sprintPlan {
-  .panel-body {
-    padding:0;
-  }
-  > .content table {
-    tr.cloned > td, tr.cloned > th, tr.native-sticky > th, tr.native-sticky > td {
-      background: #fff;
-      border-top: none;
+  > .content {
+    .panel-body {
+      padding:0;
+    }
+    .panel-heading {
+      margin-bottom:10px;
+    }
+    table {
+      tr.cloned > td, tr.cloned > th, tr.native-sticky > th, tr.native-sticky > td {
+        background: #fff;
+        border-top: none;
+      }
+      th {
+        text-align: center;
+      }
     }
   }
 }
