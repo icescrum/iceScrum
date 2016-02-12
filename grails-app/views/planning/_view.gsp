@@ -69,6 +69,23 @@
 <div ng-if="releases.length > 0"
      class="backlogs-list">
     <div class="timeline" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
+    <div class="btn-toolbar">
+        <div class="btn-group" ng-if="authorizedRelease('create')">
+            <a type="button"
+               class="btn btn-primary"
+               href="#{{ ::viewName }}/new">
+                ${message(code: 'todo.is.ui.release.new')}
+            </a>
+        </div>
+        <div class="btn-group"
+             ng-if="authorizedSprint('create')">
+            <a type="button"
+               class="btn btn-primary"
+               href="#{{ viewName + '/' + release.id }}/sprint/new">
+                ${message(code: 'todo.is.ui.sprint.new')}
+            </a>
+        </div>
+    </div>
     <hr>
 </div>
 <div ng-if="releases.length > 0"
