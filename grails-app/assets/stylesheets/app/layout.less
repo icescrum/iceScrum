@@ -258,6 +258,16 @@ body > .container-fluid > .header {
             vertical-align: top;
             display: inline-block;
           }
+          &:hover {
+            .search-status.fa-times:before {
+              content: "\f00d";
+            }
+          }
+          &:not(:hover) {
+            .search-status.fa-times:before {
+              content: "\f0b0";
+            }
+          }
         }
       }
       margin-right: 0;

@@ -182,7 +182,7 @@
                                    typeahead-template-url="search.context.html">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button" ng-click="app.search = null">
-                                    <i class="fa" ng-class="app.search ? 'fa-times' : 'fa-search'"></i>
+                                    <i class="fa search-status" ng-class="app.search ? 'fa-times' : 'fa-search'"></i>
                                 </button>
                             </span>
                         </div>

@@ -26,7 +26,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">
             <div class="btn-toolbar">
-                <a href ng-click="openSprint(sprint)">
+                <a href="{{ ::openSprint(sprint) }}">
                     {{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}
                 </a>
                 <div class="btn-group pull-right"
@@ -91,24 +91,24 @@
         <table class="table" selectable="selectableOptions">
             <thead ng-switch="sprint.state >= 3">
             <tr class="header" ng-switch-default>
-                <th style="text-align:center;">
+                <th>
                     Type
                 </th>
-                <th style="text-align:center;">
+                <th>
                     <span>${message(code: 'is.task.state.wait')}</span>
                 </th>
-                <th style="text-align:center;">
+                <th>
                     <span>${message(code: 'is.task.state.inprogress')}</span>
                 </th>
-                <th style="text-align:center;">
+                <th>
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
             <tr ng-switch-when="true">
-                <th style="text-align:center;">
+                <th>
                     Type
                 </th>
-                <th style="text-align:center;">
+                <th>
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
@@ -136,8 +136,7 @@
                         <a type="button"
                            ng-if="taskState == 0"
                            class="btn btn-primary"
-                           ng-click="openNewTaskByType(11)"
-                           href>
+                           href="{{ ::urlNewTaskByType(10) }}">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -164,9 +163,8 @@
                     <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
                         <a type="button"
                            ng-if="taskState == 0"
-                           ng-click="openNewTaskByType(10)"
                            class="btn btn-primary "
-                           href>
+                           href="{{ ::urlNewTaskByType(10) }}">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -195,10 +193,9 @@
                     </div>
                     <div ng-if="authorizedTask('create', {parentStory: story})" class="postit-container">
                         <a type="button"
-                           ng-click="openNewTaskByStory(story)"
+                           href="{{ ::urlNewTaskByStory(story) }}"
                            ng-if="taskState == 0"
-                           class="btn btn-primary"
-                           href>
+                           class="btn btn-primary">
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
