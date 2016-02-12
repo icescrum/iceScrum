@@ -655,11 +655,11 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     }
-}]).directive("stickyList",['$window', '$timeout',function ($window) {
+}]).directive("stickyList", ['$window', function($window) {
     //when you don't find, DIY
     return {
         restrict: 'A',
-        link:function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             var headers = [], $cloneHeaders = [], offset;
             var nativeStickyEnable = function() {
                 var prop = 'position:',
@@ -669,7 +669,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 return (mStyle['position'].indexOf('sticky') !== -1);
             }();
 
-            scope.$watchCollection(attrs.stickyWatch,function(){
+            scope.$watchCollection(attrs.stickyWatch, function() {
                 headers = element.find('.list-group-header:not(.cloned), tr.header:not(.cloned)');
                 $cloneHeaders = [];
                 render();
@@ -684,72 +684,72 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 });
             });
 
-            var position = function(){
-                if(headers.length){
+            var position = function() {
+                if (headers.length) {
                     offset = element.offset().top;
-                    if($cloneHeaders.length){
-                        _.each($cloneHeaders, function(header, index){
-                            $cloneHeaders[index].css('top', offset+'px');
+                    if ($cloneHeaders.length) {
+                        _.each($cloneHeaders, function(header, index) {
+                            $cloneHeaders[index].css('top', offset + 'px');
                         });
                     }
                 }
             };
-            var render = function(){
+            var render = function() {
                 var $parent;
-                _.each(headers, function(header, index){
+                _.each(headers, function(header, index) {
                     var $header = angular.element(header);
                     var top = $header.offset().top;
                     var $previous = null;
-                    if(nativeStickyEnable){
+                    if (nativeStickyEnable) {
                         $header.addClass('native-sticky')
-                               .css('top', '-'+element.css('padding-top'))
+                               .css('top', '-' + element.css('padding-top'))
                                .css('z-index', index + 1);
                         return;
                     }
-                    if(index == 0){
+                    if (index == 0) {
                         position();
                         $parent = $header.parent();
                         $parent.css('position', 'relative');
                     } else {
                         $previous = $cloneHeaders[index - 1];
                     }
-                    if((offset - top) > 0){
-                        if($header.css('visibility') != 'hidden'){
+                    if ((offset - top) > 0) {
+                        if ($header.css('visibility') != 'hidden') {
                             var $clone = $header.clone();
                             $clone.data('height', $header.height())
-                                .css('top', offset+'px').css('position','fixed').css('overflow-y','hidden').css('z-index', index + 1)
-                                .addClass('cloned').addClass('sticky-'+index)
+                                .css('top', offset + 'px').css('position', 'fixed').css('overflow-y', 'hidden').css('z-index', index + 1)
+                                .addClass('cloned').addClass('sticky-' + index)
                                 .width(element.outerWidth() - (element.outerWidth() - $header.innerWidth()));
 
                             var $headerThs = $header.find('th,td');
-                            if ($headerThs.length){
+                            if ($headerThs.length) {
                                 var $cloneThs = $clone.find('th,td');
-                                _.each($headerThs, function(headerTh, index){
+                                _.each($headerThs, function(headerTh, index) {
                                     angular.element($cloneThs[index]).css('width', angular.element(headerTh).outerWidth());
                                 });
                             }
 
                             $cloneHeaders.push($clone);
                             $parent.append($clone);
-                            $header.css('visibility','hidden');
-                            if($previous){
-                                $previous.css('visibility','hidden');
+                            $header.css('visibility', 'hidden');
+                            if ($previous) {
+                                $previous.css('visibility', 'hidden');
                             }
                         }
                     } else {
-                        if($previous) {
+                        if ($previous) {
                             var height = $previous.data('height') + $header.height();
-                            if(Math.abs(offset - top) < height){
-                                $previous.css('top', ($header.position().top - height)+'px').css('position', 'absolute');
+                            if (Math.abs(offset - top) < height) {
+                                $previous.css('top', ($header.position().top - height) + 'px').css('position', 'absolute');
                             } else {
-                                $previous.css('position', 'fixed').css('top', offset+'px');
+                                $previous.css('position', 'fixed').css('top', offset + 'px');
                             }
                         }
-                        if($header.css('visibility') == 'hidden'){
+                        if ($header.css('visibility') == 'hidden') {
                             $cloneHeaders.pop().remove();
-                            $header.css('visibility','visible');
-                            if($previous){
-                                $previous.css('height', '').css('visibility','visible');
+                            $header.css('visibility', 'visible');
+                            if ($previous) {
+                                $previous.css('height', '').css('visibility', 'visible');
                             }
                         }
                     }

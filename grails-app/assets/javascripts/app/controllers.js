@@ -260,10 +260,10 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         $state.reload();
     };
     $scope.setFeatureContext = function(feature) {
-        $scope.setContext({type: 'feature', id: feature.id});
+        $scope.setContext({type: 'feature', id: feature.id, term: feature.name});
     };
     $scope.setTagContext = function(tag) {
-        $scope.setContext({type: 'tag', id: tag});
+        $scope.setContext({type: 'tag', id: tag, term: tag});
     };
     $scope.hasContextOrSearch = function() {
         return $scope.app.context || $scope.app.search;
