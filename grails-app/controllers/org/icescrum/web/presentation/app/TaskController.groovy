@@ -228,6 +228,19 @@ class TaskController {
             tasks = Story.withStory(product, id).tasks
         } else if (type == 'sprint') {
             tasks = Sprint.withSprint(product, id).tasks
+            if (params.context) {
+                tasks = tasks.findAll { Task task ->
+                    if (task.type) {
+                        if (params.context.type == 'tag') {
+                            return task.tags.contains(params.context.id)
+                        } else if (params.context.type == 'feature') {
+                            return false
+                        }
+                    } else {
+                        return true
+                    }
+                }
+            }
         }
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: tasks as JSON) }
