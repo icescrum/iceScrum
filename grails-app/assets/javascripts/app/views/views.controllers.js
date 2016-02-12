@@ -116,7 +116,7 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
     $scope.orderByRank();
 }]);
 
-controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
+controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -125,7 +125,7 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
         return SprintService.authorizedSprint(action, sprint);
     };
     // Init
-    $scope.viewName = 'releasePlan';
+    $scope.viewName = 'planning';
     $scope.project = project;
 
     // TODO bug fix: project.releases MAY BE empty on refresh that's why we assign it manually
@@ -136,17 +136,17 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
 
     $scope.timelineSelected = function(selectedItems) { // Timeline -> URL
         if (selectedItems.length == 0) {
-            $state.go('releasePlan');
+            $state.go('planning');
         } else if (selectedItems.length == 1 && selectedItems[0].class == 'Release') {
             var release = selectedItems[0];
-            $state.go('releasePlan.release.details', {releaseId: release.id});
+            $state.go('planning.release.details', {releaseId: release.id});
         } else if (selectedItems.length == 1 && selectedItems[0].class == 'Sprint') {
             var sprint = selectedItems[0];
             var releaseId = sprint.parentRelease.id;
-            $state.go('releasePlan.release.sprint.withId.details', {releaseId: releaseId, sprintId: sprint.id});
+            $state.go('planning.release.sprint.withId.details', {releaseId: releaseId, sprintId: sprint.id});
         } else {
             var releaseId = selectedItems[0].parentRelease.id;
-            $state.go('releasePlan.release.sprint.multiple.details', {releaseId: releaseId, sprintListId: _.map(selectedItems, 'id')});
+            $state.go('planning.release.sprint.multiple.details', {releaseId: releaseId, sprintListId: _.map(selectedItems, 'id')});
         }
     };
     $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.releaseId; }, function() { return $state.params.sprintId; }, function() { return $state.params.sprintListId; }], function(newValues) {
@@ -193,8 +193,8 @@ controllers.controller('releasePlanCtrl', ['$scope', '$state', 'ReleaseService',
     });
 }]);
 
-controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {
-    $scope.viewName = 'sprintPlan';
+controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {
+    $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
         return $state.params.taskId ? $state.params.taskId == selectable.id : false;
@@ -202,25 +202,24 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
     $scope.hasSelected = function() {
         return $state.params.taskId != undefined;
     };
-    $scope.isSortableSprintPlan = function(sprint) {
+    $scope.isSortableTaskBoard = function(sprint) {
         return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
     };
-    $scope.isSortingSprintPlan = function(sprint) {
-        return $scope.isSortableSprintPlan(sprint) && $scope.currentSprintFilter.id == 'allTasks' && !$scope.hasContextOrSearch();
+    $scope.isSortingTaskBoard = function(sprint) {
+        return $scope.isSortableTaskBoard(sprint) && $scope.currentSprintFilter.id == 'allTasks' && !$scope.hasContextOrSearch();
     };
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
     };
     $scope.openSprint = function(sprint) {
-        return $state.href('sprintPlan.details', {sprintId: sprint.id});
+        return $state.href('taskBoard.details', {sprintId: sprint.id});
     };
     $scope.urlNewTaskByStory = function(story) {
-        return $state.href('sprintPlan.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
+        return $state.href('taskBoard.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
     };
     $scope.urlNewTaskByType = function(type) {
-        return $state.href('sprintPlan.task.new', {taskTemplate: {type: type}});
+        return $state.href('taskBoard.task.new', {taskTemplate: {type: type}});
     };
-
     $scope.refreshTasks = function() {
         $scope.sprintTaskStates = $scope.sprint.state < SprintStatesByName.DONE ? $scope.taskStates : [TaskStatesByName.DONE];
         var partitionedTasks = _.partition($scope.sprint.tasks, function(task) {
@@ -322,7 +321,7 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
     ];
     var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
-    $scope.sortableId = 'sprintPlan';
+    $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;
     $scope.backlog = sprint;
     $scope.tasksByTypeByState = {};

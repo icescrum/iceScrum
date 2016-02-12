@@ -79,7 +79,7 @@
         <div class="panel-heading">
             <h3 class="panel-title small-title">
                 <div>
-                    <a href="#/sprintPlan/{{ sprint.id }}/details">
+                    <a href="#/taskBoard/{{ sprint.id }}/details">
                         ${message(code: 'is.sprint')} {{ sprint.orderNumber + ' - ' + (sprint.state | i18n: 'SprintStates') }}
                     </a>
                     <span class="pull-right">{{ (sprint.state > 1 ? (sprint.velocity + ' / ') : '') + sprint.capacity }} <i class="small-icon fa fa-dollar"></i></span>

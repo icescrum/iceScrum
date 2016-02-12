@@ -175,7 +175,7 @@
                                    name="app.search"
                                    class="form-control"
                                    ng-model="app.search"
-                                   placeholder="${message(code:'todo.is.ui.search')}"
+                                   placeholder="${message(code:'todo.is.ui.search.action')}"
                                    ng-model-options="{ debounce: 300 }"
                                    uib-typeahead="context.term for context in searchContext($viewValue)"
                                    typeahead-on-select="setContext($item)"

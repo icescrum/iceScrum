@@ -36,7 +36,7 @@ import org.icescrum.core.domain.User
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-class FinderController {
+class SearchController {
 
     def springSecurityService
 

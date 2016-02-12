@@ -22,7 +22,7 @@
 --}%
 
 <div class="panel panel-light"
-     ng-class="{'sortable-disabled': !isSortingSprintPlan(sprint), 'sprint-not-done': sprint.state != 3}">
+     ng-class="{'sortable-disabled': !isSortingTaskBoard(sprint), 'sprint-not-done': sprint.state != 3}">
     <div class="panel-heading">
         <h3 class="panel-title">
             <div class="btn-toolbar">
@@ -32,11 +32,11 @@
                 <div class="btn-group pull-right"
                      uib-dropdown>
                     <button type="button"
-                            ng-if="isSortableSprintPlan(sprint)"
+                            ng-if="isSortableTaskBoard(sprint)"
                             class="btn btn-default"
                             ng-click="enableSortable()"
-                            uib-tooltip="{{ isSortingSprintPlan(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
-                        <span ng-class="isSortingSprintPlan(sprint) ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
+                            uib-tooltip="{{ isSortingTaskBoard(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
+                        <span ng-class="isSortingTaskBoard(sprint) ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
                     </button>
                     <button class="btn btn-default"
                             uib-dropdown-toggle
@@ -78,7 +78,7 @@
                     </g:if>
                 </div>
             </div>
-            <div ng-if="isSortableSprintPlan(sprint) && !isSortingSprintPlan(sprint)" class="toolbar-warning">
+            <div ng-if="isSortableTaskBoard(sprint) && !isSortingTaskBoard(sprint)" class="toolbar-warning">
                 <i class="fa fa-exclamation-triangle"></i>
                 ${message(code: 'todo.is.ui.sortable.sprintPlan.warning')}
                 <button type="button" class="btn btn-default btn-sm" ng-click="enableSortable()">
@@ -123,7 +123,7 @@
                     ng-model="tasksByTypeByState[11][taskState]"
                     ng-init="taskType = 11"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                    is-disabled="!isSortingSprintPlan(sprint)"
+                    is-disabled="!isSortingTaskBoard(sprint)"
                     ng-repeat="taskState in sprintTaskStates">
                     <div ng-repeat="task in tasksByTypeByState[11][taskState] | search"
                          ng-class="{ 'is-selected': isSelected(task) }"
@@ -151,7 +151,7 @@
                     ng-model="tasksByTypeByState[10][taskState]"
                     ng-init="taskType = 10"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                    is-disabled="!isSortingSprintPlan(sprint)"
+                    is-disabled="!isSortingTaskBoard(sprint)"
                     ng-repeat="taskState in sprintTaskStates">
                     <div ng-repeat="task in tasksByTypeByState[10][taskState] | search"
                          ng-class="{ 'is-selected': isSelected(task) }"
@@ -182,7 +182,7 @@
                     ng-class="hasSelected() ? 'has-selected' : ''"
                     ng-model="tasksByStoryByState[story.id][taskState]"
                     as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                    is-disabled="!isSortingSprintPlan(sprint) || !isSortingStory(story)"
+                    is-disabled="!isSortingTaskBoard(sprint) || !isSortingStory(story)"
                     ng-repeat="taskState in sprintTaskStates">
                     <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                          ng-class="{ 'is-selected': isSelected(task) }"

@@ -44,9 +44,9 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             angular.extend(_.find(obj.tasks, { id: task.id }), task);
         };
         crudMethods[IceScrumEventType.DELETE] = function(task) {
-            if ($state.includes("sprintPlan.task.details", {taskId: task.id}) ||
-                ($state.includes("sprintPlan.task.multiple") && _.contains($state.params.taskListId.split(','), task.id.toString()))) {
-                $state.go('sprintPlan');
+            if ($state.includes("taskBoard.task.details", {taskId: task.id}) ||
+                ($state.includes("taskBoard.task.multiple") && _.contains($state.params.taskListId.split(','), task.id.toString()))) {
+                $state.go('taskBoard');
             }
             _.remove(obj.tasks, { id: task.id });
             obj.tasks_count = obj.tasks.length;

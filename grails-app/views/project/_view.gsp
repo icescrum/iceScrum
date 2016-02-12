@@ -78,7 +78,7 @@
                 <h3 class="panel-title">
                     <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
                     <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                       href="#/releasePlan/{{ release.id }}"
+                       href="#/planning/{{ release.id }}"
                        ng-if="authorizedRelease('update', release)">
                         <span class="fa fa-pencil"></span>
                     </a>
@@ -93,7 +93,7 @@
                 <h3 class="panel-title">
                     <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
                     <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                       href="#/sprintPlan/{{ currentOrLastSprint.id }}/details"
+                       href="#/taskBoard/{{ currentOrLastSprint.id }}/details"
                        ng-if="authorizedSprint('update', currentOrLastSprint)">
                         <span class="fa fa-pencil"></span>
                     </a>
@@ -108,7 +108,7 @@
                 <h3 class="panel-title">
                     <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
                     <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                       href="#/sprintPlan/{{ currentOrLastSprint.id }}/details"
+                       href="#/taskBoard/{{ currentOrLastSprint.id }}/details"
                        ng-if="authorizedSprint('update', currentOrLastSprint)">
                         <span class="fa fa-pencil"></span>
                     </a>

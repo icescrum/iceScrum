@@ -275,7 +275,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.like = function(story) {
             StoryService.like(story);
         };
-
         $scope.isDirty = function() {
             return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
         };

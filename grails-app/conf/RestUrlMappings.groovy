@@ -68,16 +68,16 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/finder/tag" {
-            controller = 'finder'
+        "/ws/p/$product/search/tag" {
+            controller = 'search'
             action = [GET: "tag"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/finder" {
-            controller = 'finder'
+        "/ws/p/$product/search" {
+            controller = 'search'
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }

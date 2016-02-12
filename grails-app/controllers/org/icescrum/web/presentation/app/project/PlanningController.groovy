@@ -26,8 +26,8 @@ package org.icescrum.web.presentation.app.project
 
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-class SprintPlanController {
+@Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
+class PlanningController {
 
     def view() {
         render(template: 'view')

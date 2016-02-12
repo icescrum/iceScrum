@@ -79,7 +79,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'Releas
         return FormService.httpGet('project/versions');
     };
     this.getTags = function() {
-        return FormService.httpGet('finder/tag');
+        return FormService.httpGet('search/tag');
     };
     this.getAllSprints = function(releases) {
         return _.chain(releases)

@@ -24,8 +24,8 @@
 class ProductUrlMappings {
     static mappings = {
 
-        "/p/$product/finder" {
-            controller = 'finder'
+        "/p/$product/search" {
+            controller = 'search'
             action = 'index'
             constraints {
                 product(matches: /[0-9A-Z]*/)

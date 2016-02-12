@@ -301,10 +301,10 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                 }
                             }
                         })
-                .state('releasePlan', {
-                    url: "/releasePlan",
-                    templateUrl: 'openWindow/releasePlan',
-                    controller: 'releasePlanCtrl',
+                .state('planning', {
+                    url: "/planning",
+                    templateUrl: 'openWindow/planning',
+                    controller: 'planningCtrl',
                     resolve: {
                         project: ['Session', function(Session) {
                             return Session.getProjectPromise();
@@ -318,7 +318,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         }]
                     }
                 })
-                    .state('releasePlan.new', {
+                    .state('planning.new', {
                         url: "/new",
                         views: {
                             "details": {
@@ -327,7 +327,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             }
                         }
                     })
-                    .state('releasePlan.release', {
+                    .state('planning.release', {
                         url: "/{releaseId:int}",
                         resolve: {
                             detailsRelease: ['$stateParams', 'releases', function($stateParams, releases){
@@ -338,28 +338,28 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             }]
                         }
                     })
-                        .state('releasePlan.release.details', {
+                        .state('planning.release.details', {
                             url: "/details",
                             views: {
-                                "details@releasePlan": {
+                                "details@planning": {
                                     templateUrl: 'release.details.html',
                                     controller: 'releaseDetailsCtrl'
                                 }
                             }
                         })
-                        .state('releasePlan.release.sprint', {
+                        .state('planning.release.sprint', {
                             url: "/sprint"
                         })
-                            .state('releasePlan.release.sprint.new', {
+                            .state('planning.release.sprint.new', {
                                 url: "/new",
                                 views: {
-                                    "details@releasePlan": {
+                                    "details@planning": {
                                         templateUrl: 'sprint.new.html',
                                         controller: 'sprintNewCtrl'
                                     }
                                 }
                             })
-                            .state('releasePlan.release.sprint.withId', {
+                            .state('planning.release.sprint.withId', {
                                 url: "/{sprintId:int}",
                                 resolve: {
                                     detailsSprint: ['$stateParams', 'detailsRelease', function($stateParams, detailsRelease) {
@@ -367,34 +367,34 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     }]
                                 }
                             })
-                                .state('releasePlan.release.sprint.withId.details', {
+                                .state('planning.release.sprint.withId.details', {
                                     url: "/details",
                                     views: {
-                                        "details@releasePlan": {
+                                        "details@planning": {
                                             templateUrl: 'sprint.details.html',
                                             controller: 'sprintDetailsCtrl'
                                         }
                                     }
                                 })
-                            .state('releasePlan.release.sprint.multiple', {
+                            .state('planning.release.sprint.multiple', {
                                 url: "/{sprintListId:[0-9]+(?:[\,][0-9]+)+}"
                             })
-                                .state('releasePlan.release.sprint.multiple.details', {
+                                .state('planning.release.sprint.multiple.details', {
                                     url: "/details",
                                     views: {
-                                        "details@releasePlan": {
+                                        "details@planning": {
                                             templateUrl: 'sprint.multiple.html',
                                             controller: 'sprintMultipleCtrl'
                                         }
                                     }
                                 })
-                .state('sprintPlan', {
-                    url: "/sprintPlan/{sprintId:int}",
+                .state('taskBoard', {
+                    url: "/taskBoard/{sprintId:int}",
                     params: {
                         sprintId: {value: null, squash: true}
                     },
-                    templateUrl: 'openWindow/sprintPlan',
-                    controller: 'sprintPlanCtrl',
+                    templateUrl: 'openWindow/taskBoard',
+                    controller: 'taskBoardCtrl',
                     resolve: {
                         project: ['Session', function(Session) {
                             return Session.getProjectPromise();
@@ -411,7 +411,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         }]
                     }
                 })
-                    .state('sprintPlan.details', {
+                    .state('taskBoard.details', {
                         url: "/details",
                         resolve: {
                             detailsSprint: ['sprint', function(sprint) {
@@ -425,22 +425,22 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             }
                         }
                     })
-                    .state('sprintPlan.task', {
+                    .state('taskBoard.task', {
                         url: "/task"
                     })
-                        .state('sprintPlan.task.new', {
+                        .state('taskBoard.task.new', {
                             url: "/new",
                             params: {
                                 taskTemplate: null
                             },
                             views: {
-                                "details@sprintPlan": {
+                                "details@taskBoard": {
                                     templateUrl: 'task.new.html',
                                     controller: 'taskNewCtrl'
                                 }
                             }
                         })
-                        .state('sprintPlan.task.details', {
+                        .state('taskBoard.task.details', {
                             url: "/{taskId:int}",
                             resolve: {
                                 detailsTask: ['$stateParams', 'sprint', function($stateParams, sprint) {
@@ -448,13 +448,13 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                 }]
                             },
                             views: {
-                                "details@sprintPlan": {
+                                "details@taskBoard": {
                                     templateUrl: 'task.details.html',
                                     controller: 'taskDetailsCtrl'
                                 }
                             }
                         })
-                            .state('sprintPlan.task.details.tab', {
+                            .state('taskBoard.task.details.tab', {
                                 url: "/{tabId:.+}",
                                 resolve: {
                                     data: ['$stateParams', 'ActivityService', 'CommentService', 'detailsTask', function($stateParams, ActivityService, CommentService, detailsTask) {

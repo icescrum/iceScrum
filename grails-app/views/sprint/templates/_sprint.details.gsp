@@ -47,12 +47,12 @@
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{:: viewName + '/' + (viewName == 'releasePlan' ? 'sprint/' : '') + previousSprint.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                   href="#{{:: viewName + '/' + (viewName == 'planning' ? 'sprint/' : '') + previousSprint.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
                 <a ng-if="nextSprint"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{:: viewName + '/' + (viewName == 'releasePlan' ? 'sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="#{{:: viewName + '/' + (viewName == 'planning' ? 'sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a class="btn btn-default"
                    href
                    ng-click="$state.go('^')"

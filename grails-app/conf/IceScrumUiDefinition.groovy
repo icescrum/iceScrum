@@ -48,18 +48,6 @@ uiDefinitions = {
             ]
         }
     }
-    'story' {
-        menuBar {
-            title 'is.ui.backlogelement'
-            show {
-                false
-            }
-        }
-        window {
-            init 'index'
-            title 'is.ui.story.details'
-        }
-    }
     'feature' {
         icon = 'fa fa-puzzle-piece'
         menuBar {
@@ -111,10 +99,10 @@ uiDefinitions = {
             ]
         }
     }
-    'releasePlan' {
+    'planning' {
         icon = 'fa fa-calendar'
         menuBar {
-            title 'is.ui.releasePlan'
+            title 'todo.is.ui.planning'
             defaultVisibility true
             defaultPosition 3
             spaceDynamicBar true
@@ -122,8 +110,8 @@ uiDefinitions = {
         window {
             details true
             init 'view'
-            title 'is.ui.releasePlan'
-            help 'is.ui.releasePlan.help'
+            title 'todo.is.ui.planning'
+            help 'todo.is.ui.planning.help'
         }
         embedded = [
                 view:'index',
@@ -137,10 +125,10 @@ uiDefinitions = {
                 }
         ]
     }
-    'sprintPlan' {
+    'taskBoard' {
         icon = 'fa fa-tasks'
         menuBar {
-            title 'is.ui.sprintPlan'
+            title 'todo.is.ui.taskBoard'
             defaultVisibility true
             defaultPosition 4
             spaceDynamicBar true
@@ -148,8 +136,8 @@ uiDefinitions = {
         window {
             details true
             init 'view'
-            title 'is.ui.sprintPlan'
-            help 'is.ui.sprintPlan.help'
+            title 'todo.is.ui.taskBoard'
+            help 'todo.is.ui.taskBoard.help'
         }
         embedded = [
                 view:'index',
@@ -171,29 +159,17 @@ uiDefinitions = {
             ]
         }
     }
-    'finder' {
+    'search' {
         icon = ' fa fa-search'
         menuBar {
-            title 'is.ui.finder'
+            title 'is.ui.search'
             defaultVisibility false
             defaultPosition 1
             spaceDynamicBar true
         }
         window {
             init 'index'
-            title 'is.ui.finder'
-        }
-    }
-    'task' {
-        menuBar {
-            title 'is.ui.backlogelement'
-            show {
-                false
-            }
-        }
-        window {
-            init 'index'
-            title 'is.ui.task.details'
+            title 'is.ui.search'
         }
     }
 }
