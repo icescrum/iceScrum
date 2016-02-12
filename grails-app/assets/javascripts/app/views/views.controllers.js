@@ -212,14 +212,15 @@ controllers.controller('sprintPlanCtrl', ['$scope', '$state', '$filter', 'UserSe
         return story.state < StoryStatesByName.DONE;
     };
     $scope.openSprint = function(sprint) {
-        $state.go('sprintPlan.details', {sprintId: sprint.id});
+        return $state.href('sprintPlan.details', {sprintId: sprint.id});
     };
-    $scope.openNewTaskByStory = function(story) {
-        $state.go('sprintPlan.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
+    $scope.urlNewTaskByStory = function(story) {
+        return $state.href('sprintPlan.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
     };
-    $scope.openNewTaskByType = function(type) {
-        $state.go('sprintPlan.task.new', {taskTemplate: {type: type}});
+    $scope.urlNewTaskByType = function(type) {
+        return $state.href('sprintPlan.task.new', {taskTemplate: {type: type}});
     };
+
     $scope.refreshTasks = function() {
         $scope.sprintTaskStates = $scope.sprint.state < SprintStatesByName.DONE ? $scope.taskStates : [TaskStatesByName.DONE];
         var partitionedTasks = _.partition($scope.sprint.tasks, function(task) {
