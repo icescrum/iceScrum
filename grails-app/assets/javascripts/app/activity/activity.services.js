@@ -28,6 +28,7 @@ services.service("ActivityService", ['FormService', function(FormService) {
         var url = 'activity/' + FormService.decapitalize(fluxiable.class) + '/' + fluxiable.id;
         return FormService.httpGet(url, params).then(function(activities) {
             fluxiable.activities = activities;
+            return activities;
         });
     };
 }]);
