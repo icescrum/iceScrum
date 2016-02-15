@@ -1024,3 +1024,28 @@ nvd3 .title {
 .text-ellipsis {
   .text-overflow();
 }
+
+//quick and dirty
+.feedback-buttons {
+  button {
+    padding-top: 6px;
+  }
+}
+
+.panel-userProjects {
+  .panel-light {
+    background: none;
+    border:none;
+    .panel-heading, .panel-body {
+      border:none;
+      background: none;
+      padding:0;
+      hr {
+        margin-bottom: 0;
+      }
+      > .div:not(:first-of-type) {
+        margin-left: 10px;
+      }
+    }
+  }
+}
