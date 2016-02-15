@@ -268,14 +268,14 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
     };
-    $scope.openSprint = function(sprint) {
+    $scope.urlOpenSprint = function(sprint) {
         return $state.href('taskBoard.details', {sprintId: sprint.id});
     };
-    $scope.urlNewTaskByStory = function(story) {
-        return $state.href('taskBoard.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
+    $scope.openNewTaskByStory = function(story) {
+        $state.go('taskBoard.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
     };
-    $scope.urlNewTaskByType = function(type) {
-        return $state.href('taskBoard.task.new', {taskTemplate: {type: type}});
+    $scope.openNewTaskByType = function(type) {
+        $state.go('taskBoard.task.new', {taskTemplate: {type: type}});
     };
     $scope.refreshTasks = function() {
         $scope.sprintTaskStates = $scope.sprint.state < SprintStatesByName.DONE ? $scope.taskStates : [TaskStatesByName.DONE];

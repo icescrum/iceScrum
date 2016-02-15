@@ -26,7 +26,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">
             <div class="btn-toolbar">
-                <a href="{{ ::openSprint(sprint) }}">
+                <a href="{{ ::urlOpenSprint(sprint) }}">
                     {{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}
                 </a>
                 <div class="btn-group pull-right"
@@ -136,7 +136,8 @@
                         <a type="button"
                            ng-if="taskState == 0"
                            class="btn btn-primary"
-                           href="{{ ::urlNewTaskByType(10) }}">
+                           ng-click="openNewTaskByType(11)"
+                           href>
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -163,8 +164,9 @@
                     <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
                         <a type="button"
                            ng-if="taskState == 0"
+                           ng-click="openNewTaskByType(10)"
                            class="btn btn-primary "
-                           href="{{ ::urlNewTaskByType(10) }}">
+                           href>
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
@@ -193,9 +195,10 @@
                     </div>
                     <div ng-if="authorizedTask('create', {parentStory: story})" class="postit-container">
                         <a type="button"
-                           href="{{ ::urlNewTaskByStory(story) }}"
+                           ng-click="openNewTaskByStory(story)"
                            ng-if="taskState == 0"
-                           class="btn btn-primary">
+                           class="btn btn-primary"
+                           href>
                             <i class="fa fa-plus"></i>
                         </a>
                     </div>
