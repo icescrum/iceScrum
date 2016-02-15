@@ -133,7 +133,7 @@
     <div ng-if="!sprints || sprints.length == 0"
          class="panel panel-light text-center">
         <div class="panel-body">
-            <p>${message(code: 'is.ui.sprint.help')}<p>
+            <p class="help-block">${message(code: 'is.ui.sprint.help')}<p>
             <a type="button"
                class="btn btn-primary"
                ng-if="authorizedSprint('create')"
@@ -146,7 +146,7 @@
 <div ng-if="releases.length == 0"
      class="panel panel-light">
     <div class="panel-body text-center">
-        <p>${message(code: 'is.ui.release.help')}<p>
+        <p class="help-block">${message(code: 'is.ui.release.help')}<p>
         <a type="button"
            class="btn btn-primary"
            ng-if="authorizedRelease('create')"
