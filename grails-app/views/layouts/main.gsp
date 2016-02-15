@@ -51,10 +51,8 @@
         <path fill="none" transform="" circle-coords="80,80,63,0" circle="app.loadingPercent" class="loading-circle"></path>
     </svg>
 </div>
+<is:header/>
 <div class="container-fluid">
-    <div class="row header">
-        <is:header/>
-    </div>
     <div class="row main" ui-view>
         <g:layoutBody/>
     </div>

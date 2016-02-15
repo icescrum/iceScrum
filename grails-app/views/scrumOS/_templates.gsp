@@ -77,8 +77,7 @@
     tooltip-placement="bottom"
     unavailable-feature="menu.id == 'search'"
     href="#/{{ menu.id != 'project' ? menu.id : '' }}">
-    <span class="handle" as-sortable-item-handle>::</span>
-    <i class="{{ menu.icon }}"></i> <span class="title">{{ menu.title }}</span>
+    <i class="{{ menu.icon }}" as-sortable-item-handle></i> <span class="title hidden-sm">{{ menu.title }}</span>
 </a>
 </script>
 
