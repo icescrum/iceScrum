@@ -220,8 +220,8 @@ body > .container-fluid > .header {
           border: 1px solid transparent;
           margin-top: -2px;
         }
-        &.menuitem.active {
-          &:after {
+        @media (min-width: @grid-float-breakpoint) {
+          &.menuitem.active:after {
             position: absolute;
             bottom: -10px;
             left: 50%;
