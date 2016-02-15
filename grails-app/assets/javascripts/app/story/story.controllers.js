@@ -353,6 +353,10 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 });
             }
         };
+        $scope.urlTab = function(tabId) {
+            var stateName = $state.params.tabId ? (tabId ? '.' : '^') : (tabId ? '.tab' : '.');
+            return $state.href(stateName, {tabId: tabId});
+        };
         // Init
         $scope.story = detailsStory;
         $scope.editableStory = {};
