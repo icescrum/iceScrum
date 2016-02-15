@@ -65,8 +65,7 @@
                     role="menu">
                     <g:each in="${is.exportFormats()}" var="format">
                         <li role="menuitem">
-                            <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}"
-                               ng-click="print($event)">${format.name}</a>
+                            <a unavailable-feature="true">${format.name}</a>
                         </li>
                     </g:each>
                     <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
@@ -88,7 +87,7 @@
                     <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                            ng-click="print($event)"
+                            unavailable-feature="true"
                             ng-href="{{ ::viewName }}/print"
                             hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
                     </button>
