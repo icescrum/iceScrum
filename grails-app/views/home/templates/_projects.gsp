@@ -11,6 +11,7 @@
                     <uib-accordion-heading>
                         {{ currentProject.name }}
                         <button type="button"
+                                style="margin: -2px 4px 0 0"
                                 class="pull-right btn btn-xs btn-default"
                                 ng-click="$event.stopPropagation(); $event.preventDefault(); openProject(currentProject)"
                                 uib-tooltip="${message(code:'todo.is.ui.project.open')}">

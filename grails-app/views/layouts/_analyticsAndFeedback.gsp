@@ -22,8 +22,8 @@
 --}%
 
 <%@ page import="grails.util.Environment" %>
-<g:set var="analytics" value="${grailsApplication.config.alpha?.analytics}"/>
-<g:if test="${analytics && Environment.current == Environment.PRODUCTION}">
+<g:set var="analytics" value="${grailsApplication.config.icescrum.alpha?.analytics}"/>
+<g:if test="${analytics}">
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -34,4 +34,7 @@
         });
         ga('send', 'pageview');
     </script>
+</g:if>
+<g:if test="${grailsApplication.config.icescrum.alpha?.feedback}">
+    <script src="https://www.icescrum.com/a/p/ISR7/feedback/load"></script>
 </g:if>
