@@ -91,51 +91,53 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                 };
                 return options;
             };
-            var storyDetailsTabState = {
-                url: "/{tabId:.+}",
-                resolve: {
-                    data: ['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'ActivityService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, ActivityService, detailsStory){
-                        if ($stateParams.tabId == 'tests') {
-                            return AcceptanceTestService.list(detailsStory);
-                        } else if($stateParams.tabId == 'tasks') {
-                            return TaskService.list(detailsStory);
-                        } else if($stateParams.tabId == 'comments') {
-                            return CommentService.list(detailsStory);
-                        } else if($stateParams.tabId == 'activities') {
-                            return ActivityService.activities(detailsStory, false);
-                        }
-                        return null;
-                    }],
-                    //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
-                    selected: ['data', 'detailsStory', function(data, detailsStory){
-                        return detailsStory;
-                    }]
-                },
-                views: {
-                    "details-tab": {
-                        templateUrl: function($stateParams) {
-                            var tpl;
+            var getStoryDetailsTabState = function() { // Use a function to generate a new object each team (doesn't work if object is shared among states)
+                return {
+                    url: "/{tabId:.+}",
+                    resolve: {
+                        data: ['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'ActivityService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, ActivityService, detailsStory){
                             if ($stateParams.tabId == 'tests') {
-                                tpl = 'story.acceptanceTests.html';
-                            } else if ($stateParams.tabId == 'tasks') {
-                                tpl = 'story.tasks.html';
-                            } else if ($stateParams.tabId == 'comments') {
-                                tpl = 'comment.list.html';
-                            } else if ($stateParams.tabId == 'activities') {
-                                tpl = 'activity.list.html';
+                                return AcceptanceTestService.list(detailsStory);
+                            } else if($stateParams.tabId == 'tasks') {
+                                return TaskService.list(detailsStory);
+                            } else if($stateParams.tabId == 'comments') {
+                                return CommentService.list(detailsStory);
+                            } else if($stateParams.tabId == 'activities') {
+                                return ActivityService.activities(detailsStory, false);
                             }
-                            return tpl;
-                        },
-                        controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
-                            $scope.selected = selected;
-                            if ($stateParams.tabId == 'activities') {
-                                $controller('activityCtrl', {$scope: $scope, selected: selected});
-                            } else if ($stateParams.tabId == 'tasks') {
-                                $controller('taskStoryCtrl', {$scope: $scope});
-                            }
+                            return null;
+                        }],
+                        //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
+                        selected: ['data', 'detailsStory', function(data, detailsStory){
+                            return detailsStory;
                         }]
+                    },
+                    views: {
+                        "details-tab": {
+                            templateUrl: function($stateParams) {
+                                var tpl;
+                                if ($stateParams.tabId == 'tests') {
+                                    tpl = 'story.acceptanceTests.html';
+                                } else if ($stateParams.tabId == 'tasks') {
+                                    tpl = 'story.tasks.html';
+                                } else if ($stateParams.tabId == 'comments') {
+                                    tpl = 'comment.list.html';
+                                } else if ($stateParams.tabId == 'activities') {
+                                    tpl = 'activity.list.html';
+                                }
+                                return tpl;
+                            },
+                            controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
+                                $scope.selected = selected;
+                                if ($stateParams.tabId == 'activities') {
+                                    $controller('activityCtrl', {$scope: $scope, selected: selected});
+                                } else if ($stateParams.tabId == 'tasks') {
+                                    $controller('taskStoryCtrl', {$scope: $scope});
+                                }
+                            }]
+                        }
                     }
-                }
+                };
             };
             $stateProvider
                 .state('root', {
@@ -238,7 +240,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         }
                     })
                     .state('backlog.details', getStoryDetailsState('details'))
-                        .state('backlog.details.tab', storyDetailsTabState)
+                        .state('backlog.details.tab', getStoryDetailsTabState())
                 .state('feature', {
                     url: "/feature",
                     templateUrl: 'openWindow/feature',
@@ -355,7 +357,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                             url: "/story"
                         })
                             .state('planning.release.story.details', getStoryDetailsState('details@planning'))
-                                .state('planning.release.story.details.tab', storyDetailsTabState)
+                                .state('planning.release.story.details.tab', getStoryDetailsTabState())
                         .state('planning.release.sprint', {
                             url: "/sprint"
                         })
@@ -389,7 +391,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     url: "/story"
                                 })
                                     .state('planning.release.sprint.withId.story.details', getStoryDetailsState('details@planning'))
-                                        .state('planning.release.sprint.withId.story.details.tab', storyDetailsTabState)
+                                        .state('planning.release.sprint.withId.story.details.tab', getStoryDetailsTabState())
                             .state('planning.release.sprint.multiple', {
                                 url: "/{sprintListId:[0-9]+(?:[\,][0-9]+)+}"
                             })
@@ -406,7 +408,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                                     url: "/story"
                                 })
                                     .state('planning.release.sprint.multiple.story.details', getStoryDetailsState('details@planning'))
-                                        .state('planning.release.sprint.multiple.story.details.tab', storyDetailsTabState)
+                                        .state('planning.release.sprint.multiple.story.details.tab', getStoryDetailsTabState())
                 .state('taskBoard', {
                     url: "/taskBoard/{sprintId:int}",
                     params: {
