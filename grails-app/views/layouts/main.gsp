@@ -62,5 +62,6 @@
 <entry:point id="icescrum-footer"/>
 <asset:javascript src="application.js"/>
 <g:include controller="scrumOS" action="templates" params="[product: params.product]"/>
+<g:render template="/layouts/analytics"/>
 </body>
 </html>
