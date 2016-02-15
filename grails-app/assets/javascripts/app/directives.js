@@ -377,12 +377,12 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     }
-}).directive('inputGroupFixWdith', ['$window', '$timeout', function($window, $timeout) {
+}).directive('inputGroupFixWidth', ['$window', '$timeout', function($window, $timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
             var resizer = function() {
-                element.css('width', element.parent().parent().width() - attrs.inputGroupFixWdith + 'px');
+                element.css('width', element.parent().parent().width() - attrs.inputGroupFixWidth + 'px');
             };
             var promiseWindowResize;
             angular.element($window).on('resize', function() {
@@ -391,7 +391,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 }
                 promiseWindowResize = $timeout(resizer, 150, false);
             });
-            resizer();
+            $timeout(resizer);
         }
     };
 }]).directive('asSortableItemHandleIf', ['$compile', function($compile) {
