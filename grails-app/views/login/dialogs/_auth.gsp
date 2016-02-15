@@ -21,13 +21,13 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:modal size="sm"
-          title="${message(code:'is.dialog.login')}"
-          submitButton="${message(code:'is.button.connect')}"
-          closeButton="${message(code:'is.button.cancel')}"
+          title="${message(code: 'is.dialog.login')}"
+          submitButton="${message(code: 'is.button.connect')}"
+          closeButton="${message(code: 'is.button.cancel')}"
           autoFillFix="true"
           form="login(credentials)">
     <div class="form-group">
-        <label for="credentials.j_username">${message(code:'is.user.username')}</label>
+        <label for="credentials.j_username">${message(code: 'is.user.username')}</label>
         <g:if test="${enableRegistration}"><div class="input-group"></g:if>
         <input required
                ng-model="credentials.j_username"
@@ -35,7 +35,7 @@
                id="credentials.j_username"
                class="form-control"
                autofocus
-               value="${params.username?:''}">
+               value="${params.username ?: ''}">
         <g:if test="${enableRegistration}">
             <span class="input-group-btn">
                 <a tabindex="-1"
@@ -43,7 +43,7 @@
                    type="button"
                    href
                    ng-click="showRegisterModal()"
-                   uib-tooltip="${message(code:'is.button.register')}">
+                   uib-tooltip="${message(code: 'is.button.register')}">
                     <i class="fa fa-user-plus"></i>
                 </a>
             </span>
@@ -51,7 +51,7 @@
         <g:if test="${enableRegistration}"></div></g:if>
     </div>
     <div class="form-group">
-        <label for="credentials.j_password">${message(code:'is.user.password')}</label>
+        <label for="credentials.j_password">${message(code: 'is.user.password')}</label>
         <g:if test="${activeLostPassword}"><div class="input-group"></g:if>
         <input required
                ng-model="credentials.j_password"
@@ -66,7 +66,7 @@
                    type="button"
                    href
                    ng-click="showRetrieveModal()"
-                   uib-tooltip="${message(code:'is.dialog.retrieve')}">
+                   uib-tooltip="${message(code: 'is.dialog.retrieve')}">
                     <i class="fa fa-question"></i>
                 </a>
             </span>
