@@ -60,7 +60,7 @@
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <span class="fa fa-cog"></span> <span class="caret"></span>
                     </button>
-                    <ul class="uib-dropdown-menu" ng-include="'story.menu.html'"></ul>
+                    <ul class="uib-dropdown-menu pull-right" ng-include="'story.menu.html'"></ul>
                 </div>
                 <a ng-if="previousStory"
                    class="btn btn-default"
