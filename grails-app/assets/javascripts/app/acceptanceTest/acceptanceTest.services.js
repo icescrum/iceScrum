@@ -35,7 +35,7 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
                 if (existingAcceptanceTest) {
                     angular.extend(existingAcceptanceTest, acceptanceTest);
                 } else {
-                    story.acceptanceTests.push(new AcceptanceTest(acceptanceTest));
+                    story.acceptanceTests.push(acceptanceTest);
                     story.acceptanceTests_count = story.acceptanceTests.length;
                 }
             }

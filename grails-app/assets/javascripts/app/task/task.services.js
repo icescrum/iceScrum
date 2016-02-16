@@ -35,7 +35,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 if (existingTask) {
                     angular.extend(existingTask, task);
                 } else {
-                    obj.tasks.push(new Task(task));
+                    obj.tasks.push(task);
                     obj.tasks_count = obj.tasks.length;
                 }
             }

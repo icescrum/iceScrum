@@ -234,8 +234,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                         query += self.formObjectData(innerObj, _prefix) + '&';
                     }
                 }
-            } else if (value !== undefined
-                && value !== null
+            } else if (value === undefined) {
+                query += encodeURIComponent(_prefix + name) + '=null&'; // HACK: an undefined property (e.g. select cleared makes the model undefined) set the null value in Grails data binding
+            } else if (value !== null
                     //no class info needed
                 && !_.contains(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
                     //no angular object
@@ -317,6 +318,10 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
                 method: 'get',
                 isArray: true,
                 interceptor: arrayInterceptor
+            },
+            deleteArray: {
+                method: 'delete',
+                isArray: true
             }
         };
         defaultMethods.update = angular.copy(defaultMethods.save); // for the moment there is no difference between save & update

@@ -34,7 +34,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
                     if (existingSprint) {
                         angular.extend(existingSprint, newSprint);
                     } else {
-                        release.sprints.push(new Sprint(newSprint));
+                        release.sprints.push(newSprint);
                     }
                 });
             } else {
@@ -65,7 +65,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             if (existingSprint) {
                 angular.extend(existingSprint, sprint);
             } else {
-                release.sprints.push(new Sprint(sprint));
+                release.sprints.push(sprint);
             }
             release.sprints_count = release.sprints.length;
         }).$promise;

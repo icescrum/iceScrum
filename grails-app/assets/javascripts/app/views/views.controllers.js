@@ -211,7 +211,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 }
             }
             if (release) {
-                $scope.sprints = release.sprints;
+                $scope.sprints = release.sprints == null ? [] : release.sprints;
                 $scope.selectedItems = [release]; // URL -> Timeline
             }
         }

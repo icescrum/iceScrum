@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('Feature', [ 'Resource', function($resource) {
+services.factory('Feature', ['Resource', function($resource) {
     return $resource('feature/:id/:action');
 }]);
 
@@ -34,18 +34,18 @@ services.service("FeatureService", ['$state', 'Feature', 'Session', 'PushService
         if (existingFeature) {
             angular.extend(existingFeature, feature);
         } else {
-            self.list.push(new Feature(feature));
+            self.list.push(feature);
         }
     };
     crudMethods[IceScrumEventType.UPDATE] = function(feature) {
-        angular.extend(_.find(self.list, { id: feature.id }), feature);
+        angular.extend(_.find(self.list, {id: feature.id}), feature);
     };
     crudMethods[IceScrumEventType.DELETE] = function(feature) {
         if ($state.includes("feature.details", {id: feature.id}) ||
             ($state.includes("feature.multiple") && _.contains($state.params.listId.split(','), feature.id.toString()))) {
             $state.go('feature');
         }
-        _.remove(self.list, { id: feature.id });
+        _.remove(self.list, {id: feature.id});
     };
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('feature', eventType, crudMethod);
@@ -70,7 +70,7 @@ services.service("FeatureService", ['$state', 'Feature', 'Session', 'PushService
         return feature.$update(crudMethods[IceScrumEventType.UPDATE]);
     };
     this.copyToBacklog = function(feature) {
-        return Feature.update({ id: feature.id, action: 'copyToBacklog' }, {}).$promise;
+        return Feature.update({id: feature.id, action: 'copyToBacklog'}, {}).$promise;
     };
     this['delete'] = function(feature) {
         return feature.$delete(crudMethods[IceScrumEventType.DELETE]);
@@ -83,22 +83,17 @@ services.service("FeatureService", ['$state', 'Feature', 'Session', 'PushService
         });
     };
     this.updateMultiple = function(ids, updatedFields) {
-        return Feature.updateArray({ id: ids }, { feature: updatedFields }, function(features) {
-            angular.forEach(features, function(feature) {
-                var index = self.list.indexOf(_.find(self.list, { id: feature.id }));
-                if (index != -1) {
-                    self.list.splice(index, 1, feature);
-                }
-            });
+        return Feature.updateArray({id: ids}, {feature: updatedFields}, function(features) {
+            _.each(features, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
     this.copyToBacklogMultiple = function(ids) {
-        return Feature.updateArray({ id: ids, action: 'copyToBacklog' }, {}).$promise;
+        return Feature.updateArray({id: ids, action: 'copyToBacklog'}, {}).$promise;
     };
     this.deleteMultiple = function(ids) {
-        return Feature.delete({id: ids}, function() {
-            _.remove(self.list, function(feature) {
-                return _.contains(ids, feature.id.toString());
+        return Feature.deleteArray({id: ids}, function() {
+            _.each(ids, function(stringId) {
+                crudMethods[IceScrumEventType.DELETE]({id: parseInt(stringId)});
             });
         }).$promise;
     };

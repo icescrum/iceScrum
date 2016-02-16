@@ -168,9 +168,9 @@ class StoryController {
                 }
                 bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
                 storyService.update(story, props)
-                // Independently manage the sprint change
-                def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
-                if (sprintId != null && story.parentSprint?.id != sprintId) {
+                // Independently manage the sprint change, manage the "null" value manually
+                def sprintId = storyParams.parentSprint == 'null' ? storyParams.parentSprint : storyParams.parentSprint?.id?.toLong()
+                if (sprintId instanceof Long && story.parentSprint?.id != sprintId) {
                     def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
                     if (sprint) {
                         storyService.plan(sprint, story)
@@ -178,8 +178,9 @@ class StoryController {
                         returnError(text: message(code: 'is.sprint.error.not.exist'))
                         return
                     }
+                } else if (sprintId == "null") {
+                    storyService.unPlan(story)
                 }
-                // TODO Unplan
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
@@ -346,21 +347,23 @@ class StoryController {
     def acceptAsFeature() {
         def stories = Story.withStories(params)?.reverse()
         def features = storyService.acceptToFeature(stories)
+        def returnData = features.size() > 1 ? features : features.first()
         withFormat {
-            html { render status: 200, contentType: 'application/json', text: features as JSON }
-            json { renderRESTJSON(text: features) }
-            xml { renderRESTXML(text: features) }
+            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
+            json { renderRESTJSON(text: returnData) }
+            xml { renderRESTXML(text: returnData) }
         }
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
     def acceptAsTask() {
         def stories = Story.withStories(params)?.reverse()
-        def elements = storyService.acceptToUrgentTask(stories)
+        def tasks = storyService.acceptToUrgentTask(stories)
+        def returnData = tasks.size() > 1 ? tasks : tasks.first()
         withFormat {
-            html { render status: 200, contentType: 'application/json', text: elements as JSON }
-            json { renderRESTJSON(text: elements) }
-            xml { renderRESTXML(text: elements) }
+            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
+            json { renderRESTJSON(text: returnData) }
+            xml { renderRESTXML(text: returnData) }
         }
     }
 

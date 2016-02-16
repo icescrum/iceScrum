@@ -61,7 +61,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         if (existingStory) {
             angular.extend(existingStory, story);
         } else {
-            self.list.push(new Story(story));
+            self.list.push(story);
         }
     };
     crudMethods[IceScrumEventType.UPDATE] = function(story) {
@@ -80,7 +80,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         PushService.registerListener('story', eventType, crudMethod);
     });
     this.mergeStories = function(stories) {
-        angular.forEach(stories, function(story) {
+        _.each(stories, function(story) {
             crudMethods[IceScrumEventType.CREATE](story);
         });
     };
@@ -160,24 +160,13 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             crudMethods[IceScrumEventType.UPDATE](story);
         }).$promise;
     };
-    this.activities = function(story, all) {
-        var params = {action: 'activities', id: story.id};
-        if (all) {
-            params.all = true;
-        }
-        return Story.query(params, function(activities) {
-            story.activities = activities;
-        }).$promise;
-    };
     this.acceptAs = function(story, target) {
         return Story.update({id: story.id, action: 'acceptAs' + target}, {}, function() {
-            _.remove(self.list, {id: story.id});
+            crudMethods[IceScrumEventType.DELETE](story);
         }).$promise;
     };
     this.copy = function(story) {
-        return Story.update({id: story.id, action: 'copy'}, {}, function(story) {
-            self.list.push(story);
-        }).$promise;
+        return Story.update({id: story.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.getMultiple = function(ids) {
         var foundStories = [];
@@ -194,26 +183,19 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.updateMultiple = function(ids, updatedFields) {
         return Story.updateArray({id: ids}, {story: updatedFields}, function(stories) {
-            angular.forEach(stories, function(story) {
-                var index = self.list.indexOf(_.find(self.list, {id: story.id}));
-                if (index != -1) {
-                    self.list.splice(index, 1, story);
-                }
-            });
+            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
     this.deleteMultiple = function(ids) {
-        return Story.delete({id: ids}, function() {
-            _.remove(self.list, function(story) {
-                return _.contains(ids, story.id.toString());
+        return Story.deleteArray({id: ids}, function() {
+            _.each(ids, function(stringId) {
+                crudMethods[IceScrumEventType.DELETE]({id: parseInt(stringId)});
             });
         }).$promise;
     };
     this.copyMultiple = function(ids) {
         return Story.updateArray({id: ids, action: 'copy'}, {}, function(stories) {
-            angular.forEach(stories, function(story) {
-                self.list.push(new Story(story));
-            });
+            _.each(stories, crudMethods[IceScrumEventType.CREATE]);
         }).$promise;
     };
     this.acceptMultiple = function(ids) {
@@ -222,25 +204,29 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.acceptAsMultiple = function(ids, target) {
         return Story.updateArray({id: ids, action: 'acceptAs' + target}, {}, function() {
-            _.remove(self.list, function(story) {
-                return _.contains(ids, story.id.toString());
+            _.each(ids, function(stringId) {
+                crudMethods[IceScrumEventType.DELETE]({id: parseInt(stringId)});
             });
         }).$promise;
     };
     this.followMultiple = function(ids, follow) {
         return Story.updateArray({id: ids, action: 'follow'}, {follow: follow}, function(stories) {
-            angular.forEach(stories, function(story) {
-                var index = self.list.indexOf(_.find(self.list, {id: story.id}));
-                if (index != -1) {
-                    self.list.splice(index, 1, story);
-                }
-            });
+            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
     this.listByBacklog = function(backlog) {
         return queryWithContext({type: 'backlog', typeId: backlog.id}, function(stories) {
             self.mergeStories(stories);
             return stories;
+        }).$promise;
+    };
+    this.activities = function(story, all) {
+        var params = {action: 'activities', id: story.id};
+        if (all) {
+            params.all = true;
+        }
+        return Story.query(params, function(activities) {
+            story.activities = activities;
         }).$promise;
     };
     this.authorizedStory = function(action, story) {

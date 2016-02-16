@@ -35,7 +35,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
                     if (existingRelease) {
                         angular.extend(existingRelease, newRelease);
                     } else {
-                        project.releases.push(new Release(newRelease));
+                        project.releases.push(newRelease);
                     }
                 });
             } else {
@@ -61,7 +61,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
             if (existingRelease) {
                 angular.extend(existingRelease, release);
             } else {
-                project.releases.push(new Release(release));
+                project.releases.push(release);
             }
             project.releases_count = project.releases.length;
         }).$promise;
