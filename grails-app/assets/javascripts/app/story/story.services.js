@@ -101,7 +101,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             self.mergeStories(stories);
             return stories;
         }).$promise;
-        return obj.stories.length == obj.stories_ids.length ? $q.when(obj.stories) : promise;
+        return obj.stories.length === (obj.stories_ids ? obj.stories_ids.length : null) ? $q.when(obj.stories) : promise;
     };
     this.get = function(id) {
         var story = _.find(self.list, {id: id});
