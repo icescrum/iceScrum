@@ -41,7 +41,9 @@
         <div class="form-group">
             <label for="feature">${message(code: 'is.feature')}</label>
             <div ng-class="{'input-group':editableStory.feature.id}">
-                <ui-select input-group-fix-width="30" ng-click="editForm(true)"
+                <ui-select input-group-fix-width="30"
+                           ng-click="editForm(true)"
+                           ng-change="editForm(true)"
                            ng-disabled="!formHolder.editable"
                            class="form-control"
                            name="feature"
@@ -81,6 +83,7 @@
                 <label for="affectVersion">${message(code: 'is.story.affectVersion')}</label>
                 <ui-select class="form-control"
                            ng-click="retrieveVersions(); editForm(true)"
+                           ng-change="editForm(true)"
                            ng-disabled="!formHolder.editable"
                            search-enabled="true"
                            tagging
@@ -152,6 +155,7 @@
              ng-show="authorizedStory('updateParentSprint', editableStory)">
             <label for="parentSprint">${message(code: 'is.sprint')}</label>
             <ui-select ng-click="retrieveParentSprintEntries(); editForm(true)"
+                       ng-change="editForm(true)"
                        ng-disabled="!formHolder.editable"
                        class="form-control"
                        name="parentSprint"
@@ -170,6 +174,7 @@
             <div ng-class="{'input-group':editableStory.dependsOn.id}">
                 <ui-select class="form-control"
                            ng-click="retrieveDependenceEntries(editableStory); editForm(true)"
+                           ng-change="editForm(true)"
                            ng-disabled="!formHolder.editable"
                            name="dependsOn"
                            search-enabled="true"
