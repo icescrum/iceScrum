@@ -674,13 +674,14 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 $cloneHeaders = [];
                 render();
                 //events stuff
-                var scrollBinder = element.bind("scroll", render);
-                var resizeBinder = angular.element($window).bind("resize", position);
-                var mainScrollBinder = angular.element('.main > .view').bind("scroll", position);
+                element.on("scroll", render); // Destroyed automatically
+                var windowElement = angular.element($window);
+                var viewElement = angular.element('.main > .view');
+                windowElement.on("resize", position);
+                viewElement.on("scroll", position);
                 scope.$on('$destroy', function() {
-                    scrollBinder();
-                    resizeBinder();
-                    mainScrollBinder();
+                    windowElement.off("resize", position);
+                    viewElement.off("scroll", position);
                 });
             });
 
