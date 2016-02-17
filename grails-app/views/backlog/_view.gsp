@@ -147,7 +147,7 @@
                 </button>
             </div>
         </div>
-        <div class="panel-body" ng-class="{'loading': !backlog.storiesRendered}">
+        <div class="panel-body" ng-class="{'loading': !backlog.storiesLoaded}">
             <div class="panel-loading" ng-include="'loading.html'"></div>
             <div class="postits {{ (backlog.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }} "
                  ng-controller="storyCtrl"

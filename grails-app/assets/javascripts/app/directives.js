@@ -340,16 +340,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             });
         }
     };
-}]).directive('onRepeatCompleted', function() {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            if (scope.$last === true) {
-                scope.$evalAsync(attrs.onRepeatCompleted);
-            }
-        }
-    }
-}).directive('circle', function() {
+}]).directive('circle', function() {
     var polarToCartesian = function(centerX, centerY, radius, angleInDegrees) {
         var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
         return {

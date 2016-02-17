@@ -45,6 +45,9 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
             sortOrder.unshift(sortByStateGroupingByBacklogState);
         }
         backlog.stories = $filter('orderBy')(filteredStories, sortOrder, backlog.orderBy.reverse);
+        if (backlog.stories && backlog.stories.length > 0) {
+            backlog.storiesLoaded = true; // To render stories already there in the client
+        }
         backlog.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog)); // TODO fix
         backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse && !$scope.hasContextOrSearch();
         $timeout(function() { // Timeout to wait for story rendering
@@ -56,7 +59,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
             backlog.shown = null;
             _.remove($scope.backlogs, {id: backlog.id});
         } else if (!backlog.shown) {
-            backlog.storiesRendered = false;
+            backlog.storiesLoaded = false;
             backlog.orderBy = {
                 values: _.sortBy([
                     {id: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
@@ -74,7 +77,9 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
             var lastShown = _.first(tmpBacklogs);
             backlog.shown = lastShown ? (lastShown.shown + 1) : 1;
             $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable, sorting and init the backlog from client data (storyService.list)
-            StoryService.listByBacklog(backlog); // Retrieve server data, stories that were missing will be automatically added through the watch on storyService.list
+            StoryService.listByBacklog(backlog).then(function() { // Retrieve server data, stories that were missing will be automatically added through the watch on storyService.list
+                backlog.storiesLoaded = true;
+            });
             if ($scope.backlogs.length == $scope.maxParallelsBacklogs) {
                 var removedBacklog = tmpBacklogs.pop();
                 removedBacklog.shown = null;
