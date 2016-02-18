@@ -172,7 +172,10 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
                     $scope.count = [];
                     StoryService.listByField('effort').then(function(effortsAndStories) {
                         initialEfforts = effortsAndStories.fieldValues;
-                        initialEfforts.splice(0, 1, '?');
+                        var indexOfNull = initialEfforts.indexOf(null);
+                        if (indexOfNull != -1) {
+                            initialEfforts.splice(indexOfNull, 1, '?');
+                        }
                         initialStoriesByEffort = effortsAndStories.stories;
                         initialCount = effortsAndStories.count;
                         $scope.updateTable(true)
