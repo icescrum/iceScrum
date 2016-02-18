@@ -89,8 +89,8 @@
     </div>
     <div class="panel-body" sticky-list sticky-watch="tasksByTypeByState">
         <table class="table" selectable="selectableOptions">
-            <thead ng-switch="sprint.state >= 3">
-            <tr class="header" ng-switch-default>
+            <thead ng-switch="sprint.state">
+            <tr class="header" ng-switch-when="2">
                 <th>
                     Type
                 </th>
@@ -104,7 +104,15 @@
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
-            <tr ng-switch-when="true">
+            <tr ng-switch-when="1">
+                <th>
+                    Type
+                </th>
+                <th>
+                    <span>${message(code: 'is.task.state.wait')}</span>
+                </th>
+            </tr>
+            <tr ng-switch-when="3">
                 <th>
                     Type
                 </th>

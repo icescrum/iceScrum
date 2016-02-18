@@ -333,15 +333,16 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             fixTaskRank(event.source.sortableScope.modelValue);
             fixTaskRank(event.dest.sortableScope.modelValue);
             var task = event.source.itemScope.modelValue;
-            var newRank = event.dest.index + 1;
             var destScope = event.dest.sortableScope;
-            var newState = destScope.taskState;
-            var newType = destScope.taskType;
-            var newStory = destScope.story;
-            task.rank = newRank;
-            task.type = newType;
-            task.state = newState;
-            task.parentStory = newStory ? {id: newStory.id} : null;
+            task.rank = event.dest.index + 1;
+            task.state = destScope.taskState;
+            if (destScope.story) {
+                task.parentStory = {id: destScope.story.id};
+                task.type = null;
+            } else {
+                task.type = destScope.taskType;
+                task.parentStory = null;
+            }
             TaskService.update(task, sprint);
         },
         orderChanged: function(event) {
