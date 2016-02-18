@@ -29,22 +29,20 @@
     <div class="head">
         <a href
            class="follow"
-           uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}" %{-- Cannot use fast-tooltip-el, see comments in the directive --}%
+           uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
            ng-click="follow(story)">
             <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
         </a>
         <span class="id">{{ ::story.uid }}</span>
         <span class="value editable"
-              fast-tooltip-el="${message(code: 'is.story.value')}"
               ng-click="showEditValueModal(story)"
               ng-if="story.value">
-            {{ story.value }} <i class="fa fa-line-chart"></i>
+            {{ story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
         </span>
         <span class="estimation editable"
-              fast-tooltip-el="${message(code: 'is.story.effort')}"
               ng-if="story.state > 1"
               ng-click="showEditEffortModal(story)">
-            {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar"></i>
+            {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
         </span>
     </div>
     <div class="content" as-sortable-item-handle-if="sortableStory">
@@ -62,30 +60,26 @@
         <div class="actions">
             <span story-menu class="action"></span>
             <span class="action" ng-class="{'active':story.attachments.length}">
-                <a href="#/{{ ::viewName }}/{{ ::story.id }}"
-                   fast-tooltip-el="${message(code:'todo.is.ui.backlogelement.attachments')}">
-                    <i class="fa fa-paperclip"></i>
+                <a href="#/{{ ::viewName }}/{{ ::story.id }}">
+                    <i class="fa fa-paperclip" fast-tooltip-el="${message(code:'todo.is.ui.backlogelement.attachments')}"></i>
                     <span class="badge">{{ story.attachments.length || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.comments_count}">
-                <a href="#/{{ ::viewName }}/{{ ::story.id }}/comments"
-                   fast-tooltip-el="${message(code:'todo.is.ui.comments')}">
-                    <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                <a href="#/{{ ::viewName }}/{{ ::story.id }}/comments">
+                    <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'" fast-tooltip-el="${message(code:'todo.is.ui.comments')}"></i>
                     <span class="badge">{{ story.comments_count  || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.tasks_count}">
-                <a href="#/{{ ::viewName }}/{{ ::story.id }}/tasks"
-                   fast-tooltip-el="${message(code:'todo.is.ui.tasks')}">
-                    <i class="fa fa-tasks"></i>
+                <a href="#/{{ ::viewName }}/{{ ::story.id }}/tasks">
+                    <i class="fa fa-tasks" fast-tooltip-el="${message(code:'todo.is.ui.tasks')}"></i>
                     <span class="badge">{{ story.tasks_count || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.acceptanceTests_count}">
-                <a href="#/{{ ::viewName }}/{{ ::story.id }}/tests"
-                   fast-tooltip-el="${message(code:'todo.is.ui.acceptanceTests')}">
-                    <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                <a href="#/{{ ::viewName }}/{{ ::story.id }}/tests">
+                    <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'" fast-tooltip-el="${message(code:'todo.is.ui.acceptanceTests')}"></i>
                     <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
                 </a>
             </span>

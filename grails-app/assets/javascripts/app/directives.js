@@ -524,8 +524,8 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 var tooltipAttr = 'fast-tooltip-el';
                 _.each(element.find('[' + tooltipAttr + ']'), function(tooltipElement) {
                     tooltipElement = angular.element(tooltipElement);
-                    var newTooltipElement = tooltipElement.clone();
-                    // Tooltip content must be a static string, it cannot be an angular expression "{{ foo }}"
+                    var newTooltipElement = tooltipElement.clone(); // Not sure that it is required
+                    // Tooltip content must be a static string, it cannot be an angular expression and the element cannot have children with angular expression !!!
                     // because the original expression and the associated watcher will be lost in the process so the value will never be synced if it changes
                     var tooltipContent = newTooltipElement.attr(tooltipAttr);
                     newTooltipElement.removeAttr(tooltipAttr); // Remove attr to prevent doing it again on next mouseenter for elements already processed
