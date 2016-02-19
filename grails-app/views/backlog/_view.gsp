@@ -32,11 +32,16 @@
                 <span class="badge">{{ availableBacklog.count }}</span>
             </button>
         </div>
+        <div class="btn-group">
+            <button class="btn btn-primary" unavailable-feature="true">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
         <div class="pull-right">
             <div class="btn-group btn-view visible-on-hover">
                 <button type="button"
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
-                        ng-click="app.asList = !app.asList"
+                        unavailable-feature="true"
                         class="btn btn-default">
                     <span class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></span>
                 </button>

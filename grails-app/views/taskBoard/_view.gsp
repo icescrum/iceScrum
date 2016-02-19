@@ -56,8 +56,7 @@
                         <button type="button"
                                 class="btn btn-default"
                                 uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                                ng-click="print($event)"
-                                ng-href="{{ ::viewName }}/print"
+                                unavailable-feature="true"
                                 hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
                         </button>
                     </g:if>
