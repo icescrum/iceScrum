@@ -216,8 +216,11 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
     $scope.projectMembersCount = 0;
 }]);
 
-controllers.controller('projectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
+controllers.controller('projectListCtrl', ['$scope', '$controller', 'Session', 'ProjectService', function($scope, $controller, Session, ProjectService) {
     $controller('abstractProjectListCtrl', { $scope: $scope });
+    $scope.getProjectUrl = function(project, viewName) {
+        return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
+    };
     // Init
     $scope.projects = [];
     $scope.openedProjects = {};
@@ -228,7 +231,7 @@ controllers.controller('projectListCtrl', ['$scope', '$controller', 'ProjectServ
             $scope.selectProject(selectedProject);
         }
     }, true);
-    var listFunction = $scope.type == 'public' ? ProjectService.listPublic : ProjectService.listByUser;
+    var listFunction = Session.authenticated() ? ProjectService.listByUser : ProjectService.listPublic;
     listFunction().then(function (projectsAndTotal) {
         $scope.projects = projectsAndTotal.projects;
     });
