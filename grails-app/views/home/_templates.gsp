@@ -24,6 +24,5 @@
 <g:render template="/home/templates/feed.panel" />
 <g:render template="/home/templates/mood.panel" />
 <g:render template="/home/templates/tasks.panel" />
-<g:render template="/home/templates/projects" />
 <g:render template="/home/templates/publicProjects.panel" />
 <g:render template="/home/templates/userProjects.panel" />
