@@ -878,9 +878,9 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         "DONE": 3
     })
     .constant('MoodFeelingsByName', {
-        "GOOD": 1,
-        "MEH": 2,
-        "BAD": 3
+        "GOOD": 2,
+        "MEH": 1,
+        "BAD": 0
     })
     .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
         PO_SM: 'PO_SM',
