@@ -27,7 +27,7 @@
         <h3 class="panel-title">
             <div class="btn-toolbar">
                 <a href="{{ ::urlOpenSprint(sprint) }}">
-                    {{ sprint.parentRelease.name + ' ' + sprint.orderNumber }}
+                    {{ sprint.parentRelease.name + ' - ${message(code: 'is.sprint')} ' + sprint.orderNumber }}
                 </a>
                 <div class="btn-group pull-right"
                      uib-dropdown>

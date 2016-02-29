@@ -274,7 +274,7 @@ controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detail
             $scope.startDate = _.first(sprints).startDate;
             $scope.endDate = _.last(sprints).endDate;
             var storyCounts = _.map(sprints, function(sprint) {
-                return sprint.stories_ids.length;
+                return sprint.stories_ids ? sprint.stories_ids.length : 0;
             });
             $scope.sumStory = _.sum(storyCounts);
             $scope.meanStory = mean(storyCounts);
