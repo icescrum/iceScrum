@@ -653,10 +653,9 @@ div.panel-body {
   }
 }
 
-//usefull when sortable container is empty
-.as-sortable-un-selectable #view-home *[as-sortable] {
-  padding-top:25px;
-  padding-bottom:25px;
+// Allow placeholder when sortable container is empty
+.as-sortable-un-selectable #view-home *[as-sortable], .postits[as-sortable] {
+  min-height: 60px;
 }
 
 .error-template {
