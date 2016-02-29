@@ -423,7 +423,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                         sprint: ['$stateParams', '$q', 'SprintService', 'StoryService', 'TaskService', 'project', function($stateParams, $q, SprintService, StoryService, TaskService, project) {
                             var promise = !$stateParams.sprintId ? SprintService.getCurrentOrNextSprint(project) : SprintService.get($stateParams.sprintId, project);
                             return promise.then(function(sprint) {
-                                return StoryService.listByType(sprint).then(function() {
+                                return sprint.id == undefined ? undefined : StoryService.listByType(sprint).then(function() {
                                     return TaskService.list(sprint).then(function() {
                                         return sprint;
                                     });

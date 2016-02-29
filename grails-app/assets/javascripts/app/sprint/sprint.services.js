@@ -65,6 +65,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             if (existingSprint) {
                 angular.extend(existingSprint, sprint);
             } else {
+                if (!angular.isArray(release.sprints)) {
+                    release.sprints = [];
+                }
                 release.sprints.push(sprint);
             }
             release.sprints_count = release.sprints.length;

@@ -22,6 +22,7 @@
 --}%
 
 <div class="panel panel-light"
+     ng-if="sprint"
      ng-class="{'sortable-disabled': !isSortingTaskBoard(sprint), 'sprint-not-done': sprint.state != 3}">
     <div class="panel-heading">
         <h3 class="panel-title">
@@ -213,5 +214,16 @@
             </tr>
             </tbody>
         </table>
+    </div>
+</div>
+<div ng-if="!sprint"
+     class="panel panel-light">
+    <div class="panel-body text-center">
+        <p class="help-block">${message(code: 'todo.is.ui.taskBoard.empty')}<p>
+        <a type="button"
+           class="btn btn-primary"
+           href="#planning">
+            <i class="fa fa-calendar"></i> ${message(code: 'todo.is.ui.planning')}
+        </a>
     </div>
 </div>

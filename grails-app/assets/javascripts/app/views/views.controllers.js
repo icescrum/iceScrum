@@ -397,5 +397,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             });
         }
     }, true);
-    $scope.refreshTasks(); // Init
+    if ($scope.sprint) {
+        $scope.refreshTasks(); // Init
+    }
 }]);
