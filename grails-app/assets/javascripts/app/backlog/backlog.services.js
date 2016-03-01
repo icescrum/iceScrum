@@ -24,18 +24,17 @@ services.factory('Backlog', ['Resource', function($resource) {
     return $resource('backlog/:id');
 }]);
 
-services.service("BacklogService", ['Backlog', 'Session', function(Backlog) {
+services.service("BacklogService", ['Backlog', 'BacklogCodes', function(Backlog, BacklogCodes) {
     this.list = function() {
         return Backlog.query({shared: true}).$promise;
     };
-    // The functions below are a hack to identify "known" backlogs, we should do better (e.g. new attribute)
     this.isAll = function(backlog) {
-        return backlog.filter == '{"story":{}}'
+        return backlog.code == BacklogCodes.ALL;
     };
     this.isSandbox = function(backlog) {
-        return backlog.filter == '{"story":{"state":1}}'
+        return backlog.code == BacklogCodes.SANDBOX;
     };
     this.isBacklog = function(backlog) {
-        return backlog.filter == '{"story":{"state":[2,3]}}'
+        return backlog.code == BacklogCodes.BACKLOG;
     };
 }]);

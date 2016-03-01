@@ -839,6 +839,12 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         clientError: 'client-error',
         serverError: 'server-error'
     })
+    .constant('BacklogCodes', {
+        SANDBOX: 'sandbox',
+        BACKLOG: 'backlog',
+        DONE: 'done',
+        ALL: 'all'
+    })
     .constant('StoryCodesByState', {
         1: "suggested",
         2: "accepted",

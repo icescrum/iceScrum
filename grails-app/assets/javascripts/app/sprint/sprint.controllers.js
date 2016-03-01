@@ -94,7 +94,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
     };
     $scope.sortableId = 'sprint';
     StoryService.listByType($scope.sprint).then(function(stories) {
-        $scope.backlog = {stories: _.sortBy(stories, 'rank')};
+        $scope.backlog = {stories: _.sortBy(stories, 'rank'), code: 'sprint'};
     });
 }]);
 
