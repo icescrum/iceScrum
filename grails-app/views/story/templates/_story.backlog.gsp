@@ -29,7 +29,8 @@
      class="postit-container">
     <div ng-include="'story.html'" ng-init="sortableStory = authorizedStory('rank', story)"></div>
 </div>
-<div ng-if="app.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0" class="text-center">
+<div ng-if="app.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0"
+     class="empty-view">
     <p class="help-block">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ app.search }}</strong><p>
     <button class="btn btn-default"
             ng-click="app.search = null">

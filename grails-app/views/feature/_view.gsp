@@ -139,7 +139,8 @@
                 <div ng-include="'feature.html'"></div>
             </div>
         </div>
-        <div ng-if="features.length == 0" class="text-center">
+        <div ng-if="features.length == 0"
+             class="empty-view">
             <p class="help-block">${message(code: 'is.ui.feature.help')}<p>
             <a type="button"
                class="btn btn-primary"
@@ -148,7 +149,8 @@
                 ${message(code: 'todo.is.ui.feature.new')}
             </a>
         </div>
-        <div ng-if="app.search && features.length != 0 && (features | search).length == 0" class="text-center">
+        <div ng-if="app.search && features.length != 0 && (features | search).length == 0"
+             class="empty-view">
             <p class="help-block">${message(code: 'is.ui.feature.search.empty')} <strong>{{ app.search }}</strong><p>
             <button class="btn btn-default"
                     ng-click="app.search = null">

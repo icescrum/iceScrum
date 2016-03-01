@@ -74,7 +74,7 @@
   }
   &.grid-group {
     &.has-selected {
-      > :not(.is-selected) {
+      > .postit-container:not(.is-selected) {
         opacity: 0.5;
         &:hover, &:focus {
           opacity: 1;
@@ -84,7 +84,7 @@
           -webkit-transition: opacity 0.25s linear;
         }
       }
-      .is-selected {
+      .postit-container.is-selected {
         .postit {
           border: 1px solid @brand-primary;
         }

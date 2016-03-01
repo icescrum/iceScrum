@@ -218,12 +218,14 @@
 </div>
 <div ng-if="!sprint"
      class="panel panel-light">
-    <div class="panel-body text-center">
+    <div class="panel-body">
+        <div class="empty-view">
             <p class="help-block">${message(code: 'todo.is.ui.taskBoard.empty')}<p>
             <a type="button"
                class="btn btn-primary"
                href="#planning">
                 <i class="fa fa-calendar"></i> ${message(code: 'todo.is.ui.planning')}
             </a>
+        </div>
     </div>
 </div>

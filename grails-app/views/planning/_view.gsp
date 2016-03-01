@@ -133,25 +133,29 @@
     <div ng-if="!sprints || sprints.length == 0"
          class="panel panel-light text-center">
         <div class="panel-body">
-            <p class="help-block">${message(code: 'is.ui.sprint.help')}<p>
-            <a type="button"
-               class="btn btn-primary"
-               ng-if="authorizedSprint('create')"
-               href="#{{:: viewName + '/' + release.id }}/sprint/new">
-                ${message(code: 'todo.is.ui.sprint.new')}
-            </a>
+            <div class="empty-view">
+                <p class="help-block">${message(code: 'is.ui.sprint.help')}<p>
+                <a type="button"
+                   class="btn btn-primary"
+                   ng-if="authorizedSprint('create')"
+                   href="#{{:: viewName + '/' + release.id }}/sprint/new">
+                    ${message(code: 'todo.is.ui.sprint.new')}
+                </a>
+            </div>
         </div>
     </div>
 </div>
 <div ng-if="releases.length == 0"
      class="panel panel-light">
-    <div class="panel-body text-center">
-        <p class="help-block">${message(code: 'is.ui.release.help')}<p>
-        <a type="button"
-           class="btn btn-primary"
-           ng-if="authorizedRelease('create')"
-           href="#{{ ::viewName }}/new">
-            ${message(code: 'todo.is.ui.release.new')}
-        </a>
+    <div class="panel-body">
+        <div class="empty-view">
+            <p class="help-block">${message(code: 'is.ui.release.help')}<p>
+            <a type="button"
+               class="btn btn-primary"
+               ng-if="authorizedRelease('create')"
+               href="#{{ ::viewName }}/new">
+                ${message(code: 'todo.is.ui.release.new')}
+            </a>
+        </div>
     </div>
 </div>
