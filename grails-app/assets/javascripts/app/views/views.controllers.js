@@ -304,7 +304,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             });
         };
         fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.sprintTaskStates);
-        fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.backlog.stories, 'id'), $scope.sprintTaskStates);
+        fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.sprint.stories, 'id'), $scope.sprintTaskStates);
     };
     $scope.changeSprintFilter = function(sprintFilter) {
         $scope.currentSprintFilter = sprintFilter;
@@ -381,7 +381,6 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
     $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;
-    $scope.backlog = sprint;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
     $scope.allStories = StoryService.list;

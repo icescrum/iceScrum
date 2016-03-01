@@ -180,7 +180,7 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-repeat="story in backlog.stories | filter: storyFilter | search | orderBy: 'rank'"
+            <tr ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'"
                 ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">
                 <td class="postits grid-group"
                     ng-controller="storyCtrl">
@@ -219,11 +219,11 @@
 <div ng-if="!sprint"
      class="panel panel-light">
     <div class="panel-body text-center">
-        <p class="help-block">${message(code: 'todo.is.ui.taskBoard.empty')}<p>
-        <a type="button"
-           class="btn btn-primary"
-           href="#planning">
-            <i class="fa fa-calendar"></i> ${message(code: 'todo.is.ui.planning')}
-        </a>
+            <p class="help-block">${message(code: 'todo.is.ui.taskBoard.empty')}<p>
+            <a type="button"
+               class="btn btn-primary"
+               href="#planning">
+                <i class="fa fa-calendar"></i> ${message(code: 'todo.is.ui.planning')}
+            </a>
     </div>
 </div>
