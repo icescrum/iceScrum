@@ -278,7 +278,17 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         $state.go('taskBoard.task.new', {taskTemplate: {type: type}});
     };
     $scope.refreshTasks = function() {
-        $scope.sprintTaskStates = $scope.sprint.state < SprintStatesByName.DONE ? $scope.taskStates : [TaskStatesByName.DONE];
+        switch ($scope.sprint.state) {
+            case SprintStatesByName.WAIT:
+                $scope.sprintTaskStates = [TaskStatesByName.WAIT];
+                break;
+            case SprintStatesByName.IN_PROGRESS:
+                $scope.sprintTaskStates = $scope.taskStates;
+                break;
+            case SprintStatesByName.DONE:
+                $scope.sprintTaskStates = [TaskStatesByName.DONE];
+                break;
+        }
         var partitionedTasks = _.partition($scope.sprint.tasks, function(task) {
             return _.isNull(task.parentStory);
         });
