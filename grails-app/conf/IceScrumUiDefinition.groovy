@@ -25,7 +25,7 @@ uiDefinitions = {
     'backlog' {
         icon = 'fa fa-inbox'
         menuBar {
-            title 'is.ui.backlog'
+            title 'is.ui.backlogs'
             defaultVisibility true
             defaultPosition 2
             spaceDynamicBar true
@@ -33,7 +33,7 @@ uiDefinitions = {
         window {
             details true
             init 'view'
-            title 'is.ui.backlog'
+            title 'is.ui.backlogs'
             help 'is.ui.backlog.help'
         }
         embedded = [
