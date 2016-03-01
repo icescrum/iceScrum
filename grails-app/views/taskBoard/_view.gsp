@@ -212,6 +212,20 @@
                     </div>
                 </td>
             </tr>
+            <tr ng-if="sprint.stories.length == 0">
+                <td>
+                    <div class="empty-view">
+                        <p class="help-block">${message(code: 'todo.is.ui.story.empty.sprint')}<p>
+                        <a type="button"
+                           class="btn btn-primary"
+                           ng-if="sprint.state != 3"
+                           href="#backlog">
+                            <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlogs')}
+                        </a>
+                    </div>
+                </td>
+                <td ng-repeat="taskState in sprintTaskStates"></td>
+            </tr>
             </tbody>
         </table>
     </div>
