@@ -773,6 +773,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             };
             return {
                 dragMove: function(itemPosition, containment, eventObj) {
+                    $rootScope.app.sortableMoving = true;
                     if (eventObj) {
                         // This HORRIBLE SOUP isolated in a private function gets the dest panel body and stores it in a captured variable.
                         // There may be a better way but it is the way ng-sortable does it
@@ -826,6 +827,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
                     }
                 },
                 dragEnd: function() {
+                    $rootScope.app.sortableMoving = false;
                     cancelScheduledScroll(); // Prevent persistent scroll in case of release out of sortable container
                 }
             }
@@ -843,7 +845,8 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         SANDBOX: 'sandbox',
         BACKLOG: 'backlog',
         DONE: 'done',
-        ALL: 'all'
+        ALL: 'all',
+        SPRINT: 'sprint'
     })
     .constant('StoryCodesByState', {
         1: "suggested",

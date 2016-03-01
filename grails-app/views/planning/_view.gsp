@@ -120,7 +120,7 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div class="postits {{ (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
+            <div class="postits {{ (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') + ' ' + (app.sortableMoving ? 'sortable-moving' : '') }}"
                  ng-controller="storyCtrl"
                  as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!isSortingSprint(sprint)"

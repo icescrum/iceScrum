@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controller', '$timeout', 'StoryService', 'BacklogService', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, $controller, $timeout, StoryService, BacklogService, StoryStatesByName, backlogs) {
+controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controller', '$timeout', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, $controller, $timeout, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
     $controller('selectableCtrl', {$scope: $scope});
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
@@ -146,4 +146,5 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
     //Useful to keep stories from update
     $scope.stories = StoryService.list;
     $scope.$watch('stories', $scope.refreshBacklogs, true);
+    $scope.backlogCodes = BacklogCodes;
 }]);

@@ -154,7 +154,7 @@
         </div>
         <div class="panel-body" ng-class="{'loading': !backlog.storiesLoaded}">
             <div class="panel-loading" ng-include="'loading.html'"></div>
-            <div class="postits {{ (backlog.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }} "
+            <div class="postits {{ (backlog.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '')  + ' ' + (app.sortableMoving ? 'sortable-moving' : '')}} "
                  ng-controller="storyCtrl"
                  as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!backlog.sorting"

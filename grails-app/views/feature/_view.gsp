@@ -125,20 +125,6 @@
     </div>
     <div class="panel-body"
          selectable="selectableOptions">
-        <div class="postits {{ (isSortingFeature() ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
-             ng-controller="featureCtrl"
-             ng-class="app.asList ? 'list-group' : 'grid-group'"
-             as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
-             is-disabled="!isSortingFeature()"
-             ng-model="features">
-            <div ng-class="{ 'is-selected': isSelected(feature) }"
-                 selectable-id="{{ ::feature.id }}"
-                 as-sortable-item
-                 ng-repeat="feature in features | search | orderBy:orderBy.current.id:orderBy.reverse"
-                 class="postit-container">
-                <div ng-include="'feature.html'"></div>
-            </div>
-        </div>
         <div ng-if="features.length == 0"
              class="empty-view">
             <p class="help-block">${message(code: 'is.ui.feature.help')}<p>
@@ -162,6 +148,20 @@
                href="#{{ ::viewName }}/new">
                 ${message(code: 'todo.is.ui.feature.new')}
             </a>
+        </div>
+        <div class="postits {{ (isSortingFeature() ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
+             ng-controller="featureCtrl"
+             ng-class="app.asList ? 'list-group' : 'grid-group'"
+             as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
+             is-disabled="!isSortingFeature()"
+             ng-model="features">
+            <div ng-class="{ 'is-selected': isSelected(feature) }"
+                 selectable-id="{{ ::feature.id }}"
+                 as-sortable-item
+                 ng-repeat="feature in features | search | orderBy:orderBy.current.id:orderBy.reverse"
+                 class="postit-container">
+                <div ng-include="'feature.html'"></div>
+            </div>
         </div>
     </div>
 </div>
