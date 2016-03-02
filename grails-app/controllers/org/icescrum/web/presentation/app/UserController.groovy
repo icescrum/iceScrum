@@ -328,7 +328,10 @@ class UserController {
     }
 
     private File getAssetAvatarFile(String avatarFileName) {
-        avatarFileName = "assets/images/avatars/${avatarFileName}"
+        def avatar = g.assetPath(src: 'avatars/'+avatarFileName) as String
+        def baseName = FilenameUtils.getBaseName(avatar)
+        def extension = FilenameUtils.getExtension(avatar)
+        avatarFileName = "assets/images/avatars/${baseName}.${extension}"
         if (!grailsApplication.warDeployed) {
             avatarFileName = "../grails-app/${avatarFileName}"
         }
