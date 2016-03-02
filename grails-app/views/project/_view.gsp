@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class="no-flex" ng-controller="dashboardCtrl">
+<div class="row" ng-controller="dashboardCtrl">
     <div class="panel-column">
         <div class="panel panel-light">
             <div class="panel-heading">

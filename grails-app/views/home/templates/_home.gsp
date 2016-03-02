@@ -22,23 +22,25 @@
 <script type="text/ng-template" id="home.html">
     <div id="view-home" class="view no-flex">
         <div class="content">
-            <div class="panel-column"
-                 as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
-                 ng-model='panelsLeft' >
-                <div ng-include="panel.id+'.panel.html'"
-                     as-sortable-item
-                     id="{{ panel.id }}"
-                     class="panel-{{ panel.id }}"
-                     ng-repeat="panel in panelsLeft"></div>
-            </div>
-            <div class="panel-column panel-{{ panel.id }}"
-                 as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
-                 ng-model='panelsRight'>
-                <div ng-include="panel.id+'.panel.html'"
-                     as-sortable-item
-                     id="{{ panel.id }}"
-                     class="panel-{{ panel.id }}"
-                     ng-repeat="panel in panelsRight"></div>
+            <div class="row">
+                <div class="panel-column"
+                     as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
+                     ng-model='panelsLeft' >
+                    <div ng-include="panel.id+'.panel.html'"
+                         as-sortable-item
+                         id="{{ panel.id }}"
+                         class="panel-{{ panel.id }}"
+                         ng-repeat="panel in panelsLeft"></div>
+                </div>
+                <div class="panel-column"
+                     as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
+                     ng-model='panelsRight'>
+                    <div ng-include="panel.id+'.panel.html'"
+                         as-sortable-item
+                         id="{{ panel.id }}"
+                         class="panel-{{ panel.id }}"
+                         ng-repeat="panel in panelsRight"></div>
+                </div>
             </div>
         </div>
     </div>

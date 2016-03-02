@@ -315,10 +315,19 @@ body > .container-fluid > .main {
         > div:not(:last-child) {
           margin-bottom: 15px;
         }
-        padding-right:0;
-      }
-      .panel-column:first-of-type {
-        padding-left:0;
+        @media (max-width: @screen-xs-max) {
+          &:last-child > div:first-child {
+            margin-top: 15px;
+          }
+        }
+        @media (min-width: @screen-md-min) {
+          &:first-child {
+            padding-right: (@grid-gutter-width / 4);
+          }
+          &:last-child {
+            padding-left: (@grid-gutter-width / 4);
+          }
+        }
       }
       // end TODO
     }
