@@ -36,7 +36,7 @@
                 </div>
                 <div class="panel-column">
                     <div as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
-                         ng-model='panelsLeft' >
+                         ng-model='panelsRight' >
                         <div ng-include="panel.id+'.panel.html'"
                              as-sortable-item
                              id="{{ panel.id }}"
