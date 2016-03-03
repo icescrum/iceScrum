@@ -22,7 +22,7 @@
 --}%
 <div class="row" ng-controller="dashboardCtrl">
     <div class="panel-column">
-        <div class="panel panel-light">
+        <div class="panel-container"><div class="panel panel-light">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-home"></i> {{ project.name + ' (' + project.pkey + ')' }}
@@ -72,8 +72,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="panel panel-light">
+        </div></div>
+        <div class="panel-container"><div class="panel panel-light">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
@@ -87,8 +87,8 @@
             <div class="panel-body"
                  ng-bind-html="(release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize">
             </div>
-        </div>
-        <div class="panel panel-light">
+        </div></div>
+        <div class="panel-container"><div class="panel panel-light">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
@@ -102,8 +102,8 @@
             <div class="panel-body"
                  ng-bind-html="(currentOrLastSprint.doneDefinition_html ? currentOrLastSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize">
             </div>
-        </div>
-        <div class="panel panel-light">
+        </div></div>
+        <div class="panel-container"><div class="panel panel-light">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
@@ -117,10 +117,10 @@
             <div class="panel-body"
                  ng-bind-html="(currentOrLastSprint.retrospective_html ? currentOrLastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize">
             </div>
-        </div>
+        </div></div>
     </div>
     <div class="panel-column">
-        <div class="panel panel-light" ng-controller="chartCtrl" ng-init="openProjectChart('burnup')">
+        <div class="panel-container"><div class="panel panel-light" ng-controller="chartCtrl" ng-init="openProjectChart('burnup')">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
@@ -164,8 +164,8 @@
             <div class="panel-body">
                 <nvd3 options="options" data="data"></nvd3>
             </div>
-        </div>
-        <div class="panel panel-light">
+        </div></div>
+        <div class="panel-container"><div class="panel panel-light">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
@@ -207,6 +207,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div></div>
     </div>
 </div>

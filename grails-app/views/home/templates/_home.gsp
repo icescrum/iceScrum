@@ -23,23 +23,26 @@
     <div id="view-home" class="view no-flex">
         <div class="content">
             <div class="row">
-                <div class="panel-column"
-                     as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
-                     ng-model='panelsLeft' >
-                    <div ng-include="panel.id+'.panel.html'"
-                         as-sortable-item
-                         id="{{ panel.id }}"
-                         class="panel-{{ panel.id }}"
-                         ng-repeat="panel in panelsLeft"></div>
+                <div class="panel-column">
+                    <div ng-include="'userProjects.panel.html'" class="panel-userProjects"></div>
+                    <div as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
+                         ng-model='panelsLeft' >
+                        <div ng-include="panel.id+'.panel.html'"
+                             as-sortable-item
+                             id="{{ panel.id }}"
+                             class="panel-container panel-{{ panel.id }}"
+                             ng-repeat="panel in panelsLeft"></div>
+                    </div>
                 </div>
-                <div class="panel-column"
-                     as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
-                     ng-model='panelsRight'>
-                    <div ng-include="panel.id+'.panel.html'"
-                         as-sortable-item
-                         id="{{ panel.id }}"
-                         class="panel-{{ panel.id }}"
-                         ng-repeat="panel in panelsRight"></div>
+                <div class="panel-column">
+                    <div as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
+                         ng-model='panelsLeft' >
+                        <div ng-include="panel.id+'.panel.html'"
+                             as-sortable-item
+                             id="{{ panel.id }}"
+                             class="panel-container panel-{{ panel.id }}"
+                             ng-repeat="panel in panelsRight"></div>
+                    </div>
                 </div>
             </div>
         </div>
