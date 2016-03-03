@@ -112,7 +112,11 @@
                     <a href="#/taskBoard/{{ sprint.id }}/details">
                         ${message(code: 'is.sprint')} {{ sprint.orderNumber + ' - ' + (sprint.state | i18n: 'SprintStates') }}
                     </a>
-                    <span class="pull-right">{{ (sprint.state > 1 ? (sprint.velocity + ' / ') : '') + sprint.capacity }} <i class="small-icon fa fa-dollar"></i></span>
+                    <span class="pull-right">
+                        <span ng-if="sprint.state > 1" uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity }} /</span>
+                        <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity }}</span>
+                        <i class="small-icon fa fa-dollar"></i>
+                    </span>
                 </div>
                 <div class="sub-title text-muted">
                     {{ sprint.startDate | dateShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dateShorter }}
