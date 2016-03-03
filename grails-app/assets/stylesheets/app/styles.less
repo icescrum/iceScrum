@@ -20,9 +20,9 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 **/
+@import (reference) "../vendors/todc/less/todc-bootstrap.less";
 @import (reference) "../vendors/bootstrap/less/forms.less";
 @import (reference) "../vendors/bootstrap/less/responsive-utilities.less";
-@import (reference) "../vendors/todc/less/todc-bootstrap.less";
 
 @import (reference) "./variables.less";
 @import (reference) "./mixin.less";
@@ -319,7 +319,7 @@ i.small-icon {
       margin-bottom: 0;
     }
     .panel-body {
-      padding: 15px;
+      padding: @grid-gutter-width / 2;
       > img {
         margin-right: 10px;
       }
@@ -339,7 +339,7 @@ i.small-icon {
 #view-project, #view-home {
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 15px 0;
+  padding: @grid-gutter-width / 2 0;
   width: 100%;
 }
 

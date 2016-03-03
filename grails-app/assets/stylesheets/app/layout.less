@@ -251,8 +251,8 @@ body > .container-fluid > .main {
     &:not(.no-flex) {
       flex: 1;
       display: flex;
-      padding-top: 15px;
-      padding-bottom: 15px;
+      padding-top: 0;
+      padding-bottom: 0;
       //col-md etc..
       > div {
         display: flex;
@@ -306,6 +306,10 @@ body > .container-fluid > .main {
     > .content {
       flex-flow:column;
       .make-md-column(12);
+      padding:0;
+      > .panel {
+        border:0;
+      }
       // TODO check or improve way to space columns in dashboard  home
       .panel-column {
         .make-md-column(6);
@@ -338,11 +342,14 @@ body > .container-fluid > .main {
     &.with-details {
       > .content {
         .make-md-column(8);
+        padding:0;
       }
       > [ui-view='details'] {
         .make-md-column(4);
-        padding-left: 0;
+        padding:0;
         > .panel {
+          border-width: 0;
+          border-left-width: 1px;
           > .panel-heading {
             padding: 0;
             > .panel-title {
@@ -553,8 +560,6 @@ body > .container-fluid > .main {
   .content {
     .backlogs-list {
       background: @panel-bg;
-      border:1px solid @btn-default-border;
-      border-bottom-width: 0;
       hr {
         margin: 15px 10% 0;
         padding-bottom:1px;
@@ -603,10 +608,11 @@ body > .container-fluid > .main {
       flex-flow: row;
       overflow: hidden;
       div.panel{
-        border-top-width: 0;
-        border-left-width: 0;
-        &:first-of-type {
-          border-left-width:1px;
+        border-width: 0;
+        border-color: #EEE;
+        border-right-width:1px;
+        &:last-of-type {
+          border-right-width:0;
         }
         .panel-body {
           padding-left:9px;
