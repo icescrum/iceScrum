@@ -708,7 +708,7 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             return Math.floor(duration / (1000 * 3600 * 24)) + 1;
         };
 
-        $rootScope.openProject = function (project) {
+        $rootScope.openProject = function(project) {
             document.location = $rootScope.serverUrl + '/p/' + project.pkey + '/';
         };
 

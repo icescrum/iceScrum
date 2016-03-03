@@ -1,5 +1,5 @@
 <script type="text/ng-template" id="publicProjects.panel.html">
-<div class="panel panel-light" ng-controller="projectListCtrl">
+<div class="panel panel-light" ng-controller="publicProjectListCtrl">
     <div class="panel-heading">
         <h3 class="panel-title"><i class="fa fa-folder-open"></i> ${message(code: 'is.panel.project.public')}</h3>
     </div>

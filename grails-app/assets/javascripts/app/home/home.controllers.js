@@ -19,7 +19,7 @@
  *
  *
  */
-controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, HomeService) {
+controllers.controller('homeCtrl', ['$scope', 'Session', 'HomeService', function($scope, Session, HomeService) {
     // Init
     $scope.panelsLeft = [];
     $scope.panelsRight = [];
@@ -42,4 +42,5 @@ controllers.controller('homeCtrl', ['$scope', 'HomeService', function($scope, Ho
         $scope.panelsLeft = panels.panelsLeft;
         $scope.panelsRight = panels.panelsRight;
     });
+    $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
 }]);
