@@ -120,93 +120,97 @@
         </div></div>
     </div>
     <div class="panel-column">
-        <div class="panel-container"><div class="panel panel-light" ng-controller="chartCtrl" ng-init="openProjectChart('burnup')">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
-                    <div class="btn-toolbar pull-right visible-on-hover"
-                         uib-dropdown>
-                        <button class="btn btn-default btn-sm"
-                                ng-click="saveChart()"
-                                type="button">
-                            <span class="fa fa-floppy-o"></span>
-                        </button>
-                        <button class="btn btn-default btn-sm"
-                                uib-tooltip="${message(code:'todo.is.ui.charts')}"
-                                type="button"
-                                uib-dropdown-toggle>
-                            <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
-                        </button>
-                        <ul class="uib-dropdown-menu">
-                            <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
-                            <li><a href ng-click="openProjectChart('flowCumulative')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
-                            <li><a href ng-click="openProjectChart('burnup')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>
-                            <li><a href ng-click="openProjectChart('burndown')">${message(code: 'is.ui.project.charts.productBurndown')}</a></li>
-                            <li><a href ng-click="openProjectChart('parkingLot')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
-                            <li><a href ng-click="openProjectChart('velocity')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
-                            <li><a href ng-click="openProjectChart('velocityCapacity')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
-                            <li ng-if="release.id" class="divider"></li>
-                            <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
-                            <li ng-if="release.id"><a href ng-click="openReleaseChart('burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>
-                            <li ng-if="release.id"><a href ng-click="openReleaseChart('parkingLot', release)">${message(code: 'is.chart.releaseParkingLot')}</a></li>
-                            <li ng-if="release.id"><a href ng-click="openMoodChart('releaseUserMood')">${message(code: 'is.chart.releaseUserMood')}</a></li>
-                            <li ng-if="currentOrLastSprint.id" class="divider"></li>
-                            <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                            <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burndownRemaining', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>
-                            <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupTasks', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a></li>
-                            <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupPoints', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a></li>
-                            <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupStories', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a></li>
-                            <li ng-if="currentOrLastSprint.id"><a href ng-click="openMoodChart('sprintUserMood')">${message(code: 'is.chart.sprintUserMood')}</a></li>
-                        </ul>
-                    </div>
-                </h3>
-            </div>
-            <div class="panel-body">
-                <nvd3 options="options" data="data"></nvd3>
-            </div>
-        </div></div>
-        <div class="panel-container"><div class="panel panel-light">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
-                    <small class="pull-right">
-                        <g:link class="rss" uib-tooltip="${message(code: 'todo.is.ui.feed')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
-                            <i class="fa fa-rss fa-lg visible-on-hover"></i>
-                        </g:link>
-                    </small>
-                </h3>
-            </div>
-            <div class="panel-body activities panel-light">
-                <div ng-repeat="activity in activities">
-                    <div class="activity">
-                        <div class="media-left">
-                            <img ng-src="{{activity.poster | userAvatar}}"
-                                 alt="{{activity.poster | userFullName}}"/>
+        <div class="panel-container">
+            <div class="panel panel-light" ng-controller="chartCtrl" ng-init="openProjectChart('burnup')">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
+                        <div class="btn-toolbar pull-right visible-on-hover"
+                             uib-dropdown>
+                            <button class="btn btn-default btn-sm"
+                                    ng-click="saveChart()"
+                                    type="button">
+                                <span class="fa fa-floppy-o"></span>
+                            </button>
+                            <button class="btn btn-default btn-sm"
+                                    uib-tooltip="${message(code:'todo.is.ui.charts')}"
+                                    type="button"
+                                    uib-dropdown-toggle>
+                                <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
+                            </button>
+                            <ul class="uib-dropdown-menu">
+                                <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
+                                <li><a href ng-click="openProjectChart('flowCumulative')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
+                                <li><a href ng-click="openProjectChart('burnup')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>
+                                <li><a href ng-click="openProjectChart('burndown')">${message(code: 'is.ui.project.charts.productBurndown')}</a></li>
+                                <li><a href ng-click="openProjectChart('parkingLot')">${message(code: 'is.ui.project.charts.productParkingLot')}</a></li>
+                                <li><a href ng-click="openProjectChart('velocity')">${message(code: 'is.ui.project.charts.productVelocity')}</a></li>
+                                <li><a href ng-click="openProjectChart('velocityCapacity')">${message(code: 'is.ui.project.charts.productVelocityCapacity')}</a></li>
+                                <li ng-if="release.id" class="divider"></li>
+                                <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
+                                <li ng-if="release.id"><a href ng-click="openReleaseChart('burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>
+                                <li ng-if="release.id"><a href ng-click="openReleaseChart('parkingLot', release)">${message(code: 'is.chart.releaseParkingLot')}</a></li>
+                                <li ng-if="release.id"><a href ng-click="openMoodChart('releaseUserMood')">${message(code: 'is.chart.releaseUserMood')}</a></li>
+                                <li ng-if="currentOrLastSprint.id" class="divider"></li>
+                                <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
+                                <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burndownRemaining', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>
+                                <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupTasks', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a></li>
+                                <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupPoints', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a></li>
+                                <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('burnupStories', currentOrLastSprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a></li>
+                                <li ng-if="currentOrLastSprint.id"><a href ng-click="openMoodChart('sprintUserMood')">${message(code: 'is.chart.sprintUserMood')}</a></li>
+                            </ul>
                         </div>
-                        <div class="media-body">
-                            <div class="text-muted pull-right">
-                                <time timeago datetime="{{ activity.dateCreated }}">
-                                    {{ activity.dateCreated | dateTime }}
-                                </time>
-                                <i class="fa fa-clock-o"></i>
-                            </div>
-                            <div>
-                                {{activity.poster | userFullName}}
-                            </div>
-                            <div>
-                                <span class="{{ activity | activityIcon}}"></span>
-                                <span>{{ message('is.fluxiable.' + activity.code ) }} <strong>{{ activity.label }}</strong></span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
+                    </h3>
                 </div>
-                <div ng-if="activities != undefined && activities.length == 0" class="panel-box-empty">
-                    <div style="text-align: center; padding:5px; font-size:14px;">
-                        <a class="scrum-link" target="_blank" href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">${message(code:'is.ui.getting.started')}</a>
-                    </div>
+                <div class="panel-body">
+                    <nvd3 options="options" data="data"></nvd3>
                 </div>
             </div>
-        </div></div>
+        </div>
+        <div class="panel-container">
+            <div class="panel panel-light">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
+                        <small class="pull-right">
+                            <g:link class="rss" uib-tooltip="${message(code: 'todo.is.ui.feed')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
+                                <i class="fa fa-rss fa-lg visible-on-hover"></i>
+                            </g:link>
+                        </small>
+                    </h3>
+                </div>
+                <div class="panel-body activities panel-light">
+                    <div ng-repeat="activity in activities">
+                        <div class="activity">
+                            <div class="media-left">
+                                <img ng-src="{{activity.poster | userAvatar}}"
+                                     alt="{{activity.poster | userFullName}}"/>
+                            </div>
+                            <div class="media-body">
+                                <div class="text-muted pull-right">
+                                    <time timeago datetime="{{ activity.dateCreated }}">
+                                        {{ activity.dateCreated | dateTime }}
+                                    </time>
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <div>
+                                    {{activity.poster | userFullName}}
+                                </div>
+                                <div>
+                                    <span class="{{ activity | activityIcon}}"></span>
+                                    <span>{{ message('is.fluxiable.' + activity.code ) }} <strong>{{ activity.label }}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div ng-if="activities != undefined && activities.length == 0" class="panel-box-empty">
+                        <div style="text-align: center; padding:5px; font-size:14px;">
+                            <a class="scrum-link" target="_blank" href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">${message(code:'is.ui.getting.started')}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
