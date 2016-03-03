@@ -13,7 +13,6 @@ body {
     display: flex;
     height: 100%;
     width: 100%;
-    overflow: hidden;
     -webkit-transition: opacity 0.5s ease-in-out;
     -moz-transition: opacity 0.5s ease-in-out;
     -ms-transition: opacity 0.5s ease-in-out;
@@ -226,7 +225,7 @@ body > header {
   }
 }
 
-body > .container-fluid > .main {
+body > .container-fluid.main {
   flex: 1;
   display: flex;
   //view
@@ -317,11 +316,11 @@ body > .container-fluid > .main {
           margin-bottom: 0;
         }
         div.panel-container:not(:last-child) {
-          margin-bottom: 15px;
+          margin-bottom: @grid-gutter-width / 2;
         }
         @media (max-width: @screen-xs-max) {
           &:last-child div.panel-container:first-child {
-            margin-top: 15px;
+            margin-top: @grid-gutter-width / 2;
           }
         }
         @media (min-width: @screen-md-min) {

@@ -52,10 +52,8 @@
     </svg>
 </div>
 <is:header/>
-<div class="container-fluid">
-    <div class="row main" ui-view>
-        <g:layoutBody/>
-    </div>
+<div class="container-fluid main" ui-view>
+    <g:layoutBody/>
 </div>
 <entry:point id="icescrum-footer"/>
 <asset:javascript src="application.js"/>
