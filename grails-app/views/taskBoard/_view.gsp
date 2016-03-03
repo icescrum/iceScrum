@@ -37,7 +37,7 @@
                             class="btn btn-default"
                             ng-click="enableSortable()"
                             uib-tooltip="{{ isSortingTaskBoard(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
-                        <span ng-class="isSortingTaskBoard(sprint) ? 'text-success' : 'text-danger'" class="fa fa-hand-pointer-o"></span>
+                        <span ng-class="isSortingTaskBoard(sprint) ? 'text-success' : 'forbidden-stack text-danger'" class="fa fa-hand-pointer-o"></span>
                     </button>
                     <button class="btn btn-default"
                             uib-dropdown-toggle
@@ -77,13 +77,6 @@
                         </button>
                     </g:if>
                 </div>
-            </div>
-            <div ng-if="isSortableTaskBoard(sprint) && !isSortingTaskBoard(sprint)" class="toolbar-warning">
-                <i class="fa fa-exclamation-triangle"></i>
-                ${message(code: 'todo.is.ui.sortable.sprintPlan.warning')}
-                <button type="button" class="btn btn-default btn-sm" ng-click="enableSortable()">
-                    <span class="text-danger fa fa-hand-pointer-o"></span>
-                </button>
             </div>
         </h3>
     </div>

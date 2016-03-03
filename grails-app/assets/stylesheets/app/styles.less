@@ -1013,15 +1013,6 @@ nvd3 .title {
   font-weight: bold;
 }
 
-.toolbar-warning {
-  text-align: center;
-  padding-top: 2px;
-  font-size: 14px;
-  i {
-    color: @brand-danger;
-  }
-}
-
 .sprint-not-done tr.story-done {
   opacity: 0.6;
 }
@@ -1059,4 +1050,12 @@ nvd3 .title {
       }
     }
   }
+}
+
+.forbidden-stack:after {
+  content:"\f05e";
+  position: absolute;
+  left: 7px;
+  font-size: 2em;
+  top: 1px;
 }
