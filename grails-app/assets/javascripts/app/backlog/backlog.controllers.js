@@ -70,6 +70,7 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
     $scope.toggleBacklog = function(backlog) {
         if (backlog.shown && $scope.backlogs.length > 1) {
             backlog.shown = null;
+            backlog.pinned = false;
             _.remove($scope.backlogs, {id: backlog.id});
         } else if (!backlog.shown) {
             backlog.storiesLoaded = false;
