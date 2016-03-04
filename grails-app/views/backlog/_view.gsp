@@ -93,6 +93,7 @@
                         ng-if="backlog.sortable"
                         class="btn btn-default"
                         ng-click="enableSortable(backlog)"
+                        tooltip-placement="right"
                         uib-tooltip="{{ backlog.sorting ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                     <span ng-class="backlog.sorting ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></span>
                 </button>
