@@ -14,3 +14,32 @@
   -webkit-touch-callout: none;
   -webkit-user-select: none;
 }
+
+.make-flex-container(@direction: column; @grow: 1; @shrink: 0; @basis: auto) {
+  flex: @grow @shrink ;
+  -webkit-flex: @grow @shrink @basis;
+  display: flex;
+  flex-direction: @direction;
+}
+
+.make-flex-panel() {
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+
+  display: flex;
+  flex-direction: column;
+
+  > .panel-heading {
+    flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+  }
+  > .panel-body {
+    flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
+    overflow-y: auto;
+    height: 1px;
+  }
+  > .panel-footer {
+    //nothing here
+  }
+}

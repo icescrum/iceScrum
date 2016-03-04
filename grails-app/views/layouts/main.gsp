@@ -41,7 +41,7 @@
     <script type="text/javascript" src="${grailsApplication.config.grails.serverURL}/assets/pdfjs/pdf.js"></script>
     <g:layoutHead/>
 </head>
-<body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'loading': app.loading, 'splash-screen': app.loadingPercent != 100 }" class="flex splash-screen loading">
+<body ng-controller="appCtrl" flow-prevent-drop="" ng-class="{ 'fullscreen':app.isFullScreen, 'loading': app.loading, 'splash-screen': app.loadingPercent != 100 }" class="splash-screen loading">
 <div id="app-loading">
     <svg class="logo loading" width="100%" height="100%" x="0px" y="0px" viewBox="0 0 150 150" style="enable-background:new 0 0 150 150;" xml:space="preserve">
         <path class="logois logois1" d="M77.345,118.476c0,0-44.015-24.76-47.161-26.527c-3.146-1.771-0.028-3.523-0.028-3.523  l49.521-27.854c0,0,46.335,26.058,49.486,27.833c3.154,1.771,0.008,3.545,0.008,3.545S83.921,117.4,81.978,118.492  C79.676,119.787,77.345,118.476,77.345,118.476z"/>

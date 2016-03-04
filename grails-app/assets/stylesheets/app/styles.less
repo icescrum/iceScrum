@@ -54,10 +54,6 @@
   background-color: #eff8e6;
 }
 
-html, body {
-  height: 100%;
-}
-
 label:not(.btn):not(.checkbox-inline) {
   line-height: 1em;
   width: 100%;
@@ -118,30 +114,8 @@ td .empty-view {
   border: 2px dashed @brand-primary;
 }
 
-#main {
-  .make-lg-column(12);
-  right: 0;
-  padding: 0;
-  > div {
-    outline: none;
-  }
-}
-
 *[type="text/icescrum-template"] {
   display: none;
-}
-
-#sidebar {
-  .make-sm-column(2);
-  .make-md-column(3);
-  .make-lg-column(2);
-}
-
-#sidebar, #main {
-  position: absolute;
-  bottom: 0;
-  top: @fromTop;
-  margin-bottom: 0;
 }
 
 .atwho-preview {
@@ -518,7 +492,7 @@ p.empty {
 }
 
 /** on hover utility **/
-.panel .on-hover:not(td), #sidebar > .on-hover {
+.panel .on-hover:not(td) {
   display: none;
 }
 
@@ -536,7 +510,7 @@ tr:hover .on-hover span {
   cursor: pointer;
 }
 
-.panel:hover .on-hover:not(td), #sidebar:hover > .on-hover {
+.panel:hover .on-hover:not(td) {
   display: block;
   &.inline {
     display: inline;
@@ -1056,4 +1030,12 @@ nvd3 .title {
   left: 7px;
   font-size: 2em;
   top: 1px;
+}
+
+.native-sticky {
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  position: sticky;
 }

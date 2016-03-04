@@ -2,24 +2,14 @@
 @import (reference) "./variables.less";
 @import (reference) "./mixin.less";
 
-body {
-  display: flex;
-  flex-flow: column;
+html, body {
+  height: 100%;
   overflow: hidden;
-  > .container-fluid {
-    opacity: 1;
-    display: flex;
-    height: 100%;
-    width: 100%;
-    -webkit-transition: opacity 0.5s ease-in-out;
-    -moz-transition: opacity 0.5s ease-in-out;
-    -ms-transition: opacity 0.5s ease-in-out;
-    -o-transition: opacity 0.5s ease-in-out;
-  }
+}
+
+body {
   &.loading {
     cursor: progress;
-  }
-  &.loading {
     &.splash-screen {
       > #app-loading {
         .make-row();
@@ -62,8 +52,7 @@ body {
   }
 }
 
-body > header {
-  min-height: 46px;
+header {
   background-color: @navbar-masthead-inverse-bg;
   border-color: @navbar-masthead-inverse-border;
   .navbar-toggle {
@@ -101,12 +90,13 @@ body > header {
                 bottom: -10px;
                 left: 50%;
                 display: inline-block;
-                margin-left: -5px;
+                margin-left: -8px;
                 content: '';
                 border-right: 8px solid transparent;
                 border-bottom: 8px solid @body-bg;
                 border-left: 8px solid transparent;
               }
+
               &#project:after {
                 border-bottom-color: @view-bg;
               }
@@ -220,13 +210,19 @@ body > header {
   }
 }
 
-body > .container-fluid.main {
-  flex: 1;
-  display: flex;
+.container-fluid.main {
+  opacity: 1;
+  width: 100%;
   padding: 0;
+  background: @view-bg;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+  -ms-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
   //view
   > .view {
-    background: @view-bg;
+    padding-top: 0;
+    padding-bottom: 0;
     > .navbar-toolbar {
       padding: 5px 5px 0;
       border: none;
@@ -243,63 +239,43 @@ body > .container-fluid.main {
         }
       }
     }
-    &:not(.no-flex) {
-      flex: 1;
-      display: flex;
-      padding-top: 0;
-      padding-bottom: 0;
-      //col-md etc..
-      > div {
-        display: flex;
-        .panel {
-          flex: 1;
-          display: flex;
-          flex-flow: column;
-          margin-bottom: 0;
-          position: relative;
-          > div.panel-heading {
+    //col-md etc..
+    > div {
+      .panel  {
+        margin-bottom: 0;
+        position: relative;
+        > div.panel-body {
+          div.panel-loading {
+            display: none;
           }
-          > div.panel-body {
-            div.panel-loading {
-              display: none;
+          &.loading > div.panel-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 1000;
+            margin-left: -50px;
+            display: block;
+            opacity: 1;
+            .logo {
+              height: 100px;
+              width: 100px;
             }
-            &.loading > div.panel-loading {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              z-index: 1000;
-              margin-left: -50px;
-              display: block;
-              opacity: 1;
-              .logo {
-                height: 100px;
-                width: 100px;
-              }
-            }
-            &.loading > div:not(.panel-loading) {
-              opacity: 0;
-            }
-            > div:not(.panel-loading) {
-              -webkit-transition: opacity 0.1s ease-in-out;
-              -moz-transition: opacity 0.1s ease-in-out;
-              -ms-transition: opacity 0.1s ease-in-out;
-              -o-transition: opacity 0.1s ease-in-out;
-            }
-            flex: 1;
-            padding-top: 0;
-            margin-top: 15px;
-            overflow-y: auto;
-            overflow-x: hidden;
           }
-          > div.panel-footer {
-            //nothing
+          &.loading > div:not(.panel-loading) {
+            opacity: 0;
           }
+          > div:not(.panel-loading) {
+            -webkit-transition: opacity 0.1s ease-in-out;
+            -moz-transition: opacity 0.1s ease-in-out;
+            -ms-transition: opacity 0.1s ease-in-out;
+            -o-transition: opacity 0.1s ease-in-out;
+          }
+          overflow-y: auto;
+          overflow-x: hidden;
         }
       }
     }
-
     > .content {
-      flex-flow: column;
       .make-md-column(12);
       padding: 0;
       > .panel {
@@ -323,6 +299,7 @@ body > .container-fluid.main {
           &:first-child {
             padding-right: (@grid-gutter-width / 4);
           }
+
           &:last-child {
             padding-left: (@grid-gutter-width / 4);
           }
@@ -333,14 +310,14 @@ body > .container-fluid.main {
     > [ui-view='details'] {
       display: none;
     }
-
     &.with-details {
       > .content {
-        .make-md-column(8);
+        .make-sm-column(8);
         padding: 0;
       }
       > [ui-view='details'] {
-        .make-md-column(4);
+        .make-sm-column(4);
+        display: block;
         padding: 0;
         > .panel {
           border-width: 0;
@@ -461,25 +438,6 @@ body > .container-fluid.main {
               .responsive-invisibility();
             }
           }
-
-          flex: 1;
-          display: flex;
-          flex-flow: column;
-          overflow: hidden;
-          > form {
-            flex: 1;
-            display: flex;
-            flex-flow: column;
-            overflow: hidden;
-            .panel-body {
-              flex: 1;
-              overflow: auto
-            }
-          }
-          .panel-body {
-            flex: 1;
-            overflow: auto;
-          }
           .panel-footer {
             padding: 0;
             > div:first-child {
@@ -488,6 +446,9 @@ body > .container-fluid.main {
           }
         }
       }
+    }
+    &.flex {
+      margin-bottom: 0;
     }
   }
 }
@@ -551,84 +512,6 @@ body > .container-fluid.main {
   }
 }
 
-#view-backlog, #view-planning {
-  .content {
-    .backlogs-list {
-      background: @panel-bg;
-      hr {
-        margin: 15px 10% 0;
-        padding-bottom: 1px;
-      }
-      .btn-toolbar {
-        padding: 15px;
-        padding-bottom: 0;
-        margin-left: 0;
-        div:first-child {
-          margin-left: 0;
-        }
-        .btn.btn-backlog {
-          .badge {
-            background: none;
-            display: inline-block;
-            text-align: right;
-            font-weight: bold;
-            top: 5px;
-            color: #000;
-            padding: 0;
-            margin: 0;
-          }
-          &.shown {
-            border-color: @input-border-focus;
-            i {
-              color: @brand-primary;
-            }
-            color: @brand-primary;
-            .badge {
-              color: @brand-primary;
-            }
-          }
-        }
-        .btn-group.btn-view {
-          margin-right: 10px;
-          &.visible-on-hover {
-            opacity: 0;
-            transition: opacity 0.3s ease 0s;
-          }
-        }
-      }
-    }
-    .backlogs-list-details {
-      flex: 1;
-      display: flex;
-      flex-flow: row;
-      overflow: hidden;
-      div.panel {
-        border-width: 0;
-        border-color: #EEE;
-        border-right-width: 1px;
-        &:last-of-type {
-          border-right-width: 0;
-        }
-        .panel-body {
-          padding-left: 9px;
-          padding-right: 9px;
-        }
-      }
-    }
-    &:hover {
-      .backlogs-list {
-        .btn-toolbar {
-          .btn-group.btn-view {
-            &.visible-on-hover {
-              opacity: 1;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 div.panel-heading {
   padding: 15px;
 }
@@ -684,6 +567,90 @@ div.panel-body {
   }
 }
 
+#view-backlog, #view-planning {
+  .content {
+    .backlogs-list {
+      background: @panel-bg;
+      flex: 0 0 auto;
+      -webkit-flex: 0 0 auto;
+      hr {
+        margin: 15px 10% 0;
+        padding-bottom: 1px;
+      }
+      .btn-toolbar {
+        padding: 15px;
+        padding-bottom: 0;
+        margin-left: 0;
+        div:first-child {
+          margin-left: 0;
+        }
+        .btn.btn-backlog {
+          .badge {
+            background: none;
+            display: inline-block;
+            text-align: right;
+            font-weight: bold;
+            top: 5px;
+            color: #000;
+            padding: 0;
+            margin: 0;
+          }
+          &.shown {
+            border-color: @input-border-focus;
+            i {
+              color: @brand-primary;
+            }
+            color: @brand-primary;
+            .badge {
+              color: @brand-primary;
+            }
+          }
+        }
+        .btn-group.btn-view {
+          margin-right: 10px;
+          &.visible-on-hover {
+            opacity: 0;
+            transition: opacity 0.3s ease 0s;
+          }
+        }
+      }
+    }
+    .backlogs-list-details {
+      height: 1px;
+      .make-flex-container(row);
+      > .panel {
+        .make-flex-panel();
+        border-width: 0;
+        border-color: #EEE;
+        border-right-width: 1px;
+        &:last-of-type {
+          border-right-width: 0;
+        }
+        .panel-body {
+          padding-left: 9px;
+          padding-right: 9px;
+          > .postits {
+            float: left;
+            clear: both;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+    &:hover {
+      .backlogs-list {
+        .btn-toolbar {
+          .btn-group.btn-view {
+            &.visible-on-hover {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 #view-taskBoard {
   > .content {
     .panel-body {
@@ -716,11 +683,53 @@ div.panel-body {
   }
 }
 
-//native sticky
-.native-sticky {
-  position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -ms-sticky;
-  position: -o-sticky;
-  position: sticky;
+#view-feature {
+  > .content {
+    > .panel {
+      .make-flex-panel();
+      > .panel-body {
+        > .postits {
+          float: left;
+          clear: both;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
+
+//flex
+body {
+  display: flex;
+  flex-direction: column;
+  > header {
+    flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+  }
+  > .main {
+    height: 100%;
+    overflow-y: auto;
+    .make-flex-container(column, 1, 1);
+    > .view.flex {
+      .make-flex-container();
+      .content {
+        .make-flex-container(column, 1, 1);
+      }
+      &.with-details {
+        overflow: hidden;
+        flex-direction: row;
+        [ui-view="details"] {
+          .make-flex-container();
+          > .panel {
+            .make-flex-container();
+            > [ui-view="details-tab"] {
+              .make-flex-panel();
+              overflow: auto;
+              height: 1px;
+            }
+          }
+        }
+      }
+    }
+  }
 }

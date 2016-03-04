@@ -20,7 +20,7 @@
 --}%
 
 <script type="text/ng-template" id="home.html">
-    <div id="view-home" class="view no-flex">
+    <div id="view-home" class="view">
         <div class="content">
             <div class="row">
                 <div class="panel-column">
