@@ -24,13 +24,12 @@
 <div class="backlogs-list">
     <div class="btn-toolbar">
         <div class="btn-group" ng-repeat="availableBacklog in availableBacklogs">
-            <button class="btn btn-default btn-backlog"
+            <button class="btn btn-default btn-backlog pin"
                     ng-class="{'shown': availableBacklog.shown}"
+                    tooltip-placement="right"
+                    uib-tooltip="{{ availableBacklog.pinned ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
                     ng-click="pinBacklog(availableBacklog)">
-                <i class="fa pin"
-                   tooltip-placement="right"
-                   ng-class="{'pinned': availableBacklog.pinned}"
-                   uib-tooltip="{{ availableBacklog.pinned ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"></i>
+                <i class="fa" ng-class="{'pinned': availableBacklog.pinned}"></i>
             </button>
             <button class="btn btn-default btn-backlog"
                     ng-class="{'shown': availableBacklog.shown}"
