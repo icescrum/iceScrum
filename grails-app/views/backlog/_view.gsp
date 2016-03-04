@@ -27,10 +27,10 @@
             <button class="btn btn-default btn-backlog"
                     ng-class="{'shown': availableBacklog.shown}"
                     ng-click="pinBacklog(availableBacklog)">
-                <i class="fa"
+                <i class="fa pin"
                    tooltip-placement="right"
-                   uib-tooltip="{{ availableBacklog.pinned ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
-                   ng-class="availableBacklog.pinned ? 'fa-dot-circle-o' : 'fa-circle-o'"></i>
+                   ng-class="{'pinned': availableBacklog.pinned}"
+                   uib-tooltip="{{ availableBacklog.pinned ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"></i>
             </button>
             <button class="btn btn-default btn-backlog"
                     ng-class="{'shown': availableBacklog.shown}"

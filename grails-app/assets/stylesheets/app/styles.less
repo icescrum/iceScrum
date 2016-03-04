@@ -1039,3 +1039,14 @@ nvd3 .title {
   position: -o-sticky;
   position: sticky;
 }
+
+i.pin {
+  &:before {
+    content: "\f10c"
+  }
+  &.pinned, &:hover {
+    &:before {
+      content: "\f192"
+    }
+  }
+}
