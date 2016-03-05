@@ -493,37 +493,6 @@ header {
   }
 }
 
-.panel {
-  .panel-heading {
-    padding: 15px;
-  }
-  .panel-body {
-    padding: 15px;
-    div.panel-loading {
-      display: none;
-    }
-    &.loading > div.panel-loading {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 1000;
-      margin-left: -15px;
-      display: block;
-      opacity: 1;
-    }
-    &.loading > div:not(.panel-loading) {
-      opacity: 0;
-    }
-    > div:not(.panel-loading) {
-      -webkit-transition: opacity 0.1s ease-in-out;
-      -moz-transition: opacity 0.1s ease-in-out;
-      -ms-transition: opacity 0.1s ease-in-out;
-      -o-transition: opacity 0.1s ease-in-out;
-    }
-  }
-
-}
-
 // Allow placeholder when sortable container is empty
 .as-sortable-un-selectable #view-home *[as-sortable], .postits[as-sortable] {
   min-height: 60px;
@@ -673,6 +642,9 @@ header {
       th {
         text-align: center;
       }
+      td {
+        padding:4px;
+      }
     }
   }
 }
@@ -692,7 +664,6 @@ header {
 .postits {
   margin-left: -6px;
   margin-top: -6px;
-  float: left;
   clear: both;
   overflow: hidden;
 }
