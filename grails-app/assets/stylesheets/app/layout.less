@@ -567,6 +567,20 @@ div.panel-body {
   }
 }
 
+#view-feature {
+  .content > .panel > .panel-heading {
+     > .btn-toolbar {
+       margin-left:0;
+       > .btn-group {
+        margin-left: 0;
+       }
+     }
+  }
+  .content > .panel > .panel-body {
+    padding: 9px
+  }
+}
+
 #view-backlog, #view-planning {
   .content {
     .backlogs-list {
@@ -611,6 +625,11 @@ div.panel-body {
           &.visible-on-hover {
             opacity: 0;
             transition: opacity 0.3s ease 0s;
+          }
+        }
+        .pull-right {
+          > div.btn-group:last-child {
+              margin-right: 0;
           }
         }
       }
