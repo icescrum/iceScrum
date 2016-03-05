@@ -280,6 +280,14 @@ header {
       padding: 0;
       > .panel {
         border: 0;
+        .panel-heading {
+          > .btn-toolbar {
+            margin-left: 0;
+            > .btn-group {
+              margin-left: 0;
+            }
+          }
+        }
       }
       // TODO check or improve way to space columns in dashboard  home
       .panel-column {
@@ -485,60 +493,35 @@ header {
   }
 }
 
-.comments, .tasks, .activities, .acceptanceTests {
-  .form-control-static {
-    display: block;
-    padding-left: 9px;
-    padding-right: 9px;
+.panel {
+  .panel-heading {
+    padding: 15px;
   }
-  hr {
-    width: 50%;
-    margin: 10px auto;
-  }
-  > div:last-of-type {
-    hr {
+  .panel-body {
+    padding: 15px;
+    div.panel-loading {
       display: none;
     }
-  }
-  .table {
-    td {
-      padding: 0;
-      border: none;
+    &.loading > div.panel-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 1000;
+      margin-left: -15px;
+      display: block;
+      opacity: 1;
+    }
+    &.loading > div:not(.panel-loading) {
+      opacity: 0;
+    }
+    > div:not(.panel-loading) {
+      -webkit-transition: opacity 0.1s ease-in-out;
+      -moz-transition: opacity 0.1s ease-in-out;
+      -ms-transition: opacity 0.1s ease-in-out;
+      -o-transition: opacity 0.1s ease-in-out;
     }
   }
-  .markitup-preview {
-    min-height: inherit;
-    max-height: inherit;
-  }
-}
 
-div.panel-heading {
-  padding: 15px;
-}
-
-div.panel-body {
-  padding: 15px;
-  div.panel-loading {
-    display: none;
-  }
-  &.loading > div.panel-loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 1000;
-    margin-left: -15px;
-    display: block;
-    opacity: 1;
-  }
-  &.loading > div:not(.panel-loading) {
-    opacity: 0;
-  }
-  > div:not(.panel-loading) {
-    -webkit-transition: opacity 0.1s ease-in-out;
-    -moz-transition: opacity 0.1s ease-in-out;
-    -ms-transition: opacity 0.1s ease-in-out;
-    -o-transition: opacity 0.1s ease-in-out;
-  }
 }
 
 // Allow placeholder when sortable container is empty
@@ -567,17 +550,30 @@ div.panel-body {
   }
 }
 
-#view-feature {
-  .content > .panel > .panel-heading {
-     > .btn-toolbar {
-       margin-left:0;
-       > .btn-group {
-        margin-left: 0;
-       }
-     }
+.comments, .tasks, .activities, .acceptanceTests {
+  .form-control-static {
+    display: block;
+    padding-left: 9px;
+    padding-right: 9px;
   }
-  .content > .panel > .panel-body {
-    padding: 9px
+  hr {
+    width: 50%;
+    margin: 10px auto;
+  }
+  > div:last-of-type {
+    hr {
+      display: none;
+    }
+  }
+  .table {
+    td {
+      padding: 0;
+      border: none;
+    }
+  }
+  .markitup-preview {
+    min-height: inherit;
+    max-height: inherit;
   }
 }
 
@@ -629,7 +625,7 @@ div.panel-body {
         }
         .pull-right {
           > div.btn-group:last-child {
-              margin-right: 0;
+            margin-right: 0;
           }
         }
       }
@@ -644,15 +640,6 @@ div.panel-body {
         border-right-width: 1px;
         &:last-of-type {
           border-right-width: 0;
-        }
-        .panel-body {
-          padding-left: 9px;
-          padding-right: 9px;
-          > .postits {
-            float: left;
-            clear: both;
-            overflow: hidden;
-          }
         }
       }
     }
@@ -702,19 +689,12 @@ div.panel-body {
   }
 }
 
-#view-feature {
-  > .content {
-    > .panel {
-      .make-flex-panel();
-      > .panel-body {
-        > .postits {
-          float: left;
-          clear: both;
-          overflow: hidden;
-        }
-      }
-    }
-  }
+.postits {
+  margin-left: -6px;
+  margin-top: -6px;
+  float: left;
+  clear: both;
+  overflow: hidden;
 }
 
 //flex
@@ -733,6 +713,9 @@ body {
       .make-flex-container();
       .content {
         .make-flex-container(column, 1, 1);
+        > .panel {
+          .make-flex-panel();
+        }
       }
       &.with-details {
         overflow: hidden;
