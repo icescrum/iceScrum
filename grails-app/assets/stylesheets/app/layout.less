@@ -298,7 +298,7 @@ header {
         div.panel-container:not(:last-child) {
           margin-bottom: @grid-gutter-width / 2;
         }
-        @media (max-width: @screen-xs-max) {
+        @media (max-width: @screen-xs-max), (max-width: @screen-sm-max) {
           &:last-child div.panel-container:first-child {
             margin-top: @grid-gutter-width / 2;
           }
