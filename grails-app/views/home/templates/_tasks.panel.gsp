@@ -3,7 +3,7 @@
         <div class="panel-heading" as-sortable-item-handle>
             <h3 class="panel-title"><i class="fa fa-tasks"></i> ${message(code: 'is.panel.mytask')}</h3>
         </div>
-        <div class="panel-body" sticky-list sticky-watch="tasksByProject">
+        <div class="panel-body" sticky-list>
             <div class="list-group-container" ng-repeat="entry in tasksByProject track by $index">
                 <div class="list-group-header">{{ ::entry.project.name }}</div>
                 <div class="postits grid-group clearfix">

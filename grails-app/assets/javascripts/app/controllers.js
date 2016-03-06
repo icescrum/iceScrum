@@ -24,7 +24,7 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http) {
+controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window) {
     $controller('headerCtrl', {$scope: $scope});
     $controller('searchCtrl', {$scope: $scope});
     // Functions
@@ -98,11 +98,14 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             $scope.app.loadingPercent += 10;
         }
     });
+    var w = angular.element($window);
     $scope.$on('$stateChangeStart', function() {
         $scope.app.loading = true;
         if ($scope.app.loadingPercent != 100) {
             $scope.app.loadingPercent += 10;
         }
+        //trigger resize on all app
+        w.triggerHandler('resize');
     });
     $scope.$on('$stateChangeSuccess', function() {
         $scope.app.loading = false;

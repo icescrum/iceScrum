@@ -651,7 +651,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var headers = [], $cloneHeaders = [], offset, nestedOffset;
+            var $headers = [], $cloneHeaders = [], offset;
             var nativeStickyEnable = function() {
                 var prop = 'position:',
                     el = document.createElement('test'),
@@ -660,10 +660,13 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 return (mStyle['position'].indexOf('sticky') !== -1);
             }();
 
-            var container = attrs.stickyContainer ? angular.element(attrs.stickyContainer) : element;
+            var stackSize = attrs.stickyStack ? attrs.stickyStack : 0;
+            var container = attrs.stickyList ? angular.element(attrs.stickyList) : element;
 
             container.one("scroll", function(){
-                headers = container.find(attrs.stickyHeader ? attrs.stickyHeader : '.list-group-header:not(.cloned), > tr.header:not(.cloned)');
+                _.each(element.find(attrs.stickyHeader ? attrs.stickyHeader : '.list-group-header:not(.cloned), tr.header:not(.cloned)'), function(header){
+                    $headers.push(angular.element(header));
+                });
                 $cloneHeaders = [];
                 render();
                 container.on("scroll", render); // Destroyed automatically
@@ -677,27 +680,51 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 });
             });
 
-            nestedOffset = 0;
             var position = function() {
-                if (headers.length) {
-                    if(attrs.stickyNested){
-                        _.each( angular.element('.cloned:visible'), function(el){
-                            nestedOffset = angular.element(el).outerHeight(true);
-                        });
-                    }
-                    offset = container.offset().top + nestedOffset + (attrs.stickyOffset ? parseInt(attrs.stickyOffset) : 0);
+                var orignOffset = container.offset().top;
+                if ($headers.length) {
+                    offset = orignOffset;
                     if ($cloneHeaders.length) {
                         _.each($cloneHeaders, function(header, index) {
+                            offset = orignOffset + computeStackOffset(index);
                             $cloneHeaders[index].css('top', offset + 'px');
+                            if(index < stackSize){
+                                $cloneHeaders[index].css('z-index', '10');
+                            }
+                            computeWidth(index);
                         });
                     }
                 }
             };
 
+            var computeStackOffset = function(index){
+                var _offset = 0;
+                if(stackSize > 0){
+                    _.each($cloneHeaders, function(header, indexH){
+                        if(indexH < stackSize && index > indexH){
+                            _offset += header.outerHeight(true);
+                        }
+                    });
+                }
+                return _offset;
+            };
+
+            var computeWidth = function(index){
+                var $clone = $cloneHeaders[index];
+                var $header = $headers[index];
+                $clone.width($header.width());
+                var $headerThs = $header.find('th,td');
+                if ($headerThs.length) {
+                    var $cloneThs = $clone.find('th,td');
+                    _.each($headerThs, function(headerTh, index) {
+                        angular.element($cloneThs[index]).css('width', angular.element(headerTh).outerWidth());
+                    });
+                }
+            };
+
             var render = function() {
                 var $parent;
-                _.each(headers, function(header, index) {
-                    var $header = angular.element(header);
+                _.each($headers, function($header, index) {
                     var top = $header.offset().top;
                     var $previous = null;
                     if (nativeStickyEnable) {
@@ -713,38 +740,25 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     } else {
                         $previous = $cloneHeaders[index - 1];
                     }
-                    if ((offset - top) > 0) {
+                    if ((offset - top) > 0 && container.scrollTop() > 0) {
                         if ($header.css('visibility') != 'hidden') {
                             var $clone = $header.clone();
                             $clone.data('height', $header.height())
                                 .css('top', offset + 'px').css('position', 'fixed').css('overflow-y', 'hidden').css('z-index', index + 1)
-                                .addClass('cloned').addClass('sticky-' + index)
-                                .width(container.outerWidth() - (container.outerWidth() - $header.innerWidth()));
-
-                            var $headerThs = $header.find('th,td');
-                            if ($headerThs.length) {
-                                var $cloneThs = $clone.find('th,td');
-                                _.each($headerThs, function(headerTh, index) {
-                                    angular.element($cloneThs[index]).css('width', angular.element(headerTh).outerWidth());
-                                });
-                            }
-
+                                .addClass('cloned').addClass('sticky-' + index);
                             $cloneHeaders.push($clone);
                             $parent.append($clone);
+                            computeWidth(index);
                             $header.css('visibility', 'hidden');
-                            if ($previous) {
+                            if ($previous && index > stackSize) {
                                 $previous.css('visibility', 'hidden');
                             }
                         }
                     } else {
                         if ($previous) {
                             var headerHeight = $header.outerHeight(true);
-                            var diff = offset - Math.abs(offset - top - headerHeight) - ($previous.data('height') + headerHeight) - nestedOffset;
-                            if (diff >= 0) {
-                                $previous.css('top', (offset - diff) + 'px');
-                            } else {
-                                $previous.css('top', offset + 'px');
-                            }
+                            var diff = offset - Math.abs(offset - top - headerHeight) - ($previous.data('height') + headerHeight) - computeStackOffset(index);
+                            $previous.css('top', ( diff >= 0 ? offset - diff : offset) + 'px');
                         }
                         if ($header.css('visibility') == 'hidden') {
                             $cloneHeaders.pop().remove();
