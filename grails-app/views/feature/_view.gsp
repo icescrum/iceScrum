@@ -50,7 +50,7 @@
                         class="btn btn-default"
                         ng-click="orderBy.reverse = !orderBy.reverse"
                         uib-tooltip="${message(code:'todo.is.ui.order')}">
-                    <span class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></span>
+                    <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
                 </button>
             </div>
             <div class="btn-group"
@@ -59,7 +59,7 @@
                 <button class="btn btn-default"
                         uib-dropdown-toggle
                         type="button">
-                    <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
+                    <i class="fa fa-download"></i>&nbsp;<span class="caret"></span>
                 </button>
                 <ul class="uib-dropdown-menu"
                     role="menu">
@@ -75,7 +75,7 @@
                     class="btn btn-default"
                     ng-click="toggleSelectableMultiple()"
                     uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.multiple.disable/)}' : '${message(code: /todo.is.ui.selectable.multiple.enable/)}' }}">
-                <span class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></span>
+                <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
             </button>
             <a type="button"
                ng-if="authorizedFeature('create')"
@@ -89,14 +89,14 @@
                             uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                             unavailable-feature="true"
                             ng-href="{{ ::viewName }}/print"
-                            hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
+                            hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                     </button>
                 </g:if>
                 <button type="button"
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
                         unavailable-feature="true"
                         class="btn btn-default">
-                    <span class="fa" ng-class="app.asList ? 'fa-th-list' : 'fa-th'"></span>
+                    <i class="fa" ng-class="app.asList ? 'fa-th-list' : 'fa-th'"></i>
                 </button>
                 <g:if test="${params?.fullScreen}">
                     <button type="button"
@@ -104,13 +104,13 @@
                             ng-show="!app.isFullScreen"
                             ng-click="fullScreen()"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                            hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
+                            hotkey="{'F': fullScreen }"><i class="fa fa-expand"></i>
                     </button>
                     <button type="button"
                             class="btn btn-default"
                             ng-show="app.isFullScreen"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                            ng-click="fullScreen()"><span class="fa fa-compress"></span>
+                            ng-click="fullScreen()"><i class="fa fa-compress"></i>
                     </button>
                 </g:if>
             </div>

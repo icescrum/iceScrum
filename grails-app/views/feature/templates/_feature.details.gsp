@@ -39,7 +39,7 @@
                 <div class="btn-group"
                      uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <span class="fa fa-cog"></span> <span class="caret"></span>
+                        <i class="fa fa-cog"></i> <i class="caret"></i>
                     </button>
                     <ul class="uib-dropdown-menu pull-right" ng-include="'feature.menu.html'"></ul>
                 </div>

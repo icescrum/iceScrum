@@ -47,7 +47,7 @@
                 <button class="btn btn-xs btn-danger pull-right"
                         type="button"
                         uib-tooltip="${message(code:'default.button.delete.label')}"
-                        ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteTemplate, args: [templateEntry] })"><span class="fa fa-times"></span></button>
+                        ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteTemplate, args: [templateEntry] })"><i class="fa fa-times"></i></button>
             </td>
         </tr>
     </table>

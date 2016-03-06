@@ -198,7 +198,7 @@
                         <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
                             <div class="navbar-notif"
                                  uib-dropdown-toggle>
-                                <span class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></span>
+                                <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
                                 <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                             </div>
                             <div class="uib-dropdown-menu notifications selection-disable" ng-include="'notifications.panel.html'"></div>

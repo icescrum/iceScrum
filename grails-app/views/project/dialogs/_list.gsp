@@ -31,7 +31,7 @@
             <div class="input-group">
                 <input type="text" ng-model="projectSearch" ng-change="searchProjects()" ng-model-options="{debounce: 300}" class="form-control" placeholder="${message(code:'todo.is.ui.search.action')}">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><span class="fa fa-search"></span></button>
+                    <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
                 </span>
             </div>
             <li ng-class="{ 'current': currentProject.id == project.id }" ng-repeat="currentProject in projects">

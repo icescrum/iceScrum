@@ -14,7 +14,7 @@
                             class="pull-right btn btn-xs btn-default"
                             ng-click="$event.stopPropagation(); $event.preventDefault(); openProject(currentProject)"
                             uib-tooltip="${message(code:'todo.is.ui.project.open')}">
-                        <span class="fa fa-expand"></span>
+                        <i class="fa fa-expand"></i>
                     </button>
                 </uib-accordion-heading>
                 <div ng-if="currentProject.id == project.id"

@@ -30,7 +30,7 @@
                             ng-if="authorizedProject('update', project)"
                             ng-click="showProjectEditModal()"
                             type="button">
-                        <span class="fa fa-pencil"></span>
+                        <i class="fa fa-pencil"></i>
                     </button>
                 </h3>
             </div>
@@ -80,7 +80,7 @@
                     <a class="btn btn-default btn-sm pull-right visible-on-hover"
                        href="#/planning/{{ release.id }}"
                        ng-if="authorizedRelease('update', release)">
-                        <span class="fa fa-pencil"></span>
+                        <i class="fa fa-pencil"></i>
                     </a>
                 </h3>
             </div>
@@ -95,7 +95,7 @@
                     <a class="btn btn-default btn-sm pull-right visible-on-hover"
                        href="#/taskBoard/{{ currentOrLastSprint.id }}/details"
                        ng-if="authorizedSprint('update', currentOrLastSprint)">
-                        <span class="fa fa-pencil"></span>
+                        <i class="fa fa-pencil"></i>
                     </a>
                 </h3>
             </div>
@@ -110,7 +110,7 @@
                     <a class="btn btn-default btn-sm pull-right visible-on-hover"
                        href="#/taskBoard/{{ currentOrLastSprint.id }}/details"
                        ng-if="authorizedSprint('update', currentOrLastSprint)">
-                        <span class="fa fa-pencil"></span>
+                        <i class="fa fa-pencil"></i>
                     </a>
                 </h3>
             </div>
@@ -130,13 +130,13 @@
                             <button class="btn btn-default btn-sm"
                                     ng-click="saveChart()"
                                     type="button">
-                                <span class="fa fa-floppy-o"></span>
+                                <i class="fa fa-floppy-o"></i>
                             </button>
                             <button class="btn btn-default btn-sm"
                                     uib-tooltip="${message(code:'todo.is.ui.charts')}"
                                     type="button"
                                     uib-dropdown-toggle>
-                                <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
+                                <i class="fa fa-bar-chart"></i>&nbsp;<i class="caret"></i>
                             </button>
                             <ul class="uib-dropdown-menu">
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>

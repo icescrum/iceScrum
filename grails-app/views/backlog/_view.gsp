@@ -49,7 +49,7 @@
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
                         unavailable-feature="true"
                         class="btn btn-default">
-                    <span class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></span>
+                    <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
                 </button>
                 <g:if test="${params?.fullScreen}">
                     <button type="button"
@@ -57,13 +57,13 @@
                             ng-show="!app.isFullScreen"
                             ng-click="fullScreen()"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                            hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
+                            hotkey="{'F': fullScreen }"><i class="fa fa-expand"></i>
                     </button>
                     <button type="button"
                             class="btn btn-default"
                             ng-show="app.isFullScreen"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                            ng-click="fullScreen()"><span class="fa fa-compress"></span>
+                            ng-click="fullScreen()"><i class="fa fa-compress"></i>
                     </button>
                 </g:if>
             </div>
@@ -72,7 +72,7 @@
                         class="btn btn-default"
                         ng-click="toggleSelectableMultiple()"
                         uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.multiple.disable/)}' : '${message(code: /todo.is.ui.selectable.multiple.enable/)}' }}">
-                    <span class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></span>
+                    <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
                 </button>
             </div>
             <a type="button"
@@ -112,7 +112,7 @@
                 <button type="button" class="btn btn-default"
                         ng-click="reverseBacklogOrder(backlog)"
                         uib-tooltip="${message(code:'todo.is.ui.order')}">
-                    <span class="fa fa-sort-amount{{ backlog.orderBy.reverse ? '-desc' : '-asc'}}"></span>
+                    <i class="fa fa-sort-amount{{ backlog.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                 </button>
             </div>
             <div class="btn-group" uib-dropdown>
@@ -122,13 +122,13 @@
                             uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                             ng-click="print($event)"
                             ng-href="backlog/{{ ::backlog.id }}/print"
-                            hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
+                            hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                     </button>
                 </g:if>
                 <button class="btn btn-default"
                         uib-tooltip="${message(code:'todo.is.ui.export')}"
                         uib-dropdown-toggle type="button">
-                    <span class="fa fa-download"></span>&nbsp;<span class="caret"></span>
+                    <i class="fa fa-download"></i>&nbsp;<span class="caret"></span>
                 </button>
                 <ul class="uib-dropdown-menu"
                     role="menu">
@@ -148,7 +148,7 @@
                         ng-if="backlogs.length > 1"
                         ng-click="toggleBacklog(backlog)"
                         uib-tooltip="${message(code:'is.ui.window.closeable')}">
-                    <span class="fa fa-times"></span>
+                    <i class="fa fa-times"></i>
                 </button>
             </div>
         </div>
