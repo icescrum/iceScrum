@@ -5,7 +5,7 @@
         </div>
         <div class="panel-body" sticky-list>
             <div class="list-group-container" ng-repeat="entry in tasksByProject track by $index">
-                <div class="list-group-header">{{ ::entry.project.name }}</div>
+                <div class="list-group-header sticky-header">{{ ::entry.project.name }}</div>
                 <div class="postits grid-group clearfix">
                     <div ng-repeat="task in entry.tasks" class="postit-container">
                         <a href="{{ ::serverUrl }}/p/{{ ::entry.project.pkey }}-T{{ ::task.id }}" style="text-decoration: none;">
