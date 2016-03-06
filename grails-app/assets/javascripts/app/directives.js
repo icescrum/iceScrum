@@ -664,7 +664,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                             offset = orignOffset + computeStackOffset(index);
                             $cloneHeaders[index].css('top', offset + 'px');
                             if(index < stackSize){
-                                $cloneHeaders[index].css('z-index', '10');
+                                $cloneHeaders[index].css('z-index', '100');
                             }
                             computeWidth(index);
                         });
@@ -726,7 +726,11 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     } else {
                         if ($previous && !$previous.hasClass('sticky-stack')) {
                             var diff = offset - (top-$previous.data('height'));
-                            $previous.css('top', ( diff >= 0 ? offset - diff : offset) + 'px');
+                            if(diff >= 0){
+                                $previous.addClass('sticky-header-will-hide').css('top', (offset - diff) + 'px');
+                            } else {
+                                $previous.removeClass('sticky-header-will-hide').css('top', offset + 'px');
+                            }
                         }
                         if ($header.css('visibility') == 'hidden') {
                             $cloneHeaders.pop().remove();
