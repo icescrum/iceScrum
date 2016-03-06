@@ -52,7 +52,7 @@
                         <a uib-dropdown-toggle>
                             ${message(code:'todo.is.ui.main.menu')} <i class="fa fa-caret-down"></i>
                         </a>
-                        <ul class="uib-dropdown-menu main-dropdown-menu">
+                        <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li>
                                 <a hotkey="{ 'shift+h': goToHome}" href ng-click="goToHome()">
                                     <g:message code="is.projectmenu.submenu.user.home"/> <small class="text-muted">(SHIFT+H)</small>
@@ -143,7 +143,7 @@
                     </li>
                     <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && menus.hidden.length == 0 }">
                         <a uib-dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
-                        <ul class="uib-dropdown-menu menubar"
+                        <ul uib-dropdown-menu class="menubar"
                             ng-class="{'sortable':currentUser.id}"
                             is-disabled="!currentUser.id"
                             as-sortable="menuSortableOptions"
@@ -201,13 +201,13 @@
                                 <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
                                 <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                             </div>
-                            <div class="uib-dropdown-menu notifications selection-disable" ng-include="'notifications.panel.html'"></div>
+                            <div uib-dropdown-menu class="notifications selection-disable" ng-include="'notifications.panel.html'"></div>
                         </div>
                         <div ng-if="currentUser.username" uib-dropdown class="pull-left">
                             <div class="navbar-user pull-left" uib-dropdown-toggle>
                                 <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
                             </div>
-                            <div class="uib-dropdown-menu profile-panel" ng-include="'profile.panel.html'"></div>
+                            <div uib-dropdown-menu class="profile-panel" ng-include="'profile.panel.html'"></div>
                         </div>
                         <button id="login"
                                 ng-show="!(currentUser.username)"

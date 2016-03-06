@@ -51,7 +51,7 @@
             <a uib-dropdown-toggle>
                 <i class="fa fa-cog"></i>
             </a>
-            <ul class="uib-dropdown-menu"
+            <ul uib-dropdown-menu
                 ng-include="'task.menu.html'"></ul>
         </span>
         <span class="action" ng-class="{'active':task.attachments.length}">

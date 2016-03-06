@@ -138,7 +138,7 @@
                                     uib-dropdown-toggle>
                                 <i class="fa fa-bar-chart"></i>&nbsp;<i class="caret"></i>
                             </button>
-                            <ul class="uib-dropdown-menu">
+                            <ul uib-dropdown-menu>
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
                                 <li><a href ng-click="openProjectChart('flowCumulative')">${message(code: 'is.ui.project.charts.productCumulativeFlow')}</a></li>
                                 <li><a href ng-click="openProjectChart('burnup')">${message(code: 'is.ui.project.charts.productBurnup')}</a></li>

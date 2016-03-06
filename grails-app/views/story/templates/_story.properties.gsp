@@ -81,7 +81,8 @@
             <div class="form-half"
                  ng-show="editableStory.type == 2">
                 <label for="affectVersion">${message(code: 'is.story.affectVersion')}</label>
-                <ui-select class="form-control"
+                <ui-select input-group-fix-width="30"
+                           class="form-control"
                            ng-click="retrieveVersions(); editForm(true)"
                            ng-change="editForm(true)"
                            ng-disabled="!formHolder.editable"
@@ -172,7 +173,8 @@
         <div class="form-group">
             <label for="dependsOn">${message(code: 'is.story.dependsOn')}</label>
             <div ng-class="{'input-group':editableStory.dependsOn.id}">
-                <ui-select class="form-control"
+                <ui-select input-group-fix-width="30"
+                           class="form-control"
                            ng-click="retrieveDependenceEntries(editableStory); editForm(true)"
                            ng-change="editForm(true)"
                            ng-disabled="!formHolder.editable"
@@ -261,7 +263,7 @@
         </div>
         <div class="form-group">
             <label>${message(code: 'is.backlogelement.attachment')} {{ story.attachments.length > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
-            <div ng-if="authorizedStory('upload', story)">
+            <div ng-if="authorizedStory('upload', story)" flow-init flow-files-submitted="attachmentQuery($flow, story)">
                 <button type="button" class="btn btn-default" flow-btn><i
                         class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
             </div>

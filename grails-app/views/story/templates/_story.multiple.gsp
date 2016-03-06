@@ -100,7 +100,7 @@
                                 uib-dropdown-toggle>
                             <g:message code='is.dialog.acceptAs.acceptAs.title'/> <span class="caret"></span>
                         </button>
-                        <ul class="uib-dropdown-menu" role="menu">
+                        <ul uib-dropdown-menu role="menu">
                             <li>
                                 <a href ng-click="acceptMultiple()">
                                     <g:message code='is.ui.backlog.menu.acceptAsStory'/>

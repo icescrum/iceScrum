@@ -41,7 +41,7 @@
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <i class="fa fa-cog"></i> <i class="caret"></i>
                     </button>
-                    <ul class="uib-dropdown-menu pull-right" ng-include="'release.menu.html'"></ul>
+                    <ul uib-dropdown-menu class="pull-right" ng-include="'release.menu.html'"></ul>
                 </div>
                 <a ng-if="previousRelease"
                    class="btn btn-default"
@@ -141,7 +141,7 @@
                                 uib-dropdown-toggle>
                             <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
                         </button>
-                        <ul class="uib-dropdown-menu">
+                        <ul uib-dropdown-menu>
                             <li><a href ng-click="openReleaseChart('burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>
                             <li><a href ng-click="openReleaseChart('parkingLot', release)">${message(code: 'is.chart.releaseParkingLot')}</a></li>
                             <li><a href ng-click="openMoodChart('releaseUserMood')">${message(code: 'is.chart.releaseUserMood')}</a></li>
@@ -171,7 +171,7 @@
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ release.attachments.length > 0 ? '(' + release.attachments.length + ')' : '' }}</label>
-                    <div ng-if="authorizedRelease('upload', release)">
+                    <div ng-if="authorizedRelease('upload', release)" flow-init flow-files-submitted="attachmentQuery($flow, release)">
                         <button type="button" class="btn btn-default" flow-btn><i
                                 class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
                     </div>

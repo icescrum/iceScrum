@@ -41,7 +41,7 @@
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <i class="fa fa-cog"></i> <i class="caret"></i>
                     </button>
-                    <ul class="uib-dropdown-menu pull-right" ng-include="'sprint.menu.html'"></ul>
+                    <ul uib-dropdown-menu class="pull-right" ng-include="'sprint.menu.html'"></ul>
                 </div>
                 <a ng-if="previousSprint"
                    class="btn btn-default"
@@ -131,7 +131,7 @@
                                 uib-dropdown-toggle>
                             <i class="fa fa-bar-chart"></i>&nbsp;<i class="caret"></i>
                         </button>
-                        <ul class="uib-dropdown-menu">
+                        <ul uib-dropdown-menu>
                             <li><a href ng-click="openSprintChart('burndownRemaining', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>
                             <li><a href ng-click="openSprintChart('burnupTasks', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a></li>
                             <li><a href ng-click="openSprintChart('burnupPoints', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a></li>
@@ -202,7 +202,7 @@
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments.length > 0 ? '(' + sprint.attachments.length + ')' : '' }}</label>
-                    <div ng-if="authorizedSprint('upload', sprint)">
+                    <div ng-if="authorizedSprint('upload', sprint)" flow-init flow-files-submitted="attachmentQuery($flow, sprint)">
                         <button type="button" class="btn btn-default" flow-btn><i
                                 class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
                     </div>

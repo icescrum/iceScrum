@@ -60,7 +60,7 @@
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <i class="fa fa-cog"></i> <i class="caret"></i>
                     </button>
-                    <ul class="uib-dropdown-menu pull-right" ng-include="'task.menu.html'"></ul>
+                    <ul uib-dropdown-menu class="pull-right" ng-include="'task.menu.html'"></ul>
                 </div>
                 <a ng-if="previousTask"
                    class="btn btn-default"
@@ -190,7 +190,7 @@
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ task.attachments.length > 0 ? '(' + task.attachments.length + ')' : '' }}</label>
-                    <div ng-if="authorizedTask('upload', task)">
+                    <div ng-if="authorizedTask('upload', task)" flow-init flow-files-submitted="attachmentQuery($flow, task)">
                         <button type="button" class="btn btn-default" flow-btn><i
                                 class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
                     </div>

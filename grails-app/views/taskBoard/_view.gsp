@@ -46,7 +46,7 @@
                         <span>{{ currentSprintFilter.name }}</span>
                         <span class="caret"></span>
                     </button>
-                    <ul class="uib-dropdown-menu" role="menu">
+                    <ul uib-dropdown-menu role="menu">
                         <li role="menuitem" ng-repeat="sprintFilter in sprintFilters">
                             <a ng-click="changeSprintFilter(sprintFilter)" href>{{ sprintFilter.name }}</a>
                         </li>
@@ -58,7 +58,7 @@
                                 class="btn btn-default"
                                 uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                                 unavailable-feature="true"
-                                hotkey="{'P': hotkeyClick }"><span class="fa fa-print"></span>
+                                hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                         </button>
                     </g:if>
                     <g:if test="${params?.fullScreen}">
@@ -67,26 +67,23 @@
                                 ng-show="!app.isFullScreen"
                                 ng-click="fullScreen()"
                                 uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                                hotkey="{'F': fullScreen }"><span class="fa fa-expand"></span>
+                                hotkey="{'F': fullScreen }"><i class="fa fa-expand"></i>
                         </button>
                         <button type="button"
                                 class="btn btn-default"
                                 ng-show="app.isFullScreen"
                                 uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                                ng-click="fullScreen()"><span class="fa fa-compress"></span>
+                                ng-click="fullScreen()"><i class="fa fa-compress"></i>
                         </button>
                     </g:if>
                 </div>
             </div>
         </h3>
     </div>
-    <div class="panel-body" sticky-list sticky-watch="tasksByTypeByState">
-        <table class="table" selectable="selectableOptions">
-            <thead ng-switch="sprint.state">
-            <tr class="header" ng-switch-when="2">
-                <th>
-                    Type
-                </th>
+    <div class="panel-body" id="tasks-board" ng-controller="taskSprintCtrl">
+        <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
+            <thead>
+            <tr class="sticky-header sticky-stack">
                 <th>
                     <span>${message(code: 'is.task.state.wait')}</span>
                 </th>
@@ -97,114 +94,104 @@
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
-            <tr ng-switch-when="1">
-                <th>
-                    Type
-                </th>
-                <th>
-                    <span>${message(code: 'is.task.state.wait')}</span>
-                </th>
-            </tr>
-            <tr ng-switch-when="3">
-                <th>
-                    Type
-                </th>
-                <th>
-                    <span>${message(code: 'is.task.state.done')}</span>
-                </th>
-            </tr>
             </thead>
-            <tbody ng-controller="taskSprintCtrl">
-            <tr>
-                <td>
-                    ${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}
-                </td>
-                <td class="postits grid-group"
-                    ng-class="hasSelected() ? 'has-selected' : ''"
-                    ng-model="tasksByTypeByState[11][taskState]"
-                    ng-init="taskType = 11"
-                    as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                    is-disabled="!isSortingTaskBoard(sprint)"
-                    ng-repeat="taskState in sprintTaskStates">
-                    <div ng-repeat="task in tasksByTypeByState[11][taskState] | search"
-                         ng-class="{ 'is-selected': isSelected(task) }"
-                         selectable-id="{{ ::task.id }}"
-                         as-sortable-item
-                         class="postit-container">
-                        <div ng-include="'task.html'"></div>
-                    </div>
-                    <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
-                        <a type="button"
-                           ng-if="taskState == 0"
-                           class="btn btn-primary"
-                           ng-click="openNewTaskByType(11)"
-                           href>
-                            <i class="fa fa-plus"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}
-                </td>
-                <td class="postits grid-group"
-                    ng-class="hasSelected() ? 'has-selected' : ''"
-                    ng-model="tasksByTypeByState[10][taskState]"
-                    ng-init="taskType = 10"
-                    as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                    is-disabled="!isSortingTaskBoard(sprint)"
-                    ng-repeat="taskState in sprintTaskStates">
-                    <div ng-repeat="task in tasksByTypeByState[10][taskState] | search"
-                         ng-class="{ 'is-selected': isSelected(task) }"
-                         selectable-id="{{ ::task.id }}"
-                         as-sortable-item
-                         class="postit-container">
-                        <div ng-include="'task.html'"></div>
-                    </div>
-                    <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
-                        <a type="button"
-                           ng-if="taskState == 0"
-                           ng-click="openNewTaskByType(10)"
-                           class="btn btn-primary "
-                           href>
-                            <i class="fa fa-plus"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-            <tr ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'"
-                ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">
-                <td class="postits grid-group"
-                    ng-controller="storyCtrl">
-                    <div class="postit-container">
+            <tbody>
+                <tr class="sticky-header">
+                    <td colspan="{{ sprint.state != 2 ? 1 : 3 }}">
+                        ${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="postits grid-group"
+                        ng-class="hasSelected() ? 'has-selected' : ''"
+                        ng-model="tasksByTypeByState[11][taskState]"
+                        ng-init="taskType = 11"
+                        as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
+                        is-disabled="!isSortingTaskBoard(sprint)"
+                        ng-repeat="taskState in sprintTaskStates">
+                        <div ng-repeat="task in tasksByTypeByState[11][taskState] | search"
+                             ng-class="{ 'is-selected': isSelected(task) }"
+                             selectable-id="{{ ::task.id }}"
+                             as-sortable-item
+                             class="postit-container">
+                            <div ng-include="'task.html'"></div>
+                        </div>
+                        <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
+                            <a type="button"
+                               ng-if="taskState == 0"
+                               class="btn btn-primary"
+                               ng-click="openNewTaskByType(11)"
+                               href>
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="sticky-header">
+                    <td colspan="{{ sprint.state != 2 ? 1 : 3 }}">
+                        ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="postits grid-group"
+                        ng-class="hasSelected() ? 'has-selected' : ''"
+                        ng-model="tasksByTypeByState[10][taskState]"
+                        ng-init="taskType = 10"
+                        as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
+                        is-disabled="!isSortingTaskBoard(sprint)"
+                        ng-repeat="taskState in sprintTaskStates">
+                        <div ng-repeat="task in tasksByTypeByState[10][taskState] | search"
+                             ng-class="{ 'is-selected': isSelected(task) }"
+                             selectable-id="{{ ::task.id }}"
+                             as-sortable-item
+                             class="postit-container">
+                            <div ng-include="'task.html'"></div>
+                        </div>
+                        <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
+                            <a type="button"
+                               ng-if="taskState == 0"
+                               ng-click="openNewTaskByType(10)"
+                               class="btn btn-primary "
+                               href>
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            </tbody>
+            <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'">
+                <tr class="sticky-header">
+                    <td colspan="3">
                         <div ng-include="'story.html'"></div>
-                    </div>
-                </td>
-                <td class="postits grid-group"
-                    ng-class="hasSelected() ? 'has-selected' : ''"
-                    ng-model="tasksByStoryByState[story.id][taskState]"
-                    as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                    is-disabled="!isSortingTaskBoard(sprint) || !isSortingStory(story)"
-                    ng-repeat="taskState in sprintTaskStates">
-                    <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
-                         ng-class="{ 'is-selected': isSelected(task) }"
-                         selectable-id="{{ ::task.id }}"
-                         as-sortable-item
-                         class="postit-container">
-                        <div ng-include="'task.html'"></div>
-                    </div>
-                    <div ng-if="authorizedTask('create', {parentStory: story})" class="postit-container">
-                        <a type="button"
-                           ng-click="openNewTaskByStory(story)"
-                           ng-if="taskState == 0"
-                           class="btn btn-primary"
-                           href>
-                            <i class="fa fa-plus"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+                <tr class="postits grid-group" ng-controller="storyCtrl" ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">
+                    <td class="postits grid-group"
+                        ng-class="hasSelected() ? 'has-selected' : ''"
+                        ng-model="tasksByStoryByState[story.id][taskState]"
+                        as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
+                        is-disabled="!isSortingTaskBoard(sprint) || !isSortingStory(story)"
+                        ng-repeat="taskState in sprintTaskStates">
+                        <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
+                             ng-class="{ 'is-selected': isSelected(task) }"
+                             selectable-id="{{ ::task.id }}"
+                             as-sortable-item
+                             class="postit-container">
+                            <div ng-include="'task.html'"></div>
+                        </div>
+                        <div ng-if="authorizedTask('create', {parentStory: story})" class="postit-container">
+                            <a type="button"
+                               ng-click="openNewTaskByStory(story)"
+                               ng-if="taskState == 0"
+                               class="btn btn-primary"
+                               href>
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
             <tr ng-if="sprint.stories.length == 0">
                 <td>
                     <div class="empty-view">
@@ -217,9 +204,7 @@
                         </a>
                     </div>
                 </td>
-                <td ng-repeat="taskState in sprintTaskStates"></td>
             </tr>
-            </tbody>
         </table>
     </div>
 </div>

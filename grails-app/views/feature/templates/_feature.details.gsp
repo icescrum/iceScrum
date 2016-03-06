@@ -41,7 +41,7 @@
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <i class="fa fa-cog"></i> <i class="caret"></i>
                     </button>
-                    <ul class="uib-dropdown-menu pull-right" ng-include="'feature.menu.html'"></ul>
+                    <ul uib-dropdown-menu class="pull-right" ng-include="'feature.menu.html'"></ul>
                 </div>
                 <a ng-if="previousFeature"
                    class="btn btn-default"
@@ -183,7 +183,7 @@
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ feature.attachments.length > 0 ? '(' + feature.attachments.length + ')' : '' }}</label>
-                    <div ng-if="authorizedFeature('upload', feature)">
+                    <div ng-if="authorizedFeature('upload', feature)" flow-init flow-files-submitted="attachmentQuery($flow, feature)">
                         <button type="button" class="btn btn-default" flow-btn><i
                                 class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
                     </div>

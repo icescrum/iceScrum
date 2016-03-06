@@ -511,7 +511,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 var newElement = element.clone();
                 newElement.removeAttr('story-menu');
                 newElement.attr('uib-dropdown', '');
-                newElement.html('<a uib-dropdown-toggle><i class="fa fa-cog"></i></a><ul class="uib-dropdown-menu" ng-include="\'story.menu.html\'"></ul>');
+                newElement.html('<a uib-dropdown-toggle><i class="fa fa-cog"></i></a><ul uib-dropdown-menu ng-include="\'story.menu.html\'"></ul>');
                 element.replaceWith(angular.element($compile(newElement)(scope)));
             });
         }

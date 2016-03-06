@@ -40,7 +40,7 @@
                         <span>{{ orderBy.current.name }}</span>
                         <span class="caret"></span>
                     </button>
-                    <ul class="uib-dropdown-menu" role="menu">
+                    <ul uib-dropdown-menu role="menu">
                         <li role="menuitem" ng-repeat="order in orderBy.values">
                             <a ng-click="orderBy.current = order" href>{{ order.name }}</a>
                         </li>
@@ -61,7 +61,7 @@
                         type="button">
                     <i class="fa fa-download"></i>&nbsp;<span class="caret"></span>
                 </button>
-                <ul class="uib-dropdown-menu"
+                <ul uib-dropdown-menu
                     role="menu">
                     <g:each in="${is.exportFormats()}" var="format">
                         <li role="menuitem">
