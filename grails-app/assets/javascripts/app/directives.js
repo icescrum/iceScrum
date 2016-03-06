@@ -651,16 +651,8 @@ directives.directive('isMarkitup', ['$http', function($http) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var $headers = [], $cloneHeaders = [], offset;
-            var nativeStickyEnable = function() {
-                var prop = 'position:',
-                    el = document.createElement('test'),
-                    mStyle = el.style;
-                mStyle.cssText = prop + ['-webkit-', '-moz-', '-ms-', '-o-', ''].join('sticky;' + prop) + 'sticky;';
-                return (mStyle['position'].indexOf('sticky') !== -1);
-            }();
-
             var stackSize = 0;
+            var $headers = [], $cloneHeaders = [], offset;
             var container = attrs.stickyList ? angular.element(attrs.stickyList) : element;
 
             var position = function() {
@@ -710,12 +702,6 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 _.each($headers, function($header, index) {
                     var top = $header.offset().top;
                     var $previous = null;
-                    if (nativeStickyEnable) {
-                        $header.addClass('native-sticky')
-                               .css('top', '-' + container.css('padding-top'))
-                               .css('z-index', index + 1);
-                        return;
-                    }
                     if (index == 0) {
                         position();
                         $parent = $header.parent();
