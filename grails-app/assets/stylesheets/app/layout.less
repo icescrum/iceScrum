@@ -279,6 +279,49 @@ header {
           overflow-y: auto;
           overflow-x: hidden;
         }
+
+        &.panel-light {
+          .panel-default;
+          border-radius: 0;
+          border-bottom-width: 1px;
+          > .panel-heading {
+            padding-bottom: 0;
+            .panel-border {
+              margin-top: 8px;
+              margin-bottom: 6px;
+            }
+          }
+          .right-title, .nav-justified {
+            .badge {
+              display: inline-block;
+              position: absolute;
+              top: 15px;
+            }
+          }
+          .right-title {
+            .btn-default {
+              position:relative;
+            }
+            .badge {
+              right: -5px;
+            }
+          }
+          .nav-justified {
+            li:first-of-type a {
+              border-left: none;
+            }
+            li:last-of-type a {
+              border-right:none;
+            }
+            li > a {
+              border-radius:0;
+            }
+            .badge {
+              left: 50%;
+              margin-left: 5px;
+            }
+          }
+        }
       }
     }
     > .content {
