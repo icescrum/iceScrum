@@ -499,8 +499,16 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 refreshBrush();
             }, true);
             d3.select(window).on('resize', render); // Register render on resize
-            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function() {  $timeout(render, 100); }); // Register render when details view changed
-            scope.$on('$destroy', function() { registeredRootScopeRender(); }); // Destroy listener when removed
+            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function(a,d) {
+                //hack
+                if(d.indexOf('@planning') != -1){
+                    $timeout(render, 100);
+                }
+            }); // Register render when details view changed
+            scope.$on('$destroy', function() {
+                d3.select(window).on('resize', null); // unRegister render on resize
+                registeredRootScopeRender();
+            }); // Destroy listener when removed
         }
     }
 }]).directive('storyMenu', ['$compile', function($compile) { // For 140 stories, reduce display time by 1 s. and initial watchers by 1700 by loading menu only on first hover
