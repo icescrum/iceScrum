@@ -78,7 +78,7 @@
                 <h3 class="panel-title">
                     <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
                     <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                       href="#/planning/{{ release.id }}"
+                       href="#/planning/{{ release.id }}/details"
                        ng-if="authorizedRelease('update', release)">
                         <i class="fa fa-pencil"></i>
                     </a>
