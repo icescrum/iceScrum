@@ -672,7 +672,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                             offset = orignOffset + computeStackOffset(index);
                             $cloneHeaders[index].css('top', offset + 'px');
                             if(index < stackSize){
-                                $cloneHeaders[index].css('z-index', '100');
+                                $cloneHeaders[index].css('z-index', '99');
                             }
                             computeWidth(index);
                         });
