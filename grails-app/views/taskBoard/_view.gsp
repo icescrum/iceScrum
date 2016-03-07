@@ -161,7 +161,7 @@
             </tbody>
             </tbody>
             <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'">
-                <tr class="sticky-header">
+                <tr class="sticky-header postit">
                     <td colspan="3">
                         <div ng-include="'story.html'"></div>
                     </td>
