@@ -30,7 +30,7 @@
 		ctrlKey = shiftKey = altKey = false;
 	
 		options = {	id:						'',
-					nameSpace:				'',
+					nameSpace:				'form-group-markItUp',
 					root:					'',
 					previewInWindow:		'', // 'width=800, height=600, resizable=yes, scrollbars=yes'
 					previewAutoRefresh:		true,
