@@ -27,9 +27,30 @@
 @import (reference) "./postits.less";
 @import (reference) "./select2.less";
 
+header {
+  z-index: 100;
+}
+
+label:not(.btn):not(.checkbox-inline) {
+  line-height: 1em;
+  width: 100%;
+  .text-overflow();
+}
+
 //custom css
 #note-size {
   max-height: 300px;
+}
+
+table {
+  &.table {
+    > thead > tr > th {
+      border-bottom-width: 1px;
+    }
+    > tbody + tbody {
+      border-top-width: 1px;
+    }
+  }
 }
 
 #pass-strength-result {
@@ -51,41 +72,9 @@
   }
 }
 
-label:not(.btn):not(.checkbox-inline) {
-  line-height: 1em;
-  width: 100%;
-  .text-overflow();
-}
-
-table {
-  tr {
-    td {
-      padding: 5px;
-      &.avatar {
-        width: 30px;
-        padding-right: 0;
-      }
-    }
-  }
-  &.table {
-    > thead > tr > th {
-      border-bottom-width: 1px;
-    }
-    > tbody + tbody {
-      border-top-width: 1px;
-    }
-  }
-}
-
 .table-scrollable {
-  margin-top: 10px;
-  overflow: auto;
   table {
-    width: auto;
     tr {
-      td, th {
-        min-width: floor((@modal-md - 2*@modal-inner-padding) / 3);
-      }
       th {
         text-align: center;
       }
@@ -93,16 +82,8 @@ table {
   }
 }
 
-.empty-content {
-  width: 100%;
-  padding: 10px;
+.empty-content, .empty-view {
   text-align: center;
-}
-
-.empty-view {
-  text-align: center;
-  max-width: 500px;
-  margin: auto;
 }
 
 .sortable-moving:not(.sortable-disabled) .empty-view {
@@ -208,32 +189,23 @@ table {
     }
   }
 }
-.form-group div[disabled] {
-  border-color: transparent;
-  &:focus {
-    outline: #000000 solid 0px;
-  }
-}
 
-/** White background and smaller size for editable inputs **/
 .form-group {
   margin-bottom: 10px;
+  div[disabled] {
+    border-color: transparent;
+    &:focus {
+      outline: #000000 solid 0;
+    }
+  }
 }
 .atwho-preview, textarea {
   max-height: 115px;
   overflow: auto;
 }
 
-
-
 button.elemid {
   min-width: 36px;
-}
-
-/** well **/
-.well {
-  padding: 10px;
-  margin-bottom: 0;
 }
 
 /** dropdown **/
@@ -265,42 +237,15 @@ i.small-icon {
 }
 
 .popover.error {
-  .popover-content {
-    max-height: 200px;
-    overflow: auto;
-  }
   .popover-title {
     color: @brand-danger;
   }
 }
 
-/** popover user **/
 #popover-user {
-  left: auto !important;
-  right: 10px;
-  top: 39px !important;
   border: none;
-  & > .arrow {
-    left: auto;
-    right: 12px;
-    top: -10px;
-  }
   .popover-content {
-    width: 270px;
-    padding: 0;
-    .panel {
-      margin-bottom: 0;
-    }
-    .panel-body {
-      padding: @grid-gutter-width / 2;
-      > img {
-        margin-right: 10px;
-      }
-    }
     .panel-footer {
-      text-align: right;
-      padding-top: 10px;
-      padding-bottom: 10px;
       > div > div:first-child {
         text-align: left;
       }
@@ -539,19 +484,37 @@ tr:hover .on-hover span {
       opacity: 0.6;
       line-height: 14px;
     }
+    .progress-bar-suggested {
+      background-color: @state-suggested;
+    }
+
+    .progress-bar-accepted {
+      background-color: @state-accepted;
+    }
+
+    .progress-bar-estimated {
+      background-color: @state-estimated;
+    }
+
+    .progress-bar-planned {
+      background-color: @state-planned;
+    }
+
+    .progress-bar-inProgress {
+      background-color: @state-inProgress;
+    }
+
+    .progress-bar-done {
+      background-color: @state-done;
+    }
   }
 }
 
 .progress.form-bar {
   border: none;
-  padding: 3px;
-  margin-bottom: 0;
-  position: relative;
   background-color: @brand-primary;
   .progress-empty {
-    display: block;
     text-align: center;
-    padding: 5px 0;
     color: @progress-bar-color;
   }
   .progress-bar {
@@ -568,58 +531,23 @@ tr:hover .on-hover span {
       color: @gray;
     }
     border-right: 3px solid @brand-primary;
-    span {
-      display: inline-block;
-      padding: 6px 0;
-    }
     &.last-bar {
       border: none;
     }
   }
   &::after {
-    width: 0;
-    content: ' ';
-    height: 0;
     border-style: solid;
     border-width: 16px 0 16px 16px;
     border-color: #ffffff transparent #ffffff @brand-primary;
-    top: 0;
-    right: 0;
-    position: absolute;
-  }
+   }
 }
 
 .well {
-  .well;
   .progress.form-bar {
     &::after {
       border-color: @well-bg transparent @well-bg @brand-primary;
     }
   }
-}
-
-.progress-bar-suggested {
-  background-color: @state-suggested;
-}
-
-.progress-bar-accepted {
-  background-color: @state-accepted;
-}
-
-.progress-bar-estimated {
-  background-color: @state-estimated;
-}
-
-.progress-bar-planned {
-  background-color: @state-planned;
-}
-
-.progress-bar-inProgress {
-  background-color: @state-inProgress;
-}
-
-.progress-bar-done {
-  background-color: @state-done;
 }
 
 .tab-content table.table {
@@ -761,15 +689,15 @@ a[data-toggle="tab"] button {
   }
 }
 
-.drop-zone {
-  display: none;
-}
-
 .table.attachments {
   margin-bottom: 0;
   .filename {
     .text-overflow();
   }
+}
+
+.drop-zone {
+  display: none;
 }
 
 .drop-enabled {
@@ -817,7 +745,7 @@ a[data-toggle="tab"] button {
     display: inline-block;
   }
   img.selected {
-    padding: 0px;
+    padding: 0;
     border: 3px solid @brand-primary;
   }
 }
@@ -1020,10 +948,39 @@ button.pin {
   }
 }
 
-header {
-  z-index: 100;
-}
-
-#view-taskBoard > .content table .sticky-header.cloned:not(.sticky-header-will-hide) > td {
-  border-bottom: 1px solid #ddd;
+#view-taskBoard > .content table {
+  &.table {
+    margin-bottom: 0;
+    .sticky-header{
+      opacity: 0.5;
+      &:hover, &.cloned {
+        opacity: 1.0;
+      }
+      &.table-header{
+        opacity: 1.0;
+        > th {
+          border:none;
+          text-transform: uppercase;
+        }
+      }
+    }
+    > thead,
+    > tbody:not(:last-of-type),
+    > tfoot {
+      > tr {
+        > th,
+        > td {
+          border: 1px solid @table-border-color;
+          border-left-style: dashed;
+          border-right-style: dashed;
+        }
+        th:first-of-type, td:first-of-type {
+          border-left-width: 0;
+        }
+        th:last-of-type, td:last-of-type {
+          border-right-width: 0;
+        }
+      }
+    }
+  }
 }

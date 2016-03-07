@@ -83,7 +83,7 @@
     <div class="panel-body" id="tasks-board" ng-controller="taskSprintCtrl">
         <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
             <thead>
-            <tr class="sticky-header sticky-stack">
+            <tr class="table-header sticky-header sticky-stack">
                 <th>
                     <span>${message(code: 'is.task.state.wait')}</span>
                 </th>

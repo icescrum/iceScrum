@@ -514,6 +514,108 @@ header {
   }
 }
 
+table {
+  tr {
+    td {
+      padding: 5px;
+      &.avatar {
+        width: 30px;
+        padding-right: 0;
+      }
+    }
+  }
+  &.table {
+    > thead > tr > th {
+      border-bottom-width: 1px;
+    }
+    > tbody + tbody {
+      border-top-width: 1px;
+    }
+  }
+}
+
+.table-scrollable {
+  margin-top: 10px;
+  overflow: auto;
+  table {
+    width: auto;
+    tr {
+      td, th {
+        min-width: floor((@modal-md - 2*@modal-inner-padding) / 3);
+      }
+    }
+  }
+}
+
+.empty-content {
+  width: 100%;
+  padding: 10px;
+}
+
+.empty-view {
+  max-width: 500px;
+  margin: auto;
+}
+
+.popover.error {
+  .popover-content {
+    max-height: 200px;
+    overflow: auto;
+  }
+}
+
+#popover-user {
+  left: auto !important;
+  right: 10px;
+  top: 39px !important;
+  & > .arrow {
+    left: auto;
+    right: 12px;
+    top: -10px;
+  }
+  .popover-content {
+    width: 270px;
+    padding: 0;
+    .panel {
+      margin-bottom: 0;
+    }
+    .panel-body {
+      padding: @grid-gutter-width / 2;
+      > img {
+        margin-right: 10px;
+      }
+    }
+    .panel-footer {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+.progress.form-bar {
+  padding: 3px;
+  margin-bottom: 0;
+  position: relative;
+  .progress-empty {
+    display: block;
+    padding: 5px 0;
+  }
+  .progress-bar {
+    span {
+      display: inline-block;
+      padding: 6px 0;
+    }
+  }
+  &::after {
+    width: 0;
+    content: ' ';
+    height: 0;
+    top: 0;
+    right: 0;
+    position: absolute;
+  }
+}
+
 .modal-xxl {
   width: 98%;
   margin: 1% auto;
@@ -544,6 +646,12 @@ header {
     right: 0;
     top: 56px;
   }
+}
+
+.well {
+  .well;
+  padding: 10px;
+  margin-bottom: 0;
 }
 
 // Allow placeholder when sortable container is empty
