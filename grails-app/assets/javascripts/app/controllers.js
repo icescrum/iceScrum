@@ -95,7 +95,15 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
     $scope.$on('$viewContentLoading', function() {
         $scope.app.loading = true;
         if ($scope.app.loadingPercent < 90) {
-            $scope.app.loadingPercent += 10;
+            $scope.app.loadingPercent += 5;
+        }
+    });
+    // Init loading
+    $scope.$on('$viewContentLoaded', function() {
+        if ($scope.app.loadingPercent < 90) {
+            $scope.app.loadingPercent += 5;
+        } else {
+            $scope.app.loading = false;
         }
     });
     var w = angular.element($window);
