@@ -1354,7 +1354,12 @@
                                 placeholder.html(this.i18n.noDropMessage);
                                 placeholder.addClass('no-drop');
                             }else if($.icescrum.product.limitUrgentTasks > 0 && this.current.state == this.STATE_INPROGRESS){
-                                if (to.closest('tr').hasClass('row-urgent-task') && to.attr('type') == 1 && to.find('.postit-task').length >= $.icescrum.product.limitUrgentTasks > 0){
+                                var tr = to.closest('tr');
+                                if (tr.hasClass('row-story') && tr.attr('type') == 'storyDone'){
+                                    placeholder.addClass('no-drop');
+                                    placeholder.html('');
+                                }
+                                else if (tr.hasClass('row-urgent-task') && to.attr('type') == 1 && to.find('.postit-task').length >= $.icescrum.product.limitUrgentTasks > 0){
                                     if (from.closest('tr').hasClass('row-urgent-task') && from.attr('type') == 1){
                                         placeholder.removeClass('no-drop');
                                         placeholder.html('');
