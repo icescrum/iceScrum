@@ -97,7 +97,10 @@ filters
         };
     })
     .filter('createGradientBackground', function() {
-        return function(color) {
+        return function(color, disabled) {
+            if(disabled){
+                return "background:"+color;
+            }
             if(color && gradientBackgroundCache[color] != undefined){
                 return gradientBackgroundCache[color];
             }

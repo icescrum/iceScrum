@@ -706,14 +706,11 @@ directives.directive('isMarkitup', ['$http', function($http) {
             };
 
             var render = function() {
-                var $parent;
                 _.each($headers, function($header, index) {
                     var top = $header.offset().top;
                     var $previous = null;
                     if (index == 0) {
                         position();
-                        $parent = $header.parent();
-                        $parent.css('position', 'relative');
                     } else {
                         $previous = $cloneHeaders[index - 1];
                     }
@@ -724,7 +721,8 @@ directives.directive('isMarkitup', ['$http', function($http) {
                                 .css('top', offset + 'px').css('position', 'fixed').css('overflow-y', 'hidden').css('z-index', index + 1)
                                 .addClass('cloned').addClass('sticky-' + index);
                             $cloneHeaders.push($clone);
-                            $parent.append($clone);
+                            $header.parent().css('position', 'relative');
+                            $clone.insertAfter($header);
                             computeWidth(index);
                             $header.css('visibility', 'hidden');
                             if ($previous && index > stackSize) {

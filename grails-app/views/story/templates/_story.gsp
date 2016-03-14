@@ -24,15 +24,13 @@
 <script type="text/ng-template" id="story.html">
 <div ellipsis
      fast-tooltip
-     style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground }}"
+     style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient }}"
      class="postit {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
         <a href
            class="follow"
            uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-           ng-click="follow(story)">
-            <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
-        </a>
+           ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
         <span class="id">{{ ::story.uid }}</span>
         <span class="value editable"
               ng-click="showEditValueModal(story)"

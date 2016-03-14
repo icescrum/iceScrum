@@ -97,8 +97,8 @@
             </thead>
             <tbody>
                 <tr class="sticky-header">
-                    <td colspan="{{ sprint.state != 2 ? 1 : 3 }}">
-                        ${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}
+                    <td colspan="{{ sprint.state != 2 ? 1 : 3 }}" class="task-type">
+                        <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</h3>
                     </td>
                 </tr>
                 <tr>
@@ -128,8 +128,8 @@
                     </td>
                 </tr>
                 <tr class="sticky-header">
-                    <td colspan="{{ sprint.state != 2 ? 1 : 3 }}">
-                        ${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}
+                    <td colspan="{{ sprint.state != 2 ? 1 : 3 }}" class="task-type">
+                        <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</h3>
                     </td>
                 </tr>
                 <tr>
@@ -161,9 +161,9 @@
             </tbody>
             </tbody>
             <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'">
-                <tr class="sticky-header postit">
-                    <td colspan="3">
-                        <div ng-include="'story.html'"></div>
+                <tr class="sticky-header list-group">
+                    <td colspan="3" class="postit-container">
+                        <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                     </td>
                 </tr>
                 <tr class="postits grid-group" ng-controller="storyCtrl" ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">

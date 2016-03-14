@@ -951,21 +951,8 @@ button.pin {
 #view-taskBoard > .content table {
   &.table {
     margin-bottom: 0;
-    .sticky-header{
-      opacity: 0.5;
-      &:hover, &.cloned {
-        opacity: 1.0;
-      }
-      &.table-header{
-        opacity: 1.0;
-        > th {
-          border:none;
-          text-transform: uppercase;
-        }
-      }
-    }
     > thead,
-    > tbody:not(:last-of-type),
+    > tbody,
     > tfoot {
       > tr {
         > th,
@@ -980,6 +967,39 @@ button.pin {
         th:last-of-type, td:last-of-type {
           border-right-width: 0;
         }
+      }
+    }
+    > tbody:not(:last-of-type) > tr:not(.sticky-header) > td {
+      border-top-style:dashed;
+    }
+    .sticky-header{
+      &.cloned, &.cloned  {
+        > td {
+          border-top:none;
+        }
+      }
+      &.table-header{
+        opacity: 1.0;
+        > th {
+          border-width:0;
+          border-bottom-width:1px;
+          text-transform: uppercase;
+        }
+      }
+      > td {
+        padding:0;
+        border-bottom:1px dashed @table-border-color;
+        &.task-type {
+          padding-left: 4px;
+        }
+        > h3 {
+          margin: 0;
+          padding:4px;
+          font-size: 16px;
+        }
+      }
+      &:not(.cloned) > td {
+        border-bottom:none;
       }
     }
   }
