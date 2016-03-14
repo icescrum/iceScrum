@@ -31,19 +31,20 @@
            class="follow"
            uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
            ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
-        <span class="id">{{ ::story.uid }}</span>
-        <span class="value editable"
+        <span class="id hidden-table">{{ ::story.uid }}</span>
+        <span class="value hidden-table editable"
               ng-click="showEditValueModal(story)"
               ng-if="story.value">
             {{ story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
         </span>
-        <span class="estimation editable"
+        <span class="estimation hidden-table editable"
               ng-if="story.state > 1"
               ng-click="showEditEffortModal(story)">
             {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
         </span>
     </div>
     <div class="content" as-sortable-item-handle-if="sortableStory">
+        <span class="id visible-table">{{ ::story.uid }}</span>
         <h3 class="title ellipsis-el"
             ng-model="story.name"
             ng-bind-html="story.name | sanitize"></h3>
@@ -82,6 +83,18 @@
                 </a>
             </span>
         </div>
+    </div>
+    <div class="numbers visible-table">
+        <span class="value editable"
+              ng-click="showEditValueModal(story)"
+              ng-if="story.value">
+            {{ story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
+        </span>
+        <span class="estimation editable"
+              ng-if="story.state > 1"
+              ng-click="showEditEffortModal(story)">
+            {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
+        </span>
     </div>
     <div ng-if="tasksProgress(story)" class="progress">
         <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
