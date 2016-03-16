@@ -57,7 +57,7 @@
                     </ui-select-choices>
                 </ui-select>
                 <span class="input-group-btn" ng-show="editableStory.feature.id">
-                    <a href="#feature/{{ editableStory.feature.id }}"
+                    <a href="{{ editableStory.feature.uid | permalink: 'feature' }}"
                        title="{{ editableStory.feature.name }}"
                        class="btn btn-default">
                         <i class="fa fa-external-link"></i>

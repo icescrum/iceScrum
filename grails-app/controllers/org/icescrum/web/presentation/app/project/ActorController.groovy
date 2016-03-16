@@ -118,10 +118,4 @@ class ActorController {
             }
         }
     }
-
-    @Secured(['permitAll()'])
-    def permalink(long id, long product){
-        Actor actor = Actor.withActor(product, id)
-        redirect(uri:"/p/$actor.backlog.pkey/#/actor/$actor.id")
-    }
 }

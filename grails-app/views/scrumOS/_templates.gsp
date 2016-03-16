@@ -50,7 +50,6 @@
 
 <script type="text/ng-template" id="copy.html">
 <is:modal title="{{ title }}">
-    <p class="help-block">${ message(code: 'todo.is.ui.copy.instructions')}</p>
     <input type="text" autofocus select-on-focus class="form-control" value="{{ value }}"/>
 </is:modal>
 </script>
@@ -141,7 +140,7 @@
                 </div>
                 <div>
                     <span class="{{ activity | activityIcon}}"></span>
-                    <span>{{ message('is.fluxiable.' + activity.code ) }} <a href="{{ activity.story.uid | permalink }}">{{ activity.story.name }}</a></span>
+                    <span>{{ message('is.fluxiable.' + activity.code ) }} <a href="{{ activity.story.uid | permalink: 'story' }}">{{ activity.story.name }}</a></span>
                 </div>
             </div>
         </div>

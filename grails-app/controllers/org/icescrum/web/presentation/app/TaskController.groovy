@@ -266,13 +266,7 @@ class TaskController {
 
     // TODO fix permalink
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def shortURL(long product, long id) {
-        Product _product = Product.withProduct(product)
-        def link = createLink(controller: 'scrumOS', action: 'index', params: [product: _product.pkey]) + '#task?uid=' + id
-        if (!springSecurityService.isLoggedIn() && _product.preferences.hidden) {
-            redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + link)
-            return
-        }
-        redirect(url: link)
+    def permalink(int uid, long product) {
+        render(status: 200)
     }
 }

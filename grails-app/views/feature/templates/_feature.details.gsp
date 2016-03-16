@@ -35,7 +35,11 @@
                 <span>{{ feature.name }}</span>
             </div>
             <div class="right-title">
-                <button class="btn btn-default elemid">{{ feature.uid }}</button>
+                <button class="btn btn-default elemid"
+                        uib-tooltip="${message(code: 'is.permalink')}"
+                        ng-click="showCopyModal('${message(code:'is.permalink')}', (feature.uid | permalink: 'feature'))">
+                    {{ ::feature.uid }}</i>
+                </button>
                 <div class="btn-group"
                      uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>

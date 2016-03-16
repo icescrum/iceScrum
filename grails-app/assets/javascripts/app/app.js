@@ -664,16 +664,9 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
             $uibModal.open({
                 templateUrl: 'copy.html',
                 size: 'sm',
-                controller: ["$scope", 'hotkeys', function($scope, hotkeys) {
+                controller: ["$scope", function($scope) {
                     $scope.title = title;
-                    $scope.value = $filter('permalink')(value); // change that if you want to use showCopyModal to copy other things than permalinks
-                    hotkeys
-                        .bindTo($scope)
-                        .add({
-                            combo: ['mod+c', 'mod+x'],
-                            allowIn: ['INPUT'],
-                            callback: $scope.$close
-                        });
+                    $scope.value = value;
                 }]
             });
         };

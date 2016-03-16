@@ -26,7 +26,7 @@
     <div ng-repeat="story in selected.stories">
         <button class="btn btn-xs btn-default"
                 disabled="disabled">{{ story.uid }}</button>
-        <a href="{{ story.uid | permalink }}">{{ story.name }}</a>
+        <a href="{{ story.uid | permalink: 'story' }}">{{ story.name }}</a>
         <div class="pretty-printed"
              ng-bind-html="story | storyDescriptionHtml | sanitize">
         </div>

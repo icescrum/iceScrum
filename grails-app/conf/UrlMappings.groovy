@@ -56,30 +56,28 @@ class UrlMappings {
         }
 
         //New url mapping
-        "/$product-F$id/"{
+        "/$product-F$uid/"{
             controller = 'feature'
             action = 'permalink'
             constraints {
                 product(matches: /[0-9A-Z]*/)
-                id(matches: /[0-9]*/)
+                uid(matches: /[0-9]*/)
             }
         }
-
-        "/$product-A$id/"{
-            controller = 'actor'
+        "/$product-T$uid/"{
+            controller = 'task'
             action = 'permalink'
             constraints {
                 product(matches: /[0-9A-Z]*/)
-                id(matches: /[0-9]*/)
+                uid(matches: /[0-9]*/)
             }
         }
-
-        "/$product-$id/" {
+        "/$product-$uid/" {
             controller = 'story'
             action = 'permalink'
             constraints {
                 product(matches: /[0-9A-Z]*/)
-                id(matches: /[0-9]*/)
+                uid(matches: /[0-9]*/)
             }
         }
 

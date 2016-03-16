@@ -42,14 +42,6 @@ class ProductUrlMappings {
                 product(matches: /[0-9A-Z]*/)
             }
         }
-        name shortURLTASK: "/p/$product-T$id/" {
-            controller = 'task'
-            action = 'shortURL'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                id(matches: /[0-9]*/)
-            }
-        }
         // Scrum OS & generic
         "/p/$product/$action/$window?/$actionWindow?/$id?" {
             controller = 'scrumOS'

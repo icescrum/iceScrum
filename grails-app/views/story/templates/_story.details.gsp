@@ -45,7 +45,7 @@
                 </span>
                 <button class="btn btn-default elemid"
                         uib-tooltip="${message(code: 'is.permalink')}"
-                        ng-click="showCopyModal('${message(code:'is.permalink')}', story.uid)">{{ ::story.uid }}</button>
+                        ng-click="showCopyModal('${message(code:'is.permalink')}', (story.uid  | permalink: 'story'))">{{ ::story.uid }}</button>
                 <button class="btn btn-default"
                         type="button"
                         ng-click="like(story)"

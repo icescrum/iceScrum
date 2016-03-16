@@ -28,17 +28,17 @@ var filters = angular.module('filters', []);
 filters
     .filter('userFullName', function() {
         return function(user) {
-            return user ? user.firstName+' '+user.lastName : '';
+            return user ? user.firstName + ' ' + user.lastName : '';
         };
     })
     .filter('userAvatar', ['$rootScope', function($rootScope) {
         return function(user) {
-            return user ?  ($rootScope.serverUrl + '/user/avatar/'+ user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
+            return user ? ($rootScope.serverUrl + '/user/avatar/' + user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
         };
     }])
     .filter('storyType', function() {
         return function(type) {
-            switch(type) {
+            switch (type) {
                 case 2:
                     return 'defect';
                 case 3:
@@ -50,7 +50,7 @@ filters
     })
     .filter('storyTypeIcon', function() {
         return function(type) {
-            switch(type) {
+            switch (type) {
                 case 2:
                     return 'bug';
                 case 3:
@@ -73,22 +73,22 @@ filters
     })
     .filter('contrastColor', function() {
         return function(bg) {
-            if(bg && contrastColorCache[bg] != undefined){
+            if (bg && contrastColorCache[bg] != undefined) {
                 return contrastColorCache[bg];
             }
             else if (bg && contrastColorCache[bg] == undefined) {
                 //convert hex to rgb
                 var color;
-                if (bg.indexOf('#') == 0){
+                if (bg.indexOf('#') == 0) {
                     var bigint = parseInt(bg.substring(1), 16);
                     var r = (bigint >> 16) & 255, g = (bigint >> 8) & 255, b = bigint & 255;
-                    color = 'rgb('+r+', '+g+', '+b+')';
+                    color = 'rgb(' + r + ', ' + g + ', ' + b + ')';
                 } else {
                     color = bg;
                 }
                 //get r,g,b and decide
-                var rgb = color.replace(/^(rgb|rgba)\(/,'').replace(/\)$/,'').replace(/\s/g,'').split(',');
-                var yiq = ((rgb[0]*299)+(rgb[1]*587)+(rgb[2]*114))/1000;
+                var rgb = color.replace(/^(rgb|rgba)\(/, '').replace(/\)$/, '').replace(/\s/g, '').split(',');
+                var yiq = ((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000;
                 contrastColorCache[bg] = (yiq >= 169) ? '' : 'invert';
                 return contrastColorCache[bg];
             } else {
@@ -98,24 +98,24 @@ filters
     })
     .filter('createGradientBackground', function() {
         return function(color, disabled) {
-            if(disabled){
-                return "background:"+color;
+            if (disabled) {
+                return "background:" + color;
             }
-            if(color && gradientBackgroundCache[color] != undefined){
+            if (color && gradientBackgroundCache[color] != undefined) {
                 return gradientBackgroundCache[color];
             }
             else if (color) {
                 var ratio = 18;
-                var num = parseInt(color.substring(1),16),
+                var num = parseInt(color.substring(1), 16),
                     ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
                     amt = Math.round(2.55 * ratio),
                     R = ((num >> 16) & 255) + amt,
                     G = ((num >> 8) & 255) + amt,
                     B = (num & 255) + amt;
-                gradientBackgroundCache[color] = "background-image: -moz-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.8) 0%, rgba("+R+","+G+","+B+",0.8) 100%); " +
-                    "   background-image: -o-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.8) 0%, rgba("+R+","+G+","+B+",0.8) 100%); " +
-                    "   background-image: -webkit-linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.8) 0%, rgba("+R+","+G+","+B+",0.8) 100%); " +
-                    "   background-image: linear-gradient(bottom, rgba("+ra+","+ga+","+ba+",0.8) 0%, rgba("+R+","+G+","+B+",0.8) 100%);";
+                gradientBackgroundCache[color] = "background-image: -moz-linear-gradient(bottom, rgba(" + ra + "," + ga + "," + ba + ",0.8) 0%, rgba(" + R + "," + G + "," + B + ",0.8) 100%); " +
+                    "   background-image: -o-linear-gradient(bottom, rgba(" + ra + "," + ga + "," + ba + ",0.8) 0%, rgba(" + R + "," + G + "," + B + ",0.8) 100%); " +
+                    "   background-image: -webkit-linear-gradient(bottom, rgba(" + ra + "," + ga + "," + ba + ",0.8) 0%, rgba(" + R + "," + G + "," + B + ",0.8) 100%); " +
+                    "   background-image: linear-gradient(bottom, rgba(" + ra + "," + ga + "," + ba + ",0.8) 0%, rgba(" + R + "," + G + "," + B + ",0.8) 100%);";
                 return gradientBackgroundCache[color];
             }
         };
@@ -166,11 +166,11 @@ filters
     })
     .filter('fileicon', function() {
         return function(ext) {
-            if (ext.indexOf('.') > -1){
+            if (ext.indexOf('.') > -1) {
                 ext = ext.substring(ext.indexOf('.') + 1);
             }
             var icon;
-            switch (ext){
+            switch (ext) {
                 case 'xls':
                 case 'csv':
                 case 'xlsx':
@@ -232,12 +232,17 @@ filters
         };
     })
     .filter('permalink', ['$rootScope', 'Session', function($rootScope, Session) {
-        return function(uid) {
-            return $rootScope.serverUrl + '/'+ Session.getProject().pkey +'-' + uid;
+        return function(uid, type) {
+            var prefixByType = {
+                story: '',
+                feature: 'F',
+                task: 'T'
+            };
+            return $rootScope.serverUrl + '/' + Session.getProject().pkey + '-' + prefixByType[type] + uid;
         };
     }])
-    .filter('flowFilesNotCompleted', function () {
-        return function (items) {
+    .filter('flowFilesNotCompleted', function() {
+        return function(items) {
             var filtered = [];
             if (items) {
                 for (var i = 0; i < items.length; i++) {
@@ -249,8 +254,8 @@ filters
             }
             return filtered;
         };
-    }).filter('activityIcon', function () {
-        return function (activity) {
+    }).filter('activityIcon', function() {
+        return function(activity) {
             if (activity) {
                 switch (activity.code) {
                     case 'save':
@@ -295,23 +300,23 @@ filters
             return Math.floor((current * 100) / count);
         }
     }]).filter('dateToIso', ['dateFilter', function(dateFilter) {
-        return function (date) {
+        return function(date) {
             return dateFilter(date, 'yyyy-MM-ddTHH:mm:ssZ');
         };
     }]).filter('dateTime', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
-        return function (date) {
+        return function(date) {
             return dateFilter(date, $rootScope.message('is.date.format.short.time'));
         };
     }]).filter('dateShort', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
-        return function (date) {
+        return function(date) {
             return dateFilter(date, $rootScope.message('is.date.format.short'));
         };
     }]).filter('dateShorter', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
-        return function (date) {
+        return function(date) {
             return dateFilter(date, $rootScope.message('is.date.format.shorter'));
         };
     }]).filter('orElse', [function() {
-        return function (value, defaultValue) {
+        return function(value, defaultValue) {
             return (!_.isUndefined(value) && !_.isNull(value)) ? value : defaultValue;
         };
     }]).filter('orFilter', [function() {
@@ -335,7 +340,7 @@ filters
             if (!_.isEmpty(items) && !_.isEmpty(term) && !_.isEmpty(fields)) {
                 var searchTerm = _.deburr(_.trim(term.toString().toLowerCase()));
                 return _.filter(items, function(item) {
-                    return _.any(fields, function (field) {
+                    return _.any(fields, function(field) {
                         var value = _.get(item, field);
                         if (!_.isUndefined(value) && !_.isNull(value)) {
                             return _.deburr(value.toString().toLowerCase()).indexOf(searchTerm) != -1;
@@ -361,7 +366,7 @@ filters
             }
         }
     }]).filter('acceptanceTestColor', ['AcceptanceTestStatesByName', function(AcceptanceTestStatesByName) {
-        return function (state) {
+        return function(state) {
             var colorClass;
             switch (state) {
                 case AcceptanceTestStatesByName.TOCHECK:
@@ -377,11 +382,11 @@ filters
             return colorClass;
         }
     }]).filter('merge', [function() {
-        return function (object, defaultObject) {
+        return function(object, defaultObject) {
             return _.merge(object, defaultObject);
         }
     }]).filter('taskStateIcon', ['TaskStatesByName', function(TaskStatesByName) {
-        return function (state) {
+        return function(state) {
             var iconByState = 'fa-hourglass-';
             switch (state) {
                 case TaskStatesByName.WAIT:

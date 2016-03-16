@@ -218,8 +218,8 @@ class StoryController {
     }
 
     @Secured(['permitAll()'])
-    def permalink(Integer id, long product) { // it is not the id but the uid...
-        def story = Story.getInProductByUid(product, id).list() // TODO replace by withStory when fix uid / id stuff
+    def permalink(int uid, long product) {
+        def story = Story.getInProductByUid(product, uid).list() // TODO replace by withStory when fix uid / id stuff
         def uri
         switch (story.state) {
             case Story.STATE_SUGGESTED:
@@ -378,17 +378,6 @@ class StoryController {
             }
         }
         render(status: 200, text: stories ? "${message(code: 'is.ui.story.duplicate')} ${stories.join(" or ")}" : "")
-    }
-
-    // TODO fix permalink
-    def shortURL(long product, long id) {
-        Product _product = Product.withProduct(product)
-        def link = createLink(controller: 'scrumOS', action: 'index', params: [product: _product.pkey]) + '#story?uid=' + id
-        if (!springSecurityService.isLoggedIn() && _product.preferences.hidden) {
-            redirect(url: createLink(controller: 'login', action: 'auth') + '?ref=' + link)
-            return
-        }
-        redirect(url: link)
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
