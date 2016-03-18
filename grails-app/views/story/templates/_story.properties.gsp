@@ -239,7 +239,7 @@
                  ng-mouseup="$parent.descriptionPreviewMouseDown = false"
                  ng-class="{'placeholder': !editableStory.description}"
                  tabindex="0"
-                 ng-bind-html="(editableStory.description ? (editableStory | storyDescriptionHtml) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
+                 ng-bind-html="(editableStory.description ? (editableStory | storyDescription: true) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
         </div>
         <div class="form-group">
             <label for="notes">${message(code: 'is.backlogelement.notes')}</label>

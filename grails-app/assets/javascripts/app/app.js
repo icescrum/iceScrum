@@ -896,10 +896,3 @@ isApp.config(['$stateProvider', '$httpProvider', '$urlRouterProvider',
         UPDATE: 'UPDATE',
         DELETE: 'DELETE'
     });
-
-
-//TODO should be move
-String.prototype.formatLine = function(remove) {
-    remove = remove ? "" : "<br/>";
-    return this.replace(/\r\n/g, remove).replace(/\n/g, remove).replace(/"/g, '\\"');
-};

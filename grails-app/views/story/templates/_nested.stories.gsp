@@ -28,7 +28,7 @@
                 disabled="disabled">{{ story.uid }}</button>
         <a href="{{ story.uid | permalink: 'story' }}">{{ story.name }}</a>
         <div class="pretty-printed"
-             ng-bind-html="story | storyDescriptionHtml | sanitize">
+             ng-bind-html="story | storyDescription: true | sanitize">
         </div>
         <hr ng-if="!$last"/>
     </div>

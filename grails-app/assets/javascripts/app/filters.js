@@ -120,14 +120,13 @@ filters
             }
         };
     })
-    .filter('storyDescriptionHtml', function() {
-        return function(story) {
-            return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '<a href="#/actor/$1">$2</a>') : "";
-        };
-    })
     .filter('storyDescription', function() {
-        return function(story) {
-            return story.description ? story.description.formatLine().replace(/A\[(.+?)-(.*?)\]/g, '$2') : "";
+        var javaStringToHtml = function(s) {
+            return s.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>").replace(/"/g, '\\"');
+        };
+        return function(story, isHtml) {
+            var actor = isHtml ? '<a href="#/actor/$1">$2</a>' : '$2';
+            return story.description ? javaStringToHtml(story.description).replace(/A\[(.+?)-(.*?)\]/g, actor) : "";
         };
     })
     .filter('i18n', ['BundleService', function(BundleService) {
