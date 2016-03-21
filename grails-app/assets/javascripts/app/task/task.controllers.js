@@ -153,7 +153,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
     $scope.formHolder = {};
     $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
     $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+        if ($scope.mustConfirmStateChange && fromParams.taskId != toParams.taskId) {
             event.preventDefault(); // cancel the state change
             $scope.mustConfirmStateChange = false;
             $scope.confirm({
