@@ -81,19 +81,19 @@
         </h3>
     </div>
     <ul class="nav nav-tabs nav-justified">
-        <li role="presentation" ng-class="{'active':!$state.params.tabId}">
+        <li role="presentation" ng-class="{'active':!$state.params.taskTabId}">
             <a href="#{{ ::viewName }}/task/{{ ::task.id }}"
                uib-tooltip="${message(code:'todo.is.ui.details')}">
                 <i class="fa fa-lg fa-edit"></i>
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.tabId == 'activities'}">
+        <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'activities'}">
             <a href="#{{ ::viewName }}/task/{{ ::task.id }}/activities"
                uib-tooltip="{{ task.activities && task.activities.length ? message('is.fluxiable.' + task.activities[0].code) : '' }}">
                 <i class="fa fa-lg fa-clock-o"></i>
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.tabId == 'comments'}">
+        <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'comments'}">
             <a href="#{{ ::viewName }}/task/{{ ::task.id }}/comments"
                uib-tooltip="${message(code:'todo.is.ui.comments')}">
                 <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>

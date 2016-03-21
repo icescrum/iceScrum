@@ -23,7 +23,9 @@
  */
 
 // Abstract Ctrl for view with selectable items
-controllers.controller('selectableCtrl', ['$scope', '$state', 'idParamName', function($scope, $state, idParamName) {
+controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', function($scope, $state, selectableType) {
+    var idParamName = selectableType + 'Id';
+    var tabIdParamName = selectableType + 'TabId';
     // Functions
     $scope.isSelected = function(selectable) {
         if ($state.params[idParamName]) {
@@ -55,7 +57,7 @@ controllers.controller('selectableCtrl', ['$scope', '$state', 'idParamName', fun
                 case 1:
                     var idObject = {};
                     idObject[idParamName] = selectedIds;
-                    $state.go($scope.viewName + '.details' + ($state.params.tabId ? '.tab' : ''), idObject);
+                    $state.go($scope.viewName + '.details' + ($state.params[tabIdParamName] ? '.tab' : ''), idObject);
                     break;
                 default:
                     $state.go($scope.viewName + '.multiple', {listId: selectedIds.join(",")});
@@ -66,7 +68,7 @@ controllers.controller('selectableCtrl', ['$scope', '$state', 'idParamName', fun
 }]);
 
 controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService', 'features', function($scope, $controller, FeatureService, features) {
-    $controller('selectableCtrl', {$scope: $scope, idParamName: 'featureId'});
+    $controller('selectableCtrl', {$scope: $scope, selectableType: 'feature'});
     // Functions
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
@@ -378,7 +380,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
                     $state.go($scope.viewName);
                     break;
                 case 1:
-                    $state.go($scope.viewName + '.task.details' + ($state.params.tabId ? '.tab' : ''), {taskId: selectedIds});
+                    $state.go($scope.viewName + '.task.details' + ($state.params.taskTabId ? '.tab' : ''), {taskId: selectedIds});
                     break;
             }
         }

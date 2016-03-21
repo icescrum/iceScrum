@@ -66,13 +66,13 @@
         </h3>
     </div>
     <ul class="nav nav-tabs nav-justified">
-        <li role="presentation" ng-class="{'active':!$state.params.tabId}">
+        <li role="presentation" ng-class="{'active':!$state.params.featureTabId}">
             <a href="#{{ ::viewName }}/{{ ::feature.id }}"
                uib-tooltip="${message(code:'todo.is.ui.details')}">
                 <i class="fa fa-lg fa-edit"></i>
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.tabId == 'stories'}">
+        <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'stories'}">
             <a href="#{{ ::viewName }}/{{ ::feature.id }}/stories"
                uib-tooltip="${message(code:'todo.is.ui.stories')}">
                 <i class="fa fa-lg fa-sticky-note"></i>

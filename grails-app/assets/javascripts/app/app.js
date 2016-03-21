@@ -86,16 +86,16 @@ angular.module('isApp', [
             children: [
                 {
                     name: 'tab',
-                    url: "/{tabId:.+}",
+                    url: "/{storyTabId:(?:tests|tasks|comments|activities)}",
                     resolve: {
                         data: ['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'ActivityService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, ActivityService, detailsStory) {
-                            if ($stateParams.tabId == 'tests') {
+                            if ($stateParams.storyTabId == 'tests') {
                                 return AcceptanceTestService.list(detailsStory);
-                            } else if ($stateParams.tabId == 'tasks') {
+                            } else if ($stateParams.storyTabId == 'tasks') {
                                 return TaskService.list(detailsStory);
-                            } else if ($stateParams.tabId == 'comments') {
+                            } else if ($stateParams.storyTabId == 'comments') {
                                 return CommentService.list(detailsStory);
-                            } else if ($stateParams.tabId == 'activities') {
+                            } else if ($stateParams.storyTabId == 'activities') {
                                 return ActivityService.activities(detailsStory, false);
                             }
                             return null;
@@ -109,22 +109,22 @@ angular.module('isApp', [
                         "details-tab": {
                             templateUrl: function($stateParams) {
                                 var tpl;
-                                if ($stateParams.tabId == 'tests') {
+                                if ($stateParams.storyTabId == 'tests') {
                                     tpl = 'story.acceptanceTests.html';
-                                } else if ($stateParams.tabId == 'tasks') {
+                                } else if ($stateParams.storyTabId == 'tasks') {
                                     tpl = 'story.tasks.html';
-                                } else if ($stateParams.tabId == 'comments') {
+                                } else if ($stateParams.storyTabId == 'comments') {
                                     tpl = 'comment.list.html';
-                                } else if ($stateParams.tabId == 'activities') {
+                                } else if ($stateParams.storyTabId == 'activities') {
                                     tpl = 'activity.list.html';
                                 }
                                 return tpl;
                             },
                             controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
                                 $scope.selected = selected;
-                                if ($stateParams.tabId == 'activities') {
+                                if ($stateParams.storyTabId == 'activities') {
                                     $controller('activityCtrl', {$scope: $scope, selected: selected});
-                                } else if ($stateParams.tabId == 'tasks') {
+                                } else if ($stateParams.storyTabId == 'tasks') {
                                     $controller('taskStoryCtrl', {$scope: $scope});
                                 }
                             }]
@@ -299,7 +299,7 @@ angular.module('isApp', [
                     children: [
                         {
                             name: 'tab',
-                            url: "/{tabId:.+}",
+                            url: "/{featureTabId:stories}",
                             resolve: {
                                 selected: ['StoryService', 'detailsFeature', function(StoryService, detailsFeature) {
                                     return StoryService.listByType(detailsFeature).then(function() {
@@ -515,12 +515,12 @@ angular.module('isApp', [
                             children: [
                                 {
                                     name: 'tab',
-                                    url: "/{tabId:.+}",
+                                    url: "/{taskTabId:(?:comments|activities)}",
                                     resolve: {
                                         data: ['$stateParams', 'ActivityService', 'CommentService', 'detailsTask', function($stateParams, ActivityService, CommentService, detailsTask) {
-                                            if ($stateParams.tabId == 'comments') {
+                                            if ($stateParams.taskTabId == 'comments') {
                                                 return CommentService.list(detailsTask);
-                                            } else if ($stateParams.tabId == 'activities') {
+                                            } else if ($stateParams.taskTabId == 'activities') {
                                                 return ActivityService.activities(detailsTask, false);
                                             }
                                             return null;
@@ -534,16 +534,16 @@ angular.module('isApp', [
                                         "details-tab": {
                                             templateUrl: function($stateParams) {
                                                 var tpl;
-                                                if ($stateParams.tabId == 'comments') {
+                                                if ($stateParams.taskTabId == 'comments') {
                                                     tpl = 'comment.list.html';
-                                                } else if ($stateParams.tabId == 'activities') {
+                                                } else if ($stateParams.taskTabId == 'activities') {
                                                     tpl = 'activity.list.html';
                                                 }
                                                 return tpl;
                                             },
                                             controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
                                                 $scope.selected = selected;
-                                                if ($stateParams.tabId == 'activities') {
+                                                if ($stateParams.taskTabId == 'activities') {
                                                     $controller('activityCtrl', {$scope: $scope, selected: selected});
                                                 }
                                             }]

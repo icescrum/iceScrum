@@ -31,22 +31,21 @@ controllers.controller('activityCtrl', ['$scope','$state', 'ActivityService', 's
     var manageActivities = function(activities) {
         var groupedActivities = [];
         angular.forEach(activities, function(activity) {
+            var selectedType = selected.class.toLowerCase();
             var tabId;
             if (activity.code == 'comment') {
                 tabId = 'comments'
-            } else if (activity.code.indexOf("acceptanceTest") > -1 && selected.class == 'Story') {
+            } else if (activity.code.indexOf("acceptanceTest") > -1 && selectedType == 'story') {
                 tabId = 'tests'
-            } else if (activity.code.indexOf("task") > -1 && selected.class == 'Story') {
+            } else if (activity.code.indexOf("task") > -1 && selectedType == 'story') {
                 tabId = 'tasks'
             }
             if (tabId) {
                 activity.onClick = function() {
-                    var newStateParams = _.merge({}, $state.params, {tabId: tabId});
-                    if ($state.params.tabId) {
-                        $state.go('.', newStateParams);
-                    } else {
-                        $state.go('.tab', newStateParams);
-                    }
+                    var tabIdParamName = selectedType + 'TabId';
+                    var newStateParams = _.merge({}, $state.params);
+                    newStateParams[tabIdParamName] = tabId;
+                    $state.go($state.params[tabIdParamName] ? '.' : '.tab', newStateParams);
                 }
             }
             activity.count = 1;
