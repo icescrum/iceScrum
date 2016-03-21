@@ -73,6 +73,46 @@ angular.module('isApp', [
     ]);
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     $urlRouterProvider.when('', '/');
+    var getFeatureDetailsState = function() {
+        var options = {
+            name: 'details',
+                url: "/{featureId:int}",
+                resolve: {
+                //we add features to wait for dynamic resolution from parent state
+                detailsFeature: ['FeatureService', '$stateParams', 'features', function(FeatureService, $stateParams, features) {
+                    return FeatureService.get($stateParams.featureId);
+                }]
+            },
+            views: {
+                "details": {
+                    templateUrl: 'feature.details.html',
+                        controller: 'featureDetailsCtrl'
+                }
+            },
+            children: [
+                {
+                    name: 'tab',
+                    url: "/{featureTabId:stories}",
+                    resolve: {
+                        selected: ['StoryService', 'detailsFeature', function(StoryService, detailsFeature) {
+                            return StoryService.listByType(detailsFeature).then(function() {
+                                return detailsFeature;
+                            });
+                        }]
+                    },
+                    views: {
+                        "details-tab": {
+                            templateUrl: 'nested.stories.html',
+                            controller: ['$scope', 'selected', function($scope, selected) {
+                                $scope.selected = selected;
+                            }]
+                        }
+                    }
+                }
+            ]
+        };
+        return options;
+    };
     var getStoryDetailsState = function(absoluteParent) {
         var options = {
             name: 'details',
@@ -281,43 +321,7 @@ angular.module('isApp', [
                         }
                     }
                 },
-                {
-                    name: 'details',
-                    url: "/{featureId:int}",
-                    resolve: {
-                        //we add features to wait for dynamic resolution from parent state
-                        detailsFeature: ['FeatureService', '$stateParams', 'features', function(FeatureService, $stateParams, features) {
-                            return FeatureService.get($stateParams.featureId);
-                        }]
-                    },
-                    views: {
-                        "details": {
-                            templateUrl: 'feature.details.html',
-                            controller: 'featureDetailsCtrl'
-                        }
-                    },
-                    children: [
-                        {
-                            name: 'tab',
-                            url: "/{featureTabId:stories}",
-                            resolve: {
-                                selected: ['StoryService', 'detailsFeature', function(StoryService, detailsFeature) {
-                                    return StoryService.listByType(detailsFeature).then(function() {
-                                        return detailsFeature;
-                                    });
-                                }]
-                            },
-                            views: {
-                                "details-tab": {
-                                    templateUrl: 'nested.stories.html',
-                                    controller: ['$scope', 'selected', function($scope, selected) {
-                                        $scope.selected = selected;
-                                    }]
-                                }
-                            }
-                        }
-                    ]
-                }
+                getFeatureDetailsState()
             ]
         })
         .state({
