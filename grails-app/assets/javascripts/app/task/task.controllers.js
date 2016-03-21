@@ -146,6 +146,10 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
             });
         }
     };
+    $scope.tabUrl = function(taskTabId) {
+        var stateName = $state.params.taskTabId ? (taskTabId ? '.' : '^') : (taskTabId ? '.tab' : '.');
+        return $state.href(stateName, {taskTabId: taskTabId});
+    };
     // Init
     $scope.task = detailsTask;
     $scope.editableTask = {};

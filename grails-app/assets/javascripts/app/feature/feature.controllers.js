@@ -76,6 +76,10 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
             });
         }
     };
+    $scope.tabUrl = function(featureTabId) {
+        var stateName = $state.params.featureTabId ? (featureTabId ? '.' : '^') : (featureTabId ? '.tab' : '.');
+        return $state.href(stateName, {featureTabId: featureTabId});
+    };
     // Init
     $scope.feature = detailsFeature;
     $scope.editableFeature = {};

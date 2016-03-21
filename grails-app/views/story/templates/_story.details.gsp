@@ -92,33 +92,33 @@
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">
-            <a href="{{ urlTab(null) }}"
+            <a href="{{ ::tabUrl() }}"
                uib-tooltip="${message(code:'todo.is.ui.details')}">
                 <i class="fa fa-lg fa-edit"></i>
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'activities'}">
-            <a href="{{ urlTab('activities') }}"
+            <a href="{{ ::tabUrl('activities') }}"
                uib-tooltip="{{ story.activities && story.activities.length ? message('is.fluxiable.' + story.activities[0].code) : '' }}">
                 <i class="fa fa-lg fa-clock-o"></i>
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'comments'}">
-            <a href="{{ urlTab('comments') }}"
+            <a href="{{ ::tabUrl('comments') }}"
                uib-tooltip="${message(code:'todo.is.ui.comments')}">
                 <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                 <span class="badge">{{ story.comments_count || '' }}</span>
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tasks'}">
-            <a href="{{ urlTab('tasks') }}"
+            <a href="{{ ::tabUrl('tasks') }}"
                uib-tooltip="${message(code:'todo.is.ui.tasks')}">
                 <i class="fa fa-lg fa-tasks"></i>
                 <span class="badge">{{ story.tasks_count || '' }}</span>
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tests'}">
-            <a href="{{ urlTab('tests') }}"
+            <a href="{{ ::tabUrl('tests') }}"
                uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
                 <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
                 <span class="badge">{{ story.acceptanceTests_count || '' }}</span>

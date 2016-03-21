@@ -356,7 +356,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 });
             }
         };
-        $scope.urlTab = function(storyTabId) {
+        $scope.tabUrl = function(storyTabId) {
             var stateName = $state.params.storyTabId ? (storyTabId ? '.' : '^') : (storyTabId ? '.tab' : '.');
             return $state.href(stateName, {storyTabId: storyTabId});
         };
