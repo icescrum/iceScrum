@@ -391,7 +391,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             });
         }
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-            if ($scope.mustConfirmStateChange && fromParams.id != toParams.id) {
+            if ($scope.mustConfirmStateChange && fromParams.storyId != toParams.storyId) {
                 event.preventDefault(); // cancel the state change
                 $scope.mustConfirmStateChange = false;
                 $scope.confirm({

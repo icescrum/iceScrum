@@ -22,7 +22,7 @@
  *
  */
 controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controller', '$timeout', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $state, $filter, $controller, $timeout, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
-    $controller('selectableCtrl', {$scope: $scope});
+    $controller('selectableCtrl', {$scope: $scope, idParamName: 'storyId'});
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };

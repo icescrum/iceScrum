@@ -23,11 +23,11 @@
  */
 
 // Abstract Ctrl for view with selectable items
-controllers.controller('selectableCtrl', ['$scope', '$state', function($scope, $state) {
+controllers.controller('selectableCtrl', ['$scope', '$state', 'idParamName', function($scope, $state, idParamName) {
     // Functions
     $scope.isSelected = function(selectable) {
-        if ($state.params.id) {
-            return $state.params.id == selectable.id;
+        if ($state.params[idParamName]) {
+            return $state.params[idParamName] == selectable.id;
         } else if ($state.params.listId) {
             return _.contains($state.params.listId.split(','), selectable.id.toString());
         } else {
@@ -35,7 +35,7 @@ controllers.controller('selectableCtrl', ['$scope', '$state', function($scope, $
         }
     };
     $scope.hasSelected = function() {
-        return $state.params.id != undefined || $state.params.listId != undefined;
+        return $state.params[idParamName] != undefined || $state.params.listId != undefined;
     };
     $scope.toggleSelectableMultiple = function() {
         $scope.app.selectableMultiple = !$scope.app.selectableMultiple;
@@ -53,7 +53,9 @@ controllers.controller('selectableCtrl', ['$scope', '$state', function($scope, $
                     $state.go($scope.viewName);
                     break;
                 case 1:
-                    $state.go($scope.viewName + '.details' + ($state.params.tabId ? '.tab' : ''), {id: selectedIds});
+                    var idObject = {};
+                    idObject[idParamName] = selectedIds;
+                    $state.go($scope.viewName + '.details' + ($state.params.tabId ? '.tab' : ''), idObject);
                     break;
                 default:
                     $state.go($scope.viewName + '.multiple', {listId: selectedIds.join(",")});
@@ -64,7 +66,7 @@ controllers.controller('selectableCtrl', ['$scope', '$state', function($scope, $
 }]);
 
 controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService', 'features', function($scope, $controller, FeatureService, features) {
-    $controller('selectableCtrl', {$scope: $scope});
+    $controller('selectableCtrl', {$scope: $scope, idParamName: 'featureId'});
     // Functions
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
@@ -118,14 +120,14 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
 
 controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
     $scope.isSelected = function(selectable) {
-        if ($state.params.id) {
-            return $state.params.id == selectable.id;
+        if ($state.params.storyId) {
+            return $state.params.storyId == selectable.storyId;
         } else {
             return false;
         }
     };
     $scope.hasSelected = function() {
-        return $state.params.id != undefined;
+        return $state.params.storyId != undefined;
     };
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -229,7 +231,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 $state.go(stateName.slice(0, storyIndexInStateName - 1));
             } else {
                 var newStateName;
-                var newStateParams = {id: selectedIds};
+                var newStateParams = {storyId: selectedIds};
                 if (_.startsWith(stateName, 'planning.release.sprint.multiple')) {
                     newStateName = 'planning.release.sprint.multiple.story.details';
                 } else if (_.startsWith(stateName, 'planning.release.sprint.withId')) {

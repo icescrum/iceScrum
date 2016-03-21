@@ -76,10 +76,10 @@ angular.module('isApp', [
     var getStoryDetailsState = function(absoluteParent) {
         var options = {
             name: 'details',
-            url: "/{id:int}",
+            url: "/{storyId:int}",
             resolve: {
                 detailsStory: ['StoryService', '$stateParams', function(StoryService, $stateParams) {
-                    return StoryService.get($stateParams.id);
+                    return StoryService.get($stateParams.storyId);
                 }]
             },
             views: {},
@@ -158,13 +158,11 @@ angular.module('isApp', [
             url: "/user/register/:token",
             params: {token: {value: null}}, // doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
             onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
-                var modal = $uibModal.open({
+                $uibModal.open({
                     keyboard: false,
                     templateUrl: $rootScope.serverUrl + '/user/register',
                     controller: 'registerCtrl'
-                });
-                modal.result.then(
-                    function(username) {
+                }).result.then(function(username) {
                         $state.transitionTo('root');
                         $rootScope.showAuthModal(username);
                     }, function() {
@@ -176,13 +174,11 @@ angular.module('isApp', [
             name: 'userretrieve',
             url: "/user/retrieve",
             onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
-                var modal = $uibModal.open({
+                $uibModal.open({
                     templateUrl: $rootScope.serverUrl + '/user/retrieve',
                     size: 'sm',
                     controller: 'retrieveCtrl'
-                });
-                modal.result.then(
-                    function() {
+                }).result.then(function() {
                         $state.transitionTo('root');
                     }, function() {
                         $state.transitionTo('root');
@@ -198,14 +194,12 @@ angular.module('isApp', [
             name: 'newProject',
             url: "/project/new",
             onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
-                var modal = $uibModal.open({
+                $uibModal.open({
                     keyboard: false,
                     templateUrl: $rootScope.serverUrl + "/project/add",
                     size: 'lg',
                     controller: 'newProjectCtrl'
-                });
-                modal.result.then(
-                    function() {
+                }).result.then(function() {
                         $state.transitionTo('root');
                     }, function() {
                         $state.transitionTo('root');
@@ -289,11 +283,11 @@ angular.module('isApp', [
                 },
                 {
                     name: 'details',
-                    url: "/{id:int}",
+                    url: "/{featureId:int}",
                     resolve: {
                         //we add features to wait for dynamic resolution from parent state
                         detailsFeature: ['FeatureService', '$stateParams', 'features', function(FeatureService, $stateParams, features) {
-                            return FeatureService.get($stateParams.id);
+                            return FeatureService.get($stateParams.featureId);
                         }]
                     },
                     views: {
