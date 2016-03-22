@@ -233,20 +233,27 @@ angular.module('isApp', [
                     resolve: {
                         features: ['FeatureService', function(FeatureService) {
                             return FeatureService.list;
-                        }]
+                        }],
+                        modalHolder: [function() { return {}; }]
                     },
-                    onEnter: ['$state', '$uibModal', function($state, $uibModal) {
-                        var goToCaller = function() {
-                            $state.go(($state.params.featureTabId ? '^.' : '') + '^.^');
+                    onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
+                        var goToCaller = function(isStateChange) {
+                            if (!isStateChange) {
+                                $state.go(($state.params.featureTabId ? '^.' : '') + '^.^');
+                            }
                         };
-                        $uibModal.open({
+                        modalHolder.modal = $uibModal.open({
                             templateUrl: 'details.modal.html',
                             size: 'lg',
                             controller: ['$scope', function($scope) {
                                 $scope.isModal = true;
                                 $scope.modalTitle = $scope.message('is.feature');
                             }]
-                        }).result.then(goToCaller, goToCaller);
+                        });
+                        modalHolder.modal.result.then(goToCaller, goToCaller);
+                    }],
+                    onExit: ['modalHolder', function(modalHolder) {
+                        modalHolder.modal.dismiss(true)
                     }],
                     children: [
                         getFeatureDetailsState('@')
@@ -590,19 +597,27 @@ angular.module('isApp', [
                     name: 'story',
                     url: '/story',
                     abstract: true,
-                    onEnter: ['$state', '$uibModal', function($state, $uibModal) {
-                        var goToCaller = function() {
-                            console.log('totoooo');
-                            $state.go(($state.params.storyTabId ? '^.' : '') + '^.^');
+                    resolve: {
+                        modalHolder: [function() { return {}; }]
+                    },
+                    onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
+                        var goToCaller = function(isStateChange) {
+                            if (!isStateChange) {
+                                $state.go(($state.params.storyTabId ? '^.' : '') + '^.^');
+                            }
                         };
-                        $uibModal.open({
+                        modalHolder.modal = $uibModal.open({
                             templateUrl: 'details.modal.html',
                             size: 'lg',
                             controller: ['$scope', function($scope) {
                                 $scope.isModal = true;
                                 $scope.modalTitle = $scope.message('is.story');
                             }]
-                        }).result.then(goToCaller, goToCaller);
+                        });
+                        modalHolder.modal.result.then(goToCaller, goToCaller);
+                    }],
+                    onExit: ['modalHolder', function(modalHolder) {
+                        modalHolder.modal.dismiss(true)
                     }],
                     children: [
                         getStoryDetailsState('@')
