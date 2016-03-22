@@ -230,7 +230,6 @@ angular.module('isApp', [
                     name: 'feature',
                     url: '/feature',
                     abstract: true,
-                    controller: 'featureCtrl',
                     resolve: {
                         features: ['FeatureService', function(FeatureService) {
                             return FeatureService.list;
@@ -243,8 +242,7 @@ angular.module('isApp', [
                         $uibModal.open({
                             templateUrl: 'details.modal.html',
                             size: 'lg',
-                            controller: ['$scope', '$controller', function($scope, $controller) {
-                                $controller('featureCtrl', {$scope: $scope});
+                            controller: ['$scope', function($scope) {
                                 $scope.isModal = true;
                                 $scope.modalTitle = $scope.message('is.feature');
                             }]
@@ -586,6 +584,28 @@ angular.module('isApp', [
                             }
                         },
                         getTaskDetailsState('@taskBoard')
+                    ]
+                },
+                {
+                    name: 'story',
+                    url: '/story',
+                    abstract: true,
+                    onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+                        var goToCaller = function() {
+                            console.log('totoooo');
+                            $state.go(($state.params.storyTabId ? '^.' : '') + '^.^');
+                        };
+                        $uibModal.open({
+                            templateUrl: 'details.modal.html',
+                            size: 'lg',
+                            controller: ['$scope', function($scope) {
+                                $scope.isModal = true;
+                                $scope.modalTitle = $scope.message('is.story');
+                            }]
+                        }).result.then(goToCaller, goToCaller);
+                    }],
+                    children: [
+                        getStoryDetailsState('@')
                     ]
                 }
             ]
