@@ -160,7 +160,7 @@
                                append-to-body="false"
                                tagging
                                tagging-tokens="SPACE|,"
-                               tagging-label="${message(code: 'toto.is.ui.tag.create')}"
+                               tagging-label="${message(code: 'todo.is.ui.tag.create')}"
                                ng-model="editableTask.tags">
                         <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
                         <ui-select-choices repeat="tag in tags | filter: $select.search">

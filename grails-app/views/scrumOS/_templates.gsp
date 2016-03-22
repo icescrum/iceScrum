@@ -155,3 +155,9 @@
     <i class="fa" ng-class="match.model.type == 'feature' ? 'fa-sticky-note' : 'fa-tag'"></i> {{ match.model.term }}
 </a>
 </script>
+
+<script type="text/ng-template" id="details.modal.html">
+<is:modal title="{{ modalTitle }}">
+    <div ui-view="details"></div>
+</is:modal>
+</script>

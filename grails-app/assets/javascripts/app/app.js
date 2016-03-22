@@ -225,6 +225,34 @@ angular.module('isApp', [
                             }]
                         }
                     }
+                },
+                {
+                    name: 'feature',
+                    url: '/feature',
+                    abstract: true,
+                    controller: 'featureCtrl',
+                    resolve: {
+                        features: ['FeatureService', function(FeatureService) {
+                            return FeatureService.list;
+                        }]
+                    },
+                    onEnter: ['$state', '$uibModal', function($state, $uibModal) {
+                        var goToCaller = function() {
+                            $state.go(($state.params.featureTabId ? '^.' : '') + '^.^');
+                        };
+                        $uibModal.open({
+                            templateUrl: 'details.modal.html',
+                            size: 'lg',
+                            controller: ['$scope', '$controller', function($scope, $controller) {
+                                $controller('featureCtrl', {$scope: $scope});
+                                $scope.isModal = true;
+                                $scope.modalTitle = $scope.message('is.feature');
+                            }]
+                        }).result.then(goToCaller, goToCaller);
+                    }],
+                    children: [
+                        getFeatureDetailsState('@')
+                    ]
                 }
             ]
         };

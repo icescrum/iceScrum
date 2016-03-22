@@ -47,17 +47,18 @@
                     </button>
                     <ul uib-dropdown-menu class="pull-right" ng-include="'feature.menu.html'"></ul>
                 </div>
-                <a ng-if="previousFeature"
+                <a ng-if="previousFeature && !isModal"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
                    href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextFeature"
+                <a ng-if="nextFeature && !isModal"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
                    href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a class="btn btn-default"
+                   ng-if="!isModal"
                    href="#{{ ::viewName }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>
@@ -157,7 +158,7 @@
                                append-to-body="false"
                                tagging
                                tagging-tokens="SPACE|,"
-                               tagging-label="${message(code: 'toto.is.ui.tag.create')}"
+                               tagging-label="${message(code: 'todo.is.ui.tag.create')}"
                                ng-model="editableFeature.tags">
                         <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
                         <ui-select-choices repeat="tag in tags | filter: $select.search">

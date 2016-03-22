@@ -57,7 +57,7 @@
                     </ui-select-choices>
                 </ui-select>
                 <span class="input-group-btn" ng-show="editableStory.feature.id">
-                    <a href="{{ editableStory.feature.uid | permalink: 'feature' }}"
+                    <a ui-sref=".feature.details({featureId: editableStory.feature.id})"
                        title="{{ editableStory.feature.name }}"
                        class="btn btn-default">
                         <i class="fa fa-external-link"></i>
@@ -211,7 +211,7 @@
                        append-to-body="false"
                        tagging
                        tagging-tokens="SPACE|,"
-                       tagging-label="${message(code: 'toto.is.ui.tag.create')}"
+                       tagging-label="${message(code: 'todo.is.ui.tag.create')}"
                        ng-model="editableStory.tags">
                 <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
                 <ui-select-choices repeat="tag in tags | filter: $select.search">
