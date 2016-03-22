@@ -73,7 +73,7 @@ angular.module('isApp', [
     ]);
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     $urlRouterProvider.when('', '/');
-    var getTaskDetailsState = function() {
+    var getTaskDetailsState = function(viewContext) {
         var options = {
             name: 'details',
             url: "/{taskId:int}",
@@ -82,12 +82,7 @@ angular.module('isApp', [
                     return _.find(sprint.tasks, {id: $stateParams.taskId})
                 }]
             },
-            views: {
-                "details@taskBoard": {
-                    templateUrl: 'task.details.html',
-                    controller: 'taskDetailsCtrl'
-                }
-            },
+            views: {},
             children: [
                 {
                     name: 'tab',
@@ -128,9 +123,13 @@ angular.module('isApp', [
                 }
             ]
         };
+        options.views['details' + (viewContext ? viewContext : '')] = {
+            templateUrl: 'task.details.html',
+            controller: 'taskDetailsCtrl'
+        };
         return options;
     };
-    var getFeatureDetailsState = function() {
+    var getFeatureDetailsState = function(viewContext) {
         var options = {
             name: 'details',
             url: "/{featureId:int}",
@@ -140,12 +139,7 @@ angular.module('isApp', [
                     return FeatureService.get($stateParams.featureId);
                 }]
             },
-            views: {
-                "details": {
-                    templateUrl: 'feature.details.html',
-                    controller: 'featureDetailsCtrl'
-                }
-            },
+            views: {},
             children: [
                 {
                     name: 'tab',
@@ -168,9 +162,13 @@ angular.module('isApp', [
                 }
             ]
         };
+        options.views['details' + (viewContext ? viewContext : '')] = {
+            templateUrl: 'feature.details.html',
+            controller: 'featureDetailsCtrl'
+        };
         return options;
     };
-    var getStoryDetailsState = function(absoluteParent) {
+    var getStoryDetailsState = function(viewContext) {
         var options = {
             name: 'details',
             url: "/{storyId:int}",
@@ -230,7 +228,7 @@ angular.module('isApp', [
                 }
             ]
         };
-        options.views['details' + (absoluteParent ? '@' + absoluteParent : '')] = {
+        options.views['details' + (viewContext ? viewContext : '')] = {
             templateUrl: 'story.details.html',
             controller: 'storyDetailsCtrl'
         };
@@ -434,7 +432,7 @@ angular.module('isApp', [
                         {
                             name: 'story',
                             url: "/story",
-                            children: [getStoryDetailsState('planning')]
+                            children: [getStoryDetailsState('@planning')]
                         },
                         {
                             name: 'sprint',
@@ -472,7 +470,7 @@ angular.module('isApp', [
                                         {
                                             name: 'story',
                                             url: "/story",
-                                            children: [getStoryDetailsState('planning')]
+                                            children: [getStoryDetailsState('@planning')]
                                         }
                                     ]
                                 },
@@ -493,7 +491,7 @@ angular.module('isApp', [
                                         {
                                             name: 'story',
                                             url: "/story",
-                                            children: [getStoryDetailsState('planning')]
+                                            children: [getStoryDetailsState('@planning')]
                                         }
                                     ]
                                 }
@@ -559,7 +557,7 @@ angular.module('isApp', [
                                 }
                             }
                         },
-                        getTaskDetailsState()
+                        getTaskDetailsState('@taskBoard')
                     ]
                 }
             ]
