@@ -123,7 +123,7 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
 controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
     $scope.isSelected = function(selectable) {
         if ($state.params.storyId) {
-            return $state.params.storyId == selectable.storyId;
+            return $state.params.storyId == selectable.id;
         } else {
             return false;
         }
