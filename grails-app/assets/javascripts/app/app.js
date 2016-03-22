@@ -73,11 +73,68 @@ angular.module('isApp', [
     ]);
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     $urlRouterProvider.when('', '/');
+    var getTaskDetailsState = function() {
+        var options = {
+            name: 'details',
+            url: "/{taskId:int}",
+            resolve: {
+                detailsTask: ['$stateParams', 'sprint', function($stateParams, sprint) {
+                    return _.find(sprint.tasks, {id: $stateParams.taskId})
+                }]
+            },
+            views: {
+                "details@taskBoard": {
+                    templateUrl: 'task.details.html',
+                    controller: 'taskDetailsCtrl'
+                }
+            },
+            children: [
+                {
+                    name: 'tab',
+                    url: "/{taskTabId:(?:comments|activities)}",
+                    resolve: {
+                        data: ['$stateParams', 'ActivityService', 'CommentService', 'detailsTask', function($stateParams, ActivityService, CommentService, detailsTask) {
+                            if ($stateParams.taskTabId == 'comments') {
+                                return CommentService.list(detailsTask);
+                            } else if ($stateParams.taskTabId == 'activities') {
+                                return ActivityService.activities(detailsTask, false);
+                            }
+                            return null;
+                        }],
+                        //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
+                        selected: ['data', 'detailsTask', function(data, detailsTask) {
+                            return detailsTask;
+                        }]
+                    },
+                    views: {
+                        "details-tab": {
+                            templateUrl: function($stateParams) {
+                                var tpl;
+                                if ($stateParams.taskTabId == 'comments') {
+                                    tpl = 'comment.list.html';
+                                } else if ($stateParams.taskTabId == 'activities') {
+                                    tpl = 'activity.list.html';
+                                }
+                                return tpl;
+                            },
+                            controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
+                                $scope.selected = selected;
+                                if ($stateParams.taskTabId == 'activities') {
+                                    $controller('activityCtrl', {$scope: $scope, selected: selected});
+                                }
+                            }]
+                        }
+                    }
+                }
+            ]
+        };
+        return options;
+    };
     var getFeatureDetailsState = function() {
         var options = {
             name: 'details',
-                url: "/{featureId:int}",
-                resolve: {
+            url: "/{featureId:int}",
+            resolve: {
                 //we add features to wait for dynamic resolution from parent state
                 detailsFeature: ['FeatureService', '$stateParams', 'features', function(FeatureService, $stateParams, features) {
                     return FeatureService.get($stateParams.featureId);
@@ -86,7 +143,7 @@ angular.module('isApp', [
             views: {
                 "details": {
                     templateUrl: 'feature.details.html',
-                        controller: 'featureDetailsCtrl'
+                    controller: 'featureDetailsCtrl'
                 }
             },
             children: [
@@ -502,60 +559,7 @@ angular.module('isApp', [
                                 }
                             }
                         },
-                        {
-                            name: 'details',
-                            url: "/{taskId:int}",
-                            resolve: {
-                                detailsTask: ['$stateParams', 'sprint', function($stateParams, sprint) {
-                                    return _.find(sprint.tasks, {id: $stateParams.taskId})
-                                }]
-                            },
-                            views: {
-                                "details@taskBoard": {
-                                    templateUrl: 'task.details.html',
-                                    controller: 'taskDetailsCtrl'
-                                }
-                            },
-                            children: [
-                                {
-                                    name: 'tab',
-                                    url: "/{taskTabId:(?:comments|activities)}",
-                                    resolve: {
-                                        data: ['$stateParams', 'ActivityService', 'CommentService', 'detailsTask', function($stateParams, ActivityService, CommentService, detailsTask) {
-                                            if ($stateParams.taskTabId == 'comments') {
-                                                return CommentService.list(detailsTask);
-                                            } else if ($stateParams.taskTabId == 'activities') {
-                                                return ActivityService.activities(detailsTask, false);
-                                            }
-                                            return null;
-                                        }],
-                                        //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
-                                        selected: ['data', 'detailsTask', function(data, detailsTask) {
-                                            return detailsTask;
-                                        }]
-                                    },
-                                    views: {
-                                        "details-tab": {
-                                            templateUrl: function($stateParams) {
-                                                var tpl;
-                                                if ($stateParams.taskTabId == 'comments') {
-                                                    tpl = 'comment.list.html';
-                                                } else if ($stateParams.taskTabId == 'activities') {
-                                                    tpl = 'activity.list.html';
-                                                }
-                                                return tpl;
-                                            },
-                                            controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
-                                                $scope.selected = selected;
-                                                if ($stateParams.taskTabId == 'activities') {
-                                                    $controller('activityCtrl', {$scope: $scope, selected: selected});
-                                                }
-                                            }]
-                                        }
-                                    }
-                                }
-                            ]
-                        }
+                        getTaskDetailsState()
                     ]
                 }
             ]
