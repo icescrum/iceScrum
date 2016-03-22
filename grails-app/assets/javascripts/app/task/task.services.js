@@ -99,7 +99,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             case 'create':
             case 'copy':
                 return Session.inProduct() &&
-                      (!task || !task.parentStory && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
+                      (!task || !task.parentStory && task.sprint && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
             case 'rank':
                 return Session.sm() || Session.responsible(task) || Session.creator(task); // no check on sprint & story state because rank cannot be called from there
             case 'update':
@@ -107,7 +107,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             case 'delete':
                 return (Session.sm() || Session.responsible(task) || Session.creator(task)) && (!task.sprint || task.sprint.state != SprintStatesByName.DONE);
             case 'block':
-                return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE && task.sprint.state == SprintStatesByName.IN_PROGRESS;
+                return !task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE && task.sprint && task.sprint.state == SprintStatesByName.IN_PROGRESS;
             case 'unBlock':
                 return task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE;
             case 'take':
