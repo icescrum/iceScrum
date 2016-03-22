@@ -64,17 +64,18 @@
                     </button>
                     <ul uib-dropdown-menu class="pull-right" ng-include="'task.menu.html'"></ul>
                 </div>
-                <a ng-if="previousTask"
+                <a ng-if="previousTask && !isModal"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
                    href="#{{ ::viewName }}/task/{{ ::previousTask.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextTask"
+                <a ng-if="nextTask && !isModal"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
                    href="#{{ ::viewName }}/task/{{ ::nextTask.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
-                <a class="btn btn-default"
+                <a ng-if="!isModal"
+                   class="btn btn-default"
                    href="{{:: $state.href('^.^') }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>

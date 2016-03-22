@@ -57,8 +57,8 @@
                    role="button"
                    tabindex="0"
                    href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
-                <a class="btn btn-default"
-                   ng-if="!isModal"
+                <a ng-if="!isModal"
+                   class="btn btn-default"
                    href="#{{ ::viewName }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>
