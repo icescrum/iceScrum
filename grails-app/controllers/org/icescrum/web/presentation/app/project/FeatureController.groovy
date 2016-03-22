@@ -175,9 +175,10 @@ class FeatureController {
     }
 
     @Secured(['permitAll()'])
-    def permalink(int uid, long product){
-        Feature feature = Feature.findByBacklogAndUid(Product.load(product), uid)
-        redirect(uri: "/p/$feature.backlog.pkey/#/feature/$feature.id")
+    def permalink(int uid, long product) {
+        Product _product = Product.get(product)
+        Feature feature = Feature.findByBacklogAndUid(_product, uid)
+        redirect(uri: "/p/$_product.pkey/#/feature/$feature.id")
     }
 
     @Secured('isAuthenticated()')

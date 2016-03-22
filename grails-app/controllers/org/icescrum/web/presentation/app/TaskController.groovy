@@ -264,9 +264,16 @@ class TaskController {
         render(status: 200, contentType: 'application/json', text: tasksByProject as JSON)
     }
 
-    // TODO fix permalink
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def permalink(int uid, long product) {
-        render(status: 200)
+        Product _product = Product.get(product)
+        Task task = Task.findByParentProductAndUid(_product, uid)
+        String uri = "/p/$_product.pkey/#/"
+        if (task.backlog) {
+            uri += "taskBoard/$task.backlog.id/task/$task.id"
+        } else {
+            uri += "backlog/$task.parentStory.id/tasks/task/$task.id"
+        }
+        redirect(uri: uri)
     }
 }

@@ -219,24 +219,19 @@ class StoryController {
 
     @Secured(['permitAll()'])
     def permalink(int uid, long product) {
-        def story = Story.getInProductByUid(product, uid).list() // TODO replace by withStory when fix uid / id stuff
-        def uri
+        Product _product = Product.get(product)
+        Story story = Story.findByBacklogAndUid(_product, uid)
+        String uri = "/p/$_product.pkey/#/"
         switch (story.state) {
-            case Story.STATE_SUGGESTED:
-                uri = "/p/$story.backlog.pkey/#/backlog/$story.id"
+            case [Story.STATE_SUGGESTED, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED]:
+                uri += "backlog/$story.id"
                 break
-            case Story.STATE_ACCEPTED:
-            case Story.STATE_ESTIMATED:
-                uri = "/p/$story.backlog.pkey/#/backlog/$story.id"
+            case [Story.STATE_PLANNED, Story.STATE_DONE]:
+                uri += "planning/$story.parentSprint.parentRelease.id/sprint/$story.parentSprint.id/story/$story.id"
                 break
-            case Story.STATE_PLANNED:
             case Story.STATE_INPROGRESS:
-            case Story.STATE_DONE:
-                //TODO need to be fixed
-                "/p/$story.backlog.pkey/#/sprint/$story.id"
+                uri += "taskBoard/$story.parentSprint.id/story/$story.id"
                 break
-            default:
-                uri: "/"
         }
         redirect(uri: uri)
     }

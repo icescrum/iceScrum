@@ -54,7 +54,9 @@
                         uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.unassign')}">
                     <i class="fa fa-user-times"></i>
                 </button>
-                <button class="btn btn-default elemid">{{ task.uid }}</button>
+                <button class="btn btn-default elemid"
+                        uib-tooltip="${message(code: 'is.permalink')}"
+                        ng-click="showCopyModal('${message(code:'is.permalink')}', (task.uid  | permalink: 'task'))">{{ ::task.uid }}</button>
                 <div class="btn-group"
                      uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
