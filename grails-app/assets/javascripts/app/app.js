@@ -245,6 +245,8 @@ angular.module('isApp', [
                                 modalHolder.modal = $uibModal.open({
                                     templateUrl: 'details.modal.html',
                                     size: 'lg',
+                                    keyboard: false,
+                                    backdrop: 'static',
                                     controller: ['$scope', function($scope) {
                                         $scope.isModal = true;
                                         $scope.modalTitle = $scope.message('is.task');
@@ -280,6 +282,8 @@ angular.module('isApp', [
                         modalHolder.modal = $uibModal.open({
                             templateUrl: 'details.modal.html',
                             size: 'lg',
+                            keyboard: false,
+                            backdrop: 'static',
                             controller: ['$scope', function($scope) {
                                 $scope.isModal = true;
                                 $scope.modalTitle = $scope.message('is.feature');
@@ -649,6 +653,8 @@ angular.module('isApp', [
                         modalHolder.modal = $uibModal.open({
                             templateUrl: 'details.modal.html',
                             size: 'lg',
+                            keyboard: false,
+                            backdrop: 'static',
                             controller: ['$scope', function($scope) {
                                 $scope.isModal = true;
                                 $scope.modalTitle = $scope.message('is.story');

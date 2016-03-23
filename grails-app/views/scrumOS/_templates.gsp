@@ -157,7 +157,20 @@
 </script>
 
 <script type="text/ng-template" id="details.modal.html">
-<is:modal title="{{ modalTitle }}">
-    <div ui-view="details"></div>
-</is:modal>
+<div class="modal-content modal-details">
+    <div class="modal-header">
+        <div class="pull-right">
+            <button class="btn btn-default"
+                    type="button"
+                    ng-click="$dismiss()"
+                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+        <h4 class="modal-title">{{ modalTitle }}</h4>
+    </div>
+    <div class="modal-body">
+        <div ui-view="details"></div>
+    </div>
+</div>
 </script>

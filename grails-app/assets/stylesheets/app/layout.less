@@ -616,38 +616,6 @@ table {
   }
 }
 
-.modal-xxl {
-  width: 98%;
-  margin: 1% auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
-  .modal-content {
-    height: 100%;
-  }
-  .modal-header {
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  .modal-footer {
-    left: 0;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
-  .modal-body {
-    bottom: 69px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 56px;
-  }
-}
-
 .well {
   .well;
   padding: 10px;
@@ -882,5 +850,15 @@ body {
         }
       }
     }
+  }
+}
+
+.modal-content.modal-details {
+  .modal-body {
+    .panel.panel-light {
+      border: none;
+      margin-bottom: 0;
+    }
+    padding: 0;
   }
 }
