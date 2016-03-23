@@ -73,6 +73,37 @@ angular.module('isApp', [
     ]);
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     $urlRouterProvider.when('', '/');
+    var getDetailsModalState = function(detailsType, options) {
+        return _.merge({
+            name: detailsType,
+            url: '/' + detailsType,
+            abstract: true,
+            resolve: {
+                modalHolder: [function() { return {}; }]
+            },
+            onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
+                var goToCaller = function(isStateChange) {
+                    if (!isStateChange) {
+                        $state.go(($state.params[detailsType + 'TabId'] ? '^.' : '') + '^.^');
+                    }
+                };
+                modalHolder.modal = $uibModal.open({
+                    templateUrl: 'details.modal.html',
+                    size: 'lg',
+                    keyboard: false,
+                    backdrop: 'static',
+                    controller: ['$scope', function($scope) {
+                        $scope.detailsType = detailsType;
+                        $scope.isModal = true;
+                    }]
+                });
+                modalHolder.modal.result.then(goToCaller, goToCaller);
+            }],
+            onExit: ['modalHolder', function(modalHolder) {
+                modalHolder.modal.dismiss(true)
+            }]
+        }, options);
+    };
     var getTaskDetailsState = function(viewContext) {
         var options = {
             name: 'details',
@@ -226,78 +257,26 @@ angular.module('isApp', [
                         }
                     },
                     children: [
-                        {
-                            name: 'task',
-                            url: '/task',
-                            abstract: true,
+                        getDetailsModalState('task', {
                             resolve: {
                                 taskContext: ['selected', function(selected) {
                                     return selected;
-                                }],
-                                modalHolder: [function() { return {}; }]
+                                }]
                             },
-                            onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
-                                var goToCaller = function(isStateChange) {
-                                    if (!isStateChange) {
-                                        $state.go(($state.params.taskTabId ? '^.' : '') + '^.^');
-                                    }
-                                };
-                                modalHolder.modal = $uibModal.open({
-                                    templateUrl: 'details.modal.html',
-                                    size: 'lg',
-                                    keyboard: false,
-                                    backdrop: 'static',
-                                    controller: ['$scope', function($scope) {
-                                        $scope.isModal = true;
-                                        $scope.modalTitle = $scope.message('is.task');
-                                    }]
-                                });
-                                modalHolder.modal.result.then(goToCaller, goToCaller);
-                            }],
-                            onExit: ['modalHolder', function(modalHolder) {
-                                modalHolder.modal.dismiss(true)
-                            }],
-                            children: [
-                                getTaskDetailsState('@')
-                            ]
-                        }
+                            children: [getTaskDetailsState('@')]
+                        })
                     ]
                 },
-                {
-                    name: 'feature',
-                    url: '/feature',
-                    abstract: true,
+                getDetailsModalState('feature', {
                     resolve: {
                         features: ['FeatureService', function(FeatureService) {
                             return FeatureService.list;
-                        }],
-                        modalHolder: [function() { return {}; }]
+                        }]
                     },
-                    onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
-                        var goToCaller = function(isStateChange) {
-                            if (!isStateChange) {
-                                $state.go(($state.params.featureTabId ? '^.' : '') + '^.^');
-                            }
-                        };
-                        modalHolder.modal = $uibModal.open({
-                            templateUrl: 'details.modal.html',
-                            size: 'lg',
-                            keyboard: false,
-                            backdrop: 'static',
-                            controller: ['$scope', function($scope) {
-                                $scope.isModal = true;
-                                $scope.modalTitle = $scope.message('is.feature');
-                            }]
-                        });
-                        modalHolder.modal.result.then(goToCaller, goToCaller);
-                    }],
-                    onExit: ['modalHolder', function(modalHolder) {
-                        modalHolder.modal.dismiss(true)
-                    }],
                     children: [
                         getFeatureDetailsState('@')
                     ]
-                }
+                })
             ]
         };
         options.views['details' + (viewContext ? viewContext : '')] = {
@@ -637,38 +616,9 @@ angular.module('isApp', [
                         getTaskDetailsState('@taskBoard')
                     ]
                 },
-                {
-                    name: 'story',
-                    url: '/story',
-                    abstract: true,
-                    resolve: {
-                        modalHolder: [function() { return {}; }]
-                    },
-                    onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
-                        var goToCaller = function(isStateChange) {
-                            if (!isStateChange) {
-                                $state.go(($state.params.storyTabId ? '^.' : '') + '^.^');
-                            }
-                        };
-                        modalHolder.modal = $uibModal.open({
-                            templateUrl: 'details.modal.html',
-                            size: 'lg',
-                            keyboard: false,
-                            backdrop: 'static',
-                            controller: ['$scope', function($scope) {
-                                $scope.isModal = true;
-                                $scope.modalTitle = $scope.message('is.story');
-                            }]
-                        });
-                        modalHolder.modal.result.then(goToCaller, goToCaller);
-                    }],
-                    onExit: ['modalHolder', function(modalHolder) {
-                        modalHolder.modal.dismiss(true)
-                    }],
-                    children: [
-                        getStoryDetailsState('@')
-                    ]
-                }
+                getDetailsModalState('story', {
+                    children: [getStoryDetailsState('@')]
+                })
             ]
         });
 }])

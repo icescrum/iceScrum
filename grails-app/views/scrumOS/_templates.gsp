@@ -167,7 +167,7 @@
                 <i class="fa fa-times"></i>
             </button>
         </div>
-        <h4 class="modal-title">{{ modalTitle }}</h4>
+        <h4 class="modal-title">{{ message('is.' + detailsType) }}</h4>
     </div>
     <div class="modal-body">
         <div ui-view="details"></div>
