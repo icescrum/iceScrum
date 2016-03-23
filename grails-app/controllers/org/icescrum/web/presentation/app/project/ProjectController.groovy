@@ -208,7 +208,11 @@ class ProjectController {
         builder.feed(description: "${_product.description?:''}",title: "$_product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}") {
           activities.each() { a ->
                 entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.label.encodeAsHTML()}") {e ->
-                    e.link = "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}" // TODO put story permalink if activity not delete story
+                    if (a.code == Activity.CODE_DELETE) {
+                        e.link = "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}"
+                    } else {
+                        e.link = "${createLink(absolute: true, uri: '/' + _product.pkey + '-' + Story.get(a.parentRef).uid)}"
+                    }
                     e.publishedDate = a.dateCreated
                 }
             }
@@ -587,7 +591,7 @@ class ProjectController {
                         creator: it.creator.firstName + ' ' + it.creator.lastName,
                         feature: it.feature?.name ?: null,
                         dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
-                        permalink:createLink(absolute: true, mapping: "shortURL", params: [product: _product.pkey], id: it.uid),
+                        permalink: createLink(absolute: true, uri: '/' + _product.pkey + '-' + it.uid),
                         featureColor: it.feature?.color ?: null,
                         nbTestsTocheck: testsByState[AcceptanceTestState.TOCHECK],
                         nbTestsFailed: testsByState[AcceptanceTestState.FAILED],

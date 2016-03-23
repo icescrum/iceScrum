@@ -34,7 +34,7 @@
 </li>
 <li>
     <a href ng-click="showCopyModal('${message(code:'is.permalink')}', (feature.uid | permalink: 'feature'))">
-        ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
+        ${message(code: 'todo.is.ui.permalink.copy')}
     </a>
 </li>
 <li ng-if="authorizedFeature('delete')">

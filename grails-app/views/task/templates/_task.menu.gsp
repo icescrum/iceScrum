@@ -39,7 +39,7 @@
 </li>
 <li>
     <a href ng-click="showCopyModal('${message(code:'is.permalink')}', (task.uid | permalink: 'task'))">
-        ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
+        ${message(code: 'todo.is.ui.permalink.copy')}
     </a>
 </li>
 <li ng-if="authorizedTask('delete', task)">

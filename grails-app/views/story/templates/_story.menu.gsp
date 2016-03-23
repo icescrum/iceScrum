@@ -69,7 +69,7 @@
 </li>
 <li>
     <a href ng-click="showCopyModal('${message(code:'is.permalink')}', (story.uid | permalink: 'story'))">
-        ${message(code: 'todo.is.ui.copy.permalink.to.clipboard')}
+        ${message(code: 'todo.is.ui.permalink.copy')}
     </a>
 </li>
 <li ng-if="authorizedStory('createTemplate')">
