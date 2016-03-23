@@ -27,68 +27,68 @@ services.factory('Task', [ 'Resource', function($resource) {
 
 services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, $rootScope, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
     var self = this;
-    this.getCrudMethods = function(obj) {
+    this.getCrudMethods = function(taskContext) {
         var crudMethods = {};
         crudMethods[IceScrumEventType.CREATE] = function(task) {
-            if (obj.class == 'Story' ? task.parentStory.id == obj.id : task.sprint.id == obj.id) {
-                var existingTask = _.find(obj.tasks, {id: task.id});
+            if (taskContext.class == 'Story' ? task.parentStory.id == taskContext.id : task.sprint.id == taskContext.id) {
+                var existingTask = _.find(taskContext.tasks, {id: task.id});
                 if (existingTask) {
                     angular.extend(existingTask, task);
                 } else {
-                    obj.tasks.push(task);
-                    obj.tasks_count = obj.tasks.length;
+                    taskContext.tasks.push(task);
+                    taskContext.tasks_count = taskContext.tasks.length;
                 }
             }
         };
         crudMethods[IceScrumEventType.UPDATE] = function(task) {
-            angular.extend(_.find(obj.tasks, { id: task.id }), task);
+            angular.extend(_.find(taskContext.tasks, { id: task.id }), task);
         };
         crudMethods[IceScrumEventType.DELETE] = function(task) {
             if ($state.includes("taskBoard.task.details", {taskId: task.id}) ||
                 ($state.includes("taskBoard.task.multiple") && _.contains($state.params.taskListId.split(','), task.id.toString()))) {
                 $state.go('taskBoard');
             }
-            _.remove(obj.tasks, { id: task.id });
-            obj.tasks_count = obj.tasks.length;
+            _.remove(taskContext.tasks, { id: task.id });
+            taskContext.tasks_count = taskContext.tasks.length;
         };
         return crudMethods;
     };
-    this.save = function(task, sprintOrStory) {
+    this.save = function(task, taskContext) {
         task.class = 'task';
-        return Task.save(task, self.getCrudMethods(sprintOrStory)[IceScrumEventType.CREATE]).$promise;
+        return Task.save(task, self.getCrudMethods(taskContext)[IceScrumEventType.CREATE]).$promise;
     };
-    this.update = function(task, obj) {
-        return task.$update(self.getCrudMethods(obj)[IceScrumEventType.UPDATE]);
+    this.update = function(task, taskContext) {
+        return task.$update(self.getCrudMethods(taskContext)[IceScrumEventType.UPDATE]);
     };
-    this.block = function(task, sprint) {
+    this.block = function(task, taskContext) {
         task.blocked = true;
-        return self.update(task, sprint);
+        return self.update(task, taskContext);
     };
-    this.unBlock = function(task, sprint) {
+    this.unBlock = function(task, taskContext) {
         task.blocked = false;
-        return self.update(task, sprint);
+        return self.update(task, taskContext);
     };
-    this.take = function(task, sprint) {
-        return Task.update({id: task.id, action: 'take'}, {}, self.getCrudMethods(sprint)[IceScrumEventType.UPDATE]).$promise;
+    this.take = function(task, taskContext) {
+        return Task.update({id: task.id, action: 'take'}, {}, self.getCrudMethods(taskContext)[IceScrumEventType.UPDATE]).$promise;
     };
-    this.release = function(task, sprint) {
-        return Task.update({id: task.id, action: 'unassign'}, {}, self.getCrudMethods(sprint)[IceScrumEventType.UPDATE]).$promise;
+    this.release = function(task, taskContext) {
+        return Task.update({id: task.id, action: 'unassign'}, {}, self.getCrudMethods(taskContext)[IceScrumEventType.UPDATE]).$promise;
     };
-    this['delete'] = function(task, sprintOrStory) {
-        return task.$delete(self.getCrudMethods(sprintOrStory)[IceScrumEventType.DELETE]);
+    this['delete'] = function(task, taskContext) {
+        return task.$delete(self.getCrudMethods(taskContext)[IceScrumEventType.DELETE]);
     };
-    this.copy = function(task, obj) {
-        return Task.update({id: task.id, action: 'copy'}, {}, self.getCrudMethods(obj)[IceScrumEventType.CREATE]).$promise;
+    this.copy = function(task, taskContext) {
+        return Task.update({id: task.id, action: 'copy'}, {}, self.getCrudMethods(taskContext)[IceScrumEventType.CREATE]).$promise;
     };
-    this.list = function(obj) {
-        var params = {typeId: obj.id, type: obj.class.toLowerCase()};
+    this.list = function(taskContext) {
+        var params = {typeId: taskContext.id, type: taskContext.class.toLowerCase()};
         if ($rootScope.app.context) {
             _.merge(params, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
         }
         return Task.query(params, function(data) {
-            obj.tasks = data;
-            obj.tasks_count = obj.tasks.length;
-            var crudMethods = self.getCrudMethods(obj);
+            taskContext.tasks = data;
+            taskContext.tasks_count = taskContext.tasks.length;
+            var crudMethods = self.getCrudMethods(taskContext);
             _.each(crudMethods, function(crudMethod, eventType) {
                 PushService.registerListener('task', eventType, crudMethod);
             });

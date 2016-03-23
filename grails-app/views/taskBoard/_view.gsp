@@ -80,7 +80,7 @@
             </div>
         </h3>
     </div>
-    <div class="panel-body" id="tasks-board" ng-controller="taskSprintCtrl">
+    <div class="panel-body" id="tasks-board" ng-controller="taskCtrl" ng-init="taskContext=sprint">
         <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
             <thead>
             <tr class="table-header sticky-header sticky-stack">
@@ -158,7 +158,6 @@
                         </div>
                     </td>
                 </tr>
-            </tbody>
             </tbody>
             <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'">
                 <tr class="sticky-header list-group">

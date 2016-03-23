@@ -35,7 +35,9 @@
                         </button>
                     </div>
                     <div class="form-group col-sm-8">
-                        <span class="name form-control-static">{{ task.name }}</span>
+                        <span class="name form-control-static">
+                            <a ui-sref=".task.details({taskId: task.id})">{{ task.name }}</a>
+                        </span>
                     </div>
                     <div class="form-group col-sm-3">
                         <span class="form-control-static text-right">{{ task.estimation != undefined ? task.estimation : '?' }} <i class="small-icon fa {{ task.state | taskStateIcon }}"></i></span>

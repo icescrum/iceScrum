@@ -78,8 +78,8 @@ angular.module('isApp', [
             name: 'details',
             url: "/{taskId:int}",
             resolve: {
-                detailsTask: ['$stateParams', 'sprint', function($stateParams, sprint) {
-                    return _.find(sprint.tasks, {id: $stateParams.taskId})
+                detailsTask: ['$stateParams', 'taskContext', function($stateParams, taskContext) {
+                    return _.find(taskContext.tasks, {id: $stateParams.taskId})
                 }]
             },
             views: {},
@@ -224,7 +224,42 @@ angular.module('isApp', [
                                 }
                             }]
                         }
-                    }
+                    },
+                    children: [
+                        {
+                            name: 'task',
+                            url: '/task',
+                            abstract: true,
+                            resolve: {
+                                taskContext: ['selected', function(selected) {
+                                    return selected;
+                                }],
+                                modalHolder: [function() { return {}; }]
+                            },
+                            onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
+                                var goToCaller = function(isStateChange) {
+                                    if (!isStateChange) {
+                                        $state.go(($state.params.taskTabId ? '^.' : '') + '^.^');
+                                    }
+                                };
+                                modalHolder.modal = $uibModal.open({
+                                    templateUrl: 'details.modal.html',
+                                    size: 'lg',
+                                    controller: ['$scope', function($scope) {
+                                        $scope.isModal = true;
+                                        $scope.modalTitle = $scope.message('is.task');
+                                    }]
+                                });
+                                modalHolder.modal.result.then(goToCaller, goToCaller);
+                            }],
+                            onExit: ['modalHolder', function(modalHolder) {
+                                modalHolder.modal.dismiss(true)
+                            }],
+                            children: [
+                                getTaskDetailsState('@')
+                            ]
+                        }
+                    ]
                 },
                 {
                     name: 'feature',
@@ -576,6 +611,11 @@ angular.module('isApp', [
                 {
                     name: 'task',
                     url: "/task",
+                    resolve: {
+                        taskContext: ['sprint', function(sprint) {
+                            return sprint;
+                        }]
+                    },
                     children: [
                         {
                             name: 'new',

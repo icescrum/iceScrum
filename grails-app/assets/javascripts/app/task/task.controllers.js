@@ -48,25 +48,25 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
     $scope.resetTaskForm();
 }]);
 
-controllers.controller('taskSprintCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
     // Functions
     $scope.take = function(task) {
-        TaskService.take(task, $scope.sprint);
+        TaskService.take(task, $scope.taskContext);
     };
     $scope.release = function(task) {
-        TaskService.release(task, $scope.sprint);
+        TaskService.release(task, $scope.taskContext);
     };
     $scope.copy = function(task) {
-        TaskService.copy(task, $scope.sprint);
+        TaskService.copy(task, $scope.taskContext);
     };
     $scope.block = function(task) {
-        TaskService.block(task, $scope.sprint);
+        TaskService.block(task, $scope.taskContext);
     };
     $scope.unBlock = function(task) {
-        TaskService.unBlock(task, $scope.sprint);
+        TaskService.unBlock(task, $scope.taskContext);
     };
     $scope['delete'] = function(task) {
-        TaskService.delete(task, $scope.sprint).then(function() {
+        TaskService.delete(task, $scope.taskContext).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
@@ -76,7 +76,8 @@ controllers.controller('taskSprintCtrl', ['$scope', 'TaskService', function($sco
 }]);
 
 controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'TaskService', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, TaskService, hotkeys, sprint) {
-    $controller('taskSprintCtrl', {$scope: $scope});
+    $scope.taskContext = sprint;
+    $controller('taskCtrl', {$scope: $scope});
     // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {backlog: {id: sprint.id}};
@@ -108,15 +109,16 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     });
 }]);
 
-controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'TaskService', 'FormService', 'ProjectService', 'sprint', 'detailsTask', function($scope, $state, $filter, $controller, TaskService, FormService, ProjectService, sprint, detailsTask) {
-    $controller('taskSprintCtrl', {$scope: $scope});
+controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, TaskService, FormService, ProjectService, taskContext, detailsTask) {
+    $scope.taskContext = taskContext;
+    $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions
     $scope.isDirty = function() {
         return !_.isEqual($scope.editableTask, $scope.editableTaskReference);
     };
     $scope.update = function(task) {
-        TaskService.update(task, sprint).then(function() {
+        TaskService.update(task, taskContext).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.updated');
         });
@@ -184,7 +186,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
         }
     };
     $scope.resetTaskForm();
-    var sortedTasks = $filter('orderBy')(sprint.tasks, [function(task) { return - task.type }, 'parentStory.rank', 'state', 'rank']);
+    var sortedTasks = $filter('orderBy')(taskContext.tasks, [function(task) { return - task.type }, 'parentStory.rank', 'state', 'rank']);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);
 }]);
