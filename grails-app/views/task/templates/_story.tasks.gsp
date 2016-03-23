@@ -36,7 +36,9 @@
                     </div>
                     <div class="form-group col-sm-8">
                         <span class="name form-control-static">
-                            <a ui-sref=".task.details({taskId: task.id})">{{ task.name }}</a>
+                            <a ng-if="!isModal"
+                               ui-sref=".task.details({taskId: task.id})">{{ task.name }}</a>
+                            <span ng-if="isModal">{{ task.name }}</span>
                         </span>
                     </div>
                     <div class="form-group col-sm-3">

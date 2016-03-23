@@ -160,7 +160,7 @@ angular.module('isApp', [
         };
         return options;
     };
-    var getFeatureDetailsState = function(viewContext) {
+    var getFeatureDetailsState = function(viewContext, isModal) {
         var options = {
             name: 'details',
             url: "/{featureId:int}",
@@ -197,9 +197,16 @@ angular.module('isApp', [
             templateUrl: 'feature.details.html',
             controller: 'featureDetailsCtrl'
         };
+        if (!isModal) {
+            options.children[0].children = [
+                getDetailsModalState('story', {
+                    children: [getStoryDetailsState('@', true)]
+                })
+            ];
+        }
         return options;
     };
-    var getStoryDetailsState = function(viewContext) {
+    var getStoryDetailsState = function(viewContext, isModal) {
         var options = {
             name: 'details',
             url: "/{storyId:int}",
@@ -255,34 +262,36 @@ angular.module('isApp', [
                                 }
                             }]
                         }
-                    },
-                    children: [
-                        getDetailsModalState('task', {
-                            resolve: {
-                                taskContext: ['selected', function(selected) {
-                                    return selected;
-                                }]
-                            },
-                            children: [getTaskDetailsState('@')]
-                        })
-                    ]
-                },
-                getDetailsModalState('feature', {
-                    resolve: {
-                        features: ['FeatureService', function(FeatureService) {
-                            return FeatureService.list;
-                        }]
-                    },
-                    children: [
-                        getFeatureDetailsState('@')
-                    ]
-                })
+                    }
+                }
             ]
         };
         options.views['details' + (viewContext ? viewContext : '')] = {
             templateUrl: 'story.details.html',
             controller: 'storyDetailsCtrl'
         };
+        if (!isModal) {
+            options.children[0].children = [
+                getDetailsModalState('task', {
+                    resolve: {
+                        taskContext: ['selected', function(selected) {
+                            return selected;
+                        }]
+                    },
+                    children: [getTaskDetailsState('@')]
+                })
+            ];
+            options.children.push(getDetailsModalState('feature', {
+                resolve: {
+                    features: ['FeatureService', function(FeatureService) {
+                        return FeatureService.list;
+                    }]
+                },
+                children: [
+                    getFeatureDetailsState('@', true)
+                ]
+            }));
+        }
         return options;
     };
     stateHelperProvider

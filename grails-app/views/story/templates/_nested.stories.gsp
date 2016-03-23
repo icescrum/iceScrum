@@ -26,7 +26,9 @@
     <div ng-repeat="story in selected.stories">
         <button class="btn btn-xs btn-default"
                 disabled="disabled">{{ story.uid }}</button>
-        <a href="{{ story.uid | permalink: 'story' }}">{{ story.name }}</a>
+        <a ng-if="!isModal"
+           ui-sref=".story.details({storyId: story.id})">{{ story.name }}</a>
+        <span ng-if="isModal">{{ story.name }}</span>
         <div class="pretty-printed"
              ng-bind-html="story | storyDescription: true | sanitize">
         </div>

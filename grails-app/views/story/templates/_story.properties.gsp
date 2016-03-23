@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
             <label for="feature">${message(code: 'is.feature')}</label>
-            <div ng-class="{'input-group':editableStory.feature.id}">
+            <div ng-class="{'input-group': editableStory.feature.id && !isModal}">
                 <ui-select input-group-fix-width="30"
                            ng-click="editForm(true)"
                            ng-change="editForm(true)"
@@ -56,7 +56,7 @@
                         <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
-                <span class="input-group-btn" ng-show="editableStory.feature.id">
+                <span class="input-group-btn" ng-if="editableStory.feature.id && !isModal">
                     <a ui-sref=".feature.details({featureId: editableStory.feature.id})"
                        title="{{ editableStory.feature.name }}"
                        class="btn btn-default">

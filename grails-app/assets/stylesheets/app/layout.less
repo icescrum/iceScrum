@@ -485,20 +485,6 @@ header {
             }
           }
 
-          .toggle-visible {
-            .responsive-invisibility();
-          }
-          .toggle-hidden {
-            .responsive-visibility();
-          }
-          .toggle-container:hover {
-            .toggle-visible {
-              .responsive-visibility();
-            }
-            .toggle-hidden {
-              .responsive-invisibility();
-            }
-          }
           .panel-footer {
             padding: 0;
             > div:first-child {
@@ -860,5 +846,20 @@ body {
       margin-bottom: 0;
     }
     padding: 0;
+  }
+}
+
+.toggle-visible {
+  .responsive-invisibility();
+}
+.toggle-hidden {
+  .responsive-visibility();
+}
+.toggle-container:hover {
+  .toggle-visible {
+    .responsive-visibility();
+  }
+  .toggle-hidden {
+    .responsive-invisibility();
   }
 }
