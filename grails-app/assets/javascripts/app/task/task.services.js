@@ -102,6 +102,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                       (!task || !task.parentStory && task.sprint && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
             case 'rank':
                 return Session.sm() || Session.responsible(task) || Session.creator(task); // no check on sprint & story state because rank cannot be called from there
+            case 'upload':
             case 'update':
                 return (Session.sm() || Session.responsible(task) || Session.creator(task)) && task.state != TaskStatesByName.DONE;
             case 'delete':
