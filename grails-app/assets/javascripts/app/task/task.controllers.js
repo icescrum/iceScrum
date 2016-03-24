@@ -157,7 +157,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
     $scope.editableTask = {};
     $scope.editableTaskReference = {};
     $scope.formHolder = {};
-    FormService.addStateChangeDirtyFormListener($scope, 'task');
+    FormService.addStateChangeDirtyFormListener($scope, 'task', true);
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {

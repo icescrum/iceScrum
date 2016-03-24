@@ -255,27 +255,42 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             return response.data;
         });
     };
-    this.addStateChangeDirtyFormListener = function($scope, type) {
+    this.addStateChangeDirtyFormListener = function($scope, type, isModal) {
+        var triggerConfirmModal = function(event, confirmCallback) {
+            event.preventDefault(); // cancel the state change
+            $scope.mustConfirmStateChange = false;
+            $scope.confirm({
+                message: $scope.message('todo.is.ui.dirty.confirm'),
+                condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
+                callback: function() {
+                    if ($scope.flow != undefined && $scope.flow.isUploading()) {
+                        $scope.flow.cancel();
+                    }
+                    confirmCallback();
+                },
+                closeCallback: function() {
+                    $scope.app.loading = false;
+                    $scope.mustConfirmStateChange = true;
+                }
+            });
+        };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             if ($scope.mustConfirmStateChange && fromParams[type + 'Id'] != toParams[type + 'Id']) {
-                event.preventDefault(); // cancel the state change
-                $scope.mustConfirmStateChange = false;
-                $scope.confirm({
-                    message: $scope.message('todo.is.ui.dirty.confirm'),
-                    condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                    callback: function() {
-                        if ($scope.flow != undefined && $scope.flow.isUploading()) {
-                            $scope.flow.cancel();
-                        }
-                        $scope.$state.go(toState, toParams)
-                    },
-                    closeCallback: function() {
-                        $scope.mustConfirmStateChange = true;
-                    }
+                triggerConfirmModal(event, function() {
+                    $scope.$state.go(toState, toParams);
                 });
             }
         });
+        if (isModal) {
+            $scope.$on('modal.closing', function(event) {
+                if ($scope.mustConfirmStateChange) {
+                    triggerConfirmModal(event, function() {
+                        $scope.$close();
+                    });
+                }
+            });
+        }
     };
 }])
 .service('BundleService', [function() {

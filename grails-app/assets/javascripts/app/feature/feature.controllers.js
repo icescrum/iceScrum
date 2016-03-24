@@ -85,7 +85,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.editableFeature = {};
     $scope.editableFeatureReference = {};
     $scope.formHolder = {};
-    FormService.addStateChangeDirtyFormListener($scope, 'feature');
+    FormService.addStateChangeDirtyFormListener($scope, 'feature', true);
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {

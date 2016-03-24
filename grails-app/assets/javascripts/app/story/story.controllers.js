@@ -389,7 +389,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 $scope.atOptions.data = mapActors(actors);
             });
         }
-        FormService.addStateChangeDirtyFormListener($scope, 'story');
+        FormService.addStateChangeDirtyFormListener($scope, 'story', true);
         $scope.resetStoryForm();
         // For header
         var list = StoryService.list;
