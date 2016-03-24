@@ -884,8 +884,13 @@ nvd3 .title {
   font-weight: bold;
 }
 
-.sprint-not-done tr.story-done {
-  opacity: 0.6;
+.sprint-not-done tbody.story-done {
+    tr.postits {
+      opacity: 0.6;
+    }
+    tr.sticky-header .postit > * {
+      opacity: 0.6;
+    }
 }
 
 .mood-button {

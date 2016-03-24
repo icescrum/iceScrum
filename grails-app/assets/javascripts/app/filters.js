@@ -99,7 +99,7 @@ filters
     .filter('createGradientBackground', function() {
         return function(color, disabled) {
             if (disabled) {
-                return "background:" + color;
+                return "border-left:8px solid " + color;
             }
             if (color && gradientBackgroundCache[color] != undefined) {
                 return gradientBackgroundCache[color];
