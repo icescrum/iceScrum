@@ -165,7 +165,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $state, $controller, SprintService, ReleaseService, FormService, detailsSprint) {
+controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $controller, SprintService, ReleaseService, FormService, detailsSprint) {
     $controller('sprintCtrl', { $scope: $scope }); // inherit from sprintCtrl
     $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsSprint, clazz: 'sprint' });
     // Functions
@@ -197,26 +197,8 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 
         }
         $scope.resetFormValidation($scope.formHolder.sprintForm);
     };
-    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        if ($scope.mustConfirmStateChange && fromParams.sprintId != toParams.sprintId) {
-            event.preventDefault(); // cancel the state change
-            $scope.mustConfirmStateChange = false;
-            $scope.confirm({
-                message: $scope.message('todo.is.ui.dirty.confirm'),
-                condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                callback: function() {
-                    if ($scope.flow != undefined && $scope.flow.isUploading()) {
-                        $scope.flow.cancel();
-                    }
-                    $state.go(toState, toParams)
-                },
-                closeCallback: function() {
-                    $scope.mustConfirmStateChange = true;
-                }
-            });
-        }
-    });
     // Init
+    FormService.addStateChangeDirtyFormListener($scope, 'sprint');
     $scope.$watchCollection('release.sprints', function(sprints) {
         if (!_.isUndefined(sprints)) {
             var previousSprint = _.findLast(_.sortBy(sprints, 'orderNumber'), function(sprint) {
@@ -238,7 +220,6 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$state', '$controller', 
     $scope.sprint = detailsSprint;
     $scope.editableSprint = {};
     $scope.editableSprintReference = {};
-    $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $state.go
     $scope.formHolder = {};
     $scope.resetSprintForm();
     ReleaseService.get($scope.sprint.parentRelease.id, $scope.project).then(function (release) {

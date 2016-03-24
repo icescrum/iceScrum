@@ -157,26 +157,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
     $scope.editableTask = {};
     $scope.editableTaskReference = {};
     $scope.formHolder = {};
-    $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
-    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        if ($scope.mustConfirmStateChange && fromParams.taskId != toParams.taskId) {
-            event.preventDefault(); // cancel the state change
-            $scope.mustConfirmStateChange = false;
-            $scope.confirm({
-                message: $scope.message('todo.is.ui.dirty.confirm'),
-                condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                callback: function() {
-                    if ($scope.flow != undefined && $scope.flow.isUploading()) {
-                        $scope.flow.cancel();
-                    }
-                    $state.go(toState, toParams)
-                },
-                closeCallback: function() {
-                    $scope.mustConfirmStateChange = true;
-                }
-            });
-        }
-    });
+    FormService.addStateChangeDirtyFormListener($scope, 'task');
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {

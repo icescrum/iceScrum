@@ -116,7 +116,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
     });
 }]);
 
-controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $state, $controller, ReleaseService, FormService, detailsRelease) {
+controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $controller, ReleaseService, FormService, detailsRelease) {
     $controller('releaseCtrl', { $scope: $scope }); // inherit from releaseCtrl
     $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsRelease, clazz: 'release' });
     // Functions
@@ -147,26 +147,8 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller',
         }
         $scope.resetFormValidation($scope.formHolder.releaseForm);
     };
-    $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        if ($scope.mustConfirmStateChange && fromParams.releaseId != toParams.releaseId) {
-            event.preventDefault(); // cancel the state change
-            $scope.mustConfirmStateChange = false;
-            $scope.confirm({
-                message: $scope.message('todo.is.ui.dirty.confirm'),
-                condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                callback: function() {
-                    if ($scope.flow != undefined && $scope.flow.isUploading()) {
-                        $scope.flow.cancel();
-                    }
-                    $state.go(toState, toParams)
-                },
-                closeCallback: function() {
-                    $scope.mustConfirmStateChange = true;
-                }
-            });
-        }
-    });
     // Init
+    FormService.addStateChangeDirtyFormListener($scope, 'release');
     $scope.$watchCollection('project.releases', function(releases) {
         if (!_.isUndefined(releases)) {
             var previousRelease = _.last(releases);
@@ -191,7 +173,6 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.editableRelease = {};
     $scope.editableReleaseReference = {};
     $scope.formHolder = {};
-    $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $state.go
     $scope.resetReleaseForm();
     $scope.previousRelease = FormService.previous($scope.project.releases, $scope.release);
     $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);

@@ -264,8 +264,8 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$uibModal', 'StoryService', 'StoryCodesByState', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, $uibModal, StoryService, StoryCodesByState, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', 'StoryService', 'StoryCodesByState', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
+    function($scope, $controller, $state, $timeout, StoryService, StoryCodesByState, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
@@ -365,7 +365,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.editableStory = {};
         $scope.editableStoryReference = {};
         $scope.formHolder = {};
-        $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.dependenceEntries = [];
         $scope.parentSprintEntries = [];
         $scope.tags = [];
@@ -390,25 +389,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 $scope.atOptions.data = mapActors(actors);
             });
         }
-        $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-            if ($scope.mustConfirmStateChange && fromParams.storyId != toParams.storyId) {
-                event.preventDefault(); // cancel the state change
-                $scope.mustConfirmStateChange = false;
-                $scope.confirm({
-                    message: $scope.message('todo.is.ui.dirty.confirm'),
-                    condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                    callback: function() {
-                        if ($scope.flow != undefined && $scope.flow.isUploading()) {
-                            $scope.flow.cancel();
-                        }
-                        $state.go(toState, toParams)
-                    },
-                    closeCallback: function() {
-                        $scope.mustConfirmStateChange = true;
-                    }
-                });
-            }
-        });
+        FormService.addStateChangeDirtyFormListener($scope, 'story');
         $scope.resetStoryForm();
         // For header
         var list = StoryService.list;
