@@ -35,8 +35,7 @@
         <button type="button"
                 role="button"
                 class="btn btn-danger"
-                ng-click="confirm({ message: '${message(code: 'is.dialog.members.leave.team.confirm')}', callback: leaveTeam, args: [project] })"
-                uib-tooltip="${message(code: 'is.dialog.members.leave.team')}">
+                ng-click="confirm({ message: '${message(code: 'is.dialog.members.leave.team.confirm')}', callback: leaveTeam, args: [project] })">
             <i class="fa fa-times"></i> ${ message(code: 'is.dialog.members.leave.team')}
         </button>
     </div>

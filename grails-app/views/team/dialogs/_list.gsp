@@ -143,7 +143,6 @@
                         </button>
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid"
-                                uib-tooltip="${message(code:'default.button.update.label')}"
                                 type="submit">
                             ${message(code:'default.button.update.label')}
                         </button>
