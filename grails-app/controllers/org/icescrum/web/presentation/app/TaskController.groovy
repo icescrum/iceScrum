@@ -255,7 +255,7 @@ class TaskController {
         def options = [max: 8]
         def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
         def userTasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
-                                        : Task.findAllByResponsibleAndStateInListAndCreationDateBetween(user, taskStates, new Date() - 10, new Date(), options)
+                                        : Task.findAllByResponsibleAndStateInList(user, taskStates, options)
         def tasksByProject = userTasks.groupBy {
             it.parentProduct
         }.collect { project, tasks ->
