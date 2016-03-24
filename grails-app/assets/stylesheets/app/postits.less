@@ -4,10 +4,6 @@
 @import (reference) "./variables.less";
 @import (reference) "./mixin.less";
 
-.as-sortable-placeholder {
-  margin: 6px;
-}
-
 .standalone {
   .postit-container {
     font-family: "Myriad Pro", Arial, sans-serif;
@@ -95,6 +91,9 @@
 }
 
 .grid-group {
+  .as-sortable-placeholder {
+    margin: 6px;
+  }
   &.has-selected {
     > .postit-container:not(.is-selected) {
       opacity: 0.5;
