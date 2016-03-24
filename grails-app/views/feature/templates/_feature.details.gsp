@@ -68,13 +68,13 @@
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.featureTabId}">
-            <a href="{{ ::tabUrl() }}"
+            <a href="{{ tabUrl() }}"
                uib-tooltip="${message(code:'todo.is.ui.details')}">
                 <i class="fa fa-lg fa-edit"></i>
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'stories'}">
-            <a href="{{ ::tabUrl('stories') }}"
+            <a href="{{ tabUrl('stories') }}"
                uib-tooltip="${message(code:'todo.is.ui.stories')}">
                 <i class="fa fa-lg fa-sticky-note"></i>
                 <span class="badge">{{ feature.stories_ids.length || '' }}</span>
