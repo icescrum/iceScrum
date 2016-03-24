@@ -107,7 +107,7 @@
     .postit {
       width: 200px;
       height: 160px;
-      padding: 0 5px;
+      padding: 2px 5px;
       position: relative;
       color: @gray;
       border: 1px solid @postit-border;
@@ -152,10 +152,16 @@
         }
       }
       .head {
+        .follow {
+          font-size: 16px;
+          color:@gray;
+        }
         .id, .estimation, .value {
           display: inline-block;
         }
         .id {
+          cursor: pointer;
+          font-weight: 700;
           padding-top: 2px;
         }
         .estimation, .value, .remaining-time {
@@ -387,6 +393,7 @@
 }
 
 .list-group {
+  margin-bottom: 0;
   .postit-container {
     .postit {
       display: flex;
@@ -396,13 +403,9 @@
       }
       > .content {
         flex: 1 1 auto;
-        padding: 4px 4px 4px 8px;
-        .id:after {
-          content:' - ';
-        }
+        padding-right:8px;
         > h3 {
           display: inline;
-          font-size: 16px;
           margin: 0;
           > div {
             display: inline;
@@ -412,62 +415,65 @@
           display: none;
         }
       }
-      > .content, > .footer, > .numbers {
+      > div {
         background: #fff;
-        color: #555555;
+        padding:6px;
       }
       .numbers {
         flex: 0 0 auto;
-        font-size: 16px;
-        line-height: 1.1;
         text-align: right;
-        vertical-align: middle;
-        padding: 5px 25px 5px 8px;
+        padding-left:8px;
+        padding-right:26px;
         border-left: 1px solid #dcdcdc;
-        text-shadow: 0 1px 1px rgba(0, 0, 0, .15);
       }
       > .head {
         flex: 0 0 auto;
-        padding: 4px 8px;
+        padding-left:8px;
+        padding-right:8px;
         background: none;
-        > * {
-          line-height: 1.1;
-          vertical-align: middle;
-        }
         .value, .estimation {
           display: none;
         }
       }
       > .footer {
-        padding-right: 8px;
         text-align: right;
         flex: 1 0 160px;
+        padding-right:8px;
         .action {
-          padding: 2px 4px;
-          font-size: 16px;
+          padding: 0 4px;
           display: inline-block;
         }
+      }
+      > .head .id {
+        font-weight: 700;
+      }
+      > .head .id, > .content h3, > .content .follow, .footer > .actions, .numbers {
+        font-size: 16px !important;
+        color: @gray;
+      }
+      &.invert > .head .id {
+        color: @invert-color;
       }
       &.defect:after, &.functional:after, &.architectural:after, &.task-blocked:after {
         content: "";
         position: absolute;
         top: 0;
         right: 0;
-        border: 13px solid;
+        border: 17px solid;
         display: block;
         width: 0;
         z-index: 1;
       }
       &.defect:before, &.functional:before, &.architectural:before, &.task-blocked:before {
         font: normal normal normal 14px/1 FontAwesome;
-        font-size: 12px;
+        font-size: 15px;
         text-rendering: auto;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #fff;
         z-index: 2;
-        top: 1px;
-        right: 1px;
+        top: 3px;
+        right: 2px;
         position: absolute;
       }
       &.defect:after, &.task-blocked:after {
@@ -498,29 +504,6 @@
       .visible-table {
         display: inline-block;
       }
-    }
-  }
-}
-
-.postit {
-  .head {
-    a.follow {
-      color: @gray;
-      vertical-align: top;
-      font-size: 16px;
-    }
-  }
-  .id {
-    cursor: pointer;
-    font-size: @font-size-base;
-    font-weight: 700;
-  }
-}
-
-.invert {
-  .head {
-    a.follow {
-      color: #fff;
     }
   }
 }
