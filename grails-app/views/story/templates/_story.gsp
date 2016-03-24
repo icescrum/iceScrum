@@ -27,27 +27,27 @@
      style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient }}"
      class="postit {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
-        <a href
-           class="follow hidden-table"
-           uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-           ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
-        <span class="id">{{ ::story.uid }}</span>
-        <span class="value hidden-table editable"
-              ng-click="showEditValueModal(story)"
-              ng-if="story.value">
-            {{ story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
-        </span>
-        <span class="estimation hidden-table editable"
-              ng-if="story.state > 1"
-              ng-click="showEditEffortModal(story)">
-            {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
-        </span>
+        <div class="head-left">
+            <a href
+               class="follow"
+               uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+               ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
+            <span class="id">{{ ::story.uid }}</span>
+        </div>
+        <div class="head-right">
+            <span class="value editable"
+                  ng-click="showEditValueModal(story)"
+                  ng-if="story.value">
+                {{ story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
+            </span>
+            <span class="estimation editable"
+                  ng-if="story.state > 1"
+                  ng-click="showEditEffortModal(story)">
+                {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
+            </span>
+        </div>
     </div>
     <div class="content" as-sortable-item-handle-if="sortableStory">
-        <a href
-           class="follow visible-table"
-           uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-           ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
         <h3 class="title ellipsis-el"
             ng-model="story.name"
             ng-bind-html="story.name | sanitize"></h3>
@@ -86,28 +86,18 @@
                 </a>
             </span>
         </div>
-    </div>
-    <div class="numbers visible-table">
-        <span class="value editable"
-              ng-click="showEditValueModal(story)"
-              ng-if="story.value">
-            {{ story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
-        </span>
-        <span class="estimation editable"
-              ng-if="story.state > 1"
-              ng-click="showEditEffortModal(story)">
-            {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
-        </span>
-    </div>
-    <div ng-if="tasksProgress(story)" class="progress hidden-table">
-        <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
-        <div class="progress-bar"
-             ng-class="'bg-'+(story.testState | acceptanceTestColor)"
-             style="width: {{ story.countDoneTasks | percentProgress:story.tasks_count }}%">
+        <div class="state-progress">
+            <div ng-if="tasksProgress(story)" class="progress">
+                <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
+                <div class="progress-bar"
+                     ng-class="'bg-'+(story.testState | acceptanceTestColor)"
+                     style="width: {{ story.countDoneTasks | percentProgress:story.tasks_count }}%">
+                </div>
+            </div>
+            <div class="state"
+                 ng-class="{'hover-progress':tasksProgress(story)}">{{ story.state | i18n:'StoryStates' }}
+            </div>
         </div>
-    </div>
-    <div class="state"
-         ng-class="{'hover-progress':tasksProgress(story)}">{{ story.state | i18n:'StoryStates' }}
     </div>
 </div>
 </script>

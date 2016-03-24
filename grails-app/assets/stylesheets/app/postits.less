@@ -74,6 +74,26 @@
   }
 }
 
+.grid-group, .list-group {
+  &.has-selected {
+    > .postit-container:not(.is-selected) {
+      opacity: 0.5;
+      &:hover, &:focus {
+        opacity: 1;
+        transition: opacity 0.25s linear;
+        -o-transition: opacity 0.25s linear;
+        -moz-transition: opacity 0.25s linear;
+        -webkit-transition: opacity 0.25s linear;
+      }
+    }
+    .postit-container.is-selected {
+      .postit {
+        border: 1px solid @brand-primary;
+      }
+    }
+  }
+}
+
 .grid-group {
   &.has-selected {
     > .postit-container:not(.is-selected) {
@@ -120,7 +140,6 @@
         .head {
           a.follow {
             color: @invert-color;
-            text-decoration: none;
           }
           .estimation, .value {
             text-shadow: 0 1px 1px rgba(255, 255, 255, .15);
@@ -152,45 +171,50 @@
         }
       }
       .head {
-        .follow {
-          font-size: 16px;
-          color:@gray;
-        }
-        .id, .estimation, .value {
-          display: inline-block;
-        }
-        .id {
-          cursor: pointer;
-          font-weight: 700;
-          padding-top: 2px;
-        }
-        .estimation, .value, .remaining-time {
-          font-size: 16px;
-          text-shadow: 0 1px 1px rgba(0, 0, 0, .15);
-          position: absolute;
-          i {
-            font-size: 0.6em;
+        .head-left {
+          float: left;
+          vertical-align: top;
+          .follow {
+            font-size: 16px;
+            color: @gray;
+            text-decoration: none;
           }
-          &.editable {
+          .id, .estimation, .value {
+            display: inline-block;
+          }
+          .id {
             cursor: pointer;
+            font-weight: 700;
           }
         }
-        .estimation {
-          right: 55px;
+        .head-right {
+          float:right;
+          vertical-align:top;
+          margin-right: 26px;
         }
-        .value, .remaining-time {
-          right: 25px;
+        width: 100%;
+        float: left;
+        position: relative;
+      }
+      .estimation, .value, .remaining-time {
+        font-size: 16px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+        i {
+          font-size: 0.6em;
         }
-        .responsible {
-          display: block;
-          position: absolute;
-          left: 33px;
-          height: 18px;
-          width: 18px;
+        &.editable {
+          cursor: pointer;
         }
       }
+      .responsible {
+        height: 18px;
+        width: 18px;
+        margin-left: 3px;
+      }
+
       .content {
         height: 82px;
+        clear: both;
         text-shadow: 0 1px 0 #fff;
         padding-right: 10px;
         padding-left: 10px;
@@ -247,45 +271,46 @@
           }
         }
       }
-      .progress {
-        height: 13px;
-        margin-bottom: 0;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        padding: 0;
-        border: none;
-        color: @gray;
-        background: rgba(255, 255, 255, 0.6);
-        .progress-bar {
-          text-align: left;
-          background: rgba(255, 255, 255, 0.9);
-          &.bg-success {
-            .bg-variant(darken(@state-success-bg, 20%))
-          }
-          &.bg-danger {
-            .bg-variant(darken(@state-danger-bg, 20%))
-          }
-        }
-        .status {
-          top: 3px;
-          left: 5px;
-          position: absolute;
+      .state-progress {
+        position: relative;
+        .state {
+          top: 0;
+          right: 5px;
           font-size: 10px;
+          margin-top: 1.5px;
+          text-align: right;
           line-height: 10px;
-          display: none;
           font-weight: bold;
+          position: absolute;
         }
-      }
-      .state {
-        right: 5px;
-        bottom: 2px;
-        font-size: 10px;
-        line-height: 10px;
-        position: absolute;
-        margin-top: 1.5px;
-        font-weight: bold;
+        .progress {
+          width:100%;
+          padding: 0;
+          height: 13px;
+          border: none;
+          color: @gray;
+          margin-bottom: 0;
+          background: rgba(255, 255, 255, 0.6);
+          .progress-bar {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.9);
+            &.bg-success {
+              .bg-variant(darken(@state-success-bg, 20%))
+            }
+            &.bg-danger {
+              .bg-variant(darken(@state-danger-bg, 20%))
+            }
+          }
+          .status {
+            top: 3px;
+            left: 5px;
+            position: absolute;
+            font-size: 10px;
+            line-height: 10px;
+            display: none;
+            font-weight: bold;
+          }
+        }
       }
       &:hover {
         .content {
@@ -376,17 +401,12 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding-top:2px;
           }
           height: @font-size-postit-small*@line-height-postit-small*@lines-to-show-postit-small;
           padding-left: 5px;
           padding-right: 5px;
         }
-      }
-      .hidden-table {
-        display: inline-block;
-      }
-      .visible-table {
-        display:none;
       }
     }
   }
@@ -394,16 +414,27 @@
 
 .list-group {
   margin-bottom: 0;
+  margin-left: -15px;
+  margin-right: -15px;
   .postit-container {
+    &:nth-child(even) .postit > div {
+      background: #fff;
+    }
+    &:nth-child(odd) .postit > div {
+      background: @table-bg-accent;
+    }
     .postit {
       display: flex;
       position: relative;
+      border: 1px solid @table-border-color;
+      border-bottom: none;
+      padding-left:8px;
       > .state {
         display: none;
       }
       > .content {
+        order:2;
         flex: 1 1 auto;
-        padding-right:8px;
         > h3 {
           display: inline;
           margin: 0;
@@ -411,48 +442,115 @@
             display: inline;
           }
         }
-        > .description {
-          display: none;
-        }
       }
       > div {
-        background: #fff;
-        padding:6px;
-      }
-      .numbers {
-        flex: 0 0 auto;
-        text-align: right;
-        padding-left:8px;
-        padding-right:26px;
-        border-left: 1px solid #dcdcdc;
+        padding:8px;
       }
       > .head {
+        order:1;
         flex: 0 0 auto;
         padding-left:8px;
+        padding-top: 6px;
         padding-right:8px;
-        background: none;
-        .value, .estimation {
-          display: none;
+        display:flex;
+        flex-direction: column;
+        .head-left, .head-right {
+            flex:1;
         }
       }
       > .footer {
+        order:3;
         text-align: right;
-        flex: 1 0 160px;
-        padding-right:8px;
+        flex: 0 0 200px;
+        padding-left:0;
+        padding-right:26px;
+        display:flex;
+        flex-direction: column;
         .action {
+          flex: 0 0 auto;
+          order:2;
           padding: 0 4px;
           display: inline-block;
+        }
+        .tags {
+          flex:1;
+          order:1;
+          font-size: 10px;
+          padding: 1px 2px;
+          border-radius: 2px;
+          a {
+            .tag {
+              margin-right: 4px;
+              font-size: 10px;
+              padding: 1px 2px;
+              border-radius: 2px;
+              background: rgba(0, 0, 0, 0.2);
+              color: @invert-color;
+            }
+
+            &:hover {
+              text-decoration: none;
+              .tag {
+                background: rgba(255, 255, 255, 0);
+                color: @gray;
+              }
+            }
+          }
+        }
+        .state-progress {
+          order:3;
+          flex: 0 0 auto;
+          height: 13px;
+          position: relative;
+          .state {
+            top:2px;
+            right:5px;
+            position: absolute;
+            font-size: 10px;
+            text-align: right;
+            line-height: 10px;
+            font-weight: bold;
+          }
+          .progress {
+            width:100%;
+            height:15px;
+            padding: 0;
+            color: @gray;
+            margin-bottom: 0;
+            position: absolute;
+            border:1px solid @table-bg-accent;
+            background: rgba(255, 255, 255, 0.6);
+            .progress-bar {
+              text-align: left;
+              background: rgba(255, 255, 255, 0.9);
+              &.bg-success {
+                .bg-variant(darken(@state-success-bg, 20%))
+              }
+              &.bg-danger {
+                .bg-variant(darken(@state-danger-bg, 20%))
+              }
+            }
+            .status {
+              top: 3px;
+              left: 5px;
+              position: absolute;
+              font-size: 10px;
+              line-height: 10px;
+              display: none;
+              font-weight: bold;
+            }
+          }
         }
       }
       > .head .id {
         font-weight: 700;
+        &:before {
+          content:' - ';
+        }
       }
-      > .head .id, > .content h3, > .content .follow, .footer > .actions, .numbers {
+      > .head > *, > .content h3, .footer > .actions, .numbers {
         font-size: 16px !important;
         color: @gray;
-      }
-      &.invert > .head .id {
-        color: @invert-color;
       }
       &.defect:after, &.functional:after, &.architectural:after, &.task-blocked:after {
         content: "";
@@ -498,12 +596,21 @@
       &.architectural:before {
         content: "\f085";
       }
-      .hidden-table {
-        display: none;
+      &.invert {
+        .description {
+          color:@gray;
+        }
+        .state {
+          color:@gray;
+        }
       }
-      .visible-table {
-        display: inline-block;
-      }
+    }
+    &:last-child > .postit {
+      border-bottom: 1px solid @table-border-color;
+    }
+    padding-bottom: 1px;
+    &.is-selected {
+      padding-bottom:0;
     }
   }
 }
@@ -517,15 +624,21 @@
   color: @gray;
 }
 
-.actions {
-  a {
+.postit {
+  .actions {
+    a {
+      text-decoration: none;
+    }
+    i {
+      color: @gray;
+      &.fa-comment-o {
+        vertical-align: text-top;
+      }
+    }
+    font-family: @font-family-base;
+  }
+  .follow {
+    color:@gray;
     text-decoration: none;
   }
-  i {
-    color: @gray;
-    &.fa-comment-o {
-      vertical-align: text-top;
-    }
-  }
-  font-family: @font-family-base;
 }

@@ -84,13 +84,13 @@
         <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
             <thead>
             <tr class="table-header sticky-header sticky-stack">
-                <th>
+                <th ng-if="sprint.state != 3">
                     <span>${message(code: 'is.task.state.wait')}</span>
                 </th>
-                <th>
+                <th ng-if="sprint.state == 2">
                     <span>${message(code: 'is.task.state.inprogress')}</span>
                 </th>
-                <th>
+                <th ng-if="sprint.state != 1">
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
@@ -192,7 +192,7 @@
                 </tr>
             </tbody>
             <tr ng-if="sprint.stories.length == 0">
-                <td>
+                <td colspan="{{ sprint.state != 2 ? 1 : 3 }}">
                     <div class="empty-view">
                         <p class="help-block">${message(code: 'todo.is.ui.story.empty.sprint')}<p>
                         <a type="button"

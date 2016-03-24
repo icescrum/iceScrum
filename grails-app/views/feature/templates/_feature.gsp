@@ -26,12 +26,16 @@
      ellipsis
      class="postit {{ (feature.color | contrastColor) + ' ' + (feature.type | featureType) }}">
     <div class="head">
-        <span class="id">{{ ::feature.id }}</span>
-        <span class="value"
-              uib-tooltip="${message(code: 'is.feature.value')}"
-              ng-if="feature.value">
-            {{ feature.value }} <i class="fa fa-line-chart"></i>
-        </span>
+        <div class="head-left">
+            <span class="id">{{ ::feature.id }}</span>
+        </div>
+        <div class="head-left">
+            <span class="value"
+                  uib-tooltip="${message(code: 'is.feature.value')}"
+                  ng-if="feature.value">
+                {{ feature.value }} <i class="fa fa-line-chart"></i>
+            </span>
+        </div>
     </div>
     <div class="content"
          as-sortable-item-handle>
@@ -42,37 +46,40 @@
              ng-model="feature.description"
              ng-bind-html="feature.description | sanitize"></div>
     </div>
-    <div class="tags">
-        <a ng-repeat="tag in feature.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
-    </div>
-    <div class="actions">
-        <span uib-dropdown class="action">
-            <a uib-dropdown-toggle>
-                <i class="fa fa-cog"></i>
-            </a>
-            <ul uib-dropdown-menu
-                ng-include="'feature.menu.html'"></ul>
-        </span>
-        <span class="action" ng-class="{'active':feature.attachments.length}">
-            <a href="#/{{ ::viewName }}/{{ ::feature.id }}"
-               uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
-                <i class="fa fa-paperclip"></i>
-                <span class="badge">{{ feature.attachments.length || '' }}</span>
-            </a>
-        </span>
-        <span class="action" ng-class="{'active':feature.stories_ids.length}">
-            <a href="#/{{ ::viewName }}/{{ ::feature.id }}/stories"
-               uib-tooltip="${message(code:'todo.is.ui.stories')}">
-                <i class="fa fa-sticky-note"></i>
-                <span class="badge">{{ feature.stories_ids.length || '' }}</span>
-            </a>
-        </span>
-    </div>
-    <div class="progress">
-        <span class="status">{{ feature.countDoneStories + '/' + feature.stories_ids.length }}</span>
-        <div class="progress-bar" style="width: {{ feature.countDoneStories | percentProgress:feature.stories_ids.length }}%">
+    <div class="footer">
+        <div class="tags">
+            <a ng-repeat="tag in feature.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
         </div>
-    </div>
-    <div class="state">{{ feature.state | i18n:'FeatureStates' }}</div>
+        <div class="actions">
+            <span uib-dropdown class="action">
+                <a uib-dropdown-toggle>
+                    <i class="fa fa-cog"></i>
+                </a>
+                <ul uib-dropdown-menu
+                    ng-include="'feature.menu.html'"></ul>
+            </span>
+            <span class="action" ng-class="{'active':feature.attachments.length}">
+                <a href="#/{{ ::viewName }}/{{ ::feature.id }}"
+                   uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                    <i class="fa fa-paperclip"></i>
+                    <span class="badge">{{ feature.attachments.length || '' }}</span>
+                </a>
+            </span>
+            <span class="action" ng-class="{'active':feature.stories_ids.length}">
+                <a href="#/{{ ::viewName }}/{{ ::feature.id }}/stories"
+                   uib-tooltip="${message(code:'todo.is.ui.stories')}">
+                    <i class="fa fa-sticky-note"></i>
+                    <span class="badge">{{ feature.stories_ids.length || '' }}</span>
+                </a>
+            </span>
+        </div>
+        <div class="state-progress">
+            <div class="progress">
+                <span class="status">{{ feature.countDoneStories + '/' + feature.stories_ids.length }}</span>
+                <div class="progress-bar" style="width: {{ feature.countDoneStories | percentProgress:feature.stories_ids.length }}%">
+                </div>
+            </div>
+            <div class="state">{{ feature.state | i18n:'FeatureStates' }}</div>
+        </div>
 </div>
 </script>

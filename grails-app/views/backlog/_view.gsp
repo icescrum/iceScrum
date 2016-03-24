@@ -47,7 +47,7 @@
             <div class="btn-group btn-view visible-on-hover">
                 <button type="button"
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
-                        unavailable-feature="true"
+                        ng-click="app.asList = !app.asList"
                         class="btn btn-default">
                     <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
                 </button>

@@ -973,7 +973,8 @@ button.pin {
       border-top-style:dashed;
     }
     .sticky-header{
-      &.cloned, &.cloned  {
+
+      &.cloned  {
         > td {
           border-top:none;
         }
@@ -1006,6 +1007,22 @@ button.pin {
           border-bottom:none;
         }
       }
+      &.list-group {
+        margin-left: 0;
+        margin-right: 0;
+        .postit-container {
+          .postit{
+            border:none;
+            > div {
+              background: #fff;
+            }
+            .description {
+              display: none;
+            }
+          }
+        }
+      }
+
     }
   }
 }
