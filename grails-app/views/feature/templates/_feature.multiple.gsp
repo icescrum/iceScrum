@@ -121,12 +121,10 @@
             <div ng-if="authorizedFeature('update')"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
-                        uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
                         type="submit">
                     ${message(code:'default.button.update.label')}
                 </button>
                 <a class="btn confirmation btn-default pull-right"
-                   uib-tooltip="${message(code: 'is.button.cancel')} (ESCAPE)"
                    href="#/{{ ::viewName }}">
                     ${message(code: 'is.button.cancel')}
                 </a>

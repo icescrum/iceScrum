@@ -45,7 +45,6 @@
                     <i class="fa fa-user-plus"></i> ${message(code: 'is.button.register')}
                 </button>
                 <button class="btn btn-primary pull-right"
-                        uib-tooltip="${message(code: 'is.button.connect')} (RETURN)"
                         type="submit">
                     ${message(code: 'is.button.connect')}
                 </button>

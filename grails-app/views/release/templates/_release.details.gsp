@@ -183,7 +183,6 @@
                 <div class="btn-toolbar">
                     <button class="btn btn-primary"
                             ng-disabled="!isDirty() || formHolder.releaseForm.$invalid"
-                            uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>

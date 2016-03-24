@@ -63,7 +63,6 @@
                     <div class="btn-toolbar pull-right">
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.newTeamForm.$dirty || formHolder.newTeamForm.$invalid"
-                                uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                                 type="submit">
                             ${message(code:'default.button.create.label')}
                         </button>

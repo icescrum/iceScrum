@@ -93,7 +93,6 @@
             <div class="btn-toolbar pull-right">
                 <button class="btn btn-primary pull-right"
                         ng-disabled="formHolder.sprintForm.$invalid"
-                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                         type="submit">
                     ${message(code:'default.button.create.label')}
                 </button>

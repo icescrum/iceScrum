@@ -205,7 +205,6 @@
                 <div class="btn-toolbar">
                     <button class="btn btn-primary"
                             ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
-                            uib-tooltip="${message(code:'default.button.update.label')} (RETURN)"
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>

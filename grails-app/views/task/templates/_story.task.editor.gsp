@@ -60,7 +60,6 @@
         <div class="btn-toolbar">
             <button class="btn btn-primary pull-right"
                     ng-disabled="!formHolder.taskForm.$dirty || formHolder.taskForm.$invalid"
-                    uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                     type="submit">
                 ${message(code:'default.button.create.label')}
             </button>

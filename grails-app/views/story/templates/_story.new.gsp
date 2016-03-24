@@ -143,7 +143,6 @@
                 </button>
                 <button class="btn btn-primary"
                         ng-disabled="formHolder.storyForm.$invalid"
-                        uib-tooltip="${message(code:'default.button.create.label')} (RETURN)"
                         type="submit">
                     ${message(code:'default.button.create.label')}
                 </button>
