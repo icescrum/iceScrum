@@ -82,16 +82,13 @@ angular.module('isApp', [
                 modalHolder: [function() { return {}; }]
             },
             onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
-                var goToCaller = function(isStateChange) {
-                    if (!isStateChange) {
+                var goToCaller = function(reason) {
+                    if (reason !== true) {
                         $state.go(($state.params[detailsType + 'TabId'] ? '^.' : '') + '^.^');
                     }
                 };
                 modalHolder.modal = $uibModal.open({
                     templateUrl: 'details.modal.html',
-                    size: 'lg',
-                    keyboard: false,
-                    backdrop: 'static',
                     controller: ['$scope', function($scope) {
                         $scope.detailsType = detailsType;
                         $scope.isModal = true;
