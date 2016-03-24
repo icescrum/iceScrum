@@ -148,7 +148,6 @@
                             ${message(code:'default.button.update.label')}
                         </button>
                         <button class="btn btn-default pull-right"
-                                uib-tooltip="${message(code:'is.button.cancel')}"
                                 type="button"
                                 ng-click="cancel()">
                             ${message(code:'is.button.cancel')}

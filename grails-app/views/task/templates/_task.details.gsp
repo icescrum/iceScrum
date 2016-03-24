@@ -210,7 +210,6 @@
                         ${message(code:'default.button.update.label')}
                     </button>
                     <button class="btn confirmation btn-default"
-                            uib-tooltip="${message(code:'is.button.cancel')}"
                             type="button"
                             ng-click="editForm(false)">
                         ${message(code:'is.button.cancel')}
