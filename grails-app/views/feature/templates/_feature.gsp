@@ -29,7 +29,7 @@
         <div class="head-left">
             <span class="id">{{ ::feature.id }}</span>
         </div>
-        <div class="head-left">
+        <div class="head-right">
             <span class="value"
                   uib-tooltip="${message(code: 'is.feature.value')}"
                   ng-if="feature.value">

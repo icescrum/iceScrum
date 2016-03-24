@@ -165,7 +165,7 @@
                         <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                     </td>
                 </tr>
-                <tr class="postits grid-group" ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}">
+                <tr class="postits grid-group" ng-class="{'sortable-disabled': !isSortingStory(story), 'story-done': story.state == 7}" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
                     <td class="postits grid-group"
                         ng-class="hasSelected() ? 'has-selected' : ''"
                         ng-model="tasksByStoryByState[story.id][taskState]"
