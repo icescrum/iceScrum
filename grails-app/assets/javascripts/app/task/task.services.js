@@ -35,6 +35,9 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 if (existingTask) {
                     angular.extend(existingTask, task);
                 } else {
+                    if (!taskContext.tasks) {
+                        taskContext.tasks = [];
+                    }
                     taskContext.tasks.push(task);
                     taskContext.tasks_count = taskContext.tasks.length;
                 }
@@ -55,6 +58,11 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             taskContext.tasks_count = taskContext.tasks.length;
         };
         return crudMethods;
+    };
+    this.mergeTasks = function(tasks, taskContext) {
+        _.each(tasks, function(task) {
+            self.getCrudMethods(taskContext)[IceScrumEventType.CREATE](task);
+        });
     };
     this.save = function(task, taskContext) {
         task.class = 'task';
@@ -88,11 +96,9 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         if ($rootScope.app.context) {
             _.merge(params, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
         }
-        return Task.query(params, function(data) {
-            taskContext.tasks = data;
-            taskContext.tasks_count = taskContext.tasks.length;
-            var crudMethods = self.getCrudMethods(taskContext);
-            _.each(crudMethods, function(crudMethod, eventType) {
+        return Task.query(params, function(tasks) {
+            self.mergeTasks(tasks, taskContext);
+            _.each(self.getCrudMethods(taskContext), function(crudMethod, eventType) {
                 PushService.registerListener('task', eventType, crudMethod);
             });
         }).$promise;
