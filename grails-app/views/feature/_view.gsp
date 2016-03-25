@@ -94,7 +94,7 @@
                 </g:if>
                 <button type="button"
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
-                        unavailable-feature="true"
+                        ng-click="app.asList = !app.asList"
                         class="btn btn-default">
                     <i class="fa" ng-class="app.asList ? 'fa-th-list' : 'fa-th'"></i>
                 </button>

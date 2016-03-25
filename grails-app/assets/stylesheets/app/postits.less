@@ -543,10 +543,14 @@
           }
         }
       }
-      > .head .id {
-        font-weight: 700;
-        &:before {
-          content:' - ';
+      > .head {
+        .id {
+          font-weight: 700;
+        }
+        .follow + .id {
+          &:before {
+            content: ' - ';
+          }
         }
       }
       > .head > *, > .content h3, .footer > .actions, .numbers {

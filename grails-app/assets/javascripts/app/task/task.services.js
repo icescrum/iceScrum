@@ -42,7 +42,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         };
         crudMethods[IceScrumEventType.UPDATE] = function(task) {
             angular.extend(_.find(taskContext.tasks, { id: task.id }), task);
-            if(task.parentStory){
+            if (task.parentStory) {
                 StoryService.refresh(task.parentStory.id);
             }
         };

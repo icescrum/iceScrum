@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="feature.html">
-<div style="{{ feature.color | createGradientBackground }}"
+<div style="{{ feature.color | createGradientBackground: app.asList }}"
      ellipsis
      class="postit {{ (feature.color | contrastColor) + ' ' + (feature.type | featureType) }}">
     <div class="head">
