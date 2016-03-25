@@ -25,7 +25,7 @@ services.factory('Task', [ 'Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action');
 }]);
 
-services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, $rootScope, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
+services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', 'StoryService', function($q, $state, $rootScope, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName, StoryService) {
     var self = this;
     this.getCrudMethods = function(taskContext) {
         var crudMethods = {};
@@ -42,6 +42,9 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         };
         crudMethods[IceScrumEventType.UPDATE] = function(task) {
             angular.extend(_.find(taskContext.tasks, { id: task.id }), task);
+            if(task.parentStory){
+                StoryService.refresh(task.parentStory.id);
+            }
         };
         crudMethods[IceScrumEventType.DELETE] = function(task) {
             if ($state.includes("taskBoard.task.details", {taskId: task.id}) ||

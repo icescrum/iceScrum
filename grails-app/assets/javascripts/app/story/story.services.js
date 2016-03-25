@@ -107,6 +107,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         var story = _.find(self.list, {id: id});
         return story ? $q.when(story) : Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
+    this.refresh = function(id) {
+        return Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
+    };
     this.update = function(story) {
         return Story.update(story, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };

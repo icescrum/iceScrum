@@ -516,11 +516,11 @@
             color: @gray;
             margin-bottom: 0;
             position: absolute;
-            border:1px solid @table-bg-accent;
+            border:1px solid @table-border-color;
             background: rgba(255, 255, 255, 0.6);
             .progress-bar {
               text-align: left;
-              background: rgba(255, 255, 255, 0.9);
+              background: rgba(0, 0, 0, 0.1);
               &.bg-success {
                 .bg-variant(darken(@state-success-bg, 20%))
               }
@@ -529,13 +529,16 @@
               }
             }
             .status {
-              top: 3px;
+              top: 2px;
               left: 5px;
               position: absolute;
               font-size: 10px;
               line-height: 10px;
               display: none;
               font-weight: bold;
+            }
+            &:hover .status {
+              display: block;
             }
           }
         }
