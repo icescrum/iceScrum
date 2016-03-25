@@ -135,14 +135,24 @@
                         </span>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="estimation">${message(code:'is.task.estimation')}</label>
-                    <input type="number"
-                           class="form-control"
-                           ng-focus="editForm(true)"
-                           ng-disabled="!formHolder.editable"
-                           name="estimation"
-                           ng-model="editableTask.estimation"/>
+                <div class="clearfix no-padding">
+                    <div class="form-half">
+                        <label for="estimation">${message(code:'is.task.estimation')}</label>
+                        <input type="number"
+                               class="form-control"
+                               ng-focus="editForm(true)"
+                               ng-disabled="!formHolder.editable"
+                               name="estimation"
+                               ng-model="editableTask.estimation"/>
+                    </div>
+                    <div ng-if="task.parentStory" class="form-half">
+                        <label for="name">${message(code:'is.story')}</label>
+                        <input class="form-control" disabled="disabled" type="text" value="{{ task.parentStory.name }}"/>
+                    </div>
+                    <div ng-if="task.type" class="form-half">
+                        <label for="name">${message(code:'is.task.type')}</label>
+                        <input class="form-control" disabled="disabled" type="text" value="{{ task.type | i18n: 'TaskTypes' }}"/>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="description">${message(code:'is.backlogelement.description')}</label>
