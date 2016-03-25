@@ -25,12 +25,14 @@ services.factory('Attachment', [ 'Resource', function($resource) {
     return $resource('attachment/:type/:typeId/:id', { typeId: '@typeId', type: '@type' });
 }]);
 
-services.service("AttachmentService", ['$q', 'Attachment', 'Session', function($q, Attachment, Session) {
-    this.save = function(attachment, attachmentable) {
-        attachment.type = attachmentable.class.toLowerCase();
-        attachment.typeId = attachmentable.id;
-        attachment.attachmentable = {id: attachmentable.id };
-        attachmentable.attachments.unshift(attachment);
+services.service("AttachmentService", ['Attachment', 'Session', function(Attachment, Session) {
+    this.addToAttachmentable = function(attachment, attachmentable) {
+        if (!_.find(attachmentable.attachments, {id: attachment.id})) {
+            attachment.type = attachmentable.class.toLowerCase();
+            attachment.typeId = attachmentable.id;
+            attachment.attachmentable = {id: attachmentable.id };
+            attachmentable.attachments.unshift(attachment);
+        }
     };
     this['delete'] = function(attachment, attachmentable) {
         attachment.type = attachmentable.class.toLowerCase();
@@ -39,15 +41,6 @@ services.service("AttachmentService", ['$q', 'Attachment', 'Session', function($
         return Attachment.delete(attachment, function() {
             _.remove(attachmentable.attachments, { id: attachment.id });
         });
-    };
-    this.list = function(attachmentable) {
-        if (_.isEmpty(attachmentable.attachments)) {
-            return Attachment.query({ typeId: attachmentable.id, type: attachmentable.class.toLowerCase() }, function(data) {
-                attachmentable.attachments = data;
-            }).$promise;
-        } else {
-            return $q.when(attachmentable.attachments);
-        }
     };
     this.authorizedAttachment = function(action, attachment) {
         switch (action) {

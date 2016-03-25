@@ -202,9 +202,15 @@
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments.length > 0 ? '(' + sprint.attachments.length + ')' : '' }}</label>
-                    <div ng-if="authorizedSprint('upload', sprint)" flow-init flow-files-submitted="attachmentQuery($flow, sprint)">
-                        <button type="button" class="btn btn-default" flow-btn><i
-                                class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
+                    <div ng-if="authorizedSprint('upload', sprint)"
+                         ng-controller="attachmentNestedCtrl"
+                         flow-init
+                         flow-files-submitted="attachmentQuery($flow, sprint)">
+                        <button type="button"
+                                class="btn btn-default"
+                                flow-btn>
+                            <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
+                        </button>
                     </div>
                     <div class="form-control-static" ng-include="'attachment.list.html'">
                     </div>

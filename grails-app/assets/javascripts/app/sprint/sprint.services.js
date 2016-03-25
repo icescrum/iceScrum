@@ -109,6 +109,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
         switch (action) {
             case 'create':
             case 'update':
+            case 'upload':
                 return Session.poOrSm();
             case 'activate':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.WAIT && sprint.activable;

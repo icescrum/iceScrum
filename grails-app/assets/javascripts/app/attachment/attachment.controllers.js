@@ -92,9 +92,13 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
     // Init
     $scope.attachmentable = attachmentable;
     $scope.clazz = clazz;
-    //manual save from flow js
+}]);
+
+// Flow events are triggered by "$scope.$broadcast so they can be received only on controllers that are at the same level or below
+// Thus, this controller must be added at the lowest level where the event can be broadcasted from, i.e. the buttons
+controllers.controller('attachmentNestedCtrl', ['$scope', 'AttachmentService', function($scope, AttachmentService) {
     $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
         var attachment = JSON.parse(message);
-        AttachmentService.save(attachment, $scope.attachmentable);
+        AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
     });
 }]);

@@ -188,9 +188,15 @@
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ feature.attachments.length > 0 ? '(' + feature.attachments.length + ')' : '' }}</label>
-                    <div ng-if="authorizedFeature('upload', feature)" flow-init flow-files-submitted="attachmentQuery($flow, feature)">
-                        <button type="button" class="btn btn-default" flow-btn><i
-                                class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}</button>
+                    <div ng-if="authorizedFeature('upload', feature)"
+                         ng-controller="attachmentNestedCtrl"
+                         flow-init
+                         flow-files-submitted="attachmentQuery($flow, feature)">
+                        <button type="button"
+                                class="btn btn-default"
+                                flow-btn>
+                            <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
+                        </button>
                     </div>
                     <div class="form-control-static" ng-include="'attachment.list.html'">
                     </div>
