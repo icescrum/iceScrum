@@ -154,6 +154,29 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     $scope.computeVisibleSprints = function() {
         $scope.visibleSprints = $scope.sprints.slice($scope.visibleSprintOffset, $scope.visibleSprintMax + $scope.visibleSprintOffset);
     };
+    var getNewStoryState = function(storyId, currentStateName) {
+        var newStateName;
+        var newStateParams = {storyId: storyId};
+        if (_.startsWith(currentStateName, 'planning.release.sprint.multiple')) {
+            newStateName = 'planning.release.sprint.multiple.story.details';
+        } else if (_.startsWith(currentStateName, 'planning.release.sprint.withId')) {
+            newStateName = 'planning.release.sprint.withId.story.details';
+        } else if (currentStateName === 'planning.release.sprint') {
+            // Special case when there is no sprintId in the state params so we must retrieve it manually
+            newStateName = 'planning.release.sprint.withId.story.details';
+            newStateParams.sprintId = $scope.selectedItems[0].id;
+        } else {
+            newStateName = 'planning.release.story.details';
+            if (currentStateName === 'planning' || currentStateName == 'planning.new') { // Special case when there is no releasedID in the state params so we must retrieve it manually
+                newStateParams.releaseId = $scope.selectedItems[0].id;
+            }
+        }
+        return {name: newStateName, params: newStateParams}
+    };
+    $scope.openStoryUrl = function(storyId) {
+        var newStoryState = getNewStoryState(storyId, $state.current.name);
+        return $state.href(newStoryState.name, newStoryState.params);
+    };
     // Init
     $scope.viewName = 'planning';
     $scope.visibleSprintMax = 3;
@@ -227,28 +250,13 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
         notSelectableSelector: '.action, button, a',
         multiple: false,
         selectionUpdated: function(selectedIds) {
-            var stateName = $state.current.name;
-            var storyIndexInStateName = stateName.indexOf('story');
+            var currentStateName = $state.current.name;
+            var storyIndexInStateName = currentStateName.indexOf('story');
             if (selectedIds.length == 0 && storyIndexInStateName != -1) {
-                $state.go(stateName.slice(0, storyIndexInStateName - 1));
+                $state.go(currentStateName.slice(0, storyIndexInStateName - 1));
             } else {
-                var newStateName;
-                var newStateParams = {storyId: selectedIds};
-                if (_.startsWith(stateName, 'planning.release.sprint.multiple')) {
-                    newStateName = 'planning.release.sprint.multiple.story.details';
-                } else if (_.startsWith(stateName, 'planning.release.sprint.withId')) {
-                    newStateName = 'planning.release.sprint.withId.story.details';
-                } else if (stateName === 'planning.release.sprint') {
-                    // Special case when there is no sprintId in the state params so we must retrieve it manually
-                    newStateName = 'planning.release.sprint.withId.story.details';
-                    newStateParams.sprintId = $scope.selectedItems[0].id;
-                } else {
-                    newStateName = 'planning.release.story.details';
-                    if (stateName === 'planning' || stateName == 'planning.new') { // Special case when there is no releasedID in the state params so we must retrieve it manually
-                        newStateParams.releaseId = $scope.selectedItems[0].id;
-                    }
-                }
-                $state.go(newStateName, newStateParams);
+                var newStoryState = getNewStoryState(selectedIds, currentStateName);
+                $state.go(newStoryState.name, newStoryState.params);
             }
         }
     };
@@ -335,6 +343,9 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         return $scope.currentSprintFilter.id == 'allTasks' || _.any($scope.tasksByStoryByState[story.id], function(tasks) {
                 return tasks.length > 0;
             });
+    };
+    $scope.openStoryUrl = function(storyId) {
+        return '#/' + $scope.viewName  + ($state.params.sprintId ? '/' + $state.params.sprintId : '') + '/story/' + storyId;
     };
     // Init
     var fixTaskRank = function(tasks) {

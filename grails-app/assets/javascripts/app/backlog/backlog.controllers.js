@@ -121,6 +121,9 @@ controllers.controller('backlogCtrl', ['$scope', '$state', '$filter', '$controll
         $scope.clearContextAndSearch();
         $scope.orderBacklogByRank(backlog)
     };
+    $scope.openStoryUrl = function(storyId) {
+        return '#/' + $scope.viewName  + '/' + storyId;
+    };
     // Init
     $scope.viewName = 'backlog';
     var fixStoryRank = function(stories) {

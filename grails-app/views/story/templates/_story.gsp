@@ -62,25 +62,25 @@
         <div class="actions">
             <span story-menu class="action"><a><i class="fa fa-cog"></i></a></span>
             <span class="action" ng-class="{'active':story.attachments.length}">
-                <a href="#/{{ ::viewName }}/{{ ::story.id }}">
+                <a href="{{ openStoryUrl(story.id) }}">
                     <i class="fa fa-paperclip" fast-tooltip-el="${message(code:'todo.is.ui.backlogelement.attachments')}"></i>
                     <span class="badge">{{ story.attachments.length || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.comments_count}">
-                <a href="#/{{ ::viewName }}/{{ ::story.id }}/comments">
+                <a href="{{ openStoryUrl(story.id) }}/comments">
                     <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'" fast-tooltip-el="${message(code:'todo.is.ui.comments')}"></i>
                     <span class="badge">{{ story.comments_count  || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.tasks_count}">
-                <a href="#/{{ ::viewName }}/{{ ::story.id }}/tasks">
+                <a href="{{ openStoryUrl(story.id) }}/tasks">
                     <i class="fa fa-tasks" fast-tooltip-el="${message(code:'todo.is.ui.tasks')}"></i>
                     <span class="badge">{{ story.tasks_count || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.acceptanceTests_count}">
-                <a href="#/{{ ::viewName }}/{{ ::story.id }}/tests">
+                <a href="{{ openStoryUrl(story.id) }}/tests">
                     <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'" fast-tooltip-el="${message(code:'todo.is.ui.acceptanceTests')}"></i>
                     <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
                 </a>
