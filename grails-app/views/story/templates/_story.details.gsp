@@ -74,7 +74,7 @@
                    href="#{{ ::viewName }}/{{ ::nextStory.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a ng-if="!isModal"
                    class="btn btn-default"
-                   href="{{:: $state.href('^') }}"
+                   href="{{ closeUrl() }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>
                 </a>

@@ -360,6 +360,13 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             var stateName = $state.params.storyTabId ? (storyTabId ? '.' : '^') : (storyTabId ? '.tab' : '.');
             return $state.href(stateName, {storyTabId: storyTabId});
         };
+        $scope.closeUrl = function() {
+            var stateName = $state.params.storyTabId ? '^.^' : '^';
+            if ($state.current.name.indexOf('.story.') != '-1') {
+                stateName += '.^'
+            }
+            return $state.href(stateName);
+        };
         // Init
         $scope.story = detailsStory;
         $scope.editableStory = {};
