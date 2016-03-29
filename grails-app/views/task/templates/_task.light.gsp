@@ -26,12 +26,16 @@
      ng-class="{'task-blocked': task.blocked}"
      class="postit postit-small {{ task.color | contrastColor }}">
     <div class="head">
-        <span class="id">{{ ::task.uid }}</span>
-        <span class="remaining-time editable"
-              ng-if="task.estimation != 0"
-              uib-tooltip="${message(code: 'is.task.estimation')}">
-            {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
-        </span>
+        <div class="head-left">
+            <span class="id">{{ ::task.uid }}</span>
+        </div>
+        <div class="head-right">
+            <span class="remaining-time editable"
+                  ng-if="task.estimation != 0"
+                  uib-tooltip="${message(code: 'is.task.estimation')}">
+                {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
+            </span>
+        </div>
     </div>
     <div class="content"
          as-sortable-item-handle-if="authorizedTask('rank', task)">
