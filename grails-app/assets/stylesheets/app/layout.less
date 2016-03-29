@@ -298,7 +298,13 @@ header {
             .badge {
               display: inline-block;
               position: absolute;
-              top: 15px;
+              left: 50%;
+              top: 20px;
+              margin-left: 5px;
+              background: none;
+              text-align: right;
+              font-weight: bold;
+              color: @gray-dark;
             }
           }
           .right-title {
@@ -306,7 +312,7 @@ header {
               position:relative;
             }
             .badge {
-              right: -5px;
+              top: 15px;
             }
           }
           .nav-justified {
@@ -318,10 +324,6 @@ header {
             }
             li > a {
               border-radius:0;
-            }
-            .badge {
-              left: 50%;
-              margin-left: 5px;
             }
           }
         }
@@ -784,7 +786,7 @@ table {
           margin-top: 10px;
           margin-bottom: 10px;
         }
-        > .div:not(:first-of-type) {
+        > div:not(:first-of-type) {
           margin-left: 10px;
         }
       }
