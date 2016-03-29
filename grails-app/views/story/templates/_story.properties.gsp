@@ -81,8 +81,7 @@
             <div class="form-half"
                  ng-show="editableStory.type == 2">
                 <label for="affectVersion">${message(code: 'is.story.affectVersion')}</label>
-                <ui-select input-group-fix-width="30"
-                           class="form-control"
+                <ui-select class="form-control"
                            ng-click="retrieveVersions(); editForm(true)"
                            ng-change="editForm(true)"
                            ng-disabled="!formHolder.editable"
@@ -92,7 +91,9 @@
                            tagging-label=""
                            ng-model="editableStory.affectVersion">
                     <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.noaffectversion')}">{{ $select.selected }}</ui-select-match>
-                    <ui-select-choices repeat="version in versions">{{ version }}</ui-select-choices>
+                    <ui-select-choices repeat="version in versions | filter: $select.search">
+                        <span ng-bind-html="version | highlight: $select.search"></span>
+                    </ui-select-choices>
                 </ui-select>
             </div>
         </div>
