@@ -51,13 +51,7 @@
             <a ng-repeat="tag in feature.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
         </div>
         <div class="actions">
-            <span uib-dropdown class="action">
-                <a uib-dropdown-toggle>
-                    <i class="fa fa-cog"></i>
-                </a>
-                <ul uib-dropdown-menu
-                    ng-include="'feature.menu.html'"></ul>
-            </span>
+            <span postit-menu="feature.menu.html" class="action"><a><i class="fa fa-cog"></i></a></span>
             <span class="action" ng-class="{'active':feature.attachments.length}">
                 <a href="#/{{ ::viewName }}/{{ ::feature.id }}"
                    uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">

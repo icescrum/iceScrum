@@ -60,7 +60,7 @@
             <a ng-repeat="tag in story.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
         </div>
         <div class="actions">
-            <span story-menu class="action"><a><i class="fa fa-cog"></i></a></span>
+            <span postit-menu="story.menu.html" class="action"><a><i class="fa fa-cog"></i></a></span>
             <span class="action" ng-class="{'active':story.attachments.length}">
                 <a href="{{ openStoryUrl(story.id) }}">
                     <i class="fa fa-paperclip" fast-tooltip-el="${message(code:'todo.is.ui.backlogelement.attachments')}"></i>

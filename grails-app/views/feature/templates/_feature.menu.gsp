@@ -22,24 +22,26 @@
 --}%
 
 <script type="text/ng-template" id="feature.menu.html">
-<li>
-    <a href ng-click="setFeatureContext(feature)">
-        ${message(code: 'todo.is.ui.context.set')}
-    </a>
-</li>
-<li ng-if="authorizedFeature('copyToBacklog')">
-    <a href ng-click="copyToBacklog(feature)">
-        ${message(code: 'is.ui.feature.menu.copy')}
-    </a>
-</li>
-<li>
-    <a href ng-click="showCopyModal('${message(code:'is.permalink')}', (feature.uid | permalink: 'feature'))">
-        ${message(code: 'todo.is.ui.permalink.copy')}
-    </a>
-</li>
-<li ng-if="authorizedFeature('delete')">
-    <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
-        ${message(code: 'is.ui.feature.menu.delete')}
-    </a>
-</li>
+<ul class="dropdown-menu" uib-dropdown-menu role="menu">
+    <li>
+        <a href ng-click="setFeatureContext(feature)">
+            ${message(code: 'todo.is.ui.context.set')}
+        </a>
+    </li>
+    <li ng-if="authorizedFeature('copyToBacklog')">
+        <a href ng-click="copyToBacklog(feature)">
+            ${message(code: 'is.ui.feature.menu.copy')}
+        </a>
+    </li>
+    <li>
+        <a href ng-click="showCopyModal('${message(code:'is.permalink')}', (feature.uid | permalink: 'feature'))">
+            ${message(code: 'todo.is.ui.permalink.copy')}
+        </a>
+    </li>
+    <li ng-if="authorizedFeature('delete')">
+        <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
+            ${message(code: 'is.ui.feature.menu.delete')}
+        </a>
+    </li>
+</ul>
 </script>

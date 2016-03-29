@@ -1689,7 +1689,6 @@ angular.module('ui.bootstrap.position', [])
             width: targetWidth + Math.round(Math.abs(this.parseStyle(targetElemStyle.marginLeft) + this.parseStyle(targetElemStyle.marginRight))),
             height: targetHeight + Math.round(Math.abs(this.parseStyle(targetElemStyle.marginTop) + this.parseStyle(targetElemStyle.marginBottom)))
           };
-
           placement[0] = placement[0] === 'top' && adjustedSize.height > viewportOffset.top && adjustedSize.height <= viewportOffset.bottom ? 'bottom' :
                          placement[0] === 'bottom' && adjustedSize.height > viewportOffset.bottom && adjustedSize.height <= viewportOffset.top ? 'top' :
                          placement[0] === 'left' && adjustedSize.width > viewportOffset.left && adjustedSize.width <= viewportOffset.right ? 'right' :
@@ -3199,7 +3198,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
   };
 }])
 
-.controller('UibDropdownController', ['$scope', '$element', '$attrs', '$parse', 'uibDropdownConfig', 'uibDropdownService', '$animate', '$uibPosition', '$document', '$compile', '$templateRequest', function($scope, $element, $attrs, $parse, dropdownConfig, uibDropdownService, $animate, $position, $document, $compile, $templateRequest) {
+.controller('UibDropdownController', ['$scope', '$element', '$attrs', '$parse', 'uibDropdownConfig', 'uibDropdownService', '$animate', '$uibPosition', '$document', '$compile', '$templateRequest', '$timeout', function($scope, $element, $attrs, $parse, dropdownConfig, uibDropdownService, $animate, $position, $document, $compile, $templateRequest, $timeout) {
   var self = this,
     scope = $scope.$new(), // create a child scope so we are not polluting original one
     templateScope,
@@ -3319,41 +3318,49 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
 
   scope.$watch('isOpen', function(isOpen, wasOpen) {
     if (appendTo && self.dropdownMenu) {
-      var pos = $position.positionElements($element, self.dropdownMenu, 'bottom-left', true),
-        css,
-        rightalign;
+      var computePosition = function(){
+        var pos = $position.positionElements($element, self.dropdownMenu, 'bottom-left', true),
+            css,
+            rightalign;
 
-      css = {
-        top: pos.top + 'px',
-        display: isOpen ? 'block' : 'none'
-      };
+        css = {
+          top: pos.top + 'px',
+          display: isOpen ? 'block' : 'none'
+        };
 
-      rightalign = self.dropdownMenu.hasClass('dropdown-menu-right');
-      if (!rightalign) {
-        css.left = pos.left + 'px';
-        css.right = 'auto';
-      } else {
-        css.left = 'auto';
-        css.right = window.innerWidth -
-          (pos.left + $element.prop('offsetWidth')) + 'px';
-      }
-
-      // Need to adjust our positioning to be relative to the appendTo container
-      // if it's not the body element
-      if (!appendToBody) {
-        var appendOffset = $position.offset(appendTo);
-
-        css.top = pos.top - appendOffset.top + 'px';
-
+        rightalign = self.dropdownMenu.hasClass('dropdown-menu-right');
         if (!rightalign) {
-          css.left = pos.left - appendOffset.left + 'px';
+          css.left = pos.left + 'px';
+          css.right = 'auto';
         } else {
+          css.left = 'auto';
           css.right = window.innerWidth -
-            (pos.left - appendOffset.left + $element.prop('offsetWidth')) + 'px';
+              (pos.left + $element.prop('offsetWidth')) + 'px';
         }
-      }
 
-      self.dropdownMenu.css(css);
+        // Need to adjust our positioning to be relative to the appendTo container
+        // if it's not the body element
+        if (!appendToBody) {
+          var appendOffset = $position.offset(appendTo);
+
+          css.top = pos.top - appendOffset.top + 'px';
+
+          if (!rightalign) {
+            css.left = pos.left - appendOffset.left + 'px';
+          } else {
+            css.right = window.innerWidth -
+                (pos.left - appendOffset.left + $element.prop('offsetWidth')) + 'px';
+          }
+        } else {
+          if(pos.top + self.dropdownMenu.height() + $element.height() + $element.prop('offsetHeight') > window.innerHeight){
+            css.top = pos.top - self.dropdownMenu.height() - $element.height() - $element.prop('offsetHeight');
+          }
+        }
+        self.dropdownMenu.css(css);
+      };
+      if(!self.dropdownMenuTemplateUrl){
+        computePosition();
+      }
     }
 
     var openContainer = appendTo ? appendTo : $element;
@@ -3375,6 +3382,9 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
             var newEl = dropdownElement;
             self.dropdownMenu.replaceWith(newEl);
             self.dropdownMenu = newEl;
+            $timeout(function(){
+              computePosition();
+            }, 100);
           });
         });
       }
