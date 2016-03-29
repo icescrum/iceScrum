@@ -80,7 +80,7 @@ class AttachmentController {
         response.status = HttpServletResponse.SC_NOT_FOUND
     }
 
-    @Secured('isAuthenticated() and stakeHolder()')
+    @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
     def save() {
         def _attachmentable = getAttachmentableObject(params)
         def endOfUpload = { uploadInfo ->
