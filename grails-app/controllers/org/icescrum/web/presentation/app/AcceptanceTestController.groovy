@@ -35,7 +35,7 @@ class AcceptanceTestController {
     def springSecurityService
     def acceptanceTestService
 
-    @Secured('stakeHolder() and !archivedProduct()')
+    @Secured('(stakeHolder() or inProduct()) and !archivedProduct()')
     def index(long product) {
         def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(product, params.long('parentStory')) : AcceptanceTest.getAllInProduct(product)
         withFormat {
@@ -45,7 +45,7 @@ class AcceptanceTestController {
         }
     }
 
-    @Secured('stakeHolder() and !archivedProduct()')
+    @Secured('(stakeHolder() or inProduct()) and !archivedProduct()')
     def show(long id, long product) {
         AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
         withFormat {

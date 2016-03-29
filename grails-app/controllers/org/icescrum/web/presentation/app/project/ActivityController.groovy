@@ -32,7 +32,7 @@ class ActivityController {
 
     def springSecurityService
 
-    @Secured('stakeHolder()')
+    @Secured('stakeHolder() or inProduct()')
     def index(long fluxiableId, boolean all, long product, String type) {
         def fluxiable = type == 'story' ? Story.withStory(product, fluxiableId) : Task.withTask(product, fluxiableId)
         withFormat {

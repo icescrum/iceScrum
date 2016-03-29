@@ -34,7 +34,7 @@ class CommentController {
     def springSecurityService
     def activityService
 
-    @Secured('stakeHolder()')
+    @Secured('stakeHolder() or inProduct()')
     def index() {
         def commentable = commentableObject
         if (commentable) {
@@ -48,7 +48,7 @@ class CommentController {
         }
     }
 
-    @Secured('stakeHolder()')
+    @Secured('stakeHolder() or inProduct()')
     def show() {
         if (!params.id) {
             returnError(text:message(code: 'is.comment.error.not.exist'))
@@ -66,7 +66,7 @@ class CommentController {
         }
     }
 
-    @Secured('isAuthenticated() and stakeHolder() and !archivedProduct()')
+    @Secured('((isAuthenticated() and stakeHolder()) or inProduct()) and !archivedProduct()')
     def save() {
         def poster = springSecurityService.currentUser
         def commentable = commentableObject
