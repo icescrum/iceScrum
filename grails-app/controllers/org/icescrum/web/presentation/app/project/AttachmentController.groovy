@@ -39,7 +39,7 @@ class AttachmentController {
     def springSecurityService
     def attachmentableService
 
-    @Secured('isAuthenticated() and stakeHolder()')
+    @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
     def index() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
@@ -53,7 +53,7 @@ class AttachmentController {
         }
     }
 
-    @Secured('isAuthenticated() and stakeHolder()')
+    @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
     def show() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
