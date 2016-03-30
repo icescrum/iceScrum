@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="story.tasks.html">
 <div class="tasks panel-body">
     <table class="table">
-        <tr ng-repeat="task in selected.tasks | orderBy:'dateCreated'">
+        <tr ng-repeat="task in selected.tasks | orderBy:tasksOrderBy">
             <td class="content {{:: authorizedTask('delete', task) ? 'toggle-container' : '' }}">
                 <div class="clearfix no-padding">
                     <div class="col-sm-1">

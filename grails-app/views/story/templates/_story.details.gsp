@@ -62,16 +62,16 @@
                     </button>
                     <ul uib-dropdown-menu class="pull-right" ng-include="'story.menu.html'"></ul>
                 </div>
-                <a ng-if="previousStory && !isModal"
+                <a ng-if="previousStory"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::previousStory.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextStory && !isModal"
+                   href="{{:: currentStateUrl(previousStory.id) }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                <a ng-if="nextStory"
                    class="btn btn-default"
                    role="button"
                    tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::nextStory.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                   href="{{:: currentStateUrl(nextStory.id) }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
                 <a ng-if="!isModal"
                    class="btn btn-default"
                    href="{{ closeUrl() }}"
