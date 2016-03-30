@@ -29,6 +29,7 @@
             <is:panel id="panel-chart">
                 <is:panelTitle>
                     <g:if test="${request.inProduct}">
+                        <entry:point id="${controllerName}-${actionName}-panel-chart" model="[sprint:sprint,release:release,product:product]"/>
                         <is:link class="right" id="chart-sprintBurndownRemainingChart" disabled="true"
                                  onClick="jQuery.icescrum.displayChart('#panel-chart-container','sprintPlan/sprintBurndownRemainingChart',true);">${message(code: 'is.ui.project.chart.option.remaining')}</is:link>
                         <span class="right">|</span>
