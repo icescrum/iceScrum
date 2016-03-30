@@ -264,8 +264,8 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', 'taskContants', 'StoryCodesByState', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, taskContants, StoryCodesByState, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', 'TaskConstants', 'StoryCodesByState', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
+    function($scope, $controller, $state, $timeout, TaskConstants, StoryCodesByState, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
@@ -360,8 +360,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             var stateName = $state.params.storyTabId ? (storyTabId ? '.' : '^') : (storyTabId ? '.tab' : '.');
             return $state.href(stateName, {storyTabId: storyTabId});
         };
-        $scope.currentStateUrl = function(id){
-            return $state.href($state.current.name, {storyId:id});
+        $scope.currentStateUrl = function(id) {
+            return $state.href($state.current.name, {storyId: id});
         };
         $scope.closeUrl = function() {
             var stateName = $state.params.storyTabId ? '^.^' : '^';
@@ -406,7 +406,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.previousStory = FormService.previous(list, $scope.story);
         $scope.nextStory = FormService.next(list, $scope.story);
         $scope.progressStates = [];
-        $scope.tasksOrderBy = taskContants.ORDER_BY;
+        $scope.tasksOrderBy = TaskConstants.ORDER_BY;
 
         var width = 100 / _.filter(_.keys(StoryCodesByState), function(key) { return key > 0 }).length;
         _.each(StoryCodesByState, function(code, state) {

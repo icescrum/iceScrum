@@ -1011,6 +1011,6 @@ angular.module('isApp', [
     UPDATE: 'UPDATE',
     DELETE: 'DELETE'
 })
-.constant('taskContants', {
+.constant('TaskConstants', {
     ORDER_BY:[function(task) { return - task.type }, 'parentStory.rank', 'state', 'rank']
 });

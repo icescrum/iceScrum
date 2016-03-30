@@ -54,14 +54,14 @@
             <span postit-menu="feature.menu.html" class="action"><a><i class="fa fa-cog"></i></a></span>
             <span class="action" ng-class="{'active':feature.attachments.length}">
                 <a href="#/{{ ::viewName }}/{{ ::feature.id }}"
-                   uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                   uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                     <i class="fa fa-paperclip"></i>
                     <span class="badge">{{ feature.attachments.length || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':feature.stories_ids.length}">
                 <a href="#/{{ ::viewName }}/{{ ::feature.id }}/stories"
-                   uib-tooltip="${message(code:'todo.is.ui.stories')}">
+                   uib-tooltip="${message(code: 'todo.is.ui.stories')}">
                     <i class="fa fa-sticky-note"></i>
                     <span class="badge">{{ feature.stories_ids.length || '' }}</span>
                 </a>
@@ -70,10 +70,12 @@
         <div class="state-progress">
             <div class="progress">
                 <span class="status">{{ feature.countDoneStories + '/' + feature.stories_ids.length }}</span>
-                <div class="progress-bar" style="width: {{ feature.countDoneStories | percentProgress:feature.stories_ids.length }}%">
+                <div class="progress-bar"
+                     style="width: {{ feature.countDoneStories | percentProgress:feature.stories_ids.length }}%">
                 </div>
             </div>
             <div class="state">{{ feature.state | i18n:'FeatureStates' }}</div>
         </div>
+    </div>
 </div>
 </script>

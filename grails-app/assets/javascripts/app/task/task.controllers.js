@@ -109,7 +109,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     });
 }]);
 
-controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'taskContants', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller , taskContants, TaskService, FormService, ProjectService, taskContext, detailsTask) {
+controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'TaskConstants', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, TaskConstants, TaskService, FormService, ProjectService, taskContext, detailsTask) {
     $scope.taskContext = taskContext;
     $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
@@ -152,8 +152,8 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
         var stateName = $state.params.taskTabId ? (taskTabId ? '.' : '^') : (taskTabId ? '.tab' : '.');
         return $state.href(stateName, {taskTabId: taskTabId});
     };
-    $scope.currentStateUrl = function(id){
-        return $state.href($state.current.name, {taskId:id});
+    $scope.currentStateUrl = function(id) {
+        return $state.href($state.current.name, {taskId: id});
     };
     // Init
     $scope.task = detailsTask;
@@ -170,7 +170,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
         }
     };
     $scope.resetTaskForm();
-    var sortedTasks = $filter('orderBy')(taskContext.tasks,taskContants.ORDER_BY);
+    var sortedTasks = $filter('orderBy')(taskContext.tasks, TaskConstants.ORDER_BY);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);
 }]);
