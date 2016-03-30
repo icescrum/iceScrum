@@ -622,9 +622,11 @@ angular.module('isApp', [
                         getTaskDetailsState('@taskBoard')
                     ]
                 },
-                getDetailsModalState('story', {
-                    children: [getStoryDetailsState('@')]
-                })
+                {
+                    name: 'story',
+                    url: "/story",
+                    children: [getStoryDetailsState('@taskBoard')]
+                }
             ]
         });
 }])

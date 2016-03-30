@@ -347,6 +347,11 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.openStoryUrl = function(storyId) {
         return '#/' + $scope.viewName  + ($state.params.sprintId ? '/' + $state.params.sprintId : '') + '/story/' + storyId;
     };
+    $scope.selectStory = function(event, storyId) {
+        if (angular.element(event.target).closest('.action, button, a').length == 0) {
+            $state.go('taskBoard.story.details', {storyId: storyId});
+        }
+    };
     // Init
     var fixTaskRank = function(tasks) {
         _.each(tasks, function(task, index) {
@@ -383,7 +388,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         }
     };
     $scope.selectableOptions = {
-        notSelectableSelector: '.action, button, a',
+        notSelectableSelector: '.action, button, a, .postit-container',
         multiple: false,
         selectionUpdated: function(selectedIds) {
             switch (selectedIds.length) {
