@@ -388,7 +388,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         }
     };
     $scope.selectableOptions = {
-        notSelectableSelector: '.action, button, a, .postit-container',
+        notSelectableSelector: '.action, button, a, .story-container',
         multiple: false,
         selectionUpdated: function(selectedIds) {
             switch (selectedIds.length) {
