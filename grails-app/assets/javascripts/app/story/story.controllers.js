@@ -22,81 +22,81 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', function ($scope, $uibModal, StoryService, $state, Session, StoryStatesByName) {
+controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName) {
     // Functions
-    $scope.acceptToBacklog = function (story) {
-        StoryService.acceptToBacklog(story).then(function () {
+    $scope.acceptToBacklog = function(story) {
+        StoryService.acceptToBacklog(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.accepted');
         });
     };
-    $scope.acceptAs = function (story, target) {
-        StoryService.acceptAs(story, target).then(function () {
+    $scope.acceptAs = function(story, target) {
+        StoryService.acceptAs(story, target).then(function() {
             $scope.notifySuccess('todo.is.ui.story.acceptedAs' + target);
         });
     };
-    $scope.returnToSandbox = function (story) {
-        StoryService.returnToSandbox(story).then(function () {
+    $scope.returnToSandbox = function(story) {
+        StoryService.returnToSandbox(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.returnedToSandbox');
         });
     };
-    $scope.unPlan = function (story) {
-        StoryService.unPlan(story).then(function () {
+    $scope.unPlan = function(story) {
+        StoryService.unPlan(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.unplanned');
         });
     };
-    $scope.shiftToNext = function (story) {
-        StoryService.shiftToNext(story).then(function () {
+    $scope.shiftToNext = function(story) {
+        StoryService.shiftToNext(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.shiftedToNext');
         });
     };
-    $scope.done = function (story) {
-        StoryService.done(story).then(function () {
+    $scope.done = function(story) {
+        StoryService.done(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.done');
         });
     };
-    $scope.unDone = function (story) {
-        StoryService.unDone(story).then(function () {
+    $scope.unDone = function(story) {
+        StoryService.unDone(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.unDone');
         });
     };
-    $scope.follow = function (story) {
+    $scope.follow = function(story) {
         StoryService.follow(story);
     };
-    $scope.copy = function (story) {
+    $scope.copy = function(story) {
         StoryService.copy(story)
     };
-    $scope['delete'] = function (story) {
+    $scope['delete'] = function(story) {
         //fake delete
         _.remove(StoryService.list, {id: story.id});
         var notif = $scope.notifySuccess('todo.is.ui.deleted', {
             actions: [{
                 label: $scope.message('todo.is.ui.undo'),
-                fn: function () {
+                fn: function() {
                     notif.data.close = angular.noop;
                     StoryService.list.push(story);
                     $state.go('backlog.details', {id: story.id});
                     $scope.notifySuccess('todo.is.ui.deleted.cancelled');
                 }
             }],
-            close: function () {
+            close: function() {
                 StoryService.delete(story);
             },
             duration: 5000
         });
     };
-    $scope.authorizedStory = function (action, story) {
+    $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };
-    $scope.tasksProgress = function (story) {
+    $scope.tasksProgress = function(story) {
         return story.tasks_count > 0 && story.state < StoryStatesByName.DONE && story.state >= StoryStatesByName.PLANNED;
     };
-    $scope.showNewTemplateModal = function (story) {
+    $scope.showNewTemplateModal = function(story) {
         $uibModal.open({
             templateUrl: 'story.template.new.html',
             size: 'sm',
-            controller: ["$scope", function ($scope) {
-                $scope.submit = function (template) {
-                    StoryService.saveTemplate(story, template.name).then(function () {
+            controller: ["$scope", function($scope) {
+                $scope.submit = function(template) {
+                    StoryService.saveTemplate(story, template.name).then(function() {
                         $scope.$close();
                         $scope.notifySuccess('todo.is.ui.story.template.saved');
                     });
@@ -104,20 +104,20 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
             }]
         });
     };
-    $scope.isEffortCustom = function () {
+    $scope.isEffortCustom = function() {
         return Session.getProject().planningPokerGameType == 2;
     };
-    $scope.effortSuite = function (isNullable) {
+    $scope.effortSuite = function(isNullable) {
         if (isNullable) {
             return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuiteNullable : $scope.fibonacciSuiteNullable;
         } else {
             return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
         }
     };
-    $scope.isEffortNullable = function (story) {
+    $scope.isEffortNullable = function(story) {
         return story.state <= StoryStatesByName.ESTIMATED;
     };
-    var scrollTable = function (dontAnimate, nbItems) {
+    var scrollTable = function(dontAnimate, nbItems) {
         var tableWidth = angular.element(angular.element('.table-scrollable').find('th')[0]).prop('offsetWidth');
         var scrollLeft = (nbItems - 1) * tableWidth;
         if (dontAnimate) {
@@ -128,8 +128,8 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
             }, 400);
         }
     };
-    var makeRows = function (storiesByField) {
-        var nbRows = _.max(storiesByField, function (stories) {
+    var makeRows = function(storiesByField) {
+        var nbRows = _.max(storiesByField, function(stories) {
             return stories.length;
         }).length;
         var nbColumns = storiesByField.length;
@@ -138,7 +138,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
             var row = [];
             for (var j = 0; j < nbColumns; j++) {
                 row = [];
-                angular.forEach(storiesByField, function (stories) {
+                angular.forEach(storiesByField, function(stories) {
                     if (stories[i]) {
                         row.push(stories[i]);
                     } else {
@@ -150,12 +150,12 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
         }
         return rows;
     };
-    $scope.showEditEffortModal = function (story) {
+    $scope.showEditEffortModal = function(story) {
         if (StoryService.authorizedStory('updateEstimate', story)) {
             var parentScope = $scope;
             $uibModal.open({
                 templateUrl: 'story.effort.html',
-                controller: ['$scope', '$timeout', function ($scope, $timeout) {
+                controller: ['$scope', '$timeout', function($scope, $timeout) {
                     $scope.editableStory = angular.copy(story);
                     $scope.isEffortCustom = parentScope.isEffortCustom;
                     $scope.effortSuite = parentScope.effortSuite;
@@ -170,7 +170,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
                     $scope.efforts = [];
                     $scope.storyRows = [];
                     $scope.count = [];
-                    StoryService.listByField('effort').then(function (effortsAndStories) {
+                    StoryService.listByField('effort').then(function(effortsAndStories) {
                         initialEfforts = effortsAndStories.fieldValues;
                         var indexOfNull = initialEfforts.indexOf(null);
                         if (indexOfNull != -1) {
@@ -180,13 +180,13 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
                         initialCount = effortsAndStories.count;
                         $scope.updateTable(true)
                     });
-                    $scope.updateTable = function (dontAnimate) {
+                    $scope.updateTable = function(dontAnimate) {
                         var effort = $scope.editableStory.effort;
                         $scope.efforts = angular.copy(initialEfforts);
                         var storiesByEffort = angular.copy(initialStoriesByEffort);
                         $scope.count = angular.copy(initialCount);
                         // Required because of mix of strings (native select options) and numbers returned by the server
-                        var effortIndex = _.findIndex($scope.efforts, function (effort2) {
+                        var effortIndex = _.findIndex($scope.efforts, function(effort2) {
                             return effort2 == effort;
                         });
                         if (effortIndex == -1) {
@@ -199,12 +199,12 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
                         _.remove(storiesByEffort[initialEffortIndex], {id: $scope.editableStory.id});
                         storiesByEffort[effortIndex].unshift($scope.editableStory);
                         $scope.storyRows = makeRows(storiesByEffort);
-                        $timeout(function () {
+                        $timeout(function() {
                             scrollTable(dontAnimate, effortIndex);
                         });
                     };
-                    $scope.submit = function (story) {
-                        StoryService.update(story).then(function () {
+                    $scope.submit = function(story) {
+                        StoryService.update(story).then(function() {
                             $scope.$close();
                             $scope.notifySuccess('todo.is.ui.story.effort.updated');
                         });
@@ -213,11 +213,11 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
             });
         }
     };
-    $scope.showEditValueModal = function (story) {
+    $scope.showEditValueModal = function(story) {
         if (StoryService.authorizedStory('update', story)) {
             $uibModal.open({
                 templateUrl: 'story.value.html',
-                controller: ["$scope", '$timeout', function ($scope, $timeout) {
+                controller: ["$scope", '$timeout', function($scope, $timeout) {
                     $scope.editableStory = angular.copy(story);
                     $scope.initialValue = $scope.editableStory.value;
                     var initialValues = [];
@@ -226,13 +226,13 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
                     $scope.values = [];
                     $scope.storyRows = [];
                     $scope.count = [];
-                    StoryService.listByField('value').then(function (valuesAndStories) {
+                    StoryService.listByField('value').then(function(valuesAndStories) {
                         initialValues = valuesAndStories.fieldValues;
                         initialStoriesByValue = valuesAndStories.stories;
                         initialCount = valuesAndStories.count;
                         $scope.updateTable(true)
                     });
-                    $scope.updateTable = function (dontAnimate) {
+                    $scope.updateTable = function(dontAnimate) {
                         var value = $scope.editableStory.value;
                         $scope.values = angular.copy(initialValues);
                         var storiesByValue = angular.copy(initialStoriesByValue);
@@ -248,12 +248,12 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
                         _.remove(storiesByValue[initialValueIndex], {id: $scope.editableStory.id});
                         storiesByValue[valueIndex].unshift($scope.editableStory);
                         $scope.storyRows = makeRows(storiesByValue);
-                        $timeout(function () {
+                        $timeout(function() {
                             scrollTable(dontAnimate, valueIndex);
                         });
                     };
-                    $scope.submit = function (story) {
-                        StoryService.update(story).then(function () {
+                    $scope.submit = function(story) {
+                        StoryService.update(story).then(function() {
                             $scope.$close();
                             $scope.notifySuccess('todo.is.ui.story.value.updated');
                         });
@@ -262,9 +262,9 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
             });
         }
     };
-    $scope.retrieveParentSprintEntries = function () {
+    $scope.retrieveParentSprintEntries = function() {
         if (_.isEmpty($scope.parentSprintEntries)) {
-            StoryService.getParentSprintEntries().then(function (parentSprintEntries) {
+            StoryService.getParentSprintEntries().then(function(parentSprintEntries) {
                 $scope.parentSprintEntries = parentSprintEntries;
             });
         }
@@ -272,29 +272,29 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
 }]);
 
 controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', 'TaskConstants', 'StoryCodesByState', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
-    function ($scope, $controller, $state, $timeout, TaskConstants, StoryCodesByState, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
+    function($scope, $controller, $state, $timeout, TaskConstants, StoryCodesByState, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
-        $scope.update = function (story) {
-            StoryService.update(story).then(function () {
+        $scope.update = function(story) {
+            StoryService.update(story).then(function() {
                 $scope.resetStoryForm();
                 $scope.notifySuccess('todo.is.ui.story.updated');
             });
         };
-        $scope.like = function (story) {
+        $scope.like = function(story) {
             StoryService.like(story);
         };
-        $scope.isDirty = function () {
+        $scope.isDirty = function() {
             return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
         };
-        $scope.editForm = function (value) {
+        $scope.editForm = function(value) {
             if (value != $scope.formHolder.editing) {
                 $scope.setInEditingMode(value); // global
                 $scope.resetStoryForm();
             }
         };
-        $scope.resetStoryForm = function () {
+        $scope.resetStoryForm = function() {
             $scope.formHolder.editing = $scope.isInEditingMode();
             $scope.formHolder.editable = $scope.authorizedStory('update', $scope.story);
             if ($scope.formHolder.editable) {
@@ -306,7 +306,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             }
             $scope.resetFormValidation($scope.formHolder.storyForm);
         };
-        $scope.clickDescriptionPreview = function ($event, template) {
+        $scope.clickDescriptionPreview = function($event, template) {
             if ($event.target.nodeName != 'A' && $scope.formHolder.editable) {
                 $scope.showDescriptionTextarea = true;
                 var $el = angular.element($event.currentTarget);
@@ -317,14 +317,14 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
-        $scope.focusDescriptionPreview = function ($event) {
+        $scope.focusDescriptionPreview = function($event) {
             if (!$scope.descriptionPreviewMouseDown) {
-                $timeout(function () {
+                $timeout(function() {
                     angular.element($event.target).triggerHandler('click');
                 });
             }
         };
-        $scope.blurDescription = function (template) {
+        $scope.blurDescription = function(template) {
             if (!$('.atwho-view:visible').length && $scope.formHolder.storyForm.description.$valid) { // ugly hack on atwho
                 $scope.showDescriptionTextarea = false;
                 if ($scope.editableStory.description.trim() == template.trim()) {
@@ -332,38 +332,38 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 }
             }
         };
-        $scope.groupSprintByParentRelease = function (sprint) {
+        $scope.groupSprintByParentRelease = function(sprint) {
             return sprint.parentRelease.name;
         };
-        $scope.retrieveDependenceEntries = function (story) {
+        $scope.retrieveDependenceEntries = function(story) {
             if (_.isEmpty($scope.dependenceEntries)) {
-                StoryService.getDependenceEntries(story).then(function (dependenceEntries) {
+                StoryService.getDependenceEntries(story).then(function(dependenceEntries) {
                     $scope.dependenceEntries = dependenceEntries;
                 });
             }
         };
-        $scope.retrieveTags = function () {
+        $scope.retrieveTags = function() {
             if (_.isEmpty($scope.tags)) {
-                ProjectService.getTags().then(function (tags) {
+                ProjectService.getTags().then(function(tags) {
                     $scope.tags = tags;
                 });
             }
         };
-        $scope.retrieveVersions = function () {
+        $scope.retrieveVersions = function() {
             if (_.isEmpty($scope.versions)) {
-                ProjectService.getVersions().then(function (versions) {
+                ProjectService.getVersions().then(function(versions) {
                     $scope.versions = versions;
                 });
             }
         };
-        $scope.tabUrl = function (storyTabId) {
+        $scope.tabUrl = function(storyTabId) {
             var stateName = $state.params.storyTabId ? (storyTabId ? '.' : '^') : (storyTabId ? '.tab' : '.');
             return $state.href(stateName, {storyTabId: storyTabId});
         };
-        $scope.currentStateUrl = function (id) {
+        $scope.currentStateUrl = function(id) {
             return $state.href($state.current.name, {storyId: id});
         };
-        $scope.closeUrl = function () {
+        $scope.closeUrl = function() {
             var stateName = $state.params.storyTabId ? '^.^' : '^';
             if ($state.current.name.indexOf('.story.') != '-1') {
                 stateName += '.^'
@@ -384,18 +384,18 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             at: 'a'
         };
         $scope.features = [];
-        FeatureService.list.$promise.then(function (features) {
+        FeatureService.list.$promise.then(function(features) {
             $scope.features = features;
         });
-        var mapActors = function (actors) {
-            return _.map(actors, function (actor) {
+        var mapActors = function(actors) {
+            return _.map(actors, function(actor) {
                 return {uid: actor.uid, name: actor.name};
             });
         };
         if (ActorService.list.$resolved) {
             $scope.atOptions.data = mapActors(ActorService.list);
         } else {
-            ActorService.list.$promise.then(function (actors) {
+            ActorService.list.$promise.then(function(actors) {
                 $scope.atOptions.data = mapActors(actors);
             });
         }
@@ -408,10 +408,10 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.progressStates = [];
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
 
-        var width = 100 / _.filter(_.keys(StoryCodesByState), function (key) {
+        var width = 100 / _.filter(_.keys(StoryCodesByState), function(key) {
                 return key > 0
             }).length;
-        _.each(StoryCodesByState, function (code, state) {
+        _.each(StoryCodesByState, function(code, state) {
             var date = $scope.story[code.toLowerCase() + 'Date'];
             if (date != null) {
                 $scope.progressStates.push({
@@ -424,47 +424,47 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         });
     }]);
 
-controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', 'FeatureService', function ($scope, $controller, StoryService, listId, FeatureService) {
+controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', 'FeatureService', function($scope, $controller, StoryService, listId, FeatureService) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
-    $scope.sumPoints = function (stories) {
+    $scope.sumPoints = function(stories) {
         return _.sum(stories, 'effort');
     };
-    $scope.sumTasks = function (stories) {
+    $scope.sumTasks = function(stories) {
         return _.sum(stories, 'tasks_count');
     };
-    $scope.sumAcceptanceTests = function (stories) {
+    $scope.sumAcceptanceTests = function(stories) {
         return _.sum(stories, 'acceptanceTests_count');
     };
-    $scope.deleteMultiple = function () {
-        StoryService.deleteMultiple(listId).then(function () {
+    $scope.deleteMultiple = function() {
+        StoryService.deleteMultiple(listId).then(function() {
             $scope.notifySuccess('todo.is.ui.multiple.deleted');
         });
     };
-    $scope.copyMultiple = function () {
+    $scope.copyMultiple = function() {
         StoryService.copyMultiple(listId);
     };
-    $scope.updateMultiple = function (updatedFields) {
-        StoryService.updateMultiple(listId, updatedFields).then(function () {
+    $scope.updateMultiple = function(updatedFields) {
+        StoryService.updateMultiple(listId, updatedFields).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.updated');
         });
     };
-    $scope.acceptMultiple = function () {
-        StoryService.acceptMultiple(listId).then(function () {
+    $scope.acceptMultiple = function() {
+        StoryService.acceptMultiple(listId).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.accepted');
         });
     };
-    $scope.followMultiple = function (follow) {
-        StoryService.followMultiple(listId, follow).then(function () {
+    $scope.followMultiple = function(follow) {
+        StoryService.followMultiple(listId, follow).then(function() {
             refreshStories();
         });
     };
-    $scope.acceptAsMultiple = function (target) {
-        StoryService.acceptAsMultiple(listId, target).then(function () {
+    $scope.acceptAsMultiple = function(target) {
+        StoryService.acceptAsMultiple(listId, target).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs' + target);
         });
     };
-    $scope.authorizedStories = function (action, stories) {
+    $scope.authorizedStories = function(action, stories) {
         return StoryService.authorizedStories(action, stories);
     };
     // Init
@@ -473,17 +473,17 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.storyPreview = {};
     $scope.stories = [];
     $scope.features = [];
-    FeatureService.list.$promise.then(function (features) {
+    FeatureService.list.$promise.then(function(features) {
         $scope.features = features;
     });
-    $scope.allFollowed = function (stories) {
+    $scope.allFollowed = function(stories) {
         return _.every(stories, 'followed');
     };
-    $scope.noneFollowed = function (stories) {
+    $scope.noneFollowed = function(stories) {
         return !_.some(stories, 'followed');
     };
     function refreshStories() {
-        StoryService.getMultiple(listId).then(function (stories) {
+        StoryService.getMultiple(listId).then(function(stories) {
             $scope.topStory = _.first(stories);
             $scope.storyPreview = {
                 value: _.every(stories, {value: $scope.topStory.value}) ? $scope.topStory.value : null,
@@ -499,10 +499,10 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
 }]);
 
 controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeout', '$controller', 'StoryService', 'hotkeys',
-    function ($scope, $state, $uibModal, $timeout, $controller, StoryService, hotkeys) {
+    function($scope, $state, $uibModal, $timeout, $controller, StoryService, hotkeys) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         // Functions
-        $scope.resetStoryForm = function () {
+        $scope.resetStoryForm = function() {
             var defaultStory = {};
             if ($scope.story && $scope.story.template) {
                 defaultStory.template = $scope.story.template
@@ -510,32 +510,32 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeo
             $scope.story = defaultStory;
             $scope.resetFormValidation($scope.formHolder.storyForm);
         };
-        $scope.templateSelected = function () {
+        $scope.templateSelected = function() {
             if ($scope.story.template) {
-                StoryService.getTemplatePreview($scope.story.template.id).then(function (storyPreview) {
+                StoryService.getTemplatePreview($scope.story.template.id).then(function(storyPreview) {
                     $scope.storyPreview = storyPreview;
                 });
             } else {
                 $scope.storyPreview = {}
             }
         };
-        $scope.showEditTemplateModal = function (story) {
+        $scope.showEditTemplateModal = function(story) {
             var parentScope = $scope;
             $uibModal.open({
                 templateUrl: 'story.template.edit.html',
                 size: 'sm',
-                controller: ["$scope", function ($scope) {
+                controller: ["$scope", function($scope) {
                     $scope.templateEntries = parentScope.templateEntries;
-                    $scope.deleteTemplate = function (templateEntry) {
-                        StoryService.deleteTemplate(templateEntry.id).then(function () {
+                    $scope.deleteTemplate = function(templateEntry) {
+                        StoryService.deleteTemplate(templateEntry.id).then(function() {
                             $scope.notifySuccess('todo.is.ui.deleted');
                         });
                     }
                 }]
             });
         };
-        $scope.save = function (story, andContinue) {
-            StoryService.save(story).then(function (story) {
+        $scope.save = function(story, andContinue) {
+            StoryService.save(story).then(function(story) {
                 if (andContinue) {
                     $scope.resetStoryForm();
                 } else {
@@ -545,16 +545,16 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeo
                 $scope.notifySuccess('todo.is.ui.story.saved');
             });
         };
-        $scope.findDuplicates = function (term) {
+        $scope.findDuplicates = function(term) {
             if (term == null || term.length <= 5) {
                 $scope.messageDuplicate = '';
             } else if (term.length >= 5) {
                 var trimmedTerm = term.trim();
                 //TODO maybe local search ?
                 $timeout.cancel($scope.timerDuplicate);
-                $scope.timerDuplicate = $timeout(function () {
+                $scope.timerDuplicate = $timeout(function() {
                     if ($scope.lastSearchedTerm != trimmedTerm) {
-                        StoryService.findDuplicates(trimmedTerm).then(function (messageDuplicate) {
+                        StoryService.findDuplicates(trimmedTerm).then(function(messageDuplicate) {
                             $scope.lastSearchedTerm = trimmedTerm;
                             $scope.messageDuplicate = messageDuplicate ? messageDuplicate : '';
                         });
@@ -571,7 +571,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeo
             callback: $scope.resetStoryForm
         });
         $scope.templateEntries = [];
-        StoryService.getTemplateEntries().then(function (templateEntries) {
+        StoryService.getTemplateEntries().then(function(templateEntries) {
             $scope.templateEntries = templateEntries;
         });
     }]);

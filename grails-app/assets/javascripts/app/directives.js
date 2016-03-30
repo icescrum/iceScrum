@@ -518,7 +518,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
         link: function(scope, element, attrs) {
             element.closest('.postit').one('mouseenter', function() {
                 var newElement = element.clone();
-                newElement.removeAttr('story-menu');
+                newElement.removeAttr('postit-menu');
                 newElement.attr('uib-dropdown', '');
                 newElement.attr('dropdown-append-to-body', '');
                 newElement.html('<a uib-dropdown-toggle><i class="fa fa-cog"></i></a><ul uib-dropdown-menu template-url="' + attrs.postitMenu + '"></ul>');

@@ -62,7 +62,7 @@
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <i class="fa fa-cog"></i> <i class="caret"></i>
                     </button>
-                    <ul uib-dropdown-menu class="pull-right" ng-include="'task.menu.html'"></ul>
+                    <ul uib-dropdown-menu template-url="task.menu.html"></ul>
                 </div>
                 <a ng-if="previousTask"
                    class="btn btn-default"

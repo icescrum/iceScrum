@@ -32,7 +32,6 @@
             </a>
         </h3>
     </div>
-
     <div class="panel-body">
         <div class="row">
             <div class="col-md-6">
@@ -46,28 +45,27 @@
                                     <i class="fa" ng-class="topStory.followed ? 'fa-star' : 'fa-star-o'"></i>
                                 </a>
                                 <span class="id">{{ topStory.id }}</span>
-                                <span class="value" ng-if="topStory.value">{{ topStory.value }} <i
-                                        class="fa fa-line-chart"></i></span>
+                                <span class="value" ng-if="topStory.value">{{ topStory.value }}
+                                    <i class="fa fa-line-chart"></i>
+                                </span>
                                 <span class="estimation"
-                                      ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }} <i
-                                        class="fa fa-dollar"></i></span>
+                                      ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }}
+                                    <i class="fa fa-dollar"></i>
+                                </span>
                             </div>
-
                             <div class="content">
                                 <h3 class="title ellipsis-el"
                                     ng-model="topStory.name"
                                     ng-bind-html="topStory.name | sanitize"></h3>
-
                                 <div class="description ellipsis-el"
                                      ng-model="topStory.description"
                                      ng-bind-html="topStory.description | sanitize"></div>
                             </div>
-
                             <div class="tags">
-                                <a ng-repeat="tag in topStory.tags" ng-click="setTagContext(tag)" href><span
-                                        class="tag">{{ tag }}</span></a>
+                                <a ng-repeat="tag in topStory.tags" ng-click="setTagContext(tag)" href>
+                                    <span class="tag">{{ tag }}</span>
+                                </a>
                             </div>
-
                             <div class="actions">
                                 <span class="action"><a><i class="fa fa-cog"></i></a></span>
                                 <span class="action" ng-class="{'active':topStory.attachments.length}">
@@ -96,13 +94,11 @@
                                     </a>
                                 </span>
                             </div>
-
                             <div class="state">{{ topStory.state | i18n:'StoryStates' }}</div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="col-md-6">
                 <div class="btn-toolbar">
                     <div ng-if="authorizedStories('accept', stories)"
@@ -131,7 +127,6 @@
                             </li>
                         </ul>
                     </div>
-
                     <div class="btn-group">
                         <button type="button"
                                 ng-if="authorizedStories('copy', stories)"
@@ -146,33 +141,31 @@
                             <g:message code='is.ui.backlog.menu.delete'/>
                         </button>
                     </div>
-
                     <div ng-if="authorizedStories('follow', stories)"
                          class="btn-group">
                         <button type="button"
                                 ng-switch="allFollowed(stories)"
                                 class="btn btn-default"
                                 ng-click="followMultiple(!allFollowed(stories))">
-                            <i class="fa" ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'"
+                            <i class="fa"
+                               ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'"
                                ng-switch-default uib-tooltip="${message(code: 'is.followable.start')}"></i>
-                            <i class="fa fa-star" ng-switch-when="true"
+                            <i class="fa fa-star"
+                               ng-switch-when="true"
                                uib-tooltip="${message(code: 'is.followable.stop')}"></i>
                         </button>
                     </div>
                 </div>
                 <br>
-
                 <div class="table-responsive">
                     <table class="table">
                         <tr><td>${message(code: 'is.story.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
                         <tr><td>${message(code: 'todo.is.ui.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>
-                        <tr><td>${message(code: 'todo.is.ui.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td>
-                        </tr>
+                        <tr><td>${message(code: 'todo.is.ui.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td></tr>
                     </table>
                 </div>
             </div>
         </div>
-
         <form ng-submit="updateMultiple(storyPreview)"
               name='storyForm'
               show-validation
@@ -181,7 +174,6 @@
                  class="clearfix no-padding">
                 <div class="form-half">
                     <label for="feature">${message(code: 'is.feature')}</label>
-
                     <div ng-class="{'input-group':storyPreview.feature.id}">
                         <ui-select class="form-control"
                                    name="feature"
@@ -191,10 +183,8 @@
                                 <i class="fa fa-sticky-note"
                                    style="color: {{ $select.selected.color }};"></i> {{ $select.selected.name }}
                             </ui-select-match>
-                            <ui-select-choices
-                                    repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
-                                <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span
-                                    ng-bind-html="feature.name | highlight: $select.search"></span>
+                            <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
+                                <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
                         <span class="input-group-btn" ng-show="storyPreview.feature.id">
@@ -206,21 +196,17 @@
                         </span>
                     </div>
                 </div>
-
                 <div class="form-half">
                     <label for="type">${message(code: 'is.story.type')}</label>
                     <ui-select class="form-control"
                                required
                                name="type"
                                ng-model="storyPreview.type">
-                        <ui-select-match
-                                placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
-                        <ui-select-choices
-                                repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                        <ui-select-match placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
+                        <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
                     </ui-select>
                 </div>
             </div>
-
             <div class="clearfix no-padding">
                 <div class="form-group"
                      ng-class="{ 'form-half' : authorizedStories('updateEstimate', stories) }">
@@ -235,7 +221,6 @@
                         </ui-select-choices>
                     </ui-select>
                 </div>
-
                 <div class="form-half"
                      ng-show="authorizedStories('updateEstimate', stories)">
                     <label for="effort">${message(code: 'is.story.effort')}</label>
@@ -245,8 +230,7 @@
                                search-enabled="true"
                                ng-model="storyPreview.effort">
                         <ui-select-match>{{ $select.selected }}</ui-select-match>
-                        <ui-select-choices
-                                repeat="i in effortSuite(isEffortNullable(topStory)) | filter: $select.search">
+                        <ui-select-choices repeat="i in effortSuite(isEffortNullable(topStory)) | filter: $select.search">
                             <span ng-bind-html="'' + i | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
@@ -257,7 +241,6 @@
                            ng-model="storyPreview.effort"/>
                 </div>
             </div>
-
             <div class="clearfix no-padding">
                 <div class="form-group"
                      ng-show="authorizedStories('updateParentSprint', stories)">
@@ -278,7 +261,6 @@
                     </ui-select>
                 </div>
             </div>
-
             <div ng-if="authorizedStories('update', stories)"
                  class="btn-toolbar">
                 <button class="btn btn-primary pull-right"

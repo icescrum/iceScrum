@@ -45,7 +45,7 @@
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <i class="fa fa-cog"></i> <i class="caret"></i>
                     </button>
-                    <ul uib-dropdown-menu class="pull-right" ng-include="'feature.menu.html'"></ul>
+                    <ul uib-dropdown-menu class="pull-right" template-url="feature.menu.html"></ul>
                 </div>
                 <a ng-if="previousFeature && !isModal"
                    class="btn btn-default"

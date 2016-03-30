@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="feature.menu.html">
-<ul class="dropdown-menu" uib-dropdown-menu role="menu">
+<ul class="dropdown-menu pull-right" uib-dropdown-menu role="menu">
     <li>
         <a href ng-click="setFeatureContext(feature)">
             ${message(code: 'todo.is.ui.context.set')}

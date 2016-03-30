@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="task.menu.html">
-<ul class="dropdown-menu" uib-dropdown-menu role="menu">
+<ul class="dropdown-menu pull-right" uib-dropdown-menu role="menu">
     <li ng-if="authorizedTask('take', task)">
         <a href ng-click="take(task)">
             ${message(code: 'is.ui.sprintPlan.menu.task.take')}
