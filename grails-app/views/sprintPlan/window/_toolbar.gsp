@@ -255,13 +255,13 @@
             <li class="first">
                 <a href="#${controllerName}/sprintBurndownRemainingChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a>
             </li>
+            <entry:point id="${controllerName}-${actionName}-charts" model="[sprint:sprint]"/>
             <li>
                 <a href="#${controllerName}/sprintBurnupTasksChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a>
             </li>
             <li>
                 <a href="#${controllerName}/sprintBurnupStoriesChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a>
             </li>
-            <entry:point id="${controllerName}-${actionName}-charts" model="[sprint:sprint]"/>
             <li class="last">
                 <a href="#${controllerName}/sprintBurnupPointsChart/${sprint.id}">${message(code:'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a>
             </li>
