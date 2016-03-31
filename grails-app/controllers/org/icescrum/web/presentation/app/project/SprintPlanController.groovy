@@ -344,7 +344,10 @@ class SprintPlanController {
     }
 
     def sprintBurndownRemainingChart = {
-        forward(action: "sprintBurndownRemainingChartCached", params:params)
+        withProduct { Product product ->
+            params.weekend = product.preferences.hideWeekend
+            forward(action: "sprintBurndownRemainingChartCached", params:params)
+        }
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
@@ -364,7 +367,10 @@ class SprintPlanController {
     }
 
     def sprintBurnupTasksChart = {
-        forward(action:"sprintBurnupTasksChartCached",params:params)
+        withProduct { Product product ->
+            params.weekend = product.preferences.hideWeekend
+            forward(action:"sprintBurnupTasksChartCached",params:params)
+        }
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
@@ -384,7 +390,10 @@ class SprintPlanController {
     }
 
     def sprintBurnupStoriesChart = {
-        forward(action:"sprintBurnupStoriesChartCached",params:params)
+        withProduct { Product product ->
+            params.weekend = product.preferences.hideWeekend
+            forward(action:"sprintBurnupStoriesChartCached",params:params)
+        }
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
@@ -404,7 +413,10 @@ class SprintPlanController {
     }
 
     def sprintBurnupPointsChart = {
-        forward(action:"sprintBurnupPointsChartCached",params:params)
+        withProduct { Product product ->
+            params.weekend = product.preferences.hideWeekend
+            forward(action:"sprintBurnupPointsChartCached",params:params)
+        }
     }
 
     @Cacheable(cache = "sprintCache", keyGenerator = 'sprintKeyGenerator')
