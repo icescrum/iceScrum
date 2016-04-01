@@ -17,7 +17,8 @@ class TeamController {
     @Secured('isAuthenticated()')
     def index(String term, Boolean create) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def teams = request.admin ? Team.findAllByNameIlike(searchTerm, options) : Team.findAllByOwner(springSecurityService.currentUser.username, [sort: "name", order: "asc", cache: true], searchTerm)
+        def options = [sort: "name", order: "asc", cache: true]
+        def teams = request.admin ? Team.findAllByNameIlike(searchTerm, options) : Team.findAllByOwner(springSecurityService.currentUser.username, options, searchTerm)
         if (!teams.any { it.name == term } && create) {
             teams.add(0, [name: params.term, members: [], scrumMasters: []])
         }
