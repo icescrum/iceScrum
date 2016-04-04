@@ -1,5 +1,6 @@
 /*!
  * angular-select-compufacil
+ * CUSTOMIZED
  * http://github.com/viniciusdacal/angular-select-compufacil
  * Version: 0.1.4 - 2016-03-17T19:15:20.413Z
  * License: MIT
@@ -789,7 +790,7 @@ uis.controller('uiSelectCtrl',
       return false;
     }
     var hasDupe = arr.filter( function (origItem) {
-      if ( ctrl.search.toUpperCase() === undefined || origItem === undefined ) {
+      if ( ctrl.search.toUpperCase() === undefined || origItem === undefined || origItem === null ) {
         return false;
       }
       return origItem.toUpperCase() === ctrl.search.toUpperCase();
