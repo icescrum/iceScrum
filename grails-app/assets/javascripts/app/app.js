@@ -348,6 +348,7 @@ angular.module('isApp', [
             onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
                 $uibModal.open({
                     keyboard: false,
+                    backdrop: 'static',
                     templateUrl: $rootScope.serverUrl + "/project/add",
                     size: 'lg',
                     controller: 'newProjectCtrl'
@@ -687,6 +688,9 @@ angular.module('isApp', [
         }
     };
 }])
+.factory('UserTimeZone', function() {
+    return jstz.determine();
+})
 .run(['Session', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
 
     //used to handle click with shortcut hotkeys

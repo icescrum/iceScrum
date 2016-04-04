@@ -331,7 +331,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     });
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, WizardHandler, Project, ProjectService, Session) {
+controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
 
     $controller('abstractProjectCtrl', { $scope: $scope });
     $scope.type = 'newProject';
@@ -387,6 +387,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'W
         endDate: endDate,
         planningPokerGameType: 1,
         preferences: {
+            timezone: UserTimeZone.name(),
             noEstimation: false,
             estimatedSprintsDuration: 14,
             displayRecurrentTasks: true,
