@@ -88,7 +88,7 @@
                            search-enabled="true"
                            tagging
                            tagging-tokens="SPACE|,"
-                           tagging-label=""
+                           tagging-label="${message(code: 'todo.is.ui.story.affectedVersion.new')}"
                            ng-model="editableStory.affectVersion">
                     <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.noaffectversion')}">{{ $select.selected }}</ui-select-match>
                     <ui-select-choices repeat="version in versions | filter: $select.search">
