@@ -26,6 +26,9 @@
           submitButton="${message(code:'default.button.create.label')}"
           closeButton="${message(code:'is.button.cancel')}"
           title="${message(code:'todo.is.ui.story.template.new')}">
+    <p class="help-block">
+        ${message(code: 'todo.is.ui.story.template.help')}
+    </p>
     <div class="form-group">
         <label for="template.name">${message(code:'todo.is.ui.story.template.name')}</label>
         <input autofocus
