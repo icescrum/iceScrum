@@ -129,11 +129,11 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
         var sprints = $scope.release.sprints;
         if (!_.isUndefined(sprints)) {
             if (_.isEmpty(sprints)) {
-                $scope.minStartDate = $scope.release.startDate;
+                $scope.startDateOptions.minDate = $scope.release.startDate;
             } else {
-                $scope.minStartDate =  $scope.immutableAddDaysToDate(_.max(_.pluck($scope.release.sprints, 'endDate')), 1);
+                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate(_.max(_.pluck($scope.release.sprints, 'endDate')), 1);
             }
-            $scope.sprint.startDate = $scope.minStartDate;
+            $scope.sprint.startDate = $scope.startDateOptions.minDate;
             var sprintDuration = $scope.project.preferences.estimatedSprintsDuration;
             var hypotheticalEndDate = $scope.immutableAddDaysToDate($scope.sprint.startDate, sprintDuration);
             $scope.sprint.endDate = _.min([hypotheticalEndDate, $scope.release.endDate]);
@@ -145,10 +145,10 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
-            $scope.minEndDate = $scope.immutableAddDaysToDate(startDate, 1);
+            $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(startDate, 1);
         }
         if (endDate) {
-            $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
+            $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
     $scope.formHolder = {};
@@ -204,17 +204,17 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSer
             var previousSprint = _.findLast(_.sortBy(sprints, 'orderNumber'), function(sprint) {
                 return sprint.orderNumber < $scope.sprint.orderNumber;
             });
-            $scope.minStartDate = _.isEmpty(previousSprint) ? $scope.release.startDate : $scope.immutableAddDaysToDate(previousSprint.endDate, 1);
+            $scope.startDateOptions.minDate = _.isEmpty(previousSprint) ? $scope.release.startDate : $scope.immutableAddDaysToDate(previousSprint.endDate, 1);
         }
     });
     $scope.$watchCollection('[editableSprint.startDate, editableSprint.endDate]', function(newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
-            $scope.minEndDate = $scope.immutableAddDaysToDate(startDate, 1);
+            $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(startDate, 1);
         }
         if (endDate) {
-            $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
+            $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
     $scope.sprint = detailsSprint;
@@ -224,7 +224,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSer
     $scope.resetSprintForm();
     ReleaseService.get($scope.sprint.parentRelease.id, $scope.project).then(function (release) {
         $scope.release = release;
-        $scope.maxEndDate = $scope.release.endDate;
+        $scope.endDateOptions.maxDate = $scope.release.endDate;
         var sortedSprints = _.sortBy($scope.release.sprints, 'orderNumber');
         $scope.previousSprint = FormService.previous(sortedSprints, $scope.sprint);
         $scope.nextSprint = FormService.next(sortedSprints, $scope.sprint);

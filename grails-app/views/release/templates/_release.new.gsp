@@ -64,8 +64,7 @@
                                name="release.startDate"
                                ng-model="release.startDate"
                                uib-datepicker-popup
-                               min-date="minStartDate"
-                               max-date="maxStartDate"
+                               datepicker-options="startDateOptions"
                                is-open="startDateOptions.opened"/>
                     </div>
                 </div>
@@ -78,7 +77,7 @@
                                name="release.endDate"
                                ng-model="release.endDate"
                                uib-datepicker-popup
-                               min-date="minEndDate"
+                               datepicker-options="endDateOptions"
                                is-open="endDateOptions.opened"/>
                         <span class="input-group-btn">
                             <button type="button"

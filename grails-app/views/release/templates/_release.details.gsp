@@ -91,8 +91,7 @@
                                    ng-disabled="!authorizedRelease('updateDates', release)"
                                    ng-model="editableRelease.startDate"
                                    uib-datepicker-popup
-                                   min-date="minStartDate"
-                                   max-date="maxStartDate"
+                                   datepicker-options="startDateOptions"
                                    is-open="startDateOptions.opened"/>
                             <span class="input-group-btn"
                                   ng-if="authorizedRelease('updateDates', release)">
@@ -116,7 +115,7 @@
                                    ng-disabled="!authorizedRelease('updateDates', release)"
                                    ng-model="editableRelease.endDate"
                                    uib-datepicker-popup
-                                   min-date="minEndDate"
+                                   datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>
                             <span class="input-group-btn"
                                   ng-if="authorizedRelease('updateDates', release)">

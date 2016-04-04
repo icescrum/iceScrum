@@ -89,11 +89,11 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
     $scope.$watchCollection('project.releases', function(releases) {
         if (!_.isUndefined(releases)) {
             if (_.isEmpty(releases)) {
-                $scope.minStartDate = $scope.project.startDate;
+                $scope.startDateOptions.minDate = $scope.project.startDate;
             } else {
-                $scope.minStartDate =  $scope.immutableAddDaysToDate(_.max(_.pluck($scope.project.releases, 'endDate')), 1);
+                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate(_.max(_.pluck($scope.project.releases, 'endDate')), 1);
             }
-            $scope.release.startDate = $scope.minStartDate;
+            $scope.release.startDate = $scope.startDateOptions.minDate;
             $scope.release.endDate = $scope.immutableAddMonthsToDate($scope.release.startDate, 3);
         }
     });
@@ -101,10 +101,10 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
-            $scope.minEndDate = $scope.immutableAddDaysToDate(startDate, 1);
+            $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(startDate, 1);
         }
         if (endDate) {
-            $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
+            $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
     $scope.formHolder = {};
@@ -153,9 +153,9 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
         if (!_.isUndefined(releases)) {
             var previousRelease = _.last(releases);
             if (_.isEmpty(previousRelease)) {
-                $scope.minStartDate = $scope.project.startDate;
+                $scope.startDateOptions.minDate = $scope.project.startDate;
             } else {
-                $scope.minStartDate =  $scope.immutableAddDaysToDate(previousRelease.endDate, 1);
+                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate(previousRelease.endDate, 1);
             }
         }
     });
@@ -163,10 +163,10 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
-            $scope.minEndDate = $scope.immutableAddDaysToDate(startDate, 1);
+            $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(startDate, 1);
         }
         if (endDate) {
-            $scope.maxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
+            $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
     $scope.release = detailsRelease;

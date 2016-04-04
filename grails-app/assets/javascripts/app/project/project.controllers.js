@@ -397,19 +397,19 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'U
         productOwners: [Session.user],
         stakeHolders: []
     });
-    $scope.startDate = {
+    $scope.startDateOptions = {
         opened: false
     };
-    $scope.endDate = angular.copy($scope.startDate);
-    $scope.firstSprint = angular.copy($scope.startDate);
+    $scope.firstSprintOptions = angular.copy($scope.startDateOptions);
+    $scope.endDateOptions = angular.copy($scope.startDateOptions);
     $scope.$watchCollection('[project.startDate, project.endDate, project.firstSprint]', function(newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
         var firstSprint = newValues[2];
-        $scope.projectMinEndDate = $scope.immutableAddDaysToDate(firstSprint, 1);
-        $scope.projectMaxStartDate = $scope.immutableAddDaysToDate(endDate, -1);
-        $scope.sprintMaxStartDate = $scope.projectMaxStartDate;
-        $scope.sprintMinStartDate = startDate;
+        $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(firstSprint, 1);
+        $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
+        $scope.firstSprintOptions.maxDate = $scope.startDateOptions.maxDate;
+        $scope.firstSprintOptions.minDate = startDate;
     });
     $scope.totalDuration = 0;
     $scope.sprints = [];
@@ -439,10 +439,10 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
     $scope.checkProjectPropertyUrl = '/project/' + $scope.currentProject.id + '/available';
     ReleaseService.list($scope.currentProject).then(function(releases) {
         if (releases.length > 0) {
-            $scope.projectMaxStartDate = new Date(releases[0].startDate);
+            $scope.startDateOptions.maxDate = new Date(releases[0].startDate);
         }
     });
-    $scope.startDate = {
+    $scope.startDateOptions = {
         opened: false
     };
     if (!$scope.panel) {

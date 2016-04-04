@@ -80,8 +80,7 @@
                                    ng-disabled="!authorizedSprint('updateStartDate', sprint)"
                                    ng-model="editableSprint.startDate"
                                    uib-datepicker-popup
-                                   min-date="minStartDate"
-                                   max-date="maxStartDate"
+                                   datepicker-options="startDateOptions"
                                    is-open="startDateOptions.opened"/>
                             <span class="input-group-btn"
                                   ng-if="authorizedSprint('updateStartDate', sprint)">
@@ -105,8 +104,7 @@
                                    ng-disabled="!authorizedSprint('updateEndDate', sprint)"
                                    ng-model="editableSprint.endDate"
                                    uib-datepicker-popup
-                                   min-date="minEndDate"
-                                   max-date="maxEndDate"
+                                   datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>
                             <span class="input-group-btn"
                                   ng-if="authorizedSprint('updateEndDate', sprint)">
