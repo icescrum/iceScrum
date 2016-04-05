@@ -151,11 +151,10 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
     FormService.addStateChangeDirtyFormListener($scope, 'release');
     $scope.$watchCollection('project.releases', function(releases) {
         if (!_.isUndefined(releases)) {
-            var previousRelease = _.last(releases);
-            if (_.isEmpty(previousRelease)) {
+            if (_.isEmpty($scope.previousRelease)) {
                 $scope.startDateOptions.minDate = $scope.project.startDate;
             } else {
-                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate(previousRelease.endDate, 1);
+                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate($scope.previousRelease.endDate, 1);
             }
         }
     });
