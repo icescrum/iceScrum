@@ -360,10 +360,10 @@ filters
                 return dependsOn.name + ' (' + dependsOn.uid + ')';
             }
         }
-    }]).filter('parentSprintLabel', ['$rootScope', function($rootScope) {
-        return function(parentSprint) {
-            if (parentSprint) {
-                return $rootScope.message('is.sprint') + ' ' + parentSprint.orderNumber;
+    }]).filter('sprintName', ['$rootScope', function($rootScope) {
+        return function(sprint) {
+            if (sprint) {
+                return $rootScope.message('is.sprint') + ' ' + sprint.orderNumber;
             }
         }
     }]).filter('acceptanceTestColor', ['AcceptanceTestStatesByName', function(AcceptanceTestStatesByName) {

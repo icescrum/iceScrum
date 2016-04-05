@@ -110,7 +110,7 @@
             <h3 class="panel-title small-title">
                 <div>
                     <a href="#/taskBoard/{{ sprint.id }}/details">
-                        ${message(code: 'is.sprint')} {{ sprint.orderNumber + ' - ' + (sprint.state | i18n: 'SprintStates') }}
+                        {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
                     </a>
                     <span class="pull-right">
                         <span ng-if="sprint.state > 1" uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity }} /</span>
