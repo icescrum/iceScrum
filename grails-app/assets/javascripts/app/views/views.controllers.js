@@ -313,6 +313,14 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         };
         $scope.tasksByTypeByState = groupByStateAndSort(_.groupBy(partitionedTasks[0], 'type'));
         $scope.tasksByStoryByState = groupByStateAndSort(_.groupBy(partitionedTasks[1], 'parentStory.id'));
+        var sprintStoriesIds = _.map($scope.sprint.stories, 'id');
+        var allStoriesIds = _.union(sprintStoriesIds, _.map(partitionedTasks[1], 'parentStory.id'));
+        var ghostStoriesIds = _.difference(allStoriesIds, sprintStoriesIds);
+        if (ghostStoriesIds) {
+            StoryService.getMultiple(ghostStoriesIds).then(function(ghostStories) {
+                $scope.ghostStories = ghostStories;
+            });
+        }
         var fillGapsInDictionnary = function(dictionnary, firstLevelKeys, secondLevelKeys) {
             _.each(firstLevelKeys, function(firstLevelKey) {
                 if (!dictionnary[firstLevelKey]) {
@@ -326,7 +334,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             });
         };
         fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.sprintTaskStates);
-        fillGapsInDictionnary($scope.tasksByStoryByState, _.map($scope.sprint.stories, 'id'), $scope.sprintTaskStates);
+        fillGapsInDictionnary($scope.tasksByStoryByState, allStoriesIds, $scope.sprintTaskStates);
     };
     $scope.changeSprintFilter = function(sprintFilter) {
         $scope.currentSprintFilter = sprintFilter;
@@ -413,6 +421,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.sprint = sprint;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
+    $scope.ghostStories = [];
     $scope.$watch('sprint.tasks', function(newValue, oldValue) {
         if (oldValue !== newValue) { // Prevent trigger watch on watch creation
             $scope.refreshTasks();

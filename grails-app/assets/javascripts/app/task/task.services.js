@@ -30,7 +30,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
     this.getCrudMethods = function(taskContext) {
         var crudMethods = {};
         crudMethods[IceScrumEventType.CREATE] = function(task) {
-            if (taskContext.class == 'Story' ? task.parentStory.id == taskContext.id : task.sprint.id == taskContext.id) {
+            if (taskContext.class == 'Story' ? task.parentStory.id == taskContext.id : (task.sprint && (task.sprint.id == taskContext.id))) {
                 var existingTask = _.find(taskContext.tasks, {id: task.id});
                 if (existingTask) {
                     angular.extend(existingTask, task);

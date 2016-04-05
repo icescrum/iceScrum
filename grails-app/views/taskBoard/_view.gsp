@@ -191,6 +191,29 @@
                     </td>
                 </tr>
             </tbody>
+            <tbody ng-repeat="story in ghostStories | filter: storyFilter | search | orderBy: 'id'" class="story-ghost">
+                <tr class="sticky-header list-group">
+                    <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)">
+                        <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
+                    </td>
+                </tr>
+                <tr class="postits grid-group sortable-disabled" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
+                    <td class="postits grid-group"
+                        ng-class="hasSelected() ? 'has-selected' : ''"
+                        ng-model="tasksByStoryByState[story.id][taskState]"
+                        as-sortable
+                        is-disabled="true"
+                        ng-repeat="taskState in sprintTaskStates">
+                        <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
+                             ng-class="{ 'is-selected': isSelected(task) }"
+                             selectable-id="{{ ::task.id }}"
+                             as-sortable-item
+                             class="postit-container">
+                            <div ng-include="'task.html'"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
             <tr ng-if="sprint.stories.length == 0">
                 <td colspan="{{ sprint.state != 2 ? 1 : 3 }}">
                     <div class="empty-view">

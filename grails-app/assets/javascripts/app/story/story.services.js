@@ -172,17 +172,23 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return Story.update({id: story.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.getMultiple = function(ids) {
-        var foundStories = [];
-        var notFoundStoryIds = [];
-        _.each(ids, function(id) {
-            var foundStory = _.find(self.list, {id: parseInt(id)});
-            if (foundStory) {
-                foundStories.push(foundStory);
-            } else {
-                notFoundStoryIds.push(id);
-            }
-        });
-        return notFoundStoryIds.length > 0 ? Story.query({id: notFoundStoryIds}, self.mergeStories).$promise : $q.when(foundStories);
+        if (ids.length == 1) {
+            return self.get(ids[0]).then(function(story) {
+                return [story];
+            });
+        } else {
+            var foundStories = [];
+            var notFoundStoryIds = [];
+            _.each(ids, function(id) {
+                var foundStory = _.find(self.list, {id: parseInt(id)});
+                if (foundStory) {
+                    foundStories.push(foundStory);
+                } else {
+                    notFoundStoryIds.push(id);
+                }
+            });
+            return notFoundStoryIds.length > 0 ? Story.query({id: notFoundStoryIds}, self.mergeStories).$promise : $q.when(foundStories);
+        }
     };
     this.updateMultiple = function(ids, updatedFields) {
         return Story.updateArray({id: ids}, {story: updatedFields}, function(stories) {
