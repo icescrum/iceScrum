@@ -125,7 +125,7 @@ filters
             return s.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>").replace(/"/g, '\\"');
         };
         return function(story, isHtml) {
-            var actor = isHtml ? '<a href="#/actor/$1">$2</a>' : '$2';
+            var actor = '$2'; // TODO reenable link when something to link to: isHtml ? '<a href="#/actor/$1">$2</a>' : '$2';
             return story.description ? javaStringToHtml(story.description).replace(/A\[(.+?)-(.*?)\]/g, actor) : "";
         };
     })
