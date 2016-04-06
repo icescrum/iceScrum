@@ -30,10 +30,10 @@
         ${message(code: 'is.dialog.selector.description')}
     </p>
     <div selectable="selectableOptions">
-        <div class="postits list-group has-selected"
+        <div class="postits list-group has-selected sortable-disabled"
              ng-controller="storyCtrl"
              ng-model="backlog.stories"
-             as-sortable=""
+             as-sortable
              is-disabled="true"
              ng-include="'story.backlog.html'">
         </div>

@@ -61,7 +61,7 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
     $scope.endDateOptions = angular.copy($scope.startDateOptions);
 }]);
 
-controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', '$uibModal', function($scope, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
+controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', function($scope, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
     // Functions
     $scope.isSortingSprint = function(sprint) {
         return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;

@@ -60,7 +60,6 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             size: 'md',
             controller: ["$scope", "StoryService", function($scope, StoryService) {
                 $scope.disabledGradient = true;
-                $scope.disabledSortable = true;
                 $scope.selectedIds = [];
                 $scope.backlog = {
                     stories: _.filter(StoryService.list, options.filter)
