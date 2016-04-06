@@ -540,7 +540,7 @@ controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeo
                     $scope.resetStoryForm();
                 } else {
                     $scope.setInEditingMode(true);
-                    $state.go('^.details', {id: story.id});
+                    $state.go('^.details', {storyId: story.id});
                 }
                 $scope.notifySuccess('todo.is.ui.story.saved');
             });

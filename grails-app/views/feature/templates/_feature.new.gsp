@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
-                <button class="btn btn-primary pull-right"
+                <button class="btn btn-primary"
                         ng-disabled="formHolder.featureForm.$invalid"
                         uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                         hotkey="{'shift+return': hotkeyClick }"
@@ -83,7 +83,7 @@
                         ng-click="save(feature, true)">
                     ${message(code:'todo.is.ui.create.and.continue')}
                 </button>
-                <button class="btn btn-primary pull-right"
+                <button class="btn btn-primary"
                         ng-disabled="formHolder.featureForm.$invalid"
                         type="submit">
                     ${message(code:'default.button.create.label')}

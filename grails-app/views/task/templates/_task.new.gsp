@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div ng-if="authorizedTask('create')" class="btn-toolbar pull-right">
-                <button class="btn btn-primary pull-right"
+                <button class="btn btn-primary"
                         ng-disabled="formHolder.taskForm.$invalid"
                         uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                         hotkey="{'shift+return': hotkeyClick }"
@@ -90,7 +90,7 @@
                         ng-click="save(task, true)">
                     ${message(code:'todo.is.ui.create.and.continue')}
                 </button>
-                <button class="btn btn-primary pull-right"
+                <button class="btn btn-primary"
                         ng-disabled="formHolder.taskForm.$invalid"
                         type="submit">
                     ${message(code:'default.button.create.label')}

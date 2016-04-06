@@ -112,7 +112,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
                 $scope.resetFeatureForm();
             } else {
                 $scope.setInEditingMode(true);
-                $state.go('^.details', {id: feature.id});
+                $state.go('^.details', {featureId: feature.id});
             }
             $scope.notifySuccess('todo.is.ui.feature.saved');
         });

@@ -90,12 +90,7 @@
                 </div>
             </div>
             <div class="btn-toolbar pull-right">
-                <button class="btn btn-primary pull-right"
-                        ng-disabled="formHolder.sprintForm.$invalid"
-                        type="submit">
-                    ${message(code:'default.button.create.label')}
-                </button>
-                <button class="btn btn-primary pull-right"
+                <button class="btn btn-primary"
                         ng-disabled="formHolder.sprintForm.$invalid"
                         uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                         hotkey="{'shift+return': hotkeyClick }"
@@ -103,6 +98,11 @@
                         type='button'
                         ng-click="save(sprint, true)">
                     ${message(code:'todo.is.ui.create.and.continue')}
+                </button>
+                <button class="btn btn-primary"
+                        ng-disabled="formHolder.sprintForm.$invalid"
+                        type="submit">
+                    ${message(code:'default.button.create.label')}
                 </button>
             </div>
         </form>
