@@ -167,45 +167,44 @@
             </div>
         </div>
         <form ng-submit="updateMultiple(storyPreview)"
+              ng-if="authorizedStories('update', stories)"
               name='storyForm'
               show-validation
               novalidate>
-            <div ng-if="authorizedStories('update', stories)"
-                 class="clearfix no-padding">
-                <div class="form-half">
-                    <label for="feature">${message(code: 'is.feature')}</label>
-                    <div ng-class="{'input-group':storyPreview.feature.id}">
-                        <ui-select class="form-control"
-                                   name="feature"
-                                   search-enabled="true"
-                                   ng-model="storyPreview.feature">
-                            <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
-                                <i class="fa fa-sticky-note"
-                                   style="color: {{ $select.selected.color }};"></i> {{ $select.selected.name }}
-                            </ui-select-match>
-                            <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
-                                <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                        <span class="input-group-btn" ng-show="storyPreview.feature.id">
-                            <a href="#feature/{{ storyPreview.feature.id }}"
-                               title="{{ storyPreview.feature.name }}"
-                               class="btn btn-default">
-                                <i class="fa fa-external-link"></i>
-                            </a>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-half">
-                    <label for="type">${message(code: 'is.story.type')}</label>
+            <div class="form-group">
+                <label for="feature">${message(code: 'is.feature')}</label>
+                <div ng-class="{'input-group':storyPreview.feature.id}">
                     <ui-select class="form-control"
-                               required
-                               name="type"
-                               ng-model="storyPreview.type">
-                        <ui-select-match placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
-                        <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                               input-group-fix-width="30"
+                               name="feature"
+                               search-enabled="true"
+                               ng-model="storyPreview.feature">
+                        <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
+                            <i class="fa fa-sticky-note"
+                               style="color: {{ $select.selected.color }};"></i> {{ $select.selected.name }}
+                        </ui-select-match>
+                        <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
+                            <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
+                        </ui-select-choices>
                     </ui-select>
+                    <span class="input-group-btn" ng-if="storyPreview.feature.id">
+                        <a ui-sref=".feature.details({featureId: storyPreview.feature.id})"
+                           title="{{ storyPreview.feature.name }}"
+                           class="btn btn-default">
+                            <i class="fa fa-external-link"></i>
+                        </a>
+                    </span>
                 </div>
+            </div>
+            <div class="form-group">
+                <label for="type">${message(code: 'is.story.type')}</label>
+                <ui-select class="form-control"
+                           required
+                           name="type"
+                           ng-model="storyPreview.type">
+                    <ui-select-match placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
+                    <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                </ui-select>
             </div>
             <div class="clearfix no-padding">
                 <div class="form-group"
@@ -222,7 +221,7 @@
                     </ui-select>
                 </div>
                 <div class="form-half"
-                     ng-show="authorizedStories('updateEstimate', stories)">
+                     ng-if="authorizedStories('updateEstimate', stories)">
                     <label for="effort">${message(code: 'is.story.effort')}</label>
                     <ui-select ng-if="!isEffortCustom()"
                                class="form-control"
@@ -241,28 +240,25 @@
                            ng-model="storyPreview.effort"/>
                 </div>
             </div>
-            <div class="clearfix no-padding">
-                <div class="form-group"
-                     ng-show="authorizedStories('updateParentSprint', stories)">
-                    <label for="parentSprint">${message(code: 'is.sprint')}</label>
-                    <ui-select ng-click="retrieveParentSprintEntries()"
-                               class="form-control"
-                               name="parentSprint"
-                               search-enabled="true"
-                               ng-model="storyPreview.parentSprint">
-                        <ui-select-match allow-clear="true"
-                                         placeholder="${message(code: 'is.ui.story.noparentsprint')}">
-                            {{ $select.selected.parentRelease.name + ' - ' + ($select.selected | sprintName) }}
-                        </ui-select-match>
-                        <ui-select-choices group-by="groupSprintByParentRelease"
-                                           repeat="parentSprintEntry in parentSprintEntries | filter: { orderNumber: $select.search }">
-                            <span ng-bind-html="parentSprintEntry | sprintName | highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
+            <div class="form-group"
+                 ng-if="authorizedStories('updateParentSprint', stories)">
+                <label for="parentSprint">${message(code: 'is.sprint')}</label>
+                <ui-select ng-click="retrieveParentSprintEntries()"
+                           class="form-control"
+                           name="parentSprint"
+                           search-enabled="true"
+                           ng-model="storyPreview.parentSprint">
+                    <ui-select-match allow-clear="true"
+                                     placeholder="${message(code: 'is.ui.story.noparentsprint')}">
+                        {{ $select.selected.parentRelease.name + ' - ' + ($select.selected | sprintName) }}
+                    </ui-select-match>
+                    <ui-select-choices group-by="groupSprintByParentRelease"
+                                       repeat="parentSprintEntry in parentSprintEntries | filter: { orderNumber: $select.search }">
+                        <span ng-bind-html="parentSprintEntry | sprintName | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
             </div>
-            <div ng-if="authorizedStories('update', stories)"
-                 class="btn-toolbar">
+            <div class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         type="submit">
                     ${message(code: 'default.button.update.label')}

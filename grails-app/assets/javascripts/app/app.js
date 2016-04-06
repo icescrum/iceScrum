@@ -284,9 +284,7 @@ angular.module('isApp', [
                         return FeatureService.list;
                     }]
                 },
-                children: [
-                    getFeatureDetailsState('@', true)
-                ]
+                children: [getFeatureDetailsState('@', true)]
             }));
         }
         return options;
@@ -393,7 +391,17 @@ angular.module('isApp', [
                             templateUrl: 'story.multiple.html',
                             controller: 'storyMultipleCtrl'
                         }
-                    }
+                    },
+                    children: [
+                        getDetailsModalState('feature', {
+                            resolve: {
+                                features: ['FeatureService', function(FeatureService) {
+                                    return FeatureService.list;
+                                }]
+                            },
+                            children: [getFeatureDetailsState('@', true)]
+                        })
+                    ]
                 },
                 getStoryDetailsState()
             ]
