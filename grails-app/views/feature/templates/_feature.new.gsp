@@ -40,18 +40,22 @@
                 <div style="{{ '#2d8ccc' | createGradientBackground }}"
                      class="postit {{ '#2d8ccc' | contrastColor }}">
                     <div class="head">
-                        <span class="id">42</span>
+                        <div class="head-left">
+                            <span class="id">42</span>
+                        </div>
                     </div>
                     <div class="content">
                         <h3 class="title ellipsis-el"
                             ng-model="feature.name"
                             ng-bind-html="feature.name | sanitize"></h3>
                     </div>
-                    <div class="tags"></div>
-                    <div class="actions">
-                        <span class="action"><a><i class="fa fa-cog"></i></a></span>
-                        <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
-                        <span class="action"><a><i class="fa fa-tasks"></i></a></span>
+                    <div class="footer">
+                        <div class="tags"></div>
+                        <div class="actions">
+                            <span class="action"><a><i class="fa fa-cog"></i></a></span>
+                            <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
+                            <span class="action"><a><i class="fa fa-tasks"></i></a></span>
+                        </div>
                     </div>
                 </div>
             </div>

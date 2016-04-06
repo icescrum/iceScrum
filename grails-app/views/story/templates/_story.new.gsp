@@ -40,7 +40,9 @@
                 <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
                      class="postit {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}">
                     <div class="head">
-                        <span class="id">42</span>
+                        <div class="head-left">
+                            <span class="id">42</span>
+                        </div>
                     </div>
                     <div class="content">
                         <h3 class="title ellipsis-el"
@@ -50,37 +52,39 @@
                              ng-model="storyPreview.description"
                              ng-bind-html="storyPreview.description | sanitize"></div>
                     </div>
-                    <div class="tags">
-                        <a ng-repeat="tag in storyPreview.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
-                    </div>
-                    <div class="actions">
-                        <span class="action">
-                            <a>
-                                <i class="fa fa-cog"></i>
-                            </a>
-                        </span>
-                        <span class="action">
-                            <a uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
-                                <i class="fa fa-paperclip"></i>
-                            </a>
-                        </span>
-                        <span class="action">
-                            <a uib-tooltip="${message(code:'todo.is.ui.comments')}">
-                                <i class="fa fa-comment-o"></i>
-                            </a>
-                        </span>
-                        <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                            <a uib-tooltip="${message(code:'todo.is.ui.tasks')}">
-                                <i class="fa fa-tasks"></i>
-                                <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
-                            </a>
-                        </span>
-                        <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                            <a uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
-                                <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
-                                <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
-                            </a>
-                        </span>
+                    <div class="footer">
+                        <div class="tags">
+                            <a ng-repeat="tag in storyPreview.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
+                        </div>
+                        <div class="actions">
+                            <span class="action">
+                                <a>
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                            </span>
+                            <span class="action">
+                                <a uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                                    <i class="fa fa-paperclip"></i>
+                                </a>
+                            </span>
+                            <span class="action">
+                                <a uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                                    <i class="fa fa-comment-o"></i>
+                                </a>
+                            </span>
+                            <span class="action" ng-class="{'active':storyPreview.tasks_count}">
+                                <a uib-tooltip="${message(code:'todo.is.ui.tasks')}">
+                                    <i class="fa fa-tasks"></i>
+                                    <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
+                                </a>
+                            </span>
+                            <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
+                                <a uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
+                                    <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                                    <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
+                                </a>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

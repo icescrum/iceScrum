@@ -40,8 +40,14 @@
                         <div style="{{ topFeature.color | createGradientBackground }}"
                              class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                             <div class="head">
-                                <span class="id">{{ topFeature.id }}</span>
-                                <span class="estimation">{{ topFeature.value ? topFeature.value : '' }}</span>
+                                <div class="head-left">
+                                    <span class="id">{{ topFeature.id }}</span>
+                                </div>
+                                <div class="head-right">
+                                    <span class="estimation">
+                                        {{ topFeature.value ? topFeature.value : '' }} <i class="fa fa-line-chart"></i>
+                                    </span>
+                                </div>
                             </div>
                             <div class="content">
                                 <h3 class="title ellipsis-el"
@@ -51,24 +57,28 @@
                                      ng-model="topFeature.description"
                                      ng-bind-html="topFeature.description | sanitize"></div>
                             </div>
-                            <div class="tags">
-                                <a ng-repeat="tag in topFeature.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
+                            <div class="footer">
+                                <div class="tags">
+                                    <a ng-repeat="tag in topFeature.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
+                                </div>
+                                <div class="actions">
+                                    <span class="action"><a><i class="fa fa-cog"></i></a></span>
+                                    <span class="action" ng-class="{'active':topFeature.attachments.length}">
+                                        <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                            <i class="fa fa-paperclip"></i>
+                                        </a>
+                                    </span>
+                                    <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
+                                        <a uib-tooltip="${message(code: 'todo.is.ui.stories')}">
+                                            <i class="fa fa-tasks"></i>
+                                            <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="state-progress">
+                                    <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
+                                </div>
                             </div>
-                            <div class="actions">
-                                <span class="action"><a><i class="fa fa-cog"></i></a></span>
-                                <span class="action" ng-class="{'active':topFeature.attachments.length}">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                        <i class="fa fa-paperclip"></i>
-                                    </a>
-                                </span>
-                                <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.stories')}">
-                                        <i class="fa fa-tasks"></i>
-                                        <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
-                                    </a>
-                                </span>
-                            </div>
-                            <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
                         </div>
                     </div>
                 </div>

@@ -40,7 +40,9 @@
                 <div style="{{ '#f9f157' | createGradientBackground }}"
                      class="postit postit-small {{ '#f9f157' | contrastColor }}">
                     <div class="head">
-                        <span class="id">42</span>
+                        <div class="head-left">
+                            <span class="id">42</span>
+                        </div>
                     </div>
                     <div class="content">
                         <h3 class="title ellipsis-el"

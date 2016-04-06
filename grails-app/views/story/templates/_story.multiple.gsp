@@ -36,22 +36,27 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="postits standalone">
-                    <div ellipsis class="postit-container stack twisted">
+                    <div ellipsis
+                         class="postit-container stack twisted">
                         <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
                              class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                             <div class="head">
-                                <a class="follow"
-                                   uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}">
-                                    <i class="fa" ng-class="topStory.followed ? 'fa-star' : 'fa-star-o'"></i>
-                                </a>
-                                <span class="id">{{ topStory.id }}</span>
-                                <span class="value" ng-if="topStory.value">{{ topStory.value }}
-                                    <i class="fa fa-line-chart"></i>
-                                </span>
-                                <span class="estimation"
-                                      ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }}
-                                    <i class="fa fa-dollar"></i>
-                                </span>
+                                <div class="head-left">
+                                    <a class="follow"
+                                       uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}">
+                                        <i class="fa" ng-class="topStory.followed ? 'fa-star' : 'fa-star-o'"></i>
+                                    </a>
+                                    <span class="id">{{ topStory.id }}</span>
+                                </div>
+                                <div class="head-right">
+                                    <span class="value" ng-if="topStory.value">{{ topStory.value }}
+                                        <i class="fa fa-line-chart"></i>
+                                    </span>
+                                    <span class="estimation"
+                                          ng-if="topStory.state > 1">{{ topStory.effort != undefined ? topStory.effort : '?' }}
+                                        <i class="fa fa-dollar"></i>
+                                    </span>
+                                </div>
                             </div>
                             <div class="content">
                                 <h3 class="title ellipsis-el"
@@ -61,40 +66,46 @@
                                      ng-model="topStory.description"
                                      ng-bind-html="topStory.description | sanitize"></div>
                             </div>
-                            <div class="tags">
-                                <a ng-repeat="tag in topStory.tags" ng-click="setTagContext(tag)" href>
-                                    <span class="tag">{{ tag }}</span>
-                                </a>
+                            <div class="footer">
+                                <div class="tags">
+                                    <a ng-repeat="tag in topStory.tags" ng-click="setTagContext(tag)" href>
+                                        <span class="tag">{{ tag }}</span>
+                                    </a>
+                                </div>
+                                <div class="actions">
+                                    <span class="action"><a><i class="fa fa-cog"></i></a></span>
+                                    <span class="action" ng-class="{'active':topStory.attachments.length}">
+                                        <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                            <i class="fa fa-paperclip"></i>
+                                        </a>
+                                    </span>
+                                    <span class="action" ng-class="{'active':topStory.comments_count}">
+                                        <a uib-tooltip="${message(code: 'todo.is.ui.comments')}">
+                                            <i class="fa"
+                                               ng-class="topStory.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                                            <span class="badge">{{ topStory.comments_count || '' }}</span>
+                                        </a>
+                                    </span>
+                                    <span class="action" ng-class="{'active':topStory.tasks_count}">
+                                        <a uib-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                            <i class="fa fa-tasks"></i>
+                                            <span class="badge">{{ topStory.tasks_count || '' }}</span>
+                                        </a>
+                                    </span>
+                                    <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
+                                        <a uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                                            <i class="fa"
+                                               ng-class="topStory.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                                            <span class="badge">{{ topStory.acceptanceTests_count || '' }}</span>
+                                        </a>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="actions">
-                                <span class="action"><a><i class="fa fa-cog"></i></a></span>
-                                <span class="action" ng-class="{'active':topStory.attachments.length}">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                        <i class="fa fa-paperclip"></i>
-                                    </a>
-                                </span>
-                                <span class="action" ng-class="{'active':topStory.comments_count}">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.comments')}">
-                                        <i class="fa"
-                                           ng-class="topStory.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
-                                        <span class="badge">{{ topStory.comments_count || '' }}</span>
-                                    </a>
-                                </span>
-                                <span class="action" ng-class="{'active':topStory.tasks_count}">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.tasks')}">
-                                        <i class="fa fa-tasks"></i>
-                                        <span class="badge">{{ topStory.tasks_count || '' }}</span>
-                                    </a>
-                                </span>
-                                <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
-                                        <i class="fa"
-                                           ng-class="topStory.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
-                                        <span class="badge">{{ topStory.acceptanceTests_count || '' }}</span>
-                                    </a>
-                                </span>
+                            <div class="state-progress">
+                                <div class="state">
+                                    {{ topStory.state | i18n:'StoryStates' }}
+                                </div>
                             </div>
-                            <div class="state">{{ topStory.state | i18n:'StoryStates' }}</div>
                         </div>
                     </div>
                 </div>
