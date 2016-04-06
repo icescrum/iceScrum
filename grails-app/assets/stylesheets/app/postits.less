@@ -33,7 +33,6 @@
         background: white;
         opacity: 0.8;
       }
-      @postit-stack-offset: 4px;
       &:before {
         top: -3px;
         z-index: 1;
@@ -57,14 +56,14 @@
       }
       &:hover {
         &:before {
-          -webkit-transform: rotate(0deg) translateX(@postit-stack-offset);
-          -moz-transform: rotate(0deg) translateX(@postit-stack-offset);
-          transform: rotate(0deg) translateX(@postit-stack-offset);
+          -webkit-transform: rotate(0deg) translateX(3px);
+          -moz-transform: rotate(0deg) translateX(3px);
+          transform: rotate(0deg) translateX(3px);
         }
         &:hover:after {
-          -webkit-transform: rotate(0deg) translateX(2 * @postit-stack-offset);
-          -moz-transform: rotate(0deg) translateX(2 * @postit-stack-offset);
-          transform: rotate(0deg) translateX(2 * @postit-stack-offset);
+          -webkit-transform: rotate(0deg) translateX(7px);
+          -moz-transform: rotate(0deg) translateX(7px);
+          transform: rotate(0deg) translateX(7px);
         }
       }
     }
