@@ -27,30 +27,37 @@
      ng-repeat="story in backlog.stories | search"
      as-sortable-item
      class="postit-container">
-    <div ng-include="'story.html'" ng-init="sortableStory = authorizedStory('rank', story)"></div>
+    <div ng-include="'story.html'"
+         ng-init="sortableStory = (sortableStory !== false) && authorizedStory('rank', story)"></div>
 </div>
+
 <div ng-if="app.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0"
      class="empty-view">
-    <p class="help-block">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ app.search }}</strong><p>
-    <button class="btn btn-default"
-            ng-click="app.search = null">
-        ${message(code: 'todo.is.ui.search.clear')}
-    </button>
+    <p class="help-block">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ app.search }}</strong>
+
+    <p>
+        <button class="btn btn-default"
+                ng-click="app.search = null">
+            ${message(code: 'todo.is.ui.search.clear')}
+        </button>
 </div>
+
 <div ng-if="backlog.stories.length == 0"
      class="empty-view">
-    <p class="help-block">{{:: message('todo.is.ui.story.empty.' + backlog.code) }}<p>
-    <a type="button"
-       class="btn btn-primary"
-       ng-if="authorizedStory('create') && (backlog.code == backlogCodes.SANDBOX || backlog.code == backlogCodes.BACKLOG || backlog.code == backlogCodes.ALL)"
-       href="#{{::viewName}}/new">
-        {{:: message('todo.is.ui.story.new' + (backlog.code == backlogCodes.SANDBOX ? '' : '.sandbox')) }}
-    </a>
-    <a type="button"
-       class="btn btn-primary"
-       ng-if="backlog.code == backlogCodes.SPRINT"
-       href="#backlog">
-        <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlogs')}
-    </a>
+    <p class="help-block">{{:: message('todo.is.ui.story.empty.' + backlog.code) }}
+
+    <p>
+        <a type="button"
+           class="btn btn-primary"
+           ng-if="authorizedStory('create') && (backlog.code == backlogCodes.SANDBOX || backlog.code == backlogCodes.BACKLOG || backlog.code == backlogCodes.ALL)"
+           href="#{{::viewName}}/new">
+            {{:: message('todo.is.ui.story.new' + (backlog.code == backlogCodes.SANDBOX ? '' : '.sandbox')) }}
+        </a>
+        <a type="button"
+           class="btn btn-primary"
+           ng-if="backlog.code == backlogCodes.SPRINT"
+           href="#backlog">
+            <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlogs')}
+        </a>
 </div>
 </script>

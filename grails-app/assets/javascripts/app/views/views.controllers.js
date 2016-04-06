@@ -23,11 +23,11 @@
  */
 
 // Abstract Ctrl for view with selectable items
-controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', function($scope, $state, selectableType) {
+controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', function ($scope, $state, selectableType) {
     var idParamName = selectableType + 'Id';
     var tabIdParamName = selectableType + 'TabId';
     // Functions
-    $scope.isSelected = function(selectable) {
+    $scope.isSelected = function (selectable) {
         if ($state.params[idParamName]) {
             return $state.params[idParamName] == selectable.id;
         } else if ($state.params.listId) {
@@ -36,10 +36,10 @@ controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', 
             return false;
         }
     };
-    $scope.hasSelected = function() {
+    $scope.hasSelected = function () {
         return $state.params[idParamName] != undefined || $state.params.listId != undefined;
     };
-    $scope.toggleSelectableMultiple = function() {
+    $scope.toggleSelectableMultiple = function () {
         $scope.app.selectableMultiple = !$scope.app.selectableMultiple;
         if ($state.params.listId != undefined) {
             $state.go($scope.viewName);
@@ -48,8 +48,8 @@ controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', 
     // Init
     $scope.selectableOptions = {
         notSelectableSelector: '.action, button, a',
-        multiple: true,
-        selectionUpdated: function(selectedIds) {
+        allowMultiple: true,
+        selectionUpdated: function (selectedIds) {
             switch (selectedIds.length) {
                 case 0:
                     $state.go($scope.viewName);
@@ -67,31 +67,31 @@ controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', 
     };
 }]);
 
-controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService', 'features', function($scope, $controller, FeatureService, features) {
+controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService', 'features', function ($scope, $controller, FeatureService, features) {
     $controller('selectableCtrl', {$scope: $scope, selectableType: 'feature'});
     // Functions
-    $scope.authorizedFeature = function(action) {
+    $scope.authorizedFeature = function (action) {
         return FeatureService.authorizedFeature(action);
     };
-    $scope.orderByRank = function() {
+    $scope.orderByRank = function () {
         $scope.orderBy.reverse = false;
         $scope.orderBy.current = _.find($scope.orderBy.values, {id: 'rank'});
     };
-    $scope.isSortableFeature = function() {
+    $scope.isSortableFeature = function () {
         return FeatureService.authorizedFeature('rank');
     };
-    $scope.isSortingFeature = function() {
+    $scope.isSortingFeature = function () {
         return $scope.isSortableFeature() && $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse && !$scope.hasContextOrSearch();
     };
-    $scope.enableSortable = function() {
+    $scope.enableSortable = function () {
         $scope.clearContextAndSearch();
         $scope.orderByRank();
     };
     // Init
     $scope.viewName = 'feature';
     $scope.features = features;
-    var updateRank = function(event) {
-        _.each(event.dest.sortableScope.modelValue, function(feature, index) {
+    var updateRank = function (event) {
+        _.each(event.dest.sortableScope.modelValue, function (feature, index) {
             feature.rank = index + 1;
         });
         var feature = event.source.itemScope.modelValue;
@@ -101,7 +101,7 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
     $scope.featureSortableOptions = {
         itemMoved: updateRank,
         orderChanged: updateRank,
-        accept: function(sourceItemHandleScope, destSortableScope) {
+        accept: function (sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         }
     };
@@ -120,41 +120,41 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
     $scope.orderByRank();
 }]);
 
-controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
-    $scope.isSelected = function(selectable) {
+controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function ($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
+    $scope.isSelected = function (selectable) {
         if ($state.params.storyId) {
             return $state.params.storyId == selectable.id;
         } else {
             return false;
         }
     };
-    $scope.hasSelected = function() {
+    $scope.hasSelected = function () {
         return $state.params.storyId != undefined;
     };
-    $scope.authorizedRelease = function(action, release) {
+    $scope.authorizedRelease = function (action, release) {
         return ReleaseService.authorizedRelease(action, release);
     };
-    $scope.authorizedSprint = function(action, sprint) {
+    $scope.authorizedSprint = function (action, sprint) {
         return SprintService.authorizedSprint(action, sprint);
     };
-    $scope.hasPreviousVisibleSprints = function() {
+    $scope.hasPreviousVisibleSprints = function () {
         return $scope.visibleSprintOffset > 0;
     };
-    $scope.hasNextVisibleSprints = function() {
+    $scope.hasNextVisibleSprints = function () {
         return $scope.visibleSprintMax + $scope.visibleSprintOffset + 1 <= $scope.sprints.length;
     };
-    $scope.visibleSprintsPrevious = function() {
+    $scope.visibleSprintsPrevious = function () {
         $scope.visibleSprintOffset--;
         $scope.computeVisibleSprints();
     };
-    $scope.visibleSprintsNext = function() {
+    $scope.visibleSprintsNext = function () {
         $scope.visibleSprintOffset++;
         $scope.computeVisibleSprints();
     };
-    $scope.computeVisibleSprints = function() {
+    $scope.computeVisibleSprints = function () {
         $scope.visibleSprints = $scope.sprints.slice($scope.visibleSprintOffset, $scope.visibleSprintMax + $scope.visibleSprintOffset);
     };
-    var getNewStoryState = function(storyId, currentStateName) {
+    var getNewStoryState = function (storyId, currentStateName) {
         var newStateName;
         var newStateParams = {storyId: storyId};
         if (_.startsWith(currentStateName, 'planning.release.sprint.multiple')) {
@@ -173,7 +173,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
         }
         return {name: newStateName, params: newStateParams}
     };
-    $scope.openStoryUrl = function(storyId) {
+    $scope.openStoryUrl = function (storyId) {
         var newStoryState = getNewStoryState(storyId, $state.current.name);
         return $state.href(newStoryState.name, newStoryState.params);
     };
@@ -187,7 +187,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     project.releases = releases;
     $scope.releases = project.releases;
     $scope.sprints = [];
-    $scope.timelineSelected = function(selectedItems) { // Timeline -> URL
+    $scope.timelineSelected = function (selectedItems) { // Timeline -> URL
         if (selectedItems.length == 0) {
             $state.go('planning');
         } else if (selectedItems.length == 1 && selectedItems[0].class == 'Release') {
@@ -199,10 +199,21 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
             $state.go('planning.release.sprint.withId.details', {releaseId: releaseId, sprintId: sprint.id});
         } else {
             var releaseId = selectedItems[0].parentRelease.id;
-            $state.go('planning.release.sprint.multiple.details', {releaseId: releaseId, sprintListId: _.map(selectedItems, 'id')});
+            $state.go('planning.release.sprint.multiple.details', {
+                releaseId: releaseId,
+                sprintListId: _.map(selectedItems, 'id')
+            });
         }
     };
-    $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.releaseId; }, function() { return $state.params.sprintId; }, function() { return $state.params.sprintListId; }], function(newValues) {
+    $scope.$watchGroup([function () {
+        return $state.$current.self.name;
+    }, function () {
+        return $state.params.releaseId;
+    }, function () {
+        return $state.params.sprintId;
+    }, function () {
+        return $state.params.sprintListId;
+    }], function (newValues) {
         var stateName = newValues[0];
         var releaseId = newValues[1];
         var sprintId = newValues[2];
@@ -212,14 +223,14 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
             if (sprintId) {
                 $scope.sprints = [_.find(release.sprints, {id: sprintId})];
             } else if (sprintListId) {
-                var ids = _.map(sprintListId.split(','), function(id) {
+                var ids = _.map(sprintListId.split(','), function (id) {
                     return parseInt(id);
                 });
-                $scope.sprints = _.filter(release.sprints, function(sprint) {
+                $scope.sprints = _.filter(release.sprints, function (sprint) {
                     return _.contains(ids, sprint.id);
                 });
             } else {
-                var sprint = _.find(release.sprints, function(sprint) {
+                var sprint = _.find(release.sprints, function (sprint) {
                     return sprint.state == SprintStatesByName.WAIT || sprint.state == SprintStatesByName.IN_PROGRESS;
                 });
                 if (!sprint) {
@@ -230,7 +241,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
             $scope.selectedItems = $scope.sprints; // URL -> Timeline
         } else {
             if (!release) {
-                release = _.find($scope.releases, function(release) {
+                release = _.find($scope.releases, function (release) {
                     return release.state == ReleaseStatesByName.WAIT || release.state == ReleaseStatesByName.IN_PROGRESS;
                 });
                 if (!release) {
@@ -248,8 +259,8 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     });
     $scope.selectableOptions = {
         notSelectableSelector: '.action, button, a',
-        multiple: false,
-        selectionUpdated: function(selectedIds) {
+        allowMultiple: false,
+        selectionUpdated: function (selectedIds) {
             var currentStateName = $state.current.name;
             var storyIndexInStateName = currentStateName.indexOf('story');
             if (selectedIds.length == 0 && storyIndexInStateName != -1) {
@@ -262,34 +273,34 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     };
 }]);
 
-controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {
+controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function ($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {
     $scope.viewName = 'taskBoard';
     // Functions
-    $scope.isSelected = function(selectable) {
+    $scope.isSelected = function (selectable) {
         return $state.params.taskId ? $state.params.taskId == selectable.id : false;
     };
-    $scope.hasSelected = function() {
+    $scope.hasSelected = function () {
         return $state.params.taskId != undefined;
     };
-    $scope.isSortableTaskBoard = function(sprint) {
+    $scope.isSortableTaskBoard = function (sprint) {
         return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
     };
-    $scope.isSortingTaskBoard = function(sprint) {
+    $scope.isSortingTaskBoard = function (sprint) {
         return $scope.isSortableTaskBoard(sprint) && $scope.currentSprintFilter.id == 'allTasks' && !$scope.hasContextOrSearch();
     };
-    $scope.isSortingStory = function(story) {
+    $scope.isSortingStory = function (story) {
         return story.state < StoryStatesByName.DONE;
     };
-    $scope.urlOpenSprint = function(sprint) {
+    $scope.urlOpenSprint = function (sprint) {
         return $state.href('taskBoard.details', {sprintId: sprint.id});
     };
-    $scope.openNewTaskByStory = function(story) {
+    $scope.openNewTaskByStory = function (story) {
         $state.go('taskBoard.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
     };
-    $scope.openNewTaskByType = function(type) {
+    $scope.openNewTaskByType = function (type) {
         $state.go('taskBoard.task.new', {taskTemplate: {type: type}});
     };
-    $scope.refreshTasks = function() {
+    $scope.refreshTasks = function () {
         switch ($scope.sprint.state) {
             case SprintStatesByName.WAIT:
                 $scope.sprintTaskStates = [TaskStatesByName.WAIT];
@@ -301,12 +312,12 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
                 $scope.sprintTaskStates = [TaskStatesByName.DONE];
                 break;
         }
-        var partitionedTasks = _.partition($scope.sprint.tasks, function(task) {
+        var partitionedTasks = _.partition($scope.sprint.tasks, function (task) {
             return _.isNull(task.parentStory);
         });
-        var groupByStateAndSort = function(tasksDictionnary) {
-            return _.mapValues(tasksDictionnary, function(tasks) {
-                return _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
+        var groupByStateAndSort = function (tasksDictionnary) {
+            return _.mapValues(tasksDictionnary, function (tasks) {
+                return _.mapValues(_.groupBy(tasks, 'state'), function (tasks) {
                     return _.sortBy($filter('filter')(tasks, $scope.currentSprintFilter.filter), 'rank');
                 });
             });
@@ -317,16 +328,16 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         var allStoriesIds = _.union(sprintStoriesIds, _.map(partitionedTasks[1], 'parentStory.id'));
         var ghostStoriesIds = _.difference(allStoriesIds, sprintStoriesIds);
         if (ghostStoriesIds) {
-            StoryService.getMultiple(ghostStoriesIds).then(function(ghostStories) {
+            StoryService.getMultiple(ghostStoriesIds).then(function (ghostStories) {
                 $scope.ghostStories = ghostStories;
             });
         }
-        var fillGapsInDictionnary = function(dictionnary, firstLevelKeys, secondLevelKeys) {
-            _.each(firstLevelKeys, function(firstLevelKey) {
+        var fillGapsInDictionnary = function (dictionnary, firstLevelKeys, secondLevelKeys) {
+            _.each(firstLevelKeys, function (firstLevelKey) {
                 if (!dictionnary[firstLevelKey]) {
                     dictionnary[firstLevelKey] = {};
                 }
-                _.each(secondLevelKeys, function(secondLevelKey) {
+                _.each(secondLevelKeys, function (secondLevelKey) {
                     if (!dictionnary[firstLevelKey][secondLevelKey]) {
                         dictionnary[firstLevelKey][secondLevelKey] = [];
                     }
@@ -336,38 +347,38 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.sprintTaskStates);
         fillGapsInDictionnary($scope.tasksByStoryByState, allStoriesIds, $scope.sprintTaskStates);
     };
-    $scope.changeSprintFilter = function(sprintFilter) {
+    $scope.changeSprintFilter = function (sprintFilter) {
         $scope.currentSprintFilter = sprintFilter;
         $scope.refreshTasks();
         var editableUser = angular.copy(Session.user);
         editableUser.preferences.filterTask = sprintFilter.id;
         UserService.update(editableUser);
     };
-    $scope.enableSortable = function() {
+    $scope.enableSortable = function () {
         $scope.clearContextAndSearch();
         $scope.changeSprintFilter(_.find($scope.sprintFilters, {id: 'allTasks'}));
     };
-    $scope.storyFilter = function(story) {
-        return $scope.currentSprintFilter.id == 'allTasks' || _.any($scope.tasksByStoryByState[story.id], function(tasks) {
+    $scope.storyFilter = function (story) {
+        return $scope.currentSprintFilter.id == 'allTasks' || _.any($scope.tasksByStoryByState[story.id], function (tasks) {
                 return tasks.length > 0;
             });
     };
-    $scope.openStoryUrl = function(storyId) {
-        return '#/' + $scope.viewName  + ($state.params.sprintId ? '/' + $state.params.sprintId : '') + '/story/' + storyId;
+    $scope.openStoryUrl = function (storyId) {
+        return '#/' + $scope.viewName + ($state.params.sprintId ? '/' + $state.params.sprintId : '') + '/story/' + storyId;
     };
-    $scope.selectStory = function(event, storyId) {
+    $scope.selectStory = function (event, storyId) {
         if (angular.element(event.target).closest('.action, button, a').length == 0) {
             $state.go('taskBoard.story.details', {storyId: storyId});
         }
     };
     // Init
-    var fixTaskRank = function(tasks) {
-        _.each(tasks, function(task, index) {
+    var fixTaskRank = function (tasks) {
+        _.each(tasks, function (task, index) {
             task.rank = index + 1;
         });
     };
     $scope.taskSortableOptions = {
-        itemMoved: function(event) {
+        itemMoved: function (event) {
             fixTaskRank(event.source.sortableScope.modelValue);
             fixTaskRank(event.dest.sortableScope.modelValue);
             var task = event.source.itemScope.modelValue;
@@ -383,13 +394,13 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             }
             TaskService.update(task, sprint);
         },
-        orderChanged: function(event) {
+        orderChanged: function (event) {
             fixTaskRank(event.dest.sortableScope.modelValue);
             var task = event.source.itemScope.modelValue;
             task.rank = event.dest.index + 1;
             TaskService.update(task, sprint);
         },
-        accept: function(sourceItemHandleScope, destSortableScope) {
+        accept: function (sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
             var isSortableDest = destSortableScope.story ? $scope.isSortingStory(destSortableScope.story) : true;
             return sameSortable && isSortableDest;
@@ -397,8 +408,8 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     };
     $scope.selectableOptions = {
         notSelectableSelector: '.action, button, a, .story-container',
-        multiple: false,
-        selectionUpdated: function(selectedIds) {
+        allowMultiple: false,
+        selectionUpdated: function (selectedIds) {
             switch (selectedIds.length) {
                 case 0:
                     $state.go($scope.viewName);
@@ -411,9 +422,21 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     };
     $scope.sprintFilters = [
         {id: 'allTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.allTasks'), filter: {}},
-        {id: 'myTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.myTasks'), filter: {responsible: {id: Session.user.id}}},
-        {id: 'freeTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.freeTasks'), filter: {responsible: null}},
-        {id: 'blockedTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.blockedTasks'), filter: {blocked: true}}
+        {
+            id: 'myTasks',
+            name: $scope.message('is.ui.sprintPlan.toolbar.filter.myTasks'),
+            filter: {responsible: {id: Session.user.id}}
+        },
+        {
+            id: 'freeTasks',
+            name: $scope.message('is.ui.sprintPlan.toolbar.filter.freeTasks'),
+            filter: {responsible: null}
+        },
+        {
+            id: 'blockedTasks',
+            name: $scope.message('is.ui.sprintPlan.toolbar.filter.blockedTasks'),
+            filter: {blocked: true}
+        }
     ];
     var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
@@ -422,12 +445,12 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
     $scope.ghostStories = [];
-    $scope.$watch('sprint.tasks', function(newValue, oldValue) {
+    $scope.$watch('sprint.tasks', function (newValue, oldValue) {
         if (oldValue !== newValue) { // Prevent trigger watch on watch creation
             $scope.refreshTasks();
         }
     }, true);
-    $scope.$watch('sprint.stories', function(newValue, oldValue) {
+    $scope.$watch('sprint.stories', function (newValue, oldValue) {
         if (oldValue !== newValue) { // Prevent trigger watch on watch creation
             TaskService.list(sprint); // Reload tasks and cascade to sprint.tasks watch that will take care of refreshing
         }

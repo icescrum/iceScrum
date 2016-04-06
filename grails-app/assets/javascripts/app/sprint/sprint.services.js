@@ -21,15 +21,19 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('Sprint', ['Resource', function($resource) {
+services.factory('Sprint', ['Resource', function ($resource) {
     return $resource(icescrum.grailsServer + '/p/:projectId/sprint/:type/:id/:action');
 }]);
 
-services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'Session', function($q, $state, Sprint, SprintStatesByName, Session) {
-    this.list = function(release) {
-        var promise = Sprint.query({ projectId: release.parentProduct.id, type: 'release', id: release.id }, function(newSprints) {
+services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'Session', function ($q, $state, Sprint, SprintStatesByName, Session) {
+    this.list = function (release) {
+        var promise = Sprint.query({
+            projectId: release.parentProduct.id,
+            type: 'release',
+            id: release.id
+        }, function (newSprints) {
             if (angular.isArray(release.sprints)) {
-                _.each(newSprints, function(newSprint) {
+                _.each(newSprints, function (newSprint) {
                     var existingSprint = _.find(release.sprints, {id: newSprint.id});
                     if (existingSprint) {
                         angular.extend(existingSprint, newSprint);
@@ -44,23 +48,23 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
         }).$promise;
         return _.isEmpty(release.sprints) ? promise : $q.when(release.sprints);
     };
-    this.getCurrentOrLastSprint = function(project) {
-        return Sprint.get({ projectId: project.id, action: 'findCurrentOrLastSprint' }).$promise;
+    this.getCurrentOrLastSprint = function (project) {
+        return Sprint.get({projectId: project.id, action: 'findCurrentOrLastSprint'}).$promise;
     };
-    this.getCurrentOrNextSprint = function(project) {
-        return Sprint.get({ projectId: project.id, action: 'findCurrentOrNextSprint' }).$promise;
+    this.getCurrentOrNextSprint = function (project) {
+        return Sprint.get({projectId: project.id, action: 'findCurrentOrNextSprint'}).$promise;
     };
-    this.update = function(sprint, release) {
-        return Sprint.update({id: sprint.id, projectId: release.parentProduct.id}, sprint, function(sprint) {
+    this.update = function (sprint, release) {
+        return Sprint.update({id: sprint.id, projectId: release.parentProduct.id}, sprint, function (sprint) {
             var existingSprint = _.find(release.sprints, {id: sprint.id});
             if (existingSprint) {
                 angular.extend(existingSprint, sprint);
             }
         }).$promise;
     };
-    this.save = function(sprint, release) {
+    this.save = function (sprint, release) {
         sprint.class = 'sprint';
-        return Sprint.save({projectId: release.parentProduct.id}, sprint, function(sprint) {
+        return Sprint.save({projectId: release.parentProduct.id}, sprint, function (sprint) {
             var existingSprint = _.find(release.sprints, {id: sprint.id});
             if (existingSprint) {
                 angular.extend(existingSprint, sprint);
@@ -73,39 +77,50 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             release.sprints_count = release.sprints.length;
         }).$promise;
     };
-    this.get = function(id, project) {
+    this.get = function (id, project) {
         return Sprint.get({id: id, projectId: project.id}).$promise;
     };
-    this.activate = function(sprint, project) {
+    this.activate = function (sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'activate'}, {}).$promise;
     };
-    this.close = function(sprint, project) {
+    this.close = function (sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'close'}, {}).$promise;
     };
-    this.autoPlan = function(sprint, capacity, project) {
+    this.autoPlan = function (sprint, capacity, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'autoPlan'}, {capacity: capacity}).$promise;
     };
-    this.unPlan = function(sprint, project) {
+    this.unPlan = function (sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'unPlan'}, {}).$promise;
     };
-    this['delete'] = function(sprint, release) {
-        return sprint.$delete({projectId: release.parentProduct.id}, function() {
-            if ($state.includes("planning.release.sprint.withId.details", {releaseId: release.id, sprintId: sprint.id})) {
+    this['delete'] = function (sprint, release) {
+        return sprint.$delete({projectId: release.parentProduct.id}, function () {
+            if ($state.includes("planning.release.sprint.withId.details", {
+                    releaseId: release.id,
+                    sprintId: sprint.id
+                })) {
                 $state.go('planning.release', {releaseId: release.id});
             }
             _.remove(release.sprints, {id: sprint.id});
         });
     };
-    this.autoPlanMultiple = function(sprints, capacity, release) {
-        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}).$promise;
+    this.autoPlanMultiple = function (sprints, capacity, release) {
+        return Sprint.updateArray({
+            id: _.map(sprints, 'id'),
+            projectId: release.parentProduct.id,
+            action: 'autoPlan'
+        }, {capacity: capacity}).$promise;
     };
-    this.unPlanMultiple = function(sprints, release) {
-        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'unPlan'}, {}).$promise;
+    this.unPlanMultiple = function (sprints, release) {
+        return Sprint.updateArray({
+            id: _.map(sprints, 'id'),
+            projectId: release.parentProduct.id,
+            action: 'unPlan'
+        }, {}).$promise;
     };
-    this.openChart = function(sprint, project, chart) {
-        return Sprint.get({ id: sprint.id, projectId: project.id, action: chart}).$promise;
+    this.openChart = function (sprint, project, chart) {
+        return Sprint.get({id: sprint.id, projectId: project.id, action: chart}).$promise;
     };
-    this.authorizedSprint = function(action, sprint) {
+    this.authorizedSprint = function (action, sprint) {
         switch (action) {
             case 'create':
             case 'update':
@@ -121,15 +136,16 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
                 return Session.poOrSm() && sprint.state < SprintStatesByName.IN_PROGRESS;
             case 'updateEndDate':
             case 'autoPlan':
+            case 'plan':
             case 'unPlan':
                 return Session.poOrSm() && sprint.state != SprintStatesByName.DONE;
             default:
                 return false;
         }
     };
-    this.authorizedSprints = function(action, sprints) {
+    this.authorizedSprints = function (action, sprints) {
         var self = this;
-        return _.every(sprints, function(sprint) {
+        return _.every(sprints, function (sprint) {
             return self.authorizedSprint(action, sprint);
         });
     };

@@ -22,34 +22,34 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', function($scope, Session, SprintService) {
+controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', function ($scope, Session, SprintService) {
     // Functions
-    $scope.authorizedSprint = function(action, sprint) {
+    $scope.authorizedSprint = function (action, sprint) {
         return SprintService.authorizedSprint(action, sprint);
     };
-    $scope.activate = function(sprint) {
-        SprintService.activate(sprint, $scope.project).then(function() {
+    $scope.activate = function (sprint) {
+        SprintService.activate(sprint, $scope.project).then(function () {
             $scope.notifySuccess('todo.is.ui.sprint.activated');
         });
     };
-    $scope.close = function(sprint) {
-        SprintService.close(sprint, $scope.project).then(function() {
+    $scope.close = function (sprint) {
+        SprintService.close(sprint, $scope.project).then(function () {
             $scope.notifySuccess('todo.is.ui.sprint.closed');
         });
     };
-    $scope.autoPlan = function(sprint, capacity) {
-        SprintService.autoPlan(sprint, capacity, $scope.project).then(function() {
+    $scope.autoPlan = function (sprint, capacity) {
+        SprintService.autoPlan(sprint, capacity, $scope.project).then(function () {
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
         });
     };
-    $scope.unPlan = function(sprint) {
-        SprintService.unPlan(sprint, $scope.project).then(function() {
+    $scope.unPlan = function (sprint) {
+        SprintService.unPlan(sprint, $scope.project).then(function () {
             $scope.notifySuccess('todo.is.ui.sprint.unPlanned');
         });
     };
-    $scope['delete'] = function(sprint) {
+    $scope['delete'] = function (sprint) {
         SprintService.delete(sprint, $scope.release)
-            .then(function() {
+            .then(function () {
                 $scope.notifySuccess('todo.is.ui.deleted');
             });
     };
@@ -61,19 +61,19 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
     $scope.endDateOptions = angular.copy($scope.startDateOptions);
 }]);
 
-controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintStatesByName', 'BacklogCodes', function($scope, StoryService, SprintStatesByName, BacklogCodes) {
+controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', '$uibModal', function ($scope, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
     // Functions
-    $scope.isSortingSprint = function(sprint) {
+    $scope.isSortingSprint = function (sprint) {
         return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
     };
     // Init
-    var fixStoryRank = function(stories) {
-        _.each(stories, function(story, index) {
+    var fixStoryRank = function (stories) {
+        _.each(stories, function (story, index) {
             story.rank = index + 1;
         });
     };
     $scope.sprintSortableOptions = {
-        itemMoved: function(event) {
+        itemMoved: function (event) {
             var destScope = event.dest.sortableScope;
             fixStoryRank(event.source.sortableScope.modelValue);
             fixStoryRank(destScope.modelValue);
@@ -81,7 +81,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
             var newRank = event.dest.index + 1;
             StoryService.plan(story, destScope.sprint, newRank);
         },
-        orderChanged: function(event) {
+        orderChanged: function (event) {
             fixStoryRank(event.dest.sortableScope.modelValue);
             var story = event.source.itemScope.modelValue;
             story.rank = event.dest.index + 1;
@@ -92,46 +92,55 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
             return sameSortable && destSortableScope.isSortingSprint(destSortableScope.sprint);
         }
     };
+    $scope.planStories = {
+        filter: {state: StoryStatesByName.ESTIMATED},
+        callback: function (sprint, selectedIds) {
+            StoryService.updateMultiple(selectedIds, {parentSprint: sprint}).then(function () {
+                $scope.notifySuccess('todo.is.ui.story.multiple.updated');
+            });
+        }
+    };
     $scope.sortableId = 'sprint';
     $scope.backlogCodes = BacklogCodes;
-    StoryService.listByType($scope.sprint).then(function(stories) {
+    $scope.sprintStatesByName = SprintStatesByName;
+    StoryService.listByType($scope.sprint).then(function (stories) {
         $scope.backlog = {stories: _.sortBy(stories, 'rank'), code: 'sprint'};
     });
 }]);
 
-controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', 'detailsRelease', function($scope, $controller, $state, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases, detailsRelease) {
-    $controller('sprintCtrl', { $scope: $scope }); // inherit from sprintCtrl
+controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', 'detailsRelease', function ($scope, $controller, $state, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases, detailsRelease) {
+    $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     // Functions
-    $scope.resetSprintForm = function() {
+    $scope.resetSprintForm = function () {
         $scope.sprint = {parentRelease: {}};
         if ($scope.release) {
             $scope.sprint.parentRelease = $scope.release;
         }
         $scope.resetFormValidation($scope.formHolder.sprintForm);
     };
-    $scope.save = function(sprint, andContinue) {
+    $scope.save = function (sprint, andContinue) {
         SprintService.save(sprint, $scope.release)
-            .then(function(sprint) {
+            .then(function (sprint) {
                 if (andContinue) {
                     $scope.resetSprintForm();
                 } else {
                     $scope.setInEditingMode(true);
-                    $state.go('^.withId.details', { releaseId: $scope.release.id, sprintId: sprint.id });
+                    $state.go('^.withId.details', {releaseId: $scope.release.id, sprintId: sprint.id});
                 }
                 $scope.notifySuccess('todo.is.ui.sprint.saved');
             });
     };
-    $scope.selectRelease = function(release) {
-        $scope.release = _.find($scope.editableReleases, { id: release.id });
+    $scope.selectRelease = function (release) {
+        $scope.release = _.find($scope.editableReleases, {id: release.id});
     };
     // Init
-    var sprintWatcher = function() {
+    var sprintWatcher = function () {
         var sprints = $scope.release.sprints;
         if (!_.isUndefined(sprints)) {
             if (_.isEmpty(sprints)) {
                 $scope.startDateOptions.minDate = $scope.release.startDate;
             } else {
-                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate(_.max(_.pluck($scope.release.sprints, 'endDate')), 1);
+                $scope.startDateOptions.minDate = $scope.immutableAddDaysToDate(_.max(_.pluck($scope.release.sprints, 'endDate')), 1);
             }
             $scope.sprint.startDate = $scope.startDateOptions.minDate;
             var sprintDuration = $scope.project.preferences.estimatedSprintsDuration;
@@ -141,7 +150,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     };
     $scope.$watchCollection('release.sprints', sprintWatcher);
     $scope.$watch('release', sprintWatcher);
-    $scope.$watchCollection('[sprint.startDate, sprint.endDate]', function(newValues) {
+    $scope.$watchCollection('[sprint.startDate, sprint.endDate]', function (newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
@@ -153,7 +162,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     });
     $scope.formHolder = {};
     $scope.resetSprintForm();
-    $scope.editableReleases = _.sortBy(_.filter(releases, function(release) {
+    $scope.editableReleases = _.sortBy(_.filter(releases, function (release) {
         return release.state < ReleaseStatesByName.DONE;
     }), 'orderNumber');
     $scope.sprint.parentRelease = detailsRelease;
@@ -165,27 +174,27 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $controller, SprintService, ReleaseService, FormService, detailsSprint) {
-    $controller('sprintCtrl', { $scope: $scope }); // inherit from sprintCtrl
-    $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsSprint, clazz: 'sprint' });
+controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function ($scope, $controller, SprintService, ReleaseService, FormService, detailsSprint) {
+    $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint'});
     // Functions
-    $scope.isDirty = function() {
+    $scope.isDirty = function () {
         return !_.isEqual($scope.editableSprint, $scope.editableSprintReference);
     };
-    $scope.update = function(sprint) {
-        SprintService.update(sprint, $scope.release).then(function(updatedSprint) {
+    $scope.update = function (sprint) {
+        SprintService.update(sprint, $scope.release).then(function (updatedSprint) {
             $scope.sprint = angular.extend($scope.sprint, updatedSprint); // explicit update is needed because if we are not in the context of a release then the sprint is stored nowhere so SprintService cannot update it
             $scope.resetSprintForm();
             $scope.notifySuccess('todo.is.ui.sprint.updated');
         });
     };
-    $scope.editForm = function(value) {
+    $scope.editForm = function (value) {
         if (value != $scope.formHolder.editing) {
             $scope.setInEditingMode(value); // global
             $scope.resetSprintForm();
         }
     };
-    $scope.resetSprintForm = function() {
+    $scope.resetSprintForm = function () {
         $scope.formHolder.editing = $scope.isInEditingMode();
         $scope.formHolder.editable = $scope.authorizedSprint('update', $scope.sprint);
         if ($scope.formHolder.editable) {
@@ -199,15 +208,15 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSer
     };
     // Init
     FormService.addStateChangeDirtyFormListener($scope, 'sprint');
-    $scope.$watchCollection('release.sprints', function(sprints) {
+    $scope.$watchCollection('release.sprints', function (sprints) {
         if (!_.isUndefined(sprints)) {
-            var previousSprint = _.findLast(_.sortBy(sprints, 'orderNumber'), function(sprint) {
+            var previousSprint = _.findLast(_.sortBy(sprints, 'orderNumber'), function (sprint) {
                 return sprint.orderNumber < $scope.sprint.orderNumber;
             });
             $scope.startDateOptions.minDate = _.isEmpty(previousSprint) ? $scope.release.startDate : $scope.immutableAddDaysToDate(previousSprint.endDate, 1);
         }
     });
-    $scope.$watchCollection('[editableSprint.startDate, editableSprint.endDate]', function(newValues) {
+    $scope.$watchCollection('[editableSprint.startDate, editableSprint.endDate]', function (newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
@@ -231,31 +240,31 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSer
     });
 }]);
 
-controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detailsRelease', function($scope, SprintService, detailsRelease) {
+controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detailsRelease', function ($scope, SprintService, detailsRelease) {
     // Functions
-    $scope.authorizedSprints = function(action, sprints) {
+    $scope.authorizedSprints = function (action, sprints) {
         return SprintService.authorizedSprints(action, sprints);
     };
-    $scope.autoPlanMultiple = function(sprints, capacity) {
-        SprintService.autoPlanMultiple(sprints, capacity, $scope.release).then(function() {
+    $scope.autoPlanMultiple = function (sprints, capacity) {
+        SprintService.autoPlanMultiple(sprints, capacity, $scope.release).then(function () {
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
         });
     };
-    $scope.unPlanMultiple = function(sprints) {
-        SprintService.unPlanMultiple(sprints, $scope.release).then(function() {
+    $scope.unPlanMultiple = function (sprints) {
+        SprintService.unPlanMultiple(sprints, $scope.release).then(function () {
             $scope.notifySuccess('todo.is.ui.sprint.unPlanned');
         });
     };
     // Init
-    var mean = function(list) {
+    var mean = function (list) {
         return _.round(_.sum(list) / (list ? list.length : 0));
     };
     $scope.release = detailsRelease;
-    $scope.$watch('sprints', function(sprints) {
+    $scope.$watch('sprints', function (sprints) {
         if (sprints.length) {
             $scope.startDate = _.first(sprints).startDate;
             $scope.endDate = _.last(sprints).endDate;
-            var storyCounts = _.map(sprints, function(sprint) {
+            var storyCounts = _.map(sprints, function (sprint) {
                 return sprint.stories_ids ? sprint.stories_ids.length : 0;
             });
             $scope.sumStory = _.sum(storyCounts);

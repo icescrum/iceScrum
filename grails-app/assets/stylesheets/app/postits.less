@@ -82,10 +82,10 @@
         -webkit-transition: opacity 0.25s linear;
       }
     }
-    .postit-container.is-selected {
-      .postit {
-        border: 1px solid @brand-primary;
-      }
+  }
+  .postit-container.is-selected {
+    .postit {
+      border: 1px solid @brand-primary;
     }
   }
 }
@@ -187,8 +187,8 @@
           }
         }
         .head-right {
-          float:right;
-          vertical-align:top;
+          float: right;
+          vertical-align: top;
           margin-right: 26px;
         }
         width: 100%;
@@ -283,7 +283,7 @@
           position: absolute;
         }
         .progress {
-          width:100%;
+          width: 100%;
           padding: 0;
           height: 13px;
           border: none;
@@ -400,7 +400,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding-top:2px;
+            padding-top: 2px;
           }
           height: @font-size-postit-small*@line-height-postit-small*@lines-to-show-postit-small;
           padding-left: 5px;
@@ -430,7 +430,7 @@
         display: none;
       }
       > .content {
-        order:2;
+        order: 2;
         flex: 1 1 auto;
         > h3 {
           display: inline;
@@ -441,37 +441,37 @@
         }
       }
       > div {
-        padding:8px;
+        padding: 8px;
       }
       > .head {
-        order:1;
+        order: 1;
         flex: 0 0 auto;
-        padding-left:8px;
+        padding-left: 8px;
         padding-top: 6px;
-        padding-right:8px;
-        display:flex;
+        padding-right: 8px;
+        display: flex;
         flex-direction: column;
         .head-left, .head-right {
-            flex:1;
+          flex: 1;
         }
       }
       > .footer {
-        order:3;
+        order: 3;
         text-align: right;
         flex: 0 0 200px;
-        padding-left:0;
-        padding-right:26px;
-        display:flex;
+        padding-left: 0;
+        padding-right: 26px;
+        display: flex;
         flex-direction: column;
         .action {
           flex: 0 0 auto;
-          order:2;
+          order: 2;
           padding: 0 4px;
           display: inline-block;
         }
         .tags {
-          flex:1;
-          order:1;
+          flex: 1;
+          order: 1;
           font-size: 10px;
           padding: 1px 2px;
           border-radius: 2px;
@@ -495,13 +495,13 @@
           }
         }
         .state-progress {
-          order:3;
+          order: 3;
           flex: 0 0 auto;
           height: 13px;
           position: relative;
           .state {
-            top:2px;
-            right:5px;
+            top: 2px;
+            right: 5px;
             position: absolute;
             font-size: 10px;
             text-align: right;
@@ -509,13 +509,13 @@
             font-weight: bold;
           }
           .progress {
-            width:100%;
-            height:15px;
+            width: 100%;
+            height: 15px;
             padding: 0;
             color: @gray;
             margin-bottom: 0;
             position: absolute;
-            border:1px solid @table-border-color;
+            border: 1px solid @table-border-color;
             background: rgba(255, 255, 255, 0.6);
             .progress-bar {
               text-align: left;
@@ -602,17 +602,17 @@
       }
       &.invert {
         .description {
-          color:@gray;
+          color: @gray;
         }
         .state {
-          color:@gray;
+          color: @gray;
         }
       }
     }
     &:last-child .postit {
       border-bottom: 1px solid @table-border-color;
     }
-    &.is-selected:nth-child(even):not(:first-child) .postit,&.is-selected:nth-child(odd):not(:first-child) .postit {
+    &.is-selected:nth-child(even):not(:first-child) .postit, &.is-selected:nth-child(odd):not(:first-child) .postit {
       border-top-color: @brand-primary;
     }
     &:nth-child(even):not(:first-child) .postit {
@@ -658,13 +658,13 @@
     font-family: @font-family-base;
   }
   .follow {
-    color:@gray;
+    color: @gray;
     text-decoration: none;
   }
 }
 
 .modal-body {
-  .postits{
+  .postits {
     max-height: 500px;
     overflow: auto;
     margin-top: auto;
