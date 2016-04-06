@@ -38,10 +38,8 @@
                    type="text"
                    class="form-control important">
         </div>
-
         <div class="form-group">
             <label for="feature">${message(code: 'is.feature')}</label>
-
             <div ng-class="{'input-group': editableStory.feature.id && !isModal}">
                 <ui-select input-group-fix-width="38"
                            ng-click="editForm(true)"
@@ -52,13 +50,10 @@
                            search-enabled="true"
                            ng-model="editableStory.feature">
                     <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
-                        <i class="fa fa-sticky-note"
-                           style="color: {{ $select.selected.color }};"></i> {{ $select.selected.name }}
+                        <i class="fa fa-sticky-note" style="color: {{ $select.selected.color }};"></i> {{ $select.selected.name }}
                     </ui-select-match>
-                    <ui-select-choices
-                            repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
-                        <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span
-                            ng-bind-html="feature.name | highlight: $select.search"></span>
+                    <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
+                        <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
                 <span class="input-group-btn" ng-if="editableStory.feature.id && !isModal">
@@ -70,7 +65,6 @@
                 </span>
             </div>
         </div>
-
         <div class="clearfix no-padding">
             <div class="form-group"
                  ng-class="{ 'form-half' : editableStory.type == 2 }">
@@ -80,15 +74,10 @@
                            ng-disabled="!formHolder.editable"
                            name="type"
                            ng-model="editableStory.type">
-                    <ui-select-match><i
-                            class="fa fa-{{ $select.selected | storyTypeIcon }}"></i> {{ $select.selected | i18n:'StoryTypes' }}
-                    </ui-select-match>
-                    <ui-select-choices repeat="storyType in storyTypes"><i
-                            class="fa fa-{{ ::storyType | storyTypeIcon }}"></i> {{ ::storyType | i18n:'StoryTypes' }}
-                    </ui-select-choices>
+                    <ui-select-match><i class="fa fa-{{ $select.selected | storyTypeIcon }}"></i> {{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
+                    <ui-select-choices repeat="storyType in storyTypes"><i class="fa fa-{{ ::storyType | storyTypeIcon }}"></i> {{ ::storyType | i18n:'StoryTypes' }}</ui-select-choices>
                 </ui-select>
             </div>
-
             <div class="form-half"
                  ng-show="editableStory.type == 2">
                 <label for="affectVersion">${message(code: 'is.story.affectVersion')}</label>
@@ -101,20 +90,17 @@
                            tagging-tokens="SPACE|,"
                            tagging-label="${message(code: 'todo.is.ui.story.affectedVersion.new')}"
                            ng-model="editableStory.affectVersion">
-                    <ui-select-match allow-clear="true"
-                                     placeholder="${message(code: 'is.ui.story.noaffectversion')}">{{ $select.selected }}</ui-select-match>
+                    <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.noaffectversion')}">{{ $select.selected }}</ui-select-match>
                     <ui-select-choices repeat="version in versions | filter: $select.search">
                         <span ng-bind-html="version | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
             </div>
         </div>
-
         <div class="clearfix no-padding">
             <div class="form-group"
                  ng-class="{ 'form-half' : authorizedStory('updateEstimate', editableStory) }">
                 <label for="value">${message(code: 'is.story.value')}</label>
-
                 <div class="input-group">
                     <ui-select class="form-control"
                                ng-click="editForm(true)"
@@ -135,11 +121,9 @@
                     </span>
                 </div>
             </div>
-
             <div class="form-half"
                  ng-show="authorizedStory('updateEstimate', editableStory)">
                 <label for="effort">${message(code: 'is.story.effort')}</label>
-
                 <div class="input-group">
                     <ui-select ng-if="!isEffortCustom()"
                                class="form-control"
@@ -169,7 +153,6 @@
                 </div>
             </div>
         </div>
-
         <div class="form-group"
              ng-show="authorizedStory('updateParentSprint', editableStory)">
             <label for="parentSprint">${message(code: 'is.sprint')}</label>
@@ -183,16 +166,13 @@
                 <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.noparentsprint')}">
                     {{ $select.selected.parentRelease.name + ' - ' + ($select.selected | sprintName) }}
                 </ui-select-match>
-                <ui-select-choices group-by="groupSprintByParentRelease"
-                                   repeat="parentSprintEntry in parentSprintEntries | filter: { orderNumber: $select.search }">
+                <ui-select-choices group-by="groupSprintByParentRelease" repeat="parentSprintEntry in parentSprintEntries | filter: { orderNumber: $select.search }">
                     <span ng-bind-html="parentSprintEntry | sprintName | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
-
         <div class="form-group">
             <label for="dependsOn">${message(code: 'is.story.dependsOn')}</label>
-
             <div ng-class="{'input-group':editableStory.dependsOn.id}">
                 <ui-select input-group-fix-width="38"
                            class="form-control"
@@ -205,8 +185,7 @@
                     <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nodependence')}">
                         {{ $select.selected | dependsOnLabel }}
                     </ui-select-match>
-                    <ui-select-choices
-                            repeat="dependenceEntry in dependenceEntries | orFilter: { name: $select.search, uid: $select.search }">
+                    <ui-select-choices repeat="dependenceEntry in dependenceEntries | orFilter: { name: $select.search, uid: $select.search }">
                         <span ng-bind-html="dependenceEntry | dependsOnLabel | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
@@ -218,14 +197,12 @@
                     </a>
                 </span>
             </div>
-
             <div class="clearfix" style="margin-top: 15px;" ng-if="editableStory.dependences.length">
                 <strong>${message(code: 'is.story.dependences')} :</strong>
                 <a class="scrum-link" title="{{ dependence.name }}"
                    ng-repeat="dependence in editableStory.dependences track by dependence.id">{{ dependence.name }}</a>
             </div>
         </div>
-
         <div class="form-group">
             <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
             <ui-select ng-click="retrieveTags(); editForm(true)"
@@ -237,14 +214,12 @@
                        tagging-tokens="SPACE|,"
                        tagging-label="${message(code: 'todo.is.ui.tag.create')}"
                        ng-model="editableStory.tags">
-                <ui-select-match
-                        placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
+                <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
                 <ui-select-choices repeat="tag in tags | filter: $select.search">
                     <span ng-bind-html="tag | highlight: $select.search"></span>
                 </ui-select-choices>
             </ui-select>
         </div>
-
         <div class="form-group">
             <label for="description">${message(code: 'is.backlogelement.description')}</label>
             <textarea class="form-control"
@@ -256,7 +231,6 @@
                       at="atOptions"
                       autofocus
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-
             <div class="atwho-preview form-control-static important"
                  ng-disabled="!formHolder.editable"
                  ng-show="!showDescriptionTextarea"
@@ -268,7 +242,6 @@
                  tabindex="0"
                  ng-bind-html="(editableStory.description ? (editableStory | storyDescription: true) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
         </div>
-
         <div class="form-group">
             <label for="notes">${message(code: 'is.backlogelement.notes')}</label>
             <textarea is-markitup
@@ -280,7 +253,6 @@
                       ng-show="showNotesTextarea"
                       ng-blur="showNotesTextarea = false"
                       placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
-
             <div class="markitup-preview important"
                  ng-disabled="!formHolder.editable"
                  ng-show="!showNotesTextarea"
@@ -290,10 +262,8 @@
                  tabindex="0"
                  ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
         </div>
-
         <div class="form-group">
             <label>${message(code: 'is.backlogelement.attachment')} {{ story.attachments.length > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
-
             <div ng-if="authorizedStory('upload', story)"
                  ng-controller="attachmentNestedCtrl"
                  flow-init
@@ -304,12 +274,10 @@
                     <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
                 </button>
             </div>
-
             <div class="form-control-static" ng-include="'attachment.list.html'">
             </div>
         </div>
     </div>
-
     <div class="panel-footer" ng-if="formHolder.editing">
         <div class="btn-toolbar">
             <button class="btn btn-primary"

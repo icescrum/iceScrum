@@ -22,65 +22,53 @@
 --}%
 
 <style>
-.timeline {
-    height: 120px;
-}
-
-.timeline .axis text {
-    font: 11px sans-serif;
-}
-
-.timeline .axis path {
-    display: none;
-}
-
-.timeline .axis line {
-    fill: none;
-    stroke: #000;
-    shape-rendering: crispEdges;
-}
-
-.timeline .timeline-background {
-    fill: #fff;
-}
-
-.timeline .grid line, .timeline .grid path {
-    fill: none;
-    stroke: #fff;
-    shape-rendering: crispEdges;
-}
-
-.timeline .grid .minor.tick line {
-    stroke-opacity: .5;
-}
-
-.timeline .brush .extent {
-    stroke: #999;
-    fill-opacity: .075;
-    shape-rendering: crispEdges;
-}
-
-.timeline .sprint {
-    stroke: #dbdbdb;
-}
-
-.timeline .release-default, .timeline .sprint-default {
-    fill: #eeeeee;
-}
-
-.timeline .release-progress, .timeline .sprint-progress {
-    fill: #DAF4FF;
-}
-
-.timeline .release-done, .timeline .sprint-done {
-    fill: #E1F5CC;
-}
+    .timeline {
+        height: 120px;
+    }
+    .timeline .axis text {
+        font: 11px sans-serif;
+    }
+    .timeline .axis path {
+        display: none;
+    }
+    .timeline .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+    .timeline .timeline-background {
+        fill: #fff;
+    }
+    .timeline .grid line, .timeline .grid path {
+        fill: none;
+        stroke: #fff;
+        shape-rendering: crispEdges;
+    }
+    .timeline .grid .minor.tick line {
+        stroke-opacity: .5;
+    }
+    .timeline .brush .extent {
+        stroke: #999;
+        fill-opacity: .075;
+        shape-rendering: crispEdges;
+    }
+    .timeline .sprint {
+        stroke: #dbdbdb;
+    }
+    .timeline .release-default, .timeline .sprint-default {
+        fill: #eeeeee;
+    }
+    .timeline .release-progress, .timeline .sprint-progress {
+        fill: #DAF4FF;
+    }
+    .timeline .release-done, .timeline .sprint-done {
+        fill: #E1F5CC;
+    }
 </style>
 
 <div ng-if="releases.length > 0"
      class="backlogs-list">
     <div class="timeline" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
-
     <div class="btn-toolbar">
         <div class="btn-group" ng-if="hasPreviousVisibleSprints()">
             <button class="btn btn-default"
@@ -88,7 +76,6 @@
                 <i class="fa fa-step-backward"></i>
             </button>
         </div>
-
         <div class="btn-group" ng-if="authorizedRelease('create')">
             <a type="button"
                class="btn btn-primary"
@@ -96,7 +83,6 @@
                 ${message(code: 'todo.is.ui.release.new')}
             </a>
         </div>
-
         <div class="btn-group"
              ng-if="authorizedSprint('create')">
             <a type="button"
@@ -105,7 +91,6 @@
                 ${message(code: 'todo.is.ui.sprint.new')}
             </a>
         </div>
-
         <div class="btn-group pull-right" ng-if="hasNextVisibleSprints()">
             <button class="btn btn-default"
                     ng-click="visibleSprintsNext()">
@@ -115,7 +100,6 @@
     </div>
     <hr>
 </div>
-
 <div ng-if="releases.length > 0"
      class="backlogs-list-details"
      selectable="selectableOptions">
@@ -143,14 +127,11 @@
                     </span>
                 </span>
                 </div>
-
                 <div class="sub-title text-muted">
-                    {{ sprint.startDate | dateShorter }} <i
-                        class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dateShorter }}
+                    {{ sprint.startDate | dateShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dateShorter }}
                 </div>
             </h3>
         </div>
-
         <div class="panel-body">
             <div class="postits {{ (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') + ' ' + (app.sortableMoving ? 'sortable-moving' : '') }}"
                  ng-controller="storyCtrl"
@@ -162,7 +143,6 @@
             </div>
         </div>
     </div>
-
     <div ng-if="!sprints || sprints.length == 0"
          class="panel panel-light text-center">
         <div class="panel-body">
@@ -178,7 +158,6 @@
         </div>
     </div>
 </div>
-
 <div ng-if="releases.length == 0"
      class="panel panel-light">
     <div class="panel-body">

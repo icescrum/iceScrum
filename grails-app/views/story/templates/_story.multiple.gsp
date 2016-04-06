@@ -32,7 +32,6 @@
             </a>
         </h3>
     </div>
-
     <div class="panel-body">
         <div class="row">
             <div class="col-md-6">
@@ -49,7 +48,6 @@
                                     </a>
                                     <span class="id">{{ topStory.id }}</span>
                                 </div>
-
                                 <div class="head-right">
                                     <span class="value" ng-if="topStory.value">{{ topStory.value }}
                                         <i class="fa fa-line-chart"></i>
@@ -60,24 +58,20 @@
                                     </span>
                                 </div>
                             </div>
-
                             <div class="content">
                                 <h3 class="title ellipsis-el"
                                     ng-model="topStory.name"
                                     ng-bind-html="topStory.name | sanitize"></h3>
-
                                 <div class="description ellipsis-el"
                                      ng-model="topStory.description"
                                      ng-bind-html="topStory.description | sanitize"></div>
                             </div>
-
                             <div class="footer">
                                 <div class="tags">
                                     <a ng-repeat="tag in topStory.tags" ng-click="setTagContext(tag)" href>
                                         <span class="tag">{{ tag }}</span>
                                     </a>
                                 </div>
-
                                 <div class="actions">
                                     <span class="action"><a><i class="fa fa-cog"></i></a></span>
                                     <span class="action" ng-class="{'active':topStory.attachments.length}">
@@ -107,7 +101,6 @@
                                     </span>
                                 </div>
                             </div>
-
                             <div class="state-progress">
                                 <div class="state">
                                     {{ topStory.state | i18n:'StoryStates' }}
@@ -117,7 +110,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-6">
                 <div class="btn-toolbar">
                     <div ng-if="authorizedStories('accept', stories)"
@@ -146,7 +138,6 @@
                             </li>
                         </ul>
                     </div>
-
                     <div class="btn-group">
                         <button type="button"
                                 ng-if="authorizedStories('copy', stories)"
@@ -161,7 +152,6 @@
                             <g:message code='is.ui.backlog.menu.delete'/>
                         </button>
                     </div>
-
                     <div ng-if="authorizedStories('follow', stories)"
                          class="btn-group">
                         <button type="button"
@@ -178,18 +168,15 @@
                     </div>
                 </div>
                 <br>
-
                 <div class="table-responsive">
                     <table class="table">
                         <tr><td>${message(code: 'is.story.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
                         <tr><td>${message(code: 'todo.is.ui.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>
-                        <tr><td>${message(code: 'todo.is.ui.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td>
-                        </tr>
+                        <tr><td>${message(code: 'todo.is.ui.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td></tr>
                     </table>
                 </div>
             </div>
         </div>
-
         <form ng-submit="updateMultiple(storyPreview)"
               ng-if="authorizedStories('update', stories)"
               name='storyForm'
@@ -197,7 +184,6 @@
               novalidate>
             <div class="form-group">
                 <label for="feature">${message(code: 'is.feature')}</label>
-
                 <div ng-class="{'input-group':storyPreview.feature.id}">
                     <ui-select class="form-control"
                                input-group-fix-width="38"
@@ -208,10 +194,8 @@
                             <i class="fa fa-sticky-note"
                                style="color: {{ $select.selected.color }};"></i> {{ $select.selected.name }}
                         </ui-select-match>
-                        <ui-select-choices
-                                repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
-                            <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span
-                                ng-bind-html="feature.name | highlight: $select.search"></span>
+                        <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
+                            <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-if="storyPreview.feature.id">
@@ -223,20 +207,16 @@
                     </span>
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="type">${message(code: 'is.story.type')}</label>
                 <ui-select class="form-control"
                            required
                            name="type"
                            ng-model="storyPreview.type">
-                    <ui-select-match
-                            placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
-                    <ui-select-choices
-                            repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                    <ui-select-match placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
+                    <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
                 </ui-select>
             </div>
-
             <div class="clearfix no-padding">
                 <div class="form-group"
                      ng-class="{ 'form-half' : authorizedStories('updateEstimate', stories) }">
@@ -251,7 +231,6 @@
                         </ui-select-choices>
                     </ui-select>
                 </div>
-
                 <div class="form-half"
                      ng-if="authorizedStories('updateEstimate', stories)">
                     <label for="effort">${message(code: 'is.story.effort')}</label>
@@ -261,8 +240,7 @@
                                search-enabled="true"
                                ng-model="storyPreview.effort">
                         <ui-select-match>{{ $select.selected }}</ui-select-match>
-                        <ui-select-choices
-                                repeat="i in effortSuite(isEffortNullable(topStory)) | filter: $select.search">
+                        <ui-select-choices repeat="i in effortSuite(isEffortNullable(topStory)) | filter: $select.search">
                             <span ng-bind-html="'' + i | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
@@ -273,7 +251,6 @@
                            ng-model="storyPreview.effort"/>
                 </div>
             </div>
-
             <div class="form-group"
                  ng-if="authorizedStories('updateParentSprint', stories)">
                 <label for="parentSprint">${message(code: 'is.sprint')}</label>
@@ -292,7 +269,6 @@
                     </ui-select-choices>
                 </ui-select>
             </div>
-
             <div class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         type="submit">

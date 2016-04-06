@@ -24,14 +24,14 @@
 
 var controllers = angular.module('controllers', []);
 
-controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function ($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
+controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
     $controller('headerCtrl', {$scope: $scope});
     $controller('searchCtrl', {$scope: $scope});
     // Functions
-    $scope.displayDetailsView = function () {
+    $scope.displayDetailsView = function() {
         var data = '';
         if ($state.current.views) {
-            var isDetails = _.any(_.keys($state.current.views), function (viewName) {
+            var isDetails = _.any(_.keys($state.current.views), function(viewName) {
                 return _.startsWith(viewName, 'details');
             });
             if (isDetails) {
@@ -40,13 +40,13 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
         }
         return data;
     };
-    $scope.showAutoPlanModal = function (options) {
+    $scope.showAutoPlanModal = function(options) {
         $uibModal.open({
             templateUrl: 'sprint.autoPlan.html',
             size: 'sm',
-            controller: ["$scope", function ($scope) {
+            controller: ["$scope", function($scope) {
                 $scope.modelHolder = {};
-                $scope.submit = function (capacity) {
+                $scope.submit = function(capacity) {
                     options.args.push(capacity);
                     options.callback.apply(options.callback, options.args);
                     $scope.$close(true);
@@ -54,11 +54,11 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             }]
         });
     };
-    $scope.showStoriesSelectorModal = function (options) {
+    $scope.showStoriesSelectorModal = function(options) {
         $uibModal.open({
             templateUrl: 'sprint.plan.html',
             size: 'md',
-            controller: ["$scope", "StoryService", function ($scope, StoryService) {
+            controller: ["$scope", "StoryService", function($scope, StoryService) {
                 $scope.disabledGradient = true;
                 $scope.disabledSortable = true;
                 $scope.selectedIds = [];
@@ -69,14 +69,14 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
                     notSelectableSelector: '.action, button, a',
                     allowMultiple: true,
                     selectableMultiple: true,
-                    selectionUpdated: function (selectedIds) {
+                    selectionUpdated: function(selectedIds) {
                         $scope.selectedIds = selectedIds;
                     }
                 };
-                $scope.isSelected = function (story) {
+                $scope.isSelected = function(story) {
                     return _.indexOf($scope.selectedIds, story.id.toString()) > -1;
                 };
-                $scope.submit = function (selectedIds) {
+                $scope.submit = function(selectedIds) {
                     options.args.push(selectedIds);
                     options.callback.apply(options.callback, options.args);
                     $scope.$close(true);
@@ -84,7 +84,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             }]
         });
     };
-    $scope.fullScreen = function () {
+    $scope.fullScreen = function() {
         if (Fullscreen.isEnabled()) {
             Fullscreen.cancel();
             $scope.app.isFullScreen = false;
@@ -97,7 +97,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             }
         }
     };
-    $scope.print = function (data) {
+    $scope.print = function(data) {
         var url = data;
         if (angular.isObject(data)) {
             url = data.currentTarget.attributes['ng-href'] ? data.currentTarget.attributes['ng-href'].value : data.target.href;
@@ -107,22 +107,22 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             keyboard: false,
             templateUrl: "report.progress.html",
             size: 'sm',
-            controller: ['$scope', function ($scope) {
+            controller: ['$scope', function($scope) {
                 $scope.downloadFile(url);
                 $scope.progress = true;
             }]
         });
         modal.result.then(
-            function () {
+            function() {
                 $scope.downloadFile("");
             },
-            function () {
+            function() {
                 $scope.downloadFile("");
             }
         );
     };
     // Init loading
-    $scope.$on('$viewContentLoading', function () {
+    $scope.$on('$viewContentLoading', function() {
         $scope.app.loading = true;
         if ($scope.app.loadingPercent < 90) {
             $scope.app.loadingPercent += 5;
@@ -131,42 +131,42 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
     // Init loading
     var w = angular.element($window);
     var resizeTimeout = null;
-    $scope.$on('$viewContentLoaded', function () {
+    $scope.$on('$viewContentLoaded', function() {
         if ($scope.app.loadingPercent < 90) {
             $scope.app.loadingPercent += 5;
         } else {
             $scope.app.loading = false;
         }
         $timeout.cancel(resizeTimeout);
-        resizeTimeout = $timeout(function () {
+        resizeTimeout = $timeout(function() {
             w.triggerHandler('resize');
         }, 100);
     });
-    $scope.$on('$stateChangeStart', function () {
+    $scope.$on('$stateChangeStart', function() {
         $scope.app.loading = true;
         if ($scope.app.loadingPercent != 100) {
             $scope.app.loadingPercent += 10;
         }
     });
-    $scope.$on('$stateChangeSuccess', function () {
+    $scope.$on('$stateChangeSuccess', function() {
         $scope.app.loading = false;
         if ($scope.app.loadingPercent != 100) {
             $scope.app.loadingPercent = 100;
         }
     });
-    $scope.$watch(function () {
+    $scope.$watch(function() {
         return $http.pendingRequests.length;
-    }, function (newVal) {
+    }, function(newVal) {
         $scope.app.loading = newVal > 0;
         if ($scope.app.loading && $scope.app.loadingPercent < 100) {
             $scope.app.loadingPercent = 100 - ((100 - $scope.app.loadingPercent) / newVal);
         }
     });
     // Init error managmeent
-    $scope.$on(SERVER_ERRORS.notAuthenticated, function () {
+    $scope.$on(SERVER_ERRORS.notAuthenticated, function() {
         $scope.showAuthModal();
     });
-    $scope.$on(SERVER_ERRORS.clientError, function (event, error) {
+    $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
         var data = error.data;
         if (!data.silent) {
             if (angular.isArray(data)) {
@@ -178,7 +178,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             }
         }
     });
-    $scope.$on(SERVER_ERRORS.serverError, function (event, error) {
+    $scope.$on(SERVER_ERRORS.serverError, function(event, error) {
         var data = error.data;
         if (angular.isArray(data)) {
             notifications.error($scope.message('todo.is.ui.error.server'), data[0].text);
@@ -190,14 +190,14 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
     });
 }]);
 
-controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', function ($scope, $uibModal, Session, UserService, hotkeys, PushService) {
+controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', function($scope, $uibModal, Session, UserService, hotkeys, PushService) {
     // Functions
-    $scope.notificationToggle = function (open) {
+    $scope.notificationToggle = function(open) {
         if (open) {
             UserService.getActivities($scope.currentUser)
-                .then(function (data) {
+                .then(function(data) {
                     var groupedActivities = [];
-                    angular.forEach(data, function (notif) {
+                    angular.forEach(data, function(notif) {
                         var augmentedActivity = notif.activity;
                         augmentedActivity.story = notif.story;
                         augmentedActivity.notRead = notif.notRead;
@@ -216,26 +216,26 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             );
         }
     };
-    $scope.getUnreadActivities = function () {
+    $scope.getUnreadActivities = function() {
         return Session.unreadActivitiesCount;
     };
     // TODO remove, user role change for dev only
-    $scope.changeRole = function (newRole) {
+    $scope.changeRole = function(newRole) {
         Session.changeRole(newRole);
     };
-    $scope.showAbout = function () {
+    $scope.showAbout = function() {
         $uibModal.open({
             templateUrl: 'scrumOS/about'
         });
     };
-    $scope.showProfile = function () {
+    $scope.showProfile = function() {
         $uibModal.open({
             keyboard: false,
             templateUrl: $scope.serverUrl + '/user/openProfile',
             controller: 'userCtrl'
         });
     };
-    $scope.showManageTeamsModal = function () {
+    $scope.showManageTeamsModal = function() {
         $uibModal.open({
             keyboard: false,
             templateUrl: $scope.serverUrl + "/team/manage",
@@ -243,14 +243,14 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             controller: 'manageTeamsModalCtrl'
         });
     };
-    $scope.getPushState = function () {
+    $scope.getPushState = function() {
         return PushService.push.connected ? 'connected' : 'disconnected';
     };
     // Init
     $scope.currentUser = Session.user;
     $scope.roles = Session.roles;
     $scope.menuDragging = false;
-    var menuSortableChange = function (event) {
+    var menuSortableChange = function(event) {
         UserService.updateMenuPreferences({
             id: event.source.itemScope.modelValue.id,
             position: event.dest.index + 1,
@@ -261,20 +261,20 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
         itemMoved: menuSortableChange,
         orderChanged: menuSortableChange,
         containment: '#header',
-        accept: function (sourceItemHandleScope, destSortableScope) {
+        accept: function(sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         },
-        dragStart: function () {
+        dragStart: function() {
             $scope.menuDragging = true;
         },
-        dragEnd: function () {
+        dragEnd: function() {
             $scope.menuDragging = false;
         }
     };
     hotkeys.bindTo($scope).add({
         combo: 'shift+l',
         description: $scope.message('is.button.connect'),
-        callback: function () {
+        callback: function() {
             if (!Session.authenticated()) {
                 $scope.showAuthModal();
             }
@@ -282,11 +282,11 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
 }]);
 
-controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'ProjectService', 'StoryService', function ($scope, $q, $location, $injector, $state, $timeout, Session, ProjectService, StoryService) {
+controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'ProjectService', 'StoryService', function($scope, $q, $location, $injector, $state, $timeout, Session, ProjectService, StoryService) {
     // Functions
-    $scope.searchContext = function (term) {
-        return !Session.authenticated() ? [] : $scope.loadContexts().then(function () {
-            var filteredResult = _.filter($scope.contexts, function (context) {
+    $scope.searchContext = function(term) {
+        return !Session.authenticated() ? [] : $scope.loadContexts().then(function() {
+            var filteredResult = _.filter($scope.contexts, function(context) {
                 return _.deburr(context.term.toLowerCase()).indexOf(_.deburr(term.toLowerCase())) != -1;
             });
             var context = $scope.app.context;
@@ -296,7 +296,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
             return filteredResult;
         });
     };
-    $scope.setContext = function (context) {
+    $scope.setContext = function(context) {
         if (context) {
             $location.search('context', context.type + ':' + context.id);
             $scope.app.search = null; // Remove the context that has been typed in the input
@@ -307,30 +307,30 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         StoryService.list.splice(0, StoryService.list.length);
         $state.reload();
     };
-    $scope.setFeatureContext = function (feature) {
+    $scope.setFeatureContext = function(feature) {
         $scope.setContext({type: 'feature', id: feature.id, term: feature.name});
     };
-    $scope.setTagContext = function (tag) {
+    $scope.setTagContext = function(tag) {
         $scope.setContext({type: 'tag', id: tag, term: tag});
     };
-    $scope.hasContextOrSearch = function () {
+    $scope.hasContextOrSearch = function() {
         return $scope.app.context || $scope.app.search;
     };
-    $scope.clearContextAndSearch = function () {
+    $scope.clearContextAndSearch = function() {
         $scope.app.search = null;
         if ($scope.app.context) {
             $scope.setContext(null);
         }
     };
-    $scope.loadContexts = function () {
+    $scope.loadContexts = function() {
         var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the controller because it will init the service systematically and call Feature.query which require authentication
-        return $q.all([ProjectService.getTags(), FeatureService.list.$promise]).then(function (data) {
+        return $q.all([ProjectService.getTags(), FeatureService.list.$promise]).then(function(data) {
             var tags = data[0];
             var features = data[1];
-            var contexts = _.map(tags, function (tag) {
+            var contexts = _.map(tags, function(tag) {
                 return {type: 'tag', id: tag, term: tag};
             });
-            contexts = contexts.concat(_.map(features, function (feature) {
+            contexts = contexts.concat(_.map(features, function(feature) {
                 return {type: 'feature', id: feature.uid.toString(), term: feature.name};
             }));
             $scope.contexts = contexts;
@@ -346,11 +346,11 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         var type = contextFields[0];
         var id = contextFields[1];
         $scope.app.context = {type: type, id: id}; // Partial context as soon as possible
-        $scope.loadContexts().then(function () {
+        $scope.loadContexts().then(function() {
             $scope.app.context = _.find($scope.contexts, $scope.app.context); // Load the full context to get the name in case of feature
         });
     }
-    $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
         if (fromState.name && toState.name) {
             if (fromState.name.split('.')[0] !== toState.name.split('.')[0]) {
                 $scope.app.search = null;
@@ -359,7 +359,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
         var context = $scope.app.context;
         if (context) {
-            $timeout(function () {
+            $timeout(function() {
                 $location.replace(); // Prevent the state without the ?context... part to be save in browser history, must be in timeout to avoid that all changes during the current digest are lost
                 $location.search('context', context.type + ':' + context.id);
             });
@@ -367,22 +367,22 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
     });
 }]);
 
-controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function ($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
+controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
     $scope.credentials = {
         j_username: $scope.username ? $scope.username : '',
         j_password: ''
     };
-    $rootScope.showRegisterModal = function () {
+    $rootScope.showRegisterModal = function() {
         if ($scope.$close) {
             $scope.$close(); // Close auth modal if present
         }
         $state.go('userregister');
     };
-    $rootScope.showRetrieveModal = function () {
+    $rootScope.showRetrieveModal = function() {
         $state.go('userretrieve');
     };
-    $scope.login = function (credentials) {
-        AuthService.login(credentials).then(function (data) {
+    $scope.login = function(credentials) {
+        AuthService.login(credentials).then(function(data) {
             var lastOpenedUrl = data.url;
             var normalizedCurrentLocation = window.location.href.charAt(window.location.href.length - 1) == '/' ? window.location.href.substring(0, window.location.href.length - 1) : window.location.href;
             if (normalizedCurrentLocation == $rootScope.serverUrl && lastOpenedUrl) {
@@ -390,30 +390,30 @@ controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_E
             } else {
                 document.location.reload(true);
             }
-        }, function () {
+        }, function() {
             $rootScope.$broadcast(SERVER_ERRORS.loginFailed);
         });
     };
 }]);
 
-controllers.controller('registerCtrl', ['$scope', '$state', 'User', 'UserService', 'Session', function ($scope, $state, User, UserService, Session) {
+controllers.controller('registerCtrl', ['$scope', '$state', 'User', 'UserService', 'Session', function($scope, $state, User, UserService, Session) {
     // Functions
-    $scope.register = function () {
-        UserService.save($scope.user).then(function () {
+    $scope.register = function() {
+        UserService.save($scope.user).then(function() {
             $scope.$close($scope.user.username);
         });
     };
     // Init
     $scope.user = new User();
     if ($state.params.token) {
-        UserService.getInvitationUserMock($state.params.token).then(function (mockUser) {
+        UserService.getInvitationUserMock($state.params.token).then(function(mockUser) {
             _.merge($scope.user, mockUser);
             $scope.user.token = $state.params.token;
         });
     }
     $scope.languages = {};
     $scope.languageKeys = [];
-    Session.getLanguages().then(function (languages) {
+    Session.getLanguages().then(function(languages) {
         $scope.languages = languages;
         $scope.languageKeys = _.keys(languages);
         if (!$scope.user.preferences) {
@@ -425,10 +425,10 @@ controllers.controller('registerCtrl', ['$scope', '$state', 'User', 'UserService
     });
 }]);
 
-controllers.controller('retrieveCtrl', ['$scope', 'User', 'UserService', function ($scope, User, UserService) {
+controllers.controller('retrieveCtrl', ['$scope', 'User', 'UserService', function($scope, User, UserService) {
     // Functions
-    $scope.retrieve = function () {
-        UserService.retrievePassword($scope.user).then(function () {
+    $scope.retrieve = function() {
+        UserService.retrievePassword($scope.user).then(function() {
             $scope.$close();
         });
     };

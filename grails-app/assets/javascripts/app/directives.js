@@ -23,7 +23,7 @@
  */
 
 var directives = angular.module('directives', []);
-directives.directive('isMarkitup', ['$http', function ($http) {
+directives.directive('isMarkitup', ['$http', function($http) {
     return {
         restrict: 'A',
         scope: {
@@ -31,11 +31,11 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             html: '=isModelHtml',
             model: '=ngModel'
         },
-        link: function (scope, element) {
+        link: function(scope, element) {
             var settings = $.extend({
                     resizeHandle: false,
                     scrollContainer: '#main-content .details:first',
-                    afterInsert: function () {
+                    afterInsert: function() {
                         element.triggerHandler('input');
                     }
                 },
@@ -44,41 +44,41 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             var container = markitup.parents('.markItUp');
             container.hide();
 
-            scope.$watch('show', function (value) {
+            scope.$watch('show', function(value) {
                 if (value === true) {
                     container.show();
-                    setTimeout(function () {
+                    setTimeout(function() {
                         element[0].focus();
                     }, 50);
                 } else {
                     container.hide();
                 }
             });
-            element.bind('blur', function () {
+            element.bind('blur', function() {
                 var val = element.val();
                 scope.$apply($http({
                     method: 'POST',
                     url: 'textileParser',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                     data: 'data=' + val
-                }).success(function (data) {
+                }).success(function(data) {
                     scope.html = data;
                 }));
             });
         }
     };
-}]).directive('showValidation', ['$compile', '$rootScope', function ($compile, $rootScope) {
+}]).directive('showValidation', ['$compile', '$rootScope', function($compile, $rootScope) {
     return {
         restrict: "A",
-        link: function (scope, element, attrs) {
-            scope.$watch(function () {
+        link: function(scope, element, attrs) {
+            scope.$watch(function() {
                 return scope.$eval(attrs.name);
-            }, function (form) {
+            }, function(form) {
                 if (form == undefined) {
                     return;
                 }
                 var inputs = element.find('input[ng-model]:not([validation-watched]):not(.ui-select-search), textarea[ng-model]:not([validation-watched])');
-                angular.forEach(inputs, function (it) {
+                angular.forEach(inputs, function(it) {
                     var input = angular.element(it);
                     input.attr('validation-watched', '');
                     var container = input.parent();
@@ -86,14 +86,14 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                         container = container.parent();
                     }
                     var inputModel = form[input.attr('name')];
-                    scope.$watch(function () {
+                    scope.$watch(function() {
                         return inputModel.$invalid && (inputModel.$dirty || inputModel.$touched);
-                    }, function (newIsInvalid, oldIsInvalid) {
+                    }, function(newIsInvalid, oldIsInvalid) {
                         if (newIsInvalid && !oldIsInvalid) {
                             var childScope = scope.$new();
                             childScope.inputModel = inputModel;
-                            childScope.errorMessages = function (errors) {
-                                return _.transform(errors, function (errorMessages, value, key) {
+                            childScope.errorMessages = function(errors) {
+                                return _.transform(errors, function(errorMessages, value, key) {
                                     if (value) {
                                         var name = input.siblings("label[for='" + input.attr('name') + "']").text();
                                         var errorMessage = '';
@@ -138,50 +138,50 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             }, true);
         }
     }
-}]).directive('notMatch', function () {
+}]).directive('notMatch', function() {
     return {
         require: 'ngModel',
         restrict: 'A',
         scope: {
             notMatch: '='
         },
-        link: function (scope, element, attrs, modelCtrl) {
-            modelCtrl.$validators.notMatch = function (modelValue, viewValue) {
+        link: function(scope, element, attrs, modelCtrl) {
+            modelCtrl.$validators.notMatch = function(modelValue, viewValue) {
                 var value = modelValue || viewValue;
                 var notMatch = scope.notMatch;
                 return value != notMatch;
             };
-            scope.$watch('notMatch', function () {
+            scope.$watch('notMatch', function() {
                 modelCtrl.$validate();
             });
         }
     };
-}).directive('isMatch', function () {
+}).directive('isMatch', function() {
     return {
         require: 'ngModel',
         restrict: 'A',
         scope: {
             isMatch: '='
         },
-        link: function (scope, element, attrs, modelCtrl) {
-            modelCtrl.$validators.isMatch = function (modelValue, viewValue) {
+        link: function(scope, element, attrs, modelCtrl) {
+            modelCtrl.$validators.isMatch = function(modelValue, viewValue) {
                 var value = modelValue || viewValue;
                 var isMatch = scope.isMatch;
                 return value === isMatch;
             };
-            scope.$watch('isMatch', function () {
+            scope.$watch('isMatch', function() {
                 modelCtrl.$validate();
             });
         }
     };
-}).directive('formAutofillFix', ['$timeout', function ($timeout) {
-    return function (scope, element, attrs) {
+}).directive('formAutofillFix', ['$timeout', function($timeout) {
+    return function(scope, element, attrs) {
         element.prop('method', 'post');
         if (attrs.ngSubmit) {
-            $timeout(function () {
+            $timeout(function() {
                 element
                     .unbind('submit')
-                    .bind('submit', function (event) {
+                    .bind('submit', function(event) {
                         event.preventDefault();
                         element
                             .find('input, textarea, select')
@@ -193,13 +193,13 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             });
         }
     };
-}]).directive('ellipsis', [function () {
+}]).directive('ellipsis', [function() {
     return {
         restrict: 'A',
         priority: 100,
-        link: function (scope, element) {
-            element.on('mouseenter', function () {
-                _.each(element.find('.ellipsis-el'), function (el) {
+        link: function(scope, element) {
+            element.on('mouseenter', function() {
+                _.each(element.find('.ellipsis-el'), function(el) {
                     el = angular.element(el);
                     var data = el.data('jqae');
                     if (!data || (data && data.wrapperElement.parent().length == 0)) {
@@ -210,12 +210,12 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             });
         }
     };
-}]).directive('timeago', [function () {
+}]).directive('timeago', [function() {
     return {
         restrict: 'A',
-        link: function (scope, element) {
+        link: function(scope, element) {
             element.data('hasTimeago', false);
-            scope.$watch("", function () {
+            scope.$watch("", function() {
                 // apply only once
                 if (!element.data('hasTimeago')) {
                     element.data('hasTimeago', true);
@@ -224,15 +224,15 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             });
         }
     };
-}]).directive('at', [function () {
+}]).directive('at', [function() {
     return {
         restrict: 'A',
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             element.data('hasAt', false);
-            scope.$watch(function () {
+            scope.$watch(function() {
                 // Cannot use isolated scope (e.g. scope { at: '=' } because there are already isolated scope on the element)
                 return scope.$eval(attrs.at);
-            }, function (newOptions) {
+            }, function(newOptions) {
                 if (element.data('hasAt')) {
                     // recreate if options has changed, eg. promise completed for data
                     element.atwho('destroy');
@@ -243,11 +243,11 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             }, true);
         }
     };
-}]).directive('capitalize', function () {
+}]).directive('capitalize', function() {
     return {
         require: 'ngModel',
-        link: function (scope, element, attrs, modelCtrl) {
-            var capitalize = function (inputValue) {
+        link: function(scope, element, attrs, modelCtrl) {
+            var capitalize = function(inputValue) {
                 if (inputValue == undefined) inputValue = '';
                 if (attrs.noSpace) {
                     inputValue = inputValue.replace(/[\s]/g, '');
@@ -263,34 +263,34 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             capitalize(scope[attrs.ngModel]);
         }
     };
-}).directive('btnModel', function () {
+}).directive('btnModel', function() {
     return {
         restrict: 'C',
         require: 'ngModel',
-        link: function (scope, element, attrs, modelCtrl) {
-            element.on('mousedown', function () {
+        link: function(scope, element, attrs, modelCtrl) {
+            element.on('mousedown', function() {
                 modelCtrl.$setDirty();
                 modelCtrl.$setTouched();
             });
         }
     };
-}).directive('selectOnFocus', function () {
+}).directive('selectOnFocus', function() {
     return {
         restrict: 'A',
-        link: function (scope, element) {
-            element.on('focus', function () {
+        link: function(scope, element) {
+            element.on('focus', function() {
                 this.select();
             });
         }
     };
-}).directive('isProgress', ['$rootScope', '$timeout', '$http', function ($rootScope, $timeout, $http) {
+}).directive('isProgress', ['$rootScope', '$timeout', '$http', function($rootScope, $timeout, $http) {
     return {
         restrict: 'E',
         scope: {
             start: '='
         },
         templateUrl: 'is.progress.html',
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             var status;
 
             scope.progress = {
@@ -299,18 +299,18 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                 type: 'primary'
             };
 
-            scope.$watch('start', function (value) {
+            scope.$watch('start', function(value) {
                 stopProgress();
                 if (value === true) {
                     $timeout(progress, 500);
                 }
             });
 
-            var progress = function () {
+            var progress = function() {
                 $http({
                     method: "get",
                     url: $rootScope.serverUrl + "/progress"
-                }).then(function (response) {
+                }).then(function(response) {
                     var data = response.data;
                     scope.progress = data;
                     if (!data.error && !data.complete) {
@@ -321,27 +321,27 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                     } else if (data.complete) {
                         scope.progress.type = 'success';
                     }
-                }, function () {
+                }, function() {
                     scope.progress.type = 'danger';
                     scope.progress.label = scope.message(attrs.errorMessage ? attrs.errorMessage : 'todo.is.ui.error');
                     scope.progress.value = 100;
                 });
             };
 
-            var stopProgress = function () {
+            var stopProgress = function() {
                 if (angular.isDefined(status)) {
                     $timeout.cancel(status);
                     status = undefined;
                 }
             };
 
-            element.on('$destroy', function () {
+            element.on('$destroy', function() {
                 stopProgress();
             });
         }
     };
-}]).directive('circle', function () {
-    var polarToCartesian = function (centerX, centerY, radius, angleInDegrees) {
+}]).directive('circle', function() {
+    var polarToCartesian = function(centerX, centerY, radius, angleInDegrees) {
         var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
         return {
             x: centerX + (radius * Math.cos(angleInRadians)),
@@ -350,13 +350,13 @@ directives.directive('isMarkitup', ['$http', function ($http) {
     };
     return {
         restrict: 'A',
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             var coords = attrs.circleCoords.split(',');
-            _.each(coords, function (val, index) {
+            _.each(coords, function(val, index) {
                 coords[index] = parseInt(val);
             });
             var end = polarToCartesian(coords[0], coords[1], coords[2], coords[3]);
-            scope.$watch(attrs.circle, function (value) {
+            scope.$watch(attrs.circle, function(value) {
                 var endAngle = 360 * value / 100;
                 var start = polarToCartesian(coords[0], coords[1], coords[2], endAngle);
                 var arcSweep = endAngle - coords[3] <= 180 ? "0" : "1";
@@ -368,15 +368,15 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             });
         }
     }
-}).directive('inputGroupFixWidth', ['$window', '$timeout', function ($window, $timeout) {
+}).directive('inputGroupFixWidth', ['$window', '$timeout', function($window, $timeout) {
     return {
         restrict: 'A',
-        link: function (scope, element, attrs) {
-            var resizer = function () {
+        link: function(scope, element, attrs) {
+            var resizer = function() {
                 element.css('width', element.parent().parent().width() - attrs.inputGroupFixWidth + 'px');
             };
             var promiseWindowResize;
-            angular.element($window).on('resize', function () {
+            angular.element($window).on('resize', function() {
                 if (promiseWindowResize) {
                     $timeout.cancel(promiseWindowResize);
                 }
@@ -385,11 +385,11 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             $timeout(resizer);
         }
     };
-}]).directive('asSortableItemHandleIf', ['$compile', function ($compile) {
+}]).directive('asSortableItemHandleIf', ['$compile', function($compile) {
     return {
         restrict: 'A',
         priority: 1000,
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             if (scope.$eval(attrs.asSortableItemHandleIf)) {
                 element.attr('as-sortable-item-handle', '');
             }
@@ -397,7 +397,7 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             $compile(element)(scope);
         }
     };
-}]).directive('timeline', ['ProjectService', '$timeout', function (ProjectService, $timeout) {
+}]).directive('timeline', ['ProjectService', '$timeout', function(ProjectService, $timeout) {
     return {
         restrict: 'A',
         scope: {
@@ -405,7 +405,7 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             timeline: '=',
             selected: '='
         },
-        link: function (scope, element) {
+        link: function(scope, element) {
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
                 elementHeight = element.height(),
                 height = elementHeight - margin.top - margin.bottom,
@@ -445,20 +445,20 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                 releaseSelector.enter().append("rect")
                     .attr("y", releaseMargin)
                     .attr("height", height - releaseMargin * 2)
-                    .attr("class", function (d) {
+                    .attr("class", function(d) {
                         return "release release-" + classByState[d.state];
                     });
                 sprintSelector.enter().append("rect")
                     .attr("y", sprintMargin + releaseMargin)
                     .attr("height", height - releaseMargin * 2 - sprintMargin * 2)
-                    .attr("class", function (d) {
+                    .attr("class", function(d) {
                         return "sprint sprint-" + classByState[d.state];
                     });
                 // Update
-                var getX = function (d) {
+                var getX = function(d) {
                     return x(d.startDate);
                 };
-                var getWidth = function (d) {
+                var getWidth = function(d) {
                     return x(d.endDate) - x(d.startDate);
                 };
                 releaseSelector.attr('x', getX).attr("width", getWidth);
@@ -468,26 +468,24 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                     refreshBrush();
                 }
             }
-
             function refreshBrush() {
                 brushSelector.transition()
                     .call(brush.extent(extent))
                     .call(brush.event);
             }
-
             function snapToSprint() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
-                var findSprintsOrAReleaseInRange = function (dates) {
+                var findSprintsOrAReleaseInRange = function(dates) {
                     var res;
-                    res = _.filter(sprints.selectAll("rect").data(), function (sprint) {
+                    res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
                         return sprint.startDate >= dates[0] && sprint.endDate <= dates[1];
                     });
                     if (!res.length) {
-                        res = _.find(releases.selectAll("rect").data(), function (release) {
+                        res = _.find(releases.selectAll("rect").data(), function(release) {
                             return release.startDate <= dates[0] && release.endDate >= dates[0];
                         });
                         if (res) {
-                            var _res = _.find(sprints.selectAll("rect").data(), function (sprint) {
+                            var _res = _.find(sprints.selectAll("rect").data(), function(sprint) {
                                 return sprint.startDate <= dates[0] && sprint.endDate >= dates[0];
                             });
                             res = _res ? [_res] : [res]; // Always return an array
@@ -504,29 +502,29 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             }
 
             scope.$watch('timeline', render, true);
-            scope.$watch('selected', function (selected) {
+            scope.$watch('selected', function(selected) {
                 extent = selected && selected.length > 0 ? [_.first(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()];
                 refreshBrush();
             }, true);
             d3.select(window).on('resize', render); // Register render on resize
-            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function (a, d) {
+            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function(a, d) {
                 //hack
                 if (d.indexOf('@planning') != -1) {
                     $timeout(render, 100);
                 }
             }); // Register render when details view changed
-            scope.$on('$destroy', function () {
+            scope.$on('$destroy', function() {
                 d3.select(window).on('resize', null); // unRegister render on resize
                 registeredRootScopeRender();
             }); // Destroy listener when removed
         }
     }
-}]).directive('postitMenu', ['$compile', function ($compile) {
+}]).directive('postitMenu', ['$compile', function($compile) {
     // For 140 postits, reduce display time by 1 s. and initial watchers by 1700 by loading menu only on first hover
     return {
         restrict: 'A',
-        link: function (scope, element, attrs) {
-            element.closest('.postit').one('mouseenter', function () {
+        link: function(scope, element, attrs) {
+            element.closest('.postit').one('mouseenter', function() {
                 var newElement = element.clone();
                 newElement.removeAttr('postit-menu');
                 newElement.attr('uib-dropdown', '');
@@ -536,13 +534,13 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             });
         }
     }
-}]).directive('fastTooltip', ['$compile', function ($compile) { // For 140 stories, reduce display time by 0,8 s.
+}]).directive('fastTooltip', ['$compile', function($compile) { // For 140 stories, reduce display time by 0,8 s.
     return {
         restrict: 'A',
-        link: function (scope, element) {
-            element.on('mouseenter', function () { // Executed on each mouseenter because new dom elements may have appeared since the last time (e.g. with ng-if)
+        link: function(scope, element) {
+            element.on('mouseenter', function() { // Executed on each mouseenter because new dom elements may have appeared since the last time (e.g. with ng-if)
                 var tooltipAttr = 'fast-tooltip-el';
-                _.each(element.find('[' + tooltipAttr + ']'), function (tooltipElement) {
+                _.each(element.find('[' + tooltipAttr + ']'), function(tooltipElement) {
                     tooltipElement = angular.element(tooltipElement);
                     var newTooltipElement = tooltipElement.clone(); // Not sure that it is required
                     // Tooltip content must be a static string, it cannot be an angular expression and the element cannot have children with angular expression !!!
@@ -555,15 +553,15 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             });
         }
     }
-}]).directive('unavailableFeature', ['$uibModal', function ($uibModal) {
+}]).directive('unavailableFeature', ['$uibModal', function($uibModal) {
     return {
         restrict: 'A',
         scope: {
             unavailableFeature: '='
         },
-        link: function (scope, element) {
+        link: function(scope, element) {
             if (scope.unavailableFeature) {
-                element.on('click', function () {
+                element.on('click', function() {
                     $uibModal.open({
                         template: '<div class="modal-header"><h4 class="modal-title">Feature Coming Soon</h4></div><div class="modal-body"><b>This useful feature is still in development. We will release it very soon!</b></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="$close()">Close</button></div>',
                         size: 'sm'
@@ -573,21 +571,21 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             }
         }
     }
-}]).directive('selectable', ['$document', '$rootScope', function ($document, $rootScope) {
+}]).directive('selectable', ['$document', '$rootScope', function($document, $rootScope) {
     return {
         restrict: 'A',
         scope: {
             selectable: '='
         },
-        link: function (scope, element) {
+        link: function(scope, element) {
             // Scroll to selection on refresh
-            element.scope().$on('selectable-refresh', function () {
+            element.scope().$on('selectable-refresh', function() {
                 var scrollableContainerSelector = '.panel-body';
-                element.find(scrollableContainerSelector).addBack(scrollableContainerSelector).each(function (i, container) {
+                element.find(scrollableContainerSelector).addBack(scrollableContainerSelector).each(function(i, container) {
                     container = $(container);
                     var selectedElements = container.find('.is-selected');
                     if (selectedElements.length > 0) {
-                        var anySelectedVisible = _.any(selectedElements, function (selectedElement) {
+                        var anySelectedVisible = _.any(selectedElements, function(selectedElement) {
                             selectedElement = angular.element(selectedElement);
                             var containerTop = 0; // Use relative positions
                             var containerBottom = container.height();
@@ -614,7 +612,7 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             var selectedIdAttr = 'selectable-id';
             var selectedSelector = '[' + selectedIdAttr + '].' + selectedClass;
             var lastSelected;
-            element.on('click', function (event) { // Listen only on the container element rather than on each element: allow deselecting and avoid the need to listen to new elements
+            element.on('click', function(event) { // Listen only on the container element rather than on each element: allow deselecting and avoid the need to listen to new elements
                 var target = angular.element(event.target);
                 if (!selectableOptions.notSelectableSelector || target.closest(selectableOptions.notSelectableSelector).length == 0) {
                     $document[0].getSelection().removeAllRanges(); // prevents text-selection when doing shift + click
@@ -626,7 +624,7 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                     var selectableElement = target.closest('[' + selectedIdAttr + ']');
                     if (selectableElement.length != 0) {
                         if (lastSelected && event.shiftKey && selectableOptions.allowMultiple) { // Dark magic to emulate shift+click behavior observed in OS
-                            var elementsBetween = function (el1, el2) {
+                            var elementsBetween = function(el1, el2) {
                                 var elements = el1.parent().children('[' + selectedIdAttr + ']');
                                 var index1 = elements.index(el1);
                                 var index2 = elements.index(el2);
@@ -637,16 +635,16 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                                 }
                                 return slice;
                             };
-                            var selectedElementsNextTo = function (el) {
+                            var selectedElementsNextTo = function(el) {
                                 var notSelectedSelector = '[' + selectedIdAttr + ']:not(.' + selectedClass + ')';
                                 var before = el.prevUntil(notSelectedSelector);
                                 var after = el.nextUntil(notSelectedSelector);
                                 return jQuery.merge(before, after);
                             };
-                            _.each(selectedElementsNextTo(lastSelected), function (el) {
+                            _.each(selectedElementsNextTo(lastSelected), function(el) {
                                 angular.element(el).removeClass(selectedClass);
                             });
-                            _.each(elementsBetween(selectableElement, lastSelected), function (el) {
+                            _.each(elementsBetween(selectableElement, lastSelected), function(el) {
                                 el = angular.element(el);
                                 if (!el.hasClass(selectedClass)) {
                                     el.addClass(selectedClass);
@@ -656,7 +654,7 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                             selectableElement.toggleClass(selectedClass);
                             lastSelected = selectableElement.hasClass(selectedClass) ? selectableElement : null;
                         }
-                        selectedIds = _.map(element.find(selectedSelector), function (selected) {
+                        selectedIds = _.map(element.find(selectedSelector), function(selected) {
                             return angular.element(selected).attr(selectedIdAttr);
                         });
                     } else {
@@ -667,21 +665,21 @@ directives.directive('isMarkitup', ['$http', function ($http) {
             });
         }
     }
-}]).directive("stickyList", ['$window', '$timeout', function ($window, $timeout) {
+}]).directive("stickyList", ['$window', '$timeout', function($window, $timeout) {
     //when you don't find, DIY
     return {
         restrict: 'A',
-        link: function (scope, element, attrs) {
+        link: function(scope, element, attrs) {
             var stackSize = 0;
             var $headers = [], $cloneHeaders = [], offset;
             var container = attrs.stickyList ? angular.element(attrs.stickyList) : element;
 
-            var position = function () {
+            var position = function() {
                 var orignOffset = container.offset().top;
                 if ($headers.length) {
                     offset = orignOffset;
                     if ($cloneHeaders.length) {
-                        _.each($cloneHeaders, function (header, index) {
+                        _.each($cloneHeaders, function(header, index) {
                             offset = orignOffset + computeStackOffset(index);
                             $cloneHeaders[index].css('top', offset + 'px');
                             if (index < stackSize) {
@@ -693,10 +691,10 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                 }
             };
 
-            var computeStackOffset = function (index) {
+            var computeStackOffset = function(index) {
                 var _offset = 0;
                 if (stackSize > 0) {
-                    _.each($cloneHeaders, function (header, indexH) {
+                    _.each($cloneHeaders, function(header, indexH) {
                         if (indexH < stackSize && index > indexH) {
                             _offset += header.outerHeight(true);
                         }
@@ -705,21 +703,21 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                 return _offset;
             };
 
-            var computeWidth = function (index) {
+            var computeWidth = function(index) {
                 var $clone = $cloneHeaders[index];
                 var $header = $headers[index];
                 $clone.width($header.width());
                 var $headerThs = $header.find('th,td');
                 if ($headerThs.length) {
                     var $cloneThs = $clone.find('th,td');
-                    _.each($headerThs, function (headerTh, index) {
+                    _.each($headerThs, function(headerTh, index) {
                         angular.element($cloneThs[index]).css('width', angular.element(headerTh).outerWidth());
                     });
                 }
             };
 
-            var render = function () {
-                _.each($headers, function ($header, index) {
+            var render = function() {
+                _.each($headers, function($header, index) {
                     var top = $header.offset().top;
                     var $previous = null;
                     if (index == 0) {
@@ -762,8 +760,8 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                 });
             };
 
-            container.one("scroll", function () {
-                _.each(element.find('.sticky-header:not(.cloned)'), function (header) {
+            container.one("scroll", function() {
+                _.each(element.find('.sticky-header:not(.cloned)'), function(header) {
                     header = angular.element(header);
                     $headers.push(angular.element(header));
                     if (header.hasClass('sticky-stack')) {
@@ -776,7 +774,7 @@ directives.directive('isMarkitup', ['$http', function ($http) {
                 var viewElement = angular.element('.main > .view');
                 windowElement.on("resize", position);
                 viewElement.on("scroll", position);
-                scope.$on('$destroy', function () {
+                scope.$on('$destroy', function() {
                     windowElement.off("resize", position);
                     viewElement.off("scroll", position);
                 });

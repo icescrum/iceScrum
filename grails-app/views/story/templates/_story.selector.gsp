@@ -29,7 +29,6 @@
     <p class="help-block">
         ${message(code: 'is.dialog.selector.description')}
     </p>
-
     <div selectable="selectableOptions">
         <div class="postits list-group has-selected"
              ng-controller="storyCtrl"
