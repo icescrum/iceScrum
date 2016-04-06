@@ -19,8 +19,8 @@
     &.stack {
       margin-bottom: 20px;
       &:before, &:after {
-        width: 196px;
-        height: 145px;
+        width: @postit-width;
+        height: @postit-height;
         color: @gray;
         border: 1px solid @postit-border;
         border-radius: 2px;
@@ -35,10 +35,11 @@
       }
       @postit-stack-offset: 4px;
       &:before {
+        top: -3px;
         z-index: 1;
       }
       &:after {
-        top: 0;
+        top: 2px;
         z-index: 0;
       }
       @postit-twisted-offset: 4deg;
@@ -124,8 +125,8 @@
       margin: 1px;
     }
     .postit {
-      width: 200px;
-      height: 160px;
+      width: @postit-width;
+      height: @postit-height;
       padding: 2px 5px;
       position: relative;
       color: @gray;
