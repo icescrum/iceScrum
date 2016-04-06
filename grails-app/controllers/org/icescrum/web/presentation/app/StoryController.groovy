@@ -287,15 +287,20 @@ class StoryController {
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
-    def acceptToBacklog(long id, long product) {
-        def story = Story.withStory(product, id)
+    def acceptToBacklog() {
+        def stories = Story.withStories(params)
         def rank
-        if (params.story?.rank) {
+        if (stories.size() == 1 && params.story?.rank) {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
-        storyService.acceptToBacklog(story, rank)
+        Story.withTransaction {
+            stories.each { Story story ->
+                storyService.acceptToBacklog(story, rank)
+            }
+        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
         withFormat {
-            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
+            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
             json { renderRESTJSON(text: story) }
             xml { renderRESTXML(text: story) }
         }

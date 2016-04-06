@@ -207,9 +207,10 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             _.each(stories, crudMethods[IceScrumEventType.CREATE]);
         }).$promise;
     };
-    this.acceptMultiple = function(ids) {
-        var fields = {state: StoryStatesByName.ACCEPTED};
-        return this.updateMultiple(ids, fields);
+    this.acceptToBacklogMultiple = function(ids) {
+        return Story.updateArray({id: ids, action: 'acceptToBacklog'}, {}, function(stories) {
+            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
+        }).$promise;
     };
     this.acceptAsMultiple = function(ids, target) {
         return Story.updateArray({id: ids, action: 'acceptAs' + target}, {}, function() {

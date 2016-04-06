@@ -122,7 +122,7 @@
                         </button>
                         <ul uib-dropdown-menu role="menu">
                             <li>
-                                <a href ng-click="acceptMultiple()">
+                                <a href ng-click="acceptToBacklogMultiple()">
                                     <g:message code='is.ui.backlog.menu.acceptAsStory'/>
                                 </a>
                             </li>

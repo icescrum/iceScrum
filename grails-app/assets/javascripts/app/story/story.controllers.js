@@ -449,8 +449,8 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
             $scope.notifySuccess('todo.is.ui.story.multiple.updated');
         });
     };
-    $scope.acceptMultiple = function() {
-        StoryService.acceptMultiple(listId).then(function() {
+    $scope.acceptToBacklogMultiple = function() {
+        StoryService.acceptToBacklogMultiple(listId).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.accepted');
         });
     };
