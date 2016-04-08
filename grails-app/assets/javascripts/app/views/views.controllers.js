@@ -421,15 +421,18 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.sprint = sprint;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
+    $scope.allStories = StoryService.list;
     $scope.ghostStories = [];
     $scope.$watch('sprint.tasks', function(newValue, oldValue) {
         if (oldValue !== newValue) { // Prevent trigger watch on watch creation
             $scope.refreshTasks();
         }
     }, true);
-    $scope.$watch('sprint.stories', function(newValue, oldValue) {
+    $scope.$watch('allStories', function(newValue, oldValue) {
         if (oldValue !== newValue) { // Prevent trigger watch on watch creation
-            TaskService.list(sprint); // Reload tasks and cascade to sprint.tasks watch that will take care of refreshing
+            StoryService.listByType(sprint).then(function() {
+                TaskService.list(sprint); // Reload tasks and cascade to sprint.tasks watch that will take care of refreshing
+            });
         }
     }, true);
     if ($scope.sprint) {
