@@ -97,7 +97,12 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             _.merge(params, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
         }
         return Task.query(params, function(tasks) {
+            var tasksIdsBefore = taskContext.tasks ? _.map(taskContext.tasks, 'id') : [];
             self.mergeTasks(tasks, taskContext);
+            var tasksIdsAfter = _.map(tasks, 'id');
+            _.each(_.difference(tasksIdsBefore, tasksIdsAfter), function(taskIdToRemove) {
+                _.remove(taskContext.tasks, {id: taskIdToRemove});
+            });
             _.each(self.getCrudMethods(taskContext), function(crudMethod, eventType) {
                 PushService.registerListener('task', eventType, crudMethod);
             });
