@@ -95,9 +95,11 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
     $scope.planStories = {
         filter: {state: StoryStatesByName.ESTIMATED},
         callback: function(sprint, selectedIds) {
-            StoryService.updateMultiple(selectedIds, {parentSprint: sprint}).then(function() {
-                $scope.notifySuccess('todo.is.ui.story.multiple.updated');
-            });
+            if (selectedIds.length > 0) {
+                StoryService.updateMultiple(selectedIds, {parentSprint: sprint}).then(function() {
+                    $scope.notifySuccess('todo.is.ui.story.multiple.updated');
+                });
+            }
         }
     };
     $scope.sortableId = 'sprint';

@@ -191,9 +191,17 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }
     };
     this.updateMultiple = function(ids, updatedFields) {
-        return Story.updateArray({id: ids}, {story: updatedFields}, function(stories) {
-            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
-        }).$promise;
+        if (ids.length == 1) {
+            return self.get(parseInt(ids[0])).then(function(story) {
+                return self.update(_.merge(story, updatedFields)).then(function(story) {
+                    return [story];
+                });
+            });
+        } else {
+            return Story.updateArray({id: ids}, {story: updatedFields}, function(stories) {
+                _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
+            }).$promise;
+        }
     };
     this.deleteMultiple = function(ids) {
         return Story.deleteArray({id: ids}, function() {
