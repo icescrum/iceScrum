@@ -103,6 +103,14 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }).$promise;
         return obj.stories.length === (obj.stories_ids ? obj.stories_ids.length : null) ? $q.when(obj.stories) : promise;
     };
+    this.filter = function(filter) {
+        var existingStories = _.filter(self.list, filter);
+        var promise = Story.query({filter: {story: filter}}, function(stories) {
+            self.mergeStories(stories);
+            _.merge(existingStories, stories);
+        }).$promise;
+        return existingStories.length > 0 ? $q.when(existingStories) : promise;
+    };
     this.get = function(id) {
         var story = _.find(self.list, {id: id});
         return story ? $q.when(story) : Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;

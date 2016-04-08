@@ -29,7 +29,8 @@
     <p class="help-block">
         ${message(code: 'is.dialog.selector.description')}
     </p>
-    <div selectable="selectableOptions">
+    <div ng-if="backlog.storiesLoaded"
+         selectable="selectableOptions">
         <div class="postits list-group has-selected sortable-disabled"
              ng-controller="storyCtrl"
              ng-model="backlog.stories"

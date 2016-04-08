@@ -59,10 +59,21 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             templateUrl: 'sprint.plan.html',
             size: 'md',
             controller: ["$scope", "StoryService", function($scope, StoryService) {
+                // Functions
+                $scope.isSelected = function(story) {
+                    return _.indexOf($scope.selectedIds, story.id.toString()) > -1;
+                };
+                $scope.submit = function(selectedIds) {
+                    options.args.push(selectedIds);
+                    options.callback.apply(options.callback, options.args);
+                    $scope.$close(true);
+                };
+                // Init
                 $scope.disabledGradient = true;
                 $scope.selectedIds = [];
                 $scope.backlog = {
-                    stories: _.filter(StoryService.list, options.filter)
+                    stories: [],
+                    storiesLoaded: false
                 };
                 $scope.selectableOptions = {
                     notSelectableSelector: '.action, button, a',
@@ -72,14 +83,10 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
                         $scope.selectedIds = selectedIds;
                     }
                 };
-                $scope.isSelected = function(story) {
-                    return _.indexOf($scope.selectedIds, story.id.toString()) > -1;
-                };
-                $scope.submit = function(selectedIds) {
-                    options.args.push(selectedIds);
-                    options.callback.apply(options.callback, options.args);
-                    $scope.$close(true);
-                };
+                StoryService.filter(options.filter).then(function(stories) {
+                    $scope.backlog.stories = stories;
+                    $scope.backlog.storiesLoaded = true;
+                });
             }]
         });
     };

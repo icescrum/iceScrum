@@ -37,26 +37,31 @@ class StoryController {
 
     @Secured('stakeHolder() or inProduct()')
     def index(long product, long typeId, String type) {
-        def options = [story: [:]]
-        if (type) {
-            if (type == 'backlog') {
-                options = JSON.parse(Backlog.get(typeId).filter)
-            } else if (type == 'actor') {
-                options.story.actor = "$typeId"
-            } else if (type == 'feature') {
-                options.story.feature = "$typeId"
-            } else if (type == 'sprint') {
-                options.story.parentSprint = "$typeId"
+        def options
+        if (params.filter) {
+            options = JSON.parse(params.filter);
+        } else {
+            options = [story: [:]]
+            if (type) {
+                if (type == 'backlog') {
+                    options = JSON.parse(Backlog.get(typeId).filter)
+                } else if (type == 'actor') {
+                    options.story.actor = "$typeId"
+                } else if (type == 'feature') {
+                    options.story.feature = "$typeId"
+                } else if (type == 'sprint') {
+                    options.story.parentSprint = "$typeId"
+                }
             }
-        }
-        if (params.context) {
-            if (params.context.type == 'tag') {
-                options.tag = params.context.id
-            } else if (params.context.type == 'feature') {
-                if (!options.story.feature) {
-                    options.story.feature = params.context.id
-                } else if (options.story.feature != params.context.id) { // If it tries to load the stories of another feature, return nothing!
-                    options.story = null
+            if (params.context) {
+                if (params.context.type == 'tag') {
+                    options.tag = params.context.id
+                } else if (params.context.type == 'feature') {
+                    if (!options.story.feature) {
+                        options.story.feature = params.context.id
+                    } else if (options.story.feature != params.context.id) { // If it tries to load the stories of another feature, return nothing!
+                        options.story = null
+                    }
                 }
             }
         }
