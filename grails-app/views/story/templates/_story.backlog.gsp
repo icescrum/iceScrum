@@ -43,13 +43,13 @@
     <p class="help-block">{{:: message('todo.is.ui.story.empty.' + backlog.code) }}</p>
     <a type="button"
        class="btn btn-primary"
-       ng-if="authorizedStory('create') && (backlog.code == backlogCodes.SANDBOX || backlog.code == backlogCodes.BACKLOG || backlog.code == backlogCodes.ALL)"
+       ng-if="authorizedStory('create') && (backlog.code == backlogCodes.SANDBOX || backlog.code == backlogCodes.BACKLOG || backlog.code == backlogCodes.ALL || backlog.code == 'plan')"
        href="#{{::viewName}}/new">
         {{:: message('todo.is.ui.story.new' + (backlog.code == backlogCodes.SANDBOX ? '' : '.sandbox')) }}
     </a>
     <a type="button"
        class="btn btn-primary"
-       ng-if="backlog.code == backlogCodes.SPRINT"
+       ng-if="backlog.code == backlogCodes.SPRINT || backlog.code == 'plan'"
        href="#backlog">
         <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlogs')}
     </a>

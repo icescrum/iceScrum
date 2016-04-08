@@ -69,11 +69,11 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
                     $scope.$close(true);
                 };
                 // Init
-                $scope.selectorCode = options.code;
                 $scope.disabledGradient = true;
                 $scope.selectedIds = [];
                 $scope.backlog = {
                     stories: [],
+                    code: options.code,
                     storiesLoaded: false
                 };
                 $scope.selectableOptions = {
