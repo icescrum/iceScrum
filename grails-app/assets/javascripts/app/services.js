@@ -332,6 +332,14 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
         var transformRequest = function(data) {
             return angular.isObject(data) && String(data) !== '[object File]' ? FormService.formObjectData(data) : data;
         };
+        var transformQueryParams = function(resolve) { // Magical hack found here: http://stackoverflow.com/questions/24082468/how-to-intercept-resource-requests
+            var originalParamSerializer = this.paramSerializer;
+            this.paramSerializer = function(params) {
+                return _.isObject(params) ? FormService.formObjectData(params) : originalParamSerializer(params);
+            };
+            this.then = null;
+            resolve(this);
+        };
         var defaultMethods = {
             save: {
                 method: 'post',
@@ -349,12 +357,14 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
             },
             get: {
                 method: 'get',
-                interceptor: singleInterceptor
+                interceptor: singleInterceptor,
+                then: transformQueryParams
             },
             query: {
                 method: 'get',
                 isArray: true,
-                interceptor: arrayInterceptor
+                interceptor: arrayInterceptor,
+                then: transformQueryParams
             },
             deleteArray: {
                 method: 'delete',

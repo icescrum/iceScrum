@@ -39,7 +39,7 @@ class StoryController {
     def index(long product, long typeId, String type) {
         def options
         if (params.filter) {
-            options = JSON.parse(params.filter);
+            options = params.filter
         } else {
             options = [story: [:]]
             if (type) {
