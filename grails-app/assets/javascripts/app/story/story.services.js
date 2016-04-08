@@ -35,7 +35,11 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         if (Session.getProject().releases && (oldSprint || newSprint)) { // No need to do anything if releases are not loaded or no parent sprint
             if (oldSprint != newSprint || oldStory.effort != newStory.effort || oldStory.state != newStory.state) {
                 ReleaseService.list(Session.getProject()).then(function(releases) { // Refreshes all the releases & sprints, which is probably overkill
-                    $q.all(_.map(releases, SprintService.list));
+                    $q.all(_.map(releases, SprintService.list)).then(function(sprintsGroupedByRelease) {
+                        _.each(_.filter(_.flatten(sprintsGroupedByRelease), function(sprint) {
+                            return sprint.id == oldSprint || sprint.id == newSprint;
+                        }), self.listByType);
+                    });
                 });
             }
         }

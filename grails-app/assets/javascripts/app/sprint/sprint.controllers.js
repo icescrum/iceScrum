@@ -96,6 +96,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
         filter: {state: StoryStatesByName.ESTIMATED},
         callback: function(sprint, selectedIds) {
             if (selectedIds.length > 0) {
+                // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch
                 StoryService.updateMultiple(selectedIds, {parentSprint: sprint}).then(function() {
                     $scope.notifySuccess('todo.is.ui.story.multiple.updated');
                 });
@@ -105,9 +106,11 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
     $scope.sortableId = 'sprint';
     $scope.backlogCodes = BacklogCodes;
     $scope.sprintStatesByName = SprintStatesByName;
-    StoryService.listByType($scope.sprint).then(function(stories) {
-        $scope.backlog = {stories: _.sortBy(stories, 'rank'), code: 'sprint'};
+    $scope.backlog = {stories: [], code: 'sprint'};
+    $scope.$watchCollection('sprint.stories', function(newStories) {
+        $scope.backlog.stories = _.sortBy(newStories, 'rank');
     });
+    StoryService.listByType($scope.sprint); // will trigger the update automatically through the watch
 }]);
 
 controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', 'detailsRelease', function($scope, $controller, $state, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases, detailsRelease) {
