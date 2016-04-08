@@ -23,11 +23,11 @@
 
 <script type="text/ng-template" id="sprint.plan.html">
 <is:modal form="submit(selectedIds)"
-          submitButton="${message(code: 'is.dialog.selector.button')}"
+          submitButton="{{ message('todo.is.ui.story.selector.' + selectorCode + '.button') }}"
           closeButton="${message(code: 'is.button.cancel')}"
-          title="${message(code: 'is.dialog.selector.title')}">
+          title="{{ message('todo.is.ui.story.selector.' + selectorCode + '.title') }}">
     <p class="help-block">
-        ${message(code: 'is.dialog.selector.description')}
+        {{ message('todo.is.ui.story.selector.' + selectorCode + '.description') }}
     </p>
     <div ng-if="backlog.storiesLoaded"
          selectable="selectableOptions">

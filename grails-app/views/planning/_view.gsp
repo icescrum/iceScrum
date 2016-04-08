@@ -120,7 +120,7 @@
                         <a type="button"
                            class="btn btn-primary"
                            href
-                           ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint]})"
+                           ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
                            ng-if="authorizedSprint('plan', sprint)" style="position:relative">
                             <i class="fa fa-plus sticky-note-stack"></i>
                         </a>
