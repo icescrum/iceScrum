@@ -335,7 +335,8 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
         var transformQueryParams = function(resolve) { // Magical hack found here: http://stackoverflow.com/questions/24082468/how-to-intercept-resource-requests
             var originalParamSerializer = this.paramSerializer;
             this.paramSerializer = function(params) {
-                return _.isObject(params) ? FormService.formObjectData(params) : originalParamSerializer(params);
+                var isDeepObject = _.isObject(params) && _.any(_.values(params), _.isObject);
+                return isDeepObject ? FormService.formObjectData(params) : originalParamSerializer(params);
             };
             this.then = null;
             resolve(this);
