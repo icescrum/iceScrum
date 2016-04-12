@@ -3277,9 +3277,11 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
             var newEl = dropdownElement;
             self.dropdownMenu.replaceWith(newEl);
             self.dropdownMenu = newEl;
-            $timeout(function() {
-              computePosition();
-            }, 100);
+            if (computePosition) {
+              $timeout(function() {
+                computePosition();
+              }, 100);
+            }
           });
         });
       }
