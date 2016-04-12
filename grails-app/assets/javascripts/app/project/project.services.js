@@ -82,12 +82,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'Releas
         return FormService.httpGet('search/tag');
     };
     this.getAllSprints = function(releases) {
-        return _.chain(releases)
-            .map(function(release) {
-                return release.sprints;
-            }).filter(function(sprints) {
-                return sprints;
-            }).flatten().value();
+        return _.filter(_.flatMap(releases, 'sprints'), _.identity);
     };
     this.getCurrentOrNextSprint = function(project) {
         var currentRelease = _.find(project.releases, {state: ReleaseStatesByName.IN_PROGRESS});

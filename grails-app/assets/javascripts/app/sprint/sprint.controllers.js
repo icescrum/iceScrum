@@ -261,9 +261,6 @@ controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detail
         });
     };
     // Init
-    var mean = function(list) {
-        return _.round(_.sum(list) / (list ? list.length : 0));
-    };
     $scope.release = detailsRelease;
     $scope.$watch('sprints', function(sprints) {
         if (sprints.length) {
@@ -273,9 +270,9 @@ controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detail
                 return sprint.stories_ids ? sprint.stories_ids.length : 0;
             });
             $scope.sumStory = _.sum(storyCounts);
-            $scope.meanStory = mean(storyCounts);
-            $scope.meanVelocity = mean(_.map(sprints, 'velocity'));
-            $scope.meanCapacity = mean(_.map(sprints, 'capacity'));
+            $scope.meanStory = _.round(_.mean(storyCounts));
+            $scope.meanVelocity = _.round(_.meanBy(sprints, 'velocity'));
+            $scope.meanCapacity = _.round(_.meanBy(sprints, 'capacity'));
         }
     }, true);
 }]);
