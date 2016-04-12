@@ -324,7 +324,7 @@ filters
         return function(items, patternObject) {
             if (angular.isArray(items)) {
                 return _.filter(items, function(item) {
-                    return _.any(_.pairs(patternObject), function(objectProperty) {
+                    return _.some(_.toPairs(patternObject), function(objectProperty) {
                         var key = objectProperty[0];
                         var value = objectProperty[1].toString().toLowerCase();
                         return item[key].toString().toLowerCase().indexOf(value) !== -1;
@@ -341,7 +341,7 @@ filters
             if (!_.isEmpty(items) && !_.isEmpty(term) && !_.isEmpty(fields)) {
                 var searchTerm = _.deburr(_.trim(term.toString().toLowerCase()));
                 return _.filter(items, function(item) {
-                    return _.any(fields, function(field) {
+                    return _.some(fields, function(field) {
                         var value = _.get(item, field);
                         if (!_.isUndefined(value) && !_.isNull(value)) {
                             return _.deburr(value.toString().toLowerCase()).indexOf(searchTerm) != -1;

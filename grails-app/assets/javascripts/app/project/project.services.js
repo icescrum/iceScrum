@@ -84,10 +84,10 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'Releas
     this.getAllSprints = function(releases) {
         return _.chain(releases)
             .map(function(release) {
-            return release.sprints;
-        }).filter(function(sprints) {
-            return sprints;
-        }).flatten().value();
+                return release.sprints;
+            }).filter(function(sprints) {
+                return sprints;
+            }).flatten().value();
     };
     this.getCurrentOrNextSprint = function(project) {
         var currentRelease = _.find(project.releases, {state: ReleaseStatesByName.IN_PROGRESS});

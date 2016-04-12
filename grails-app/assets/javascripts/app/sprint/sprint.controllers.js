@@ -145,7 +145,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
             if (_.isEmpty(sprints)) {
                 $scope.startDateOptions.minDate = $scope.release.startDate;
             } else {
-                $scope.startDateOptions.minDate = $scope.immutableAddDaysToDate(_.max(_.pluck($scope.release.sprints, 'endDate')), 1);
+                $scope.startDateOptions.minDate = $scope.immutableAddDaysToDate(_.max(_.map($scope.release.sprints, 'endDate')), 1);
             }
             $scope.sprint.startDate = $scope.startDateOptions.minDate;
             var sprintDuration = $scope.project.preferences.estimatedSprintsDuration;
@@ -267,7 +267,7 @@ controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detail
     $scope.release = detailsRelease;
     $scope.$watch('sprints', function(sprints) {
         if (sprints.length) {
-            $scope.startDate = _.first(sprints).startDate;
+            $scope.startDate = _.head(sprints).startDate;
             $scope.endDate = _.last(sprints).endDate;
             var storyCounts = _.map(sprints, function(sprint) {
                 return sprint.stories_ids ? sprint.stories_ids.length : 0;

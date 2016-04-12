@@ -238,7 +238,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 query += encodeURIComponent(_prefix + name) + '=null&'; // HACK: an undefined property (e.g. select cleared makes the model undefined) set the null value in Grails data binding
             } else if (value !== null
                     //no class info needed
-                && !_.contains(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
+                && !_.includes(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
                     //no angular object
                 && !_.startsWith(name, '$')
                     //no custom count / html values
@@ -335,7 +335,7 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
         var transformQueryParams = function(resolve) { // Magical hack found here: http://stackoverflow.com/questions/24082468/how-to-intercept-resource-requests
             var originalParamSerializer = this.paramSerializer;
             this.paramSerializer = function(params) {
-                var isDeepObject = _.isObject(params) && _.any(_.values(params), _.isObject);
+                var isDeepObject = _.isObject(params) && _.some(_.values(params), _.isObject);
                 return isDeepObject ? FormService.formObjectData(params) : originalParamSerializer(params);
             };
             this.then = null;

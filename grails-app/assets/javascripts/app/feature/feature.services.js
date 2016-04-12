@@ -42,7 +42,7 @@ services.service("FeatureService", ['$state', 'Feature', 'Session', 'PushService
     };
     crudMethods[IceScrumEventType.DELETE] = function(feature) {
         if ($state.includes("feature.details", {id: feature.id}) ||
-            ($state.includes("feature.multiple") && _.contains($state.params.listId.split(','), feature.id.toString()))) {
+            ($state.includes("feature.multiple") && _.includes($state.params.listId.split(','), feature.id.toString()))) {
             $state.go('feature');
         }
         _.remove(self.list, {id: feature.id});
@@ -78,7 +78,7 @@ services.service("FeatureService", ['$state', 'Feature', 'Session', 'PushService
     this.getMultiple = function(ids) {
         return self.list.$promise.then(function() {
             return _.filter(self.list, function(feature) {
-                return _.contains(ids, feature.id.toString());
+                return _.includes(ids, feature.id.toString());
             });
         });
     };

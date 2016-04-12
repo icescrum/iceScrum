@@ -31,7 +31,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
     $scope.displayDetailsView = function() {
         var data = '';
         if ($state.current.views) {
-            var isDetails = _.any(_.keys($state.current.views), function(viewName) {
+            var isDetails = _.some(_.keys($state.current.views), function(viewName) {
                 return _.startsWith(viewName, 'details');
             });
             if (isDetails) {
@@ -427,7 +427,7 @@ controllers.controller('registerCtrl', ['$scope', '$state', 'User', 'UserService
             $scope.user.preferences = {};
         }
         if (!$scope.user.preferences.language) {
-            $scope.user.preferences.language = _.first($scope.languageKeys);
+            $scope.user.preferences.language = _.head($scope.languageKeys);
         }
     });
 }]);

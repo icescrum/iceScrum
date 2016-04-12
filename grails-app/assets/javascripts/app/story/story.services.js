@@ -75,7 +75,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     crudMethods[IceScrumEventType.DELETE] = function(story) {
         if ($state.includes("backlog.details", {id: story.id}) ||
-            ($state.includes("backlog.multiple") && _.contains($state.params.listId.split(','), story.id.toString()))) {
+            ($state.includes("backlog.multiple") && _.includes($state.params.listId.split(','), story.id.toString()))) {
             $state.go('backlog');
         }
         _.remove(self.list, {id: story.id});
@@ -284,7 +284,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
                     (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             case 'returnToSandbox':
-                return Session.po() && _.contains([StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED], story.state);
+                return Session.po() && _.includes([StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED], story.state);
             case 'unPlan':
                 return Session.poOrSm() && story.state >= StoryStatesByName.PLANNED && story.state < StoryStatesByName.DONE;
             case 'shiftToNext':

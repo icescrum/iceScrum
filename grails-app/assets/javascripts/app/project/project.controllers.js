@@ -53,7 +53,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                         $scope.totalProjects = projectsAndTotal.total;
                         $scope.projects = projectsAndTotal.projects;
                         if (!_.isEmpty($scope.projects) && _.isEmpty($scope.project)) {
-                            $scope.selectProject(_.first($scope.projects));
+                            $scope.selectProject(_.head($scope.projects));
                         }
                     });
                 };
@@ -305,16 +305,16 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
         };
         p.team.scrumMasters = mapId(project.team.scrumMasters);
         p.team.members = _.filter(mapId(project.team.members), function(member) {
-            return !_.any(p.team.scrumMasters, { id: member.id });
+            return !_.some(p.team.scrumMasters, { id: member.id });
         });
         p.stakeHolders = mapId(project.stakeHolders);
         p.productOwners = mapId(project.productOwners);
         var invited = function(members) {
-            return _.chain(members).where({id: null}).map(function(member) { return {email:member.email}; }).value();
+            return _.chain(members).filter({id: null}).map(function(member) { return {email:member.email}; }).value();
         };
         p.team.invitedScrumMasters = invited(project.team.scrumMasters);
         p.team.invitedMembers = _.filter(invited(project.team.members), function(member) {
-            return !_.any(p.team.invitedScrumMasters, { email: member.email });
+            return !_.some(p.team.invitedScrumMasters, { email: member.email });
         });
         p.invitedStakeHolders = invited(project.stakeHolders);
         p.invitedProductOwners = invited(project.productOwners);
@@ -494,7 +494,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
 controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
     $scope.views = [];
     $scope.update = function(project) {
-        $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).where({hidden: true}).map('id').value().join(',');
+        $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).filter({hidden: true}).map('id').value().join(',');
         ProjectService.update(project)
             .then(function(updatedProject) {
                 Session.updateProject(updatedProject);
@@ -507,7 +507,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
         $scope.project = angular.copy($scope.currentProject);
         var restrictedViews = $scope.project.preferences.stakeHolderRestrictedViews ? $scope.project.preferences.stakeHolderRestrictedViews.split(',') : [];
         $scope.views = _.chain($scope.applicationMenus).map(function(menu) {
-            return { title: menu.title, id: menu.id, hidden: _.contains(restrictedViews, menu.id) };
+            return { title: menu.title, id: menu.id, hidden: _.includes(restrictedViews, menu.id) };
         }).sortBy('title').value();
     };
     $scope['delete'] = function(project) {

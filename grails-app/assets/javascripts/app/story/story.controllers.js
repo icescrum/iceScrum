@@ -129,7 +129,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
         }
     };
     var makeRows = function(storiesByField) {
-        var nbRows = _.max(storiesByField, function(stories) {
+        var nbRows = _.maxBy(storiesByField, function(stories) {
             return stories.length;
         }).length;
         var nbColumns = storiesByField.length;
@@ -428,13 +428,13 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.sumPoints = function(stories) {
-        return _.sum(stories, 'effort');
+        return _.sumBy(stories, 'effort');
     };
     $scope.sumTasks = function(stories) {
-        return _.sum(stories, 'tasks_count');
+        return _.sumBy(stories, 'tasks_count');
     };
     $scope.sumAcceptanceTests = function(stories) {
-        return _.sum(stories, 'acceptanceTests_count');
+        return _.sumBy(stories, 'acceptanceTests_count');
     };
     $scope.deleteMultiple = function() {
         StoryService.deleteMultiple(listId).then(function() {
@@ -484,7 +484,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     };
     function refreshStories() {
         StoryService.getMultiple(listId).then(function(stories) {
-            $scope.topStory = _.first(stories);
+            $scope.topStory = _.head(stories);
             $scope.storyPreview = {
                 value: _.every(stories, {value: $scope.topStory.value}) ? $scope.topStory.value : null,
                 effort: _.every(stories, {value: $scope.topStory.effort}) ? $scope.topStory.effort : null,

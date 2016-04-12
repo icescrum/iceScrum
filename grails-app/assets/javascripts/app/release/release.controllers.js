@@ -91,7 +91,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
             if (_.isEmpty(releases)) {
                 $scope.startDateOptions.minDate = $scope.project.startDate;
             } else {
-                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate(_.max(_.pluck($scope.project.releases, 'endDate')), 1);
+                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate(_.max(_.map($scope.project.releases, 'endDate')), 1);
             }
             $scope.release.startDate = $scope.startDateOptions.minDate;
             $scope.release.endDate = $scope.immutableAddMonthsToDate($scope.release.startDate, 3);

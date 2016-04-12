@@ -51,7 +51,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         };
         crudMethods[IceScrumEventType.DELETE] = function(task) {
             if ($state.includes("taskBoard.task.details", {taskId: task.id}) ||
-                ($state.includes("taskBoard.task.multiple") && _.contains($state.params.taskListId.split(','), task.id.toString()))) {
+                ($state.includes("taskBoard.task.multiple") && _.includes($state.params.taskListId.split(','), task.id.toString()))) {
                 $state.go('taskBoard');
             }
             _.remove(taskContext.tasks, { id: task.id });

@@ -31,7 +31,7 @@ controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', 
         if ($state.params[idParamName]) {
             return $state.params[idParamName] == selectable.id;
         } else if ($state.params.listId) {
-            return _.contains($state.params.listId.split(','), selectable.id.toString());
+            return _.includes($state.params.listId.split(','), selectable.id.toString());
         } else {
             return false;
         }
@@ -216,7 +216,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                     return parseInt(id);
                 });
                 $scope.sprints = _.filter(release.sprints, function(sprint) {
-                    return _.contains(ids, sprint.id);
+                    return _.includes(ids, sprint.id);
                 });
             } else {
                 var sprint = _.find(release.sprints, function(sprint) {
@@ -348,7 +348,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         $scope.changeSprintFilter(_.find($scope.sprintFilters, {id: 'allTasks'}));
     };
     $scope.storyFilter = function(story) {
-        return $scope.currentSprintFilter.id == 'allTasks' || _.any($scope.tasksByStoryByState[story.id], function(tasks) {
+        return $scope.currentSprintFilter.id == 'allTasks' || _.some($scope.tasksByStoryByState[story.id], function(tasks) {
                 return tasks.length > 0;
             });
     };

@@ -131,10 +131,10 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.sumValues = function(features) {
-        return _.sum(features, 'value');
+        return _.sumBy(features, 'value');
     };
     $scope.sumStories = function(features) {
-        return _.sum(features, function(feature) {
+        return _.sumBy(features, function(feature) {
             return feature.stories_ids.length;
         });
     };
@@ -161,7 +161,7 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
     $scope.features = [];
     FeatureService.getMultiple(listId).then(function(features) {
         $scope.features = features;
-        $scope.topFeature = _.first(features);
+        $scope.topFeature = _.head(features);
         $scope.featurePreview = {
             type: _.every(features, {type: $scope.topFeature.type}) ? $scope.topFeature.type : null
         };

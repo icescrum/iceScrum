@@ -429,7 +429,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 rootSvg.attr("width", element.width());
                 var elementWidth = element.width(); // WARNING: element.width must be recomputed after rootSvg.attr("width", ...) because it changes if the right panel has lateral padding (e.g. with .new form which has .panel-body padding)
                 var width = elementWidth - margin.left - margin.right;
-                x.domain([_.first(_releases).startDate, _.last(_releases).endDate]);
+                x.domain([_.head(_releases).startDate, _.last(_releases).endDate]);
                 x.range([0, width]);
                 xAxis.scale(x);
                 xAxisSelector.call(xAxis);
@@ -496,14 +496,14 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 var selectedItems = findSprintsOrAReleaseInRange(brush.extent().map(d3.time.day.utc));
                 if (selectedItems.length > 0) {
                     scope.onSelect(selectedItems);
-                    extent = [_.first(selectedItems).startDate, _.last(selectedItems).endDate];
+                    extent = [_.head(selectedItems).startDate, _.last(selectedItems).endDate];
                     refreshBrush();
                 }
             }
 
             scope.$watch('timeline', render, true);
             scope.$watch('selected', function(selected) {
-                extent = selected && selected.length > 0 ? [_.first(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()];
+                extent = selected && selected.length > 0 ? [_.head(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()];
                 refreshBrush();
             }, true);
             d3.select(window).on('resize', render); // Register render on resize
@@ -585,7 +585,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                     container = $(container);
                     var selectedElements = container.find('.is-selected');
                     if (selectedElements.length > 0) {
-                        var anySelectedVisible = _.any(selectedElements, function(selectedElement) {
+                        var anySelectedVisible = _.some(selectedElements, function(selectedElement) {
                             selectedElement = angular.element(selectedElement);
                             var containerTop = 0; // Use relative positions
                             var containerBottom = container.height();
