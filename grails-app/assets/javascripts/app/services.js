@@ -298,7 +298,38 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     this.getBundle = function(bundleName) {
         return this.bundles[bundleName];
     }
-}]);
+}])
+.service('CacheService', function() {
+    var self = this;
+    var caches = {};
+    this.getCache = function(cacheName) {
+        if (!_.isString(cacheName)) {
+           throw Error("This cache name is not a string: " + cacheName);
+        }
+        if (!_.isArray(caches[cacheName])) {
+            caches[cacheName] = [];
+        }
+        return caches[cacheName];
+    };
+    this.emptyCache = function(cacheName) {
+        var cache = self.getCache(cacheName);
+        cache.splice(0, cache.length);
+    };
+    this.addOrUpdate = function(cacheName, item) {
+        var cachedItem = self.get(cacheName, item.id);
+        if (cachedItem) {
+            _.merge(cachedItem, item);
+        } else {
+            self.getCache(cacheName).push(item);
+        }
+    };
+    this.get = function(cacheName, id) {
+        return _.find(self.getCache(cacheName), {id: parseInt(id)});
+    };
+    this.remove = function(cacheName, id) {
+        _.remove(self.getCache(cacheName), {id: parseInt(id)});
+    };
+});
 
 var restResource = angular.module('restResource', ['ngResource']);
 restResource.factory('Resource', ['$resource', 'FormService', function($resource, FormService) {

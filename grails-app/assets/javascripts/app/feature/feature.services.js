@@ -25,42 +25,37 @@ services.factory('Feature', ['Resource', function($resource) {
     return $resource('feature/:id/:action');
 }]);
 
-services.service("FeatureService", ['$state', 'Feature', 'Session', 'PushService', 'IceScrumEventType', function($state, Feature, Session, PushService, IceScrumEventType) {
+services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'CacheService', 'PushService', 'IceScrumEventType', function($state, $q, Feature, Session, CacheService, PushService, IceScrumEventType) {
     var self = this;
     this.list = Feature.query();
+    this.list.$promise.then(function(features) {
+        self.mergeFeatures(features);
+    });
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(feature) {
-        var existingFeature = _.find(self.list, {id: feature.id});
-        if (existingFeature) {
-            angular.extend(existingFeature, feature);
-        } else {
-            self.list.push(feature);
-        }
+        CacheService.addOrUpdate('feature', feature);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(feature) {
-        angular.extend(_.find(self.list, {id: feature.id}), feature);
+        CacheService.addOrUpdate('feature', feature);
     };
     crudMethods[IceScrumEventType.DELETE] = function(feature) {
         if ($state.includes("feature.details", {id: feature.id}) ||
             ($state.includes("feature.multiple") && _.includes($state.params.listId.split(','), feature.id.toString()))) {
             $state.go('feature');
         }
-        _.remove(self.list, {id: feature.id});
+        CacheService.remove('feature', feature.id);
     };
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('feature', eventType, crudMethod);
     });
-    this.get = function(id) {
-        return self.list.$promise.then(function(list) {
-            var feature = _.find(list, function(rw) {
-                return rw.id == id;
-            });
-            if (feature) {
-                return feature;
-            } else {
-                throw Error('todo.is.ui.feature.does.not.exist');
-            }
+    this.mergeFeatures = function(features) {
+        _.each(features, function(feature) {
+            crudMethods[IceScrumEventType.CREATE](feature);
         });
+    };
+    this.get = function(id) {
+        var cachedFeature = CacheService.get('feature', id);
+        return cachedFeature ? $q.when(cachedFeature) : Feature.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.save = function(feature) {
         feature.class = 'feature';
@@ -76,11 +71,20 @@ services.service("FeatureService", ['$state', 'Feature', 'Session', 'PushService
         return feature.$delete(crudMethods[IceScrumEventType.DELETE]);
     };
     this.getMultiple = function(ids) {
-        return self.list.$promise.then(function() {
-            return _.filter(self.list, function(feature) {
-                return _.includes(ids, feature.id.toString());
-            });
+        ids = _.map(ids, function(id) {
+            return parseInt(id);
         });
+        var cachedFeatures = _.filter(_.map(ids, function(id) {
+            return CacheService.get('feature', id);
+        }), _.identity);
+        var notFoundFeatureIds = _.difference(ids, _.map(cachedFeatures, 'id'));
+        if (notFoundFeatureIds.length > 1) {
+            return Feature.query({id: notFoundFeatureIds}, self.mergeFeatures).$promise;
+        } else if (notFoundFeatureIds.length == 1) {
+            return self.get(ids[0]).then(function(feature) { return [feature]; });
+        } else {
+            return $q.when(cachedFeatures);
+        }
     };
     this.updateMultiple = function(ids, updatedFields) {
         return Feature.updateArray({id: ids}, {feature: updatedFields}, function(features) {

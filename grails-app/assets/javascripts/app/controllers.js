@@ -289,7 +289,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
 }]);
 
-controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'ProjectService', 'StoryService', function($scope, $q, $location, $injector, $state, $timeout, Session, ProjectService, StoryService) {
+controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'CacheService', 'ProjectService', function($scope, $q, $location, $injector, $state, $timeout, Session, CacheService, ProjectService) {
     // Functions
     $scope.searchContext = function(term) {
         return !Session.authenticated() ? [] : $scope.loadContexts().then(function() {
@@ -311,7 +311,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
             $location.search('context', null);
         }
         $scope.app.context = context;
-        StoryService.list.splice(0, StoryService.list.length);
+        CacheService.emptyCache('story');
         $state.reload();
     };
     $scope.setFeatureContext = function(feature) {

@@ -25,10 +25,8 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('story/:type/:typeId/:id/:action');
 }]);
 
-services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
-    this.list = [];
+services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'CacheService', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, CacheService, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     var self = this;
-    var crudMethods = {};
     var refreshReleasesAndSprints = function(oldStory, newStory) {
         var oldSprint = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
         var newSprint = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
@@ -49,7 +47,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             parameters = {};
         }
         if ($rootScope.app.context) {
-            _.merge(parameters,  {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
+            _.merge(parameters, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
         }
         var args = [parameters];
         if (success) {
@@ -60,25 +58,22 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }
         return Story.query.apply(this, args);
     };
+    var crudMethods = {};
+    this.crudMethods = crudMethods;
     crudMethods[IceScrumEventType.CREATE] = function(story) {
-        var existingStory = _.find(self.list, {id: story.id});
-        if (existingStory) {
-            angular.extend(existingStory, story);
-        } else {
-            self.list.push(story);
-        }
+        CacheService.addOrUpdate('story', story);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(story) {
-        var existingStory = _.find(self.list, {id: story.id});
-        refreshReleasesAndSprints(existingStory, story); // Must be done before local update to have proper before/after values and know if refresh must occur
-        angular.extend(existingStory, story);
+        var cachedStory = CacheService.get('story', story.id);
+        refreshReleasesAndSprints(cachedStory, story); // Must be done before local update to have proper before/after values and know if refresh must occur
+        CacheService.addOrUpdate('story', story);
     };
     crudMethods[IceScrumEventType.DELETE] = function(story) {
         if ($state.includes("backlog.details", {id: story.id}) ||
             ($state.includes("backlog.multiple") && _.includes($state.params.listId.split(','), story.id.toString()))) {
             $state.go('backlog');
         }
-        _.remove(self.list, {id: story.id});
+        CacheService.remove('story', story.id);
     };
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('story', eventType, crudMethod);
@@ -95,9 +90,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.listByType = function(obj) {
         obj.stories = [];
         _.each(obj.stories_ids, function(story) {
-            var foundStory = _.find(self.list, {id: story.id});
-            if (foundStory) {
-                obj.stories.push(foundStory);
+            var cachedStory = CacheService.get('story', story.id);
+            if (cachedStory) {
+                obj.stories.push(cachedStory);
             }
         });
         var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
@@ -108,7 +103,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return obj.stories.length === (obj.stories_ids ? obj.stories_ids.length : null) ? $q.when(obj.stories) : promise;
     };
     this.filter = function(filter) {
-        var existingStories = _.filter(self.list, filter);
+        var existingStories = _.filter(CacheService.getCache('story'), filter);
         var promise = Story.query({filter: {story: filter}}, function(stories) {
             self.mergeStories(stories);
             _.merge(existingStories, stories);
@@ -116,8 +111,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return existingStories.length > 0 ? $q.when(existingStories) : promise;
     };
     this.get = function(id) {
-        var story = _.find(self.list, {id: id});
-        return story ? $q.when(story) : Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
+        var cachedStory = CacheService.get('story', id);
+        return cachedStory ? $q.when(cachedStory) : Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.refresh = function(id) {
         return Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
@@ -184,22 +179,19 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return Story.update({id: story.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.getMultiple = function(ids) {
-        if (ids.length == 1) {
-            return self.get(ids[0]).then(function(story) {
-                return [story];
-            });
+        ids = _.map(ids, function(id) {
+            return parseInt(id);
+        });
+        var cachedStories = _.filter(_.map(ids, function(id) {
+            return CacheService.get('story', id);
+        }), _.identity);
+        var notFoundStoryIds = _.difference(ids, _.map(cachedStories, 'id'));
+        if (notFoundStoryIds.length > 1) {
+            return Story.query({id: notFoundStoryIds}, self.mergeStories).$promise;
+        } else if (notFoundStoryIds.length == 1) {
+            return self.get(ids[0]).then(function(story) { return [story]; });
         } else {
-            var foundStories = [];
-            var notFoundStoryIds = [];
-            _.each(ids, function(id) {
-                var foundStory = _.find(self.list, {id: parseInt(id)});
-                if (foundStory) {
-                    foundStories.push(foundStory);
-                } else {
-                    notFoundStoryIds.push(id);
-                }
-            });
-            return notFoundStoryIds.length > 0 ? Story.query({id: notFoundStoryIds}, self.mergeStories).$promise : $q.when(foundStories);
+            return $q.when(cachedStories);
         }
     };
     this.updateMultiple = function(ids, updatedFields) {

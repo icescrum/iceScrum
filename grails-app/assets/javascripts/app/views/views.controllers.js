@@ -262,7 +262,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     };
 }]);
 
-controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {
+controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'CacheService', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function($scope, $state, $filter, CacheService, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {
     $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
@@ -421,7 +421,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.sprint = sprint;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
-    $scope.allStories = StoryService.list;
+    $scope.allStories = CacheService.getCache('story');
     $scope.ghostStories = [];
     $scope.$watch('sprint.tasks', function(newValue, oldValue) {
         if (oldValue !== newValue) { // Prevent trigger watch on watch creation

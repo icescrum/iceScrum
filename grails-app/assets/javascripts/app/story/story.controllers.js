@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, StoryService, $state, Session, StoryStatesByName) {
+controllers.controller('storyCtrl', ['$scope', '$uibModal', 'IceScrumEventType', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, IceScrumEventType, StoryService, $state, Session, StoryStatesByName) {
     // Functions
     $scope.acceptToBacklog = function(story) {
         StoryService.acceptToBacklog(story).then(function() {
@@ -67,13 +67,13 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
     };
     $scope['delete'] = function(story) {
         //fake delete
-        _.remove(StoryService.list, {id: story.id});
+        StoryService.crudMethods[IceScrumEventType.DELETE](story);
         var notif = $scope.notifySuccess('todo.is.ui.deleted', {
             actions: [{
                 label: $scope.message('todo.is.ui.undo'),
                 fn: function() {
                     notif.data.close = angular.noop;
-                    StoryService.list.push(story);
+                    StoryService.crudMethods[IceScrumEventType.CREATE](story);
                     $state.go('backlog.details', {id: story.id});
                     $scope.notifySuccess('todo.is.ui.deleted.cancelled');
                 }
@@ -402,9 +402,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         FormService.addStateChangeDirtyFormListener($scope, 'story', true);
         $scope.resetStoryForm();
         // For header
-        var list = StoryService.list;
-        $scope.previousStory = FormService.previous(list, $scope.story);
-        $scope.nextStory = FormService.next(list, $scope.story);
+        //$scope.previousStory = FormService.previous(list, $scope.story);
+        //$scope.nextStory = FormService.next(list, $scope.story);
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
         $scope.storyStates = StoryStatesByName;
     }]);

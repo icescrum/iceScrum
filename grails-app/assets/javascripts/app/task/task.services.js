@@ -25,20 +25,14 @@ services.factory('Task', [ 'Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action');
 }]);
 
-services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', 'StoryService', function($q, $state, $rootScope, Task, Session, IceScrumEventType, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName, StoryService) {
+services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', 'StoryService', function($q, $state, $rootScope, Task, Session, IceScrumEventType, CacheService, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName, StoryService) {
     var self = this;
-    self.tasksCache = [];
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(task) {
-        var existingTask = _.find(self.tasksCache, {id: task.id});
-        if (existingTask) {
-            angular.extend(existingTask, task);
-        } else {
-            self.tasksCache.push(task);
-        }
+        CacheService.addOrUpdate('task', task);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(task) {
-        angular.extend(_.find(self.tasksCache, { id: task.id }), task);
+        CacheService.addOrUpdate('task', task);
         if (task.parentStory) {
             StoryService.refresh(task.parentStory.id);
         }
@@ -48,7 +42,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             ($state.includes("taskBoard.task.multiple") && _.includes($state.params.taskListId.split(','), task.id.toString()))) {
             $state.go('taskBoard');
         }
-        _.remove(self.tasksCache, { id: task.id });
+        CacheService.remove('task', task.id);
     };
     _.each(crudMethods, function(crudMethod, eventType) {
         PushService.registerListener('task', eventType, crudMethod);
@@ -90,9 +84,9 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             taskContext.tasks = [];
         }
         _.each(taskContext.tasks_ids, function(task) {
-            var foundTask = _.find(self.tasksCache, {id: task.id});
-            if (foundTask) {
-                taskContext.tasks.push(foundTask);
+            var cachedTask = CacheService.get('task', task.id);
+            if (cachedTask) {
+                taskContext.tasks.push(cachedTask);
             }
         });
         var params = {typeId: taskContext.id, type: taskContext.class.toLowerCase()};
