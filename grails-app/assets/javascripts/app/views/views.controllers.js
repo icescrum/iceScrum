@@ -381,13 +381,13 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
                 task.type = destScope.taskType;
                 task.parentStory = null;
             }
-            TaskService.update(task, sprint);
+            TaskService.update(task);
         },
         orderChanged: function(event) {
             fixTaskRank(event.dest.sortableScope.modelValue);
             var task = event.source.itemScope.modelValue;
             task.rank = event.dest.index + 1;
-            TaskService.update(task, sprint);
+            TaskService.update(task);
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;

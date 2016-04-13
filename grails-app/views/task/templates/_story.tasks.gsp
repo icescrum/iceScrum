@@ -30,7 +30,7 @@
                         <button class="btn btn-default elemid toggle-hidden"
                                 disabled="disabled">{{ task.uid }}</button>
                         <button class="btn btn-danger toggle-visible"
-                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task, selected] })"
+                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task] })"
                                 uib-tooltip="${message(code:'default.button.delete.label')}"><i class="fa fa-times"></i>
                         </button>
                     </div>

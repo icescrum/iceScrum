@@ -30,13 +30,13 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
     };
     $scope.save = function(task, story) {
         task.parentStory = {id: story.id};
-        TaskService.save(task, story).then(function() {
+        TaskService.save(task).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.saved');
         });
     };
-    $scope['delete'] = function(task, story) {
-        TaskService.delete(task, story).then(function() {
+    $scope['delete'] = function(task) {
+        TaskService.delete(task).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
@@ -51,22 +51,22 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
 controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
     // Functions
     $scope.take = function(task) {
-        TaskService.take(task, $scope.taskContext);
+        TaskService.take(task);
     };
     $scope.release = function(task) {
-        TaskService.release(task, $scope.taskContext);
+        TaskService.release(task);
     };
     $scope.copy = function(task) {
-        TaskService.copy(task, $scope.taskContext);
+        TaskService.copy(task);
     };
     $scope.block = function(task) {
-        TaskService.block(task, $scope.taskContext);
+        TaskService.block(task);
     };
     $scope.unBlock = function(task) {
-        TaskService.unBlock(task, $scope.taskContext);
+        TaskService.unBlock(task);
     };
     $scope['delete'] = function(task) {
-        TaskService.delete(task, $scope.taskContext).then(function() {
+        TaskService.delete(task).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
@@ -76,7 +76,6 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
 }]);
 
 controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'TaskService', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, TaskService, hotkeys, sprint) {
-    $scope.taskContext = sprint;
     $controller('taskCtrl', {$scope: $scope});
     // Functions
     $scope.resetTaskForm = function() {
@@ -89,7 +88,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
         $scope.resetFormValidation($scope.formHolder.taskForm);
     };
     $scope.save = function(task, andContinue) {
-        TaskService.save(task, sprint).then(function(task) {
+        TaskService.save(task).then(function(task) {
             if (andContinue) {
                 $scope.resetTaskForm();
             } else {
@@ -110,7 +109,6 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
 }]);
 
 controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, TaskStatesByName, TaskConstants, TaskService, FormService, ProjectService, taskContext, detailsTask) {
-    $scope.taskContext = taskContext;
     $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions
@@ -118,7 +116,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
         return !_.isEqual($scope.editableTask, $scope.editableTaskReference);
     };
     $scope.update = function(task) {
-        TaskService.update(task, taskContext).then(function() {
+        TaskService.update(task).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.updated');
         });

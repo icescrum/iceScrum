@@ -80,7 +80,7 @@
             </div>
         </h3>
     </div>
-    <div class="panel-body" id="tasks-board" ng-controller="taskCtrl" ng-init="taskContext=sprint">
+    <div class="panel-body" id="tasks-board" ng-controller="taskCtrl">
         <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
             <thead>
             <tr class="table-header sticky-header sticky-stack">
