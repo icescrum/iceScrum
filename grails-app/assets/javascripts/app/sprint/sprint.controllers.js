@@ -179,7 +179,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $controller, SprintService, ReleaseService, FormService, detailsSprint) {
+controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $controller, SprintStatesByName, SprintService, ReleaseService, FormService, detailsSprint) {
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint'});
     // Functions
@@ -231,11 +231,12 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSer
             $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $scope.sprint = detailsSprint;
-    $scope.editableSprint = {};
-    $scope.editableSprintReference = {};
     $scope.formHolder = {};
     $scope.resetSprintForm();
+    $scope.editableSprint = {};
+    $scope.sprint = detailsSprint;
+    $scope.editableSprintReference = {};
+    $scope.sprintStates = SprintStatesByName;
     ReleaseService.get($scope.sprint.parentRelease.id, $scope.project).then(function(release) {
         $scope.release = release;
         $scope.endDateOptions.maxDate = $scope.release.endDate;

@@ -116,7 +116,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
     });
 }]);
 
-controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $controller, ReleaseService, FormService, detailsRelease) {
+controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $controller, ReleaseStatesByName, ReleaseService, FormService, detailsRelease) {
     $controller('releaseCtrl', { $scope: $scope }); // inherit from releaseCtrl
     $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsRelease, clazz: 'release' });
     // Functions
@@ -168,11 +168,12 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
             $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $scope.release = detailsRelease;
-    $scope.editableRelease = {};
-    $scope.editableReleaseReference = {};
     $scope.formHolder = {};
     $scope.resetReleaseForm();
+    $scope.editableRelease = {};
+    $scope.release = detailsRelease;
+    $scope.editableReleaseReference = {};
+    $scope.releaseStates = ReleaseStatesByName;
     $scope.previousRelease = FormService.previous($scope.project.releases, $scope.release);
     $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);
 }]);

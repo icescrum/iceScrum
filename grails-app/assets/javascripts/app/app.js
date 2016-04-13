@@ -970,15 +970,6 @@ angular.module('isApp', [
     ALL: 'all',
     SPRINT: 'sprint'
 })
-.constant('StoryCodesByState', {
-    1: "suggested",
-    2: "accepted",
-    3: "estimated",
-    4: "planned",
-    5: "inprogress",
-    7: "done",
-    '-1': "icebox"
-})
 .constant('StoryStatesByName', {
     "SUGGESTED": 1,
     "ACCEPTED": 2,
@@ -1002,6 +993,11 @@ angular.module('isApp', [
     "WAIT": 1,
     "IN_PROGRESS": 2,
     "DONE": 3
+})
+.constant('FeatureStatesByName', {
+    "WAIT": 0,
+    "IN_PROGRESS": 1,
+    "DONE": 2
 })
 .constant('ReleaseStatesByName', {
     "WAIT": 1,

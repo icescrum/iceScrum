@@ -60,6 +60,7 @@
                 </a>
             </div>
         </h3>
+        <visual-states ng-model="release" model-states="releaseStates"/>
     </div>
     <div ui-view="details-tab">
         <form ng-submit="update(editableRelease)"

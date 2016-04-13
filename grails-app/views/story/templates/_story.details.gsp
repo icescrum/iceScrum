@@ -80,16 +80,7 @@
                 </a>
             </div>
         </h3>
-        <div class="progress-container">
-            <div class="progress">
-                <div ng-repeat="progressState in progressStates"
-                     class="progress-bar progress-bar-{{ progressState.code }}"
-                     tooltip-placement="left"
-                     uib-tooltip="{{ (progressState.state | i18n: 'StoryStates') + ' ' + (progressState.date | dateTime) }}"
-                     style="width:{{ progressState.width }}%">
-                </div>
-            </div>
-        </div>
+        <visual-states ng-model="story" model-states="storyStates"/>
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">

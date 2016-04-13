@@ -38,7 +38,7 @@ controllers.controller('featureCtrl', ['$scope', 'FeatureService', function($sco
     };
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'FormService', 'ProjectService', 'detailsFeature', function($scope, $state, $controller, FeatureService, FormService, ProjectService, detailsFeature) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'FeatureService', 'FormService', 'ProjectService', 'detailsFeature', function($scope, $state, $controller, FeatureStatesByName, FeatureService, FormService, ProjectService, detailsFeature) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature'});
     // Functions
@@ -97,6 +97,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.resetFeatureForm();
     $scope.previousFeature = FormService.previous(FeatureService.list, $scope.feature);
     $scope.nextFeature = FormService.next(FeatureService.list, $scope.feature);
+    $scope.featureStates = FeatureStatesByName;
 }]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {

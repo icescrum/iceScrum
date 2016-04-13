@@ -447,46 +447,36 @@ tr:hover .on-hover span {
       }
     }
   }
-  .progress-container {
+  .states-container {
     &:after {
       clear: both;
       content: "";
       display: block;
     }
-    margin-top: 10px;
     margin-bottom: 10px;
   }
-  .progress {
-    .make-sm-column(12);
-    margin-bottom: 5px;
-    padding: 2px;
-    border: 1px solid #DCDCDC;
-    .progress-bar {
-      opacity: 0.6;
-      line-height: 14px;
-    }
-    .progress-bar-suggested {
-      background-color: @state-suggested;
-    }
-
-    .progress-bar-accepted {
-      background-color: @state-accepted;
-    }
-
-    .progress-bar-estimated {
-      background-color: @state-estimated;
-    }
-
-    .progress-bar-planned {
-      background-color: @state-planned;
-    }
-
-    .progress-bar-inProgress {
-      background-color: @state-inProgress;
-    }
-
-    .progress-bar-done {
-      background-color: @state-done;
+  .states {
+    .progress;
+    height:18px;
+    border: none;
+    margin-bottom: 0;
+    .state {
+      opacity: 0.1;
+      .transition(none);
+      .state-name {
+        display: none;
+        font-size: 10px;
+        font-weight: bold;
+      }
+      &.state-completed {
+        opacity:0.5;
+        .state-name {
+          display: inline;
+        }
+        &.state-current, &:hover {
+          opacity:1.0;
+        }
+      }
     }
   }
 }
@@ -1031,4 +1021,28 @@ button.pin {
 
     }
   }
+}
+
+.color-state-suggested {
+  background-color: @state-suggested;
+}
+
+.color-state-accepted {
+  background-color: @state-accepted;
+}
+
+.color-state-estimated, .color-state-todo {
+  background-color: @state-estimated;
+}
+
+.color-state-planned {
+  background-color: @state-planned;
+}
+
+.color-state-inProgress {
+  background-color: @state-inProgress;
+}
+
+.color-state-done {
+  background-color: @state-done;
 }

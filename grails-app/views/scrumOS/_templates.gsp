@@ -174,3 +174,18 @@
     </div>
 </div>
 </script>
+
+<script type="text/ng-template" id="states.html">
+<div class="states-container">
+    <div class="states">
+        <div ng-repeat="state in states" class="progress-bar state {{ state.class }}"
+             ng-class="{ 'state-completed' : state.completed, 'state-current': state.current}"
+             tooltip-placement="left"
+             uib-tooltip="{{ state.tooltip  }}"
+             style="width:{{ state.width }}%">
+            <span class="state-name">{{ state.name }}</span>
+        </div>
+    </div>
+</div>
+
+</script>

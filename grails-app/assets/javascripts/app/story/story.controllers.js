@@ -271,8 +271,8 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'StoryService', '$st
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', 'TaskConstants', 'StoryCodesByState', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, TaskConstants, StoryCodesByState, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
@@ -405,23 +405,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         var list = StoryService.list;
         $scope.previousStory = FormService.previous(list, $scope.story);
         $scope.nextStory = FormService.next(list, $scope.story);
-        $scope.progressStates = [];
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
-
-        var width = 100 / _.filter(_.keys(StoryCodesByState), function(key) {
-                return key > 0
-            }).length;
-        _.each(StoryCodesByState, function(code, state) {
-            var date = $scope.story[code.toLowerCase() + 'Date'];
-            if (date != null) {
-                $scope.progressStates.push({
-                    state: state,
-                    date: date,
-                    code: code,
-                    width: width
-                });
-            }
-        });
+        $scope.storyStates = StoryStatesByName;
     }]);
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', 'FeatureService', function($scope, $controller, StoryService, listId, FeatureService) {
