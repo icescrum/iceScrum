@@ -25,7 +25,7 @@
 services.service("ActivityService", ['FormService', function(FormService) {
     this.activities = function(fluxiable, all) {
         var params = all ? {params: {all: true}} : {};
-        var url = 'activity/' + FormService.decapitalize(fluxiable.class) + '/' + fluxiable.id;
+        var url = 'activity/' + _.lowerFirst(fluxiable.class) + '/' + fluxiable.id;
         return FormService.httpGet(url, params).then(function(activities) {
             fluxiable.activities = activities;
             return activities;
