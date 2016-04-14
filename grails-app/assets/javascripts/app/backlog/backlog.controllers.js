@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$timeout', 'CacheService', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $controller, $timeout, CacheService, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
+controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$timeout', 'Session', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $controller, $timeout, Session, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
     $controller('selectableCtrl', {$scope: $scope, selectableType: 'story'});
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
@@ -33,7 +33,7 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
     };
     $scope.refreshSingleBacklog = function(backlog) {
         var filter = JSON.parse(backlog.filter);
-        var filteredStories = $filter('filter')($scope.stories, filter.story, function(expected, actual) {
+        var filteredStories = $filter('filter')(Session.getProject().stories, filter.story, function(expected, actual) {
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
         var sortOrder = [backlog.orderBy.current.id, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
@@ -163,7 +163,8 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
     $scope.availableBacklogs = backlogs;
     $scope.toggleBacklog(backlogs[0]);
     //Useful to keep stories from update
-    $scope.stories = CacheService.getCache('story');
-    $scope.$watch('stories', $scope.refreshBacklogs, true);
+    $scope.$watch(function() {
+        return Session.getProject().stories;
+    }, $scope.refreshBacklogs, true);
     $scope.backlogCodes = BacklogCodes;
 }]);

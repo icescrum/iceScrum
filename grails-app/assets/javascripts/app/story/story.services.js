@@ -27,6 +27,7 @@ services.factory('Story', ['Resource', function($resource) {
 
 services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'CacheService', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, CacheService, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     var self = this;
+    Session.getProject().stories = CacheService.getCache('story');
     var queryWithContext = function(parameters, success, error) {
         if (!parameters) {
             parameters = {};
