@@ -49,12 +49,13 @@ class FeatureController {
     }
 
     @Secured('isAuthenticated()')
-    def show(long id, long product) {
-        Feature feature = Feature.withFeature(product, id)
+    def show() {
+        def features = Feature.withFeatures(params)
+        def returnData = features.size() > 1 ? features : features.first()
         withFormat {
-            html { render status: 200, contentType: 'application/json', text: feature as JSON }
-            json { renderRESTJSON(text: feature) }
-            xml { renderRESTXML(text: feature) }
+            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
+            json { renderRESTJSON(text: returnData) }
+            xml { renderRESTXML(text: returnData) }
         }
     }
 
