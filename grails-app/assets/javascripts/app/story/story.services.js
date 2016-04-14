@@ -27,21 +27,6 @@ services.factory('Story', ['Resource', function($resource) {
 
 services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'CacheService', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, CacheService, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
     var self = this;
-    var refreshReleasesAndSprints = function(oldStory, newStory) {
-        var oldSprint = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
-        var newSprint = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
-        if (Session.getProject().releases && (oldSprint || newSprint)) { // No need to do anything if releases are not loaded or no parent sprint
-            if (oldSprint != newSprint || oldStory.effort != newStory.effort || oldStory.state != newStory.state) {
-                ReleaseService.list(Session.getProject()).then(function(releases) { // Refreshes all the releases & sprints, which is probably overkill
-                    $q.all(_.map(releases, SprintService.list)).then(function(sprintsGroupedByRelease) {
-                        _.each(_.filter(_.flatten(sprintsGroupedByRelease), function(sprint) {
-                            return sprint.id == oldSprint || sprint.id == newSprint;
-                        }), self.listByType);
-                    });
-                });
-            }
-        }
-    };
     var queryWithContext = function(parameters, success, error) {
         if (!parameters) {
             parameters = {};
@@ -64,8 +49,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         CacheService.addOrUpdate('story', story);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(story) {
-        var cachedStory = CacheService.get('story', story.id);
-        refreshReleasesAndSprints(cachedStory, story); // Must be done before local update to have proper before/after values and know if refresh must occur
         CacheService.addOrUpdate('story', story);
     };
     crudMethods[IceScrumEventType.DELETE] = function(story) {

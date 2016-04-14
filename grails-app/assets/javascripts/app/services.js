@@ -299,7 +299,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         return this.bundles[bundleName];
     }
 }])
-.service('CacheService', function() {
+.service('CacheService', ['$injector', function($injector) {
     var self = this;
     var caches = {};
     this.getCache = function(cacheName) {
@@ -317,6 +317,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
     this.addOrUpdate = function(cacheName, item) {
         var cachedItem = self.get(cacheName, item.id);
+        $injector.get('SyncService').sync(cacheName, cachedItem, item);
         if (cachedItem) {
             _.merge(cachedItem, item);
         } else {
@@ -327,9 +328,50 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         return _.find(self.getCache(cacheName), {id: parseInt(id)});
     };
     this.remove = function(cacheName, id) {
+        var cachedItem = self.get(cacheName, id);
+        $injector.get('SyncService').sync(cacheName, cachedItem, null);
         _.remove(self.getCache(cacheName), {id: parseInt(id)});
     };
-});
+}]).service('SyncService', ['$q', 'CacheService', 'Session', 'StoryService', 'ReleaseService', 'SprintService', function($q, CacheService, Session, StoryService, ReleaseService, SprintService) {
+    var syncFunctions = {
+        story: function(oldStory, newStory) {
+            var oldSprint = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
+            var newSprint = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
+            if (Session.getProject().releases && (oldSprint || newSprint)) { // No need to do anything if releases are not loaded or no parent sprint
+                if (oldSprint != newSprint || oldStory.effort != newStory.effort || oldStory.state != newStory.state) {
+                    ReleaseService.list(Session.getProject()).then(function(releases) { // Refreshes all the releases & sprints, which is probably overkill
+                        $q.all(_.map(releases, SprintService.list)).then(function(sprintsGroupedByRelease) {
+                            _.each(_.filter(_.flatten(sprintsGroupedByRelease), function(sprint) {
+                                return sprint.id == oldSprint || sprint.id == newSprint;
+                            }), self.listByType);
+                        });
+                    });
+                }
+            }
+        },
+        task: function(oldTask, newTask) {
+            var oldStory = (oldTask && oldTask.parentStory) ? oldTask.parentStory.id : null;
+            var newStory = (newTask && newTask.parentStory) ? newTask.parentStory.id : null;
+            if (newStory) {
+                StoryService.refresh(newStory);
+            }
+            if (oldStory) {
+                StoryService.refresh(oldStory);
+            }
+        },
+        feature: function(oldFeature, newFeature) {
+            _.each(CacheService.getCache('story'), function(story) {
+                var featureId = newFeature ? newFeature.id : oldFeature.id;
+                if (story.feature && story.feature.id == featureId) {
+                    story.feature = newFeature;
+                }
+            });
+        }
+    };
+    this.sync = function(clazz, oldItem, newItem) {
+        syncFunctions[clazz](oldItem, newItem);
+    }
+}]);
 
 var restResource = angular.module('restResource', ['ngResource']);
 restResource.factory('Resource', ['$resource', 'FormService', function($resource, FormService) {
