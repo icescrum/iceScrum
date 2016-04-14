@@ -27,7 +27,7 @@
           autoFillFix="true"
           form="login(credentials)">
     <div class="form-group">
-        <label for="credentials.j_username">${message(code: 'is.user.username')}</label>
+        <label for="credentials.j_username">${message(code: 'is.dialog.login.username.or.email')}</label>
         <g:if test="${enableRegistration}"><div class="input-group"></g:if>
         <input required
                ng-model="credentials.j_username"

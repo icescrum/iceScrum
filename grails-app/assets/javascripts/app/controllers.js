@@ -407,7 +407,7 @@ controllers.controller('registerCtrl', ['$scope', '$state', 'User', 'UserService
     // Functions
     $scope.register = function() {
         UserService.save($scope.user).then(function() {
-            $scope.$close($scope.user.username);
+            $scope.$close($scope.user.email);
         });
     };
     // Init

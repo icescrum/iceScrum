@@ -26,6 +26,7 @@ package org.icescrum.web.presentation.security
 import org.springframework.security.authentication.CredentialsExpiredException
 import org.springframework.security.authentication.DisabledException
 import org.springframework.security.authentication.LockedException
+import org.springframework.security.web.WebAttributes
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -78,7 +79,7 @@ class LoginController {
      */
     def authfail() {
         String msg = ''
-        def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
+        def exception = session[WebAttributes.AUTHENTICATION_EXCEPTION]
         if (exception) {
             if (exception instanceof AccountExpiredException) {
                 msg = 'is.dialog.login.error.account.expired'

@@ -68,7 +68,7 @@
                    name="user.email"
                    class="form-control"
                    ng-model="user.email"
-                   ng-remote-validate="/user/available/username"/>
+                   ng-remote-validate="/user/available/email"/>
         </div>
         <div class="form-half">
             <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>

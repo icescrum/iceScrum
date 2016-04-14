@@ -6,7 +6,7 @@
     <div class="panel-body">
         <form novalidate role="form" ng-submit="login(credentials)" ng-controller="loginCtrl">
             <div class="form-group">
-                <label for="credentials.j_username">${message(code: 'is.user.username')}</label>
+                <label for="credentials.j_username">${message(code: 'is.dialog.login.username.or.email')}</label>
                 <input required
                        ng-model="credentials.j_username"
                        type="text"

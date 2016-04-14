@@ -27,29 +27,11 @@ import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.support.MenuBarSupport
 import org.icescrum.i18n.IceScrumMessageSource
-import org.icescrum.web.security.ScrumAuthenticationProcessingFilter
 
 beans = {
 
     xmlns task:"http://www.springframework.org/schema/task"
     task.'annotation-driven'()
-
-    authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
-        def conf = SpringSecurityUtils.securityConfig
-        storeLastUsername = false
-        authenticationManager = ref('authenticationManager')
-        sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
-        authenticationSuccessHandler = ref('authenticationSuccessHandler')
-        authenticationFailureHandler = ref('authenticationFailureHandler')
-        rememberMeServices = ref('rememberMeServices')
-        authenticationDetailsSource = ref('authenticationDetailsSource')
-        filterProcessesUrl = conf.apf.filterProcessesUrl
-        usernameParameter = conf.apf.usernameParameter
-        passwordParameter = conf.apf.passwordParameter
-        continueChainBeforeSuccessfulAuthentication = conf.apf.continueChainBeforeSuccessfulAuthentication
-        allowSessionCreation = conf.apf.allowSessionCreation
-        postOnly = conf.apf.postOnly
-    }
 
     webExpressionHandler(WebScrumExpressionHandler) {
         roleHierarchy = ref('roleHierarchy')
