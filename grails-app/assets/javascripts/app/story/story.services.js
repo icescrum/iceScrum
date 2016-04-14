@@ -186,10 +186,16 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             return CacheService.get('story', id);
         }), _.identity);
         var notFoundStoryIds = _.difference(ids, _.map(cachedStories, 'id'));
-        if (notFoundStoryIds.length > 1) {
-            return Story.query({id: notFoundStoryIds}, self.mergeStories).$promise;
-        } else if (notFoundStoryIds.length == 1) {
-            return self.get(ids[0]).then(function(story) { return [story]; });
+        if (notFoundStoryIds.length > 0) {
+            var promise;
+            if (notFoundStoryIds.length == 1) {
+                promise = self.get(notFoundStoryIds[0]).then(function(story) { return [story]; });
+            } else {
+                promise = Story.query({id: notFoundStoryIds}, self.mergeStories).$promise;
+            }
+            return promise.then(function(stories) {
+                return _.concat(cachedStories, stories);
+            });
         } else {
             return $q.when(cachedStories);
         }

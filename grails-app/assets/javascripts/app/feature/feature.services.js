@@ -78,10 +78,16 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             return CacheService.get('feature', id);
         }), _.identity);
         var notFoundFeatureIds = _.difference(ids, _.map(cachedFeatures, 'id'));
-        if (notFoundFeatureIds.length > 1) {
-            return Feature.query({id: notFoundFeatureIds}, self.mergeFeatures).$promise;
-        } else if (notFoundFeatureIds.length == 1) {
-            return self.get(ids[0]).then(function(feature) { return [feature]; });
+        if (notFoundFeatureIds.length > 0) {
+            var promise;
+            if (notFoundFeatureIds.length == 1) {
+                promise = self.get(notFoundFeatureIds[0]).then(function(feature) { return [feature]; });
+            } else {
+                promise = Feature.query({id: notFoundFeatureIds}, self.mergeFeatures).$promise;
+            }
+            return promise.then(function(features) {
+                return _.concat(cachedFeatures, features);
+            });
         } else {
             return $q.when(cachedFeatures);
         }
