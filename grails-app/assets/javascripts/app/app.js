@@ -64,13 +64,25 @@ angular.module('isApp', [
     'as.sortable',
     'angular.atmosphere',
     'nvd3'
-]).config(['stateHelperProvider', '$httpProvider', '$urlRouterProvider', function(stateHelperProvider, $httpProvider, $urlRouterProvider) {
+]).config(['stateHelperProvider', '$httpProvider', '$urlRouterProvider', '$stateProvider', function(stateHelperProvider, $httpProvider, $urlRouterProvider, $stateProvider) {
     $httpProvider.interceptors.push([
         '$injector',
         function($injector) {
             return $injector.get('AuthInterceptor');
         }
     ]);
+
+    $stateProvider.decorator('parent', function (state, parentFn) {
+        state.self.$$state = function () {
+            return state;
+        };
+
+        state.self.isSetAuthorize = function () {
+            return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
+        };
+        return parentFn(state);
+    });
+
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     $urlRouterProvider.when('', '/');
     var getDetailsModalState = function(detailsType, options) {
@@ -362,6 +374,13 @@ angular.module('isApp', [
             url: "/backlog",
             templateUrl: 'openWindow/backlog',
             controller: 'backlogCtrl',
+            //example 
+            //todo remove once it works well
+            data: {
+                authorize: {
+                    roles: ['authenticated']
+                }
+            },
             resolve: {
                 backlogs: ['BacklogService', function(BacklogService) {
                     return BacklogService.list();
@@ -638,7 +657,7 @@ angular.module('isApp', [
                 }
             ]
         });
-}])
+    }])
 .config(['flowFactoryProvider', function(flowFactoryProvider) {
     flowFactoryProvider.defaults = {
         target: 'attachment/save',
@@ -811,10 +830,23 @@ angular.module('isApp', [
         return newDate;
     };
 
-    $rootScope.showAuthModal = function(username) {
+    $rootScope.showAuthModal = function(username, loginSuccess, loginFailure) {
         var childScope = $rootScope.$new();
         if (username) {
             childScope.username = username;
+        }
+        var loginCallback = null;
+        if(loginSuccess){
+            childScope.loginCallback = true;
+            loginCallback = function(loggedIn){
+                if(loggedIn){
+                    Session.create().then(function(){
+                        loginSuccess();
+                    });
+                } else {
+                    loginFailure();
+                }
+            };
         }
         $uibModal.open({
             keyboard: false,
@@ -822,7 +854,7 @@ angular.module('isApp', [
             controller: 'loginCtrl',
             scope: childScope,
             size: 'sm'
-        });
+        }).result.then(loginCallback);
     };
 
     $rootScope.durationBetweenDates = function(startDateString, endDateString) {
@@ -954,6 +986,30 @@ angular.module('isApp', [
             }
         }
     };
+
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
+        if (!event.defaultPrevented) {
+            var state = toState.$$state();
+            authorized = true;
+            if (state.isSetAuthorize()) {
+                var authorized = false;
+                _.every(state.data.authorize.roles, function (role) {
+                    authorized = role.indexOf('!') > -1 ? !Session[role.substring(role.indexOf('!') + 1)]() : (Session[role]() === true);
+                    return authorized;
+                });
+            }
+            if (!authorized) {
+                event.preventDefault();
+                if (!Session.authenticated()) {
+                    $rootScope.showAuthModal('',function(){
+                        $state.go(toState.name);
+                    });
+                } else {
+                    $state.go(fromState.name);
+                }
+            }
+        }
+    });
 }])
 .constant('SERVER_ERRORS', {
     loginFailed: 'auth-login-failed',

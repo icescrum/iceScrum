@@ -138,27 +138,33 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
     // Init loading
     var w = angular.element($window);
     var resizeTimeout = null;
-    $scope.$on('$viewContentLoaded', function() {
-        if ($scope.app.loadingPercent < 90) {
-            $scope.app.loadingPercent += 5;
-        } else {
+    $scope.$on('$viewContentLoaded', function(event) {
+        if (!event.defaultPrevented) {
+            if ($scope.app.loadingPercent < 90) {
+                $scope.app.loadingPercent += 5;
+            } else {
+                $scope.app.loading = false;
+            }
+            $timeout.cancel(resizeTimeout);
+            resizeTimeout = $timeout(function () {
+                w.triggerHandler('resize');
+            }, 100);
+        }
+    });
+    $scope.$on('$stateChangeStart', function(event) {
+        if (!event.defaultPrevented) {
+            $scope.app.loading = true;
+            if ($scope.app.loadingPercent != 100) {
+                $scope.app.loadingPercent += 10;
+            }
+        }
+    });
+    $scope.$on('$stateChangeSuccess', function(event) {
+        if (!event.defaultPrevented) {
             $scope.app.loading = false;
-        }
-        $timeout.cancel(resizeTimeout);
-        resizeTimeout = $timeout(function() {
-            w.triggerHandler('resize');
-        }, 100);
-    });
-    $scope.$on('$stateChangeStart', function() {
-        $scope.app.loading = true;
-        if ($scope.app.loadingPercent != 100) {
-            $scope.app.loadingPercent += 10;
-        }
-    });
-    $scope.$on('$stateChangeSuccess', function() {
-        $scope.app.loading = false;
-        if ($scope.app.loadingPercent != 100) {
-            $scope.app.loadingPercent = 100;
+            if ($scope.app.loadingPercent != 100) {
+                $scope.app.loadingPercent = 100;
+            }
         }
     });
     $scope.$watch(function() {
@@ -358,18 +364,20 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         });
     }
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
-        if (fromState.name && toState.name) {
-            if (fromState.name.split('.')[0] !== toState.name.split('.')[0]) {
-                $scope.app.search = null;
+        if (!event.defaultPrevented) {
+            if (fromState.name && toState.name) {
+                if (fromState.name.split('.')[0] !== toState.name.split('.')[0]) {
+                    $scope.app.search = null;
+                }
             }
-        }
-        // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
-        var context = $scope.app.context;
-        if (context) {
-            $timeout(function() {
-                $location.replace(); // Prevent the state without the ?context... part to be save in browser history, must be in timeout to avoid that all changes during the current digest are lost
-                $location.search('context', context.type + ':' + context.id);
-            });
+            // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
+            var context = $scope.app.context;
+            if (context) {
+                $timeout(function () {
+                    $location.replace(); // Prevent the state without the ?context... part to be save in browser history, must be in timeout to avoid that all changes during the current digest are lost
+                    $location.search('context', context.type + ':' + context.id);
+                });
+            }
         }
     });
 }]);
@@ -381,7 +389,7 @@ controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_E
     };
     $rootScope.showRegisterModal = function() {
         if ($scope.$close) {
-            $scope.$close(); // Close auth modal if present
+            $scope.$close(false); // Close auth modal if present
         }
         $state.go('userregister');
     };
@@ -390,12 +398,16 @@ controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_E
     };
     $scope.login = function(credentials) {
         AuthService.login(credentials).then(function(data) {
-            var lastOpenedUrl = data.url;
-            var normalizedCurrentLocation = window.location.href.charAt(window.location.href.length - 1) == '/' ? window.location.href.substring(0, window.location.href.length - 1) : window.location.href;
-            if (normalizedCurrentLocation == $rootScope.serverUrl && lastOpenedUrl) {
-                document.location = lastOpenedUrl;
+            if(!$scope.loginCallback) {
+                var lastOpenedUrl = data.url;
+                var normalizedCurrentLocation = window.location.href.charAt(window.location.href.length - 1) == '/' ? window.location.href.substring(0, window.location.href.length - 1) : window.location.href;
+                if (normalizedCurrentLocation == $rootScope.serverUrl && lastOpenedUrl) {
+                    document.location = lastOpenedUrl;
+                } else {
+                    document.location.reload(true);
+                }
             } else {
-                document.location.reload(true);
+                $scope.$close(true);
             }
         }, function() {
             $rootScope.$broadcast(SERVER_ERRORS.loginFailed);

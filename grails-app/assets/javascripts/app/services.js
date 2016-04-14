@@ -58,7 +58,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         }, 2000);
     };
     this.create = function() {
-        UserService.getCurrent()
+        return UserService.getCurrent()
             .then(function(data) {
                 if (data.user != "null") {
                     _.extend(self.user, data.user);
