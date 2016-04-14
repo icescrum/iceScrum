@@ -384,7 +384,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             at: 'a'
         };
         $scope.features = [];
-        FeatureService.list.$promise.then(function(features) {
+        FeatureService.list().then(function(features) {
             $scope.features = features;
         });
         var mapActors = function(actors) {
@@ -457,7 +457,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.storyPreview = {};
     $scope.stories = [];
     $scope.features = [];
-    FeatureService.list.$promise.then(function(features) {
+    FeatureService.list().then(function(features) {
         $scope.features = features;
     });
     $scope.allFollowed = function(stories) {

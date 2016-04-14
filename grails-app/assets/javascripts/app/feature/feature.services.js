@@ -27,10 +27,7 @@ services.factory('Feature', ['Resource', function($resource) {
 
 services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'CacheService', 'PushService', 'IceScrumEventType', function($state, $q, Feature, Session, CacheService, PushService, IceScrumEventType) {
     var self = this;
-    this.list = Feature.query();
-    this.list.$promise.then(function(features) {
-        self.mergeFeatures(features);
-    });
+    Session.getProject().features = CacheService.getCache('feature');
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(feature) {
         CacheService.addOrUpdate('feature', feature);
@@ -56,6 +53,14 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
     this.get = function(id) {
         var cachedFeature = CacheService.get('feature', id);
         return cachedFeature ? $q.when(cachedFeature) : Feature.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
+    };
+    this.list = function() {
+        var promise = Feature.query().$promise.then(function(features) {
+            self.mergeFeatures(features);
+            return CacheService.getCache('feature');
+        });
+        var cachedFeatures = CacheService.getCache('feature');
+        return cachedFeatures.length > 0 ? $q.when(cachedFeatures) : promise;
     };
     this.save = function(feature) {
         feature.class = 'feature';

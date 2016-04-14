@@ -281,7 +281,7 @@ angular.module('isApp', [
             options.children.push(getDetailsModalState('feature', {
                 resolve: {
                     features: ['FeatureService', function(FeatureService) {
-                        return FeatureService.list;
+                        return FeatureService.list();
                     }]
                 },
                 children: [getFeatureDetailsState('@', true)]
@@ -396,7 +396,7 @@ angular.module('isApp', [
                         getDetailsModalState('feature', {
                             resolve: {
                                 features: ['FeatureService', function(FeatureService) {
-                                    return FeatureService.list;
+                                    return FeatureService.list();
                                 }]
                             },
                             children: [getFeatureDetailsState('@', true)]
@@ -413,7 +413,7 @@ angular.module('isApp', [
             controller: 'featuresCtrl',
             resolve: {
                 features: ['FeatureService', function(FeatureService) {
-                    return FeatureService.list;
+                    return FeatureService.list();
                 }]
             },
             children: [
