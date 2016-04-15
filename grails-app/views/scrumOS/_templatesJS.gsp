@@ -44,12 +44,12 @@
         applicationMenus:${is.getMenuBarFromUiDefinitions() as JSON},
         messages:${i18nMessages},
         bundles:${is.i18nBundle() as JSON},
-        types:{
+        types: {
             story:${BundleUtils.storyTypes.keySet() as JSON},
             feature:${BundleUtils.featureTypes.keySet() as JSON},
             planningPoker:${BundleUtils.planningPokerGameSuites.keySet() as JSON},
             task:${BundleUtils.taskStates.keySet() as JSON}
-       },
+        },
         states: {
             taskStates:${BundleUtils.taskTypes.keySet() as JSON},
             acceptanceTestStates:${BundleUtils.acceptanceTestStates.keySet() as JSON}
