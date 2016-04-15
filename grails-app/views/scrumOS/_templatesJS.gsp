@@ -56,6 +56,6 @@
         },
         user:${user as JSON},
         project:${product as JSON},
-        pushContext:${product?.id?:''}
+        pushContext:${product?.id?:"''"}
     };
 </script>
