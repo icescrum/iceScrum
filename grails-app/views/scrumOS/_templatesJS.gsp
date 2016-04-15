@@ -40,27 +40,22 @@
     </g:if>
 </div>
 <script type="text/javascript">
-    angular.element(document).ready(function () {
-        var $injector = angular.element(document).injector();
-        var $rootScope = $injector.get('$rootScope');
-        var Session = $injector.get('Session');
-        var PushService = $injector.get('PushService');
-        var BundleService = $injector.get('BundleService');
-        $rootScope.initApplicationMenus(${is.getMenuBarFromUiDefinitions() as JSON});
-        $rootScope.initMessages(${i18nMessages});
-        BundleService.initBundles(${is.i18nBundle() as JSON});
-        $rootScope.storyTypes = ${BundleUtils.storyTypes.keySet() as JSON};
-        $rootScope.featureTypes = ${BundleUtils.featureTypes.keySet() as JSON};
-        $rootScope.taskStates = ${BundleUtils.taskStates.keySet() as JSON};
-        $rootScope.taskTypes = ${BundleUtils.taskTypes.keySet() as JSON};
-        $rootScope.acceptanceTestStates = ${BundleUtils.acceptanceTestStates.keySet() as JSON};
-        $rootScope.planningPokerTypes = ${BundleUtils.planningPokerGameSuites.keySet() as JSON};
-        var project = ${product as JSON};
-        project.startDate = new Date(project.startDate);
-        project.endDate = new Date(project.endDate);
-        Session.initProject(project);
-        Session.setUser(${user as JSON});
-        Session.create();
-        PushService.initPush(${product?.id});
-    });
+    isSettings = {
+        applicationMenus:${is.getMenuBarFromUiDefinitions() as JSON},
+        messages:${i18nMessages},
+        bundles:${is.i18nBundle() as JSON},
+        types:{
+            story:${BundleUtils.storyTypes.keySet() as JSON},
+            feature:${BundleUtils.featureTypes.keySet() as JSON},
+            planningPoker:${BundleUtils.planningPokerGameSuites.keySet() as JSON},
+            task:${BundleUtils.taskStates.keySet() as JSON}
+       },
+        states: {
+            taskStates:${BundleUtils.taskTypes.keySet() as JSON},
+            acceptanceTestStates:${BundleUtils.acceptanceTestStates.keySet() as JSON}
+        },
+        user:${user as JSON},
+        project:${product as JSON},
+        pushContext:${product?.id?:''}
+    };
 </script>
