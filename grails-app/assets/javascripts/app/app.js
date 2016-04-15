@@ -375,13 +375,6 @@ angular.module('isApp', [
             url: "/backlog",
             templateUrl: 'openWindow/backlog',
             controller: 'backlogCtrl',
-            //example 
-            //todo remove once it works well
-            data: {
-                authorize: {
-                    roles: ['authenticated']
-                }
-            },
             resolve: {
                 backlogs: ['BacklogService', function(BacklogService) {
                     return BacklogService.list();
@@ -391,6 +384,11 @@ angular.module('isApp', [
                 {
                     name: 'new',
                     url: "/new",
+                    data: {
+                        authorize: {
+                            roles: ['inProduct']
+                        }
+                    },
                     views: {
                         "details": {
                             templateUrl: 'story.new.html',
@@ -440,6 +438,11 @@ angular.module('isApp', [
                 {
                     name: 'new',
                     url: '/new',
+                    data: {
+                        authorize: {
+                            roles: ['po']
+                        }
+                    },
                     views: {
                         "details": {
                             templateUrl: 'feature.new.html',
@@ -486,6 +489,11 @@ angular.module('isApp', [
                 {
                     name: 'new',
                     url: "/new",
+                    data: {
+                        authorize: {
+                            roles: ['poOrSm']
+                        }
+                    },
                     views: {
                         "details": {
                             templateUrl: 'release.new.html',
@@ -527,6 +535,11 @@ angular.module('isApp', [
                                 {
                                     name: 'new',
                                     url: "/new",
+                                    data: {
+                                        authorize: {
+                                            roles: ['poOrSm']
+                                        }
+                                    },
                                     views: {
                                         "details@planning": {
                                             templateUrl: 'sprint.new.html',
@@ -638,6 +651,11 @@ angular.module('isApp', [
                         {
                             name: 'new',
                             url: "/new",
+                            data: {
+                                authorize: {
+                                    roles: ['inProduct']
+                                }
+                            },
                             params: {
                                 taskTemplate: null
                             },
