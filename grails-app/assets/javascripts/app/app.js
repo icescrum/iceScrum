@@ -72,12 +72,11 @@ angular.module('isApp', [
         }
     ]);
 
-    $stateProvider.decorator('parent', function (state, parentFn) {
-        state.self.$$state = function () {
+    $stateProvider.decorator('parent', function(state, parentFn) {
+        state.self.$$state = function() {
             return state;
         };
-
-        state.self.isSetAuthorize = function () {
+        state.self.isSetAuthorize = function() {
             return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
         };
         return parentFn(state);
@@ -836,11 +835,11 @@ angular.module('isApp', [
             childScope.username = username;
         }
         var loginCallback = null;
-        if(loginSuccess){
+        if (loginSuccess) {
             childScope.loginCallback = true;
-            loginCallback = function(loggedIn){
-                if(loggedIn){
-                    Session.create().then(function(){
+            loginCallback = function(loggedIn) {
+                if (loggedIn) {
+                    Session.create().then(function() {
                         loginSuccess();
                     });
                 } else {
@@ -987,13 +986,13 @@ angular.module('isApp', [
         }
     };
 
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
         if (!event.defaultPrevented) {
             var state = toState.$$state();
             authorized = true;
             if (state.isSetAuthorize()) {
                 var authorized = false;
-                _.every(state.data.authorize.roles, function (role) {
+                _.every(state.data.authorize.roles, function(role) {
                     authorized = role.indexOf('!') > -1 ? !Session[role.substring(role.indexOf('!') + 1)]() : (Session[role]() === true);
                     return authorized;
                 });
@@ -1001,7 +1000,7 @@ angular.module('isApp', [
             if (!authorized) {
                 event.preventDefault();
                 if (!Session.authenticated()) {
-                    $rootScope.showAuthModal('',function(){
+                    $rootScope.showAuthModal('', function() {
                         $state.go(toState.name);
                     });
                 } else {
@@ -1078,5 +1077,5 @@ angular.module('isApp', [
     DELETE: 'DELETE'
 })
 .constant('TaskConstants', {
-    ORDER_BY:[function(task) { return - task.type }, 'parentStory.rank', 'state', 'rank']
+    ORDER_BY: [function(task) { return -task.type }, 'parentStory.rank', 'state', 'rank']
 });
