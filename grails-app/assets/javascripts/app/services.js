@@ -40,6 +40,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
 }])
 .service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
     var self = this;
+    self.menus = {visible:[], hidden:[]};
     self.user = new User();
     self.project = new Project();
     self.isProjectResolved = $q.defer();
@@ -68,8 +69,14 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                             self.unreadActivitiesCount = data.unreadActivitiesCount;
                         });
                 }
+                UserService.getMenus(self.project).then(function(menus){
+                    var menusByVisibility = _.groupBy(menus, 'visible');
+                    self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
+                    self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');
+                });
             });
     };
+
     this.setUser = function(user) {
         _.extend(self.user, user);
         PushService.registerListener('activity', IceScrumEventType.CREATE, function() {

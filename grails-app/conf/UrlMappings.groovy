@@ -125,6 +125,11 @@ class UrlMappings {
             }
         }
 
+        "/user/menus" {
+            controller = 'user'
+            action = [GET: "menus"]
+        }
+
         "/user/current" {
             controller = 'user'
             action = [GET: "current"]

@@ -47,7 +47,7 @@
                     ng-class="{'sortable':currentUser.id}"
                     is-disabled="!currentUser.id"
                     as-sortable="menuSortableOptions"
-                    ng-model="menus.visible">
+                    ng-model="app.menus.visible">
                     <li class="contextual-menu" uib-dropdown>
                         <a uib-dropdown-toggle>
                             ${message(code:'todo.is.ui.main.menu')} <i class="fa fa-caret-down"></i>
@@ -136,19 +136,19 @@
                     <entry:point id="menu-left" model="[product:product]"/>
                     <li id="{{ menu.id }}"
                         as-sortable-item
-                        ng-repeat="menu in menus.visible"
+                        ng-repeat="menu in app.menus.visible"
                         ng-include="'menuitem.item.html'"
                         ng-class="{'active':$state.includes(menu.id)}"
                         class="menuitem">
                     </li>
-                    <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && menus.hidden.length == 0 }">
+                    <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && app.menus.hidden.length == 0 }">
                         <a uib-dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                         <ul uib-dropdown-menu class="menubar"
                             ng-class="{'sortable':currentUser.id}"
                             is-disabled="!currentUser.id"
                             as-sortable="menuSortableOptions"
-                            ng-model="menus.hidden">
-                            <li ng-repeat="menu in menus.hidden"
+                            ng-model="app.menus.hidden">
+                            <li ng-repeat="menu in app.menus.hidden"
                                 ng-include="'menuitem.item.html'"
                                 as-sortable-item
                                 ng-class="{'active':$state.includes(menu.id)}" class="menuitem"></li>

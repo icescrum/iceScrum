@@ -182,13 +182,23 @@ class ScrumOSController {
             currentSprint = Sprint.findCurrentSprint(product.id).list() ?: null
         }
         def i18nMessages = messageSource.getAllMessages(RCU.getLocale(request))
+
+        def applicationMenus = []
+        uiDefinitionService.getDefinitions().each { def uiDefinitionId, def uiDefinition ->
+            def menuBar = uiDefinition.menuBar
+            applicationMenus << [id: uiDefinitionId,
+                      title: message(code: menuBar?.title),
+                      shortcut: "ctrl+" + (applicationMenus.size() + 1)]
+        }
+
         def tmpl = g.render(
                 template: 'templatesJS',
                 model: [id: controllerName,
                         user:springSecurityService.currentUser,
                         product: product,
+                        i18nMessages: i18nMessages,
                         currentSprint: currentSprint,
-                        i18nMessages: i18nMessages as JSON])
+                        applicationMenus: applicationMenus])
 
         tmpl = "${tmpl}".split("<div class='templates'>")
         tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=')

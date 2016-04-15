@@ -891,6 +891,7 @@ angular.module('isApp', [
         loading: true,
         loadingPercent: 0,
         isFullScreen: false,
+        menus: Session.menus,
         selectableMultiple: false
     };
 
@@ -900,16 +901,6 @@ angular.module('isApp', [
     var messages = {};
     $rootScope.initMessages = function(initMessages) {
         messages = initMessages;
-    };
-
-    $rootScope.applicationMenus = [];
-    $rootScope.initApplicationMenus = function(initMenus) {
-        $rootScope.applicationMenus = initMenus;
-        var menusByVisibility = _.groupBy(initMenus, 'visible');
-        $rootScope.menus = {
-            visible: _.sortBy(menusByVisibility[true], 'position'),
-            hidden: _.sortBy(menusByVisibility[false], 'position')
-        }
     };
 
     $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
@@ -989,23 +980,26 @@ angular.module('isApp', [
     };
 
     if (isSettings) {
-        $rootScope.initApplicationMenus(isSettings.applicationMenus);
-        $rootScope.initMessages(isSettings.messages);
-        BundleService.initBundles(isSettings.bundles);
+        $rootScope.taskTypes = isSettings.types.task;
         $rootScope.storyTypes = isSettings.types.story;
         $rootScope.featureTypes = isSettings.types.feature;
-        $rootScope.taskTypes = isSettings.types.task;
         $rootScope.planningPokerTypes = isSettings.types.planningPoker;
+
         $rootScope.taskStates = isSettings.states.task;
         $rootScope.acceptanceTestStates = isSettings.states.acceptanceTests;
+
         if (isSettings.project) {
             isSettings.project.startDate = new Date(isSettings.project.startDate);
             isSettings.project.endDate = new Date(isSettings.project.endDate);
             Session.initProject(isSettings.project);
         }
+
+        PushService.initPush(isSettings.pushContext);
+        $rootScope.initMessages(isSettings.messages);
+        BundleService.initBundles(isSettings.bundles);
+
         Session.setUser(isSettings.user);
         Session.create();
-        PushService.initPush(isSettings.pushContext);
     }
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {

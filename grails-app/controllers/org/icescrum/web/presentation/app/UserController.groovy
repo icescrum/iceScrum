@@ -37,14 +37,17 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.ui.UiDefinition
 import org.springframework.mail.MailException
 import org.springframework.security.acls.domain.BasePermission
 
 class UserController {
 
     def userService
-    def springSecurityService
+    def menuBarSupport
     def grailsApplication
+    def uiDefinitionService
+    def springSecurityService
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def index() {
@@ -278,6 +281,31 @@ class UserController {
         } catch (RuntimeException e) {
             returnError(text: message(code: 'is.user.preferences.error.menuBar'), exception: e)
         }
+    }
+
+    @Secured('permitAll()')
+    def menus() {
+        def menus = []
+        uiDefinitionService.getDefinitions().each { String uiDefinitionId, UiDefinition uiDefinition ->
+            def menuBar = uiDefinition.menuBar
+            if (menuBar?.spaceDynamicBar) {
+                menuBar.show = menuBarSupport.spaceDynamicBar(uiDefinitionId, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space, uiDefinition.window.init)
+            }
+            def show = menuBar?.show
+            if (show in Closure) {
+                show.delegate = delegate
+                show = show()
+            }
+            if (show) {
+                menus << [title: message(code: menuBar?.title),
+                          id: uiDefinitionId,
+                          shortcut: "ctrl+" + (menus.size() + 1),
+                          icon: uiDefinition.icon,
+                          position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
+                          visible: show.visible]
+            }
+        }
+        render(status: 200, text:menus as JSON)
     }
 
     @Secured(['permitAll()'])

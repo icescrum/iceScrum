@@ -267,7 +267,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
         UserService.updateMenuPreferences({
             id: event.source.itemScope.modelValue.id,
             position: event.dest.index + 1,
-            hidden: event.dest.sortableScope.modelValue === $scope.menus.hidden
+            hidden: event.dest.sortableScope.modelValue === $scope.app.menus.hidden
         });
     };
     $scope.menuSortableOptions = {

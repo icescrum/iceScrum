@@ -24,9 +24,9 @@
 <div class='templates'>
     <g:render template="templates"/>
     <g:render template="/home/templates"/>
-    <g:render template="/project/templates"/>
     <g:render template="/team/templates"/>
     <g:render template="/sprint/templates"/>
+    <g:render template="/project/templates"/>
     <g:render template="/task/templates/task.light"/>
     <g:if test="${params.product}">
         <g:render template="/story/templates"/>
@@ -41,21 +41,21 @@
 </div>
 <script type="text/javascript">
     isSettings = {
-        applicationMenus:${is.getMenuBarFromUiDefinitions() as JSON},
-        messages:${i18nMessages},
+        user:${user as JSON},
+        project:${product as JSON},
+        pushContext:${product?.id?:"''"},
+        messages:${i18nMessages as JSON},
         bundles:${is.i18nBundle() as JSON},
+        applicationMenus:${applicationMenus as JSON},
         types: {
+            task:${BundleUtils.taskStates.keySet() as JSON},
             story:${BundleUtils.storyTypes.keySet() as JSON},
             feature:${BundleUtils.featureTypes.keySet() as JSON},
-            planningPoker:${BundleUtils.planningPokerGameSuites.keySet() as JSON},
-            task:${BundleUtils.taskStates.keySet() as JSON}
+            planningPoker:${BundleUtils.planningPokerGameSuites.keySet() as JSON}
         },
         states: {
             taskStates:${BundleUtils.taskTypes.keySet() as JSON},
             acceptanceTestStates:${BundleUtils.acceptanceTestStates.keySet() as JSON}
-        },
-        user:${user as JSON},
-        project:${product as JSON},
-        pushContext:${product?.id?:"''"}
+        }
     };
 </script>

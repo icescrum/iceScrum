@@ -33,13 +33,12 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 class UtilsTagLib {
 
-    static returnObjectForTags = ['i18nBundle', 'exportFormats', 'getMenuBarFromUiDefinitions']
+    static returnObjectForTags = ['i18nBundle', 'exportFormats']
 
     static namespace = 'is'
 
     def grailsApplication
     def uiDefinitionService
-    def menuBarSupport
 
     def loadJsVar = { attrs, body ->
 
@@ -99,29 +98,5 @@ class UtilsTagLib {
 
     def appId = {
         out << grailsApplication.config.icescrum.appID
-    }
-
-    def getMenuBarFromUiDefinitions = { attrs ->
-        def menus = []
-        uiDefinitionService.getDefinitions().each { String uiDefinitionId, UiDefinition uiDefinition ->
-            def menuBar = uiDefinition.menuBar
-            if (menuBar?.spaceDynamicBar) {
-                menuBar.show = menuBarSupport.spaceDynamicBar(uiDefinitionId, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space, uiDefinition.window.init)
-            }
-            def show = menuBar?.show
-            if (show in Closure) {
-                show.delegate = delegate
-                show = show()
-            }
-            if (show) {
-                menus << [title: message(code: menuBar?.title),
-                          id: uiDefinitionId,
-                          shortcut: "ctrl+" + (menus.size() + 1),
-                          icon: uiDefinition.icon,
-                          position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
-                          visible: show.visible]
-            }
-        }
-        return menus
     }
 }
