@@ -43,22 +43,24 @@
             ng-model="task.name"
             ng-bind-html="task.name | sanitize"></h3>
     </div>
-    <div class="tags">
-        <a ng-repeat="tag in task.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
-    </div>
-    <div class="actions">
-        <span class="action" ng-class="{'active':task.attachments.length}">
-            <span uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
-                <i class="fa fa-paperclip"></i>
-                <span class="badge">{{ task.attachments.length || '' }}</span>
+    <div class="footer">
+        <div class="tags">
+            <a ng-repeat="tag in task.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
+        </div>
+        <div class="actions">
+            <span class="action" ng-class="{'active':task.attachments.length}">
+                <span uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                    <i class="fa fa-paperclip"></i>
+                    <span class="badge">{{ task.attachments.length || '' }}</span>
+                </span>
             </span>
-        </span>
-        <span class="action" ng-class="{'active':task.comments_count}">
-            <span uib-tooltip="${message(code:'todo.is.ui.comments')}">
-                <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
-                <span class="badge">{{ task.comments_count || '' }}</span>
+            <span class="action" ng-class="{'active':task.comments_count}">
+                <span uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                    <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                    <span class="badge">{{ task.comments_count || '' }}</span>
+                </span>
             </span>
-        </span>
+        </div>
     </div>
 </div>
 </script>
