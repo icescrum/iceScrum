@@ -676,6 +676,11 @@ angular.module('isApp', [
                 }
             ]
         });
+
+    $stateProvider.state('404', {
+        url: '*path',
+        template: ''
+    });
 }])
 .config(['flowFactoryProvider', function(flowFactoryProvider) {
     flowFactoryProvider.defaults = {
