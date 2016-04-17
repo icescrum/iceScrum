@@ -22,7 +22,7 @@
  *
  */
 services.factory('Sprint', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/p/:projectId/sprint/:type/:id/:action');
+    return $resource('/p/:projectId/sprint/:type/:id/:action');
 }]);
 
 services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'Session', function($q, $state, Sprint, SprintStatesByName, Session) {

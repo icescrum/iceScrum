@@ -21,7 +21,7 @@
  *
  */
 services.factory('Project', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/project/:id/:action');
+    return $resource('/project/:id/:action');
 }]);
 
 services.service("ProjectService", ['Project', 'Session', 'FormService', 'ReleaseStatesByName', 'SprintStatesByName', function(Project, Session, FormService, ReleaseStatesByName, SprintStatesByName) {

@@ -22,7 +22,7 @@
  *
  */
 services.factory('Release', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/p/:projectId/release/:id/:action');
+    return $resource('/p/:projectId/release/:id/:action');
 }]);
 
 services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByName', 'Session', function($q, $state, Release, ReleaseStatesByName, Session) {

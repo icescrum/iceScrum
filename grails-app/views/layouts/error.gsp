@@ -35,7 +35,6 @@
     <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
     <!-- end iOS web app-->
     <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-    <is:loadJsVar/>
     <asset:stylesheet href="application.css"/>
     <g:layoutHead/>
 </head>

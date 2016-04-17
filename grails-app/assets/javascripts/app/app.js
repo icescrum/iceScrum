@@ -308,7 +308,7 @@ angular.module('isApp', [
             url: '/',
             controller: ['$state', function($state) {
                 var isInProject = window.location.pathname.indexOf('/p/') != -1;
-                $state.go(isInProject ? 'project' : 'home');
+                $state.go(isInProject ? 'project' : 'home', $state.params);
             }]
         })
         .state({
@@ -677,10 +677,10 @@ angular.module('isApp', [
             ]
         });
 
-    $stateProvider.state('404', {
-        url: '*path',
-        template: ''
-    });
+        $stateProvider.state('404', {
+            url: '*path',
+            template: ''
+        });
 }])
 .config(['flowFactoryProvider', function(flowFactoryProvider) {
     flowFactoryProvider.defaults = {
@@ -898,9 +898,6 @@ angular.module('isApp', [
         }
     };
 
-    // TODO Change ugly hack
-    $rootScope.serverUrl = icescrum.grailsServer;
-
     $rootScope.integerSuite = [];
     for (var i = 0; i < 100; i++) {
         $rootScope.integerSuite.push(i);
@@ -1003,6 +1000,8 @@ angular.module('isApp', [
     };
 
     if (isSettings) {
+        $rootScope.serverUrl = isSettings.serverUrl;
+
         $rootScope.taskTypes = isSettings.types.task;
         $rootScope.storyTypes = isSettings.types.story;
         $rootScope.featureTypes = isSettings.types.feature;
@@ -1026,7 +1025,10 @@ angular.module('isApp', [
     }
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
-        if (!event.defaultPrevented) {
+        if(toState.name == "404"){
+            event.preventDefault();
+            $state.go('root');
+        } else if (!event.defaultPrevented) {
             var state = toState.$$state();
             authorized = true;
             if (state.isSetAuthorize()) {

@@ -56,6 +56,7 @@
         states: {
             taskStates:${BundleUtils.taskTypes.keySet() as JSON},
             acceptanceTestStates:${BundleUtils.acceptanceTestStates.keySet() as JSON}
-        }
+        },
+        serverUrl: "${grailsApplication.config.grails.serverURL}"
     };
 </script>

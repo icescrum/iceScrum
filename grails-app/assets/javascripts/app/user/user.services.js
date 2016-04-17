@@ -22,7 +22,7 @@
  *
  */
 services.factory('User', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/user/:id/:action');
+    return $resource('/user/:id/:action');
 }]);
 
 services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'FormService', function(User, $http, $rootScope, $injector, FormService) {

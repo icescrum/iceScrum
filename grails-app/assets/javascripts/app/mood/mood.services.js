@@ -21,7 +21,7 @@
  */
 
 services.factory('Mood', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/mood/:id/:action');
+    return $resource('/mood/:id/:action');
 }]);
 
 services.service("MoodService", ['Mood', function(Mood) {

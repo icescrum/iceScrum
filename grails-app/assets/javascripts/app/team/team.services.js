@@ -22,7 +22,7 @@
  *
  */
 services.factory('Team', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/team/:type/:id/:action',
+    return $resource('/team/:type/:id/:action',
         {},
         {
             listByUser: {method: 'GET', params: {action: 'listByUser'}}

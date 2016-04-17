@@ -20,7 +20,7 @@
  */
 
 services.factory('Feed', ['Resource', function($resource) {
-    return $resource(icescrum.grailsServer + '/home/feed/:id/:action');
+    return $resource('/home/feed/:id/:action');
 }]);
 
 services.service("FeedService", ['Feed', 'FormService', function(Feed, FormService) {

@@ -381,7 +381,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
 }]);
 
 var restResource = angular.module('restResource', ['ngResource']);
-restResource.factory('Resource', ['$resource', 'FormService', function($resource, FormService) {
+restResource.factory('Resource', ['$resource', 'FormService', '$rootScope', function($resource, FormService) {
     return function(url, params, methods) {
         var defaultParams = {
             id: '@id'
@@ -450,6 +450,9 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
             }
         };
         defaultMethods.update = angular.copy(defaultMethods.save); // for the moment there is no difference between save & update
+        if(url.indexOf('/') == 0){
+            url = isSettings.serverUrl + url;
+        }
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));
     };
 }]);
