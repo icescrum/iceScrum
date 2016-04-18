@@ -84,9 +84,10 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.getCurrentOrLastSprint = function(project) {
         return ReleaseService.getCurrentOrLastRelease(project).then(function(release) {
             if (release.id) {
-                return self.list(release).then(function(sprints) {
-                    return _.find(_.sortBy(sprints, 'orderNumber'), function(sprint) {
-                        return sprint.state < SprintStatesByName.DONE;
+                return self.list(release).then(function() {
+                    var sprints = _.orderBy(release.sprints, 'orderNumber', 'desc');
+                    return _.find(sprints, function(sprint) {
+                        return sprint.state > SprintStatesByName.WAIT;
                     });
                 });
             } else {
@@ -97,9 +98,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.getCurrentOrNextSprint = function(project) {
         return ReleaseService.getCurrentOrNextRelease(project).then(function(release) {
             if (release.id) {
-                return self.list(release).then(function(sprints) {
-                    return _.find(_.sortBy(sprints, 'orderNumber'), function(sprint) {
-                        return sprint.state > SprintStatesByName.WAIT;
+                return self.list(release).then(function() {
+                    return _.find(_.sortBy(release.sprints, 'orderNumber'), function(sprint) {
+                        return sprint.state < SprintStatesByName.DONE;
                     });
                 });
             } else {

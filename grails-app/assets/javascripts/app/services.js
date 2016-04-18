@@ -380,6 +380,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 var cachedRelease = _.find(cachedReleases, {id: newSprint.parentRelease.id});
                 if (cachedRelease) {
                     if (!_.find(cachedRelease.sprints, {id: newSprint.id})) {
+                        if (!_.isArray(cachedRelease.sprints)) {
+                            cachedRelease.sprints = [];
+                        }
                         cachedRelease.sprints.push(newSprint);
                     }
                 }

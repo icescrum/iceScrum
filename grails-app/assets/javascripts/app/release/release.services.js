@@ -54,15 +54,15 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     };
     this.getCurrentOrLastRelease = function(project) {
         return self.list(project).then(function(releases) {
-            return _.find(_.sortBy(releases, 'orderNumber'), function(release) {
-                return release.state < ReleaseStatesByName.DONE;
+            return _.find(_.orderBy(releases, 'orderNumber', 'desc'), function(release) {
+                return release.state > ReleaseStatesByName.WAIT;
             });
         });
     };
     this.getCurrentOrNextRelease = function(project) {
         return self.list(project).then(function(releases) {
             return _.find(_.sortBy(releases, 'orderNumber'), function(release) {
-                return release.state > ReleaseStatesByName.WAIT;
+                return release.state < ReleaseStatesByName.DONE;
             });
         });
     };

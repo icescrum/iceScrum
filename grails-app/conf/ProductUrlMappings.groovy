@@ -93,7 +93,7 @@ class ProductUrlMappings {
         // Task
         "/p/$product/task" {
             controller = 'task'
-            action = [GET: "index", POST:"save"]
+            action = [POST:"save"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
@@ -115,7 +115,7 @@ class ProductUrlMappings {
         }
         "/p/$product/task/$type/$id" {
             controller = 'task'
-            action = [GET: "listByType"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)

@@ -33,32 +33,33 @@ class TaskController {
     def taskService
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def index() {
-        Sprint sprint = (Sprint) params.sprint ? Sprint.getInProduct(params.product.toLong(), params.sprint.toLong()).list() : Sprint.findCurrentOrNextSprint(params.product.toLong()).list()[0]
-        if (!sprint) {
-            returnError(text: message(code: 'is.sprint.error.not.exist'))
-            return
-        }
-        def tasks = Task.getAllTasksInSprint(sprint.id).list()
-        if (params.context) {
-            tasks = tasks.findAll { Task task ->
-                if (task.type) {
-                    if (params.context.type == 'tag') {
-                        return task.tags.contains(params.context.id)
-                    } else if (params.context.type == 'feature') {
-                        return false
+    def index(long id, long product, String type) {
+        def tasks
+        if (type == 'story') {
+            tasks = Story.withStory(product, id).tasks
+        } else if (type == 'sprint') {
+            tasks = Sprint.withSprint(product, id).tasks
+            if (params.context) {
+                tasks = tasks.findAll { Task task ->
+                    if (task.type) {
+                        if (params.context.type == 'tag') {
+                            return task.tags.contains(params.context.id)
+                        } else if (params.context.type == 'feature') {
+                            return false
+                        }
+                    } else {
+                        return true
                     }
-                } else {
-                    return true
                 }
             }
         }
         withFormat {
-            html { render status: 200, contentType: 'application/json', text: tasks as JSON }
+            html { render(status: 200, contentType: 'application/json', text: tasks as JSON) }
             json { renderRESTJSON(text: tasks) }
             xml { renderRESTXML(text: tasks) }
         }
     }
+
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def show(long id, long product) {
@@ -218,34 +219,6 @@ class TaskController {
             html { render(status: 200, contentType: 'application/json', text: copiedTask as JSON) }
             json { renderRESTJSON(text: copiedTask, status: 201) }
             xml { renderRESTXML(text: copiedTask, status: 201) }
-        }
-    }
-
-    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def listByType(long id, long product, String type) {
-        def tasks
-        if (type == 'story') {
-            tasks = Story.withStory(product, id).tasks
-        } else if (type == 'sprint') {
-            tasks = Sprint.withSprint(product, id).tasks
-            if (params.context) {
-                tasks = tasks.findAll { Task task ->
-                    if (task.type) {
-                        if (params.context.type == 'tag') {
-                            return task.tags.contains(params.context.id)
-                        } else if (params.context.type == 'feature') {
-                            return false
-                        }
-                    } else {
-                        return true
-                    }
-                }
-            }
-        }
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: tasks as JSON) }
-            json { renderRESTJSON(text: tasks) }
-            xml { renderRESTXML(text: tasks) }
         }
     }
 
