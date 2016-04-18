@@ -39,15 +39,15 @@ import sun.misc.BASE64Decoder
 
 class ScrumOSController {
 
-    def springSecurityService
-    def menuBarSupport
-    def notificationEmailService
-    def securityService
-    def uiDefinitionService
-    def grailsApplication
-    def servletContext
+    def menuSupport
     def messageSource
+    def servletContext
     def productService
+    def securityService
+    def grailsApplication
+    def uiDefinitionService
+    def springSecurityService
+    def notificationEmailService
 
     def index() {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
@@ -82,22 +82,22 @@ class ScrumOSController {
             return
         }
 
-        def uiRequested = params.window
-        def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
-        if (uiDefinition) {
+        def windowRequested = params.window
+        def windowDefition = uiDefinitionService.getWindowDefinitionById(windowRequested)
+        if (windowDefition) {
 
             def space = null
-            if (uiDefinition.space) {
-                space = ApplicationSupport.getCurrentSpace(params,uiDefinition.space)
+            if (windowDefition.space) {
+                space = ApplicationSupport.getCurrentSpace(params,windowDefition.space)
                 if (!space){
                     render(status:404)
                     return
                 }
             }
 
-            def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params:space?.params?:null).toString() - request.contextPath
+            def url = createLink(controller: params.window, action: params.actionWindow ?: windowDefition?.init, params:space?.params?:null).toString() - request.contextPath
 
-            if (!menuBarSupport.permissionDynamicBar(url)){
+            if (!menuSupport.permissionDynamic(url)){
                 if (springSecurityService.isLoggedIn()){
                     render(status:403)
                 } else {
@@ -107,25 +107,25 @@ class ScrumOSController {
             }
 
             def _continue = true
-            if (uiDefinition.window.before){
-                uiDefinition.window.before.delegate = delegate
-                uiDefinition.window.before.resolveStrategy = Closure.DELEGATE_FIRST
-                _continue = uiDefinition.window.before(space?.object, params.actionWindow ?: uiDefinition.window?.init)
+            if (windowDefition.before){
+                windowDefition.before.delegate = delegate
+                windowDefition.before.resolveStrategy = Closure.DELEGATE_FIRST
+                _continue = windowDefition.before(space?.object, params.actionWindow ?: windowDefition?.init)
             }
             if (!_continue){
                 render(status:404)
             } else {
                 render is.window([
                         window: params.window,
-                        icon: uiDefinition.icon,
+                        icon: windowDefition.icon,
                         spaceName: space?.object?.name,
-                        flex: uiDefinition.window?.flex,
-                        details: uiDefinition.window?.details,
-                        printable: uiDefinition.window?.printable,
-                        fullScreen: uiDefinition.window?.fullScreen,
-                        help: message(code: uiDefinition.window?.help),
-                        title: message(code: uiDefinition.window?.title),
-                        init: params.actionWindow ?: uiDefinition.window?.init
+                        flex: windowDefition?.flex,
+                        details: windowDefition?.details,
+                        printable: windowDefition?.printable,
+                        fullScreen: windowDefition?.fullScreen,
+                        help: message(code: windowDefition?.help),
+                        title: message(code: windowDefition?.title),
+                        init: params.actionWindow ?: windowDefition?.init
                 ], {})
             }
         } else {
@@ -184,27 +184,19 @@ class ScrumOSController {
         def i18nMessages = messageSource.getAllMessages(RCU.getLocale(request))
 
         def applicationMenus = []
-        uiDefinitionService.getDefinitions().each { def uiDefinitionId, def uiDefinition ->
-            def menuBar = uiDefinition.menuBar
-            applicationMenus << [id: uiDefinitionId,
-                      title: message(code: menuBar?.title),
+        uiDefinitionService.getWindowDefinitions().each { def uiWIndowId, def uiWIndow ->
+            def menu = uiWIndow.menu
+            applicationMenus << [id: uiWIndowId,
+                      title: message(code: menu?.title),
                       shortcut: "ctrl+" + (applicationMenus.size() + 1)]
         }
-
-        def roles = [
-                productOwner: request.productOwner,
-                scrumMaster: request.scrumMaster,
-                teamMember: request.teamMember,
-                stakeHolder: request.stakeHolder,
-                admin: request.admin
-        ]
 
         def tmpl = g.render(
                 template: 'templatesJS',
                 model: [id: controllerName,
                         user:springSecurityService.currentUser,
                         product: product,
-                        roles: roles,
+                        roles: securityService.getRolesRequest(),
                         i18nMessages: i18nMessages,
                         currentSprint: currentSprint,
                         applicationMenus: applicationMenus])

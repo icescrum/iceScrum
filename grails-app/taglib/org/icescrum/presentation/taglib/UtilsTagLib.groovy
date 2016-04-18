@@ -27,7 +27,6 @@ package org.icescrum.presentation.taglib
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
-import org.icescrum.core.ui.UiDefinition
 import org.icescrum.core.utils.BundleUtils
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -40,26 +39,6 @@ class UtilsTagLib {
     def grailsApplication
     def uiDefinitionService
 
-    def loadJsVar = { attrs, body ->
-
-        def current = pageScope.variables?.space ? pageScope.space.object : null
-        def p = current ? pageScope.space.params : [:]
-        def locale = attrs.locale ? attrs.locale : RCU.getLocale(request).toString()
-        def jsCode = """var icescrum = {
-                          grailsServer:"${grailsApplication.config.grails.serverURL}",
-                          baseUrl: "${createLink(controller: 'scrumOS')}",
-                          versionUrl: "${createLink(controller: 'scrumOS', action:'version')}",
-                          baseUrlSpace: ${p ? '\'' + createLink(controller: 'scrumOS', params: p, mapping:'baseUrl'+pageScope.variables.space.name.capitalize()) + '/\'' : null},
-                          urlOpenWindow:"${createLink(controller: 'scrumOS', action: 'openWindow', params: p)}",
-                          deleteConfirmMessage:"${message(code: 'is.confirm.delete').encodeAsJavaScript()}",
-                          cancelFormConfirmMessage:"${message(code: 'is.confirm.cancel.form').encodeAsJavaScript()}",
-                          more:"${message(code: 'is.menu.more').encodeAsJavaScript()}",
-                          uploading:"${message(code:'is.upload.inprogress.wait').encodeAsJavaScript()}",
-                          locale:'${locale}'
-                };"""
-        out << g.javascript(null, jsCode)
-    }
-
     def header = { attrs, body ->
         out << g.render(template: '/scrumOS/header',
                 model: [
@@ -71,7 +50,7 @@ class UtilsTagLib {
     }
 
     def exportFormats = { attrs, body ->
-        def exportFormats = uiDefinitionService.getDefinitionById(controllerName).exportFormats
+        def exportFormats = uiDefinitionService.getWindowDefinitionById(controllerName).exportFormats
         if (exportFormats instanceof Closure){
             exportFormats.delegate = delegate
             exportFormats.resolveStrategy = Closure.DELEGATE_FIRST

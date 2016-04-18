@@ -21,20 +21,18 @@
 *
 */
 
-uiDefinitions = {
+windows = {
     'backlog' {
+        init 'view'
+        details true
         icon = 'fa fa-inbox'
-        menuBar {
+        title 'is.ui.backlogs'
+        help 'is.ui.backlog.help'
+        menu {
             title 'is.ui.backlogs'
             defaultVisibility true
             defaultPosition 2
             spaceDynamicBar true
-        }
-        window {
-            details true
-            init 'view'
-            title 'is.ui.backlogs'
-            help 'is.ui.backlog.help'
         }
         embedded = [
                 view:'list',
@@ -49,18 +47,16 @@ uiDefinitions = {
         }
     }
     'feature' {
+        init 'view'
+        details true
+        title 'is.ui.feature'
+        help 'is.ui.feature.help'
         icon = 'fa fa-puzzle-piece'
-        menuBar {
+        menu {
             title 'is.ui.feature'
             defaultVisibility true
             defaultPosition 5
             spaceDynamicBar true
-        }
-        window {
-            details true
-            init 'view'
-            title 'is.ui.feature'
-            help 'is.ui.feature.help'
         }
         embedded = [
                 view:'list',
@@ -73,18 +69,16 @@ uiDefinitions = {
         }
     }
     'project' {
+        flex false
+        init 'view'
+        title 'is.ui.project'
         icon = 'fa fa-dashboard'
-        menuBar {
+        help 'is.ui.project.help'
+        menu {
             title 'is.ui.project'
             defaultVisibility true
             defaultPosition 1
             spaceDynamicBar true
-        }
-        window {
-            flex false
-            init 'view'
-            title 'is.ui.project'
-            help 'is.ui.projedt.help'
         }
         embedded = [
                 view:'productCumulativeFlowChart',
@@ -100,18 +94,16 @@ uiDefinitions = {
         }
     }
     'planning' {
+        details true
+        init 'view'
         icon = 'fa fa-calendar'
-        menuBar {
+        title 'todo.is.ui.planning'
+        help 'todo.is.ui.planning.help'
+        menu {
             title 'todo.is.ui.planning'
             defaultVisibility true
             defaultPosition 3
             spaceDynamicBar true
-        }
-        window {
-            details true
-            init 'view'
-            title 'todo.is.ui.planning'
-            help 'todo.is.ui.planning.help'
         }
         embedded = [
                 view:'index',
@@ -126,18 +118,16 @@ uiDefinitions = {
         ]
     }
     'taskBoard' {
+        init 'view'
+        details true
         icon = 'fa fa-tasks'
-        menuBar {
+        title 'todo.is.ui.taskBoard'
+        help 'todo.is.ui.taskBoard.help'
+        menu {
             title 'todo.is.ui.taskBoard'
             defaultVisibility true
             defaultPosition 4
             spaceDynamicBar true
-        }
-        window {
-            details true
-            init 'view'
-            title 'todo.is.ui.taskBoard'
-            help 'todo.is.ui.taskBoard.help'
         }
         embedded = [
                 view:'index',
@@ -160,16 +150,23 @@ uiDefinitions = {
         }
     }
     'search' {
-        icon = ' fa fa-search'
-        menuBar {
+        init 'index'
+        title 'is.ui.search'
+        icon = 'fa fa-search'
+        menu {
             title 'is.ui.search'
             defaultVisibility false
             defaultPosition 1
             spaceDynamicBar true
         }
-        window {
-            init 'index'
-            title 'is.ui.search'
-        }
+    }
+}
+
+widgets = {
+    'chart' {
+        title 'is.ui.widget.chart.title'
+    }
+    'feeds' {
+        title 'is.ui.widget.feedsdd.title'
     }
 }

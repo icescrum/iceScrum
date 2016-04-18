@@ -37,14 +37,14 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
-import org.icescrum.core.ui.UiDefinition
+import org.icescrum.core.ui.WindowDefinition
 import org.springframework.mail.MailException
 import org.springframework.security.acls.domain.BasePermission
 
 class UserController {
 
     def userService
-    def menuBarSupport
+    def menuSupport
     def securityService
     def grailsApplication
     def uiDefinitionService
@@ -267,35 +267,35 @@ class UserController {
     @Secured('isAuthenticated()')
     def menu(String id, String position, boolean hidden) {
         if (!id && !position) {
-            returnError(text: message(code: 'is.user.preferences.error.menuBar'))
+            returnError(text: message(code: 'is.user.preferences.error.menu'))
             return
         }
         try {
             userService.menu((User) springSecurityService.currentUser, id, position, hidden ?: false)
             render(status: 200)
         } catch (RuntimeException e) {
-            returnError(text: message(code: 'is.user.preferences.error.menuBar'), exception: e)
+            returnError(text: message(code: 'is.user.preferences.error.menu'), exception: e)
         }
     }
 
     @Secured('permitAll()')
     def menus() {
         def menus = []
-        uiDefinitionService.getDefinitions().each { String uiDefinitionId, UiDefinition uiDefinition ->
-            def menuBar = uiDefinition.menuBar
-            if (menuBar?.spaceDynamicBar) {
-                menuBar.show = menuBarSupport.spaceDynamicBar(uiDefinitionId, menuBar.defaultVisibility, menuBar.defaultPosition, uiDefinition.space, uiDefinition.window.init)
+        uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
+            def menu = windowDefinition.menu
+            if (menu?.spaceDynamicBar) {
+                menu.show = menuSupport.spaceDynamic(windowDefinitionId, menu.defaultVisibility, menu.defaultPosition, windowDefinition.space, windowDefinition.init)
             }
-            def show = menuBar?.show
+            def show = menu?.show
             if (show in Closure) {
                 show.delegate = delegate
                 show = show()
             }
             if (show) {
-                menus << [title: message(code: menuBar?.title),
-                          id: uiDefinitionId,
+                menus << [title: message(code: menu?.title),
+                          id: windowDefinitionId,
                           shortcut: "ctrl+" + (menus.size() + 1),
-                          icon: uiDefinition.icon,
+                          icon: windowDefinition.icon,
                           position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
                           visible: show.visible]
             }

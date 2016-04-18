@@ -171,7 +171,6 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
         return $http.pendingRequests.length;
     }, function(newVal) {
         $scope.app.loading = newVal > 0 || $scope.app.loadingPercent < 100;
-        debugger;
         if ($scope.app.loading && $scope.app.loadingPercent < 100) {
             $scope.app.loadingPercent = 100 - ((100 - $scope.app.loadingPercent) / newVal);
         }

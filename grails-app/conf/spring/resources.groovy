@@ -24,7 +24,7 @@
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
-import org.icescrum.core.support.MenuBarSupport
+import org.icescrum.core.support.MenuSupport
 import org.icescrum.i18n.IceScrumMessageSource
 
 beans = {
@@ -43,7 +43,7 @@ beans = {
         trustResolver = ref('authenticationTrustResolver')
     }
 
-    menuBarSupport(MenuBarSupport) {innerBean ->
+    menuSupport(MenuSupport) { innerBean ->
         innerBean.autowire = "byName"
     }
 
