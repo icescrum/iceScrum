@@ -677,10 +677,10 @@ angular.module('isApp', [
             ]
         });
 
-        $stateProvider.state('404', {
-            url: '*path',
-            template: ''
-        });
+    $stateProvider.state('404', {
+        url: '*path',
+        template: ''
+    });
 }])
 .config(['flowFactoryProvider', function(flowFactoryProvider) {
     flowFactoryProvider.defaults = {
@@ -1025,7 +1025,7 @@ angular.module('isApp', [
     }
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
-        if(toState.name == "404"){
+        if (toState.name == "404") {
             event.preventDefault();
             $state.go('root');
         } else if (!event.defaultPrevented) {

@@ -146,7 +146,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
                 $scope.app.loading = false;
             }
             $timeout.cancel(resizeTimeout);
-            resizeTimeout = $timeout(function () {
+            resizeTimeout = $timeout(function() {
                 w.triggerHandler('resize');
             }, 100);
         }
@@ -373,7 +373,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
             // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
             var context = $scope.app.context;
             if (context) {
-                $timeout(function () {
+                $timeout(function() {
                     $location.replace(); // Prevent the state without the ?context... part to be save in browser history, must be in timeout to avoid that all changes during the current digest are lost
                     $location.search('context', context.type + ':' + context.id);
                 });
@@ -398,7 +398,7 @@ controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_E
     };
     $scope.login = function(credentials) {
         AuthService.login(credentials).then(function(data) {
-            if(!$scope.loginCallback) {
+            if (!$scope.loginCallback) {
                 var lastOpenedUrl = data.url;
                 var normalizedCurrentLocation = window.location.href.charAt(window.location.href.length - 1) == '/' ? window.location.href.substring(0, window.location.href.length - 1) : window.location.href;
                 if (normalizedCurrentLocation == $rootScope.serverUrl && lastOpenedUrl) {

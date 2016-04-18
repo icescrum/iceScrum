@@ -42,7 +42,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     };
     this.getMenus = function(project) {
         //product is used to get menu for a particular product
-        return User.query({action: 'menus', product:project ? project.id : null}).$promise;
+        return User.query({action: 'menus', product: project ? project.id : null}).$promise;
     };
     this.update = function(user) {
         user.class = 'user';
@@ -56,7 +56,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         return $http.post($rootScope.serverUrl + '/user/retrieve?user.username=' + user.username);
     };
     this.getInvitationUserMock = function(token) {
-        return FormService.httpGet('user/invitationUserMock', { params: { token: token } }, true);
+        return FormService.httpGet('user/invitationUserMock', {params: {token: token}}, true);
     };
     this.updateMenuPreferences = function(info) {
         $http({
@@ -70,6 +70,6 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         });
     };
     this.search = function(term) {
-        return FormService.httpGet('user/search', { params: { value: term, invit: true } }, true);
+        return FormService.httpGet('user/search', {params: {value: term, invit: true}}, true);
     }
 }]);
