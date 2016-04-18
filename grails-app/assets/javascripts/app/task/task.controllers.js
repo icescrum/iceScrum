@@ -171,7 +171,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
     var sortedTasks = $filter('orderBy')(taskContext.tasks, TaskConstants.ORDER_BY);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);
-    $scope.taskStates = TaskStatesByName;
+    $scope.taskStatesByName = TaskStatesByName;
 }]);
 
 controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {

@@ -23,7 +23,7 @@
 
 <div class="panel panel-light"
      ng-if="sprint"
-     ng-class="{'sortable-disabled': !isSortingTaskBoard(sprint), 'sprint-not-done': sprint.state != 3}">
+     ng-class="{'sortable-disabled': !isSortingTaskBoard(sprint), 'sprint-not-done': sprint.state != sprintStatesByName.DONE}">
     <div class="panel-heading">
         <h3 class="panel-title">
             <div class="btn-toolbar">
@@ -84,32 +84,32 @@
         <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
             <thead>
             <tr class="table-header sticky-header sticky-stack">
-                <th ng-if="sprint.state != 3">
+                <th ng-if="sprint.state != sprintStatesByName.DONE">
                     <span>${message(code: 'is.task.state.wait')}</span>
                 </th>
-                <th ng-if="sprint.state == 2">
+                <th ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
                     <span>${message(code: 'is.task.state.inprogress')}</span>
                 </th>
-                <th ng-if="sprint.state != 1">
+                <th ng-if="sprint.state != sprintStatesByName.WAIT">
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>
             </thead>
             <tbody>
                 <tr class="sticky-header">
-                    <td colspan="{{ sprint.state != 2 ? 1 : 3 }}" class="task-type">
+                    <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}" class="task-type">
                         <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</h3>
                     </td>
                 </tr>
                 <tr>
                     <td class="postits grid-group"
                         ng-class="hasSelected() ? 'has-selected' : ''"
-                        ng-model="tasksByTypeByState[11][taskState]"
-                        ng-init="taskType = 11"
+                        ng-model="tasksByTypeByState[taskTypesByName.URGENT][taskState]"
+                        ng-init="taskType = taskTypesByName.URGENT"
                         as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                         is-disabled="!isSortingTaskBoard(sprint)"
                         ng-repeat="taskState in sprintTaskStates">
-                        <div ng-repeat="task in tasksByTypeByState[11][taskState] | search"
+                        <div ng-repeat="task in tasksByTypeByState[taskTypesByName.URGENT][taskState] | search"
                              ng-class="{ 'is-selected': isSelected(task) }"
                              selectable-id="{{ ::task.id }}"
                              as-sortable-item
@@ -120,7 +120,7 @@
                             <a type="button"
                                ng-if="taskState == 0"
                                class="btn btn-primary"
-                               ng-click="openNewTaskByType(11)"
+                               ng-click="openNewTaskByType(taskTypesByName.URGENT)"
                                href>
                                 <i class="fa fa-plus"></i>
                             </a>
@@ -128,19 +128,19 @@
                     </td>
                 </tr>
                 <tr class="sticky-header">
-                    <td colspan="{{ sprint.state != 2 ? 1 : 3 }}" class="task-type">
+                    <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}" class="task-type">
                         <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</h3>
                     </td>
                 </tr>
                 <tr>
                     <td class="postits grid-group"
                         ng-class="hasSelected() ? 'has-selected' : ''"
-                        ng-model="tasksByTypeByState[10][taskState]"
-                        ng-init="taskType = 10"
+                        ng-model="tasksByTypeByState[taskTypesByName.RECURRENT][taskState]"
+                        ng-init="taskType = taskTypesByName.RECURRENT"
                         as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                         is-disabled="!isSortingTaskBoard(sprint)"
                         ng-repeat="taskState in sprintTaskStates">
-                        <div ng-repeat="task in tasksByTypeByState[10][taskState] | search"
+                        <div ng-repeat="task in tasksByTypeByState[taskTypesByName.RECURRENT][taskState] | search"
                              ng-class="{ 'is-selected': isSelected(task) }"
                              selectable-id="{{ ::task.id }}"
                              as-sortable-item
@@ -150,7 +150,7 @@
                         <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
                             <a type="button"
                                ng-if="taskState == 0"
-                               ng-click="openNewTaskByType(10)"
+                               ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
                                class="btn btn-primary "
                                href>
                                 <i class="fa fa-plus"></i>
@@ -215,12 +215,12 @@
                 </tr>
             </tbody>
             <tr ng-if="sprint.stories.length == 0">
-                <td colspan="{{ sprint.state != 2 ? 1 : 3 }}">
+                <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                     <div class="empty-view">
                         <p class="help-block">${message(code: 'todo.is.ui.story.empty.sprint')}<p>
                         <a type="button"
                            class="btn btn-primary"
-                           ng-if="sprint.state != 3"
+                           ng-if="sprint.state != sprintStatesByName.DONE"
                            href="#backlog">
                             <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlogs')}
                         </a>

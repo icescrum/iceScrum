@@ -60,7 +60,7 @@
                 </a>
             </div>
         </h3>
-        <visual-states ng-model="sprint" model-states="sprintStates"/>
+        <visual-states ng-model="sprint" model-states="sprintStatesByName"/>
     </div>
     <div ui-view="details-tab">
         <form ng-submit="update(editableSprint)"

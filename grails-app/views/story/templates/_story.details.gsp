@@ -80,7 +80,7 @@
                 </a>
             </div>
         </h3>
-        <visual-states ng-model="story" model-states="storyStates"/>
+        <visual-states ng-model="story" model-states="storyStatesByName"/>
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">

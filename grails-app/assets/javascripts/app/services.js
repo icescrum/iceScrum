@@ -63,28 +63,24 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     this.create = function(user, roles) {
         _.extend(self.user, user);
         _.merge(self.roles, roles);
-
-        if(self.authenticated()){
+        if (self.authenticated()) {
             UserService.getUnreadActivities(self.user)
                 .then(function(data) {
                     self.unreadActivitiesCount = data.unreadActivitiesCount;
                 });
         }
-
         UserService.getMenus(self.project).then(function(menus) {
             var menusByVisibility = _.groupBy(menus, 'visible');
             self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
             self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');
         });
-
-        if(self.listeners.activity){
+        if (self.listeners.activity) {
             self.listeners.activity.unregister();
         }
         self.listeners.activity = PushService.registerListener('activity', IceScrumEventType.CREATE, function() {
             self.unreadActivitiesCount += 1;
         });
-
-        if(self.listeners.user){
+        if (self.listeners.user) {
             self.listeners.user.unregister();
         }
         self.listeners.user = PushService.registerListener('user', IceScrumEventType.UPDATE, function(user) {

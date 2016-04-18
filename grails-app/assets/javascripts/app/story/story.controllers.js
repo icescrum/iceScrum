@@ -405,7 +405,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         //$scope.previousStory = FormService.previous(list, $scope.story);
         //$scope.nextStory = FormService.next(list, $scope.story);
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
-        $scope.storyStates = StoryStatesByName;
+        $scope.storyStatesByName = StoryStatesByName;
     }]);
 
 controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', 'FeatureService', function($scope, $controller, StoryService, listId, FeatureService) {

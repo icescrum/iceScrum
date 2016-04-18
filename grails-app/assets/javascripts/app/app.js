@@ -999,14 +999,12 @@ angular.module('isApp', [
 
     if (isSettings) {
         $rootScope.serverUrl = isSettings.serverUrl;
-
         $rootScope.taskTypes = isSettings.types.task;
         $rootScope.storyTypes = isSettings.types.story;
         $rootScope.featureTypes = isSettings.types.feature;
         $rootScope.planningPokerTypes = isSettings.types.planningPoker;
-
         $rootScope.taskStates = isSettings.states.task;
-        $rootScope.acceptanceTestStates = isSettings.states.acceptanceTests;
+        $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
 
         if (isSettings.project) {
             isSettings.project.startDate = new Date(isSettings.project.startDate);
@@ -1039,7 +1037,7 @@ angular.module('isApp', [
                 event.preventDefault();
                 if (!Session.authenticated()) {
                     $rootScope.showAuthModal('', function() {
-                        UserService.getCurrent().then(function(data){
+                        UserService.getCurrent().then(function(data) {
                             Session.create(data.user, data.roles);
                             $state.go(toState.name, toParams);
                         });
@@ -1079,6 +1077,10 @@ angular.module('isApp', [
     "WAIT": 0,
     "IN_PROGRESS": 1,
     "DONE": 2
+})
+.constant('TaskTypesByName', {
+    "RECURRENT": 10,
+    "URGENT": 11
 })
 .constant('AcceptanceTestStatesByName', {
     "TOCHECK": 1,

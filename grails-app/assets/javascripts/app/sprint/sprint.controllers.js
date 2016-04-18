@@ -236,7 +236,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
     $scope.sprint = detailsSprint;
     $scope.editableSprintReference = {};
     $scope.resetSprintForm();
-    $scope.sprintStates = SprintStatesByName;
+    $scope.sprintStatesByName = SprintStatesByName;
     ReleaseService.get($scope.sprint.parentRelease.id).then(function(release) {
         $scope.release = release;
         $scope.endDateOptions.maxDate = $scope.release.endDate;

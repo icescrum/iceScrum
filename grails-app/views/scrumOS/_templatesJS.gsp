@@ -55,8 +55,8 @@
             planningPoker:${BundleUtils.planningPokerGameSuites.keySet() as JSON}
         },
         states: {
-            taskStates:${BundleUtils.taskStates.keySet() as JSON},
-            acceptanceTestStates:${BundleUtils.acceptanceTestStates.keySet() as JSON}
+            task:${BundleUtils.taskStates.keySet() as JSON},
+            acceptanceTest:${BundleUtils.acceptanceTestStates.keySet() as JSON}
         },
         serverUrl: "${grailsApplication.config.grails.serverURL}"
     };

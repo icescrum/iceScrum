@@ -82,7 +82,7 @@
                 </a>
             </div>
         </h3>
-        <visual-states ng-model="task" model-states="taskStates"/>
+        <visual-states ng-model="task" model-states="taskStatesByName"/>
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.taskTabId}">

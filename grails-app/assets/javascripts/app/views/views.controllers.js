@@ -260,7 +260,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     };
 }]);
 
-controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, sprint) {
+controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, sprint) {
     $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
@@ -419,22 +419,12 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.sprint = sprint;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
+    $scope.sprintStatesByName = SprintStatesByName;
+    $scope.taskTypesByName = TaskTypesByName;
     $scope.ghostStories = [];
-    $scope.$watch('sprint.tasks', function(newValue, oldValue) {
-        if (oldValue !== newValue) { // Prevent trigger watch on watch creation
+    $scope.$watch('sprint.tasks', function(newTasks) {
+        if (newTasks) {
             $scope.refreshTasks();
         }
     }, true);
-    $scope.$watch(function() {
-        return Session.getProject().stories;
-    }, function(newValue, oldValue) {
-        if (oldValue !== newValue) { // Prevent trigger watch on watch creation
-            StoryService.listByType(sprint).then(function() {
-                TaskService.list(sprint); // Reload tasks and cascade to sprint.tasks watch that will take care of refreshing
-            });
-        }
-    }, true);
-    if ($scope.sprint) {
-        $scope.refreshTasks(); // Init
-    }
 }]);

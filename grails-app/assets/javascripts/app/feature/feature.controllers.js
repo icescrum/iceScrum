@@ -97,7 +97,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.resetFeatureForm();
     $scope.previousFeature = FormService.previous(Session.getProject().features, $scope.feature);
     $scope.nextFeature = FormService.next(Session.getProject().features, $scope.feature);
-    $scope.featureStates = FeatureStatesByName;
+    $scope.featureStatesByName = FeatureStatesByName;
 }]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {

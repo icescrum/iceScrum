@@ -173,7 +173,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
     $scope.release = detailsRelease;
     $scope.editableReleaseReference = {};
     $scope.resetReleaseForm();
-    $scope.releaseStates = ReleaseStatesByName;
+    $scope.releaseStatesByName = ReleaseStatesByName;
     $scope.previousRelease = FormService.previous($scope.project.releases, $scope.release);
     $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);
 }]);

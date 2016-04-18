@@ -77,25 +77,30 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         return Task.update({id: task.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.list = function(taskContext) {
-        if (!_.isArray(taskContext.tasks)) {
-            taskContext.tasks = [];
-        }
-        _.each(taskContext.tasks_ids, function(task) {
-            var cachedTask = CacheService.get('task', task.id);
-            if (cachedTask) {
-                taskContext.tasks.push(cachedTask);
+        if (_.isEmpty(taskContext.tasks)) {
+            var params = {typeId: taskContext.id, type: taskContext.class.toLowerCase()};
+            if ($rootScope.app.context) {
+                _.merge(params, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
             }
-        });
-        var params = {typeId: taskContext.id, type: taskContext.class.toLowerCase()};
-        if ($rootScope.app.context) {
-            _.merge(params, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
+            return Task.query(params, function(tasks) {
+                if (angular.isArray(taskContext.tasks)) {
+                    _.each(tasks, function(task) {
+                        var existingSprint = _.find(taskContext.tasks, {id: task.id});
+                        if (existingSprint) {
+                            angular.extend(existingSprint, task);
+                        } else {
+                            taskContext.tasks.push(task);
+                        }
+                    });
+                } else {
+                    taskContext.tasks = tasks;
+                }
+                taskContext.tasts_count = tasks.length;
+                self.mergeTasks(tasks);
+            }).$promise;
+        } else {
+            return $q.when(taskContext.tasks);
         }
-        var promise = Task.query(params, function(tasks) {
-            taskContext.tasks = tasks;
-            taskContext.tasts_count = tasks.length;
-            self.mergeTasks(tasks);
-        }).$promise;
-        return taskContext.tasks.length === (taskContext.tasks_ids ? taskContext.tasks_ids.length : null) ? $q.when(taskContext.tasks) : promise;
     };
     this.authorizedTask = function(action, task) {
         switch (action) {

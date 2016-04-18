@@ -65,7 +65,7 @@
                 </a>
             </div>
         </h3>
-        <visual-states ng-model="feature" model-states="featureStates"/>
+        <visual-states ng-model="feature" model-states="featureStatesByName"/>
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.featureTabId}">
