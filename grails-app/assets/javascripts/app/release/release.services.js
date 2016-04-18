@@ -84,9 +84,6 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     this.close = function(release) {
         return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.generateSprints = function(release) {
-        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'generateSprints'}, {}, self.mergeSprints).$promise; // TODO release resource returns sprints, this is not good
-    };
     this.autoPlan = function(release, capacity) {
         return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}).$promise; // TODO release resource returns stories, this is not good
     };

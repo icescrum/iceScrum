@@ -343,5 +343,13 @@ class ProductUrlMappings {
                 releaseId(matches: /[0-9A-Z]*/)
             }
         }
+        "/p/$product/sprint/release/$releaseId/generateSprints" {
+            controller = 'sprint'
+            action = 'generateSprints'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                releaseId(matches: /[0-9A-Z]*/)
+            }
+        }
     }
 }

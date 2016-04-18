@@ -375,6 +375,20 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             });
         },
         sprint: function(oldSprint, newSprint) {
+            var cachedReleases = CacheService.getCache('release');
+            if (!oldSprint && newSprint) {
+                var cachedRelease = _.find(cachedReleases, {id: newSprint.parentRelease.id});
+                if (cachedRelease) {
+                    if (!_.find(cachedRelease.sprints, {id: newSprint.id})) {
+                        cachedRelease.sprints.push(newSprint);
+                    }
+                }
+            } else if (oldSprint && !newSprint) {
+                var cachedRelease = _.find(cachedReleases, {id: oldSprint.parentRelease.id});
+                if (cachedRelease) {
+                    _.remove(cachedRelease.sprints, {id: oldSprint.id});
+                }
+            }
         },
         release: function(oldRelease, newRelease) {
         }
@@ -429,6 +443,13 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: transformRequest,
                 interceptor: singleInterceptor
+            },
+            saveArray: {
+                method: 'post',
+                isArray: true,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                transformRequest: transformRequest,
+                interceptor: arrayInterceptor
             },
             updateArray: {
                 method: 'post',

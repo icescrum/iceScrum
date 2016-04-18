@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', function($scope, Session, ReleaseService) {
+controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'SprintService', function($scope, Session, ReleaseService, SprintService) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
@@ -38,7 +38,7 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', fu
         });
     };
     $scope.generateSprints = function(release) {
-        ReleaseService.generateSprints(release).then(function() {
+        SprintService.generateSprints(release).then(function() {
             $scope.notifySuccess('todo.is.ui.release.generatedSprints');
         });
     };

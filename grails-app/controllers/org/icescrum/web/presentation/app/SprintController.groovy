@@ -125,6 +125,17 @@ class SprintController {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    def generateSprints(long product, long releaseId) {
+        Release release = Release.withRelease(product, releaseId)
+        def sprints = sprintService.generateSprints(release)
+        withFormat {
+            html { render status: 200, contentType: 'application/json', text: sprints as JSON }
+            json { renderRESTJSON(text: sprints, status: 201) }
+            xml { renderRESTXML(text: sprints, status: 201) }
+        }
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def autoPlan(Double capacity) {
         def sprints = Sprint.withSprints(params)
         storyService.autoPlan(sprints, capacity)

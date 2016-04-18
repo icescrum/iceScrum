@@ -165,17 +165,6 @@ class ReleaseController {
         }
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def generateSprints(long product, long id) {
-        Release release = Release.withRelease(product, id)
-        def sprints = sprintService.generateSprints(release)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: sprints as JSON }
-            json { renderRESTJSON(text: sprints, status: 201) }
-            xml { renderRESTXML(text: sprints, status: 201) }
-        }
-    }
-
     @Secured(['stakeHolder() or inProduct()'])
     def burndown(long product, long id) {
         Release release = Release.withRelease(product, id)

@@ -45,7 +45,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             crudMethods[IceScrumEventType.CREATE](sprint);
         });
     };
-    this.list = function(release) { // TODO FIX
+    this.list = function(release) {
         if (_.isEmpty(release.sprints)) {
             return Sprint.query({projectId: release.parentProduct.id, type: 'release', id: release.id}, function(sprints) {
                 if (angular.isArray(release.sprints)) {
@@ -73,6 +73,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.save = function(sprint, release) {
         sprint.class = 'sprint';
         return Sprint.save({projectId: release.parentProduct.id}, sprint, crudMethods[IceScrumEventType.CREATE]).$promise;
+    };
+    this.generateSprints = function(release) {
+        return Sprint.saveArray({type: 'release', id: release.id, projectId: release.parentProduct.id, action: 'generateSprints'}, {}, self.mergeSprints).$promise;
     };
     this.get = function(id, project) {
         var sprint = _.find(ReleaseService.getAllSprints(project.releases), {id: id});
