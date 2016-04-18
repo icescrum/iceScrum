@@ -1041,7 +1041,7 @@ angular.module('isApp', [
                     $rootScope.showAuthModal('', function() {
                         UserService.getCurrent().then(function(data){
                             Session.create(data.user, data.roles);
-                            $state.go(toState.name, {}, {reload: true});
+                            $state.go(toState.name, toParams);
                         });
                     });
                 } else {
