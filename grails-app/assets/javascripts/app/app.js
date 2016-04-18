@@ -480,7 +480,7 @@ angular.module('isApp', [
                 releases: ['$q', 'ReleaseService', 'SprintService', 'project', function($q, ReleaseService, SprintService, project) {
                     return ReleaseService.list(project).then(function(releases) {            // Wait for releases
                         return $q.all(_.map(releases, SprintService.list)).then(function() { // Wait for sprints
-                            return releases;                                                 // Finally resolve the releases
+                            return project.releases;                                         // Finally resolve the releases
                         });
                     });
                 }]

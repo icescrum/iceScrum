@@ -179,22 +179,6 @@ class IceScrumFilters {
             }
         }
 
-        releaseId(controller: 'planning', action: '*') {
-            before = {
-                if (!params.id) {
-                    params.id = !actionName.contains('Chart') ? Release.findCurrentOrNextRelease(Product.load(params.product).id).list()[0]?.id : Release.findCurrentOrLastRelease(Product.load(params.product).id).list()[0]?.id
-                }
-            }
-        }
-
-        sprintId(controller: 'taskBoard', action: '*') {
-            before = {
-                if (!params.id) {
-                    params.id = !actionName.contains('Chart') ? Sprint.findCurrentOrNextSprint(Product.load(params.product).id).list()[0]?.id : Sprint.findCurrentOrLastSprint(Product.load(params.product).id).list()[0]?.id
-                }
-            }
-        }
-
         locale(uri: '/ws/**', invert:true) {
             before = {
                 def locale = params.lang ?: null

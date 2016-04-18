@@ -177,16 +177,6 @@ class ReleaseController {
     }
 
     @Secured(['stakeHolder() or inProduct()'])
-    def findCurrentOrNextRelease(long product) {
-        def release = Release.findCurrentOrNextRelease(product).list()[0]
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: release as JSON }
-            json { renderRESTJSON(text: release) }
-            xml { renderRESTXML(text: release) }
-        }
-    }
-
-    @Secured(['stakeHolder() or inProduct()'])
     def burndown(long product, long id) {
         Release release = Release.withRelease(product, id)
         def values = releaseService.releaseBurndownValues(release)

@@ -232,12 +232,12 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
         }
     });
     $scope.formHolder = {};
-    $scope.resetSprintForm();
     $scope.editableSprint = {};
     $scope.sprint = detailsSprint;
     $scope.editableSprintReference = {};
+    $scope.resetSprintForm();
     $scope.sprintStates = SprintStatesByName;
-    ReleaseService.get($scope.sprint.parentRelease.id, $scope.project).then(function(release) {
+    ReleaseService.get($scope.sprint.parentRelease.id).then(function(release) {
         $scope.release = release;
         $scope.endDateOptions.maxDate = $scope.release.endDate;
         var sortedSprints = _.sortBy($scope.release.sprints, 'orderNumber');

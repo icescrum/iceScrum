@@ -40,7 +40,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
 }])
 .service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
     var self = this;
-    self.menus = {visible:[], hidden:[]};
+    self.menus = {visible: [], hidden: []};
     self.user = new User();
     self.project = new Project();
     self.isProjectResolved = $q.defer();
@@ -69,7 +69,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                             self.unreadActivitiesCount = data.unreadActivitiesCount;
                         });
                 }
-                UserService.getMenus(self.project).then(function(menus){
+                UserService.getMenus(self.project).then(function(menus) {
                     var menusByVisibility = _.groupBy(menus, 'visible');
                     self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
                     self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');
@@ -196,20 +196,20 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         });
     };
     this.getLanguages = function() {
-        return FormService.httpGet('scrumOS/languages', { cache: true });
+        return FormService.httpGet('scrumOS/languages', {cache: true});
     };
     this.getTimezones = function() {
-        return FormService.httpGet('scrumOS/timezones', { cache: true });
+        return FormService.httpGet('scrumOS/timezones', {cache: true});
     };
 }])
 .service('FormService', ['$filter', '$http', '$rootScope', function($filter, $http, $rootScope) {
     var self = this;
     this.previous = function(list, element) {
-        var ind = _.findIndex(list, { id: element.id });
+        var ind = _.findIndex(list, {id: element.id});
         return ind > 0 ? list[ind - 1] : null;
     };
     this.next = function(list, element) {
-        var ind = _.findIndex(list, { id: element.id });
+        var ind = _.findIndex(list, {id: element.id});
         return ind + 1 <= list.length ? list[ind + 1] : null;
     };
     this.formObjectData = function(obj, prefix) {
@@ -311,7 +311,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     var caches = {};
     this.getCache = function(cacheName) {
         if (!_.isString(cacheName)) {
-           throw Error("This cache name is not a string: " + cacheName);
+            throw Error("This cache name is not a string: " + cacheName);
         }
         if (!_.isArray(caches[cacheName])) {
             caches[cacheName] = [];
@@ -373,6 +373,10 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                     story.feature = newFeature;
                 }
             });
+        },
+        sprint: function(oldSprint, newSprint) {
+        },
+        release: function(oldRelease, newRelease) {
         }
     };
     this.sync = function(clazz, oldItem, newItem) {
@@ -381,7 +385,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
 }]);
 
 var restResource = angular.module('restResource', ['ngResource']);
-restResource.factory('Resource', ['$resource', 'FormService', '$rootScope', function($resource, FormService) {
+restResource.factory('Resource', ['$resource', 'FormService', function($resource, FormService) {
     return function(url, params, methods) {
         var defaultParams = {
             id: '@id'
@@ -450,7 +454,7 @@ restResource.factory('Resource', ['$resource', 'FormService', '$rootScope', func
             }
         };
         defaultMethods.update = angular.copy(defaultMethods.save); // for the moment there is no difference between save & update
-        if(url.indexOf('/') == 0){
+        if (url.indexOf('/') == 0) {
             url = isSettings.serverUrl + url;
         }
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));

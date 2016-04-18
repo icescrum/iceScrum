@@ -25,82 +25,105 @@ services.factory('Sprint', ['Resource', function($resource) {
     return $resource('/p/:projectId/sprint/:type/:id/:action');
 }]);
 
-services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'Session', function($q, $state, Sprint, SprintStatesByName, Session) {
-    this.list = function(release) {
-        var promise = Sprint.query({projectId: release.parentProduct.id, type: 'release', id: release.id}, function(newSprints) {
-            if (angular.isArray(release.sprints)) {
-                _.each(newSprints, function(newSprint) {
-                    var existingSprint = _.find(release.sprints, {id: newSprint.id});
-                    if (existingSprint) {
-                        angular.extend(existingSprint, newSprint);
-                    } else {
-                        release.sprints.push(newSprint);
-                    }
-                });
-            } else {
-                release.sprints = newSprints;
-            }
-            release.sprints_count = release.sprints.length;
-        }).$promise;
-        return _.isEmpty(release.sprints) ? promise : $q.when(release.sprints);
+services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'IceScrumEventType', 'Session', 'CacheService', 'ReleaseService', function($q, $state, Sprint, SprintStatesByName, IceScrumEventType, Session, CacheService, ReleaseService) {
+    var self = this;
+    var crudMethods = {};
+    crudMethods[IceScrumEventType.CREATE] = function(sprint) {
+        CacheService.addOrUpdate('sprint', sprint);
     };
-    this.getCurrentOrLastSprint = function(project) {
-        return Sprint.get({projectId: project.id, action: 'findCurrentOrLastSprint'}).$promise;
+    crudMethods[IceScrumEventType.UPDATE] = function(sprint) {
+        CacheService.addOrUpdate('sprint', sprint);
     };
-    this.getCurrentOrNextSprint = function(project) {
-        return Sprint.get({projectId: project.id, action: 'findCurrentOrNextSprint'}).$promise;
+    crudMethods[IceScrumEventType.DELETE] = function(sprint) {
+        if ($state.includes("planning.release.sprint.withId.details", {sprintId: sprint.id})) {
+            $state.go('planning.release');
+        }
+        CacheService.remove('sprint', sprint.id);
+    };
+    this.mergeSprints = function(sprints) {
+        _.each(sprints, function(sprint) {
+            crudMethods[IceScrumEventType.CREATE](sprint);
+        });
+    };
+    this.list = function(release) { // TODO FIX
+        if (_.isEmpty(release.sprints)) {
+            return Sprint.query({projectId: release.parentProduct.id, type: 'release', id: release.id}, function(sprints) {
+                if (angular.isArray(release.sprints)) {
+                    _.each(sprints, function(sprint) {
+                        var existingSprint = _.find(release.sprints, {id: sprint.id});
+                        if (existingSprint) {
+                            angular.extend(existingSprint, sprint);
+                        } else {
+                            release.sprints.push(sprint);
+                        }
+                    });
+                } else {
+                    release.sprints = sprints;
+                }
+                release.sprints_count = release.sprints.length;
+                self.mergeSprints(sprints);
+            }).$promise;
+        } else {
+            return $q.when(release.sprints);
+        }
     };
     this.update = function(sprint, release) {
-        return Sprint.update({id: sprint.id, projectId: release.parentProduct.id}, sprint, function(sprint) {
-            var existingSprint = _.find(release.sprints, {id: sprint.id});
-            if (existingSprint) {
-                angular.extend(existingSprint, sprint);
-            }
-        }).$promise;
+        return Sprint.update({id: sprint.id, projectId: release.parentProduct.id}, sprint, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.save = function(sprint, release) {
         sprint.class = 'sprint';
-        return Sprint.save({projectId: release.parentProduct.id}, sprint, function(sprint) {
-            var existingSprint = _.find(release.sprints, {id: sprint.id});
-            if (existingSprint) {
-                angular.extend(existingSprint, sprint);
-            } else {
-                if (!angular.isArray(release.sprints)) {
-                    release.sprints = [];
-                }
-                release.sprints.push(sprint);
-            }
-            release.sprints_count = release.sprints.length;
-        }).$promise;
+        return Sprint.save({projectId: release.parentProduct.id}, sprint, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.get = function(id, project) {
-        return Sprint.get({id: id, projectId: project.id}).$promise;
+        var sprint = _.find(ReleaseService.getAllSprints(project.releases), {id: id});
+        return sprint ? $q.when(sprint) : Sprint.get({id: id, projectId: project.id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.activate = function(sprint, project) {
-        return Sprint.update({id: sprint.id, projectId: project.id, action: 'activate'}, {}).$promise;
-    };
-    this.close = function(sprint, project) {
-        return Sprint.update({id: sprint.id, projectId: project.id, action: 'close'}, {}).$promise;
-    };
-    this.autoPlan = function(sprint, capacity, project) {
-        return Sprint.update({id: sprint.id, projectId: project.id, action: 'autoPlan'}, {capacity: capacity}).$promise;
-    };
-    this.unPlan = function(sprint, project) {
-        return Sprint.update({id: sprint.id, projectId: project.id, action: 'unPlan'}, {}).$promise;
-    };
-    this['delete'] = function(sprint, release) {
-        return sprint.$delete({projectId: release.parentProduct.id}, function() {
-            if ($state.includes("planning.release.sprint.withId.details", {releaseId: release.id, sprintId: sprint.id})) {
-                $state.go('planning.release', {releaseId: release.id});
+    this.getCurrentOrLastSprint = function(project) {
+        return ReleaseService.getCurrentOrLastRelease(project).then(function(release) {
+            if (release.id) {
+                return self.list(release).then(function(sprints) {
+                    return _.find(_.sortBy(sprints, 'orderNumber'), function(sprint) {
+                        return sprint.state < SprintStatesByName.DONE;
+                    });
+                });
+            } else {
+                return $q.when(null);
             }
-            _.remove(release.sprints, {id: sprint.id});
         });
     };
+    this.getCurrentOrNextSprint = function(project) {
+        return ReleaseService.getCurrentOrNextRelease(project).then(function(release) {
+            if (release.id) {
+                return self.list(release).then(function(sprints) {
+                    return _.find(_.sortBy(sprints, 'orderNumber'), function(sprint) {
+                        return sprint.state > SprintStatesByName.WAIT;
+                    });
+                });
+            } else {
+                return $q.when(null);
+            }
+        });
+    };
+    this.activate = function(sprint, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'activate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
+    this.close = function(sprint, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
+    this.autoPlan = function(sprint, capacity, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'autoPlan'}, {capacity: capacity}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
+    this.unPlan = function(sprint, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
+    this['delete'] = function(sprint, release) {
+        return sprint.$delete({projectId: release.parentProduct.id}, crudMethods[IceScrumEventType.DELETE]);
+    };
     this.autoPlanMultiple = function(sprints, capacity, release) {
-        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}).$promise;
+        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}, self.mergeSprints).$promise;
     };
     this.unPlanMultiple = function(sprints, release) {
-        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'unPlan'}, {}).$promise;
+        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'unPlan'}, {}, self.mergeSprints).$promise;
     };
     this.openChart = function(sprint, project, chart) {
         return Sprint.get({id: sprint.id, projectId: project.id, action: chart}).$promise;

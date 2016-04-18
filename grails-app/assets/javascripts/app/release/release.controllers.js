@@ -124,7 +124,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
         return !_.isEqual($scope.editableRelease, $scope.editableReleaseReference);
     };
     $scope.update = function(release) {
-        ReleaseService.update(release, $scope.project).then(function() {
+        ReleaseService.update(release).then(function() {
             $scope.resetReleaseForm();
             $scope.notifySuccess('todo.is.ui.release.updated');
         });
@@ -169,10 +169,10 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
         }
     });
     $scope.formHolder = {};
-    $scope.resetReleaseForm();
     $scope.editableRelease = {};
     $scope.release = detailsRelease;
     $scope.editableReleaseReference = {};
+    $scope.resetReleaseForm();
     $scope.releaseStates = ReleaseStatesByName;
     $scope.previousRelease = FormService.previous($scope.project.releases, $scope.release);
     $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);

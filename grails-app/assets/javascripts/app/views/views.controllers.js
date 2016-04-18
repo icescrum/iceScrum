@@ -183,8 +183,6 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     $scope.visibleSprintOffset = 0;
     $scope.visibleSprints = [];
     $scope.project = project;
-    // TODO bug fix: project.releases MAY BE empty on refresh that's why we assign it manually
-    project.releases = releases;
     $scope.releases = project.releases;
     $scope.sprints = [];
     $scope.timelineSelected = function(selectedItems) { // Timeline -> URL

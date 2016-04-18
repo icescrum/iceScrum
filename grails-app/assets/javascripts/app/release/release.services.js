@@ -25,86 +25,82 @@ services.factory('Release', ['Resource', function($resource) {
     return $resource('/p/:projectId/release/:id/:action');
 }]);
 
-services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByName', 'Session', function($q, $state, Release, ReleaseStatesByName, Session) {
+services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByName', 'IceScrumEventType', 'Session', 'CacheService', 'PushService', function($q, $state, Release, ReleaseStatesByName, IceScrumEventType, Session, CacheService, PushService) {
     var self = this;
+    Session.getProject().releases = CacheService.getCache('release');
+    var crudMethods = {};
+    crudMethods[IceScrumEventType.CREATE] = function(release) {
+        CacheService.addOrUpdate('release', release);
+    };
+    crudMethods[IceScrumEventType.UPDATE] = function(release) {
+        CacheService.addOrUpdate('release', release);
+    };
+    crudMethods[IceScrumEventType.DELETE] = function(release) {
+        if ($state.includes("planning.release.details", {releaseId: release.id})) {
+            $state.go('planning');
+        }
+        CacheService.remove('release', release.id);
+    };
+    _.each(crudMethods, function(crudMethod, eventType) {
+        PushService.registerListener('release', eventType, crudMethod);
+    });
+    this.mergeReleases = function(releases) {
+        _.each(releases, function(release) {
+            crudMethods[IceScrumEventType.CREATE](release);
+        });
+    };
     this.list = function(project) {
-        var promise = Release.query({projectId: project.id}, function(newReleases) {
-            if (angular.isArray(project.releases)) {
-                _.each(newReleases, function(newRelease) {
-                    var existingRelease = _.find(project.releases, {id: newRelease.id});
-                    if (existingRelease) {
-                        angular.extend(existingRelease, newRelease);
-                    } else {
-                        project.releases.push(newRelease);
-                    }
-                });
-            } else {
-                project.releases = newReleases;
-            }
-            project.releases_count = project.releases.length;
-        }).$promise;
-        return _.isEmpty(project.releases) ? promise : $q.when(project.releases);
+        return _.isEmpty(project.releases) ? Release.query({projectId: project.id}, self.mergeReleases).$promise : $q.when(project.releases);
+    };
+    this.getCurrentOrLastRelease = function(project) {
+        return self.list(project).then(function(releases) {
+            return _.find(_.sortBy(releases, 'orderNumber'), function(release) {
+                return release.state < ReleaseStatesByName.DONE;
+            });
+        });
     };
     this.getCurrentOrNextRelease = function(project) {
-        return Release.get({projectId: project.id, action: 'findCurrentOrNextRelease'}).$promise;
+        return self.list(project).then(function(releases) {
+            return _.find(_.sortBy(releases, 'orderNumber'), function(release) {
+                return release.state > ReleaseStatesByName.WAIT;
+            });
+        });
     };
-    this.update = function(release, project) {
+    this.update = function(release) {
         var releaseToUpdate = _.omit(release, 'sprints');
-        return Release.update({id: release.id, projectId: release.parentProduct.id}, releaseToUpdate, function(release) {
-            angular.extend(_.find(project.releases, { id: release.id }), release);
-        }).$promise;
+        return Release.update({id: release.id, projectId: release.parentProduct.id}, releaseToUpdate, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.save = function(release, project) {
         release.class = 'release';
-        return Release.save({projectId: project.id}, release, function(release) {
-            var existingRelease = _.find(project.releases, {id: release.id});
-            if (existingRelease) {
-                angular.extend(existingRelease, release);
-            } else {
-                project.releases.push(release);
-            }
-            project.releases_count = project.releases.length;
-        }).$promise;
+        return Release.save({projectId: project.id}, release, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.get = function(id, project) {
-        return self.list(project).then(function(releases) {
-            var release = _.find(releases, function(rw) {
-                return rw.id == id;
-            });
-            if (release) {
-                return release;
-            } else {
-                throw Error('todo.is.ui.release.does.not.exist');
-            }
-        });
+    this.get = function(id) {
+        var cachedRelease = CacheService.get('release', id);
+        return cachedRelease ? $q.when(cachedRelease) : Release.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.activate = function(release) {
-        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'activate'}, {}).$promise;
+        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'activate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.close = function(release) {
-        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'close'}, {}).$promise;
+        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.generateSprints = function(release) {
-        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'generateSprints'}, {}).$promise.then(function(sprints){
-            release.sprints = sprints;
-        });
+        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'generateSprints'}, {}, self.mergeSprints).$promise; // TODO release resource returns sprints, this is not good
     };
     this.autoPlan = function(release, capacity) {
-        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}).$promise;
+        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}).$promise; // TODO release resource returns stories, this is not good
     };
     this.unPlan = function(release) {
-        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'unPlan'}, {}).$promise;
+        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(release, project) {
-        return release.$delete({projectId: project.id}, function() {
-            if ($state.includes("planning.release.details", {releaseId: release.id})) {
-                $state.go('planning');
-            }
-            _.remove(project.releases, {id: release.id});
-        });
+        return release.$delete({projectId: project.id}, crudMethods[IceScrumEventType.DELETE]);
     };
     this.openChart = function(release, chart) {
         return Release.get({id: release.id, projectId: release.parentProduct.id, action: chart}).$promise;
+    };
+    this.getAllSprints = function(releases) {
+        return _.filter(_.flatMap(releases, 'sprints'), _.identity);
     };
     this.authorizedRelease = function(action, release) {
         switch (action) {

@@ -229,7 +229,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.listByBacklog = function(backlog) {
         return queryWithContext({type: 'backlog', typeId: backlog.id}, function(stories) {
             self.mergeStories(stories);
-            return stories;
         }).$promise;
     };
     this.activities = function(story, all) {

@@ -397,7 +397,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             $compile(element)(scope);
         }
     };
-}]).directive('timeline', ['ProjectService', '$timeout', function(ProjectService, $timeout) {
+}]).directive('timeline', ['ReleaseService', '$timeout', function(ReleaseService, $timeout) {
     return {
         restrict: 'A',
         scope: {
@@ -436,7 +436,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 timelineBackground.attr("width", width);
 
                 var releaseSelector = releases.selectAll('rect').data(_releases);
-                var sprintSelector = sprints.selectAll('rect').data(ProjectService.getAllSprints(_releases));
+                var sprintSelector = sprints.selectAll('rect').data(ReleaseService.getAllSprints(_releases));
                 // Remove
                 releaseSelector.exit().remove();
                 sprintSelector.exit().remove();

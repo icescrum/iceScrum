@@ -172,26 +172,6 @@ class SprintController {
     }
 
     @Secured(['stakeHolder() or inProduct()'])
-    def findCurrentOrLastSprint(long product) {
-        def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: sprint as JSON }
-            json { renderRESTJSON(text: sprint) }
-            xml { renderRESTXML(text: sprint) }
-        }
-    }
-
-    @Secured(['stakeHolder() or inProduct()'])
-    def findCurrentOrNextSprint(long product) {
-        def sprint = Sprint.findCurrentOrNextSprint(product).list()[0]
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: sprint as JSON }
-            json { renderRESTJSON(text: sprint) }
-            xml { renderRESTXML(text: sprint) }
-        }
-    }
-
-    @Secured(['stakeHolder() or inProduct()'])
     def burndownRemaining(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurndownRemainingValues(sprint)

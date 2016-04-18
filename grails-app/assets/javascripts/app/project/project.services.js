@@ -24,7 +24,7 @@ services.factory('Project', ['Resource', function($resource) {
     return $resource('/project/:id/:action');
 }]);
 
-services.service("ProjectService", ['Project', 'Session', 'FormService', 'ReleaseStatesByName', 'SprintStatesByName', function(Project, Session, FormService, ReleaseStatesByName, SprintStatesByName) {
+services.service("ProjectService", ['Project', 'Session', 'FormService', function(Project, Session, FormService) {
     this.save = function(project) {
         project.class = 'product';
         return Project.save(project).$promise;
@@ -81,17 +81,4 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'Releas
     this.getTags = function() {
         return FormService.httpGet('search/tag');
     };
-    this.getAllSprints = function(releases) {
-        return _.filter(_.flatMap(releases, 'sprints'), _.identity);
-    };
-    this.getCurrentOrNextSprint = function(project) {
-        var currentRelease = _.find(project.releases, {state: ReleaseStatesByName.IN_PROGRESS});
-        if (currentRelease) {
-            return _.find(_.sortBy(currentRelease.sprints, 'orderNumber'), function(sprint) {
-                return sprint.state < SprintStatesByName.DONE;
-            });
-        } else {
-            return null;
-        }
-    }
 }]);
