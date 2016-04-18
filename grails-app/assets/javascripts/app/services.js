@@ -357,16 +357,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 }
             }
         },
-        task: function(oldTask, newTask) {
-            var oldStory = (oldTask && oldTask.parentStory) ? oldTask.parentStory.id : null;
-            var newStory = (newTask && newTask.parentStory) ? newTask.parentStory.id : null;
-            if (newStory) {
-                StoryService.refresh(newStory);
-            }
-            if (oldStory) {
-                StoryService.refresh(oldStory);
-            }
-        },
+        task: function(oldTask, newTask) {},
         feature: function(oldFeature, newFeature) {
             _.each(CacheService.getCache('story'), function(story) {
                 var featureId = newFeature ? newFeature.id : oldFeature.id;
