@@ -42,6 +42,7 @@
 <script type="text/javascript">
     isSettings = {
         user:${user as JSON},
+        roles:${roles as JSON},
         project:${product as JSON},
         pushContext:${product?.id?:"''"},
         messages:${i18nMessages as JSON},

@@ -39,8 +39,9 @@ import javax.security.auth.login.AccountExpiredException
 
 class LoginController {
 
-    def springSecurityService
+    def securityService
     def grailsApplication
+    def springSecurityService
 
     def auth() {
         def config = SpringSecurityUtils.securityConfig
@@ -104,12 +105,11 @@ class LoginController {
 
     def ajaxSuccess() {
         User u = (User) springSecurityService.currentUser
-        if (u.preferences.lastProductOpened) {
-            def url = grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProductOpened + '/'
-            render(status: 200, contentType: 'application/json', text: [url: url] as JSON)
-        } else {
-            render(status: 200, text: '')
-        }
+        render(status: 200, contentType: 'application/json', text: [
+                user:u,
+                roles:securityService.getRolesRequest(true),
+                url: u.preferences.lastProductOpened ? grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProductOpened + '/' : null
+        ] as JSON)
     }
 
     def ajaxDenied() {

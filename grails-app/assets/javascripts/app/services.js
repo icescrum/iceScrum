@@ -53,36 +53,41 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         admin: false
     };
     self.roles = _.clone(defaultRoles);
+    self.listeners = {};
+
     var reload = function() {
         $timeout(function() {
             document.location.reload(true);
         }, 2000);
     };
-    this.create = function() {
-        return UserService.getCurrent()
-            .then(function(data) {
-                if (data.user != "null") {
-                    _.extend(self.user, data.user);
-                    _.merge(self.roles, data.roles);
-                    UserService.getUnreadActivities(self.user)
-                        .then(function(data) {
-                            self.unreadActivitiesCount = data.unreadActivitiesCount;
-                        });
-                }
-                UserService.getMenus(self.project).then(function(menus) {
-                    var menusByVisibility = _.groupBy(menus, 'visible');
-                    self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
-                    self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');
-                });
-            });
-    };
-
-    this.setUser = function(user) {
+    this.create = function(user, roles) {
         _.extend(self.user, user);
-        PushService.registerListener('activity', IceScrumEventType.CREATE, function() {
+        _.merge(self.roles, roles);
+
+        if(self.authenticated()){
+            UserService.getUnreadActivities(self.user)
+                .then(function(data) {
+                    self.unreadActivitiesCount = data.unreadActivitiesCount;
+                });
+        }
+
+        UserService.getMenus(self.project).then(function(menus) {
+            var menusByVisibility = _.groupBy(menus, 'visible');
+            self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
+            self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');
+        });
+
+        if(self.listeners.activity){
+            self.listeners.activity.unregister();
+        }
+        self.listeners.activity = PushService.registerListener('activity', IceScrumEventType.CREATE, function() {
             self.unreadActivitiesCount += 1;
         });
-        PushService.registerListener('user', IceScrumEventType.UPDATE, function(user) {
+
+        if(self.listeners.user){
+            self.listeners.user.unregister();
+        }
+        self.listeners.user = PushService.registerListener('user', IceScrumEventType.UPDATE, function(user) {
             if (user.updatedRole) {
                 var updatedRole = user.updatedRole;
                 var updatedProject = updatedRole.product;

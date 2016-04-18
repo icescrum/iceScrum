@@ -21,7 +21,6 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
-import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler

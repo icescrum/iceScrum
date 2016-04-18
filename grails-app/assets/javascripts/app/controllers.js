@@ -407,7 +407,7 @@ controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_E
                     document.location.reload(true);
                 }
             } else {
-                $scope.$close(true);
+                $scope.$close(data);
             }
         }, function() {
             $rootScope.$broadcast(SERVER_ERRORS.loginFailed);

@@ -742,7 +742,7 @@ angular.module('isApp', [
 .factory('UserTimeZone', function() {
     return jstz.determine();
 })
-.run(['Session', 'BundleService', 'PushService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
+.run(['Session', 'BundleService', 'PushService', 'UserService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, UserService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
 
     //used to handle click with shortcut hotkeys
     $rootScope.hotkeyClick = function(event, hotkey) {
@@ -864,9 +864,7 @@ angular.module('isApp', [
             childScope.loginCallback = true;
             loginCallback = function(loggedIn) {
                 if (loggedIn) {
-                    Session.create().then(function() {
-                        loginSuccess();
-                    });
+                    loginSuccess();
                 } else {
                     loginFailure();
                 }
@@ -1020,8 +1018,7 @@ angular.module('isApp', [
         $rootScope.initMessages(isSettings.messages);
         BundleService.initBundles(isSettings.bundles);
 
-        Session.setUser(isSettings.user);
-        Session.create();
+        Session.create(isSettings.user, isSettings.roles);
     }
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
@@ -1042,10 +1039,13 @@ angular.module('isApp', [
                 event.preventDefault();
                 if (!Session.authenticated()) {
                     $rootScope.showAuthModal('', function() {
-                        $state.go(toState.name);
+                        UserService.getCurrent().then(function(data){
+                            Session.create(data.user, data.roles);
+                            $state.go(toState.name, {}, {reload: true});
+                        });
                     });
                 } else {
-                    $state.go(fromState.name);
+                    $state.go(angular.isDefined(fromState) && fromState.name ? fromState.name : "404");
                 }
             }
         }

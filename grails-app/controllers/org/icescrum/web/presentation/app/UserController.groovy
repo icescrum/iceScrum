@@ -45,6 +45,7 @@ class UserController {
 
     def userService
     def menuBarSupport
+    def securityService
     def grailsApplication
     def uiDefinitionService
     def springSecurityService
@@ -227,13 +228,7 @@ class UserController {
     @Secured(['permitAll()'])
     def current() {
         def user = [user: springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
-                    roles: [
-                            productOwner: request.productOwner,
-                            scrumMaster: request.scrumMaster,
-                            teamMember: request.teamMember,
-                            stakeHolder: request.stakeHolder,
-                            admin: request.admin
-                    ]]
+                    roles: securityService.getRolesRequest(true)]
         withFormat {
             html { render(status: 200, contentType: 'application/json', text: user as JSON) }
             json { renderRESTJSON(text: user) }

@@ -191,11 +191,20 @@ class ScrumOSController {
                       shortcut: "ctrl+" + (applicationMenus.size() + 1)]
         }
 
+        def roles = [
+                productOwner: request.productOwner,
+                scrumMaster: request.scrumMaster,
+                teamMember: request.teamMember,
+                stakeHolder: request.stakeHolder,
+                admin: request.admin
+        ]
+
         def tmpl = g.render(
                 template: 'templatesJS',
                 model: [id: controllerName,
                         user:springSecurityService.currentUser,
                         product: product,
+                        roles: roles,
                         i18nMessages: i18nMessages,
                         currentSprint: currentSprint,
                         applicationMenus: applicationMenus])
