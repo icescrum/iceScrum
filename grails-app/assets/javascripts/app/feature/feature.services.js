@@ -55,12 +55,11 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
         return cachedFeature ? $q.when(cachedFeature) : Feature.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.list = function() {
-        var promise = Feature.query().$promise.then(function(features) {
+        var cachedFeatures = CacheService.getCache('feature');
+        return _.isEmpty(cachedFeatures) ? Feature.query().$promise.then(function(features) {
             self.mergeFeatures(features);
             return CacheService.getCache('feature');
-        });
-        var cachedFeatures = CacheService.getCache('feature');
-        return cachedFeatures.length > 0 ? $q.when(cachedFeatures) : promise;
+        }) : $q.when(cachedFeatures);
     };
     this.save = function(feature) {
         feature.class = 'feature';
