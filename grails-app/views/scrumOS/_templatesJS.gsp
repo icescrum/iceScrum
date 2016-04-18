@@ -48,13 +48,13 @@
         bundles:${is.i18nBundle() as JSON},
         applicationMenus:${applicationMenus as JSON},
         types: {
-            task:${BundleUtils.taskStates.keySet() as JSON},
+            task:${BundleUtils.taskTypes.keySet() as JSON},
             story:${BundleUtils.storyTypes.keySet() as JSON},
             feature:${BundleUtils.featureTypes.keySet() as JSON},
             planningPoker:${BundleUtils.planningPokerGameSuites.keySet() as JSON}
         },
         states: {
-            taskStates:${BundleUtils.taskTypes.keySet() as JSON},
+            taskStates:${BundleUtils.taskStates.keySet() as JSON},
             acceptanceTestStates:${BundleUtils.acceptanceTestStates.keySet() as JSON}
         },
         serverUrl: "${grailsApplication.config.grails.serverURL}"
