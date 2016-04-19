@@ -422,9 +422,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.sprintStatesByName = SprintStatesByName;
     $scope.taskTypesByName = TaskTypesByName;
     $scope.ghostStories = [];
-    $scope.$watch('sprint.tasks', function(newTasks) {
-        if (newTasks) {
-            $scope.refreshTasks();
-        }
+    $scope.$watch('sprint.tasks', function() {
+        $scope.refreshTasks();
     }, true);
 }]);

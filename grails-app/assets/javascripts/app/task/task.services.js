@@ -71,7 +71,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         return Task.update({id: task.id, action: 'unassign'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(task) {
-        return task.$delete(crudMethods[IceScrumEventType.DELETE]);
+        return Task.delete({id: task.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.copy = function(task) {
         return Task.update({id: task.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
@@ -95,7 +95,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 } else {
                     taskContext.tasks = tasks;
                 }
-                taskContext.tasts_count = tasks.length;
+                taskContext.tasks_count = tasks.length;
                 self.mergeTasks(tasks);
             }).$promise;
         } else {

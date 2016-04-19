@@ -343,21 +343,71 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
 }]).service('SyncService', ['$q', 'CacheService', 'Session', 'StoryService', 'ReleaseService', 'SprintService', function($q, CacheService, Session, StoryService, ReleaseService, SprintService) {
     var syncFunctions = {
         story: function(oldStory, newStory) {
-            var oldSprint = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
-            var newSprint = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
-            if (Session.getProject().releases && (oldSprint || newSprint)) { // No need to do anything if releases are not loaded or no parent sprint
-                if (oldSprint != newSprint || oldStory.effort != newStory.effort || oldStory.state != newStory.state) {
-                    ReleaseService.list(Session.getProject()).then(function(releases) { // Refreshes all the releases & sprints, which is probably overkill
-                        $q.all(_.map(releases, SprintService.list)).then(function(sprintsGroupedByRelease) {
-                            _.each(_.filter(_.flatten(sprintsGroupedByRelease), function(sprint) {
-                                return sprint.id == oldSprint || sprint.id == newSprint;
-                            }), self.listByType);
-                        });
-                    });
+            var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
+            var newSprintId = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
+            var cachedReleases = CacheService.getCache('release');
+            if (cachedReleases && (oldSprintId || newSprintId)) { // No need to do anything if releases are not loaded or no parent sprint
+                if (oldSprintId != newSprintId || oldStory.effort != newStory.effort || oldStory.state != newStory.state) {
+                    //ReleaseService.list(Session.getProject()).then(function(releases) { // Refreshes all the releases & sprints, which is probably overkill
+                    //    $q.all(_.map(releases, SprintService.list)).then(function(sprintsGroupedByRelease) {
+                    //        _.each(_.filter(_.flatten(sprintsGroupedByRelease), function(sprint) {
+                    //            return sprint.id == oldSprintId || sprint.id == newSprintId;
+                    //        }), StoryService.listByType);
+                    //    });
+                    //});
                 }
             }
         },
-        task: function(oldTask, newTask) {},
+        task: function(oldTask, newTask) {
+            var oldSprintId = (oldTask && oldTask.backlog) ? oldTask.backlog.id : null;
+            var newSprintId = (newTask && newTask.backlog) ? newTask.backlog.id : null;
+            if (newSprintId != oldSprintId) {
+                var cachedSprints = CacheService.getCache('sprint');
+                if (oldSprintId) {
+                    var cachedSprint = _.find(cachedSprints, {id: oldSprintId});
+                    if (cachedSprint) {
+                        _.remove(cachedSprint.tasks, {id: oldTask.id});
+                        if (_.isArray(cachedSprint.tasks)) {
+                            cachedSprint.tasks_count = cachedSprint.tasks.length;
+                        }
+                        cachedSprint.tasks_count = cachedSprint.tasks.length;
+                    }
+                }
+                if (newSprintId) {
+                    var cachedSprint = _.find(cachedSprints, {id: newSprintId});
+                    if (!_.find(cachedSprint.tasks, {id: newTask.id})) {
+                        if (!_.isArray(cachedSprint.tasks)) {
+                            cachedSprint.tasks = [];
+                        }
+                        cachedSprint.tasks.push(newTask);
+                    }
+                }
+            }
+            var oldStoryId = (oldTask && oldTask.parentStory) ? oldTask.parentStory.id : null;
+            var newStoryId = (newTask && newTask.parentStory) ? newTask.parentStory.id : null;
+            if (newStoryId != oldStoryId) {
+                var cachedStories = CacheService.getCache('story');
+                if (oldStoryId) {
+                    var cachedStory = _.find(cachedStories, {id: oldStoryId});
+                    if (cachedStory) {
+                        _.remove(cachedStory.tasks, {id: oldTask.id});
+                        if (_.isArray(cachedStory.tasks)) {
+                            cachedStory.tasks_count = cachedStory.tasks.length;
+                        }
+                    }
+                }
+                if (newStoryId) {
+                    var cachedStory = _.find(cachedStories, {id: newStoryId});
+                    if (!_.find(cachedStory.tasks, {id: newTask.id})) {
+                        if (!_.isArray(cachedStory.tasks)) {
+                            cachedStory.tasks = [];
+                        }
+                        cachedStory.tasks.push(newTask);
+                        cachedStory.tasks_count = cachedStory.tasks.length;
+                    }
+                }
+            }
+        },
         feature: function(oldFeature, newFeature) {
             _.each(CacheService.getCache('story'), function(story) {
                 var featureId = newFeature ? newFeature.id : oldFeature.id;
