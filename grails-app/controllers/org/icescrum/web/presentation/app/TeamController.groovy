@@ -106,7 +106,7 @@ class TeamController {
             return
         }
         teamService.delete(team)
-        render(status: 200)
+        render(status: 200, text: [id: id] as JSON)
     }
 
     @Secured('isAuthenticated()')

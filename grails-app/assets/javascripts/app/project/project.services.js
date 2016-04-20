@@ -47,7 +47,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
         return Project.update({id: project.id, action: 'archive'}, {}).$promise;
     };
     this['delete'] = function(project) {
-        return project.$delete();
+        return Project.delete({id: project.id}).$promise;
     };
     this.listPublic = function(term, offset) {
         return Project.get({action: 'listPublic', term: term, offset: offset}).$promise;

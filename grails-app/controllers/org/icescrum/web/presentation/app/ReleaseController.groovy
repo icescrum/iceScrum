@@ -106,12 +106,11 @@ class ReleaseController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def delete(long product, long id) {
         Release release = Release.withRelease(product, id)
-        def jsonRelease = (release as JSON).toString()
         releaseService.delete(release)
         withFormat {
-            html { render status: 200, contentType: 'application/json', text: jsonRelease }
-            json { render status: 204 }
-            xml { render status: 204 }
+            html { render(status: 200, contentType: 'application/json', text: [id: id] as JSON) }
+            json { render(status: 204) }
+            xml { render(status: 204) }
         }
     }
 

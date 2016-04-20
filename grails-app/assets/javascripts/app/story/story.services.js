@@ -105,7 +105,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return Story.update(story, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(story) {
-        return story.$delete(crudMethods[IceScrumEventType.DELETE]);
+        return Story.delete({id: story.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.acceptToBacklog = function(story, rank) {
         var params = {story: {}};

@@ -56,7 +56,7 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
         return AcceptanceTest.save(acceptanceTest, self.getCrudMethods(story)[IceScrumEventType.CREATE]).$promise;
     };
     this['delete'] = function(acceptanceTest, story) {
-        return acceptanceTest.$delete(self.getCrudMethods(story)[IceScrumEventType.DELETE]);
+        return AcceptanceTest.delete({id: acceptanceTest.id}, self.getCrudMethods(story)[IceScrumEventType.DELETE]).$promise;
     };
     this.update = function(acceptanceTest, story) {
         return acceptanceTest.$update(self.getCrudMethods(story)[IceScrumEventType.UPDATE]);

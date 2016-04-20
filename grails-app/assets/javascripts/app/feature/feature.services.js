@@ -72,7 +72,7 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
         return Feature.update({id: feature.id, action: 'copyToBacklog'}, {}).$promise;
     };
     this['delete'] = function(feature) {
-        return feature.$delete(crudMethods[IceScrumEventType.DELETE]);
+        return Feature.delete({id: feature.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.getMultiple = function(ids) {
         ids = _.map(ids, function(id) {

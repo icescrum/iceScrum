@@ -38,7 +38,7 @@ services.service("TeamService", ['$q', 'Team', 'Session', 'FormService', functio
         return Team.update({id: team.id}, {team: team}).$promise;
     };
     this['delete'] = function(team) {
-        return team.$delete();
+        return Team.delete({id: team.id}).$promise;
     };
     this.authorizedTeam = function(action, team) {
         switch (action) {

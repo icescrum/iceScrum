@@ -163,9 +163,9 @@ class TaskController {
                 taskService.delete(it, user)
             }
         }
-        def data = tasks.size() > 1 ? tasks.collect { [id: it.id] } : (tasks ? [id: tasks.first().id] : [:])
+        def returnData = tasks.size() > 1 ? tasks.collect { [id: it.id] } : (tasks ? [id: tasks.first().id] : [:])
         withFormat {
-            html { render(status: 200, text: data as JSON) }
+            html { render(status: 200, text: returnData as JSON) }
             json { render(status: 204) }
             xml { render(status: 204) }
         }

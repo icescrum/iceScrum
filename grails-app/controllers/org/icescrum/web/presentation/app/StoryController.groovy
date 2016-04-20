@@ -202,9 +202,9 @@ class StoryController {
     def delete() {
         def stories = Story.withStories(params)
         storyService.delete(stories, null, params.reason ? params.reason.replaceAll("(\r\n|\n)", "<br/>") : null)
-        def data = stories.size() > 1 ? stories.collect { [id: it.id] } : (stories ? [id: stories.first().id] : [:])
+        def returnData = stories.size() > 1 ? stories.collect { [id: it.id] } : (stories ? [id: stories.first().id] : [:])
         withFormat {
-            html { render(status: 200, text: data as JSON) }
+            html { render(status: 200, text: returnData as JSON) }
             json { render(status: 204) }
             xml { render(status: 204) }
         }

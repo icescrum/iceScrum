@@ -105,7 +105,7 @@ class FeatureController {
         }
         def returnData = features.size() > 1 ? features : features.first()
         withFormat {
-            html { render status: 200, contentType: 'application/json', text:returnData as JSON }
+            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
             json { renderRESTJSON(text:returnData) }
             xml  { renderRESTXML(text:returnData) }
         }
@@ -118,9 +118,9 @@ class FeatureController {
             features.each { feature ->
                 featureService.delete(feature)
             }
-            def data = features.size() > 1 ? features.collect {[id : it.id]} : (features ? [id: features.first().id] : [:])
+            def returnData = features.size() > 1 ? features.collect {[id : it.id]} : (features ? [id: features.first().id] : [:])
             withFormat {
-                html { render(status: 200, text: data as JSON)  }
+                html { render(status: 200, text: returnData as JSON)  }
                 json { render(status: 204) }
                 xml { render(status: 204) }
             }

@@ -91,7 +91,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
         return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(release, project) {
-        return release.$delete({projectId: project.id}, crudMethods[IceScrumEventType.DELETE]);
+        return Release.delete({id: release.id, projectId: project.id}, {}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.openChart = function(release, chart) {
         return Release.get({id: release.id, projectId: release.parentProduct.id, action: chart}).$promise;

@@ -113,7 +113,7 @@ class SprintController {
         try {
             sprintService.delete(sprint)
             withFormat {
-                html { render(status: 200) }
+                html { render(status: 200, text: [id: id] as JSON) }
                 json { render(status: 204) }
                 xml { render(status: 204) }
             }

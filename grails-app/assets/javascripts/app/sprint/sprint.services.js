@@ -121,7 +121,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(sprint, release) {
-        return sprint.$delete({projectId: release.parentProduct.id}, crudMethods[IceScrumEventType.DELETE]);
+        return Sprint.delete({id: sprint.id, projectId: release.parentProduct.id}, {}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.autoPlanMultiple = function(sprints, capacity, release) {
         return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}, self.mergeSprints).$promise;
