@@ -348,22 +348,49 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         $injector.get('SyncService').sync(cacheName, cachedItem, null);
         _.remove(self.getCache(cacheName), {id: parseInt(id)});
     };
-}]).service('SyncService', ['$q', 'CacheService', 'Session', 'StoryService', 'ReleaseService', 'SprintService', function($q, CacheService, Session, StoryService, ReleaseService, SprintService) {
+}]).service('SyncService', ['CacheService', 'StoryService', 'FeatureService', 'SprintService', function(CacheService, StoryService, FeatureService, SprintService) {
+    var refreshIfNeeded = function(shortItem, refreshCallback) {
+        var cacheName = _.lowerFirst(shortItem.class);
+        var cachedItem = CacheService.get(cacheName, shortItem.id);
+        if (cachedItem && cachedItem.lastUpdated != shortItem.lastUpdated) {
+            refreshCallback();
+        }
+    };
     var syncFunctions = {
         story: function(oldStory, newStory) {
             var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
             var newSprintId = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
-            var cachedReleases = CacheService.getCache('release');
-            if (cachedReleases && (oldSprintId || newSprintId)) { // No need to do anything if releases are not loaded or no parent sprint
-                if (oldSprintId != newSprintId || oldStory.effort != newStory.effort || oldStory.state != newStory.state) {
-                    //ReleaseService.list(Session.getProject()).then(function(releases) { // Refreshes all the releases & sprints, which is probably overkill
-                    //    $q.all(_.map(releases, SprintService.list)).then(function(sprintsGroupedByRelease) {
-                    //        _.each(_.filter(_.flatten(sprintsGroupedByRelease), function(sprint) {
-                    //            return sprint.id == oldSprintId || sprint.id == newSprintId;
-                    //        }), StoryService.listByType);
-                    //    });
-                    //});
+            if (newSprintId != oldSprintId) {
+                var cachedSprints = CacheService.getCache('sprint');
+                if (oldSprintId) {
+                    var cachedSprint = _.find(cachedSprints, {id: oldSprintId});
+                    if (cachedSprint) {
+                        _.remove(cachedSprint.stories, {id: oldStory.id});
+                        if (_.isArray(cachedSprint.stories)) {
+                            cachedSprint.stories_count = cachedSprint.stories.length;
+                        }
+                    }
                 }
+                if (newSprintId) {
+                    var cachedSprint = _.find(cachedSprints, {id: newSprintId});
+                    if (cachedSprint && !_.find(cachedSprint.stories, {id: newStory.id})) {
+                        if (!_.isArray(cachedSprint.stories)) {
+                            cachedSprint.stories = [];
+                        }
+                        cachedSprint.stories.push(newStory);
+                    }
+                }
+            }
+            if (newSprintId) {
+                refreshIfNeeded(newStory.parentSprint, function() {
+                    SprintService.refresh(newSprintId, newStory.backlog.id);
+                });
+            }
+            var newFeatureId = (newStory && newStory.feature) ? newStory.feature.id : null;
+            if (newFeatureId) {
+                refreshIfNeeded(newStory.feature, function() {
+                    FeatureService.refresh(newFeatureId);
+                });
             }
         },
         task: function(oldTask, newTask) {
@@ -378,12 +405,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                         if (_.isArray(cachedSprint.tasks)) {
                             cachedSprint.tasks_count = cachedSprint.tasks.length;
                         }
-                        cachedSprint.tasks_count = cachedSprint.tasks.length;
                     }
                 }
                 if (newSprintId) {
                     var cachedSprint = _.find(cachedSprints, {id: newSprintId});
-                    if (!_.find(cachedSprint.tasks, {id: newTask.id})) {
+                    if (cachedSprint && !_.find(cachedSprint.tasks, {id: newTask.id})) {
                         if (!_.isArray(cachedSprint.tasks)) {
                             cachedSprint.tasks = [];
                         }
@@ -406,7 +432,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 }
                 if (newStoryId) {
                     var cachedStory = _.find(cachedStories, {id: newStoryId});
-                    if (!_.find(cachedStory.tasks, {id: newTask.id})) {
+                    if (cachedStory && !_.find(cachedStory.tasks, {id: newTask.id})) {
                         if (!_.isArray(cachedStory.tasks)) {
                             cachedStory.tasks = [];
                         }
@@ -414,6 +440,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                         cachedStory.tasks_count = cachedStory.tasks.length;
                     }
                 }
+            }
+            if (newStoryId) {
+                refreshIfNeeded(newTask.parentStory, function() {
+                    StoryService.refresh(newStoryId);
+                });
             }
         },
         feature: function(oldFeature, newFeature) {
@@ -428,13 +459,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             var cachedReleases = CacheService.getCache('release');
             if (!oldSprint && newSprint) {
                 var cachedRelease = _.find(cachedReleases, {id: newSprint.parentRelease.id});
-                if (cachedRelease) {
-                    if (!_.find(cachedRelease.sprints, {id: newSprint.id})) {
-                        if (!_.isArray(cachedRelease.sprints)) {
-                            cachedRelease.sprints = [];
-                        }
-                        cachedRelease.sprints.push(newSprint);
+                if (cachedRelease && !_.find(cachedRelease.sprints, {id: newSprint.id})) {
+                    if (!_.isArray(cachedRelease.sprints)) {
+                        cachedRelease.sprints = [];
                     }
+                    cachedRelease.sprints.push(newSprint);
                 }
             } else if (oldSprint && !newSprint) {
                 var cachedRelease = _.find(cachedReleases, {id: oldSprint.parentRelease.id});
@@ -443,8 +472,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 }
             }
         },
-        release: function(oldRelease, newRelease) {
-        }
+        release: function(oldRelease, newRelease) {}
     };
     this.sync = function(clazz, oldItem, newItem) {
         syncFunctions[clazz](oldItem, newItem);

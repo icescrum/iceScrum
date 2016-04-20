@@ -96,7 +96,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.get = function(id) {
         var cachedStory = CacheService.get('story', id);
-        return cachedStory ? $q.when(cachedStory) : Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return cachedStory ? $q.when(cachedStory) : self.refresh(id);
     };
     this.refresh = function(id) {
         return Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
@@ -187,7 +187,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.updateMultiple = function(ids, updatedFields) {
         if (ids.length == 1) {
             return self.get(parseInt(ids[0])).then(function(story) {
-                return self.update(_.merge(story, updatedFields)).then(function(story) {
+                return self.update(_.merge({}, story, updatedFields)).then(function(story) {
                     return [story];
                 });
             });

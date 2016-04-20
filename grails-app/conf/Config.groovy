@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Kagilum SAS.
+ * Copyright (c) 2016 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -22,15 +22,15 @@
  */
 
 
-import grails.util.Metadata
 import grails.util.Holders
+import grails.util.Metadata
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
+import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.icescrum.core.support.ApplicationSupport
-import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
@@ -102,59 +102,59 @@ icescrum.push.enable = true
 
 //remove total*
 icescrum.marshaller = [
-        story:[include:['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed', 'countDoneTasks'],
-               includeCount:['comments'],
-               textile:['notes'],
-               asShort:['state', 'effort','uid', 'name', 'rank']],
-        comment: [textile:['body'], include: ['poster']],
+        story: [include: ['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed', 'countDoneTasks'],
+                includeCount: ['comments'],
+                textile: ['notes'],
+                asShort: ['state', 'effort', 'uid', 'name', 'rank', 'lastUpdated']],
+        comment: [textile: ['body'], include: ['poster']],
         product: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
-                  exclude:['cliches'],
-                  textile:['description']],
-        team: [include:['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
-        task:[exclude:['impediment','participants'],
-              includeCount:['comments'],
-              include:['tags', 'attachments', 'sprint']],
-        user:[exclude: ['password','accountExpired','accountLocked','passwordExpired'],
-              asShort:['firstName', 'lastName'],
-              textile:['notes']],
-        actor:[include:['tags', 'attachments'],
-               withIds:['stories']],
-        feature:[include:['countDoneStories','state','effort','tags','attachments'],
-                 withIds:['stories'],
-                 asShort:['color', 'name']],
-        sprint:[include:['activable','totalRemaining', 'duration','attachments'],
-                exclude:['cliches'],
-                withIds:['stories'],
-                textile:['retrospective', 'doneDefinition'],
-                asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName']],
-        release:[include:['duration', 'closable','activable','attachments'],
-                 textile:['vision'],
-                 asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
-                 exclude:['cliches']
+                  exclude: ['cliches'],
+                  textile: ['description']],
+        team: [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
+        task: [exclude: ['impediment', 'participants'],
+               includeCount: ['comments'],
+               include: ['tags', 'attachments', 'sprint']],
+        user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired'],
+               asShort: ['firstName', 'lastName'],
+               textile: ['notes']],
+        actor: [include: ['tags', 'attachments'],
+                withIds: ['stories']],
+        feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'attachments', 'lastUpdated'],
+                  withIds: ['stories'],
+                  asShort: ['color', 'name']],
+        sprint: [include: ['activable', 'totalRemaining', 'duration', 'attachments'],
+                 exclude: ['cliches'],
+                 withIds: ['stories'],
+                 textile: ['retrospective', 'doneDefinition'],
+                 asShort: ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName', 'lastUpdated']],
+        release: [include: ['duration', 'closable', 'activable', 'attachments'],
+                  textile: ['vision'],
+                  asShort: ['name', 'state', 'endDate', 'startDate', 'orderNumber'],
+                  exclude: ['cliches']
         ],
-        backlog: [include:['count', 'isDefault']],
+        backlog: [include: ['count', 'isDefault']],
         activity: [include: ['important']],
-        userpreferences:[asShort:['activity', 'language', 'emailsSettings', 'filterTask']],
-        productpreferences:[asShort:['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks', 'assignOnCreateTask',
-                                     'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
-        attachment:[include: ['filename']],
-        acceptancetest:[textile:['description'], asShort:['state']]
+        userpreferences: [asShort: ['activity', 'language', 'emailsSettings', 'filterTask']],
+        productpreferences: [asShort: ['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
+                                       'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
+        attachment: [include: ['filename']],
+        acceptancetest: [textile: ['description'], asShort: ['state']]
 ]
 
 icescrum.restMarshaller = [
         //global exclude
-        exclude:['dateCreated'],
-        story:[exclude:['backlog'], include: ['tags', 'dependences', 'testState','comments']],
-        feature: [exclude: ['parentDomain','backlog'],include: ['tags']],
-        actor: [exclude: ['backlog'],include: ['tags']],
-        task:[exclude:['impediment'],include: ['tags','comments']],
-        product:[exclude: ['domains','impediments','goal','cliches','duration']],
-        sprint:[exclude: ['description','cliches','duration']],
-        release:[exclude: ['description','cliches','duration']],
-        team:[exclude: ['velocity','description','preferences']],
-        user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']],
-        userpreferences:[asShort:['activity', 'language']],
-        acceptancetest:[]
+        exclude: ['dateCreated'],
+        story: [exclude: ['backlog'], include: ['tags', 'dependences', 'testState', 'comments']],
+        feature: [exclude: ['parentDomain', 'backlog'], include: ['tags']],
+        actor: [exclude: ['backlog'], include: ['tags']],
+        task: [exclude: ['impediment'], include: ['tags', 'comments']],
+        product: [exclude: ['domains', 'impediments', 'goal', 'cliches', 'duration']],
+        sprint: [exclude: ['description', 'cliches', 'duration']],
+        release: [exclude: ['description', 'cliches', 'duration']],
+        team: [exclude: ['velocity', 'description', 'preferences']],
+        user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'teams']],
+        userpreferences: [asShort: ['activity', 'language']],
+        acceptancetest: []
 ]
 
 icescrum.activities.important = [Activity.CODE_SAVE, 'acceptAs', 'estimate', 'plan', 'unPlan', 'done', 'unDone', 'returnToSandbox']
@@ -185,16 +185,16 @@ icescrum {
     spaces {
         product {
             spaceClass = Product
-            config = { product -> [key:product.pkey, path:'p'] }
-            params = { product -> [product:product.id] }
+            config = { product -> [key: product.pkey, path: 'p'] }
+            params = { product -> [product: product.id] }
             indexScrumOS = { productSpace, user, securityService, springSecurityService ->
                 def product = productSpace.object
-                if (product?.preferences?.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product,springSecurityService.authentication,false)){
-                    forward(action:springSecurityService.isLoggedIn() ? 'error403' : 'error401',controller:'errors')
+                if (product?.preferences?.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product, springSecurityService.authentication, false)) {
+                    forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
                     return
                 }
 
-                if (product && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProductOpened != product.pkey){
+                if (product && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProductOpened != product.pkey) {
                     user.preferences.lastProductOpened = product.pkey
                     user.save()
                 }
@@ -386,15 +386,15 @@ grails {
             fii.rejectPublicInvocations = true
             controllerAnnotations.staticRules = [
                     //app controllers rules
-                    '/stream/app/**':                 ['permitAll'],
-                    '/scrumOS/**':                    ['permitAll'],
-                    '/user/**':                       ['permitAll'],
-                    '/errors/**':                     ['permitAll'],
-                    '/assets/**':                     ['permitAll'],
-                    '/**/js/**':                      ['permitAll'],
-                    '/**/css/**':                     ['permitAll'],
-                    '/**/images/**':                  ['permitAll'],
-                    '/**/favicon.ico':                ['permitAll']
+                    '/stream/app/**' : ['permitAll'],
+                    '/scrumOS/**'    : ['permitAll'],
+                    '/user/**'       : ['permitAll'],
+                    '/errors/**'     : ['permitAll'],
+                    '/assets/**'     : ['permitAll'],
+                    '/**/js/**'      : ['permitAll'],
+                    '/**/css/**'     : ['permitAll'],
+                    '/**/images/**'  : ['permitAll'],
+                    '/**/favicon.ico': ['permitAll']
             ]
 
             userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
@@ -406,7 +406,7 @@ grails {
             basic.realmName = "iceScrum authentication for REST API"
             filterChain.chainMap = [
                     '/ws/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
-                    '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+                    '/**'   : 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
             ]
 
             auth.loginFormUrl = '/login'
@@ -429,7 +429,7 @@ grails {
                 User.withTransaction {
                     def user = User.lock(e.authentication.principal.id)
                     user.lastLogin = new Date()
-                    user.save(flush:true)
+                    user.save(flush: true)
                 }
             }
         }
@@ -463,12 +463,10 @@ environments {
         else if (new File("${userHome}${File.separator}.grails${File.separator}${appName}.properties").exists()) {
             println "*** User defined config: file:${userHome}${File.separator}.grails${File.separator}${appName}.properties. ***"
             grails.config.locations = ["file:${userHome}${File.separator}.grails${File.separator}${appName}.properties"]
-        }
-        else if (new File("${userHome}${File.separator}.icescrum${File.separator}config.groovy").exists()) {
+        } else if (new File("${userHome}${File.separator}.icescrum${File.separator}config.groovy").exists()) {
             println "*** iceScrum home defined config: file:${userHome}${File.separator}.icescrum${File.separator}config.groovy. ***"
             grails.config.locations = ["file:${userHome}${File.separator}.icescrum${File.separator}config.groovy"]
-        }
-        else {
+        } else {
             println "*** No external configuration file defined (${ApplicationSupport.CONFIG_ENV_NAME}). ***"
         }
         try {
@@ -489,11 +487,11 @@ JavascriptTagLib.PROVIDER_MAPPINGS.jquery = JQueryProvider.class
 
 //cache config
 def uniqueCacheManagerName = appName + "-EhCacheManager-" + System.currentTimeMillis()
-grails{
+grails {
     cache {
         order = 2000 // higher than default (1000) and plugins, usually 1500
         enabled = true
-        clearAtStartup=true // reset caches when redeploying
+        clearAtStartup = true // reset caches when redeploying
         ehcache {
             cacheManagerName = uniqueCacheManagerName
         }

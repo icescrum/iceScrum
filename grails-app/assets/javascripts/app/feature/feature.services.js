@@ -52,7 +52,10 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
     };
     this.get = function(id) {
         var cachedFeature = CacheService.get('feature', id);
-        return cachedFeature ? $q.when(cachedFeature) : Feature.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return cachedFeature ? $q.when(cachedFeature) : self.refresh(id);
+    };
+    this.refresh = function(id) {
+        return Feature.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.list = function() {
         var cachedFeatures = CacheService.getCache('feature');

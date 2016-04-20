@@ -82,7 +82,10 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     };
     this.get = function(id, project) {
         var sprint = _.find(ReleaseService.getAllSprints(project.releases), {id: id});
-        return sprint ? $q.when(sprint) : Sprint.get({id: id, projectId: project.id}, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return sprint ? $q.when(sprint) : self.refresh(id, project.id);
+    };
+    this.refresh = function(id, projectId) {
+        return Sprint.get({id: id, projectId: projectId}, crudMethods[IceScrumEventType.CREATE]).$promise
     };
     this.getCurrentOrLastSprint = function(project) {
         return ReleaseService.getCurrentOrLastRelease(project).then(function(release) {
