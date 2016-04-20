@@ -22,7 +22,7 @@
  *
  */
 
-services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', function($rootScope, $http, atmosphereService, IceScrumEventType) {
+services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', 'FormService', function($rootScope, $http, atmosphereService, IceScrumEventType, FormService) {
     var self = this;
     self.push = {};
     this.listeners = {};
@@ -154,6 +154,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 if (_canLog('debug')) {
                     atmosphere.util.debug('Call listener on ' + eventType + ' ' + domain);
                 }
+                FormService.transformStringToDate(object);
                 listener(object);
             });
         }

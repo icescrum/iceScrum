@@ -25,7 +25,7 @@ services.factory('Sprint', ['Resource', function($resource) {
     return $resource('/p/:projectId/sprint/:type/:id/:action');
 }]);
 
-services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'IceScrumEventType', 'Session', 'CacheService', 'ReleaseService', function($q, $state, Sprint, SprintStatesByName, IceScrumEventType, Session, CacheService, ReleaseService) {
+services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'IceScrumEventType', 'Session', 'PushService', 'CacheService', 'ReleaseService', function($q, $state, Sprint, SprintStatesByName, IceScrumEventType, Session, PushService, CacheService, ReleaseService) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(sprint) {
@@ -40,6 +40,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
         }
         CacheService.remove('sprint', sprint.id);
     };
+    _.each(crudMethods, function(crudMethod, eventType) {
+        PushService.registerListener('sprint', eventType, crudMethod);
+    });
     this.mergeSprints = function(sprints) {
         _.each(sprints, function(sprint) {
             crudMethods[IceScrumEventType.CREATE](sprint);

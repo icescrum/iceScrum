@@ -297,6 +297,14 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             });
         }
     };
+    this.transformStringToDate = function(item) {
+        if (item.hasOwnProperty('startDate')) {
+            item.startDate = new Date(item.startDate);
+        }
+        if (item.hasOwnProperty('endDate')) {
+            item.endDate = new Date(item.endDate);
+        }
+    };
 }])
 .service('BundleService', [function() {
     this.bundles = {};
@@ -449,23 +457,15 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
         var defaultParams = {
             id: '@id'
         };
-        var transformStringToDate = function(item) {
-            if (item.hasOwnProperty('startDate')) {
-                item.startDate = new Date(item.startDate);
-            }
-            if (item.hasOwnProperty('endDate')) {
-                item.endDate = new Date(item.endDate);
-            }
-        };
         var arrayInterceptor = {
             response: function(response) {
-                _.each(response.resource, transformStringToDate);
+                _.each(response.resource, FormService.transformStringToDate);
                 return response.resource;
             }
         };
         var singleInterceptor = {
             response: function(response) {
-                transformStringToDate(response.resource);
+                FormService.transformStringToDate(response.resource);
                 return response.resource;
             }
         };
