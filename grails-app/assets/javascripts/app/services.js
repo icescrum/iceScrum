@@ -349,13 +349,6 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         _.remove(self.getCache(cacheName), {id: parseInt(id)});
     };
 }]).service('SyncService', ['CacheService', 'StoryService', 'FeatureService', 'SprintService', function(CacheService, StoryService, FeatureService, SprintService) {
-    var refreshIfNeeded = function(shortItem, refreshCallback) {
-        var cacheName = _.lowerFirst(shortItem.class);
-        var cachedItem = CacheService.get(cacheName, shortItem.id);
-        if (cachedItem && cachedItem.lastUpdated != shortItem.lastUpdated) {
-            refreshCallback();
-        }
-    };
     var syncFunctions = {
         story: function(oldStory, newStory) {
             var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
@@ -380,17 +373,6 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                         cachedSprint.stories.push(newStory);
                     }
                 }
-            }
-            if (newSprintId) {
-                refreshIfNeeded(newStory.parentSprint, function() {
-                    SprintService.refresh(newSprintId, newStory.backlog.id);
-                });
-            }
-            var newFeatureId = (newStory && newStory.feature) ? newStory.feature.id : null;
-            if (newFeatureId) {
-                refreshIfNeeded(newStory.feature, function() {
-                    FeatureService.refresh(newFeatureId);
-                });
             }
         },
         task: function(oldTask, newTask) {
@@ -440,11 +422,6 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                         cachedStory.tasks_count = cachedStory.tasks.length;
                     }
                 }
-            }
-            if (newStoryId) {
-                refreshIfNeeded(newTask.parentStory, function() {
-                    StoryService.refresh(newStoryId);
-                });
             }
         },
         feature: function(oldFeature, newFeature) {
