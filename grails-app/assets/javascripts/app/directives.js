@@ -784,34 +784,38 @@ directives.directive('isMarkitup', ['$http', function($http) {
         }
     };
 }])
-    .directive('visualStates',['$compile', '$filter', function($compile, $filter) {
-        return {
-            scope: {
-                ngModel: '=',
-                modelStates: '='
-            },
-            replace: true,
-            templateUrl: 'states.html',
-            link: function(scope, element, attrs) {
-                var width = 100 / _.filter(_.keys(scope.modelStates), function(key) {
-                    return scope.modelStates[key] >= 0
-                }).length;
+.directive('visualStates', ['$compile', '$filter', function($compile, $filter) {
+    return {
+        restrict: 'E',
+        require: 'ngModel',
+        scope: {
+            modelStates: '='
+        },
+        replace: true,
+        templateUrl: 'states.html',
+        link: function(scope, element, attrs, modelCtrl) {
+            var width = 100 / _.filter(_.keys(scope.modelStates), function(key) {
+                return scope.modelStates[key] >= 0
+            }).length;
+            scope.$watch(function() { return modelCtrl.$modelValue.state; }, function(newState) {
                 scope.states = [];
                 _.each(scope.modelStates, function(state, code) {
-                    if(state >= 0) {
+                    if (state >= 0) {
+                        var newModel = modelCtrl.$modelValue;
                         var codeN = attrs.$normalize(code.toLowerCase());
-                        var date = scope.ngModel[codeN+'Date'];
-                        var name = $filter('i18n')(state, scope.ngModel.class + 'States');
+                        var date = newModel[codeN + 'Date'];
+                        var name = $filter('i18n')(state, newModel.class + 'States');
                         scope.states.push({
-                            name : name,
+                            name: name,
                             width: width,
-                            completed : scope.ngModel.state >= state,
-                            current : scope.ngModel.state == state,
-                            tooltip: name + (date ? ': '+($filter('dateTime')(date)) : ''),
+                            completed: newState >= state,
+                            current: newState == state,
+                            tooltip: name + (date ? ': ' + ($filter('dateTime')(date)) : ''),
                             class: 'color-state-' + codeN
                         });
                     }
                 });
-            }
-        };
-    }]);
+            });
+        }
+    };
+}]);
