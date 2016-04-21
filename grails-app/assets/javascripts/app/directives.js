@@ -444,16 +444,10 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 var classByState = {1: 'default', 2: 'progress', 3: 'done'};
                 releaseSelector.enter().append("rect")
                     .attr("y", releaseMargin)
-                    .attr("height", height - releaseMargin * 2)
-                    .attr("class", function(d) {
-                        return "release release-" + classByState[d.state];
-                    });
+                    .attr("height", height - releaseMargin * 2);
                 sprintSelector.enter().append("rect")
                     .attr("y", sprintMargin + releaseMargin)
-                    .attr("height", height - releaseMargin * 2 - sprintMargin * 2)
-                    .attr("class", function(d) {
-                        return "sprint sprint-" + classByState[d.state];
-                    });
+                    .attr("height", height - releaseMargin * 2 - sprintMargin * 2);
                 // Update
                 var getX = function(d) {
                     return x(d.startDate);
@@ -461,9 +455,18 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 var getWidth = function(d) {
                     return x(d.endDate) - x(d.startDate);
                 };
-                releaseSelector.attr('x', getX).attr("width", getWidth);
-                sprintSelector.attr('x', getX).attr("width", getWidth);
-
+                releaseSelector
+                    .attr('x', getX)
+                    .attr("width", getWidth)
+                    .attr("class", function(release) {
+                        return "release release-" + classByState[release.state];
+                    });
+                sprintSelector
+                    .attr('x', getX)
+                    .attr("width", getWidth)
+                    .attr("class", function(sprint) {
+                        return "sprint sprint-" + classByState[sprint.state];
+                    });
                 if (extent) {
                     refreshBrush();
                 }
