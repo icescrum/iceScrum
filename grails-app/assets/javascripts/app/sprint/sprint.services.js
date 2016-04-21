@@ -89,7 +89,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     };
     this.getCurrentOrLastSprint = function(project) {
         return ReleaseService.getCurrentOrLastRelease(project).then(function(release) {
-            if (release.id) {
+            if (release && release.id) {
                 return self.list(release).then(function() {
                     var sprints = _.orderBy(release.sprints, 'orderNumber', 'desc');
                     return _.find(sprints, function(sprint) {
@@ -103,7 +103,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     };
     this.getCurrentOrNextSprint = function(project) {
         return ReleaseService.getCurrentOrNextRelease(project).then(function(release) {
-            if (release.id) {
+            if (release && release.id) {
                 return self.list(release).then(function() {
                     return _.find(_.sortBy(release.sprints, 'orderNumber'), function(sprint) {
                         return sprint.state < SprintStatesByName.DONE;

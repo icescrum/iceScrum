@@ -226,6 +226,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 $scope.sprints = [sprint];
             }
             $scope.selectedItems = $scope.sprints; // URL -> Timeline
+            $scope.visibleSprintOffset = 0;
         } else {
             if (!release) {
                 release = _.find($scope.releases, function(release) {
@@ -239,9 +240,15 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 $scope.sprints = release.sprints == null ? [] : release.sprints;
                 $scope.selectedItems = [release]; // URL -> Timeline
             }
+            var firstSprintToShowIndex = _.findIndex(release.sprints, function(sprint) {
+                return sprint.state == SprintStatesByName.WAIT || sprint.state == SprintStatesByName.IN_PROGRESS;
+            });
+            if (firstSprintToShowIndex == -1) {
+                firstSprintToShowIndex = _.isArray(release.sprints) && release.sprints.length > $scope.visibleSprintMax ? release.sprints.length - $scope.visibleSprintMax - 1 : 0;
+            }
+            $scope.visibleSprintOffset = firstSprintToShowIndex;
         }
         $scope.release = release;
-        $scope.visibleSprintOffset = 0;
         $scope.computeVisibleSprints();
     });
     $scope.selectableOptions = {

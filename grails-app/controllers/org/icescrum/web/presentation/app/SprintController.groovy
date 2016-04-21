@@ -164,7 +164,7 @@ class SprintController {
         Sprint sprint = Sprint.withSprint(product, id)
         sprintService.activate(sprint)
         withFormat {
-            html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, stories: sprint.stories] as JSON) }
+            html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
             json { renderRESTJSON(text: sprint) }
             xml { renderRESTXML(text: sprint) }
         }
@@ -173,10 +173,9 @@ class SprintController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
-        def unDoneStories = sprint.stories.findAll { it.state != Story.STATE_DONE }
         sprintService.close(sprint)
         withFormat {
-            html { render(status: 200, contentType: 'application/json', text: [sprint: sprint, unDoneStories: unDoneStories, stories: sprint.stories] as JSON) }
+            html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
             json { renderRESTJSON(text: sprint) }
             xml { renderRESTXML(text: sprint) }
         }
