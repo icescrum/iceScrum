@@ -74,10 +74,6 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
         release.class = 'release';
         return Release.save({projectId: project.id}, release, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.get = function(id) {
-        var cachedRelease = CacheService.get('release', id);
-        return cachedRelease ? $q.when(cachedRelease) : Release.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
-    };
     this.activate = function(release) {
         return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'activate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
@@ -96,7 +92,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     this.openChart = function(release, chart) {
         return Release.get({id: release.id, projectId: release.parentProduct.id, action: chart}).$promise;
     };
-    this.getAllSprints = function(releases) {
+    this.findAllSprints = function(releases) {
         return _.filter(_.flatMap(releases, 'sprints'), _.identity);
     };
     this.authorizedRelease = function(action, release) {

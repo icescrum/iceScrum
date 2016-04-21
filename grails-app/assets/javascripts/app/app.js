@@ -478,9 +478,9 @@ angular.module('isApp', [
                     return Session.getProjectPromise();
                 }],
                 releases: ['$q', 'ReleaseService', 'SprintService', 'project', function($q, ReleaseService, SprintService, project) {
-                    return ReleaseService.list(project).then(function(releases) {            // Wait for releases
-                        return $q.all(_.map(releases, SprintService.list)).then(function() { // Wait for sprints
-                            return project.releases;                                         // Finally resolve the releases
+                    return ReleaseService.list(project).then(function() {                            // Wait for releases
+                        return $q.all(_.map(project.releases, SprintService.list)).then(function() { // Wait for sprints
+                            return project.releases;                                                 // Finally resolve the releases
                         });
                     });
                 }]
@@ -612,8 +612,20 @@ angular.module('isApp', [
                 project: ['Session', function(Session) {
                     return Session.getProjectPromise();
                 }],
-                sprint: ['$stateParams', '$q', 'SprintService', 'StoryService', 'TaskService', 'project', function($stateParams, $q, SprintService, StoryService, TaskService, project) {
-                    var promise = !$stateParams.sprintId ? SprintService.getCurrentOrNextSprint(project) : SprintService.get($stateParams.sprintId, project);
+                releases: ['$q', 'ReleaseService', 'SprintService', 'project', function($q, ReleaseService, SprintService, project) {
+                    return ReleaseService.list(project).then(function() {                            // Wait for releases
+                        return $q.all(_.map(project.releases, SprintService.list)).then(function() { // Wait for sprints
+                            return project.releases;                                                 // Finally resolve the releases
+                        });
+                    });
+                }],
+                sprint: ['$stateParams', '$q', 'ReleaseService', 'SprintService', 'StoryService', 'TaskService', 'project', 'releases', function($stateParams, $q, ReleaseService, SprintService, StoryService, TaskService, project, releases) {
+                    var promise;
+                    if ($stateParams.sprintId) {
+                        promise = $q.when(_.find(ReleaseService.findAllSprints(releases), {id: $stateParams.sprintId}));
+                    } else {
+                        promise = SprintService.getCurrentOrNextSprint(project);
+                    }
                     return promise.then(function(sprint) {
                         return sprint.id == undefined ? undefined : StoryService.listByType(sprint).then(function() {
                             return TaskService.list(sprint).then(function() {
@@ -630,6 +642,9 @@ angular.module('isApp', [
                     resolve: {
                         detailsSprint: ['sprint', function(sprint) {
                             return sprint;
+                        }],
+                        detailsRelease: ['releases', 'sprint', function(releases, sprint) {
+                            return _.find(releases, {id: sprint.parentRelease.id});
                         }]
                     },
                     views: {

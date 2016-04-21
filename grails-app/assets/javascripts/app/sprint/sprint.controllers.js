@@ -179,7 +179,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', function($scope, $controller, SprintStatesByName, SprintService, ReleaseService, FormService, detailsSprint) {
+controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', 'detailsRelease', function($scope, $controller, SprintStatesByName, SprintService, ReleaseService, FormService, detailsSprint, detailsRelease) {
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint'});
     // Functions
@@ -187,8 +187,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
         return !_.isEqual($scope.editableSprint, $scope.editableSprintReference);
     };
     $scope.update = function(sprint) {
-        SprintService.update(sprint, $scope.release).then(function(updatedSprint) {
-            $scope.sprint = angular.extend($scope.sprint, updatedSprint); // explicit update is needed because if we are not in the context of a release then the sprint is stored nowhere so SprintService cannot update it
+        SprintService.update(sprint, $scope.release).then(function() {
             $scope.resetSprintForm();
             $scope.notifySuccess('todo.is.ui.sprint.updated');
         });
@@ -237,13 +236,11 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
     $scope.editableSprintReference = {};
     $scope.resetSprintForm();
     $scope.sprintStatesByName = SprintStatesByName;
-    ReleaseService.get($scope.sprint.parentRelease.id).then(function(release) {
-        $scope.release = release;
-        $scope.endDateOptions.maxDate = $scope.release.endDate;
-        var sortedSprints = _.sortBy($scope.release.sprints, 'orderNumber');
-        $scope.previousSprint = FormService.previous(sortedSprints, $scope.sprint);
-        $scope.nextSprint = FormService.next(sortedSprints, $scope.sprint);
-    });
+    $scope.release = detailsRelease;
+    $scope.endDateOptions.maxDate = $scope.release.endDate;
+    var sortedSprints = _.sortBy($scope.release.sprints, 'orderNumber');
+    $scope.previousSprint = FormService.previous(sortedSprints, $scope.sprint);
+    $scope.nextSprint = FormService.next(sortedSprints, $scope.sprint);
 }]);
 
 controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detailsRelease', function($scope, SprintService, detailsRelease) {

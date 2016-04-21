@@ -80,10 +80,6 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.generateSprints = function(release) {
         return Sprint.saveArray({type: 'release', id: release.id, projectId: release.parentProduct.id, action: 'generateSprints'}, {}, self.mergeSprints).$promise;
     };
-    this.get = function(id, project) {
-        var sprint = _.find(ReleaseService.getAllSprints(project.releases), {id: id});
-        return sprint ? $q.when(sprint) : self.refresh(id, project.id);
-    };
     this.refresh = function(id, projectId) {
         return Sprint.get({id: id, projectId: projectId}, crudMethods[IceScrumEventType.CREATE]).$promise
     };

@@ -436,7 +436,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 timelineBackground.attr("width", width);
 
                 var releaseSelector = releases.selectAll('rect').data(_releases);
-                var sprintSelector = sprints.selectAll('rect').data(ReleaseService.getAllSprints(_releases));
+                var sprintSelector = sprints.selectAll('rect').data(ReleaseService.findAllSprints(_releases));
                 // Remove
                 releaseSelector.exit().remove();
                 sprintSelector.exit().remove();
