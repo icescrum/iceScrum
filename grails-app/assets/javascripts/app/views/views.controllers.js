@@ -206,6 +206,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
         var sprintId = newValues[2];
         var sprintListId = newValues[3];
         var release = _.find($scope.releases, {id: releaseId});
+        $scope.visibleSprintOffset = 0;
         if (release && stateName.indexOf('.sprint') != -1 && stateName.indexOf('.new') == -1) {
             if (sprintId) {
                 $scope.sprints = [_.find(release.sprints, {id: sprintId})];
@@ -226,7 +227,6 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 $scope.sprints = [sprint];
             }
             $scope.selectedItems = $scope.sprints; // URL -> Timeline
-            $scope.visibleSprintOffset = 0;
         } else {
             if (!release) {
                 release = _.find($scope.releases, function(release) {
@@ -237,16 +237,19 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 }
             }
             if (release) {
-                $scope.sprints = release.sprints == null ? [] : release.sprints;
+                if (release.sprints == null) {
+                    release.sprints = [];
+                }
+                $scope.sprints = release.sprints;
                 $scope.selectedItems = [release]; // URL -> Timeline
+                var firstSprintToShowIndex = _.findIndex($scope.sprints, function(sprint) {
+                    return sprint.state == SprintStatesByName.WAIT || sprint.state == SprintStatesByName.IN_PROGRESS;
+                });
+                if (firstSprintToShowIndex == -1) {
+                    firstSprintToShowIndex = $scope.sprints.length > $scope.visibleSprintMax ? $scope.sprints.length - $scope.visibleSprintMax - 1 : 0;
+                }
+                $scope.visibleSprintOffset = firstSprintToShowIndex;
             }
-            var firstSprintToShowIndex = _.findIndex(release.sprints, function(sprint) {
-                return sprint.state == SprintStatesByName.WAIT || sprint.state == SprintStatesByName.IN_PROGRESS;
-            });
-            if (firstSprintToShowIndex == -1) {
-                firstSprintToShowIndex = _.isArray(release.sprints) && release.sprints.length > $scope.visibleSprintMax ? release.sprints.length - $scope.visibleSprintMax - 1 : 0;
-            }
-            $scope.visibleSprintOffset = firstSprintToShowIndex;
         }
         $scope.release = release;
         $scope.computeVisibleSprints();
