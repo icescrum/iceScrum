@@ -1089,7 +1089,7 @@ angular.module('isApp', [
     "ICEBOX": -1
 })
 .constant('TaskStatesByName', {
-    "WAIT": 0,
+    "TODO": 0,
     "IN_PROGRESS": 1,
     "DONE": 2
 })
@@ -1103,17 +1103,17 @@ angular.module('isApp', [
     "SUCCESS": 10
 })
 .constant('SprintStatesByName', {
-    "WAIT": 1,
+    "TODO": 1,
     "IN_PROGRESS": 2,
     "DONE": 3
 })
 .constant('FeatureStatesByName', {
-    "WAIT": 0,
+    "TODO": 0,
     "IN_PROGRESS": 1,
     "DONE": 2
 })
 .constant('ReleaseStatesByName', {
-    "WAIT": 1,
+    "TODO": 1,
     "IN_PROGRESS": 2,
     "DONE": 3
 })

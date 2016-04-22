@@ -113,7 +113,7 @@
                         {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
                     </a>
                     <span class="pull-right">
-                        <span ng-if="sprint.state > sprintStatesByName.WAIT"
+                        <span ng-if="sprint.state > sprintStatesByName.TODO"
                               uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity }} /</span>
                         <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity }}</span>
                         <i class="small-icon fa fa-dollar"></i>

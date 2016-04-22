@@ -55,7 +55,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     this.getCurrentOrLastRelease = function(project) {
         return self.list(project).then(function(releases) {
             return _.find(_.orderBy(releases, 'orderNumber', 'desc'), function(release) {
-                return release.state > ReleaseStatesByName.WAIT;
+                return release.state > ReleaseStatesByName.TODO;
             });
         });
     };
@@ -103,11 +103,11 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
             case 'updateDates':
                 return Session.poOrSm() && release.state != ReleaseStatesByName.DONE;
             case 'activate':
-                return Session.poOrSm() && release.state == ReleaseStatesByName.WAIT && release.activable;
+                return Session.poOrSm() && release.state == ReleaseStatesByName.TODO && release.activable;
             case 'close':
                 return Session.poOrSm() && release.state == ReleaseStatesByName.IN_PROGRESS && release.closable;
             case 'delete':
-                return Session.poOrSm() && release.state == ReleaseStatesByName.WAIT;
+                return Session.poOrSm() && release.state == ReleaseStatesByName.TODO;
             case 'create':
             case 'update':
                 return Session.poOrSm();

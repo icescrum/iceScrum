@@ -90,7 +90,7 @@
                 <th ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
                     <span>${message(code: 'is.task.state.inprogress')}</span>
                 </th>
-                <th ng-if="sprint.state != sprintStatesByName.WAIT">
+                <th ng-if="sprint.state != sprintStatesByName.TODO">
                     <span>${message(code: 'is.task.state.done')}</span>
                 </th>
             </tr>

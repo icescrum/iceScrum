@@ -219,7 +219,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 });
             } else {
                 var sprint = _.find(release.sprints, function(sprint) {
-                    return sprint.state == SprintStatesByName.WAIT || sprint.state == SprintStatesByName.IN_PROGRESS;
+                    return sprint.state == SprintStatesByName.TODO || sprint.state == SprintStatesByName.IN_PROGRESS;
                 });
                 if (!sprint) {
                     sprint = _.last(release.sprints);
@@ -230,7 +230,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
         } else {
             if (!release) {
                 release = _.find($scope.releases, function(release) {
-                    return release.state == ReleaseStatesByName.WAIT || release.state == ReleaseStatesByName.IN_PROGRESS;
+                    return release.state == ReleaseStatesByName.TODO || release.state == ReleaseStatesByName.IN_PROGRESS;
                 });
                 if (!release) {
                     release = _.last($scope.releases);
@@ -243,7 +243,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 $scope.sprints = release.sprints;
                 $scope.selectedItems = [release]; // URL -> Timeline
                 var firstSprintToShowIndex = _.findIndex($scope.sprints, function(sprint) {
-                    return sprint.state == SprintStatesByName.WAIT || sprint.state == SprintStatesByName.IN_PROGRESS;
+                    return sprint.state == SprintStatesByName.TODO || sprint.state == SprintStatesByName.IN_PROGRESS;
                 });
                 if (firstSprintToShowIndex == -1) {
                     firstSprintToShowIndex = $scope.sprints.length > $scope.visibleSprintMax ? $scope.sprints.length - $scope.visibleSprintMax - 1 : 0;
@@ -299,8 +299,8 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     };
     $scope.refreshTasks = function() {
         switch ($scope.sprint.state) {
-            case SprintStatesByName.WAIT:
-                $scope.sprintTaskStates = [TaskStatesByName.WAIT];
+            case SprintStatesByName.TODO:
+                $scope.sprintTaskStates = [TaskStatesByName.TODO];
                 break;
             case SprintStatesByName.IN_PROGRESS:
                 $scope.sprintTaskStates = $scope.taskStates;

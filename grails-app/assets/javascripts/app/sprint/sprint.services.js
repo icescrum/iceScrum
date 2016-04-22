@@ -89,7 +89,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
                 return self.list(release).then(function() {
                     var sprints = _.orderBy(release.sprints, 'orderNumber', 'desc');
                     return _.find(sprints, function(sprint) {
-                        return sprint.state > SprintStatesByName.WAIT;
+                        return sprint.state > SprintStatesByName.TODO;
                     });
                 });
             } else {
@@ -141,9 +141,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             case 'upload':
                 return Session.poOrSm();
             case 'activate':
-                return Session.poOrSm() && sprint.state == SprintStatesByName.WAIT && sprint.activable;
+                return Session.poOrSm() && sprint.state == SprintStatesByName.TODO && sprint.activable;
             case 'delete':
-                return Session.poOrSm() && sprint.state == SprintStatesByName.WAIT;
+                return Session.poOrSm() && sprint.state == SprintStatesByName.TODO;
             case 'close':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.IN_PROGRESS;
             case 'updateStartDate':

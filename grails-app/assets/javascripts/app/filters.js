@@ -390,7 +390,7 @@ filters
         return function(state) {
             var iconByState = 'fa-hourglass-';
             switch (state) {
-                case TaskStatesByName.WAIT:
+                case TaskStatesByName.TODO:
                     iconByState += 'start';
                     break;
                 case TaskStatesByName.IN_PROGRESS:
