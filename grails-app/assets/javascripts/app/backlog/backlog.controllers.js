@@ -36,7 +36,7 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
         var filteredStories = $filter('filter')(Session.getProject().stories, filter.story, function(expected, actual) {
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
-        var sortOrder = [backlog.orderBy.current.id, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
+        var sortOrder = [backlog.orderBy.current.value, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
         if (BacklogService.isAll(backlog) && backlog.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
             var sortByStateGroupingByBacklogState = function(story) {
                 var orderCriteria = story.state == StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state; // Ignore the differences betweed accepted and estimated
@@ -48,7 +48,7 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
         if (backlog.stories && backlog.stories.length > 0) {
             backlog.storiesLoaded = true; // To render stories already there in the client
         }
-        backlog.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog)); // TODO fix
+        backlog.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog));
         backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse && !$scope.hasContextOrSearch();
         $timeout(function() { // Timeout to wait for story rendering
             $scope.$emit('selectable-refresh');
@@ -67,6 +67,21 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
             }
         }
     };
+    var getValueEffortRateForSorting = function(story) {
+        var rate = -3; // Rate = -3 when no effort (null) & no value (0)
+        if (story.value == 0) {
+            if (story.effort != null) {
+                rate = - story.effort / 10000; // Rate spans from 0 to -1 (unless effort is > 1000, very unlikely), higher effort => lower rate
+            }
+        } else {
+            if (story.effort == null) {
+                rate =  - 1 / story.value -1; // Rate spans from -2 to -1, higher value => higher rate
+            } else {
+                rate = story.value / story.effort; // Rate spans from 0 to Infinity, higher value compared to effort => higher rate
+            }
+        }
+        return rate;
+    };
     $scope.toggleBacklog = function(backlog) {
         if (backlog.shown && $scope.backlogs.length > 1) {
             backlog.shown = null;
@@ -76,15 +91,16 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
             backlog.storiesLoaded = false;
             backlog.orderBy = {
                 values: _.sortBy([
-                    {id: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
-                    {id: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
-                    {id: 'name', name: $scope.message('todo.is.ui.sort.name')},
-                    {id: 'tasks_count', name: $scope.message('todo.is.ui.sort.tasks')},
-                    {id: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
-                    {id: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
-                    {id: 'value', name: $scope.message('todo.is.ui.sort.value')},
-                    {id: 'type', name: $scope.message('todo.is.ui.sort.type')},
-                    {id: 'state', name: $scope.message('todo.is.ui.sort.state')}
+                    {id: 'effort', value: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
+                    {id: 'rank', value: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
+                    {id: 'name', value: 'name', name: $scope.message('todo.is.ui.sort.name')},
+                    {id: 'tasks_count', value: 'tasks_count', name: $scope.message('todo.is.ui.sort.tasks')},
+                    {id: 'suggestedDate', value: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
+                    {id: 'feature.id', value: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
+                    {id: 'value', value: 'value', name: $scope.message('todo.is.ui.sort.value')},
+                    {id: 'type', value: 'type', name: $scope.message('todo.is.ui.sort.type')},
+                    {id: 'state', value: 'state', name: $scope.message('todo.is.ui.sort.state')},
+                    {id: 'value/effort', value: getValueEffortRateForSorting, name: $scope.message('todo.is.ui.sort.value.effort.rate')}
                 ], 'name')
             };
             $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable, sorting and init the backlog from client data (storyService.list)
