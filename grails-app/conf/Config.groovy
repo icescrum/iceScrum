@@ -119,7 +119,7 @@ icescrum.marshaller = [
                textile: ['notes']],
         actor: [include: ['tags', 'attachments'],
                 withIds: ['stories']],
-        feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'attachments'],
+        feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'attachments', 'inProgressDate', 'doneDate'],
                   withIds: ['stories'],
                   asShort: ['color', 'name']],
         sprint: [include: ['activable', 'totalRemaining', 'duration', 'attachments'],
