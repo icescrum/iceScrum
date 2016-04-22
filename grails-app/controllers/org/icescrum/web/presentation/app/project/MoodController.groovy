@@ -89,8 +89,8 @@ class MoodController {
     def sprintUserMood(long product) {
         Product _product = Product.withProduct(product)
         def sprint = Sprint.findCurrentOrLastSprint(product).list()[0]
-        def sprintActivationDate = sprint.activationDate.clone().clearTime()
-        def values = Mood.findAllByUserInList(_product.allUsers).findAll { mood -> mood.feelingDay >= sprintActivationDate }
+        def sprintInProgressDate = sprint.inProgressDate.clone().clearTime()
+        def values = Mood.findAllByUserInList(_product.allUsers).findAll { mood -> mood.feelingDay >= sprintInProgressDate }
         // Mood by user
         def moodsByUser = values.groupBy { it.user }
         def computedValues = moodsByUser.collect { user, moods ->
