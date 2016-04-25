@@ -23,7 +23,7 @@
  *
  */
 
-package org.icescrum.web.presentation.app.project
+package org.icescrum.web.presentation.api
 
 import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Product

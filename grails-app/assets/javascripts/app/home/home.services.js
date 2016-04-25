@@ -20,12 +20,9 @@
  *
  */
 services.service("HomeService", ['User', '$http', '$rootScope', 'FormService', function(User, $http, $rootScope, FormService) {
-    this.getPanels = function() {
-        return FormService.httpGet('home/panel', {}, true);
-    };
-    this.updatePositionPanel = function(_data) {
+    this.updatePositionWidget = function(_data) {
         $http({
-            url: $rootScope.serverUrl + '/home/panel',
+            url: $rootScope.serverUrl + '/home/widget',
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
             transformRequest: function(data) {

@@ -37,21 +37,6 @@ class UrlMappings {
             controller = 'scrumOS'
         }
 
-        "/$action/$window?/$id?" {
-            controller = 'scrumOS'
-            constraints {
-                id(matches: /\d*/)
-            }
-        }
-
-        "/$action/$window?/$actionWindow?/$id?" {
-            controller = 'scrumOS'
-            constraints {
-                actionWindow(matches: /[a-zA-Z]*/)
-                id(matches: /\d*/)
-            }
-        }
-
         name privateURL: "/ws/$controller/$action/$id?" {
         }
 
@@ -85,6 +70,23 @@ class UrlMappings {
             controller = 'scrumOS'
             action = 'index'
         }
+
+        "/window/$windowId" {
+            controller = 'scrumOS'
+            action = 'window'
+            constraints {
+                windowId(matches: /[a-zA-Z]*/)
+            }
+        }
+
+        "/widget/$widgetId" {
+            controller = 'scrumOS'
+            action = 'widget'
+            constraints {
+                widgetId(matches: /[a-zA-Z]*/)
+            }
+        }
+
         "/progress" {
             controller = 'scrumOS'
             action = 'progress'
@@ -117,6 +119,15 @@ class UrlMappings {
                 id(matches: /\d*/)
             }
         }
+
+        "/user/$id/widgets" {
+            controller = 'user'
+            action = 'widgets'
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
         "/user/$id/unreadActivitiesCount" {
             controller = 'user'
             action = 'unreadActivitiesCount'
@@ -332,7 +343,7 @@ class UrlMappings {
             }
         }
 
-        "/home/feed" {
+        /*"/home/feed" {
             controller = 'home'
             action = [GET:'listFeeds', POST:"saveFeed"]
         }
@@ -344,7 +355,7 @@ class UrlMappings {
             controller = 'home'
             action = [DELETE:'deleteFeed']
             constraints {
-                id(matches: /\d*/)
+                id(matches: /\d*//*)
             }
         }
         "/home/feed/$id/content" { // Not the REST resource which is returned, so not a REST action
@@ -354,11 +365,16 @@ class UrlMappings {
         "/home/feed/userFeed" {
             controller = 'home'
             action = [GET:"userFeed"]
+        }*/
+
+        "/home/widget" {
+            controller = 'home'
+            action = [GET: "widget", POST: "updateWidgetPosition"]
         }
 
-        "/home/panel" {
-            controller = 'home'
-            action = [GET: "panel", POST: "updatePanelPosition"]
+        "/widgets/feed" {
+            controller = 'feed'
+            action = [GET: "index"]
         }
 
         "404"(controller: "errors", action: "error404")

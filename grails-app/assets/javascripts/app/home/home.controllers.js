@@ -19,18 +19,18 @@
  *
  *
  */
-controllers.controller('homeCtrl', ['$scope', 'Session', 'HomeService', function($scope, Session, HomeService) {
+controllers.controller('homeCtrl', ['$scope', 'Session', 'UserService', function($scope, Session, UserService) {
     // Init
-    $scope.panelsLeft = [];
-    $scope.panelsRight = [];
+    $scope.widgetsLeft = [];
+    $scope.widgetsRight = [];
     var updatePosition = function(event) {
-        HomeService.updatePositionPanel({
+        /*HomeService.updatePositionWidget({
             id: event.source.itemScope.modelValue.id,
             position: event.dest.index,
-            right: event.dest.sortableScope.modelValue === $scope.panelsRight
-        });
+            right: event.dest.sortableScope.modelValue === $scope.widgetsRight
+        });*/
     };
-    $scope.panelSortableOptions = {
+    $scope.widgetSortableOptions = {
         itemMoved: updatePosition,
         orderChanged: updatePosition,
         accept: function (sourceItemHandleScope, destSortableScope) {
@@ -38,9 +38,9 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'HomeService', function
         }
     };
     $scope.sortableId = 'home';
-    HomeService.getPanels().then(function(panels) {
-        $scope.panelsLeft = panels.panelsLeft;
-        $scope.panelsRight = panels.panelsRight;
+    UserService.getWidgets(Session.user).then(function(widgets) {
+        $scope.widgetsLeft = widgets.widgetsLeft;
+        $scope.widgetsRight = widgets.widgetsRight;
     });
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
 }]);

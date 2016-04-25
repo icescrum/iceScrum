@@ -21,13 +21,12 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-package org.icescrum.web.presentation.app
+package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.Story
 import org.icescrum.core.utils.ServicesUtils
 
 class SprintController {

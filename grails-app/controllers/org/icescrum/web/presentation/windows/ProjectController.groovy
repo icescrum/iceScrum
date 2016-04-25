@@ -22,7 +22,7 @@
  *
  */
 
-package org.icescrum.web.presentation.app.project
+package org.icescrum.web.presentation.windows
 
 import com.sun.syndication.io.SyndFeedOutput
 import feedsplugin.FeedBuilder

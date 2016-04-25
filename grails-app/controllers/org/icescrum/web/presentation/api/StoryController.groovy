@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-package org.icescrum.web.presentation.app
+package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
@@ -560,4 +560,3 @@ class StoryController {
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 }
-

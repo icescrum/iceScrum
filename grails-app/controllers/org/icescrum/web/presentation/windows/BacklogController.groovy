@@ -22,7 +22,7 @@
  *
  */
 
-package org.icescrum.web.presentation.app.project
+package org.icescrum.web.presentation.windows
 
 import grails.converters.JSON
 import org.icescrum.core.domain.Backlog

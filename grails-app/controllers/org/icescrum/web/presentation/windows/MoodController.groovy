@@ -20,7 +20,7 @@
  * Marwah Soltani (msoltani@kagilum.com)
  *
  */
-package org.icescrum.web.presentation.app.project
+package org.icescrum.web.presentation.windows
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured

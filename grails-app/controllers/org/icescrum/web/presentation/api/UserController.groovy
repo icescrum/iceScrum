@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-package org.icescrum.web.presentation.app
+package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
@@ -44,7 +44,6 @@ import org.springframework.security.acls.domain.BasePermission
 class UserController {
 
     def userService
-    def menuSupport
     def securityService
     def grailsApplication
     def uiDefinitionService
@@ -284,7 +283,7 @@ class UserController {
         uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
             def menu = windowDefinition.menu
             if (menu?.spaceDynamicBar) {
-                menu.show = menuSupport.spaceDynamic(windowDefinitionId, menu.defaultVisibility, menu.defaultPosition, windowDefinition.space, windowDefinition.init)
+                menu.show = ApplicationSupport.isAllowed(windowDefinition, request, params) ? ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: menu.defaultVisibility, pos:menu.defaultPosition] : false
             }
             def show = menu?.show
             if (show in Closure) {
@@ -326,10 +325,10 @@ class UserController {
             def story = it[1]
             def project = story.backlog
             [
-                activity: activity,
-                story: [uid: story.uid, name: story.name],
-                project: [pkey: project.pkey, name: project.name],
-                notRead: activity.dateCreated > user.preferences.lastReadActivities
+                    activity: activity,
+                    story: [uid: story.uid, name: story.name],
+                    project: [pkey: project.pkey, name: project.name],
+                    notRead: activity.dateCreated > user.preferences.lastReadActivities
             ]
         }
         user.preferences.lastReadActivities = new Date()
@@ -348,6 +347,31 @@ class UserController {
         render(status: 200, text: [unreadActivitiesCount: unreadActivities.size()] as JSON, contentType: 'application/json')
     }
 
+    @Secured(['permitAll()'])
+    def widgets() {
+        User user = (User) springSecurityService.currentUser
+        def widgetsLeft
+        def widgetsRight
+        if (user) {
+            widgetsLeft = user.preferences.panelsLeft.collect { return [id: it.key, position: it.value] }.sort { it.position }
+            widgetsRight = user.preferences.panelsRight.collect { return [id: it.key, position: it.value] }.sort { it.position }
+        } else {
+            widgetsLeft = [[id: 'login']]
+            widgetsRight = [[id: 'publicProjects']]
+        }
+        def panels = [widgetsLeft: widgetsLeft, widgetsRight: widgetsRight]
+        render(status: 200, contentType: 'application/json', text: panels as JSON)
+    }
+
+    def invitationUserMock(String token) {
+        def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
+        def invitation = Invitation.findByToken(token)
+        if (!invitation || !enableInvitation) {
+            throw new ObjectNotFoundException(token, 'Invitation') // TODO manage error independently
+        }
+        render(status: 200, text: invitation.userMock as JSON, contentType: 'application/json')
+    }
+
     private File getAssetAvatarFile(String avatarFileName) {
         def avatarPath
         if (grailsApplication.warDeployed) {
@@ -359,14 +383,5 @@ class UserController {
             avatarPath = "../grails-app/${avatarFileName}"
         }
         return grailsApplication.parentContext.getResource(avatarPath).file
-    }
-
-    def invitationUserMock(String token) {
-        def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
-        def invitation = Invitation.findByToken(token)
-        if (!invitation || !enableInvitation) {
-            throw new ObjectNotFoundException(token, 'Invitation') // TODO manage error independently
-        }
-        render(status: 200, text: invitation.userMock as JSON, contentType: 'application/json')
     }
 }

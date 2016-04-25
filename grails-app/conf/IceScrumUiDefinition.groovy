@@ -163,10 +163,7 @@ windows = {
 }
 
 widgets = {
-    'chart' {
-        title 'is.ui.widget.chart.title'
-    }
-    'feeds' {
-        title 'is.ui.widget.feedsdd.title'
+    'tasks' {
+
     }
 }

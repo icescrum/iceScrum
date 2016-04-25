@@ -22,7 +22,7 @@
  *
  */
 
-package org.icescrum.web.presentation.app.project
+package org.icescrum.web.presentation.windows
 
 import org.grails.taggable.Tag
 import grails.converters.JSON

@@ -350,7 +350,7 @@ angular.module('isApp', [
         })
         .state({
             name: 'project',  // should not be acceded directly, called by 'root'
-            templateUrl: 'openWindow/project',
+            templateUrl: 'window/project',
             controller: 'projectCtrl'
         })
         .state({
@@ -373,7 +373,7 @@ angular.module('isApp', [
         .state({
             name: 'backlog',
             url: "/backlog",
-            templateUrl: 'openWindow/backlog',
+            templateUrl: 'window/backlog',
             controller: 'backlogCtrl',
             resolve: {
                 backlogs: ['BacklogService', function(BacklogService) {
@@ -427,7 +427,7 @@ angular.module('isApp', [
         .state({
             name: 'feature',
             url: "/feature",
-            templateUrl: 'openWindow/feature',
+            templateUrl: 'window/feature',
             controller: 'featuresCtrl',
             resolve: {
                 features: ['FeatureService', function(FeatureService) {
@@ -471,7 +471,7 @@ angular.module('isApp', [
         .state({
             name: 'planning',
             url: "/planning",
-            templateUrl: 'openWindow/planning',
+            templateUrl: 'window/planning',
             controller: 'planningCtrl',
             resolve: {
                 project: ['Session', function(Session) {
@@ -606,7 +606,7 @@ angular.module('isApp', [
             params: {
                 sprintId: {value: null, squash: true}
             },
-            templateUrl: 'openWindow/taskBoard',
+            templateUrl: 'window/taskBoard',
             controller: 'taskBoardCtrl',
             resolve: {
                 project: ['Session', function(Session) {

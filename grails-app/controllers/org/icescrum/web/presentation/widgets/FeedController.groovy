@@ -22,50 +22,22 @@
  *
  *
  */
-package org.icescrum.web.presentation.app
+package org.icescrum.web.presentation.widgets
 
 import grails.converters.JSON
-import grails.plugin.cache.Cacheable
-import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Feed
 import org.icescrum.core.domain.User
 
-@Secured('isAuthenticated()')
-class HomeController {
+class FeedController {
 
-    def userService
     def springSecurityService
+    def userService
 
-    @Secured(['permitAll()'])
-    def panel() {
-        User user = (User) springSecurityService.currentUser
-        def panelsLeft
-        def panelsRight
-        if (user) {
-            panelsLeft = user.preferences.panelsLeft.collect { return [id: it.key, position: it.value] }.sort { it.position }
-            panelsRight = user.preferences.panelsRight.collect { return [id: it.key, position: it.value] }.sort { it.position }
-        } else {
-            panelsLeft = [[id: 'login']]
-            panelsRight = [[id: 'publicProjects']]
-        }
-        def panels = [panelsLeft: panelsLeft, panelsRight: panelsRight]
-        render(status: 200, contentType: 'application/json', text: panels as JSON)
+    def index() {
+        render(status:200, template: 'widget', contentType: 'text/html')
     }
 
-    def updatePanelPosition(String id, String position, Boolean right) {
-        if (id == null || position == null || right == null) {
-            returnError(text: message(code: 'is.user.preferences.error.panel'))
-            return
-        }
-        try {
-            userService.updatePanelPosition((User) springSecurityService.currentUser, id, position, right)
-            render(status: 200)
-        } catch (RuntimeException e) {
-            returnError(text: message(code: 'is.user.preferences.error.panel'), exception: e)
-        }
-    }
-
-    def saveFeed() {
+    def save() {
         Feed feed = new Feed()
         try {
             if (!params.feed?.feedUrl) {
@@ -92,7 +64,7 @@ class HomeController {
         }
     }
 
-    def deleteFeed(long id) {
+    def delete(long id) {
         User user = (User) springSecurityService.currentUser
         try {
             def feedToDelete = Feed.findById(id)
@@ -110,7 +82,7 @@ class HomeController {
         }
     }
 
-    def listFeeds() {
+    def list() {
         def user = (User) springSecurityService.currentUser
         def feeds = []
         if (grailsApplication.config.icescrum.feed.default.url != null && grailsApplication.config.icescrum.feed.default.title != null) {
@@ -120,12 +92,12 @@ class HomeController {
         render(status: 200, contentType: 'application/json', text: feeds as JSON)
     }
 
-    def userFeed() {
+    def user() {
         User user = (User) springSecurityService.currentUser
         render(status: 200, contentType: 'application/json', text: user.preferences.feed as JSON)
     }
 
-    def contentFeed(long id) {
+    def content(long id) {
         User user = (User) springSecurityService.currentUser
         Feed feed = Feed.findByUserAndId(user, id)
         userService.saveFeed(user, feed)
@@ -138,7 +110,7 @@ class HomeController {
         }
     }
 
-    def mergedContentFeed() {
+    def mega() {
         def mergedContentFeed = []
         User user = (User) springSecurityService.currentUser
         userService.saveFeed(user, null)
@@ -147,7 +119,7 @@ class HomeController {
             it.feedUrl
         }
         if (grailsApplication.config.icescrum.feed.default.url != null) {
-             allUsersFeedUrls << grailsApplication.config.icescrum.feed.default.url
+            allUsersFeedUrls << grailsApplication.config.icescrum.feed.default.url
         }
         def currentFeed
         try {

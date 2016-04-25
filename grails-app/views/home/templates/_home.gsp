@@ -25,23 +25,23 @@
             <div class="row">
                 <div class="panel-column">
                     <div ng-if="authenticated()" ng-include="'userProjects.panel.html'" class="panel-userProjects"></div>
-                    <div as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
-                         ng-model='panelsLeft'>
-                        <div ng-include="panel.id+'.panel.html'"
+                    <div as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
+                         ng-model='widgetsLeft'>
+                        <div ng-include="'widget/'+widget.id"
                              as-sortable-item
-                             id="{{ panel.id }}"
-                             class="panel-container panel-{{ panel.id }}"
-                             ng-repeat="panel in panelsLeft"></div>
+                             id="{{ widget.id }}"
+                             class="panel-container widget-{{ widget.id }}"
+                             ng-repeat="widget in widgetsLeft"></div>
                     </div>
                 </div>
                 <div class="panel-column">
-                    <div as-sortable="panelSortableOptions | merge: sortableScrollOptions('#view-home')"
-                         ng-model='panelsRight'>
-                        <div ng-include="panel.id+'.panel.html'"
+                    <div as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
+                         ng-model='widgetsRight'>
+                        <div ng-include="'widget/'+widget.id"
                              as-sortable-item
-                             id="{{ panel.id }}"
-                             class="panel-container panel-{{ panel.id }}"
-                             ng-repeat="panel in panelsRight"></div>
+                             id="{{ widget.id }}"
+                             class="panel-container widget-{{ widget.id }}"
+                             ng-repeat="widget in widgetsRight"></div>
                     </div>
                 </div>
             </div>

@@ -39,7 +39,6 @@ import sun.misc.BASE64Decoder
 
 class ScrumOSController {
 
-    def menuSupport
     def messageSource
     def servletContext
     def productService
@@ -75,58 +74,67 @@ class ScrumOSController {
         attrs
     }
 
-    def openWindow() {
+    def window(String windowId) {
 
-        if (!params.window) {
+        if (!windowId) {
             returnError(text:message(code: 'is.error.no.window'))
             return
         }
 
-        def windowRequested = params.window
-        def windowDefition = uiDefinitionService.getWindowDefinitionById(windowRequested)
-        if (windowDefition) {
-
-            def space = null
-            if (windowDefition.space) {
-                space = ApplicationSupport.getCurrentSpace(params,windowDefition.space)
-                if (!space){
-                    render(status:404)
-                    return
-                }
-            }
-
-            def url = createLink(controller: params.window, action: params.actionWindow ?: windowDefition?.init, params:space?.params?:null).toString() - request.contextPath
-
-            if (!menuSupport.permissionDynamic(url)){
+        def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowId)
+        if (windowDefinition) {
+            if (!ApplicationSupport.isAllowed(windowDefinition, request, params)){
                 if (springSecurityService.isLoggedIn()){
                     render(status:403)
                 } else {
-                    render(status:401, contentType: 'application/json', text:[url:params.window ? '#'+params.window + (params.actionWindow ? '/'+params.actionWindow : '') + (params.id ? '/'+params.id : '') + (params.uid ? '/?uid='+params.uid : '') : ''] as JSON)
+                    render(status:401, contentType: 'application/json', text:[] as JSON)
                 }
                 return
             }
 
+            def space =  windowDefinition.space ? ApplicationSupport.getCurrentSpace(params,windowDefinition.space) : null
             def _continue = true
-            if (windowDefition.before){
-                windowDefition.before.delegate = delegate
-                windowDefition.before.resolveStrategy = Closure.DELEGATE_FIRST
-                _continue = windowDefition.before(space?.object, params.actionWindow ?: windowDefition?.init)
+            if (windowDefinition.before){
+                windowDefinition.before.delegate = delegate
+                windowDefinition.before.resolveStrategy = Closure.DELEGATE_FIRST
+                _continue = windowDefinition.before(space?.object, windowDefinition.init)
             }
+
             if (!_continue){
                 render(status:404)
             } else {
                 render is.window([
-                        window: params.window,
-                        icon: windowDefition.icon,
+                        window: windowId,
+                        icon: windowDefinition.icon,
+                        init: windowDefinition?.init,
+                        flex: windowDefinition?.flex,
                         spaceName: space?.object?.name,
-                        flex: windowDefition?.flex,
-                        details: windowDefition?.details,
-                        printable: windowDefition?.printable,
-                        fullScreen: windowDefition?.fullScreen,
-                        help: message(code: windowDefition?.help),
-                        title: message(code: windowDefition?.title),
-                        init: params.actionWindow ?: windowDefition?.init
+                        details: windowDefinition?.details,
+                        printable: windowDefinition?.printable,
+                        fullScreen: windowDefinition?.fullScreen,
+                        help: message(code: windowDefinition?.help),
+                        title: message(code: windowDefinition?.title),
                 ], {})
+            }
+        } else {
+            render(status:404)
+        }
+    }
+
+    def widget(String widgetId) {
+        if (!widgetId) {
+            returnError(text:message(code: 'is.error.no.widget'))
+            return
+        }
+        def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetId)
+        if (widgetDefinition) {
+            def space = null
+            if (widgetDefinition.space) {
+                space = ApplicationSupport.getCurrentSpace(params,widgetDefinition.space)
+                if (!space){
+                    render(status:404)
+                    return
+                }
             }
         } else {
             render(status:404)
@@ -141,19 +149,19 @@ class ScrumOSController {
         render(status: 200, template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
     }
 
-    def textileParser() {
-        render(text: wikitext.renderHtml([markup: "Textile"], params.data))
+    def textileParser(def data) {
+        render(text: wikitext.renderHtml([markup: "Textile"], data))
     }
 
-    def reportError() {
+    def reportError(String report) {
         try {
             notificationEmailService.send([
                     from: springSecurityService.currentUser?.email?:null,
                     to: grailsApplication.config.icescrum.alerts.errors.to,
                     subject: "[iceScrum][report] Rapport d'erreur",
                     view: '/emails-templates/reportError',
-                    model: [error: params.report.stack,
-                            comment: params.report.comment,
+                    model: [error: report.stack,
+                            comment: report.comment,
                             appID: grailsApplication.config.icescrum.appID,
                             ip: request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
                             date: g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
@@ -184,9 +192,9 @@ class ScrumOSController {
         def i18nMessages = messageSource.getAllMessages(RCU.getLocale(request))
 
         def applicationMenus = []
-        uiDefinitionService.getWindowDefinitions().each { def uiWIndowId, def uiWIndow ->
-            def menu = uiWIndow.menu
-            applicationMenus << [id: uiWIndowId,
+        uiDefinitionService.getWindowDefinitions().each { def windowId, def windowDefinition ->
+            def menu = windowDefinition.menu
+            applicationMenus << [id: windowId,
                       title: message(code: menu?.title),
                       shortcut: "ctrl+" + (applicationMenus.size() + 1)]
         }
@@ -196,7 +204,7 @@ class ScrumOSController {
                 model: [id: controllerName,
                         user:springSecurityService.currentUser,
                         product: product,
-                        roles: securityService.getRolesRequest(),
+                        roles: securityService.getRolesRequest(false),
                         i18nMessages: i18nMessages,
                         currentSprint: currentSprint,
                         applicationMenus: applicationMenus])
@@ -208,23 +216,23 @@ class ScrumOSController {
         render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
     }
 
-    def saveImage() {
-        if (!params.image){
+    def saveImage(String image, String title) {
+        if (!image){
             render(status:404)
             return
         }
-        String imageEncoded = URLDecoder.decode(params.image)
-        String title = URLDecoder.decode(params.title)
-        imageEncoded = imageEncoded.substring(imageEncoded.indexOf("base64,") + "base64,".length(), imageEncoded.length());
+        title = URLDecoder.decode(title)
+        image = URLDecoder.decode(image)
+        image = image.substring(image.indexOf("base64,") + "base64,".length(), image.length())
         response.contentType = 'image/png'
         ['Content-disposition': "attachment;filename=\"${title+'.png'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
             response.setHeader(k, v)
         }
-        response.outputStream << new BASE64Decoder().decodeBuffer(imageEncoded)
+        response.outputStream << new BASE64Decoder().decodeBuffer(image)
     }
 
-    def whatsNew() {
-        if (params.hide){
+    def whatsNew(boolean hide) {
+        if (hide){
             if(springSecurityService.currentUser?.preferences?.displayWhatsNew){
                 springSecurityService.currentUser.preferences.displayWhatsNew = false
             }

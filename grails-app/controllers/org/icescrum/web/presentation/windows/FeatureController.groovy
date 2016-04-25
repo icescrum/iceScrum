@@ -22,7 +22,7 @@
  *
  */
 
-package org.icescrum.web.presentation.app.project
+package org.icescrum.web.presentation.windows
 
 import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
