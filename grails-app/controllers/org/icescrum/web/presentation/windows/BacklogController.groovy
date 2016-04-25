@@ -75,8 +75,4 @@ class BacklogController {
             }
         }
     }
-
-    def view() {
-        render(template: "view")
-    }
 }

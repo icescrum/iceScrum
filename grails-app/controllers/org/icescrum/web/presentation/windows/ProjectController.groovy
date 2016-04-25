@@ -728,11 +728,6 @@ class ProjectController {
         render(status: 200, text: activities as JSON, contentType: 'application/json')
     }
 
-    def view(long product) {
-        Product _product = Product.withProduct(product)
-        render template: 'view', model: [product: _product]
-    }
-
     @Secured(['isAuthenticated()'])
     def edit() {
         render(status: 200, template: "dialogs/edit")

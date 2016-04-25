@@ -23,16 +23,16 @@
 
 windows = {
     'backlog' {
-        init 'view'
         details true
-        icon = 'fa fa-inbox'
-        title 'is.ui.backlogs'
-        help 'is.ui.backlog.help'
+        context 'product'
+        icon    'fa fa-inbox'
+        help    'is.ui.backlog.help'
+        title   'is.ui.backlogs'
+        secured 'stakeHolder() or inProduct()'
         menu {
             title 'is.ui.backlogs'
             defaultVisibility true
             defaultPosition 2
-            spaceDynamicBar true
         }
         embedded = [
                 view:'list',
@@ -47,16 +47,16 @@ windows = {
         }
     }
     'feature' {
-        init 'view'
         details true
-        title 'is.ui.feature'
-        help 'is.ui.feature.help'
-        icon = 'fa fa-puzzle-piece'
+        context 'product'
+        icon    'fa fa-puzzle-piece'
+        help    'is.ui.feature.help'
+        title   'is.ui.feature'
+        secured 'isAuthenticated()'
         menu {
             title 'is.ui.feature'
             defaultVisibility true
             defaultPosition 5
-            spaceDynamicBar true
         }
         embedded = [
                 view:'list',
@@ -69,16 +69,15 @@ windows = {
         }
     }
     'project' {
-        flex false
-        init 'view'
-        title 'is.ui.project'
-        icon = 'fa fa-dashboard'
-        help 'is.ui.project.help'
+        context 'product'
+        flex    false
+        icon    'fa fa-dashboard'
+        help    'is.ui.project.help'
+        title   'is.ui.project'
         menu {
             title 'is.ui.project'
             defaultVisibility true
             defaultPosition 1
-            spaceDynamicBar true
         }
         embedded = [
                 view:'productCumulativeFlowChart',
@@ -95,15 +94,15 @@ windows = {
     }
     'planning' {
         details true
-        init 'view'
-        icon = 'fa fa-calendar'
-        title 'todo.is.ui.planning'
-        help 'todo.is.ui.planning.help'
+        context 'product'
+        icon    'fa fa-calendar'
+        help    'todo.is.ui.planning.help'
+        title   'todo.is.ui.planning'
+        secured '(isAuthenticated() and stakeHolder()) or inProduct()'
         menu {
             title 'todo.is.ui.planning'
             defaultVisibility true
             defaultPosition 3
-            spaceDynamicBar true
         }
         embedded = [
                 view:'index',
@@ -118,16 +117,16 @@ windows = {
         ]
     }
     'taskBoard' {
-        init 'view'
         details true
-        icon = 'fa fa-tasks'
-        title 'todo.is.ui.taskBoard'
-        help 'todo.is.ui.taskBoard.help'
+        context 'product'
+        icon    'fa fa-tasks'
+        help    'todo.is.ui.taskBoard.help'
+        title   'todo.is.ui.taskBoard'
+        secured 'inProduct() or (isAuthenticated() and stakeHolder())'
         menu {
             title 'todo.is.ui.taskBoard'
             defaultVisibility true
             defaultPosition 4
-            spaceDynamicBar true
         }
         embedded = [
                 view:'index',
@@ -150,14 +149,13 @@ windows = {
         }
     }
     'search' {
-        init 'index'
-        title 'is.ui.search'
-        icon = 'fa fa-search'
+        context 'product'
+        icon    'fa fa-search'
+        title   'is.ui.search'
         menu {
             title 'is.ui.search'
             defaultVisibility false
             defaultPosition 1
-            spaceDynamicBar true
         }
     }
 }

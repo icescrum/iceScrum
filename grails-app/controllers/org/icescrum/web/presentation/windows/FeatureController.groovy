@@ -181,9 +181,4 @@ class FeatureController {
         Feature feature = Feature.findByBacklogAndUid(_product, uid)
         redirect(uri: "/p/$_product.pkey/#/feature/$feature.id")
     }
-
-    @Secured('isAuthenticated()')
-    def view() {
-        render(template: "view")
-    }
 }

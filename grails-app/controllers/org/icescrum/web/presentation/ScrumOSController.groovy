@@ -51,10 +51,10 @@ class ScrumOSController {
     def index() {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
 
-        def space = ApplicationSupport.getCurrentSpace(params)
-        if (space){
-            space.indexScrumOS.delegate = this
-            space.indexScrumOS(space, user, securityService, springSecurityService)
+        def context = ApplicationSupport.getCurrentContext(params)
+        if (context){
+            context.indexScrumOS.delegate = this
+            context.indexScrumOS(context, user, securityService, springSecurityService)
         }
 
         def products = user ? productService.getAllActiveProductsByUser().take(10) : []
@@ -64,26 +64,24 @@ class ScrumOSController {
 
         def attrs = [user: user,
                      lang: RCU.getLocale(request).toString().substring(0, 2),
-                     space:space,
+                     context:context,
                      browsableProductsExist: browsableProductsCount > 0,
                      moreProductsExist: moreProductExist,
                      productFilteredsList: products.take(productsLimit)]
-        if (space) {
-            attrs."$space.name" = space.object
+        if (context) {
+            attrs."$context.name" = context.object
         }
         attrs
     }
 
     def window(String windowId) {
-
         if (!windowId) {
             returnError(text:message(code: 'is.error.no.window'))
             return
         }
-
         def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowId)
         if (windowDefinition) {
-            if (!ApplicationSupport.isAllowed(windowDefinition, request, params)){
+            if (!ApplicationSupport.isAllowed(windowDefinition, params)){
                 if (springSecurityService.isLoggedIn()){
                     render(status:403)
                 } else {
@@ -92,29 +90,22 @@ class ScrumOSController {
                 return
             }
 
-            def space =  windowDefinition.space ? ApplicationSupport.getCurrentSpace(params,windowDefinition.space) : null
+            def context =  windowDefinition.context ? ApplicationSupport.getCurrentContext(params,windowDefinition.context) : null
             def _continue = true
             if (windowDefinition.before){
                 windowDefinition.before.delegate = delegate
                 windowDefinition.before.resolveStrategy = Closure.DELEGATE_FIRST
-                _continue = windowDefinition.before(space?.object, windowDefinition.init)
+                _continue = windowDefinition.before(context?.object)
             }
 
             if (!_continue){
                 render(status:404)
             } else {
-                render is.window([
-                        window: windowId,
-                        icon: windowDefinition.icon,
-                        init: windowDefinition?.init,
-                        flex: windowDefinition?.flex,
-                        spaceName: space?.object?.name,
-                        details: windowDefinition?.details,
-                        printable: windowDefinition?.printable,
-                        fullScreen: windowDefinition?.fullScreen,
-                        help: message(code: windowDefinition?.help),
-                        title: message(code: windowDefinition?.title),
-                ], {})
+                def model = [windowDefinition:windowDefinition]
+                if(context){
+                    model[context.name] = context.object
+                }
+                forward(action:'window', controller:windowDefinition.id, model:model)
             }
         } else {
             render(status:404)
@@ -128,10 +119,10 @@ class ScrumOSController {
         }
         def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetId)
         if (widgetDefinition) {
-            def space = null
-            if (widgetDefinition.space) {
-                space = ApplicationSupport.getCurrentSpace(params,widgetDefinition.space)
-                if (!space){
+            def context = null
+            if (widgetDefinition.context) {
+                context = ApplicationSupport.getCurrentContext(params,widgetDefinition.context)
+                if (!context){
                     render(status:404)
                     return
                 }

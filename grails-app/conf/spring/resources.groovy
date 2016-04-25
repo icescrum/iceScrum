@@ -43,10 +43,6 @@ beans = {
         trustResolver = ref('authenticationTrustResolver')
     }
 
-    menuSupport(MenuSupport) { innerBean ->
-        innerBean.autowire = "byName"
-    }
-
     userDetailsService(ScrumDetailsService) {
         grailsApplication = ref('grailsApplication')
     }

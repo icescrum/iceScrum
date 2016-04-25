@@ -22,7 +22,7 @@
 <head>
     <meta name='layout' content='main'/>
     <g:if test="${params.product}">
-        <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[product:pageScope.variables.space.object.pkey,lang:lang]"/>
+        <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[product:pageScope.variables.context.object.pkey,lang:lang]"/>
         <title>${product?.name ?: ''}</title>
     </g:if>
 </head>

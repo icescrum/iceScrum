@@ -180,15 +180,15 @@ icescrum.check.timeout  = 5000
 /* Array for visual & catched errors */
 icescrum.errors = []
 
-/* Spaces */
+/* Contexts */
 icescrum {
-    spaces {
+    contexts {
         product {
-            spaceClass = Product
+            contextClass = Product
             config = { product -> [key: product.pkey, path: 'p'] }
             params = { product -> [product: product.id] }
-            indexScrumOS = { productSpace, user, securityService, springSecurityService ->
-                def product = productSpace.object
+            indexScrumOS = { productContext, user, securityService, springSecurityService ->
+                def product = productContext.object
                 if (product?.preferences?.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product, springSecurityService.authentication, false)) {
                     forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
                     return
