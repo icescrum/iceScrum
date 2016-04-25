@@ -199,8 +199,7 @@
             </div>
             <div class="clearfix" style="margin-top: 15px;" ng-if="editableStory.dependences.length">
                 <strong>${message(code: 'is.story.dependences')} :</strong>
-                <a class="scrum-link" title="{{ dependence.name }}"
-                   ng-repeat="dependence in editableStory.dependences track by dependence.id">{{ dependence.name }}</a>
+                <span ng-repeat="dependence in editableStory.dependences track by dependence.id">{{ dependence.name }}</span>
             </div>
         </div>
         <div class="form-group">

@@ -36,15 +36,15 @@
                     <ul>
                         <li>
                             <a href="${releaseNotesURL}" target="_blank"></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Story description template and autocomplete on actors</a>
+                            <a href="${releaseNotesURL}" target="_blank">Story description template and autocomplete on actors</a>
                         </li>
                         <li>
                             <a href="${releaseNotesURL}" target="_blank"></a>
-                            <a href="${releaseNotesURL}" class="scrum-link" target="_blank">Better UI and search field on large drop-down lists</a>
+                            <a href="${releaseNotesURL}" target="_blank">Better UI and search field on large drop-down lists</a>
                         </li>
                     </ul>
                     <span class="more">
-                        <g:message code="is.ui.whatsnew.more"/> <a href="${releaseNotesURL}" target="_blank" class="scrum-link">${message(code:"is.ui.whatsnew.releaseNotes", args:[g.meta(name:"app.version")])}</a>
+                        <g:message code="is.ui.whatsnew.more"/> <a href="${releaseNotesURL}" target="_blank">${message(code:"is.ui.whatsnew.releaseNotes", args:[g.meta(name:"app.version")])}</a>
                     </span>
                     <g:set var="now" value="${new Date()}"/>
                     <g:set var="validFrom" value="${new Date('22/12/2014')}"/>
