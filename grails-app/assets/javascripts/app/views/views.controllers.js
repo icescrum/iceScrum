@@ -435,4 +435,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.$watch('sprint.tasks', function() {
         $scope.refreshTasks();
     }, true);
+    $scope.$watch('sprint.state', function() { // To generate the proper $scope.sprintTaskStates when changing state
+        $scope.refreshTasks();
+    });
 }]);
