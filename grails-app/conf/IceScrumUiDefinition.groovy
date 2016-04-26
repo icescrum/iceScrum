@@ -201,7 +201,7 @@ windows = {
 widgets = {
     'feed' {
         icon    'rss'
-        title   'is.ui.rss'
+        title   'is.panel.feed'
         secured 'isAuthenticated()'
     }
     'login' {

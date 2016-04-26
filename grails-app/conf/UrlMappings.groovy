@@ -71,7 +71,7 @@ class UrlMappings {
             action = 'index'
         }
 
-        "/window/$windowId" {
+        "/ui/window/$windowId" {
             controller = 'scrumOS'
             action = 'window'
             constraints {
@@ -79,7 +79,7 @@ class UrlMappings {
             }
         }
 
-        "/widget/$widgetId" {
+        "/ui/widget/$widgetId" {
             controller = 'scrumOS'
             action = 'widget'
             constraints {
@@ -343,38 +343,30 @@ class UrlMappings {
             }
         }
 
-        /*"/home/feed" {
-            controller = 'home'
-            action = [GET:'listFeeds', POST:"saveFeed"]
+        /* widgets url Mapping */
+
+        "/widget/feed" {
+            controller = 'feed'
+            action = [GET:'list', POST:"save"]
         }
-        "/home/feed/merged" {
-            controller = 'home'
-            action = [GET:'mergedContentFeed']
+        "/widget/feed/mega" {
+            controller = 'feed'
+            action = [GET:'mega']
         }
-        "/home/feed/$id" {
-            controller = 'home'
-            action = [DELETE:'deleteFeed']
+        "/widget/feed/$id" {
+            controller = 'feed'
+            action = [DELETE:'delete']
             constraints {
-                id(matches: /\d*//*)
+                id(matches: /\d*/)
             }
         }
-        "/home/feed/$id/content" { // Not the REST resource which is returned, so not a REST action
-            controller = 'home'
-            action = [GET:'contentFeed']
-        }
-        "/home/feed/userFeed" {
-            controller = 'home'
-            action = [GET:"userFeed"]
-        }*/
-
-        "/home/widget" {
-            controller = 'home'
-            action = [GET: "widget", POST: "updateWidgetPosition"]
-        }
-
-        "/widgets/feed" {
+        "/widget/feed/$id/content" { // Not the REST resource which is returned, so not a REST action
             controller = 'feed'
-            action = [GET: "index"]
+            action = [GET:'content']
+        }
+        "/widget/feed/user" {
+            controller = 'feed'
+            action = [GET:"user"]
         }
 
         "404"(controller: "errors", action: "error404")

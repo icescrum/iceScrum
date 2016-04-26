@@ -25,17 +25,15 @@
 package org.icescrum.web.presentation.widgets
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Feed
 import org.icescrum.core.domain.User
 
+@Secured(['isAuthenticated()'])
 class FeedController {
 
     def springSecurityService
     def userService
-
-    def index() {
-        render(status:200, template: 'widget', contentType: 'text/html')
-    }
 
     def save() {
         Feed feed = new Feed()

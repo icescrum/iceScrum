@@ -25,7 +25,7 @@
                 <div ng-if="authenticated()" ng-include="'userProjects.panel.html'" class="panel-userProjects"></div>
                 <div as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
                      ng-model='widgetsLeft'>
-                    <div ng-include="'widget/'+widget.id"
+                    <div ng-include="'ui/widget/'+widget.id"
                          as-sortable-item
                          id="{{ widget.id }}"
                          class="panel-container widget-{{ widget.id }}"
@@ -35,7 +35,7 @@
             <div class="panel-column">
                 <div as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
                      ng-model='widgetsRight'>
-                    <div ng-include="'widget/'+widget.id"
+                    <div ng-include="'ui/widget/'+widget.id"
                          as-sortable-item
                          id="{{ widget.id }}"
                          class="panel-container widget-{{ widget.id }}"

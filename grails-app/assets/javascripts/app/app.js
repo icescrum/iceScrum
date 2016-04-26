@@ -313,7 +313,7 @@ angular.module('isApp', [
         })
         .state({
             name: 'home', // should not be acceded directly, called by 'root'
-            templateUrl: 'window/home',
+            templateUrl: 'ui/window/home',
             controller: 'homeCtrl'
         })
         .state({
@@ -350,7 +350,7 @@ angular.module('isApp', [
         })
         .state({
             name: 'project',  // should not be acceded directly, called by 'root'
-            templateUrl: 'window/project',
+            templateUrl: 'ui/window/project',
             controller: 'projectCtrl'
         })
         .state({
@@ -373,7 +373,7 @@ angular.module('isApp', [
         .state({
             name: 'backlog',
             url: "/backlog",
-            templateUrl: 'window/backlog',
+            templateUrl: 'ui/window/backlog',
             controller: 'backlogCtrl',
             resolve: {
                 backlogs: ['BacklogService', function(BacklogService) {
@@ -427,7 +427,7 @@ angular.module('isApp', [
         .state({
             name: 'feature',
             url: "/feature",
-            templateUrl: 'window/feature',
+            templateUrl: 'ui/window/feature',
             controller: 'featuresCtrl',
             resolve: {
                 features: ['FeatureService', function(FeatureService) {
@@ -471,7 +471,7 @@ angular.module('isApp', [
         .state({
             name: 'planning',
             url: "/planning",
-            templateUrl: 'window/planning',
+            templateUrl: 'ui/window/planning',
             controller: 'planningCtrl',
             resolve: {
                 project: ['Session', function(Session) {
@@ -606,7 +606,7 @@ angular.module('isApp', [
             params: {
                 sprintId: {value: null, squash: true}
             },
-            templateUrl: 'window/taskBoard',
+            templateUrl: 'ui/window/taskBoard',
             controller: 'taskBoardCtrl',
             resolve: {
                 project: ['Session', function(Session) {

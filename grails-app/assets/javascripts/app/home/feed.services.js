@@ -20,7 +20,7 @@
  */
 
 services.factory('Feed', ['Resource', function($resource) {
-    return $resource('/home/feed/:id/:action');
+    return $resource('/widget/feed/:id/:action');
 }]);
 
 services.service("FeedService", ['Feed', 'FormService', function(Feed, FormService) {
@@ -32,16 +32,16 @@ services.service("FeedService", ['Feed', 'FormService', function(Feed, FormServi
         return Feed.query().$promise;
     };
     this.userFeed = function() {
-        return Feed.get({action: 'userFeed'}).$promise;
+        return Feed.get({action: 'user'}).$promise;
     };
     this.delete = function(feed) {
         return Feed.delete({id: feed.id}).$promise;
     };
     this.merged = function() {
-        return FormService.httpGet('home/feed/merged');
+        return FormService.httpGet('widget/feed/mega');
     };
     this.content = function(feed) {
-        return FormService.httpGet('home/feed/' + feed.id + '/content');
+        return FormService.httpGet('widget/feed/' + feed.id + '/content');
     };
 }]);
 
