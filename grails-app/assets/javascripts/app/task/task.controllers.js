@@ -116,7 +116,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
         return !_.isEqual($scope.editableTask, $scope.editableTaskReference);
     };
     $scope.update = function(task) {
-        TaskService.update(task).then(function() {
+        TaskService.update(task, true).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.updated');
         });
