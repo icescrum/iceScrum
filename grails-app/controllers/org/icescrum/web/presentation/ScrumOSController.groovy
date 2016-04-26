@@ -108,7 +108,7 @@ class ScrumOSController {
                 if(ApplicationSupport.controllerExist(windowDefinition.id, "window")){
                     forward(action:'window', controller:windowDefinition.id, model:model)
                 } else {
-                    render(template:"/${windowDefinition.id}/window", model:model)
+                    render(plugin: windowDefinition.pluginName, template:"/${windowDefinition.id}/window", model:model)
                 }
             }
         } else {
