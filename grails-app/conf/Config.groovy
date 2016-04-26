@@ -200,12 +200,6 @@ icescrum {
                 }
             }
         }
-        'user' {
-            contextClass = User
-            config = { product -> [key: product.pkey, path: 'p'] }
-            params = { product -> [product: product.id] }
-            indexScrumOS = { productContext, user, securityService, springSecurityService -> }
-        }
     }
 }
 

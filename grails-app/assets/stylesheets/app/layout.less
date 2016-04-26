@@ -769,8 +769,8 @@ table {
 }
 
 #view-home {
-  .panel-tasks {
-    .panel-body {
+  .widget-tasks {
+    .panel-body > div {
       max-height: 230px;
       overflow: auto;
       .list-group-header {
@@ -778,7 +778,14 @@ table {
       }
     }
   }
-  .panel-userProjects {
+  .widget-feed {
+    .panel-body {
+      max-height: 350px;
+      overflow-y: auto;
+    }
+  }
+
+  .widget-userProjects {
     .panel-light {
       .panel-heading, .panel-body {
         padding:0;
