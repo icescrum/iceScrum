@@ -122,17 +122,16 @@ class ScrumOSController {
             return
         }
         def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetId)
-        if (widgetDefinition) {
-            def context = null
-            if (widgetDefinition.context) {
-                context = ApplicationSupport.getCurrentContext(params,widgetDefinition.context)
-                if (!context){
-                    render(status:404)
-                    return
-                }
+        if(widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params, true)) {
+
+            def model = [widgetDefinition:widgetDefinition]
+            if(ApplicationSupport.controllerExist(widgetDefinition.id, "widget")){
+                forward(action:'widget', controller:widgetDefinition.id, model:model)
+            } else if(widgetDefinition.templatePath){
+                render(plugin: widgetDefinition.pluginName, template:widgetDefinition.templatePath, model:model)
             }
         } else {
-            render(status:404)
+            render(status:200, "")
         }
     }
 
@@ -144,7 +143,7 @@ class ScrumOSController {
         render(status: 200, template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
     }
 
-    def textileParser(def data) {
+    def textileParser(String data) {
         render(text: wikitext.renderHtml([markup: "Textile"], data))
     }
 

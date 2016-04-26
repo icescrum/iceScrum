@@ -18,14 +18,41 @@
 * Authors:
 *
 * Nicolas Noullet (nnoullet@kagilum.com)
+* Vincent BARRIER (vbarrier@kagilum.com)
 *
 */
 
+
+/*
+    'windowName' {
+        icon                        default: ''                   | String (fontawesome)
+        title                       default: ''                   | String (i18n key)
+        help                        default: ''                   | String (i18n key)
+        secured                     default: "permitAll()"        | String (spEl expression)
+        context                     default: "product"            | String (product or ...)
+        templatePath                default: "windowName/window"  | String (full path to template)
+        menu { => default: null
+            defaultPosition         default:null                  | Integer
+            defaultVisibility       default:null                  | true/false
+        }
+        flex =                      default: true                 | true/false
+        details =                   default: false                | true/false
+        printable =                 default: true                 | true/false
+        fullScreen =                default: true                 | true/false
+        exportFormats =             default: []                   | Array of Maps: [code:extension,name:'i18n.code',params:[]]
+        before        =             default:null                  | Closure
+    }
+ */
+
 windows = {
+    //Master window : no menu, no context
+    'home' {
+        context null
+    }
     'backlog' {
         details true
         context 'product'
-        icon    'fa fa-inbox'
+        icon    'inbox'
         help    'is.ui.backlog.help'
         title   'is.ui.backlogs'
         secured 'stakeHolder() or inProduct()'
@@ -49,14 +76,13 @@ windows = {
     'feature' {
         details true
         context 'product'
-        icon    'fa fa-puzzle-piece'
+        icon    'puzzle-piece'
         help    'is.ui.feature.help'
         title   'is.ui.feature'
         secured 'isAuthenticated()'
         menu {
             defaultPosition 5
             defaultVisibility true
-
             title 'is.ui.feature'
         }
         embedded = [
@@ -72,7 +98,7 @@ windows = {
     'project' {
         context 'product'
         flex    false
-        icon    'fa fa-dashboard'
+        icon    'dashboard'
         help    'is.ui.project.help'
         title   'is.ui.project'
         menu {
@@ -96,7 +122,7 @@ windows = {
     'planning' {
         details true
         context 'product'
-        icon    'fa fa-calendar'
+        icon    'calendar'
         help    'todo.is.ui.planning.help'
         title   'todo.is.ui.planning'
         secured '(isAuthenticated() and stakeHolder()) or inProduct()'
@@ -120,7 +146,7 @@ windows = {
     'taskBoard' {
         details true
         context 'product'
-        icon    'fa fa-tasks'
+        icon    'tasks'
         help    'todo.is.ui.taskBoard.help'
         title   'todo.is.ui.taskBoard'
         secured 'inProduct() or (isAuthenticated() and stakeHolder())'
@@ -151,7 +177,7 @@ windows = {
     }
     'search' {
         context 'product'
-        icon    'fa fa-search'
+        icon    'search'
         title   'is.ui.search'
         menu {
             defaultPosition 1
@@ -161,7 +187,54 @@ windows = {
     }
 }
 
+/*
+    'widgetName' {
+        icon                        default: ''                   | String (fontawesome)
+        title                       default: ''                   | String (i18n key)
+        help                        default: ''                   | String (i18n key)
+        secured                     default: "permitAll()"        | String (spEl expression)
+        context                     default: null                 | String (product or ...)
+        templatePath                default: "widgetName/window"  | String (full path to template)
+    }
+ */
+
 widgets = {
+    'feed' {
+        icon    'rss'
+        title   'is.ui.rss'
+        secured 'isAuthenticated()'
+    }
+    'login' {
+        icon    'user'
+        title   'is.dialog.login'
+        secured '!isAuthenticated()'
+        templatePath '/widgets/login'
+     }
+    'notes' {
+        icon    'pencil-square-o'
+        title   'is.panel.notes'
+        secured 'isAuthenticated()'
+        templatePath '/widgets/notes'
+    }
+    'publicProjects' {
+        icon    'folder-open'
+        title   'is.panel.project.public'
+        templatePath '/widgets/publicProjects'
+    }
+    'mood' {
+        icon    'smile-o'
+        title   'is.panel.mood'
+        secured 'isAuthenticated()'
+        templatePath '/widgets/mood'
+    }
     'tasks' {
+        icon 'tasks'
+        title 'is.panel.mytask'
+        secured 'isAuthenticated()'
+        templatePath '/widgets/tasks'
+    }
+    'userProjects' {
+        secured 'isAuthenticated()'
+        templatePath '/widgets/quickProjects'
     }
 }

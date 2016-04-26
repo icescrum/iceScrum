@@ -66,9 +66,6 @@ controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function
             $scope.notifySuccess('todo.is.ui.feed.delete');
         })
     };
-    $scope.toggleSettings = function() {
-        $scope.showSettings = !$scope.showSettings;
-    };
     $scope.hasFeeds = function() {
         return $scope.feeds.length != 0;
     };

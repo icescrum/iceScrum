@@ -313,7 +313,7 @@ angular.module('isApp', [
         })
         .state({
             name: 'home', // should not be acceded directly, called by 'root'
-            templateUrl: 'home.html',
+            templateUrl: 'window/home',
             controller: 'homeCtrl'
         })
         .state({

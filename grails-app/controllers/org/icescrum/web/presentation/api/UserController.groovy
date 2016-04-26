@@ -282,7 +282,7 @@ class UserController {
         def menus = []
         uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
             def menu = windowDefinition.menu
-            if (windowDefinition?.context) {
+            if (menu && windowDefinition?.context) {
                 menu.show = ApplicationSupport.isAllowed(windowDefinition, params) ? ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: menu.defaultVisibility, pos:menu.defaultPosition] : false
             }
             def show = menu?.show

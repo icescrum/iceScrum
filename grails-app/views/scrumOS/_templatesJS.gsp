@@ -23,7 +23,6 @@
 <%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON;" %>
 <div class='templates'>
     <g:render template="templates"/>
-    <g:render template="/home/templates"/>
     <g:render template="/team/templates"/>
     <g:render template="/sprint/templates"/>
     <g:render template="/project/templates"/>

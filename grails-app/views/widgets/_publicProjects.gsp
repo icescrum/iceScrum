@@ -1,9 +1,5 @@
-<script type="text/ng-template" id="publicProjects.panel.html">
-<div class="panel panel-light" ng-controller="publicProjectListCtrl">
-    <div class="panel-heading">
-        <h3 class="panel-title"><i class="fa fa-folder-open"></i> ${message(code: 'is.panel.project.public')}</h3>
-    </div>
-    <div class="panel-body">
+<is:widget widgetDefinition="${widgetDefinition}">
+    <div ng-controller="publicProjectListCtrl">
         <uib-accordion>
             <uib-accordion-group is-open="openedProjects[currentProject.id]"
                                  ng-repeat="currentProject in projects">
@@ -23,5 +19,4 @@
             </uib-accordion-group>
         </uib-accordion>
     </div>
-</div>
-</script>
+</is:widget>
