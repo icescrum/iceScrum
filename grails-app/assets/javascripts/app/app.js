@@ -627,7 +627,7 @@ angular.module('isApp', [
                         promise = SprintService.getCurrentOrNextSprint(project);
                     }
                     return promise.then(function(sprint) {
-                        return sprint.id == undefined ? undefined : StoryService.listByType(sprint).then(function() {
+                        return sprint == undefined || sprint.id == undefined ? undefined : StoryService.listByType(sprint).then(function() {
                             return TaskService.list(sprint).then(function() {
                                 return sprint;
                             });

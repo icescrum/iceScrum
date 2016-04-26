@@ -150,7 +150,7 @@
                     <a type="button"
                        class="btn btn-primary"
                        ng-if="authorizedSprint('create')"
-                       href="#{{:: viewName + '/' + release.id }}/sprint/new">
+                       href="#{{ viewName + '/' + release.id }}/sprint/new">
                         ${message(code: 'todo.is.ui.sprint.new')}
                     </a>
                 </div>
