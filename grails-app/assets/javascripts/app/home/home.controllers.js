@@ -24,11 +24,11 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'UserService', function
     $scope.widgetsLeft = [];
     $scope.widgetsRight = [];
     var updatePosition = function(event) {
-        /*HomeService.updatePositionWidget({
-            id: event.source.itemScope.modelValue.id,
+        UserService.updatePositionWidget({
+            widgetId: event.source.itemScope.modelValue.id,
             position: event.dest.index,
             right: event.dest.sortableScope.modelValue === $scope.widgetsRight
-        });*/
+        });
     };
     $scope.widgetSortableOptions = {
         itemMoved: updatePosition,

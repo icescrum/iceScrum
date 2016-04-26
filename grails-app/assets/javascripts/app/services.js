@@ -69,7 +69,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                     self.unreadActivitiesCount = data.unreadActivitiesCount;
                 });
         }
-        UserService.getMenus(self.project).then(function(menus) {
+        UserService.getMenus(self.user, self.project).then(function(menus) {
             var menusByVisibility = _.groupBy(menus, 'visible');
             self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
             self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');

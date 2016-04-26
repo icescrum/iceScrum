@@ -264,20 +264,25 @@ class UserController {
     }
 
     @Secured('isAuthenticated()')
-    def menu(String id, String position, boolean hidden) {
-        if (!id && !position) {
+    def menu(long id, String menuId, String position, boolean hidden) {
+        User user = springSecurityService.currentUser
+        if (id != user.id) {
+            render(status: 403)
+            return
+        }
+        if (!menuId && !position) {
             returnError(text: message(code: 'is.user.preferences.error.menu'))
             return
         }
         try {
-            userService.menu((User) springSecurityService.currentUser, id, position, hidden ?: false)
+            userService.menu(user, menuId, position, hidden ?: false)
             render(status: 200)
         } catch (RuntimeException e) {
             returnError(text: message(code: 'is.user.preferences.error.menu'), exception: e)
         }
     }
 
-    @Secured('permitAll()')
+    @Secured(['permitAll()'])
     def menus() {
         def menus = []
         uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
@@ -315,10 +320,12 @@ class UserController {
         render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
     }
 
+    @Secured(['isAuthenticated()'])
     def activities(long id) {
         User user = springSecurityService.currentUser
         if (id != user.id) {
             render(status: 403)
+            return
         }
         def activitiesAndStories = Activity.storyActivities(user).take(15).collect {
             def activity = it[0]
@@ -335,10 +342,13 @@ class UserController {
         render(status: 200, text: activitiesAndStories as JSON, contentType: 'application/json')
     }
 
+    @Secured(['isAuthenticated()'])
     def unreadActivitiesCount(long id) {
         User user = springSecurityService.currentUser
         if (id != user.id) {
             render(status: 403)
+            return
+
         }
         def unreadActivities = Activity.storyActivities(user).findAll {
             def activity = it[0]
@@ -347,9 +357,28 @@ class UserController {
         render(status: 200, text: [unreadActivitiesCount: unreadActivities.size()] as JSON, contentType: 'application/json')
     }
 
+    @Secured('isAuthenticated()')
+    def widget(long id, String widgetId, String position, Boolean right) {
+        User user = springSecurityService.currentUser
+        if (id != user.id) {
+            render(status: 403)
+            return
+        }
+        if (widgetId == null || position == null || right == null) {
+            returnError(text: message(code: 'is.user.preferences.error.widget'))
+            return
+        }
+        try {
+            userService.updatePanelPosition(user, widgetId, position, right)
+            render(status: 200)
+        } catch (RuntimeException e) {
+            returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
+        }
+    }
+
     @Secured(['permitAll()'])
     def widgets() {
-        User user = (User) springSecurityService.currentUser
+        User user = springSecurityService.currentUser
         def widgetsLeft
         def widgetsRight
         if (user) {

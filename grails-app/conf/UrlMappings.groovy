@@ -104,6 +104,16 @@ class UrlMappings {
             action = [GET: "retrieve", POST:"retrieve"]
         }
 
+        "/user/menus" {
+            controller = 'user'
+            action = 'menus'
+        }
+
+        "/user/widgets" {
+            controller = 'user'
+            action = 'widgets'
+        }
+
         "/user/$id" {
             controller = 'user'
             action = [GET: "show", PUT:"update", POST:"update"]
@@ -120,12 +130,14 @@ class UrlMappings {
             }
         }
 
-        "/user/$id/widgets" {
+        "/user/$id/widget" {
             controller = 'user'
-            action = 'widgets'
-            constraints {
-                id(matches: /\d*/)
-            }
+            action = [POST: "widget"]
+        }
+
+        "/user/$id/menu" {
+            controller = 'user'
+            action = [POST: "menu"]
         }
 
         "/user/$id/unreadActivitiesCount" {
@@ -136,22 +148,17 @@ class UrlMappings {
             }
         }
 
-        "/user/menus" {
-            controller = 'user'
-            action = [GET: "menus"]
-        }
-
-        "/user/current" {
-            controller = 'user'
-            action = [GET: "current"]
-        }
-
-        "/user/avatar/$id" {
+        "/user/$id/avatar" {
             controller = 'user'
             action = 'avatar'
             constraints {
                 id(matches: /\d*/)
             }
+        }
+
+        "/user/current" {
+            controller = 'user'
+            action = [GET: "current"]
         }
 
         "/user/available/$property" {

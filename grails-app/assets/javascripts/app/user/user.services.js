@@ -43,9 +43,9 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     this.getWidgets = function(user) {
         return User.get({action: 'widgets', id: user.id}).$promise;
     };
-    this.getMenus = function(project) {
+    this.getMenus = function(user, project) {
         //product is used to get menu for a particular product
-        return User.query({action: 'menus', product: project ? project.id : null}).$promise;
+        return User.query({action: 'menus', id: user.id, product: project ? project.id : null}).$promise;
     };
     this.update = function(user) {
         user.class = 'user';
@@ -62,8 +62,21 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         return FormService.httpGet('user/invitationUserMock', {params: {token: token}}, true);
     };
     this.updateMenuPreferences = function(info) {
+        var Session = $injector.get('Session');
         $http({
-            url: $rootScope.serverUrl + '/user/menu',
+            url: $rootScope.serverUrl + '/user/'+Session.user.id+'/menu',
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+            transformRequest: function(data) {
+                return FormService.formObjectData(data, '');
+            },
+            data: info
+        });
+    };
+    this.updatePositionWidget = function(info) {
+        var Session = $injector.get('Session');
+        $http({
+            url: $rootScope.serverUrl + '/user/'+Session.user.id+'/widget',
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
             transformRequest: function(data) {

@@ -265,7 +265,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     $scope.menuDragging = false;
     var menuSortableChange = function(event) {
         UserService.updateMenuPreferences({
-            id: event.source.itemScope.modelValue.id,
+            menuId: event.source.itemScope.modelValue.id,
             position: event.dest.index + 1,
             hidden: event.dest.sortableScope.modelValue === $scope.app.menus.hidden
         });
