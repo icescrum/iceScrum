@@ -36,13 +36,15 @@
             </div>
             <div class="right-title">
                 <button class="btn btn-default elemid">{{ release.id }}</button>
-                <div class="btn-group"
-                     uib-dropdown>
-                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="caret"></i>
-                    </button>
-                    <ul uib-dropdown-menu class="pull-right" ng-include="'release.menu.html'"></ul>
-                </div>
+                <g:if test="${request.scrumMaster || request.productOwner}">
+                    <div class="btn-group"
+                         uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <i class="fa fa-cog"></i> <i class="caret"></i>
+                        </button>
+                        <ul uib-dropdown-menu class="pull-right" ng-include="'release.menu.html'"></ul>
+                    </div>
+                </g:if>
                 <a ng-if="previousRelease"
                    class="btn btn-default"
                    role="button"

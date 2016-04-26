@@ -125,7 +125,7 @@ windows = {
         icon    'calendar'
         help    'todo.is.ui.planning.help'
         title   'todo.is.ui.planning'
-        secured '(isAuthenticated() and stakeHolder()) or inProduct()'
+        secured 'inProduct() or (isAuthenticated() and stakeHolder())'
         menu {
             defaultPosition 3
             defaultVisibility true
