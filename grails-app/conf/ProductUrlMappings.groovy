@@ -43,7 +43,7 @@ class ProductUrlMappings {
             }
         }
         // Scrum OS & generic
-        "/p/$product/window/$windowId" {
+        "/p/$product/ui/window/$windowId" {
             controller = 'scrumOS'
             action = 'window'
             constraints {
