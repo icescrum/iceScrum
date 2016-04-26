@@ -30,9 +30,9 @@ windows = {
         title   'is.ui.backlogs'
         secured 'stakeHolder() or inProduct()'
         menu {
-            title 'is.ui.backlogs'
-            defaultVisibility true
             defaultPosition 2
+            defaultVisibility true
+            title 'is.ui.backlogs'
         }
         embedded = [
                 view:'list',
@@ -54,9 +54,10 @@ windows = {
         title   'is.ui.feature'
         secured 'isAuthenticated()'
         menu {
-            title 'is.ui.feature'
-            defaultVisibility true
             defaultPosition 5
+            defaultVisibility true
+
+            title 'is.ui.feature'
         }
         embedded = [
                 view:'list',
@@ -75,9 +76,9 @@ windows = {
         help    'is.ui.project.help'
         title   'is.ui.project'
         menu {
-            title 'is.ui.project'
-            defaultVisibility true
             defaultPosition 1
+            defaultVisibility true
+            title 'is.ui.project'
         }
         embedded = [
                 view:'productCumulativeFlowChart',
@@ -100,9 +101,9 @@ windows = {
         title   'todo.is.ui.planning'
         secured '(isAuthenticated() and stakeHolder()) or inProduct()'
         menu {
-            title 'todo.is.ui.planning'
-            defaultVisibility true
             defaultPosition 3
+            defaultVisibility true
+            title 'todo.is.ui.planning'
         }
         embedded = [
                 view:'index',
@@ -124,9 +125,9 @@ windows = {
         title   'todo.is.ui.taskBoard'
         secured 'inProduct() or (isAuthenticated() and stakeHolder())'
         menu {
-            title 'todo.is.ui.taskBoard'
-            defaultVisibility true
             defaultPosition 4
+            defaultVisibility true
+            title 'todo.is.ui.taskBoard'
         }
         embedded = [
                 view:'index',
@@ -153,15 +154,14 @@ windows = {
         icon    'fa fa-search'
         title   'is.ui.search'
         menu {
-            title 'is.ui.search'
-            defaultVisibility false
             defaultPosition 1
+            defaultVisibility false
+            title 'is.ui.search'
         }
     }
 }
 
 widgets = {
     'tasks' {
-
     }
 }
