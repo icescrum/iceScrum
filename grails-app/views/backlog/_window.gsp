@@ -133,7 +133,7 @@
                     </button>
                     <ul uib-dropdown-menu
                         role="menu">
-                        <g:each in="${is.exportFormats()}" var="format">
+                        <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
                             <li role="menuitem">
                                 <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}&id={{ ::backlog.id }}"
                                    ng-click="print($event)">${format.name}</a>

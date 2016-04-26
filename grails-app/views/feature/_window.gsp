@@ -64,7 +64,7 @@
                     </button>
                     <ul uib-dropdown-menu
                         role="menu">
-                        <g:each in="${is.exportFormats()}" var="format">
+                        <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                             <li role="menuitem">
                                 <a unavailable-feature="true">${format.name}</a>
                             </li>

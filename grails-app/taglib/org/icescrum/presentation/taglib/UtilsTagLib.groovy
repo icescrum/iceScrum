@@ -50,7 +50,8 @@ class UtilsTagLib {
     }
 
     def exportFormats = { attrs, body ->
-        def exportFormats = uiDefinitionService.getWindowDefinitionById(controllerName).exportFormats
+        assert attrs.windowDefinition
+        def exportFormats = uiDefinitionService.getWindowDefinitionById(attrs.windowDefinition.id).exportFormats
         if (exportFormats instanceof Closure){
             exportFormats.delegate = delegate
             exportFormats.resolveStrategy = Closure.DELEGATE_FIRST

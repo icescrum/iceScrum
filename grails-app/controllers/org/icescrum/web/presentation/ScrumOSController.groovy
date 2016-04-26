@@ -105,7 +105,11 @@ class ScrumOSController {
                 if(context){
                     model[context.name] = context.object
                 }
-                forward(action:'window', controller:windowDefinition.id, model:model)
+                if(ApplicationSupport.controllerExist(windowDefinition.id, "window")){
+                    forward(action:'window', controller:windowDefinition.id, model:model)
+                } else {
+                    render(template:"/${windowDefinition.id}/window", model:model)
+                }
             }
         } else {
             render(status:404)
