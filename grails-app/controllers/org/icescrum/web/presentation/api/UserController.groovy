@@ -283,7 +283,12 @@ class UserController {
     }
 
     @Secured(['permitAll()'])
-    def menus() {
+    def menus(long id) {
+        User user = springSecurityService.currentUser
+        if (user && id != user.id) {
+            render(status: 403)
+            return
+        }
         def menus = []
         uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
             def menu = windowDefinition.menu
@@ -377,8 +382,12 @@ class UserController {
     }
 
     @Secured(['permitAll()'])
-    def widgets() {
+    def widgets(long id) {
         User user = springSecurityService.currentUser
+        if (user && id != user.id) {
+            render(status: 403)
+            return
+        }
         def widgetsLeft
         def widgetsRight
         if (user) {

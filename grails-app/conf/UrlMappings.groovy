@@ -104,14 +104,20 @@ class UrlMappings {
             action = [GET: "retrieve", POST:"retrieve"]
         }
 
-        "/user/menus" {
+        "/user/$id?/menus" {
             controller = 'user'
             action = 'menus'
+            constraints {
+                id(matches: /\d*/)
+            }
         }
 
-        "/user/widgets" {
+        "/user/$id?/widgets" {
             controller = 'user'
             action = 'widgets'
+            constraints {
+                id(matches: /\d*/)
+            }
         }
 
         "/user/$id" {
