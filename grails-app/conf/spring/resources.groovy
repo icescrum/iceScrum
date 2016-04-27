@@ -24,7 +24,6 @@
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
-import org.icescrum.core.support.MenuSupport
 import org.icescrum.i18n.IceScrumMessageSource
 
 beans = {
