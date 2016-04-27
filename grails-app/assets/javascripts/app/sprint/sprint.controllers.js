@@ -24,6 +24,9 @@
 
 controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', function($scope, Session, SprintService) {
     // Functions
+    $scope.showSprintMenu = function() {
+        return Session.poOrSm();
+    };
     $scope.authorizedSprint = function(action, sprint) {
         return SprintService.authorizedSprint(action, sprint);
     };

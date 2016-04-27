@@ -24,8 +24,8 @@
 
 controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'SprintService', function($scope, Session, ReleaseService, SprintService) {
     // Functions
-    $scope.authorizedRelease = function(action, release) {
-        return ReleaseService.authorizedRelease(action, release);
+    $scope.showReleaseMenu = function() {
+        return Session.poOrSm();
     };
     $scope.activate = function(release) {
         ReleaseService.activate(release).then(function() {

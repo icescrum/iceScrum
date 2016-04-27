@@ -37,6 +37,7 @@
             <div class="right-title">
                 <button class="btn btn-default elemid">{{ sprint.id }}</button>
                 <div class="btn-group"
+                     ng-if="showSprintMenu()"
                      uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
                         <i class="fa fa-cog"></i> <i class="caret"></i>
