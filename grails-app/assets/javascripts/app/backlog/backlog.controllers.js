@@ -184,3 +184,7 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
     }, $scope.refreshBacklogs, true);
     $scope.backlogCodes = BacklogCodes;
 }]);
+
+controllers.controller('backlogDetailsCtrl', ['$scope', 'backlog', function($scope, backlog) {
+    $scope.backlog = backlog;
+}]);

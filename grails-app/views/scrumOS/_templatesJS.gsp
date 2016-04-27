@@ -36,6 +36,7 @@
         <g:render template="/feature/templates"/>
         <g:render template="/acceptanceTest/templates"/>
         <g:render template="/release/templates"/>
+        <g:render template="/backlog/templates"/>
     </g:if>
 </div>
 <script type="text/javascript">

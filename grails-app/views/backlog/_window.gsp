@@ -35,7 +35,7 @@
                 <button class="btn btn-default btn-backlog"
                         ng-class="{'shown': availableBacklog.shown}"
                         ng-click="toggleBacklog(availableBacklog)">
-                    {{ availableBacklog.isDefault ? message(availableBacklog.name) : availableBacklog.name }}
+                    {{ availableBacklog | backlogName }}
                     <span class="badge">{{ availableBacklog.count }}</span>
                 </button>
             </div>

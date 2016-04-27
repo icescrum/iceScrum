@@ -382,6 +382,21 @@ angular.module('isApp', [
             },
             children: [
                 {
+                    name: 'details',
+                    url: "/{backlogId:int}",
+                    resolve: {
+                        backlog: ['$stateParams', 'backlogs', function($stateParams, backlogs) {
+                            return _.find(backlogs, {id: $stateParams.backlogId});
+                        }]
+                    },
+                    views: {
+                        "details": {
+                            templateUrl: 'backlog.details.html',
+                            controller: 'backlogDetailsCtrl'
+                        }
+                    }
+                },
+                {
                     name: 'story',
                     url: "/story",
                     children: [

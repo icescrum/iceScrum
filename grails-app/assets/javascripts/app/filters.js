@@ -402,4 +402,10 @@ filters
             }
             return iconByState;
         }
+    }]).filter('backlogName', ['$rootScope', function($rootScope) {
+        return function(backlog) {
+            if (backlog) {
+                return backlog.isDefault ? $rootScope.message(backlog.name) : backlog.name;
+            }
+        }
     }]);
