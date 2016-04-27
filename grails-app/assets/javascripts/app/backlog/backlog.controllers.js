@@ -71,11 +71,11 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
         var rate = -3; // Rate = -3 when no effort (null) & no value (0)
         if (story.value == 0) {
             if (story.effort != null) {
-                rate = - story.effort / 10000; // Rate spans from 0 to -1 (unless effort is > 1000, very unlikely), higher effort => lower rate
+                rate = -story.effort / 10000; // Rate spans from 0 to -1 (unless effort is > 1000, very unlikely), higher effort => lower rate
             }
         } else {
             if (story.effort == null) {
-                rate =  - 1 / story.value -1; // Rate spans from -2 to -1, higher value => higher rate
+                rate = -1 / story.value - 1; // Rate spans from -2 to -1, higher value => higher rate
             } else {
                 rate = story.value / story.effort; // Rate spans from 0 to Infinity, higher value compared to effort => higher rate
             }
@@ -138,7 +138,7 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
         $scope.orderBacklogByRank(backlog)
     };
     $scope.openStoryUrl = function(storyId) {
-        return '#/' + $scope.viewName  + '/' + storyId;
+        return '#/' + $scope.viewName + '/story/' + storyId;
     };
     // Init
     $scope.viewName = 'backlog';

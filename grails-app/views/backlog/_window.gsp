@@ -39,11 +39,7 @@
                     <span class="badge">{{ availableBacklog.count }}</span>
                 </button>
             </div>
-            <div class="btn-group">
-                <button class="btn btn-primary" unavailable-feature="true">
-                    <i class="fa fa-plus"></i>
-                </button>
-            </div>
+            <entry:point id="backlog-window-toolbar-left"/>
             <div class="pull-right">
                 <div class="btn-group btn-view visible-on-hover">
                     <button type="button"
@@ -78,7 +74,7 @@
                 </div>
                 <a type="button"
                    ng-if="authorizedStory('create')"
-                   href="#/{{ ::viewName }}/new"
+                   href="#/{{ ::viewName }}/story/new"
                    class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
             </div>
         </div>
@@ -139,11 +135,11 @@
                                    ng-click="print($event)">${format.name}</a>
                             </li>
                         </g:each>
-                        <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
+                        <entry:point id="backlog-window-toolbar-export" model="[product:params.product, origin:controllerName]"/>
                     </ul>
                 </div>
                 <div class="btn-group pull-right visible-on-hover">
-                    <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
+                    <entry:point id="backlog-window-toolbar-right"/>
                     <button type="button"
                             class="btn btn-default"
                             ng-if="backlogs.length > 1"

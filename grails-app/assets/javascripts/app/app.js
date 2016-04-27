@@ -382,46 +382,52 @@ angular.module('isApp', [
             },
             children: [
                 {
-                    name: 'new',
-                    url: "/new",
-                    data: {
-                        authorize: {
-                            roles: ['inProduct']
-                        }
-                    },
-                    views: {
-                        "details": {
-                            templateUrl: 'story.new.html',
-                            controller: 'storyNewCtrl'
-                        }
-                    }
-                },
-                {
-                    name: 'multiple',
-                    url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                    resolve: {
-                        listId: ['$stateParams', function($stateParams) {
-                            return $stateParams.listId.split(',');
-                        }]
-                    },
-                    views: {
-                        "details": {
-                            templateUrl: 'story.multiple.html',
-                            controller: 'storyMultipleCtrl'
-                        }
-                    },
+                    name: 'story',
+                    url: "/story",
                     children: [
-                        getDetailsModalState('feature', {
+                        {
+                            name: 'new',
+                            url: "/new",
+                            data: {
+                                authorize: {
+                                    roles: ['inProduct']
+                                }
+                            },
+                            views: {
+                                "details@backlog": {
+                                    templateUrl: 'story.new.html',
+                                    controller: 'storyNewCtrl'
+                                }
+                            }
+                        },
+                        {
+                            name: 'multiple',
+                            url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
                             resolve: {
-                                features: ['FeatureService', function(FeatureService) {
-                                    return FeatureService.list();
+                                listId: ['$stateParams', function($stateParams) {
+                                    return $stateParams.listId.split(',');
                                 }]
                             },
-                            children: [getFeatureDetailsState('@', true)]
-                        })
+                            views: {
+                                "details@backlog": {
+                                    templateUrl: 'story.multiple.html',
+                                    controller: 'storyMultipleCtrl'
+                                }
+                            },
+                            children: [
+                                getDetailsModalState('feature', {
+                                    resolve: {
+                                        features: ['FeatureService', function(FeatureService) {
+                                            return FeatureService.list();
+                                        }]
+                                    },
+                                    children: [getFeatureDetailsState('@backlog', true)]
+                                })
+                            ]
+                        },
+                        getStoryDetailsState('@backlog')
                     ]
-                },
-                getStoryDetailsState()
+                }
             ]
         })
         .state({

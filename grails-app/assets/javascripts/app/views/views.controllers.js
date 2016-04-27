@@ -50,6 +50,7 @@ controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', 
         notSelectableSelector: '.action, button, a',
         allowMultiple: true,
         selectionUpdated: function(selectedIds) {
+            var itemState = selectableType == 'feature' ? $scope.viewName : $scope.viewName + '.' + selectableType;
             switch (selectedIds.length) {
                 case 0:
                     $state.go($scope.viewName);
@@ -57,10 +58,10 @@ controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', 
                 case 1:
                     var idObject = {};
                     idObject[idParamName] = selectedIds;
-                    $state.go($scope.viewName + '.details' + ($state.params[tabIdParamName] ? '.tab' : ''), idObject);
+                    $state.go(itemState + '.details' + ($state.params[tabIdParamName] ? '.tab' : ''), idObject);
                     break;
                 default:
-                    $state.go($scope.viewName + '.multiple', {listId: selectedIds.join(",")});
+                    $state.go(itemState + '.multiple', {listId: selectedIds.join(",")});
                     break;
             }
         }

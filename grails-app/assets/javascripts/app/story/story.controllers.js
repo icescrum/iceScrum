@@ -74,7 +74,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'IceScrumEventType',
                 fn: function() {
                     notif.data.close = angular.noop;
                     StoryService.crudMethods[IceScrumEventType.CREATE](story);
-                    $state.go('backlog.details', {id: story.id});
+                    $state.go('backlog.story.details', {id: story.id});
                     $scope.notifySuccess('todo.is.ui.deleted.cancelled');
                 }
             }],
