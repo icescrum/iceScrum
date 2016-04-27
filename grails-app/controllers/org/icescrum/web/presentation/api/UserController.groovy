@@ -373,8 +373,8 @@ class UserController {
         def widgetsLeft = []
         def widgetsRight = []
         if (user) {
-            widgetsLeft = Widget.findAllByUserPreferencesAndRight(user.preferences, false, [sort:'position']).collect{ [id:"$it.widgetDefinitionId-$it.id", position:it.position]}
-            widgetsRight = Widget.findAllByUserPreferencesAndRight(user.preferences, true, [sort:'position']).collect{ [id:"$it.widgetDefinitionId-$it.id", position:it.position]}
+            widgetsLeft = Widget.findAllByUserPreferencesAndOnRight(user.preferences, false, [sort:'position']).collect{ [id:"$it.widgetDefinitionId-$it.id", position:it.position]}
+            widgetsRight = Widget.findAllByUserPreferencesAndOnRight(user.preferences, true, [sort:'position']).collect{ [id:"$it.widgetDefinitionId-$it.id", position:it.position]}
         } else {
             def widgets = uiDefinitionService.widgetDefinitions.findResults{
                 ApplicationSupport.isAllowed(it.value, [], true) ? it : null
