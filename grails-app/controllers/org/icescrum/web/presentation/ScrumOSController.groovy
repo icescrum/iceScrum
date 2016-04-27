@@ -26,6 +26,8 @@ package org.icescrum.web.presentation
 
 import grails.converters.XML
 import grails.util.BuildSettingsHolder
+import org.icescrum.core.domain.Widget
+import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -74,12 +76,12 @@ class ScrumOSController {
         attrs
     }
 
-    def window(String windowId) {
-        if (!windowId) {
+    def window(String windowDefinitionId) {
+        if (!windowDefinitionId) {
             returnError(text:message(code: 'is.error.no.window'))
             return
         }
-        def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowId)
+        def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
         if (windowDefinition) {
             if (!ApplicationSupport.isAllowed(windowDefinition, params)){
                 if (springSecurityService.isLoggedIn()){
@@ -116,22 +118,26 @@ class ScrumOSController {
         }
     }
 
-    def widget(String widgetId) {
-        if (!widgetId) {
+    def widget(String widgetDefinitionId, long widgetId) {
+        if (!widgetDefinitionId) {
             returnError(text:message(code: 'is.error.no.widget'))
             return
         }
-        def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetId)
+        def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
         if(widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params, true)) {
-
-            def model = [widgetDefinition:widgetDefinition]
-            if(ApplicationSupport.controllerExist(widgetDefinition.id, "widget")){
-                forward(action:'widget', controller:widgetDefinition.id, model:model)
-            } else if(widgetDefinition.templatePath){
-                render(plugin: widgetDefinition.pluginName, template:widgetDefinition.templatePath, model:model)
+            UserPreferences userPreferences = springSecurityService.currentUser?.preferences
+            if(widgetId && !userPreferences){
+                render(status:200, text:"")
+            } else {
+                def model = [widgetDefinition:widgetDefinition, widget:widgetId ? Widget.findByIdAndUserPreferences(widgetId, userPreferences) : null]
+                if(ApplicationSupport.controllerExist(widgetDefinition.id, "widget")){
+                    forward(action:'widget', controller:widgetDefinition.id, model:model)
+                } else if(widgetDefinition.templatePath){
+                    render(plugin: widgetDefinition.pluginName, template:widgetDefinition.templatePath, model:model)
+                }
             }
         } else {
-            render(status:200, "")
+            render(status:200, text:"")
         }
     }
 

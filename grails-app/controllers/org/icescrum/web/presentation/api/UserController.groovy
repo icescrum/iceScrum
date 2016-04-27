@@ -35,6 +35,7 @@ import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Invitation
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.Widget
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.WindowDefinition
@@ -263,25 +264,6 @@ class UserController {
         }
     }
 
-    @Secured('isAuthenticated()')
-    def menu(long id, String menuId, String position, boolean hidden) {
-        User user = springSecurityService.currentUser
-        if (id != user.id) {
-            render(status: 403)
-            return
-        }
-        if (!menuId && !position) {
-            returnError(text: message(code: 'is.user.preferences.error.menu'))
-            return
-        }
-        try {
-            userService.menu(user, menuId, position, hidden ?: false)
-            render(status: 200)
-        } catch (RuntimeException e) {
-            returnError(text: message(code: 'is.user.preferences.error.menu'), exception: e)
-        }
-    }
-
     @Secured(['permitAll()'])
     def menus(long id) {
         User user = springSecurityService.currentUser
@@ -310,6 +292,25 @@ class UserController {
             }
         }
         render(status: 200, text:menus as JSON)
+    }
+
+    @Secured('isAuthenticated()')
+    def menu(long id, String menuId, String position, boolean hidden) {
+        User user = springSecurityService.currentUser
+        if (id != user.id) {
+            render(status: 403)
+            return
+        }
+        if (!menuId && !position) {
+            returnError(text: message(code: 'is.user.preferences.error.menu'))
+            return
+        }
+        try {
+            userService.menu(user, menuId, position, hidden ?: false)
+            render(status: 200)
+        } catch (RuntimeException e) {
+            returnError(text: message(code: 'is.user.preferences.error.menu'), exception: e)
+        }
     }
 
     @Secured(['permitAll()'])
@@ -362,25 +363,6 @@ class UserController {
         render(status: 200, text: [unreadActivitiesCount: unreadActivities.size()] as JSON, contentType: 'application/json')
     }
 
-    @Secured('isAuthenticated()')
-    def widget(long id, String widgetId, String position, Boolean right) {
-        User user = springSecurityService.currentUser
-        if (id != user.id) {
-            render(status: 403)
-            return
-        }
-        if (widgetId == null || position == null || right == null) {
-            returnError(text: message(code: 'is.user.preferences.error.widget'))
-            return
-        }
-        try {
-            userService.updatePanelPosition(user, widgetId, position, right)
-            render(status: 200)
-        } catch (RuntimeException e) {
-            returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
-        }
-    }
-
     @Secured(['permitAll()'])
     def widgets(long id) {
         User user = springSecurityService.currentUser
@@ -388,17 +370,43 @@ class UserController {
             render(status: 403)
             return
         }
-        def widgetsLeft
-        def widgetsRight
+        def widgetsLeft = []
+        def widgetsRight = []
         if (user) {
-            widgetsLeft = user.preferences.panelsLeft.collect { return [id: it.key, position: it.value] }.sort { it.position }
-            widgetsRight = user.preferences.panelsRight.collect { return [id: it.key, position: it.value] }.sort { it.position }
+            widgetsLeft = Widget.findAllByUserPreferencesAndRight(user.preferences, false, [sort:'position']).collect{ [id:"$it.widgetDefinitionId-$it.id", position:it.position]}
+            widgetsRight = Widget.findAllByUserPreferencesAndRight(user.preferences, true, [sort:'position']).collect{ [id:"$it.widgetDefinitionId-$it.id", position:it.position]}
         } else {
-            widgetsLeft = [[id: 'login']]
-            widgetsRight = [[id: 'publicProjects']]
+            def widgets = uiDefinitionService.widgetDefinitions.findResults{
+                ApplicationSupport.isAllowed(it.value, [], true) ? it : null
+            }
+            widgets.eachWithIndex{ def widget, def i ->
+                if(i % 2){
+                    widgetsRight << [id:widget.key]
+                } else {
+                    widgetsLeft << [id:widget.key]
+                }
+            }
         }
-        def panels = [widgetsLeft: widgetsLeft, widgetsRight: widgetsRight]
-        render(status: 200, contentType: 'application/json', text: panels as JSON)
+        render(status: 200, contentType: 'application/json', text: [widgetsLeft: widgetsLeft, widgetsRight: widgetsRight] as JSON)
+    }
+
+    @Secured('isAuthenticated()')
+    def widget(long id, String widgetDefinitionId, long widgetId, String position, Boolean right) {
+        User user = springSecurityService.currentUser
+        if (id != user.id) {
+            render(status: 403)
+            return
+        }
+        if ( widgetId == null || position == null || right == null) {
+            returnError(text: message(code: 'is.user.preferences.error.widget'))
+            return
+        }
+        try {
+            userService.updateWidgetPosition(user, Widget.findByIdAndUserPreferences(widgetId, user.preferences), position, right)
+            render(status: 200)
+        } catch (RuntimeException e) {
+            returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
+        }
     }
 
     def invitationUserMock(String token) {

@@ -24,8 +24,10 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'UserService', function
     $scope.widgetsLeft = [];
     $scope.widgetsRight = [];
     var updatePosition = function(event) {
-        UserService.updatePositionWidget({
-            widgetId: event.source.itemScope.modelValue.id,
+        var widgetId = event.source.itemScope.modelValue.id.split('-');
+        UserService.updateWidgetPosition({
+            widgetId:widgetId[1],
+            widgetDefinitionId:widgetId[0],
             position: event.dest.index,
             right: event.dest.sortableScope.modelValue === $scope.widgetsRight
         });

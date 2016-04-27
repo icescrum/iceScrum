@@ -73,7 +73,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
             data: info
         });
     };
-    this.updatePositionWidget = function(info) {
+    this.updateWidgetPosition = function(info) {
         var Session = $injector.get('Session');
         $http({
             url: $rootScope.serverUrl + '/user/'+Session.user.id+'/widget',

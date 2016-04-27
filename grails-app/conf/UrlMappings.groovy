@@ -71,19 +71,30 @@ class UrlMappings {
             action = 'index'
         }
 
-        "/ui/window/$windowId" {
+        "/ui/window/$windowDefinitionId" {
             controller = 'scrumOS'
             action = 'window'
             constraints {
-                windowId(matches: /[a-zA-Z]*/)
+                windowDefinitionId(matches: /[a-zA-Z]*/)
             }
         }
 
-        "/ui/widget/$widgetId" {
+        //without saved configuration (for anonymous)
+        "/ui/widget/$widgetDefinitionId" {
             controller = 'scrumOS'
             action = 'widget'
             constraints {
-                widgetId(matches: /[a-zA-Z]*/)
+                widgetDefinitionId(matches: /[a-zA-Z]*/)
+            }
+        }
+
+        //for authenticated users
+        "/ui/widget/$widgetDefinitionId-$widgetId" {
+            controller = 'scrumOS'
+            action = 'widget'
+            constraints {
+                widgetDefinitionId(matches: /[a-zA-Z]*/)
+                widgetId(matches: /\d*/)
             }
         }
 

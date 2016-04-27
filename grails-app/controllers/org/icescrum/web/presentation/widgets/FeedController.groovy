@@ -92,7 +92,7 @@ class FeedController {
 
     def user() {
         User user = (User) springSecurityService.currentUser
-        render(status: 200, contentType: 'application/json', text: user.preferences.feed as JSON)
+        render(status: 200, contentType: 'application/json', text: [test:''] as JSON)
     }
 
     def content(long id) {

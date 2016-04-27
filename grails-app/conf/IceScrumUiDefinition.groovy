@@ -195,7 +195,10 @@ windows = {
         secured                     default: "permitAll()"        | String (spEl expression)
         context                     default: null                 | String (product or ...)
         templatePath                default: "widgetName/window"  | String (full path to template)
-    }
+
+        allowDuplicate              default: true                 | true/false
+        allowRemove                 default: true                 | true/false
+   }
  */
 
 widgets = {
@@ -237,4 +240,5 @@ widgets = {
         secured 'isAuthenticated()'
         templatePath '/widgets/quickProjects'
     }
+
 }
