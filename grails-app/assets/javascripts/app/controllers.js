@@ -295,15 +295,6 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
 }]);
 
-controllers.controller("widgetCtrl", ['$scope', function($scope) {
-    $scope.toggleSettings = function() {
-        $scope.showSettings = !$scope.showSettings;
-    };
-
-    $scope.remove = function() {
-    };
-}]);
-
 controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'CacheService', 'ProjectService', function($scope, $q, $location, $injector, $state, $timeout, Session, CacheService, ProjectService) {
     // Functions
     $scope.searchContext = function(term) {

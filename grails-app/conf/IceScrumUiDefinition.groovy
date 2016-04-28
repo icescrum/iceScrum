@@ -1,3 +1,6 @@
+import grails.plugins.wikitext.WikiTextTagLib
+import grails.util.Holders
+
 /*
 * Copyright (c) 2015 Kagilum SAS
 *
@@ -198,44 +201,63 @@ windows = {
 
         allowDuplicate              default: true                 | true/false
         allowRemove                 default: true                 | true/false
+        defaultSettings (=)         default: [:]                  | Map
+
+        onSave                      default: nothing              | Closure(widgetInstance)
+        onUpdate                    default: nothing              | Closure(widgetInstance, newSettingsValues)
+        onDelete                    default: nothing              | Closure(widgetInstance)
+
+        Others custom settings can be added as field and will be added to options property (Map [fieldName:fieldValue])
    }
  */
 
 widgets = {
+
     'feed' {
         icon    'rss'
         title   'is.panel.feed'
         secured 'isAuthenticated()'
     }
+
     'login' {
         icon    'user'
         title   'is.dialog.login'
         secured '!isAuthenticated()'
         templatePath '/widgets/login'
      }
+
     'notes' {
         icon    'pencil-square-o'
         title   'is.panel.notes'
         secured 'isAuthenticated()'
         templatePath '/widgets/notes'
+        defaultSettings = [text:'dsgds']
+        onUpdate { widget, settings ->
+            WikiTextTagLib textileRenderer = (WikiTextTagLib) Holders.grailsApplication.mainContext["grails.plugins.wikitext.WikiTextTagLib"]
+            settings.text_html = textileRenderer.renderHtml([markup: "Textile"], settings.text)
+        }
     }
+
     'publicProjects' {
         icon    'folder-open'
         title   'is.panel.project.public'
         templatePath '/widgets/publicProjects'
     }
+
     'mood' {
         icon    'smile-o'
         title   'is.panel.mood'
         secured 'isAuthenticated()'
         templatePath '/widgets/mood'
     }
+
     'tasks' {
         icon 'tasks'
         title 'is.panel.mytask'
         secured 'isAuthenticated()'
         templatePath '/widgets/tasks'
     }
+
     'userProjects' {
         secured 'isAuthenticated()'
         templatePath '/widgets/quickProjects'

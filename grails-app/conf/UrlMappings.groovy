@@ -79,22 +79,19 @@ class UrlMappings {
             }
         }
 
-        //without saved configuration (for anonymous)
-        "/ui/widget/$widgetDefinitionId" {
-            controller = 'scrumOS'
-            action = 'widget'
-            constraints {
-                widgetDefinitionId(matches: /[a-zA-Z]*/)
-            }
+
+        "/ui/widget" {
+            controller = 'widget'
+            action = [GET: "index", POST:"save"]
         }
 
-        //for authenticated users
-        "/ui/widget/$widgetDefinitionId-$widgetId" {
-            controller = 'scrumOS'
-            action = 'widget'
+        //without saved configuration (for anonymous)
+        "/ui/widget/$widgetDefinitionId/$id?" {
+            controller = 'widget'
+            action = [GET:"show", POST:"update", DELETE:"delete"]
             constraints {
                 widgetDefinitionId(matches: /[a-zA-Z]*/)
-                widgetId(matches: /\d*/)
+                id(matches: /\d*/)
             }
         }
 
@@ -118,14 +115,6 @@ class UrlMappings {
         "/user/$id?/menus" {
             controller = 'user'
             action = 'menus'
-            constraints {
-                id(matches: /\d*/)
-            }
-        }
-
-        "/user/$id?/widgets" {
-            controller = 'user'
-            action = 'widgets'
             constraints {
                 id(matches: /\d*/)
             }

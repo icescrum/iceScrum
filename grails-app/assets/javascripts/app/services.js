@@ -260,6 +260,18 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             return response.data;
         });
     };
+    this.httpPost = function(path, data, params, isAbsolute) {
+        var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
+        var paramObj = params || {
+                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                transformRequest: function(data) {
+                    return formObjectData(data, '');
+                }
+            };
+        return $http.post(fullPath, data, paramObj).then(function(response) {
+            return response.data;
+        });
+    };
     this.addStateChangeDirtyFormListener = function($scope, type, isModal) {
         var triggerConfirmModal = function(event, confirmCallback) {
             event.preventDefault(); // cancel the state change
@@ -448,11 +460,12 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                     _.remove(cachedRelease.sprints, {id: oldSprint.id});
                 }
             }
-        },
-        release: function(oldRelease, newRelease) {}
+        }
     };
     this.sync = function(clazz, oldItem, newItem) {
-        syncFunctions[clazz](oldItem, newItem);
+        if(angular.isDefined(syncFunctions[clazz])){
+            syncFunctions[clazz](oldItem, newItem);
+        }
     }
 }]);
 

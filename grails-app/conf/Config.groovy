@@ -115,8 +115,7 @@ icescrum.marshaller = [
                includeCount: ['comments'],
                include: ['tags', 'attachments', 'sprint']],
         user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired'],
-               asShort: ['firstName', 'lastName'],
-               textile: ['notes']],
+               asShort: ['firstName', 'lastName']],
         actor: [include: ['tags', 'attachments'],
                 withIds: ['stories']],
         feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'attachments', 'inProgressDate', 'doneDate'],
@@ -138,7 +137,8 @@ icescrum.marshaller = [
         productpreferences: [asShort: ['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
                                        'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment: [include: ['filename']],
-        acceptancetest: [textile: ['description'], asShort: ['state']]
+        acceptancetest: [textile: ['description'], asShort: ['state']],
+        widget: [exclude: ['settingsData'],include: ['settings']]
 ]
 
 icescrum.restMarshaller = [

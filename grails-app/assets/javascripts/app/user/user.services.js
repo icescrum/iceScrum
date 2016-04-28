@@ -40,9 +40,6 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     this.getUnreadActivities = function(user) {
         return User.get({action: 'unreadActivitiesCount', id: user.id}).$promise;
     };
-    this.getWidgets = function(user) {
-        return User.get({action: 'widgets', id: user.id}).$promise;
-    };
     this.getMenus = function(user, project) {
         //product is used to get menu for a particular product
         return User.query({action: 'menus', id: user.id, product: project ? project.id : null}).$promise;
@@ -65,18 +62,6 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         var Session = $injector.get('Session');
         $http({
             url: $rootScope.serverUrl + '/user/' + Session.user.id + '/menu',
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-            transformRequest: function(data) {
-                return FormService.formObjectData(data, '');
-            },
-            data: info
-        });
-    };
-    this.updateWidgetPosition = function(info) {
-        var Session = $injector.get('Session');
-        $http({
-            url: $rootScope.serverUrl + '/user/' + Session.user.id + '/widget',
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
             transformRequest: function(data) {

@@ -117,29 +117,6 @@ class ScrumOSController {
         }
     }
 
-    def widget(String widgetDefinitionId, long widgetId) {
-        if (!widgetDefinitionId) {
-            returnError(text: message(code: 'is.error.no.widget'))
-            return
-        }
-        def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
-        if (widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params, true)) {
-            UserPreferences userPreferences = springSecurityService.currentUser?.preferences
-            if (widgetId && !userPreferences) {
-                render(status: 200, text: "")
-            } else {
-                def model = [widgetDefinition: widgetDefinition, widget: widgetId ? Widget.findByIdAndUserPreferences(widgetId, userPreferences) : null]
-                if (ApplicationSupport.controllerExist(widgetDefinition.id, "widget")) {
-                    forward(action: 'widget', controller: widgetDefinition.id, model: model)
-                } else if (widgetDefinition.templatePath) {
-                    render(plugin: widgetDefinition.pluginName, template: widgetDefinition.templatePath, model: model)
-                }
-            }
-        } else {
-            render(status: 200, text: "")
-        }
-    }
-
     def about() {
         def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${RCU.getLocale(request)}.xml")
         if (!file.exists()) {

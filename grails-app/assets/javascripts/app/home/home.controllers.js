@@ -19,30 +19,44 @@
  *
  *
  */
-controllers.controller('homeCtrl', ['$scope', 'Session', 'UserService', function($scope, Session, UserService) {
-    // Init
-    $scope.widgetsLeft = [];
-    $scope.widgetsRight = [];
-    var updatePosition = function(event) {
-        var widgetId = event.source.itemScope.modelValue.id.split('-');
-        UserService.updateWidgetPosition({
-            widgetId: widgetId[1],
-            widgetDefinitionId: widgetId[0],
-            position: event.dest.index,
-            right: event.dest.sortableScope.modelValue === $scope.widgetsRight
-        });
+controllers.controller('homeCtrl', ['$scope', '$filter', 'Session', 'WidgetService', function($scope, $filter, Session, WidgetService) {
+    $scope.templateWidgetUrl = function(widget){
+        return 'ui/widget/'+widget.widgetDefinitionId+ (widget.id? '/'+widget.id :'');
     };
-    $scope.widgetSortableOptions = {
-        itemMoved: updatePosition,
-        orderChanged: updatePosition,
+
+    //init
+    var position = function(event) {
+        debugger;
+        var widget = event.source.itemScope.modelValue;
+        widget.position = event.dest.index + 1;
+        widget.onRight = event.dest.sortableScope.options.sortableId === 'sortableRight';
+        WidgetService.update(widget);
+    };
+
+    $scope.widgetSortableOptionsLeft = {
+        itemMoved: position,
+        orderChanged: position,
+        sortableId:'sortableLeft',
         accept: function(sourceItemHandleScope, destSortableScope) {
-            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+            return _.includes(['sortableLeft', 'sortableRight'], destSortableScope.options.sortableId);
         }
     };
-    $scope.sortableId = 'home';
-    UserService.getWidgets(Session.user).then(function(widgets) {
-        $scope.widgetsLeft = widgets.widgetsLeft;
-        $scope.widgetsRight = widgets.widgetsRight;
-    });
+
+    $scope.widgetSortableOptionsRight = {
+        itemMoved: position,
+        orderChanged: position,
+        sortableId:'sortableRight',
+        accept: function(sourceItemHandleScope, destSortableScope) {
+            return _.includes(['sortableLeft', 'sortableRight'], destSortableScope.options.sortableId);
+        }
+    };
+
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
+
+    $scope.widgets = Session.widgets;
+    $scope.$watchCollection('widgets', function(){
+        $scope.widgetsOnLeft = $filter('filter')($scope.widgets, {onRight:false});
+        $scope.widgetsOnRight = $filter('filter')($scope.widgets, {onRight:true});
+    });
+    WidgetService.list();
 }]);

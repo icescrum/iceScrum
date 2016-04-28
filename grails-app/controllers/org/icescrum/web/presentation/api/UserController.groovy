@@ -363,52 +363,6 @@ class UserController {
         render(status: 200, text: [unreadActivitiesCount: unreadActivities.size()] as JSON, contentType: 'application/json')
     }
 
-    @Secured(['permitAll()'])
-    def widgets(long id) {
-        User user = springSecurityService.currentUser
-        if (user && id != user.id) {
-            render(status: 403)
-            return
-        }
-        def widgetsLeft = []
-        def widgetsRight = []
-        if (user) {
-            widgetsLeft = Widget.findAllByUserPreferencesAndOnRight(user.preferences, false, [sort:'position']).collect{ [id:"$it.widgetDefinitionId-$it.id", position:it.position]}
-            widgetsRight = Widget.findAllByUserPreferencesAndOnRight(user.preferences, true, [sort:'position']).collect{ [id:"$it.widgetDefinitionId-$it.id", position:it.position]}
-        } else {
-            def widgets = uiDefinitionService.widgetDefinitions.findResults{
-                ApplicationSupport.isAllowed(it.value, [], true) ? it : null
-            }
-            widgets.eachWithIndex{ def widget, def i ->
-                if(i % 2){
-                    widgetsRight << [id:widget.key]
-                } else {
-                    widgetsLeft << [id:widget.key]
-                }
-            }
-        }
-        render(status: 200, contentType: 'application/json', text: [widgetsLeft: widgetsLeft, widgetsRight: widgetsRight] as JSON)
-    }
-
-    @Secured('isAuthenticated()')
-    def widget(long id, String widgetDefinitionId, long widgetId, String position, Boolean right) {
-        User user = springSecurityService.currentUser
-        if (id != user.id) {
-            render(status: 403)
-            return
-        }
-        if ( widgetId == null || position == null || right == null) {
-            returnError(text: message(code: 'is.user.preferences.error.widget'))
-            return
-        }
-        try {
-            userService.updateWidgetPosition(user, Widget.findByIdAndUserPreferences(widgetId, user.preferences), position, right)
-            render(status: 200)
-        } catch (RuntimeException e) {
-            returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
-        }
-    }
-
     def invitationUserMock(String token) {
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
         def invitation = Invitation.findByToken(token)

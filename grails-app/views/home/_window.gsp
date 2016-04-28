@@ -22,24 +22,23 @@
     <div class="content">
         <div class="row">
             <div class="panel-column">
-                <div ng-if="authenticated()" ng-include="'userProjects.panel.html'" class="panel-userProjects"></div>
-                <div as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
-                     ng-model='widgetsLeft'>
-                    <div ng-include="'ui/widget/'+widget.id"
+                <div as-sortable="widgetSortableOptionsLeft | merge: sortableScrollOptions('#view-home')"
+                     ng-model='widgetsOnLeft'>
+                    <div ng-include src="templateWidgetUrl(widget)"
                          as-sortable-item
                          id="{{ widget.id }}"
                          class="panel-container widget-{{ widget.id }}"
-                         ng-repeat="widget in widgetsLeft"></div>
+                         ng-repeat="widget in widgetsOnLeft"></div>
                 </div>
             </div>
             <div class="panel-column">
-                <div as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
-                     ng-model='widgetsRight'>
-                    <div ng-include="'ui/widget/'+widget.id"
+                <div as-sortable="widgetSortableOptionsRight | merge: sortableScrollOptions('#view-home')"
+                     ng-model='widgetsOnRight'>
+                    <div ng-include src="templateWidgetUrl(widget)"
                          as-sortable-item
                          id="{{ widget.id }}"
                          class="panel-container widget-{{ widget.id }}"
-                         ng-repeat="widget in widgetsRight"></div>
+                         ng-repeat="widget in widgetsOnRight"></div>
                 </div>
             </div>
         </div>
