@@ -38,6 +38,12 @@
                     {{ availableBacklog | backlogName }}
                     <span class="badge">{{ availableBacklog.count }}</span>
                 </button>
+                <a class="btn btn-default btn-backlog"
+                   ng-class="{'shown': availableBacklog.shown}"
+                   ui-sref="backlog.backlog.details({backlogCode: availableBacklog.code})"
+                   uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                    <i class="fa fa-pencil-square-o "></i>
+                </a>
             </div>
             <entry:point id="backlog-window-toolbar"/>
             <div class="pull-right">

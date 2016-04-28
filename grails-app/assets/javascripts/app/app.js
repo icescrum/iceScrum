@@ -381,19 +381,25 @@ angular.module('isApp', [
             },
             children: [
                 {
-                    name: 'details',
+                    name: 'backlog',
                     url: "/:backlogCode",
                     resolve: {
                         backlog: ['$stateParams', 'backlogs', function($stateParams, backlogs) {
                             return _.find(backlogs, {code: $stateParams.backlogCode});
                         }]
                     },
-                    views: {
-                        "details": {
-                            templateUrl: 'backlog.details.html',
-                            controller: 'backlogDetailsCtrl'
+                    children: [
+                        {
+                            name: 'details',
+                            url: "/details",
+                            views: {
+                                "details@backlog": {
+                                    templateUrl: 'backlog.details.html',
+                                        controller: 'backlogDetailsCtrl'
+                                }
+                            }
                         }
-                    }
+                    ]
                 },
                 {
                     name: 'story',
