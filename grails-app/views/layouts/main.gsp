@@ -54,7 +54,6 @@
 <div class="container-fluid main" ui-view>
     <g:layoutBody/>
 </div>
-<entry:point id="icescrum-footer"/>
 <g:include controller="scrumOS" action="isSettings" params="[product: params.product]"/>
 <asset:javascript src="application.js"/>
 <g:include controller="scrumOS" action="templates" params="[product: params.product]"/>

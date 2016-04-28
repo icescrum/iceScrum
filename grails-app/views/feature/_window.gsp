@@ -69,7 +69,6 @@
                                 <a unavailable-feature="true">${format.name}</a>
                             </li>
                         </g:each>
-                        <entry:point id="${controllerName}-toolbar-export" model="[product:params.product, origin:controllerName]"/>
                     </ul>
                 </div>
                 <button type="button"
@@ -83,7 +82,6 @@
                    href="#/{{ ::viewName }}/new"
                    class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
                 <div class="btn-group pull-right visible-on-hover">
-                    <entry:point id="${controllerName}-${actionName}-toolbar-right"/>
                     <g:if test="${params?.printable}">
                         <button type="button"
                                 class="btn btn-default"

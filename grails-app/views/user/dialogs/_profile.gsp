@@ -196,6 +196,5 @@
                 </div>
             </uib-tab>
         </g:if>
-        <entry:point id="${controllerName}-${actionName}-contentd"/>
     </uib-tabset>
 </is:modal>

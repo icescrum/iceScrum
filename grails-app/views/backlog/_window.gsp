@@ -39,7 +39,7 @@
                     <span class="badge">{{ availableBacklog.count }}</span>
                 </button>
             </div>
-            <entry:point id="backlog-window-toolbar-left"/>
+            <entry:point id="backlog-window-toolbar"/>
             <div class="pull-right">
                 <div class="btn-group btn-view visible-on-hover">
                     <button type="button"
@@ -135,11 +135,9 @@
                                    ng-click="print($event)">${format.name}</a>
                             </li>
                         </g:each>
-                        <entry:point id="backlog-window-toolbar-export" model="[product:params.product, origin:controllerName]"/>
                     </ul>
                 </div>
                 <div class="btn-group pull-right visible-on-hover">
-                    <entry:point id="backlog-window-toolbar-right"/>
                     <button type="button"
                             class="btn btn-default"
                             ng-if="backlogs.length > 1"

@@ -21,7 +21,6 @@
 --}%
 <is:modal title="${message(code:'is.about')}">
     <uib-tabset type="pills" justified="true">
-        <entry:point id="about-tabs-first"/>
         <g:if test="${errors}">
             <uib-tab heading="${message(code:'is.dialog.about.errors')}">
                 <g:render template="/${controllerName}/about/errors" model="[errors:errors]"/>
@@ -36,6 +35,5 @@
         <uib-tab heading="${message(code:'is.dialog.about.legal')}">
             ${about.license.text().encodeAsNL2BR()}
         </uib-tab>
-        <entry:point id="about-tabs-last"/>
     </uib-tabset>
 </is:modal>

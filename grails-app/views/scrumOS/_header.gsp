@@ -130,10 +130,8 @@
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.ui.team.menu')}</li>
                                 <li><a href ng-click="showManageTeamsModal()">${message(code: 'is.ui.team.manage')}</a></li>
                             </g:if>
-                            <entry:point id="menu-project" model="[curProduct:product,user:user]"/>
                         </ul>
                     </li>
-                    <entry:point id="menu-left" model="[product:product]"/>
                     <li id="{{ menu.id }}"
                         as-sortable-item
                         ng-repeat="menu in app.menus.visible"
@@ -155,7 +153,6 @@
                         </ul>
                     </li>
                 </ul>
-                <entry:point id="menu-right" model="[curProduct:curProduct]"/>
                 <div class="navbar-right">
                         <g:if test="${product}">
                             <form class="navbar-form pull-left" role="search">
