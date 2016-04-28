@@ -42,6 +42,7 @@
 
 //= require_full_tree vendors
 
+//= require_full_tree app/plugins
 //= require           app/app
 //= require           app/controllers
 //= require           app/directives

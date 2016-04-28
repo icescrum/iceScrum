@@ -35,7 +35,6 @@ import grails.converters.JSON
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.springframework.mail.MailException
-import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.preferences.ProductPreferences
 import sun.misc.BASE64Decoder
 
@@ -54,7 +53,7 @@ class ScrumOSController {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
 
         def context = ApplicationSupport.getCurrentContext(params)
-        if (context){
+        if (context) {
             context.indexScrumOS.delegate = this
             context.indexScrumOS(context, user, securityService, springSecurityService)
         }
@@ -62,11 +61,11 @@ class ScrumOSController {
         def products = user ? productService.getAllActiveProductsByUser().take(10) : []
         def productsLimit = 9
         def moreProductExist = products?.size() > productsLimit
-        def browsableProductsCount = request.admin ? Product.count() : ProductPreferences.countByHidden(false,[cache:true])
+        def browsableProductsCount = request.admin ? Product.count() : ProductPreferences.countByHidden(false, [cache: true])
 
         def attrs = [user: user,
                      lang: RCU.getLocale(request).toString().substring(0, 2),
-                     context:context,
+                     context: context,
                      browsableProductsExist: browsableProductsCount > 0,
                      moreProductsExist: moreProductExist,
                      productFilteredsList: products.take(productsLimit)]
@@ -78,66 +77,66 @@ class ScrumOSController {
 
     def window(String windowDefinitionId) {
         if (!windowDefinitionId) {
-            returnError(text:message(code: 'is.error.no.window'))
+            returnError(text: message(code: 'is.error.no.window'))
             return
         }
         def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
         if (windowDefinition) {
-            if (!ApplicationSupport.isAllowed(windowDefinition, params)){
-                if (springSecurityService.isLoggedIn()){
-                    render(status:403)
+            if (!ApplicationSupport.isAllowed(windowDefinition, params)) {
+                if (springSecurityService.isLoggedIn()) {
+                    render(status: 403)
                 } else {
-                    render(status:401, contentType: 'application/json', text:[] as JSON)
+                    render(status: 401, contentType: 'application/json', text: [] as JSON)
                 }
                 return
             }
 
-            def context =  windowDefinition.context ? ApplicationSupport.getCurrentContext(params,windowDefinition.context) : null
+            def context = windowDefinition.context ? ApplicationSupport.getCurrentContext(params, windowDefinition.context) : null
             def _continue = true
-            if (windowDefinition.before){
+            if (windowDefinition.before) {
                 windowDefinition.before.delegate = delegate
                 windowDefinition.before.resolveStrategy = Closure.DELEGATE_FIRST
                 _continue = windowDefinition.before(context?.object)
             }
 
-            if (!_continue){
-                render(status:404)
+            if (!_continue) {
+                render(status: 404)
             } else {
-                def model = [windowDefinition:windowDefinition]
-                if(context){
+                def model = [windowDefinition: windowDefinition]
+                if (context) {
                     model[context.name] = context.object
                 }
-                if(ApplicationSupport.controllerExist(windowDefinition.id, "window")){
-                    forward(action:'window', controller:windowDefinition.id, model:model)
+                if (ApplicationSupport.controllerExist(windowDefinition.id, "window")) {
+                    forward(action: 'window', controller: windowDefinition.id, model: model)
                 } else {
-                    render(plugin: windowDefinition.pluginName, template:"/${windowDefinition.id}/window", model:model)
+                    render(plugin: windowDefinition.pluginName, template: "/${windowDefinition.id}/window", model: model)
                 }
             }
         } else {
-            render(status:404)
+            render(status: 404)
         }
     }
 
     def widget(String widgetDefinitionId, long widgetId) {
         if (!widgetDefinitionId) {
-            returnError(text:message(code: 'is.error.no.widget'))
+            returnError(text: message(code: 'is.error.no.widget'))
             return
         }
         def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
-        if(widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params, true)) {
+        if (widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params, true)) {
             UserPreferences userPreferences = springSecurityService.currentUser?.preferences
-            if(widgetId && !userPreferences){
-                render(status:200, text:"")
+            if (widgetId && !userPreferences) {
+                render(status: 200, text: "")
             } else {
-                def model = [widgetDefinition:widgetDefinition, widget:widgetId ? Widget.findByIdAndUserPreferences(widgetId, userPreferences) : null]
-                if(ApplicationSupport.controllerExist(widgetDefinition.id, "widget")){
-                    forward(action:'widget', controller:widgetDefinition.id, model:model)
-                } else if(widgetDefinition.templatePath){
-                    render(plugin: widgetDefinition.pluginName, template:widgetDefinition.templatePath, model:model)
+                def model = [widgetDefinition: widgetDefinition, widget: widgetId ? Widget.findByIdAndUserPreferences(widgetId, userPreferences) : null]
+                if (ApplicationSupport.controllerExist(widgetDefinition.id, "widget")) {
+                    forward(action: 'widget', controller: widgetDefinition.id, model: model)
+                } else if (widgetDefinition.templatePath) {
+                    render(plugin: widgetDefinition.pluginName, template: widgetDefinition.templatePath, model: model)
                 }
             }
         } else {
-            render(status:200, text:"")
+            render(status: 200, text: "")
         }
     }
 
@@ -146,7 +145,7 @@ class ScrumOSController {
         if (!file.exists()) {
             file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
         }
-        render(status: 200, template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
+        render(status: 200, template: "about/index", model: [server: servletContext.getServerInfo(), about: new XmlSlurper().parse(file), errors: grailsApplication.config.icescrum.errors ?: false])
     }
 
     def textileParser(String data) {
@@ -156,7 +155,7 @@ class ScrumOSController {
     def reportError(String report) {
         try {
             notificationEmailService.send([
-                    from: springSecurityService.currentUser?.email?:null,
+                    from: springSecurityService.currentUser?.email ?: null,
                     to: grailsApplication.config.icescrum.alerts.errors.to,
                     subject: "[iceScrum][report] Rapport d'erreur",
                     view: '/emails-templates/reportError',
@@ -171,107 +170,93 @@ class ScrumOSController {
             //render(status: 200, contentType: 'application/json', text:message(code: 'is.blame.sended') as JSON)
             render(status: 200)
         } catch (MailException e) {
-            returnError(text:message(code: 'is.mail.error'), exception:e)
+            returnError(text: message(code: 'is.mail.error'), exception: e)
             return
         } catch (RuntimeException re) {
-            returnError(text:message(code: re.getMessage()), exception:re)
+            returnError(text: message(code: re.getMessage()), exception: re)
             return
         } catch (Exception e) {
-            returnError(text:message(code: 'is.mail.error'), exception:e)
+            returnError(text: message(code: 'is.mail.error'), exception: e)
             return
         }
     }
 
     def templates() {
-        def currentSprint = null
-        def product = null
-        if (params.long('product')) {
-            product = Product.get(params.product)
-            currentSprint = Sprint.findCurrentSprint(product.id).list() ?: null
-        }
-        def i18nMessages = messageSource.getAllMessages(RCU.getLocale(request))
+        render(status: 200, template: 'templatesJS')
+    }
 
+    def isSettings() {
         def applicationMenus = []
-        uiDefinitionService.getWindowDefinitions().each { def windowId, def windowDefinition ->
-            def menu = windowDefinition.menu
+        uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
             applicationMenus << [id: windowId,
-                      title: message(code: menu?.title),
-                      shortcut: "ctrl+" + (applicationMenus.size() + 1)]
+                                 title: message(code: windowDefinition.menu?.title),
+                                 shortcut: "ctrl+" + (applicationMenus.size() + 1)]
         }
-
-        def tmpl = g.render(
-                template: 'templatesJS',
-                model: [id: controllerName,
-                        user:springSecurityService.currentUser,
-                        product: product,
-                        roles: securityService.getRolesRequest(false),
-                        i18nMessages: i18nMessages,
-                        currentSprint: currentSprint,
-                        applicationMenus: applicationMenus])
-
-        tmpl = "${tmpl}".split("<div class='templates'>")
-        tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=')
-                .replaceAll('<template ', '<script type="text/x-jqote-template" ').replaceAll('</template>', '</script>')
-                .replaceAll('<underscore ', '<script type="text/icescrum-template" ').replaceAll('</underscore>', '</script>')
-        render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
+        render(status: 200,
+               template: 'isSettings',
+               model: [user: springSecurityService.currentUser,
+                       product: params.long('product') ? Product.get(params.product) : null,
+                       roles: securityService.getRolesRequest(false),
+                       i18nMessages: messageSource.getAllMessages(RCU.getLocale(request)),
+                       applicationMenus: applicationMenus])
     }
 
     def saveImage(String image, String title) {
-        if (!image){
-            render(status:404)
+        if (!image) {
+            render(status: 404)
             return
         }
         title = URLDecoder.decode(title)
         image = URLDecoder.decode(image)
         image = image.substring(image.indexOf("base64,") + "base64,".length(), image.length())
         response.contentType = 'image/png'
-        ['Content-disposition': "attachment;filename=\"${title+'.png'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+        ['Content-disposition': "attachment;filename=\"${title + '.png'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
             response.setHeader(k, v)
         }
         response.outputStream << new BASE64Decoder().decodeBuffer(image)
     }
 
     def whatsNew(boolean hide) {
-        if (hide){
-            if(springSecurityService.currentUser?.preferences?.displayWhatsNew){
+        if (hide) {
+            if (springSecurityService.currentUser?.preferences?.displayWhatsNew) {
                 springSecurityService.currentUser.preferences.displayWhatsNew = false
             }
-            render(status:200)
+            render(status: 200)
             return
         }
         def dialog = g.render(template: "about/whatsNew")
-        render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     def version() {
-        withFormat{
+        withFormat {
             html {
-                render(status:'200', text:g.meta([name:'app.version']))
+                render(status: '200', text: g.meta([name: 'app.version']))
             }
             xml {
-                renderRESTXML(text:[version:g.meta([name:'app.version'])])
+                renderRESTXML(text: [version: g.meta([name: 'app.version'])])
             }
             json {
-                renderRESTJSON(text:[version:g.meta([name:'app.version'])])
+                renderRESTJSON(text: [version: g.meta([name: 'app.version'])])
             }
         }
     }
 
     def progress() {
-        if(session.progress) {
+        if (session.progress) {
             withFormat {
                 html {
-                    render(status:200, contentType:"application/json", text:session.progress  as JSON)
+                    render(status: 200, contentType: "application/json", text: session.progress as JSON)
                 }
                 xml {
-                    render(status:200, contentType:"text/xml", text:session.progress  as XML)
+                    render(status: 200, contentType: "text/xml", text: session.progress as XML)
                 }
                 json {
-                    render(status:200, contentType:"application/json", text:session.progress  as JSON)
+                    render(status: 200, contentType: "application/json", text: session.progress as JSON)
                 }
             }
             //we already sent the error so reset progress
-            if (session.progress.error || session.progress.complete){
+            if (session.progress.error || session.progress.complete) {
                 session.progress = null
             }
         } else {

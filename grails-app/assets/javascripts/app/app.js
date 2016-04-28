@@ -39,34 +39,33 @@
     }
 })();
 
-var isSettings;
-
 angular.module('isApp', [
-    'ngRoute',
-    'ngAnimate',
-    'ngSanitize',
-    'controllers',
-    'services',
-    'filters',
-    'directives',
-    'ui.router',
-    'ui.router.stateHelper',
-    'ui.bootstrap',
-    'ui.select',
-    'monospaced.elastic',
-    'cfp.hotkeys',
-    'colorpicker.module',
-    'mgo-angular-wizard',
-    'ngPasswordStrength',
-    'flow',
-    'ngPDFViewer',
-    'remoteValidation',
-    'FBAngular',
-    'angular-extended-notifications',
-    'as.sortable',
-    'angular.atmosphere',
-    'nvd3'
-]).config(['stateHelperProvider', '$httpProvider', '$urlRouterProvider', '$stateProvider', function(stateHelperProvider, $httpProvider, $urlRouterProvider, $stateProvider) {
+        'ngRoute',
+        'ngAnimate',
+        'ngSanitize',
+        'controllers',
+        'services',
+        'filters',
+        'directives',
+        'ui.router',
+        'ui.router.stateHelper',
+        'ui.bootstrap',
+        'ui.select',
+        'monospaced.elastic',
+        'cfp.hotkeys',
+        'colorpicker.module',
+        'mgo-angular-wizard',
+        'ngPasswordStrength',
+        'flow',
+        'ngPDFViewer',
+        'remoteValidation',
+        'FBAngular',
+        'angular-extended-notifications',
+        'as.sortable',
+        'angular.atmosphere',
+        'nvd3'
+    ].concat(isSettings.plugins)
+).config(['stateHelperProvider', '$httpProvider', '$urlRouterProvider', '$stateProvider', function(stateHelperProvider, $httpProvider, $urlRouterProvider, $stateProvider) {
     $httpProvider.interceptors.push([
         '$injector',
         function($injector) {

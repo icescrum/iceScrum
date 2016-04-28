@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2015 Kagilum SAS.
+- Copyright (c) 2016 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -20,7 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON;" %>
 <div class='templates'>
     <g:render template="templates"/>
     <g:render template="/team/templates"/>
@@ -39,25 +38,3 @@
         <g:render template="/backlog/templates"/>
     </g:if>
 </div>
-<script type="text/javascript">
-    isSettings = {
-        user:${user as JSON},
-        roles:${roles as JSON},
-        project:${product as JSON},
-        pushContext:${product?.id?:"''"},
-        messages:${i18nMessages as JSON},
-        bundles:${is.i18nBundle() as JSON},
-        applicationMenus:${applicationMenus as JSON},
-        types: {
-            task:${BundleUtils.taskTypes.keySet() as JSON},
-            story:${BundleUtils.storyTypes.keySet() as JSON},
-            feature:${BundleUtils.featureTypes.keySet() as JSON},
-            planningPoker:${BundleUtils.planningPokerGameSuites.keySet() as JSON}
-        },
-        states: {
-            task:${BundleUtils.taskStates.keySet() as JSON},
-            acceptanceTest:${BundleUtils.acceptanceTestStates.keySet() as JSON}
-        },
-        serverUrl: "${grailsApplication.config.grails.serverURL}"
-    };
-</script>
