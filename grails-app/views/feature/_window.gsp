@@ -77,8 +77,7 @@
                         uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.multiple.disable/)}' : '${message(code: /todo.is.ui.selectable.multiple.enable/)}' }}">
                     <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
                 </button>
-                <a type="button"
-                   ng-if="authorizedFeature('create')"
+                <a ng-if="authorizedFeature('create')"
                    href="#/{{ ::viewName }}/new"
                    class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
                 <div class="btn-group pull-right visible-on-hover">
@@ -120,8 +119,7 @@
             <div ng-if="features.length == 0"
                  class="empty-view">
                 <p class="help-block">${message(code: 'is.ui.feature.help')}<p>
-                <a type="button"
-                   class="btn btn-primary"
+                <a class="btn btn-primary"
                    ng-if="authorizedFeature('create')"
                    href="#{{ ::viewName }}/new">
                     ${message(code: 'todo.is.ui.feature.new')}
@@ -134,8 +132,7 @@
                         ng-click="app.search = null">
                     ${message(code: 'todo.is.ui.search.clear')}
                 </button>
-                <a type="button"
-                   class="btn btn-primary"
+                <a class="btn btn-primary"
                    ng-if="authorizedFeature('create')"
                    href="#{{ ::viewName }}/new">
                     ${message(code: 'todo.is.ui.feature.new')}

@@ -72,8 +72,7 @@
                         <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
                     </button>
                 </div>
-                <a type="button"
-                   ng-if="authorizedStory('create')"
+                <a ng-if="authorizedStory('create')"
                    href="#/{{ ::viewName }}/story/new"
                    class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
             </div>

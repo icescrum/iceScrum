@@ -117,8 +117,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
-                                <a type="button"
-                                   ng-if="taskState == 0"
+                                <a ng-if="taskState == 0"
                                    class="btn btn-primary"
                                    ng-click="openNewTaskByType(taskTypesByName.URGENT)"
                                    href>
@@ -148,8 +147,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
-                                <a type="button"
-                                   ng-if="taskState == 0"
+                                <a ng-if="taskState == 0"
                                    ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
                                    class="btn btn-primary "
                                    href>
@@ -180,8 +178,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="authorizedTask('create', {parentStory: story})" class="postit-container">
-                                <a type="button"
-                                   ng-click="openNewTaskByStory(story)"
+                                <a ng-click="openNewTaskByStory(story)"
                                    ng-if="taskState == 0"
                                    class="btn btn-primary"
                                    href>
@@ -218,8 +215,7 @@
                     <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                         <div class="empty-view">
                             <p class="help-block">${message(code: 'todo.is.ui.story.empty.sprint')}<p>
-                            <a type="button"
-                               class="btn btn-primary"
+                            <a class="btn btn-primary"
                                ng-if="sprint.state != sprintStatesByName.DONE"
                                href="#backlog">
                                 <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlogs')}
@@ -235,8 +231,7 @@
         <div class="panel-body">
             <div class="empty-view">
                 <p class="help-block">${message(code: 'todo.is.ui.taskBoard.empty')}<p>
-                <a type="button"
-                   class="btn btn-primary"
+                <a class="btn btn-primary"
                    href="#planning">
                     <i class="fa fa-calendar"></i> ${message(code: 'todo.is.ui.planning')}
                 </a>

@@ -40,7 +40,6 @@
             <span class="input-group-btn">
                 <a tabindex="-1"
                    class="btn btn-default"
-                   type="button"
                    href
                    ng-click="showRegisterModal()"
                    uib-tooltip="${message(code: 'is.button.register')}">
@@ -63,7 +62,6 @@
             <span class="input-group-btn">
                 <a tabindex="-1"
                    class="btn btn-default"
-                   type="button"
                    href
                    ng-click="showRetrieveModal()"
                    uib-tooltip="${message(code: 'is.dialog.retrieve')}">
