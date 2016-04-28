@@ -27,8 +27,11 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <div class="btn-toolbar">
-                    <a href="{{ ::urlOpenSprint(sprint) }}">
-                        {{ sprint.parentRelease.name + ' - ' + (sprint | sprintName) }}
+                    {{ sprint.parentRelease.name + ' - ' + (sprint | sprintName) }}
+                    <a class="btn btn-default pull-right"
+                       href="{{ ::openSprintUrl(sprint) }}"
+                       uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                        <i class="fa fa-pencil-square-o "></i>
                     </a>
                     <div class="btn-group pull-right"
                          uib-dropdown>

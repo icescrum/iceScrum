@@ -178,6 +178,9 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
         var newStoryState = getNewStoryState(storyId, $state.current.name);
         return $state.href(newStoryState.name, newStoryState.params);
     };
+    $scope.openSprintUrl = function(sprint) {
+        return $state.href('planning.release.sprint.withId.details', {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
+    };
     // Init
     $scope.viewName = 'planning';
     $scope.visibleSprintMax = 3;
@@ -289,7 +292,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
     };
-    $scope.urlOpenSprint = function(sprint) {
+    $scope.openSprintUrl = function(sprint) {
         return $state.href('taskBoard.details', {sprintId: sprint.id});
     };
     $scope.openNewTaskByStory = function(story) {

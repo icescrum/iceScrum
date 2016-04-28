@@ -107,19 +107,28 @@
             <div class="panel-heading">
                 <h3 class="panel-title small-title">
                     <div>
-                        <a href="#/taskBoard/{{ sprint.id }}/details">
-                            {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
-                        </a>
+                        {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
                         <span class="pull-right">
                             <span ng-if="sprint.state > sprintStatesByName.TODO"
                                   uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity }} /</span>
                             <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity }}</span>
                             <i class="small-icon fa fa-dollar"></i>
-                            <a class="btn btn-primary"
-                               href
-                               ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
-                               ng-if="authorizedSprint('plan', sprint)" style="position:relative">
+                            <button class="btn btn-primary"
+                                    type="button"
+                                    uib-tooltip="${message(code: 'todo.is.ui.story.plan')}"
+                                    ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
+                                    ng-if="authorizedSprint('plan', sprint)" style="position:relative">
                                 <i class="fa fa-plus sticky-note-stack"></i>
+                            </button>
+                            <a class="btn btn-default"
+                               href="#/taskBoard/{{ sprint.id }}/details"
+                               uib-tooltip="${message(code: 'todo.is.ui.taskBoard')}">
+                                <i class="fa fa-tasks"></i>
+                            </a>
+                            <a class="btn btn-default"
+                               href="{{ ::openSprintUrl(sprint) }}"
+                               uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                                <i class="fa fa-pencil-square-o "></i>
                             </a>
                         </span>
                     </div>
