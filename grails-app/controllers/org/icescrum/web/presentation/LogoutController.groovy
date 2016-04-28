@@ -21,7 +21,7 @@
  *
  */
 
-package org.icescrum.web.presentation.security
+package org.icescrum.web.presentation
 
 import grails.plugin.springsecurity.SpringSecurityUtils
 
