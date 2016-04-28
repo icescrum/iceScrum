@@ -67,7 +67,7 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'S
 }]);
 
 controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'ReleaseService', 'hotkeys', function($scope, $controller, $state, ReleaseService, hotkeys) {
-    $controller('releaseCtrl', { $scope: $scope }); // inherit from releaseCtrl
+    $controller('releaseCtrl', {$scope: $scope}); // inherit from releaseCtrl
     // Functions
     $scope.resetReleaseForm = function() {
         $scope.release = {};
@@ -80,7 +80,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
                     $scope.resetReleaseForm();
                 } else {
                     $scope.setInEditingMode(true);
-                    $state.go('^.release.details', { releaseId: release.id });
+                    $state.go('^.release.details', {releaseId: release.id});
                 }
                 $scope.notifySuccess('todo.is.ui.release.saved');
             });
@@ -91,7 +91,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
             if (_.isEmpty(releases)) {
                 $scope.startDateOptions.minDate = $scope.project.startDate;
             } else {
-                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate(_.max(_.map($scope.project.releases, 'endDate')), 1);
+                $scope.startDateOptions.minDate = $scope.immutableAddDaysToDate(_.max(_.map($scope.project.releases, 'endDate')), 1);
             }
             $scope.release.startDate = $scope.startDateOptions.minDate;
             $scope.release.endDate = $scope.immutableAddMonthsToDate($scope.release.startDate, 3);
@@ -117,8 +117,8 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
 }]);
 
 controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $controller, ReleaseStatesByName, ReleaseService, FormService, detailsRelease) {
-    $controller('releaseCtrl', { $scope: $scope }); // inherit from releaseCtrl
-    $controller('attachmentCtrl', { $scope: $scope, attachmentable: detailsRelease, clazz: 'release' });
+    $controller('releaseCtrl', {$scope: $scope}); // inherit from releaseCtrl
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsRelease, clazz: 'release'});
     // Functions
     $scope.isDirty = function() {
         return !_.isEqual($scope.editableRelease, $scope.editableReleaseReference);
@@ -137,7 +137,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
     };
     $scope.resetReleaseForm = function() {
         $scope.formHolder.editing = $scope.isInEditingMode();
-            $scope.formHolder.editable = $scope.authorizedRelease('update', $scope.release);
+        $scope.formHolder.editable = $scope.authorizedRelease('update', $scope.release);
         if ($scope.formHolder.editable) {
             $scope.editableRelease = angular.copy($scope.release);
             $scope.editableReleaseReference = angular.copy($scope.release);
@@ -154,7 +154,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
             if (_.isEmpty($scope.previousRelease)) {
                 $scope.startDateOptions.minDate = $scope.project.startDate;
             } else {
-                $scope.startDateOptions.minDate =  $scope.immutableAddDaysToDate($scope.previousRelease.endDate, 1);
+                $scope.startDateOptions.minDate = $scope.immutableAddDaysToDate($scope.previousRelease.endDate, 1);
             }
         }
     });

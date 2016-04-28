@@ -66,6 +66,6 @@ services.service("TeamService", ['$q', 'Team', 'Session', 'FormService', functio
         return Team.query({action: 'listByUser', term: term, offset: offset}).$promise;
     };
     this.countByUser = function(term) {
-        return FormService.httpGet('team/countByUser', {params:{term: term}}, true);
+        return FormService.httpGet('team/countByUser', {params: {term: term}}, true);
     };
 }]);

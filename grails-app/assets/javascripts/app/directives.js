@@ -786,8 +786,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
             render();
         }
     };
-}])
-.directive('visualStates', ['$compile', '$filter', function($compile, $filter) {
+}]).directive('visualStates', ['$compile', '$filter', function($compile, $filter) {
     return {
         restrict: 'E',
         require: 'ngModel',

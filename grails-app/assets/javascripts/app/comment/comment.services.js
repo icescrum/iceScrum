@@ -21,8 +21,8 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('Comment', [ 'Resource', function($resource) {
-    return $resource('comment/:type/:typeId/:id', { typeId: '@typeId', type: '@type' });
+services.factory('Comment', ['Resource', function($resource) {
+    return $resource('comment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
 }]);
 
 services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Comment, Session) {
@@ -41,7 +41,7 @@ services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Com
         comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
         return Comment.delete({id: comment.id}, function() {
-            _.remove(commentable.comments, { id: comment.id });
+            _.remove(commentable.comments, {id: comment.id});
             commentable.comments_count = commentable.comments.length;
         }).$promise;
     };
@@ -50,12 +50,12 @@ services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Com
         comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
         return comment.$update(function(returnedComment) {
-            angular.extend(_.find(commentable.comments, { id: comment.id }), returnedComment);
+            angular.extend(_.find(commentable.comments, {id: comment.id}), returnedComment);
         });
     };
     this.list = function(commentable) {
         if (_.isEmpty(commentable.comments)) {
-            return Comment.query({ typeId: commentable.id, type: commentable.class.toLowerCase() }, function(data) {
+            return Comment.query({typeId: commentable.id, type: commentable.class.toLowerCase()}, function(data) {
                 commentable.comments = data;
                 commentable.comments_count = commentable.comments.length;
             }).$promise;

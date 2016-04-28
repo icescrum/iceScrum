@@ -91,7 +91,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             try {
                 var jsonBody = atmosphere.util.parseJSON(textBody);
                 if (jsonBody.eventType) {
-                   self.publishEvent(jsonBody);
+                    self.publishEvent(jsonBody);
                 }
             } catch (e) {
                 if (_canLog('debug')) {

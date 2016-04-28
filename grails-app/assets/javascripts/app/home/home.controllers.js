@@ -26,8 +26,8 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'UserService', function
     var updatePosition = function(event) {
         var widgetId = event.source.itemScope.modelValue.id.split('-');
         UserService.updateWidgetPosition({
-            widgetId:widgetId[1],
-            widgetDefinitionId:widgetId[0],
+            widgetId: widgetId[1],
+            widgetDefinitionId: widgetId[0],
             position: event.dest.index,
             right: event.dest.sortableScope.modelValue === $scope.widgetsRight
         });
@@ -35,7 +35,7 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'UserService', function
     $scope.widgetSortableOptions = {
         itemMoved: updatePosition,
         orderChanged: updatePosition,
-        accept: function (sourceItemHandleScope, destSortableScope) {
+        accept: function(sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         }
     };

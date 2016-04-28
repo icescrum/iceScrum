@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('AcceptanceTest', [ 'Resource', function($resource) {
+services.factory('AcceptanceTest', ['Resource', function($resource) {
     return $resource('acceptanceTest/:type/:storyId/:id');
 }]);
 
@@ -45,14 +45,14 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
             angular.extend(foundAcceptanceTest, acceptanceTest);
         };
         crudMethods[IceScrumEventType.DELETE] = function(acceptanceTest) {
-            _.remove(story.acceptanceTests, { id: acceptanceTest.id });
+            _.remove(story.acceptanceTests, {id: acceptanceTest.id});
             story.acceptanceTests_count = story.acceptanceTests.length;
         };
         return crudMethods;
     };
     this.save = function(acceptanceTest, story) {
         acceptanceTest.class = 'acceptanceTest';
-        acceptanceTest.parentStory = { id: story.id };
+        acceptanceTest.parentStory = {id: story.id};
         return AcceptanceTest.save(acceptanceTest, self.getCrudMethods(story)[IceScrumEventType.CREATE]).$promise;
     };
     this['delete'] = function(acceptanceTest, story) {
@@ -63,7 +63,7 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
     };
     this.list = function(story) {
         if (_.isEmpty(story.acceptanceTests)) {
-            return AcceptanceTest.query({ storyId: story.id, type: 'story' }, function(data) {
+            return AcceptanceTest.query({storyId: story.id, type: 'story'}, function(data) {
                 story.acceptanceTests = data;
                 story.acceptanceTests_count = story.acceptanceTests.length;
                 var crudMethods = self.getCrudMethods(story);

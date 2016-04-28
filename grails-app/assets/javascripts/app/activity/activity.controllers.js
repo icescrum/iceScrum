@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('activityCtrl', ['$scope','$state', 'ActivityService', 'selected', function($scope, $state, ActivityService, selected) {
+controllers.controller('activityCtrl', ['$scope', '$state', 'ActivityService', 'selected', function($scope, $state, ActivityService, selected) {
     //activities are ugly but it's working..
     $scope.activities = function(fluxiable, all) {
         $scope.allActivities = all;

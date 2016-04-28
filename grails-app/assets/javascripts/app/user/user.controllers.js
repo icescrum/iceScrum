@@ -21,11 +21,11 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User', 'Session', function ($scope, $timeout, UserService, User, Session) {
+controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User', 'Session', function($scope, $timeout, UserService, User, Session) {
     // Functions
     $scope.update = function(user) {
         UserService.update(user).then(function(userUpdated) {
-            if($scope.$close) {
+            if ($scope.$close) {
                 $scope.$close(); // Close auth modal if present
             }
             if (Session.user.preferences.language != userUpdated.preferences.language) {
@@ -39,11 +39,11 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
             angular.extend(Session.user, userUpdated);
         });
     };
-    $scope.refreshAvatar = function(user){
+    $scope.refreshAvatar = function(user) {
         var url;
         var avatar = user.avatar;
         var avatarImg = angular.element('#user-avatar').find('img');
-        if (avatar == 'gravatar'){
+        if (avatar == 'gravatar') {
             url = user.email ? "https://secure.gravatar.com/avatar/" + $.md5(user.email) : null;
         } else if (avatar == 'custom') {
             avatarImg.triggerHandler('click');

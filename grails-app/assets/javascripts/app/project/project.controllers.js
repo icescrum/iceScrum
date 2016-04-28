@@ -28,7 +28,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
     $scope.showProjectEditModal = function(view) {
         var childScope = $scope.$new();
         if (view) {
-            $scope.panel = { current: view };
+            $scope.panel = {current: view};
         }
         $uibModal.open({
             keyboard: false,
@@ -44,7 +44,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
             templateUrl: $scope.serverUrl + "/project/listModal",
             size: 'lg',
             controller: ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
-                $controller('abstractProjectListCtrl', { $scope: $scope });
+                $controller('abstractProjectListCtrl', {$scope: $scope});
                 // Functions
                 $scope.searchProjects = function() {
                     var offset = $scope.projectsPerPage * ($scope.currentPage - 1);
@@ -104,8 +104,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                             return FormService.formObjectData(data, 'changes.');
                         },
                         data: $scope.changes
-                    })
-                    .then(function(response) {
+                    }).then(function(response) {
                             var data = response.data;
                             if (data && data.class == 'Product') {
                                 document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
@@ -143,10 +142,10 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
             }
         );
     };
-    $scope.goToHome = function(){
+    $scope.goToHome = function() {
         window.location.href = $scope.serverUrl;
     };
-    $scope.goToNewProject = function(){
+    $scope.goToNewProject = function() {
         $state.go('newProject');
     };
     // Init
@@ -181,7 +180,7 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     TeamService.get($scope.currentProject).then(function(team) {
         // That's ugly and repeated in TeamController...
         team.members = _.map(team.members, function(member) {
-            member.scrumMaster = _.find(team.scrumMasters, { id: member.id }) ? true : false;
+            member.scrumMaster = _.find(team.scrumMasters, {id: member.id}) ? true : false;
             return member;
         });
     });
@@ -217,18 +216,18 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
 }]);
 
 controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
-    $controller('abstractProjectListCtrl', { $scope: $scope });
+    $controller('abstractProjectListCtrl', {$scope: $scope});
     // Init
     $scope.projects = [];
     $scope.openedProjects = {};
     $scope.$watch('openedProjects', function(newVal) { // Really ugly hack, only way to watch which accordion group is opened...
         var selectedProjectId = _.invert(newVal)[true];
         if (selectedProjectId != undefined) {
-            var selectedProject = _.find($scope.projects, { id: parseInt(selectedProjectId) });
+            var selectedProject = _.find($scope.projects, {id: parseInt(selectedProjectId)});
             $scope.selectProject(selectedProject);
         }
     }, true);
-    ProjectService.listPublic().then(function (projectsAndTotal) {
+    ProjectService.listPublic().then(function(projectsAndTotal) {
         $scope.projects = projectsAndTotal.projects;
     });
 }]);
@@ -239,7 +238,7 @@ controllers.controller('userProjectListCtrl', ['$scope', 'ProjectService', funct
     };
     // Init
     $scope.projects = [];
-    ProjectService.listByUser().then(function (projectsAndTotal) {
+    ProjectService.listByUser().then(function(projectsAndTotal) {
         $scope.projects = projectsAndTotal.projects;
     });
 }]);
@@ -249,12 +248,12 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
         return UserService.search(val).then(function(users) {
             return _.chain(users)
                 .filter(function(u) {
-                    var found = _.find($scope.project.productOwners, { email: u.email });
+                    var found = _.find($scope.project.productOwners, {email: u.email});
                     if (!found) {
-                        found = _.find($scope.project.stakeHolders, { email: u.email });
+                        found = _.find($scope.project.stakeHolders, {email: u.email});
                     }
                     if (!found && $scope.project.team) {
-                        found = _.find($scope.project.team.members, { email: u.email });
+                        found = _.find($scope.project.team.members, {email: u.email});
                         if (isPo && found && found.scrumMaster) {
                             found = false;
                         }
@@ -272,7 +271,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
         if (role == 'po') {
             $scope.project.productOwners.push(user);
             if ($scope.project.team) {
-                var member = _.find($scope.project.team.members, { email: user.email });
+                var member = _.find($scope.project.team.members, {email: user.email});
                 if (member) {
                     member.productOwner = true;
                 }
@@ -285,36 +284,36 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     };
     $scope.removeUser = function(user, role) {
         if (role == 'po') {
-            _.remove($scope.project.productOwners, { email: user.email});
+            _.remove($scope.project.productOwners, {email: user.email});
             if ($scope.project.team) {
-                var member = _.find($scope.project.team.members, { email: user.email });
+                var member = _.find($scope.project.team.members, {email: user.email});
                 if (member) {
                     member.productOwner = false;
                 }
             }
         } else if (role == 'sh') {
-            _.remove($scope.project.stakeHolders, { email: user.email});
+            _.remove($scope.project.stakeHolders, {email: user.email});
         }
     };
     $scope.prepareProject = function(project) {
         var p = angular.copy(project);
         var mapId = function(members) {
             return _.map(members, function(member) {
-                return { id: member.id };
+                return {id: member.id};
             });
         };
         p.team.scrumMasters = mapId(project.team.scrumMasters);
         p.team.members = _.filter(mapId(project.team.members), function(member) {
-            return !_.some(p.team.scrumMasters, { id: member.id });
+            return !_.some(p.team.scrumMasters, {id: member.id});
         });
         p.stakeHolders = mapId(project.stakeHolders);
         p.productOwners = mapId(project.productOwners);
         var invited = function(members) {
-            return _.chain(members).filter({id: null}).map(function(member) { return {email:member.email}; }).value();
+            return _.chain(members).filter({id: null}).map(function(member) { return {email: member.email}; }).value();
         };
         p.team.invitedScrumMasters = invited(project.team.scrumMasters);
         p.team.invitedMembers = _.filter(invited(project.team.members), function(member) {
-            return !_.some(p.team.invitedScrumMasters, { email: member.email });
+            return !_.some(p.team.invitedScrumMasters, {email: member.email});
         });
         p.invitedStakeHolders = invited(project.stakeHolders);
         p.invitedProductOwners = invited(project.productOwners);
@@ -333,7 +332,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
 
 controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
 
-    $controller('abstractProjectCtrl', { $scope: $scope });
+    $controller('abstractProjectCtrl', {$scope: $scope});
     $scope.type = 'newProject';
     $scope.checkProjectPropertyUrl = '/project/available';
     $scope.isCurrentStep = function(index) {
@@ -368,7 +367,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'U
         for (var i = 1; i <= nbSprints; i++) {
             var startDate = $scope.immutableAddDaysToDate($scope.project.firstSprint, (i - 1) * sprintDuration);
             var endDate = $scope.immutableAddDaysToDate(startDate, sprintDuration);
-            $scope.sprints.push({ orderNumber : i, startDate: startDate, endDate: endDate });
+            $scope.sprints.push({orderNumber: i, startDate: startDate, endDate: endDate});
         }
     };
     $scope.initPkey = function() {
@@ -447,12 +446,12 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
     };
     if (!$scope.panel) {
         var defaultView = $scope.authorizedProject('update', $scope.currentProject) ? 'general' : 'team';
-        $scope.panel = { current: defaultView };
+        $scope.panel = {current: defaultView};
     }
 }]);
 
 controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Session', 'ProjectService', 'TeamService', function($scope, $controller, Session, ProjectService, TeamService) {
-    $controller('abstractProjectCtrl', { $scope: $scope });
+    $controller('abstractProjectCtrl', {$scope: $scope});
     $scope.teamMembersEditable = function() {
         return false;
     };
@@ -507,7 +506,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
         $scope.project = angular.copy($scope.currentProject);
         var restrictedViews = $scope.project.preferences.stakeHolderRestrictedViews ? $scope.project.preferences.stakeHolderRestrictedViews.split(',') : [];
         $scope.views = _.chain($scope.applicationMenus).map(function(menu) {
-            return { title: menu.title, id: menu.id, hidden: _.includes(restrictedViews, menu.id) };
+            return {title: menu.title, id: menu.id, hidden: _.includes(restrictedViews, menu.id)};
         }).sortBy('title').value();
     };
     $scope['delete'] = function(project) {

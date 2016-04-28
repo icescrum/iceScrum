@@ -21,8 +21,8 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('Attachment', [ 'Resource', function($resource) {
-    return $resource('attachment/:type/:typeId/:id', { typeId: '@typeId', type: '@type' });
+services.factory('Attachment', ['Resource', function($resource) {
+    return $resource('attachment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
 }]);
 
 services.service("AttachmentService", ['Attachment', 'Session', function(Attachment, Session) {
@@ -30,7 +30,7 @@ services.service("AttachmentService", ['Attachment', 'Session', function(Attachm
         if (!_.find(attachmentable.attachments, {id: attachment.id})) {
             attachment.type = attachmentable.class.toLowerCase();
             attachment.typeId = attachmentable.id;
-            attachment.attachmentable = {id: attachmentable.id };
+            attachment.attachmentable = {id: attachmentable.id};
             attachmentable.attachments.unshift(attachment);
         }
     };
@@ -39,7 +39,7 @@ services.service("AttachmentService", ['Attachment', 'Session', function(Attachm
         attachment.typeId = attachmentable.id;
         attachment.attachmentable = {id: attachmentable.id};
         return Attachment.delete(attachment, function() {
-            _.remove(attachmentable.attachments, { id: attachment.id });
+            _.remove(attachmentable.attachments, {id: attachment.id});
         });
     };
     this.authorizedAttachment = function(action, attachment) {
