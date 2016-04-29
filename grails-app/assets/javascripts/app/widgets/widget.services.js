@@ -29,12 +29,11 @@ services.factory('Widget', ['Resource', function($resource) {
 services.service("WidgetService", ['CacheService', '$q', 'Widget', function(CacheService, $q, Widget) {
     this.list = function() {
         var cachedWidgets = CacheService.getCache('widget');
-        return _.isEmpty(cachedWidgets) ? Widget.query().$promise.then(function(widgets) {
+        return _.isEmpty(cachedWidgets) ? Widget.query({}, function(widgets) {
             _.each(widgets, function(widget) {
                 CacheService.addOrUpdate('widget', widget);
             });
-            return CacheService.getCache('widget');
-        }) : $q.when(cachedWidgets);
+        }).$promise : $q.when(cachedWidgets);
     };
     this.update = function(widget) {
         widget.class = 'widget';

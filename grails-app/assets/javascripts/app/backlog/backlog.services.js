@@ -24,9 +24,14 @@ services.factory('Backlog', ['Resource', function($resource) {
     return $resource('backlog/:id');
 }]);
 
-services.service("BacklogService", ['Backlog', 'BacklogCodes', function(Backlog, BacklogCodes) {
+services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'BacklogCodes', function(Backlog, $q, CacheService, BacklogCodes) {
     this.list = function() {
-        return Backlog.query({shared: true}).$promise;
+        var cachedBacklogs = CacheService.getCache('backlog');
+        return _.isEmpty(cachedBacklogs) ? Backlog.query({shared: true}, function(backlogs) {
+            _.each(backlogs, function(backlog) {
+                CacheService.addOrUpdate('backlog', backlog);
+            });
+        }).$promise : $q.when(cachedBacklogs);
     };
     this.isAll = function(backlog) {
         return backlog.code == BacklogCodes.ALL;
