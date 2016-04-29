@@ -28,13 +28,13 @@ services.factory('Widget', ['Resource', function($resource) {
 
 services.service("WidgetService", ['CacheService', '$q', 'Widget', function(CacheService, $q, Widget) {
     this.list = function() {
-        var widgets = CacheService.getCache('widget');
-        return _.isEmpty(widgets) ? Widget.query().$promise.then(function(widgets) {
+        var cachedWidgets = CacheService.getCache('widget');
+        return _.isEmpty(cachedWidgets) ? Widget.query().$promise.then(function(widgets) {
             _.each(widgets, function(widget) {
                 CacheService.addOrUpdate('widget', widget);
             });
             return CacheService.getCache('widget');
-        }) : $q.when(widgets);
+        }) : $q.when(cachedWidgets);
     };
     this.update = function(widget) {
         widget.class = 'widget';
