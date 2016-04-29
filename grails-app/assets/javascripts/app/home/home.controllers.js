@@ -20,11 +20,10 @@
  *
  */
 controllers.controller('homeCtrl', ['$scope', '$filter', 'Session', 'WidgetService', function($scope, $filter, Session, WidgetService) {
-    $scope.templateWidgetUrl = function(widget){
-        return 'ui/widget/'+widget.widgetDefinitionId+ (widget.id? '/'+widget.id :'');
+    $scope.templateWidgetUrl = function(widget) {
+        return 'ui/widget/' + widget.widgetDefinitionId + (widget.id ? '/' + widget.id : '');
     };
-
-    //init
+    // Init
     var position = function(event) {
         debugger;
         var widget = event.source.itemScope.modelValue;
@@ -32,31 +31,27 @@ controllers.controller('homeCtrl', ['$scope', '$filter', 'Session', 'WidgetServi
         widget.onRight = event.dest.sortableScope.options.sortableId === 'sortableRight';
         WidgetService.update(widget);
     };
-
     $scope.widgetSortableOptionsLeft = {
         itemMoved: position,
         orderChanged: position,
-        sortableId:'sortableLeft',
+        sortableId: 'sortableLeft',
         accept: function(sourceItemHandleScope, destSortableScope) {
             return _.includes(['sortableLeft', 'sortableRight'], destSortableScope.options.sortableId);
         }
     };
-
     $scope.widgetSortableOptionsRight = {
         itemMoved: position,
         orderChanged: position,
-        sortableId:'sortableRight',
+        sortableId: 'sortableRight',
         accept: function(sourceItemHandleScope, destSortableScope) {
             return _.includes(['sortableLeft', 'sortableRight'], destSortableScope.options.sortableId);
         }
     };
-
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
-
     $scope.widgets = Session.widgets;
-    $scope.$watchCollection('widgets', function(){
-        $scope.widgetsOnLeft = $filter('filter')($scope.widgets, {onRight:false});
-        $scope.widgetsOnRight = $filter('filter')($scope.widgets, {onRight:true});
+    $scope.$watchCollection('widgets', function() {
+        $scope.widgetsOnLeft = $filter('filter')($scope.widgets, {onRight: false});
+        $scope.widgetsOnRight = $filter('filter')($scope.widgets, {onRight: true});
     });
     WidgetService.list();
 }]);

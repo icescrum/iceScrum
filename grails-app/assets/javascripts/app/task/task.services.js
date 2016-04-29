@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-services.factory('Task', [ 'Resource', function($resource) {
+services.factory('Task', ['Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action');
 }]);
 
