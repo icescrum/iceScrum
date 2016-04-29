@@ -111,9 +111,8 @@
                         <i class="fa fa-sort-amount{{ backlog.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                     </button>
                 </div>
-                <a class="btn btn-default btn-backlog"
-                   ng-class="{'shown': availableBacklog.shown}"
-                   ui-sref="backlog.backlog.details({backlogCode: availableBacklog.code})"
+                <a class="btn btn-default"
+                   ui-sref="backlog.backlog.details({backlogCode: backlog.code})"
                    uib-tooltip="${message(code: 'todo.is.ui.details')}">
                     <i class="fa fa-pencil-square-o "></i>
                 </a>

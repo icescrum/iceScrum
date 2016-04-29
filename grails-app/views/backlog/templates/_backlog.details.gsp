@@ -37,6 +37,12 @@
         </h3>
     </div>
     <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table">
+                <tr><td>${message(code: 'todo.is.ui.stories')}</td><td>{{ backlog.count }}</td></tr>
+            </table>
+        </div>
+        <entry:point id="backlog-details-body"/>
     </div>
 </div>
 </script>
