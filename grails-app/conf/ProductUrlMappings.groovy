@@ -243,24 +243,9 @@ class ProductUrlMappings {
         // Backlog
         "/p/$product/backlog" {
             controller = 'backlog'
-            action = [GET: "index", POST:"save"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
-            }
-        }
-        "/p/$product/backlog/$id" {
-            controller = 'backlog'
-            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                id(matches: /\d+(,\d+)*/)
-            }
-        }
-        "/p/$product/backlog/$id/$action" {
-            controller = 'backlog'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                id(matches: /\d+(,\d+)*/)
             }
         }
         // Release
