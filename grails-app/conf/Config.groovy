@@ -138,7 +138,8 @@ icescrum.marshaller = [
                                        'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment: [include: ['filename']],
         acceptancetest: [textile: ['description'], asShort: ['state']],
-        widget: [exclude: ['settingsData'],include: ['settings']]
+        widget: [exclude: ['settingsData'],
+                 include: ['settings']]
 ]
 
 icescrum.restMarshaller = [
