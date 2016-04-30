@@ -19,29 +19,12 @@
  *
  */
 
-services.factory('Feed', ['Resource', function($resource) {
-    return $resource('/widget/feed/:id/:action');
-}]);
-
 services.service("FeedService", ['Feed', 'FormService', function(Feed, FormService) {
-    this.save = function(feed) {
-        feed.class = 'feed';
-        return Feed.save(feed).$promise;
-    };
-    this.list = function() {
-        return Feed.query().$promise;
-    };
-    this.userFeed = function() {
-        return Feed.get({action: 'user'}).$promise;
-    };
-    this.delete = function(feed) {
-        return Feed.delete({id: feed.id}).$promise;
-    };
-    this.merged = function() {
-        return FormService.httpGet('widget/feed/mega');
+    this.combined = function() {
+        return FormService.httpGet('widget/feed/');
     };
     this.content = function(feed) {
-        return FormService.httpGet('widget/feed/' + feed.id + '/content');
+        
     };
 }]);
 

@@ -314,30 +314,13 @@ class UrlMappings {
                 product(matches: /\d*/)
             }
         }
+
         // Widget
         "/widget/feed" {
             controller = 'feed'
-            action = [GET: 'list', POST: "save"]
+            action = [POST: "index"]
         }
-        "/widget/feed/mega" {
-            controller = 'feed'
-            action = [GET: 'mega']
-        }
-        "/widget/feed/$id" {
-            controller = 'feed'
-            action = [DELETE: 'delete']
-            constraints {
-                id(matches: /\d*/)
-            }
-        }
-        "/widget/feed/$id/content" { // Not the REST resource which is returned, so not a REST action
-            controller = 'feed'
-            action = [GET: 'content']
-        }
-        "/widget/feed/user" {
-            controller = 'feed'
-            action = [GET: "user"]
-        }
+
         // Errors
         "404"(controller: "errors", action: "error404")
         "403"(controller: "errors", action: "error403")

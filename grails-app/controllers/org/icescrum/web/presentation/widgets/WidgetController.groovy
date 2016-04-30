@@ -98,8 +98,8 @@ class WidgetController {
                 if(params.widget.onRight){
                     props.onRight = params.widget.boolean('onRight')
                 }
-                if(params.widget.settings){
-                    props.settings =  params.widget.settings
+                if(params.widget.settingsData){
+                    props.settings =  JSON.parse(params.widget.settingsData)
                 }
                 widgetService.update(widget, props)
                 render(status: 200, text:widget as JSON)

@@ -265,7 +265,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         var paramObj = params || {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: function(data) {
-                    return formObjectData(data, '');
+                    return self.formObjectData(data, '');
                 }
             };
         return $http.post(fullPath, data, paramObj).then(function(response) {

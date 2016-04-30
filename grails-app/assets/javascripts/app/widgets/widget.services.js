@@ -31,13 +31,18 @@ services.service("WidgetService", ['CacheService', '$q', 'Widget', function(Cach
         var cachedWidgets = CacheService.getCache('widget');
         return _.isEmpty(cachedWidgets) ? Widget.query({}, function(widgets) {
             _.each(widgets, function(widget) {
+                widget.settings = widget.settingsData ? JSON.parse(widget.settingsData) : undefined;
+                delete widget.settingsData;
                 CacheService.addOrUpdate('widget', widget);
             });
         }).$promise : $q.when(cachedWidgets);
     };
     this.update = function(widget) {
         widget.class = 'widget';
+        widget.settingsData = JSON.stringify(widget.settings);
         return Widget.update({widgetDefinitionId: widget.widgetDefinitionId}, widget, function(widget) {
+            widget.settings = widget.settingsData ? JSON.parse(widget.settingsData) : undefined;
+            delete widget.settingsData;
             CacheService.addOrUpdate('widget', widget);
         }).$promise;
     };

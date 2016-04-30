@@ -22,16 +22,16 @@
     <div ng-controller="FeedCtrl">
         <div ng-if="holder.errorMessage" ng-bind-html="holder.errorMessage"></div>
         <div ng-if="!holder.errorMessage">
-            <div ng-show="!hasFeeds()">
+            <div ng-show="!widget.settings.feeds">
                 ${message(code: 'todo.is.ui.panel.feed.no.rss')}
             </div>
-            <div ng-if="hasFeedChannel()">
-                <h5><strong ng-bind-html="feedChannel.title"></strong></h5>
-                <p class="text-left" ng-bind-html="feedChannel.description"></p>
+            <div ng-if="holder.feed.title">
+                <h5><strong ng-bind-html="holder.feed.title"></strong></h5>
+                <p class="text-left" ng-bind-html="holder.feed.description"></p>
                 <hr/>
             </div>
-            <div ng-repeat="item in feedItems">
-                <strong ng-if="!hasFeedChannel()" ng-bind-html="item.feedTitle"></strong>
+            <div ng-repeat="item in holder.feed.items">
+                <strong ng-if="!holder.feed.title" ng-bind-html="item.feedTitle"></strong>
                 <div>
                     <div class="text-muted pull-right">
                         <time timeago datetime="{{ item.pubDate | dateToIso }}">

@@ -217,6 +217,20 @@ widgets = {
         icon    'rss'
         title   'is.panel.feed'
         secured 'isAuthenticated()'
+        defaultSettings = [
+                feeds:[
+                        [url:'https://www.icescrum.com/blog/feed/', title:'iceScrum', selected:true],
+                        [url:'http://www.universfreebox.com/backend.php', title:'Univers Freebox', selected:false]
+                ]
+        ]
+        onUpdate { widget, settings ->
+            settings.feeds?.findAll{ !it.title }?.each{
+                try {
+                    it.title = new XmlSlurper().parse(it.url).channel.title.text()
+                } catch(Exception e){}
+            }
+            settings.feeds = settings.feeds?.findAll{ it.title }.unique{ it.url }
+        }
     }
 
     'login' {

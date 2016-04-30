@@ -137,9 +137,7 @@ icescrum.marshaller = [
         productpreferences: [asShort: ['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
                                        'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment: [include: ['filename']],
-        acceptancetest: [textile: ['description'], asShort: ['state']],
-        widget: [exclude: ['settingsData'],
-                 include: ['settings']]
+        acceptancetest: [textile: ['description'], asShort: ['state']]
 ]
 
 icescrum.restMarshaller = [

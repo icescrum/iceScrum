@@ -19,72 +19,57 @@
  *
  * Marwah Soltani (msoltani@kagilum.com)
  */
-controllers.controller("FeedCtrl", ['$scope', '$filter', 'FeedService', function($scope, $filter, FeedService) {
-    $scope.save = function(feed) {
-        FeedService.save(feed).then(function(savedFeed) {
-            if (_.isEmpty($scope.holder.selectedFeed)) {
-                if (_.isEmpty($scope.feeds)) {
-                    $scope.holder.selectedFeed = savedFeed;
-                    $scope.selectFeed(savedFeed);
-                } else {
-                    $scope.selectFeed();
-                }
-                $scope.showSettings = false;
-            }
-            $scope.feeds.push(savedFeed);
-            $scope.feed = {};
-            $scope.notifySuccess('todo.is.ui.feed.saved');
+controllers.controller("FeedCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', function($scope, $filter, FormService, WidgetService) {
+    //$scope.widget inherited
+    var widget = $scope.widget;
+
+    $scope.select = function(widgetId) {
+        $scope.holder.feed = {};
+        return FormService.httpPost('widget/feed', {widgetId:widgetId}, null, true).then(function(feedWithContent){
+            //what do we do!
+            $scope.holder.errorMessage = null;
+            $scope.holder.feed = feedWithContent;
+        }).catch(function(error) {
+            $scope.holder.errorMessage = error.data.text;
         });
     };
-    $scope.selectFeed = function(selectedFeed) {
-        var handleError = function(error) {
-            $scope.holder.errorMessage = error.data.text;
-        };
-        if (_.isEmpty(selectedFeed)) {
-            FeedService.merged().then(function(mergedFeed) {
-                $scope.feedChannel = {};
-                $scope.feedItems = $filter('orderBy')(mergedFeed, '-pubDate');
-                $scope.disableDeleteButton = true;
-                $scope.holder.errorMessage = null;
-            }).catch(handleError);
-        } else {
-            $scope.disableDeleteButton = selectedFeed.id == "defaultFeed";
-            FeedService.content(selectedFeed).then(function(feed) {
-                $scope.feedChannel = feed;
-                $scope.feedItems = feed.items;
-                $scope.holder.errorMessage = null;
-            }).catch(handleError);
+
+    $scope.add = function(url){
+        if(!widget.settings.feeds){
+            widget.settings.feeds = {};
         }
+        widget.settings.feeds.push({url:url});
+        WidgetService.update(widget).then(function(){
+            $scope.holder.feedUrl = '';
+        });
     };
+
     $scope.delete = function(feed) {
-        FeedService.delete(feed).then(function() {
-            _.remove($scope.feeds, {id: feed.id});
-            $scope.feedItems = [];
-            $scope.feedChannel = {};
-            $scope.holder.selectedFeed = null;
-            $scope.selectFeed();
-            $scope.notifySuccess('todo.is.ui.feed.delete');
-        })
+        _.remove(widget.settings.feeds, {url: feed.url});
+        WidgetService.update(widget).then(function(){
+            $scope.holder.selected = null;
+            $scope.select(widget.id);
+        });
     };
-    $scope.hasFeeds = function() {
-        return $scope.feeds.length != 0;
-    };
-    $scope.hasFeedChannel = function() {
-        return !_.isEmpty($scope.feedChannel);
-    };
-    // Init
-    $scope.feedItems = [];
-    $scope.feedChannel = {};
-    $scope.feed = {};
-    $scope.holder = {}; // Holder required to share the references across the ctrl chain, otherwise primitive values are copied and changes are not propagated
-    $scope.feeds = [];
-    FeedService.userFeed().then(function(feed) {
-        if (feed.id) {
-            $scope.holder.selectedFeed = feed;
+
+    $scope.onSelect = function($item, $model){
+        _.each(widget.settings.feeds, function(feed){
+            feed.selected = false;
+        });
+        if($model){
+            $model.selected = true;
         }
-        $scope.selectFeed($scope.holder.selectedFeed);
-    });
-    FeedService.list().then(function(feeds) {
-        $scope.feeds = feeds;
-    });
+        WidgetService.update(widget);
+        $scope.select(widget.id);
+    };
+
+    // Init
+    $scope.holder = {
+        feed: {},
+        errorMessage:false,
+        feeds:widget.settings.feeds,
+        selected:_.find(widget.settings.feeds, {selected:true})
+    };
+
+    $scope.select(widget.id);
 }]);
