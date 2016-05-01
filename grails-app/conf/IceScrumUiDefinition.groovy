@@ -273,6 +273,8 @@ widgets = {
     }
 
     'userProjects' {
+        icon 'tasks'
+        title 'is.panel.userProjects'
         secured 'isAuthenticated()'
         templatePath '/widgets/quickProjects'
     }

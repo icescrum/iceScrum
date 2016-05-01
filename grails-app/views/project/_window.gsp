@@ -22,7 +22,7 @@
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="row" ng-controller="dashboardCtrl">
-        <div class="panel-column">
+        <div class="widget-column">
             <div class="panel-container"><div class="panel panel-light">
                 <div class="panel-heading">
                     <h3 class="panel-title">
@@ -120,7 +120,7 @@
                 </div>
             </div></div>
         </div>
-        <div class="panel-column">
+        <div class="widget-column">
             <div class="panel-container">
                 <div class="panel panel-light" ng-controller="chartCtrl" ng-init="openProjectChart('burnup')">
                     <div class="panel-heading">

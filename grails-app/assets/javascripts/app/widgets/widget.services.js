@@ -26,7 +26,7 @@ services.factory('Widget', ['Resource', function($resource) {
     return $resource('/ui/widget/:widgetDefinitionId/:id');
 }]);
 
-services.service("WidgetService", ['CacheService', '$q', 'Widget', function(CacheService, $q, Widget) {
+services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget', function(CacheService, FormService, $q, Widget) {
     this.list = function() {
         var cachedWidgets = CacheService.getCache('widget');
         return _.isEmpty(cachedWidgets) ? Widget.query({}, function(widgets) {
@@ -36,6 +36,16 @@ services.service("WidgetService", ['CacheService', '$q', 'Widget', function(Cach
                 CacheService.addOrUpdate('widget', widget);
             });
         }).$promise : $q.when(cachedWidgets);
+    };
+    this.save = function(widgetDefinitionId, onRight) {
+        //simplify widget definition
+        var widgetDefinition = {widgetDefinitionId:widgetDefinitionId, onRight:onRight};
+        return Widget.save(widgetDefinition, function(widget) {
+            //WHY it doesn't work ????
+            widget.settings = widget.settingsData ? JSON.parse(widget.settingsData) : undefined;
+            delete widget.settingsData;
+            CacheService.addOrUpdate('widget', widget);
+        }).$promise;
     };
     this.update = function(widget) {
         widget.class = 'widget';
@@ -50,5 +60,8 @@ services.service("WidgetService", ['CacheService', '$q', 'Widget', function(Cach
         return Widget.delete({widgetDefinitionId: widget.widgetDefinitionId, id: widget.id}, {}, function() {
             CacheService.remove('widget', widget.id);
         }).$promise;
+    };
+    this.getWidgetDefinitions = function() {
+        return FormService.httpGet('ui/widget/definitions', null, true);
     };
 }]);

@@ -783,7 +783,7 @@ angular.module('isApp', [
 .factory('UserTimeZone', function() {
     return jstz.determine();
 })
-.run(['Session', 'BundleService', 'PushService', 'UserService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, UserService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
+.run(['Session', 'BundleService', 'PushService', 'UserService' , 'WidgetService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, UserService, WidgetService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
 
     //used to handle click with shortcut hotkeys
     $rootScope.hotkeyClick = function(event, hotkey) {
@@ -918,6 +918,33 @@ angular.module('isApp', [
             scope: childScope,
             size: 'sm'
         }).result.then(loginCallback);
+    };
+
+    $rootScope.showAddWidgetModal = function(onRight){
+        $uibModal.open({
+            keyboard: false,
+            templateUrl: 'addWidget.modal.html',
+            controller: ['$scope',function($scope){
+                $scope.detailsWidgetDefinition = function(widgetDefinition){
+                    $scope.widgetDefinition = widgetDefinition;
+                };
+                $scope.addWidget = function(widgetDefinition){
+                    WidgetService.save(widgetDefinition.id, onRight).then(function(){
+                        $scope.$close();
+                    });
+                };
+                //init
+                $scope.widgetDefinition =  {};
+                $scope.widgetDefinitions = [];
+                WidgetService.getWidgetDefinitions().then(function(widgetDefinitions){
+                    if(widgetDefinitions.length > 0){
+                        $scope.widgetDefinitions = widgetDefinitions;
+                        $scope.widgetDefinition =  widgetDefinitions[0];
+                    }
+                });
+            }],
+            size: 'lg'
+        });
     };
 
     $rootScope.durationBetweenDates = function(startDateString, endDateString) {

@@ -21,7 +21,7 @@
 <div id="view-home" class="view">
     <div class="content">
         <div class="row">
-            <div class="panel-column">
+            <div class="widget-column">
                 <div as-sortable="widgetSortableOptionsLeft | merge: sortableScrollOptions('#view-home')"
                      ng-model='widgetsOnLeft'>
                     <div ng-include src="templateWidgetUrl(widget)"
@@ -30,8 +30,13 @@
                          class="panel-container widget-{{ widget.id }}"
                          ng-repeat="widget in widgetsOnLeft"></div>
                 </div>
+                <div class="add-widget">
+                    <button class="btn btn-default" ng-click="showAddWidgetModal()">
+                        <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="todo.is.ui.add.widget"/>
+                    </button>
+                </div>
             </div>
-            <div class="panel-column">
+            <div class="widget-column">
                 <div as-sortable="widgetSortableOptionsRight | merge: sortableScrollOptions('#view-home')"
                      ng-model='widgetsOnRight'>
                     <div ng-include src="templateWidgetUrl(widget)"
@@ -39,6 +44,11 @@
                          id="{{ widget.id }}"
                          class="panel-container widget-{{ widget.id }}"
                          ng-repeat="widget in widgetsOnRight"></div>
+                </div>
+                <div class="add-widget">
+                    <button class="btn btn-default" ng-click="showAddWidgetModal()">
+                        <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="todo.is.ui.add.widget"/>
+                    </button>
                 </div>
             </div>
         </div>

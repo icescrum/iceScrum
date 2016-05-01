@@ -30,6 +30,7 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Widget
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.ui.WidgetDefinition
 
 class WidgetController {
 
@@ -80,6 +81,18 @@ class WidgetController {
     }
 
     @Secured('isAuthenticated()')
+    def save(String widgetDefinitionId, boolean onRight) {
+        User user = springSecurityService.currentUser
+        WidgetDefinition widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
+        if (!widgetDefinition || !user || !ApplicationSupport.isAllowed(widgetDefinition, [], true)) {
+            returnError(text: message(code: 'is.user.preferences.error.widget'))
+            return
+        }
+        Widget widget = widgetService.add(user, widgetDefinition, onRight)
+        render(status: 200, contentType: 'application/json', text:widget as JSON)
+    }
+
+    @Secured('isAuthenticated()')
     def update(long id) {
         User user = springSecurityService.currentUser
         if (!id || !params.widget) {
@@ -102,7 +115,7 @@ class WidgetController {
                     props.settings =  JSON.parse(params.widget.settingsData)
                 }
                 widgetService.update(widget, props)
-                render(status: 200, text:widget as JSON)
+                render(status: 200, contentType: 'application/json', text:widget as JSON)
             } catch (RuntimeException e) {
                 returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
             }
@@ -127,5 +140,15 @@ class WidgetController {
                 returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
             }
         }
+    }
+
+    @Secured('isAuthenticated()')
+    def definitions(){
+        def publicWidgetDefinitions = uiDefinitionService.widgetDefinitions
+                .findResults{ ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
+                .collect {
+                    [id:it.value.id,title:it.value.title,description:it.value.description,icon:it.value.icon]
+                }
+        render(status:200, contentType: 'application/json', text:publicWidgetDefinitions as JSON)
     }
 }

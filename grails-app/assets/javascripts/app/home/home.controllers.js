@@ -19,7 +19,7 @@
  *
  *
  */
-controllers.controller('homeCtrl', ['$scope', 'Session', 'CacheService', 'WidgetService', function($scope, Session, CacheService, WidgetService) {
+controllers.controller('homeCtrl', ['$scope', '$rootScope', '$uibModal', 'Session', 'CacheService', 'WidgetService', function($scope, $rootScope, $uibModal, Session, CacheService, WidgetService) {
     $scope.templateWidgetUrl = function(widget) {
         return 'ui/widget/' + widget.widgetDefinitionId + (widget.id ? '/' + widget.id : '');
     };

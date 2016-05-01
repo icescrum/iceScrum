@@ -261,6 +261,30 @@ i.small-icon {
   width: 100%;
 }
 
+#view-home {
+  .as-sortable-placeholder {
+    margin-bottom: 15px;
+  }
+  .widget-column {
+    > div:not(:first-of-type) {
+      &.add-widget {
+        margin-top:15px;
+      }
+    }
+  }
+  .add-widget {
+    opacity: 0.2;
+    padding: 10px;
+    text-align: center;
+    border:1px solid @view-bg;
+    &:hover {
+      opacity: 1;
+      background: @body-bg;
+      border-color:@panel-default-border;
+    }
+  }
+}
+
 .sortable .panel-heading, li.as-sortable-placeholder {
   cursor:move;
 }
@@ -543,8 +567,16 @@ a[data-toggle="tab"] button {
 
 .split-modal {
   .left-panel {
-    max-height: 340px;
-    overflow: auto;
+    .left-panel-bottom, .left-panel-header {
+      margin:15px;
+    }
+    .left-panel-body {
+      height: 280px;
+      overflow: auto;
+    }
+    .left-panel-bottom {
+      text-align: center;
+    }
   }
 }
 

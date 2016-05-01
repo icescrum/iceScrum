@@ -157,22 +157,9 @@
 </script>
 
 <script type="text/ng-template" id="details.modal.html">
-<div class="modal-content modal-details">
-    <div class="modal-header">
-        <div class="pull-right">
-            <button class="btn btn-default"
-                    type="button"
-                    ng-click="$dismiss()"
-                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                <i class="fa fa-times"></i>
-            </button>
-        </div>
-        <h4 class="modal-title">{{ message('is.' + detailsType) }}</h4>
-    </div>
-    <div class="modal-body">
-        <div ui-view="details"></div>
-    </div>
-</div>
+<is:modal title="{{ message('is.' + detailsType) }}" class="modal-details">
+    <div ui-view="details"></div>
+</is:modal>
 </script>
 
 <script type="text/ng-template" id="states.html">
@@ -187,4 +174,41 @@
         </div>
     </div>
 </div>
+</script>
+
+<script type="text/ng-template" id="addWidget.modal.html">
+<is:modal title="${message(code:'is.dialog.addWidget.title')}"
+          form="addWidget(widgetDefinition)"
+          submitButton="${message(code:'todo.is.ui.addWidget')}"
+          class="add-widget split-modal">
+    <div class="row">
+        <div class="left-panel col-sm-3">
+            <div class="left-panel-header">
+                <div class="input-group">
+                    <input type="text" ng-model="widgetDefinitionSearch" class="form-control" placeholder="${message(code:'todo.is.ui.search.action')}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+            <ul class="left-panel-body nav nav-list">
+                <li ng-class="{ 'current': currentWidgetDefinition.id == widgetDefinition.id }" ng-repeat="currentWidgetDefinition in widgetDefinitions | filter:widgetDefinitionSearch">
+                    <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href>{{ currentWidgetDefinition.title }}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right-panel col-sm-9" ng-switch="widgetDefinitions != undefined && widgetDefinitions.length == 0">
+            <div ng-switch-when="true">
+                ${ message(code: 'todo.is.ui.widget.noAvailableWidgetDefinitions') }
+            </div>
+            <div class="col-md-12" ng-switch-default>
+                <div ng-include="'widgetDefinition.details.html'"></div>
+            </div>
+        </div>
+    </div>
+</is:modal>
+</script>
+
+<script type="text/ng-template" id="widgetDefinition.details.html">
+{{ widgetDefinition.id }}
 </script>

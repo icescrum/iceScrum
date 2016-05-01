@@ -78,7 +78,6 @@ class UrlMappings {
             controller = 'widget'
             action = [GET: "index", POST: "save"]
         }
-        //without saved configuration (for anonymous)
         "/ui/widget/$widgetDefinitionId/$id?" {
             controller = 'widget'
             action = [GET: "show", POST: "update", DELETE: "delete"]
@@ -86,6 +85,10 @@ class UrlMappings {
                 widgetDefinitionId(matches: /[a-zA-Z]*/)
                 id(matches: /\d*/)
             }
+        }
+        "/ui/widget/definitions" {
+            controller = 'widget'
+            action = 'definitions'
         }
         // Progress
         "/progress" {
