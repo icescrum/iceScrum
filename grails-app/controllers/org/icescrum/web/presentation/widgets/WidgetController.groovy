@@ -88,7 +88,7 @@ class WidgetController {
             returnError(text: message(code: 'is.user.preferences.error.widget'))
             return
         }
-        Widget widget = widgetService.add(user, widgetDefinition, onRight)
+        Widget widget = widgetService.save(user, widgetDefinition, onRight)
         render(status: 200, contentType: 'application/json', text:widget as JSON)
     }
 

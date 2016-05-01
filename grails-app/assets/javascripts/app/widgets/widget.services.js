@@ -38,10 +38,9 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
         }).$promise : $q.when(cachedWidgets);
     };
     this.save = function(widgetDefinitionId, onRight) {
-        //simplify widget definition
-        var widgetDefinition = {widgetDefinitionId:widgetDefinitionId, onRight:onRight};
-        return Widget.save(widgetDefinition, function(widget) {
-            //WHY it doesn't work ????
+        var widget = {widget:'feature', widgetDefinitionId:widgetDefinitionId, onRight:onRight};
+        return Widget.save(widget, function(widget) {
+            console.log(widget);
             widget.settings = widget.settingsData ? JSON.parse(widget.settingsData) : undefined;
             delete widget.settingsData;
             CacheService.addOrUpdate('widget', widget);
