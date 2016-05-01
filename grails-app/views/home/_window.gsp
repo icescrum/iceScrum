@@ -46,7 +46,7 @@
                          ng-repeat="widget in widgetsOnRight"></div>
                 </div>
                 <div class="add-widget">
-                    <button class="btn btn-default" ng-click="showAddWidgetModal()">
+                    <button class="btn btn-default" ng-click="showAddWidgetModal(true)">
                         <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="todo.is.ui.add.widget"/>
                     </button>
                 </div>
