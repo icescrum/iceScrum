@@ -40,19 +40,19 @@ class FeedController {
         def url = params.url
         User user = springSecurityService.currentUser
         try {
-            if(user && params.widgetId) {
+            if (user && params.widgetId) {
                 Widget widgetFeed = Widget.findByUserPreferencesAndId(user.preferences, params.long('widgetId'))
-                def selectedFeed = widgetFeed.settings.feeds?.find{it -> it.selected }
-                if(selectedFeed){
+                def selectedFeed = widgetFeed.settings.feeds?.find { it -> it.selected }
+                if (selectedFeed) {
                     content = getFeedContent(selectedFeed.url)
                 } else {
-                    content  = [items:[]]
+                    content = [items: []]
                     widgetFeed.settings.feeds?.each { feed ->
                         content.items.addAll(getFeedContent(feed.url).items)
                     }
                 }
             }
-            if (content){
+            if (content) {
                 render(status: 200, contentType: "application/json", text: content as JSON)
             } else {
                 render(status: 204)
@@ -63,7 +63,7 @@ class FeedController {
         }
     }
 
-    private static getFeedContent(def url){
+    private static getFeedContent(def url) {
         def channel = new XmlSlurper().parse(url).channel
         def contentFeed = [title: channel.title.text(), description: channel.description.text()]
         contentFeed.items = channel.item.collect { xmlItem ->

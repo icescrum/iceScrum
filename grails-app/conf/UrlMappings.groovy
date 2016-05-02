@@ -317,13 +317,11 @@ class UrlMappings {
                 product(matches: /\d*/)
             }
         }
-
         // Widget
         "/widget/feed" {
             controller = 'feed'
             action = [POST: "index"]
         }
-
         // Errors
         "404"(controller: "errors", action: "error404")
         "403"(controller: "errors", action: "error403")

@@ -49,9 +49,9 @@ class WidgetController {
                 order('position', 'asc')
             }
         } else {
-            widgets = uiDefinitionService.widgetDefinitions.findResults{ ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
-                            .collect{ ['widgetDefinitionId':it.key] }
-                                .eachWithIndex{ def entry, def i -> entry.onRight = i % 2 ? true : false }
+            widgets = uiDefinitionService.widgetDefinitions.findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
+                            .collect { ['widgetDefinitionId': it.key] }
+                            .eachWithIndex { def entry, def i -> entry.onRight = i % 2 ? true : false }
         }
         render(status: 200, contentType: 'application/json', text: widgets as JSON)
     }
@@ -89,7 +89,7 @@ class WidgetController {
             return
         }
         Widget widget = widgetService.save(user, widgetDefinition, onRight)
-        render(status: 200, contentType: 'application/json', text:widget as JSON)
+        render(status: 200, contentType: 'application/json', text: widget as JSON)
     }
 
     @Secured('isAuthenticated()')
@@ -100,22 +100,22 @@ class WidgetController {
             return
         }
         Widget widget = Widget.findByIdAndUserPreferences(id, user.preferences)
-        if(!widget){
+        if (!widget) {
             render(status: 403)
         } else {
             try {
                 Map props = [:]
-                if(params.widget.position){
+                if (params.widget.position) {
                     props.position = params.widget.int('position')
                 }
-                if(params.widget.onRight){
+                if (params.widget.onRight) {
                     props.onRight = params.widget.boolean('onRight')
                 }
-                if(params.widget.settingsData){
-                    props.settings =  JSON.parse(params.widget.settingsData)
+                if (params.widget.settingsData) {
+                    props.settings = JSON.parse(params.widget.settingsData)
                 }
                 widgetService.update(widget, props)
-                render(status: 200, contentType: 'application/json', text:widget as JSON)
+                render(status: 200, contentType: 'application/json', text: widget as JSON)
             } catch (RuntimeException e) {
                 returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
             }
@@ -130,7 +130,7 @@ class WidgetController {
             return
         }
         Widget widget = Widget.findByIdAndUserPreferences(params.long('id'), user.preferences)
-        if(!widget){
+        if (!widget) {
             render(status: 403)
         } else {
             try {
@@ -143,12 +143,12 @@ class WidgetController {
     }
 
     @Secured('isAuthenticated()')
-    def definitions(){
+    def definitions() {
         def publicWidgetDefinitions = uiDefinitionService.widgetDefinitions
-                .findResults{ ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
+                .findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
                 .collect {
-                    [id:it.value.id,title:it.value.title,description:it.value.description,icon:it.value.icon]
+                    [id: it.value.id, title: it.value.title, description: it.value.description, icon: it.value.icon]
                 }
-        render(status:200, contentType: 'application/json', text:publicWidgetDefinitions as JSON)
+        render(status: 200, contentType: 'application/json', text: publicWidgetDefinitions as JSON)
     }
 }

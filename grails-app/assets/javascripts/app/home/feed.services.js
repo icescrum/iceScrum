@@ -24,7 +24,7 @@ services.service("FeedService", ['Feed', 'FormService', function(Feed, FormServi
         return FormService.httpGet('widget/feed/');
     };
     this.content = function(feed) {
-        
+
     };
 }]);
 

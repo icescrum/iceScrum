@@ -395,7 +395,7 @@ angular.module('isApp', [
                             views: {
                                 "details@backlog": {
                                     templateUrl: 'backlog.details.html',
-                                        controller: 'backlogDetailsCtrl'
+                                    controller: 'backlogDetailsCtrl'
                                 }
                             }
                         }
@@ -783,7 +783,7 @@ angular.module('isApp', [
 .factory('UserTimeZone', function() {
     return jstz.determine();
 })
-.run(['Session', 'BundleService', 'PushService', 'UserService' , 'WidgetService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, UserService, WidgetService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
+.run(['Session', 'BundleService', 'PushService', 'UserService', 'WidgetService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, UserService, WidgetService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
 
     //used to handle click with shortcut hotkeys
     $rootScope.hotkeyClick = function(event, hotkey) {
@@ -920,26 +920,26 @@ angular.module('isApp', [
         }).result.then(loginCallback);
     };
 
-    $rootScope.showAddWidgetModal = function(onRight){
+    $rootScope.showAddWidgetModal = function(onRight) {
         $uibModal.open({
             keyboard: false,
             templateUrl: 'addWidget.modal.html',
-            controller: ['$scope',function($scope){
-                $scope.detailsWidgetDefinition = function(widgetDefinition){
+            controller: ['$scope', function($scope) {
+                $scope.detailsWidgetDefinition = function(widgetDefinition) {
                     $scope.widgetDefinition = widgetDefinition;
                 };
-                $scope.addWidget = function(widgetDefinition){
-                    WidgetService.save(widgetDefinition.id, onRight).then(function(){
+                $scope.addWidget = function(widgetDefinition) {
+                    WidgetService.save(widgetDefinition.id, onRight).then(function() {
                         $scope.$close();
                     });
                 };
-                //init
-                $scope.widgetDefinition =  {};
+                // Init
+                $scope.widgetDefinition = {};
                 $scope.widgetDefinitions = [];
-                WidgetService.getWidgetDefinitions().then(function(widgetDefinitions){
-                    if(widgetDefinitions.length > 0){
+                WidgetService.getWidgetDefinitions().then(function(widgetDefinitions) {
+                    if (widgetDefinitions.length > 0) {
                         $scope.widgetDefinitions = widgetDefinitions;
-                        $scope.widgetDefinition =  widgetDefinitions[0];
+                        $scope.widgetDefinition = widgetDefinitions[0];
                     }
                 });
             }],

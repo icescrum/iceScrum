@@ -463,7 +463,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         }
     };
     this.sync = function(clazz, oldItem, newItem) {
-        if(angular.isDefined(syncFunctions[clazz])){
+        if (angular.isDefined(syncFunctions[clazz])) {
             syncFunctions[clazz](oldItem, newItem);
         }
     }
