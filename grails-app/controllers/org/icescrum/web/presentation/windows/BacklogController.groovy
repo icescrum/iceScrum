@@ -39,10 +39,10 @@ class BacklogController {
     def springSecurityService
 
     @Secured(['stakeHolder() or inProduct()'])
-    def index(long product, boolean shared) {
-        def backlogs = Backlog.findAllByProductAndShared(Product.load(product), shared)
+    def index(long product) {
+        def backlogs = Backlog.findAllByProductAndShared(Product.load(product), true).findAll { it.isDefault }
         withFormat {
-            html { render(status: 200, contentType: 'application/json', text:backlogs as JSON) }
+            html { render(status: 200, contentType: 'application/json', text: backlogs as JSON) }
             json { renderRESTJSON(text: backlogs) }
             xml  { renderRESTXML(text: backlogs) }
         }

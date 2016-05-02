@@ -27,7 +27,7 @@ services.factory('Backlog', ['Resource', function($resource) {
 services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'BacklogCodes', function(Backlog, $q, CacheService, BacklogCodes) {
     this.list = function() {
         var cachedBacklogs = CacheService.getCache('backlog');
-        return _.isEmpty(cachedBacklogs) ? Backlog.query({shared: true}, function(backlogs) {
+        return _.isEmpty(cachedBacklogs) ? Backlog.query({}, function(backlogs) {
             _.each(backlogs, function(backlog) {
                 CacheService.addOrUpdate('backlog', backlog);
             });
