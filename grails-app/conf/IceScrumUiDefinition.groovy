@@ -194,6 +194,7 @@ windows = {
     'widgetName' {
         icon                        default: ''                   | String (fontawesome)
         title                       default: ''                   | String (i18n key)
+        description                 default: ''                   | String (i18n key)
         help                        default: ''                   | String (i18n key)
         secured                     default: "permitAll()"        | String (spEl expression)
         context                     default: null                 | String (product or ...)
@@ -255,12 +256,14 @@ widgets = {
     'publicProjects' {
         icon    'folder-open'
         title   'is.panel.project.public'
+        description ''
         templatePath '/widgets/publicProjects'
     }
 
     'mood' {
         icon    'smile-o'
         title   'is.panel.mood'
+        description ''
         secured 'isAuthenticated()'
         templatePath '/widgets/mood'
     }
@@ -268,6 +271,7 @@ widgets = {
     'tasks' {
         icon 'tasks'
         title 'is.panel.mytask'
+        description ''
         secured 'isAuthenticated()'
         templatePath '/widgets/tasks'
     }
@@ -275,6 +279,7 @@ widgets = {
     'userProjects' {
         icon 'tasks'
         title 'is.panel.userProjects'
+        description ''
         secured 'isAuthenticated()'
         templatePath '/widgets/quickProjects'
     }
