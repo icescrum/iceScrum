@@ -1087,6 +1087,9 @@ angular.module('isApp', [
         Session.create(isSettings.user, isSettings.roles);
     }
 
+    //
+    $rootScope.authenticated = Session.authenticated;
+
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
         if (toState.name == "404") {
             event.preventDefault();

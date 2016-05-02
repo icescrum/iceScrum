@@ -30,7 +30,7 @@
                          class="panel-container widget-{{ widget.id }}"
                          ng-repeat="widget in widgetsOnLeft"></div>
                 </div>
-                <div class="add-widget">
+                <div class="add-widget" ng-if="authenticated()">
                     <button class="btn btn-default" ng-click="showAddWidgetModal()">
                         <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="todo.is.ui.add.widget"/>
                     </button>
@@ -45,7 +45,7 @@
                          class="panel-container widget-{{ widget.id }}"
                          ng-repeat="widget in widgetsOnRight"></div>
                 </div>
-                <div class="add-widget">
+                <div class="add-widget" ng-if="authenticated()">
                     <button class="btn btn-default" ng-click="showAddWidgetModal(true)">
                         <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="todo.is.ui.add.widget"/>
                     </button>
