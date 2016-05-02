@@ -31,7 +31,9 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'BacklogCod
             _.each(backlogs, function(backlog) {
                 CacheService.addOrUpdate('backlog', backlog);
             });
-        }).$promise : $q.when(cachedBacklogs);
+        }).$promise.then(function() {
+            return cachedBacklogs;
+        }) : $q.when(cachedBacklogs);
     };
     this.isAll = function(backlog) {
         return backlog.code == BacklogCodes.ALL;
