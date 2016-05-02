@@ -157,7 +157,7 @@
 </script>
 
 <script type="text/ng-template" id="details.modal.html">
-<is:modal title="{{ message('is.' + detailsType) }}" class="modal-details">
+<is:modal footer="${false}" title="{{ message('is.' + detailsType) }}" class="modal-details">
     <div ui-view="details"></div>
 </is:modal>
 </script>
