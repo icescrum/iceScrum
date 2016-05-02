@@ -243,10 +243,11 @@ widgets = {
 
     'notes' {
         icon    'pencil-square-o'
-        title   'is.panel.notes'
+        title   'is.widget.notes'
         secured 'isAuthenticated()'
+        description 'is.widget.notes.description'
         templatePath '/widgets/notes'
-        defaultSettings = [text:'dsgds']
+        defaultSettings = [text:'']
         onUpdate { widget, settings ->
             WikiTextTagLib textileRenderer = (WikiTextTagLib) Holders.grailsApplication.mainContext["grails.plugins.wikitext.WikiTextTagLib"]
             settings.text_html = textileRenderer.renderHtml([markup: "Textile"], settings.text)
@@ -255,33 +256,42 @@ widgets = {
 
     'publicProjects' {
         icon    'folder-open'
-        title   'is.panel.project.public'
-        description ''
+        title   'is.widget.project.public'
         templatePath '/widgets/publicProjects'
     }
 
     'mood' {
         icon    'smile-o'
-        title   'is.panel.mood'
-        description ''
+        title   'is.widget.mood'
         secured 'isAuthenticated()'
+        description 'is.widget.mood.description'
         templatePath '/widgets/mood'
+        allowDuplicate false
     }
 
     'tasks' {
         icon 'tasks'
-        title 'is.panel.mytask'
-        description ''
+        title 'is.widget.mytask'
         secured 'isAuthenticated()'
+        description 'is.widget.mytask.description'
         templatePath '/widgets/tasks'
     }
 
     'userProjects' {
         icon 'tasks'
-        title 'is.panel.userProjects'
-        description ''
+        title 'is.widget.userProjects'
         secured 'isAuthenticated()'
+        description 'is.widget.userProjects.description'
         templatePath '/widgets/quickProjects'
+    }
+
+    'chart' {
+        icon 'chart'
+        title 'is.widget.chart'
+        secured 'isAuthenticated()'
+        description 'is.widget.chart.description'
+        templatePath '/widgets/chart'
+        defaultSettings = [project:[id:1], chart:'burnup']
     }
 
 }

@@ -210,5 +210,6 @@
 </script>
 
 <script type="text/ng-template" id="widgetDefinition.details.html">
-{{ widgetDefinition.id }}
+<h4>{{ widgetDefinition.title }}</h4>
+<p>{{ widgetDefinition.description }}</p>
 </script>
