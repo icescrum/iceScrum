@@ -114,7 +114,7 @@
                 <a class="btn btn-default"
                    ui-sref="backlog.backlog.details({backlogCode: backlogContainer.backlog.code})"
                    uib-tooltip="${message(code: 'todo.is.ui.details')}">
-                    <i class="fa fa-pencil-square-o "></i>
+                    <i class="fa fa-info-circle"></i>
                 </a>
                 <div class="btn-group" uib-dropdown>
                     <g:if test="${params?.printable}">
@@ -163,5 +163,6 @@
                 </div>
             </div>
         </div>
+        <entry:point id="backlog-list-details"/>
     </div>
 </is:window>

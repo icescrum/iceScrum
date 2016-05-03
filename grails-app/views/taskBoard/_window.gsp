@@ -31,7 +31,7 @@
                     <a class="btn btn-default pull-right"
                        href="{{ ::openSprintUrl(sprint) }}"
                        uib-tooltip="${message(code: 'todo.is.ui.details')}">
-                        <i class="fa fa-pencil-square-o "></i>
+                        <i class="fa fa-info-circle"></i>
                     </a>
                     <div class="btn-group pull-right"
                          uib-dropdown>

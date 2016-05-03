@@ -60,7 +60,7 @@
                     <a ui-sref=".feature.details({featureId: editableStory.feature.id})"
                        title="{{ editableStory.feature.name }}"
                        class="btn btn-default">
-                        <i class="fa fa-external-link"></i>
+                        <i class="fa fa-info-circle"></i>
                     </a>
                 </span>
             </div>
@@ -193,7 +193,7 @@
                     <a href="#story/{{ editableStory.dependsOn.id }}"
                        title="{{ editableStory.dependsOn.name }}"
                        class="btn btn-default">
-                        <i class="fa fa-external-link"></i>
+                        <i class="fa fa-info-circle"></i>
                     </a>
                 </span>
             </div>

@@ -202,7 +202,7 @@
                         <a ui-sref=".feature.details({featureId: storyPreview.feature.id})"
                            title="{{ storyPreview.feature.name }}"
                            class="btn btn-default">
-                            <i class="fa fa-external-link"></i>
+                            <i class="fa fa-info-circle"></i>
                         </a>
                     </span>
                 </div>
