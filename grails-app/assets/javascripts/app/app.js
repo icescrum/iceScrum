@@ -39,6 +39,19 @@
     }
 })();
 
+angular.module('isPlugins', []).provider('controllerEntryPoints', function() {
+    this.$get = angular.noop;
+    this.register = function(entryPoints) {
+        _.each(entryPoints, function(appControllerName, pluginControllerName) {
+            if (_.has(isSettings.controllerEntryPoints, appControllerName)) {
+                isSettings.controllerEntryPoints[appControllerName].push(pluginControllerName);
+            } else {
+                console.error("App controller " + appControllerName + " is not registered so plugin controller " + pluginControllerName + " cannot be plugged");
+            }
+        });
+    }
+});
+
 angular.module('isApp', [
         'ngRoute',
         'ngAnimate',

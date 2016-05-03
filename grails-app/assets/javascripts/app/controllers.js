@@ -24,6 +24,33 @@
 
 var controllers = angular.module('controllers', []);
 
+var registerController = function(appControllerName, controllerArray) {
+    isSettings.controllerEntryPoints[appControllerName] = [];
+    var functionIndex = controllerArray.length - 1;
+    var oldFunction = controllerArray[functionIndex];
+    var newControllerArray = _.dropRight(controllerArray);
+    if (!_.includes(newControllerArray, '$scope')) {
+        throw new Error('To be able to register the controller, inject $scope');
+    }
+    var indexOfScope = controllerArray.indexOf("$scope");
+    var removeControllerProvider;
+    if (!_.includes(newControllerArray, '$controller')) {
+        newControllerArray.push('$controller');
+        removeControllerProvider = true;
+    }
+    var indexOfControllerProvider = newControllerArray.indexOf('$controller');
+    newControllerArray.push(function() {
+        var $scope = arguments[indexOfScope];
+        var $controller = arguments[indexOfControllerProvider];
+        var newArguments = removeControllerProvider ? _.dropRight(arguments) : arguments;
+        oldFunction.apply(null, newArguments); // Call the controller
+        _.each(isSettings.controllerEntryPoints[appControllerName], function(pluginControllerName) {
+            $controller(pluginControllerName, {$scope: $scope});
+        });
+    });
+    controllers.controller(appControllerName, newControllerArray);
+};
+
 controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
     $controller('headerCtrl', {$scope: $scope});
     $controller('searchCtrl', {$scope: $scope});

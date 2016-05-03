@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$timeout', '$state', 'Session', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $controller, $timeout, $state, Session, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
+registerController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state', 'Session', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $timeout, $state, Session, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
     // Functions
     $scope.authorizedStory = StoryService.authorizedStory;
     $scope.isSelected = function(selectable) {
@@ -110,7 +110,8 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
                 return $state.href('.');
             }
         } else {
-            return $state.href('.', {backlogCode: backlog.code});
+            var stateName = _.startsWith($state.current.name, 'backlog.backlog') || _.startsWith($state.current.name, 'backlog.multiple') ? '.' : 'backlog.backlog';
+            return $state.href(stateName, {backlogCode: backlog.code});
         }
     };
     $scope.togglePinBacklogUrl = function(backlog) {
@@ -141,16 +142,13 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
     $scope.isPinned = function(backlog) {
         return $state.params.pinnedBacklogCode == backlog.code;
     };
-    var getBacklog = function(backlogCode) {
-        return _.find($scope.availableBacklogs, {code: backlogCode});
-    };
     $scope.showBacklog = function(backlogCode) {
         var backlogContainer = _.find($scope.backlogContainers, function(backlogContainer) {
             return backlogContainer.backlog.code == backlogCode;
         });
         if (!backlogContainer) {
             backlogContainer = {
-                backlog: getBacklog(backlogCode),
+                backlog: _.find($scope.availableBacklogs, {code: backlogCode}),
                 storiesLoaded: false,
                 orderBy: {
                     values: _.sortBy([

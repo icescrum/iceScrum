@@ -41,6 +41,7 @@
             acceptanceTest: ${BundleUtils.acceptanceTestStates.keySet() as JSON}
         },
         plugins: [],
+        controllerEntryPoints: {},
         serverUrl: "${grailsApplication.config.grails.serverURL}"
     };
 </script>
