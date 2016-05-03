@@ -290,8 +290,7 @@ widgets = {
         title 'is.widget.chart'
         secured 'isAuthenticated()'
         description 'is.widget.chart.description'
-        templatePath '/widgets/chart'
-        defaultSettings = [project:[id:1], chart:'burnup']
+        defaultSettings = [project:[id:1], chart:[id:'burnup',project:true]]
     }
 
 }

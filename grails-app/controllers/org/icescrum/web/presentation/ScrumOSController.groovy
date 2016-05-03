@@ -105,6 +105,7 @@ class ScrumOSController {
                 def model = [windowDefinition: windowDefinition]
                 if (context) {
                     model[context.name] = context.object
+                    model['contextScope'] = context.contextScope
                 }
                 if (ApplicationSupport.controllerExist(windowDefinition.id, "window")) {
                     forward(action: 'window', controller: windowDefinition.id, model: model)

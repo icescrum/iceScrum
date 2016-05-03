@@ -198,6 +198,32 @@ icescrum {
                     user.save()
                 }
             }
+            contextScope = [
+                charts:[//project level
+                   project:[
+                        [id:'burnup',title:'is.ui.project.charts.productBurnup'],
+                        [id:'burndown',title:'is.ui.project.charts.productBurndown'],
+                        [id:'velocity',title:'is.ui.project.charts.productVelocity'],
+                        [id:'parkingLot',title:'is.ui.project.charts.productParkingLot'],
+                        [id:'flowCumulative',title:'is.ui.project.charts.productCumulativeFlow'],
+                        [id:'velocityCapacity',title:'is.ui.project.charts.productVelocityCapacity'],
+                    ],
+                   //release level
+                   release: [
+                       [id:'burndown', title:'is.chart.releaseBurndown'],
+                       [id:'parkingLot', title:'is.chart.releaseParkingLot'],
+                       [id:'releaseUserMood', title:'is.chart.releaseUserMood'],
+                   ],
+                   //sprint level
+                    sprint: [
+                        [id:'sprintUserMood', title:'is.chart.sprintUserMood'],
+                        [id:'burnupTasks', title:'is.chart.sprint.BurnupTasksChart'],
+                        [id:'burnupPoints', title:'is.chart.sprint.BurnupPointsChart'],
+                        [id:'burnupStories', title:'is.chart.sprint.BurnupStoriesChart'],
+                        [id:'burndownRemaining', title:'is.chart.sprint.BurndownRemainingChart']
+                    ]
+                ]
+            ]
         }
     }
 }

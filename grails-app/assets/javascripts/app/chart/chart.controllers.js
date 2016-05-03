@@ -212,3 +212,6 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
     // Init
     $scope.cleanData();
 }]);
+
+controllers.controller('ChartWidgetCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', function($scope, $element, $filter, Session, ProjectService) {
+}]);
