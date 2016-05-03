@@ -22,58 +22,27 @@
  *
  */
 
-// Abstract Ctrl for view with selectable items
-controllers.controller('selectableCtrl', ['$scope', '$state', 'selectableType', function($scope, $state, selectableType) {
-    var idParamName = selectableType + 'Id';
-    var tabIdParamName = selectableType + 'TabId';
+controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'features', function($scope, $state, $controller, FeatureService, features) {
     // Functions
     $scope.isSelected = function(selectable) {
-        if ($state.params[idParamName]) {
-            return $state.params[idParamName] == selectable.id;
-        } else if ($state.params.listId) {
-            return _.includes($state.params.listId.split(','), selectable.id.toString());
+        if ($state.params.featureId) {
+            return $state.params.featureId == selectable.id;
+        } else if ($state.params.featureListId) {
+            return _.includes($state.params.featureListId.split(','), selectable.id.toString());
         } else {
             return false;
         }
     };
     $scope.hasSelected = function() {
-        return $state.params[idParamName] != undefined || $state.params.listId != undefined;
+        return $state.params.featureId != undefined || $state.params.featureListId != undefined;
     };
     $scope.toggleSelectableMultiple = function() {
         $scope.app.selectableMultiple = !$scope.app.selectableMultiple;
-        if ($state.params.listId != undefined) {
+        if ($state.params.featureListId != undefined) {
             $state.go($scope.viewName);
         }
     };
-    // Init
-    $scope.selectableOptions = {
-        notSelectableSelector: '.action, button, a',
-        allowMultiple: true,
-        selectionUpdated: function(selectedIds) {
-            var itemState = selectableType == 'feature' ? $scope.viewName : $scope.viewName + '.' + selectableType;
-            switch (selectedIds.length) {
-                case 0:
-                    $state.go($scope.viewName);
-                    break;
-                case 1:
-                    var idObject = {};
-                    idObject[idParamName] = selectedIds;
-                    $state.go(itemState + '.details' + ($state.params[tabIdParamName] ? '.tab' : ''), idObject);
-                    break;
-                default:
-                    $state.go(itemState + '.multiple', {listId: selectedIds.join(",")});
-                    break;
-            }
-        }
-    };
-}]);
-
-controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService', 'features', function($scope, $controller, FeatureService, features) {
-    $controller('selectableCtrl', {$scope: $scope, selectableType: 'feature'});
-    // Functions
-    $scope.authorizedFeature = function(action) {
-        return FeatureService.authorizedFeature(action);
-    };
+    $scope.authorizedFeature = FeatureService.authorizedFeature;
     $scope.orderByRank = function() {
         $scope.orderBy.reverse = false;
         $scope.orderBy.current = _.find($scope.orderBy.values, {id: 'rank'});
@@ -107,6 +76,23 @@ controllers.controller('featuresCtrl', ['$scope', '$controller', 'FeatureService
         }
     };
     $scope.sortableId = 'feature';
+    $scope.selectableOptions = {
+        notSelectableSelector: '.action, button, a',
+        allowMultiple: true,
+        selectionUpdated: function(selectedIds) {
+            switch (selectedIds.length) {
+                case 0:
+                    $state.go($scope.viewName);
+                    break;
+                case 1:
+                    $state.go($scope.viewName + '.details' + ($state.params.featureTabId ? '.tab' : ''), {featureId: selectedIds});
+                    break;
+                default:
+                    $state.go($scope.viewName + '.multiple', {featureListId: selectedIds.join(",")});
+                    break;
+            }
+        }
+    };
     $scope.orderBy = {
         current: {id: 'dateCreated', name: $scope.message('todo.is.ui.sort.date')},
         values: _.sortBy([

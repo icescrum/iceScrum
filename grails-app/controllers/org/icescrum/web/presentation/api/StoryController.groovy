@@ -228,8 +228,11 @@ class StoryController {
         Story story = Story.findByBacklogAndUid(_product, uid)
         String uri = "/p/$_product.pkey/#/"
         switch (story.state) {
-            case [Story.STATE_SUGGESTED, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED]:
-                uri += "backlog/$story.id"
+            case Story.STATE_SUGGESTED:
+                uri += "backlog/sandbox/story/$story.id"
+                break
+            case [Story.STATE_ACCEPTED, Story.STATE_ESTIMATED]:
+                uri += "backlog/backlog/story/$story.id"
                 break
             case [Story.STATE_PLANNED, Story.STATE_DONE]:
                 uri += "planning/$story.parentSprint.parentRelease.id/sprint/$story.parentSprint.id/story/$story.id"

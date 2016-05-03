@@ -25,19 +25,19 @@
     <div class="backlogs-list">
         <div class="btn-toolbar">
             <div class="btn-group" ng-repeat="availableBacklog in availableBacklogs">
-                <button class="btn btn-default btn-backlog pin"
-                        ng-class="{'shown': availableBacklog.shown}"
-                        tooltip-placement="right"
-                        uib-tooltip="{{ availableBacklog.pinned ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
-                        ng-click="pinBacklog(availableBacklog)">
-                    <i class="fa" ng-class="{'pinned': availableBacklog.pinned}"></i>
-                </button>
-                <button class="btn btn-default btn-backlog"
-                        ng-class="{'shown': availableBacklog.shown}"
-                        ng-click="toggleBacklog(availableBacklog)">
+                <a class="btn btn-default btn-backlog pin"
+                   href="{{ togglePinBacklogUrl(availableBacklog) }}"
+                   ng-class="{'shown': isShown(availableBacklog)}"
+                   tooltip-placement="right"
+                   uib-tooltip="{{ isPinned(availableBacklog) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}">
+                    <i class="fa" ng-class="{'pinned': isPinned(availableBacklog)}"></i>
+                </a>
+                <a class="btn btn-default btn-backlog"
+                   href="{{ toggleBacklogUrl(availableBacklog) }}"
+                   ng-class="{'shown': isShown(availableBacklog)}">
                     {{ availableBacklog | backlogName }}
                     <span class="badge">{{ availableBacklog.count }}</span>
-                </button>
+                </a>
             </div>
             <entry:point id="backlog-window-toolbar"/>
             <div class="pull-right">
@@ -73,7 +73,7 @@
                     </button>
                 </div>
                 <a ng-if="authorizedStory('create')"
-                   href="#/{{ ::viewName }}/story/new"
+                   href="#/{{ ::viewName }}/sandbox/story/new"
                    class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
             </div>
         </div>
@@ -81,38 +81,38 @@
     </div>
     <div class="backlogs-list-details"
          selectable="selectableOptions">
-        <div class="panel panel-light" ng-repeat="backlog in backlogs">
+        <div class="panel panel-light" ng-repeat="backlogContainer in backlogContainers">
             <div class="panel-heading">
                 <div class="btn-group">
                     <button type="button"
-                            ng-if="backlog.sortable"
+                            ng-if="backlogContainer.sortable"
                             class="btn btn-default"
-                            ng-click="enableSortable(backlog)"
+                            ng-click="enableSortable(backlogContainer)"
                             tooltip-placement="right"
-                            uib-tooltip="{{ backlog.sorting ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
-                        <i ng-class="backlog.sorting ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
+                            uib-tooltip="{{ backlogContainer.sorting ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
+                        <i ng-class="backlogContainer.sorting ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
                     </button>
                     <div class="btn-group"
                          uib-dropdown
                          uib-tooltip="${message(code:'todo.is.ui.sort')}">
                         <button class="btn btn-default" uib-dropdown-toggle type="button">
-                            <span>{{ backlog.orderBy.current.name }}</span>
+                            <span>{{ backlogContainer.orderBy.current.name }}</span>
                             <span class="caret"></span>
                         </button>
                         <ul uib-dropdown-menu role="menu">
-                            <li role="menuitem" ng-repeat="order in backlog.orderBy.values">
-                                <a ng-click="changeBacklogOrder(backlog, order)" href>{{ order.name }}</a>
+                            <li role="menuitem" ng-repeat="order in backlogContainer.orderBy.values">
+                                <a ng-click="changeBacklogOrder(backlogContainer, order)" href>{{ order.name }}</a>
                             </li>
                         </ul>
                     </div>
                     <button type="button" class="btn btn-default"
-                            ng-click="reverseBacklogOrder(backlog)"
+                            ng-click="reverseBacklogOrder(backlogContainer)"
                             uib-tooltip="${message(code:'todo.is.ui.order')}">
-                        <i class="fa fa-sort-amount{{ backlog.orderBy.reverse ? '-desc' : '-asc'}}"></i>
+                        <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                     </button>
                 </div>
                 <a class="btn btn-default"
-                   ui-sref="backlog.backlog.details({backlogCode: backlog.code})"
+                   ui-sref="backlog.backlog.details({backlogCode: backlogContainer.backlog.code})"
                    uib-tooltip="${message(code: 'todo.is.ui.details')}">
                     <i class="fa fa-pencil-square-o "></i>
                 </a>
@@ -122,7 +122,7 @@
                                 class="btn btn-default"
                                 uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                                 ng-click="print($event)"
-                                ng-href="backlog/{{ ::backlog.id }}/print"
+                                ng-href="backlog/{{ ::backlogContainer.backlog.id }}/print"
                                 hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                         </button>
                     </g:if>
@@ -135,30 +135,30 @@
                         role="menu">
                         <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
                             <li role="menuitem">
-                                <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}&id={{ ::backlog.id }}"
+                                <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}&id={{ ::backlogContainer.backlog.id }}"
                                    ng-click="print($event)">${format.name}</a>
                             </li>
                         </g:each>
                     </ul>
                 </div>
                 <div class="btn-group pull-right visible-on-hover">
-                    <button type="button"
-                            class="btn btn-default"
-                            ng-if="backlogs.length > 1"
-                            ng-click="toggleBacklog(backlog)"
-                            uib-tooltip="${message(code:'is.ui.window.closeable')}">
+                    <a href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
+                       class="btn btn-default"
+                       ng-if="backlogContainers.length > 1"
+                       uib-tooltip="${message(code:'is.ui.window.closeable')}">
                         <i class="fa fa-times"></i>
-                    </button>
+                    </a>
                 </div>
             </div>
-            <div class="panel-body" ng-class="{'loading': !backlog.storiesLoaded}">
+            <div class="panel-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="panel-loading" ng-include="'loading.html'"></div>
-                <div class="postits {{ (backlog.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '')  + ' ' + (app.sortableMoving ? 'sortable-moving' : '')}} "
+                <div class="postits {{ (backlogContainer.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '')  + ' ' + (app.sortableMoving ? 'sortable-moving' : '')}} "
                      ng-controller="storyCtrl"
                      as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
-                     is-disabled="!backlog.sorting"
-                     ng-model="backlog.stories"
+                     is-disabled="!backlogContainer.sorting"
+                     ng-model="backlogContainer.backlog.stories"
                      ng-class="app.asList ? 'list-group' : 'grid-group'"
+                     ng-init="backlog = backlogContainer.backlog"
                      ng-include="'story.backlog.html'">
                 </div>
             </div>

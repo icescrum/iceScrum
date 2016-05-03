@@ -301,6 +301,55 @@ angular.module('isApp', [
         }
         return options;
     };
+    var getBacklogStoryState = function() {
+        return {
+            name: 'story',
+            url: "/story",
+            children: [
+                {
+                    name: 'new',
+                    url: "/new",
+                    data: {
+                        authorize: {
+                            roles: ['inProduct']
+                        }
+                    },
+                    views: {
+                        "details@backlog": {
+                            templateUrl: 'story.new.html',
+                            controller: 'storyNewCtrl'
+                        }
+                    }
+                },
+                {
+                    name: 'multiple',
+                    url: "/{storyListId:[0-9]+(?:[\,][0-9]+)+}",
+                    resolve: {
+                        storyListId: ['$stateParams', function($stateParams) {
+                            return $stateParams.storyListId.split(',');
+                        }]
+                    },
+                    views: {
+                        "details@backlog": {
+                            templateUrl: 'story.multiple.html',
+                            controller: 'storyMultipleCtrl'
+                        }
+                    },
+                    children: [
+                        getDetailsModalState('feature', {
+                            resolve: {
+                                features: ['FeatureService', function(FeatureService) {
+                                    return FeatureService.list();
+                                }]
+                            },
+                            children: [getFeatureDetailsState('@backlog', true)]
+                        })
+                    ]
+                },
+                getStoryDetailsState('@backlog')
+            ]
+        }
+    };
     stateHelperProvider
         .state({
             name: 'root',
@@ -381,6 +430,11 @@ angular.module('isApp', [
             },
             children: [
                 {
+                    name: 'multiple',
+                    url: "/:pinnedBacklogCode,:backlogCode",
+                    children: [getBacklogStoryState()]
+                },
+                {
                     name: 'backlog',
                     url: "/:backlogCode",
                     resolve: {
@@ -398,54 +452,8 @@ angular.module('isApp', [
                                     controller: 'backlogDetailsCtrl'
                                 }
                             }
-                        }
-                    ]
-                },
-                {
-                    name: 'story',
-                    url: "/story",
-                    children: [
-                        {
-                            name: 'new',
-                            url: "/new",
-                            data: {
-                                authorize: {
-                                    roles: ['inProduct']
-                                }
-                            },
-                            views: {
-                                "details@backlog": {
-                                    templateUrl: 'story.new.html',
-                                    controller: 'storyNewCtrl'
-                                }
-                            }
                         },
-                        {
-                            name: 'multiple',
-                            url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
-                            resolve: {
-                                listId: ['$stateParams', function($stateParams) {
-                                    return $stateParams.listId.split(',');
-                                }]
-                            },
-                            views: {
-                                "details@backlog": {
-                                    templateUrl: 'story.multiple.html',
-                                    controller: 'storyMultipleCtrl'
-                                }
-                            },
-                            children: [
-                                getDetailsModalState('feature', {
-                                    resolve: {
-                                        features: ['FeatureService', function(FeatureService) {
-                                            return FeatureService.list();
-                                        }]
-                                    },
-                                    children: [getFeatureDetailsState('@backlog', true)]
-                                })
-                            ]
-                        },
-                        getStoryDetailsState('@backlog')
+                        getBacklogStoryState()
                     ]
                 }
             ]
@@ -478,10 +486,10 @@ angular.module('isApp', [
                 },
                 {
                     name: 'multiple',
-                    url: "/{listId:[0-9]+(?:[\,][0-9]+)+}",
+                    url: "/{featureListId:[0-9]+(?:[\,][0-9]+)+}",
                     resolve: {
-                        listId: ['$stateParams', function($stateParams) {
-                            return $stateParams.listId.split(',');
+                        featureListId: ['$stateParams', function($stateParams) {
+                            return $stateParams.featureListId.split(',');
                         }]
                     },
                     views: {

@@ -21,51 +21,52 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$timeout', 'Session', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $controller, $timeout, Session, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
-    $controller('selectableCtrl', {$scope: $scope, selectableType: 'story'});
-    $scope.authorizedStory = function(action, story) {
-        return StoryService.authorizedStory(action, story);
+controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$timeout', '$state', 'Session', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $controller, $timeout, $state, Session, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
+    // Functions
+    $scope.authorizedStory = StoryService.authorizedStory;
+    $scope.isSelected = function(selectable) {
+        if ($state.params.storyId) {
+            return $state.params.storyId == selectable.id;
+        } else if ($state.params.storyListId) {
+            return _.includes($state.params.storyListId.split(','), selectable.id.toString());
+        } else {
+            return false;
+        }
     };
-    $scope.refreshBacklogs = function() {
-        _.each($scope.backlogs, function(backlog) {
-            $scope.refreshSingleBacklog(backlog);
-        });
+    $scope.hasSelected = function() {
+        return $state.params.storyId != undefined || $state.params.storyListId != undefined;
     };
-    $scope.refreshSingleBacklog = function(backlog) {
+    $scope.toggleSelectableMultiple = function() {
+        $scope.app.selectableMultiple = !$scope.app.selectableMultiple;
+        if ($state.params.storyListId != undefined) {
+            var currentStateName = $state.current.name;
+            var storyIndexInStateName = currentStateName.indexOf('story');
+            $state.go(currentStateName.slice(0, storyIndexInStateName - 1));
+        }
+    };
+    $scope.refreshSingleBacklog = function(backlogContainer) {
+        var backlog = backlogContainer.backlog;
         var filter = JSON.parse(backlog.filter);
         var filteredStories = $filter('filter')(Session.getProject().stories, filter.story, function(expected, actual) {
             return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
         });
-        var sortOrder = [backlog.orderBy.current.value, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
-        if (BacklogService.isAll(backlog) && backlog.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
+        var sortOrder = [backlogContainer.orderBy.current.value, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
+        if (BacklogService.isAll(backlog) && backlogContainer.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
             var sortByStateGroupingByBacklogState = function(story) {
                 var orderCriteria = story.state == StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state; // Ignore the differences betweed accepted and estimated
                 return -orderCriteria; // "minus" the state to make done stories more prioritary
             };
             sortOrder.unshift(sortByStateGroupingByBacklogState);
         }
-        backlog.stories = $filter('orderBy')(filteredStories, sortOrder, backlog.orderBy.reverse);
+        backlog.stories = $filter('orderBy')(filteredStories, sortOrder, backlogContainer.orderBy.reverse);
         if (backlog.stories && backlog.stories.length > 0) {
-            backlog.storiesLoaded = true; // To render stories already there in the client
+            backlogContainer.storiesLoaded = true; // To render stories already there in the client
         }
-        backlog.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog));
-        backlog.sorting = backlog.sortable && backlog.orderBy.current.id == 'rank' && !backlog.orderBy.reverse && !$scope.hasContextOrSearch();
+        backlogContainer.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog));
+        backlogContainer.sorting = backlogContainer.sortable && backlogContainer.orderBy.current.id == 'rank' && !backlogContainer.orderBy.reverse && !$scope.hasContextOrSearch();
         $timeout(function() { // Timeout to wait for story rendering
             $scope.$emit('selectable-refresh');
         }, 0);
-    };
-    $scope.pinBacklog = function(backlog) {
-        if (backlog.pinned) {
-            backlog.pinned = false;
-        } else {
-            _.each($scope.availableBacklogs, function(availableBacklog) {
-                availableBacklog.pinned = false;
-            });
-            backlog.pinned = true;
-            if (!backlog.shown) {
-                $scope.toggleBacklog(backlog);
-            }
-        }
     };
     var getValueEffortRateForSorting = function(story) {
         var rate = -3; // Rate = -3 when no effort (null) & no value (0)
@@ -82,64 +83,118 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
         }
         return rate;
     };
-    $scope.toggleBacklog = function(backlog) {
-        if (backlog.shown && $scope.backlogs.length > 1) {
-            backlog.shown = null;
-            backlog.pinned = false;
-            _.remove($scope.backlogs, {id: backlog.id});
-        } else if (!backlog.shown) {
-            backlog.storiesLoaded = false;
-            backlog.orderBy = {
-                values: _.sortBy([
-                    {id: 'effort', value: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
-                    {id: 'rank', value: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
-                    {id: 'name', value: 'name', name: $scope.message('todo.is.ui.sort.name')},
-                    {id: 'tasks_count', value: 'tasks_count', name: $scope.message('todo.is.ui.sort.tasks')},
-                    {id: 'suggestedDate', value: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
-                    {id: 'feature.id', value: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
-                    {id: 'value', value: 'value', name: $scope.message('todo.is.ui.sort.value')},
-                    {id: 'type', value: 'type', name: $scope.message('todo.is.ui.sort.type')},
-                    {id: 'state', value: 'state', name: $scope.message('todo.is.ui.sort.state')},
-                    {id: 'value/effort', value: getValueEffortRateForSorting, name: $scope.message('todo.is.ui.sort.value.effort.rate')}
-                ], 'name')
-            };
-            $scope.orderBacklogByRank(backlog); // Initialize order {current, reverse}, sortable, sorting and init the backlog from client data (storyService.list)
-            StoryService.listByBacklog(backlog).then(function() { // Retrieve server data, stories that were missing will be automatically added through the watch on storyService.list
-                backlog.storiesLoaded = true;
-            });
-            backlog.shown = ($scope.backlogs.length > 0 ? _.max(_.map($scope.backlogs, 'shown')) : 0) + 1;
-            $scope.backlogs.push(backlog);
-            var latestShownNotPinned = _.max(_.map(_.filter($scope.backlogs, function(shownBacklog) {
-                return !shownBacklog.pinned;
-            }), 'shown'));
-            var removedBacklogs = _.remove($scope.backlogs, function(shownBacklog) {
-                return !shownBacklog.pinned && shownBacklog.shown < latestShownNotPinned; // Just substract 1 from latestShownNotPinned to display 3 backlogs max instead of 2
-            });
-            _.each(removedBacklogs, function(removedBacklog) {
-                removedBacklog.shown = null;
-            });
-            $scope.backlogs = _.sortBy($scope.backlogs, 'id');
-        }
+    $scope.orderBacklogByRank = function(backlogContainer) {
+        backlogContainer.orderBy.reverse = false;
+        $scope.changeBacklogOrder(backlogContainer, _.find(backlogContainer.orderBy.values, {id: 'rank'}));
     };
-    $scope.orderBacklogByRank = function(backlog) {
-        backlog.orderBy.reverse = false;
-        $scope.changeBacklogOrder(backlog, _.find(backlog.orderBy.values, {id: 'rank'}));
+    $scope.changeBacklogOrder = function(backlogContainer, order) {
+        backlogContainer.orderBy.current = order;
+        $scope.refreshSingleBacklog(backlogContainer);
     };
-    $scope.changeBacklogOrder = function(backlog, order) {
-        backlog.orderBy.current = order;
-        $scope.refreshSingleBacklog(backlog);
+    $scope.reverseBacklogOrder = function(backlogContainer) {
+        backlogContainer.orderBy.reverse = !backlogContainer.orderBy.reverse;
+        $scope.refreshSingleBacklog(backlogContainer);
     };
-    $scope.reverseBacklogOrder = function(backlog) {
-        backlog.orderBy.reverse = !backlog.orderBy.reverse;
-        $scope.refreshSingleBacklog(backlog);
-    };
-    $scope.enableSortable = function(backlog) {
+    $scope.enableSortable = function(backlogContainer) {
         $scope.clearContextAndSearch();
-        $scope.orderBacklogByRank(backlog)
+        $scope.orderBacklogByRank(backlogContainer)
     };
     $scope.openStoryUrl = function(storyId) {
         return '#/' + $scope.viewName + '/story/' + storyId;
     };
+    $scope.toggleBacklogUrl = function(backlog) {
+        if ($scope.isShown(backlog)) {
+            if ($scope.backlogContainers.length > 1) {
+                return $scope.closeBacklogUrl(backlog);
+            } else {
+                return $state.href('.');
+            }
+        } else {
+            return $state.href('.', {backlogCode: backlog.code});
+        }
+    };
+    $scope.togglePinBacklogUrl = function(backlog) {
+        var stateName;
+        var stateParams;
+        if ($scope.isPinned(backlog)) {
+            stateName = 'backlog.backlog';
+            stateParams = {backlogCode: backlog.code};
+        } else {
+            stateName = 'backlog.multiple';
+            stateParams = {pinnedBacklogCode: backlog.code};
+            stateParams.backlogCode = $state.params.pinnedBacklogCode ? $state.params.pinnedBacklogCode : ($state.params.backlogCode != backlog.code ? $state.params.backlogCode : null);
+        }
+        return $state.href(stateName, stateParams);
+    };
+    $scope.closeBacklogUrl = function(backlog) {
+        var stateParams;
+        if (backlog.code == $state.params.pinnedBacklogCode) {
+            stateParams = {pinnedBacklogCode: $state.params.backlogCode, backlogCode: null};
+        } else {
+            stateParams = {backlogCode: null};
+        }
+        return $state.href('.', stateParams);
+    };
+    $scope.isShown = function(backlog) {
+        return _.includes([$state.params.pinnedBacklogCode, $state.params.backlogCode], backlog.code);
+    };
+    $scope.isPinned = function(backlog) {
+        return $state.params.pinnedBacklogCode == backlog.code;
+    };
+    var getBacklog = function(backlogCode) {
+        return _.find($scope.availableBacklogs, {code: backlogCode});
+    };
+    $scope.showBacklog = function(backlogCode) {
+        var backlogContainer = _.find($scope.backlogContainers, function(backlogContainer) {
+            return backlogContainer.backlog.code == backlogCode;
+        });
+        if (!backlogContainer) {
+            backlogContainer = {
+                backlog: getBacklog(backlogCode),
+                storiesLoaded: false,
+                orderBy: {
+                    values: _.sortBy([
+                        {id: 'effort', value: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
+                        {id: 'rank', value: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
+                        {id: 'name', value: 'name', name: $scope.message('todo.is.ui.sort.name')},
+                        {id: 'tasks_count', value: 'tasks_count', name: $scope.message('todo.is.ui.sort.tasks')},
+                        {id: 'suggestedDate', value: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
+                        {id: 'feature.id', value: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
+                        {id: 'value', value: 'value', name: $scope.message('todo.is.ui.sort.value')},
+                        {id: 'type', value: 'type', name: $scope.message('todo.is.ui.sort.type')},
+                        {id: 'state', value: 'state', name: $scope.message('todo.is.ui.sort.state')},
+                        {id: 'value/effort', value: getValueEffortRateForSorting, name: $scope.message('todo.is.ui.sort.value.effort.rate')}
+                    ], 'name')
+                }
+            };
+            $scope.orderBacklogByRank(backlogContainer); // Initialize order {current, reverse}, sortable, sorting and init the backlog from client data (storyService.list)
+            StoryService.listByBacklog(backlogContainer.backlog).then(function() { // Retrieve server data, stories that were missing will be automatically added through the watch on storyService.list
+                backlogContainer.storiesLoaded = true;
+            });
+            $scope.backlogContainers.push(backlogContainer);
+            $scope.backlogContainers = _.sortBy($scope.backlogContainers, function(backlogContainer) {
+                return backlogContainer.backlog.id;
+            });
+        }
+    };
+    $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.pinnedBacklogCode; }, function() { return $state.params.backlogCode; }], function(newValues) {
+        var stateName = newValues[0];
+        var pinnedBacklogCode = newValues[1];
+        var backlogCode = newValues[2];
+        if (stateName == 'backlog') {
+            $state.go('backlog.backlog', {backlogCode: _.head($scope.availableBacklogs).code});
+        } else if (_.startsWith(stateName, 'backlog')) {
+            if (pinnedBacklogCode) {
+                $scope.showBacklog(pinnedBacklogCode);
+            }
+            if (backlogCode) {
+                $scope.showBacklog(backlogCode);
+            }
+            _.remove($scope.backlogContainers, function(backlogContainer) {
+                return !_.includes([pinnedBacklogCode, backlogCode], backlogContainer.backlog.code);
+            });
+        }
+    });
     // Init
     $scope.viewName = 'backlog';
     var fixStoryRank = function(stories) {
@@ -155,9 +210,9 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
             var destScope = event.dest.sortableScope;
             fixStoryRank(sourceScope.modelValue);
             fixStoryRank(destScope.modelValue);
-            if (BacklogService.isBacklog(sourceScope.backlog) && BacklogService.isSandbox(destScope.backlog)) {
+            if (BacklogService.isBacklog(sourceScope.backlogContainer.backlog) && BacklogService.isSandbox(destScope.backlogContainer.backlog)) {
                 StoryService.returnToSandbox(story, newRank);
-            } else if (BacklogService.isSandbox(sourceScope.backlog) && BacklogService.isBacklog(destScope.backlog)) {
+            } else if (BacklogService.isSandbox(sourceScope.backlogContainer.backlog) && BacklogService.isBacklog(destScope.backlogContainer.backlog)) {
                 StoryService.acceptToBacklog(story, newRank);
             }
         },
@@ -171,18 +226,67 @@ controllers.controller('backlogCtrl', ['$scope', '$filter', '$controller', '$tim
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
             // We don't check more that the fact that the dest backlog is also sorting
             // because we know that the only backlogs that can be sorted (Sandbox & Backlog) can always be inter-sorted (accept <-> return to backlog)
-            return sameSortable && destSortableScope.backlog.sorting;
+            return sameSortable && destSortableScope.backlogContainer.sorting;
         }
     };
     $scope.sortableId = 'backlog';
-    $scope.backlogs = [];
+    var getNewStoryState = function(storyId, currentStateName) {
+        var newStateName;
+        var newStateParams = {storyId: storyId};
+        if (_.startsWith(currentStateName, 'planning.release.sprint.multiple')) {
+            newStateName = 'planning.release.sprint.multiple.story.details';
+        } else if (_.startsWith(currentStateName, 'planning.release.sprint.withId')) {
+            newStateName = 'planning.release.sprint.withId.story.details';
+        } else if (currentStateName === 'planning.release.sprint') {
+            // Special case when there is no sprintId in the state params so we must retrieve it manually
+            newStateName = 'planning.release.sprint.withId.story.details';
+            newStateParams.sprintId = $scope.selectedItems[0].id;
+        } else {
+            newStateName = 'planning.release.story.details';
+            if (currentStateName === 'planning' || currentStateName == 'planning.new') { // Special case when there is no releasedID in the state params so we must retrieve it manually
+                newStateParams.releaseId = $scope.selectedItems[0].id;
+            }
+        }
+        return {name: newStateName, params: newStateParams}
+    };
+    $scope.selectableOptions = {
+        notSelectableSelector: '.action, button, a',
+        allowMultiple: true,
+        selectionUpdated: function(selectedIds) {
+            var currentStateName = $state.current.name;
+            var storyIndexInStateName = currentStateName.indexOf('story');
+            if (selectedIds.length == 0) {
+                if (storyIndexInStateName != -1) {
+                    $state.go(currentStateName.slice(0, storyIndexInStateName - 1));
+                }
+            } else {
+                var stateName;
+                var stateParams;
+                if (_.startsWith(currentStateName, 'backlog.backlog')) {
+                    stateName = 'backlog.backlog.story'
+                } else if (_.startsWith(currentStateName, 'backlog.multiple')) {
+                    stateName = 'backlog.multiple.story'
+                }
+                if (selectedIds.length == 1) {
+                    stateName += '.details' + ($state.params.storyTabId ? '.tab' : '');
+                    stateParams = {storyId: selectedIds};
+                } else {
+                    stateName += '.multiple';
+                    stateParams = {storyListId: selectedIds.join(",")};
+                }
+                $state.go(stateName, stateParams);
+            }
+        }
+    };
+    $scope.backlogContainers = [];
     $scope.availableBacklogs = backlogs;
-    $scope.toggleBacklog(backlogs[0]);
-    //Useful to keep stories from update
-    $scope.$watch(function() {
-        return Session.getProject().stories;
-    }, $scope.refreshBacklogs, true);
     $scope.backlogCodes = BacklogCodes;
+    // Ensures that the stories of displayed backlogs are up to date
+    $scope.$watch(function() { return Session.getProject().stories; }, function() {
+        _.each($scope.backlogContainers, function(backlogContainer) {
+            $scope.refreshSingleBacklog(backlogContainer);
+        });
+    }, true);
 }]);
 
 controllers.controller('backlogDetailsCtrl', ['$scope', 'backlog', function($scope, backlog) {

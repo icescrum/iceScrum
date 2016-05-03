@@ -27,7 +27,7 @@
             <i class="fa fa-sticky-note" style="color: {{ storyPreview.feature ? storyPreview.feature.color : '#f9f157' }}"></i>
             ${message(code: 'todo.is.ui.story.new')}
             <a class="pull-right visible-on-hover btn btn-default"
-                    href="#/{{ ::viewName }}"
+                    href="#/{{ ::viewName }}/sandbox"
                     uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
             </a>

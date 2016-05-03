@@ -128,7 +128,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     });
 }]);
 
-controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId', 'FeatureService', function($scope, $controller, listId, FeatureService) {
+controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', function($scope, $controller, featureListId, FeatureService) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.sumValues = function(features) {
@@ -140,27 +140,27 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'listId'
         });
     };
     $scope.deleteMultiple = function() {
-        FeatureService.deleteMultiple(listId).then(function() {
+        FeatureService.deleteMultiple(featureListId).then(function() {
             $scope.notifySuccess('todo.is.ui.multiple.deleted');
         });
     };
     $scope.updateMultiple = function(updatedFields) {
-        FeatureService.updateMultiple(listId, updatedFields).then(function() {
+        FeatureService.updateMultiple(featureListId, updatedFields).then(function() {
             $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
         });
     };
     $scope.copyToBacklogMultiple = function() {
-        FeatureService.copyToBacklogMultiple(listId).then(function() {
+        FeatureService.copyToBacklogMultiple(featureListId).then(function() {
             $scope.notifySuccess('todo.is.ui.feature.multiple.copied.to.backlog');
         });
     };
     // Init
     $scope.app.selectableMultiple = true;
-    $scope.ids = listId;
+    $scope.ids = featureListId;
     $scope.topFeature = {};
     $scope.featurePreview = {};
     $scope.features = [];
-    FeatureService.getMultiple(listId).then(function(features) {
+    FeatureService.getMultiple(featureListId).then(function(features) {
         $scope.features = features;
         $scope.topFeature = _.head(features);
         $scope.featurePreview = {

@@ -74,7 +74,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'IceScrumEventType',
                 fn: function() {
                     notif.data.close = angular.noop;
                     StoryService.crudMethods[IceScrumEventType.CREATE](story);
-                    $state.go('backlog.story.details', {id: story.id});
+                    $state.go('backlog.backlog.story.details', {id: story.id});
                     $scope.notifySuccess('todo.is.ui.deleted.cancelled');
                 }
             }],
@@ -408,7 +408,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.storyStatesByName = StoryStatesByName;
     }]);
 
-controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'listId', 'FeatureService', function($scope, $controller, StoryService, listId, FeatureService) {
+controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'FeatureService', function($scope, $controller, StoryService, storyListId, FeatureService) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.sumPoints = function(stories) {
@@ -421,30 +421,30 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
         return _.sumBy(stories, 'acceptanceTests_count');
     };
     $scope.deleteMultiple = function() {
-        StoryService.deleteMultiple(listId).then(function() {
+        StoryService.deleteMultiple(storyListId).then(function() {
             $scope.notifySuccess('todo.is.ui.multiple.deleted');
         });
     };
     $scope.copyMultiple = function() {
-        StoryService.copyMultiple(listId);
+        StoryService.copyMultiple(storyListId);
     };
     $scope.updateMultiple = function(updatedFields) {
-        StoryService.updateMultiple(listId, updatedFields).then(function() {
+        StoryService.updateMultiple(storyListId, updatedFields).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.updated');
         });
     };
     $scope.acceptToBacklogMultiple = function() {
-        StoryService.acceptToBacklogMultiple(listId).then(function() {
+        StoryService.acceptToBacklogMultiple(storyListId).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.accepted');
         });
     };
     $scope.followMultiple = function(follow) {
-        StoryService.followMultiple(listId, follow).then(function() {
+        StoryService.followMultiple(storyListId, follow).then(function() {
             refreshStories();
         });
     };
     $scope.acceptAsMultiple = function(target) {
-        StoryService.acceptAsMultiple(listId, target).then(function() {
+        StoryService.acceptAsMultiple(storyListId, target).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs' + target);
         });
     };
@@ -467,7 +467,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
         return !_.some(stories, 'followed');
     };
     function refreshStories() {
-        StoryService.getMultiple(listId).then(function(stories) {
+        StoryService.getMultiple(storyListId).then(function(stories) {
             $scope.topStory = _.head(stories);
             $scope.storyPreview = {
                 value: _.every(stories, {value: $scope.topStory.value}) ? $scope.topStory.value : null,
