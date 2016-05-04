@@ -134,17 +134,17 @@ class ScrumOSController {
     def reportError(String report) {
         try {
             notificationEmailService.send([
-                    from: springSecurityService.currentUser?.email ?: null,
-                    to: grailsApplication.config.icescrum.alerts.errors.to,
+                    from   : springSecurityService.currentUser?.email ?: null,
+                    to     : grailsApplication.config.icescrum.alerts.errors.to,
                     subject: "[iceScrum][report] Rapport d'erreur",
-                    view: '/emails-templates/reportError',
-                    model: [error: report.stack,
-                            comment: report.comment,
-                            appID: grailsApplication.config.icescrum.appID,
-                            ip: request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
-                            date: g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
-                            version: g.meta(name: 'app.version')],
-                    async: true
+                    view   : '/emails-templates/reportError',
+                    model  : [error  : report.stack,
+                              comment: report.comment,
+                              appID  : grailsApplication.config.icescrum.appID,
+                              ip     : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
+                              date   : g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
+                              version: g.meta(name: 'app.version')],
+                    async  : true
             ]);
             //render(status: 200, contentType: 'application/json', text:message(code: 'is.blame.sended') as JSON)
             render(status: 200)
@@ -288,9 +288,9 @@ class ScrumOSController {
     @Secured(['isAuthenticated()'])
     def charts(String context) {
         def _charts = []
-        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each{
-            _charts.addAll(it.value?.collect{ [id:it.id,name:message(code:it.name)]})
+        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each {
+            _charts.addAll(it.value?.collect { [id: it.id, name: message(code: it.name)] })
         }
-        render contentType: 'application/json', text:_charts as JSON
+        render contentType: 'application/json', text: _charts as JSON
     }
 }

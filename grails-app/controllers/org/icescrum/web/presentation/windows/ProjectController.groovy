@@ -54,7 +54,6 @@ class ProjectController {
     def featureService
     def attachmentableService
     def securityService
-    def windowDefinition
 
     @Secured(['isAuthenticated()'])
     def save() {

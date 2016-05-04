@@ -216,26 +216,22 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
 controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormService', 'ProjectService', function($scope, WidgetService, FormService, ProjectService) {
     //$scope.widget inherited
     var widget = $scope.widget;
-
     $scope.listProjects = function(term) {
         return ProjectService.listByUser(term, 0).then(function(projectsAndTotal) {
             $scope.projects = projectsAndTotal.projects;
         });
     };
-
-    $scope.widgetReady = function(widget){
+    $scope.widgetReady = function(widget) {
         return widget.settings && widget.settings.project && widget.settings.chart ? true : false;
     };
-
-    $scope.title = function(widget){
-        return $scope.widgetReady(widget) ? widget.settings.project.name+' ('+widget.settings.chart.name+')' : '';
+    $scope.title = function(widget) {
+        return $scope.widgetReady(widget) ? widget.settings.project.name + ' (' + widget.settings.chart.name + ')' : '';
     };
-
     //Init
     $scope.charts = [];
     $scope.projects = [];
     $scope.listProjects($scope.widgetReady(widget) ? widget.settings.project.id : '');
-    FormService.httpGet('charts/product').then(function(charts){
+    FormService.httpGet('charts/product').then(function(charts) {
         $scope.charts = charts;
     });
 }]);
