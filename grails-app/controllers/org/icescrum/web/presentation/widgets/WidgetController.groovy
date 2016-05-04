@@ -147,7 +147,7 @@ class WidgetController {
         def publicWidgetDefinitions = uiDefinitionService.widgetDefinitions
                 .findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
                 .collect {
-                    [id: it.value.id, title: it.value.title, description: it.value.description, icon: it.value.icon]
+                    [id: it.value.id, name: it.value.name, description: it.value.description, icon: it.value.icon]
                 }
         render(status: 200, contentType: 'application/json', text: publicWidgetDefinitions as JSON)
     }

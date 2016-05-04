@@ -193,14 +193,12 @@ windows = {
 /*
     'widgetName' {
         icon                        default: ''                   | String (fontawesome)
-        title                       default: ''                   | String (i18n key or ...)
-        description                 default: ''                   | String (i18n key or ...)
-        help                        default: ''                   | String (i18n key or ...)
+        title                       default: name                 | String (i18n key or ...)
         secured                     default: "permitAll()"        | String (spEl expression)
         context                     default: null                 | String (product or ...)
         context                     default: null                 | String (product or ...)
         ngController                default: null                 | String
-        templatePath                default: "widgetName/window"  | String (full path to template)
+        templatePath                default: " widgetName /window"| String (full path to template)
 
         allowDuplicate              default: true                 | true/false
         allowRemove                 default: true                 | true/false
@@ -211,6 +209,11 @@ windows = {
         onDelete                    default: nothing              | Closure(widgetInstance)
 
         Others custom settings can be added as field and will be added to options property (Map [fieldName:fieldValue])
+
+        Automatically:
+        name                        is.ui.widget. widgetName .name
+        help                        is.ui.widget. widgetName .help
+        description                 is.ui.widget. widgetName .description
    }
  */
 
@@ -218,7 +221,7 @@ widgets = {
 
     'feed' {
         icon    'rss'
-        title   'is.panel.feed'
+        title   '{{ getFeedTitle() }}'
         secured 'isAuthenticated()'
         ngController 'feedWidgetCtrl'
         defaultSettings = [
@@ -239,14 +242,12 @@ widgets = {
 
     'login' {
         icon    'user'
-        title   'is.dialog.login'
         secured '!isAuthenticated()'
         templatePath '/widgets/login'
      }
 
     'notes' {
         icon    'pencil-square-o'
-        title   'is.widget.notes'
         secured 'isAuthenticated()'
         description 'is.widget.notes.description'
         templatePath '/widgets/notes'
@@ -259,13 +260,11 @@ widgets = {
 
     'publicProjects' {
         icon    'folder-open'
-        title   'is.widget.project.public'
         templatePath '/widgets/publicProjects'
     }
 
     'mood' {
         icon    'smile-o'
-        title   'is.widget.mood'
         secured 'isAuthenticated()'
         description 'is.widget.mood.description'
         templatePath '/widgets/mood'
@@ -274,7 +273,6 @@ widgets = {
 
     'tasks' {
         icon 'tasks'
-        title 'is.widget.mytask'
         secured 'isAuthenticated()'
         description 'is.widget.mytask.description'
         templatePath '/widgets/tasks'
@@ -282,7 +280,6 @@ widgets = {
 
     'userProjects' {
         icon 'tasks'
-        title 'is.widget.userProjects'
         secured 'isAuthenticated()'
         description 'is.widget.userProjects.description'
         templatePath '/widgets/quickProjects'
@@ -290,7 +287,6 @@ widgets = {
 
     'chart' {
         icon 'chart'
-        title 'is.widget.chart'
         secured 'isAuthenticated()'
         ngController 'chartWidgetCtrl'
         description 'is.widget.chart.description'

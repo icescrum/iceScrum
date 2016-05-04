@@ -42,15 +42,20 @@ class FeedController {
         try {
             if (user && params.widgetId) {
                 Widget widgetFeed = Widget.findByUserPreferencesAndId(user.preferences, params.long('widgetId'))
+                //if user has select one feed
                 def selectedFeed = widgetFeed.settings.feeds?.find { it -> it.selected }
-                if (selectedFeed) {
-                    content = getFeedContent(selectedFeed.url)
-                } else {
-                    content = [items: []]
-                    widgetFeed.settings.feeds?.each { feed ->
-                        content.items.addAll(getFeedContent(feed.url).items)
-                    }
+                content = [title:'', items: []]
+                //one feed or combined ?
+                def feeds = selectedFeed ? [selectedFeed] : widgetFeed.settings.feeds
+                feeds?.eachWithIndex { feed, index ->
+                    def feedContent = getFeedContent(feed.url)
+                    content.title = index > 0 ? "${content.title} / ${feedContent.title}" : feedContent.title
+                    content.items.addAll(feedContent.items)
                 }
+                content.items.sort{a,b ->
+                    return new Date(a.pubDate) <=> new Date(b.pubDate)
+                }
+                Collections.reverse(content.items)
             }
             if (content) {
                 render(status: 200, contentType: "application/json", text: content as JSON)
@@ -65,12 +70,11 @@ class FeedController {
 
     private static getFeedContent(def url) {
         def channel = new XmlSlurper().parse(url).channel
-        def contentFeed = [title: channel.title.text(), description: channel.description.text()]
+        def contentFeed = [title: channel.title.text()]
         contentFeed.items = channel.item.collect { xmlItem ->
             return [feed: channel.title.text(),
                     link: xmlItem.link.text(),
                     title: xmlItem.title.text(),
-                    feedTitle: contentFeed.title,           //repeated for combined feed
                     description: xmlItem.description.text(),
                     pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]
         }

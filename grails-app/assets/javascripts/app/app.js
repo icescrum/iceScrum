@@ -1084,7 +1084,7 @@ angular.module('isApp', [
                 cancelScheduledScroll(); // Prevent persistent scroll in case of release out of sortable container
             }
         }
-    };
+    };             
 
     if (isSettings) {
         $rootScope.serverUrl = isSettings.serverUrl;

@@ -193,7 +193,7 @@
             </div>
             <ul class="left-panel-body nav nav-list">
                 <li ng-class="{ 'current': currentWidgetDefinition.id == widgetDefinition.id }" ng-repeat="currentWidgetDefinition in widgetDefinitions | filter:widgetDefinitionSearch">
-                    <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href>{{ currentWidgetDefinition.title }}</a>
+                    <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href>{{ currentWidgetDefinition.name }}</a>
                 </li>
             </ul>
         </div>
@@ -210,6 +210,6 @@
 </script>
 
 <script type="text/ng-template" id="widgetDefinition.details.html">
-<h4>{{ widgetDefinition.title }}</h4>
+<h4>{{ widgetDefinition.name }}</h4>
 <p>{{ widgetDefinition.description }}</p>
 </script>
