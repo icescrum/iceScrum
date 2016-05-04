@@ -24,8 +24,8 @@
 
 var controllers = angular.module('controllers', []);
 
-var registerController = function(appControllerName, controllerArray) {
-    isSettings.controllerEntryPoints[appControllerName] = [];
+var registerAppController = function(appControllerName, controllerArray) {
+    isSettings.controllerHooks[appControllerName] = [];
     var functionIndex = controllerArray.length - 1;
     var oldFunction = controllerArray[functionIndex];
     var newControllerArray = _.dropRight(controllerArray);
@@ -44,7 +44,7 @@ var registerController = function(appControllerName, controllerArray) {
         var $controller = arguments[indexOfControllerProvider];
         var newArguments = removeControllerProvider ? _.dropRight(arguments) : arguments;
         oldFunction.apply(null, newArguments); // Call the controller
-        _.each(isSettings.controllerEntryPoints[appControllerName], function(pluginControllerName) {
+        _.each(isSettings.controllerHooks[appControllerName], function(pluginControllerName) {
             $controller(pluginControllerName, {$scope: $scope});
         });
     });

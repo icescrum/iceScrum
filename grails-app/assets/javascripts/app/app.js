@@ -39,14 +39,14 @@
     }
 })();
 
-angular.module('isPlugins', []).provider('controllerEntryPoints', function() {
+angular.module('isPlugins', []).provider('controllerHooks', function() {
     this.$get = angular.noop;
     this.register = function(entryPoints) {
         _.each(entryPoints, function(appControllerName, pluginControllerName) {
-            if (_.has(isSettings.controllerEntryPoints, appControllerName)) {
-                isSettings.controllerEntryPoints[appControllerName].push(pluginControllerName);
+            if (_.has(isSettings.controllerHooks, appControllerName)) {
+                isSettings.controllerHooks[appControllerName].push(pluginControllerName);
             } else {
-                console.error("App controller " + appControllerName + " is not registered so plugin controller " + pluginControllerName + " cannot be plugged");
+                console.error("App controller " + appControllerName + " is not registered so plugin controller " + pluginControllerName + " cannot be hooked");
             }
         });
     }

@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-registerController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state', 'Session', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $timeout, $state, Session, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
+registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state', 'Session', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $timeout, $state, Session, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
     // Functions
     $scope.authorizedStory = StoryService.authorizedStory;
     $scope.isSelected = function(selectable) {
