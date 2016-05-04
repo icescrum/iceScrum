@@ -30,6 +30,7 @@ import com.mysql.jdbc.CommunicationsException
 class UrlMappings {
 
     static mappings = {
+
         name default: "/$controller/$action/$id?" {}
         name privateURL: "/ws/$controller/$action/$id?" {}
         // Scrum OS
@@ -40,7 +41,10 @@ class UrlMappings {
         "/$action" {
             controller = 'scrumOS'
         }
-
+        "/textileParser" {
+            controller = 'scrumOS'
+            action = 'textileParser'
+        }
         "/charts/$context" {
             action = 'charts'
             controller = 'scrumOS'
@@ -48,7 +52,6 @@ class UrlMappings {
                 context(matches: /[a-zA-Z]*/)
             }
         }
-
         // Permalinks
         "/$product-F$uid/" {
             controller = 'feature'

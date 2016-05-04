@@ -22,6 +22,7 @@
  */
 
 class ProductUrlMappings {
+
     static mappings = {
 
         "/p/$product/search" {
@@ -30,10 +31,6 @@ class ProductUrlMappings {
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
-        }
-        "/p/textileParser" {
-            controller = 'scrumOS'
-            action = 'textileParser'
         }
         name baseUrlProduct: "/p/$product/" {
             controller = 'scrumOS'

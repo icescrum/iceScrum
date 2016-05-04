@@ -23,7 +23,7 @@
  */
 
 var directives = angular.module('directives', []);
-directives.directive('isMarkitup', ['$http', function($http) {
+directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $rootScope) {
     return {
         restrict: 'A',
         scope: {
@@ -58,7 +58,7 @@ directives.directive('isMarkitup', ['$http', function($http) {
                 var val = element.val();
                 scope.$apply($http({
                     method: 'POST',
-                    url: 'textileParser',
+                    url: $rootScope.serverUrl + 'textileParser',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                     data: 'data=' + val
                 }).success(function(data) {
