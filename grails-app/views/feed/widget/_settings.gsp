@@ -1,5 +1,5 @@
 <form ng-switch-when="true"
-      ng-controller="FeedCtrl"
+      ng-controller="FeedWidgetCtrl"
       ng-submit="add(holder.feedUrl)"
       class="form-horizontal">
     <div class="form-group">

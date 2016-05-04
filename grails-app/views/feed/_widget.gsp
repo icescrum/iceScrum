@@ -19,7 +19,7 @@
 -
 --}%
 <is:widget widgetDefinition="${widgetDefinition}">
-    <div ng-controller="FeedCtrl">
+    <div ng-controller="FeedWidgetCtrl">
         <div ng-if="holder.errorMessage" ng-bind-html="holder.errorMessage"></div>
         <div ng-if="!holder.errorMessage">
             <div ng-show="!widget.settings.feeds">

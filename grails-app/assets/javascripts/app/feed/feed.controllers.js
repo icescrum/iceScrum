@@ -19,7 +19,7 @@
  *
  * Marwah Soltani (msoltani@kagilum.com)
  */
-controllers.controller("FeedCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', function($scope, $filter, FormService, WidgetService) {
+controllers.controller("FeedWidgetCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', function($scope, $filter, FormService, WidgetService) {
     //$scope.widget inherited
     var widget = $scope.widget;
     $scope.select = function(widgetId) {

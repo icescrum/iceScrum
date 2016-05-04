@@ -54,6 +54,7 @@ class ProjectController {
     def featureService
     def attachmentableService
     def securityService
+    def windowDefinition
 
     @Secured(['isAuthenticated()'])
     def save() {
@@ -691,14 +692,14 @@ class ProjectController {
         render(status: 200, contentType: 'application/json', text: projectsAndTotal as JSON)
     }
 
-    @Secured(['permitAll()'])
+    @Secured(['isAuthenticated()'])
     def listByUser(String term, Integer offset) {
         if (!offset) {
             offset = 0
         }
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def limit = 9
-        def projects = productService.getAllActiveProductsByUser(searchTerm)
+        def projects = productService.getAllActiveProductsByUser(springSecurityService.currentUser, searchTerm)
         def projectsAndTotal = [projects: projects.drop(offset).take(limit), total: projects.size()]
         render(status: 200, contentType: 'application/json', text: projectsAndTotal as JSON)
     }

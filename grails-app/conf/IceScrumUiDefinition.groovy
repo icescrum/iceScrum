@@ -218,6 +218,7 @@ widgets = {
         icon    'rss'
         title   'is.panel.feed'
         secured 'isAuthenticated()'
+        ngController 'feedWidgetCtrl'
         defaultSettings = [
                 feeds:[
                         [url:'https://www.icescrum.com/blog/feed/', title:'iceScrum', selected:true],
@@ -289,8 +290,8 @@ widgets = {
         icon 'chart'
         title 'is.widget.chart'
         secured 'isAuthenticated()'
+        ngController 'chartWidgetCtrl'
         description 'is.widget.chart.description'
-        defaultSettings = [project:[id:1], chart:[id:'burnup',project:true]]
+        defaultSettings = [:]
     }
-
 }

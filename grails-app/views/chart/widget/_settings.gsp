@@ -20,49 +20,27 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
-<form ng-switch-when="true"
-      ng-controller="ChartWidgetCtrl"
-      ng-submit="update(widget)"
-      class="form-horizontal">
-    <div class="form-group">
-        <label class="col-sm-2">${message(code: 'todo.is.ui.widget.chart.list')}</label>
-        <div class="col-sm-7">
-            <ui-select class="form-control"
-                       ng-model="widget.settings.chart">
-                <ui-select-match allow-clear="true" placeholder="${message(code: 'todo.is.ui.widget.charts.title')}">{{ $select.selected.id }}</ui-select-match>
-                <ui-select-choices repeat="chart in charts">{{chart.id}}</ui-select-choices>
-            </ui-select>
-        </div>
+<div class="form-group">
+    <label class="col-sm-2">${message(code: 'todo.is.ui.widget.chart.project')}</label>
+    <div class="col-sm-6">
+        <ui-select class="form-control"
+                   search-enabled="true"
+                   ng-model="widget.settings.project">
+            <ui-select-match placeholder="${message(code: 'todo.is.ui.widget.charts.title')}">{{ $select.selected.name }}</ui-select-match>
+            <ui-select-choices repeat="proj in projects track by $index"
+                               refresh="listProjects($select.search)"
+                               refresh-delay="150">{{proj.name}}</ui-select-choices>
+        </ui-select>
     </div>
-    <div class="form-group" ng-if="widget.settings.chart.project">
-        <label class="col-sm-2">${message(code: 'todo.is.ui.widget.chart.projects.list')}</label>
-        <div class="col-sm-7">
-            <ui-select class="form-control"
-                       ng-model="widget.settings.chart">
-                <ui-select-match allow-clear="true" placeholder="${message(code: 'todo.is.ui.widget.chart.projects.title')}">{{ $select.selected.name }}</ui-select-match>
-                <ui-select-choices repeat="project in projects">{{project.name}}</ui-select-choices>
-            </ui-select>
-        </div>
+</div>
+<div class="form-group" ng-if="widget.settings.project">
+    <label class="col-sm-2">${message(code: 'todo.is.ui.widget.chart.list')}</label>
+    <div class="col-sm-6">
+        <ui-select class="form-control"
+                   search-enabled="true"
+                   ng-model="widget.settings.chart">
+            <ui-select-match placeholder="${message(code: 'todo.is.ui.widget.charts.title')}">{{ $select.selected.name }}</ui-select-match>
+            <ui-select-choices repeat="chart in charts">{{chart.name}}</ui-select-choices>
+        </ui-select>
     </div>
-    <div class="form-group" ng-if="widget.settings.chart.release">
-        <label class="col-sm-2">${message(code: 'todo.is.ui.widget.chart.releases.list')}</label>
-        <div class="col-sm-7">
-            <ui-select class="form-control"
-                       ng-model="widget.settings.chart">
-                <ui-select-match allow-clear="true" placeholder="${message(code: 'todo.is.ui.widget.chart.releases.title')}">{{ $select.selected.name }}</ui-select-match>
-                <ui-select-choices repeat="release in releases">{{release.name}}</ui-select-choices>
-            </ui-select>
-        </div>
-    </div>
-    <div class="form-group" ng-if="widget.settings.chart.sprint">
-        <label class="col-sm-2">${message(code: 'todo.is.ui.widget.chart.sprints.list')}</label>
-        <div class="col-sm-7">
-            <ui-select class="form-control"
-                       ng-model="widget.settings.chart">
-                <ui-select-match allow-clear="true" placeholder="${message(code: 'todo.is.ui.widget.chart.sprints.title')}">{{ $select.selected.name }}</ui-select-match>
-                <ui-select-choices repeat="release in releases">{{sprint.name}}</ui-select-choices>
-            </ui-select>
-        </div>
-    </div>
-</form>
+</div>

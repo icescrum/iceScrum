@@ -40,6 +40,15 @@ class UrlMappings {
         "/$action" {
             controller = 'scrumOS'
         }
+
+        "/charts/$context" {
+            action = 'charts'
+            controller = 'scrumOS'
+            constraints {
+                context(matches: /[a-zA-Z]*/)
+            }
+        }
+
         // Permalinks
         "/$product-F$uid/" {
             controller = 'feature'

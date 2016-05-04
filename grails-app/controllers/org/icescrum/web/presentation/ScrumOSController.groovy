@@ -25,6 +25,7 @@
 package org.icescrum.web.presentation
 
 import grails.converters.XML
+import grails.plugin.springsecurity.annotation.Secured
 import grails.util.BuildSettingsHolder
 import org.icescrum.core.domain.Widget
 import org.icescrum.core.domain.preferences.UserPreferences
@@ -58,7 +59,7 @@ class ScrumOSController {
             context.indexScrumOS(context, user, securityService, springSecurityService)
         }
 
-        def products = user ? productService.getAllActiveProductsByUser().take(10) : []
+        def products = user ? productService.getAllActiveProductsByUser(user).take(10) : []
         def productsLimit = 9
         def moreProductExist = products?.size() > productsLimit
         def browsableProductsCount = request.admin ? Product.count() : ProductPreferences.countByHidden(false, [cache: true])
@@ -282,5 +283,14 @@ class ScrumOSController {
             return [(it): "$timeZone.ID (UTC$offsetSign${String.format('%tR', calendar)})"]
         }
         render(timezones as JSON)
+    }
+
+    @Secured(['isAuthenticated()'])
+    def charts(String context) {
+        def _charts = []
+        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each{
+            _charts.addAll(it.value?.collect{ [id:it.id,name:message(code:it.name)]})
+        }
+        render contentType: 'application/json', text:_charts as JSON
     }
 }

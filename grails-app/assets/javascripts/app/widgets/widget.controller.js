@@ -24,6 +24,9 @@
 
 controllers.controller("widgetCtrl", ['$scope', 'WidgetService', function($scope, WidgetService) {
     $scope.toggleSettings = function(widget) {
+        if($scope.showSettings){
+            $scope.update(widget);
+        }
         $scope.showSettings = !$scope.showSettings;
     };
     $scope.update = function(widget) {

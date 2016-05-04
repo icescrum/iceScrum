@@ -22,7 +22,12 @@
 --}%
 
 <is:widget widgetDefinition="${widgetDefinition}">
-    <div ng-controller="chartCtrl" ng-init="openProjectChart(widget.settings.chart.id, widget.settings.project)">
-        <nvd3 options="options" data="data"></nvd3>
+    <div ng-switch="widgetReady(widget)">
+        <div  ng-switch-when="true" ng-controller="chartCtrl" ng-init="openProjectChart(widget.settings.chart.id, widget.settings.project)">
+            <nvd3 options="options" data="data"></nvd3>
+        </div>
+        <div ng-switch-default>
+            <h4 class="text-center"><g:message code="todo.is.ui.widget.chart.no.chart"/></h4>
+        </div>
     </div>
 </is:widget>

@@ -142,17 +142,17 @@
                                 <ul uib-dropdown-menu>
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
                                     <g:each var="chart" in="${contextScope.charts.project}">
-                                        <li><a href ng-click="openProjectChart('${chart.id}')">${message(code: chart.title)}</a></li>
+                                        <li><a href ng-click="openProjectChart('${chart.id}')">${message(code: chart.name)}</a></li>
                                     </g:each>
                                     <li ng-if="release.id" class="divider"></li>
                                     <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
                                     <g:each var="chart" in="${contextScope.charts.release}">
-                                        <li ng-if="release.id"><a href ng-click="openProjectChart('${chart.id}')">${message(code: chart.title)}</a></li>
+                                        <li ng-if="release.id"><a href ng-click="openReleaseChart('${chart.id}', release)">${message(code: chart.name)}</a></li>
                                     </g:each>
                                     <li ng-if="currentOrLastSprint.id" class="divider"></li>
                                     <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
                                     <g:each var="chart" in="${contextScope.charts.sprint}">
-                                        <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('${chart.id}', currentOrLastSprint)">${message(code: chart.title)}</a></li>
+                                        <li ng-if="currentOrLastSprint.id"><a href ng-click="openSprintChart('${chart.id}', currentOrLastSprint)">${message(code: chart.name)}</a></li>
                                     </g:each>
                                 </ul>
                             </div>
