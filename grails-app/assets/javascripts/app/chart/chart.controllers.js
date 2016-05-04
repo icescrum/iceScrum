@@ -224,7 +224,7 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
     $scope.widgetReady = function(widget) {
         return widget.settings && widget.settings.project && widget.settings.chart ? true : false;
     };
-    $scope.title = function(widget) {
+    $scope.getTitle = function() {
         return $scope.widgetReady(widget) ? widget.settings.project.name + ' (' + widget.settings.chart.name + ')' : '';
     };
     //Init

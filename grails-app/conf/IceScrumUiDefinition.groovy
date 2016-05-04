@@ -221,7 +221,7 @@ widgets = {
 
     'feed' {
         icon    'rss'
-        title   '{{ getFeedTitle() }}'
+        title   '{{ getTitle() }}'
         secured 'isAuthenticated()'
         ngController 'feedWidgetCtrl'
         defaultSettings = [
@@ -287,6 +287,7 @@ widgets = {
 
     'chart' {
         icon 'chart'
+        title '{{ getTitle() }}'
         secured 'isAuthenticated()'
         ngController 'chartWidgetCtrl'
         description 'is.widget.chart.description'

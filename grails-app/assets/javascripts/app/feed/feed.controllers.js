@@ -58,7 +58,7 @@ controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
             }
         });
     };
-    $scope.getFeedTitle = function(){
+    $scope.getTitle = function(){
         return $scope.holder.feed && $scope.holder.feed.title ? $scope.holder.feed.title : '';
     };
     // Init
