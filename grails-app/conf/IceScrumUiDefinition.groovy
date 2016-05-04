@@ -193,11 +193,13 @@ windows = {
 /*
     'widgetName' {
         icon                        default: ''                   | String (fontawesome)
-        title                       default: ''                   | String (i18n key)
-        description                 default: ''                   | String (i18n key)
-        help                        default: ''                   | String (i18n key)
+        title                       default: ''                   | String (i18n key or ...)
+        description                 default: ''                   | String (i18n key or ...)
+        help                        default: ''                   | String (i18n key or ...)
         secured                     default: "permitAll()"        | String (spEl expression)
         context                     default: null                 | String (product or ...)
+        context                     default: null                 | String (product or ...)
+        ngController                default: null                 | String
         templatePath                default: "widgetName/window"  | String (full path to template)
 
         allowDuplicate              default: true                 | true/false

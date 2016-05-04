@@ -19,10 +19,11 @@
  *
  * Marwah Soltani (msoltani@kagilum.com)
  */
-controllers.controller("FeedWidgetCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', function($scope, $filter, FormService, WidgetService) {
+controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', function($scope, $filter, FormService, WidgetService) {
     //$scope.widget inherited
     var widget = $scope.widget;
-    $scope.select = function(widgetId) {
+
+    $scope.display = function(widgetId) {
         $scope.holder.feed = {};
         return FormService.httpPost('widget/feed', {widgetId: widgetId}, null, true).then(function(feedWithContent) {
             //what do we do!
@@ -45,18 +46,17 @@ controllers.controller("FeedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
         _.remove(widget.settings.feeds, {url: feed.url});
         WidgetService.update(widget).then(function() {
             $scope.holder.selected = null;
-            $scope.select(widget.id);
         });
     };
     $scope.onSelect = function($item, $model) {
         _.each(widget.settings.feeds, function(feed) {
-            feed.selected = false;
+            if($model && $model.url == feed.url){
+                $model.selected = true;
+                feed.selected = true;
+            } else {
+                feed.selected = false;
+            }
         });
-        if ($model) {
-            $model.selected = true;
-        }
-        WidgetService.update(widget);
-        $scope.select(widget.id);
     };
     // Init
     $scope.holder = {
@@ -65,5 +65,5 @@ controllers.controller("FeedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
         feeds: widget.settings.feeds,
         selected: _.find(widget.settings.feeds, {selected: true})
     };
-    $scope.select(widget.id);
+    $scope.display(widget.id);
 }]);
