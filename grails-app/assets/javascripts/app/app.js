@@ -948,6 +948,7 @@ angular.module('isApp', [
             controller: ['$scope', function($scope) {
                 $scope.detailsWidgetDefinition = function(widgetDefinition) {
                     $scope.widgetDefinition = widgetDefinition;
+                    $scope.addWidgetForm.$invalid = !widgetDefinition.available;
                 };
                 $scope.addWidget = function(widgetDefinition) {
                     WidgetService.save(widgetDefinition.id, onRight).then(function() {

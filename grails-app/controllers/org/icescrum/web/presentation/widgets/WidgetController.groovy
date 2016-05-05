@@ -144,11 +144,21 @@ class WidgetController {
 
     @Secured('isAuthenticated()')
     def definitions() {
-        def publicWidgetDefinitions = uiDefinitionService.widgetDefinitions
+        User user = springSecurityService.currentUser
+        def userWidgets = Widget.createCriteria().list {
+            eq('userPreferences', user.preferences)
+            order('onRight', 'desc')
+            order('position', 'asc')
+        }.collect{ it.widgetDefinitionId }
+        def widgetDefinitions = uiDefinitionService.widgetDefinitions
                 .findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
                 .collect {
-                    [id: it.value.id, name: it.value.name, description: it.value.description, icon: it.value.icon]
+                    [id: it.value.id,
+                     icon: it.value.icon,
+                     name: it.value.name,
+                     description: it.value.description,
+                     available:!(!it.value.allowDuplicate && userWidgets.contains(it.value.id))]
                 }
-        render(status: 200, contentType: 'application/json', text: publicWidgetDefinitions as JSON)
+        render(status: 200, contentType: 'application/json', text: widgetDefinitions as JSON)
     }
 }

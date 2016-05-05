@@ -277,6 +277,7 @@ widgets = {
 
     'quickProjects' {
         icon 'folder'
+        allowDuplicate false
         secured 'isAuthenticated()'
         ngController 'quickProjectsListCtrl'
         templatePath '/widgets/quickProjects'
