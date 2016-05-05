@@ -42,7 +42,7 @@ controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
             $scope.holder.feedUrl = '';
         });
     };
-    $scope.delete = function(feed) {
+    $scope.deleteFeed = function(feed) {
         _.remove(widget.settings.feeds, {url: feed.url});
         WidgetService.update(widget).then(function() {
             $scope.holder.selected = null;

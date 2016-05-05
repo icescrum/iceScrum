@@ -28,7 +28,7 @@
     <button ng-disabled="disableDeleteButton"
             type="button"
             class="btn btn-default"
-            ng-click="delete(holder.selected)">
+            ng-click="deleteFeed(holder.selected)">
         ${message(code: 'default.button.delete.label')}
     </button>
 </div>

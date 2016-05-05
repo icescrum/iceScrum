@@ -232,7 +232,7 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
     });
 }]);
 
-controllers.controller('userProjectListCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {
+controllers.controller('quickProjectsListCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {
     $scope.getProjectUrl = function(project, viewName) {
         return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
     };

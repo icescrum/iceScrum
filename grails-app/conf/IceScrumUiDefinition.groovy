@@ -249,7 +249,6 @@ widgets = {
     'notes' {
         icon    'pencil-square-o'
         secured 'isAuthenticated()'
-        description 'is.widget.notes.description'
         templatePath '/widgets/notes'
         defaultSettings = [text:'']
         onUpdate { widget, settings ->
@@ -266,7 +265,6 @@ widgets = {
     'mood' {
         icon    'smile-o'
         secured 'isAuthenticated()'
-        description 'is.widget.mood.description'
         templatePath '/widgets/mood'
         allowDuplicate false
     }
@@ -274,23 +272,21 @@ widgets = {
     'tasks' {
         icon 'tasks'
         secured 'isAuthenticated()'
-        description 'is.widget.mytask.description'
         templatePath '/widgets/tasks'
     }
 
-    'userProjects' {
-        icon 'tasks'
+    'quickProjects' {
+        icon 'folder'
         secured 'isAuthenticated()'
-        description 'is.widget.userProjects.description'
+        ngController 'quickProjectsListCtrl'
         templatePath '/widgets/quickProjects'
     }
 
     'chart' {
-        icon 'chart'
+        icon 'bar-chart'
         title '{{ getTitle() }}'
         secured 'isAuthenticated()'
         ngController 'chartWidgetCtrl'
-        description 'is.widget.chart.description'
         defaultSettings = [:]
     }
 }
