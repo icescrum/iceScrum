@@ -38,6 +38,7 @@
         },
         states: {
             task: ${BundleUtils.taskStates.keySet() as JSON},
+            story: ${BundleUtils.storyStates.keySet() as JSON},
             acceptanceTest: ${BundleUtils.acceptanceTestStates.keySet() as JSON}
         },
         plugins: [],

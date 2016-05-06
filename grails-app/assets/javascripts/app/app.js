@@ -1094,6 +1094,7 @@ angular.module('isApp', [
         $rootScope.featureTypes = isSettings.types.feature;
         $rootScope.planningPokerTypes = isSettings.types.planningPoker;
         $rootScope.taskStates = isSettings.states.task;
+        $rootScope.storyStates = isSettings.states.story;
         $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
 
         if (isSettings.project) {

@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="backlog.details.html">
-<div  class="panel panel-light">
+<div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
@@ -42,7 +42,7 @@
                 <tr><td>${message(code: 'todo.is.ui.stories')}</td><td>{{ backlog.count }}</td></tr>
             </table>
         </div>
-        <entry:point id="backlog-details-body"/>
     </div>
 </div>
+<entry:point id="backlog-details-body"/>
 </script>
