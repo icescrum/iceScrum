@@ -214,5 +214,4 @@
 <script type="text/ng-template" id="widgetDefinition.details.html">
 <h4>{{ widgetDefinition.name }}</h4>
 <p>{{ widgetDefinition.description }}</p>
-<p>Duplicate ? {{ widgetDefinition.available }}</p>
 </script>

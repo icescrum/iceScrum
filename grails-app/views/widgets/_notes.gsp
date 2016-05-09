@@ -14,6 +14,6 @@
              ng-click="showNotesTextarea = true"
              ng-class="{'placeholder': !widget.settings.text_html}"
              tabindex="0"
-             ng-bind-html="(widget.settings.text_html ? widget.settings.text_html : '<p>${message(code: 'is.panel.notes.placeholder')}</p>') | sanitize"></div>
+             ng-bind-html="(widget.settings.text_html ? widget.settings.text_html : '<p>${message(code: 'is.ui.widget.notes.placeholder')}</p>') | sanitize"></div>
     </div>
 </is:widget>

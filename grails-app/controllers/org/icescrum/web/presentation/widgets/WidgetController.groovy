@@ -155,8 +155,8 @@ class WidgetController {
                 .collect {
                     [id: it.value.id,
                      icon: it.value.icon,
-                     name: it.value.name,
-                     description: it.value.description,
+                     name: message(code:it.value.name),
+                     description: message(code:it.value.description),
                      available:!(!it.value.allowDuplicate && userWidgets.contains(it.value.id))]
                 }
         render(status: 200, contentType: 'application/json', text: widgetDefinitions as JSON)
