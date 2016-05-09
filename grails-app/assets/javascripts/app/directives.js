@@ -58,7 +58,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var val = element.val();
                 scope.$apply($http({
                     method: 'POST',
-                    url: $rootScope.serverUrl + 'textileParser',
+                    url: $rootScope.serverUrl + '/textileParser',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                     data: 'data=' + val
                 }).success(function(data) {
