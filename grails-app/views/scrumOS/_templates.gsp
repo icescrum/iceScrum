@@ -222,7 +222,6 @@
           validate="true"
           name="manageExtensionsForm"
           form="manageExtension(extension)"
-          submitButton="${message(code:'is.dialog.manageExtensions.install')}"
           class="manage-extensions split-modal">
     <div class="row">
         <div class="left-panel col-sm-3">
@@ -235,7 +234,7 @@
                 </div>
             </div>
             <ul class="left-panel-body nav nav-list">
-                <li ng-class="{ 'current': currentExtension.id == extension.id }" ng-repeat="currentExtension in extensions | filter:extensionSearch">
+                <li ng-class="{ 'current': currentExtension == holder.extension }" ng-repeat="currentExtension in extensions | filter:extensionSearch">
                     <a ng-click="detailsExtension(currentExtension)" href><i class="fa fa-{{ currentExtension.icon }}"></i>{{ currentExtension.name }}</a>
                 </li>
             </ul>
@@ -253,28 +252,28 @@
 </script>
 
 <script type="text/ng-template" id="extension.details.html">
-<h4><i class="fa fa-{{ extension.icon }}"></i> {{ extension.name }}</h4>
-<p>{{ extension.description }}</p>
-<div class="row">
-    <div class="col-xs-6 col-md-3">
-        <a href="#" class="thumbnail">
-            <img src="" alt="" style="height: 100px; width: 100%; display: block;">
-        </a>
+<h4><i class="fa fa-{{ holder.extension.icon }}"></i> {{ holder.extension.name }}
+    <div class="pull-right">
+        <div class="btn-group">
+            <button type="submit" class="btn btn-default" ng-if="holder.extension.installed"><i class="fa fa-cog"></i></button>
+            <button type="submit" class="btn btn-danger" ng-if="holder.extension.installed">${message(code:'is.dialog.manageExtensions.disable')}</button>
+            <button type="submit" class="btn btn-success" ng-if="!holder.extension.installed">${message(code:'is.dialog.manageExtensions.enable')}</button>
+        </div>
     </div>
-    <div class="col-xs-6 col-md-3">
-        <a href="#" class="thumbnail">
-            <img src="" alt="" style="height: 100px; width: 100%; display: block;">
-        </a>
+</h4>
+<p></p>
+<p>{{ holder.extension.description }}</p>
+<div class="row" ng-if="holder.extension.screenshots">
+    <div class="col-xs-10 col-md-9">
+        <img ng-src="{{ holder.screenshot }}" class="screenshot">
     </div>
-    <div class="col-xs-6 col-md-3">
-        <a href="#" class="thumbnail">
-            <img src="" alt="" style="height: 100px; width: 100%; display: block;">
-        </a>
-    </div>
-    <div class="col-xs-6 col-md-3">
-        <a href="#" class="thumbnail">
-            <img src="" alt="" style="height: 100px; width: 100%; display: block;">
-        </a>
+    <div class="col-xs-2 col-md-3 screenshots">
+        <div class="row">
+            <div class="col-md-12" ng-repeat="screenshot in holder.extension.screenshots">
+            <a href="#" class="thumbnail" ng-click="selectedScreenshot(screenshot)" ng-class="{'current':holder.screenshot == screenshot}">
+                <img ng-src="{{ screenshot }}">
+            </a>
+        </div>
     </div>
 </div>
 </script>

@@ -296,7 +296,20 @@ class ScrumOSController {
 
     @Secured(['permitAll()'])
     def extensions(){
-        def extensions = [[name:'Bundle', description:'test']]
+        def extensions = [
+                [name:'Bundle',
+                 extra: false,
+                 installed: true,
+                 description:'Ut enim benefici liberalesque sumus, non ut exigamus gratiam (neque enim beneficium faeneramur sed natura propensi ad liberalitatem sumus), sic amicitiam non spe mercedis adducti sed quod omnis eius fructus in ipso amore inest, expetendam putamus.',
+                 screenshots:['huhu','hoho','gegeg','gregeg','fezfezf','esvds']
+                ],
+                [name:'Mood',
+                 extra: true,
+                 installed: false,
+                 description:'liberalitatem sumus), sic amicitiam non spe mercedis adducti sed quod omnis eius fructus in ipso amore inest, expetendam putamus.',
+                 screenshots:['huhu','hoho']
+                ]
+        ]
         render contentType: 'application/json', text: extensions as JSON
     }
 }

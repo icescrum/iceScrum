@@ -975,17 +975,24 @@ angular.module('isApp', [
             templateUrl: 'manageExtensions.modal.html',
             controller: ['$scope', function($scope) {
                 $scope.detailsExtension = function(extension) {
-                    $scope.extension = extension;
+                    $scope.holder.extension = extension;
                     $scope.manageExtensionsForm.$invalid = !extension.available;
+                    $scope.selectedScreenshot(extension.screenshots.length > 0 ? extension.screenshots[0] : {})
                 };
+                $scope.selectedScreenshot = function(screenshot){
+                    $scope.holder.screenshot = screenshot;
+                };
+
                 // Init
-                $scope.extension = {};
+                $scope.holder = {
+                    extension : {},
+                    screenshot: {}
+                };
                 $scope.extensions = [];
                 ExtensionService.getExtensions().then(function(extensions) {
-                    debugger;
                     if (extensions.length > 0) {
                         $scope.extensions = extensions;
-                        $scope.extension = extensions[0];
+                        $scope.detailsExtension(extensions[0]);
                     }
                     $scope.manageExtensionsForm.$invalid = extensions.length == 0;
                 });
