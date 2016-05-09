@@ -804,7 +804,7 @@ angular.module('isApp', [
 .factory('UserTimeZone', function() {
     return jstz.determine();
 })
-.run(['Session', 'BundleService', 'PushService', 'UserService', 'WidgetService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, UserService, WidgetService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
+.run(['Session', 'BundleService', 'PushService', 'UserService', 'WidgetService', 'ExtensionService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, UserService, WidgetService, ExtensionService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
 
     //used to handle click with shortcut hotkeys
     $rootScope.hotkeyClick = function(event, hotkey) {
@@ -963,6 +963,31 @@ angular.module('isApp', [
                         $scope.widgetDefinitions = widgetDefinitions;
                         $scope.widgetDefinition = widgetDefinitions[0];
                     }
+                });
+            }],
+            size: 'lg'
+        });
+    };
+
+    $rootScope.showManageExtensionsModal = function() {
+        $uibModal.open({
+            keyboard: false,
+            templateUrl: 'manageExtensions.modal.html',
+            controller: ['$scope', function($scope) {
+                $scope.detailsExtension = function(extension) {
+                    $scope.extension = extension;
+                    $scope.manageExtensionsForm.$invalid = !extension.available;
+                };
+                // Init
+                $scope.extension = {};
+                $scope.extensions = [];
+                ExtensionService.getExtensions().then(function(extensions) {
+                    debugger;
+                    if (extensions.length > 0) {
+                        $scope.extensions = extensions;
+                        $scope.extension = extensions[0];
+                    }
+                    $scope.manageExtensionsForm.$invalid = extensions.length == 0;
                 });
             }],
             size: 'lg'

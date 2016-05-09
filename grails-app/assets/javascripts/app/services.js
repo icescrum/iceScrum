@@ -544,3 +544,9 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));
     };
 }]);
+
+services.service("ExtensionService", ['FormService', function(FormService) {
+    this.getExtensions = function() {
+        return FormService.httpGet('extensions', null, true);
+    };
+}]);

@@ -293,4 +293,10 @@ class ScrumOSController {
         }
         render contentType: 'application/json', text: _charts as JSON
     }
+
+    @Secured(['permitAll()'])
+    def extensions(){
+        def extensions = []
+        render contentType: 'application/json', text: extensions as JSON
+    }
 }

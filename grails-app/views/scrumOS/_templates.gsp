@@ -215,3 +215,44 @@
 <h4>{{ widgetDefinition.name }}</h4>
 <p>{{ widgetDefinition.description }}</p>
 </script>
+
+
+<script type="text/ng-template" id="manageExtensions.modal.html">
+<is:modal title="${message(code:'is.dialog.manageExtensions.title')}"
+          validate="true"
+          name="manageExtensionsForm"
+          form="manageExtension(extension)"
+          submitButton="${message(code:'is.dialog.manageExtensions.install')}"
+          class="manage-extensions split-modal">
+    <div class="row">
+        <div class="left-panel col-sm-3">
+            <div class="left-panel-header">
+                <div class="input-group">
+                    <input type="text" ng-model="extensionSearch" name="extension-search-input" class="form-control" placeholder="${message(code:'todo.is.ui.search.action')}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+            <ul class="left-panel-body nav nav-list">
+                <li ng-class="{ 'current': currentExtension.id == extension.id }" ng-repeat="currentExtension in extensions | filter:extensionSearch">
+                    <a ng-click="detailsExtension(currentExtension)" href>{{ currentExtension.name }}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="right-panel col-sm-9" ng-switch="extensions != undefined && extensions.length == 0">
+            <div ng-switch-when="true">
+                ${ message(code: 'is.dialog.noAvailableExtensions') }
+            </div>
+            <div class="col-md-12" ng-switch-default>
+                <div ng-include="'extension.details.html'"></div>
+            </div>
+        </div>
+    </div>
+</is:modal>
+</script>
+
+<script type="text/ng-template" id="extension.details.html">
+<h4>{{ extension.name }}</h4>
+<p>{{ extension.description }}</p>
+</script>
