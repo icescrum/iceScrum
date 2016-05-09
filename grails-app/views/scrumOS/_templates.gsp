@@ -252,16 +252,18 @@
 </script>
 
 <script type="text/ng-template" id="extension.details.html">
-<h4><i class="fa fa-{{ holder.extension.icon }}"></i> {{ holder.extension.name }}
+<h4><i class="fa fa-{{ holder.extension.icon }}"></i> {{ holder.extension.name }} <small>v{{ holder.extension.version }} ({{ holder.extension.publishDate }})</small>
     <div class="pull-right">
-        <div class="btn-group">
-            <button type="submit" class="btn btn-default" ng-if="holder.extension.installed"><i class="fa fa-cog"></i></button>
-            <button type="submit" class="btn btn-danger" ng-if="holder.extension.installed">${message(code:'is.dialog.manageExtensions.disable')}</button>
-            <button type="submit" class="btn btn-success" ng-if="!holder.extension.installed">${message(code:'is.dialog.manageExtensions.enable')}</button>
+        <div class="btn-group" ng-if="holder.extension.installed">
+            <a href uib-tooltip="${message(code:'is.dialog.manageExtensions.configure')}" tooltip-placement="top" class="btn btn-default"><i class="fa fa-cog"></i></a>
+            <button ng-if="!holder.extension.includedWithLicense" uib-tooltip="${message(code:'is.dialog.manageExtensions.uninstall')}" tooltip-placement="top" class="btn btn-default"><i class="fa fa-times"></i></button>
         </div>
+        <button disabled class="btn btn-success" style="margin-left:15px" ng-if="holder.extension.installed && holder.extension.includedWithLicense">${message(code:'is.dialog.manageExtensions.includedWithLicense')}</button>
+        <button disabled class="btn btn-success" style="margin-left:15px" ng-if="holder.extension.installed && !holder.extension.includedWithLicense">${message(code:'is.dialog.manageExtensions.installed')}</button>
+        <button type="submit" class="btn btn-primary" ng-if="!holder.extension.installed">${message(code:'is.dialog.manageExtensions.install')}</button>
     </div>
 </h4>
-<p></p>
+<p>${message(code:'is.dialog.manageExtensions.from')} <a href="{{ holder.extension.website }}">{{ holder.extension.author }}</a>, <a href="{{ holder.extension.documentation }}">${message(code:'is.dialog.manageExtensions.documentation')}</a></p>
 <p>{{ holder.extension.description }}</p>
 <div class="row" ng-if="holder.extension.screenshots">
     <div class="col-xs-10 col-md-9">
@@ -270,7 +272,7 @@
     <div class="col-xs-2 col-md-3 screenshots">
         <div class="row">
             <div class="col-md-12" ng-repeat="screenshot in holder.extension.screenshots">
-            <a href="#" class="thumbnail" ng-click="selectedScreenshot(screenshot)" ng-class="{'current':holder.screenshot == screenshot}">
+            <a href class="thumbnail" ng-click="selectedScreenshot(screenshot)" ng-class="{'current':holder.screenshot == screenshot}">
                 <img ng-src="{{ screenshot }}">
             </a>
         </div>

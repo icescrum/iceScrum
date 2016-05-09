@@ -298,16 +298,26 @@ class ScrumOSController {
     def extensions(){
         def extensions = [
                 [name:'Bundle',
-                 extra: false,
-                 installed: true,
+                 version:'1.6',
+                 installed: false,
+                 author:'Kagilum team',
+                 publishDate:'09/05/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com',
                  description:'Ut enim benefici liberalesque sumus, non ut exigamus gratiam (neque enim beneficium faeneramur sed natura propensi ad liberalitatem sumus), sic amicitiam non spe mercedis adducti sed quod omnis eius fructus in ipso amore inest, expetendam putamus.',
-                 screenshots:['huhu','hoho','gegeg','gregeg','fezfezf','esvds']
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2015/04/embeddable-widgets-900x600@2x.png','https://www.icescrum.com/wp-content/uploads/2014/08/Task-board2-900x600@2x.png','https://www.icescrum.com/wp-content/uploads/2015/04/sandbox2-900x600@2x.png']
                 ],
                 [name:'Mood',
-                 extra: true,
-                 installed: false,
+                 version:'1.4',
+                 installed: true,
+                 author:'iceScrum team',
+                 publishDate:'06/09/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com',
                  description:'liberalitatem sumus), sic amicitiam non spe mercedis adducti sed quod omnis eius fructus in ipso amore inest, expetendam putamus.',
-                 screenshots:['huhu','hoho']
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2015/04/embeddable-widgets-900x600@2x.png','https://www.icescrum.com/wp-content/uploads/2014/08/Task-board2-900x600@2x.png','https://www.icescrum.com/wp-content/uploads/2015/04/sandbox2-900x600@2x.png']
                 ]
         ]
         render contentType: 'application/json', text: extensions as JSON
