@@ -23,7 +23,7 @@
         <div ng-if="holder.errorMessage" ng-bind-html="holder.errorMessage"></div>
         <div ng-if="!holder.errorMessage">
             <div ng-show="!widget.settings.feeds">
-                ${message(code: 'todo.is.ui.panel.feed.no.rss')}
+                ${message(code: 'is.ui.widget.feed.no.rss')}
             </div>
             <div ng-repeat="item in holder.feed.items">
                 <div>

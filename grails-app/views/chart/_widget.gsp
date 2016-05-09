@@ -27,7 +27,7 @@
             <nvd3 options="options" data="data"></nvd3>
         </div>
         <div ng-switch-default>
-            <h4 class="text-center"><g:message code="todo.is.ui.widget.chart.no.chart"/></h4>
+            <h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4>
         </div>
     </div>
 </is:widget>

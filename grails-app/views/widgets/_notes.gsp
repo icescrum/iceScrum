@@ -7,7 +7,7 @@
                   is-model-html="widget.settings.text_html"
                   ng-show="showNotesTextarea"
                   ng-blur="showNotesTextarea = false; update(widget)"
-                  placeholder="${message(code: 'is.panel.notes.placeholder')}"></textarea>
+                  placeholder="${message(code: 'is.ui.widget.notes.placeholder')}"></textarea>
         <div class="markitup-preview"
              ng-disabled="true"
              ng-show="!showNotesTextarea"

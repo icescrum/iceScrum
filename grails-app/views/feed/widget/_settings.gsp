@@ -1,11 +1,11 @@
 <div class="form-group">
-    <label class="col-sm-2">${message(code: 'todo.is.ui.panel.feed.input')}</label>
+    <label class="col-sm-2">${message(code: 'is.ui.widget.feed.input')}</label>
     <div class="col-sm-7">
         <input autofocus
                name="name"
                class="form-control"
                type="text"
-               placeholder="${message(code: 'todo.is.ui.panel.feed.input.add')}"
+               placeholder="${message(code: 'is.ui.widget.feed.input.add')}"
                ng-model="holder.feedUrl"/>
     </div>
     <button type="submit"
@@ -15,13 +15,13 @@
     </button>
 </div>
 <div ng-show="holder.feeds" class="form-group">
-    <label class="col-sm-2">${message(code: 'todo.is.ui.panel.feed.list')}</label>
+    <label class="col-sm-2">${message(code: 'is.ui.widget.feed.list')}</label>
     <div class="col-sm-7">
         <ui-select class="form-control"
                    ng-model="holder.selected"
                    on-select="onSelect($item, $model)"
                    on-remove="onRemove($item, $model)">
-            <ui-select-match allow-clear="true" placeholder="${message(code: 'todo.is.ui.panel.feed.title.allFeed')}">{{ $select.selected.title }}</ui-select-match>
+            <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.widget.feed.title.allFeed')}">{{ $select.selected.title }}</ui-select-match>
             <ui-select-choices repeat="feed in holder.feeds">{{feed.title}}</ui-select-choices>
         </ui-select>
     </div>

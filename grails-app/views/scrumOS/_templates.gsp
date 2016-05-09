@@ -181,7 +181,7 @@
           validate="true"
           name="addWidgetForm"
           form="addWidget(widgetDefinition)"
-          submitButton="${message(code:'todo.is.ui.addWidget')}"
+          submitButton="${message(code:'is.dialog.addWidget.add')}"
           class="add-widget split-modal">
     <div class="row">
         <div class="left-panel col-sm-3">
@@ -201,7 +201,7 @@
         </div>
         <div class="right-panel col-sm-9" ng-switch="widgetDefinitions != undefined && widgetDefinitions.length == 0">
             <div ng-switch-when="true">
-                ${ message(code: 'todo.is.ui.widget.noAvailableWidgetDefinitions') }
+                ${ message(code: 'is.dialog.noAvailableWidgetDefinitions') }
             </div>
             <div class="col-md-12" ng-switch-default>
                 <div ng-include="'widgetDefinition.details.html'"></div>
