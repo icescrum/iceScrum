@@ -296,7 +296,7 @@ class ScrumOSController {
 
     @Secured(['permitAll()'])
     def extensions(){
-        def extensions = []
+        def extensions = [[name:'Bundle', description:'test']]
         render contentType: 'application/json', text: extensions as JSON
     }
 }

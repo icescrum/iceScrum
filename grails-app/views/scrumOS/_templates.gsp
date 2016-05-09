@@ -195,7 +195,7 @@
             </div>
             <ul class="left-panel-body nav nav-list">
                 <li ng-class="{ 'current': currentWidgetDefinition.id == widgetDefinition.id }" ng-repeat="currentWidgetDefinition in widgetDefinitions | filter:widgetDefinitionSearch">
-                    <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href>{{ currentWidgetDefinition.name }}</a>
+                    <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href><i class="fa fa-{{ currentWidgetDefinition.icon }}"></i> {{ currentWidgetDefinition.name }}</a>
                 </li>
             </ul>
         </div>
@@ -212,7 +212,7 @@
 </script>
 
 <script type="text/ng-template" id="widgetDefinition.details.html">
-<h4>{{ widgetDefinition.name }}</h4>
+<h4><i class="fa fa-{{ widgetDefinition.icon }}"></i> {{ widgetDefinition.name }}</h4>
 <p>{{ widgetDefinition.description }}</p>
 </script>
 
@@ -236,7 +236,7 @@
             </div>
             <ul class="left-panel-body nav nav-list">
                 <li ng-class="{ 'current': currentExtension.id == extension.id }" ng-repeat="currentExtension in extensions | filter:extensionSearch">
-                    <a ng-click="detailsExtension(currentExtension)" href>{{ currentExtension.name }}</a>
+                    <a ng-click="detailsExtension(currentExtension)" href><i class="fa fa-{{ currentExtension.icon }}"></i>{{ currentExtension.name }}</a>
                 </li>
             </ul>
         </div>
@@ -253,6 +253,28 @@
 </script>
 
 <script type="text/ng-template" id="extension.details.html">
-<h4>{{ extension.name }}</h4>
+<h4><i class="fa fa-{{ extension.icon }}"></i> {{ extension.name }}</h4>
 <p>{{ extension.description }}</p>
+<div class="row">
+    <div class="col-xs-6 col-md-3">
+        <a href="#" class="thumbnail">
+            <img src="" alt="" style="height: 100px; width: 100%; display: block;">
+        </a>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <a href="#" class="thumbnail">
+            <img src="" alt="" style="height: 100px; width: 100%; display: block;">
+        </a>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <a href="#" class="thumbnail">
+            <img src="" alt="" style="height: 100px; width: 100%; display: block;">
+        </a>
+    </div>
+    <div class="col-xs-6 col-md-3">
+        <a href="#" class="thumbnail">
+            <img src="" alt="" style="height: 100px; width: 100%; display: block;">
+        </a>
+    </div>
+</div>
 </script>
