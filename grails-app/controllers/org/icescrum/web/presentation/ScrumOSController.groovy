@@ -297,27 +297,130 @@ class ScrumOSController {
     @Secured(['permitAll()'])
     def extensions(){
         def extensions = [
-                [name:'Bundle',
-                 version:'1.6',
+                [name:'Management',
+                 version:'1.0',
                  installed: false,
-                 author:'Kagilum team',
-                 publishDate:'09/05/2016',
-                 includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com',
-                 description:'Ut enim benefici liberalesque sumus, non ut exigamus gratiam (neque enim beneficium faeneramur sed natura propensi ad liberalitatem sumus), sic amicitiam non spe mercedis adducti sed quod omnis eius fructus in ipso amore inest, expetendam putamus.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2015/04/embeddable-widgets-900x600@2x.png','https://www.icescrum.com/wp-content/uploads/2014/08/Task-board2-900x600@2x.png','https://www.icescrum.com/wp-content/uploads/2015/04/sandbox2-900x600@2x.png']
-                ],
-                [name:'Mood',
-                 version:'1.4',
-                 installed: true,
                  author:'iceScrum team',
-                 publishDate:'06/09/2016',
+                 publishDate:'01/06/2016',
                  includedWithLicense: true,
                  website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com',
-                 description:'liberalitatem sumus), sic amicitiam non spe mercedis adducti sed quod omnis eius fructus in ipso amore inest, expetendam putamus.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2015/04/embeddable-widgets-900x600@2x.png','https://www.icescrum.com/wp-content/uploads/2014/08/Task-board2-900x600@2x.png','https://www.icescrum.com/wp-content/uploads/2015/04/sandbox2-900x600@2x.png']
+                 documentation:'https://www.icescrum.com/documentation/',
+                 description:'This extension is the core of iceScrum Pro. It helps you to configure and manage your iceScrum server:' +
+                         '<p>' +
+                         '<ul>' +
+                         '<li>Administrate your users</li>' +
+                         '<li>Administrate your projects</li>' +
+                         '<li>Define new administrators</li>' +
+                         '<li>Update your server configuration in an nice user interface</li>' +
+                         '<li>Authenticate your users through LDAP</li>' +
+                         '<li>Define your product vision with the Roadmap view</li>' +
+                         '<li>Define your team availabilities</li>' +
+                         '<li>Export iceScrum items as custom CSV documents</li>' +
+                         '<li>Switch user in the task board</li>' +
+                         '<li>Create items from emails</li>' +
+                         '<li>Create stories directly in the backlog, copy stories from one project to another, filter by user in the sprint plan...</li>' +
+                         '</ul>' +
+                         '</p>',
+                 screenshots:[]
+                ],
+                [name:'Embedded',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/embedded',
+                 description:'Embed live iceScrum views into your online documents or websites in order to create custom dashboards and reports.',
+                 screenshots:[]
+                ],
+                [name:'Backlogs',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/backlogs/',
+                 description:'Manage your own story backlogs',
+                 screenshots:[]
+                ],
+                [name:'Icebox',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/icebox/',
+                 description:'Product Owners freeze stories that don’t belong to the current product vision and restore them when the time has come.',
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2012/11/Freeze-a-story1.jpg']
+                ],
+                [name:'Cloud Storage',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/cloud-storage',
+                 description:'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
+                 screenshots:[]
+                ],
+                [name:'Feedback',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/feedback',
+                 description:'Include the feedback module in your website and offer your users a way to provide feedback that your collect as stories in your iceScrum project',
+                 screenshots:[]
+                ],
+                [name:'Team communication',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/team-communication',
+                 description:'Stay informed of what happens in iceScrum by receiving important events about your stories in your Slack channel.',
+                 screenshots:[]
+                ],
+                [name:'SCM',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/git-svn/',
+                 description:'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
+                 screenshots:[]
+                ],
+                [name:'Bug Trackers',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/bug-tracker/',
+                 description:'Automatically synchronize your project data between your bug tracker (JIRA, Mantis, Bugzilla, Redmine, TRAC…) and iceScrum.',
+                 screenshots:[]
+                ],
+                [name:'Project Bundle',
+                 version:'1.0',
+                 installed: false,
+                 author:'iceScrum team',
+                 publishDate:'01/06/2016',
+                 includedWithLicense: true,
+                 website:'https://www.icescrum.com',
+                 documentation:'https://www.icescrum.com/documentation/project-bundle/',
+                 description:'Project bundles allow you to group interrelated projects, providing a big picture of their planning and progress to help you make the best decisions.',
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2013/08/Bundle-timeline.png','https://www.icescrum.com/wp-content/uploads/2013/08/Total-line-for-synchronized-sprints.png']
                 ]
         ]
         render contentType: 'application/json', text: extensions as JSON

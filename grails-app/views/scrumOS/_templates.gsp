@@ -243,7 +243,7 @@
             <div ng-switch-when="true">
                 ${ message(code: 'is.dialog.noAvailableExtensions') }
             </div>
-            <div class="col-md-12" ng-switch-default>
+            <div ng-switch-default>
                 <div ng-include="'extension.details.html'"></div>
             </div>
         </div>
@@ -264,18 +264,25 @@
     </div>
 </h4>
 <p>${message(code:'is.dialog.manageExtensions.from')} <a href="{{ holder.extension.website }}">{{ holder.extension.author }}</a>, <a href="{{ holder.extension.documentation }}">${message(code:'is.dialog.manageExtensions.documentation')}</a></p>
-<p>{{ holder.extension.description }}</p>
-<div class="row" ng-if="holder.extension.screenshots">
-    <div class="col-xs-10 col-md-9">
-        <img ng-src="{{ holder.screenshot }}" class="screenshot">
-    </div>
-    <div class="col-xs-2 col-md-3 screenshots">
+<uib-tabset type="tabs">
+    <uib-tab heading="${message(code:'is.dialog.manageExtensions.description')}">
+        <p ng-bind-html="holder.extension.description"></p>
+    </uib-tab>
+    <uib-tab heading="${message(code:'is.dialog.manageExtensions.screenshots')}">
         <div class="row">
-            <div class="col-md-12" ng-repeat="screenshot in holder.extension.screenshots">
-            <a href class="thumbnail" ng-click="selectedScreenshot(screenshot)" ng-class="{'current':holder.screenshot == screenshot}">
-                <img ng-src="{{ screenshot }}">
-            </a>
+            <div class="col-xs-10 col-md-9">
+                <img ng-src="{{ holder.screenshot }}" class="screenshot">
+            </div>
+            <div class="col-xs-2 col-md-3 screenshots">
+                <div class="row">
+                    <div class="col-md-12" ng-repeat="screenshot in holder.extension.screenshots">
+                        <a href class="thumbnail" ng-click="selectedScreenshot(screenshot)" ng-class="{'current':holder.screenshot == screenshot}">
+                            <img ng-src="{{ screenshot }}">
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </uib-tab>
+</uib-tabset>
 </script>
