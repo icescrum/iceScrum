@@ -321,7 +321,7 @@ class ScrumOSController {
                          '<li>Create stories directly in the backlog, copy stories from one project to another, filter by user in the sprint plan...</li>' +
                          '</ul>' +
                          '</p>',
-                 screenshots:[]
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2012/06/Example-of-working-LDAP-Configuration1.jpg']
                 ],
                 [name:'Embedded',
                  version:'1.0',
@@ -332,7 +332,7 @@ class ScrumOSController {
                  website:'https://www.icescrum.com',
                  documentation:'https://www.icescrum.com/documentation/embedded',
                  description:'Embed live iceScrum views into your online documents or websites in order to create custom dashboards and reports.',
-                 screenshots:[]
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2013/01/Define-your-embedded-widgets.jpg']
                 ],
                 [name:'Backlogs',
                  version:'1.0',
@@ -365,7 +365,7 @@ class ScrumOSController {
                  website:'https://www.icescrum.com',
                  documentation:'https://www.icescrum.com/documentation/cloud-storage',
                  description:'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
-                 screenshots:[]
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png','https://www.icescrum.com/wp-content/uploads/2012/11/Attach-a-document-from-the-cloud.jpg','https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
                 ],
                 [name:'Feedback',
                  version:'1.0',
@@ -376,7 +376,7 @@ class ScrumOSController {
                  website:'https://www.icescrum.com',
                  documentation:'https://www.icescrum.com/documentation/feedback',
                  description:'Include the feedback module in your website and offer your users a way to provide feedback that your collect as stories in your iceScrum project',
-                 screenshots:[]
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2015/06/feedback-english-650x393@2x.png','https://www.icescrum.com/wp-content/uploads/2015/06/story-details-2-650x424@2x.png']
                 ],
                 [name:'Team communication',
                  version:'1.0',
@@ -387,7 +387,7 @@ class ScrumOSController {
                  website:'https://www.icescrum.com',
                  documentation:'https://www.icescrum.com/documentation/team-communication',
                  description:'Stay informed of what happens in iceScrum by receiving important events about your stories in your Slack channel.',
-                 screenshots:[]
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2015/06/admin-settings-650x401@2x.png','https://www.icescrum.com/wp-content/uploads/2015/06/Slack1-650x461@2x.png']
                 ],
                 [name:'SCM',
                  version:'1.0',
@@ -398,7 +398,7 @@ class ScrumOSController {
                  website:'https://www.icescrum.com',
                  documentation:'https://www.icescrum.com/documentation/git-svn/',
                  description:'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
-                 screenshots:[]
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg','https://www.icescrum.com/wp-content/uploads/2013/06/Build-information-in-story-details.jpg','https://www.icescrum.com/wp-content/uploads/2014/09/Choose-the-iceScrum-GitHub-Service-650x261@2x.png','https://www.icescrum.com/wp-content/uploads/2012/05/commit-googlecode.jpg','https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
                 ],
                 [name:'Bug Trackers',
                  version:'1.0',
@@ -409,7 +409,7 @@ class ScrumOSController {
                  website:'https://www.icescrum.com',
                  documentation:'https://www.icescrum.com/documentation/bug-tracker/',
                  description:'Automatically synchronize your project data between your bug tracker (JIRA, Mantis, Bugzilla, Redmine, TRAC…) and iceScrum.',
-                 screenshots:[]
+                 screenshots:['https://www.icescrum.com/wp-content/uploads/2013/08/Set-up-bug-tracker-connection.png','https://www.icescrum.com/wp-content/uploads/2013/08/Create-an-import-rule.-Here-every-15-min-new-issues-from-vb-filter-are-imported-as-accepted-defect-stories.png']
                 ],
                 [name:'Project Bundle',
                  version:'1.0',
