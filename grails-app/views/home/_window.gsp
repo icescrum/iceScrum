@@ -31,7 +31,7 @@
                          ng-repeat="widget in widgetsOnLeft"></div>
                     <div class="add-widget" ng-if="authenticated()">
                         <button class="btn btn-default" ng-click="showAddWidgetModal()">
-                            <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="is.ui.widget.add"/>
+                            <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="is.ui.widget.new"/>
                         </button>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                          ng-repeat="widget in widgetsOnRight"></div>
                     <div class="add-widget" ng-if="authenticated()">
                         <button class="btn btn-default" ng-click="showAddWidgetModal(true)">
-                            <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="is.ui.widget.add"/>
+                            <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="is.ui.widget.new"/>
                         </button>
                     </div>
                 </div>
