@@ -22,52 +22,18 @@
  *
  */
 
-package org.icescrum.web.presentation.windows
+package org.icescrum.web.presentation.api
 
 import org.grails.taggable.Tag
 import grails.converters.JSON
 import org.icescrum.core.domain.BacklogElement
 import org.icescrum.core.domain.Product
-import org.icescrum.core.domain.Actor
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.Task
-import org.icescrum.core.domain.User
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
 class SearchController {
 
     def springSecurityService
-
-    def index(long product) {
-        Product _product = Product.withProduct(product)
-        def data = [:]
-
-        data.actors =  Actor.search(product, [tag:params.tag, term:params.term, actor: params.withActors ? params.actor : null])
-        data.stories = Story.search(product, [tag:params.tag, term:params.term, story: params.withStories ? params.story : null])
-        data.features = Feature.search(product, [tag:params.tag, term:params.term, feature: params.withFeatures ? params.feature : null])
-        data.tasks = Task.search(product, [tag:params.tag, term:params.term, task: params.withTasks ? params.task : null])
-
-        if (!data.actors && !data.stories && !data.features && !data.tasks && !params.term && !params.tag && !params.withActors && !params.withStories && !params.withFeatures && !params.withTasks){
-            data = null
-        }
-
-        withFormat{
-            html {
-                render(template: 'window/postitsView', model: [
-                        data: data,
-                        user:(User)springSecurityService.currentUser,
-                        estimates:_product.stories*.effort.unique().findAll { it != null }.sort(),
-                        creators:(_product.allUsers + _product.stories*.creator.unique()).unique(),
-                        tasksCreators:(_product.allUsers + Task.getAllCreatorsInProduct(_product.id)).unique(),
-                        tasksResponsibles:(_product.allUsers + Task.getAllResponsiblesInProduct(_product.id)).unique(),
-                        product:_product])
-            }
-            json { renderRESTJSON(text:data) }
-            xml  { renderRESTXML(text:data) }
-        }
-    }
 
     def tag(long product) {
         Product _product = Product.withProduct(product)
