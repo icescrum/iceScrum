@@ -142,10 +142,13 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
     $scope.isPinned = function(backlog) {
         return $state.params.pinnedBacklogCode == backlog.code;
     };
-    $scope.showBacklog = function(backlogCode) {
-        var backlogContainer = _.find($scope.backlogContainers, function(backlogContainer) {
+    $scope.getBacklogContainer = function(backlogCode) {
+        return _.find($scope.backlogContainers, function(backlogContainer) {
             return backlogContainer.backlog.code == backlogCode;
         });
+    };
+    $scope.showBacklog = function(backlogCode) {
+        var backlogContainer = $scope.getBacklogContainer(backlogCode);
         if (!backlogContainer) {
             backlogContainer = {
                 backlog: _.find($scope.availableBacklogs, {code: backlogCode}),
