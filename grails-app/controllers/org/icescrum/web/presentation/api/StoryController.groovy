@@ -46,11 +46,11 @@ class StoryController {
                 if (type == 'backlog') {
                     options = JSON.parse(Backlog.get(typeId).filter)
                 } else if (type == 'actor') {
-                    options.story.actor = "$typeId"
+                    options.story.actor = typeId
                 } else if (type == 'feature') {
-                    options.story.feature = "$typeId"
+                    options.story.feature = typeId
                 } else if (type == 'sprint') {
-                    options.story.parentSprint = "$typeId"
+                    options.story.parentSprint = typeId
                 }
             }
             if (params.context) {
