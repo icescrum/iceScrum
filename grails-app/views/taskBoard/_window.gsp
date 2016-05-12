@@ -217,11 +217,10 @@
                 <tr ng-if="sprint.stories.length == 0">
                     <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                         <div class="empty-view">
-                            <p class="help-block">${message(code: 'todo.is.ui.story.empty.sprint')}<p>
+                            <p class="help-block">${message(code: 'todo.is.ui.story.empty.taskBoard')}</p>
                             <a class="btn btn-primary"
-                               ng-if="sprint.state != sprintStatesByName.DONE"
-                               href="#backlog">
-                                <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlogs')}
+                               href="#/planning/{{ sprint.parentRelease.id }}/sprint/{{ sprint.id }}">
+                                <i class="fa fa-inbox"></i> ${message(code: 'todo.is.ui.planning')}
                             </a>
                         </div>
                     </td>

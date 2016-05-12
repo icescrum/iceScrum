@@ -825,8 +825,8 @@ angular.module('isApp', [
         }
     };
 
-    $rootScope.message = function(code, args) {
-        var text = messages[code] ? messages[code] : code;
+    $rootScope.message = function(code, args, defaultCode) {
+        var text = messages[code] ? messages[code] : (defaultCode && messages[defaultCode] ? messages[defaultCode] : code);
         angular.forEach(args, function(arg, index) {
             var placeholderMatcher = new RegExp('\\{' + index + '\\}', 'g');
             text = text.replace(placeholderMatcher, arg);
@@ -1186,8 +1186,7 @@ angular.module('isApp', [
     SANDBOX: 'sandbox',
     BACKLOG: 'backlog',
     DONE: 'done',
-    ALL: 'all',
-    SPRINT: 'sprint'
+    ALL: 'all'
 })
 .constant('StoryStatesByName', {
     "SUGGESTED": 1,

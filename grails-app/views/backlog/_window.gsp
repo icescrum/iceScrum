@@ -158,7 +158,7 @@
                      is-disabled="!backlogContainer.sorting"
                      ng-model="backlogContainer.backlog.stories"
                      ng-class="app.asList ? 'list-group' : 'grid-group'"
-                     ng-init="backlog = backlogContainer.backlog"
+                     ng-init="(backlog = backlogContainer.backlog) && (emptyBacklogTemplate = 'story.backlog.backlogs.empty.html')"
                      ng-include="'story.backlog.html'">
                 </div>
             </div>

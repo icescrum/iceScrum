@@ -40,16 +40,34 @@
 </div>
 <div ng-if="backlog.stories.length == 0"
      class="empty-view">
-    <p class="help-block">{{:: message('todo.is.ui.story.empty.' + backlog.code) }}</p>
-    <a class="btn btn-primary"
-       ng-if="authorizedStory('create') && (backlog.code == backlogCodes.SANDBOX || backlog.code == backlogCodes.BACKLOG || backlog.code == backlogCodes.ALL || backlog.code == 'plan')"
-       href="#{{::viewName}}/new">
-        {{:: message('todo.is.ui.story.new' + (backlog.code == backlogCodes.SANDBOX ? '' : '.sandbox')) }}
-    </a>
-    <a class="btn btn-primary"
-       ng-if="backlog.code == backlogCodes.SPRINT || backlog.code == 'plan'"
-       href="#backlog">
-        <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlogs')}
-    </a>
+    <div ng-include="emptyBacklogTemplate"></div>
 </div>
+</script>
+
+<script type="text/ng-template" id="story.backlog.backlogs.empty.html">
+<p class="help-block">{{:: message('todo.is.ui.story.empty.backlogs.' + backlog.code, [], 'todo.is.ui.story.empty.backlogs.default') }}</p>
+<a class="btn btn-primary"
+   ng-if="authorizedStory('create')"
+   href="#/backlog/sandbox/story/new">
+    {{:: message('todo.is.ui.story.new' + (backlog.code == backlogCodes.SANDBOX ? '' : '.sandbox')) }}
+</a>
+</script>
+
+<script type="text/ng-template" id="story.backlog.planning.empty.html">
+<p class="help-block">${message(code: 'todo.is.ui.story.empty.planning')}</p>
+<button class="btn btn-primary"
+        type="button"
+        ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
+        ng-if="authorizedSprint('plan', sprint)">
+    <i class="fa fa-plus sticky-note-stack"></i> ${message(code: 'todo.is.ui.story.plan')}
+</button>
+</script>
+
+<script type="text/ng-template" id="story.backlog.plan.empty.html">
+<p class="help-block">${message(code: 'todo.is.ui.story.empty.plan')}</p>
+<a class="btn btn-primary"
+   ng-click="$close()"
+   href="#/backlog/backlog">
+    <i class="fa fa-inbox"></i> ${message(code: 'is.ui.backlog')}
+</a>
 </script>

@@ -144,6 +144,7 @@
                      is-disabled="!isSortingSprint(sprint)"
                      ng-model="backlog.stories"
                      ng-class="app.asList ? 'list-group' : 'grid-group'"
+                     ng-init="emptyBacklogTemplate = 'story.backlog.planning.empty.html'"
                      ng-include="'story.backlog.html'">
                 </div>
             </div>

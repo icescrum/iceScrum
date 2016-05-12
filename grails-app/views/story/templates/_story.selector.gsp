@@ -36,6 +36,7 @@
              ng-model="backlog.stories"
              as-sortable
              is-disabled="true"
+             ng-init="emptyBacklogTemplate = 'story.backlog.plan.empty.html'"
              ng-include="'story.backlog.html'">
         </div>
     </div>
