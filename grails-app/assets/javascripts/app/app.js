@@ -456,16 +456,6 @@ angular.module('isApp', [
                         }]
                     },
                     children: [
-                        {
-                            name: 'details',
-                            url: "/details",
-                            views: {
-                                "details@backlog": {
-                                    templateUrl: 'backlog.details.html',
-                                    controller: 'backlogDetailsCtrl'
-                                }
-                            }
-                        },
                         getBacklogStoryState()
                     ]
                 }

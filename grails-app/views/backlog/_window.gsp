@@ -83,6 +83,7 @@
          selectable="selectableOptions">
         <div class="panel panel-light" ng-repeat="backlogContainer in backlogContainers">
             <div class="panel-heading">
+                <entry:point id="backlog-list-details-heading"/>
                 <div class="btn-group">
                     <button type="button"
                             ng-if="backlogContainer.sortable"
@@ -111,11 +112,6 @@
                         <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                     </button>
                 </div>
-                <a class="btn btn-default"
-                   ui-sref="backlog.backlog.details({backlogCode: backlogContainer.backlog.code})"
-                   uib-tooltip="${message(code: 'todo.is.ui.details')}">
-                    <i class="fa fa-info-circle"></i>
-                </a>
                 <div class="btn-group" uib-dropdown>
                     <g:if test="${params?.printable}">
                         <button type="button"

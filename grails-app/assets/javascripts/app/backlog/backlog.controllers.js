@@ -286,7 +286,3 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
         });
     }, true);
 }]);
-
-controllers.controller('backlogDetailsCtrl', ['$scope', 'backlog', function($scope, backlog) {
-    $scope.backlog = backlog;
-}]);
