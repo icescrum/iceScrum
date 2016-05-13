@@ -82,7 +82,7 @@ class MoodController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodUser.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.moodUser.xaxis.label')]],
                        title: [text: message(code: "is.chart.moodUser.title")]]
-        def moodLabel = [message(code: "is.panel.mood.bad"), message(code: "is.panel.mood.meh"), message(code: "is.panel.mood.good")]
+        def moodLabel = [message(code: "is.ui.widget.mood.bad"), message(code: "is.ui.widget.mood.meh"), message(code: "is.ui.widget.mood.good")]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsY: moodLabel, options: options] as JSON)
     }
 
@@ -106,7 +106,7 @@ class MoodController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.sprintUserMood.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.sprintUserMood.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintUserMood.title")]]
-        def moodLabel = [message(code: "is.panel.mood.bad"), message(code: "is.panel.mood.meh"), message(code: "is.panel.mood.good")]
+        def moodLabel = [message(code: "is.ui.widget.mood.bad"), message(code: "is.ui.widget.mood.meh"), message(code: "is.ui.widget.mood.good")]
         render(status: 200, contentType: 'application/json', text: [data: computedValues,labelsY: moodLabel, options: options] as JSON)
     }
 
@@ -147,7 +147,7 @@ class MoodController {
                                xAxis: [axisLabel: message(code: 'is.chart.releaseUserMood.xaxis.label')]],
                        title: [text: message(code: "is.chart.releaseUserMood.title")]]
         def sprintLabel = sprintDone.collect { message(code:'is.sprint') + ' ' + it.orderNumber }
-        def moodLabel = [message(code: "is.panel.mood.bad"), message(code: "is.panel.mood.meh"), message(code: "is.panel.mood.good")]
+        def moodLabel = [message(code: "is.ui.widget.mood.bad"), message(code: "is.ui.widget.mood.meh"), message(code: "is.ui.widget.mood.good")]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: sprintLabel,labelsY: moodLabel, options: options] as JSON)
     }
 }
