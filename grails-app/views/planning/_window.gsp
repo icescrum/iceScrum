@@ -133,7 +133,7 @@
                         </span>
                     </div>
                     <div class="sub-title text-muted">
-                        {{ sprint.startDate | dateShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dateShorter }}
+                        {{ sprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dayShorter }}
                     </div>
                 </h3>
             </div>

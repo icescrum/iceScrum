@@ -330,7 +330,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     });
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
+controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
 
     $controller('abstractProjectCtrl', {$scope: $scope});
     $scope.type = 'newProject';
@@ -357,7 +357,7 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'U
         return true;
     };
     $scope.computePlanning = function() {
-        $scope.totalDuration = $scope.durationBetweenDates($scope.project.firstSprint, $scope.project.endDate);
+        $scope.totalDuration = DateService.daysBetweenDays($scope.project.firstSprint, $scope.project.endDate);
         if ($scope.project.preferences.estimatedSprintsDuration > $scope.totalDuration) {
             $scope.project.preferences.estimatedSprintsDuration = $scope.totalDuration;
         }
@@ -365,8 +365,8 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'U
         var nbSprints = Math.floor($scope.totalDuration / sprintDuration);
         $scope.sprints = [];
         for (var i = 1; i <= nbSprints; i++) {
-            var startDate = $scope.immutableAddDaysToDate($scope.project.firstSprint, (i - 1) * sprintDuration);
-            var endDate = $scope.immutableAddDaysToDate(startDate, sprintDuration);
+            var startDate = DateService.immutableAddDaysToDate($scope.project.firstSprint, (i - 1) * sprintDuration);
+            var endDate = DateService.immutableAddDaysToDate(startDate, sprintDuration);
             $scope.sprints.push({orderNumber: i, startDate: startDate, endDate: endDate});
         }
     };
@@ -377,9 +377,8 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'U
     };
     // Init
     $scope.project = new Project();
-    var today = new Date();
-    today.setHours(0, 0, 0, 0);
-    var endDate = $scope.immutableAddMonthsToDate(today, 3);
+    var today = DateService.getMidnightTodayUTC();
+    var endDate = DateService.immutableAddMonthsToDate(today, 3);
     angular.extend($scope.project, {
         startDate: today,
         firstSprint: today,
@@ -405,8 +404,8 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'U
         var startDate = newValues[0];
         var endDate = newValues[1];
         var firstSprint = newValues[2];
-        $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(firstSprint, 1);
-        $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
+        $scope.endDateOptions.minDate = DateService.immutableAddDaysToDate(firstSprint, 1);
+        $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         $scope.firstSprintOptions.maxDate = $scope.startDateOptions.maxDate;
         $scope.firstSprintOptions.minDate = startDate;
     });

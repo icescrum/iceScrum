@@ -63,6 +63,7 @@
                                required
                                name="release.startDate"
                                ng-model="release.startDate"
+                               ng-model-options="{timezone: 'utc'}"
                                uib-datepicker-popup
                                datepicker-options="startDateOptions"
                                is-open="startDateOptions.opened"/>
@@ -76,6 +77,7 @@
                                required
                                name="release.endDate"
                                ng-model="release.endDate"
+                               ng-model-options="{timezone: 'utc'}"
                                uib-datepicker-popup
                                datepicker-options="endDateOptions"
                                is-open="endDateOptions.opened"/>

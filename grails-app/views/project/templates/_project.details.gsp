@@ -29,8 +29,8 @@
             <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
         </uib-progress>
         <div class="row project-rel-dates">
-            <div class="col-md-6">{{ release.startDate | date: message('is.date.format.short') }}</div>
-            <div class="col-md-6 text-right">{{ release.endDate | date: message('is.date.format.short') }}</div>
+            <div class="col-md-6">{{ release.startDate | dayShort }}</div>
+            <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>
         </div>
     </div>
 </script>

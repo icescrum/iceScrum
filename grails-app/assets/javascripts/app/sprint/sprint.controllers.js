@@ -116,7 +116,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
     StoryService.listByType($scope.sprint); // will trigger the update automatically through the watch
 }]);
 
-controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', 'detailsRelease', function($scope, $controller, $state, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases, detailsRelease) {
+controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'DateService', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', 'detailsRelease', function($scope, $controller, $state, DateService, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases, detailsRelease) {
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     // Functions
     $scope.resetSprintForm = function() {
@@ -148,11 +148,11 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
             if (_.isEmpty(sprints)) {
                 $scope.startDateOptions.minDate = $scope.release.startDate;
             } else {
-                $scope.startDateOptions.minDate = $scope.immutableAddDaysToDate(_.max(_.map($scope.release.sprints, 'endDate')), 1);
+                $scope.startDateOptions.minDate = DateService.immutableAddDaysToDate(_.max(_.map($scope.release.sprints, 'endDate')), 1);
             }
             $scope.sprint.startDate = $scope.startDateOptions.minDate;
             var sprintDuration = $scope.project.preferences.estimatedSprintsDuration;
-            var hypotheticalEndDate = $scope.immutableAddDaysToDate($scope.sprint.startDate, sprintDuration);
+            var hypotheticalEndDate = DateService.immutableAddDaysToDate($scope.sprint.startDate, sprintDuration);
             $scope.sprint.endDate = _.min([hypotheticalEndDate, $scope.release.endDate]);
         }
     };
@@ -162,10 +162,10 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
-            $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(startDate, 1);
+            $scope.endDateOptions.minDate = DateService.immutableAddDaysToDate(startDate, 1);
         }
         if (endDate) {
-            $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
+            $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         }
     });
     $scope.formHolder = {};
@@ -182,7 +182,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Spr
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', 'detailsRelease', function($scope, $controller, SprintStatesByName, SprintService, ReleaseService, FormService, detailsSprint, detailsRelease) {
+controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'DateService', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', 'detailsRelease', function($scope, $controller, SprintStatesByName, DateService, SprintService, ReleaseService, FormService, detailsSprint, detailsRelease) {
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint'});
     // Functions
@@ -220,17 +220,17 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
             var previousSprint = _.findLast(_.sortBy(sprints, 'orderNumber'), function(sprint) {
                 return sprint.orderNumber < $scope.sprint.orderNumber;
             });
-            $scope.startDateOptions.minDate = _.isEmpty(previousSprint) ? $scope.release.startDate : $scope.immutableAddDaysToDate(previousSprint.endDate, 1);
+            $scope.startDateOptions.minDate = _.isEmpty(previousSprint) ? $scope.release.startDate : DateService.immutableAddDaysToDate(previousSprint.endDate, 1);
         }
     });
     $scope.$watchCollection('[editableSprint.startDate, editableSprint.endDate]', function(newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
-            $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(startDate, 1);
+            $scope.endDateOptions.minDate = DateService.immutableAddDaysToDate(startDate, 1);
         }
         if (endDate) {
-            $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
+            $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         }
     });
     $scope.formHolder = {};

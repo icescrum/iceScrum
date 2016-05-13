@@ -78,14 +78,12 @@ angular.module('isApp', [
         'angular.atmosphere',
         'nvd3'
     ].concat(isSettings.plugins)
-).config(['stateHelperProvider', '$httpProvider', '$urlRouterProvider', '$stateProvider', function(stateHelperProvider, $httpProvider, $urlRouterProvider, $stateProvider) {
-    $httpProvider.interceptors.push([
-        '$injector',
-        function($injector) {
-            return $injector.get('AuthInterceptor');
-        }
-    ]);
-
+)
+.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.interceptors.push(['$injector', function($injector) { return $injector.get('AuthInterceptor'); }]);
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+}])
+.config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider) {
     $stateProvider.decorator('parent', function(state, parentFn) {
         state.self.$$state = function() {
             return state;
@@ -96,8 +94,8 @@ angular.module('isApp', [
         return parentFn(state);
     });
 
-    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     $urlRouterProvider.when('', '/');
+
     var getDetailsModalState = function(detailsType, options) {
         return _.merge({
             name: detailsType,
@@ -895,17 +893,6 @@ angular.module('isApp', [
         });
     };
 
-    $rootScope.immutableAddDaysToDate = function(date, days) {
-        var newDate = new Date(date);
-        newDate.setDate(date.getDate() + days);
-        return newDate;
-    };
-    $rootScope.immutableAddMonthsToDate = function(date, months) {
-        var newDate = new Date(date);
-        newDate.setMonth(date.getMonth() + months);
-        return newDate;
-    };
-
     $rootScope.showAuthModal = function(username, loginSuccess, loginFailure) {
         var childScope = $rootScope.$new();
         if (username) {
@@ -989,11 +976,6 @@ angular.module('isApp', [
             }],
             size: 'lg'
         });
-    };
-
-    $rootScope.durationBetweenDates = function(startDateString, endDateString) {
-        var duration = new Date(endDateString) - new Date(startDateString);
-        return Math.floor(duration / (1000 * 3600 * 24)) + 1;
     };
 
     $rootScope.openProject = function(project) {

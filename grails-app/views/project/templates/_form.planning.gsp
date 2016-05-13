@@ -47,6 +47,7 @@
                        class="form-control"
                        name="project.startDate"
                        ng-model="project.startDate"
+                       ng-model-options="{timezone: 'utc'}"
                        uib-datepicker-popup
                        is-open="startDateOptions.opened"
                        datepicker-options="startDateOptions"
@@ -85,6 +86,7 @@
                        class="form-control"
                        name="project.firstSprint"
                        ng-model="project.firstSprint"
+                       ng-model-options="{timezone: 'utc'}"
                        ng-change="computePlanning()"
                        uib-datepicker-popup
                        is-open="firstSprintOptions.opened"
@@ -114,6 +116,7 @@
                        class="form-control text-right"
                        name="project.endDate"
                        ng-model="project.endDate"
+                       ng-model-options="{timezone: 'utc'}"
                        ng-change="computePlanning()"
                        uib-datepicker-popup
                        is-open="endDateOptions.opened"

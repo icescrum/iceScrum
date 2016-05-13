@@ -81,6 +81,7 @@
                                    name="sprint.startDate"
                                    ng-disabled="!authorizedSprint('updateStartDate', sprint)"
                                    ng-model="editableSprint.startDate"
+                                   ng-model-options="{timezone: 'utc'}"
                                    uib-datepicker-popup
                                    datepicker-options="startDateOptions"
                                    is-open="startDateOptions.opened"/>
@@ -105,6 +106,7 @@
                                    name="sprint.endDate"
                                    ng-disabled="!authorizedSprint('updateEndDate', sprint)"
                                    ng-model="editableSprint.endDate"
+                                   ng-model-options="{timezone: 'utc'}"
                                    uib-datepicker-popup
                                    datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>

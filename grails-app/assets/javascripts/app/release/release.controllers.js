@@ -66,7 +66,7 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'S
     $scope.endDateOptions = angular.copy($scope.startDateOptions);
 }]);
 
-controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'ReleaseService', 'hotkeys', function($scope, $controller, $state, ReleaseService, hotkeys) {
+controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'DateService', 'ReleaseService', 'hotkeys', function($scope, $controller, $state, DateService, ReleaseService, hotkeys) {
     $controller('releaseCtrl', {$scope: $scope}); // inherit from releaseCtrl
     // Functions
     $scope.resetReleaseForm = function() {
@@ -91,20 +91,20 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
             if (_.isEmpty(releases)) {
                 $scope.startDateOptions.minDate = $scope.project.startDate;
             } else {
-                $scope.startDateOptions.minDate = $scope.immutableAddDaysToDate(_.max(_.map($scope.project.releases, 'endDate')), 1);
+                $scope.startDateOptions.minDate = DateService.immutableAddDaysToDate(_.max(_.map($scope.project.releases, 'endDate')), 1);
             }
             $scope.release.startDate = $scope.startDateOptions.minDate;
-            $scope.release.endDate = $scope.immutableAddMonthsToDate($scope.release.startDate, 3);
+            $scope.release.endDate = DateService.immutableAddMonthsToDate($scope.release.startDate, 3);
         }
     });
     $scope.$watchCollection('[release.startDate, release.endDate]', function(newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
-            $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(startDate, 1);
+            $scope.endDateOptions.minDate = DateService.immutableAddDaysToDate(startDate, 1);
         }
         if (endDate) {
-            $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
+            $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         }
     });
     $scope.formHolder = {};
@@ -116,7 +116,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Re
     });
 }]);
 
-controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $controller, ReleaseStatesByName, ReleaseService, FormService, detailsRelease) {
+controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'DateService', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $controller, ReleaseStatesByName, DateService, ReleaseService, FormService, detailsRelease) {
     $controller('releaseCtrl', {$scope: $scope}); // inherit from releaseCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsRelease, clazz: 'release'});
     // Functions
@@ -154,7 +154,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
             if (_.isEmpty($scope.previousRelease)) {
                 $scope.startDateOptions.minDate = $scope.project.startDate;
             } else {
-                $scope.startDateOptions.minDate = $scope.immutableAddDaysToDate($scope.previousRelease.endDate, 1);
+                $scope.startDateOptions.minDate = DateService.immutableAddDaysToDate($scope.previousRelease.endDate, 1);
             }
         }
     });
@@ -162,10 +162,10 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
         var startDate = newValues[0];
         var endDate = newValues[1];
         if (startDate) {
-            $scope.endDateOptions.minDate = $scope.immutableAddDaysToDate(startDate, 1);
+            $scope.endDateOptions.minDate = DateService.immutableAddDaysToDate(startDate, 1);
         }
         if (endDate) {
-            $scope.startDateOptions.maxDate = $scope.immutableAddDaysToDate(endDate, -1);
+            $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         }
     });
     $scope.formHolder = {};

@@ -92,6 +92,7 @@
                                    name="release.startDate"
                                    ng-disabled="!authorizedRelease('updateDates', release)"
                                    ng-model="editableRelease.startDate"
+                                   ng-model-options="{timezone: 'utc'}"
                                    uib-datepicker-popup
                                    datepicker-options="startDateOptions"
                                    is-open="startDateOptions.opened"/>
@@ -116,6 +117,7 @@
                                    name="release.endDate"
                                    ng-disabled="!authorizedRelease('updateDates', release)"
                                    ng-model="editableRelease.endDate"
+                                   ng-model-options="{timezone: 'utc'}"
                                    uib-datepicker-popup
                                    datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>

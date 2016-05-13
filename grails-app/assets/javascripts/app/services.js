@@ -550,3 +550,30 @@ services.service("ExtensionService", ['FormService', function(FormService) {
         return FormService.httpGet('extensions', null, true);
     };
 }]);
+
+services.service("DateService", [function() {
+    var self = this;
+    this.immutableAddDaysToDate = function(date, days) {
+        var newDate = new Date(date);
+        newDate.setDate(date.getDate() + days);
+        return newDate;
+    };
+    this.immutableAddMonthsToDate = function(date, months) {
+        var newDate = new Date(date);
+        newDate.setMonth(date.getMonth() + months);
+        return newDate;
+    };
+    this.getMidnightTodayUTC = function() {
+        var today = new Date();
+        today.setHours(0, 0, 0, 0); // Midnight
+        today.setMinutes(-today.getTimezoneOffset()); // UTC
+        return today;
+    };
+    this.daysBetweenDates = function(startDate, endDate) {
+        var duration = new Date(endDate) - new Date(startDate); // Ensure that we have dates
+        return Math.floor(duration / (1000 * 3600 * 24));
+    };
+    this.daysBetweenDays = function(firstDay, lastDay) {
+        return self.daysBetweenDates(firstDay, lastDay) + 1; // e.g. from 14/05 to 15/05 it is two days of work, whereas it is only one day in dates
+    };
+}]);

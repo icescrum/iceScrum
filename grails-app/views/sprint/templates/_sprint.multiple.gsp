@@ -59,8 +59,8 @@
         <div class="table-responsive">
             <table class="table">
                 <tr><td>${message(code: 'is.release')}</td><td>{{ release.name }}</td></tr>
-                <tr><td>${message(code: 'todo.is.ui.sprint.multiple.startDate')}</td><td>{{ startDate | dateShort }}</td></tr>
-                <tr><td>${message(code: 'todo.is.ui.sprint.multiple.endDate')}</td><td>{{ endDate | dateShort }}</td></tr>
+                <tr><td>${message(code: 'todo.is.ui.sprint.multiple.startDate')}</td><td>{{ startDate | dayShort }}</td></tr>
+                <tr><td>${message(code: 'todo.is.ui.sprint.multiple.endDate')}</td><td>{{ endDate | dayShort }}</td></tr>
                 <tr><td>${message(code: 'todo.is.ui.sprint.multiple.story.sum')}</td><td>{{ sumStory }}</td></tr>
                 <tr><td>${message(code: 'todo.is.ui.sprint.multiple.story.mean')}</td><td>{{ meanStory }}</td></tr>
                 <tr><td>${message(code: 'todo.is.ui.sprint.multiple.velocity.mean')}</td><td>{{ meanVelocity }}</td></tr>

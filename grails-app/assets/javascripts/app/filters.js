@@ -308,13 +308,17 @@ filters
         return function(date) {
             return dateFilter(date, $rootScope.message('is.date.format.short.time'));
         };
-    }]).filter('dateShort', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
-        return function(date) {
-            return dateFilter(date, $rootScope.message('is.date.format.short'));
-        };
     }]).filter('dateShorter', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
         return function(date) {
             return dateFilter(date, $rootScope.message('is.date.format.shorter'));
+        };
+    }]).filter('dayShort', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
+        return function(date) {
+            return dateFilter(date, $rootScope.message('is.date.format.short'), 'utc');
+        };
+    }]).filter('dayShorter', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
+        return function(date) {
+            return dateFilter(date, $rootScope.message('is.date.format.shorter'), 'utc');
         };
     }]).filter('orElse', [function() {
         return function(value, defaultValue) {

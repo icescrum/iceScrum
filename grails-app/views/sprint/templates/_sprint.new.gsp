@@ -63,6 +63,7 @@
                                required
                                name="sprint.startDate"
                                ng-model="sprint.startDate"
+                               ng-model-options="{timezone: 'utc'}"
                                uib-datepicker-popup
                                datepicker-options="startDateOptions"
                                is-open="startDateOptions.opened"/>
@@ -76,6 +77,7 @@
                                required
                                name="sprint.endDate"
                                ng-model="sprint.endDate"
+                               ng-model-options="{timezone: 'utc'}"
                                uib-datepicker-popup
                                datepicker-options="endDateOptions"
                                is-open="endDateOptions.opened"/>

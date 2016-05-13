@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('activityCtrl', ['$scope', '$state', 'ActivityService', 'selected', function($scope, $state, ActivityService, selected) {
+controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'ActivityService', 'selected', function($scope, $state, DateService, ActivityService, selected) {
     //activities are ugly but it's working..
     $scope.activities = function(fluxiable, all) {
         $scope.allActivities = all;
@@ -51,7 +51,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', 'ActivityService', '
             activity.count = 1;
             if (_.isEmpty(groupedActivities) ||
                 _.last(groupedActivities).poster.id != activity.poster.id ||
-                new Date(_.last(groupedActivities).dateCreated).getTime() - 86400000 > new Date(activity.dateCreated).getTime()) {
+                DateService.daysBetweenDates(_.last(groupedActivities).dateCreated, activity.dateCreated) > 0) {
                 groupedActivities.push({
                     poster: activity.poster,
                     dateCreated: activity.dateCreated,
