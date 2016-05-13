@@ -1,25 +1,25 @@
-    /*
- * Copyright (c) 2015 Kagilum.
- *
- * This file is part of iceScrum.
- *
- * iceScrum is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License.
- *
- * iceScrum is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Authors:
- *
- * Marwah Soltani (msoltani@kagilum.com)
- *
- */
+/*
+* Copyright (c) 2015 Kagilum.
+*
+* This file is part of iceScrum.
+*
+* iceScrum is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License.
+*
+* iceScrum is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Authors:
+*
+* Marwah Soltani (msoltani@kagilum.com)
+*
+*/
 package org.icescrum.web.presentation.windows
 
 import grails.converters.JSON
@@ -58,25 +58,19 @@ class MoodController {
         }
     }
 
-    def listByUser() {
+    def show() {
         def today = new Date().clearTime()
-        def moods = Mood.findAllByUserAndFeelingDay((User) springSecurityService.currentUser, today)
-        render(status: 200, contentType: 'application/json', text: moods as JSON)
-    }
-
-    def isAlreadySavedToday() {
-        def today = new Date().clearTime()
-        def moodCount = Mood.countByFeelingDayAndUser(today, (User) springSecurityService.currentUser)
-        render(status: 200, contentType: 'application/json', text: [value: moodCount > 0] as JSON)
+        def mood = Mood.findByUserAndFeelingDay((User) springSecurityService.currentUser, today)
+        render(status: 200, contentType: 'application/json', text: mood as JSON)
     }
 
     // Current user mood by day for current last days
     def chart() {
         def user = (User) springSecurityService.currentUser
         def values = Mood.findAllByUser(user)
-        def lastDays= new Date() - 14
+        def lastDays = new Date() - 14
         def computedValues = [[key   : message(code: 'todo.is.ui.mymood'),
-                               values: values.findAll { it.feelingDay >= lastDays}.collect {
+                               values: values.findAll { it.feelingDay >= lastDays }.collect {
                                    return [it.feelingDay.time, it.feeling]
                                }]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.moodUser.yaxis.label')],
@@ -107,7 +101,7 @@ class MoodController {
                                xAxis: [axisLabel: message(code: 'is.chart.sprintUserMood.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintUserMood.title")]]
         def moodLabel = [message(code: "is.ui.widget.mood.bad"), message(code: "is.ui.widget.mood.meh"), message(code: "is.ui.widget.mood.good")]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues,labelsY: moodLabel, options: options] as JSON)
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsY: moodLabel, options: options] as JSON)
     }
 
     def releaseUserMood(long product) {
@@ -146,8 +140,8 @@ class MoodController {
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseUserMood.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.releaseUserMood.xaxis.label')]],
                        title: [text: message(code: "is.chart.releaseUserMood.title")]]
-        def sprintLabel = sprintDone.collect { message(code:'is.sprint') + ' ' + it.orderNumber }
+        def sprintLabel = sprintDone.collect { message(code: 'is.sprint') + ' ' + it.orderNumber }
         def moodLabel = [message(code: "is.ui.widget.mood.bad"), message(code: "is.ui.widget.mood.meh"), message(code: "is.ui.widget.mood.good")]
-        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: sprintLabel,labelsY: moodLabel, options: options] as JSON)
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: sprintLabel, labelsY: moodLabel, options: options] as JSON)
     }
 }

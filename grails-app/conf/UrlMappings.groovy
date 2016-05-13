@@ -329,6 +329,11 @@ class UrlMappings {
                 product(matches: /\d*/)
             }
         }
+        // Mood
+        "/mood" {
+            controller = 'mood'
+            action = [GET: "show", POST: "save"]
+        }
         // Widget
         "/widget/feed" {
             controller = 'feed'

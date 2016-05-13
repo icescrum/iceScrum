@@ -27,13 +27,10 @@ services.factory('Mood', ['Resource', function($resource) {
 services.service("MoodService", ['Mood', function(Mood) {
     this.save = function(mood) {
         mood.class = 'mood';
-        return Mood.save({action: 'save'}, mood).$promise;
+        return Mood.save(mood).$promise;
     };
-    this.listByUser = function() {
-        return Mood.query({action: 'listByUser'}).$promise;
-    };
-    this.isAlreadySavedToday = function() {
-        return Mood.get({action: 'isAlreadySavedToday'}).$promise;
+    this.get = function() {
+        return Mood.get().$promise;
     };
     this.openChart = function(chart, project) {
         var settings = {action: chart};

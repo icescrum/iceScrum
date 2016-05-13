@@ -22,29 +22,17 @@
 
 controllers.controller('moodCtrl', ['$scope', 'MoodService', 'MoodFeelingsByName', function($scope, MoodService, MoodFeelingsByName) {
     $scope.save = function(feelingString) {
-        var mood = {feeling: MoodFeelingsByName[feelingString]};
-        MoodService.save(mood)
-            .then(function(savedMood) {
-                $scope.mood = savedMood;
-                $scope.alreadySavedToday = true;
-                $scope.listMoodsIfNeeded();
-            });
-    };
-    $scope.listMoodsIfNeeded = function() {
-        if ($scope.alreadySavedToday) {
-            MoodService.listByUser()
-                .then(function(moods) {
-                    $scope.moods = moods;
-                });
-        }
+        MoodService.save({feeling: MoodFeelingsByName[feelingString]}).then(function(mood) {
+            $scope.mood = mood;
+        });
     };
     // Init
-    $scope.moods = [];
-    MoodService.isAlreadySavedToday()
-        .then(function(data) {
-            $scope.alreadySavedToday = data.value;
-            $scope.listMoodsIfNeeded();
-        });
+    $scope.mood = null;
+    MoodService.get().then(function(mood) {
+        if (mood.id) {
+            $scope.mood = mood
+        }
+    });
 }]);
 
 controllers.controller('moodChartCtrl', ['$scope', 'MoodService', '$element', '$filter', function($scope, MoodService, $element, $filter) {

@@ -1,5 +1,5 @@
 <is:widget widgetDefinition="${widgetDefinition}">
-    <div ng-controller="moodCtrl" ng-switch="alreadySavedToday">
+    <div ng-controller="moodCtrl" ng-switch="mood != null">
         <div ng-switch-default>
             ${message(code: 'is.ui.widget.mood.day')}
             <div class="text-center">
@@ -9,10 +9,7 @@
             </div>
         </div>
         <div ng-switch-when="true">
-            <table ng-repeat="mood in moods">
-                <tr><td>${message(code: 'is.ui.widget.mood.feeling')} {{mood.feeling | i18n:'MoodFeelings'}}</td>
-                </tr>
-            </table>
+            ${message(code: 'is.ui.widget.mood.feeling')} {{mood.feeling | i18n:'MoodFeelings'}}
             <div ng-controller="moodChartCtrl">
                 <div class="panel-body">
                     <nvd3 options="options" data="data"></nvd3>
