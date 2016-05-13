@@ -65,7 +65,13 @@ class StoryController {
                 }
             }
         }
-        def stories = Story.search(product, options).sort { Story story -> story.id }
+        def stories
+        try {
+            stories = Story.search(product, options).sort { Story story -> story.id }
+        } catch (RuntimeException e) {
+            returnError(text: message(code: 'todo.is.ui.search.error'), exception: e)
+            return
+        }
         withFormat {
             html { render(status: 200, text: stories as JSON, contentType: 'application/json') }
             json { renderRESTJSON(text: stories) }
