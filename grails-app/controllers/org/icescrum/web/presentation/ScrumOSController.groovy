@@ -177,6 +177,7 @@ class ScrumOSController {
                        product: params.long('product') ? Product.get(params.product) : null,
                        roles: securityService.getRolesRequest(false),
                        i18nMessages: messageSource.getAllMessages(RCU.getLocale(request)),
+                       resourceBundles: grailsApplication.config.icescrum.resourceBundles,
                        applicationMenus: applicationMenus])
     }
 

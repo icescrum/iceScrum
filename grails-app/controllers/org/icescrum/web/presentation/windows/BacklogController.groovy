@@ -29,7 +29,6 @@ import org.icescrum.core.domain.Backlog
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
-import org.icescrum.core.utils.BundleUtils
 
 import static grails.async.Promises.task
 
@@ -37,6 +36,7 @@ import static grails.async.Promises.task
 class BacklogController {
 
     def springSecurityService
+    def grailsApplication
 
     @Secured(['stakeHolder() or inProduct()'])
     def index(long product) {
@@ -65,7 +65,7 @@ class BacklogController {
                             name         : it.name,
                             description  : it.description,
                             notes        : it.notes?.replaceAll(/<.*?>/, ''),
-                            type         : message(code: BundleUtils.storyTypes[it.type]),
+                            type         : message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.type]),
                             suggestedDate: it.suggestedDate,
                             creator      : it.creator.firstName + ' ' + it.creator.lastName,
                             feature      : it.feature?.name,

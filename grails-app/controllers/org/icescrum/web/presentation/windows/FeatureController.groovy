@@ -24,7 +24,6 @@
 
 package org.icescrum.web.presentation.windows
 
-import org.icescrum.core.utils.BundleUtils
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
@@ -38,6 +37,7 @@ class FeatureController {
 
     def featureService
     def springSecurityService
+    def grailsApplication
 
     def index() {
         def features = Feature.searchAllByTermOrTag(params.long('product'), params.term).sort { Feature feature -> feature.rank }
@@ -161,7 +161,7 @@ class FeatureController {
                                 description: feature.description,
                                 notes: feature.notes?.replaceAll(/<.*?>/, ''),
                                 rank: feature.rank,
-                                type: message(code: BundleUtils.featureTypes[feature.type]),
+                                type: message(code: grailsApplication.config.icescrum.resourceBundles.featureTypes[feature.type]),
                                 value: feature.value,
                                 effort: feature.effort,
                                 associatedStories: Story.countByFeature(feature),

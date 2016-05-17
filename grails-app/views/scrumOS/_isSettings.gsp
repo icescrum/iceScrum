@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.utils.BundleUtils; grails.converters.JSON;" %>
+<%@ page import="grails.converters.JSON;" %>
 <script type="text/javascript">
     var isSettings = {
         user: ${user as JSON},
@@ -31,15 +31,15 @@
         bundles: ${is.i18nBundle() as JSON},
         applicationMenus: ${applicationMenus as JSON},
         types: {
-            task:${BundleUtils.taskTypes.keySet() as JSON},
-            story:${BundleUtils.storyTypes.keySet() as JSON},
-            feature:${BundleUtils.featureTypes.keySet() as JSON},
-            planningPoker:${BundleUtils.planningPokerGameSuites.keySet() as JSON}
+            task:${resourceBundles.taskTypes.keySet() as JSON},
+            story:${resourceBundles.storyTypes.keySet() as JSON},
+            feature:${resourceBundles.featureTypes.keySet() as JSON},
+            planningPoker:${resourceBundles.planningPokerGameSuites.keySet() as JSON}
         },
         states: {
-            task: ${BundleUtils.taskStates.keySet() as JSON},
-            story: ${BundleUtils.storyStates.keySet() as JSON},
-            acceptanceTest: ${BundleUtils.acceptanceTestStates.keySet() as JSON}
+            task: ${resourceBundles.taskStates.keySet() as JSON},
+            story: ${resourceBundles.storyStates.keySet() as JSON},
+            acceptanceTest: ${resourceBundles.acceptanceTestStates.keySet() as JSON}
         },
         plugins: [],
         controllerHooks: {},

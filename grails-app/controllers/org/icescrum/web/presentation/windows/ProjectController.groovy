@@ -38,7 +38,6 @@ import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
-import org.icescrum.core.utils.BundleUtils
 import org.icescrum.core.utils.ServicesUtils
 
 import static grails.async.Promises.task
@@ -534,7 +533,7 @@ class ProjectController {
                 chart = 'timeline'
                 data = [
                         [
-                                releaseStateBundle: BundleUtils.releaseStates,
+                                releaseStateBundle: grailsApplication.config.icescrum.resourceBundles.releaseStates,
                                 releases: _product.releases,
                                 productCumulativeFlowChart: productService.cumulativeFlowValues(_product),
                                 productBurnupChart: productService.productBurnupValues(_product),
@@ -576,10 +575,10 @@ class ProjectController {
                         name: it.name,
                         id: it.uid,
                         effort: it.effort,
-                        state: message(code: BundleUtils.storyStates[it.state]),
+                        state: message(code: grailsApplication.config.icescrum.resourceBundles.storyStates[it.state]),
                         description: is.storyDescription([story: it, displayBR: true]),
                         notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
-                        type: message(code: BundleUtils.storyTypes[it.type]),
+                        type: message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.type]),
                         suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.suggestedDate]) : null,
                         acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.acceptedDate]) : null,
                         estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.estimatedDate]) : null,

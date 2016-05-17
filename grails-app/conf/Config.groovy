@@ -27,9 +27,17 @@ import grails.util.Metadata
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
+import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.Activity
+import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.PlanningPokerGame
 import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Task
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.web.JQueryProvider
 
@@ -99,6 +107,67 @@ grails.mail.props = ["mail.smtp.auth":"true",
 
 /* Push */
 icescrum.push.enable = true
+
+icescrum.resourceBundles = [
+        featureTypes: [
+                (Feature.TYPE_FUNCTIONAL): 'is.feature.type.functional',
+                (Feature.TYPE_ARCHITECTURAL): 'is.feature.type.architectural'
+        ],
+        featureStates: [
+                (Feature.STATE_WAIT): 'is.feature.state.wait',
+                (Feature.STATE_BUSY): 'is.feature.state.inprogress',
+                (Feature.STATE_DONE): 'is.feature.state.done'
+        ],
+        storyStates: [
+                (Story.STATE_SUGGESTED): 'is.story.state.suggested',
+                (Story.STATE_ACCEPTED): 'is.story.state.accepted',
+                (Story.STATE_ESTIMATED): 'is.story.state.estimated',
+                (Story.STATE_PLANNED): 'is.story.state.planned',
+                (Story.STATE_INPROGRESS): 'is.story.state.inprogress',
+                (Story.STATE_DONE): 'is.story.state.done'
+        ],
+        storyTypes: [
+                (Story.TYPE_USER_STORY): 'is.story.type.story',
+                (Story.TYPE_DEFECT): 'is.story.type.defect',
+                (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
+        ],
+        releaseStates: [
+                (Release.STATE_WAIT): 'is.release.state.wait',
+                (Release.STATE_INPROGRESS): 'is.release.state.inprogress',
+                (Release.STATE_DONE): 'is.release.state.done'
+        ],
+        sprintStates: [
+                (Sprint.STATE_WAIT): 'is.sprint.state.wait',
+                (Sprint.STATE_INPROGRESS): 'is.sprint.state.inprogress',
+                (Sprint.STATE_DONE): 'is.sprint.state.done'
+        ],
+        taskStates: [
+                (Task.STATE_WAIT): 'is.task.state.wait',
+                (Task.STATE_BUSY): 'is.task.state.inprogress',
+                (Task.STATE_DONE): 'is.task.state.done'
+        ],
+        taskTypes: [
+                (Task.TYPE_RECURRENT) : 'is.task.type.recurrent',
+                (Task.TYPE_URGENT) : 'is.task.type.urgent'
+        ],
+        roles: [
+                (Authority.MEMBER): 'is.role.teamMember',
+                (Authority.SCRUMMASTER): 'is.role.scrumMaster',
+                (Authority.PRODUCTOWNER): 'is.role.productOwner',
+                (Authority.STAKEHOLDER): 'is.role.stakeHolder',
+                (Authority.PO_AND_SM): 'is.role.poAndSm'
+        ],
+        planningPokerGameSuites: [
+                (PlanningPokerGame.FIBO_SUITE): 'is.estimationSuite.fibonacci',
+                (PlanningPokerGame.INTEGER_SUITE): 'is.estimationSuite.integer',
+                (PlanningPokerGame.CUSTOM_SUITE): 'is.estimationSuite.custom',
+        ],
+        acceptanceTestStates: [
+                (AcceptanceTest.AcceptanceTestState.TOCHECK.id): 'is.acceptanceTest.state.tocheck',
+                (AcceptanceTest.AcceptanceTestState.FAILED.id): 'is.acceptanceTest.state.failed',
+                (AcceptanceTest.AcceptanceTestState.SUCCESS.id): 'is.acceptanceTest.state.success'
+        ]
+]
 
 //remove total*
 icescrum.marshaller = [

@@ -27,8 +27,6 @@ package org.icescrum.presentation.taglib
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
-import org.icescrum.core.utils.BundleUtils
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 class UtilsTagLib {
 
@@ -62,10 +60,8 @@ class UtilsTagLib {
     }
 
     def i18nBundle = {
-        def bundles = ['storyStates', 'storyTypes', 'taskStates', 'taskTypes', 'featureTypes', 'featureStates', 'sprintStates',
-                       'releaseStates', 'planningPokerGameSuites', 'acceptanceTestStates']
-        return bundles.collectEntries { bundleName -> [
-            (bundleName.capitalize()): BundleUtils."$bundleName".collectEntries { k, v -> [(k): message(code: v)]}
+        return grailsApplication.config.icescrum.resourceBundles.collectEntries { bundleName, values -> [
+            (bundleName.capitalize()): values.collectEntries { k, v -> [(k): message(code: v)]}
         ]}
     }
 
