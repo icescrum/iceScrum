@@ -44,5 +44,6 @@
         plugins: [],
         controllerHooks: {},
         serverUrl: "${grailsApplication.config.grails.serverURL}"
+        <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, product:product]"/>
     };
 </script>

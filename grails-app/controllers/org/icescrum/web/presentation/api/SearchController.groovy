@@ -78,12 +78,6 @@ class SearchController {
             tags = tags.collect { BacklogElement.TAG_KEYWORD + it }
         }
 
-        withFormat{
-            html {
-                render tags as JSON
-            }
-            json { renderRESTJSON(text:tags.unique()) }
-            xml  { renderRESTXML(text:tags.unique()) }
-        }
+        render tags as JSON
     }
 }

@@ -53,22 +53,14 @@ class TaskController {
                 }
             }
         }
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: tasks as JSON) }
-            json { renderRESTJSON(text: tasks) }
-            xml { renderRESTXML(text: tasks) }
-        }
+        render(status: 200, contentType: 'application/json', text: tasks as JSON)
     }
 
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def show(long id, long product) {
         Task task = Task.withTask(product, id)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: task as JSON }
-            json { renderRESTJSON text: task }
-            xml { renderRESTXML text: task }
-        }
+        render status: 200, contentType: 'application/json', text: task as JSON
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -96,11 +88,7 @@ class TaskController {
                 taskService.save(task, springSecurityService.currentUser)
                 task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
             }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                json { renderRESTJSON(status: 201, text: task) }
-                xml { renderRESTXML(status: 201, text: task) }
-            }
+            render(status: 200, contentType: 'application/json', text: task as JSON)
         } catch (IllegalStateException e) {
             returnError(exception: e)
         } catch (RuntimeException e) {
@@ -146,11 +134,7 @@ class TaskController {
             }
             taskService.update(task, user, false, props)
             task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: task as JSON) }
-                json { renderRESTJSON(text: task) }
-                xml { renderRESTXML(text: task) }
-            }
+            render(status: 200, contentType: 'application/json', text: task as JSON)
         }
     }
 
@@ -164,11 +148,7 @@ class TaskController {
             }
         }
         def returnData = tasks.size() > 1 ? tasks.collect { [id: it.id] } : (tasks ? [id: tasks.first().id] : [:])
-        withFormat {
-            html { render(status: 200, text: returnData as JSON) }
-            json { render(status: 204) }
-            xml { render(status: 204) }
-        }
+        render(status: 200, text: returnData as JSON)
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -179,11 +159,7 @@ class TaskController {
             task.responsible = user
             taskService.update(task, user)
         }
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: task as JSON) }
-            json { renderRESTJSON(text: task) }
-            xml { renderRESTXML(text: task) }
-        }
+        render(status: 200, contentType: 'application/json', text: task as JSON)
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -203,11 +179,7 @@ class TaskController {
             task.state = Task.STATE_WAIT
             taskService.update(task, user)
         }
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: task as JSON) }
-            json { renderRESTJSON(text: task) }
-            xml { renderRESTXML(text: task) }
-        }
+        render(status: 200, contentType: 'application/json', text: task as JSON)
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -215,11 +187,7 @@ class TaskController {
         Task task = Task.withTask(product, id)
         User user = (User) springSecurityService.currentUser
         def copiedTask = taskService.copy(task, user)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: copiedTask as JSON) }
-            json { renderRESTJSON(text: copiedTask, status: 201) }
-            xml { renderRESTXML(text: copiedTask, status: 201) }
-        }
+        render(status: 200, contentType: 'application/json', text: copiedTask as JSON)
     }
 
     @Secured('isAuthenticated()')

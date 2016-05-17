@@ -43,11 +43,7 @@ class AttachmentController {
     def index() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: attachmentable.attachments as JSON) }
-                json { renderRESTJSON(text:attachmentable.attachments) }
-                xml  { renderRESTXML(text:attachmentable.attachments) }
-            }
+            render(status: 200, contentType: 'application/json', text: attachmentable.attachments as JSON)
         } else {
             returnError(text:message(code: 'todo.is.ui.backlogelement.attachments.error'))
         }
@@ -109,11 +105,7 @@ class AttachmentController {
                 grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['removeAttachment':attachment])
                 attachmentable.removeAttachment(attachment)
                 grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['removedAttachment':null])
-                withFormat {
-                    html { render(status: 200) }
-                    json { renderRESTJSON(status: 204) }
-                    xml  { renderRESTXML(status: 204) }
-                }
+                render(status: 200)
             }
         }
     }

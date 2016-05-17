@@ -26,6 +26,7 @@
           closeButton="${message(code: 'is.button.cancel')}"
           autoFillFix="true"
           form="login(credentials)">
+    <entry:point id="auth-dialog-before-form"/>
     <div class="form-group">
         <label for="credentials.j_username">${message(code: 'is.dialog.login.username.or.email')}</label>
         <g:if test="${enableRegistration}"><div class="input-group"></g:if>
@@ -79,4 +80,5 @@
                    <g:if test='${hasCookie}'>checked='checked'</g:if>/> <g:message code="is.dialog.login.rememberme"/>
         </label>
     </div>
+    <entry:point id="auth-dialog-after-form"/>
 </is:modal>

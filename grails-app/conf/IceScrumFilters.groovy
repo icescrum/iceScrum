@@ -152,12 +152,6 @@ class IceScrumFilters {
                     }
                     if (!webservices) {
                         render(status: 503)
-                    } else {
-                        if (request.format == 'xml' && params.values) {
-                            params.remove('values')?.each { k, v ->
-                                params."${k}" = v
-                            }
-                        }
                     }
                 } else {
                     webservices = true
@@ -167,11 +161,6 @@ class IceScrumFilters {
                     request.withFormat {
                         json {
                             params << request.JSON
-                        }
-                        xml {
-                            GPathResult xml = request.XML
-                            GPathResultMap xmlMap = new GPathResultMap(xml) // Warning: GPathResultMap does not support .remove() Map operation
-                            params[xml.name()] = xmlMap
                         }
                     }
                 }

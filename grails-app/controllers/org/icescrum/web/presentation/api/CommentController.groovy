@@ -38,11 +38,7 @@ class CommentController {
     def index() {
         def commentable = commentableObject
         if (commentable) {
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: commentable.comments as JSON) }
-                json { renderRESTJSON(text:commentable.comments) }
-                xml  { renderRESTXML(text:commentable.comments) }
-            }
+            render(status: 200, contentType: 'application/json', text: commentable.comments as JSON)
         } else {
             returnError(text:message(code: 'is.ui.backlogelement.comment.error'))
         }
@@ -59,11 +55,7 @@ class CommentController {
             returnError(text:message(code: 'is.comment.error.not.exist'))
             return
         }
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: comment as JSON }
-            json { renderRESTJSON(text: comment) }
-            xml  { renderRESTXML(text: comment) }
-        }
+        render status: 200, contentType: 'application/json', text: comment as JSON
     }
 
     @Secured('((isAuthenticated() and stakeHolder()) or inProduct()) and !archivedProduct()')
@@ -89,11 +81,7 @@ class CommentController {
                     }
                 }
             }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text:comment as JSON)  }
-                json { renderRESTJSON(text:comment) }
-                xml  { renderRESTXML(text:comment) }
-            }
+            render(status: 200, contentType: 'application/json', text:comment as JSON)
         } catch (Exception e) {
             returnError(exception:e)
         }
@@ -119,11 +107,7 @@ class CommentController {
             grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment':comment])
             comment.save()
             grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment':comment])
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text:comment as JSON)  }
-                json { renderRESTJSON(text:comment) }
-                xml  { renderRESTXML(text:comment) }
-            }
+            render(status: 200, contentType: 'application/json', text:comment as JSON)
         } catch (RuntimeException e) {
             returnError(exception: e)
         }
@@ -152,11 +136,7 @@ class CommentController {
             grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removeComment':comment])
             commentable.removeComment(comment)
             grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removedComment':comment])
-            withFormat {
-                html { render(status: 200)  }
-                json { render(status: 204) }
-                xml { render(status: 204) }
-            }
+            render(status: 200)
         } catch (RuntimeException e) {
             returnError(exception:e)
         }

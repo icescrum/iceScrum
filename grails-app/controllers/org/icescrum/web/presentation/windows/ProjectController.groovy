@@ -234,14 +234,7 @@ class ProjectController {
         return task {
             session.progress = new ProgressSupport()
             Product.withNewSession {
-                withFormat {
-                    html {
-                        params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
-                    }
-                    xml {
-                        params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
-                    }
-                }
+                params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
                 session.progress.completeProgress(message(code: 'todo.is.ui.progress.complete'))
             }
         }
@@ -274,13 +267,7 @@ class ProjectController {
     @Secured(['stakeHolder() or inProduct()'])
     def versions(long product) {
         Product _product = Product.withProduct(product)
-        withFormat {
-            html {
-                render(_product.getVersions(false, true) as JSON)
-            }
-            json { renderRESTJSON(text: _product.versions) }
-            xml { renderRESTXML(text: _product.versions) }
-        }
+        render(_product.getVersions(false, true) as JSON)
     }
 
     @Secured('inProduct()')
@@ -421,22 +408,9 @@ class ProjectController {
                 }
                 def product = productService.parseXML(xmlFile, session.progress)
                 def changes = productService.validate(product, session.progress)
-                withFormat {
-                    html {
-                        session.import.product = product
-                        session.import.path = path
-                        render(status: 200, contentType: 'application/json', text: changes as JSON)
-                    }
-                    xml {
-                        //TODO do saveImport
-                        renderRESTXML(text: changes)
-                    }
-                    json {
-                        //TODO do saveImport
-                        renderRESTJSON(text: changes)
-                    }
-
-                }
+                session.import.product = product
+                session.import.path = path
+                render(status: 200, contentType: 'application/json', text: changes as JSON)
             }
 
             UtilsWebComponents.handleUpload.delegate = this

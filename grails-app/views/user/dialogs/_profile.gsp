@@ -24,27 +24,28 @@
 <is:modal name="formHolder.profileForm"
           form="update(editableUser)"
           validate="true"
-          submitButton="${message(code:'is.button.update')}"
-          closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'todo.is.ui.profile')}">
+          submitButton="${message(code: 'is.button.update')}"
+          closeButton="${message(code: 'is.button.cancel')}"
+          title="${message(code: 'todo.is.ui.profile')}">
     <uib-tabset type="pills" justified="true">
         <uib-tab heading="${message(code: 'todo.is.ui.profile.general.title')}"
-             active="tabSelected.general"
-             select="setTabSelected('general')">
+                 active="tabSelected.general"
+                 select="setTabSelected('general')">
             <div flow-files-added="editableUser.avatar = 'custom';"
                  flow-files-submitted="$flow.upload()"
                  flow-files-success="editableUser.avatar = 'custom'"
                  flow-file-added="!! {png:1,jpg:1,jpeg:1} [$file.getExtension()]"
-                 flow-init="{target:'${createLink(controller:'user', action:'update', id:user.id)}', singleFile:true, simultaneousUploads:1}"
+                 flow-init="{target:'${createLink(controller: 'user', action: 'update', id: user.id)}', singleFile:true, simultaneousUploads:1}"
                  flow-single-file="true"
                  flow-drop>
+                <entry:point id="user-dialog-profile-tab-general-before-form"/>
                 <div class="row">
                     <div class="form-half">
-                        <label for="username">${message(code:'is.user.username')}</label>
+                        <label for="username">${message(code: 'is.user.username')}</label>
                         <p class="form-control-static">${user.username}</p>
                     </div>
                     <div class="form-half">
-                        <label for="userAvatar">${message(code:'is.user.avatar')}</label>
+                        <label for="userAvatar">${message(code: 'is.user.avatar')}</label>
                         <div id="user-avatar" class="form-control-static">
                             <div class="col-md-12">
                                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)}">
@@ -57,7 +58,7 @@
                                           flow-btn class="btn btn-default"><i class="fa fa-photo"></i></span>
                                     <img flow-btn
                                          ng-class="{'selected': editableUser.avatar == 'custom', 'hide': editableUser.avatar != 'custom' }"
-                                         flow-img="$flow.files[0] ? $flow.files[0] : null" />
+                                         flow-img="$flow.files[0] ? $flow.files[0] : null"/>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -85,7 +86,7 @@
                 </div>
                 <div class="row">
                     <div class="form-half">
-                        <label for="user.firstName">${message(code:'is.user.firstname')}</label>
+                        <label for="user.firstName">${message(code: 'is.user.firstname')}</label>
                         <input type="text"
                                class="form-control"
                                name="user.firstName"
@@ -94,7 +95,7 @@
                                required/>
                     </div>
                     <div class="form-half">
-                        <label for="user.lastName">${message(code:'is.user.lastname')}</label>
+                        <label for="user.lastName">${message(code: 'is.user.lastname')}</label>
                         <input type="text"
                                class="form-control"
                                name="user.lastName"
@@ -104,7 +105,7 @@
                 </div>
                 <div class="row">
                     <div class="form-half">
-                        <label for="user.email">${message(code:'is.user.email')}</label>
+                        <label for="user.email">${message(code: 'is.user.email')}</label>
                         <input type="email"
                                name="user.email"
                                class="form-control"
@@ -113,18 +114,19 @@
                                required/>
                     </div>
                     <div class="form-half">
-                        <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
+                        <label for="user.preferences.language">${message(code: 'is.user.preferences.language')}</label>
                         <ui-select name="user.preferences.language"
                                    class="form-control"
                                    ng-model="editableUser.preferences.language">
                             <ui-select-match>{{ languages[$select.selected] }}</ui-select-match>
-                            <ui-select-choices repeat="languageKey in languageKeys">{{ languages[languageKey] }}</ui-select-choices>
+                            <ui-select-choices
+                                    repeat="languageKey in languageKeys">{{ languages[languageKey] }}</ui-select-choices>
                         </ui-select>
                     </div>
                 </div>
                 <div class="row" ng-show="!editableUser.accountExternal">
                     <div class="form-half">
-                        <label for="user.password">${message(code:'is.user.password')}</label>
+                        <label for="user.password">${message(code: 'is.user.password')}</label>
                         <input name="user.password"
                                type="password"
                                class="form-control"
@@ -132,7 +134,7 @@
                                ng-password-strength>
                     </div>
                     <div class="form-half">
-                        <label for="confirmPassword">${message(code:'is.dialog.register.confirmPassword')}</label>
+                        <label for="confirmPassword">${message(code: 'is.dialog.register.confirmPassword')}</label>
                         <input name="confirmPassword"
                                type="password"
                                class="form-control"
@@ -142,22 +144,25 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 form-group">
-                        <label for="user.preferences.activity">${message(code:'is.user.preferences.activity')}</label>
+                        <label for="user.preferences.activity">${message(code: 'is.user.preferences.activity')}</label>
                         <input name="user.preferences.activity"
                                type="text"
                                class="form-control"
                                ng-model="editableUser.preferences.activity">
                     </div>
                 </div>
+                <entry:point id="user-dialog-profile-tab-general-after-form"/>
             </div>
         </uib-tab>
+        <entry:point id="user-dialog-profile-tab"/>
         <g:if test="${projects}">
             <uib-tab heading="${message(code: 'is.dialog.profile.emailsSettings')}"
-                 active="tabSelected.emailSettings"
-                 select="setTabSelected('emailSettings')">
+                     active="tabSelected.emailSettings"
+                     select="setTabSelected('emailSettings')">
+                <entry:point id="user-dialog-profile-tab-emails-before-form"/>
                 <div class="row">
                     <div class="col-md-12 form-group">
-                        <label for="user.preferences.emailsSettings.autoFollow">${message(code:'is.dialog.profile.emailsSettings.autoFollow')}</label>
+                        <label for="user.preferences.emailsSettings.autoFollow">${message(code: 'is.dialog.profile.emailsSettings.autoFollow')}</label>
                         <select name="user.preferences.emailsSettings.autoFollow"
                                 class="form-control"
                                 multiple
@@ -170,7 +175,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 form-group">
-                        <label for="user.preferences.emailsSettings.onStory">${message(code:'is.dialog.profile.emailsSettings.onStory')}</label>
+                        <label for="user.preferences.emailsSettings.onStory">${message(code: 'is.dialog.profile.emailsSettings.onStory')}</label>
                         <select name="user.preferences.emailsSettings.onStory"
                                 multiple="multiple"
                                 class="form-control"
@@ -183,7 +188,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 form-group">
-                        <label for="user.preferences.emailsSettings.onUrgentTask">${message(code:'is.dialog.profile.emailsSettings.onUrgentTask')}</label>
+                        <label for="user.preferences.emailsSettings.onUrgentTask">${message(code: 'is.dialog.profile.emailsSettings.onUrgentTask')}</label>
                         <select name="user.preferences.emailsSettings.onUrgentTask"
                                 multiple="multiple"
                                 class="form-control"
@@ -194,6 +199,7 @@
                         </select>
                     </div>
                 </div>
+                <entry:point id="user-dialog-profile-tab-emails-after-form"/>
             </uib-tab>
         </g:if>
     </uib-tabset>

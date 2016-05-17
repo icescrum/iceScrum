@@ -38,21 +38,13 @@ class AcceptanceTestController {
     @Secured('(stakeHolder() or inProduct()) and !archivedProduct()')
     def index(long product) {
         def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(product, params.long('parentStory')) : AcceptanceTest.getAllInProduct(product)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: acceptanceTests as JSON }
-            json { renderRESTJSON text: acceptanceTests }
-            xml { renderRESTXML text: acceptanceTests }
-        }
+        render status: 200, contentType: 'application/json', text: acceptanceTests as JSON
     }
 
     @Secured('(stakeHolder() or inProduct()) and !archivedProduct()')
     def show(long id, long product) {
         AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
-            json { renderRESTJSON text: acceptanceTest }
-            xml { renderRESTXML text: acceptanceTest }
-        }
+        render status: 200, contentType: 'application/json', text: acceptanceTest as JSON
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -95,11 +87,7 @@ class AcceptanceTestController {
             returnError(object: acceptanceTest, exception: e)
             return
         }
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: acceptanceTest as JSON }
-            json { renderRESTJSON status: 201, text: acceptanceTest }
-            xml { renderRESTXML status: 201, text: acceptanceTest }
-        }
+        render status: 200, contentType: 'application/json', text: acceptanceTest as JSON
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -136,17 +124,7 @@ class AcceptanceTestController {
             bindData(acceptanceTest, acceptanceTestParams, [include: ['name', 'description']])
             acceptanceTestService.update(acceptanceTest)
         }
-        withFormat {
-            html {
-                // TODO suggest story done when last acceptance test done
-//                    if (request.productOwner && story.testStateEnum == Story.TestState.SUCCESS) {
-//                        responseData.dialogSuccess = g.render(template: 'dialogs/suggestDone', model: [storyId: story.id])
-//                    }
-                render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
-            }
-            json { renderRESTJSON text: acceptanceTest }
-            xml { renderRESTXML text: acceptanceTest }
-        }
+        render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -154,10 +132,6 @@ class AcceptanceTestController {
         AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
         def deleted = [id: acceptanceTest.id, parentStory: [id: acceptanceTest.parentStory.id]]
         acceptanceTestService.delete(acceptanceTest)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: deleted as JSON }
-            json { render status: 204 }
-            xml { render status: 204 }
-        }
+        render status: 200, contentType: 'application/json', text: deleted as JSON
     }
 }

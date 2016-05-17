@@ -35,18 +35,14 @@ class ActivityController {
     @Secured('stakeHolder() or inProduct()')
     def index(long fluxiableId, boolean all, long product, String type) {
         def fluxiable = type == 'story' ? Story.withStory(product, fluxiableId) : Task.withTask(product, fluxiableId)
-        withFormat {
-            def activities = fluxiable.activity
-            if (!all) {
-                def selectedActivities = activities.findAll { it.important }
-                def remainingActivities = activities - selectedActivities
-                activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
-                activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
-            }
-            html { render(status: 200, contentType: 'application/json', text: activities as JSON) }
-            json { renderRESTJSON(text: activities) }
-            xml { renderRESTXML(text: activities) }
+        def activities = fluxiable.activity
+        if (!all) {
+            def selectedActivities = activities.findAll { it.important }
+            def remainingActivities = activities - selectedActivities
+            activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
+            activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
         }
+        render(status: 200, contentType: 'application/json', text: activities as JSON)
     }
 }
 

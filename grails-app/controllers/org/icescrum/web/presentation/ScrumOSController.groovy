@@ -24,19 +24,16 @@
 
 package org.icescrum.web.presentation
 
+import grails.converters.JSON
 import grails.converters.XML
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.BuildSettingsHolder
-import org.icescrum.core.domain.Widget
-import org.icescrum.core.domain.preferences.UserPreferences
-import org.icescrum.core.support.ApplicationSupport
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-
-import grails.converters.JSON
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
-import org.springframework.mail.MailException
 import org.icescrum.core.domain.preferences.ProductPreferences
+import org.icescrum.core.support.ApplicationSupport
+import org.springframework.mail.MailException
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import sun.misc.BASE64Decoder
 
 class ScrumOSController {
@@ -64,15 +61,16 @@ class ScrumOSController {
         def moreProductExist = products?.size() > productsLimit
         def browsableProductsCount = request.admin ? Product.count() : ProductPreferences.countByHidden(false, [cache: true])
 
-        def attrs = [user: user,
-                     lang: RCU.getLocale(request).toString().substring(0, 2),
-                     context: context,
+        def attrs = [user                  : user,
+                     lang                  : RCU.getLocale(request).toString().substring(0, 2),
+                     context               : context,
                      browsableProductsExist: browsableProductsCount > 0,
-                     moreProductsExist: moreProductExist,
-                     productFilteredsList: products.take(productsLimit)]
+                     moreProductsExist     : moreProductExist,
+                     productFilteredsList  : products.take(productsLimit)]
         if (context) {
             attrs."$context.name" = context.object
         }
+        entry.hook(id: "scrumOS-index", model: [attrs: attrs])
         attrs
     }
 
@@ -167,8 +165,8 @@ class ScrumOSController {
     def isSettings() {
         def applicationMenus = []
         uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
-            applicationMenus << [id: windowId,
-                                 title: message(code: windowDefinition.menu?.title),
+            applicationMenus << [id      : windowId,
+                                 title   : message(code: windowDefinition.menu?.title),
                                  shortcut: "ctrl+" + (applicationMenus.size() + 1)]
         }
         render(status: 200,
@@ -209,32 +207,12 @@ class ScrumOSController {
     }
 
     def version() {
-        withFormat {
-            html {
-                render(status: '200', text: g.meta([name: 'app.version']))
-            }
-            xml {
-                renderRESTXML(text: [version: g.meta([name: 'app.version'])])
-            }
-            json {
-                renderRESTJSON(text: [version: g.meta([name: 'app.version'])])
-            }
-        }
+        render(status: '200', text: g.meta([name: 'app.version']))
     }
 
     def progress() {
         if (session.progress) {
-            withFormat {
-                html {
-                    render(status: 200, contentType: "application/json", text: session.progress as JSON)
-                }
-                xml {
-                    render(status: 200, contentType: "text/xml", text: session.progress as XML)
-                }
-                json {
-                    render(status: 200, contentType: "application/json", text: session.progress as JSON)
-                }
-            }
+            render(status: 200, contentType: "application/json", text: session.progress as JSON)
             //we already sent the error so reset progress
             if (session.progress.error || session.progress.complete) {
                 session.progress = null
@@ -296,17 +274,17 @@ class ScrumOSController {
     }
 
     @Secured(['permitAll()'])
-    def extensions(){
+    def extensions() {
         def extensions = [
-                [name:'Management',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Management',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/',
-                 description:'This extension is the core of iceScrum Pro. It helps you to configure and manage your iceScrum server:' +
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/',
+                 description        : 'This extension is the core of iceScrum Pro. It helps you to configure and manage your iceScrum server:' +
                          '<p>' +
                          '<ul>' +
                          '<li>Administrate your users</li>' +
@@ -322,106 +300,106 @@ class ScrumOSController {
                          '<li>Create stories directly in the backlog, copy stories from one project to another, filter by user in the sprint plan...</li>' +
                          '</ul>' +
                          '</p>',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2012/06/Example-of-working-LDAP-Configuration1.jpg']
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/06/Example-of-working-LDAP-Configuration1.jpg']
                 ],
-                [name:'Embedded',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Embedded',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/embedded',
-                 description:'Embed live iceScrum views into your online documents or websites in order to create custom dashboards and reports.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2013/01/Define-your-embedded-widgets.jpg']
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/embedded',
+                 description        : 'Embed live iceScrum views into your online documents or websites in order to create custom dashboards and reports.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/01/Define-your-embedded-widgets.jpg']
                 ],
-                [name:'Backlogs',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Backlogs',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/backlogs/',
-                 description:'Manage your own story backlogs',
-                 screenshots:[]
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/backlogs/',
+                 description        : 'Manage your own story backlogs',
+                 screenshots        : []
                 ],
-                [name:'Icebox',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Icebox',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/icebox/',
-                 description:'Product Owners freeze stories that don’t belong to the current product vision and restore them when the time has come.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2012/11/Freeze-a-story1.jpg']
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/icebox/',
+                 description        : 'Product Owners freeze stories that don’t belong to the current product vision and restore them when the time has come.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/11/Freeze-a-story1.jpg']
                 ],
-                [name:'Cloud Storage',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Cloud Storage',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/cloud-storage',
-                 description:'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png','https://www.icescrum.com/wp-content/uploads/2012/11/Attach-a-document-from-the-cloud.jpg','https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/cloud-storage',
+                 description        : 'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attach-a-document-from-the-cloud.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
                 ],
-                [name:'Feedback',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Feedback',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/feedback',
-                 description:'Include the feedback module in your website and offer your users a way to provide feedback that your collect as stories in your iceScrum project',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2015/06/feedback-english-650x393@2x.png','https://www.icescrum.com/wp-content/uploads/2015/06/story-details-2-650x424@2x.png']
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/feedback',
+                 description        : 'Include the feedback module in your website and offer your users a way to provide feedback that your collect as stories in your iceScrum project',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2015/06/feedback-english-650x393@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/story-details-2-650x424@2x.png']
                 ],
-                [name:'Team communication',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Team communication',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/team-communication',
-                 description:'Stay informed of what happens in iceScrum by receiving important events about your stories in your Slack channel.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2015/06/admin-settings-650x401@2x.png','https://www.icescrum.com/wp-content/uploads/2015/06/Slack1-650x461@2x.png']
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/team-communication',
+                 description        : 'Stay informed of what happens in iceScrum by receiving important events about your stories in your Slack channel.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2015/06/admin-settings-650x401@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/Slack1-650x461@2x.png']
                 ],
-                [name:'SCM',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'SCM',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/git-svn/',
-                 description:'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg','https://www.icescrum.com/wp-content/uploads/2013/06/Build-information-in-story-details.jpg','https://www.icescrum.com/wp-content/uploads/2014/09/Choose-the-iceScrum-GitHub-Service-650x261@2x.png','https://www.icescrum.com/wp-content/uploads/2012/05/commit-googlecode.jpg','https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/git-svn/',
+                 description        : 'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg', 'https://www.icescrum.com/wp-content/uploads/2013/06/Build-information-in-story-details.jpg', 'https://www.icescrum.com/wp-content/uploads/2014/09/Choose-the-iceScrum-GitHub-Service-650x261@2x.png', 'https://www.icescrum.com/wp-content/uploads/2012/05/commit-googlecode.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
                 ],
-                [name:'Bug Trackers',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Bug Trackers',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/bug-tracker/',
-                 description:'Automatically synchronize your project data between your bug tracker (JIRA, Mantis, Bugzilla, Redmine, TRAC…) and iceScrum.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2013/08/Set-up-bug-tracker-connection.png','https://www.icescrum.com/wp-content/uploads/2013/08/Create-an-import-rule.-Here-every-15-min-new-issues-from-vb-filter-are-imported-as-accepted-defect-stories.png']
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/bug-tracker/',
+                 description        : 'Automatically synchronize your project data between your bug tracker (JIRA, Mantis, Bugzilla, Redmine, TRAC…) and iceScrum.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/08/Set-up-bug-tracker-connection.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Create-an-import-rule.-Here-every-15-min-new-issues-from-vb-filter-are-imported-as-accepted-defect-stories.png']
                 ],
-                [name:'Project Bundle',
-                 version:'1.0',
-                 installed: false,
-                 author:'iceScrum team',
-                 publishDate:'01/06/2016',
+                [name               : 'Project Bundle',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '01/06/2016',
                  includedWithLicense: true,
-                 website:'https://www.icescrum.com',
-                 documentation:'https://www.icescrum.com/documentation/project-bundle/',
-                 description:'Project bundles allow you to group interrelated projects, providing a big picture of their planning and progress to help you make the best decisions.',
-                 screenshots:['https://www.icescrum.com/wp-content/uploads/2013/08/Bundle-timeline.png','https://www.icescrum.com/wp-content/uploads/2013/08/Total-line-for-synchronized-sprints.png']
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/project-bundle/',
+                 description        : 'Project bundles allow you to group interrelated projects, providing a big picture of their planning and progress to help you make the best decisions.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/08/Bundle-timeline.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Total-line-for-synchronized-sprints.png']
                 ]
         ]
         render contentType: 'application/json', text: extensions as JSON

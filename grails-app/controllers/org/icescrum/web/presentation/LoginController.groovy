@@ -23,17 +23,15 @@
  */
 package org.icescrum.web.presentation
 
-import org.springframework.security.authentication.CredentialsExpiredException
-import org.springframework.security.authentication.DisabledException
-import org.springframework.security.authentication.LockedException
-import org.springframework.security.web.WebAttributes
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.User
 import org.icescrum.core.support.ApplicationSupport
+import org.springframework.security.authentication.CredentialsExpiredException
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.LockedException
+import org.springframework.security.web.WebAttributes
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import javax.security.auth.login.AccountExpiredException
 
@@ -58,17 +56,18 @@ class LoginController {
             if (localeAccept?.size() > 0) {
                 locale = params.lang ?: localeAccept[0].toString()
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
 
         if (locale) {
             RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         }
 
         render(status: 200, template: "dialogs/auth", model: [
-                postUrl: grailsApplication.config.grails.serverURL + config.apf.filterProcessesUrl,
+                postUrl            : grailsApplication.config.grails.serverURL + config.apf.filterProcessesUrl,
                 rememberMeParameter: config.rememberMe.parameter,
-                activeLostPassword: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable),
-                enableRegistration: ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)])
+                activeLostPassword : ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable),
+                enableRegistration : ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)])
     }
 
     def authAjax() {
@@ -105,10 +104,11 @@ class LoginController {
 
     def ajaxSuccess() {
         User u = (User) springSecurityService.currentUser
+        entry.hook(id: "login-ajaxSuccess", model: [user: u])
         render(status: 200, contentType: 'application/json', text: [
-                user:u,
-                roles:securityService.getRolesRequest(true),
-                url: u.preferences.lastProductOpened ? grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProductOpened + '/' : null
+                user : u,
+                roles: securityService.getRolesRequest(true),
+                url  : u.preferences.lastProductOpened ? grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProductOpened + '/' : null
         ] as JSON)
     }
 

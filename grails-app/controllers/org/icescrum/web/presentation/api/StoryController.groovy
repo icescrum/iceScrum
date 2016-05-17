@@ -72,22 +72,14 @@ class StoryController {
             returnError(text: message(code: 'todo.is.ui.search.error'), exception: e)
             return
         }
-        withFormat {
-            html { render(status: 200, text: stories as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text: stories) }
-            xml { renderRESTXML(text: stories) }
-        }
+        render(status: 200, text: stories as JSON, contentType: 'application/json')
     }
 
     @Secured(['inProduct()'])
     def show() {
         def stories = Story.withStories(params)
         def returnData = stories.size() > 1 ? stories : stories.first()
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render status: 200, contentType: 'application/json', text: returnData as JSON
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])
@@ -127,11 +119,7 @@ class StoryController {
                     story.addToAcceptanceTests(acceptanceTest) // required so the acceptance tests are returned with the story in JSON
                 }
                 entry.hook(id: "${controllerName}-${actionName}", model: [story: story])
-                withFormat {
-                    html { render status: 200, contentType: 'application/json', text: story as JSON }
-                    json { renderRESTJSON(text: story, status: 201) }
-                    xml { renderRESTXML(text: story, status: 201) }
-                }
+                render status: 200, contentType: 'application/json', text: story as JSON
             }
 
         } catch (RuntimeException e) {
@@ -195,13 +183,7 @@ class StoryController {
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
-        withFormat {
-            html {
-                render status: 200, contentType: 'application/json', text: returnData as JSON
-            }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render status: 200, contentType: 'application/json', text: returnData as JSON
     }
 
     @Secured(['isAuthenticated()'])
@@ -209,23 +191,15 @@ class StoryController {
         def stories = Story.withStories(params)
         storyService.delete(stories, null, params.reason ? params.reason.replaceAll("(\r\n|\n)", "<br/>") : null)
         def returnData = stories.size() > 1 ? stories.collect { [id: it.id] } : (stories ? [id: stories.first().id] : [:])
-        withFormat {
-            html { render(status: 200, text: returnData as JSON) }
-            json { render(status: 204) }
-            xml { render(status: 204) }
-        }
+        render(status: 200, text: returnData as JSON)
     }
 
     @Secured(['inProduct() and !archivedProduct()'])
     def copy() {
         def stories = Story.withStories(params)
         def copiedStories = storyService.copy(stories)
-        withFormat {
-            def returnData = copiedStories.size() > 1 ? copiedStories : copiedStories.first()
-            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
-            json { renderRESTJSON(text: returnData, status: 201) }
-            xml { renderRESTXML(text: returnData, status: 201) }
-        }
+        def returnData = copiedStories.size() > 1 ? copiedStories : copiedStories.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['permitAll()'])
@@ -266,22 +240,14 @@ class StoryController {
             rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
         }
         storyService.plan(sprint, story, rank)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
-            json { renderRESTJSON(text: story) }
-            xml { renderRESTXML(text: story) }
-        }
+        render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
     def unPlan(long id, long product) {
         def story = Story.withStory(product, id)
         storyService.unPlan(story)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
-            json { renderRESTJSON(text: story) }
-            xml { renderRESTXML(text: story) }
-        }
+        render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
@@ -293,11 +259,7 @@ class StoryController {
             return
         }
         storyService.plan(nextSprint, story, 1)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
-            json { renderRESTJSON(text: story) }
-            xml { renderRESTXML(text: story) }
-        }
+        render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
@@ -313,11 +275,7 @@ class StoryController {
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
-            json { renderRESTJSON(text: story) }
-            xml { renderRESTXML(text: story) }
-        }
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
@@ -328,33 +286,21 @@ class StoryController {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
         storyService.returnToSandbox(story, rank)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
-            json { renderRESTJSON(text: story) }
-            xml { renderRESTXML(text: story) }
-        }
+        render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
     def done(long id, long product) {
         def story = Story.withStory(product, id)
         storyService.done(story)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
-            json { renderRESTJSON(text: story) }
-            xml { renderRESTXML(text: story) }
-        }
+        render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
     def unDone(long id, long product) {
         def story = Story.withStory(product, id)
         storyService.unDone(story)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: story as JSON) }
-            json { renderRESTJSON(text: story) }
-            xml { renderRESTXML(text: story) }
-        }
+        render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
@@ -362,11 +308,7 @@ class StoryController {
         def stories = Story.withStories(params)?.reverse()
         def features = storyService.acceptToFeature(stories)
         def returnData = features.size() > 1 ? features : features.first()
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render status: 200, contentType: 'application/json', text: returnData as JSON
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
@@ -374,11 +316,7 @@ class StoryController {
         def stories = Story.withStories(params)?.reverse()
         def tasks = storyService.acceptToUrgentTask(stories)
         def returnData = tasks.size() > 1 ? tasks : tasks.first()
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render status: 200, contentType: 'application/json', text: returnData as JSON
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
@@ -407,13 +345,7 @@ class StoryController {
             storyService.update(story)
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
-        withFormat {
-            html {
-                render status: 200, contentType: 'application/json', text: returnData as JSON
-            }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render status: 200, contentType: 'application/json', text: returnData as JSON
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])
@@ -431,13 +363,7 @@ class StoryController {
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
-        withFormat {
-            html {
-                render status: 200, contentType: 'application/json', text: returnData as JSON
-            }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render status: 200, contentType: 'application/json', text: returnData as JSON
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])

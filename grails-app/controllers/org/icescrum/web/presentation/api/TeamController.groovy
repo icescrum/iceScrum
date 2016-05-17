@@ -22,13 +22,7 @@ class TeamController {
         if (!teams.any { it.name == term } && create) {
             teams.add(0, [name: params.term, members: [], scrumMasters: []])
         }
-        withFormat {
-            html {
-                render(status: 200, text: teams as JSON, contentType: 'application/json')
-            }
-            json { renderRESTJSON(text: teams) }
-            xml { renderRESTXML(text: teams) }
-        }
+        render(status: 200, text: teams as JSON, contentType: 'application/json')
     }
 
     @Secured(['stakeHolder() or inProduct()'])
@@ -116,11 +110,7 @@ class TeamController {
         def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache: true]
         def user = springSecurityService.currentUser
         def teams = request.admin ? Team.findAllByNameIlike(searchTerm, options) : Team.findAllByOwnerOrSM(user.username, options, searchTerm)
-        withFormat {
-            html { render(status: 200, text: teams as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text: teams) }
-            xml { renderRESTXML(text: teams) }
-        }
+        render(status: 200, text: teams as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')
@@ -129,11 +119,7 @@ class TeamController {
         def user = springSecurityService.currentUser
         def count = request.admin ? Team.countByNameIlike(searchTerm, [cache: true]) : Team.countByOwnerOrSM(user.username, [cache: true], searchTerm)
         def jsonCount = [count: count]
-        withFormat {
-            html { render(status: 200, text: jsonCount as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text: jsonCount) }
-            xml { renderRESTXML(text: jsonCount) }
-        }
+        render(status: 200, text: jsonCount as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')

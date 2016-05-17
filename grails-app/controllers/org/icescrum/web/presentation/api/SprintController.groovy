@@ -39,21 +39,13 @@ class SprintController {
     def index(long product, Long releaseId) {
         Release release = releaseId ? Release.withRelease(product, releaseId) : Release.findCurrentOrNextRelease(product).list()[0]
         def sprints = release?.sprints ?: []
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: sprints as JSON) }
-            json { renderRESTJSON(text: sprints) }
-            xml { renderRESTXML(text: sprints) }
-        }
+        render(status: 200, contentType: 'application/json', text: sprints as JSON)
     }
 
     @Secured('inProduct()')
     def show(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: sprint as JSON }
-            json { renderRESTJSON(text: sprint) }
-            xml { renderRESTXML(text: sprint) }
-        }
+        render status: 200, contentType: 'application/json', text: sprint as JSON
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -77,11 +69,7 @@ class SprintController {
                 bindData(sprint, sprintParams, [include: ['goal', 'startDate', 'endDate', 'deliveredVersion']])
                 sprintService.save(sprint, release)
             }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-                json { renderRESTJSON(text: sprint, status: 201) }
-                xml { renderRESTXML(text: sprint, status: 201) }
-            }
+            render(status: 200, contentType: 'application/json', text: sprint as JSON)
         } catch (IllegalStateException e) {
             returnError(exception: e)
         } catch (RuntimeException e) {
@@ -99,11 +87,7 @@ class SprintController {
             bindData(sprint, sprintParams, [include: ['goal', 'deliveredVersion', 'retrospective', 'doneDefinition']])
             sprintService.update(sprint, startDate, endDate)
         }
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-            json { renderRESTJSON(text: sprint) }
-            xml { renderRESTXML(text: sprint) }
-        }
+        render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -111,11 +95,7 @@ class SprintController {
         Sprint sprint = Sprint.withSprint(product, id)
         try {
             sprintService.delete(sprint)
-            withFormat {
-                html { render(status: 200, text: [id: id] as JSON) }
-                json { render(status: 204) }
-                xml { render(status: 204) }
-            }
+            render(status: 200, text: [id: id] as JSON)
         } catch (IllegalStateException e) {
             returnError(exception: e)
         } catch (RuntimeException e) {
@@ -127,11 +107,7 @@ class SprintController {
     def generateSprints(long product, long releaseId) {
         Release release = Release.withRelease(product, releaseId)
         def sprints = sprintService.generateSprints(release)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: sprints as JSON }
-            json { renderRESTJSON(text: sprints, status: 201) }
-            xml { renderRESTXML(text: sprints, status: 201) }
-        }
+        render status: 200, contentType: 'application/json', text: sprints as JSON
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -139,11 +115,7 @@ class SprintController {
         def sprints = Sprint.withSprints(params)
         storyService.autoPlan(sprints, capacity)
         def returnData = sprints.size() > 1 ? sprints : sprints.first()
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -151,33 +123,21 @@ class SprintController {
         def sprints = Sprint.withSprints(params)
         storyService.unPlanAll(sprints)
         def returnData = sprints.size() > 1 ? sprints : sprints.first()
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def activate(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
         sprintService.activate(sprint)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-            json { renderRESTJSON(text: sprint) }
-            xml { renderRESTXML(text: sprint) }
-        }
+        render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def close(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
         sprintService.close(sprint)
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: sprint as JSON) }
-            json { renderRESTJSON(text: sprint) }
-            xml { renderRESTXML(text: sprint) }
-        }
+        render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
     @Secured(['stakeHolder() or inProduct()'])

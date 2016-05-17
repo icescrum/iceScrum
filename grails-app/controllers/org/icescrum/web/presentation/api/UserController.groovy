@@ -53,21 +53,13 @@ class UserController {
     @Secured(["hasRole('ROLE_ADMIN')"])
     def index() {
         def users = User.getAll()
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: users as JSON }
-            json { renderRESTJSON(text: users) }
-            xml { renderRESTXML(text: users) }
-        }
+        render status: 200, contentType: 'application/json', text: users as JSON
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def show(long id) {
         User user = User.withUser(id)
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: user as JSON }
-            json { renderRESTJSON(text: user) }
-            xml { renderRESTXML(text: user) }
-        }
+        render status: 200, contentType: 'application/json', text: user as JSON
     }
 
     @Secured(["!isAuthenticated()"])
@@ -88,11 +80,7 @@ class UserController {
                 bindData(user.preferences, (Map) this.params.user, [include: ['language', 'filterTask', 'activity']], "preferences")
                 userService.save(user, params.user.token)
             }
-            withFormat {
-                html { render status: 200, contentType: 'application/json', text: user as JSON }
-                json { renderRESTJSON(text: user, status: 201) }
-                xml { renderRESTXML(text: user, status: 201) }
-            }
+            render status: 200, contentType: 'application/json', text: user as JSON
         } catch (RuntimeException e) {
             returnError(object: user, exception: e)
         }
@@ -102,7 +90,7 @@ class UserController {
     def update(long id) {
         User user = User.withUser(id)
         // profile is personal
-        if ((user.id != springSecurityService.principal.id || request.format in ['json', 'xml']) && !request.admin) {
+        if ((user.id != springSecurityService.principal.id || request.format in ['json']) && !request.admin) {
             render(status: 403)
             return
         }
@@ -114,11 +102,7 @@ class UserController {
                     props.avatar = uploadedAvatar.canonicalPath
                     props.scale = true
                     userService.update(user, props)
-                    withFormat {
-                        html { render status: 200, contentType: 'application/json', text: user as JSON }
-                        json { renderRESTJSON(text: user) }
-                        xml { renderRESTXML(text: user) }
-                    }
+                    render status: 200, contentType: 'application/json', text: user as JSON
                 }
                 UtilsWebComponents.handleUpload.delegate = this
                 UtilsWebComponents.handleUpload(request, params, endOfUpload)
@@ -167,11 +151,7 @@ class UserController {
             entry.hook(id: "${controllerName}-${actionName}", model: [user: user, props: props])
             userService.update(user, props)
         }
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: user as JSON }
-            json { renderRESTJSON(text: user) }
-            xml { renderRESTXML(text: user) }
-        }
+        render status: 200, contentType: 'application/json', text: user as JSON
     }
 
     @Secured(['!isAuthenticated()'])
@@ -206,11 +186,7 @@ class UserController {
         if (!users && invit && GenericValidator.isEmail(value) && enableInvitation) {
             users << Invitation.getUserMock(value)
         }
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: users as JSON) }
-            json { renderRESTJSON(text: users) }
-            xml { renderRESTXML(text: users) }
-        }
+        render(status: 200, contentType: 'application/json', text: users as JSON)
     }
 
     @Secured(['isAuthenticated()'])
@@ -229,11 +205,7 @@ class UserController {
     def current() {
         def user = [user: springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
                     roles: securityService.getRolesRequest(true)]
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: user as JSON) }
-            json { renderRESTJSON(text: user) }
-            xml { renderRESTXML(text: user) }
-        }
+        render(status: 200, contentType: 'application/json', text: user as JSON)
     }
 
     @Secured(['!isAuthenticated()'])

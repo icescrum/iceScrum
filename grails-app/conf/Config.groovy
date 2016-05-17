@@ -212,22 +212,6 @@ icescrum.marshaller = [
         acceptancetest: [textile: ['description'], asShort: ['state']]
 ]
 
-icescrum.restMarshaller = [
-        //global exclude
-        exclude: ['dateCreated'],
-        story: [exclude: ['backlog'], include: ['tags', 'testState', 'comments']],
-        feature: [exclude: ['parentDomain', 'backlog'], include: ['tags']],
-        actor: [exclude: ['backlog'], include: ['tags']],
-        task: [exclude: ['impediment'], include: ['tags', 'comments']],
-        product: [exclude: ['domains', 'impediments', 'goal', 'cliches', 'duration']],
-        sprint: [exclude: ['description', 'cliches', 'duration']],
-        release: [exclude: ['description', 'cliches', 'duration']],
-        team: [exclude: ['velocity', 'description', 'preferences']],
-        user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'teams']],
-        userpreferences: [asShort: ['activity', 'language']],
-        acceptancetest: []
-]
-
 icescrum.activities.important = [Activity.CODE_SAVE, 'acceptAs', 'estimate', 'plan', 'unPlan', 'done', 'unDone', 'returnToSandbox']
 
 /* Assets */

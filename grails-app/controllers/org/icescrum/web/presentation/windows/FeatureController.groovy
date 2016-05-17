@@ -41,22 +41,14 @@ class FeatureController {
 
     def index() {
         def features = Feature.searchAllByTermOrTag(params.long('product'), params.term).sort { Feature feature -> feature.rank }
-        withFormat{
-            html { render(status: 200, text: features as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text:features) }
-            xml  { renderRESTXML(text:features) }
-        }
+        render(status: 200, text: features as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')
     def show() {
         def features = Feature.withFeatures(params)
         def returnData = features.size() > 1 ? features : features.first()
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render status: 200, contentType: 'application/json', text: returnData as JSON
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -74,11 +66,7 @@ class FeatureController {
                 def product = Product.load(params.long('product'))
                 featureService.save(feature, product)
                 entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature]) // TODO check if still needed
-                withFormat {
-                    html { render(status: 200, contentType: 'application/json', text: feature as JSON) }
-                    json { renderRESTJSON(text: feature, status: 201) }
-                    xml { renderRESTXML(text: feature, status: 201) }
-                }
+                render(status: 200, contentType: 'application/json', text: feature as JSON)
             }
         } catch (RuntimeException e) {
             returnError(exception:e, object:feature)
@@ -104,11 +92,7 @@ class FeatureController {
             }
         }
         def returnData = features.size() > 1 ? features : features.first()
-        withFormat {
-            html { render status: 200, contentType: 'application/json', text: returnData as JSON }
-            json { renderRESTJSON(text:returnData) }
-            xml  { renderRESTXML(text:returnData) }
-        }
+        render status: 200, contentType: 'application/json', text: returnData as JSON
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -119,11 +103,7 @@ class FeatureController {
                 featureService.delete(feature)
             }
             def returnData = features.size() > 1 ? features.collect {[id : it.id]} : (features ? [id: features.first().id] : [:])
-            withFormat {
-                html { render(status: 200, text: returnData as JSON)  }
-                json { render(status: 204) }
-                xml { render(status: 204) }
-            }
+            render(status: 200, text: returnData as JSON)
         }
     }
 
@@ -131,12 +111,9 @@ class FeatureController {
     def copyToBacklog() {
         List<Feature> features = Feature.withFeatures(params)
         List<Story> stories = featureService.copyToBacklog(features)
-        withFormat {
-            def returnData = stories.size() > 1 ? stories : stories.first()
-            html { render(status: 200, contentType: 'application/json', text:returnData as JSON) }
-            json { renderRESTJSON(text:returnData, status:201) }
-            xml  { renderRESTXML(text:returnData, status:201) }
-        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        render(status: 200, contentType: 'application/json', text:returnData as JSON)
+
     }
 
     def productParkingLotChart() {

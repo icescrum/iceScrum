@@ -38,20 +38,12 @@ class ActorController {
 
     def index() {
         def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
-        withFormat {
-            html { render(status: 200, text: actors as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text: actors) }
-            xml { renderRESTXML(text: actors) }
-        }
+        render(status: 200, text: actors as JSON, contentType: 'application/json')
     }
 
     def show(long id, long product) {
         Actor actor = Actor.withActor(product, id)
-        withFormat {
-            html { render(status: 200, text: actor as JSON, contentType: 'application/json') }
-            json { renderRESTJSON(text: actor) }
-            xml { renderRESTXML(text: actor) }
-        }
+        render(status: 200, text: actor as JSON, contentType: 'application/json')
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -69,11 +61,7 @@ class ActorController {
                 def product = Product.load(params.long('product'))
                 actorService.save(actor, product)
             }
-            withFormat {
-                html { render(status: 200, contentType: 'application/json', text: actor as JSON) }
-                json { renderRESTJSON(text: actor, status: 201) }
-                xml { renderRESTXML(text: actor, status: 201) }
-            }
+            render(status: 200, contentType: 'application/json', text: actor as JSON)
         } catch (RuntimeException e) {
             returnError(exception: e, object: actor)
         }
@@ -97,11 +85,7 @@ class ActorController {
             }
         }
         def returnData = actors.size() > 1 ? actors : actors.first()
-        withFormat {
-            html { render(status: 200, contentType: 'application/json', text: returnData as JSON) }
-            json { renderRESTJSON(text: returnData) }
-            xml { renderRESTXML(text: returnData) }
-        }
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -111,11 +95,7 @@ class ActorController {
             actors.each { actor ->
                 actorService.delete(actor)
             }
-            withFormat {
-                html { render(status: 200)  }
-                json { render(status: 204) }
-                xml { render(status: 204) }
-            }
+            render(status: 200)
         }
     }
 }
