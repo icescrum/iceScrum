@@ -262,13 +262,6 @@ widgets = {
         templatePath '/widgets/publicProjects'
     }
 
-    'mood' {
-        icon    'smile-o'
-        secured 'isAuthenticated()'
-        templatePath '/widgets/mood'
-        allowDuplicate false
-    }
-
     'tasks' {
         icon 'tasks'
         secured 'isAuthenticated()'

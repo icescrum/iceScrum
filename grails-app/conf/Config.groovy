@@ -202,8 +202,8 @@ icescrum {
                 }
             }
             contextScope = [
-                charts:[//project level
-                   project:[
+                charts:[
+                    project:[
                         [id:'burnup',name:'is.ui.project.charts.productBurnup'],
                         [id:'burndown',name:'is.ui.project.charts.productBurndown'],
                         [id:'velocity',name:'is.ui.project.charts.productVelocity'],
@@ -211,15 +211,11 @@ icescrum {
                         [id:'flowCumulative',name:'is.ui.project.charts.productCumulativeFlow'],
                         [id:'velocityCapacity',name:'is.ui.project.charts.productVelocityCapacity'],
                     ],
-                   //release level
-                   release: [
-                       [id:'burndown', name:'is.chart.releaseBurndown'],
-                       [id:'parkingLot', name:'is.chart.releaseParkingLot'],
-                       [id:'releaseUserMood', name:'is.chart.releaseUserMood'],
-                   ],
-                   //sprint level
+                    release: [
+                        [id:'burndown', name:'is.chart.releaseBurndown'],
+                        [id:'parkingLot', name:'is.chart.releaseParkingLot'],
+                    ],
                     sprint: [
-                        [id:'sprintUserMood', name:'is.chart.sprintUserMood'],
                         [id:'burnupTasks', name:'is.chart.sprint.BurnupTasksChart'],
                         [id:'burnupPoints', name:'is.chart.sprint.BurnupPointsChart'],
                         [id:'burnupStories', name:'is.chart.sprint.BurnupStoriesChart'],

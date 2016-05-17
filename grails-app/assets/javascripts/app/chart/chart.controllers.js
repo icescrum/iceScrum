@@ -22,8 +22,8 @@
  *
  */
 
-controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'MoodService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService, MoodService) {
-    var defaultOptions = {
+registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService) {
+    $scope.defaultOptions = {
         chart: {
             height: 350
         },
@@ -74,7 +74,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, defaultProjectOptions, options);
+        $scope.options = _.merge({}, $scope.defaultOptions, defaultProjectOptions, options);
         ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
@@ -115,7 +115,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             };
         }
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, options);
+        $scope.options = _.merge({}, $scope.defaultOptions, options);
         ReleaseService.openChart(release, chartName).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
@@ -137,7 +137,7 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
             }
         };
         $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, defaultSprintOptions);
+        $scope.options = _.merge({}, $scope.defaultOptions, defaultSprintOptions);
         SprintService.openChart(sprint, $scope.currentProject ? $scope.currentProject : Session.getProject(), chartName).then(function(chart) {
             $scope.options = _.merge($scope.options, chart.options);
             $scope.data = chart.data;
@@ -148,59 +148,6 @@ controllers.controller('chartCtrl', ['$scope', '$element', '$filter', 'Session',
         saveChartAsPng($element.find('svg')[0], {}, title[0], function(imageBase64) {
             // Server side "attachment" content type is needed because the a.download HTML5 feature is not supported in crappy browsers (safari & co).
             jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': title.text()});
-        });
-    };
-    $scope.openMoodChart = function(chartName) {
-        var options = {};
-        if (chartName == 'sprintUserMood') {
-            options = {
-                chart: {
-                    type: 'lineChart',
-                    x: function(entry) { return entry[0]; },
-                    y: function(entry) { return entry[1]; },
-                    xScale: d3.time.scale.utc(),
-                    xAxis: {
-                        tickFormat: $filter('dateShorter')
-                    },
-                    yAxis: {
-                        tickFormat: function(entry) {
-                            return $scope.labelsY[entry];
-                        }
-                    }
-                }
-            };
-        } else if (chartName == 'releaseUserMood') {
-            options = {
-                chart: {
-                    type: 'lineChart',
-                    x: function(entry, index) {
-                        return index;
-                    },
-                    y: function(entry) {
-                        return entry[0];
-                    },
-                    xAxis: {
-                        tickFormat: function(entry) {
-                            return $scope.labelsX[entry];
-                        }
-                    },
-                    yAxis: {
-                        tickFormat: function(d) {
-                            return $scope.labelsY[d];
-                        }
-                    }
-                }
-            };
-        }
-        $scope.cleanData();
-        $scope.options = _.merge({}, defaultOptions, options);
-        MoodService.openChart(chartName, $scope.currentProject ? $scope.currentProject : Session.getProject()).then(function(chart) {
-            $scope.data = chart.data;
-            $scope.options = _.merge($scope.options, chart.options);
-            if (chart.labelsX || chart.labelsY) {
-                $scope.labelsX = chart.labelsX;
-                $scope.labelsY = chart.labelsY;
-            }
         });
     };
     $scope.cleanData = function() {

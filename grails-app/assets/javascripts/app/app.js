@@ -1198,11 +1198,6 @@ angular.module('isApp', [
     "IN_PROGRESS": 2,
     "DONE": 3
 })
-.constant('MoodFeelingsByName', {
-    "GOOD": 2,
-    "MEH": 1,
-    "BAD": 0
-})
 .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
     PO_SM: 'PO_SM',
     PO: 'PO',
