@@ -21,12 +21,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div class="form-group">
-    <label class="col-sm-2">${message(code: 'todo.is.ui.widget.chart.project')}</label>
+    <label class="col-sm-2">${message(code: 'is.ui.widget.chart.project')}</label>
     <div class="col-sm-6">
         <ui-select class="form-control"
                    search-enabled="true"
                    ng-model="widget.settings.project">
-            <ui-select-match placeholder="${message(code: 'todo.is.ui.widget.charts.title')}">{{ $select.selected.name }}</ui-select-match>
+            <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.project')}">{{ $select.selected.name }}</ui-select-match>
             <ui-select-choices repeat="proj in projects track by $index"
                                refresh="listProjects($select.search)"
                                refresh-delay="150">{{proj.name}}</ui-select-choices>
@@ -34,12 +34,12 @@
     </div>
 </div>
 <div class="form-group" ng-if="widget.settings.project">
-    <label class="col-sm-2">${message(code: 'todo.is.ui.widget.chart.list')}</label>
+    <label class="col-sm-2">${message(code: 'is.ui.widget.chart.chart')}</label>
     <div class="col-sm-6">
         <ui-select class="form-control"
                    search-enabled="true"
                    ng-model="widget.settings.chart">
-            <ui-select-match placeholder="${message(code: 'todo.is.ui.widget.charts.title')}">{{ $select.selected.name }}</ui-select-match>
+            <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.chart')}">{{ $select.selected.name }}</ui-select-match>
             <ui-select-choices repeat="chart in charts">{{chart.name}}</ui-select-choices>
         </ui-select>
     </div>

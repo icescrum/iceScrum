@@ -132,7 +132,7 @@ registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 
                 y: function(entry) { return entry[1]; },
                 xScale: d3.time.scale.utc(),
                 xAxis: {
-                    tickFormat: $filter('dateShorter')
+                    tickFormat: $filter('dayShorter')
                 }
             }
         };
@@ -172,7 +172,7 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
         return widget.settings && widget.settings.project && widget.settings.chart ? true : false;
     };
     $scope.getTitle = function() {
-        return $scope.widgetReady(widget) ? widget.settings.project.name + ' (' + widget.settings.chart.name + ')' : '';
+        return $scope.widgetReady(widget) ? widget.settings.project.name + ' - ' + widget.settings.chart.name : '';
     };
     //Init
     $scope.charts = [];

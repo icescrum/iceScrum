@@ -255,24 +255,24 @@ icescrum {
                 }
             }
             contextScope = [
-                charts:[
-                    project:[
-                        [id:'burnup',name:'is.ui.project.charts.productBurnup'],
-                        [id:'burndown',name:'is.ui.project.charts.productBurndown'],
-                        [id:'velocity',name:'is.ui.project.charts.productVelocity'],
-                        [id:'parkingLot',name:'is.ui.project.charts.productParkingLot'],
-                        [id:'flowCumulative',name:'is.ui.project.charts.productCumulativeFlow'],
-                        [id:'velocityCapacity',name:'is.ui.project.charts.productVelocityCapacity'],
+                charts: [
+                    project: [
+                        [id:'burnup', name:'is.ui.project.charts.productBurnup'],
+                        [id:'burndown', name:'is.ui.project.charts.productBurndown'],
+                        [id:'velocity', name:'is.ui.project.charts.productVelocity'],
+                        [id:'parkingLot', name:'is.ui.project.charts.productParkingLot'],
+                        [id:'flowCumulative', name:'is.ui.project.charts.productCumulativeFlow'],
+                        [id:'velocityCapacity', name:'is.ui.project.charts.productVelocityCapacity'],
                     ],
                     release: [
                         [id:'burndown', name:'is.chart.releaseBurndown'],
                         [id:'parkingLot', name:'is.chart.releaseParkingLot'],
                     ],
                     sprint: [
-                        [id:'burnupTasks', name:'is.chart.sprint.BurnupTasksChart'],
-                        [id:'burnupPoints', name:'is.chart.sprint.BurnupPointsChart'],
-                        [id:'burnupStories', name:'is.chart.sprint.BurnupStoriesChart'],
-                        [id:'burndownRemaining', name:'is.chart.sprint.BurndownRemainingChart']
+                        [id:'burnupTasks', name:'is.ui.sprintPlan.charts.sprintBurnupTasksChart'],
+                        [id:'burnupPoints', name:'is.ui.sprintPlan.charts.sprintBurnupPointsChart'],
+                        [id:'burnupStories', name:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart'],
+                        [id:'burndownRemaining', name:'is.ui.sprintPlan.charts.sprintBurndownRemainingChart']
                     ]
                 ]
             ]
@@ -394,6 +394,7 @@ log4j = {
           'org.springframework',
           'org.hibernate',
           'net.sf.ehcache.hibernate'
+          // 'grails.plugin.springsecurity'
 
     warn  'org.mortbay.log'
     warn  'org.atmosphere.cpr'
@@ -422,7 +423,6 @@ log4j = {
 
     if (ApplicationSupport.booleanValue(Holders.config.icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
-        /* debug 'grails.plugin.springsecurity'*/
     }
 
     appenders {

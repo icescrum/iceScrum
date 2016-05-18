@@ -308,10 +308,6 @@ filters
         return function(date) {
             return dateFilter(date, $rootScope.message('is.date.format.short.time'));
         };
-    }]).filter('dateShorter', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
-        return function(date) {
-            return dateFilter(date, $rootScope.message('is.date.format.shorter'));
-        };
     }]).filter('dayShort', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
         return function(date) {
             return dateFilter(date, $rootScope.message('is.date.format.short'), 'utc');

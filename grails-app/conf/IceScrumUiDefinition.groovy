@@ -25,7 +25,6 @@ import grails.util.Holders
 *
 */
 
-
 /*
     'windowName' {
         icon                        default: ''                   | String (fontawesome)
@@ -65,14 +64,14 @@ windows = {
             title 'is.ui.backlogs'
         }
         embedded = [
-                view:'list',
-                viewTypes:['postits','table']
+                view: 'list',
+                viewTypes: ['postits', 'table']
         ]
         exportFormats = {
             [
-                [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
-                [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
-                [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]
+                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF']],
+                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX']],
+                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT']]
             ]
         }
     }
@@ -89,13 +88,13 @@ windows = {
             title 'is.ui.feature'
         }
         embedded = [
-                view:'list',
-                viewTypes:['postits','table','productParkingLotChart']
+                view: 'list',
+                viewTypes: ['postits', 'table', 'productParkingLotChart']
         ]
         exportFormats = {
-            [[code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF']],
-                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX']],
-                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT']]]
+            [[code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF']],
+             [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX']],
+             [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT']]]
         }
     }
     'project' {
@@ -110,15 +109,15 @@ windows = {
             title 'is.ui.project'
         }
         embedded = [
-                view:'productCumulativeFlowChart',
-                viewTypes:['productCumulativeFlowChart','productVelocityCapacityChart','productBurnupChart','productBurndownChart','productVelocityChart','productParkingLotChart'],
+                view: 'productCumulativeFlowChart',
+                viewTypes: ['productCumulativeFlowChart', 'productVelocityCapacityChart', 'productBurnupChart', 'productBurndownChart', 'productVelocityChart', 'productParkingLotChart'],
         ]
         exportFormats = {
             [
-                    [code:'pdf',name:message(code:'is.report.format.pdf'), action:'printPostits', params:[product:params.product, format:'PDF']],
-                    [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', locationHash:params.actionWindow?:'']],
-                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX', locationHash:params.actionWindow?:'']],
-                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT', locationHash:params.actionWindow?:'']]
+                    [code: 'pdf', name: message(code: 'is.report.format.pdf'), action: 'printPostits', params: [product: params.product, format: 'PDF']],
+                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF', locationHash: params.actionWindow ?: '']],
+                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX', locationHash: params.actionWindow ?: '']],
+                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT', locationHash: params.actionWindow ?: '']]
             ]
         }
     }
@@ -135,12 +134,12 @@ windows = {
             title 'todo.is.ui.planning'
         }
         embedded = [
-                view:'index',
-                viewTypes:['postits','notes','releaseBurndownChart','releaseParkingLotChart'],
-                id:{ product ->
-                    def id = [label:message(code:'is.release'), select:[[key:'', value:message(code:'is.ui.releasePlan.id.empty')]]]
-                    product.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
-                        id.select << [key:it.id, value:"${it.name}"]
+                view: 'index',
+                viewTypes: ['postits', 'notes', 'releaseBurndownChart', 'releaseParkingLotChart'],
+                id: { product ->
+                    def id = [label: message(code: 'is.release'), select: [[key: '', value: message(code: 'is.ui.releasePlan.id.empty')]]]
+                    product.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
+                        id.select << [key: it.id, value: "${it.name}"]
                     }
                     id
                 }
@@ -159,22 +158,22 @@ windows = {
             title 'todo.is.ui.taskBoard'
         }
         embedded = [
-                view:'index',
-                viewTypes:['postits','table','notes','sprintBurndownRemainingChart','sprintBurnupTasksChart','sprintBurnupStoriesChart','sprintBurnupPointsChart'],
-                id:{ product ->
-                    def id = [label:message(code:'is.sprint'), select:[[key:'', value:message(code:'is.ui.sprintPlan.id.empty')]]]
-                    product.releases?.sort({a, b -> a.orderNumber <=> b.orderNumber} as Comparator)?.each {
-                        it.sprints?.collect {v -> id.select << [key:v.id, value:"${it.name} - Sprint ${v.orderNumber}"]}
+                view : 'index',
+                viewTypes: ['postits', 'table', 'notes', 'sprintBurndownRemainingChart', 'sprintBurnupTasksChart', 'sprintBurnupStoriesChart', 'sprintBurnupPointsChart'],
+                id: { product ->
+                    def id = [label: message(code: 'is.sprint'), select: [[key: '', value: message(code: 'is.ui.sprintPlan.id.empty')]]]
+                    product.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
+                        it.sprints?.collect { v -> id.select << [key: v.id, value: "${it.name} - Sprint ${v.orderNumber}"] }
                     }
                     id
                 }
         ]
         exportFormats = {
             [
-                    [code:'pdf',name:message(code:'is.report.format.pdf'), action:'printPostits', params:[product:params.product, format:'PDF', id:params.id]],
-                    [code:'rtf',name:message(code:'is.report.format.rtf'), params:[product:params.product, format:'RTF', id:params.id]],
-                    [code:'docx',name:message(code:'is.report.format.docx'), params:[product:params.product, format:'DOCX', id:params.id]],
-                    [code:'odt',name:message(code:'is.report.format.odt'), params:[product:params.product, format:'ODT', id:params.id]]
+                    [code: 'pdf', name: message(code: 'is.report.format.pdf'), action: 'printPostits', params: [product: params.product, format: 'PDF', id: params.id]],
+                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF', id: params.id]],
+                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX', id: params.id]],
+                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT', id: params.id]]
             ]
         }
     }
@@ -218,56 +217,50 @@ windows = {
  */
 
 widgets = {
-
     'feed' {
-        icon    'rss'
-        title   '{{ getTitle() }}'
+        icon 'rss'
+        title '{{ getTitle() }}'
         secured 'isAuthenticated()'
         ngController 'feedWidgetCtrl'
         defaultSettings = [
-                feeds:[
-                        [url:'https://www.icescrum.com/blog/feed/', title:'iceScrum', selected:true],
-                        [url:'http://www.universfreebox.com/backend.php', title:'Univers Freebox', selected:false]
+                feeds: [
+                        [url: 'https://www.icescrum.com/blog/feed/', title: 'iceScrum', selected: true],
+                        [url: 'http://www.universfreebox.com/backend.php', title: 'Univers Freebox', selected: false]
                 ]
         ]
         onUpdate { widget, settings ->
-            settings.feeds?.findAll{ !it.title }?.each{
+            settings.feeds?.findAll { !it.title }?.each {
                 try {
                     it.title = new XmlSlurper().parse(it.url).channel.title.text()
-                } catch(Exception e){}
+                } catch (Exception e) {}
             }
-            settings.feeds = settings.feeds?.findAll{ it.title }.unique{ it.url }
+            settings.feeds = settings.feeds?.findAll { it.title }.unique { it.url }
         }
     }
-
     'login' {
-        icon    'user'
+        icon 'user'
         secured '!isAuthenticated()'
         templatePath '/widgets/login'
-     }
-
+    }
     'notes' {
-        icon    'pencil-square-o'
+        icon 'pencil-square-o'
         secured 'isAuthenticated()'
         templatePath '/widgets/notes'
-        defaultSettings = [text:'']
+        defaultSettings = [text: '']
         onUpdate { widget, settings ->
             WikiTextTagLib textileRenderer = (WikiTextTagLib) Holders.grailsApplication.mainContext["grails.plugins.wikitext.WikiTextTagLib"]
             settings.text_html = textileRenderer.renderHtml([markup: "Textile"], settings.text)
         }
     }
-
     'publicProjects' {
-        icon    'folder-open'
+        icon 'folder-open'
         templatePath '/widgets/publicProjects'
     }
-
     'tasks' {
         icon 'tasks'
         secured 'isAuthenticated()'
         templatePath '/widgets/tasks'
     }
-
     'quickProjects' {
         icon 'folder'
         allowDuplicate false
@@ -275,7 +268,6 @@ widgets = {
         ngController 'quickProjectsListCtrl'
         templatePath '/widgets/quickProjects'
     }
-
     'chart' {
         icon 'bar-chart'
         title '{{ getTitle() }}'

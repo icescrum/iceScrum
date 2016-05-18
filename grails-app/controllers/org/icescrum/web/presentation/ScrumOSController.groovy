@@ -25,7 +25,6 @@
 package org.icescrum.web.presentation
 
 import grails.converters.JSON
-import grails.converters.XML
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.BuildSettingsHolder
 import org.icescrum.core.domain.Product
@@ -170,13 +169,13 @@ class ScrumOSController {
                                  shortcut: "ctrl+" + (applicationMenus.size() + 1)]
         }
         render(status: 200,
-               template: 'isSettings',
-               model: [user: springSecurityService.currentUser,
-                       product: params.long('product') ? Product.get(params.product) : null,
-                       roles: securityService.getRolesRequest(false),
-                       i18nMessages: messageSource.getAllMessages(RCU.getLocale(request)),
-                       resourceBundles: grailsApplication.config.icescrum.resourceBundles,
-                       applicationMenus: applicationMenus])
+                template: 'isSettings',
+                model: [user            : springSecurityService.currentUser,
+                        product         : params.long('product') ? Product.get(params.product) : null,
+                        roles           : securityService.getRolesRequest(false),
+                        i18nMessages    : messageSource.getAllMessages(RCU.getLocale(request)),
+                        resourceBundles : grailsApplication.config.icescrum.resourceBundles,
+                        applicationMenus: applicationMenus])
     }
 
     def saveImage(String image, String title) {
@@ -267,10 +266,12 @@ class ScrumOSController {
     @Secured(['isAuthenticated()'])
     def charts(String context) {
         def _charts = []
-        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each {
-            _charts.addAll(it.value?.collect { [id: it.id, name: message(code: it.name)] })
+        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each { groupName, charts ->
+            if (groupName == 'project') { // TODO support charts at release / sprint levels...
+                _charts.addAll(charts.collect { chart -> [id: chart.id, name: message(code: chart.name)] })
+            }
         }
-        render contentType: 'application/json', text: _charts as JSON
+        render(status: 200, contentType: 'application/json', text: _charts as JSON)
     }
 
     @Secured(['permitAll()'])
@@ -402,6 +403,6 @@ class ScrumOSController {
                  screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/08/Bundle-timeline.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Total-line-for-synchronized-sprints.png']
                 ]
         ]
-        render contentType: 'application/json', text: extensions as JSON
+        render(status: 200, contentType: 'application/json', text: extensions as JSON)
     }
 }
