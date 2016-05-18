@@ -23,7 +23,7 @@
 
 <is:widget widgetDefinition="${widgetDefinition}">
     <div ng-switch="widgetReady(widget)">
-        <div  ng-switch-when="true" ng-controller="chartCtrl" ng-init="openProjectChart(widget.settings.chart.id, widget.settings.project)">
+        <div  ng-switch-when="true" ng-controller="chartCtrl" ng-init="openChart('project', widget.settings.chart.id, widget.settings.project)">
             <nvd3 options="options" data="data"></nvd3>
         </div>
         <div ng-switch-default>

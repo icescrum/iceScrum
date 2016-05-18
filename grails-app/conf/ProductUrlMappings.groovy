@@ -268,12 +268,6 @@ class ProductUrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/release/$action" {
-            controller = 'release'
-            constraints {
-                action(inList: ['burndown', 'parkingLot'])
-            }
-        }
         // Sprint
         "/p/$product/sprint" {
             controller = 'sprint'
@@ -295,12 +289,6 @@ class ProductUrlMappings {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
-            }
-        }
-        "/p/$product/sprint/$action" {
-            controller = 'sprint'
-            constraints {
-                action(inList: ['burnupStories', 'burnupPoints', 'burnupTasks', 'burndownRemaining'])
             }
         }
         "/p/$product/sprint/release/$releaseId" {

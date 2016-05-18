@@ -135,7 +135,7 @@
                 </div>
                 <div class="chart"
                      ng-controller="chartCtrl"
-                     ng-init="openReleaseChart('burndown', release)">
+                     ng-init="openChart('release', 'burndown', release)">
                     <div uib-dropdown
                          class="pull-right">
                         <button class="btn btn-default btn-sm"
@@ -145,8 +145,8 @@
                             <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
                         </button>
                         <ul uib-dropdown-menu>
-                            <li><a href ng-click="openReleaseChart('burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>
-                            <li><a href ng-click="openReleaseChart('parkingLot', release)">${message(code: 'is.chart.releaseParkingLot')}</a></li>
+                            <li><a href ng-click="openChart('release', 'burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>
+                            <li><a href ng-click="openChart('release', 'parkingLot', release)">${message(code: 'is.chart.releaseParkingLot')}</a></li>
                             <entry:point id="release-details-charts"/>
                         </ul>
                     </div>

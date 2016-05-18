@@ -31,23 +31,49 @@ registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 
             enable: true
         }
     };
-    $scope.openProjectChart = function(chartName, project) {
-        var options = {};
-        if (chartName == 'flowCumulative') {
-            options = {
+    $scope.chartLoaders = {
+        project: function(chartName, item) {
+            return ProjectService.openChart(item ? item : Session.getProject(), chartName);
+        },
+        release: function(chartName, item) {
+            return ReleaseService.openChart(item, chartName);
+        },
+        sprint: function(chartName, item) {
+            return SprintService.openChart(item, $scope.currentProject ? $scope.currentProject : Session.getProject(), chartName);
+        }
+    };
+    $scope.chartOptions = {
+        project: {
+            default: {
+                chart: {
+                    type: 'lineChart',
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        tickFormat: function(entry) {
+                            return $scope.labelsX[entry];
+                        }
+                    }
+                }
+            },
+            flowCumulative: {
                 chart: {
                     type: 'stackedAreaChart'
                 }
-            }
-        } else if (chartName == 'burndown' || chartName == 'velocity') {
-            options = {
+            },
+            burndown: {
                 chart: {
                     type: 'multiBarChart',
                     stacked: true
                 }
-            }
-        } else if (chartName == 'parkingLot') {
-            options = {
+            },
+            velocity: {
+                chart: {
+                    type: 'multiBarChart',
+                    stacked: true
+                }
+            },
+            parkingLot:  {
                 chart: {
                     type: 'multiBarHorizontalChart',
                     x: function(entry) { return entry[0]; },
@@ -60,33 +86,10 @@ registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 
                     }
                 }
             }
-        }
-        var defaultProjectOptions = {
-            chart: {
-                type: 'lineChart',
-                x: function(entry, index) { return index; },
-                y: function(entry) { return entry[0]; },
-                xAxis: {
-                    tickFormat: function(entry) {
-                        return $scope.labelsX[entry];
-                    }
-                }
-            }
-        };
-        $scope.cleanData();
-        $scope.options = _.merge({}, $scope.defaultOptions, defaultProjectOptions, options);
-        ProjectService.openChart(project ? project : Session.getProject(), chartName).then(function(chart) {
-            $scope.data = chart.data;
-            $scope.options = _.merge($scope.options, chart.options);
-            if (chart.labelsX) {
-                $scope.labelsX = chart.labelsX;
-            }
-        });
-    };
-    $scope.openReleaseChart = function(chartName, release) {
-        var options = {};
-        if (chartName == 'parkingLot') {
-            options = {
+        },
+        release: {
+            default: {},
+            parkingLot: {
                 chart: {
                     type: 'multiBarHorizontalChart',
                     x: function(entry) { return entry[0]; },
@@ -98,13 +101,12 @@ registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 
                         }
                     }
                 }
-            };
-        } else if (chartName == 'burndown') {
-            options = {
+            },
+            burndown: {
                 chart: {
+                    type: 'multiBarChart',
                     x: function(entry, index) { return index; },
                     y: function(entry) { return entry[0]; },
-                    type: 'multiBarChart',
                     stacked: true,
                     xAxis: {
                         tickFormat: function(entry) {
@@ -112,35 +114,34 @@ registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 
                         }
                     }
                 }
-            };
+            }
+        },
+        sprint: {
+            default: {
+                chart: {
+                    type: 'lineChart',
+                    x: function(entry) { return entry[0]; },
+                    y: function(entry) { return entry[1]; },
+                    xScale: d3.time.scale.utc(),
+                    xAxis: {
+                        tickFormat: $filter('dayShorter')
+                    }
+                }
+            }
         }
+    };
+    $scope.openChart = function(itemType, chartName, item) {
         $scope.cleanData();
-        $scope.options = _.merge({}, $scope.defaultOptions, options);
-        ReleaseService.openChart(release, chartName).then(function(chart) {
+        $scope.options = _.merge({}, $scope.defaultOptions, $scope.chartOptions[itemType]['default'], $scope.chartOptions[itemType][chartName] ? $scope.chartOptions[itemType][chartName] : {});
+        $scope.chartLoaders[itemType](chartName, item).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
             if (chart.labelsX) {
                 $scope.labelsX = chart.labelsX;
             }
-        });
-    };
-    $scope.openSprintChart = function(chartName, sprint) {
-        var defaultSprintOptions = {
-            chart: {
-                type: 'lineChart',
-                x: function(entry) { return entry[0]; },
-                y: function(entry) { return entry[1]; },
-                xScale: d3.time.scale.utc(),
-                xAxis: {
-                    tickFormat: $filter('dayShorter')
-                }
+            if (chart.labelsY) {
+                $scope.labelsY = chart.labelsY;
             }
-        };
-        $scope.cleanData();
-        $scope.options = _.merge({}, $scope.defaultOptions, defaultSprintOptions);
-        SprintService.openChart(sprint, $scope.currentProject ? $scope.currentProject : Session.getProject(), chartName).then(function(chart) {
-            $scope.options = _.merge($scope.options, chart.options);
-            $scope.data = chart.data;
         });
     };
     $scope.saveChart = function() {

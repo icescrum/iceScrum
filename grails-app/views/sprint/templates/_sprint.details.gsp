@@ -124,7 +124,7 @@
                 </div>
                 <div class="chart"
                      ng-controller="chartCtrl"
-                     ng-init="openSprintChart('burnupTasks', sprint)">
+                     ng-init="openChart('sprint', 'burnupTasks', sprint)">
                     <div uib-dropdown
                          class="pull-right">
                         <button class="btn btn-default btn-sm"
@@ -134,10 +134,10 @@
                             <i class="fa fa-bar-chart"></i>&nbsp;<i class="caret"></i>
                         </button>
                         <ul uib-dropdown-menu>
-                            <li><a href ng-click="openSprintChart('burndownRemaining', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>
-                            <li><a href ng-click="openSprintChart('burnupTasks', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a></li>
-                            <li><a href ng-click="openSprintChart('burnupPoints', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a></li>
-                            <li><a href ng-click="openSprintChart('burnupStories', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a></li>
+                            <li><a href ng-click="openChart('sprint', 'burndownRemaining', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>
+                            <li><a href ng-click="openChart('sprint', 'burnupTasks', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a></li>
+                            <li><a href ng-click="openChart('sprint', 'burnupPoints', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a></li>
+                            <li><a href ng-click="openChart('sprint', 'burnupStories', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a></li>
                             <entry:point id="sprint-details-charts"/>
                         </ul>
                     </div>
