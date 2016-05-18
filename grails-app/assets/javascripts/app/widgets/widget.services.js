@@ -40,7 +40,6 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
     this.save = function(widgetDefinitionId, onRight) {
         var widget = {widget: 'feature', widgetDefinitionId: widgetDefinitionId, onRight: onRight};
         return Widget.save(widget, function(widget) {
-            console.log(widget);
             widget.settings = widget.settingsData ? JSON.parse(widget.settingsData) : undefined;
             delete widget.settingsData;
             CacheService.addOrUpdate('widget', widget);
