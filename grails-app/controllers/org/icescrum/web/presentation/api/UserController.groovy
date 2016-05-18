@@ -53,13 +53,13 @@ class UserController {
     @Secured(["hasRole('ROLE_ADMIN')"])
     def index() {
         def users = User.getAll()
-        render status: 200, contentType: 'application/json', text: users as JSON
+        render(status: 200, contentType: 'application/json', text: users as JSON)
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def show(long id) {
         User user = User.withUser(id)
-        render status: 200, contentType: 'application/json', text: user as JSON
+        render(status: 200, contentType: 'application/json', text: user as JSON)
     }
 
     @Secured(["!isAuthenticated()"])
@@ -80,7 +80,7 @@ class UserController {
                 bindData(user.preferences, (Map) this.params.user, [include: ['language', 'filterTask', 'activity']], "preferences")
                 userService.save(user, params.user.token)
             }
-            render status: 200, contentType: 'application/json', text: user as JSON
+            render(status: 201, contentType: 'application/json', text: user as JSON)
         } catch (RuntimeException e) {
             returnError(object: user, exception: e)
         }
@@ -102,7 +102,7 @@ class UserController {
                     props.avatar = uploadedAvatar.canonicalPath
                     props.scale = true
                     userService.update(user, props)
-                    render status: 200, contentType: 'application/json', text: user as JSON
+                    render(status: 200, contentType: 'application/json', text: user as JSON)
                 }
                 UtilsWebComponents.handleUpload.delegate = this
                 UtilsWebComponents.handleUpload(request, params, endOfUpload)
@@ -151,7 +151,7 @@ class UserController {
             entry.hook(id: "${controllerName}-${actionName}", model: [user: user, props: props])
             userService.update(user, props)
         }
-        render status: 200, contentType: 'application/json', text: user as JSON
+        render(status: 200, contentType: 'application/json', text: user as JSON)
     }
 
     @Secured(['!isAuthenticated()'])
@@ -169,7 +169,7 @@ class UserController {
         }
         if (!avatar?.exists()) {
             if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable && user)) {
-                redirect url: "https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()
+                redirect(url: "https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5())
                 return
             }
             avatar = getAssetAvatarFile("avatar.png")

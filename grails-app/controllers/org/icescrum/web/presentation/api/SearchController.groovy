@@ -38,7 +38,7 @@ class SearchController {
     def tag(long product) {
         Product _product = Product.withProduct(product)
         if ((_product.preferences.hidden && !request.inProduct) || (!_product.preferences.hidden && !springSecurityService.isLoggedIn())){
-            render status:403, text:''
+            render (status:403, text:'')
             return
         }
         String findTagsByTermAndProduct = """SELECT DISTINCT tagLink.tag.name
@@ -78,6 +78,6 @@ class SearchController {
             tags = tags.collect { BacklogElement.TAG_KEYWORD + it }
         }
 
-        render tags as JSON
+        render(tags as JSON)
     }
 }

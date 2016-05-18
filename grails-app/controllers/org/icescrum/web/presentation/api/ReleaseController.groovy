@@ -41,13 +41,13 @@ class ReleaseController {
     def index(long product) {
         Product _product = Product.withProduct(product)
         def releases = _product.releases
-        render status: 200, contentType: 'application/json', text: releases as JSON
+        render(status: 200, contentType: 'application/json', text: releases as JSON)
     }
 
     @Secured('inProduct()')
     def show(long product, long id) {
         Release release = Release.withRelease(product, id)
-        render status: 200, contentType: 'application/json', text: release as JSON
+        render(status: 200, contentType: 'application/json', text: release as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -66,7 +66,7 @@ class ReleaseController {
                 bindData(release, releaseParams, [include: ['name', 'goal', 'startDate', 'endDate']])
                 releaseService.save(release, _product)
             }
-            render status: 200, contentType: 'application/json', text: release as JSON
+            render(status: 201, contentType: 'application/json', text: release as JSON)
         } catch (IllegalStateException e) {
             returnError(exception: e)
         } catch (RuntimeException e) {
@@ -84,7 +84,7 @@ class ReleaseController {
             bindData(release, releaseParams, [include: ['name', 'vision']])
             releaseService.update(release, startDate, endDate)
         }
-        render status: 200, contentType: 'application/json', text: release as JSON
+        render(status: 200, contentType: 'application/json', text: release as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -98,21 +98,21 @@ class ReleaseController {
     def close(long product, long id) {
         Release release = Release.withRelease(product, id)
         releaseService.close(release)
-        render status: 200, contentType: 'application/json', text: release as JSON
+        render(status: 200, contentType: 'application/json', text: release as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def activate(long product, long id) {
         Release release = Release.withRelease(product, id)
         releaseService.activate(release)
-        render status: 200, contentType: 'application/json', text: release as JSON
+        render(status: 200, contentType: 'application/json', text: release as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def autoPlan(long product, long id, Double capacity) {
         Release release = Release.withRelease(product, id)
         def plannedStories = storyService.autoPlan(release.sprints.asList(), capacity)
-        render status: 200, contentType: 'application/json', text: plannedStories as JSON
+        render(status: 200, contentType: 'application/json', text: plannedStories as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -123,7 +123,7 @@ class ReleaseController {
         if (sprints) {
             unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
         }
-        render status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON
+        render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON)
     }
 
     @Secured(['stakeHolder() or inProduct()'])

@@ -44,7 +44,7 @@ class LoginController {
     def auth() {
         def config = SpringSecurityUtils.securityConfig
         if (springSecurityService.isLoggedIn()) {
-            redirect uri: config.successHandler.defaultTargetUrl
+            redirect(uri: config.successHandler.defaultTargetUrl)
             return
         }
         session.invalidate()
@@ -98,7 +98,7 @@ class LoginController {
             return
         } else {
             flash.message = msg
-            redirect action: auth, params: params
+            redirect(action: auth, params: params)
         }
     }
 

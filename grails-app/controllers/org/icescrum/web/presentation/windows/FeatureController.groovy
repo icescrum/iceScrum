@@ -48,7 +48,7 @@ class FeatureController {
     def show() {
         def features = Feature.withFeatures(params)
         def returnData = features.size() > 1 ? features : features.first()
-        render status: 200, contentType: 'application/json', text: returnData as JSON
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -66,7 +66,7 @@ class FeatureController {
                 def product = Product.load(params.long('product'))
                 featureService.save(feature, product)
                 entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature]) // TODO check if still needed
-                render(status: 200, contentType: 'application/json', text: feature as JSON)
+                render(status: 201, contentType: 'application/json', text: feature as JSON)
             }
         } catch (RuntimeException e) {
             returnError(exception:e, object:feature)
@@ -92,7 +92,7 @@ class FeatureController {
             }
         }
         def returnData = features.size() > 1 ? features : features.first()
-        render status: 200, contentType: 'application/json', text: returnData as JSON
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -117,7 +117,7 @@ class FeatureController {
     }
 
     def productParkingLotChart() {
-        forward controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName]
+        forward(controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName])
     }
 
     @Secured('isAuthenticated()')

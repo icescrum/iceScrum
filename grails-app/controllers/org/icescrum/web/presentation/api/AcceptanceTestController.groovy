@@ -38,13 +38,13 @@ class AcceptanceTestController {
     @Secured('(stakeHolder() or inProduct()) and !archivedProduct()')
     def index(long product) {
         def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(product, params.long('parentStory')) : AcceptanceTest.getAllInProduct(product)
-        render status: 200, contentType: 'application/json', text: acceptanceTests as JSON
+        render(status: 200, contentType: 'application/json', text: acceptanceTests as JSON)
     }
 
     @Secured('(stakeHolder() or inProduct()) and !archivedProduct()')
     def show(long id, long product) {
         AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
-        render status: 200, contentType: 'application/json', text: acceptanceTest as JSON
+        render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -87,7 +87,7 @@ class AcceptanceTestController {
             returnError(object: acceptanceTest, exception: e)
             return
         }
-        render status: 200, contentType: 'application/json', text: acceptanceTest as JSON
+        render(status: 201, contentType: 'application/json', text: acceptanceTest as JSON)
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -132,6 +132,6 @@ class AcceptanceTestController {
         AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
         def deleted = [id: acceptanceTest.id, parentStory: [id: acceptanceTest.parentStory.id]]
         acceptanceTestService.delete(acceptanceTest)
-        render status: 200, contentType: 'application/json', text: deleted as JSON
+        render(status: 200, contentType: 'application/json', text: deleted as JSON)
     }
 }

@@ -89,7 +89,7 @@ class WidgetController {
             return
         }
         Widget widget = widgetService.save(user, widgetDefinition, onRight)
-        render(status: 200, contentType: 'application/json', text: widget as JSON)
+        render(status: 201, contentType: 'application/json', text: widget as JSON)
     }
 
     @Secured('isAuthenticated()')

@@ -79,7 +79,7 @@ class StoryController {
     def show() {
         def stories = Story.withStories(params)
         def returnData = stories.size() > 1 ? stories : stories.first()
-        render status: 200, contentType: 'application/json', text: returnData as JSON
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])
@@ -119,9 +119,8 @@ class StoryController {
                     story.addToAcceptanceTests(acceptanceTest) // required so the acceptance tests are returned with the story in JSON
                 }
                 entry.hook(id: "${controllerName}-${actionName}", model: [story: story])
-                render status: 200, contentType: 'application/json', text: story as JSON
+                render(status: 201, contentType: 'application/json', text: story as JSON)
             }
-
         } catch (RuntimeException e) {
             returnError(object: story, exception: e)
         }
@@ -183,7 +182,7 @@ class StoryController {
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
-        render status: 200, contentType: 'application/json', text: returnData as JSON
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['isAuthenticated()'])
@@ -308,7 +307,7 @@ class StoryController {
         def stories = Story.withStories(params)?.reverse()
         def features = storyService.acceptToFeature(stories)
         def returnData = features.size() > 1 ? features : features.first()
-        render status: 200, contentType: 'application/json', text: returnData as JSON
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
@@ -316,7 +315,7 @@ class StoryController {
         def stories = Story.withStories(params)?.reverse()
         def tasks = storyService.acceptToUrgentTask(stories)
         def returnData = tasks.size() > 1 ? tasks : tasks.first()
-        render status: 200, contentType: 'application/json', text: returnData as JSON
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
@@ -345,7 +344,7 @@ class StoryController {
             storyService.update(story)
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
-        render status: 200, contentType: 'application/json', text: returnData as JSON
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])
@@ -363,7 +362,7 @@ class StoryController {
             }
         }
         def returnData = stories.size() > 1 ? stories : stories.first()
-        render status: 200, contentType: 'application/json', text: returnData as JSON
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])
@@ -371,7 +370,7 @@ class StoryController {
         def story = Story.withStory(product, id)
         def stories = Story.findPossiblesDependences(story).list()?.sort { a -> a.feature == story.feature ? 0 : 1 }
         def storyEntries = stories.collect { [id: it.id, name: it.name, uid: it.uid] }
-        render status: 200, contentType: 'application/json', text: storyEntries as JSON
+        render(status: 200, contentType: 'application/json', text: storyEntries as JSON)
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])
@@ -388,7 +387,7 @@ class StoryController {
                 }
             }
         }
-        render status: 200, contentType: 'application/json', text: sprintEntries as JSON
+        render(status: 200, contentType: 'application/json', text: sprintEntries as JSON)
     }
 
     @Secured(['isAuthenticated() and !archivedProduct()'])

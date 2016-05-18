@@ -60,7 +60,7 @@ class TaskController {
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def show(long id, long product) {
         Task task = Task.withTask(product, id)
-        render status: 200, contentType: 'application/json', text: task as JSON
+        render(status: 200, contentType: 'application/json', text: task as JSON)
     }
 
     @Secured('inProduct() and !archivedProduct()')
@@ -88,7 +88,7 @@ class TaskController {
                 taskService.save(task, springSecurityService.currentUser)
                 task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
             }
-            render(status: 200, contentType: 'application/json', text: task as JSON)
+            render(status: 201, contentType: 'application/json', text: task as JSON)
         } catch (IllegalStateException e) {
             returnError(exception: e)
         } catch (RuntimeException e) {

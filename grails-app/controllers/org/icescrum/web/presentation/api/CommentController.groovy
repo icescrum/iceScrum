@@ -55,7 +55,7 @@ class CommentController {
             returnError(text:message(code: 'is.comment.error.not.exist'))
             return
         }
-        render status: 200, contentType: 'application/json', text: comment as JSON
+        render(status: 200, contentType: 'application/json', text: comment as JSON)
     }
 
     @Secured('((isAuthenticated() and stakeHolder()) or inProduct()) and !archivedProduct()')
@@ -81,7 +81,7 @@ class CommentController {
                     }
                 }
             }
-            render(status: 200, contentType: 'application/json', text:comment as JSON)
+            render(status: 201, contentType: 'application/json', text: comment as JSON)
         } catch (Exception e) {
             returnError(exception:e)
         }

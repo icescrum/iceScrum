@@ -45,7 +45,7 @@ class SprintController {
     @Secured('inProduct()')
     def show(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
-        render status: 200, contentType: 'application/json', text: sprint as JSON
+        render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -69,7 +69,7 @@ class SprintController {
                 bindData(sprint, sprintParams, [include: ['goal', 'startDate', 'endDate', 'deliveredVersion']])
                 sprintService.save(sprint, release)
             }
-            render(status: 200, contentType: 'application/json', text: sprint as JSON)
+            render(status: 201, contentType: 'application/json', text: sprint as JSON)
         } catch (IllegalStateException e) {
             returnError(exception: e)
         } catch (RuntimeException e) {
@@ -107,7 +107,7 @@ class SprintController {
     def generateSprints(long product, long releaseId) {
         Release release = Release.withRelease(product, releaseId)
         def sprints = sprintService.generateSprints(release)
-        render status: 200, contentType: 'application/json', text: sprints as JSON
+        render(status: 200, contentType: 'application/json', text: sprints as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')

@@ -61,7 +61,7 @@ class ActorController {
                 def product = Product.load(params.long('product'))
                 actorService.save(actor, product)
             }
-            render(status: 200, contentType: 'application/json', text: actor as JSON)
+            render(status: 201, contentType: 'application/json', text: actor as JSON)
         } catch (RuntimeException e) {
             returnError(exception: e, object: actor)
         }

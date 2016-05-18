@@ -37,7 +37,7 @@ class TeamController {
         try {
             Team.withTransaction {
                 teamService.save(team, null, [springSecurityService.currentUser.id])
-                render(status: 200, text: team as JSON, contentType: 'application/json')
+                render(status: 201, text: team as JSON, contentType: 'application/json')
             }
         } catch (IllegalStateException ise) {
             returnError(text: message(code: ise.message))

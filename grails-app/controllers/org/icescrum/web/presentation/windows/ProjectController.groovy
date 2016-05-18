@@ -116,7 +116,7 @@ class ProjectController {
                     releaseService.save(release, product)
                     sprintService.generateSprints(release, productParams.firstSprint)
                 }
-                render(status: 200, contentType: 'application/json', text: product as JSON)
+                render(status: 201, contentType: 'application/json', text: product as JSON)
             } catch (IllegalStateException ise) {
                 status.setRollbackOnly()
                 returnError(text: message(code: ise.getMessage()))
@@ -274,7 +274,7 @@ class ProjectController {
     def addDocument(long product) {
         Product _product = Product.withProduct(product)
         def dialog = g.render(template: '/attachment/dialogs/documents', model: [bean: _product, destController: 'project'])
-        render status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
     @Secured('inProduct()')
@@ -283,7 +283,7 @@ class ProjectController {
         def keptAttachments = params.list('product.attachments')
         def addedAttachments = params.list('attachments')
         def attachments = manageAttachments(_product, keptAttachments, addedAttachments)
-        render status: 200, contentType: 'application/json', text: attachments as JSON
+        render(status: 200, contentType: 'application/json', text: attachments as JSON)
     }
 
     // Cannot end with Flow because of f*cked up filter in SpringSecurity (AnnotationFilterInvocationDefinition.java:256)
