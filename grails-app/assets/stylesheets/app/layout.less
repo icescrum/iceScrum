@@ -805,6 +805,55 @@ table {
   }
 }
 
+#view-planning {
+  .timeline {
+    height: 120px;
+    .axis {
+      text {
+        font: 11px sans-serif;
+      }
+      path {
+        display: none;
+      }
+      line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+    }
+    .timeline-background {
+      fill: #fff;
+    }
+    .grid {
+      line, path {
+        fill: none;
+        stroke: #fff;
+        shape-rendering: crispEdges;
+      }
+      .minor.tick line {
+        stroke-opacity: .5;
+      }
+    }
+    .brush .extent {
+      stroke: #999;
+      fill-opacity: .075;
+      shape-rendering: crispEdges;
+    }
+    .sprint, .release {
+      stroke: #dbdbdb;
+    }
+    .release-default, .sprint-default {
+      fill: #eeeeee;
+    }
+    .release-progress, .sprint-progress {
+      fill: #DAF4FF;
+    }
+    .release-done, .sprint-done {
+      fill: #E1F5CC;
+    }
+  }
+}
+
 .manage-extensions {
     .screenshot {
       max-width: 100%;

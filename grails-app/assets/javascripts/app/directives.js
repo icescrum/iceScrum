@@ -409,7 +409,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
                 elementHeight = element.height(),
                 height = elementHeight - margin.top - margin.bottom,
-                sprintMargin = 10, releaseMargin = 15,
+                sprintYMargin = 10, releaseYMargin = 15,
                 x = d3.time.scale(),
                 xAxis = d3.svg.axis(),
                 extent; // Global var
@@ -443,11 +443,11 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 // Insert
                 var classByState = {1: 'default', 2: 'progress', 3: 'done'};
                 releaseSelector.enter().append("rect")
-                    .attr("y", releaseMargin)
-                    .attr("height", height - releaseMargin * 2);
+                    .attr("y", releaseYMargin)
+                    .attr("height", height - releaseYMargin * 2);
                 sprintSelector.enter().append("rect")
-                    .attr("y", sprintMargin + releaseMargin)
-                    .attr("height", height - releaseMargin * 2 - sprintMargin * 2);
+                    .attr("y", sprintYMargin + releaseYMargin)
+                    .attr("height", height - releaseYMargin * 2 - sprintYMargin * 2);
                 // Update
                 var getX = function(d) {
                     return x(d.startDate);
