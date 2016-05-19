@@ -835,14 +835,21 @@ table {
       }
     }
     .brush .extent {
-      stroke: #999;
+      stroke: #aaa;
+      stroke-width: 2;
       fill-opacity: .075;
       shape-rendering: crispEdges;
     }
     .sprint, .release {
-      stroke: #dbdbdb;
+      stroke: #ccc;
       &.selected {
-        stroke: #999;
+        stroke: #666;
+      }
+    }
+    .sprint-text {
+      fill: #ccc;
+      &.selected {
+        fill: #666;
       }
     }
     .release-default, .sprint-default {

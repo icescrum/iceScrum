@@ -419,6 +419,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var xAxisSelector = svg.append("g").attr("class", "x axis").attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')');
             var releases = svg.append("g").attr("class", "releases");
             var sprints = svg.append("g").attr("class", "sprints");
+            var sprintTexts = svg.append("g").attr("class", "sprint-texts");
             var brush = d3.svg.brush().x(x).on("brush", onBrush).on("brushend", onBrushEnd);
             var brushSelector = svg.append("g").attr("class", "brush").call(brush);
             brushSelector.selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15 * 2);
@@ -435,11 +436,14 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 xAxisSelector.call(xAxis);
                 timelineBackground.attr("width", width);
 
+                var _sprints = ReleaseService.findAllSprints(_releases);
                 var releaseSelector = releases.selectAll('rect').data(_releases);
-                var sprintSelector = sprints.selectAll('rect').data(ReleaseService.findAllSprints(_releases));
+                var sprintSelector = sprints.selectAll('rect').data(_sprints);
+                var sprintTextsSelector = sprintTexts.selectAll('text').data(_sprints);
                 // Remove
                 releaseSelector.exit().remove();
                 sprintSelector.exit().remove();
+                sprintTextsSelector.exit().remove();
                 // Insert
                 var classByState = {1: 'default', 2: 'progress', 3: 'done'};
                 releaseSelector.enter().append("rect")
@@ -448,12 +452,17 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 sprintSelector.enter().append("rect")
                     .attr("y", sprintYMargin + releaseYMargin)
                     .attr("height", height - releaseYMargin * 2 - sprintYMargin * 2);
+                sprintTextsSelector.enter().append("text")
+                    .attr("y", 8 + height / 2)
+                    .text(function (sprint) { return sprint.orderNumber; })
+                    .style("text-anchor", "middle")
+                    .attr("font-size", "18px");
                 // Update
-                var getX = function(d) {
-                    return x(d.startDate);
+                var getX = function(item) {
+                    return x(item.startDate);
                 };
-                var getWidth = function(d) {
-                    return x(d.endDate) - x(d.startDate);
+                var getWidth = function(item) {
+                    return x(item.endDate) - x(item.startDate);
                 };
                 var selectedClass = function(item) {
                     return _.includes(selectedItems, item) ? ' selected' : ''
@@ -470,6 +479,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .attr("class", function(sprint) {
                         return "sprint sprint-" + classByState[sprint.state] + selectedClass(sprint);
                     });
+                sprintTextsSelector
+                    .attr('x', function(sprint) { return x(new Date(sprint.startDate.getTime() + (sprint.endDate.getTime() - sprint.startDate.getTime()) / 2)); })
+                    .attr("class", function(sprint) { return "sprint-text" + selectedClass(sprint); });
             }
             // Brush management
             function reinitializeBrush() {
