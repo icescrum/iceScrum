@@ -520,8 +520,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 render(); // To update selected items
             }
             // Register render on model change
-            scope.$watch('timeline', render, true);
-            scope.$watch('selected', function(newSelected) {
+            var removeTimelineWatcher = scope.$watch('timeline', render, true);
+            var removeSelectedWatcher = scope.$watch('selected', function(newSelected) {
                 selectedItems = newSelected;
                 render(); // To update selected items
             }, true);
@@ -532,9 +532,16 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     $timeout(render, 100);
                 }
             });
-            // Unregister listeners
+            // Unregister event listener & watchers when state change & scope destroy
+            var unregisterRemoveWatchersOnWindowChanged = scope.$on('$stateChangeStart', function(event, toState) {
+                if (!_.startsWith(toState.name, 'planning')) {
+                    removeTimelineWatcher();
+                    removeSelectedWatcher();
+                }
+            });
             scope.$on('$destroy', function() {
                 d3.select(window).on('resize', null);
+                unregisterRemoveWatchersOnWindowChanged();
                 unregisterRenderOnDetailsChanged();
             });
             // Initialize the brush
