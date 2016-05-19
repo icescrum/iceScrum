@@ -167,6 +167,12 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     $scope.openSprintUrl = function(sprint) {
         return $state.href('planning.release.sprint.withId.details', {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
     };
+    $scope.openMultipleSprintDetailsUrl = function() {
+        return $state.href('planning.release.sprint.multiple.details');
+    };
+    $scope.isMultipleSprint = function() {
+        return _.startsWith($state.current.name, 'planning.release.sprint.multiple');
+    };
     // Init
     $scope.viewName = 'planning';
     $scope.visibleSprintMax = 3;
@@ -178,16 +184,23 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     $scope.timelineSelected = function(selectedItems) { // Timeline -> URL
         if (selectedItems.length == 0) {
             $state.go('planning');
-        } else if (selectedItems.length == 1 && selectedItems[0].class == 'Release') {
-            var release = selectedItems[0];
-            $state.go('planning.release.details', {releaseId: release.id});
-        } else if (selectedItems.length == 1 && selectedItems[0].class == 'Sprint') {
-            var sprint = selectedItems[0];
-            var releaseId = sprint.parentRelease.id;
-            $state.go('planning.release.sprint.withId.details', {releaseId: releaseId, sprintId: sprint.id});
         } else {
-            var releaseId = selectedItems[0].parentRelease.id;
-            $state.go('planning.release.sprint.multiple.details', {releaseId: releaseId, sprintListId: _.map(selectedItems, 'id')});
+            var stateName, stateParams;
+            if (selectedItems.length == 1 && selectedItems[0].class == 'Release') {
+                stateName = 'planning.release';
+                stateParams = {releaseId: selectedItems[0].id};
+            } else if (selectedItems.length == 1 && selectedItems[0].class == 'Sprint') {
+                var sprint = selectedItems[0];
+                stateName = 'planning.release.sprint.withId';
+                stateParams = {releaseId: sprint.parentRelease.id, sprintId: sprint.id};
+            } else {
+                stateName = 'planning.release.sprint.multiple';
+                stateParams = {releaseId: selectedItems[0].parentRelease.id, sprintListId: _.map(selectedItems, 'id')};
+            }
+            if (_.endsWith($state.current.name, '.details')) {
+                stateName += '.details';
+            }
+            $state.go(stateName, stateParams);
         }
     };
     $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.releaseId; }, function() { return $state.params.sprintId; }, function() { return $state.params.sprintListId; }], function(newValues) {

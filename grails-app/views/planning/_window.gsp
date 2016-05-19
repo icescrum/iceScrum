@@ -44,6 +44,15 @@
                     ${message(code: 'todo.is.ui.sprint.new')}
                 </a>
             </div>
+            <div class="btn-group"
+                 ng-if="isMultipleSprint()">
+                <a class="btn btn-default"
+                   href="{{ openMultipleSprintDetailsUrl() }}"
+                   uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                    <i class="fa fa-info-circle"></i>
+                </a>
+            </div>
+        </span>
             <div class="btn-group pull-right" ng-if="hasNextVisibleSprints()">
                 <button class="btn btn-default"
                         ng-click="visibleSprintsNext()">
