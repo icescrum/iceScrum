@@ -410,8 +410,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 elementHeight = element.height(),
                 height = elementHeight - margin.top - margin.bottom,
                 sprintYMargin = 10, releaseYMargin = 15,
+                releaseHeight = height - releaseYMargin * 2,
                 x = d3.time.scale(),
                 xAxis = d3.svg.axis(),
+                y = d3.scale.linear().domain([elementHeight - releaseYMargin, 0 - releaseYMargin]).range([elementHeight, 0]),
                 selectedItems = [];
             var rootSvg = d3.select(element[0]).append("svg").attr("height", elementHeight);
             var svg = rootSvg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -420,9 +422,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var releases = svg.append("g").attr("class", "releases");
             var sprints = svg.append("g").attr("class", "sprints");
             var sprintTexts = svg.append("g").attr("class", "sprint-texts");
-            var brush = d3.svg.brush().x(x).on("brush", onBrush).on("brushend", onBrushEnd);
+            var brush = d3.svg.brush().x(x).y(y).on("brush", onBrush).on("brushend", onBrushEnd);
             var brushSelector = svg.append("g").attr("class", "brush").call(brush);
-            brushSelector.selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15 * 2);
             // Main rendering
             function render() {
                 var _releases = scope.timeline;
@@ -430,8 +431,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 rootSvg.attr("width", element.width());
                 var elementWidth = element.width(); // WARNING: element.width must be recomputed after rootSvg.attr("width", ...) because it changes if the right panel has lateral padding (e.g. with .new form which has .panel-body padding)
                 var width = elementWidth - margin.left - margin.right;
-                x.domain([_.head(_releases).startDate, _.last(_releases).endDate]);
-                x.range([0, width]);
+                x.domain([_.head(_releases).startDate, _.last(_releases).endDate]).range([0, width]);
                 xAxis.scale(x);
                 xAxisSelector.call(xAxis);
                 timelineBackground.attr("width", width);
@@ -448,10 +448,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var classByState = {1: 'default', 2: 'progress', 3: 'done'};
                 releaseSelector.enter().append("rect")
                     .attr("y", releaseYMargin)
-                    .attr("height", height - releaseYMargin * 2);
+                    .attr("height", releaseHeight);
                 sprintSelector.enter().append("rect")
                     .attr("y", sprintYMargin + releaseYMargin)
-                    .attr("height", height - releaseYMargin * 2 - sprintYMargin * 2);
+                    .attr("height", releaseHeight - sprintYMargin * 2);
                 sprintTextsSelector.enter().append("text")
                     .attr("y", 8 + height / 2)
                     .text(function (sprint) { return sprint.orderNumber; })
@@ -487,32 +487,35 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             function reinitializeBrush() {
                 brushSelector.call(brush.clear());
             }
-            function findSprintsOrAReleaseInRange(dates) {
+            function findSprintsOrAReleaseInRange(ranges) {
+                var dates = ranges.x;
+                var y = ranges.y;
+                var onSprint = (y[0] > sprintYMargin || y[1] > sprintYMargin) && (y[0] < (releaseHeight - sprintYMargin) || y[1] < (releaseHeight - sprintYMargin));
                 var res;
-                res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
-                    return sprint.startDate <= dates[1] && sprint.endDate >= dates[0];
-                });
-                if (!res.length) {
-                    res = _.find(releases.selectAll("rect").data(), function(release) {
-                        return release.startDate <= dates[0] && release.endDate >= dates[0];
+                if (onSprint) {
+                    res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
+                        return sprint.startDate <= dates[1] && sprint.endDate >= dates[0];
                     });
-                    if (res) {
-                        var _res = _.find(sprints.selectAll("rect").data(), function(sprint) {
-                            return sprint.startDate <= dates[0] && sprint.endDate >= dates[0];
-                        });
-                        res = _res ? [_res] : [res]; // Always return an array
-                    }
+                }
+                if (!res || !res.length) {
+                    res = [_.find(releases.selectAll("rect").data(), function(release) {
+                        return release.startDate <= dates[1] && release.endDate >= dates[0];
+                    })];
                 }
                 return res;
             }
+            function getBrushRanges() {
+                var transposedExtend = _.zip.apply(null, (brush.extent()));
+                return {x:_.map(transposedExtend[0], d3.time.day.utc), y: transposedExtend[1]};
+            }
             function onBrush() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
-                selectedItems = findSprintsOrAReleaseInRange(brush.extent().map(d3.time.day.utc));
+                selectedItems = findSprintsOrAReleaseInRange(getBrushRanges());
                 render(); // To update selected items
             }
             function onBrushEnd() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
-                selectedItems = findSprintsOrAReleaseInRange(brush.extent().map(d3.time.day.utc));
+                selectedItems = findSprintsOrAReleaseInRange(getBrushRanges());
                 if (selectedItems.length > 0) {
                     scope.onSelect(selectedItems);
                 }
