@@ -412,17 +412,17 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 sprintYMargin = 10, releaseYMargin = 15,
                 x = d3.time.scale(),
                 xAxis = d3.svg.axis(),
-                extent; // Global var
+                selectedItems = [];
             var rootSvg = d3.select(element[0]).append("svg").attr("height", elementHeight);
             var svg = rootSvg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
             var timelineBackground = svg.append("rect").attr("class", "timeline-background").attr("height", elementHeight);
             var xAxisSelector = svg.append("g").attr("class", "x axis").attr('transform', 'translate(0,' + (height - margin.top - margin.bottom) + ')');
             var releases = svg.append("g").attr("class", "releases");
             var sprints = svg.append("g").attr("class", "sprints");
-            var brush = d3.svg.brush().x(x).on("brushend", snapToSprint);
-            var brushSelector = svg.append("g").attr("class", "brush").call(brush).call(brush.event);
+            var brush = d3.svg.brush().x(x).on("brush", onBrush).on("brushend", onBrushEnd);
+            var brushSelector = svg.append("g").attr("class", "brush").call(brush);
             brushSelector.selectAll("rect").attr('transform', 'translate(0,' + margin.bottom + ')').attr("height", height - 15 * 2);
-
+            // Main rendering
             function render() {
                 var _releases = scope.timeline;
                 if (!scope.timeline) return;
@@ -455,71 +455,80 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var getWidth = function(d) {
                     return x(d.endDate) - x(d.startDate);
                 };
+                var selectedClass = function(item) {
+                    return _.includes(selectedItems, item) ? ' selected' : ''
+                };
                 releaseSelector
                     .attr('x', getX)
                     .attr("width", getWidth)
                     .attr("class", function(release) {
-                        return "release release-" + classByState[release.state];
+                        return "release release-" + classByState[release.state] + selectedClass(release);
                     });
                 sprintSelector
                     .attr('x', getX)
                     .attr("width", getWidth)
                     .attr("class", function(sprint) {
-                        return "sprint sprint-" + classByState[sprint.state];
+                        return "sprint sprint-" + classByState[sprint.state] + selectedClass(sprint);
                     });
-                if (extent) {
-                    refreshBrush();
-                }
             }
-            function refreshBrush() {
-                brushSelector.transition()
-                    .call(brush.extent(extent))
-                    .call(brush.event);
+            // Brush management
+            function reinitializeBrush() {
+                brushSelector.call(brush.clear());
             }
-            function snapToSprint() {
-                if (!d3.event.sourceEvent) return; // Only transition after input
-                var findSprintsOrAReleaseInRange = function(dates) {
-                    var res;
-                    res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
-                        return sprint.startDate >= dates[0] && sprint.endDate <= dates[1];
+            function findSprintsOrAReleaseInRange(dates) {
+                var res;
+                res = _.filter(sprints.selectAll("rect").data(), function(sprint) {
+                    return sprint.startDate <= dates[1] && sprint.endDate >= dates[0];
+                });
+                if (!res.length) {
+                    res = _.find(releases.selectAll("rect").data(), function(release) {
+                        return release.startDate <= dates[0] && release.endDate >= dates[0];
                     });
-                    if (!res.length) {
-                        res = _.find(releases.selectAll("rect").data(), function(release) {
-                            return release.startDate <= dates[0] && release.endDate >= dates[0];
+                    if (res) {
+                        var _res = _.find(sprints.selectAll("rect").data(), function(sprint) {
+                            return sprint.startDate <= dates[0] && sprint.endDate >= dates[0];
                         });
-                        if (res) {
-                            var _res = _.find(sprints.selectAll("rect").data(), function(sprint) {
-                                return sprint.startDate <= dates[0] && sprint.endDate >= dates[0];
-                            });
-                            res = _res ? [_res] : [res]; // Always return an array
-                        }
+                        res = _res ? [_res] : [res]; // Always return an array
                     }
-                    return res;
-                };
-                var selectedItems = findSprintsOrAReleaseInRange(brush.extent().map(d3.time.day.utc));
+                }
+                return res;
+            }
+            function onBrush() {
+                if (!d3.event.sourceEvent) return; // Only transition after input
+                selectedItems = findSprintsOrAReleaseInRange(brush.extent().map(d3.time.day.utc));
+                render(); // To update selected items
+            }
+            function onBrushEnd() {
+                if (!d3.event.sourceEvent) return; // Only transition after input
+                selectedItems = findSprintsOrAReleaseInRange(brush.extent().map(d3.time.day.utc));
                 if (selectedItems.length > 0) {
                     scope.onSelect(selectedItems);
-                    extent = [_.head(selectedItems).startDate, _.last(selectedItems).endDate];
-                    refreshBrush();
                 }
+                reinitializeBrush();
+                render(); // To update selected items
             }
-
+            // Register render on model change
             scope.$watch('timeline', render, true);
-            scope.$watch('selected', function(selected) {
-                extent = selected && selected.length > 0 ? [_.head(selected).startDate, _.last(selected).endDate] : [new Date(), new Date()];
-                refreshBrush();
+            scope.$watch('selected', function(newSelected) {
+                selectedItems = newSelected;
+                render(); // To update selected items
             }, true);
-            d3.select(window).on('resize', render); // Register render on resize
-            var registeredRootScopeRender = scope.$root.$on('$viewContentLoaded', function(a, d) {
-                //hack
-                if (d.indexOf('@planning') != -1) {
+            // Register render on width change (either by resize or opening / closing of details view)
+            d3.select(window).on('resize', render);
+            var unregisterRenderOnDetailsChanged = scope.$root.$on('$viewContentLoaded', function(event, viewConfig) {
+                if (viewConfig.indexOf('@planning') != -1) {
                     $timeout(render, 100);
                 }
-            }); // Register render when details view changed
+            });
+            // Unregister listeners
             scope.$on('$destroy', function() {
-                d3.select(window).on('resize', null); // unRegister render on resize
-                registeredRootScopeRender();
-            }); // Destroy listener when removed
+                d3.select(window).on('resize', null);
+                unregisterRenderOnDetailsChanged();
+            });
+            // Initialize the brush
+            $timeout(function() {
+                reinitializeBrush();
+            })
         }
     }
 }]).directive('postitMenu', ['$compile', function($compile) {
