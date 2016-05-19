@@ -760,6 +760,7 @@ angular.module('isApp', [
 .config(['uibDatepickerPopupConfig', function(uibDatepickerPopupConfig) {
     angular.extend(uibDatepickerPopupConfig, {
         showButtonBar: false,
+        appendToBody: true,
         datepickerPopup: 'dd/MM/yyyy' // TODO make it i18n
     });
 }])
