@@ -439,6 +439,9 @@
             display: inline;
           }
         }
+        .description {
+          display: none;
+        }
       }
       > div {
         padding: 8px;
@@ -626,11 +629,6 @@
     }
     &.is-selected:nth-child(odd) + .is-selected .postit {
       border-top-color: @table-bg-accent !important;
-    }
-  }
-  .postit-container-light {
-    .description {
-      display: none;
     }
   }
 }
