@@ -509,15 +509,15 @@ tr:hover .on-hover span {
   }
   .progress-bar {
     &.progress-bar-default {
-      background-color: @gray-lighter;
+      background-color: @state-suggested-light;
       color: @gray;
     }
     &.progress-bar-progress {
-      background-color: #DAF4FF;
+      background-color: @state-inProgress-light;
       color: @gray;
     }
     &.progress-bar-done {
-      background-color: #E1F5CC;
+      background-color: @state-done-light;
       color: @gray;
     }
     border-right: 3px solid @brand-primary;
@@ -1040,26 +1040,21 @@ tbody.story-ghost {
   }
 }
 
-.color-state-suggested {
+.color-state-suggested, .color-state-todo {
   background-color: @state-suggested;
 }
-
 .color-state-accepted {
   background-color: @state-accepted;
 }
-
-.color-state-estimated, .color-state-todo {
+.color-state-estimated {
   background-color: @state-estimated;
 }
-
 .color-state-planned {
   background-color: @state-planned;
 }
-
 .color-state-inProgress {
   background-color: @state-inProgress;
 }
-
 .color-state-done {
   background-color: @state-done;
 }

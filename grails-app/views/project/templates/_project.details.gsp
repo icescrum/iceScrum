@@ -24,7 +24,7 @@
                      tooltip-placement="bottom"
                      type="{{ { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] }}"
                      value="sprint.duration">
-                #{{ sprint.orderNumber }}
+                {{ sprint.orderNumber }}
             </uib-bar>
             <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
         </uib-progress>
