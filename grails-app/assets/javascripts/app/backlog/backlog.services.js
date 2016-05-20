@@ -24,7 +24,7 @@ services.factory('Backlog', ['Resource', function($resource) {
     return $resource('backlog/:id');
 }]);
 
-services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'BacklogCodes', function(Backlog, $q, CacheService, BacklogCodes) {
+services.service("BacklogService", ['Backlog', '$q', '$filter', 'CacheService', 'BacklogCodes', function(Backlog, $q, $filter, CacheService, BacklogCodes) {
     this.list = function() {
         var cachedBacklogs = CacheService.getCache('backlog');
         return _.isEmpty(cachedBacklogs) ? Backlog.query({}, function(backlogs) {
@@ -43,5 +43,11 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'BacklogCod
     };
     this.isBacklog = function(backlog) {
         return backlog.code == BacklogCodes.BACKLOG;
+    };
+    this.filterStories = function(backlog, stories) {
+        var filter = JSON.parse(backlog.filter);
+        return $filter('filter')(stories, filter.story, function(expected, actual) {
+            return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
+        });
     };
 }]);

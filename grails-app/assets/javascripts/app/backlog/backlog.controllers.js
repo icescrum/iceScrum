@@ -46,10 +46,7 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
     };
     $scope.refreshSingleBacklog = function(backlogContainer) {
         var backlog = backlogContainer.backlog;
-        var filter = JSON.parse(backlog.filter);
-        var filteredStories = $filter('filter')(Session.getProject().stories, filter.story, function(expected, actual) {
-            return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
-        });
+        var filteredStories = BacklogService.filterStories(backlog, Session.getProject().stories);
         var sortOrder = [backlogContainer.orderBy.current.value, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
         if (BacklogService.isAll(backlog) && backlogContainer.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
             var sortByStateGroupingByBacklogState = function(story) {
