@@ -131,11 +131,14 @@ class ReleaseController {
         Release release = Release.withRelease(product, id)
         def values = releaseService.releaseBurndownValues(release)
         def computedValues = [[key: message(code:'is.chart.releaseBurnDown.series.userstories.name'),
-                               values: values.collect { return [it.userstories]}],
+                               values: values.collect { return [it.userstories]},
+                               color:'#009900'],
                               [key: message(code:'is.chart.releaseBurnDown.series.technicalstories.name'),
-                               values: values.collect { return [it.technicalstories]}],
+                               values: values.collect { return [it.technicalstories]},
+                               color:'#1F77B4'],
                               [key: message(code:'is.chart.releaseBurnDown.series.defectstories.name'),
-                               values: values.collect { return [it.defectstories]}]]
+                               values: values.collect { return [it.defectstories]},
+                               color:'#CC3300']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.releaseBurnDown.title")]]

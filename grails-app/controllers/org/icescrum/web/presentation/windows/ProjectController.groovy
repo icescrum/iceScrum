@@ -291,17 +291,23 @@ class ProjectController {
         Product _product = Product.withProduct(product)
         def values = productService.cumulativeFlowValues(_product)
         def computedValues = [[key: message(code:"is.chart.productCumulativeflow.serie.suggested.name"),
-                               values: values.collect { return [it.suggested]}],
+                               values: values.collect { return [it.suggested]},
+                               color:'#AAAAAA'],
                               [key: message(code:"is.chart.productCumulativeflow.serie.accepted.name"),
-                               values: values.collect { return [it.accepted]}],
+                               values: values.collect { return [it.accepted]},
+                               color:'#FFCC04'],
                               [key: message(code:"is.chart.productCumulativeflow.serie.estimated.name"),
-                               values: values.collect { return [it.estimated]}],
+                               values: values.collect { return [it.estimated]},
+                               color:'#FF9933'],
                               [key: message(code:"is.chart.productCumulativeflow.serie.planned.name"),
-                               values: values.collect { return [it.planned]}],
+                               values: values.collect { return [it.planned]},
+                               color:'#CC3300'],
                               [key: message(code:"is.chart.productCumulativeflow.serie.inprogress.name"),
-                               values: values.collect { return [it.inprogress]}],
+                               values: values.collect { return [it.inprogress]},
+                               color:'#42A9E0'],
                               [key: message(code:"is.chart.productCumulativeflow.serie.done.name"),
-                               values: values.collect { return [it.done]}]].reverse()
+                               values: values.collect { return [it.done]},
+                               color:'#009900']].reverse()
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.xaxis.label')]],
                        title: [text: message(code: "is.chart.productCumulativeflow.title")]]
@@ -312,7 +318,8 @@ class ProjectController {
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityCapacityValues(_product)
         def computedValues = [[key: message(code:"is.chart.productVelocityCapacity.serie.velocity.name"),
-                               values: values.collect { return [it.capacity]}],
+                               values: values.collect { return [it.capacity]},
+                               color:'#009900'],
                               [key: message(code:"is.chart.productVelocityCapacity.serie.capacity.name"),
                                values: values.collect { return [it.velocity]}]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.yaxis.label')],
@@ -328,7 +335,8 @@ class ProjectController {
         def computedValues = [[key: message(code:"is.chart.productBurnUp.serie.all.name"),
                                values: values.collect { return [it.all]}],
                               [key: message(code:"is.chart.productBurnUp.serie.done.name"),
-                               values: values.collect { return [it.done]}]]
+                               values: values.collect { return [it.done]},
+                               color:'#009900']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnUp.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productBurnUp.xaxis.label')]],
                        title: [text: message(code: "is.chart.productBurnUp.title")]]
@@ -339,11 +347,14 @@ class ProjectController {
         Product _product = Product.withProduct(product)
         def values = productService.productBurndownValues(_product)
         def computedValues = [[key: message(code:'is.chart.productBurnDown.series.userstories.name'),
-                               values: values.collect { return [it.userstories]}],
+                               values: values.collect { return [it.userstories]},
+                               color:'#009900'],
                               [key: message(code:'is.chart.productBurnDown.series.technicalstories.name'),
-                               values: values.collect { return [it.technicalstories]}],
+                               values: values.collect { return [it.technicalstories]},
+                               color:'#1F77B4'],
                               [key: message(code:'is.chart.productBurnDown.series.defectstories.name'),
-                               values: values.collect { return [it.defectstories]}]]
+                               values: values.collect { return [it.defectstories]},
+                               color:'#CC3300']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.productBurnDown.title")]]
@@ -354,11 +365,14 @@ class ProjectController {
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityValues(_product)
         def computedValues = [[key: message(code:'is.chart.productVelocity.series.userstories.name'),
-                               values: values.collect { return [it.userstories]}],
+                               values: values.collect { return [it.userstories]},
+                               color:'#009900'],
                               [key: message(code:'is.chart.productVelocity.series.technicalstories.name'),
-                               values: values.collect { return [it.technicalstories]}],
+                               values: values.collect { return [it.technicalstories]},
+                               color:'#1F77B4'],
                               [key: message(code:'is.chart.productVelocity.series.defectstories.name'),
-                               values: values.collect { return [it.defectstories]}]]
+                               values: values.collect { return [it.defectstories]},
+                               color:'#CC3300']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocity.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productVelocity.xaxis.label')]],
                        title: [text: message(code: "is.chart.productVelocity.title")]]
