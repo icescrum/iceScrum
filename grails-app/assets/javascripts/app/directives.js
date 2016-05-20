@@ -453,7 +453,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .attr("y", sprintYMargin + releaseYMargin)
                     .attr("height", releaseHeight - sprintYMargin * 2);
                 sprintTextsSelector.enter().append("text")
-                    .attr("y", 8 + height / 2)
+                    .attr("y", 6 + height / 2)
                     .text(function (sprint) { return sprint.orderNumber; })
                     .style("text-anchor", "middle")
                     .attr("font-size", "18px");
