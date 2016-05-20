@@ -23,7 +23,6 @@
 <is:window windowDefinition="${windowDefinition}">
     <div ng-if="releases.length > 0"
          class="backlogs-list">
-        <div class="timeline" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
         <div class="btn-toolbar">
             <div class="btn-group" ng-if="hasPreviousVisibleSprints()">
                 <button class="btn btn-default"
@@ -148,4 +147,5 @@
             </div>
         </div>
     </div>
+    <div class="timeline" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
 </is:window>
