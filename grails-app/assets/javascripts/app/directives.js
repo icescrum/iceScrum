@@ -409,7 +409,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var margin = {top: 0, right: 15, bottom: 15, left: 15},
                 elementHeight = element.height(),
                 height = elementHeight - margin.top - margin.bottom,
-                sprintYMargin = 10, releaseYMargin = 15,
+                sprintYMargin = 11, releaseYMargin = 15,
                 releaseHeight = height - releaseYMargin * 2,
                 x = d3.time.scale(),
                 xAxis = d3.svg.axis(),

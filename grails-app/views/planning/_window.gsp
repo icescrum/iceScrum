@@ -44,6 +44,14 @@
                     ${message(code: 'todo.is.ui.sprint.new')}
                 </a>
             </div>
+            <div class="btn-group">
+                <button type="button"
+                        uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
+                        ng-click="app.asList = !app.asList"
+                        class="btn btn-default">
+                    <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
+                </button>
+            </div>
             <div class="btn-group"
                  ng-if="isMultipleSprint()">
                 <a class="btn btn-default"
