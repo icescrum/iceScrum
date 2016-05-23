@@ -164,9 +164,10 @@ class SprintController {
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasksDone.name"),
                  values: values.findAll { it.tasksDone != null }.collect { return [it.label, it.tasksDone]},
-                 color:'#009900'],
+                 color: '#009900'],
                 [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasks.name"),
-                 values: values.findAll { it.tasks != null }.collect { return [it.label, it.tasks]}]
+                 values: values.findAll { it.tasks != null }.collect { return [it.label, it.tasks]},
+                 color: '#1C3660']
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
                                yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
@@ -181,10 +182,11 @@ class SprintController {
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
-                 values: values.findAll { it.totalPoints != null }.collect { return [it.label, it.totalPoints]}],
+                 values: values.findAll { it.totalPoints != null }.collect { return [it.label, it.totalPoints]},
+                 color: '#1C3660'],
                 [key: message(code: "is.chart.sprintBurnupPointsChart.serie.pointsDone.name"),
                  values: values.findAll { it.pointsDone != null }.collect { return [it.label, it.pointsDone]},
-                 color:'#009900']
+                 color: '#009900']
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
                                yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
@@ -199,10 +201,11 @@ class SprintController {
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),
-                 values: values.findAll { it.stories != null }.collect { return [it.label, it.stories]}],
+                 values: values.findAll { it.stories != null }.collect { return [it.label, it.stories]},
+                 color: '#1C3660'],
                 [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.storiesDone.name"),
                  values: values.findAll { it.storiesDone != null }.collect { return [it.label, it.storiesDone]},
-                 color:'#009900']
+                 color: '#009900']
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
                                yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],

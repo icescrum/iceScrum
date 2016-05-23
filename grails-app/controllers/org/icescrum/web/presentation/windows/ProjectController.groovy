@@ -321,7 +321,8 @@ class ProjectController {
                                values: values.collect { return [it.capacity]},
                                color:'#009900'],
                               [key: message(code:"is.chart.productVelocityCapacity.serie.capacity.name"),
-                               values: values.collect { return [it.velocity]}]]
+                               values: values.collect { return [it.velocity]},
+                               color: '#1C3660']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.xaxis.label')]],
                        title: [text: message(code: "is.chart.productVelocityCapacity.title")]]
@@ -333,7 +334,8 @@ class ProjectController {
         Product _product = Product.withProduct(product)
         def values = productService.productBurnupValues(_product)
         def computedValues = [[key: message(code:"is.chart.productBurnUp.serie.all.name"),
-                               values: values.collect { return [it.all]}],
+                               values: values.collect { return [it.all]},
+                               color: '#1C3660'],
                               [key: message(code:"is.chart.productBurnUp.serie.done.name"),
                                values: values.collect { return [it.done]},
                                color:'#009900']]
