@@ -117,11 +117,11 @@ class ScrumOSController {
     }
 
     def about() {
-        def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${RCU.getLocale(request)}.xml")
-        if (!file.exists()) {
-            file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
-        }
-        render(status: 200, template: "about/index", model: [server: servletContext.getServerInfo(), about: new XmlSlurper().parse(file), errors: grailsApplication.config.icescrum.errors ?: false])
+        def aboutFile = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about.xml")
+        render(status: 200, template: "about/index", model: [server: servletContext.getServerInfo(),
+                                                             versionNumber: g.meta([name: 'app.version']),
+                                                             about: new XmlSlurper().parse(aboutFile),
+                                                             errors: grailsApplication.config.icescrum.errors ?: false])
     }
 
     def textileParser(String data) {

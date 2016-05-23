@@ -19,20 +19,20 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:modal title="${message(code:'is.ui.app.about')}">
+<is:modal title="${message(code: 'is.ui.app.about')}">
     <uib-tabset type="pills" justified="true">
         <g:if test="${errors}">
-            <uib-tab heading="${message(code:'is.dialog.about.errors')}">
-                <g:render template="/${controllerName}/about/errors" model="[errors:errors]"/>
+            <uib-tab heading="${message(code: 'is.dialog.about.errors')}">
+                <g:render template="/${controllerName}/about/errors" model="[errors: errors]"/>
             </uib-tab>
         </g:if>
-        <uib-tab heading="${message(code:'is.dialog.about.help')}">
+        <uib-tab heading="${message(code: 'is.dialog.about.help')}">
             <g:render template="/${controllerName}/about/help" model="[version: about.version]"/>
         </uib-tab>
-        <uib-tab heading="${message(code:'is.dialog.about.version')}">
-            <g:render template="/${controllerName}/about/version" model="[version:about.version, server:server]"/>
+        <uib-tab heading="${message(code: 'is.dialog.about.version')}">
+            <g:render template="/${controllerName}/about/version" model="[version: about.version, versionNumber: versionNumber, server: server]"/>
         </uib-tab>
-        <uib-tab heading="${message(code:'is.dialog.about.legal')}">
+        <uib-tab heading="${message(code: 'is.dialog.about.legal')}">
             ${about.license.text().encodeAsNL2BR()}
         </uib-tab>
     </uib-tabset>

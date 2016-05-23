@@ -20,6 +20,7 @@
   ~ Vincent Barrier (vbarrier@kagilum.com)
   ~
   -->
+
 <about>
     <version>
         <link>https://www.icescrum.com</link>
@@ -27,21 +28,41 @@
         <documentation>https://www.icescrum.com/documentation</documentation>
         <gettingStarted>https://www.icescrum.com/documentation/getting-started-with-icescrum</gettingStarted>
         <forum>https://www.icescrum.com/forums/</forum>
-        <library>
-            <name>jQuery iceScrum</name>
-            <version>7.1</version>
-        </library>
-        <library>
-            <name>jQuery</name>
-            <version>2.1.4</version>
-        </library>
-        <library>
-            <name>AngularJS</name>
-            <version>1.4.8</version>
-        </library>
+        <library><name>AngularJS</name></library>
+        <library><name>angular-atmosphere</name></library>
+        <library><name>angular-extended-notifications</name></library>
+        <library><name>angular-fullscreen</name></library>
+        <library><name>angular-hotkeys</name></library>
+        <library><name>angular-wizard</name></library>
+        <library><name>angular-nvd3</name></library>
+        <library><name>angular-ui-bootstrap</name></library>
+        <library><name>angular-bootstrap-colorpicker</name></library>
+        <library><name>angular-ui-router</name></library>
+        <library><name>angular-ui-router-statehelper</name></library>
+        <library><name>angular-ui-select</name></library>
+        <library><name>ng-flow</name></library>
+        <library><name>ng-remote-validate</name></library>
+        <library><name>ng-password-strength</name></library>
+        <library><name>ng-pdfviewer</name></library>
+        <library><name>ng-sortable</name></library>
+        <library><name>Bootstrap</name></library>
+        <library><name>Bootstrap-Offcanvas</name></library>
+        <library><name>TODC Bootstrap</name></library>
+        <library><name>D3.js</name></library>
+        <library><name>nvd3</name></library>
+        <library><name>jQuery</name></library>
+        <library><name>jQuery atwho</name></library>
+        <library><name>jQuery autoellipsis</name></library>
+        <library><name>jQuery caret</name></library>
+        <library><name>jQuery markitup</name></library>
+        <library><name>jQuery timeago</name></library>
+        <library><name>jstz</name></library>
+        <library><name>lodash</name></library>
+        <library><name>pdfjs</name></library>
+        <library><name>saveSvgAsPng</name></library>
+        <library><name>Font Awesome</name></library>
     </version>
-    <license><![CDATA[
-                    GNU AFFERO GENERAL PUBLIC LICENSE
+    <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
