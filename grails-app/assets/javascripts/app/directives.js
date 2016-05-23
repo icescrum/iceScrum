@@ -427,7 +427,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             // Main rendering
             function render() {
                 var _releases = scope.timeline;
-                if (!scope.timeline) return;
+                if (!scope.timeline || !scope.timeline.length) return;
                 rootSvg.attr("width", element.width());
                 var elementWidth = element.width(); // WARNING: element.width must be recomputed after rootSvg.attr("width", ...) because it changes if the right panel has lateral padding (e.g. with .new form which has .panel-body padding)
                 var width = elementWidth - margin.left - margin.right;
