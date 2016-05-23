@@ -24,7 +24,7 @@
 <is:widget widgetDefinition="${widgetDefinition}">
     <div ng-switch="widgetReady(widget)">
         <div  ng-switch-when="true" ng-controller="chartCtrl" ng-init="openChart('project', widget.settings.chart.id, widget.settings.project)">
-            <nvd3 options="options" data="data"></nvd3>
+            <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
         <div ng-switch-default>
             <h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4>

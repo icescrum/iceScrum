@@ -159,7 +159,7 @@
                         </h3>
                     </div>
                     <div class="panel-body">
-                        <nvd3 options="options" data="data"></nvd3>
+                        <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
                     </div>
                 </div>
             </div>
