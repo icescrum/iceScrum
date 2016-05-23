@@ -955,16 +955,14 @@ angular.module('isApp', [
                 $scope.detailsExtension = function(extension) {
                     $scope.holder.extension = extension;
                     $scope.manageExtensionsForm.$invalid = !extension.available;
-                    $scope.selectedScreenshot(extension.screenshots.length > 0 ? extension.screenshots[0] : {})
+                    $scope.selectScreenshot(extension.screenshots.length > 0 ? extension.screenshots[0] : null)
                 };
-                $scope.selectedScreenshot = function(screenshot){
+                $scope.selectScreenshot = function(screenshot){
                     $scope.holder.screenshot = screenshot;
                 };
-
                 // Init
                 $scope.holder = {
-                    extension : {},
-                    screenshot: {}
+                    extension : {}
                 };
                 $scope.extensions = [];
                 ExtensionService.getExtensions().then(function(extensions) {

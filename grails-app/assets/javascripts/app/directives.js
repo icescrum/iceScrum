@@ -597,7 +597,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             if (scope.unavailableFeature) {
                 element.on('click', function() {
                     $uibModal.open({
-                        template: '<div class="modal-header"><h4 class="modal-title">Feature Coming Soon</h4></div><div class="modal-body"><b>This useful feature is still in development. We will release it very soon!</b></div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="$close()">Close</button></div>',
+                        template: '<div class="modal-header"><h4 class="modal-title">Feature Coming Soon</h4></div><div class="modal-body">This feature is still in development, it will be available soon!</div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="$close()">Close</button></div>',
                         size: 'sm'
                     });
                     return false;

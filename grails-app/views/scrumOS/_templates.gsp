@@ -258,8 +258,11 @@
             <ul class="left-panel-body nav nav-list">
                 <li ng-class="{ 'current': currentExtension == holder.extension }"
                     ng-repeat="currentExtension in extensions | filter:extensionSearch">
-                    <a ng-click="detailsExtension(currentExtension)" href><i
-                            class="fa fa-{{ currentExtension.icon }}"></i>{{ currentExtension.name }}</a>
+                    <a ng-click="detailsExtension(currentExtension)" href>
+                        <i class="fa fa-{{ currentExtension.icon }}"></i>
+                        {{ currentExtension.name }}
+                        <i ng-if="currentExtension.installed" class="fa fa-check text-success"></i>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -276,12 +279,17 @@
 </script>
 
 <script type="text/ng-template" id="extension.details.html">
-<h4><i class="fa fa-{{ holder.extension.icon }}"></i> {{ holder.extension.name }} <small>v{{ holder.extension.version }} ({{ holder.extension.publishDate }})</small>
+<h4><i class="fa fa-{{ holder.extension.icon }}"></i> {{ holder.extension.name }} <small>v{{ holder.extension.version }} {{ holder.extension.publishDate ? ' - ' + holder.extension.publishDate : '' }}</small>
     <div class="pull-right">
         <div class="btn-group" ng-if="holder.extension.installed">
-            <a href uib-tooltip="${message(code: 'is.dialog.manageExtensions.configure')}" tooltip-placement="top"
-               class="btn btn-default"><i class="fa fa-cog"></i></a>
+            <a href
+               unavailable-feature="true"
+               uib-tooltip="${message(code: 'is.dialog.manageExtensions.configure')}" tooltip-placement="top"
+               class="btn btn-default">
+                <i class="fa fa-cog"></i>
+            </a>
             <button ng-if="!holder.extension.includedWithLicense"
+                    unavailable-feature="true"
                     uib-tooltip="${message(code: 'is.dialog.manageExtensions.uninstall')}" tooltip-placement="top"
                     class="btn btn-default"><i class="fa fa-times"></i></button>
         </div>
@@ -290,6 +298,7 @@
         <button disabled class="btn btn-success" style="margin-left:15px"
                 ng-if="holder.extension.installed && !holder.extension.includedWithLicense">${message(code: 'is.dialog.manageExtensions.installed')}</button>
         <button type="submit" class="btn btn-primary"
+                unavailable-feature="true"
                 ng-if="!holder.extension.installed">${message(code: 'is.dialog.manageExtensions.install')}</button>
     </div>
 </h4>
@@ -301,14 +310,15 @@
         <p ng-bind-html="holder.extension.description"></p>
     </uib-tab>
     <uib-tab heading="${message(code: 'is.dialog.manageExtensions.screenshots')}">
-        <div class="row">
+        <div class="row"
+             ng-if="holder.screenshot">
             <div class="col-xs-10 col-md-9">
                 <img ng-src="{{ holder.screenshot }}" class="screenshot">
             </div>
             <div class="col-xs-2 col-md-3 screenshots">
                 <div class="row">
                     <div class="col-md-12" ng-repeat="screenshot in holder.extension.screenshots">
-                        <a href class="thumbnail" ng-click="selectedScreenshot(screenshot)"
+                        <a href class="thumbnail" ng-click="selectScreenshot(screenshot)"
                            ng-class="{'current':holder.screenshot == screenshot}">
                             <img ng-src="{{ screenshot }}">
                         </a>
