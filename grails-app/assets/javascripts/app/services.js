@@ -330,12 +330,14 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
 .service('CacheService', ['$injector', function($injector) {
     var self = this;
     var caches = {};
+    this.cacheCreationDates = {};
     this.getCache = function(cacheName) {
         if (!_.isString(cacheName)) {
             throw Error("This cache name is not a string: " + cacheName);
         }
         if (!_.isArray(caches[cacheName])) {
             caches[cacheName] = [];
+            self.cacheCreationDates[cacheName] = new Date()
         }
         return caches[cacheName];
     };
@@ -360,7 +362,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         $injector.get('SyncService').sync(cacheName, cachedItem, null);
         _.remove(self.getCache(cacheName), {id: parseInt(id)});
     };
-}]).service('SyncService', ['CacheService', 'StoryService', 'FeatureService', 'SprintService', function(CacheService, StoryService, FeatureService, SprintService) {
+}]).service('SyncService', ['CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', function(CacheService, StoryService, FeatureService, SprintService, BacklogService) {
     var syncFunctions = {
         story: function(oldStory, newStory) {
             var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
@@ -385,6 +387,24 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                         cachedSprint.stories.push(newStory);
                     }
                 }
+            }
+            var cachedBacklogs = CacheService.getCache('backlog');
+            var backlogCacheDate = CacheService.cacheCreationDates['backlog'];
+            if (cachedBacklogs.length && (!newStory || new Date(newStory.dateCreated) > backlogCacheDate || new Date(newStory.lastUpdated) > backlogCacheDate)) {
+                var oldBacklogIds = [], newBacklogsIds = [];
+                _.each(cachedBacklogs, function(cachedBacklog) {
+                    if (oldStory && BacklogService.filterStories(cachedBacklog, [oldStory]).length) {
+                        oldBacklogIds.push(cachedBacklog.id);
+                    }
+                    if (newStory && BacklogService.filterStories(cachedBacklog, [newStory]).length) {
+                        newBacklogsIds.push(cachedBacklog.id);
+                    }
+                });
+                var backlogGetter = _.curry(CacheService.get)('backlog');
+                var backlogsToIncrement = _.map(_.difference(newBacklogsIds, oldBacklogIds), backlogGetter);
+                var backlogsToDecrement = _.map(_.difference(oldBacklogIds, newBacklogsIds), backlogGetter);
+                _.each(backlogsToIncrement, function(backlog) { backlog['count'] ++ });
+                _.each(backlogsToDecrement, function(backlog) { backlog['count'] -- });
             }
         },
         task: function(oldTask, newTask) {
