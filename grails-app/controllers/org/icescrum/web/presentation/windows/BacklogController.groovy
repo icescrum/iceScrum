@@ -40,7 +40,7 @@ class BacklogController {
 
     @Secured(['stakeHolder() or inProduct()'])
     def index(long product) {
-        def backlogs = Backlog.findAllByProductAndShared(Product.load(product), true).findAll { it.isDefault }
+        def backlogs = Backlog.findAllByProductAndShared(Product.load(product), true).findAll { it.isDefault }.sort { it.id}
         render(status: 200, contentType: 'application/json', text: backlogs as JSON)
     }
 
