@@ -228,25 +228,6 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
         }
     };
     $scope.sortableId = 'backlog';
-    var getNewStoryState = function(storyId, currentStateName) {
-        var newStateName;
-        var newStateParams = {storyId: storyId};
-        if (_.startsWith(currentStateName, 'planning.release.sprint.multiple')) {
-            newStateName = 'planning.release.sprint.multiple.story.details';
-        } else if (_.startsWith(currentStateName, 'planning.release.sprint.withId')) {
-            newStateName = 'planning.release.sprint.withId.story.details';
-        } else if (currentStateName === 'planning.release.sprint') {
-            // Special case when there is no sprintId in the state params so we must retrieve it manually
-            newStateName = 'planning.release.sprint.withId.story.details';
-            newStateParams.sprintId = $scope.selectedItems[0].id;
-        } else {
-            newStateName = 'planning.release.story.details';
-            if (currentStateName === 'planning' || currentStateName == 'planning.new') { // Special case when there is no releasedID in the state params so we must retrieve it manually
-                newStateParams.releaseId = $scope.selectedItems[0].id;
-            }
-        }
-        return {name: newStateName, params: newStateParams}
-    };
     $scope.selectableOptions = {
         notSelectableSelector: '.action, button, a',
         allowMultiple: true,
