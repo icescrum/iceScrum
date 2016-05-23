@@ -86,10 +86,9 @@
                             <i class="small-icon fa fa-dollar"></i>
                             <button class="btn btn-primary"
                                     type="button"
-                                    uib-tooltip="${message(code: 'todo.is.ui.story.plan')}"
                                     ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
                                     ng-if="authorizedSprint('plan', sprint)" style="position:relative">
-                                <i class="fa fa-plus sticky-note-stack"></i>
+                                ${message(code: 'todo.is.ui.story.plan')}
                             </button>
                             <a class="btn btn-default"
                                href="#/taskBoard/{{ sprint.id }}/details"

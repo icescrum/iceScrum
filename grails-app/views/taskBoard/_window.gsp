@@ -27,7 +27,7 @@
         <div class="panel-heading">
             <h3 class="panel-title">
                 <div class="btn-toolbar">
-                    {{ sprint.parentRelease.name + ' - ' + (sprint | sprintName) }}
+                    {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
                     <a class="btn btn-default pull-right"
                        href="{{ ::openSprintUrl(sprint) }}"
                        uib-tooltip="${message(code: 'todo.is.ui.details')}">
@@ -79,6 +79,9 @@
                                     ng-click="fullScreen()"><i class="fa fa-compress"></i>
                             </button>
                         </g:if>
+                    </div>
+                    <div class="sub-title text-muted">
+                        {{ sprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dayShorter }}
                     </div>
                 </div>
             </h3>

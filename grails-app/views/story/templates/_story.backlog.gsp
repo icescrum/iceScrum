@@ -59,7 +59,7 @@
         type="button"
         ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
         ng-if="authorizedSprint('plan', sprint)">
-    <i class="fa fa-plus"></i> ${message(code: 'todo.is.ui.story.plan')}
+    ${message(code: 'todo.is.ui.story.plan')}
 </button>
 </script>
 
