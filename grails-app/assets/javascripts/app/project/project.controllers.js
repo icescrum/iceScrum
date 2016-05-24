@@ -153,7 +153,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
     $scope.currentProject = Session.getProject();
 }]);
 
-controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'PushService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, PushService, TeamService) {
+controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, TeamService) {
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
     };
@@ -164,7 +164,7 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     $scope.activities = [];
     $scope.release = {};
     $scope.currentOrLastSprint = {};
-    $scope.listeners = [];
+    $scope.currentOrNextSprint = {};
     $scope.projectMembersCount = 0;
     $scope.project = $scope.currentProject;
     ProjectService.getActivities($scope.currentProject).then(function(activities) {
@@ -173,9 +173,8 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
         $scope.release = release;
         if (release && release.id) {
-            SprintService.list(release); // TODO push on sprints
+            SprintService.list(release);
         }
-        $scope.listeners.push(PushService.synchronizeItem('release', $scope.release));
     });
     TeamService.get($scope.currentProject).then(function(team) {
         // That's ugly and repeated in TeamController...
@@ -187,13 +186,10 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     // Needs a separate call because it may not be in the currentOrNextRelease
     SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
         $scope.currentOrLastSprint = sprint;
-        $scope.listeners.push(PushService.synchronizeItem('sprint', $scope.currentOrLastSprint));
     });
-    $scope.$on('$destroy', function() {
-        _.each($scope.listeners, function(listener) {
-            listener.unregister();
-        });
-    })
+    SprintService.getCurrentOrNextSprint($scope.currentProject).then(function(sprint) {
+        $scope.currentOrNextSprint = sprint;
+    });
 }]);
 
 controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, TeamService) {

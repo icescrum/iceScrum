@@ -80,7 +80,7 @@
                         <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
                         <a class="btn btn-default btn-sm pull-right visible-on-hover"
                            href="#/planning/{{ release.id }}/details"
-                           ng-if="authorizedRelease('update', release)">
+                           ng-if="release.id && authorizedRelease('update', release)">
                             <i class="fa fa-pencil"></i>
                         </a>
                     </h3>
@@ -94,14 +94,14 @@
                     <h3 class="panel-title">
                         <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
                         <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                           href="#/taskBoard/{{ currentOrLastSprint.id }}/details"
-                           ng-if="authorizedSprint('update', currentOrLastSprint)">
+                           href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
+                           ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
                             <i class="fa fa-pencil"></i>
                         </a>
                     </h3>
                 </div>
                 <div class="panel-body"
-                     ng-bind-html="(currentOrLastSprint.doneDefinition_html ? currentOrLastSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize">
+                     ng-bind-html="(currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize">
                 </div>
             </div></div>
             <div class="panel-container"><div class="panel panel-light">
@@ -110,7 +110,7 @@
                         <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
                         <a class="btn btn-default btn-sm pull-right visible-on-hover"
                            href="#/taskBoard/{{ currentOrLastSprint.id }}/details"
-                           ng-if="authorizedSprint('update', currentOrLastSprint)">
+                           ng-if="currentOrLastSprint.id && authorizedSprint('update', currentOrLastSprint)">
                             <i class="fa fa-pencil"></i>
                         </a>
                     </h3>
