@@ -38,7 +38,7 @@
         <div class="postits standalone">
             <div ellipsis class="postit-container">
                 <div style="{{ '#f9f157' | createGradientBackground }}"
-                     class="postit postit{{ app.postitSize }} {{ '#f9f157' | contrastColor }}">
+                     class="postit {{ app.postitSize + ' ' + ('#f9f157' | contrastColor) }}">
                     <div class="head">
                         <div class="head-left">
                             <span class="id">42</span>

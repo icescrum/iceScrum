@@ -132,12 +132,10 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
         }
     };
     $scope.postitSize = function() {
-        if($scope.app.postitSize == ''){
+        if ($scope.app.postitSize == '') {
             $scope.app.postitSize = 'postit-sm';
-
-        } else if($scope.app.postitSize == 'postit-sm'){
+        } else if ($scope.app.postitSize == 'postit-sm') {
             $scope.app.postitSize = 'postit-xs';
-
         } else {
             $scope.app.postitSize = '';
         }
