@@ -180,7 +180,7 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
         var pinnedBacklogCode = newValues[1];
         var backlogCode = newValues[2];
         if (stateName == 'backlog') {
-            $state.go('backlog.backlog', {backlogCode: _.head($scope.availableBacklogs).code});
+            $state.go('backlog.backlog', {backlogCode: _.head($scope.availableBacklogs).code}, {location: 'replace'});
         } else if (_.startsWith(stateName, 'backlog')) {
             if (pinnedBacklogCode) {
                 $scope.showBacklog(pinnedBacklogCode);

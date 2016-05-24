@@ -654,20 +654,27 @@ angular.module('isApp', [
                         });
                     });
                 }],
-                sprint: ['$stateParams', '$q', 'ReleaseService', 'SprintService', 'StoryService', 'TaskService', 'project', 'releases', function($stateParams, $q, ReleaseService, SprintService, StoryService, TaskService, project, releases) {
+                sprint: ['$stateParams', '$state', '$q', 'ReleaseService', 'SprintService', 'StoryService', 'TaskService', 'project', 'releases', function($stateParams, $state, $q, ReleaseService, SprintService, StoryService, TaskService, project, releases) {
                     var promise;
                     if ($stateParams.sprintId) {
-                        promise = $q.when(_.find(ReleaseService.findAllSprints(releases), {id: $stateParams.sprintId}));
-                    } else {
-                        promise = SprintService.getCurrentOrNextSprint(project);
-                    }
-                    return promise.then(function(sprint) {
-                        return sprint == undefined || sprint.id == undefined ? undefined : StoryService.listByType(sprint).then(function() {
-                            return TaskService.list(sprint).then(function() {
-                                return sprint;
+                        var sprint = _.find(ReleaseService.findAllSprints(releases), {id: $stateParams.sprintId});
+                        if (sprint) {
+                            promise = StoryService.listByType(sprint).then(function() {
+                                return TaskService.list(sprint).then(function() {
+                                    return sprint;
+                                });
                             });
+                        } else {
+                            promise = $q.when(null);
+                        }
+                    } else {
+                        promise = SprintService.getCurrentOrNextSprint(project).then(function(sprint) {
+                            if (!$stateParams.sprintId && sprint && sprint.id) {
+                                $state.go('taskBoard', {sprintId: sprint.id}, {location: 'replace'});
+                            }
                         });
-                    })
+                    }
+                    return promise;
                 }]
             },
             children: [
