@@ -50,7 +50,7 @@ environments {
             pooled = true
             username = "root"
             password = ""
-            dialect = org.grails.db.Utf8InnodbDialect
+            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/grails"
             dbCreate = "update"
