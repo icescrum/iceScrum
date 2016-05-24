@@ -81,7 +81,7 @@
                    href="#/{{ ::viewName }}/new"
                    class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
                 <div class="btn-group pull-right visible-on-hover">
-                    <g:if test="${params?.printable}">
+                    <g:if test="${windowDefinition.printable}">
                         <button type="button"
                                 class="btn btn-default"
                                 uib-tooltip="${message(code:'is.ui.window.print')} (P)"
@@ -96,19 +96,11 @@
                             class="btn btn-default">
                         <i class="fa" ng-class="app.asList ? 'fa-th-list' : 'fa-th'"></i>
                     </button>
-                    <g:if test="${params?.fullScreen}">
+                    <g:if test="${windowDefinition.fullScreen}">
                         <button type="button"
                                 class="btn btn-default"
-                                ng-show="!app.isFullScreen"
-                                ng-click="fullScreen()"
-                                uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                                hotkey="{'F': fullScreen }"><i class="fa fa-expand"></i>
-                        </button>
-                        <button type="button"
-                                class="btn btn-default"
-                                ng-show="app.isFullScreen"
                                 uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                                ng-click="fullScreen()"><i class="fa fa-compress"></i>
+                                unavailable-feature="true"><i class="fa fa-arrows-alt"></i>
                         </button>
                     </g:if>
                 </div>

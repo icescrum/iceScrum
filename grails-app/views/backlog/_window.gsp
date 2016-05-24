@@ -48,19 +48,11 @@
                             class="btn btn-default">
                         <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
                     </button>
-                    <g:if test="${params?.fullScreen}">
+                    <g:if test="${windowDefinition.fullScreen}">
                         <button type="button"
                                 class="btn btn-default"
-                                ng-show="!app.isFullScreen"
-                                ng-click="fullScreen()"
-                                uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                                hotkey="{'F': fullScreen }"><i class="fa fa-expand"></i>
-                        </button>
-                        <button type="button"
-                                class="btn btn-default"
-                                ng-show="app.isFullScreen"
                                 uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                                ng-click="fullScreen()"><i class="fa fa-compress"></i>
+                                ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                         </button>
                     </g:if>
                 </div>
@@ -113,7 +105,7 @@
                     </button>
                 </div>
                 <div class="btn-group" uib-dropdown>
-                    <g:if test="${params?.printable}">
+                    <g:if test="${windowDefinition.printable}">
                         <button type="button"
                                 class="btn btn-default"
                                 uib-tooltip="${message(code:'is.ui.window.print')} (P)"
