@@ -25,7 +25,7 @@
     <div ng-if="releases.length > 0"
          class="backlogs-list">
         <div class="btn-toolbar">
-            <div class="btn-group visible-on-hover" ng-if="hasPreviousVisibleSprints()">
+            <div class="btn-group visible-on-hover" ng-show="hasPreviousVisibleSprints()">
                 <button class="btn btn-default"
                         ng-click="visibleSprintsPrevious()">
                         <i class="fa fa-step-backward"></i>
