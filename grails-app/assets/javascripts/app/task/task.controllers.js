@@ -75,16 +75,12 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
     };
 }]);
 
-controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'TaskService', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, TaskService, hotkeys, sprint) {
+controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, hotkeys, sprint) {
     $controller('taskCtrl', {$scope: $scope});
     // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {backlog: {id: sprint.id}};
-        if ($stateParams.taskTemplate) {
-            angular.extend($scope.task, $stateParams.taskTemplate);
-        } else {
-            $scope.task.type = 11;
-        }
+        $scope.selectCategory();
         $scope.resetFormValidation($scope.formHolder.taskForm);
     };
     $scope.save = function(task, andContinue) {
@@ -98,9 +94,31 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
             $scope.notifySuccess('todo.is.ui.task.saved');
         });
     };
+    $scope.groupCategory = function(category) {
+        return category.class == 'Story' ? $scope.message('is.story') : $scope.message('is.task.type');
+    };
+    $scope.selectCategory = function() {
+        var category = $scope.formHolder.category;
+        if (category) {
+            var newType = null;
+            var newParentStory = null;
+            if (category.class == 'Story') {
+                newParentStory = _.pick(category, 'id');
+            } else {
+                newType = category.id;
+            }
+            $scope.task.type = newType;
+            $scope.task.parentStory = newParentStory;
+        }
+    };
     // Init
     $scope.formHolder = {};
+    $scope.formHolder.category = $stateParams.taskCategory;
     $scope.resetTaskForm();
+    var taskTypesCategories = _.map($scope.taskTypes, function(taskType) {
+        return {id: taskType, name: i18nFilter(taskType, 'TaskTypes')};
+    });
+    $scope.categories = _.concat(_.reverse(taskTypesCategories), sprint.stories);
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],

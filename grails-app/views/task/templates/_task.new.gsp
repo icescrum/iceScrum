@@ -73,13 +73,19 @@
                            ng-disabled="!authorizedTask('create')"
                            placeholder="${message(code: 'is.ui.task.noname')}"/>
                 </div>
-                <div ng-if="task.parentStory" class="form-half">
-                    <label for="name">${message(code:'is.story')}</label>
-                    <span class="form-control-static">{{ task.parentStory.name }}</span>
-                </div>
-                <div ng-if="task.type" class="form-half">
-                    <label for="name">${message(code:'is.task.type')}</label>
-                    <span class="form-control-static">{{ task.type | i18n: 'TaskTypes' }}</span>
+                <div class="form-half">
+                    <label for="category">${message(code:'todo.is.ui.task.category')}</label>
+                    <ui-select class="form-control"
+                               required
+                               name="category"
+                               search-enabled="true"
+                               on-select="selectCategory()"
+                               ng-model="formHolder.category">
+                        <ui-select-match placeholder="${message(code: 'todo.is.ui.task.nocategory')}">{{ $select.selected.name }}</ui-select-match>
+                        <ui-select-choices group-by="groupCategory" repeat="category in categories | filter: $select.search">
+                            <span ng-bind-html="category.name | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
             </div>
             <div ng-if="authorizedTask('create')" class="btn-toolbar pull-right">

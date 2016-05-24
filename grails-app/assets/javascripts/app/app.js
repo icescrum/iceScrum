@@ -714,7 +714,7 @@ angular.module('isApp', [
                                 }
                             },
                             params: {
-                                taskTemplate: null
+                                taskCategory: null
                             },
                             views: {
                                 "details@taskBoard": {

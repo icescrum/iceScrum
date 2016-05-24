@@ -295,10 +295,10 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         return $state.href('taskBoard.details', {sprintId: sprint.id});
     };
     $scope.openNewTaskByStory = function(story) {
-        $state.go('taskBoard.task.new', {taskTemplate: {parentStory: _.pick(story, ['id', 'name'])}});
+        $state.go('taskBoard.task.new', {taskCategory: _.pick(story, ['id', 'name', 'class'])});
     };
     $scope.openNewTaskByType = function(type) {
-        $state.go('taskBoard.task.new', {taskTemplate: {type: type}});
+        $state.go('taskBoard.task.new', {taskCategory: {id: type, name: $filter('i18n')(type, 'TaskTypes')}});
     };
     $scope.refreshTasks = function() {
         switch ($scope.sprint.state) {

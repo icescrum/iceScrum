@@ -26,7 +26,8 @@
          ng-class="{'sortable-disabled': !isSortingTaskBoard(sprint), 'sprint-not-done': sprint.state != sprintStatesByName.DONE}">
         <div class="panel-heading">
             <h3 class="panel-title">
-                <div class="btn-toolbar">
+                <div class="btn-toolbar"
+                     ng-controller="taskCtrl">
                     {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
                     <a class="btn btn-default pull-right"
                        href="{{ ::openSprintUrl(sprint) }}"
@@ -55,6 +56,9 @@
                             </li>
                         </ul>
                     </div>
+                    <a ng-if="authorizedTask('create', {sprint: sprint})"
+                       ui-sref="taskBoard.task.new"
+                       class="btn btn-primary pull-right">${message(code: "todo.is.ui.task.new")}</a>
                     <div class="btn-group pull-right visible-on-hover">
                         <g:if test="${params?.printable}">
                             <button type="button"
