@@ -25,7 +25,7 @@
          ng-if="sprint"
          ng-class="{'sortable-disabled': !isSortingTaskBoard(sprint), 'sprint-not-done': sprint.state != sprintStatesByName.DONE}">
         <div class="panel-heading">
-            <h3 class="panel-title">
+            <h3 class="panel-title small-title">
                 <div class="btn-toolbar"
                      ng-controller="taskCtrl">
                     {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
