@@ -301,6 +301,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         $state.go('taskBoard.task.new', {taskCategory: {id: type, name: $filter('i18n')(type, 'TaskTypes')}});
     };
     $scope.refreshTasks = function() {
+        $scope.taskCountByState = _.countBy($scope.sprint.tasks, 'state');
         switch ($scope.sprint.state) {
             case SprintStatesByName.TODO:
                 $scope.sprintTaskStates = [TaskStatesByName.TODO];
@@ -432,6 +433,8 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.sprint = sprint;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
+    $scope.taskCountByState = {};
+    $scope.taskStatesByName = TaskStatesByName;
     $scope.sprintStatesByName = SprintStatesByName;
     $scope.taskTypesByName = TaskTypesByName;
     $scope.ghostStories = [];
