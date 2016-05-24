@@ -29,6 +29,9 @@
                 <div class="btn-toolbar"
                      ng-controller="taskCtrl">
                     {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
+                    <a ng-if="authorizedTask('create', {sprint: sprint})"
+                       ui-sref="taskBoard.task.new"
+                       class="btn btn-primary pull-right">${message(code: "todo.is.ui.task.new")}</a>
                     <a class="btn btn-default pull-right"
                        href="{{ ::openSprintUrl(sprint) }}"
                        uib-tooltip="${message(code: 'todo.is.ui.details')}">
@@ -43,6 +46,11 @@
                                 uib-tooltip="{{ isSortingTaskBoard(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                             <span ng-class="isSortingTaskBoard(sprint) ? 'text-success' : 'forbidden-stack text-danger'" class="fa fa-hand-pointer-o"></span>
                         </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                                ng-click="postitSize()"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize == '', 'fa-compress': app.postitSize == 'postit-sm', 'fa-expand': app.postitSize == 'postit-xs'}"></i>
+                        </button>
                         <button class="btn btn-default"
                                 uib-dropdown-toggle
                                 uib-tooltip="${message(code:'todo.is.ui.filters')}"
@@ -56,11 +64,8 @@
                             </li>
                         </ul>
                     </div>
-                    <a ng-if="authorizedTask('create', {sprint: sprint})"
-                       ui-sref="taskBoard.task.new"
-                       class="btn btn-primary pull-right">${message(code: "todo.is.ui.task.new")}</a>
                     <div class="btn-group pull-right visible-on-hover">
-                        <g:if test="${params?.printable}">
+                        <g:if test="${windowDefinition.printable}">
                             <button type="button"
                                     class="btn btn-default"
                                     uib-tooltip="${message(code:'is.ui.window.print')} (P)"
@@ -68,19 +73,11 @@
                                     hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                             </button>
                         </g:if>
-                        <g:if test="${params?.fullScreen}">
+                        <g:if test="${windowDefinition.fullScreen}">
                             <button type="button"
                                     class="btn btn-default"
-                                    ng-show="!app.isFullScreen"
-                                    ng-click="fullScreen()"
-                                    uib-tooltip="${message(code:'is.ui.window.fullscreen')} (F)"
-                                    hotkey="{'F': fullScreen }"><i class="fa fa-expand"></i>
-                            </button>
-                            <button type="button"
-                                    class="btn btn-default"
-                                    ng-show="app.isFullScreen"
                                     uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                                    ng-click="fullScreen()"><i class="fa fa-compress"></i>
+                                    ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </g:if>
                     </div>

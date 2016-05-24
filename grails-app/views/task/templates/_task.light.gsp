@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="task.light.html">
 <div style="{{ task.color | createGradientBackground }}"
      ng-class="{'task-blocked': task.blocked}"
-     class="postit postit-small {{ task.color | contrastColor }}">
+     class="postit postit{{ app.postitSize }} {{ task.color | contrastColor }}">
     <div class="head">
         <div class="head-left">
             <span class="id">{{ ::task.uid }}</span>

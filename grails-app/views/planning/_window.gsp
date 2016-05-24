@@ -21,37 +21,29 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
+<div class="panel panel-light">
     <div ng-if="releases.length > 0"
          class="backlogs-list">
         <div class="btn-toolbar">
-            <div class="btn-group" ng-if="hasPreviousVisibleSprints()">
+            <div class="btn-group visible-on-hover" ng-if="hasPreviousVisibleSprints()">
                 <button class="btn btn-default"
                         ng-click="visibleSprintsPrevious()">
-                    <i class="fa fa-step-backward"></i>
+                        <i class="fa fa-step-backward"></i>
                 </button>
             </div>
-            <div class="btn-group" ng-if="authorizedRelease('create')">
+            <div class="btn-group pull-right">
                 <a class="btn btn-primary"
+                   ng-if="authorizedRelease('create')"
                    href="#{{ ::viewName }}/new">
                     ${message(code: 'todo.is.ui.release.new')}
                 </a>
-            </div>
-            <div class="btn-group"
-                 ng-if="authorizedSprint('create')">
                 <a class="btn btn-primary"
+                   ng-if="authorizedSprint('create')"
                    href="#{{ viewName + '/' + release.id }}/sprint/new">
                     ${message(code: 'todo.is.ui.sprint.new')}
                 </a>
             </div>
-            <div class="btn-group">
-                <button type="button"
-                        uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
-                        ng-click="app.asList = !app.asList"
-                        class="btn btn-default">
-                    <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
-                </button>
-            </div>
-            <div class="btn-group"
+            <div class="btn-group pull-right"
                  ng-if="isMultipleSprint()">
                 <a class="btn btn-default"
                    href="{{ openMultipleSprintDetailsUrl() }}"
@@ -59,8 +51,15 @@
                     <i class="fa fa-info-circle"></i>
                 </a>
             </div>
-        </span>
-            <div class="btn-group pull-right" ng-if="hasNextVisibleSprints()">
+            <div class="btn-group pull-right visible-on-hover">
+                <button type="button"
+                        uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
+                        ng-click="app.asList = !app.asList"
+                        class="btn btn-default">
+                    <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
+                </button>
+            </div>
+            <div class="btn-group pull-right visible-on-hover" ng-if="hasNextVisibleSprints()">
                 <button class="btn btn-default"
                         ng-click="visibleSprintsNext()">
                     <i class="fa fa-step-forward"></i>
@@ -147,4 +146,5 @@
         </div>
     </div>
     <div class="timeline" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
+</div>
 </is:window>
