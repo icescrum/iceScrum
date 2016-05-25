@@ -27,7 +27,7 @@
      class="postit {{ app.postitSize + ' ' + (task.color | contrastColor) }}">
     <div class="head">
         <div class="head-left">
-            <span class="id">{{ ::task.uid }}</span>
+            <span class="id" as-sortable-item-handle-if="authorizedTask('rank', task)">{{ ::task.uid }}</span>
             <img ng-src="{{ task.responsible | userAvatar }}"
                  ng-if="task.responsible"
                  class="responsible"
