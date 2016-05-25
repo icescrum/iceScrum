@@ -519,6 +519,9 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
             $scope[editable] = $scope[type];
             $scope[editableReference] = $scope[type];
         }
+        if ($scope.resetCallback) {
+            $scope.resetCallback();
+        }
         $scope.resetFormValidation($scope.formHolder[form]);
     };
     // Init
