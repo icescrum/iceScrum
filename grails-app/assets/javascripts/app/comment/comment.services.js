@@ -40,7 +40,7 @@ services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Com
         comment.type = commentable.class.toLowerCase();
         comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
-        return Comment.delete({id: comment.id}, function() {
+        return Comment.delete(comment, function() {
             _.remove(commentable.comments, {id: comment.id});
             commentable.comments_count = commentable.comments.length;
         }).$promise;
