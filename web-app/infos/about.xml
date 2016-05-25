@@ -52,7 +52,6 @@
         <library><name>nvd3</name></library>
         <library><name>jQuery</name></library>
         <library><name>jQuery atwho</name></library>
-        <library><name>jQuery autoellipsis</name></library>
         <library><name>jQuery caret</name></library>
         <library><name>jQuery markitup</name></library>
         <library><name>jQuery timeago</name></library>
