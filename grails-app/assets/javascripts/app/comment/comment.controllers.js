@@ -47,7 +47,7 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
         return CommentService.authorizedComment(action, comment);
     };
     $scope.editForm = function(value) {
-        $scope.formHolder.editing = value;
+        $scope.formHolder.editing = $scope.formHolder.editable && value;
         if (value) {
             hotkeys.bindTo($scope).add({
                 combo: 'esc',

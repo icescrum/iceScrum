@@ -50,7 +50,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         return AcceptanceTestService.authorizedAcceptanceTest(action, acceptanceTest);
     };
     $scope.editForm = function(value) {
-        $scope.formHolder.editing = value;
+        $scope.formHolder.editing = $scope.formHolder.editable && value;
         if (value) {
             $scope.editableAcceptanceTest = angular.copy($scope.editableAcceptanceTest);
             hotkeys.bindTo($scope).add({
