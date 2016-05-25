@@ -186,35 +186,13 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint'});
     // Functions
-    $scope.isDirty = function() {
-        return !_.isEqual($scope.editableSprint, $scope.editableSprintReference);
-    };
     $scope.update = function(sprint) {
         SprintService.update(sprint, $scope.release).then(function() {
             $scope.resetSprintForm();
             $scope.notifySuccess('todo.is.ui.sprint.updated');
         });
     };
-    $scope.editForm = function(value) {
-        if (value != $scope.formHolder.editing) {
-            $scope.setInEditingMode(value); // global
-            $scope.resetSprintForm();
-        }
-    };
-    $scope.resetSprintForm = function() {
-        $scope.formHolder.editing = $scope.isInEditingMode();
-        $scope.formHolder.editable = $scope.authorizedSprint('update', $scope.sprint);
-        if ($scope.formHolder.editable) {
-            $scope.editableSprint = angular.copy($scope.sprint);
-            $scope.editableSprintReference = angular.copy($scope.sprint);
-        } else {
-            $scope.editableSprint = $scope.sprint;
-            $scope.editableSprintReference = $scope.sprint;
-        }
-        $scope.resetFormValidation($scope.formHolder.sprintForm);
-    };
     // Init
-    FormService.addStateChangeDirtyFormListener($scope, 'sprint');
     $scope.$watchCollection('release.sprints', function(sprints) {
         if (!_.isUndefined(sprints)) {
             var previousSprint = _.findLast(_.sortBy(sprints, 'orderNumber'), function(sprint) {
@@ -233,11 +211,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
             $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $scope.formHolder = {};
-    $scope.editableSprint = {};
-    $scope.sprint = detailsSprint;
-    $scope.editableSprintReference = {};
-    $scope.resetSprintForm();
+    $controller('updateFormController', {$scope: $scope, item: detailsSprint, type: 'sprint'});
     $scope.sprintStatesByName = SprintStatesByName;
     $scope.release = detailsRelease;
     $scope.endDateOptions.maxDate = $scope.release.endDate;

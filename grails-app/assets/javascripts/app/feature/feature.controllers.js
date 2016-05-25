@@ -42,32 +42,11 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature'});
     // Functions
-    $scope.isDirty = function() {
-        return !_.isEqual($scope.editableFeature, $scope.editableFeatureReference);
-    };
     $scope.update = function(feature) {
         FeatureService.update(feature).then(function() {
             $scope.resetFeatureForm();
             $scope.notifySuccess('todo.is.ui.feature.updated');
         });
-    };
-    $scope.editForm = function(value) {
-        if (value != $scope.formHolder.editing) {
-            $scope.setInEditingMode(value); // global
-            $scope.resetFeatureForm();
-        }
-    };
-    $scope.resetFeatureForm = function() {
-        $scope.formHolder.editing = $scope.isInEditingMode();
-        $scope.formHolder.editable = $scope.authorizedFeature('update', $scope.feature);
-        if ($scope.formHolder.editable) {
-            $scope.editableFeature = angular.copy($scope.feature);
-            $scope.editableFeatureReference = angular.copy($scope.feature);
-        } else {
-            $scope.editableFeature = $scope.feature;
-            $scope.editableFeatureReference = $scope.feature;
-        }
-        $scope.resetFormValidation($scope.formHolder.featureForm);
     };
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -81,11 +60,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
         return $state.href(stateName, {featureTabId: featureTabId});
     };
     // Init
-    $scope.feature = detailsFeature;
-    $scope.editableFeature = {};
-    $scope.editableFeatureReference = {};
-    $scope.formHolder = {};
-    FormService.addStateChangeDirtyFormListener($scope, 'feature', true);
+    $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -94,7 +69,6 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
             });
         }
     };
-    $scope.resetFeatureForm();
     $scope.previousFeature = FormService.previous(Session.getProject().features, $scope.feature);
     $scope.nextFeature = FormService.next(Session.getProject().features, $scope.feature);
     $scope.featureStatesByName = FeatureStatesByName;

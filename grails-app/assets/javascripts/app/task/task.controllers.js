@@ -130,32 +130,11 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
     $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions
-    $scope.isDirty = function() {
-        return !_.isEqual($scope.editableTask, $scope.editableTaskReference);
-    };
     $scope.update = function(task) {
         TaskService.update(task, true).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.updated');
         });
-    };
-    $scope.editForm = function(value) {
-        if (value != $scope.formHolder.editing) {
-            $scope.setInEditingMode(value); // global
-            $scope.resetTaskForm();
-        }
-    };
-    $scope.resetTaskForm = function() {
-        $scope.formHolder.editing = $scope.isInEditingMode();
-        $scope.formHolder.editable = $scope.authorizedTask('update', $scope.task);
-        if ($scope.formHolder.editable) {
-            $scope.editableTask = angular.copy($scope.task);
-            $scope.editableTaskReference = angular.copy($scope.task);
-        } else {
-            $scope.editableTask = $scope.task;
-            $scope.editableTaskReference = $scope.task;
-        }
-        $scope.resetFormValidation($scope.formHolder.taskForm);
     };
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -172,11 +151,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
         return $state.href($state.current.name, {taskId: id});
     };
     // Init
-    $scope.task = detailsTask;
-    $scope.editableTask = {};
-    $scope.editableTaskReference = {};
-    $scope.formHolder = {};
-    FormService.addStateChangeDirtyFormListener($scope, 'task', true);
+    $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task'});
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -185,7 +160,6 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
             });
         }
     };
-    $scope.resetTaskForm();
     var sortedTasks = $filter('orderBy')(taskContext.tasks, TaskConstants.ORDER_BY);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);

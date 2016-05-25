@@ -285,27 +285,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.like = function(story) {
             StoryService.like(story);
         };
-        $scope.isDirty = function() {
-            return !_.isEqual($scope.editableStory, $scope.editableStoryReference);
-        };
-        $scope.editForm = function(value) {
-            if (value != $scope.formHolder.editing) {
-                $scope.setInEditingMode(value); // global
-                $scope.resetStoryForm();
-            }
-        };
-        $scope.resetStoryForm = function() {
-            $scope.formHolder.editing = $scope.isInEditingMode();
-            $scope.formHolder.editable = $scope.authorizedStory('update', $scope.story);
-            if ($scope.formHolder.editable) {
-                $scope.editableStory = angular.copy($scope.story);
-                $scope.editableStoryReference = angular.copy($scope.story);
-            } else {
-                $scope.editableStory = $scope.story;
-                $scope.editableStoryReference = $scope.story;
-            }
-            $scope.resetFormValidation($scope.formHolder.storyForm);
-        };
         $scope.clickDescriptionPreview = function($event, template) {
             if ($event.target.nodeName != 'A' && $scope.formHolder.editable) {
                 $scope.showDescriptionTextarea = true;
@@ -371,10 +350,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             return $state.href(stateName);
         };
         // Init
-        $scope.story = detailsStory;
-        $scope.editableStory = {};
-        $scope.editableStoryReference = {};
-        $scope.formHolder = {};
+        $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});
         $scope.dependenceEntries = [];
         $scope.parentSprintEntries = [];
         $scope.tags = [];
@@ -399,8 +375,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 $scope.atOptions.data = mapActors(actors);
             });
         }
-        FormService.addStateChangeDirtyFormListener($scope, 'story', true);
-        $scope.resetStoryForm();
         // For header
         //$scope.previousStory = FormService.previous(list, $scope.story);
         //$scope.nextStory = FormService.next(list, $scope.story);

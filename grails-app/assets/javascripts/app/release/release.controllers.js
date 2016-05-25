@@ -120,35 +120,13 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
     $controller('releaseCtrl', {$scope: $scope}); // inherit from releaseCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsRelease, clazz: 'release'});
     // Functions
-    $scope.isDirty = function() {
-        return !_.isEqual($scope.editableRelease, $scope.editableReleaseReference);
-    };
     $scope.update = function(release) {
         ReleaseService.update(release).then(function() {
             $scope.resetReleaseForm();
             $scope.notifySuccess('todo.is.ui.release.updated');
         });
     };
-    $scope.editForm = function(value) {
-        if (value != $scope.formHolder.editing) {
-            $scope.setInEditingMode(value); // global
-            $scope.resetReleaseForm();
-        }
-    };
-    $scope.resetReleaseForm = function() {
-        $scope.formHolder.editing = $scope.isInEditingMode();
-        $scope.formHolder.editable = $scope.authorizedRelease('update', $scope.release);
-        if ($scope.formHolder.editable) {
-            $scope.editableRelease = angular.copy($scope.release);
-            $scope.editableReleaseReference = angular.copy($scope.release);
-        } else {
-            $scope.editableRelease = $scope.release;
-            $scope.editableReleaseReference = $scope.release;
-        }
-        $scope.resetFormValidation($scope.formHolder.releaseForm);
-    };
     // Init
-    FormService.addStateChangeDirtyFormListener($scope, 'release');
     $scope.$watchCollection('project.releases', function(releases) {
         if (!_.isUndefined(releases)) {
             if (_.isEmpty($scope.previousRelease)) {
@@ -168,11 +146,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
             $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $scope.formHolder = {};
-    $scope.editableRelease = {};
-    $scope.release = detailsRelease;
-    $scope.editableReleaseReference = {};
-    $scope.resetReleaseForm();
+    $controller('updateFormController', {$scope: $scope, item: detailsRelease, type: 'release'});
     $scope.releaseStatesByName = ReleaseStatesByName;
     $scope.previousRelease = FormService.previous($scope.project.releases, $scope.release);
     $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);

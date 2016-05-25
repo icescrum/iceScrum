@@ -132,7 +132,6 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
         }
     };
     $scope.postitSize = function(type, xs) {
-        debugger;
         type = type ? type : 'story';
         if ($scope.app.postitSize[type] == '') {
             $scope.app.postitSize[type] = 'postit-sm';
@@ -491,4 +490,42 @@ controllers.controller('retrieveCtrl', ['$scope', 'User', 'UserService', functio
     };
     // Init
     $scope.user = new User();
+}]);
+
+controllers.controller('updateFormController', ['$scope', 'FormService', 'type', 'item', function($scope, FormService, type, item) {
+    var upperType = _.upperFirst(type);
+    var resetForm = 'reset' + upperType + 'Form';
+    var authorized = 'authorized' + upperType;
+    var form = type + 'Form';
+    var editable = 'editable' + upperType;
+    var editableReference = editable + 'Reference';
+    // Functions
+    $scope.isDirty = function() {
+        return !_.isEqual($scope[editable], $scope[editableReference]);
+    };
+    $scope.editForm = function(value) {
+        if ($scope.formHolder.editable && value != $scope.formHolder.editing) {
+            $scope.setInEditingMode(value); // global
+            $scope[resetForm]();
+        }
+    };
+    $scope[resetForm] = function() {
+        $scope.formHolder.editable = $scope[authorized]('update', $scope[type]);
+        $scope.formHolder.editing =  $scope.formHolder.editable && $scope.isInEditingMode();
+        if ($scope.formHolder.editing) {
+            $scope[editable] = angular.copy($scope[type]);
+            $scope[editableReference] = angular.copy($scope[type]);
+        } else {
+            $scope[editable] = $scope[type];
+            $scope[editableReference] = $scope[type];
+        }
+        $scope.resetFormValidation($scope.formHolder[form]);
+    };
+    // Init
+    $scope[type] = item;
+    $scope[editable] = {};
+    $scope[editableReference] = {};
+    $scope.formHolder = {};
+    $scope[resetForm]();
+    FormService.addStateChangeDirtyFormListener($scope, type, true);
 }]);
