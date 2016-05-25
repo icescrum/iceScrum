@@ -53,7 +53,6 @@
                     </div>
                     <div class="form-group">
                         <textarea required
-                                  msd-elastic
                                   ng-maxlength="5000"
                                   ng-blur="update(editableComment, selected); showCommentBodyTextarea = false;"
                                   is-markitup

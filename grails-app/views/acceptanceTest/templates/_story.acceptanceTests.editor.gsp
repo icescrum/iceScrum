@@ -56,7 +56,6 @@
     </div>
     <div class="form-group">
         <textarea is-markitup
-                  msd-elastic
                   class="form-control"
                   ng-maxlength="1000"
                   name="description"

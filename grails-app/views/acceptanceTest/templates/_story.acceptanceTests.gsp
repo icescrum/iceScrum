@@ -69,7 +69,6 @@
                     <div class="form-group">
                         <textarea is-markitup
                                   class="form-control"
-                                  msd-elastic
                                   ng-maxlength="1000"
                                   name="description"
                                   ng-model="editableAcceptanceTest.description"

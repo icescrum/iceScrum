@@ -64,7 +64,6 @@ angular.module('isApp', [
         'ui.router.stateHelper',
         'ui.bootstrap',
         'ui.select',
-        'monospaced.elastic',
         'cfp.hotkeys',
         'colorpicker.module',
         'mgo-angular-wizard',

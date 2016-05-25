@@ -52,7 +52,6 @@
         <div class="form-group">
             <textarea name="description"
                       ng-model="task.description"
-                      msd-elastic
                       ng-maxlength="3000"
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"
                       class="form-control"></textarea>

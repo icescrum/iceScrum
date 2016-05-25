@@ -191,7 +191,6 @@
                               ng-focus="editForm(true)"
                               ng-disabled="!formHolder.editable"
                               ng-maxlength="5000"
-                              msd-elastic
                               ng-model="editableSprint.goal"
                               placeholder="${message(code: 'todo.is.ui.sprint.nogoal')}"></textarea>
                 </div>

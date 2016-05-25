@@ -29,7 +29,6 @@
     <div class="form-group">
         <textarea required
                   ng-maxlength="5000"
-                  msd-elastic
                   name="body"
                   is-markitup
                   ng-blur="showCommentBodyTextarea = false"
