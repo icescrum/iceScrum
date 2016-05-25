@@ -181,7 +181,7 @@ class UserController {
 
     @Secured(['isAuthenticated()'])
     def search(String value, boolean showDisabled, boolean invit) {
-        def users = User.findUsersLike(value ?: '', false, showDisabled, [:])
+        def users = User.findUsersLike(value ?: '', false, showDisabled, [max: 9])
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
         if (!users && invit && GenericValidator.isEmail(value) && enableInvitation) {
             users << Invitation.getUserMock(value)
