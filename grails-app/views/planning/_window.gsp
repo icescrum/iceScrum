@@ -105,7 +105,7 @@
                                 <i class="fa fa-tasks"></i>
                             </a>
                             <a class="btn btn-default"
-                               href="{{ ::openSprintUrl(sprint) }}"
+                               href="{{ openSprintUrl(sprint) }}"
                                uib-tooltip="${message(code: 'todo.is.ui.details')}">
                                 <i class="fa fa-info-circle"></i>
                             </a>

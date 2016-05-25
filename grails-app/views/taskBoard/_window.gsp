@@ -33,7 +33,7 @@
                        ui-sref="taskBoard.task.new"
                        class="btn btn-primary pull-right">${message(code: "todo.is.ui.task.new")}</a>
                     <a class="btn btn-default pull-right"
-                       href="{{ ::openSprintUrl(sprint) }}"
+                       href="{{ openSprintUrl(sprint) }}"
                        uib-tooltip="${message(code: 'todo.is.ui.details')}">
                         <i class="fa fa-info-circle"></i>
                     </a>

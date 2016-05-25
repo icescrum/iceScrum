@@ -165,10 +165,18 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
         return $state.href(newStoryState.name, newStoryState.params);
     };
     $scope.openSprintUrl = function(sprint) {
-        return $state.href('planning.release.sprint.withId.details', {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
+        var stateName =  'planning.release.sprint.withId';
+        if($state.current.name != 'planning.release.sprint.withId.details'){
+            stateName +=  '.details';
+        }
+        return $state.href(stateName, {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
     };
     $scope.openMultipleSprintDetailsUrl = function() {
-        return $state.href('planning.release.sprint.multiple.details');
+        var stateName =  'planning.release.sprint.multiple';
+        if($state.current.name != 'planning.release.sprint.multiple.details'){
+            stateName +=  '.details';
+        }
+        return $state.href(stateName);
     };
     $scope.isMultipleSprint = function() {
         return _.startsWith($state.current.name, 'planning.release.sprint.multiple');
@@ -293,8 +301,13 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         return story.state < StoryStatesByName.DONE;
     };
     $scope.openSprintUrl = function(sprint) {
-        return $state.href('taskBoard.details', {sprintId: sprint.id});
+        var stateName =  'taskBoard';
+        if($state.current.name != 'taskBoard.details'){
+            stateName +=  '.details';
+        }
+        return $state.href(stateName, {sprintId: sprint.id});
     };
+
     $scope.openNewTaskByStory = function(story) {
         $state.go('taskBoard.task.new', {taskCategory: _.pick(story, ['id', 'name', 'class'])});
     };
