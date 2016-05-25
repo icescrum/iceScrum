@@ -102,9 +102,9 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="task-type">
                     <tr class="sticky-header">
-                        <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}" class="task-type">
+                        <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                             <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</h3>
                         </td>
                     </tr>
@@ -123,18 +123,18 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
-                                <a ng-if="taskState == 0"
-                                   class="btn btn-primary"
-                                   ng-click="openNewTaskByType(taskTypesByName.URGENT)"
-                                   href>
-                                    <i class="fa fa-plus"></i>
-                                </a>
+                            <div ng-if="taskState == 0 && authorizedTask('create', {sprint: sprint})" class="postit-container">
+                                <div class="add-task postit {{ app.postitSize }}">
+                                    <a class="btn btn-primary"
+                                       ng-click="openNewTaskByType(taskTypesByName.URGENT)"
+                                       href><g:message code="todo.is.ui.task.new"/>
+                                    </a>
+                                </div>
                             </div>
                         </td>
                     </tr>
                     <tr class="sticky-header">
-                        <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}" class="task-type">
+                        <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                             <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</h3>
                         </td>
                     </tr>
@@ -153,13 +153,13 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <div ng-if="authorizedTask('create', {sprint: sprint})" class="postit-container">
-                                <a ng-if="taskState == 0"
-                                   ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
-                                   class="btn btn-primary "
-                                   href>
-                                    <i class="fa fa-plus"></i>
-                                </a>
+                            <div ng-if="taskState == 0 && authorizedTask('create', {sprint: sprint})" class="postit-container">
+                                <div class="add-task postit {{ app.postitSize }}">
+                                    <a class="btn btn-primary"
+                                       ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
+                                       href><g:message code="todo.is.ui.task.new"/>
+                                    </a>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -184,13 +184,13 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <div ng-if="authorizedTask('create', {parentStory: story})" class="postit-container">
-                                <a ng-click="openNewTaskByStory(story)"
-                                   ng-if="taskState == 0"
-                                   class="btn btn-primary"
-                                   href>
-                                    <i class="fa fa-plus"></i>
-                                </a>
+                            <div ng-if="taskState == 0 && authorizedTask('create', {parentStory: story})" class="postit-container">
+                                <div class="add-task postit {{ app.postitSize }}">
+                                    <a class="btn btn-primary"
+                                       ng-click="openNewTaskByStory(story)"
+                                       href><g:message code="todo.is.ui.task.new"/>
+                                    </a>
+                                </div>
                             </div>
                         </td>
                     </tr>

@@ -956,29 +956,29 @@ tbody.story-ghost {
 #view-taskBoard > .content table {
   &.table {
     margin-bottom: 0;
+    tbody + tbody {
+      border:none;
+    }
     > thead,
     > tbody,
     > tfoot {
       > tr {
         > th,
         > td {
-          border: 1px solid @table-border-color;
-          border-left-style: dashed;
-          border-right-style: dashed;
+          border-left: 1px dashed darken(@table-border-color, 15%);
         }
         th:first-of-type, td:first-of-type {
           border-left-width: 0;
-        }
-        th:last-of-type, td:last-of-type {
-          border-right-width: 0;
         }
       }
     }
     > tbody:not(:last-of-type) > tr:not(.sticky-header) > td {
       border-top:none;
     }
+    .task-type {
+      border-left:15px solid transparent;
+    }
     .sticky-header{
-
       &.cloned  {
         > td {
           border-top:none;
@@ -994,10 +994,9 @@ tbody.story-ghost {
       }
       > td {
         padding:0;
-        border-bottom:1px dashed @table-border-color;
-        &.task-type {
-          padding-left: 4px;
-        }
+        border:1px solid darken(@table-border-color, 15%);
+        border-bottom: none;
+        border-right: none;
         > h3 {
           margin: 0;
           padding:6px;
@@ -1006,7 +1005,7 @@ tbody.story-ghost {
         }
       }
       &:not(.cloned) > td {
-        border-bottom:none;
+        //border-bottom:none;
       }
       &.sticky-header-will-hide {
         > td {
