@@ -53,9 +53,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         CacheService.addOrUpdate('story', story);
     };
     crudMethods[IceScrumEventType.DELETE] = function(story) {
-        if ($state.includes("backlog.backlog.story.details", {id: story.id} || $state.includes("backlog.multiple.story.details", {id: story.id}) ||
-            ($state.includes("backlog.backlog.story.multiple") || $state.includes("backlog.mutiple.story.multiple")) && _.includes($state.params.storyListId.split(','), story.id.toString()))) {
-            $state.go('backlog');
+        if ($state.includes("backlog.backlog.story.details", {id: story.id}) || $state.includes("backlog.multiple.story.details", {id: story.id}) ||
+            ($state.includes("backlog.backlog.story.multiple") || $state.includes("backlog.mutiple.story.multiple")) && _.includes($state.params.storyListId.split(','), story.id.toString())) {
+            $state.go('backlog.backlog');
         }
         CacheService.remove('story', story.id);
     };
