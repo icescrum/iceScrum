@@ -41,7 +41,6 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         return User.get({action: 'unreadActivitiesCount', id: user.id}).$promise;
     };
     this.getMenus = function(user, project) {
-        //product is used to get menu for a particular product
         return User.query({action: 'menus', id: user.id, product: project ? project.id : null}).$promise;
     };
     this.update = function(user) {

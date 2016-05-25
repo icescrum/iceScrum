@@ -29,7 +29,7 @@
         pushContext: ${product?.id ?: "''"},
         messages: ${i18nMessages as JSON},
         bundles: ${is.i18nBundle() as JSON},
-        applicationMenus: ${applicationMenus as JSON},
+        projectMenus: ${projectMenus as JSON},
         types: {
             task:${resourceBundles.taskTypes.keySet() as JSON},
             story:${resourceBundles.storyTypes.keySet() as JSON},

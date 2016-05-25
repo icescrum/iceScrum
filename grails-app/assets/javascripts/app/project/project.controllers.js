@@ -487,9 +487,9 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
 }]);
 
 controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
-    $scope.views = [];
+    $scope.stakeHolderViews = [];
     $scope.update = function(project) {
-        $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.views).filter({hidden: true}).map('id').value().join(',');
+        $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.stakeHolderViews).filter({hidden: true}).map('id').value().join(',');
         ProjectService.update(project)
             .then(function(updatedProject) {
                 Session.updateProject(updatedProject);
@@ -501,7 +501,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
         $scope.resetFormValidation($scope.formHolder.editProjectForm);
         $scope.project = angular.copy($scope.currentProject);
         var restrictedViews = $scope.project.preferences.stakeHolderRestrictedViews ? $scope.project.preferences.stakeHolderRestrictedViews.split(',') : [];
-        $scope.views = _.chain($scope.applicationMenus).map(function(menu) {
+        $scope.stakeHolderViews = _.chain(isSettings.projectMenus).map(function(menu) {
             return {title: menu.title, id: menu.id, hidden: _.includes(restrictedViews, menu.id)};
         }).sortBy('title').value();
     };

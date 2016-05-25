@@ -162,11 +162,11 @@ class ScrumOSController {
     }
 
     def isSettings() {
-        def applicationMenus = []
+        def projectMenus = []
         uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
-            applicationMenus << [id      : windowId,
-                                 title   : message(code: windowDefinition.menu?.title),
-                                 shortcut: "ctrl+" + (applicationMenus.size() + 1)]
+            if (windowDefinition.context == 'product') {
+                projectMenus << [id: windowId, title: message(code: windowDefinition.menu?.title)]
+            }
         }
         render(status: 200,
                 template: 'isSettings',
@@ -175,7 +175,7 @@ class ScrumOSController {
                         roles           : securityService.getRolesRequest(false),
                         i18nMessages    : messageSource.getAllMessages(RCU.getLocale(request)),
                         resourceBundles : grailsApplication.config.icescrum.resourceBundles,
-                        applicationMenus: applicationMenus])
+                        projectMenus    : projectMenus])
     }
 
     def saveImage(String image, String title) {
