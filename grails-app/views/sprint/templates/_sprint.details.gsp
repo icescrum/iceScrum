@@ -36,6 +36,18 @@
             </div>
             <div class="right-title">
                 <button class="btn btn-default elemid">{{ sprint.id }}</button>
+                <button class="btn btn-default"
+                        ng-if="authorizedSprint('activate', sprint)"
+                        uib-tooltip="${message(code:'is.ui.releasePlan.menu.sprint.activate')}"
+                        ng-click="activate(sprint)">
+                    <i class="fa fa-play"></i>
+                </button>
+                <button class="btn btn-default"
+                        ng-if="authorizedSprint('close', sprint)"
+                        uib-tooltip="${message(code:'is.ui.releasePlan.menu.sprint.close')}"
+                        ng-click="close(sprint)">
+                    <i class="fa fa-stop"></i>
+                </button>
                 <div class="btn-group"
                      ng-if="showSprintMenu()"
                      uib-dropdown>

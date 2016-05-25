@@ -28,7 +28,7 @@
             <div class="btn-group visible-on-hover" ng-show="hasPreviousVisibleSprints()">
                 <button class="btn btn-default"
                         ng-click="visibleSprintsPrevious()">
-                        <i class="fa fa-step-backward"></i>
+                        <i class="fa fa-angle-left fa-lg"></i>
                 </button>
             </div>
             <div class="btn-group pull-right">
@@ -72,7 +72,7 @@
             <div class="btn-group pull-right visible-on-hover" ng-if="hasNextVisibleSprints()">
                 <button class="btn btn-default"
                         ng-click="visibleSprintsNext()">
-                    <i class="fa fa-step-forward"></i>
+                    <i class="fa fa-angle-right fa-lg"></i>
                 </button>
             </div>
         </div>
