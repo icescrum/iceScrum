@@ -165,16 +165,16 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
         return $state.href(newStoryState.name, newStoryState.params);
     };
     $scope.openSprintUrl = function(sprint) {
-        var stateName =  'planning.release.sprint.withId';
-        if($state.current.name != 'planning.release.sprint.withId.details'){
-            stateName +=  '.details';
+        var stateName = 'planning.release.sprint.withId';
+        if ($state.current.name != 'planning.release.sprint.withId.details') {
+            stateName += '.details';
         }
         return $state.href(stateName, {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
     };
     $scope.openMultipleSprintDetailsUrl = function() {
-        var stateName =  'planning.release.sprint.multiple';
-        if($state.current.name != 'planning.release.sprint.multiple.details'){
-            stateName +=  '.details';
+        var stateName = 'planning.release.sprint.multiple';
+        if ($state.current.name != 'planning.release.sprint.multiple.details') {
+            stateName += '.details';
         }
         return $state.href(stateName);
     };
