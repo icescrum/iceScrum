@@ -37,7 +37,6 @@
                        class="form-control"
                        uib-typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                        typeahead-loading="searching"
-                       typeahead-min-length="2"
                        typeahead-wait-ms="250"
                        typeahead-on-select="selectTeam($item, $model, $label)"
                        typeahead-template-url="select.or.create.team.html"

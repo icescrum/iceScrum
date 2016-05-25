@@ -31,6 +31,7 @@
           d="M77.345,95.244c0,0-44.015-24.76-47.161-26.529s0-3.541,0-3.541  s44.814-25.207,47.153-26.522c2.339-1.313,4.602-0.041,4.602-0.041l36.191,20.396c0,0,4.141,1.336,8.162-0.852  c0.33-0.178,0.924-0.553,0.922,0.732c-0.014,12.328-15.943,19.957-15.943,19.957S84.345,93.939,82.009,95.248  C79.676,96.556,77.345,95.244,77.345,95.244z"/>
 </svg>
 </script>
+
 <script type="text/ng-template" id="confirm.modal.html">
 <is:modal form="submit()"
           submitButton="${message(code: 'todo.is.ui.confirm')}"
@@ -42,13 +43,13 @@
 
 <script type="text/ng-template" id="select.or.create.team.html">
 <a>
-    <span ng-show="!match.model.id">${message(code: 'todo.is.ui.create.team')}</span><span>{{ match.model.name }}</span>
+    <span ng-show="!match.model.id">${message(code: 'todo.is.ui.create.team')}</span> <strong>{{ match.model.name }}</strong>
 </a>
 </script>
 
 <script type="text/ng-template" id="select.member.html">
 <a>
-    <span ng-show="!match.model.id">${message(code: 'todo.is.ui.user.will.be.invited')}</span><span>{{ match.model | userFullName }}</span>
+    <span ng-show="!match.model.id">${message(code: 'todo.is.ui.user.will.be.invited')}</span> <span>{{ match.model | userFullName }}</span>
 </a>
 </script>
 
@@ -92,15 +93,12 @@
              height="60px"
              width="60px"/>
     </div>
-
     <div class="media-body">
         <div>
             {{ (currentUser | userFullName) + ' (' + currentUser.username + ')' }}
         </div>
-
         <div class="text-muted">
             <div>{{currentUser.email}}</div>
-
             <div>{{currentUser.preferences.activity}}</div>
             <g:if test="${product}">
                 <div>
@@ -111,7 +109,6 @@
         </div>
     </div>
 </div>
-
 <div class="btn-toolbar pull-right">
     <a href
        class="btn btn-default"
@@ -125,23 +122,19 @@
     </a>
 </div>
 </script>
+
 <script type="text/ng-template" id="notifications.panel.html">
 <div class="empty-content" ng-show="groupedUserActivities === undefined">
     <i class="fa fa-refresh fa-spin"></i>
 </div>
-
 <div ng-repeat="groupedActivity in groupedUserActivities">
-    <div><h4><a
-            href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">{{ groupedActivity.project.name }}</a>
-    </h4></div>
-
+    <div><h4><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">{{ groupedActivity.project.name }}</a></h4></div>
     <div class="media" ng-class="{ 'unread': activity.notRead }" ng-repeat="activity in groupedActivity.activities">
         <div class="media-left">
             <img height="36px"
                  ng-src="{{activity.poster | userAvatar}}"
                  alt="{{activity.poster | userFullName}}"/>
         </div>
-
         <div class="media-body">
             <div class="text-muted pull-right">
                 <time timeago datetime="{{ activity.dateCreated }}">
@@ -149,20 +142,16 @@
                 </time>
                 <i class="fa fa-clock-o"></i>
             </div>
-
             <div>
                 {{activity.poster | userFullName}}
             </div>
-
             <div>
                 <span class="{{ activity | activityIcon}}"></span>
-                <span>{{ message('is.fluxiable.' + activity.code ) }} <a
-                        href="{{ activity.story.uid | permalink: 'story' }}">{{ activity.story.name }}</a></span>
+                <span>{{ message('is.fluxiable.' + activity.code ) }} <a href="{{ activity.story.uid | permalink: 'story' }}">{{ activity.story.name }}</a></span>
             </div>
         </div>
     </div>
 </div>
-
 <div class="empty-content" ng-show="groupedUserActivities != undefined && groupedUserActivities.length == 0">
     <small>${message(code: 'todo.is.ui.activities.empty')}</small>
 </div>
@@ -205,8 +194,11 @@
         <div class="left-panel col-sm-3">
             <div class="left-panel-header">
                 <div class="input-group">
-                    <input type="text" ng-model="widgetDefinitionSearch" name="widget-definition-search-input"
-                           class="form-control" placeholder="${message(code: 'todo.is.ui.search.action')}">
+                    <input type="text"
+                           ng-model="widgetDefinitionSearch"
+                           name="widget-definition-search-input"
+                           class="form-control"
+                           placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
                     </span>
@@ -215,8 +207,9 @@
             <ul class="left-panel-body nav nav-list">
                 <li ng-class="{ 'current': currentWidgetDefinition.id == widgetDefinition.id }"
                     ng-repeat="currentWidgetDefinition in widgetDefinitions | filter:widgetDefinitionSearch">
-                    <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href><i
-                            class="fa fa-{{ currentWidgetDefinition.icon }}"></i> {{ currentWidgetDefinition.name }}</a>
+                    <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href>
+                        <i class="fa fa-{{ currentWidgetDefinition.icon }}"></i> {{ currentWidgetDefinition.name }}
+                    </a>
                 </li>
             </ul>
         </div>
@@ -248,7 +241,10 @@
         <div class="left-panel col-sm-3">
             <div class="left-panel-header">
                 <div class="input-group">
-                    <input type="text" ng-model="extensionSearch" name="extension-search-input" class="form-control"
+                    <input type="text"
+                           ng-model="extensionSearch"
+                           name="extension-search-input"
+                           class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
@@ -293,11 +289,16 @@
                     uib-tooltip="${message(code: 'is.dialog.manageExtensions.uninstall')}" tooltip-placement="top"
                     class="btn btn-default"><i class="fa fa-times"></i></button>
         </div>
-        <button disabled class="btn btn-success" style="margin-left:15px"
+        <button disabled
+                class="btn btn-success"
+                style="margin-left:15px"
                 ng-if="holder.extension.installed && holder.extension.includedWithLicense">${message(code: 'is.dialog.manageExtensions.includedWithLicense')}</button>
-        <button disabled class="btn btn-success" style="margin-left:15px"
+        <button disabled
+                class="btn btn-success"
+                style="margin-left:15px"
                 ng-if="holder.extension.installed && !holder.extension.includedWithLicense">${message(code: 'is.dialog.manageExtensions.installed')}</button>
-        <button type="submit" class="btn btn-primary"
+        <button type="submit"
+                class="btn btn-primary"
                 unavailable-feature="true"
                 ng-if="!holder.extension.installed">${message(code: 'is.dialog.manageExtensions.install')}</button>
     </div>
@@ -318,7 +319,9 @@
             <div class="col-xs-2 col-md-3 screenshots">
                 <div class="row">
                     <div class="col-md-12" ng-repeat="screenshot in holder.extension.screenshots">
-                        <a href class="thumbnail" ng-click="selectScreenshot(screenshot)"
+                        <a href
+                           class="thumbnail"
+                           ng-click="selectScreenshot(screenshot)"
                            ng-class="{'current':holder.screenshot == screenshot}">
                             <img ng-src="{{ screenshot }}">
                         </a>
