@@ -55,7 +55,7 @@
                 <button type="button"
                         class="btn btn-default"
                         uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                        ng-click="postitSize()"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize == '', 'fa-compress': app.postitSize == 'postit-sm', 'fa-expand': app.postitSize == 'postit-xs'}"></i>
+                        ng-click="postitSize('story')"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize.story == '', 'fa-compress': app.postitSize.story == 'postit-sm', 'fa-expand': app.postitSize.story == 'postit-xs'}"></i>
                 </button>
                 <button type="button"
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"

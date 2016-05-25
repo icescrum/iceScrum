@@ -1010,7 +1010,10 @@ angular.module('isApp', [
         loadingPercent: 0,
         isFullScreen: false,
         menus: Session.menus,
-        postitSize: '',
+        postitSize: {
+            story:"",
+            task:'postit-sm'
+        },
         selectableMultiple: false
     };
 

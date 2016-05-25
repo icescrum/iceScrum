@@ -63,7 +63,7 @@
                         <button type="button"
                                 class="btn btn-default"
                                 uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                                ng-click="postitSize(true)"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize == '', 'fa-compress': app.postitSize == 'postit-sm', 'fa-expand': app.postitSize == 'postit-xs'}"></i>
+                                ng-click="postitSize('task',true)"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize.task == '', 'fa-compress': app.postitSize.task == 'postit-sm', 'fa-expand': app.postitSize.task == 'postit-xs'}"></i>
                         </button>
                         <button type="button"
                                 class="btn btn-default"
@@ -120,7 +120,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="taskState == 0 && authorizedTask('create', {sprint: sprint})" class="postit-container">
-                                <div class="add-task postit {{ app.postitSize }}">
+                                <div class="add-task postit {{ app.postitSize.task }}">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByType(taskTypesByName.URGENT)"
                                        href><g:message code="todo.is.ui.task.new"/>
@@ -150,7 +150,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="taskState == 0 && authorizedTask('create', {sprint: sprint})" class="postit-container">
-                                <div class="add-task postit {{ app.postitSize }}">
+                                <div class="add-task postit {{ app.postitSize.task }}">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
                                        href><g:message code="todo.is.ui.task.new"/>
@@ -181,7 +181,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="taskState == 0 && authorizedTask('create', {parentStory: story})" class="postit-container">
-                                <div class="add-task postit {{ app.postitSize }}">
+                                <div class="add-task postit {{ app.postitSize.task }}">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByStory(story)"
                                        href><g:message code="todo.is.ui.task.new"/>

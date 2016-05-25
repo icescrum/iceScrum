@@ -131,13 +131,15 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             }
         }
     };
-    $scope.postitSize = function(xs) {
-        if ($scope.app.postitSize == '') {
-            $scope.app.postitSize = 'postit-sm';
-        } else if ($scope.app.postitSize == 'postit-sm' && xs) {
-            $scope.app.postitSize = 'postit-xs';
+    $scope.postitSize = function(type, xs) {
+        debugger;
+        type = type ? type : 'story';
+        if ($scope.app.postitSize[type] == '') {
+            $scope.app.postitSize[type] = 'postit-sm';
+        } else if ($scope.app.postitSize[type] == 'postit-sm' && xs) {
+            $scope.app.postitSize[type] = 'postit-xs';
         } else {
-            $scope.app.postitSize = '';
+            $scope.app.postitSize[type] = '';
         }
     };
     $scope.print = function(data) {
