@@ -227,10 +227,22 @@
           visibility: hidden;
           display: inline-block;
           max-height: @postit-content-height;
+
+          display: -webkit-box;
+          max-width: 400px;
+          height: @font-size-postit*@line-height-postit*@lines-to-show-postit; /* Fallback for non-webkit */
+          margin: 0 auto;
+          font-size: @font-size-postit;
+          line-height: @line-height-postit;
+          -webkit-line-clamp:@lines-to-show-postit;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
         }
         .description-template {
           display: inline-block;
-          font-size: 12px;
+          font-size: 13px;
           font-style: italic;
           overflow: hidden;
           max-height: @postit-content-height;
@@ -313,13 +325,12 @@
       }
       &:hover {
         .content {
-          .title div {
+          .title {
             .text-overflow();
           }
           .description {
-            font-size: 12px;
-            font-style: italic;
             overflow: hidden;
+            font-style: italic;
             visibility: visible;
           }
         }
@@ -423,10 +434,17 @@
             overflow: hidden;
             text-overflow: ellipsis;
             padding-top: 2px;
+            white-space: normal;
           }
           height: @font-size-postit-sm*@line-height-postit-sm*@lines-to-show-postit-sm;
           padding-left: 5px;
           padding-right: 5px;
+        }
+        .description, .state-progress {
+          display:none;
+        }
+        .actions > .action {
+          width: 28px;
         }
       }
       &.postit-xs {

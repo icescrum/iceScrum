@@ -124,17 +124,17 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             $scope.app.isFullScreen = false;
         }
         else {
-            var el = angular.element('.main > div:first-of-type');
+            var el = angular.element('.main');
             if (el.length > 0) {
                 Fullscreen.enable(el[0]);
                 $scope.app.isFullScreen = !$scope.app.isFullScreen;
             }
         }
     };
-    $scope.postitSize = function() {
+    $scope.postitSize = function(xs) {
         if ($scope.app.postitSize == '') {
             $scope.app.postitSize = 'postit-sm';
-        } else if ($scope.app.postitSize == 'postit-sm') {
+        } else if ($scope.app.postitSize == 'postit-sm' && xs) {
             $scope.app.postitSize = 'postit-xs';
         } else {
             $scope.app.postitSize = '';

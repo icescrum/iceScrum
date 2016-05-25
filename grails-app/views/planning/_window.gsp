@@ -53,10 +53,20 @@
             </div>
             <div class="btn-group pull-right visible-on-hover">
                 <button type="button"
+                        class="btn btn-default"
+                        uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                        ng-click="postitSize()"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize == '', 'fa-compress': app.postitSize == 'postit-sm', 'fa-expand': app.postitSize == 'postit-xs'}"></i>
+                </button>
+                <button type="button"
                         uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
                         ng-click="app.asList = !app.asList"
                         class="btn btn-default">
                     <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
+                </button>
+                <button type="button"
+                        class="btn btn-default"
+                        ng-click="fullScreen()"
+                        uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                 </button>
             </div>
             <div class="btn-group pull-right visible-on-hover" ng-if="hasNextVisibleSprints()">

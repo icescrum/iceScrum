@@ -46,11 +46,6 @@
                                 uib-tooltip="{{ isSortingTaskBoard(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                             <span ng-class="isSortingTaskBoard(sprint) ? 'text-success' : 'forbidden-stack text-danger'" class="fa fa-hand-pointer-o"></span>
                         </button>
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                                ng-click="postitSize()"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize == '', 'fa-compress': app.postitSize == 'postit-sm', 'fa-expand': app.postitSize == 'postit-xs'}"></i>
-                        </button>
                         <button class="btn btn-default"
                                 uib-dropdown-toggle
                                 uib-tooltip="${message(code:'todo.is.ui.filters')}"
@@ -65,21 +60,22 @@
                         </ul>
                     </div>
                     <div class="btn-group pull-right visible-on-hover">
-                        <g:if test="${windowDefinition.printable}">
-                            <button type="button"
-                                    class="btn btn-default"
-                                    uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                                    unavailable-feature="true"
-                                    hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
-                            </button>
-                        </g:if>
-                        <g:if test="${windowDefinition.fullScreen}">
-                            <button type="button"
-                                    class="btn btn-default"
-                                    uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                                    ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
-                            </button>
-                        </g:if>
+                        <button type="button"
+                                class="btn btn-default"
+                                uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                                ng-click="postitSize(true)"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize == '', 'fa-compress': app.postitSize == 'postit-sm', 'fa-expand': app.postitSize == 'postit-xs'}"></i>
+                        </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                                unavailable-feature="true"
+                                hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
+                        </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                                ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
+                        </button>
                     </div>
                     <div class="sub-title text-muted">
                         {{ sprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dayShorter }}

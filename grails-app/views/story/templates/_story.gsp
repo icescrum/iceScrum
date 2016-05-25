@@ -22,10 +22,8 @@
 --}%
 
 <script type="text/ng-template" id="story.html">
-<div ellipsis
-     fast-tooltip
-     style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : app.asList}}"
-     class="postit {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
+<div style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : app.asList}}"
+     class="postit {{ app.postitSize + ' ' + ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
         <div class="head-left">
             <a href
@@ -48,10 +46,10 @@
         </div>
     </div>
     <div class="content" as-sortable-item-handle-if="sortableStory">
-        <h3 class="title ellipsis-el"
+        <h3 class="title"
             ng-model="story.name"
             ng-bind-html="story.name | sanitize"></h3>
-        <div class="description ellipsis-el"
+        <div class="description"
              ng-model="story.description"
              ng-bind-html="story.description | sanitize"></div>
     </div>

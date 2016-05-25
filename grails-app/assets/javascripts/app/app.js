@@ -1010,7 +1010,7 @@ angular.module('isApp', [
         loadingPercent: 0,
         isFullScreen: false,
         menus: Session.menus,
-        postitSize: 'postit-sm',
+        postitSize: '',
         selectableMultiple: false
     };
 

@@ -48,13 +48,11 @@
                             class="btn btn-default">
                         <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
                     </button>
-                    <g:if test="${windowDefinition.fullScreen}">
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                                ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
-                        </button>
-                    </g:if>
+                    <button type="button"
+                            class="btn btn-default"
+                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                            ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
+                    </button>
                 </div>
                 <div class="btn-group btn-view">
                     <button type="button"
@@ -105,15 +103,13 @@
                     </button>
                 </div>
                 <div class="btn-group" uib-dropdown>
-                    <g:if test="${windowDefinition.printable}">
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                                ng-click="print($event)"
-                                ng-href="backlog/{{ ::backlogContainer.backlog.id }}/print"
-                                hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
-                        </button>
-                    </g:if>
+                    <button type="button"
+                            class="btn btn-default"
+                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                            ng-click="print($event)"
+                            ng-href="backlog/{{ ::backlogContainer.backlog.id }}/print"
+                            hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
+                    </button>
                     <button class="btn btn-default"
                             uib-tooltip="${message(code:'todo.is.ui.export')}"
                             uib-dropdown-toggle type="button">

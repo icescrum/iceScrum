@@ -193,23 +193,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}]).directive('ellipsis', [function() {
-    return {
-        restrict: 'A',
-        priority: 100,
-        link: function(scope, element) {
-            element.on('mouseenter', function() {
-                _.each(element.find('.ellipsis-el'), function(el) {
-                    el = angular.element(el);
-                    var data = el.data('jqae');
-                    if (!data || (data && data.wrapperElement.parent().length == 0)) {
-                        el.data('jqae', null);
-                        el.ellipsis();
-                    }
-                });
-            });
-        }
-    };
 }]).directive('timeago', [function() {
     return {
         restrict: 'A',

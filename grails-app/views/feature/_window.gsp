@@ -81,28 +81,24 @@
                    href="#/{{ ::viewName }}/new"
                    class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
                 <div class="btn-group pull-right visible-on-hover">
-                    <g:if test="${windowDefinition.printable}">
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                                unavailable-feature="true"
-                                ng-href="{{ ::viewName }}/print"
-                                hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
-                        </button>
-                    </g:if>
+                    <button type="button"
+                            class="btn btn-default"
+                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                            unavailable-feature="true"
+                            ng-href="{{ ::viewName }}/print"
+                            hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
+                    </button>
                     <button type="button"
                             uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
                             ng-click="app.asList = !app.asList"
                             class="btn btn-default">
                         <i class="fa" ng-class="app.asList ? 'fa-th-list' : 'fa-th'"></i>
                     </button>
-                    <g:if test="${windowDefinition.fullScreen}">
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                                unavailable-feature="true"><i class="fa fa-arrows-alt"></i>
-                        </button>
-                    </g:if>
+                    <button type="button"
+                            class="btn btn-default"
+                            ng-click="fullScreen()"
+                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                    </button>
                 </div>
             </div>
         </div>
