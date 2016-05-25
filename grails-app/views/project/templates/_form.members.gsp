@@ -34,6 +34,7 @@
                    ng-model="po.name"
                    uib-typeahead="po as po.name for po in searchUsers($viewValue, true)"
                    typeahead-loading="searchingPo"
+                   typeahead-min-length="2"
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'po')"
                    typeahead-template-url="select.member.html">
@@ -60,6 +61,7 @@
                    ng-model="sh.name"
                    uib-typeahead="sh as sh.name for sh in searchUsers($viewValue)"
                    typeahead-loading="searchingSh"
+                   typeahead-min-length="2"
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'sh')"
                    typeahead-template-url="select.member.html">

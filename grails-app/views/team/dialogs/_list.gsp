@@ -116,6 +116,7 @@
                                    ng-model="member.name"
                                    uib-typeahead="member as member.name for member in searchMembers($viewValue)"
                                    typeahead-loading="searchingMember"
+                                   typeahead-min-length="2"
                                    typeahead-wait-ms="250"
                                    typeahead-on-select="addTeamMember($item, $model, $label)"
                                    typeahead-template-url="select.member.html">

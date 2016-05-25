@@ -37,10 +37,11 @@
                        class="form-control"
                        uib-typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                        typeahead-loading="searching"
+                       typeahead-min-length="2"
+                       typeahead-wait-ms="250"
                        typeahead-on-select="selectTeam($item, $model, $label)"
                        typeahead-template-url="select.or.create.team.html"
                        ng-disabled="team.selected"
-                       typeahead-wait-ms="250"
                        ng-model="team.name"
                        ng-required="isCurrentStep(2)">
                 <span class="input-group-addon" ng-if="teamRemovable()"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>
@@ -61,6 +62,7 @@
                            ng-model="member.name"
                            uib-typeahead="member as member.name for member in searchMembers($viewValue)"
                            typeahead-loading="searchingMember"
+                           typeahead-min-length="2"
                            typeahead-wait-ms="250"
                            typeahead-on-select="addTeamMember($item, $model, $label)"
                            typeahead-template-url="select.member.html">
