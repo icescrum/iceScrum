@@ -55,7 +55,7 @@ class StoryController {
             }
             if (params.context) {
                 if (params.context.type == 'tag') {
-                    options.tag = params.context.id
+                    options.story.tag = params.context.id
                 } else if (params.context.type == 'feature') {
                     if (!options.story.feature) {
                         options.story.feature = params.context.id
