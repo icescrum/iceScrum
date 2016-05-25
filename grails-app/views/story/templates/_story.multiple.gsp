@@ -36,8 +36,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="postits standalone">
-                    <div ellipsis
-                         class="postit-container stack twisted">
+                    <div class="postit-container stack twisted">
                         <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
                              class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                             <div class="head">
@@ -59,10 +58,10 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <h3 class="title ellipsis-el"
+                                <h3 class="title"
                                     ng-model="topStory.name"
                                     ng-bind-html="topStory.name | sanitize"></h3>
-                                <div class="description ellipsis-el"
+                                <div class="description"
                                      ng-model="topStory.description"
                                      ng-bind-html="topStory.description | sanitize"></div>
                             </div>

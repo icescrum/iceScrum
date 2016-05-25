@@ -36,7 +36,7 @@
     <div class="panel-body">
         <div class="help-block">${message(code:'is.ui.task.help')}</div>
         <div class="postits standalone">
-            <div ellipsis class="postit-container">
+            <div class="postit-container">
                 <div style="{{ '#f9f157' | createGradientBackground }}"
                      class="postit {{ app.postitSize + ' ' + ('#f9f157' | contrastColor) }}">
                     <div class="head">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="content">
-                        <h3 class="title ellipsis-el"
+                        <h3 class="title"
                             ng-model="task.name"
                             ng-bind-html="task.name | sanitize"></h3>
                     </div>

@@ -36,7 +36,7 @@
     <div class="panel-body">
         <div class="help-block">${message(code:'is.ui.sandbox.help')}</div>
         <div class="postits standalone">
-            <div ellipsis class="postit-container">
+            <div class="postit-container">
                 <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
                      class="postit {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}">
                     <div class="head">
@@ -45,10 +45,10 @@
                         </div>
                     </div>
                     <div class="content">
-                        <h3 class="title ellipsis-el"
+                        <h3 class="title"
                             ng-model="story.name"
                             ng-bind-html="story.name | sanitize"></h3>
-                        <div class="description-template ellipsis-el"
+                        <div class="description-template"
                              ng-model="storyPreview.description"
                              ng-bind-html="storyPreview.description | sanitize"></div>
                     </div>

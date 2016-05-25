@@ -36,7 +36,7 @@
     <div class="panel-body">
         <div class="help-block">${message(code:'is.ui.feature.help')}</div>
         <div class="postits standalone">
-            <div ellipsis class="postit-container">
+            <div class="postit-container">
                 <div style="{{ '#2d8ccc' | createGradientBackground }}"
                      class="postit {{ '#2d8ccc' | contrastColor }}">
                     <div class="head">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="content">
-                        <h3 class="title ellipsis-el"
+                        <h3 class="title"
                             ng-model="feature.name"
                             ng-bind-html="feature.name | sanitize"></h3>
                     </div>

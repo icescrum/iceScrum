@@ -23,7 +23,6 @@
 
 <script type="text/ng-template" id="feature.html">
 <div style="{{ feature.color | createGradientBackground: app.asList }}"
-     ellipsis
      class="postit {{ (feature.color | contrastColor) + ' ' + (feature.type | featureType) }}">
     <div class="head">
         <div class="head-left">
@@ -39,10 +38,10 @@
     </div>
     <div class="content"
          as-sortable-item-handle>
-        <h3 class="title ellipsis-el"
+        <h3 class="title"
             ng-model="feature.name"
             ng-bind-html="feature.name | sanitize"></h3>
-        <div class="description ellipsis-el"
+        <div class="description"
              ng-model="feature.description"
              ng-bind-html="feature.description | sanitize"></div>
     </div>

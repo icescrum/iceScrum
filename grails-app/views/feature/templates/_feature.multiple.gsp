@@ -36,7 +36,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="postits standalone">
-                    <div ellipsis class="postit-container stack twisted">
+                    <div class="postit-container stack twisted">
                         <div style="{{ topFeature.color | createGradientBackground }}"
                              class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                             <div class="head">
@@ -50,10 +50,10 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <h3 class="title ellipsis-el"
+                                <h3 class="title"
                                     ng-model="topFeature.name"
                                     ng-bind-html="topFeature.name | sanitize"></h3>
-                                <div class="description ellipsis-el"
+                                <div class="description"
                                      ng-model="topFeature.description"
                                      ng-bind-html="topFeature.description | sanitize"></div>
                             </div>
