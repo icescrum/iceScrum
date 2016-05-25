@@ -326,9 +326,9 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     });
 }]);
 
-controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $filter, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
-
+controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
     $controller('abstractProjectCtrl', {$scope: $scope});
+    // Functions
     $scope.type = 'newProject';
     $scope.checkProjectPropertyUrl = '/project/available';
     $scope.isCurrentStep = function(index) {
@@ -366,12 +366,13 @@ controllers.controller('newProjectCtrl', ["$scope", '$filter', '$controller', 'D
             $scope.sprints.push({orderNumber: i, startDate: startDate, endDate: endDate});
         }
     };
-    $scope.initPkey = function() {
-        if ($scope.project.name && !$scope.project.pkey) {
-            $scope.project.pkey = $filter('uppercase')($scope.project.name.replace(/\W+/g, ""));
+    $scope.nameChanged = function() {
+        if (!$scope.formHolder.projectForm.pkey.$dirty) {
+            $scope.project.pkey = _.upperCase($scope.project.name).replace(/\W+/g, "");
         }
     };
     // Init
+    $scope.formHolder = {};
     $scope.project = new Project();
     var today = DateService.getMidnightTodayUTC();
     var endDate = DateService.immutableAddMonthsToDate(today, 3);

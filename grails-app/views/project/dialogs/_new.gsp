@@ -24,7 +24,7 @@
 
 
 <is:modal title="{{ (project.name ? project.name : '${message(code:'is.dialog.wizard')}') + ' ' + (project.pkey ? project.pkey : '') }}" class="wizard" footer="false">
-    <form name="newProjectForm"
+    <form name="formHolder.projectForm"
           ng-init="project.preferences.hidden = ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.default)};"
           show-validation
           novalidate>
@@ -32,7 +32,7 @@
             <wz-step title="${message(code:"is.dialog.wizard.section.project")}" icon="fa fa-pencil">
                 <ng-include src="'form.general.project.html'"></ng-include>
                 <div class="wizard-next">
-                    <input type="submit" class="btn btn-default" ng-disabled="newProjectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
+                    <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
                 </div>
             </wz-step>
             <wz-step title="${message(code:"is.dialog.wizard.section.team")}" icon="fa fa-users">
@@ -47,13 +47,13 @@
             <wz-step title="${message(code:"is.dialog.wizard.section.options")}" icon="fa fa-sliders">
                 <ng-include src="'form.practices.project.html'"></ng-include>
                 <div class="wizard-next">
-                    <input type="submit" class="btn btn-default" ng-disabled="newProjectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
+                    <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
                 </div>
             </wz-step>
             <wz-step title="${message(code:"todo.is.ui.project.planning")}" icon="fa fa-calendar">
                 <ng-include src="'form.planning.project.html'"></ng-include>
                 <div class="wizard-next">
-                    <input type="submit" class="btn btn-default" ng-disabled="newProjectForm.$invalid" wz-finish="createProject(project)" value="${message(code:'todo.is.ui.wizard.finish')}" />
+                    <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-finish="createProject(project)" value="${message(code:'todo.is.ui.wizard.finish')}" />
                 </div>
             </wz-step>
         </wizard>
