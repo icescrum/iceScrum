@@ -53,14 +53,14 @@
     <div class="actions">
         <span postit-menu="task.menu.html" class="action"><a><i class="fa fa-cog"></i></a></span>
         <span class="action" ng-class="{'active':task.attachments.length}">
-            <a href="#/{{ ::viewName }}/task/{{ ::task.id }}"
+            <a href="#/{{ ::viewName }}/{{ sprint.id }}/task/{{ ::task.id }}"
                uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
                 <i class="fa fa-paperclip"></i>
                 <span class="badge">{{ task.attachments.length || '' }}</span>
             </a>
         </span>
         <span class="action" ng-class="{'active':task.comments_count}">
-            <a href="#/{{ ::viewName }}/task/{{ ::task.id }}/comments"
+            <a href="#/{{ ::viewName }}/{{ sprint.id }}/task/{{ ::task.id }}/comments"
                uib-tooltip="${message(code:'todo.is.ui.comments')}">
                 <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                 <span class="badge">{{ task.comments_count || '' }}</span>
