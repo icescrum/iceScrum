@@ -55,11 +55,14 @@ class TeamController {
             return
         }
         def newMembers = []
-        params.team.members?.list('id').each {
-            newMembers << [id: it.toLong(), role: Authority.MEMBER]
-        }
         params.team.scrumMasters?.list('id').each {
             newMembers << [id: it.toLong(), role: Authority.SCRUMMASTER]
+        }
+        params.team.members?.list('id').each {
+            def userId = it.toLong()
+            if (!newMembers.find { it.id == userId }) {
+                newMembers << [id: userId, role: Authority.MEMBER]
+            }
         }
         def invitedMembers = params.team.invitedMembers?.list('email') ?: []
         def invitedScrumMasters = params.team.invitedScrumMasters?.list('email') ?: []
