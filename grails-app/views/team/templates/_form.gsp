@@ -28,7 +28,7 @@
         </div>
         <div class="col-sm-4">
             <h4>${message(code:'is.team')}</h4>
-            <label for="team.name">${message(code:'todo.is.ui.create.or.select.team')}</label>
+            <label for="team.name">{{ message(teamCreatable() ? 'todo.is.ui.create.or.select.team' : 'todo.is.ui.select.team' )}}</label>
             <p class="input-group">
                 <input autocomplete="off"
                        type="text"
