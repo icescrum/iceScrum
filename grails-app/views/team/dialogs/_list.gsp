@@ -122,7 +122,7 @@
                                    typeahead-on-select="addTeamMember($item, $model, $label)"
                                    typeahead-template-url="select.member.html">
                             <span class="input-group-addon">
-                                <i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
+                                <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
                             </span>
                         </p>
                     </div>
