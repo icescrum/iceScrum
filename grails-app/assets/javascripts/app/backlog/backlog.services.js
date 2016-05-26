@@ -24,7 +24,7 @@ services.factory('Backlog', ['Resource', function($resource) {
     return $resource('backlog/:id');
 }]);
 
-services.service("BacklogService", ['Backlog', '$q', '$filter', 'CacheService', 'BacklogCodes', function(Backlog, $q, $filter, CacheService, BacklogCodes) {
+services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'BacklogCodes', function(Backlog, $q, CacheService, BacklogCodes) {
     this.list = function() {
         var cachedBacklogs = CacheService.getCache('backlog');
         return _.isEmpty(cachedBacklogs) ? Backlog.query({}, function(backlogs) {
@@ -45,9 +45,47 @@ services.service("BacklogService", ['Backlog', '$q', '$filter', 'CacheService', 
         return backlog.code == BacklogCodes.BACKLOG;
     };
     this.filterStories = function(backlog, stories) {
-        var filter = JSON.parse(backlog.filter);
-        return $filter('filter')(stories, filter.story, function(expected, actual) {
-            return angular.isArray(actual) && actual.indexOf(expected) > -1 || angular.equals(actual, expected);
+        var storyFilter = JSON.parse(backlog.filter).story;
+        var getMatcher = function(key) {
+            if (key == 'term') {
+                return function(value) {
+                    if (isNaN(value)) {
+                        return function(story) {
+                            var normalize = _.flow(_.deburr, _.toLower);
+                            return _.some(['name', 'description', 'notes'], function(field) {
+                                return normalize(story[field]).indexOf(normalize(value)) != -1;
+                            });
+                        }
+                    } else {
+                        return _.matchesProperty('uid', _.toNumber(value));
+                    }
+                }
+            } else if (_.includes(['creator', 'feature', 'actor', 'dependsOn', 'parentSprint'], key)) {
+                return function(value) {
+                    return _.matchesProperty(key + '.id', value);
+                };
+            } else if (key == 'parentRelease') {
+                return function(value) {
+                    return _.matchesProperty('parentSprint.parentReleaseId', value);
+                };
+            } else if (key == 'deliveredVersion') {
+                return function(value) {
+                    return _.matchesProperty('parentSprint.deliveredVersion', value);
+                };
+            } else {
+                return function(value) {
+                    return _.matchesProperty(key, value);
+                };
+            }
+        };
+        return _.filter(stories, function(story) {
+            return _.every(storyFilter, function(value, key) {
+                var values = _.isArray(value) ? value : [value];
+                var matcher = getMatcher(key);
+                return _.some(values, function(val) {
+                    return matcher(val)(story);
+                });
+            });
         });
     };
 }]);
