@@ -35,6 +35,7 @@
                        name="team.name"
                        autofocus
                        class="form-control"
+                       placeholder="${message(code: 'todo.is.ui.team.noteam')}"
                        uib-typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                        typeahead-loading="searching"
                        typeahead-wait-ms="250"
@@ -58,6 +59,7 @@
                            id="member.search"
                            autofocus
                            class="form-control"
+                           placeholder="${message(code: 'todo.is.ui.select.notext')}"
                            ng-model="member.name"
                            uib-typeahead="member as member.name for member in searchMembers($viewValue)"
                            typeahead-loading="searchingMember"

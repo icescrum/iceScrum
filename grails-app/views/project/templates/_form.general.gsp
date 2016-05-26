@@ -25,13 +25,14 @@
     <h4>${message(code:"is.dialog.wizard.section.project")}</h4>
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
     <div class="row">
-        <div class="col-sm-8 col-xs-8 form-group">
+        <div class="col-sm-7 col-xs-7 form-group">
             <label for="name">${message(code:'is.product.name')}</label>
             <div class="input-group">
                 <input autofocus
                        name="name"
                        type="text"
                        class="form-control"
+                       placeholder="${message(code: 'todo.is.ui.project.noname')}"
                        ng-model="project.name"
                        ng-change="nameChanged()"
                        ng-required="isCurrentStep(1)"
@@ -39,7 +40,7 @@
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
                         <a class="btn btn-model"
-                           uib-tooltip="{{project.preferences.hidden ? '${message(code: 'is.product.preferences.project.hidden')}' : '${message(code: 'todo.is.ui.product.preferences.project.public')}' }}"
+                           uib-tooltip="{{project.preferences.hidden ? '${message(code: /is.product.preferences.project.hidden/)}' : '${message(code: /todo.is.ui.product.preferences.project.public/)}' }}"
                            ng-model="project.preferences.hidden"
                            ng-click="project.preferences.hidden = !project.preferences.hidden;"
                            ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
@@ -49,12 +50,13 @@
                 </g:if>
             </div>
         </div>
-        <div class="col-sm-4 col-xs-4 form-group">
+        <div class="col-sm-5 col-xs-5 form-group">
             <label for="pkey">${message(code:'is.product.pkey')}</label>
             <input name="pkey"
                    type="text"
                    capitalize
                    class="form-control"
+                   placeholder="${message(code: 'todo.is.ui.project.nokey')}"
                    ng-model="project.pkey"
                    ng-pattern="/^[A-Z0-9]*$/"
                    ng-required="isCurrentStep(1)"

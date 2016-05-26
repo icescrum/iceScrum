@@ -113,6 +113,7 @@
                                    id="member.search"
                                    autofocus
                                    class="form-control"
+                                   placeholder="${message(code: 'todo.is.ui.select.notext')}"
                                    ng-model="member.name"
                                    uib-typeahead="member as member.name for member in searchMembers($viewValue)"
                                    typeahead-loading="searchingMember"
