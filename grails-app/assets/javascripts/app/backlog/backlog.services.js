@@ -72,6 +72,12 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'BacklogCod
                 return function(value) {
                     return _.matchesProperty('parentSprint.deliveredVersion', value);
                 };
+            } else if (key == 'tag') {
+                return function(value) {
+                    return function(story) {
+                        return _.includes(story.tags, value);
+                    }
+                };
             } else {
                 return function(value) {
                     return _.matchesProperty(key, value);
