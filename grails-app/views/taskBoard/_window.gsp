@@ -214,7 +214,7 @@
                         </td>
                     </tr>
                 </tbody>
-                <tr ng-if="sprint.stories.length == 0">
+                <tr ng-if="sprint.stories.length == 0 && sprint.state < sprintStatesByName.DONE">
                     <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                         <div class="empty-view">
                             <p class="help-block">${message(code: 'todo.is.ui.story.empty.taskBoard')}</p>

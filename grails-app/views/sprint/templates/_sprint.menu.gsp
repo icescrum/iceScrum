@@ -23,12 +23,12 @@
 
 <script type="text/ng-template" id="sprint.menu.html">
 <li ng-if="authorizedSprint('activate', sprint)">
-    <a href ng-click="activate(sprint)">
+    <a href ng-click="confirm({ message: '${message(code: 'is.ui.releasePlan.menu.sprint.activate.confirm')}', callback: activate, args: [sprint] })">
         ${message(code:'is.ui.releasePlan.menu.sprint.activate')}
     </a>
 </li>
 <li ng-if="authorizedSprint('close', sprint)">
-    <a href ng-click="close(sprint)">
+    <a href ng-click="confirm({ message: '${message(code: 'is.ui.releasePlan.menu.sprint.close.confirm')}', callback: close, args: [sprint] })">
         ${message(code:'is.ui.releasePlan.menu.sprint.close')}
     </a>
 </li>

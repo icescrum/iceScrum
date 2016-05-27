@@ -39,13 +39,13 @@
                 <button class="btn btn-default"
                         ng-if="authorizedSprint('activate', sprint)"
                         uib-tooltip="${message(code:'is.ui.releasePlan.menu.sprint.activate')}"
-                        ng-click="activate(sprint)">
+                        ng-click="confirm({ message: '${message(code: 'is.ui.releasePlan.menu.sprint.activate.confirm')}', callback: activate, args: [sprint] })">
                     <i class="fa fa-play"></i>
                 </button>
                 <button class="btn btn-default"
                         ng-if="authorizedSprint('close', sprint)"
                         uib-tooltip="${message(code:'is.ui.releasePlan.menu.sprint.close')}"
-                        ng-click="close(sprint)">
+                        ng-click="confirm({ message: '${message(code: 'is.ui.releasePlan.menu.sprint.close.confirm')}', callback: close, args: [sprint] })">
                     <i class="fa fa-stop"></i>
                 </button>
                 <div class="btn-group"

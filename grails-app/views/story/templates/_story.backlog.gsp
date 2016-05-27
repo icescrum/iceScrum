@@ -54,13 +54,15 @@
 </script>
 
 <script type="text/ng-template" id="story.backlog.planning.empty.html">
-<p class="help-block">${message(code: 'todo.is.ui.story.empty.planning')}</p>
-<button class="btn btn-primary"
-        type="button"
-        ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
-        ng-if="authorizedSprint('plan', sprint)">
-    ${message(code: 'todo.is.ui.story.plan')}
-</button>
+<div ng-if="sprint.state < sprintStatesByName.DONE">
+    <p class="help-block">${message(code: 'todo.is.ui.story.empty.planning')}</p>
+    <button class="btn btn-primary"
+            type="button"
+            ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
+            ng-if="authorizedSprint('plan', sprint)">
+        ${message(code: 'todo.is.ui.story.plan')}
+    </button>
+</div>
 </script>
 
 <script type="text/ng-template" id="story.backlog.plan.empty.html">
