@@ -318,7 +318,19 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         $state.go('taskBoard.task.new', {taskCategory: {id: type, name: $filter('i18n')(type, 'TaskTypes')}});
     };
     $scope.refreshTasks = function() {
-        $scope.taskCountByState = _.countBy($scope.sprint.tasks, 'state');
+        var tasks;
+        if($scope.app.context){
+            tasks = _.filter($scope.sprint.tasks, function(task){
+                if($scope.app.context.type == 'tag'){
+                    return _.includes(task.tags, $scope.app.context.term);
+                } else {
+                    return true;
+                }
+            });
+        } else {
+            tasks = $scope.sprint.tasks;
+        }
+        $scope.taskCountByState = _.countBy(tasks, 'state');
         switch ($scope.sprint.state) {
             case SprintStatesByName.TODO:
                 $scope.sprintTaskStates = [TaskStatesByName.TODO];
@@ -330,7 +342,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
                 $scope.sprintTaskStates = [TaskStatesByName.DONE];
                 break;
         }
-        var partitionedTasks = _.partition($scope.sprint.tasks, function(task) {
+        var partitionedTasks = _.partition(tasks, function(task) {
             return _.isNull(task.parentStory);
         });
         var groupByStateAndSort = function(tasksDictionnary) {
