@@ -206,7 +206,10 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
                 stateParams = {releaseId: selectedItems[0].parentRelease.id, sprintListId: _.map(selectedItems, 'id')};
             }
             var currentStateName = $state.current.name;
-            if (_.endsWith(currentStateName, '.details') && currentStateName != stateName + '.details' || currentStateName == stateName) {
+            var sameStateName = _.endsWith(currentStateName, '.details') && currentStateName == stateName + '.details' || currentStateName == stateName;
+            var sameStateParams = $state.params.sprintId == stateParams.sprintId && $state.params.releaseId == stateParams.releaseId;
+            var sameState = sameStateName && sameStateParams;
+            if (_.endsWith(currentStateName, '.details') && !sameState || !_.endsWith(currentStateName, '.details') && sameState) {
                 stateName += '.details';
             }
             $state.go(stateName, stateParams);
