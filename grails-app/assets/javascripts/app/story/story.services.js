@@ -72,25 +72,21 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return Story.save(story, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.listByType = function(obj) {
-        obj.stories = [];
-        _.each(obj.stories_ids, function(story) {
-            var cachedStory = CacheService.get('story', story.id);
-            if (cachedStory) {
-                obj.stories.push(cachedStory);
-            }
-        });
-        var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
-            obj.stories = stories;
-            self.mergeStories(stories);
-            return stories;
-        }).$promise;
-        return obj.stories.length === (obj.stories_ids ? obj.stories_ids.length : null) ? $q.when(obj.stories) : promise;
+        if (!_.isArray(obj.stories)) {
+            obj.stories = [];
+        }
+        var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, self.mergeStories).$promise;
+        return obj.stories.length == 0 ? promise : $q.when(obj.stories);
     };
     this.filter = function(filter) {
-        var existingStories = _.filter(CacheService.getCache('story'), filter);
+        var existingStories = self.filterStories(CacheService.getCache('story'), filter);
         var promise = Story.query({filter: {story: filter}}, function(stories) {
             self.mergeStories(stories);
-            _.merge(existingStories, stories);
+            _.each(stories, function(story) {
+                if (!_.find(existingStories, {id: story.id})) {
+                    existingStories.push(CacheService.get('story', story.id));
+                }
+            });
         }).$promise;
         return existingStories.length > 0 ? $q.when(existingStories) : promise;
     };
@@ -329,5 +325,54 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.findDuplicates = function(term) {
         return FormService.httpGet('story/findDuplicates', {params: {term: term}});
-    }
+    };
+    this.filterStories = function(stories, storyFilter) {
+        var getMatcher = function(key) {
+            if (key == 'term') {
+                return function(value) {
+                    if (isNaN(value)) {
+                        return function(story) {
+                            var normalize = _.flow(_.deburr, _.toLower);
+                            return _.some(['name', 'description', 'notes'], function(field) {
+                                return normalize(story[field]).indexOf(normalize(value)) != -1;
+                            });
+                        }
+                    } else {
+                        return _.matchesProperty('uid', _.toNumber(value));
+                    }
+                }
+            } else if (_.includes(['creator', 'feature', 'actor', 'dependsOn', 'parentSprint'], key)) {
+                return function(value) {
+                    return _.matchesProperty(key + '.id', value);
+                };
+            } else if (key == 'parentRelease') {
+                return function(value) {
+                    return _.matchesProperty('parentSprint.parentReleaseId', value);
+                };
+            } else if (key == 'deliveredVersion') {
+                return function(value) {
+                    return _.matchesProperty('parentSprint.deliveredVersion', value);
+                };
+            } else if (key == 'tag') {
+                return function(value) {
+                    return function(story) {
+                        return _.includes(story.tags, value);
+                    }
+                };
+            } else {
+                return function(value) {
+                    return _.matchesProperty(key, value);
+                };
+            }
+        };
+        return _.filter(stories, function(story) {
+            return _.every(storyFilter, function(value, key) {
+                var values = _.isArray(value) ? value : [value];
+                var matcher = getMatcher(key);
+                return _.some(values, function(val) {
+                    return matcher(val)(story);
+                });
+            });
+        });
+    };
 }]);

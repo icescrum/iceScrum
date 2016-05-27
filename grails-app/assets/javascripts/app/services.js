@@ -347,11 +347,17 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
     this.addOrUpdate = function(cacheName, item) {
         var cachedItem = self.get(cacheName, item.id);
-        $injector.get('SyncService').sync(cacheName, cachedItem, item);
+        var oldItem = _.cloneDeep(cachedItem);
+        var newItem;
         if (cachedItem) {
             _.merge(cachedItem, item);
+            newItem = cachedItem;
         } else {
-            self.getCache(cacheName).push(item);
+            newItem = item;
+        }
+        $injector.get('SyncService').sync(cacheName, oldItem, newItem);
+        if (!oldItem) {
+            self.getCache(cacheName).push(newItem);
         }
     };
     this.get = function(cacheName, id) {
@@ -385,6 +391,29 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                             cachedSprint.stories = [];
                         }
                         cachedSprint.stories.push(newStory);
+                    }
+                }
+            }
+            var oldFeatureId = (oldStory && oldStory.feature) ? oldStory.feature.id : null;
+            var newFeatureId = (newStory && newStory.feature) ? newStory.feature.id : null;
+            if (newFeatureId != oldFeatureId) {
+                var cachedFeatures = CacheService.getCache('feature');
+                if (oldFeatureId) {
+                    var cachedFeature = _.find(cachedFeatures, {id: oldFeatureId});
+                    if (cachedFeature) {
+                        _.remove(cachedFeature.stories, {id: oldStory.id});
+                        if (_.isArray(cachedFeature.stories)) {
+                            cachedFeature.stories_count = cachedFeature.stories.length;
+                        }
+                    }
+                }
+                if (newFeatureId) {
+                    var cachedFeature = _.find(cachedFeatures, {id: newFeatureId});
+                    if (cachedFeature && !_.find(cachedFeature.stories, {id: newStory.id})) {
+                        if (!_.isArray(cachedFeature.stories)) {
+                            cachedFeature.stories = [];
+                        }
+                        cachedFeature.stories.push(newStory);
                     }
                 }
             }
