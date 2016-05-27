@@ -48,7 +48,7 @@
     </a>
 </li>
 <li ng-if="authorizedRelease('delete', release)">
-    <a href ng-click="delete(release)">
+    <a href ng-click="confirm({ message: '${message(code: 'is.ui.timeline.menu.delete.confirm')}', callback: delete, args: [release] })">
         ${message(code:'is.ui.timeline.menu.delete')}
     </a>
 </li>

@@ -43,7 +43,7 @@
     </a>
 </li>
 <li ng-if="authorizedSprint('delete', sprint)">
-    <a href ng-click="delete(sprint)">
+    <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [sprint] })">
         ${message(code:'is.ui.releasePlan.menu.sprint.delete')}
     </a>
 </li>
