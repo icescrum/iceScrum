@@ -23,12 +23,12 @@
 
 <script type="text/ng-template" id="release.menu.html">
 <li ng-if="authorizedRelease('activate', release)">
-    <a href ng-click="activate(release)">
+    <a href ng-click="confirm({ message: '${message(code: 'is.ui.timeline.menu.activate.confirm')}', callback: activate, args: [release] })">
         ${message(code:'is.ui.timeline.menu.activate')}
     </a>
 </li>
 <li ng-if="authorizedRelease('close', release)">
-    <a href ng-click="close(release)">
+    <a href ng-click="confirm({ message: '${message(code: 'is.ui.timeline.menu.close.confirm')}', callback: close, args: [release] })">
         ${message(code:'is.ui.timeline.menu.close')}
     </a>
 </li>
