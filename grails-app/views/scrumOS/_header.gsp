@@ -28,6 +28,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
+    <entry:point id="before-menu-header"/>
     <nav id="menu-header" class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse" role="navigation">
         <div class="container-fluid">
             <div class="nav-header">
