@@ -75,7 +75,14 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         if (!_.isArray(obj.stories)) {
             obj.stories = [];
         }
-        var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, self.mergeStories).$promise;
+        var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
+            self.mergeStories(stories);
+            _.each(stories, function(story) {
+                if (!_.find(obj.stories, {id: story.id})) {
+                    obj.stories.push(CacheService.get('story', story.id));
+                }
+            });
+        }).$promise;
         return obj.stories.length == 0 ? promise : $q.when(obj.stories);
     };
     this.filter = function(filter) {
