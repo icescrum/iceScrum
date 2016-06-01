@@ -48,6 +48,16 @@ body {
       }
     }
   }
+  .loading-text {
+    display: none;
+  }
+  &.app-ready {
+    &.splash-screen {
+      .loading-text {
+        display: block;
+      }
+    }
+  }
   > #app-loading {
     display: none;
   }

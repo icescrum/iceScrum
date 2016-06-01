@@ -1006,7 +1006,7 @@ angular.module('isApp', [
     $rootScope.app = {
         asList: false,
         loading: true,
-        loadingText: null,
+        loadingText: '',
         loadingPercent: 0,
         isFullScreen: false,
         menus: Session.menus,
