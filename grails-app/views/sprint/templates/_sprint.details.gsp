@@ -204,7 +204,7 @@
                               ng-show="showDoneDefinitionTextarea"
                               ng-blur="showDoneDefinitionTextarea = false"
                               placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
-                    <div class="markitup-preview"
+                    <div class="markitup-preview important"
                          ng-disabled="!formHolder.editable"
                          ng-show="!showDoneDefinitionTextarea"
                          ng-click="showDoneDefinitionTextarea = formHolder.editable"

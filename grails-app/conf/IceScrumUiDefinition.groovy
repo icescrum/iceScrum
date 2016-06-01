@@ -177,16 +177,7 @@ windows = {
             ]
         }
     }
-    'search' {
-        context 'product'
-        icon    'search'
-        title   'is.ui.search'
-        menu {
-            defaultPosition 1
-            defaultVisibility false
-            title 'is.ui.search'
-        }
-    }
+
 }
 
 /*
