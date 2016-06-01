@@ -75,7 +75,8 @@ angular.module('isApp', [
         'angular-extended-notifications',
         'as.sortable',
         'angular.atmosphere',
-        'nvd3'
+        'nvd3',
+        'ngStorage'
     ].concat(isSettings.plugins)
 )
 .config(['$httpProvider', function($httpProvider) {
