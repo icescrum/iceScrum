@@ -668,9 +668,18 @@ angular.module('isApp', [
                             promise = $q.when(null);
                         }
                     } else {
-                        promise = SprintService.getCurrentOrNextSprint(project).then(function(sprint) {
-                            if (!$stateParams.sprintId && sprint && sprint.id) {
-                                $state.go('taskBoard', {sprintId: sprint.id}, {location: 'replace'});
+                        var openSprintTaskBoard = function(sprint) {
+                            $state.go('taskBoard', {sprintId: sprint.id}, {location: 'replace'});
+                        };
+                        promise = SprintService.getCurrentOrNextSprint(project).then(function(currentOrNextSprint) {
+                            if (currentOrNextSprint && currentOrNextSprint.id) {
+                                openSprintTaskBoard(currentOrNextSprint);
+                            } else {
+                                SprintService.getCurrentOrLastSprint(project).then(function(currentOrLastSprint) {
+                                    if (currentOrLastSprint && currentOrLastSprint.id) {
+                                        openSprintTaskBoard(currentOrLastSprint);
+                                    }
+                                });
                             }
                         });
                     }
