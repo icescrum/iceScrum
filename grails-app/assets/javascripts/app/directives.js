@@ -506,7 +506,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 render(); // To update selected items
             }
             // Register render on model change
-            var removeTimelineWatcher = scope.$watch('timeline', render, true);
+            var removeTimelineWatcher = scope.$watch('timeline', function() {
+                render();
+                reinitializeBrush(); // Init brush on first loading or after creating first release
+            }, true);
             var removeSelectedWatcher = scope.$watch('selected', function(newSelected) {
                 selectedItems = newSelected;
                 render(); // To update selected items
@@ -530,10 +533,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 unregisterRemoveWatchersOnWindowChanged();
                 unregisterRenderOnDetailsChanged();
             });
-            // Initialize the brush
-            $timeout(function() {
-                reinitializeBrush();
-            })
         }
     }
 }]).directive('postitMenu', ['$compile', function($compile) {
