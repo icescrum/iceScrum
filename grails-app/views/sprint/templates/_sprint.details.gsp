@@ -165,7 +165,7 @@
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.sprint.nodeliveredversion')}"/>
                 </div>
-                <div class="form-group" ng-if="sprint.state > 2">
+                <div class="form-group" ng-if="sprint.state > sprintStatesByName.IN_PROGRESS">
                     <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
                     <textarea is-markitup
                               class="form-control"
@@ -175,7 +175,7 @@
                               ng-show="showRetrospectiveTextarea"
                               ng-blur="showRetrospectiveTextarea = false"
                               placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
-                    <div class="markitup-preview"
+                    <div class="markitup-preview important"
                          ng-disabled="!formHolder.editable"
                          ng-show="!showRetrospectiveTextarea"
                          ng-click="showRetrospectiveTextarea = formHolder.editable"

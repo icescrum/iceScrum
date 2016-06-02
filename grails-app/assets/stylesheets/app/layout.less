@@ -418,11 +418,6 @@ header {
             .markitup-preview {
               border-color: transparent;
             }
-            .form-control.important {
-              .well;
-              .well-sm;
-              background-color: @view-bg;
-            }
             .atwho-preview, textarea {
               min-height: 0;
             }
@@ -474,10 +469,12 @@ header {
             }
           }
           form {
-            .markitup-preview.important, .atwho-preview.important, textarea.important {
-              .well;
-              .well-sm;
-              background-color: @view-bg;
+            .markitup-preview, .atwho-preview, .form-control {
+              &.important {
+                &:not(:focus) {
+                  background-color: @view-bg !important;
+                }
+              }
             }
             textarea {
               min-height: 100px;
@@ -878,23 +875,23 @@ table {
 }
 
 .manage-extensions {
-    .screenshot {
-      max-width: 100%;
-      max-height: 310px;
-    }
-    .screenshots {
-      max-height: 310px;
-      overflow: auto;
-      .thumbnail {
-        height: 100px;
-        width: 100%;
-        display: block;
-        border:2px solid transparent;
-        &.current {
-          border-color:@brand-primary;
-        }
+  .screenshot {
+    max-width: 100%;
+    max-height: 310px;
+  }
+  .screenshots {
+    max-height: 310px;
+    overflow: auto;
+    .thumbnail {
+      height: 100px;
+      width: 100%;
+      display: block;
+      border:2px solid transparent;
+      &.current {
+        border-color:@brand-primary;
       }
     }
+  }
 }
 
 .postits {
