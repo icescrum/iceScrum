@@ -109,14 +109,14 @@
                     <h3 class="panel-title">
                         <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
                         <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                           href="#/taskBoard/{{ currentOrLastSprint.id }}/details"
-                           ng-if="currentOrLastSprint.id && authorizedSprint('update', currentOrLastSprint)">
+                           href="#/taskBoard/{{ lastSprint.id }}/details"
+                           ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
                             <i class="fa fa-pencil"></i>
                         </a>
                     </h3>
                 </div>
                 <div class="panel-body"
-                     ng-bind-html="(currentOrLastSprint.retrospective_html ? currentOrLastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize">
+                     ng-bind-html="(lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize">
                 </div>
             </div></div>
         </div>

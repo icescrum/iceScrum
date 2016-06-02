@@ -97,6 +97,17 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             }
         });
     };
+    this.getLastSprint = function(project) {
+        return ReleaseService.getCurrentOrLastRelease(project).then(function(release) {
+            if (release && release.id) {
+                return self.list(release).then(function() {
+                    return _.findLast(release.sprints, {state: SprintStatesByName.DONE});
+                });
+            } else {
+                return $q.when(null);
+            }
+        });
+    };
     this.getCurrentOrNextSprint = function(project) {
         return ReleaseService.getCurrentOrNextRelease(project).then(function(release) {
             if (release && release.id) {

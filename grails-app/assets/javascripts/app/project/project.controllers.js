@@ -187,6 +187,9 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
     SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
         $scope.currentOrLastSprint = sprint;
     });
+    SprintService.getLastSprint($scope.currentProject).then(function(sprint) {
+        $scope.lastSprint = sprint;
+    });
     SprintService.getCurrentOrNextSprint($scope.currentProject).then(function(sprint) {
         $scope.currentOrNextSprint = sprint;
     });
