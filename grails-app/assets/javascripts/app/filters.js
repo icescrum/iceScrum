@@ -31,8 +31,11 @@ filters
             return user ? user.firstName + ' ' + user.lastName : '';
         };
     })
-    .filter('userAvatar', ['$rootScope', function($rootScope) {
+    .filter('userAvatar', ['$rootScope', 'Session', function($rootScope, Session) {
         return function(user) {
+            if (user && Session.user && Session.user.id == user.id) {
+                user = Session.user; // Bind to current user to see avatar change immediately
+            }
             return user ? ($rootScope.serverUrl + '/user/avatar/' + user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
         };
     }])
