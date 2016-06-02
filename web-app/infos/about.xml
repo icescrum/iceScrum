@@ -45,6 +45,7 @@
         <library><name>ng-password-strength</name></library>
         <library><name>ng-pdfviewer</name></library>
         <library><name>ng-sortable</name></library>
+        <library><name>ngStorage</name></library>
         <library><name>Bootstrap</name></library>
         <library><name>Bootstrap-Offcanvas</name></library>
         <library><name>TODC Bootstrap</name></library>
