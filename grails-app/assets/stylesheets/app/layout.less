@@ -12,6 +12,11 @@ html, body {
 }
 
 body {
+  &.isInFullScreen {
+    header {
+      display: none;
+    }
+  }
   &.loading {
     cursor: progress;
     &.splash-screen {

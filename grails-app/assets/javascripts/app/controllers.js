@@ -119,17 +119,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
         });
     };
     $scope.fullScreen = function() {
-        if (Fullscreen.isEnabled()) {
-            Fullscreen.cancel();
-            $scope.app.isFullScreen = false;
-        }
-        else {
-            var el = angular.element('.main');
-            if (el.length > 0) {
-                Fullscreen.enable(el[0]);
-                $scope.app.isFullScreen = !$scope.app.isFullScreen;
-            }
-        }
+        $scope.app.isFullScreen = !$scope.app.isFullScreen;
     };
     $scope.postitSize = function(type, xs) {
         type = type ? type : 'story';
