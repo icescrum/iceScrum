@@ -23,7 +23,7 @@
 
 <is:modal title="${message(code: 'is.ui.team.menu')}"
           class="split-modal"
-          footer="false">
+          footer="${false}">
     <div class="row">
         <div class="left-panel col-sm-3">
             <div class="left-panel-header">

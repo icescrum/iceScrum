@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<is:modal title="${message(code: 'todo.is.ui.project.edit')}" class="wizard" footer="false">
+<is:modal title="${message(code: 'todo.is.ui.project.edit')}" class="wizard" footer="${false}">
     <div class="row wizard-row">
         <div class="left-panel col-sm-3">
             <ul class="left-panel-body nav nav-list">
