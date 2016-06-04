@@ -860,6 +860,10 @@ angular.module('isApp', [
         if (form) {
             form.$setPristine();
             form.$setUntouched();
+            var el = angular.element('[name="'+form.$name+'"] input[autofocus]');
+            if(el){
+                el[0].focus();
+            }
         }
     };
 

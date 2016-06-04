@@ -37,6 +37,7 @@
                        type="text"
                        name="name"
                        ng-model="task.name"
+                       autofocus
                        placeholder="${message(code: 'is.ui.backlogelement.noname')}"
                        class="form-control">
             </div>

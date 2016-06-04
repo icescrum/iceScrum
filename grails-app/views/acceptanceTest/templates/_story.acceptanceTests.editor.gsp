@@ -36,6 +36,7 @@
                        ng-maxlength="255"
                        name="name"
                        ng-model="editableAcceptanceTest.name"
+                       autofocus
                        class="form-control"
                        placeholder="${message(code: 'is.ui.backlogelement.noname')}">
             </div>
