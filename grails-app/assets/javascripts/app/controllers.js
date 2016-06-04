@@ -85,7 +85,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
         $uibModal.open({
             templateUrl: 'sprint.plan.html',
             size: 'md',
-            controller: ["$scope", "StoryService", function($scope, StoryService) {
+            controller: ["$scope", "$filter", "StoryService", function($scope, $filter, StoryService) {
                 // Functions
                 $scope.isSelected = function(story) {
                     return _.indexOf($scope.selectedIds, story.id.toString()) > -1;
@@ -112,7 +112,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
                     }
                 };
                 StoryService.filter(options.filter).then(function(stories) {
-                    $scope.backlog.stories = stories;
+                    $scope.backlog.stories = options.filter.order ? $filter('orderBy')(stories, options.filter.order) : stories;
                     $scope.backlog.storiesLoaded = true;
                 });
             }]

@@ -96,7 +96,10 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
         }
     };
     $scope.planStories = {
-        filter: {state: StoryStatesByName.ESTIMATED},
+        filter: {
+            state: StoryStatesByName.ESTIMATED,
+            order: ['rank', 'id']// Order by id is crucial to ensure stable order regardles
+        },
         callback: function(sprint, selectedIds) {
             if (selectedIds.length > 0) {
                 // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch

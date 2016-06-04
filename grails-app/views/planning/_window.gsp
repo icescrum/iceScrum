@@ -95,7 +95,7 @@
                             <i class="small-icon fa fa-dollar"></i>
                             <button class="btn btn-primary"
                                     type="button"
-                                    ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
+                                    ng-click="showStoriesSelectorModal({filter:planStories.filter, callback: planStories.callback, args:[sprint], code: 'plan'})"
                                     ng-if="authorizedSprint('plan', sprint)" style="position:relative">
                                 ${message(code: 'todo.is.ui.story.plan')}
                             </button>
