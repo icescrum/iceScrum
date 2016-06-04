@@ -73,7 +73,7 @@
                      style="width: {{ feature.countDoneStories | percentProgress:feature.stories_ids.length }}%">
                 </div>
             </div>
-            <div class="state">{{ feature.state | i18n:'FeatureStates' }}</div>
+            <div class="state hover-progress">{{ feature.state | i18n:'FeatureStates' }}</div>
         </div>
     </div>
 </div>
