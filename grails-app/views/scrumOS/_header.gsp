@@ -185,14 +185,6 @@
                                     </span>
                                 </div>
                             </form>
-                            <!-- Todo remove, user role change for dev only -->
-                            <div style="padding: 13px" class="pull-left" ng-if="false">
-                                <a ng-class="{ 'text-warning': roles.productOwner && roles.scrumMaster }" ng-click="changeRole('PO_SM')">PO_SM</a>
-                                <a ng-class="{ 'text-warning': roles.productOwner && (!roles.scrumMaster) }" ng-click="changeRole('PO')">PO</a>
-                                <a ng-class="{ 'text-warning': roles.scrumMaster && (!roles.productOwner) }" ng-click="changeRole('SM')">SM</a>
-                                <a ng-class="{ 'text-warning': roles.teamMember }" ng-click="changeRole('TM')">TM</a>
-                                <a ng-class="{ 'text-warning': roles.stakeHolder }" ng-click="changeRole('SH')">SH</a>
-                            </div>
                         </g:if>
                         <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
                             <div class="navbar-notif"
