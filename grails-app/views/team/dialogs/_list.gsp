@@ -141,22 +141,22 @@
                     <div ng-if="team.members.length == 0">
                         ${message(code: 'todo.is.ui.team.no.members')}
                     </div>
-                    <div class="btn-toolbar">
+                    <div class="btn-toolbar pull-right">
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="cancel()">
+                            ${message(code:'is.button.cancel')}
+                        </button>
                         <button ng-if="authorizedTeam('delete', team) && team.products_count == 0"
                                 class="btn btn-danger"
                                 type="button"
                                 ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [team] })">
                             ${message(code:'default.button.delete.label')}
                         </button>
-                        <button class="btn btn-primary pull-right"
+                        <button class="btn btn-primary"
                                 ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid"
                                 type="submit">
                             ${message(code:'default.button.update.label')}
-                        </button>
-                        <button class="btn btn-default pull-right"
-                                type="button"
-                                ng-click="cancel()">
-                            ${message(code:'is.button.cancel')}
                         </button>
                     </div>
                 </form>

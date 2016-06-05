@@ -34,7 +34,7 @@
         <button type="button"
                 role="button"
                 class="btn btn-default"
-                ng-click="resetProjectForm()">
+                ng-click="$close()">
             ${ message(code:'is.button.cancel')}
         </button>
         <button type='submit'

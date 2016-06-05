@@ -161,8 +161,9 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
         return SprintService.authorizedSprint(action, sprint);
     };
     // Init
-    $scope.activities = [];
     $scope.release = {};
+    $scope.allMembers = [];
+    $scope.activities = [];
     $scope.currentOrLastSprint = {};
     $scope.currentOrNextSprint = {};
     $scope.projectMembersCount = 0;
@@ -176,10 +177,13 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
             SprintService.list(release);
         }
     });
+
     TeamService.get($scope.currentProject).then(function(team) {
         // That's ugly and repeated in TeamController...
-        team.members = _.map(team.members, function(member) {
+        $scope.allMembers = _.unionBy(team.members, $scope.project.productOwners, 'id');
+        $scope.allMembers = _.map($scope.allMembers, function(member) {
             member.scrumMaster = _.find(team.scrumMasters, {id: member.id}) ? true : false;
+            member.productOwner = _.find($scope.project.productOwners, {id: member.id}) ? true : false;
             return member;
         });
     });

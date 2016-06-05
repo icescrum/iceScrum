@@ -37,16 +37,12 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-8">
                             <div ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
-                            <div ng-if="project.productOwners.length">
-                                ${ message(code: 'todo.is.ui.project.productOwners')}
-                                <div style="margin: 4px 0" ng-repeat="user in project.productOwners" ng-include="'user.item.html'"></div>
-                            </div>
                         </div>
-                        <div class="col-md-7 text-right">
-                            <h4><i class="fa fa-users"></i> {{ project.team.name }}</h4>
-                            <div style="margin: 4px 0" ng-repeat="user in project.team.members" ng-class="{'strong': user.scrumMaster}" ng-include="'user.item.html'"></div>
+                        <div class="col-md-4 text-right">
+                            <img ng-src="{{ user | userAvatar }}" ng-repeat="user in allMembers" height="32" width="32" class="mini-user" ng-class="{'sm': user.scrumMaster, 'po': user.productOwner }" title="{{ user.username }}">
+                            <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
                         </div>
                     </div>
                     <div class="well">

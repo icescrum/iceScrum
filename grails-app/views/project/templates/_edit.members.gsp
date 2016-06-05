@@ -39,12 +39,11 @@
     </div>
     <br/>
     <ng-include src="'form.members.project.html'"></ng-include>
-    <div class="btn-toolbar pull-right"
-         ng-if="authorizedProject('update', currentProject)">
+    <div class="btn-toolbar pull-right">
         <button type="button"
                 role="button"
                 class="btn btn-default"
-                ng-click="resetTeamForm()">
+                ng-click="$close()">
             ${ message(code:'is.button.cancel')}
         </button>
         <button type='submit'

@@ -641,6 +641,9 @@ a[data-toggle="tab"] button {
   }
   .right-panel {
     overflow: hidden;
+    .btn-toolbar {
+      margin-top:15px;
+    }
   }
   .wizard-next {
     text-align: right;
@@ -788,6 +791,23 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
     .btn {
       cursor: pointer;
     }
+  }
+}
+
+.mini-user {
+  margin:2px;
+  border:3px solid #fff;
+  &.sm:not(.po) {
+    border-color:@brand-info;
+  }
+  &.po:not(.sm) {
+    border-color:@brand-primary;
+  }
+  &.po.sm {
+    border-top-color:@brand-primary;
+    border-left-color:@brand-primary;
+    border-right-color:@brand-info;
+    border-bottom-color:@brand-info;
   }
 }
 
