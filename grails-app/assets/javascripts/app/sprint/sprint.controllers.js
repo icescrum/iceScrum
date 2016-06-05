@@ -214,7 +214,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
             $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $controller('updateFormController', {$scope: $scope, item: detailsSprint, type: 'sprint'});
+    $controller('updateFormController', {$scope: $scope, item: detailsSprint, type: 'sprint', resetOnProperties:[]});
     $scope.sprintStatesByName = SprintStatesByName;
     $scope.release = detailsRelease;
     $scope.endDateOptions.maxDate = $scope.release.endDate;

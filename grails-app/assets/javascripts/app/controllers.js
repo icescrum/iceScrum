@@ -482,7 +482,7 @@ controllers.controller('retrieveCtrl', ['$scope', 'User', 'UserService', functio
     $scope.user = new User();
 }]);
 
-controllers.controller('updateFormController', ['$scope', 'FormService', 'type', 'item', function($scope, FormService, type, item) {
+controllers.controller('updateFormController', ['$scope', 'FormService', 'type', 'item', 'resetOnProperties', function($scope, FormService, type, item, resetOnProperties) {
     var upperType = _.upperFirst(type);
     var resetForm = 'reset' + upperType + 'Form';
     var authorized = 'authorized' + upperType;
@@ -521,4 +521,21 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     $scope.formHolder = {};
     $scope[resetForm]();
     FormService.addStateChangeDirtyFormListener($scope, type, true);
+
+    if(resetOnProperties.length > 0){
+        var resetOnPropertiesW = '';
+        var length = resetOnProperties.length - 1;
+        _.each(resetOnProperties, function(resetOnProperty, index){
+            resetOnPropertiesW += type+'.'+resetOnProperty;
+            if(index != length){
+                resetOnPropertiesW += ';';
+            }
+        });
+        $scope.$watch(resetOnPropertiesW, function() {
+            if($scope.isInEditingMode() && !$scope.isDirty()){
+                $scope[resetForm]();
+                $scope.editForm(true);
+            }
+        });
+    }
 }]);

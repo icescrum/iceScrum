@@ -350,7 +350,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             return $state.href(stateName);
         };
         // Init
-        $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});
+        $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story', resetOnProperties:['state']});
         $scope.dependenceEntries = [];
         $scope.parentSprintEntries = [];
         $scope.tags = [];
