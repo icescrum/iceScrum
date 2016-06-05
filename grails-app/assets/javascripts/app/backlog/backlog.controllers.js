@@ -97,7 +97,8 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
         $scope.orderBacklogByRank(backlogContainer)
     };
     $scope.openStoryUrl = function(storyId) {
-        return '#/' + $scope.viewName + '/story/' + storyId;
+        var stateName = $state.params.storyTabId ? '^' : '.';
+        return $state.href(stateName, {storyId: storyId});
     };
     $scope.toggleBacklogUrl = function(backlog) {
         if ($scope.isShown(backlog)) {
