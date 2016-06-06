@@ -45,10 +45,10 @@ class IceScrumFilters {
 
         all(controller: '*', action: '*') {
             before = {
-                //response.setHeader(HEADER_CACHE_CONTROL, "no-store")
-                //response.setHeader(HEADER_CACHE_CONTROL, "no-cache")
+                response.setHeader(HEADER_CACHE_CONTROL, "no-store")
+                response.setHeader(HEADER_CACHE_CONTROL, "no-cache")
                 response.setHeader(HEADER_CACHE_CONTROL, "no-transform")
-                //response.setHeader(HEADER_CACHE_CONTROL, "must-revalidate")
+                response.setHeader(HEADER_CACHE_CONTROL, "must-revalidate")
             }
         }
 
