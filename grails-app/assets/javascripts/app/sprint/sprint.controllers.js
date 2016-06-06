@@ -155,7 +155,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Dat
             }
             $scope.sprint.startDate = $scope.startDateOptions.minDate;
             var sprintDuration = $scope.project.preferences.estimatedSprintsDuration;
-            var hypotheticalEndDate = DateService.immutableAddDaysToDate($scope.sprint.startDate, sprintDuration);
+            var hypotheticalEndDate = DateService.immutableAddDaysToDate($scope.sprint.startDate, sprintDuration - 1);
             $scope.sprint.endDate = _.min([hypotheticalEndDate, $scope.release.endDate]);
         }
     };

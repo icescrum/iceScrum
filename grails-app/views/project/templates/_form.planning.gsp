@@ -102,6 +102,7 @@
                        type="number"
                        name="project.preferences.estimatedSprintsDuration"
                        id="estimatedSprintsDuration"
+                       min="2"
                        ng-pattern="/^[0-9]+$/"
                        ng-required="isCurrentStep(4)"
                        ng-change="computePlanning()"
