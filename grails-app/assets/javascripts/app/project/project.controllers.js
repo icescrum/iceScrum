@@ -177,7 +177,6 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
             SprintService.list(release);
         }
     });
-
     TeamService.get($scope.currentProject).then(function(team) {
         // That's ugly and repeated in TeamController...
         $scope.allMembers = _.unionBy(team.members, $scope.project.productOwners, 'id');

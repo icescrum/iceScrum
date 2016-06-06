@@ -306,10 +306,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.blurDescription = function(template) {
             if (!$('.atwho-view:visible').length && $scope.formHolder.storyForm.description.$valid) { // ugly hack on atwho
                 $scope.showDescriptionTextarea = false;
-                if ($scope.editableStory.description == null) {
-                    $scope.editableStory.description = '';
-                }
-                else if ($scope.editableStory.description.trim() == template.trim()) {
+                if ($scope.editableStory.description == null || $scope.editableStory.description.trim() == template.trim()) {
                     $scope.editableStory.description = '';
                 }
             }
