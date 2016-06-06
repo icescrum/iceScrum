@@ -39,7 +39,18 @@ class IceScrumFilters {
     def springSecurityService
     def userAgentIdentService
 
+    private static final String HEADER_CACHE_CONTROL = "Cache-Control";
+
     def filters = {
+
+        all(controller: '*', action: '*') {
+            before = {
+                //response.setHeader(HEADER_CACHE_CONTROL, "no-store")
+                //response.setHeader(HEADER_CACHE_CONTROL, "no-cache")
+                response.setHeader(HEADER_CACHE_CONTROL, "no-transform")
+                //response.setHeader(HEADER_CACHE_CONTROL, "must-revalidate")
+            }
+        }
 
         permissions(controller: '*', action: '*') {
             before = {
