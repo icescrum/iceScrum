@@ -432,8 +432,8 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 var backlogGetter = _.curry(CacheService.get)('backlog');
                 var backlogsToIncrement = _.map(_.difference(newBacklogsIds, oldBacklogIds), backlogGetter);
                 var backlogsToDecrement = _.map(_.difference(oldBacklogIds, newBacklogsIds), backlogGetter);
-                _.each(backlogsToIncrement, function(backlog) { backlog['count'] ++ });
-                _.each(backlogsToDecrement, function(backlog) { backlog['count'] -- });
+                _.each(backlogsToIncrement, function(backlog) { backlog['count']++ });
+                _.each(backlogsToDecrement, function(backlog) { backlog['count']-- });
             }
         },
         task: function(oldTask, newTask) {

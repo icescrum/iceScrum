@@ -146,7 +146,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
             $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         }
     });
-    $controller('updateFormController', {$scope: $scope, item: detailsRelease, type: 'release', resetOnProperties:[]});
+    $controller('updateFormController', {$scope: $scope, item: detailsRelease, type: 'release', resetOnProperties: []});
     $scope.releaseStatesByName = ReleaseStatesByName;
     $scope.previousRelease = FormService.previous($scope.project.releases, $scope.release);
     $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);

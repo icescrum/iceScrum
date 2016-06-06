@@ -73,7 +73,7 @@ registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 
                     stacked: true
                 }
             },
-            parkingLot:  {
+            parkingLot: {
                 chart: {
                     type: 'multiBarHorizontalChart',
                     x: function(entry) { return entry[0]; },

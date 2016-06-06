@@ -306,7 +306,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.blurDescription = function(template) {
             if (!$('.atwho-view:visible').length && $scope.formHolder.storyForm.description.$valid) { // ugly hack on atwho
                 $scope.showDescriptionTextarea = false;
-                if($scope.editableStory.description == null){
+                if ($scope.editableStory.description == null) {
                     $scope.editableStory.description = '';
                 }
                 else if ($scope.editableStory.description.trim() == template.trim()) {
@@ -353,7 +353,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             return $state.href(stateName);
         };
         // Init
-        $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story', resetOnProperties:['state']});
+        $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story', resetOnProperties: ['state']});
         $scope.dependenceEntries = [];
         $scope.parentSprintEntries = [];
         $scope.tags = [];

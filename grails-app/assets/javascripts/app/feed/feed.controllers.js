@@ -50,7 +50,7 @@ controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
     };
     $scope.onSelect = function($item, $model) {
         _.each(widget.settings.feeds, function(feed) {
-            if($model && $model.url == feed.url){
+            if ($model && $model.url == feed.url) {
                 $model.selected = true;
                 feed.selected = true;
             } else {
@@ -58,7 +58,7 @@ controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
             }
         });
     };
-    $scope.getTitle = function(){
+    $scope.getTitle = function() {
         return $scope.holder.feed && $scope.holder.feed.title ? $scope.holder.feed.title : '';
     };
     // Init

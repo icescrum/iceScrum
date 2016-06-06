@@ -860,8 +860,8 @@ angular.module('isApp', [
         if (form) {
             form.$setPristine();
             form.$setUntouched();
-            var el = angular.element('[name="'+form.$name+'"] input[autofocus]');
-            if(el.size() > 0){
+            var el = angular.element('[name="' + form.$name + '"] input[autofocus]');
+            if (el.size() > 0) {
                 el[0].focus();
             }
         }
@@ -977,12 +977,12 @@ angular.module('isApp', [
                     $scope.manageExtensionsForm.$invalid = !extension.available;
                     $scope.selectScreenshot(extension.screenshots.length > 0 ? extension.screenshots[0] : null)
                 };
-                $scope.selectScreenshot = function(screenshot){
+                $scope.selectScreenshot = function(screenshot) {
                     $scope.holder.screenshot = screenshot;
                 };
                 // Init
                 $scope.holder = {
-                    extension : {}
+                    extension: {}
                 };
                 $scope.extensions = [];
                 ExtensionService.getExtensions().then(function(extensions) {
@@ -1025,8 +1025,8 @@ angular.module('isApp', [
         isFullScreen: false,
         menus: Session.menus,
         postitSize: {
-            story:"",
-            task:'postit-sm'
+            story: "",
+            task: 'postit-sm'
         },
         selectableMultiple: false
     };
@@ -1113,7 +1113,7 @@ angular.module('isApp', [
                 cancelScheduledScroll(); // Prevent persistent scroll in case of release out of sortable container
             }
         }
-    };             
+    };
 
     if (isSettings) {
         $rootScope.serverUrl = isSettings.serverUrl;

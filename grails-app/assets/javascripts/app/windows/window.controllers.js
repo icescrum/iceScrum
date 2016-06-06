@@ -304,13 +304,12 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         return story.state < StoryStatesByName.DONE;
     };
     $scope.openSprintUrl = function(sprint) {
-        var stateName =  'taskBoard';
-        if($state.current.name != 'taskBoard.details'){
-            stateName +=  '.details';
+        var stateName = 'taskBoard';
+        if ($state.current.name != 'taskBoard.details') {
+            stateName += '.details';
         }
         return $state.href(stateName, {sprintId: sprint.id});
     };
-
     $scope.openNewTaskByStory = function(story) {
         $state.go('taskBoard.task.new', {taskCategory: _.pick(story, ['id', 'name', 'class'])});
     };
@@ -319,9 +318,9 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     };
     $scope.refreshTasks = function() {
         var tasks;
-        if($scope.app.context){
-            tasks = _.filter($scope.sprint.tasks, function(task){
-                if($scope.app.context.type == 'tag'){
+        if ($scope.app.context) {
+            tasks = _.filter($scope.sprint.tasks, function(task) {
+                if ($scope.app.context.type == 'tag') {
                     return _.includes(task.tags, $scope.app.context.term);
                 } else {
                     return true;

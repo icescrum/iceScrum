@@ -151,7 +151,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
         return $state.href($state.current.name, {taskId: id});
     };
     // Init
-    $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task', resetOnProperties:[]});
+    $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task', resetOnProperties: []});
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {

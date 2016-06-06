@@ -60,7 +60,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
         return $state.href(stateName, {featureTabId: featureTabId});
     };
     // Init
-    $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature', resetOnProperties:[]});
+    $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature', resetOnProperties: []});
     $scope.tags = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {

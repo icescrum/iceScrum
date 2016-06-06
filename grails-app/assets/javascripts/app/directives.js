@@ -437,7 +437,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .attr("height", releaseHeight - sprintYMargin * 2);
                 sprintTextsSelector.enter().append("text")
                     .attr("y", 6 + height / 2)
-                    .text(function (sprint) { return sprint.orderNumber; })
+                    .text(function(sprint) { return sprint.orderNumber; })
                     .style("text-anchor", "middle")
                     .attr("font-size", "18px");
                 // Update
@@ -489,7 +489,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             }
             function getBrushRanges() {
                 var transposedExtend = _.zip.apply(null, (brush.extent()));
-                return {x:_.map(transposedExtend[0], d3.time.day.utc), y: transposedExtend[1]};
+                return {x: _.map(transposedExtend[0], d3.time.day.utc), y: transposedExtend[1]};
             }
             function onBrush() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
