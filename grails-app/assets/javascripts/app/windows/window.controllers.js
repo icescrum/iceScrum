@@ -470,7 +470,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         if ($scope.sprint) {
             $scope.refreshTasks();
         }
-    }, true);
+    }, true);  // Be careful of circular objects, it will blow up the stack when comparing equality by value
     $scope.$watch('sprint.state', function() { // To generate the proper $scope.sprintTaskStates when changing state
         if ($scope.sprint) {
             $scope.refreshTasks();

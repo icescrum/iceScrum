@@ -261,9 +261,14 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
     $scope.availableBacklogs = backlogs;
     $scope.backlogCodes = BacklogCodes;
     // Ensures that the stories of displayed backlogs are up to date
-    $scope.$watch(function() { return Session.getProject().stories; }, function() {
-        _.each($scope.backlogContainers, function(backlogContainer) {
-            $scope.refreshSingleBacklog(backlogContainer);
+    $scope.$on('is:backlogsUpdated', function(event, backlogCodes) {
+        _.each(backlogCodes, function(backlogCode) {
+            var backlogContainer = $scope.getBacklogContainer(backlogCode);
+            if (backlogContainer) {
+                $timeout(function() {
+                    $scope.refreshSingleBacklog(backlogContainer);
+                })
+            }
         });
-    }, true);
+    });
 }]);

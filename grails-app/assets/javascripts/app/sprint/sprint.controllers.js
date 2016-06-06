@@ -252,5 +252,5 @@ controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detail
             $scope.meanVelocity = _.round(_.meanBy(sprints, 'velocity'));
             $scope.meanCapacity = _.round(_.meanBy(sprints, 'capacity'));
         }
-    }, true);
+    }, true);  // Be careful of circular objects, it will blow up the stack when comparing equality by value
 }]);

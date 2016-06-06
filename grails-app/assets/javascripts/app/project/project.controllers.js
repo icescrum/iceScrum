@@ -228,7 +228,7 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
             var selectedProject = _.find($scope.projects, {id: parseInt(selectedProjectId)});
             $scope.selectProject(selectedProject);
         }
-    }, true);
+    }, true); // Be careful of circular objects, it will blow up the stack when comparing equality by value
     ProjectService.listPublic().then(function(projectsAndTotal) {
         $scope.projects = projectsAndTotal.projects;
     });

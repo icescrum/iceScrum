@@ -347,7 +347,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         $injector.get('SyncService').sync(cacheName, cachedItem, null);
         _.remove(self.getCache(cacheName), {id: parseInt(id)});
     };
-}]).service('SyncService', ['CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', function(CacheService, StoryService, FeatureService, SprintService, BacklogService) {
+}]).service('SyncService', ['$rootScope', 'CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', function($rootScope, CacheService, StoryService, FeatureService, SprintService, BacklogService) {
     var syncFunctions = {
         story: function(oldStory, newStory) {
             var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
@@ -397,8 +397,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 }
             }
             var cachedBacklogs = CacheService.getCache('backlog');
-            var backlogCacheDate = CacheService.cacheCreationDates['backlog'];
-            if (cachedBacklogs.length && (!newStory || new Date(newStory.dateCreated) > backlogCacheDate || new Date(newStory.lastUpdated) > backlogCacheDate)) {
+            if (cachedBacklogs.length) {
                 var oldBacklogIds = [], newBacklogsIds = [];
                 _.each(cachedBacklogs, function(cachedBacklog) {
                     if (oldStory && BacklogService.filterStories(cachedBacklog, [oldStory]).length) {
@@ -411,8 +410,15 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                 var backlogGetter = _.curry(CacheService.get)('backlog');
                 var backlogsToIncrement = _.map(_.difference(newBacklogsIds, oldBacklogIds), backlogGetter);
                 var backlogsToDecrement = _.map(_.difference(oldBacklogIds, newBacklogsIds), backlogGetter);
-                _.each(backlogsToIncrement, function(backlog) { backlog['count']++ });
-                _.each(backlogsToDecrement, function(backlog) { backlog['count']-- });
+                var backlogCacheDate = CacheService.cacheCreationDates['backlog'];
+                if ((!newStory || new Date(newStory.dateCreated) > backlogCacheDate || new Date(newStory.lastUpdated) > backlogCacheDate)) {
+                    _.each(backlogsToIncrement, function(backlog) { backlog['count']++ });
+                    _.each(backlogsToDecrement, function(backlog) { backlog['count']-- });
+                }
+                var updatedBacklogCodes = _.map(_.union(backlogsToDecrement, backlogsToIncrement), 'code');
+                if (updatedBacklogCodes) {
+                    $rootScope.$broadcast('is:backlogsUpdated', updatedBacklogCodes);
+                }
             }
         },
         task: function(oldTask, newTask) {

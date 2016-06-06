@@ -1171,12 +1171,12 @@ angular.module('isApp', [
     });
 }])
 .constant('SERVER_ERRORS', {
-    loginFailed: 'auth-login-failed',
-    sessionTimeout: 'auth-session-timeout',
-    notAuthenticated: 'auth-not-authenticated',
-    notAuthorized: 'auth-not-authorized',
-    clientError: 'client-error',
-    serverError: 'server-error'
+    loginFailed: 'is:auth-login-failed',
+    sessionTimeout: 'is:auth-session-timeout',
+    notAuthenticated: 'is:auth-not-authenticated',
+    notAuthorized: 'is:auth-not-authorized',
+    clientError: 'is:client-error',
+    serverError: 'is:server-error'
 })
 .constant('BacklogCodes', {
     SANDBOX: 'sandbox',
