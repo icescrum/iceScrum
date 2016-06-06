@@ -138,27 +138,6 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     this.owner = function(item) {
         return !_.isEmpty(item) && !_.isEmpty(item.owner) && self.user.id == item.owner.id;
     };
-    // TODO remove, user role change for dev only
-    this.changeRole = function(newUserRole) {
-        var newRoles = {};
-        switch (newUserRole) {
-            case USER_ROLES.PO_SM:
-                newRoles.productOwner = true;
-                newRoles.scrumMaster = true;
-                break;
-            case USER_ROLES.PO:
-                newRoles.productOwner = true;
-                break;
-            case USER_ROLES.SM:
-                newRoles.scrumMaster = true;
-                break;
-            case USER_ROLES.TM:
-                newRoles.teamMember = true;
-                break;
-        }
-        newRoles.stakeHolder = true;
-        _.merge(self.roles, defaultRoles, newRoles);
-    };
     this.initProject = function(project) {
         _.extend(self.project, project);
         self.isProjectResolved.resolve();

@@ -259,10 +259,6 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     $scope.getUnreadActivities = function() {
         return Session.unreadActivitiesCount;
     };
-    // TODO remove, user role change for dev only
-    $scope.changeRole = function(newRole) {
-        Session.changeRole(newRole);
-    };
     $scope.showAbout = function() {
         $uibModal.open({
             templateUrl: 'scrumOS/about'
