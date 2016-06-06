@@ -344,8 +344,10 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
     this.remove = function(cacheName, id) {
         var cachedItem = self.get(cacheName, id);
-        $injector.get('SyncService').sync(cacheName, cachedItem, null);
-        _.remove(self.getCache(cacheName), {id: parseInt(id)});
+        if (cachedItem) {
+            $injector.get('SyncService').sync(cacheName, cachedItem, null);
+            _.remove(self.getCache(cacheName), {id: parseInt(id)});
+        }
     };
 }]).service('SyncService', ['$rootScope', 'CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', function($rootScope, CacheService, StoryService, FeatureService, SprintService, BacklogService) {
     var syncFunctions = {
@@ -474,7 +476,12 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             _.each(CacheService.getCache('story'), function(story) {
                 var featureId = newFeature ? newFeature.id : oldFeature.id;
                 if (story.feature && story.feature.id == featureId) {
-                    story.feature = newFeature;
+                    if (newFeature) {
+                        story.feature.color = newFeature.color;
+                        story.feature.name = newFeature.name;
+                    } else {
+                        story.feature = null;
+                    }
                 }
             });
         },

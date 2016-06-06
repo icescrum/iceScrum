@@ -362,7 +362,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the controller because it will init the service systematically and call Feature.query which require authentication
         return $q.all([ProjectService.getTags(), FeatureService.list()]).then(function(data) {
             var tags = data[0];
-            var features = data[1];
+            var features = Session.getProject().features;
             var contexts = _.map(tags, function(tag) {
                 return {type: 'tag', id: tag, term: tag};
             });

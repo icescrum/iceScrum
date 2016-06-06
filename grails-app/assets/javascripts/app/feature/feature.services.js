@@ -69,7 +69,7 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
         return Feature.save(feature, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.update = function(feature) {
-        return feature.$update(crudMethods[IceScrumEventType.UPDATE]);
+        return Feature.update(_.omit(feature, 'stories'), crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.copyToBacklog = function(feature) {
         return Feature.update({id: feature.id, action: 'copyToBacklog'}, {}).$promise;

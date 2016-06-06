@@ -271,8 +271,8 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'IceScrumEventType',
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, Session, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
@@ -359,10 +359,8 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
             tpl: "<li data-value='A[${uid}-${name}]'>${name}</li>",
             at: 'a'
         };
-        $scope.features = [];
-        FeatureService.list().then(function(features) {
-            $scope.features = features;
-        });
+        $scope.features = Session.getProject().features;
+        FeatureService.list();
         var mapActors = function(actors) {
             return _.map(actors, function(actor) {
                 return {uid: actor.uid, name: actor.name};
@@ -382,7 +380,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.storyStatesByName = StoryStatesByName;
     }]);
 
-controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'FeatureService', function($scope, $controller, StoryService, storyListId, FeatureService) {
+controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', function($scope, $controller, StoryService, storyListId, Session, FeatureService) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.sumPoints = function(stories) {
@@ -430,10 +428,8 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.topStory = {};
     $scope.storyPreview = {};
     $scope.stories = [];
-    $scope.features = [];
-    FeatureService.list().then(function(features) {
-        $scope.features = features;
-    });
+    $scope.features = Session.getProject().features;
+    FeatureService.list();
     $scope.allFollowed = function(stories) {
         return _.every(stories, 'followed');
     };
