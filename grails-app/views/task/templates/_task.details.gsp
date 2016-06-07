@@ -37,7 +37,9 @@
             <div class="right-title">
                 <span ng-if="task.responsible"
                       uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
-                    <img ng-src="{{ task.responsible | userAvatar }}" alt="{{ task.responsible | userFullName }}"
+                    <img ng-src="{{ task.responsible | userAvatar }}"
+                         class="{{ task.responsible | userColorRoles }}"
+                         alt="{{ task.responsible | userFullName }}"
                          height="30px"/>
                 </span>
                 <button type="button"

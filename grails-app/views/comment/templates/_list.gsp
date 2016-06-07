@@ -32,7 +32,7 @@
                     <div class="clearfix no-padding">
                         <div class="col-sm-1">
                             <img height="30px"
-                                 class="toggle-hidden"
+                                 class="toggle-hidden {{ comment.poster | userColorRoles }}"
                                  ng-src="{{comment.poster | userAvatar}}"
                                  alt="{{comment.poster | userFullName}}"/>
                             <button class="btn btn-danger toggle-visible"

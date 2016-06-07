@@ -30,7 +30,7 @@
             <span class="id" as-sortable-item-handle-if="authorizedTask('rank', task)">{{ ::task.uid }}</span>
             <img ng-src="{{ task.responsible | userAvatar }}"
                  ng-if="task.responsible"
-                 class="responsible"
+                 class="responsible {{ task.responsible | userColorRoles }}"
                  uib-tooltip="{{ task.responsible | userFullName }}">
         </div>
         <div class="head-right">

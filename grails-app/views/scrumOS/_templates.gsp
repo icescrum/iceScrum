@@ -90,8 +90,8 @@
     <div class="media-left">
         <img ng-src="{{ currentUser | userAvatar }}"
              alt="{{currentUser | userFullName}}"
-             height="60px"
-             width="60px"/>
+             height="50px"
+             width="50px"/>
     </div>
     <div class="media-body">
         <div>
@@ -133,6 +133,7 @@
         <div class="media-left">
             <img height="36px"
                  ng-src="{{activity.poster | userAvatar}}"
+                 class="{{ activity.poster | userColorRoles }}"
                  alt="{{activity.poster | userFullName}}"/>
         </div>
         <div class="media-body">

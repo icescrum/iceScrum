@@ -26,6 +26,7 @@
         user: ${user as JSON},
         roles: ${roles as JSON},
         project: ${product ? product as JSON : 'null'},
+        projectTeam: ${product ? product.firstTeam as JSON : 'null'},
         pushContext: ${product?.id ?: "''"},
         messages: ${i18nMessages as JSON},
         bundles: ${is.i18nBundle() as JSON},

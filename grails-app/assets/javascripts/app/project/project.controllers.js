@@ -177,15 +177,7 @@ controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseSer
             SprintService.list(release);
         }
     });
-    TeamService.get($scope.currentProject).then(function(team) {
-        // That's ugly and repeated in TeamController...
-        $scope.allMembers = _.unionBy(team.members, $scope.project.productOwners, 'id');
-        $scope.allMembers = _.map($scope.allMembers, function(member) {
-            member.scrumMaster = _.find(team.scrumMasters, {id: member.id}) ? true : false;
-            member.productOwner = _.find($scope.project.productOwners, {id: member.id}) ? true : false;
-            return member;
-        });
-    });
+    $scope.allMembers = _.unionBy($scope.project.team.members, $scope.project.productOwners, 'id');
     // Needs a separate call because it may not be in the currentOrNextRelease
     SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
         $scope.currentOrLastSprint = sprint;

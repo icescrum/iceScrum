@@ -196,7 +196,7 @@
                         </div>
                         <div ng-if="currentUser.username" uib-dropdown class="pull-left">
                             <div class="navbar-user pull-left" uib-dropdown-toggle>
-                                <img ng-src="{{ currentUser | userAvatar }}" height="32px" width="32px"/>
+                                <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="32px" width="32px"/>
                             </div>
                             <div uib-dropdown-menu class="profile-panel" ng-include="'profile.panel.html'"></div>
                         </div>

@@ -22,7 +22,7 @@
  *
  */
 
-var contrastColorCache = {}, gradientBackgroundCache = {};
+var contrastColorCache = {}, gradientBackgroundCache = {}, userVisualRolesCache = {};
 var filters = angular.module('filters', []);
 
 filters
@@ -37,6 +37,28 @@ filters
                 user = Session.user; // Bind to current user to see avatar change immediately
             }
             return user ? ($rootScope.serverUrl + '/user/avatar/' + user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
+        };
+    }])
+    .filter('userColorRoles', ['$rootScope', 'Session', function($rootScope, Session) {
+        return function(user) {
+            var classes = "img-circle user-role";
+            var project = Session.getProject();
+            if(!project){
+                return '';
+            }
+            if(!userVisualRolesCache[project.pkey]){
+                userVisualRolesCache[project.pkey] = {};
+            }
+            if(!userVisualRolesCache[project.pkey][user.id]){
+                if(_.find(project.productOwners, {id: user.id})){
+                    classes += " po";
+                }
+                if(_.find(project.team.scrumMasters, {id: user.id})){
+                    classes += " sm";
+                }
+                userVisualRolesCache[project.pkey][user.id] = classes;
+            }
+            return userVisualRolesCache[project.pkey][user.id];
         };
     }])
     .filter('storyType', function() {

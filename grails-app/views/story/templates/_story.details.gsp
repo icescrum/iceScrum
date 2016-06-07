@@ -40,7 +40,7 @@
             </div>
             <div class="right-title">
                 <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
-                    <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}"
+                    <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
                          height="30px"/>
                 </span>
                 <button class="btn btn-default elemid"

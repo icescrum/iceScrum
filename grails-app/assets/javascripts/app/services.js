@@ -172,7 +172,10 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
     this.getProjectPromise = function() {
         return self.isProjectResolved.promise.then(function() {
-            return self.project;
+            //return TeamService.get(self.project).then(function(team) {
+            //    self.project.team = team;
+                return self.project;
+            //});
         });
     };
     this.getLanguages = function() {
