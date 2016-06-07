@@ -868,39 +868,32 @@ angular.module('isApp', [
     };
 
     $rootScope.confirm = function(options) {
-        var callCallback = function() {
-            if (options.args) {
-                options.callback.apply(options.callback, options.args);
-            } else {
-                options.callback();
+        var modal = $uibModal.open({
+            templateUrl: 'confirm.modal.html',
+            size: 'sm',
+            controller: ["$scope", "hotkeys", function($scope, hotkeys) {
+                $scope.message = options.message;
+                $scope.submit = function() {
+                    if (options.args) {
+                        options.callback.apply(options.callback, options.args);
+                    } else {
+                        options.callback();
+                    }
+                    $scope.$close(true);
+                };
+                // Required because there is not input so the form cannot be submitted by "return"
+                hotkeys.bindTo($scope).add({
+                    combo: 'return',
+                    callback: $scope.submit
+                });
+            }]
+        });
+        var callCloseCallback = function(confirmed) {
+            if (!confirmed && options.closeCallback) {
+                options.closeCallback();
             }
         };
-        if (options.condition !== false) {
-            var modal = $uibModal.open({
-                templateUrl: 'confirm.modal.html',
-                size: 'sm',
-                controller: ["$scope", "hotkeys", function($scope, hotkeys) {
-                    $scope.message = options.message;
-                    $scope.submit = function() {
-                        callCallback();
-                        $scope.$close(true);
-                    };
-                    // Required because there is not input so the form cannot be submitted by "return"
-                    hotkeys.bindTo($scope).add({
-                        combo: 'return',
-                        callback: $scope.submit
-                    });
-                }]
-            });
-            var callCloseCallback = function(confirmed) {
-                if (!confirmed && options.closeCallback) {
-                    options.closeCallback();
-                }
-            };
-            modal.result.then(callCloseCallback, callCloseCallback);
-        } else {
-            callCallback();
-        }
+        modal.result.then(callCloseCallback, callCloseCallback);
     };
 
     $rootScope.showCopyModal = function(title, value) {

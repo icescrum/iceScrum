@@ -253,22 +253,23 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
     this.addStateChangeDirtyFormListener = function($scope, type, isModal) {
         var triggerConfirmModal = function(event, confirmCallback) {
-            event.preventDefault(); // cancel the state change
-            $scope.mustConfirmStateChange = false;
-            $scope.confirm({
-                message: $scope.message('todo.is.ui.dirty.confirm'),
-                condition: $scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading()),
-                callback: function() {
-                    if ($scope.flow != undefined && $scope.flow.isUploading()) {
-                        $scope.flow.cancel();
+            if ($scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading())) {
+                event.preventDefault(); // cancel the state change
+                $scope.mustConfirmStateChange = false;
+                $scope.confirm({
+                    message: $scope.message('todo.is.ui.dirty.confirm'),
+                    callback: function() {
+                        if ($scope.flow != undefined && $scope.flow.isUploading()) {
+                            $scope.flow.cancel();
+                        }
+                        confirmCallback();
+                    },
+                    closeCallback: function() {
+                        $scope.app.loading = false;
+                        $scope.mustConfirmStateChange = true;
                     }
-                    confirmCallback();
-                },
-                closeCallback: function() {
-                    $scope.app.loading = false;
-                    $scope.mustConfirmStateChange = true;
-                }
-            });
+                });
+            }
         };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
