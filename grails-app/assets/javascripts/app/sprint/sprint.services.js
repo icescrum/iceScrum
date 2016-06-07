@@ -156,13 +156,13 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             case 'activate':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.TODO && sprint.activable;
             case 'delete':
+            case 'autoPlan':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.TODO;
             case 'close':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.IN_PROGRESS;
             case 'updateStartDate':
                 return Session.poOrSm() && sprint.state < SprintStatesByName.IN_PROGRESS;
             case 'updateEndDate':
-            case 'autoPlan':
             case 'plan':
             case 'unPlan':
                 return Session.poOrSm() && sprint.state != SprintStatesByName.DONE;
