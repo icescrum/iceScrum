@@ -83,9 +83,18 @@
       }
     }
   }
-  .postit-container.is-selected {
+  .postit-container{
+    &.is-selected {
+      .postit {
+        border: 1px solid @brand-primary;
+      }
+    }
     .postit {
-      border: 1px solid @brand-primary;
+      .responsible {
+        height: 18px;
+        width: 18px;
+        margin-left: 3px;
+      }
     }
   }
 }
@@ -177,6 +186,10 @@
             font-size: 16px;
             color: @gray;
             text-decoration: none;
+            visibility: hidden;
+            &.active {
+                visibility: visible;
+            }
           }
           .id, .estimation, .value {
             display: inline-block;
@@ -204,12 +217,6 @@
           cursor: pointer;
         }
       }
-      .responsible {
-        height: 18px;
-        width: 18px;
-        margin-left: 3px;
-      }
-
       .content {
         height: 82px;
         clear: both;
@@ -322,6 +329,13 @@
         }
       }
       &:hover {
+        .head {
+          .head-left {
+            .follow {
+              visibility: visible;
+            }
+          }
+        }
         .content {
           .title {
             .text-overflow();
@@ -351,14 +365,6 @@
         }
         padding-top: @postit-height / 2 - 17;
         padding-left: @postit-width / 2 - 42;
-        &.postit-sm {
-          padding-top: @postit-height-sm / 2 - 17;
-          padding-left: @postit-width-sm / 2 - 42;
-        }
-        &.postit-xs {
-          padding: 6px;
-          border:none;
-        }
       }
     }
     position: relative;
@@ -410,64 +416,77 @@
       &.architectural:before {
         content: "\f085";
       }
-      &.postit-sm {
-        width: @postit-width-sm;
-        height: @postit-height-sm;
-        .responsible {
-          height: 16px;
-          width: 16px;
-          margin-left: 3px;
+
+    }
+  }
+  &.size-sm {
+    .postit-container .postit {
+      width: @postit-width-sm;
+      height: @postit-height-sm;
+      .responsible {
+        height: 16px;
+        width: 16px;
+        margin-left: 3px;
+      }
+      .content {
+        h3.title {
+          display: block; /* Fallback for non-webkit */
+          display: -webkit-box;
+          max-width: 400px;
+          height: @font-size-postit-sm*@line-height-postit-sm*@lines-to-show-postit-sm; /* Fallback for non-webkit */
+          margin: 0 auto;
+          font-size: @font-size-postit-sm;
+          line-height: @line-height-postit-sm;
+          -webkit-line-clamp: @lines-to-show-postit-sm;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding-top: 2px;
+          white-space: normal;
         }
-        .content {
-          h3.title {
-            display: block; /* Fallback for non-webkit */
-            display: -webkit-box;
-            max-width: 400px;
-            height: @font-size-postit-sm*@line-height-postit-sm*@lines-to-show-postit-sm; /* Fallback for non-webkit */
-            margin: 0 auto;
-            font-size: @font-size-postit-sm;
-            line-height: @line-height-postit-sm;
-            -webkit-line-clamp: @lines-to-show-postit-sm;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            padding-top: 2px;
-            white-space: normal;
+        height: @font-size-postit-sm*@line-height-postit-sm*@lines-to-show-postit-sm;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      .description, .state-progress {
+        display:none;
+      }
+      .actions > .action {
+        width: 28px;
+      }
+      &.add-task {
+        padding-top: @postit-height-sm / 2 - 17;
+        padding-left: @postit-width-sm / 2 - 42;
+      }
+    }
+  }
+  &.size-xs {
+    .postit-container .postit {
+      width: 65px;
+      height: 45px;
+      .content, .tags, .actions, .footer, .follow {
+        display:none;
+      }
+      .head {
+        .head-left {
+          float:none;
+          text-align: center;
+          .responsible {
+            height: 14px;
+            width: 14px;
+            margin-left: 3px;
           }
-          height: @font-size-postit-sm*@line-height-postit-sm*@lines-to-show-postit-sm;
-          padding-left: 5px;
-          padding-right: 5px;
         }
-        .description, .state-progress {
-          display:none;
-        }
-        .actions > .action {
-          width: 28px;
+        .head-right {
+          float:none;
+          margin-right: 0;
+          text-align: center;
+          vertical-align: middle;
         }
       }
-      &.postit-xs {
-        width: 65px;
-        height: 45px;
-        .content, .tags, .actions {
-          display:none;
-        }
-        .head {
-          .head-left {
-            float:none;
-            text-align: center;
-            .responsible {
-              height: 14px;
-              width: 14px;
-              margin-left: 3px;
-            }
-          }
-          .head-right {
-            float:none;
-            margin-right: 0;
-            text-align: center;
-            vertical-align: middle;
-          }
-        }
+      &.add-task {
+        padding: 6px;
+        border:none;
       }
     }
   }
@@ -488,6 +507,8 @@
       display: flex;
       position: relative;
       border: 1px solid @table-border-color;
+      border-left:none;
+      border-right:none;
       > .state {
         display: none;
       }
@@ -518,6 +539,10 @@
         flex-direction: column;
         .head-left, .head-right {
           flex: 1;
+          .follow {
+            float: left;
+            margin-right: 5px;
+          }
         }
       }
       > .footer {
@@ -669,6 +694,16 @@
           color: @gray;
         }
       }
+      &.add-task {
+        display: table;
+        margin: 0 auto;
+        &:last-child {
+          border:none;
+        }
+        a.btn {
+          margin: 10px;
+        }
+      }
     }
     &:last-child .postit {
       border-bottom: 1px solid @table-border-color;
@@ -687,6 +722,13 @@
     }
     &.is-selected:nth-child(odd) + .is-selected .postit {
       border-top-color: @table-bg-accent !important;
+    }
+  }
+  &.force-size-xs {
+    .postit-container .postit {
+      .footer {
+        display: none;
+      }
     }
   }
 }

@@ -55,13 +55,7 @@
                 <button type="button"
                         class="btn btn-default"
                         uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                        ng-click="postitSize('story')"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize.story == '', 'fa-compress': app.postitSize.story == 'postit-sm', 'fa-expand': app.postitSize.story == 'postit-xs'}"></i>
-                </button>
-                <button type="button"
-                        uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
-                        ng-click="app.asList = !app.asList"
-                        class="btn btn-default">
-                    <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
+                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
                 </button>
                 <button type="button"
                         class="btn btn-default"
@@ -117,12 +111,12 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="postits {{ (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') + ' ' + (app.sortableMoving ? 'sortable-moving' : '') }}"
+                <div class="postits {{ currentPostitSize(viewName, 'grid-group')+ ' ' + (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') + ' ' + (app.sortableMoving ? 'sortable-moving' : '') }}"
+                     postits-screen-size
                      ng-controller="storyCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!isSortingSprint(sprint)"
                      ng-model="backlog.stories"
-                     ng-class="app.asList ? 'list-group' : 'grid-group'"
                      ng-init="emptyBacklogTemplate = 'story.backlog.planning.empty.html'"
                      ng-include="'story.backlog.html'">
                 </div>

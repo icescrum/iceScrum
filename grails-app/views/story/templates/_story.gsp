@@ -27,11 +27,11 @@
      class="postit {{ app.postitSize.story + ' ' + ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
         <div class="head-left">
+            <span class="id">{{ ::story.uid }}</span>
             <a href
-               class="follow"
+               class="follow {{ story.followed ? 'active' : '' }}"
                uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
-            <span class="id">{{ ::story.uid }}</span>
         </div>
         <div class="head-right">
             <span class="value editable"

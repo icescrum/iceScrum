@@ -43,10 +43,9 @@
             <div class="pull-right">
                 <div class="btn-group btn-view visible-on-hover">
                     <button type="button"
-                            uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
-                            ng-click="app.asList = !app.asList"
-                            class="btn btn-default">
-                        <i class="fa fa-th" ng-class="{'fa-th-list': app.asList, 'fa-th': !app.asList}"></i>
+                            class="btn btn-default"
+                            uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
                     </button>
                     <button type="button"
                             class="btn btn-default"
@@ -74,7 +73,7 @@
         <div class="panel panel-light" ng-repeat="backlogContainer in backlogContainers">
             <div class="panel-heading">
                 <entry:point id="backlog-list-details-heading"/>
-                <div class="btn-group">
+                <div class="btn-group btn-view">
                     <button type="button"
                             ng-if="backlogContainer.sortable"
                             class="btn btn-default"
@@ -136,12 +135,12 @@
             </div>
             <div class="panel-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="panel-loading" ng-include="'loading.html'"></div>
-                <div class="postits {{ (backlogContainer.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '')  + ' ' + (app.sortableMoving ? 'sortable-moving' : '')}} "
+                <div class="postits {{ currentPostitSize(viewName, 'grid-group') + ' ' + (backlogContainer.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '')  + ' ' + (app.sortableMoving ? 'sortable-moving' : '')}} "
                      ng-controller="storyCtrl"
+                     postits-screen-size
                      as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!backlogContainer.sorting"
                      ng-model="backlogContainer.backlog.stories"
-                     ng-class="app.asList ? 'list-group' : 'grid-group'"
                      ng-init="(backlog = backlogContainer.backlog) && (emptyBacklogTemplate = 'story.backlog.backlogs.empty.html')"
                      ng-include="'story.backlog.html'">
                 </div>

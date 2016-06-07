@@ -51,7 +51,7 @@ var registerAppController = function(appControllerName, controllerArray) {
     controllers.controller(appControllerName, newControllerArray);
 };
 
-controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
+controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $localStorage, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
     $controller('headerCtrl', {$scope: $scope});
     $controller('searchCtrl', {$scope: $scope});
     // Functions
@@ -121,16 +121,58 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
     $scope.fullScreen = function() {
         $scope.app.isFullScreen = !$scope.app.isFullScreen;
     };
-    $scope.postitSize = function(type, xs) {
-        type = type ? type : 'story';
-        if ($scope.app.postitSize[type] == '') {
-            $scope.app.postitSize[type] = 'postit-sm';
-        } else if ($scope.app.postitSize[type] == 'postit-sm' && xs) {
-            $scope.app.postitSize[type] = 'postit-xs';
-        } else {
-            $scope.app.postitSize[type] = '';
+
+    $scope.currentPostitSize = function(viewName, defaultSize) {
+        var contextSizeName = viewName + 'PostitSize';
+        if(!$localStorage[contextSizeName]){
+            $localStorage[contextSizeName] = defaultSize;
         }
+        return $localStorage[contextSizeName];
     };
+
+    $scope.iconCurrentPostitSize = function(viewName) {
+        var icon;
+        switch($scope.currentPostitSize(viewName)){
+            case 'grid-group':
+                icon = 'fa-sticky-note fa-xl';
+                break;
+            case 'grid-group size-sm':
+                icon = 'fa-sticky-note fa-lg';
+                break;
+            case 'grid-group size-xs':
+                icon = 'fa-sticky-note';
+                break;
+            case 'list-group':
+                icon = 'fa-list';
+                break;
+            default:
+                icon = 'fa-sticky-note';
+                break;
+        }
+        return icon;
+    };
+
+    $scope.setPostitSize = function(viewName) {
+        var next;
+        switch($scope.currentPostitSize(viewName)){
+            case 'grid-group':
+                next = 'grid-group size-sm';
+                break;
+            case 'grid-group size-sm':
+                next = 'grid-group size-xs';
+                break;
+            case 'grid-group size-xs':
+                next = 'list-group';
+                break;
+            default:
+            case 'list-group':
+                next = 'grid-group';
+                break;
+        }
+        var contextSizeName = viewName + 'PostitSize';
+        $localStorage[contextSizeName] = next;
+    };
+
     $scope.print = function(data) {
         var url = data;
         if (angular.isObject(data)) {
@@ -175,7 +217,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$state', '$uibModal
             $timeout.cancel(resizeTimeout);
             resizeTimeout = $timeout(function() {
                 w.triggerHandler('resize');
-            }, 100);
+            }, 50);
         }
     });
     $scope.$on('$stateChangeStart', function(event) {

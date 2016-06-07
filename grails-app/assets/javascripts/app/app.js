@@ -1011,16 +1011,11 @@ angular.module('isApp', [
     $rootScope.fibonacciSuiteNullable = ['?'].concat($rootScope.fibonacciSuite);
 
     $rootScope.app = {
-        asList: false,
         loading: true,
         loadingText: '',
         loadingPercent: 0,
         isFullScreen: false,
         menus: Session.menus,
-        postitSize: {
-            story: "",
-            task: 'postit-sm'
-        },
         selectableMultiple: false
     };
 

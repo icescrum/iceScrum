@@ -665,7 +665,11 @@ table {
   }
 }
 
-#view-backlog, #view-planning {
+.btn-group.btn-view {
+  margin-right: 10px;
+}
+
+#view-backlog, #view-planning, #view-feature {
   .content {
     .backlogs-list {
       background: @panel-bg;
@@ -704,13 +708,6 @@ table {
             }
           }
         }
-        .btn-group.btn-view {
-          margin-right: 10px;
-          &.visible-on-hover {
-            opacity: 0;
-            transition: opacity 0.3s ease 0s;
-          }
-        }
         .pull-right {
           > div.btn-group:last-child {
             margin-right: 0;
@@ -728,17 +725,6 @@ table {
         border-right-width: 1px;
         &:last-of-type {
           border-right-width: 0;
-        }
-      }
-    }
-    &:hover {
-      .backlogs-list {
-        .btn-toolbar {
-          .btn-group.btn-view {
-            &.visible-on-hover {
-              opacity: 1;
-            }
-          }
         }
       }
     }
@@ -769,6 +755,9 @@ table {
       }
       td {
         padding:4px;
+        &.list-group {
+          padding: 0;
+        }
       }
       .sticky-header.cloned > td {
         padding-top:4px;
@@ -984,8 +973,24 @@ form .has-error .help-block {
   padding: 2px 5px;
 }
 
-ul.dropdown-menu.sprints-menu > li > a {
-  line-height: 16.5px;
-  font-size: 15px;
-  padding: 3px 12px;
+.sprints-dropdown{
+  margin-left: 5px;
+  margin-right: 20px;
+  float:left;
+  .fa-caret-down {
+    position: absolute;
+    right: -20px;
+    top: 7px;
+  }
+  > ul.dropdown-menu > li > a {
+    line-height: 16.5px;
+    font-size: 15px;
+    padding: 3px 12px;
+  }
+}
+
+.fa-xl {
+  font-size: 1.666em;
+  line-height: .80em;
+  vertical-align: -25%
 }

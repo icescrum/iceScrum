@@ -28,7 +28,7 @@
             <h3 class="panel-title small-title">
                 <div class="btn-toolbar"
                      ng-controller="taskCtrl">
-                    <div uib-dropdown class="pull-left">
+                    <div class="sprints-dropdown" uib-dropdown>
                         <div uib-dropdown-toggle>
                             {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i ng-if="sprints.length > 1" class="fa fa-caret-down"></i>
                             <div class="sub-title text-muted">
@@ -46,16 +46,7 @@
                             </li>
                         </ul>
                     </div>
-                    <a ng-if="authorizedTask('create', {sprint: sprint})"
-                       ui-sref="taskBoard.task.new"
-                       class="btn btn-primary pull-right">${message(code: "todo.is.ui.task.new")}</a>
-                    <a class="btn btn-default pull-right"
-                       href="{{ openSprintUrl(sprint) }}"
-                       uib-tooltip="${message(code: 'todo.is.ui.details')}">
-                        <i class="fa fa-info-circle"></i>
-                    </a>
-                    <div class="btn-group pull-right"
-                         uib-dropdown>
+                    <div class="btn-group" uib-dropdown>
                         <button type="button"
                                 ng-if="isSortableTaskBoard(sprint)"
                                 class="btn btn-default"
@@ -76,23 +67,35 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="btn-group pull-right visible-on-hover">
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                                ng-click="postitSize('task',true)"><i class="fa fa-compress" ng-class="{'fa-compress fa-lg': app.postitSize.task == '', 'fa-compress': app.postitSize.task == 'postit-sm', 'fa-expand': app.postitSize.task == 'postit-xs'}"></i>
-                        </button>
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                                unavailable-feature="true"
-                                hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
-                        </button>
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                                ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
-                        </button>
+                    <button type="button"
+                            class="btn btn-default"
+                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                            unavailable-feature="true"
+                            hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
+                    </button>
+                    <div class="pull-right">
+                        <div class="btn-group btn-view visible-on-hover">
+                            <button type="button"
+                                    class="btn btn-default"
+                                    uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                                    ng-click="setPostitSize(viewName)"><i class="fa" ng-class="iconCurrentPostitSize(viewName, 'grid-group size-sm')"></i>
+                            </button>
+                            <button type="button"
+                                    class="btn btn-default"
+                                    uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                                    ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
+                            </button>
+                        </div>
+                        <div class="btn-group btn-view">
+                            <a class="btn btn-default"
+                               href="{{ openSprintUrl(sprint) }}"
+                               uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                        </div>
+                        <a ng-if="authorizedTask('create', {sprint: sprint})"
+                           ui-sref="taskBoard.task.new"
+                           class="btn btn-primary">${message(code: "todo.is.ui.task.new")}</a>
                     </div>
                 </div>
             </h3>
@@ -119,8 +122,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="postits grid-group"
-                            ng-class="hasSelected() ? 'has-selected' : ''"
+                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') }}"
+                            postits-screen-size
                             ng-model="tasksByTypeByState[taskTypesByName.URGENT][taskState]"
                             ng-init="taskType = taskTypesByName.URGENT"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
@@ -134,7 +137,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="taskState == 0 && authorizedTask('create', {sprint: sprint})" class="postit-container">
-                                <div class="add-task postit {{ app.postitSize.task }}">
+                                <div class="add-task postit">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByType(taskTypesByName.URGENT)"
                                        href><g:message code="todo.is.ui.task.new"/>
@@ -149,8 +152,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="postits grid-group"
-                            ng-class="hasSelected() ? 'has-selected' : ''"
+                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') }}"
+                            postits-screen-size
                             ng-model="tasksByTypeByState[taskTypesByName.RECURRENT][taskState]"
                             ng-init="taskType = taskTypesByName.RECURRENT"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
@@ -164,7 +167,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="taskState == 0 && authorizedTask('create', {sprint: sprint})" class="postit-container">
-                                <div class="add-task postit {{ app.postitSize.task }}">
+                                <div class="add-task postit">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
                                        href><g:message code="todo.is.ui.task.new"/>
@@ -180,9 +183,9 @@
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr class="postits grid-group" ng-class="{'sortable-disabled': !isSortingStory(story)}" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
-                        <td class="postits grid-group"
-                            ng-class="hasSelected() ? 'has-selected' : ''"
+                    <tr ng-class="{'sortable-disabled': !isSortingStory(story)}" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
+                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') }}"
+                            postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                             is-disabled="!isSortingTaskBoard(sprint) || !isSortingStory(story)"
@@ -195,7 +198,7 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <div ng-if="taskState == 0 && authorizedTask('create', {parentStory: story})" class="postit-container">
-                                <div class="add-task postit {{ app.postitSize.task }}">
+                                <div class="add-task postit">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByStory(story)"
                                        href><g:message code="todo.is.ui.task.new"/>
@@ -211,9 +214,9 @@
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr class="postits grid-group sortable-disabled" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
-                        <td class="postits grid-group"
-                            ng-class="hasSelected() ? 'has-selected' : ''"
+                    <tr class="sortable-disabled" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
+                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') }}"
+                            postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable
                             is-disabled="true"

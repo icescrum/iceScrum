@@ -25,7 +25,7 @@
     <div class="panel panel-light">
         <div class="panel-heading">
             <div class="btn-toolbar">
-                <div class="btn-group">
+                <div class="btn-group btn-view">
                     <button type="button"
                             ng-if="isSortableFeature()"
                             class="btn btn-default"
@@ -54,9 +54,16 @@
                         <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
                     </button>
                 </div>
-                <div class="btn-group"
+                <div class="btn-group btn-view"
                      uib-dropdown
                      uib-tooltip="${message(code:'todo.is.ui.export')}">
+                    <button type="button"
+                            class="btn btn-default"
+                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                            unavailable-feature="true"
+                            ng-href="{{ ::viewName }}/print"
+                            hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
+                    </button>
                     <button class="btn btn-default"
                             uib-dropdown-toggle
                             type="button">
@@ -71,34 +78,30 @@
                         </g:each>
                     </ul>
                 </div>
-                <button type="button"
-                        class="btn btn-default"
-                        ng-click="toggleSelectableMultiple()"
-                        uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.multiple.disable/)}' : '${message(code: /todo.is.ui.selectable.multiple.enable/)}' }}">
-                    <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
-                </button>
-                <a ng-if="authorizedFeature('create')"
-                   href="#/{{ ::viewName }}/new"
-                   class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
-                <div class="btn-group pull-right visible-on-hover">
-                    <button type="button"
+                <div class="pull-right">
+                    <div class="btn-group btn-view visible-on-hover">
+                        <button type="button"
                             class="btn btn-default"
-                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                            unavailable-feature="true"
-                            ng-href="{{ ::viewName }}/print"
-                            hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
-                    </button>
-                    <button type="button"
-                            uib-tooltip="${message(code:'todo.is.ui.toggle.grid.list')}"
-                            ng-click="app.asList = !app.asList"
-                            class="btn btn-default">
-                        <i class="fa" ng-class="app.asList ? 'fa-th-list' : 'fa-th'"></i>
-                    </button>
-                    <button type="button"
-                            class="btn btn-default"
-                            ng-click="fullScreen()"
-                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
-                    </button>
+                            uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
+                        </button>
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="fullScreen()"
+                                uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group btn-view">
+                        <button type="button"
+                                class="btn btn-default"
+                                ng-click="toggleSelectableMultiple()"
+                                uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.multiple.disable/)}' : '${message(code: /todo.is.ui.selectable.multiple.enable/)}' }}">
+                            <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
+                        </button>
+                    </div>
+                    <a ng-if="authorizedFeature('create')"
+                       href="#/{{ ::viewName }}/new"
+                       class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
                 </div>
             </div>
         </div>
@@ -126,9 +129,9 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div class="postits {{ (isSortingFeature() ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
+            <div class="postits {{ currentPostitSize(viewName, 'grid-group') + ' ' + (isSortingFeature() ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
+                 postits-screen-size
                  ng-controller="featureCtrl"
-                 ng-class="app.asList ? 'list-group' : 'grid-group'"
                  as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!isSortingFeature()"
                  ng-model="features">

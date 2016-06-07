@@ -47,39 +47,41 @@
             ng-model="task.name"
             ng-bind-html="task.name | sanitize"></h3>
     </div>
-    <div class="tags">
-        <a ng-repeat="tag in task.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
-    </div>
-    <div class="actions">
-        <span postit-menu="task.menu.html" class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
-        <span class="action" ng-class="{'active':task.attachments.length}">
-            <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}"
-               uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
-                <i class="fa fa-paperclip"></i>
-                <span class="badge">{{ task.attachments.length || '' }}</span>
-            </a>
-        </span>
-        <span class="action" ng-class="{'active':task.comments_count}">
-            <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}/comments"
-               uib-tooltip="${message(code:'todo.is.ui.comments')}">
-                <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
-                <span class="badge">{{ task.comments_count || '' }}</span>
-            </a>
-        </span>
-        <span class="action" ng-if="authorizedTask('take', task)">
-            <a href
-               ng-click="take(task)"
-               uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.take')}">
-                <i class="fa fa-user-plus"></i>
-            </a>
-        </span>
-        <span class="action" ng-if="authorizedTask('release', task)">
-            <a href
-               ng-click="release(task)"
-               uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.unassign')}">
-                <i class="fa fa-user-times"></i>
-            </a>
-        </span>
+    <div class="footer">
+        <div class="tags">
+            <a ng-repeat="tag in task.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
+        </div>
+        <div class="actions">
+            <span postit-menu="task.menu.html" class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
+            <span class="action" ng-class="{'active':task.attachments.length}">
+                <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}"
+                   uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                    <i class="fa fa-paperclip"></i>
+                    <span class="badge">{{ task.attachments.length || '' }}</span>
+                </a>
+            </span>
+            <span class="action" ng-class="{'active':task.comments_count}">
+                <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}/comments"
+                   uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                    <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                    <span class="badge">{{ task.comments_count || '' }}</span>
+                </a>
+            </span>
+            <span class="action" ng-if="authorizedTask('take', task)">
+                <a href
+                   ng-click="take(task)"
+                   uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.take')}">
+                    <i class="fa fa-user-plus"></i>
+                </a>
+            </span>
+            <span class="action" ng-if="authorizedTask('release', task)">
+                <a href
+                   ng-click="release(task)"
+                   uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.unassign')}">
+                    <i class="fa fa-user-times"></i>
+                </a>
+            </span>
+        </div>
     </div>
 </div>
 </script>
