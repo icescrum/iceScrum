@@ -22,7 +22,7 @@
 <head>
   <title>${message(code:'todo.is.ui.401')}</title>
   <meta name='layout' content='error'/>
-  <meta http-equiv="refresh" content="3; URL=${createLink(controller: 'login', action: 'auth', params:[ref:ref])}">
+  <meta http-equiv="refresh" content="3; URL=${homeUrl}">
 </head>
 <body>
 <h1>Oops!</h1>

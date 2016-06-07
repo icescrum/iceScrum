@@ -28,36 +28,32 @@ class ErrorsController {
     def springSecurityService
 
     def error403() {
-        if (springSecurityService.isAjax(request))
+        if (springSecurityService.isAjax(request)) {
             render(status: 403, text: [error: message(code: 'is.error.denied')])
-        else{
-            render(status: 403, view: '403.gsp', model:[homeUrl:grailsApplication.config.grails.serverURL, supportEmail:grailsApplication.config.icescrum.alerts.errors.to])
+        } else {
+            render(status: 403, view: '403.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL, supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
         }
     }
 
     def error404() {
-        if (springSecurityService.isAjax(request))
+        if (springSecurityService.isAjax(request)) {
             render(status: 404)
-        else {
-            render(status: 404, view: '404.gsp', model:[homeUrl:grailsApplication.config.grails.serverURL, supportEmail:grailsApplication.config.icescrum.alerts.errors.to])
+        } else {
+            render(status: 404, view: '404.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL, supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
         }
     }
 
     def error401() {
-        if (springSecurityService.isAjax(request))
+        if (springSecurityService.isAjax(request)) {
             render(status: 401)
-        else {
-            render(status: 401, view: '401.gsp', model:[ref: params.ref])
+        } else {
+            render(status: 401, view: '401.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL])
         }
     }
 
-    def fakeError() {
+    def fakeError() {}
 
-    }
-
-    def browserNotSupported() {
-
-    }
+    def browserNotSupported() {}
 
     def database() {
         render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.database')] as JSON)
