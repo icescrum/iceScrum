@@ -28,7 +28,24 @@
             <h3 class="panel-title small-title">
                 <div class="btn-toolbar"
                      ng-controller="taskCtrl">
-                    {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
+                    <div uib-dropdown class="pull-left">
+                        <div uib-dropdown-toggle>
+                            {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i ng-if="sprints.length > 1" class="fa fa-caret-down"></i>
+                            <div class="sub-title text-muted">
+                                {{ sprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dayShorter }}
+                            </div>
+                        </div>
+                        <ul uib-dropdown-menu role="menu" class="sprints-menu">
+                            <li role="menuitem" ng-repeat="otherSprint in sprints | orderBy: 'orderNumber'">
+                                <a href="{{ openSprintUrl(otherSprint, true) }}">
+                                    <span ng-class="{'strong': otherSprint.id == sprint.id}">{{ (otherSprint | sprintName) + ' - ' + (otherSprint.state | i18n: 'SprintStates') }}</span>
+                                    <div class="sub-title text-muted">
+                                        {{ otherSprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ otherSprint.endDate | dayShorter }}
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     <a ng-if="authorizedTask('create', {sprint: sprint})"
                        ui-sref="taskBoard.task.new"
                        class="btn btn-primary pull-right">${message(code: "todo.is.ui.task.new")}</a>
@@ -76,9 +93,6 @@
                                 uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
                                 ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                         </button>
-                    </div>
-                    <div class="sub-title text-muted">
-                        {{ sprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dayShorter }}
                     </div>
                 </div>
             </h3>

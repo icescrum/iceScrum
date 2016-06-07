@@ -285,7 +285,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     };
 }]);
 
-controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'sprint', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, sprint) {
+controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'sprint', 'releases', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, sprint, releases) {
     $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
@@ -303,9 +303,9 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
     };
-    $scope.openSprintUrl = function(sprint) {
+    $scope.openSprintUrl = function(sprint, keepDetails) {
         var stateName = 'taskBoard';
-        if ($state.current.name != 'taskBoard.details') {
+        if (keepDetails && $state.current.name == 'taskBoard.details' || !keepDetails && $state.current.name != 'taskBoard.details') {
             stateName += '.details';
         }
         return $state.href(stateName, {sprintId: sprint.id});
@@ -459,6 +459,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
     $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;
+    $scope.sprints = _.find(releases, {id: sprint.parentRelease.id}).sprints;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
     $scope.taskCountByState = {};
