@@ -60,7 +60,7 @@
                 <div class="btn-group"
                      uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="caret"></i>
+                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
                     </button>
                     <ul uib-dropdown-menu template-url="task.menu.html"></ul>
                 </div>

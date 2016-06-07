@@ -72,7 +72,7 @@
                                     </a>
                                 </div>
                                 <div class="actions">
-                                    <span class="action"><a><i class="fa fa-cog"></i></a></span>
+                                    <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
                                     <span class="action" ng-class="{'active':topStory.attachments.length}">
                                         <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                             <i class="fa fa-paperclip"></i>
@@ -117,7 +117,7 @@
                         <button type="button"
                                 class="btn btn-default"
                                 uib-dropdown-toggle>
-                            <g:message code='is.dialog.acceptAs.acceptAs.title'/> <span class="caret"></span>
+                            <g:message code='is.dialog.acceptAs.acceptAs.title'/> <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu role="menu">
                             <li>

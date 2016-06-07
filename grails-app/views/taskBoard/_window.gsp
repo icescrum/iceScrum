@@ -51,7 +51,7 @@
                                 uib-tooltip="${message(code:'todo.is.ui.filters')}"
                                 type="button">
                             <span>{{ currentSprintFilter.name }}</span>
-                            <span class="caret"></span>
+                            <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu role="menu">
                             <li role="menuitem" ng-repeat="sprintFilter in sprintFilters">

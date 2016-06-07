@@ -52,7 +52,7 @@
                      ng-if="showSprintMenu()"
                      uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="caret"></i>
+                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
                     </button>
                     <ul uib-dropdown-menu class="pull-right" ng-include="'sprint.menu.html'"></ul>
                 </div>
@@ -143,7 +143,7 @@
                                 uib-tooltip="${message(code:'todo.is.ui.charts')}"
                                 type="button"
                                 uib-dropdown-toggle>
-                            <i class="fa fa-bar-chart"></i>&nbsp;<i class="caret"></i>
+                            <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu>
                             <li><a href ng-click="openChart('sprint', 'burndownRemaining', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>

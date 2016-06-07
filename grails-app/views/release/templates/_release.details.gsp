@@ -40,7 +40,7 @@
                      ng-if="showReleaseMenu()"
                      uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="caret"></i>
+                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
                     </button>
                     <ul uib-dropdown-menu class="pull-right" ng-include="'release.menu.html'"></ul>
                 </div>
@@ -142,7 +142,7 @@
                                 uib-tooltip="${message(code:'todo.is.ui.charts')}"
                                 type="button"
                                 uib-dropdown-toggle>
-                            <span class="fa fa-bar-chart"></span>&nbsp;<span class="caret"></span>
+                            <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu>
                             <li><a href ng-click="openChart('release', 'burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>

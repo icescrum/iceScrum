@@ -59,7 +59,7 @@
                         <div class="actions">
                             <span class="action">
                                 <a>
-                                    <i class="fa fa-cog"></i>
+                                    <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
                                 </a>
                             </span>
                             <span class="action">

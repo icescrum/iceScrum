@@ -39,7 +39,7 @@
                         <button class="btn btn-default"
                                 uib-dropdown-toggle type="button">
                             <span>{{ orderBy.current.name }}</span>
-                            <span class="caret"></span>
+                            <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu role="menu">
                             <li role="menuitem" ng-repeat="order in orderBy.values">
@@ -60,7 +60,7 @@
                     <button class="btn btn-default"
                             uib-dropdown-toggle
                             type="button">
-                        <i class="fa fa-download"></i>&nbsp;<span class="caret"></span>
+                        <i class="fa fa-download"></i> <i class="fa fa-caret-down"></i>
                     </button>
                     <ul uib-dropdown-menu
                         role="menu">

@@ -51,7 +51,7 @@
                     </div>
                     <div class="tags"></div>
                     <div class="actions">
-                        <span class="action"><a><i class="fa fa-cog"></i></a></span>
+                        <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
                         <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
                         <span class="action"><a><i class="fa fa-tasks"></i></a></span>
                     </div>

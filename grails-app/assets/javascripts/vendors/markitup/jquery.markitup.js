@@ -169,7 +169,7 @@
 				$.each(markupSet, function() {
 					var button = this, btn;
                     if (button.dropMenu) {
-                        btn = $('<div class="btn-group btn-group-sm"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">'+(button.icon ? '<i class="'+button.icon+'"></i>' : '')+' <span class="caret"></span></button></div>')
+                        btn = $('<div class="btn-group btn-group-sm"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">'+(button.icon ? '<i class="'+button.icon+'"></i>' : '')+' <i class="fa fa-caret-down"></i></button></div>')
                             .focusin(function(){
                                 $$.focus();
                             });

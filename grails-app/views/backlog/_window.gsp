@@ -88,7 +88,7 @@
                          uib-tooltip="${message(code:'todo.is.ui.sort')}">
                         <button class="btn btn-default" uib-dropdown-toggle type="button">
                             <span>{{ backlogContainer.orderBy.current.name }}</span>
-                            <span class="caret"></span>
+                            <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu role="menu">
                             <li role="menuitem" ng-repeat="order in backlogContainer.orderBy.values">
@@ -113,7 +113,7 @@
                     <button class="btn btn-default"
                             uib-tooltip="${message(code:'todo.is.ui.export')}"
                             uib-dropdown-toggle type="button">
-                        <i class="fa fa-download"></i>&nbsp;<span class="caret"></span>
+                        <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
                     </button>
                     <ul uib-dropdown-menu
                         role="menu">

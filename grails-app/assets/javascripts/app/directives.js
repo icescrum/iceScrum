@@ -545,7 +545,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 newElement.removeAttr('postit-menu');
                 newElement.attr('uib-dropdown', '');
                 newElement.attr('dropdown-append-to-body', '');
-                newElement.html('<a uib-dropdown-toggle><i class="fa fa-cog"></i></a><ul uib-dropdown-menu template-url="' + attrs.postitMenu + '"></ul>');
+                newElement.html('<a uib-dropdown-toggle><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a><ul uib-dropdown-menu template-url="' + attrs.postitMenu + '"></ul>');
                 element.replaceWith(angular.element($compile(newElement)(scope)));
             });
         }

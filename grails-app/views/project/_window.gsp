@@ -133,7 +133,7 @@
                                         uib-tooltip="${message(code:'todo.is.ui.charts')}"
                                         type="button"
                                         uib-dropdown-toggle>
-                                    <i class="fa fa-bar-chart"></i>&nbsp;<i class="caret"></i>
+                                    <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
                                 </button>
                                 <ul uib-dropdown-menu>
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
