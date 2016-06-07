@@ -41,7 +41,7 @@
                        typeahead-wait-ms="250"
                        typeahead-on-select="selectTeam($item, $model, $label)"
                        typeahead-template-url="select.or.create.team.html"
-                       ng-disabled="team.selected"
+                       ng-readonly="team.selected"
                        ng-model="team.name"
                        ng-required="isCurrentStep(2)">
                 <span class="input-group-addon" ng-if="teamRemovable()"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>

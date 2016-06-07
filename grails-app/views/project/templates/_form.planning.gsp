@@ -24,20 +24,6 @@
     <h4>${message(code:"todo.is.ui.project.planning")}</h4>
     <div class="row">
         <div class="form-half">
-            <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
-            <ui-select required="required"
-                       class="form-control"
-                       ng-required="isCurrentStep(4)"
-                       name="project.preferences.timezone"
-                       search-enabled="true"
-                       ng-model="project.preferences.timezone">
-                <ui-select-match placeholder="${message(code:'todo.is.ui.project.notimezone')}">{{ timezones[$select.selected] }}</ui-select-match>
-                <ui-select-choices repeat="timezoneKey in timezoneKeys | filter: $select.search">
-                    <span ng-bind-html="timezones[timezoneKey] | highlight: $select.search"></span>
-                </ui-select-choices>
-            </ui-select>
-        </div>
-        <div class="form-half">
             <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>
             <div class="input-group">
                 <span class="input-group-btn">
@@ -54,8 +40,52 @@
                        ng-required="isCurrentStep(4)"/>
             </div>
         </div>
-        <div class="form-half" ng-if="type != 'newProject'">
-            <label for="hideWeekend" class="checkbox-inline">
+        <div class="form-half">
+            <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
+            <ui-select required="required"
+                       class="form-control"
+                       ng-required="isCurrentStep(4)"
+                       name="project.preferences.timezone"
+                       search-enabled="true"
+                       ng-model="project.preferences.timezone">
+                <ui-select-match placeholder="${message(code:'todo.is.ui.project.notimezone')}">{{ timezones[$select.selected] }}</ui-select-match>
+                <ui-select-choices repeat="timezoneKey in timezoneKeys | filter: $select.search">
+                    <span ng-bind-html="timezones[timezoneKey] | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-half">
+            <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>
+            <div class="input-group">
+                <input class="form-control"
+                       type="number"
+                       name="project.preferences.estimatedSprintsDuration"
+                       id="estimatedSprintsDuration"
+                       min="2"
+                       ng-pattern="/^[0-9]+$/"
+                       ng-required="isCurrentStep(4)"
+                       ng-change="computePlanning()"
+                       ng-model="project.preferences.estimatedSprintsDuration">
+                <div class="input-group-addon">${message(code:'is.dialog.wizard.project.days')}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-half">
+            <label ng-if="type == 'newProject'"
+                   for="initializeProject"
+                   class="checkbox-inline">
+                <input type="checkbox"
+                       name="project.initialize"
+                       id="initializeProject"
+                       ng-model="project.initialize">
+                ${message(code:'todo.is.ui.project.planning.initialize')}
+            </label>
+            <label ng-if="type != 'newProject'"
+                   for="hideWeekend"
+                   class="checkbox-inline">
                 <input type="checkbox"
                        name="project.preferences.hideWeekend"
                        id="hideWeekend"
@@ -64,19 +94,8 @@
             </label>
         </div>
     </div>
-    <div class="row" ng-if="type == 'newProject'">
-        <div class="form-half">
-            <label for="initializeProject" class="checkbox-inline">
-                <input type="checkbox"
-                       name="project.initialize"
-                       id="initializeProject"
-                       ng-model="project.initialize">
-                ${message(code:'todo.is.ui.project.planning.initialize')}
-            </label>
-        </div>
-    </div>
     <div class="row" ng-if="project.initialize">
-        <div class="form-group col-md-4">
+        <div class="form-half">
             <label for="project.firstSprint">${message(code:'is.dialog.wizard.firstSprint')}</label>
             <div class="input-group">
                 <span class="input-group-btn">
@@ -95,22 +114,7 @@
                        ng-required="isCurrentStep(4)"/>
             </div>
         </div>
-        <div class="form-group col-md-4">
-            <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>
-            <div class="input-group">
-                <input class="form-control"
-                       type="number"
-                       name="project.preferences.estimatedSprintsDuration"
-                       id="estimatedSprintsDuration"
-                       min="2"
-                       ng-pattern="/^[0-9]+$/"
-                       ng-required="isCurrentStep(4)"
-                       ng-change="computePlanning()"
-                       ng-model="project.preferences.estimatedSprintsDuration">
-                <div class="input-group-addon">${message(code:'is.dialog.wizard.project.days')}</div>
-            </div>
-        </div>
-        <div class="form-group col-md-4">
+        <div class="form-half">
             <label for="project.endDate" class="text-right">${message(code:'is.dialog.wizard.project.endDate')}</label>
             <div class="input-group">
                 <input type="text"
