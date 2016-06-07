@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$scope', '$state', 'Session', 'SprintService', function($scope, $state, Session, SprintService) {
+controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', function($scope, Session, SprintService) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -51,15 +51,9 @@ controllers.controller('sprintCtrl', ['$scope', '$state', 'Session', 'SprintServ
         });
     };
     $scope['delete'] = function(sprint) {
-        SprintService.delete(sprint, $scope.release)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.deleted');
-                if($state.includes('taskBoard')){
-                    $state.go('taskBoard', {sprintId: null}, {location: 'replace'});
-                } else if($state.includes('planning')){
-                    $state.go('planning', {}, {location: 'replace'});
-                }
-            });
+        SprintService.delete(sprint, $scope.release).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+        });
     };
     // Init
     $scope.project = Session.getProject();

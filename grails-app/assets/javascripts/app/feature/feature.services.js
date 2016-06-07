@@ -38,7 +38,7 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
     crudMethods[IceScrumEventType.DELETE] = function(feature) {
         if ($state.includes("feature.details", {id: feature.id}) ||
             ($state.includes("feature.multiple") && _.includes($state.params.featureListId.split(','), feature.id.toString()))) {
-            $state.go('feature');
+            $state.go('feature', {}, {location: 'replace'});
         }
         CacheService.remove('feature', feature.id);
     };

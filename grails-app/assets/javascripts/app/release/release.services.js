@@ -37,7 +37,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     };
     crudMethods[IceScrumEventType.DELETE] = function(release) {
         if ($state.includes("planning.release.details", {releaseId: release.id})) {
-            $state.go('planning');
+            $state.go('planning', {}, {location: 'replace'});
         }
         CacheService.remove('release', release.id);
     };

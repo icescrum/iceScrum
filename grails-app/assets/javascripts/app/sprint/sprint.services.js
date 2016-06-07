@@ -36,7 +36,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     };
     crudMethods[IceScrumEventType.DELETE] = function(sprint) {
         if ($state.includes("planning.release.sprint.withId.details", {sprintId: sprint.id})) {
-            $state.go('planning.release');
+            $state.go('planning.release', {}, {location: 'replace'});
+        } else if ($state.includes('taskBoard', {sprintId: sprint.id})) {
+            $state.go('taskBoard', {sprintId: null}, {location: 'replace'});
         }
         CacheService.remove('sprint', sprint.id);
     };
