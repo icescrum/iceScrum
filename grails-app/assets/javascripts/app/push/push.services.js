@@ -46,6 +46,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             contentType: 'application/json',
             logLevel: logLevel,
             transport: 'websocket',
+            fallbackTransport: 'streaming',
             trackMessageLength: true,
             reconnectInterval: 5000,
             enableXDR: true,
@@ -79,9 +80,8 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             if (_canLog('info')) {
                 atmosphere.util.info(errorMsg);
             }
-            request.fallbackTransport = 'streaming';
             if (_canLog('debug')) {
-                atmosphere.util.debug('Default transport is WebSocket, fallback is ' + request.fallbackTransport);
+                atmosphere.util.debug('Default transport is WebSocket, fallback is ' + options.fallbackTransport);
             }
         };
 
