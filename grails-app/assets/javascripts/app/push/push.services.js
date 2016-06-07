@@ -50,6 +50,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             trackMessageLength: true,
             reconnectInterval: 5000,
             enableXDR: true,
+            headers: {"X-Atmosphere-WebSocket-Proxy": "true"},
             timeout: 60000
         };
         options.onOpen = function(response) {
