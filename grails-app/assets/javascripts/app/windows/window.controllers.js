@@ -400,6 +400,27 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             $state.go('taskBoard.story.details', {storyId: storyId});
         }
     };
+    $scope.tasksShown = function(taskState, typeOrStory) {
+        var taskLimit = 5;
+        if (taskState == TaskStatesByName.DONE && $scope.sprint.state < SprintStatesByName.DONE) {
+            if (_.isObject(typeOrStory)) {
+                var story = typeOrStory;
+                return $scope.tasksByStoryByState[story.id][taskState].length < taskLimit || $scope.tasksShownByTypeOrStory.stories[story.id];
+            } else {
+                var type = typeOrStory;
+                return $scope.tasksByTypeByState[type][taskState].length < taskLimit || $scope.tasksShownByTypeOrStory[type];
+            }
+        } else {
+            return true;
+        }
+    };
+    $scope.showTasks = function(typeOrStory, show) {
+        if (_.isObject(typeOrStory)) {
+            $scope.tasksShownByTypeOrStory.stories[typeOrStory.id] = show;
+        } else {
+            $scope.tasksShownByTypeOrStory[typeOrStory] = show;
+        }
+    };
     // Init
     var fixTaskRank = function(tasks) {
         _.each(tasks, function(task, index) {
@@ -488,4 +509,5 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             });
         }
     });
+    $scope.tasksShownByTypeOrStory = {'stories': {}};
 }]);

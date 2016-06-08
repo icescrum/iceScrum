@@ -136,13 +136,17 @@
                             is-disabled="!isSortingTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div ng-repeat="task in tasksByTypeByState[taskTypesByName.URGENT][taskState] | search"
+                                 ng-if="tasksShown(taskState, taskTypesByName.URGENT)"
                                  ng-class="{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <div ng-if="taskState == 0 && authorizedTask('create', {sprint: sprint})" class="postit-container">
+                            <div ng-if="!tasksShown(taskState, taskTypesByName.URGENT)">
+                                <button type="button" class="btn btn-default" ng-click="showTasks(taskTypesByName.URGENT, true)">Show {{ tasksByTypeByState[taskTypesByName.URGENT][taskState].length }} tasks</button>
+                            </div>
+                            <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
                                 <div class="add-task postit">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByType(taskTypesByName.URGENT)"
@@ -166,13 +170,17 @@
                             is-disabled="!isSortingTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div ng-repeat="task in tasksByTypeByState[taskTypesByName.RECURRENT][taskState] | search"
+                                 ng-if="tasksShown(taskState, taskTypesByName.RECURRENT)"
                                  ng-class="{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <div ng-if="taskState == 0 && authorizedTask('create', {sprint: sprint})" class="postit-container">
+                            <div ng-if="!tasksShown(taskState, taskTypesByName.RECURRENT)">
+                                <button type="button" class="btn btn-default" ng-click="showTasks(taskTypesByName.RECURRENT, true)">Show {{ tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length }} tasks</button>
+                            </div>
+                            <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
                                 <div class="add-task postit">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
@@ -197,13 +205,17 @@
                             is-disabled="!isSortingTaskBoard(sprint) || !isSortingStory(story)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
+                                 ng-if="tasksShown(taskState, story)"
                                  ng-class="{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <div ng-if="taskState == 0 && authorizedTask('create', {parentStory: story})" class="postit-container">
+                            <div ng-if="!tasksShown(taskState, story)">
+                                <button type="button" class="btn btn-default" ng-click="showTasks(story, true)">Show {{ tasksByStoryByState[story.id][taskState].length }} tasks</button>
+                            </div>
+                            <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="postit-container">
                                 <div class="add-task postit">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByStory(story)"
@@ -228,11 +240,15 @@
                             is-disabled="true"
                             ng-repeat="taskState in sprintTaskStates">
                             <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
+                                 ng-if="tasksShown(taskState, story)"
                                  ng-class="{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
+                            </div>
+                            <div ng-if="!tasksShown(taskState, story)">
+                                <button type="button" class="btn btn-default" ng-click="showTasks(story, true)">Show {{ tasksByStoryByState[story.id][taskState].length }} tasks</button>
                             </div>
                         </td>
                     </tr>
