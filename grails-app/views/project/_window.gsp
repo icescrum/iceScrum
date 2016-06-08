@@ -41,7 +41,7 @@
                             <div ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
                         </div>
                         <div class="col-md-4 text-right">
-                            <img ng-src="{{ user | userAvatar }}" ng-repeat="user in allMembers" height="32" width="32" class="{{ user | userColorRoles }}" uib-tooltip="{{ user | userFullName }}"">
+                            <img ng-src="{{ user | userAvatar }}" ng-repeat="user in allMembers" height="36" width="36" style="margin-left:5px;" class="{{ user | userColorRoles }}" uib-tooltip="{{ user | userFullName }}"">
                             <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
                         </div>
                     </div>
