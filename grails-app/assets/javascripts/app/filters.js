@@ -43,17 +43,17 @@ filters
         return function(user) {
             var classes = "img-circle user-role";
             var project = Session.getProject();
-            if(!project){
+            if (!project) {
                 return '';
             }
-            if(!userVisualRolesCache[project.pkey]){
+            if (!userVisualRolesCache[project.pkey]) {
                 userVisualRolesCache[project.pkey] = {};
             }
-            if(!userVisualRolesCache[project.pkey][user.id]){
-                if(_.find(project.productOwners, {id: user.id})){
+            if (!userVisualRolesCache[project.pkey][user.id]) {
+                if (_.find(project.productOwners, {id: user.id})) {
                     classes += " po";
                 }
-                if(_.find(project.team.scrumMasters, {id: user.id})){
+                if (_.find(project.team.scrumMasters, {id: user.id})) {
                     classes += " sm";
                 }
                 userVisualRolesCache[project.pkey][user.id] = classes;

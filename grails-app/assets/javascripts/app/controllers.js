@@ -121,18 +121,17 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
     $scope.fullScreen = function() {
         $scope.app.isFullScreen = !$scope.app.isFullScreen;
     };
-
+    // Postit size
     $scope.currentPostitSize = function(viewName, defaultSize) {
         var contextSizeName = viewName + 'PostitSize';
-        if(!$localStorage[contextSizeName]){
+        if (!$localStorage[contextSizeName]) {
             $localStorage[contextSizeName] = defaultSize;
         }
         return $localStorage[contextSizeName];
     };
-
     $scope.iconCurrentPostitSize = function(viewName) {
         var icon;
-        switch($scope.currentPostitSize(viewName)){
+        switch ($scope.currentPostitSize(viewName)) {
             case 'grid-group':
                 icon = 'fa-sticky-note fa-xl';
                 break;
@@ -151,10 +150,9 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
         }
         return icon;
     };
-
     $scope.setPostitSize = function(viewName) {
         var next;
-        switch($scope.currentPostitSize(viewName)){
+        switch ($scope.currentPostitSize(viewName)) {
             case 'grid-group':
                 next = 'grid-group size-sm';
                 break;
@@ -172,7 +170,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
         var contextSizeName = viewName + 'PostitSize';
         $localStorage[contextSizeName] = next;
     };
-
+    // Print
     $scope.print = function(data) {
         var url = data;
         if (angular.isObject(data)) {

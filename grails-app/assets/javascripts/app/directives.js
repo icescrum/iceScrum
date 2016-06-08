@@ -368,13 +368,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             $timeout(resizer);
         }
     };
-}])
-.directive('postitsScreenSize', ['$window', '$timeout', function($window, $timeout) {
+}]).directive('postitsScreenSize', ['$window', '$timeout', function($window, $timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
             var checkSize = function() {
-                if(element.width() <= '400'){
+                if (element.width() <= '400') {
                     element.addClass('force-size-xs');
                 } else {
                     element.removeClass('force-size-xs');
