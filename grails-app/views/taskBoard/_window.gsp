@@ -30,19 +30,25 @@
                      ng-controller="taskCtrl">
                     <div class="sprints-dropdown" uib-dropdown>
                         <div uib-dropdown-toggle>
-                            {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i ng-if="sprints.length > 1" class="fa fa-caret-down"></i>
+                            {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down"></i>
                             <div class="sub-title text-muted">
                                 {{ sprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dayShorter }}
                             </div>
                         </div>
                         <ul uib-dropdown-menu role="menu" class="sprints-menu">
-                            <li role="menuitem" ng-repeat="otherSprint in sprints | orderBy: 'orderNumber'">
-                                <a href="{{ openSprintUrl(otherSprint, true) }}">
-                                    <span ng-class="{'strong': otherSprint.id == sprint.id}">{{ (otherSprint | sprintName) + ' - ' + (otherSprint.state | i18n: 'SprintStates') }}</span>
+                            <li ng-repeat="sprintEntry in sprintEntries | orderBy: 'orderNumber'"
+                                ng-switch="sprintEntry.type"
+                                ng-class="{'divider': 'divider', 'release': 'dropdown-header'}[sprintEntry.type]">
+                                <a ng-switch-when="sprint"
+                                    href="{{ openSprintUrl(sprintEntry.item, true) }}">
+                                    <span ng-class="{'strong': sprintEntry.item.id == sprint.id}">{{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}</span>
                                     <div class="sub-title text-muted">
-                                        {{ otherSprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ otherSprint.endDate | dayShorter }}
+                                        {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
                                     </div>
                                 </a>
+                                <span ng-switch-when="release">
+                                    {{ sprintEntry.item.name }}
+                                </span>
                             </li>
                         </ul>
                     </div>

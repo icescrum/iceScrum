@@ -459,7 +459,6 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
     $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;
-    $scope.sprints = _.find(releases, {id: sprint.parentRelease.id}).sprints;
     $scope.tasksByTypeByState = {};
     $scope.tasksByStoryByState = {};
     $scope.taskCountByState = {};
@@ -475,6 +474,18 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.$watch('sprint.state', function() { // To generate the proper $scope.sprintTaskStates when changing state
         if ($scope.sprint) {
             $scope.refreshTasks();
+        }
+    });
+    $scope.sprintEntries = [];
+    _.each(_.sortBy(releases, 'orderNumber'), function(release) {
+        if (release.sprints && release.sprints.length > 0) {
+            if ($scope.sprintEntries.length > 0) {
+                $scope.sprintEntries.push({type: 'divider'});
+            }
+            $scope.sprintEntries.push({type: 'release', item: release});
+            _.each(_.sortBy(release.sprints, 'orderNumber'), function(sprint) {
+                $scope.sprintEntries.push({type: 'sprint', item: sprint})
+            });
         }
     });
 }]);

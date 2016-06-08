@@ -44,10 +44,10 @@ body {
           stroke-linecap: butt;
         }
         .loading-text {
-          font-size:16px;
-          font-weight:bold;
-          margin-left:10px;
-          padding-left:10px;
+          font-size: 16px;
+          font-weight: bold;
+          margin-left: 10px;
+          padding-left: 10px;
         }
       }
       > .container-fluid, header {
@@ -263,7 +263,7 @@ header {
       .panel  {
         margin-bottom: 0;
         position: relative;
-        > div.panel-heading{
+        > div.panel-heading {
           padding: 15px;
         }
         > div.panel-body {
@@ -323,7 +323,7 @@ header {
           }
           .right-title {
             .btn-default {
-              position:relative;
+              position: relative;
             }
             .badge {
               top: 15px;
@@ -334,10 +334,10 @@ header {
               border-left: none;
             }
             li:last-of-type a {
-              border-right:none;
+              border-right: none;
             }
             li > a {
-              border-radius:0;
+              border-radius: 0;
             }
           }
         }
@@ -754,13 +754,13 @@ table {
         }
       }
       td {
-        padding:4px;
+        padding: 4px;
         &.list-group {
           padding: 0;
         }
       }
       .sticky-header.cloned > td {
-        padding-top:4px;
+        padding-top: 4px;
       }
       tbody:last-of-type tr:last-of-type td {
         border-bottom: none;
@@ -787,10 +787,10 @@ table {
   }
 
   .widget-quickProjects {
-    border:none;
+    border: none;
     background: none;
     .panel-body {
-      padding-bottom:0;
+      padding-bottom: 0;
       hr {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -883,9 +883,9 @@ table {
       height: 100px;
       width: 100%;
       display: block;
-      border:2px solid transparent;
+      border: 2px solid transparent;
       &.current {
-        border-color:@brand-primary;
+        border-color: @brand-primary;
       }
     }
   }
@@ -973,19 +973,23 @@ form .has-error .help-block {
   padding: 2px 5px;
 }
 
-.sprints-dropdown{
+.sprints-dropdown {
   margin-left: 5px;
   margin-right: 20px;
-  float:left;
+  float: left;
   .fa-caret-down {
     position: absolute;
     right: -20px;
     top: 7px;
   }
-  > ul.dropdown-menu > li > a {
-    line-height: 16.5px;
-    font-size: 15px;
-    padding: 3px 12px;
+  > ul.dropdown-menu {
+    max-height: 400px;
+    overflow-x: hidden;
+    > li > a {
+      line-height: 16.5px;
+      font-size: 15px;
+      padding: 3px 12px;
+    }
   }
 }
 
