@@ -335,6 +335,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         if (cachedItem) {
             _.merge(cachedItem, item);
             newItem = cachedItem;
+            if(item.hasOwnProperty('tags')){
+                newItem.tags = item.tags;
+            }
         } else {
             newItem = item;
         }
