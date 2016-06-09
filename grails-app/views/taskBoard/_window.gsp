@@ -128,7 +128,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') +' '+ (tasksShown(taskState, taskTypesByName.URGENT) ? '' : 'hide-tasks')}}"
+                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') +' '+ (tasksShown(taskState, taskTypesByName.URGENT) ? '' : 'show-tasks')}}"
                             postits-screen-size
                             ng-model="tasksByTypeByState[taskTypesByName.URGENT][taskState]"
                             ng-init="taskType = taskTypesByName.URGENT"
@@ -143,7 +143,12 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <button type="button" ng-if="!tasksShown(taskState, taskTypesByName.URGENT)" class="btn btn-default vertical-align horizontal-align"  ng-click="showTasks(taskTypesByName.URGENT, true)">Show {{ tasksByTypeByState[taskTypesByName.URGENT][taskState].length }} tasks</button>
+                            <button type="button" ng-if="!tasksShown(taskState, taskTypesByName.URGENT)" class="btn btn-default"  ng-click="showTasks(taskTypesByName.URGENT, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}</button>
+                            <div ng-if="tasksHidden(taskState, taskTypesByName.URGENT)" class="postit-container">
+                                <div class="hide-tasks postit">
+                                    <button type="button" class="btn btn-default" ng-click="showTasks(taskTypesByName.URGENT, false)">{{ message('todo.is.ui.task.hideDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}</button>
+                                </div>
+                            </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
                                 <div class="add-task postit">
                                     <a class="btn btn-primary"
@@ -160,7 +165,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') +' '+ (tasksShown(taskState, taskTypesByName.RECURRENT) ? '' : 'hide-tasks')}}"
+                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') +' '+ (tasksShown(taskState, taskTypesByName.RECURRENT) ? '' : 'show-tasks')}}"
                             postits-screen-size
                             ng-model="tasksByTypeByState[taskTypesByName.RECURRENT][taskState]"
                             ng-init="taskType = taskTypesByName.RECURRENT"
@@ -175,7 +180,12 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <button type="button" ng-if="!tasksShown(taskState, taskTypesByName.RECURRENT)" class="btn btn-default vertical-align horizontal-align" ng-click="showTasks(taskTypesByName.RECURRENT, true)">Show {{ tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length }} tasks</button>
+                            <button type="button" ng-if="!tasksShown(taskState, taskTypesByName.RECURRENT)" class="btn btn-default" ng-click="showTasks(taskTypesByName.RECURRENT, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}</button>
+                            <div ng-if="tasksHidden(taskState, taskTypesByName.RECURRENT)" class="postit-container">
+                                <div class="hide-tasks postit">
+                                    <button type="button" class="btn btn-default" ng-click="showTasks(taskTypesByName.RECURRENT, false)">{{ message('todo.is.ui.task.hideDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}</button>
+                                </div>
+                            </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
                                 <div class="add-task postit">
                                     <a class="btn btn-primary"
@@ -194,7 +204,7 @@
                         </td>
                     </tr>
                     <tr ng-class="{'sortable-disabled': !isSortingStory(story)}" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
-                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') +' '+ (tasksShown(taskState, story) ? '' : 'hide-tasks') }}"
+                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') +' '+ (tasksShown(taskState, story) ? '' : 'show-tasks') }}"
                             postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
@@ -208,7 +218,12 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <button type="button" ng-if="!tasksShown(taskState, story)" class="btn btn-default vertical-align horizontal-align" ng-click="showTasks(story, true)">Show {{ tasksByStoryByState[story.id][taskState].length }} tasks</button>
+                            <button type="button" ng-if="!tasksShown(taskState, story)" class="btn btn-default" ng-click="showTasks(story, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}</button>
+                            <div ng-if="tasksHidden(taskState, story)" class="postit-container">
+                                <div class="hide-tasks postit">
+                                    <button type="button" class="btn btn-default" ng-click="showTasks(story, false)">{{ message('todo.is.ui.task.hideDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}</button>
+                                </div>
+                            </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="postit-container">
                                 <div class="add-task postit">
                                     <a class="btn btn-primary"
@@ -227,7 +242,7 @@
                         </td>
                     </tr>
                     <tr class="sortable-disabled" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
-                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') +' '+ (tasksShown(taskState, story) ? '' : 'hide-tasks')}}"
+                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group') +' '+ (tasksShown(taskState, story) ? '' : 'show-tasks')}}"
                             postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable
@@ -241,7 +256,12 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <button type="button" class="btn btn-default vertical-align horizontal-align" ng-if="!tasksShown(taskState, story)" ng-click="showTasks(story, true)">Show {{ tasksByStoryByState[story.id][taskState].length }} tasks</button>
+                            <button type="button" class="btn btn-default" ng-if="!tasksShown(taskState, story)" ng-click="showTasks(story, true)"><g:message code="todo.is.ui.task.showDoneTasks"/> ({{ tasksByStoryByState[story.id][taskState].length }})</button>
+                            <div ng-if="tasksHidden(taskState, story)" class="postit-container">
+                                <div class="hide-tasks postit">
+                                    <button type="button" class="btn btn-default" ng-click="showTasks(story, false)">{{ message('todo.is.ui.task.hideDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}</button>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
