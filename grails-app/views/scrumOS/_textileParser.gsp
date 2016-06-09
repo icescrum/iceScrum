@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -21,11 +21,9 @@
 --}%
 <html>
 <head>
-  <r:use module="app-css"/>
-  <r:layoutResources/>
+  <asset:stylesheet src="application.css"/>
 </head>
 <body style="background:none;overflow-y:auto;">
     <div class="rich-content"><wikitext:renderHtml markup="Textile">${params.data}</wikitext:renderHtml></div>
-<r:layoutResources/>
 </body>
 </html>

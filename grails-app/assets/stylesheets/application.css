@@ -1,0 +1,43 @@
+/**
+- Copyright (c) 2014 Kagilum SAS.
+-
+- This file is part of iceScrum.
+-
+- iceScrum is free software: you can redistribute it and/or modify
+- it under the terms of the GNU Affero General Public License as published by
+- the Free Software Foundation, either version 3 of the License.
+-
+- iceScrum is distributed in the hope that it will be useful,
+- but WITHOUT ANY WARRANTY; without even the implied warranty of
+- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Affero General Public License
+- along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+-
+- Authors:
+-
+- Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
+**/
+
+/*
+*= encoding          UTF-8
+
+*= require           vendors/bootstrap/less/bootstrap.less
+*= require           vendors/todc/less/todc-bootstrap.less
+*= require           vendors/bootstrap/bootstrap.offcanvas.min.css
+
+*= require           vendors/select2/jquery.select2.css
+*= require_full_tree vendors/select2
+
+*= require_full_tree vendors/jquery
+*= require_full_tree vendors/font-awesome
+*= require_full_tree vendors/angular
+*= require_full_tree vendors/d3
+*= require_full_tree app
+
+Plugins probably need to come after all to override standard style
+(by default plugins are scanned AFTER the app)
+*= require_full_tree plugins
+*/

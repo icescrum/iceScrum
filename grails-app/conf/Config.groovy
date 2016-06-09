@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2016 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,129 +18,268 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
- * Manuarii Stein (manuarii.stein@icescrum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
+
+import grails.util.Holders
+import grails.util.Metadata
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
-import org.icescrum.core.support.ApplicationSupport
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
+import org.icescrum.core.domain.AcceptanceTest
+import org.icescrum.core.domain.Activity
+import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.PlanningPokerGame
+import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.User
+import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.web.JQueryProvider
 
-/*
- Public URL
-*/
-grails.serverURL = "http://localhost:8080/${appName}"
+import javax.naming.InitialContext
 
-/*
-Administration section
- */
+
+
+/* Public URL */
+grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http') ?: '8080'}/${appName}"
+
+/* Administration */
+icescrum.feed.default.url = "https://www.icescrum.com/blog/feed/"
+icescrum.feed.default.title = "iceScrum Blog"
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = true
-
+icescrum.invitation.enable = false
 icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = true
 icescrum.alerts.default.from = "webmaster@icescrum.org"
 icescrum.alerts.emailPerAccount = false
-
 icescrum.attachments.enable = true
 icescrum.alerts.errors.to = "dev@icescrum.org"
-icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
+icescrum.gravatar.enable = true
 
+/* Server TimeZone */
+try {
+    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.timezone.default")
+    if (extConfFile) {
+        icescrum.timezone.default = extConfFile;
+    }
+} catch (Exception e) {
+    icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
+}
 println "Server Timezone : ${icescrum.timezone.default}"
 
-/*
-Project administration section
- */
+/* Project administration */
 icescrum.project.import.enable = true
 icescrum.project.export.enable = true
 icescrum.project.creation.enable = true
 icescrum.project.private.enable = true
+icescrum.project.private.default = false
 
-/*
-  IceScrum css theme
- */
-icescrum.theme = 'is'
-icescrum.gravatar.secure = false
-icescrum.gravatar.enable = false
+/* iceScrum base dir */
+try {
+    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.basedir")
+    if (extConfFile) {
+        icescrum.baseDir = extConfFile;
+    }
+} catch (Exception e) {
+    icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
+}
 
-/*
-  IceScrum base dir
-*/
-icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
-
-/*
-Autofollowing
- */
+/* Autofollowing */
 icescrum.auto_follow_productowner = true
 icescrum.auto_follow_stakeholder  = true
 icescrum.auto_follow_scrummaster  = true
 
-/*  Mail section  */
+/*  Mail */
 /*grails.mail.host = "smtp.gmail.com"
 grails.mail.port = 465
 grails.mail.username = "username@gmail.com"
 grails.mail.password = ""
 grails.mail.props = ["mail.smtp.auth":"true",
-        "mail.smtp.socketFactory.port":"465",
-        "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-        "mail.smtp.socketFactory.fallback":"false"]*/
+                     "mail.smtp.socketFactory.port":"465",
+                     "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+                     "mail.smtp.socketFactory.fallback":"false"]*/
 
+/* Push */
+icescrum.push.enable = true
 
-/*
-  Push section
- */
-icescrum.marshaller = [
-        product: [exclude:['cliches']],
-        actor:[include:['totalAttachments']],
-        task:[include:['totalAttachments','totalComments'], includeShort:['sprint']],
-        feature:[include:['totalAttachments','countDoneStories','state','effort'],
-                 asShort:['color', 'name']],
-        story:[include:['totalAttachments','totalComments','tasks', 'testState'],
-               asShort:['state', 'effort','uid']],
-        sprint:[include:['activable','totalRemaining'],
-                exclude:['cliches'],
-                asShort:['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable']],
-        release:[asShort:['name', 'state', 'endDate', 'startDate', 'orderNumber'],
-                exclude:['cliches']
+icescrum.resourceBundles = [
+        featureTypes: [
+                (Feature.TYPE_FUNCTIONAL): 'is.feature.type.functional',
+                (Feature.TYPE_ARCHITECTURAL): 'is.feature.type.architectural'
         ],
-        user:[asShort:['firstName', 'lastName']],
-        productpreferences:[asShort:['displayRecurrentTasks','displayUrgentTasks','hidden','limitUrgentTasks','assignOnBeginTask']],
-        attachment:[include: ['filename']],
-        acceptancetest:[asShort:['state']]
+        featureStates: [
+                (Feature.STATE_WAIT): 'is.feature.state.wait',
+                (Feature.STATE_BUSY): 'is.feature.state.inprogress',
+                (Feature.STATE_DONE): 'is.feature.state.done'
+        ],
+        storyStates: [
+                (Story.STATE_SUGGESTED): 'is.story.state.suggested',
+                (Story.STATE_ACCEPTED): 'is.story.state.accepted',
+                (Story.STATE_ESTIMATED): 'is.story.state.estimated',
+                (Story.STATE_PLANNED): 'is.story.state.planned',
+                (Story.STATE_INPROGRESS): 'is.story.state.inprogress',
+                (Story.STATE_DONE): 'is.story.state.done'
+        ],
+        storyTypes: [
+                (Story.TYPE_USER_STORY): 'is.story.type.story',
+                (Story.TYPE_DEFECT): 'is.story.type.defect',
+                (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
+        ],
+        releaseStates: [
+                (Release.STATE_WAIT): 'is.release.state.wait',
+                (Release.STATE_INPROGRESS): 'is.release.state.inprogress',
+                (Release.STATE_DONE): 'is.release.state.done'
+        ],
+        sprintStates: [
+                (Sprint.STATE_WAIT): 'is.sprint.state.wait',
+                (Sprint.STATE_INPROGRESS): 'is.sprint.state.inprogress',
+                (Sprint.STATE_DONE): 'is.sprint.state.done'
+        ],
+        taskStates: [
+                (Task.STATE_WAIT): 'is.task.state.wait',
+                (Task.STATE_BUSY): 'is.task.state.inprogress',
+                (Task.STATE_DONE): 'is.task.state.done'
+        ],
+        taskTypes: [
+                (Task.TYPE_RECURRENT) : 'is.task.type.recurrent',
+                (Task.TYPE_URGENT) : 'is.task.type.urgent'
+        ],
+        roles: [
+                (Authority.MEMBER): 'is.role.teamMember',
+                (Authority.SCRUMMASTER): 'is.role.scrumMaster',
+                (Authority.PRODUCTOWNER): 'is.role.productOwner',
+                (Authority.STAKEHOLDER): 'is.role.stakeHolder',
+                (Authority.PO_AND_SM): 'is.role.poAndSm'
+        ],
+        planningPokerGameSuites: [
+                (PlanningPokerGame.FIBO_SUITE): 'is.estimationSuite.fibonacci',
+                (PlanningPokerGame.INTEGER_SUITE): 'is.estimationSuite.integer',
+                (PlanningPokerGame.CUSTOM_SUITE): 'is.estimationSuite.custom',
+        ],
+        acceptanceTestStates: [
+                (AcceptanceTest.AcceptanceTestState.TOCHECK.id): 'is.acceptanceTest.state.tocheck',
+                (AcceptanceTest.AcceptanceTestState.FAILED.id): 'is.acceptanceTest.state.failed',
+                (AcceptanceTest.AcceptanceTestState.SUCCESS.id): 'is.acceptanceTest.state.success'
+        ]
 ]
 
-icescrum.restMarshaller = [
-        //global exclude
-        exclude:['dateCreated','totalAttachments','totalComments'],
-        story:[exclude:['origin','backlog','value'], include: ['tags', 'dependences', 'testState','comments']],
-        feature: [exclude: ['parentDomain','backlog'],include: ['tags']],
-        actor: [exclude: ['backlog'],include: ['tags']],
-        task:[exclude:['impediment'],include: ['tags','comments']],
-        product:[exclude: ['domains','impediments','goal','cliches','duration']],
-        sprint:[exclude: ['description','cliches','duration']],
-        release:[exclude: ['description','cliches','duration']],
-        team:[exclude: ['velocity','description','preferences']],
-        user: [exclude: ['password','accountExpired','accountLocked','passwordExpired','teams']]
+//remove total*
+icescrum.marshaller = [
+        story: [include: ['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed', 'countDoneTasks'],
+                includeCount: ['comments'],
+                textile: ['notes'],
+                asShort: ['state', 'effort', 'uid', 'name', 'rank']],
+        comment: [textile: ['body'], include: ['poster']],
+        product: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
+                  exclude: ['cliches'],
+                  textile: ['description']],
+        team: [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
+        task: [exclude: ['impediment', 'participants'],
+               textile: ['notes'],
+               includeCount: ['comments'],
+               include: ['tags', 'attachments', 'sprint']],
+        user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired'],
+               asShort: ['firstName', 'lastName']],
+        actor: [include: ['tags', 'attachments'],
+                withIds: ['stories']],
+        feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'attachments', 'inProgressDate', 'doneDate'],
+                  withIds: ['stories'],
+                  textile: ['notes'],
+                  asShort: ['color', 'name']],
+        sprint: [include: ['activable', 'totalRemaining', 'duration', 'attachments'],
+                 exclude: ['cliches'],
+                 withIds: ['stories'],
+                 textile: ['retrospective', 'doneDefinition'],
+                 asShort: ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName', 'deliveredVersion']],
+        release: [include: ['duration', 'closable', 'activable', 'attachments'],
+                  textile: ['vision'],
+                  asShort: ['name', 'state', 'endDate', 'startDate', 'orderNumber'],
+                  exclude: ['cliches']
+        ],
+        backlog: [include: ['count', 'isDefault'],
+                  textile: ['notes']],
+        activity: [include: ['important']],
+        userpreferences: [asShort: ['activity', 'language', 'emailsSettings', 'filterTask']],
+        productpreferences: [asShort: ['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
+                                       'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
+        attachment: [include: ['filename']],
+        acceptancetest: [textile: ['description'], asShort: ['state']]
 ]
 
-/* CORS Section */
+icescrum.activities.important = [Activity.CODE_SAVE, 'acceptAs', 'estimate', 'plan', 'unPlan', 'done', 'unDone', 'returnToSandbox']
+
+/* Assets */
+grails.assets.less.compile = 'less4j'
+grails.assets.excludes = ["**/*.less"]
+grails.assets.includes = ["styles.less"]
+grails.assets.plugin."commentable".excludes = ["**/*"]
+grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
+
+/* CORS */
 icescrum.cors.enable = true
 icescrum.cors.url.pattern = '/ws/*'
 
-/*
-    Check for update
-*/
+/* Check for update */
 icescrum.check.enable   = true
-icescrum.check.url      = 'http://www.icescrum.org'
-icescrum.check.path     = 'check.php'
+icescrum.check.url      = 'https://www.icescrum.com'
+icescrum.check.path     = 'wc-api/v2/kagilum/version'
 icescrum.check.interval = 1440 //in minutes (24h)
 icescrum.check.timeout  = 5000
 
-//Array for visual & catched errors
+/* Array for visual & catched errors */
 icescrum.errors = []
+
+/* Contexts */
+icescrum {
+    contexts {
+        product {
+            contextClass = Product
+            config = { product -> [key: product.pkey, path: 'p'] }
+            params = { product -> [product: product.id] }
+            indexScrumOS = { productContext, user, securityService, springSecurityService ->
+                def product = productContext.object
+                if (product?.preferences?.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product, springSecurityService.authentication, false)) {
+                    forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
+                    return
+                }
+
+                if (product && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProductOpened != product.pkey) {
+                    user.preferences.lastProductOpened = product.pkey
+                    user.save()
+                }
+            }
+            contextScope = [
+                charts: [
+                    project: [
+                        [id:'burnup', name:'is.ui.project.charts.productBurnup'],
+                        [id:'burndown', name:'is.ui.project.charts.productBurndown'],
+                        [id:'velocity', name:'is.ui.project.charts.productVelocity'],
+                        [id:'parkingLot', name:'is.ui.project.charts.productParkingLot'],
+                        [id:'flowCumulative', name:'is.ui.project.charts.productCumulativeFlow'],
+                        [id:'velocityCapacity', name:'is.ui.project.charts.productVelocityCapacity'],
+                    ],
+                    release: [
+                        [id:'burndown', name:'is.chart.releaseBurndown'],
+                        [id:'parkingLot', name:'is.chart.releaseParkingLot'],
+                    ],
+                    sprint: [
+                        [id:'burnupTasks', name:'is.ui.sprintPlan.charts.sprintBurnupTasksChart'],
+                        [id:'burnupPoints', name:'is.ui.sprintPlan.charts.sprintBurnupPointsChart'],
+                        [id:'burnupStories', name:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart'],
+                        [id:'burndownRemaining', name:'is.ui.sprintPlan.charts.sprintBurndownRemainingChart']
+                    ]
+                ]
+            ]
+        }
+    }
+}
+
 /*
  Attachmentable section
  */
@@ -158,14 +297,13 @@ grails.attachmentable.taskDir = {
 }
 
 grails.taggable.preserve.case = true
-/*
-  Default grails config
- */
 
+/* Default grails config */
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
-grails.mime.use.accept.header = false
-grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
+grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident'] // experiment
+grails.mime.types = [
+        html: ['text/html', 'application/xhtml+xml'],
         xml: ['text/xml', 'application/xml'],
         text: 'text/plain',
         js: 'text/javascript',
@@ -183,6 +321,8 @@ grails.mime.types = [html: ['text/html', 'application/xhtml+xml'],
 grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"
 grails.converters.encoding = "UTF-8"
+
+grails.controllers.defaultScope = 'singleton' // big experiment
 
 // enable Sitemesh preprocessing of GSP pages
 grails.views.gsp.sitemesh.preprocess = true
@@ -204,7 +344,6 @@ environments {
         icescrum.debug.enable = true
         grails.entryPoints.debug = false
         grails.tomcat.nio = true
-        //grails.resources.debug=true
     }
     test {
         icescrum.debug.enable = true
@@ -218,10 +357,24 @@ environments {
     }
 }
 
+grails.cache.config = {
+    cache {
+        name 'feed'
+        timeToLiveSeconds 120
+    }
+}
+
 icescrum.securitydebug.enable = false
 
-// log4j configuration
-icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
+/* log4j configuration */
+try {
+    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.log.dir")
+    if (extConfFile) {
+        icescrum.log.dir = extConfFile;
+    }
+} catch (Exception e) {
+    icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
+}
 println "log dir : ${icescrum.log.dir}"
 
 log4j = {
@@ -241,56 +394,53 @@ log4j = {
           'org.springframework',
           'org.hibernate',
           'net.sf.ehcache.hibernate'
+          // 'grails.plugin.springsecurity'
 
     warn  'org.mortbay.log'
+    warn  'org.atmosphere.cpr'
 
-    if (grails.entryPoints.debug) {
+    if (Holders.config.grails.entryPoints.debug) {
         debug 'org.icescrum.plugins.entryPoints'
     }
 
-    if (ApplicationSupport.booleanValue(icescrum.debug.enable)) {
-        debug 'grails.app.service.org.icescrum'
-        debug 'grails.app.controller.org.icescrum'
+    if (ApplicationSupport.booleanValue(Holders.config.icescrum.debug.enable)) {
+        debug "org.grails.plugins.atmosphere_meteor"
+        debug 'grails.app.controllers.org.icescrum'
+        debug 'grails.app.controllers.com.kagilum'
+        debug 'grails.app.services.org.icescrum'
+        debug 'grails.app.services.com.kagilum'
         debug 'grails.app.domain.org.icescrum'
-        debug 'grails.app.org.icescrum'
-        debug 'org.icescrum.cache'
-        debug 'org.icescrum.core'
-        debug 'org.icescrum.plugins'
-        debug 'org.icescrum.plugins.chat'
-        debug 'net.sf.jasperreports'
-        debug 'grails.app.service.com.kagilum'
-        debug 'grails.app.controller.com.kagilum'
         debug 'grails.app.domain.com.kagilum'
-        debug 'com.kagilum'
+        debug 'org.icescrum.plugins.chat'
         debug 'org.icescrum.atmosphere'
+        debug 'grails.app.org.icescrum'
+        debug 'org.icescrum.plugins'
+        debug 'net.sf.jasperreports'
+        debug 'org.icescrum.core'
         debug 'org.atmosphere'
-        /*debug 'grails.plugin.springcache' */
-    }else{
-        off 'grails.plugin.springcache'
+        debug 'com.kagilum'
     }
 
-    if (ApplicationSupport.booleanValue(icescrum.securitydebug.enable)) {
+    if (ApplicationSupport.booleanValue(Holders.config.icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
-        /* debug 'org.codehaus.groovy.grails.plugins.springsecurity',
-                'grails.plugins.springsecurity'*/
     }
 
     appenders {
         appender new DailyRollingFileAppender(name: "icescrumFileLog",
-                fileName: "${icescrum.log.dir}/${appName}.log",
+                fileName: "${Holders.config.icescrum.log.dir}/${Metadata.current.'app.name'}.log",
                 datePattern: "'.'yyyy-MM-dd",
                 layout: logLayoutPattern
         )
 
-        rollingFile name: "stacktrace", maxFileSize: 1024, file: "${icescrum.log.dir}/stacktrace.log"
+        rollingFile name: "stacktrace", maxFileSize: 1024, file: "${Holders.config.icescrum.log.dir}/stacktrace.log"
     }
 
     root {
-        if (ApplicationSupport.booleanValue(icescrum.debug.enable)) {
+        if (ApplicationSupport.booleanValue(Holders.config.icescrum.debug.enable)) {
             debug 'stdout', 'icescrumFileLog'
             error 'stdout', 'icescrumFileLog'
             info 'stdout', 'icescrumFileLog'
-        }else{
+        } else {
             debug 'icescrumFileLog'
             error 'icescrumFileLog'
             info 'icescrumFileLog'
@@ -302,35 +452,28 @@ log4j = {
     off 'org.codehaus.groovy.grails.web.converters.XMLParsingParameterCreationListener'
 }
 
-modulesResources = []
-
-/*
-
- CACHE SECTION
-
- */
-
-springcache {
-    defaults {
-        timeToLive = 432000
-        timeToIdle = 0
-    }
-    caches {
-        applicationCache {
-            eternal = true
-        }
-    }
-}
-
-/*
-
-SECURITY SECTION
-
-*/
-
+/* Security */
 grails {
-    plugins {
+    plugin {
         springsecurity {
+            password.algorithm = 'SHA-256'
+            password.hash.iterations = 1
+
+            rejectIfNoRule = false
+            fii.rejectPublicInvocations = true
+            controllerAnnotations.staticRules = [
+                    //app controllers rules
+                    '/stream/app/**' : ['permitAll'],
+                    '/scrumOS/**'    : ['permitAll'],
+                    '/user/**'       : ['permitAll'],
+                    '/errors/**'     : ['permitAll'],
+                    '/assets/**'     : ['permitAll'],
+                    '/**/js/**'      : ['permitAll'],
+                    '/**/css/**'     : ['permitAll'],
+                    '/**/images/**'  : ['permitAll'],
+                    '/**/favicon.ico': ['permitAll']
+            ]
+
             userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
             userLookup.authorityJoinClassName = 'org.icescrum.core.domain.security.UserAuthority'
             authority.className = 'org.icescrum.core.domain.security.Authority'
@@ -340,35 +483,37 @@ grails {
             basic.realmName = "iceScrum authentication for REST API"
             filterChain.chainMap = [
                     '/ws/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
-                    '/**': 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+                    '/**'   : 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
             ]
 
             auth.loginFormUrl = '/login'
 
             rememberMe {
                 cookieName = 'iceScrum'
-                key = 'twelveMe'
+                key = 'VincNicoJuShazam'
             }
 
             useRunAs = true
-            runAs.key = 'tw3lv3Scrum!'
+            runAs.key = 'VincNicoJuShazam!'
             acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
             ldap.authorities.retrieveGroupRoles = false
             ldap.authorities.groupSearchFilter = ""
             ldap.authorities.groupSearchBase = ""
-            ldap.active=false
+            ldap.active = false
+
+            useSecurityEventListener = true
+            onInteractiveAuthenticationSuccessEvent = { e, appCtx ->
+                User.withTransaction {
+                    def user = User.lock(e.authentication.principal.id)
+                    user.lastLogin = new Date()
+                    user.save(flush: true)
+                }
+            }
         }
     }
 }
 
-/*
-
-CLIENT MODULES SECTION
-
-*/
-grails.resources.caching.excludes = ['js/timeline**/*.js']
-grails.resources.zip.excludes = ['/**/*.png', '/**/*.gif', '/**/*.jpg', '/**/*.gz']
-
+/* User config */
 environments {
     production {
         if (!grails.config.locations || !(grails.config.locations instanceof List)) {
@@ -395,14 +540,19 @@ environments {
         else if (new File("${userHome}${File.separator}.grails${File.separator}${appName}.properties").exists()) {
             println "*** User defined config: file:${userHome}${File.separator}.grails${File.separator}${appName}.properties. ***"
             grails.config.locations = ["file:${userHome}${File.separator}.grails${File.separator}${appName}.properties"]
-        }
-        else if (new File("${userHome}${File.separator}.icescrum${File.separator}config.groovy").exists()) {
+        } else if (new File("${userHome}${File.separator}.icescrum${File.separator}config.groovy").exists()) {
             println "*** iceScrum home defined config: file:${userHome}${File.separator}.icescrum${File.separator}config.groovy. ***"
             grails.config.locations = ["file:${userHome}${File.separator}.icescrum${File.separator}config.groovy"]
-        }
-        else {
+        } else {
             println "*** No external configuration file defined (${ApplicationSupport.CONFIG_ENV_NAME}). ***"
         }
+        try {
+            String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum_config_location") ?: (String) new InitialContext().lookup("java:comp/env/icescrum.config.location")
+            if (extConfFile) {
+                grails.config.locations << extConfFile
+                println "*** JNDI defined config: file:${extConfFile}"
+            }
+        } catch (Exception e) {}
         println "(*) grails.config.locations = ${grails.config.locations}"
         println "--------------------------------------------------------"
     }
@@ -410,3 +560,28 @@ environments {
 
 JavascriptTagLib.LIBRARY_MAPPINGS.jquery = ["jquery/jquery-${jQueryVersion}.min"]
 JavascriptTagLib.PROVIDER_MAPPINGS.jquery = JQueryProvider.class
+
+
+//cache config
+def uniqueCacheManagerName = appName + "-EhCacheManager-" + System.currentTimeMillis()
+grails {
+    cache {
+        order = 2000 // higher than default (1000) and plugins, usually 1500
+        enabled = true
+        clearAtStartup = true // reset caches when redeploying
+        ehcache {
+            cacheManagerName = uniqueCacheManagerName
+        }
+        config = {
+            provider {
+                // unique name when configuring caches
+                name uniqueCacheManagerName
+            }
+        }
+    }
+}
+beans {
+    cacheManager {
+        shared = true
+    }
+}

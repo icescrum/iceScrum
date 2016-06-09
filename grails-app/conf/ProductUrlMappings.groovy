@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum.
  *
  * This file is part of iceScrum.
  *
@@ -18,26 +18,20 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
 class ProductUrlMappings {
+
     static mappings = {
 
-        "/p/$product/finder" {
-            controller = 'finder'
+        "/p/$product/search" {
+            controller = 'search'
             action = 'index'
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
         }
-
-        "/p/textileParser" {
-            controller = 'scrumOS'
-            action = 'textileParser'
-        }
-
-
         name baseUrlProduct: "/p/$product/" {
             controller = 'scrumOS'
             action = 'index'
@@ -45,74 +39,20 @@ class ProductUrlMappings {
                 product(matches: /[0-9A-Z]*/)
             }
         }
-
-
-        name shortURL: "/p/$product-$id/" {
-            controller = 'story'
-            action = 'shortURL'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                id(matches: /[0-9]*/)
-            }
-        }
-
-        name shortURLTASK: "/p/$product-T$id/" {
-            controller = 'task'
-            action = 'shortURL'
-            constraints {
-                product(matches: /[0-9A-Z]*/)
-                id(matches: /[0-9]*/)
-            }
-        }
-
-        name profile: "/profile/$id/" {
-            controller = 'user'
-            action = 'profileURL'
-            constraints {
-                id(matches: /[a-zA-Z0-9]*/)
-            }
-        }
-
-        "/$action/user/$actionWindow/$id" {
+        // Scrum OS & generic
+        "/p/$product/ui/window/$windowDefinitionId" {
             controller = 'scrumOS'
-            window = 'user'
+            action = 'window'
             constraints {
-                actionWindow(matches: /[a-zA-Z]*/)
-                action(matches: /[a-zA-Z]*/)
+                windowDefinitionId(matches: /[a-zA-Z]*/)
             }
         }
-
-        "/p/$product/$action/$window?/$actionWindow?/$id?" {
-            controller = 'scrumOS'
-            constraints {
-                actionWindow(matches: /[a-zA-Z]*/)
-                product(matches: /[0-9A-Z]*/)
-            }
-        }
-
-        "/p/$product/$action/$window?/$id/$actionWindow?/$subid?" {
-            controller = 'scrumOS'
-            constraints {
-                actionWindow(matches: /[a-zA-Z]*/)
-                product(matches: /[0-9A-Z]*/)
-            }
-        }
-
-        "/p/$product/$action/$window?/$id?" {
-            controller = 'scrumOS'
-            constraints {
-                id(matches: /\d*/)
-                product(matches: /[0-9A-Z]*/)
-            }
-        }
-
         "/p/$product/$controller/$id?" {
             constraints {
                 id(matches: /\d*/)
                 product(matches: /[0-9A-Z]*/)
             }
         }
-
         "/p/$product/$controller/$id?/$action?/$subid?" {
             constraints {
                 product(matches: /[0-9A-Z]*/)
@@ -120,10 +60,251 @@ class ProductUrlMappings {
                 subid(matches: /\d*/)
             }
         }
-
         name urlProduct: "/p/$product/$controller/$action?/$id?/$type?" {
             constraints {
                 product(matches: /[0-9A-Z]*/)
+            }
+        }
+        // new way to handle requests (REST Style)
+        "/p/$product/$controller/print/$format?" {
+            action = 'print'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                format(matches: /[0-9A-Z]*/)
+            }
+        }
+        // Task
+        "/p/$product/task" {
+            controller = 'task'
+            action = [POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/task/$id" {
+            controller = 'task'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+        "/p/$product/task/$id/$action" {
+            controller = 'task'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+        "/p/$product/task/$type/$id" {
+            controller = 'task'
+            action = [GET: "index"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+                type(inList: ['story', 'sprint'])
+            }
+        }
+        // Story
+        "/p/$product/story" {
+            controller = 'story'
+            action = [GET: "index", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/story/$type/$typeId" {
+            controller = 'story'
+            action = 'index'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                typeId(matches: /\d*/)
+                type(inList: ['actor', 'feature', 'sprint', 'backlog'])
+            }
+        }
+        "/p/$product/story/$id" {
+            controller = 'story'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        "/p/$product/story/$id/$action" {
+            controller = 'story'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        "/p/$product/story/listByField" {
+            controller = 'story'
+            action = 'listByField'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        // Actor
+        "/p/$product/actor" {
+            controller = 'actor'
+            action = [GET: "index", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/actor/$id" {
+            controller = 'actor'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        // Feature
+        "/p/$product/feature" {
+            controller = 'feature'
+            action = [GET: "index", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/feature/$id" {
+            controller = 'feature'
+            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        "/p/$product/feature/$id/$action" {
+            controller = 'feature'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        // Activity
+        "/p/$product/activity/$type/$fluxiableId" {
+            controller = 'activity'
+            action = [GET: "index"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+                fluxiableId(matches: /\d*/)
+            }
+        }
+        // Comment
+        "/p/$product/comment/$type/$commentable" {
+            controller = 'comment'
+            action = [GET: "index", POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+                commentable(matches: /\d*/)
+            }
+        }
+        "/p/$product/comment/$type/$commentable/$id" {
+            controller = 'comment'
+            action = [GET: "show", PUT:"update", DELETE:"delete", POST:'update']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+                id(matches: /\d*/)
+                commentable(matches: /\d*/)
+            }
+        }
+        // Acceptance test
+        "/p/$product/acceptanceTest/story/$parentStory" {
+            controller = 'acceptanceTest'
+            action = [GET: "index"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                parentStory(matches: /\d*/)
+            }
+        }
+        "/p/$product/acceptanceTest" {
+            controller = 'acceptanceTest'
+            action = [POST:"save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/acceptanceTest/$id" {
+            controller = 'acceptanceTest'
+            action = [POST:"update", DELETE:"delete"]
+            constraints {
+                id(matches: /\d*/)
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        // Backlog
+        "/p/$product/backlog" {
+            controller = 'backlog'
+            action = [GET: "index"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        // Release
+        "/p/$product/release" {
+            controller = 'release'
+            action = [GET: "index", POST: "save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/release/$id" {
+            controller = 'release'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        "/p/$product/release/$id/$action" {
+            controller = 'release'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        // Sprint
+        "/p/$product/sprint" {
+            controller = 'sprint'
+            action = [POST: "save"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/sprint/$id" {
+            controller = 'sprint'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        "/p/$product/sprint/$id/$action" {
+            controller = 'sprint'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                id(matches: /\d+(,\d+)*/)
+            }
+        }
+        "/p/$product/sprint/release/$releaseId" {
+            controller = 'sprint'
+            action = 'index'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                releaseId(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/sprint/release/$releaseId/generateSprints" {
+            controller = 'sprint'
+            action = 'generateSprints'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                releaseId(matches: /[0-9A-Z]*/)
             }
         }
     }

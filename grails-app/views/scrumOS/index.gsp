@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,16 +18,13 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
-- Manuarii Stein (manuarii.stein@icescrum.com)
-- Stephane Maldini (stephane.maldini@icescrum.com)
 --}%
 <head>
     <meta name='layout' content='main'/>
     <g:if test="${params.product}">
-        <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[product:params.product,lang:lang]"/>
+        <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[product:pageScope.variables.context.object.pkey,lang:lang]"/>
         <title>${product?.name ?: ''}</title>
     </g:if>
 </head>
-
 <body>
 </body>

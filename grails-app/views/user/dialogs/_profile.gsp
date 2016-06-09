@@ -1,6 +1,6 @@
 <%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2015 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -19,105 +19,188 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:dialog valid="[action:'update',controller:'user',id:user.id,onSuccess:'jQuery.event.trigger(\'updateProfile_user\',[data])']"
-            title="is.dialog.profile"
-            width="600"
-            noprefix="true"
-            resizable="false"
-            draggable="false">
-<form id="form-profile" method="post" class='box-form box-form-250 box-form-200-legend'
-      onsubmit="jQuery('.ui-dialog-buttonpane button:eq(1)').click();
-      return false;">
-    <input type="hidden" id="product" name="product" value="${params.product}"/>
-    <input type="hidden" id="user.version" name="user.version" value="${user.version}"/>
-    <is:fieldset nolegend="true" title="is.dialog.profile">
-        <is:accordion id="profile" autoHeight="false">
-            <is:accordionSection title="is.dialog.profile.general.title">
-
-                <is:fieldInput for="userfirstName" label="is.user.firstname">
-                    <is:input id="userfirstName" name="user.firstName" value="${user.firstName}"/>
-                </is:fieldInput>
-                <is:fieldInput for="userlastName" label="is.user.lastname">
-                    <is:input id="userlastName" name="user.lastName" value="${user.lastName}"/>
-                </is:fieldInput>
-                <is:fieldInput for="userusername" label="is.user.username">
-                    <is:input id="userusername" disabled="disabled" name="username" value="${user.username}"/>
-                </is:fieldInput>
-
-                <g:if test="${!user.accountExternal}">
-                    <is:fieldInput for="userpassword" label="is.user.password" class="user-password">
-                        <is:password id="userpassword" name="user.password"/>
-                    </is:fieldInput>
-                    <is:fieldInput for="confirmPassword" label="is.dialog.profile.confirmPassword" class="user-password-confirm">
-                        <is:password id="confirmPassword" name="confirmPassword"/>
-                    </is:fieldInput>
-                </g:if>
-                    <is:fieldInput for="useremail" label="is.user.email">
-                        <is:input id="useremail" name="user.email" disabled="${user.accountExternal?'disabled':false}" value="${user.email}"/>
-                    </is:fieldInput>
-
-                <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar.enable)}">
-                    <is:fieldInput for="avatar" label="is.dialog.profile.gravatar" class="profile-avatar">
-                        <a href="http://gravatar.com/emails"><is:avatar user="${user}"/></a>
-                    </is:fieldInput>
-                </g:if>
-                <g:else>
-                    <is:fieldFile class="file-avatar" for="avatar" label="" noborder="true">
-                        <is:avatar elementId="preview-avatar" user="${user}" nocache="true"/>
-                        <is:multiFilesUpload
-                                name="avatar"
-                                accept="['jpg','png','gif']"
-                                urlUpload="${createLink(action:'upload',controller:'scrumOS')}"
-                                multi="1"
-                                onUploadComplete="jQuery('#avatar-selected').val('');jQuery('#preview-avatar').attr('src','${createLink(action:'previewAvatar',controller:'user')}?fileID='+fileID);"
-                                progress="[
-                      url:createLink(action:'uploadStatus',controller:'scrumOS'),
-                      label:message(code:'is.upload.wait'),
-                    ]"/>
-                    </is:fieldFile>
-                    <is:fieldInput class="file-avatar">
-                        <is:avatarSelector/>
-                    </is:fieldInput>
-                </g:else>
-
-                <is:fieldInput for="activity" label="is.user.preferences.activity" optional="true">
-                    <is:input name='user.preferences.activity' id='activity' value="${user.preferences.activity}"/>
-                </is:fieldInput>
-                <is:fieldSelect for="user.preferences.language" label="is.user.preferences.language" noborder="true">
-                    <is:localeSelecter width="170" styleSelect="dropdown" name="user.preferences.language"
-                                       id="user.preferences.language" value="${user.preferences.language}"/>
-                </is:fieldSelect>
-            </is:accordionSection>
-            <g:if test="${projects}">
-                <is:accordionSection title="is.dialog.profile.emailsSettings">
-                    <is:fieldFile for="userpreferencesemailsSettingsonStory" label="is.dialog.profile.emailsSettings.onStory">
-                        <div class="emails-settings">
-                            <g:each var="project" in="${projects}">
-                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.onStory}"  value="${project.pkey}" name="user.preferences.emailsSettings.onStory"/>
-                            </g:each>
+<is:modal name="formHolder.profileForm"
+          form="update(editableUser)"
+          validate="true"
+          submitButton="${message(code: 'is.button.update')}"
+          closeButton="${message(code: 'is.button.cancel')}"
+          title="${message(code: 'todo.is.ui.profile')}">
+    <uib-tabset type="pills" justified="true">
+        <uib-tab heading="${message(code: 'todo.is.ui.profile.general.title')}"
+                 active="tabSelected.general"
+                 select="setTabSelected('general')">
+            <div flow-files-added="editableUser.avatar = 'custom';"
+                 flow-files-submitted="$flow.upload()"
+                 flow-files-success="editableUser.avatar = 'custom'"
+                 flow-file-added="!! {png:1,jpg:1,jpeg:1} [$file.getExtension()]"
+                 flow-init="{target:'${createLink(controller: 'user', action: 'update', id: user.id)}', singleFile:true, simultaneousUploads:1}"
+                 flow-single-file="true"
+                 flow-drop>
+                <entry:point id="user-dialog-profile-tab-general-before-form"/>
+                <div class="row">
+                    <div class="form-half">
+                        <label for="username">${message(code: 'is.user.username')}</label>
+                        <p class="form-control-static">${user.username}</p>
+                    </div>
+                    <div class="form-half">
+                        <label for="userAvatar">${message(code: 'is.user.avatar')}</label>
+                        <div id="user-avatar" class="form-control-static">
+                            <div class="col-md-12">
+                                <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)}">
+                                    <img ng-click="editableUser.avatar = 'gravatar'"
+                                         ng-class="{'selected': editableUser.avatar == 'gravatar' }"
+                                         src="${"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()}"/>
+                                </g:if>
+                                <div class="choose-file">
+                                    <span ng-class="{'hide': editableUser.avatar == 'custom' }"
+                                          flow-btn class="btn btn-default"><i class="fa fa-photo"></i></span>
+                                    <img flow-btn
+                                         ng-class="{'selected': editableUser.avatar == 'custom', 'hide': editableUser.avatar != 'custom' }"
+                                         flow-img="$flow.files[0] ? $flow.files[0] : null"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <img ng-click="editableUser.avatar = 'dev-ico.png'"
+                                     ng-class="{'selected': editableUser.avatar == 'dev-ico.png' }"
+                                     src="${asset.assetPath(src: 'avatars/dev-ico.png')}"/>
+                                <img ng-click="editableUser.avatar = 'po-ico.png'"
+                                     ng-class="{'selected': editableUser.avatar == 'po-ico.png' }"
+                                     src="${asset.assetPath(src: 'avatars/po-ico.png')}"/>
+                                <img ng-click="editableUser.avatar = 'sh-ico.png'"
+                                     ng-class="{'selected': editableUser.avatar == 'sh-ico.png' }"
+                                     src="${asset.assetPath(src: 'avatars/sh-ico.png')}"/>
+                                <img ng-click="editableUser.avatar = 'sm-ico.png'"
+                                     ng-class="{'selected': editableUser.avatar == 'sm-ico.png' }"
+                                     src="${asset.assetPath(src: 'avatars/sm-ico.png')}"/>
+                                <img ng-click="editableUser.avatar = 'admin-ico.png'"
+                                     ng-class="{'selected': editableUser.avatar == 'admin-ico.png' }"
+                                     src="${asset.assetPath(src: 'avatars/admin-ico.png')}"/>
+                            </div>
+                            <input type="hidden"
+                                   name="user.avatar"
+                                   ng-model="editableUser.avatar"/>
                         </div>
-                    </is:fieldFile>
-                    <is:fieldFile for="userpreferencesemailsSettingsautoFollow" label="is.dialog.profile.emailsSettings.autoFollow">
-                        <div class="emails-settings">
-                            <g:each var="project" in="${projects}">
-                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.autoFollow}"  value="${project.pkey}" name="user.preferences.emailsSettings.autoFollow"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-half">
+                        <label for="user.firstName">${message(code: 'is.user.firstname')}</label>
+                        <input type="text"
+                               class="form-control"
+                               name="user.firstName"
+                               ng-model="editableUser.firstName"
+                               autofocus
+                               required/>
+                    </div>
+                    <div class="form-half">
+                        <label for="user.lastName">${message(code: 'is.user.lastname')}</label>
+                        <input type="text"
+                               class="form-control"
+                               name="user.lastName"
+                               ng-model="editableUser.lastName"
+                               required/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-half">
+                        <label for="user.email">${message(code: 'is.user.email')}</label>
+                        <input type="email"
+                               name="user.email"
+                               class="form-control"
+                               ng-model="editableUser.email"
+                               ng-blur="refreshAvatar(editableUser)"
+                               required/>
+                    </div>
+                    <div class="form-half">
+                        <label for="user.preferences.language">${message(code: 'is.user.preferences.language')}</label>
+                        <ui-select name="user.preferences.language"
+                                   class="form-control"
+                                   ng-model="editableUser.preferences.language">
+                            <ui-select-match>{{ languages[$select.selected] }}</ui-select-match>
+                            <ui-select-choices
+                                    repeat="languageKey in languageKeys">{{ languages[languageKey] }}</ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row" ng-show="!editableUser.accountExternal">
+                    <div class="form-half">
+                        <label for="user.password">${message(code: 'is.user.password')}</label>
+                        <input name="user.password"
+                               type="password"
+                               class="form-control"
+                               ng-model="editableUser.password"
+                               ng-password-strength>
+                    </div>
+                    <div class="form-half">
+                        <label for="confirmPassword">${message(code: 'is.dialog.register.confirmPassword')}</label>
+                        <input name="confirmPassword"
+                               type="password"
+                               class="form-control"
+                               is-match="editableUser.password"
+                               ng-model="editableUser.confirmPassword">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="user.preferences.activity">${message(code: 'is.user.preferences.activity')}</label>
+                        <input name="user.preferences.activity"
+                               type="text"
+                               class="form-control"
+                               ng-model="editableUser.preferences.activity">
+                    </div>
+                </div>
+                <entry:point id="user-dialog-profile-tab-general-after-form"/>
+            </div>
+        </uib-tab>
+        <entry:point id="user-dialog-profile-tab"/>
+        <g:if test="${projects}">
+            <uib-tab heading="${message(code: 'is.dialog.profile.emailsSettings')}"
+                     active="tabSelected.emailSettings"
+                     select="setTabSelected('emailSettings')">
+                <entry:point id="user-dialog-profile-tab-emails-before-form"/>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="user.preferences.emailsSettings.autoFollow">${message(code: 'is.dialog.profile.emailsSettings.autoFollow')}</label>
+                        <select name="user.preferences.emailsSettings.autoFollow"
+                                class="form-control"
+                                multiple
+                                ng-model="editableUser.preferences.emailsSettings.autoFollow">
+                            <g:each in="${projects}" var="project">
+                                <option value="${project.pkey}">${project.name}</option>
                             </g:each>
-                        </div>
-                    </is:fieldFile>
-                    <is:fieldFile for="userpreferencesemailsSettingsonUrgentTask" label="is.dialog.profile.emailsSettings.onUrgentTask">
-                        <div class="emails-settings">
-                            <g:each var="project" in="${projects}">
-                                <is:checkbox label="${project.name}" checked="${project.pkey in user.preferences.emailsSettings.onUrgentTask}"  value="${project.pkey}" name="user.preferences.emailsSettings.onUrgentTask"/>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="user.preferences.emailsSettings.onStory">${message(code: 'is.dialog.profile.emailsSettings.onStory')}</label>
+                        <select name="user.preferences.emailsSettings.onStory"
+                                multiple="multiple"
+                                class="form-control"
+                                ng-model="editableUser.preferences.emailsSettings.onStory">
+                            <g:each in="${projects}" var="project">
+                                <option value="${project.pkey}">${project.name}</option>
                             </g:each>
-                        </div>
-                    </is:fieldFile>
-                </is:accordionSection>
-            </g:if>
-            <entry:point id="${controllerName}-${actionName}" model="[user:user]"/>
-        </is:accordion>
-    </is:fieldset>
-</form>
-<is:shortcut key="return" callback="jQuery('.ui-dialog-buttonpane button:eq(1)').click();" scope="form-profile"
-             listenOn="'#form-profile input'"/>
-</is:dialog>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        <label for="user.preferences.emailsSettings.onUrgentTask">${message(code: 'is.dialog.profile.emailsSettings.onUrgentTask')}</label>
+                        <select name="user.preferences.emailsSettings.onUrgentTask"
+                                multiple="multiple"
+                                class="form-control"
+                                ng-model="editableUser.preferences.emailsSettings.onUrgentTask">
+                            <g:each in="${projects}" var="project">
+                                <option value="${project.pkey}">${project.name}</option>
+                            </g:each>
+                        </select>
+                    </div>
+                </div>
+                <entry:point id="user-dialog-profile-tab-emails-after-form"/>
+            </uib-tab>
+        </g:if>
+    </uib-tabset>
+</is:modal>

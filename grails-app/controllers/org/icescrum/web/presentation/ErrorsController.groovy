@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -16,7 +16,6 @@
  * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authors: Vincent Barrier (vbarrier@kagilum.com)
- *  Stéphane Maldini (stephane.maldini@icescrum.com)
  *
  */
 
@@ -28,36 +27,39 @@ class ErrorsController {
 
     def springSecurityService
 
-    def error403 = {
-        if (springSecurityService.isAjax(request))
+    def error403() {
+        if (springSecurityService.isAjax(request)) {
             render(status: 403, text: [error: message(code: 'is.error.denied')])
-        else{
-            render(status: 403, text: message(code: 'is.error.denied'))
-        }
-    }
-    def error401 = {
-        if (springSecurityService.isAjax(request))
-            render(status: 401, text: '')
-        else {
-            render(template: 'error401', status: 401, model: [ref: params.ref])
+        } else {
+            render(status: 403, view: '403.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL, supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
         }
     }
 
-    def fakeError = {
-
+    def error404() {
+        if (springSecurityService.isAjax(request)) {
+            render(status: 404)
+        } else {
+            render(status: 404, view: '404.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL, supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
+        }
     }
 
-
-
-    def browserNotSupported = {
-
+    def error401() {
+        if (springSecurityService.isAjax(request)) {
+            render(status: 401)
+        } else {
+            render(status: 401, view: '401.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL])
+        }
     }
 
-    def database = {
+    def fakeError() {}
+
+    def browserNotSupported() {}
+
+    def database() {
         render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.database')] as JSON)
     }
 
-    def memory = {
+    def memory() {
         render(status: 500, contentType: 'application/json', text: [error: message(code: 'is.error.memory')] as JSON)
     }
 }

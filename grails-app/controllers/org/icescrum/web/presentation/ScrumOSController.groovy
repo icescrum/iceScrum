@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2015 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,303 +18,402 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stéphane Maldini (stephane.maldini@icescrum.com)
- * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
 
 package org.icescrum.web.presentation
 
-import org.icescrum.core.support.ApplicationSupport
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-
 import grails.converters.JSON
-import grails.plugins.springsecurity.Secured
-import org.apache.commons.io.FilenameUtils
+import grails.plugin.springsecurity.annotation.Secured
+import grails.util.BuildSettingsHolder
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
-import org.icescrum.core.support.ProgressSupport
-import org.icescrum.web.upload.AjaxMultipartResolver
-import org.springframework.mail.MailException
-import org.icescrum.core.domain.Sprint
-import grails.plugin.springcache.annotations.Cacheable
-import org.springframework.security.acls.domain.BasePermission
 import org.icescrum.core.domain.preferences.ProductPreferences
+import org.icescrum.core.support.ApplicationSupport
+import org.springframework.mail.MailException
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import sun.misc.BASE64Decoder
 
 class ScrumOSController {
 
-    def springSecurityService
-    def menuBarSupport
-    def notificationEmailService
-    def securityService
-    def uiDefinitionService
-    def grailsApplication
+    def messageSource
     def servletContext
+    def productService
+    def securityService
+    def grailsApplication
+    def uiDefinitionService
+    def springSecurityService
+    def notificationEmailService
 
-    def index = {
+    def index() {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
 
-        def space = ApplicationSupport.getCurrentSpace(params)
-        if (space){
-            space.indexScrumOS.delegate = delegate
-            space.indexScrumOS(space, user, securityService, springSecurityService)
+        def context = ApplicationSupport.getCurrentContext(params)
+        if (context) {
+            context.indexScrumOS.delegate = this
+            context.indexScrumOS(context, user, securityService, springSecurityService)
         }
 
-        //For PO / SM : WRITE - TM / SH : READ
-        def products = user ? Product.findAllByRole(user, [BasePermission.WRITE,BasePermission.READ] , [cache:true, max:11], true, false) : []
-        def pCount = products?.size()
+        def products = user ? productService.getAllActiveProductsByUser(user).take(10) : []
+        def productsLimit = 9
+        def moreProductExist = products?.size() > productsLimit
+        def browsableProductsCount = request.admin ? Product.count() : ProductPreferences.countByHidden(false, [cache: true])
 
-        def attrs = [user: user,
-                     lang: RCU.getLocale(request).toString().substring(0, 2),
-                     space:space,
-                     publicProductsExists: ProductPreferences.countByHidden(false,[cache:true]) ? true : false,
-                     productFilteredsListCount: pCount,
-                     productFilteredsList: pCount > 9 ? products?.subList(0,9) : products]
-        if (space)
-            attrs."$space.name" = space.object
+        def attrs = [user                  : user,
+                     lang                  : RCU.getLocale(request).toString().substring(0, 2),
+                     context               : context,
+                     browsableProductsExist: browsableProductsCount > 0,
+                     moreProductsExist     : moreProductExist,
+                     productFilteredsList  : products.take(productsLimit)]
+        if (context) {
+            attrs."$context.name" = context.object
+        }
+        entry.hook(id: "scrumOS-index", model: [attrs: attrs])
         attrs
     }
 
-
-    def openWidget = {
-        if (!request.xhr){
-            redirect(controller: 'scrumOS', action: 'index')
+    def window(String windowDefinitionId) {
+        if (!windowDefinitionId) {
+            returnError(text: message(code: 'is.error.no.window'))
             return
         }
-
-        if (!params.window) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.widget')]] as JSON)
-            return
-        }
-
-
-        def uiRequested = params.window
-        def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
-        if (uiDefinition) {
-            def paramsWidget = null
-            if (params."$uiDefinition.space") {
-                paramsWidget = ApplicationSupport.getCurrentSpace(params,uiDefinition.space)
-                if (!paramsWidget){
-                    render(status:404)
-                    return
-                }else{
-                    paramsWidget = paramsWidget.params
-                }
-            }
-
-            def url = createLink(controller: params.window, action: uiDefinition.widget?.init, params: paramsWidget).toString() - request.contextPath
-            if (!menuBarSupport.permissionDynamicBar(url)) {
-                render(status: 400)
-                return
-            }
-
-            render is.widget([
-                    id: params.window,
-                    hasToolbar: uiDefinition.widget?.toolbar,
-                    closeable: uiDefinition.widget?.closeable,
-                    sortable: uiDefinition.widget?.sortable,
-                    windowable: uiDefinition.window ? true : false,
-                    resizable: uiDefinition.widget?.resizable ?: false,
-                    hasTitleBarContent: uiDefinition.widget?.titleBarContent,
-                    title: message(code: uiDefinition.widget?.title),
-                    init: uiDefinition.widget?.init
-            ], {})
-        } else {
-            render(status:404)
-        }
-    }
-
-    def openWindow = {
-        if (!params.window) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.error.no.window')]] as JSON)
-            return
-        }
-        params.viewType = params.viewType ?: 'postitsView'
-
-        def uiRequested = params.window
-        def uiDefinition = uiDefinitionService.getDefinitionById(uiRequested)
-        if (uiDefinition) {
-
-            def space = null
-            if (uiDefinition.space) {
-                space = ApplicationSupport.getCurrentSpace(params,uiDefinition.space)
-                if (!space){
-                    render(status:404)
-                    return
-                }
-            }
-
-            if (!request.xhr){
-                def fragment = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params: space?.params?:null).toString() - createLink(params:space?.params?:null) - '/'
-                redirect(url:createLink(absolute: true, params:space?.params?:null, fragment: fragment))
-                return
-            }
-
-            def url = createLink(controller: params.window, action: params.actionWindow ?: uiDefinition.window?.init, params:space?.params?:null).toString() - request.contextPath
-
-            if (!menuBarSupport.permissionDynamicBar(url)){
-                if (springSecurityService.isLoggedIn()){
-                    render(status:403)
+        def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
+        if (windowDefinition) {
+            if (!ApplicationSupport.isAllowed(windowDefinition, params)) {
+                if (springSecurityService.isLoggedIn()) {
+                    render(status: 403)
                 } else {
-                    render(status:401, contentType: 'application/json', text:[url:params.window ? '#'+params.window + (params.actionWindow ? '/'+params.actionWindow : '') + (params.id ? '/'+params.id : '') + (params.uid ? '/?uid='+params.uid : '') : ''] as JSON)
+                    render(status: 401, contentType: 'application/json', text: [] as JSON)
                 }
                 return
             }
 
+            def context = windowDefinition.context ? ApplicationSupport.getCurrentContext(params, windowDefinition.context) : null
             def _continue = true
-            if (uiDefinition.window.before){
-                uiDefinition.window.before.delegate = delegate
-                uiDefinition.window.before.resolveStrategy = Closure.DELEGATE_FIRST
-                _continue = uiDefinition.window.before(space?.object, params.actionWindow ?: uiDefinition.window?.init)
+            if (windowDefinition.before) {
+                windowDefinition.before.delegate = delegate
+                windowDefinition.before.resolveStrategy = Closure.DELEGATE_FIRST
+                _continue = windowDefinition.before(context?.object)
             }
-            if (!_continue){
-                render(status:404)
+
+            if (!_continue) {
+                render(status: 404)
             } else {
-                render is.window([
-                        window: params.window,
-                        spaceName: space?.object?.name,
-                        title: message(code: uiDefinition.window?.title),
-                        help: message(code: uiDefinition.window?.help),
-                        shortcuts: uiDefinition.shortcuts,
-                        hasToolbar: uiDefinition.window?.toolbar,
-                        hasTitleBarContent: uiDefinition.window?.titleBarContent,
-                        hasRight: uiDefinition.window?.right,
-                        maximizeable: uiDefinition.window?.maximizeable,
-                        closeable: uiDefinition.window?.closeable,
-                        widgetable: uiDefinition.widget ? true : false,
-                        init: params.actionWindow ?: uiDefinition.window?.init
-                ], {})
+                def model = [windowDefinition: windowDefinition]
+                if (context) {
+                    model[context.name] = context.object
+                    model['contextScope'] = context.contextScope
+                }
+                if (ApplicationSupport.controllerExist(windowDefinition.id, "window")) {
+                    forward(action: 'window', controller: windowDefinition.id, model: model)
+                } else {
+                    render(plugin: windowDefinition.pluginName, template: "/${windowDefinition.id}/window", model: model)
+                }
             }
         } else {
-            render(status:404)
+            render(status: 404)
         }
     }
 
-    @Secured('isAuthenticated()')
-    def upload = {
-        def upfile = request.getFile('file')
-        def filename = FilenameUtils.getBaseName(upfile.originalFilename)
-        def ext = FilenameUtils.getExtension(upfile.originalFilename)
-        def tmpF = session.createTempFile(filename, '.' + ext)
-        request.getFile("file").transferTo(tmpF)
-        if (!session.uploadedFiles)
-            session.uploadedFiles = [:]
-        session.uploadedFiles["${params."X-Progress-ID"}"] = tmpF.toString()
-        if (log.infoEnabled)
-            log.info "upload done for session: ${session?.id} / fileID: ${params."X-Progress-ID"}"
-        render(status: 200)
+    def about() {
+        def aboutFile = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about.xml")
+        render(status: 200, template: "about/index", model: [server: servletContext.getServerInfo(),
+                                                             versionNumber: g.meta([name: 'app.version']),
+                                                             about: new XmlSlurper().parse(aboutFile),
+                                                             errors: grailsApplication.config.icescrum.errors ?: false])
     }
 
-    @Secured('isAuthenticated()')
-    def uploadStatus = {
-        if (log.debugEnabled)
-            log.debug "upload status for session: ${session?.id} / fileID: ${params?."X-Progress-ID" ?: 'null'}"
-        if (params."X-Progress-ID" && session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")]) {
-            if (((ProgressSupport) session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])?.complete) {
-                render(status: 200, contentType: 'application/json', text: session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
-                session.removeAttribute([AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")])
-            } else {
-                render(status: 200, contentType: 'application/json', text: session[AjaxMultipartResolver.progressAttrName(params."X-Progress-ID")] as JSON)
-            }
-        } else {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.upload.error')]] as JSON)
-        }
+    def textileParser(String data) {
+        render(text: wikitext.renderHtml([markup: "Textile"], data))
     }
 
-    def about = {
-        def file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_${RCU.getLocale(request)}.xml")
-        if (!file.exists()) {
-            file = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about_en.xml")
-        }
-        def dialog = g.render(template: "about/index", model: [server:servletContext.getServerInfo(),about: new XmlSlurper().parse(file),errors:grailsApplication.config.icescrum.errors?:false])
-        render(status: 200, contentType: 'application/json', text:[dialog:dialog] as JSON)
-    }
-
-    def textileParser = {
-        if (params.truncate) {
-            params.data = is.truncated([size: params.int('truncate')], params.data)
-        }
-        if (params.withoutHeader) {
-            render(text: '<div class="rich-content">'+wikitext.renderHtml([markup: "Textile"], params.data)+'</div>')
-        } else {
-            render(status: 200, template: 'textileParser')
-        }
-    }
-
-    def reportError = {
+    def reportError(String report) {
         try {
             notificationEmailService.send([
-                    from: springSecurityService.currentUser?.email?:null,
-                    to: grailsApplication.config.icescrum.alerts.errors.to,
+                    from   : springSecurityService.currentUser?.email ?: null,
+                    to     : grailsApplication.config.icescrum.alerts.errors.to,
                     subject: "[iceScrum][report] Rapport d'erreur",
-                    view: '/emails-templates/reportError',
-                    model: [error: params.stackError,
-                            comment: params.comments,
-                            appID: grailsApplication.config.icescrum.appID,
-                            ip: request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
-                            date: g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
-                            version: g.meta(name: 'app.version')]
+                    view   : '/emails-templates/reportError',
+                    model  : [error  : report.stack,
+                              comment: report.comment,
+                              appID  : grailsApplication.config.icescrum.appID,
+                              ip     : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
+                              date   : g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
+                              version: g.meta(name: 'app.version')],
+                    async  : true
             ]);
-            render(status: 200, contentType: 'application/json', text: [notice: [text: message(code: 'is.blame.sended'), type: 'notice']] as JSON)
+            //render(status: 200, contentType: 'application/json', text:message(code: 'is.blame.sended') as JSON)
+            render(status: 200)
         } catch (MailException e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+            returnError(text: message(code: 'is.mail.error'), exception: e)
             return
         } catch (RuntimeException re) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: re.getMessage())]] as JSON)
+            returnError(text: message(code: re.getMessage()), exception: re)
             return
         } catch (Exception e) {
-            render(status: 400, contentType: 'application/json', text: [notice: [text: message(code: 'is.mail.error')]] as JSON)
+            returnError(text: message(code: 'is.mail.error'), exception: e)
             return
         }
     }
 
-    @Cacheable(cache = 'projectCache', keyGenerator = 'projectUserKeyGenerator')
-    def templates = {
-        def currentSprint = null
-        def product = null
-        if (params.long('product')) {
-            product = Product.get(params.product)
-            currentSprint = Sprint.findCurrentSprint(product.id).list() ?: null
-        }
-        def tmpl = g.render(
-                template: 'templatesJS',
-                model: [id: controllerName,
-                        currentSprint: currentSprint,
-                        product:product
-                ])
-
-        tmpl = "${tmpl}".split("<div class='templates'>")
-        tmpl[1] = tmpl[1].replaceAll('%3F', '?').replaceAll('%3D', '=').replaceAll('<script type="text/javascript">', '<js>').replaceAll('</script>', '</js>').replaceAll('<template ', '<script type="text/x-jqote-template" ').replaceAll('</template>', '</script>')
-        render(text: tmpl[0] + '<div class="templates">' + tmpl[1], status: 200)
+    def templates() {
+        render(status: 200, template: 'templatesJS')
     }
 
-    def saveImage = {
-        if (!params.image){
-            render(status:404)
+    def isSettings() {
+        def projectMenus = []
+        uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
+            if (windowDefinition.context == 'product') {
+                projectMenus << [id: windowId, title: message(code: windowDefinition.menu?.title)]
+            }
+        }
+        render(status: 200,
+                template: 'isSettings',
+                model: [user            : springSecurityService.currentUser,
+                        product         : params.long('product') ? Product.get(params.product) : null,
+                        roles           : securityService.getRolesRequest(false),
+                        i18nMessages    : messageSource.getAllMessages(RCU.getLocale(request)),
+                        resourceBundles : grailsApplication.config.icescrum.resourceBundles,
+                        projectMenus    : projectMenus])
+    }
+
+    def saveImage(String image, String title) {
+        if (!image) {
+            render(status: 404)
             return
         }
-        String imageEncoded = URLDecoder.decode(params.image)
-        String title = URLDecoder.decode(params.title)
-        imageEncoded = imageEncoded.substring(imageEncoded.indexOf("base64,") + "base64,".length(), imageEncoded.length());
+        title = URLDecoder.decode(title)
+        image = URLDecoder.decode(image)
+        image = image.substring(image.indexOf("base64,") + "base64,".length(), image.length())
         response.contentType = 'image/png'
-        ['Content-disposition': "attachment;filename=\"${title+'.png'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+        ['Content-disposition': "attachment;filename=\"${title + '.png'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
             response.setHeader(k, v)
         }
-        response.outputStream << new BASE64Decoder().decodeBuffer(imageEncoded)
+        response.outputStream << new BASE64Decoder().decodeBuffer(image)
     }
 
-    def version = {
-        withFormat{
-            html {
-                render(status:'200', text:g.meta([name:'app.version']))
+    def whatsNew(boolean hide) {
+        if (hide) {
+            if (springSecurityService.currentUser?.preferences?.displayWhatsNew) {
+                springSecurityService.currentUser.preferences.displayWhatsNew = false
             }
-            xml {
-                renderRESTXML(text:[version:g.meta([name:'app.version'])])
+            render(status: 200)
+            return
+        }
+        def dialog = g.render(template: "about/whatsNew")
+        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+    }
+
+    def version() {
+        render(status: '200', text: g.meta([name: 'app.version']))
+    }
+
+    def progress() {
+        if (session.progress) {
+            render(status: 200, contentType: "application/json", text: session.progress as JSON)
+            //we already sent the error so reset progress
+            if (session.progress.error || session.progress.complete) {
+                session.progress = null
             }
-            json {
-                renderRESTJSON(text:[version:g.meta([name:'app.version'])])
+        } else {
+            render(status: 404)
+        }
+    }
+
+    def languages() {
+        List locales = []
+        def i18n
+        if (grailsApplication.warDeployed) {
+            i18n = grailsAttributes.getApplicationContext().getResource("WEB-INF/grails-app/i18n/").getFile().toString()
+        } else {
+            i18n = "$BuildSettingsHolder.settings.baseDir/grails-app/i18n"
+        }
+        //Default language
+        locales << new Locale("en")
+        // TODO re-enable real locale management
+        //new File(i18n).eachFile {
+        //    def arr = it.name.split("[_.]")
+        //    if (arr[1] != 'svn' && arr[1] != 'properties' && arr[0].startsWith('messages')) {
+        //        locales << (arr.length > 3 ? new Locale(arr[1], arr[2]) : arr.length > 2 ? new Locale(arr[1]) : new Locale(""))
+        //    }
+        //}
+        locales.addAll(new Locale('en', 'US'), new Locale('fr'))
+        // End TODO
+        def returnLocales = locales.collectEntries { locale ->
+            [(locale.toString()): locale.getDisplayName(locale).capitalize()]
+        }
+        render(returnLocales as JSON)
+    }
+
+    def timezones() {
+        def timezones = TimeZone.availableIDs.sort().findAll {
+            it.matches("^(Africa|America|Asia|Atlantic|Australia|Europe|Indian|Pacific)/.*")
+        }.collectEntries {
+            TimeZone timeZone = TimeZone.getTimeZone(it)
+            def offset = timeZone.rawOffset
+            def offsetSign = offset < 0 ? '-' : '+'
+            Integer hour = Math.abs(offset / (60 * 60 * 1000))
+            Integer min = Math.abs(offset / (60 * 1000)) % 60
+            def calendar = Calendar.instance
+            calendar.set(Calendar.HOUR_OF_DAY, hour)
+            calendar.set(Calendar.MINUTE, min)
+            return [(it): "$timeZone.ID (UTC$offsetSign${String.format('%tR', calendar)})"]
+        }
+        render(timezones as JSON)
+    }
+
+    @Secured(['isAuthenticated()'])
+    def charts(String context) {
+        def _charts = []
+        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each { groupName, charts ->
+            if (groupName == 'project') { // TODO support charts at release / sprint levels...
+                _charts.addAll(charts.collect { chart -> [id: chart.id, name: message(code: chart.name)] })
             }
         }
+        render(status: 200, contentType: 'application/json', text: _charts as JSON)
+    }
+
+    @Secured(['permitAll()'])
+    def extensions() {
+        def extensions = [
+                [name               : 'Management',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/',
+                 description        : 'This extension is the core of iceScrum Pro. It helps you to configure and manage your iceScrum server:' +
+                         '<p>' +
+                         '<ul>' +
+                         '<li>Administrate your users</li>' +
+                         '<li>Administrate your projects</li>' +
+                         '<li>Define new administrators</li>' +
+                         '<li>Update your server configuration in an nice user interface</li>' +
+                         '<li>Authenticate your users through LDAP</li>' +
+                         '<li>Define your product vision with the Roadmap view</li>' +
+                         '<li>Define your team availabilities</li>' +
+                         '<li>Export iceScrum items as custom CSV documents</li>' +
+                         '<li>Switch user in the task board</li>' +
+                         '<li>Create items from emails</li>' +
+                         '<li>Create stories directly in the backlog, copy stories from one project to another, filter by user in the sprint plan...</li>' +
+                         '</ul>' +
+                         '</p>',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/06/Example-of-working-LDAP-Configuration1.jpg']
+                ],
+                [name               : 'Embedded',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/embedded',
+                 description        : 'Embed live iceScrum views into your online documents or websites in order to create custom dashboards and reports.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/01/Define-your-embedded-widgets.jpg']
+                ],
+                [name               : 'Icebox',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/icebox/',
+                 description        : 'Product Owners freeze stories that don’t belong to the current product vision and restore them when the time has come.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/11/Freeze-a-story1.jpg']
+                ],
+                [name               : 'Cloud Storage',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/cloud-storage',
+                 description        : 'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attach-a-document-from-the-cloud.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
+                ],
+                [name               : 'Feedback',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/feedback',
+                 description        : 'Include the feedback module in your website and offer your users a way to provide feedback that your collect as stories in your iceScrum project',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2015/06/feedback-english-650x393@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/story-details-2-650x424@2x.png']
+                ],
+                [name               : 'Team communication',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/team-communication',
+                 description        : 'Stay informed of what happens in iceScrum by receiving important events about your stories in your Slack channel.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2015/06/admin-settings-650x401@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/Slack1-650x461@2x.png']
+                ],
+                [name               : 'SCM',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/git-svn/',
+                 description        : 'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg', 'https://www.icescrum.com/wp-content/uploads/2013/06/Build-information-in-story-details.jpg', 'https://www.icescrum.com/wp-content/uploads/2014/09/Choose-the-iceScrum-GitHub-Service-650x261@2x.png', 'https://www.icescrum.com/wp-content/uploads/2012/05/commit-googlecode.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
+                ],
+                [name               : 'Bug Trackers',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/bug-tracker/',
+                 description        : 'Automatically synchronize your project data between your bug tracker (JIRA, Mantis, Bugzilla, Redmine, TRAC…) and iceScrum.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/08/Set-up-bug-tracker-connection.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Create-an-import-rule.-Here-every-15-min-new-issues-from-vb-filter-are-imported-as-accepted-defect-stories.png']
+                ],
+                [name               : 'Project Bundle',
+                 version            : '1.0',
+                 installed          : false,
+                 author             : 'iceScrum team',
+                 publishDate        : '',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com/documentation/project-bundle/',
+                 description        : 'Project bundles allow you to group interrelated projects, providing a big picture of their planning and progress to help you make the best decisions.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/08/Bundle-timeline.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Total-line-for-synchronized-sprints.png']
+                ],
+                [name               : 'Backlogs',
+                 version            : '0.1',
+                 installed          : true,
+                 author             : 'iceScrum team',
+                 publishDate        : '23/05/2016',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com',
+                 description        : 'Create your own story backlogs according to custom filters.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2016/05/extension-backlogs.png']
+                ],
+                [name               : 'Mood',
+                 version            : '0.1',
+                 installed          : true,
+                 author             : 'iceScrum team',
+                 publishDate        : '23/05/2016',
+                 includedWithLicense: true,
+                 website            : 'https://www.icescrum.com',
+                 documentation      : 'https://www.icescrum.com',
+                 description        : 'Enter you mood everyday and help track and improve the well-being of your teams.',
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2016/05/extension-mood.png']
+                ]
+        ]
+        render(status: 200, contentType: 'application/json', text: extensions.sort {it.name} as JSON)
     }
 }

@@ -1,7 +1,7 @@
 import grails.util.Environment
 
 /*
-* Copyright (c) 2010 iceScrum Technologies.
+* Copyright (c) 2015 Kagilum SAS
 *
 * This file is part of iceScrum.
 *
@@ -25,7 +25,12 @@ eventCreateWarStart = {warname, stagingDir ->
         entry(key: 'scm.version', value: getRevision())
         entry(key: 'build.date', value: new Date())
         if (System.getProperty("app.version.suffix")){
+            println "app.version.suffix has been set to: ${System.getProperty("app.version.suffix")}"
             entry(key: 'app.version', value: ' '+System.getProperty("app.version.suffix"), operation:'+')
+        }
+        else if (System.getProperty("app.version.cloud")){
+            println "app.version.cloud has been set to: Pro Cloud"
+            entry(key: 'app.version', value: ' Pro Cloud', operation:'+')
         }
     }
 }
@@ -34,22 +39,7 @@ eventSetClasspath = {
         if (System.getProperty('icescrum.clean') == 'true'){
             println "----- DELETE OLD ICESCRUM CORE START ---------"
             String iceScrumCore = "${userHome}/.ivy2/cache/org.icescrum/icescrum-core"
-            String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.6-SNAPSHOT"
-            if (grailsEnv != "development"){
-                String tomcatNio = "${projectWorkDir}/plugins/tomcatnio-1.3.4"
-                file = new File(tomcatNio)
-                if (file.exists()){
-                    println "----- deleting.... ${tomcatNio}--------"
-                    ant.delete(dir:tomcatNio)
-                }
-            }else{
-                String tomcat = "${projectWorkDir}/plugins/tomcat-1.3.9"
-                file = new File(tomcat)
-                if (file.exists()){
-                    println "----- deleting.... ${tomcat}--------"
-                    ant.delete(dir:tomcat)
-                }
-            }
+            String iceScrumCoreP = "${projectWorkDir}/plugins/icescrum-core-1.7-SNAPSHOT"
             file = new File(iceScrumCore)
             if (file.exists()){
                 println "----- deleting.... ${iceScrumCore}--------"

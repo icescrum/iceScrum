@@ -1,5 +1,6 @@
+<%@ page import="grails.util.Metadata" %>
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2014 Kagilum SAS.
 -
 - This file is part of iceScrum.
 -
@@ -18,81 +19,79 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<p>
-  <strong><g:message code="is.dialog.about.version.link"/></strong> : <a href="${version.link}">${version.link}</a>
-</p>
-<p>
-  <strong><g:message code="is.dialog.about.version.pro"/></strong> : <a href="${version.pro}">${version.pro}</a>
-</p>
-<p class="last">
-  <strong><g:message code="is.dialog.about.version.documentation.link"/></strong> : <a href="${version.documentation}">${version.documentation}</a>
-</p>
-<h3><g:message code="is.dialog.about.version.build.title"/></h3>
-<p>
-  <strong><g:message code="is.dialog.about.version.appVersion"/></strong> : <g:meta name="app.version"/>
-</p>
-<p>
-    <strong><g:message code="is.dialog.about.appID"/></strong> : <is:appId/>
-</p>
-<p>
-  <strong><g:message code="is.dialog.about.version.buildDate"/></strong> : <g:meta name="build.date"/>
-</p>
-<p>
-  <strong><g:message code="is.dialog.about.version.scr"/></strong> : #<g:meta name="scm.version"/>
-</p>
-<g:if test="${g.meta(name:'environment.BUILD_NUMBER')}">
-  <p>
-    <strong><g:message code="is.dialog.about.version.buildNumber"/></strong> : #<g:meta name="environment.BUILD_NUMBER"/>
-  </p>
-</g:if>
-<g:if test="${g.meta(name:'environment.BUILD_ID')}">
-  <p>
-    <strong><g:message code="is.dialog.about.version.buildID"/></strong> : <g:meta name="environment.BUILD_ID"/>
-  </p>
-</g:if>
-<g:if test="${g.meta(name:'environment.BUILD_TAG')}">
-  <p>
-    <strong><g:message code="is.dialog.about.version.buildTag"/></strong> : <g:meta name="environment.BUILD_TAG"/>
-  </p>
-</g:if>
-<p>
-  <strong><g:message code="is.dialog.about.version.env"/></strong> : ${System.getProperty('grails.env')}
-</p>
-<p>
-  <strong><g:message code="is.dialog.about.version.grailsVersion"/></strong> : <g:meta name="app.grails.version"/>
-</p>
-<p>
-  <strong><g:message code="is.dialog.about.version.javaVersion"/></strong> : ${System.getProperty('java.version')}
-</p>
-<p class="last">
-    <strong><g:message code="is.dialog.about.version.serverVersion"/></strong> : ${server}
-</p>
-<h3><g:message code="is.dialog.about.version.plugins.title"/></h3>
-<g:set var="pluginManager" value="${applicationContext.getBean('pluginManager').allPlugins.sort({it.name.toUpperCase()})}"/>
-<is:table class="buildinfos-table">
-  <is:tableHeader name="${message(code:'is.dialog.about.version.plugin.name')}"/>
-  <is:tableHeader name="${message(code:'is.dialog.about.version.plugin.version')}" class="buildinfos-table-version"/>
-  <is:tableRows in="${pluginManager}" var="plugin">
-    <is:tableColumn>
-      ${plugin.name}
-    </is:tableColumn>
-    <is:tableColumn>
-      ${plugin.version}
-    </is:tableColumn>
-  </is:tableRows>
-</is:table>
-<br/>
-<h3><g:message code="is.dialog.about.version.libraries.title"/></h3>
-<is:table class="buildinfos-table">
-  <is:tableHeader name="${message(code:'is.dialog.about.version.library.name')}"/>
-  <is:tableHeader name="${message(code:'is.dialog.about.version.library.version')}" class="buildinfos-table-version"/>
-  <is:tableRows in="${version.library}" var="library">
-    <is:tableColumn>
-      ${library.name}
-    </is:tableColumn>
-    <is:tableColumn>
-      ${library.version}
-    </is:tableColumn>
-  </is:tableRows>
-</is:table>
+<h4><g:message code="is.dialog.about.version.build.title"/></h4>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <tr>
+            <td><strong><g:message code="is.dialog.about.version.appVersion"/></strong></td>
+            <td>${versionNumber.contains('Cloud') ? versionNumber : versionNumber + ' Standalone'} <g:if test="${Metadata.current['app.promoteVersion'] == 'true'}">(<a data-ajax="true" href="${g.createLink(controller: "scrumOS", action: "whatsNew")}">${message(code: 'is.ui.whatsnew.title')}</a>)</g:if></td>
+        </tr>
+        <g:if test="${request.authenticated}">
+            <tr>
+                <td><strong><g:message code="is.dialog.about.appID"/></strong></td>
+                <td><is:appId/></td>
+            </tr>
+        </g:if>
+        <g:if test="${request.admin}">
+            <g:if test="${g.meta(name: 'build.date')}">
+                <tr>
+                    <td><g:message code="is.dialog.about.version.buildDate"/></td>
+                    <td><g:meta name="build.date"/></td>
+                </tr>
+            </g:if>
+            <g:if test="${g.meta(name: 'environment.BUILD_NUMBER')}">
+                <tr>
+                    <td><g:message code="is.dialog.about.version.buildNumber"/></td>
+                    <td>#<g:meta name="environment.BUILD_NUMBER"/></td>
+                </tr>
+            </g:if>
+            <g:if test="${g.meta(name: 'environment.BUILD_ID')}">
+                <tr>
+                    <td><g:message code="is.dialog.about.version.buildID"/></td>
+                    <td><g:meta name="environment.BUILD_ID"/></td>
+                </tr>
+            </g:if>
+            <g:if test="${g.meta(name: 'environment.BUILD_TAG')}">
+                <tr>
+                    <td><g:message code="is.dialog.about.version.buildTag"/></td>
+                    <td><g:meta name="environment.BUILD_TAG"/></td>
+                </tr>
+            </g:if>
+            <g:if test="${System.getProperty('grails.env')}">
+                <tr>
+                    <td><g:message code="is.dialog.about.version.env"/></td>
+                    <td>${System.getProperty('grails.env')}</td>
+                </tr>
+            </g:if>
+            <tr>
+                <td><g:message code="is.dialog.about.version.grailsVersion"/></td>
+                <td><g:meta name="app.grails.version"/></td>
+            </tr>
+            <tr>
+                <td><g:message code="is.dialog.about.version.javaVersion"/></td>
+                <td>${System.getProperty('java.version')}</td>
+            </tr>
+            <tr>
+                <td><g:message code="is.dialog.about.version.serverVersion"/></td>
+                <td>${server}</td>
+            </tr>
+        </g:if>
+        </tbody>
+    </table>
+</div>
+<h4><g:message code="is.dialog.about.version.libraries.title"/></h4>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <tbody>
+        <g:each in="${version.library}" var="library">
+            <tr>
+                <td>${library.name}</td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</div>

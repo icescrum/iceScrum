@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2015 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -18,30 +18,39 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
- * Manuarii Stein (manuarii.stein@icescrum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
 import grails.util.GrailsNameUtils
 import grails.util.Environment
 
+grails.servlet.version = "3.0"
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
+grails.project.target.level = 1.7
+grails.project.source.level = 1.7
 grails.project.war.file = "target/${appName}.war"
-
+grails.project.dependency.resolver = "maven"
 grails.project.war.osgi.headers = false
+grails.tomcat.nio = true
 
-def environment = Environment.getCurrent()
+def jvmArgs = ['-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005',
+               '-Dicescrum.plugins.dir='+System.getProperty("icescrum.plugins.dir"),
+               '-Dicescrum.clean=true',
+               '-Dfile.encoding=UTF-8',
+               '-Duser.timezone=UTC']
 
-if (environment != Environment.PRODUCTION){
-    println "use inline plugin in env: ${environment}"
+grails.project.fork = [
+        test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
+        run: [maxMemory: 1024, minMemory: 512, debug: false, maxPerm: 256, forkReserve:false, jvmArgs: jvmArgs],
+        war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false]
+]
+
+if (Environment.current != Environment.PRODUCTION) {
+    println "use inline plugin in env: ${Environment.current}"
     grails.plugin.location.'icescrum-core' = '../plugins/icescrum-core'
-}
-
-coverage {
-    enabledByDefault = false
-    xml = true
+    //grails.plugin.location.'kagilum-licenseable' = '../plugins/kagilum-licenseable'
 }
 
 grails.war.resources = { stagingDir ->
@@ -53,72 +62,41 @@ grails.war.resources = { stagingDir ->
 }
 
 grails.project.dependency.resolution = {
-    // inherit Grails' default dependencies
-    inherits("global"){
-        excludes "xml-apis"
+    inherits("global") {
+        excludes "xml-apis", "maven-publisher", "itext"
     }
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "warn"
     repositories {
         grailsPlugins()
         grailsCentral()
         grailsHome()
-
-        // uncomment the below to enable remote dependency resolution
-        // from public Maven repositories
-        //mavenLocal()
         mavenCentral()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        mavenRepo "http://repository.codehaus.org"
+        //To help grails to compile and find jar depencies form icescrum-core on jenkins WTF!?
+        mavenRepo "http://repo.spring.io/libs-release"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/"
         mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/"
     }
-
-    def gebVersion = "0.7.0"
-    def seleniumVersion = "2.25.0"
-
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-        test 'xmlunit:xmlunit:1.3'
-        runtime 'mysql:mysql-connector-java:5.1.18'
-        runtime 'commons-dbcp:commons-dbcp:1.4'
-
-        test "org.codehaus.geb:geb-spock:$gebVersion"
-        test("org.seleniumhq.selenium:selenium-htmlunit-driver:$seleniumVersion") {
-           exclude 'xml-apis'
-       }
-       test "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
-       test "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
-       if (environment == Environment.TEST){
-           build 'org.apache.httpcomponents:httpclient:4.1.2'
-           build "org.spockframework:spock-grails-support:0.6-groovy-1.7"
-       }
+        build 'com.lowagie:itext:2.1.7'
+        runtime 'mysql:mysql-connector-java:5.1.38'
+        //runtime "com.kagilum:kagilum-licenseable:2.0"
+        //runtime "com.kagilum:icescrum-plugin-bugtracker:2.0"
     }
-
     plugins {
-        compile "org.icescrum:entry-points:0.4.2"
-        compile ":cache-headers:1.1.5"
-        compile ":cached-resources:1.0"
-        compile ":feeds:1.5"
-        compile ":hibernate:1.3.9"
-        compile ":resources:1.1.6"
-        compile ":session-temp-files:1.0"
-        compile ":zipped-resources:1.0"
-        compile ":yui-minify-resources:0.1.5"
-        compile ":browser-detection:0.4.3"
-        if (environment == Environment.PRODUCTION){
-            compile "org.icescrum:icescrum-core:1.6-SNAPSHOT"
-            compile ":tomcat:1.3.9"
-        }else{
-            compile ":tomcatnio:1.3.4"
+        compile ':standalone:1.3'
+        compile ':cache-headers:1.1.7'
+        compile ':asset-pipeline:2.7.4'
+        compile ':less-asset-pipeline:2.7.2'
+        compile ':browser-detection:2.7.0'
+        runtime ':hibernate4:4.3.10'
+        build   ':tomcat:7.0.55.3'
+        compile 'org.icescrum:entry-points:1.1'
+        if (Environment.current == Environment.PRODUCTION) {
+            compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
         }
-        test(":spock:0.6") {
-            exclude "spock-grails-support"
-        }
-        test ":geb:$gebVersion"
     }
 }
 
-//iceScrum plugins management
 def iceScrumPluginsDir = System.getProperty("icescrum.plugins.dir") ?: false
 println "Compile and use icescrum plugins : ${iceScrumPluginsDir ? true : false}"
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2015 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -21,34 +21,15 @@
  * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
-import org.icescrum.core.support.MenuBarSupport
-import org.icescrum.web.security.ScrumAuthenticationProcessingFilter
-import org.icescrum.web.upload.AjaxMultipartResolver
+import org.icescrum.i18n.IceScrumMessageSource
 
 beans = {
 
     xmlns task:"http://www.springframework.org/schema/task"
     task.'annotation-driven'()
-
-    authenticationProcessingFilter(ScrumAuthenticationProcessingFilter) {
-        def conf = SpringSecurityUtils.securityConfig
-        authenticationManager = ref('authenticationManager')
-        sessionAuthenticationStrategy = ref('sessionAuthenticationStrategy')
-        authenticationSuccessHandler = ref('authenticationSuccessHandler')
-        authenticationFailureHandler = ref('authenticationFailureHandler')
-        rememberMeServices = ref('rememberMeServices')
-        authenticationDetailsSource = ref('authenticationDetailsSource')
-        filterProcessesUrl = conf.apf.filterProcessesUrl
-        usernameParameter = conf.apf.usernameParameter
-        passwordParameter = conf.apf.passwordParameter
-        continueChainBeforeSuccessfulAuthentication = conf.apf.continueChainBeforeSuccessfulAuthentication
-        allowSessionCreation = conf.apf.allowSessionCreation
-        postOnly = conf.apf.postOnly
-    }
 
     webExpressionHandler(WebScrumExpressionHandler) {
         roleHierarchy = ref('roleHierarchy')
@@ -61,16 +42,11 @@ beans = {
         trustResolver = ref('authenticationTrustResolver')
     }
 
-    menuBarSupport(MenuBarSupport) {innerBean ->
-        innerBean.autowire = "byName"
-    }
-
     userDetailsService(ScrumDetailsService) {
         grailsApplication = ref('grailsApplication')
     }
 
-    multipartResolver(AjaxMultipartResolver) {
-        maxInMemorySize = 10240
-        maxUploadSize = 1024000000
+    messageSource(IceScrumMessageSource)  {
+        basenames = "WEB-INF/grails-app/i18n/messages"
     }
 }

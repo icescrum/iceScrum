@@ -1,0 +1,68 @@
+.vertical-align() {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.disable-text-selection {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+}
+
+.make-flex-container(@direction: column; @grow: 1; @shrink: 0; @basis: auto) {
+  flex: @grow @shrink ;
+  -webkit-flex: @grow @shrink @basis;
+  display: flex;
+  flex-direction: @direction;
+}
+
+.make-flex-panel() {
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
+
+  display: flex;
+  flex-direction: column;
+
+  > .panel-heading {
+    flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+  }
+  > .panel-body {
+    flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
+    overflow-y: auto;
+    height: 1px;
+    padding: 15px;
+  }
+  > .panel-footer {
+    //nothing here
+  }
+}
+
+/* Vertical Alignment */
+.vertical-align{
+  position: absolute;
+  top:50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+/* Horizontal Alignment */
+.horizontal-align{
+  position: absolute;
+  left:50%;
+  -webkit-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}

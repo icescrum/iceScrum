@@ -30,64 +30,86 @@ class RestUrlMappings {
             controller = 'scrumOS'
         }
 
-        "/ws/p/$product/$controller"(parseRequest: true) {
-            action = [POST: "save", GET: "list"]
+        "/ws/user" {
+            controller = 'user'
+            action = [POST: "forceRestSave", GET: "index"]
+        }
+
+        "/ws/user/$id" {
+            action = [GET: "show", PUT: "update"]
+            controller = 'user'
+            constraints {
+                id(matches: /\d*/)
+            }
+        }
+
+        "/ws/p/$product/$controller" {
+            action = [POST: "save", GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/$id/sprint"(parseRequest: true) {
+        "/ws/p/$product/$id/sprint" {
             controller = 'sprint'
-            action = [GET: "list"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
             }
         }
 
-        "/ws/p/$product/task/$filter"(parseRequest: true) {
+        "/ws/p/$product/task/$filter" {
             controller = 'task'
-            action = [GET: "list"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 filter(matches:/[A-Za-z]*/)
             }
         }
 
-        "/ws/p/$product/finder/tag"(parseRequest: true) {
-            controller = 'finder'
+        "/ws/p/$product/search/tag" {
+            controller = 'search'
             action = [GET: "tag"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/finder"(parseRequest: true) {
-            controller = 'finder'
+        "/ws/p/$product/search" {
+            controller = 'search'
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/$sprint/task/$filter?"(parseRequest: true) {
+        "/ws/p/$product/$sprint/task/$filter?" {
             controller = 'task'
-            action = [GET: "list"]
+            action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 sprint(matches: /\d*/)
             }
         }
 
-        "/ws/p/$product/$controller/$id"(parseRequest: true) {
-            action = [GET: "index", PUT: "update", DELETE: "delete"]
+        "/ws/p/$product/$story/acceptanceTest" {
+            controller = 'acceptanceTest'
+            action = [GET: "index"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                story(matches: /\d*/)
+            }
+        }
+
+        "/ws/p/$product/$controller/$id" {
+            action = [GET: "show", PUT: "update", DELETE: "delete"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
             }
         }
 
-        "/ws/p/$product/$controller/$id/$action"(parseRequest: true) {
+        "/ws/p/$product/$controller/$id/$action" {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)

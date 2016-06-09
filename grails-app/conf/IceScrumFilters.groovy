@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2013/2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -16,16 +16,21 @@
  * along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
  *
  * Authors:
+ * Vincent Barrier (vbarrier@kagilum.com)
  *
- * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
 
+import grails.plugin.springsecurity.SpringSecurityUtils
+import groovy.util.slurpersupport.GPathResult
 import org.geeks.browserdetection.ComparisonType
+import org.grails.databinding.xml.GPathResultMap
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
+import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.support.ApplicationSupport
 import org.springframework.web.servlet.support.RequestContextUtils
 
 class IceScrumFilters {
@@ -34,45 +39,13 @@ class IceScrumFilters {
     def springSecurityService
     def userAgentIdentService
 
+    private static final String HEADER_CACHE_CONTROL = "Cache-Control";
+
     def filters = {
-        pkey(controller: 'scrumOS', action: 'index') {
-            before = {
-                if (params.product) {
-                    params.product = params.product.decodeProductKey()
-                    if (!params.product) {
-                        redirect(controller: 'scrumOS', action: 'index')
-                        return
-                    }
 
-                }
-            }
-        }
-
-        webservices(uri: '/ws/**') {
+        all(controller: '*', action: '*') {
             before = {
-                def webservices = false
-                if (params.product) {
-                    params.product = params.product.decodeProductKey()
-                    webservices = Product.createCriteria().get {
-                        eq 'id', params.product.toLong()
-                        preferences {
-                            projections {
-                                property 'webservices'
-                            }
-                        }
-                        cache true
-                    }
-                    if (!webservices) {
-                        render(status: 503)
-                    } else {
-                        if (request.format == 'xml' && params.values) {
-                            params.remove('values')?.each { k, v ->
-                                params."${k}" = v
-                            }
-                        }
-                    }
-                }
-                return webservices
+                response.addHeader(HEADER_CACHE_CONTROL, "no-store, no-cache, no-transform, must-revalidate")
             }
         }
 
@@ -86,38 +59,120 @@ class IceScrumFilters {
                         }
                     }
                 }
+                if (params.product && !(actionName == 'save' && controllerName == 'project')) {
+                    params.product = params.product.decodeProductKey()
+                    if (!params.product) {
+                        forward(controller:"errors", action:"error404")
+                        return false
+                    }
+                }
                 securityService.filterRequest()
                 return
             }
         }
 
-        pkeyFeed(controller: 'project', action: 'feed') {
+        projectCreationEnableSave(controller:'project', action:'save') {
             before = {
-                if (params.product) {
-                    params.product = params.product.decodeProductKey()
-                    if (!params.product) {
-                        render(status: 404)
-                        return
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        forward(controller:"errors", action:"error403")
+                        return false
                     }
-
-                }
-            }
-
-        }
-
-        releaseId(controller: 'releasePlan', action: '*') {
-            before = {
-                if (!params.id) {
-                    params.id = !actionName.contains('Chart') ? Release.findCurrentOrNextRelease(Product.load(params.product).id).list()[0]?.id : Release.findCurrentOrLastRelease(Product.load(params.product).id).list()[0]?.id
                 }
             }
         }
 
-        sprintId(controller: 'sprintPlan', action: '*') {
+        projectCreationEnableAdd(controller:'project', action:'add'){
             before = {
-                if (!params.id) {
-                    params.id = !actionName.contains('Chart') ? Sprint.findCurrentOrNextSprint(Product.load(params.product).id).list()[0]?.id : Sprint.findCurrentOrLastSprint(Product.load(params.product).id).list()[0]?.id
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        forward(controller:"errors", action:"error403")
+                        return false
+                    }
                 }
+            }
+        }
+
+        projectImportEnable(controller:'project', action:'import'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        render(status: 403)
+                        return false
+                    }
+                }
+            }
+        }
+
+        projectExportEnable(controller:'project', action:'export'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        forward(controller:"errors", action:"error403")
+                        return false
+                    }
+                }
+            }
+        }
+
+        userRegistrationEnable(controller:'user', action:'register'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
+                    forward(controller:"errors", action:"error403")
+                    return false
+                }
+            }
+        }
+
+        userRegistrationEnable2(controller:'user', action:'save'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
+                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                        forward(controller:"errors", action:"error403")
+                        return false
+                    }
+                }
+            }
+        }
+
+        userRetrieveEnable(controller:'user', action:'retrieve'){
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)) {
+                    forward(controller:"errors", action:"error403")
+                    return false
+                }
+            }
+        }
+
+        webservices(uri: '/ws/**') {
+            before = {
+                def webservices
+                if (params.product) {
+                    webservices = Product.createCriteria().get {
+                        //TODO test if product is really a long
+                        eq 'id', params.product.toLong()
+                        preferences {
+                            projections {
+                                property 'webservices'
+                            }
+                        }
+                        cache true
+                    }
+                    if (!webservices) {
+                        render(status: 503)
+                    }
+                } else {
+                    webservices = true
+                }
+                if (webservices) {
+                    // Replace old parseRequest, warning: the request body (InputStream) cannot be read after that, that a one shot
+                    request.withFormat {
+                        json {
+                            params << request.JSON
+                        }
+                    }
+                }
+                return webservices
             }
         }
 

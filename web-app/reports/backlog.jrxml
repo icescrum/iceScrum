@@ -91,7 +91,7 @@
     <subDataset name="story">
         <field name="uid" class="java.lang.Integer"/>
         <field name="name" class="java.lang.String"/>
-        <field name="effort" class="java.lang.Integer"/>
+        <field name="effort" class="java.math.BigDecimal"/>
         <field name="rank" class="java.lang.Integer"/>
         <field name="description" class="java.lang.String"/>
         <field name="type" class="java.lang.String"/>

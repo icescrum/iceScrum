@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2014 Kagilum SAS.
  *
  * This file is part of iceScrum.
  *
@@ -18,11 +18,11 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
 import grails.util.Metadata
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.mime.DefaultAcceptHeaderParser
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.codehaus.groovy.grails.web.servlet.HttpHeaders
@@ -33,6 +33,7 @@ class BootStrap {
 
     def localeResolver
     DefaultGrailsApplication grailsApplication
+    def ehcacheCacheManager
 
     def init = { servletContext ->
 
@@ -41,6 +42,7 @@ class BootStrap {
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
         println("------------------");
         println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
+        println "cache manager name: ${ehcacheCacheManager?.name}"
         println("------------------");
 
         //Hack grails 1.3.x bug with accept header for request.format should be remove when upgrade to grails 2.x

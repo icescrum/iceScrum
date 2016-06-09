@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2010 iceScrum Technologies.
+- Copyright (c) 2015 Kagilum SAS
 -
 - This file is part of iceScrum.
 -
@@ -18,7 +18,4 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
---}%<is:objectAsXML object ="${object}" node="cliche" indentLevel="${indentLevel}" root="${root}">
-  <is:propertyAsXML name="['datePrise','type']"/>
-  <is:propertyAsXML name="['data']" cdata="true"/>
-</is:objectAsXML>
+--}%

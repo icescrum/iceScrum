@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 iceScrum Technologies.
+ * Copyright (c) 2015 Kagilum SAS
  *
  * This file is part of iceScrum.
  *
@@ -23,46 +23,37 @@
 
 package org.icescrum.presentation.taglib
 
-import org.icescrum.core.domain.security.Authority
-
-import org.springframework.security.core.authority.GrantedAuthorityImpl
-
 class SecurityTagLib {
-  static namespace = 'is'
+    static namespace = 'is'
 
-  def securityService
-  def aclUtilService
-  static final userAuthorities = [new GrantedAuthorityImpl(Authority.ROLE_USER)]
+    def securityService
 
-  def displayRole = {attrs ->
-    def res = []
-      if (request.admin) {
-        res << message(code: 'is.role.admin')
-      }
-      else
-      {
-        if (securityService.archivedProduct(params.product)){
-            res << message(code:'is.product.archived')
-        }else{
-            if (request.owner) {
-              res << message(code: 'is.role.owner')
-            }
-            if (request.scrumMaster) {
-              res << message(code: 'is.role.scrumMaster')
-            }
-            if (request.teamMember) {
-              res << message(code: 'is.role.teamMember')
-            }
-            if (request.productOwner) {
-              res << message(code: 'is.role.productOwner')
-            }
-            if (!res && request.stakeHolder) {
-              res << message(code: 'is.role.stakeHolder')
+    //TODO remove ?
+    def displayRole = { attrs ->
+        def res = []
+        if (request.admin) {
+            res << message(code: 'is.role.admin')
+        } else {
+            if (securityService.archivedProduct(attrs.product)) {
+                res << message(code: 'is.product.archived')
+            } else {
+                if (request.owner) {
+                    res << message(code: 'is.role.owner')
+                }
+                if (request.scrumMaster) {
+                    res << message(code: 'is.role.scrumMaster')
+                }
+                if (request.teamMember) {
+                    res << message(code: 'is.role.teamMember')
+                }
+                if (request.productOwner) {
+                    res << message(code: 'is.role.productOwner')
+                }
+                if (!res && request.stakeHolder) {
+                    res << message(code: 'is.role.stakeHolder')
+                }
             }
         }
-      }
-    out << res.join(', ')
-  }
-
-
+        out << res.join(', ')
+    }
 }
