@@ -75,14 +75,14 @@ class StoryController {
         render(status: 200, text: stories as JSON, contentType: 'application/json')
     }
 
-    @Secured(['inProduct()'])
+    @Secured(['stakeHolder() or inProduct()'])
     def show() {
         def stories = Story.withStories(params)
         def returnData = stories.size() > 1 ? stories : stories.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated() and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def save() {
         def storyParams = params.story
         if (!storyParams) {
@@ -102,7 +102,7 @@ class StoryController {
         try {
             Story.withTransaction {
                 bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
-                def user = (User) springSecurityService.currentUser
+                User user = (User) springSecurityService.currentUser
                 def product = Product.get(params.long('product'))
                 storyService.save(story, product, user)
                 story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
@@ -110,12 +110,12 @@ class StoryController {
                     def task = new Task()
                     bindData(task, it, [include: ['color', 'description', 'estimation', 'name', 'notes', 'tags']])
                     story.addToTasks(task)
-                    taskService.save(task, springSecurityService.currentUser)
+                    taskService.save(task, user)
                 }
                 acceptanceTests.each {
                     def acceptanceTest = new AcceptanceTest()
                     bindData(acceptanceTest, it, [include: ['description', 'name']])
-                    acceptanceTestService.save(acceptanceTest, story, springSecurityService.currentUser)
+                    acceptanceTestService.save(acceptanceTest, story, user)
                     story.addToAcceptanceTests(acceptanceTest) // required so the acceptance tests are returned with the story in JSON
                 }
                 entry.hook(id: "${controllerName}-${actionName}", model: [story: story])
@@ -126,7 +126,7 @@ class StoryController {
         }
     }
 
-    @Secured(['isAuthenticated() and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def update() {
         def stories = Story.withStories(params)
         def storyParams = params.story
@@ -185,7 +185,7 @@ class StoryController {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def delete() {
         def stories = Story.withStories(params)
         storyService.delete(stories, null, params.reason ? params.reason.replaceAll("(\r\n|\n)", "<br/>") : null)
@@ -193,7 +193,7 @@ class StoryController {
         render(status: 200, text: returnData as JSON)
     }
 
-    @Secured(['inProduct() and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def copy() {
         def stories = Story.withStories(params)
         def copiedStories = storyService.copy(stories)
@@ -318,7 +318,7 @@ class StoryController {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def findDuplicates(long product) {
         def stories = null
         Product _product = Product.withProduct(product)
@@ -331,7 +331,7 @@ class StoryController {
         render(status: 200, text: stories ? "${message(code: 'is.ui.story.duplicate')} ${stories.join(" or ")}" : "")
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def like() {
         def stories = Story.withStories(params)
         stories.each { Story story ->
@@ -347,7 +347,7 @@ class StoryController {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated() and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def follow() {
         def stories = Story.withStories(params)
         stories.each { Story story ->
@@ -365,7 +365,7 @@ class StoryController {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated() and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def dependenceEntries(long id, long product) {
         def story = Story.withStory(product, id)
         def stories = Story.findPossiblesDependences(story).list()?.sort { a -> a.feature == story.feature ? 0 : 1 }
@@ -373,7 +373,7 @@ class StoryController {
         render(status: 200, contentType: 'application/json', text: storyEntries as JSON)
     }
 
-    @Secured(['isAuthenticated() and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def sprintEntries(long product) {
         def sprintEntries = []
         Product _product = Product.withProduct(product)
@@ -390,7 +390,7 @@ class StoryController {
         render(status: 200, contentType: 'application/json', text: sprintEntries as JSON)
     }
 
-    @Secured(['isAuthenticated() and !archivedProduct()'])
+    @Secured(['inProduct() and !archivedProduct()'])
     def saveTemplate(long id, long product) {
         Story story = Story.withStory(product, id)
         Product _product = Product.withProduct(product)
@@ -437,13 +437,13 @@ class StoryController {
         }
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def templateEntries() {
         def templates = Template.findAllByParentProduct(Product.get(params.long('product')))
         render(text: templates.collect {[id: it.id, text: it.name]} as JSON, contentType: 'application/json', status: 200)
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured(['inProduct() and !archivedProduct()'])
     def templatePreview() {
         if (params.template) {
             def product = Product.get(params.long('product'))
@@ -465,7 +465,7 @@ class StoryController {
         }
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def listByField(long product, String field) {
         Product _product = Product.withProduct(product)
         def productStories = _product.stories;
@@ -486,11 +486,5 @@ class StoryController {
             }
         }
         render(text: [fieldValues: fieldValues, stories: stories, count: count] as JSON, contentType: 'application/json', status: 200)
-    }
-
-    @Secured('isAuthenticated()')
-    def openDialogDelete() {
-        def dialog = g.render(template: 'dialogs/delete', model: [back: params.back ? params.back : '#backlog'])
-        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 }
