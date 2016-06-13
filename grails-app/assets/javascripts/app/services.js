@@ -126,6 +126,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     this.inProduct = function() {
         return self.roles.productOwner || self.roles.scrumMaster || self.roles.teamMember;
     };
+    this.stakeHolder = function() {
+        return self.roles.stakeHolder;
+    };
     this.tmOrSm = function() {
         return self.roles.scrumMaster || self.roles.teamMember;
     };
@@ -174,7 +177,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         return self.isProjectResolved.promise.then(function() {
             //return TeamService.get(self.project).then(function(team) {
             //    self.project.team = team;
-                return self.project;
+            return self.project;
             //});
         });
     };
@@ -335,7 +338,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         if (cachedItem) {
             _.merge(cachedItem, item);
             newItem = cachedItem;
-            if(item.hasOwnProperty('tags')){
+            if (item.hasOwnProperty('tags')) {
                 newItem.tags = item.tags;
             }
         } else {

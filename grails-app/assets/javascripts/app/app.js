@@ -88,7 +88,7 @@ angular.module('isApp', [
         state.self.$$state = function() {
             return state;
         };
-        state.self.isSetAuthorize = function() {
+        state.self.isSecured = function() {
             return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
         };
         return parentFn(state);
@@ -322,7 +322,7 @@ angular.module('isApp', [
                     url: "/new",
                     data: {
                         authorize: {
-                            roles: ['inProduct']
+                            roles: ['inProduct or stakeHolder']
                         }
                     },
                     views: {
@@ -1135,25 +1135,24 @@ angular.module('isApp', [
             $state.go('root');
         } else if (!event.defaultPrevented) {
             var state = toState.$$state();
-            authorized = true;
-            if (state.isSetAuthorize()) {
-                var authorized = false;
-                _.every(state.data.authorize.roles, function(role) {
-                    authorized = role.indexOf('!') > -1 ? !Session[role.substring(role.indexOf('!') + 1)]() : (Session[role]() === true);
-                    return authorized;
-                });
-            }
-            if (!authorized) {
-                event.preventDefault();
-                if (!Session.authenticated()) {
-                    $rootScope.showAuthModal('', function() {
-                        UserService.getCurrent().then(function(data) {
-                            Session.create(data.user, data.roles);
-                            $state.go(toState.name, toParams);
-                        });
+            if (state.isSecured()) {
+                var authorized = _.every(state.data.authorize.roles, function(orRoles) {
+                    return _.some(orRoles.split(' or '), function(role) {
+                        return role.indexOf('!') > -1 ? !Session[role.substring(role.indexOf('!') + 1)]() : (Session[role]() === true);
                     });
-                } else {
-                    $state.go(angular.isDefined(fromState) && fromState.name ? fromState.name : "404");
+                });
+                if (!authorized) {
+                    event.preventDefault();
+                    if (!Session.authenticated()) {
+                        $rootScope.showAuthModal('', function() {
+                            UserService.getCurrent().then(function(data) {
+                                Session.create(data.user, data.roles);
+                                $state.go(toState.name, toParams);
+                            });
+                        });
+                    } else {
+                        $state.go(angular.isDefined(fromState) && fromState.name ? fromState.name : "404");
+                    }
                 }
             }
         }
