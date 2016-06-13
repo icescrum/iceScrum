@@ -258,13 +258,13 @@ filters
         };
     })
     .filter('permalink', ['$rootScope', 'Session', function($rootScope, Session) {
-        return function(uid, type) {
+        return function(uid, type, projectKey) {
             var prefixByType = {
                 story: '',
                 feature: 'F',
                 task: 'T'
             };
-            return $rootScope.serverUrl + '/' + Session.getProject().pkey + '-' + prefixByType[type] + uid;
+            return $rootScope.serverUrl + '/' + (projectKey ? projectKey : Session.getProject().pkey) + '-' + prefixByType[type] + uid;
         };
     }])
     .filter('flowFilesNotCompleted', function() {
