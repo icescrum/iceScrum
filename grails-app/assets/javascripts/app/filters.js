@@ -43,8 +43,8 @@ filters
         return function(user) {
             var classes = "img-circle user-role";
             var project = Session.getProject();
-            if (!project) {
-                return '';
+            if (!project || !project.key) {
+                return classes;
             }
             if (!userVisualRolesCache[project.pkey]) {
                 userVisualRolesCache[project.pkey] = {};
