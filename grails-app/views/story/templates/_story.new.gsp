@@ -107,7 +107,7 @@
                            ng-change="findDuplicates(story.name)"
                            ng-disabled="!authorizedStory('create')"/>
                     <div ng-if="messageDuplicate"
-                         class="help-block bg-warning"
+                         class="help-block bg-warning spaced-help-block"
                          ng-bind-html="messageDuplicate | sanitize"></div>
                 </div>
                 <div class="form-half" ng-if="templateEntries.length > 0">

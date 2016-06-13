@@ -320,15 +320,15 @@ class StoryController {
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def findDuplicates(long product) {
-        def stories = null
         Product _product = Product.withProduct(product)
+        def stories
         def terms = params.term?.tokenize()?.findAll { it.size() >= 5 }
         if (terms) {
-            stories = Story.search(_product.id, [term: terms, list: [max: 3]]).collect {
-                "<a href='${createLink(absolute: true, mapping: "shortURL", params: [product: _product.pkey], id: it.uid, title: it.description)}'>${it.name}</a>"
+            stories = Story.search(_product.id, [story: [term: terms], list: [max: 3]]).collect {
+                "<a href='${createLink(absolute: true, action: 'permalink', params: [product: _product.pkey, uid: it.uid])}'>$it.name</a>"
             }
         }
-        render(status: 200, text: stories ? "${message(code: 'is.ui.story.duplicate')} ${stories.join(" or ")}" : "")
+        render(status: 200, text: stories ? message(code: 'is.ui.story.duplicate') + ' ' + stories.join(" or ") : "")
     }
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
