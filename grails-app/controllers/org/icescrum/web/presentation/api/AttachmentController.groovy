@@ -31,11 +31,11 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.event.IceScrumEventType
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
 import javax.servlet.http.HttpServletResponse
 
-class AttachmentController implements ControllerExceptionHandler {
+class AttachmentController implements ControllerErrorHandler {
 
     def springSecurityService
     def attachmentableService

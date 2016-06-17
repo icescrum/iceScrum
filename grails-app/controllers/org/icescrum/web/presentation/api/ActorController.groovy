@@ -29,10 +29,10 @@ import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Product
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
 @Secured('inProduct() or stakeHolder()')
-class ActorController implements ControllerExceptionHandler {
+class ActorController implements ControllerErrorHandler {
 
     def actorService
     def springSecurityService

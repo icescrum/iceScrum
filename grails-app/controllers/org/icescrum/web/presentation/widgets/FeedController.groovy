@@ -28,9 +28,9 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Widget
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
-class FeedController implements ControllerExceptionHandler {
+class FeedController implements ControllerErrorHandler {
 
     def springSecurityService
 

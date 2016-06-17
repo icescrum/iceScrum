@@ -28,9 +28,9 @@ import org.grails.comments.Comment
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.event.IceScrumEventType
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
-class CommentController implements ControllerExceptionHandler {
+class CommentController implements ControllerErrorHandler {
 
     def springSecurityService
     def activityService

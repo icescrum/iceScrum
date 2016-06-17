@@ -39,12 +39,12 @@ import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.ServicesUtils
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
 import static grails.async.Promises.task
 
 @Secured('stakeHolder() or inProduct()')
-class ProjectController implements ControllerExceptionHandler {
+class ProjectController implements ControllerErrorHandler {
 
     def productService
     def sprintService

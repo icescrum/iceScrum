@@ -30,12 +30,13 @@ import grails.util.BuildSettingsHolder
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.ProductPreferences
+import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import sun.misc.BASE64Decoder
 
-class ScrumOSController {
+class ScrumOSController implements ControllerErrorHandler {
 
     def messageSource
     def servletContext

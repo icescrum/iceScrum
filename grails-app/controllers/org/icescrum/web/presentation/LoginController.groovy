@@ -26,6 +26,7 @@ package org.icescrum.web.presentation
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.User
+import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.security.authentication.CredentialsExpiredException
 import org.springframework.security.authentication.DisabledException
@@ -35,7 +36,7 @@ import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import javax.security.auth.login.AccountExpiredException
 
-class LoginController {
+class LoginController implements ControllerErrorHandler {
 
     def securityService
     def grailsApplication

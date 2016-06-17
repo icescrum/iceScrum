@@ -29,12 +29,12 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Story
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
 import static grails.async.Promises.task
 
 @Secured('inProduct() or stakeHolder()')
-class FeatureController implements ControllerExceptionHandler {
+class FeatureController implements ControllerErrorHandler {
 
     def featureService
     def springSecurityService

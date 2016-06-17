@@ -6,9 +6,9 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
-class TeamController implements ControllerExceptionHandler {
+class TeamController implements ControllerErrorHandler {
 
     def springSecurityService
     def productService

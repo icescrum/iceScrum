@@ -28,9 +28,9 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.utils.ServicesUtils
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
-class SprintController implements ControllerExceptionHandler {
+class SprintController implements ControllerErrorHandler {
 
     def sprintService
     def storyService

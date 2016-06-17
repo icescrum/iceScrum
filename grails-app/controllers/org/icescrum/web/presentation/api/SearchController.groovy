@@ -29,10 +29,10 @@ import grails.converters.JSON
 import org.icescrum.core.domain.BacklogElement
 import org.icescrum.core.domain.Product
 import grails.plugin.springsecurity.annotation.Secured
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
 @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-class SearchController implements ControllerExceptionHandler {
+class SearchController implements ControllerErrorHandler {
 
     def springSecurityService
 

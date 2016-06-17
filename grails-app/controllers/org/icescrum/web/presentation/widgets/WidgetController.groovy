@@ -31,9 +31,9 @@ import org.icescrum.core.domain.Widget
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.WidgetDefinition
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
-class WidgetController implements ControllerExceptionHandler {
+class WidgetController implements ControllerErrorHandler {
 
     def widgetService
     def uiDefinitionService

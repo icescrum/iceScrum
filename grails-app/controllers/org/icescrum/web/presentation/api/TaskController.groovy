@@ -26,9 +26,9 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
-class TaskController implements ControllerExceptionHandler {
+class TaskController implements ControllerErrorHandler {
 
     def springSecurityService
     def taskService

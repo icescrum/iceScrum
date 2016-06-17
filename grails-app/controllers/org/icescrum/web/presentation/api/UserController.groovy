@@ -38,11 +38,11 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.WindowDefinition
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 import org.springframework.mail.MailException
 import org.springframework.security.acls.domain.BasePermission
 
-class UserController implements ControllerExceptionHandler{
+class UserController implements ControllerErrorHandler{
 
     def userService
     def securityService

@@ -28,9 +28,9 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.utils.ServicesUtils
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
-class ReleaseController implements ControllerExceptionHandler {
+class ReleaseController implements ControllerErrorHandler {
 
     def releaseService
     def sprintService

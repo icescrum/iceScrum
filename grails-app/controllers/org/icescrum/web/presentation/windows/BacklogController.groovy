@@ -29,12 +29,12 @@ import org.icescrum.core.domain.Backlog
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
-import org.icescrum.core.exception.ControllerExceptionHandler
+import org.icescrum.core.error.ControllerErrorHandler
 
 import static grails.async.Promises.task
 
 @Secured(['stakeHolder() or inProduct()'])
-class BacklogController implements ControllerExceptionHandler {
+class BacklogController implements ControllerErrorHandler {
 
     def springSecurityService
     def grailsApplication
