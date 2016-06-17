@@ -222,6 +222,7 @@ class UserController implements ControllerErrorHandler{
                         status.setRollbackOnly()
                         returnError(code: 'is.mail.error', exception: e)
                     } catch (RuntimeException re) {
+                        status.setRollbackOnly()
                         returnError(text: re.message, exception: re)
                     } catch (Exception e) {
                         status.setRollbackOnly()

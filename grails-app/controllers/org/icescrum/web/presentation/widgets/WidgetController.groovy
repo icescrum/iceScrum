@@ -104,22 +104,18 @@ class WidgetController implements ControllerErrorHandler {
         if (!widget) {
             render(status: 403)
         } else {
-            try {
-                Map props = [:]
-                if (params.widget.position) {
-                    props.position = params.widget.int('position')
-                }
-                if (params.widget.onRight) {
-                    props.onRight = params.widget.boolean('onRight')
-                }
-                if (params.widget.settingsData) {
-                    props.settings = JSON.parse(params.widget.settingsData)
-                }
-                widgetService.update(widget, props)
-                render(status: 200, contentType: 'application/json', text: widget as JSON)
-            } catch (RuntimeException e) {
-                returnError(code: 'is.user.preferences.error.widget', exception: e)
+            Map props = [:]
+            if (params.widget.position) {
+                props.position = params.widget.int('position')
             }
+            if (params.widget.onRight) {
+                props.onRight = params.widget.boolean('onRight')
+            }
+            if (params.widget.settingsData) {
+                props.settings = JSON.parse(params.widget.settingsData)
+            }
+            widgetService.update(widget, props)
+            render(status: 200, contentType: 'application/json', text: widget as JSON)
         }
     }
 
@@ -134,12 +130,8 @@ class WidgetController implements ControllerErrorHandler {
         if (!widget) {
             render(status: 403)
         } else {
-            try {
-                widgetService.delete(widget)
-                render(status: 204)
-            } catch (RuntimeException e) {
-                returnError(code: 'is.user.preferences.error.widget', exception: e)
-            }
+            widgetService.delete(widget)
+            render(status: 204)
         }
     }
 
