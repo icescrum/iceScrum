@@ -65,7 +65,7 @@ class TeamController implements ControllerErrorHandler {
         Team.withTransaction {
             if (team.name != params.team.name) {
                 team.name = params.team.name
-                team.save(failOnError: true)
+                team.save()
             }
             productService.updateTeamMembers(team, newMembers)
             productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)

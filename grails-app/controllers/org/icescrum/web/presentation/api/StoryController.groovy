@@ -410,7 +410,7 @@ class StoryController implements ControllerErrorHandler {
             }
         }
         def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: _product)
-        template.save(failOnError: true)
+        template.save()
         render(text: [id: template.id, text: template.name] as JSON, contentType: 'application/json', status: 200)
     }
 

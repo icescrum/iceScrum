@@ -324,6 +324,8 @@ grails.converters.encoding = "UTF-8"
 
 grails.controllers.defaultScope = 'singleton' // big experiment
 
+grails.gorm.failOnError = true
+
 // enable Sitemesh preprocessing of GSP pages
 grails.views.gsp.sitemesh.preprocess = true
 // scaffolding templates configuration
