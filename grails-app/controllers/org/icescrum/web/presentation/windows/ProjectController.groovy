@@ -39,11 +39,12 @@ import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.ServicesUtils
+import org.icescrum.core.exception.ControllerExceptionHandler
 
 import static grails.async.Promises.task
 
 @Secured('stakeHolder() or inProduct()')
-class ProjectController {
+class ProjectController implements ControllerExceptionHandler {
 
     def productService
     def sprintService
@@ -61,7 +62,7 @@ class ProjectController {
         def productParams = params.remove('product')
 
         if (!productParams || !teamParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
         }
 
         productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate)
@@ -76,18 +77,17 @@ class ProjectController {
 
         //Case user choose to generate sprints
         if (productParams.initialize && (productParams.firstSprint?.before(productParams.startDate) || productParams.firstSprint?.after(productParams.endDate) || productParams.firstSprint == productParams.endDate)) {
-            def msg = message(code: 'is.product.error.firstSprint')
-            returnError(text: msg)
+            returnError(code: 'is.product.error.firstSprint')
             return
         }
 
         def team
         def product = new Product()
         product.preferences = new ProductPreferences()
-        Product.withTransaction { status ->
-            bindData(product, productParams, [include: ['name', 'description', 'startDate', 'endDate', 'pkey']])
-            bindData(product.preferences, productPreferencesParams, [exclude: ['archived']])
-            try {
+        try {
+            Product.withTransaction {
+                bindData(product, productParams, [include: ['name', 'description', 'startDate', 'endDate', 'pkey']])
+                bindData(product.preferences, productPreferencesParams, [exclude: ['archived']])
                 if (!teamParams?.id) {
                     team = new Team()
                     bindData(team, teamParams, [include: ['name']])
@@ -96,13 +96,13 @@ class ProjectController {
                     def invitedMembers = teamParams.invitedMembers?.list('email') ?: []
                     def invitedScrumMasters = teamParams.invitedScrumMasters?.list('email') ?: []
                     if (!scrumMasters && !members) {
-                        returnError(text: message(code: 'is.product.error.noMember'))
+                        returnError(code: 'is.product.error.noMember')
                         return
                     }
                     teamService.save(team, members, scrumMasters)
                     productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
                 } else {
-                    team = Team.findById(teamParams.id)
+                    team = Team.withTeam(teamParams.long('id'))
                 }
                 def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
                 def stakeHolders = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
@@ -116,15 +116,13 @@ class ProjectController {
                     releaseService.save(release, product)
                     sprintService.generateSprints(release, productParams.firstSprint)
                 }
-                render(status: 201, contentType: 'application/json', text: product as JSON)
-            } catch (IllegalStateException ise) {
-                status.setRollbackOnly()
-                returnError(text: message(code: ise.getMessage()))
-            } catch (RuntimeException re) {
-                status.setRollbackOnly()
-                if (log.debugEnabled) re.printStackTrace()
-                returnError(text: renderErrors(bean: product) + renderErrors(bean: team))
             }
+            render(status: 201, contentType: 'application/json', text: product as JSON)
+        } catch (IllegalStateException ise) {
+            returnError(code: ise.message)
+        } catch (RuntimeException re) {
+            if (log.debugEnabled) re.printStackTrace()
+            returnError(text: renderErrors(bean: product) + renderErrors(bean: team))
         }
     }
 
@@ -133,21 +131,16 @@ class ProjectController {
         Product _product = Product.withProduct(product)
         def productPreferencesParams = params.productd?.remove('preferences')
         def productParams = params.remove('productd')
-        try {
-            Product.withTransaction {
-                productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate);
-                bindData(_product, productParams, [include: ['name', 'description', 'startDate', 'pkey', 'planningPokerGameType']])
-                bindData(_product.preferences, productPreferencesParams, [exclude: ['archived']])
-                if (!productPreferencesParams?.stakeHolderRestrictedViews) {
-                    _product.preferences.stakeHolderRestrictedViews = null
-                }
-                productService.update(_product, _product.preferences.isDirty('hidden'), _product.isDirty('pkey') ? _product.getPersistentValue('pkey') : null)
-                entry.hook(id: "${controllerName}-${actionName}", model: [product: _product])
-                render(status: 200, contentType: 'application/json', text: _product as JSON)
+        Product.withTransaction {
+            productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate);
+            bindData(_product, productParams, [include: ['name', 'description', 'startDate', 'pkey', 'planningPokerGameType']])
+            bindData(_product.preferences, productPreferencesParams, [exclude: ['archived']])
+            if (!productPreferencesParams?.stakeHolderRestrictedViews) {
+                _product.preferences.stakeHolderRestrictedViews = null
             }
-        } catch (RuntimeException e) {
-            returnError(exception: e, object: _product)
-            return
+            productService.update(_product, _product.preferences.isDirty('hidden'), _product.isDirty('pkey') ? _product.getPersistentValue('pkey') : null)
+            entry.hook(id: "${controllerName}-${actionName}", model: [product: _product])
+            render(status: 200, contentType: 'application/json', text: _product as JSON)
         }
     }
 
@@ -159,7 +152,7 @@ class ProjectController {
             render(status: 200, contentType: 'application/json', text: [class: 'Product', id: product] as JSON)
         } catch (RuntimeException re) {
             if (log.debugEnabled) re.printStackTrace()
-            returnError(text: message(code: 'is.product.error.not.deleted'))
+            returnError(code: 'is.product.error.not.deleted')
         }
     }
 
@@ -248,7 +241,7 @@ class ProjectController {
             render(status: 200, contentType: 'application/json', text: [class: 'Product', id: _product.id] as JSON)
         } catch (RuntimeException re) {
             if (log.debugEnabled) re.printStackTrace()
-            returnError(text: message(code: 'is.product.error.not.archived'))
+            returnError(code: 'is.product.error.not.archived')
         }
     }
 
@@ -260,7 +253,7 @@ class ProjectController {
             render(status: 200, contentType: 'application/json', text: [class: 'Product', id: _product.id] as JSON)
         } catch (RuntimeException re) {
             if (log.debugEnabled) re.printStackTrace()
-            returnError(text: message(code: 'is.product.error.not.archived'))
+            returnError(code: 'is.product.error.not.archived')
         }
     }
 
@@ -465,18 +458,11 @@ class ProjectController {
 
             def changes = productService.validate(product, session.progress, erase)
             if (!changes) {
-
-                Product.withTransaction { status ->
-                    try {
-                        productService.saveImport(product, path, erase)
-                        render(status: 200, contentType: 'application/json', text: product as JSON)
-                    } catch (RuntimeException e) {
-                        status.setRollbackOnly()
-                        if (log.debugEnabled) e.printStackTrace()
-                        returnError(text: message(code: 'is.import.error'))
-                    } finally {
-                        //session.import = null
-                    }
+                try {
+                    productService.saveImport(product, path, erase)
+                    render(status: 200, contentType: 'application/json', text: product as JSON)
+                } catch (RuntimeException e) {
+                    returnError(code: 'is.import.error', exception: e)
                 }
             } else {
                 session.import.product = product
@@ -537,7 +523,7 @@ class ProjectController {
         }
 
         if (data.size() <= 0) {
-            returnError(text: message(code: 'is.report.error.no.data'))
+            returnError(code: 'is.report.error.no.data')
         } else if (params.get) {
             renderReport(chart ?: 'timeline', params.format, data, _product.name, ['labels.projectName': _product.name])
         } else if (params.status) {
@@ -556,7 +542,7 @@ class ProjectController {
         def first = 0
         def stories = Story.findAllByBacklog(_product, [sort: 'state', order: 'asc'])
         if (!stories) {
-            returnError(text: message(code: 'is.report.error.no.data'))
+            returnError(code: 'is.report.error.no.data')
             return
         } else if (params.get) {
             stories.each {

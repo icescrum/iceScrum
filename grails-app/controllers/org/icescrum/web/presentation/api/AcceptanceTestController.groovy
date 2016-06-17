@@ -29,8 +29,9 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.User
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class AcceptanceTestController {
+class AcceptanceTestController implements ControllerExceptionHandler {
 
     def springSecurityService
     def acceptanceTestService
@@ -51,12 +52,12 @@ class AcceptanceTestController {
     def save(long product) {
         def acceptanceTestParams = params.acceptanceTest
         if (!acceptanceTestParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         def story = Story.withStory(product, acceptanceTestParams.parentStory.id.toLong())
         if (story.state >= Story.STATE_DONE) {
-            returnError(text: message(code: 'is.acceptanceTest.error.save.storyState'))
+            returnError(code: 'is.acceptanceTest.error.save.storyState')
             return
         }
         def state = acceptanceTestParams.state?.toInteger()
@@ -65,27 +66,22 @@ class AcceptanceTestController {
             if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                 newState = AcceptanceTest.AcceptanceTestState.byId(state)
                 if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                    returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
+                    returnError(code: 'is.acceptanceTest.error.update.state.storyState')
                     return
                 }
             } else {
-                returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
+                returnError(code: 'is.acceptanceTest.error.state.not.exist')
                 return
             }
         }
         User user = (User) springSecurityService.currentUser
         def acceptanceTest = new AcceptanceTest()
-        try {
-            AcceptanceTest.withTransaction {
-                if (newState) {
-                    acceptanceTest.stateEnum = newState
-                }
-                bindData(acceptanceTest, acceptanceTestParams, [include: ['name', 'description']])
-                acceptanceTestService.save(acceptanceTest, story, user)
+        AcceptanceTest.withTransaction {
+            if (newState) {
+                acceptanceTest.stateEnum = newState
             }
-        } catch (RuntimeException e) {
-            returnError(object: acceptanceTest, exception: e)
-            return
+            bindData(acceptanceTest, acceptanceTestParams, [include: ['name', 'description']])
+            acceptanceTestService.save(acceptanceTest, story, user)
         }
         render(status: 201, contentType: 'application/json', text: acceptanceTest as JSON)
     }
@@ -94,13 +90,13 @@ class AcceptanceTestController {
     def update(long id, long product) {
         def acceptanceTestParams = params.acceptanceTest
         if (!acceptanceTestParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
         def story = acceptanceTest.parentStory
         if (story.state >= Story.STATE_DONE) {
-            returnError(text: message(code: 'is.acceptanceTest.error.update.storyState'))
+            returnError(code: 'is.acceptanceTest.error.update.storyState')
             return
         }
         def state = acceptanceTestParams.state?.toInteger()
@@ -109,11 +105,11 @@ class AcceptanceTestController {
             if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                 newState = AcceptanceTest.AcceptanceTestState.byId(state)
                 if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                    returnError(text: message(code: 'is.acceptanceTest.error.update.state.storyState'))
+                    returnError(code: 'is.acceptanceTest.error.update.state.storyState')
                     return
                 }
             } else {
-                returnError(text: message(code: 'is.acceptanceTest.error.state.not.exist'))
+                returnError(code: 'is.acceptanceTest.error.state.not.exist')
                 return
             }
         }

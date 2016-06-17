@@ -29,15 +29,16 @@ import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Product
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.exception.ControllerExceptionHandler
 
 @Secured('inProduct() or stakeHolder()')
-class ActorController {
+class ActorController implements ControllerExceptionHandler {
 
     def actorService
     def springSecurityService
 
-    def index() {
-        def actors = Actor.searchAllByTermOrTag(params.long('product'), params.term).sort { Actor actor -> actor.useFrequency }
+    def index(long product) {
+        def actors = Actor.searchAllByTermOrTag(product, params.term).sort { Actor actor -> actor.useFrequency }
         render(status: 200, text: actors as JSON, contentType: 'application/json')
     }
 
@@ -47,24 +48,20 @@ class ActorController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def save() {
+    def save(long product) {
         def actorParams = params.actor
         if (!actorParams){
-            returnError(text:message(code:'todo.is.ui.no.data'))
+            returnError(code:'todo.is.ui.no.data')
             return
         }
         def actor = new Actor()
-        try {
-            Actor.withTransaction {
-                bindData(actor, actorParams, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']])
-                actor.tags = actorParams.tags instanceof String ? actorParams.tags.split(',') : (actorParams.tags instanceof String[] || actorParams.tags instanceof List) ? actorParams.tags : null
-                def product = Product.load(params.long('product'))
-                actorService.save(actor, product)
-            }
-            render(status: 201, contentType: 'application/json', text: actor as JSON)
-        } catch (RuntimeException e) {
-            returnError(exception: e, object: actor)
+        Actor.withTransaction {
+            bindData(actor, actorParams, [include: ['name', 'description', 'notes', 'satisfactionCriteria', 'instances', 'expertnessLevel', 'useFrequency']])
+            actor.tags = actorParams.tags instanceof String ? actorParams.tags.split(',') : (actorParams.tags instanceof String[] || actorParams.tags instanceof List) ? actorParams.tags : null
+            Product _product = Product.load(product)
+            actorService.save(actor, _product)
         }
+        render(status: 201, contentType: 'application/json', text: actor as JSON)
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -72,7 +69,7 @@ class ActorController {
         def actorParams = params.actor
         List<Actor> actors = Actor.withActors(params)
         if (!actorParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         actors.each { Actor actor ->

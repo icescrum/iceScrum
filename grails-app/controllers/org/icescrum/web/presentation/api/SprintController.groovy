@@ -28,8 +28,9 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.utils.ServicesUtils
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class SprintController {
+class SprintController implements ControllerExceptionHandler {
 
     def sprintService
     def storyService
@@ -53,7 +54,7 @@ class SprintController {
         def sprintParams = params.sprint
         def releaseId = params.parentRelease?.id ?: sprintParams.parentRelease?.id
         if (!releaseId) {
-            returnError(text: message(code: 'is.release.error.not.exist'))
+            returnError(code: 'is.release.error.not.exist')
             return
         }
         Release release = Release.withRelease(product, releaseId.toLong())
@@ -64,17 +65,11 @@ class SprintController {
             sprintParams.endDate = ServicesUtils.parseDateISO8601(sprintParams.endDate)
         }
         Sprint sprint = new Sprint()
-        try {
-            Sprint.withTransaction {
-                bindData(sprint, sprintParams, [include: ['goal', 'startDate', 'endDate', 'deliveredVersion']])
-                sprintService.save(sprint, release)
-            }
-            render(status: 201, contentType: 'application/json', text: sprint as JSON)
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: sprint, exception: e)
+        Sprint.withTransaction {
+            bindData(sprint, sprintParams, [include: ['goal', 'startDate', 'endDate', 'deliveredVersion']])
+            sprintService.save(sprint, release)
         }
+        render(status: 201, contentType: 'application/json', text: sprint as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
@@ -93,14 +88,8 @@ class SprintController {
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
     def delete(long product, long id) {
         Sprint sprint = Sprint.withSprint(product, id)
-        try {
-            sprintService.delete(sprint)
-            render(status: 200, text: [id: id] as JSON)
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: sprint, exception: e)
-        }
+        sprintService.delete(sprint)
+        render(status: 200, text: [id: id] as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')

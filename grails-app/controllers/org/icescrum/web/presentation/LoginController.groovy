@@ -94,7 +94,7 @@ class LoginController {
             }
         }
         if (springSecurityService.isAjax(request)) {
-            returnError(text: message(code: msg))
+            returnError(code: msg)
             return
         } else {
             flash.message = msg

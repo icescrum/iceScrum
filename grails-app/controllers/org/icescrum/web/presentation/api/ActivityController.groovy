@@ -27,8 +27,9 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class ActivityController {
+class ActivityController implements ControllerExceptionHandler {
 
     def springSecurityService
 

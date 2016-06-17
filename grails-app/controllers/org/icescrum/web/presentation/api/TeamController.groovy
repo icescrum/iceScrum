@@ -6,8 +6,9 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class TeamController {
+class TeamController implements ControllerExceptionHandler {
 
     def springSecurityService
     def productService
@@ -34,15 +35,9 @@ class TeamController {
     @Secured('isAuthenticated()')
     def save() {
         def team = new Team(name: params.team.name)
-        try {
-            Team.withTransaction {
-                teamService.save(team, null, [springSecurityService.currentUser.id])
-                render(status: 201, text: team as JSON, contentType: 'application/json')
-            }
-        } catch (IllegalStateException ise) {
-            returnError(text: message(code: ise.message))
-        } catch (RuntimeException re) {
-            returnError(object: team, exception: re)
+        Team.withTransaction {
+            teamService.save(team, null, [springSecurityService.currentUser.id])
+            render(status: 201, text: team as JSON, contentType: 'application/json')
         }
     }
     @Secured(['isAuthenticated()', 'RUN_AS_PERMISSIONS_MANAGER'])
@@ -66,31 +61,23 @@ class TeamController {
         }
         def invitedMembers = params.team.invitedMembers?.list('email') ?: []
         def invitedScrumMasters = params.team.invitedScrumMasters?.list('email') ?: []
-        try {
-            def newOwnerId = params.team.owner?.id?.toLong()
-            Team.withTransaction {
-                if (team.name != params.team.name) {
-                    team.name = params.team.name
-                    if (!team.save()) {
-                        returnError(object: team, exception: new RuntimeException(team.errors.toString()))
-                    }
-                }
-                productService.updateTeamMembers(team, newMembers)
-                productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
-                if (request.admin && newOwnerId && newOwnerId != team.owner.id) {
-                    def newOwner = User.get(newOwnerId)
-                    securityService.changeOwner(newOwner, team)
-                    team.products.each { Product product ->
-                        securityService.changeOwner(newOwner, product)
-                    }
+        def newOwnerId = params.team.owner?.id?.toLong()
+        Team.withTransaction {
+            if (team.name != params.team.name) {
+                team.name = params.team.name
+                team.save(failOnError: true)
+            }
+            productService.updateTeamMembers(team, newMembers)
+            productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
+            if (request.admin && newOwnerId && newOwnerId != team.owner.id) {
+                def newOwner = User.get(newOwnerId)
+                securityService.changeOwner(newOwner, team)
+                team.products.each { Product product ->
+                    securityService.changeOwner(newOwner, product)
                 }
             }
-            render(status: 200, text: team as JSON, contentType: 'application/json')
-        } catch (IllegalStateException ise) {
-            returnError(text: message(code: ise.message))
-        } catch (RuntimeException re) {
-            returnError(object: team, exception: re)
         }
+        render(status: 200, text: team as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')

@@ -28,8 +28,9 @@ import org.grails.comments.Comment
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.event.IceScrumEventType
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class CommentController {
+class CommentController implements ControllerExceptionHandler {
 
     def springSecurityService
     def activityService
@@ -40,19 +41,19 @@ class CommentController {
         if (commentable) {
             render(status: 200, contentType: 'application/json', text: commentable.comments as JSON)
         } else {
-            returnError(text:message(code: 'is.ui.backlogelement.comment.error'))
+            returnError(code: 'is.ui.backlogelement.comment.error')
         }
     }
 
     @Secured('stakeHolder() or inProduct()')
     def show() {
         if (!params.id) {
-            returnError(text:message(code: 'is.comment.error.not.exist'))
+            returnError(code: 'is.comment.error.not.exist')
             return
         }
         def comment = Comment.get(params.long('id'))
         if (!comment) {
-            returnError(text:message(code: 'is.comment.error.not.exist'))
+            returnError(code: 'is.comment.error.not.exist')
             return
         }
         render(status: 200, contentType: 'application/json', text: comment as JSON)
@@ -62,35 +63,26 @@ class CommentController {
     def save() {
         def poster = springSecurityService.currentUser
         def commentable = commentableObject
-        try {
-            Comment comment
-            if (params['comment'] instanceof Map) {
-                Comment.withTransaction { status ->
-                    try {
-                        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['addComment':null])
-                        commentable.addComment(poster, params.comment.body)
-                        activityService.addActivity(commentable, poster, 'comment', commentable.name);
-                        comment = commentable.comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
-                        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment':comment])
-                        if (params.type == 'story') {
-                            commentable.addToFollowers(poster)
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace()
-                        status.setRollbackOnly()
-                    }
+        Comment comment
+        if (params['comment'] instanceof Map) {
+            Comment.withTransaction {
+                grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['addComment':null])
+                commentable.addComment(poster, params.comment.body)
+                activityService.addActivity(commentable, poster, 'comment', commentable.name);
+                comment = commentable.comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
+                grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment':comment])
+                if (params.type == 'story') {
+                    commentable.addToFollowers(poster)
                 }
             }
-            render(status: 201, contentType: 'application/json', text: comment as JSON)
-        } catch (Exception e) {
-            returnError(exception:e)
         }
+        render(status: 201, contentType: 'application/json', text: comment as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def update() {
         if (params.id == null) {
-            returnError(text:message(code: 'is.ui.backlogelement.comment.error.not.exists'))
+            returnError(code: 'is.ui.backlogelement.comment.error.not.exists')
             return
         }
         def comment = Comment.get(params.long('id'))
@@ -102,25 +94,21 @@ class CommentController {
             return
         }
         def commentable = commentableObject
-        try {
-            comment.body = params.comment.body
-            grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment':comment])
-            comment.save()
-            grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment':comment])
-            render(status: 200, contentType: 'application/json', text:comment as JSON)
-        } catch (RuntimeException e) {
-            returnError(exception: e)
-        }
+        comment.body = params.comment.body
+        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment':comment])
+        comment.save()
+        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment':comment])
+        render(status: 200, contentType: 'application/json', text:comment as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProduct()')
     def delete() {
         if (params.id == null) {
-            returnError(text:message(code: 'is.ui.backlogelement.comment.error.not.exists'))
+            returnError(code: 'is.ui.backlogelement.comment.error.not.exists')
             return
         }
         if (params.commentable == null) {
-            returnError(text:message(code: 'is.backlogelement.error.not.exist'))
+            returnError(code: 'is.backlogelement.error.not.exist')
             return
         }
         def comment = Comment.get(params.long('id'))
@@ -132,24 +120,22 @@ class CommentController {
             return
         }
         def commentable = commentableObject
-        try {
-            grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removeComment':comment])
-            commentable.removeComment(comment)
-            grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removedComment':comment])
-            render(status: 200)
-        } catch (RuntimeException e) {
-            returnError(exception:e)
-        }
+        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removeComment':comment])
+        commentable.removeComment(comment)
+        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removedComment':comment])
+        render(status: 200)
     }
 
     private getCommentableObject(){
         def commentable
+        long product = params.long('product')
+        long commentableId = params.long('commentable')
         switch (params.type){
             case 'story':
-                commentable = Story.getInProduct(params.long('product'),params.long('commentable')).list()
+                commentable = Story.getInProduct(product, commentableId).list()
                 break
             case 'task':
-                commentable = Task.getInProduct(params.long('product'),params.long('commentable'))
+                commentable = Task.getInProduct(product, commentableId)
                 break
             default:
                 commentable = null

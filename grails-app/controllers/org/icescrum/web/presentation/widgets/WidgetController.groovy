@@ -31,8 +31,9 @@ import org.icescrum.core.domain.Widget
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.WidgetDefinition
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class WidgetController {
+class WidgetController implements ControllerExceptionHandler {
 
     def widgetService
     def uiDefinitionService
@@ -59,7 +60,7 @@ class WidgetController {
     @Secured(['permitAll()'])
     def show(String widgetDefinitionId, long id) {
         if (!widgetDefinitionId) {
-            returnError(text: message(code: 'is.error.no.widget'))
+            returnError(code: 'is.error.no.widget')
             return
         }
         def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
@@ -85,7 +86,7 @@ class WidgetController {
         User user = springSecurityService.currentUser
         WidgetDefinition widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
         if (!widgetDefinition || !user || !ApplicationSupport.isAllowed(widgetDefinition, [], true)) {
-            returnError(text: message(code: 'is.user.preferences.error.widget'))
+            returnError(code: 'is.user.preferences.error.widget')
             return
         }
         Widget widget = widgetService.save(user, widgetDefinition, onRight)
@@ -96,7 +97,7 @@ class WidgetController {
     def update(long id) {
         User user = springSecurityService.currentUser
         if (!id || !params.widget) {
-            returnError(text: message(code: 'is.user.preferences.error.widget'))
+            returnError(code: 'is.user.preferences.error.widget')
             return
         }
         Widget widget = Widget.findByIdAndUserPreferences(id, user.preferences)
@@ -117,7 +118,7 @@ class WidgetController {
                 widgetService.update(widget, props)
                 render(status: 200, contentType: 'application/json', text: widget as JSON)
             } catch (RuntimeException e) {
-                returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
+                returnError(code: 'is.user.preferences.error.widget', exception: e)
             }
         }
     }
@@ -126,7 +127,7 @@ class WidgetController {
     def delete() {
         User user = springSecurityService.currentUser
         if (!params.id) {
-            returnError(text: message(code: 'is.user.preferences.error.widget'))
+            returnError(code: 'is.user.preferences.error.widget')
             return
         }
         Widget widget = Widget.findByIdAndUserPreferences(params.long('id'), user.preferences)
@@ -137,7 +138,7 @@ class WidgetController {
                 widgetService.delete(widget)
                 render(status: 204)
             } catch (RuntimeException e) {
-                returnError(text: message(code: 'is.user.preferences.error.widget'), exception: e)
+                returnError(code: 'is.user.preferences.error.widget', exception: e)
             }
         }
     }

@@ -29,18 +29,19 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Story
+import org.icescrum.core.exception.ControllerExceptionHandler
 
 import static grails.async.Promises.task
 
 @Secured('inProduct() or stakeHolder()')
-class FeatureController {
+class FeatureController implements ControllerExceptionHandler {
 
     def featureService
     def springSecurityService
     def grailsApplication
 
-    def index() {
-        def features = Feature.searchAllByTermOrTag(params.long('product'), params.term).sort { Feature feature -> feature.rank }
+    def index(long product) {
+        def features = Feature.searchAllByTermOrTag(product, params.term).sort { Feature feature -> feature.rank }
         render(status: 200, text: features as JSON, contentType: 'application/json')
     }
 
@@ -52,24 +53,20 @@ class FeatureController {
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def save() {
+    def save(long product) {
         def featureParams = params.feature
         if (!featureParams){
-            returnError(text:message(code:'todo.is.ui.no.data'))
+            returnError(code:'todo.is.ui.no.data')
             return
         }
         def feature = new Feature()
-        try {
-            Feature.withTransaction {
-                bindData(feature, featureParams, [include:['name','description','notes','color','type','value','rank']])
-                feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
-                def product = Product.load(params.long('product'))
-                featureService.save(feature, product)
-                entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature]) // TODO check if still needed
-                render(status: 201, contentType: 'application/json', text: feature as JSON)
-            }
-        } catch (RuntimeException e) {
-            returnError(exception:e, object:feature)
+        Feature.withTransaction {
+            bindData(feature, featureParams, [include:['name','description','notes','color','type','value','rank']])
+            feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
+            def _product = Product.load(product)
+            featureService.save(feature, _product)
+            entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature]) // TODO check if still needed
+            render(status: 201, contentType: 'application/json', text: feature as JSON)
         }
     }
 
@@ -78,7 +75,7 @@ class FeatureController {
         List<Feature> features = Feature.withFeatures(params)
         def featureParams = params.feature
         if (!featureParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         features.each { Feature feature ->
@@ -122,11 +119,11 @@ class FeatureController {
 
     @Secured('isAuthenticated()')
     def print(long product, String format) {
-        def _product = Product.get(product)
+        def _product = Product.withProduct(product)
         def values = featureService.productParkingLotValues(_product)
         def features = _product.features
         if (!features) {
-            returnError(text:message(code: 'is.report.error.no.data'))
+            returnError(code: 'is.report.error.no.data')
         } else {
             return task {
                 def data = []
@@ -154,7 +151,7 @@ class FeatureController {
 
     @Secured(['permitAll()'])
     def permalink(int uid, long product) {
-        Product _product = Product.get(product)
+        Product _product = Product.withProduct(product)
         Feature feature = Feature.findByBacklogAndUid(_product, uid)
         redirect(uri: "/p/$_product.pkey/#/feature/$feature.id")
     }

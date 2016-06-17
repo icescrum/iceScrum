@@ -29,11 +29,12 @@ import org.icescrum.core.domain.Backlog
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
+import org.icescrum.core.exception.ControllerExceptionHandler
 
 import static grails.async.Promises.task
 
 @Secured(['stakeHolder() or inProduct()'])
-class BacklogController {
+class BacklogController implements ControllerExceptionHandler {
 
     def springSecurityService
     def grailsApplication
@@ -46,12 +47,12 @@ class BacklogController {
 
     @Secured('stakeHolder() or inProduct()')
     def print(long product, long id, String format) {
-        def _product = Product.get(product)
+        def _product = Product.withProduct(product)
         def backlog = Backlog.get(id)
         def outputFileName = _product.name + '-' + backlog.name
         def stories = Story.search(product, JSON.parse(backlog.filter)).sort { Story story -> story.id }
         if (!stories) {
-            returnError(text: message(code: 'is.report.error.no.data'))
+            returnError(code: 'is.report.error.no.data')
         } else {
             return task {
                 def data = []

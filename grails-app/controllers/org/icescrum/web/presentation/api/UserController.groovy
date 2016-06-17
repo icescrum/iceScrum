@@ -35,14 +35,14 @@ import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Invitation
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
-import org.icescrum.core.domain.Widget
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.WindowDefinition
+import org.icescrum.core.exception.ControllerExceptionHandler
 import org.springframework.mail.MailException
 import org.springframework.security.acls.domain.BasePermission
 
-class UserController {
+class UserController implements ControllerExceptionHandler{
 
     def userService
     def securityService
@@ -65,25 +65,21 @@ class UserController {
     @Secured(["!isAuthenticated()"])
     def save() {
         if (!params.user) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         if (!request.admin && (params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
-            returnError(text: message(code: 'is.user.error.password.check'))
+            returnError(code: 'is.user.error.password.check')
             return
         }
         def user = new User()
-        try {
-            User.withTransaction {
-                user.preferences = new UserPreferences()
-                bindData(user, this.params, [include: ['username', 'firstName', 'lastName', 'email', 'password']], "user")
-                bindData(user.preferences, (Map) this.params.user, [include: ['language', 'filterTask', 'activity']], "preferences")
-                userService.save(user, params.user.token)
-            }
-            render(status: 201, contentType: 'application/json', text: user as JSON)
-        } catch (RuntimeException e) {
-            returnError(object: user, exception: e)
+        User.withTransaction {
+            user.preferences = new UserPreferences()
+            bindData(user, this.params, [include: ['username', 'firstName', 'lastName', 'email', 'password']], "user")
+            bindData(user.preferences, (Map) this.params.user, [include: ['language', 'filterTask', 'activity']], "preferences")
+            userService.save(user, params.user.token)
         }
+        render(status: 201, contentType: 'application/json', text: user as JSON)
     }
 
     @Secured('isAuthenticated()')
@@ -110,11 +106,11 @@ class UserController {
             return;
         }
         if (!params.user) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         if (!request.admin && (params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
-            returnError(text: message(code: 'is.user.error.password.check'))
+            returnError(code: 'is.user.error.password.check')
             return
         }
         User.withTransaction {
@@ -216,7 +212,7 @@ class UserController {
             def user = User.findWhere(username: params.user.username)
             if (!user || !user.enabled || user.accountExternal) {
                 def code = !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.dialog.login.error.disabled' : 'is.user.error.externalAccount')
-                returnError(text: message(code: code))
+                returnError(code: code)
             } else {
                 User.withTransaction { status ->
                     try {
@@ -224,12 +220,12 @@ class UserController {
                         render(status: 200, contentType: 'application/json', text: [text: message(code: 'is.dialog.retrieve.success', args: [user.email])] as JSON)
                     } catch (MailException e) {
                         status.setRollbackOnly()
-                        returnError(text: message(code: 'is.mail.error'), exception: e)
+                        returnError(code: 'is.mail.error', exception: e)
                     } catch (RuntimeException re) {
-                        returnError(text: re.getMessage(), exception: re)
+                        returnError(text: re.message, exception: re)
                     } catch (Exception e) {
                         status.setRollbackOnly()
-                        returnError(text: message(code: 'is.mail.error'), exception: e)
+                        returnError(code: 'is.mail.error', exception: e)
                     }
                 }
             }
@@ -274,14 +270,14 @@ class UserController {
             return
         }
         if (!menuId && !position) {
-            returnError(text: message(code: 'is.user.preferences.error.menu'))
+            returnError(code: 'is.user.preferences.error.menu')
             return
         }
         try {
             userService.menu(user, menuId, position, hidden ?: false)
             render(status: 200)
         } catch (RuntimeException e) {
-            returnError(text: message(code: 'is.user.preferences.error.menu'), exception: e)
+            returnError(code: 'is.user.preferences.error.menu', exception: e)
         }
     }
 

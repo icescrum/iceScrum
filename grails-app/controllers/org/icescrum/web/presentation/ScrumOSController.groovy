@@ -75,7 +75,7 @@ class ScrumOSController {
 
     def window(String windowDefinitionId) {
         if (!windowDefinitionId) {
-            returnError(text: message(code: 'is.error.no.window'))
+            returnError(code: 'is.error.no.window')
             return
         }
         def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
@@ -146,13 +146,13 @@ class ScrumOSController {
             //render(status: 200, contentType: 'application/json', text:message(code: 'is.blame.sended') as JSON)
             render(status: 200)
         } catch (MailException e) {
-            returnError(text: message(code: 'is.mail.error'), exception: e)
+            returnError(code: 'is.mail.error', exception: e)
             return
         } catch (RuntimeException re) {
-            returnError(text: message(code: re.getMessage()), exception: re)
+            returnError(code: re.message, exception: re)
             return
         } catch (Exception e) {
-            returnError(text: message(code: 'is.mail.error'), exception: e)
+            returnError(code: 'is.mail.error', exception: e)
             return
         }
     }
@@ -161,7 +161,7 @@ class ScrumOSController {
         render(status: 200, template: 'templatesJS')
     }
 
-    def isSettings() {
+    def isSettings(Long product) {
         def projectMenus = []
         uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
             if (windowDefinition.context == 'product') {
@@ -171,7 +171,7 @@ class ScrumOSController {
         render(status: 200,
                 template: 'isSettings',
                 model: [user            : springSecurityService.currentUser,
-                        product         : params.long('product') ? Product.get(params.product) : null,
+                        product         : product ? Product.get(product) : null,
                         roles           : securityService.getRolesRequest(false),
                         i18nMessages    : messageSource.getAllMessages(RCU.getLocale(request)),
                         resourceBundles : grailsApplication.config.icescrum.resourceBundles,

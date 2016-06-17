@@ -31,10 +31,11 @@ import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.event.IceScrumEventType
+import org.icescrum.core.exception.ControllerExceptionHandler
 
 import javax.servlet.http.HttpServletResponse
 
-class AttachmentController {
+class AttachmentController implements ControllerExceptionHandler {
 
     def springSecurityService
     def attachmentableService
@@ -45,7 +46,7 @@ class AttachmentController {
         if (attachmentable) {
             render(status: 200, contentType: 'application/json', text: attachmentable.attachments as JSON)
         } else {
-            returnError(text:message(code: 'todo.is.ui.backlogelement.attachments.error'))
+            returnError(code: 'todo.is.ui.backlogelement.attachments.error')
         }
     }
 
@@ -112,24 +113,26 @@ class AttachmentController {
 
     private static getAttachmentableObject(def params) {
         def attachmentable
+        long product = params.long('product')
+        long attachmentableId = params.long('attachmentable')
         switch (params.type){
             case 'story':
-                attachmentable = Story.getInProduct(params.long('product'),params.long('attachmentable')).list()
+                attachmentable = Story.getInProduct(product, attachmentableId).list()
                 break
             case 'task':
-                attachmentable = Task.getInProduct(params.long('product'),params.long('attachmentable'))
+                attachmentable = Task.getInProduct(product, attachmentableId)
                 break
             case 'actor':
-                attachmentable = Actor.getInProduct(params.long('product'),params.long('attachmentable')).list()
+                attachmentable = Actor.getInProduct(product, attachmentableId).list()
                 break
             case 'feature':
-                attachmentable = Feature.getInProduct(params.long('product'),params.long('attachmentable')).list()
+                attachmentable = Feature.getInProduct(product, attachmentableId).list()
                 break
             case 'release':
-                attachmentable = Release.getInProduct(params.long('product'),params.long('attachmentable')).list()
+                attachmentable = Release.getInProduct(product, attachmentableId).list()
                 break
             case 'sprint':
-                attachmentable = Sprint.getInProduct(params.long('product'),params.long('attachmentable')).list()
+                attachmentable = Sprint.getInProduct(product, attachmentableId).list()
                 break
             default:
                 attachmentable = null

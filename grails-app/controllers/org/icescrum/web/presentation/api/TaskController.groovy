@@ -26,8 +26,9 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class TaskController {
+class TaskController implements ControllerExceptionHandler {
 
     def springSecurityService
     def taskService
@@ -67,14 +68,14 @@ class TaskController {
     def save() {
         def taskParams = params.task
         if (!taskParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         if (taskParams?.estimation instanceof String) {
             try {
                 taskParams.estimation = taskParams.estimation in ['?', ""] ? null : taskParams.estimation.replace(/,/, '.').toFloat()
             } catch (NumberFormatException e) {
-                returnError(text: message(code: 'is.task.error.estimation.number'))
+                returnError(code: 'is.task.error.estimation.number')
                 return
             }
         }
@@ -82,25 +83,19 @@ class TaskController {
             taskParams.backlog = taskParams.sprint
         }
         Task task = new Task()
-        try {
-            Task.withTransaction {
-                bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']])
-                taskService.save(task, springSecurityService.currentUser)
-                task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
-            }
-            render(status: 201, contentType: 'application/json', text: task as JSON)
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: task, exception: e)
+        Task.withTransaction {
+            bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']])
+            taskService.save(task, springSecurityService.currentUser)
+            task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
         }
+        render(status: 201, contentType: 'application/json', text: task as JSON)
     }
 
     @Secured('inProduct() and !archivedProduct()')
     def update(long id, long product) {
         def taskParams = params.task
         if (!taskParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         Task task = Task.withTask(product, id)
@@ -109,7 +104,7 @@ class TaskController {
             try {
                 taskParams.estimation = taskParams.estimation in ['?', ""] ? null : taskParams.estimation.replace(/,/, '.').toFloat()
             } catch (NumberFormatException e) {
-                returnError(text: message(code: 'is.task.error.estimation.number'))
+                returnError(code: 'is.task.error.estimation.number')
                 return
             }
         }
@@ -167,11 +162,11 @@ class TaskController {
         Task task = Task.withTask(product, id)
         User user = (User) springSecurityService.currentUser
         if (task.responsible?.id != user.id) {
-            returnError(text: message(code: 'is.task.error.unassign.not.responsible'))
+            returnError(code: 'is.task.error.unassign.not.responsible')
             return
         }
         if (task.state == Task.STATE_DONE) {
-            returnError(text: message(code: 'is.task.error.done'))
+            returnError(code: 'is.task.error.done')
             return
         }
         Task.withTransaction {
@@ -195,7 +190,7 @@ class TaskController {
         def user = springSecurityService.currentUser
         def options = [max: 8]
         def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
-        def userTasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.get(product), taskStates, options)
+        def userTasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.withProduct(product), taskStates, options)
                                         : Task.findAllByResponsibleAndStateInList(user, taskStates, options)
         def tasksByProject = userTasks.groupBy {
             it.parentProduct
@@ -207,7 +202,7 @@ class TaskController {
 
     @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
     def permalink(int uid, long product) {
-        Product _product = Product.get(product)
+        Product _product = Product.withProduct(product)
         Task task = Task.findByParentProductAndUid(_product, uid)
         String uri = "/p/$_product.pkey/#/"
         if (task.backlog) {

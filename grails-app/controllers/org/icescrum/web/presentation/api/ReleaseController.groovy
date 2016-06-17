@@ -28,8 +28,9 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.utils.ServicesUtils
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class ReleaseController {
+class ReleaseController implements ControllerExceptionHandler {
 
     def releaseService
     def sprintService
@@ -61,17 +62,11 @@ class ReleaseController {
             releaseParams.endDate = ServicesUtils.parseDateISO8601(releaseParams.endDate)
         }
         def release = new Release()
-        try {
-            Release.withTransaction {
-                bindData(release, releaseParams, [include: ['name', 'goal', 'startDate', 'endDate']])
-                releaseService.save(release, _product)
-            }
-            render(status: 201, contentType: 'application/json', text: release as JSON)
-        } catch (IllegalStateException e) {
-            returnError(exception: e)
-        } catch (RuntimeException e) {
-            returnError(object: release, exception: e)
+        Release.withTransaction {
+            bindData(release, releaseParams, [include: ['name', 'goal', 'startDate', 'endDate']])
+            releaseService.save(release, _product)
         }
+        render(status: 201, contentType: 'application/json', text: release as JSON)
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')

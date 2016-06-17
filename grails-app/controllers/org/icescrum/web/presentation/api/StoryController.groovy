@@ -26,8 +26,9 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
+import org.icescrum.core.exception.ControllerExceptionHandler
 
-class StoryController {
+class StoryController implements ControllerExceptionHandler {
 
     def storyService
     def taskService
@@ -69,7 +70,7 @@ class StoryController {
         try {
             stories = Story.search(product, options).sort { Story story -> story.id }
         } catch (RuntimeException e) {
-            returnError(text: message(code: 'todo.is.ui.search.error'), exception: e)
+            returnError(code: 'todo.is.ui.search.error', exception: e)
             return
         }
         render(status: 200, text: stories as JSON, contentType: 'application/json')
@@ -83,55 +84,51 @@ class StoryController {
     }
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def save() {
+    def save(long product) {
         def storyParams = params.story
         if (!storyParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
+        Product _product = Product.withProduct(product)
         def tasks
         def acceptanceTests
         if (storyParams.template != null) {
-            def template = Template.findByParentProductAndId(Product.get(params.long('product')), storyParams.template.id.toLong())
+            def template = Template.findByParentProductAndId(_product, storyParams.template.id.toLong())
             def parsedTemplateData = JSON.parse(template.serializedData) as Map
             tasks = parsedTemplateData.remove('tasks')
             acceptanceTests = parsedTemplateData.remove('acceptanceTests')
             storyParams << parsedTemplateData
         }
         def story = new Story()
-        try {
-            Story.withTransaction {
-                bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
-                User user = (User) springSecurityService.currentUser
-                def product = Product.get(params.long('product'))
-                storyService.save(story, product, user)
-                story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
-                tasks.each {
-                    def task = new Task()
-                    bindData(task, it, [include: ['color', 'description', 'estimation', 'name', 'notes', 'tags']])
-                    story.addToTasks(task)
-                    taskService.save(task, user)
-                }
-                acceptanceTests.each {
-                    def acceptanceTest = new AcceptanceTest()
-                    bindData(acceptanceTest, it, [include: ['description', 'name']])
-                    acceptanceTestService.save(acceptanceTest, story, user)
-                    story.addToAcceptanceTests(acceptanceTest) // required so the acceptance tests are returned with the story in JSON
-                }
-                entry.hook(id: "${controllerName}-${actionName}", model: [story: story])
-                render(status: 201, contentType: 'application/json', text: story as JSON)
+        Story.withTransaction {
+            bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
+            User user = (User) springSecurityService.currentUser
+            storyService.save(story, _product, user)
+            story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
+            tasks.each {
+                def task = new Task()
+                bindData(task, it, [include: ['color', 'description', 'estimation', 'name', 'notes', 'tags']])
+                story.addToTasks(task)
+                taskService.save(task, user)
             }
-        } catch (RuntimeException e) {
-            returnError(object: story, exception: e)
+            acceptanceTests.each {
+                def acceptanceTest = new AcceptanceTest()
+                bindData(acceptanceTest, it, [include: ['description', 'name']])
+                acceptanceTestService.save(acceptanceTest, story, user)
+                story.addToAcceptanceTests(acceptanceTest) // required so the acceptance tests are returned with the story in JSON
+            }
+            entry.hook(id: "${controllerName}-${actionName}", model: [story: story])
+            render(status: 201, contentType: 'application/json', text: story as JSON)
         }
     }
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def update() {
+    def update(long product) {
         def stories = Story.withStories(params)
         def storyParams = params.story
         if (!storyParams) {
-            returnError(text: message(code: 'todo.is.ui.no.data'))
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         stories.each { Story story ->
@@ -169,13 +166,8 @@ class StoryController {
                 // Independently manage the sprint change, manage the "null" value manually
                 def sprintId = storyParams.parentSprint == 'null' ? storyParams.parentSprint : storyParams.parentSprint?.id?.toLong()
                 if (sprintId instanceof Long && story.parentSprint?.id != sprintId) {
-                    def sprint = Sprint.getInProduct(params.long('product'), sprintId).list()
-                    if (sprint) {
-                        storyService.plan(sprint, story)
-                    } else {
-                        returnError(text: message(code: 'is.sprint.error.not.exist'))
-                        return
-                    }
+                    def sprint = Sprint.withSprint(product, sprintId)
+                    storyService.plan(sprint, story)
                 } else if (sprintId == "null") {
                     storyService.unPlan(story)
                 }
@@ -203,7 +195,7 @@ class StoryController {
 
     @Secured(['permitAll()'])
     def permalink(int uid, long product) {
-        Product _product = Product.get(product)
+        Product _product = Product.withProduct(product)
         Story story = Story.findByBacklogAndUid(_product, uid)
         String uri = "/p/$_product.pkey/#/"
         switch (story.state) {
@@ -231,7 +223,7 @@ class StoryController {
         def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
         def sprint = Sprint.withSprint(product, sprintId)
         if (!sprint) {
-            returnError(text: message(code: 'is.sprint.error.not.exist'))
+            returnError(code: 'is.sprint.error.not.exist')
             return
         }
         def rank
@@ -254,7 +246,7 @@ class StoryController {
         def story = Story.withStory(product, id)
         def nextSprint = story.parentSprint.nextSprint
         if (!nextSprint) {
-            returnError(text: message(code: 'is.sprint.error.not.exist'))
+            returnError(code: 'is.sprint.error.not.exist')
             return
         }
         storyService.plan(nextSprint, story, 1)
@@ -418,39 +410,37 @@ class StoryController {
             }
         }
         def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: _product)
-        if (template.save()) {
-            render(text: [id: template.id, text: template.name] as JSON, contentType: 'application/json', status: 200)
-        } else {
-            returnError(object: template, exception: new RuntimeException(template.errors.toString()))
-        }
+        template.save(failOnError: true)
+        render(text: [id: template.id, text: template.name] as JSON, contentType: 'application/json', status: 200)
     }
 
     @Secured('productOwner() and !archivedProduct()')
-    def deleteTemplate() {
-        def product = Product.get(params.long('product'))
-        def template = Template.findByIdAndParentProduct(params.long('template.id'), product)
+    def deleteTemplate(long product) {
+        Product _product = Product.withProduct(product)
+        def template = Template.findByIdAndParentProduct(params.long('template.id'), _product)
         if (template) {
             template.delete()
             render(status: 204)
         } else {
-            returnError(text: message(code: 'todo.is.ui.story.template.not.found'))
+            returnError(code: 'todo.is.ui.story.template.not.found')
         }
     }
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def templateEntries() {
-        def templates = Template.findAllByParentProduct(Product.get(params.long('product')))
+    def templateEntries(long product) {
+        Product _product = Product.withProduct(product)
+        def templates = Template.findAllByParentProduct(_product)
         render(text: templates.collect {[id: it.id, text: it.name]} as JSON, contentType: 'application/json', status: 200)
     }
 
     @Secured(['inProduct() and !archivedProduct()'])
-    def templatePreview() {
+    def templatePreview(long product) {
         if (params.template) {
-            def product = Product.get(params.long('product'))
-            def template = Template.findByParentProductAndId(product, params.long('template'))
+            Product _product = Product.withProduct(product)
+            def template = Template.findByParentProductAndId(_product, params.long('template'))
             def parsedData = JSON.parse(template.serializedData) as Map
             if (parsedData.feature) {
-                def feature = Feature.getInProduct(product.id, parsedData.feature.id.toLong()).list()
+                def feature = Feature.getInProduct(_product.id, parsedData.feature.id.toLong()).list()
                 if (feature) {
                     parsedData.feature.color = feature.color
                 }
