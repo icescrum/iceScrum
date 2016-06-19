@@ -111,7 +111,7 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="postits {{ currentPostitSize(viewName, 'grid-group')+ ' ' + (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') + ' ' + (app.sortableMoving ? 'sortable-moving' : '') }}"
+                <div class="postits {{ currentPostitSize(viewName, 'grid-group size-sm')+ ' ' + (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') + ' ' + (app.sortableMoving ? 'sortable-moving' : '') }}"
                      postits-screen-size
                      ng-controller="storyCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
