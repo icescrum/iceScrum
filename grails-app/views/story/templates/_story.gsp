@@ -23,7 +23,7 @@
 
 <script type="text/ng-template" id="story.html">
 <div fast-tooltip
-     style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : app.asList}}"
+     style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)}}"
      class="postit {{ app.postitSize.story + ' ' + ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
         <div class="head-left">
