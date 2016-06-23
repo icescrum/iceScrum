@@ -202,7 +202,7 @@
         </div>
         <div class="clearfix no-padding">
             <div class="form-half">
-                <label for="creator">${message(code: 'is.story.owner')}</label>
+                <label for="creator">${message(code: 'is.story.creator')}</label>
                 <ui-select ng-click="editForm(true)"
                            ng-change="editForm(true)"
                            ng-disabled="!formHolder.editable"
