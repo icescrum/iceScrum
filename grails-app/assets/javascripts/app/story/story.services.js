@@ -255,6 +255,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
                     (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
+            case 'updateCreator':
+                return Session.po() && story.state < StoryStatesByName.DONE;
             case 'updateEstimate':
                 return Session.tmOrSm() && story.state > StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
             case 'updateParentSprint':
