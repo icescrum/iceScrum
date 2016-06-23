@@ -271,11 +271,21 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'IceScrumEventType',
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, Session, StoryService, FormService, ActorService, FeatureService, ProjectService, detailsStory) {
+controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, Session, StoryService, FormService, ActorService, FeatureService, ProjectService, UserService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
+
+        $scope.searchCreator = function(val) {
+            UserService.search(val).then(function(users) {
+                $scope.creators = _.map(users, function(member) {
+                    member.name = $filter('userFullName')(member);
+                    return member;
+                });
+            });
+        };
+
         $scope.update = function(story) {
             StoryService.update(story).then(function() {
                 $scope.resetStoryForm();
@@ -355,6 +365,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $scope.parentSprintEntries = [];
         $scope.tags = [];
         $scope.versions = [];
+        $scope.creators = [];
         $scope.atOptions = {
             tpl: "<li data-value='A[${uid}-${name}]'>${name}</li>",
             at: 'a'
