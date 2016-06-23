@@ -114,49 +114,36 @@
               show-validation
               novalidate>
             <div class="panel-body">
-                <div class="form-group">
-                    <label for="name">${message(code:'is.task.name')}</label>
-                    <div class="input-group">
-                        <input required
-                               ng-maxlength="100"
-                               ng-focus="editForm(true)"
-                               ng-disabled="!formHolder.editable"
-                               name="name"
-                               ng-model="editableTask.name"
-                               type="text"
-                               class="form-control">
-                        <span class="input-group-btn" ng-if="formHolder.editable">
-                            <button colorpicker
-                                    class="btn {{ editableTask.color | contrastColor }}"
-                                    type="button"
-                                    style="background-color:{{ editableTask.color }};"
-                                    colorpicker-position="left"
-                                    ng-focus="editForm(true)"
-                                    value="#bf3d3d"
-                                    name="color"
-                                    ng-model="editableTask.color"><i class="fa fa-pencil"></i></button>
-                        </span>
-                    </div>
-                </div>
-                <div ng-if="task.sprint" class="form-group">
-                    <label for="backlog">${message(code:'is.sprint')}</label>
-                    <input class="form-control" disabled="disabled" type="text" value="{{ task.sprint.parentRelease.name + ' - ' + (task.sprint | sprintName) }}"/>
-                </div>
                 <div class="clearfix no-padding">
-                    <div class="form-half">
-                        <label for="estimation">${message(code:'is.task.estimation')}</label>
-                        <input type="number"
-                               class="form-control"
-                               ng-focus="editForm(true)"
-                               ng-disabled="!formHolder.editable"
-                               name="estimation"
-                               ng-model="editableTask.estimation"/>
+                    <div class="form-2-tiers">
+                        <label for="name">${message(code:'is.task.name')}</label>
+                        <div class="input-group">
+                            <input required
+                                   ng-maxlength="100"
+                                   ng-focus="editForm(true)"
+                                   ng-disabled="!formHolder.editable"
+                                   name="name"
+                                   ng-model="editableTask.name"
+                                   type="text"
+                                   class="form-control">
+                            <span class="input-group-btn" ng-if="formHolder.editable">
+                                <button colorpicker
+                                        class="btn {{ editableTask.color | contrastColor }}"
+                                        type="button"
+                                        style="background-color:{{ editableTask.color }};"
+                                        colorpicker-position="left"
+                                        ng-focus="editForm(true)"
+                                        value="#bf3d3d"
+                                        name="color"
+                                        ng-model="editableTask.color"><i class="fa fa-pencil"></i></button>
+                            </span>
+                        </div>
                     </div>
-                    <div ng-if="task.parentStory" class="form-half">
+                    <div ng-if="task.parentStory" class="form-1-tier">
                         <label for="name">${message(code:'is.story')}</label>
                         <input class="form-control" disabled="disabled" type="text" value="{{ task.parentStory.name }}"/>
                     </div>
-                    <div ng-if="task.type" class="form-half">
+                    <div ng-if="task.type" class="form-1-tier">
                         <label for="name">${message(code:'is.task.type')}</label>
                         <input class="form-control" disabled="disabled" type="text" value="{{ task.type | i18n: 'TaskTypes' }}"/>
                     </div>
@@ -187,6 +174,21 @@
                             <span ng-bind-html="tag | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
+                </div>
+                <div class="clearfix no-padding">
+                    <div class="form-1-tier">
+                        <label for="estimation">${message(code:'is.task.estimation')}</label>
+                        <input type="number"
+                               class="form-control"
+                               ng-focus="editForm(true)"
+                               ng-disabled="!formHolder.editable"
+                               name="estimation"
+                               ng-model="editableTask.estimation"/>
+                    </div>
+                    <div ng-if="task.sprint" class="form-2-tiers">
+                        <label for="backlog">${message(code:'is.sprint')}</label>
+                        <input class="form-control" disabled="disabled" type="text" value="{{ task.sprint.parentRelease.name + ' - ' + (task.sprint | sprintName) }}"/>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="notes">${message(code:'is.backlogelement.notes')}</label>

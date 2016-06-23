@@ -181,8 +181,7 @@
                     </span>
                 </div>
             </div>
-            <div class="form-3-quarters"
-                 ng-show="authorizedStory('updateParentSprint', editableStory)">
+            <div class="form-3-quarters" ng-show="authorizedStory('updateParentSprint', editableStory)">
                 <label for="parentSprint">${message(code: 'is.sprint')}</label>
                 <ui-select ng-click="retrieveParentSprintEntries(); editForm(true)"
                            ng-change="editForm(true)"
@@ -205,7 +204,7 @@
                 <label for="creator">${message(code: 'is.story.creator')}</label>
                 <ui-select ng-click="editForm(true)"
                            ng-change="editForm(true)"
-                           ng-disabled="!formHolder.editable"
+                           ng-disabled="!formHolder.editable || !authorizedStory('updateCreator', editableStory)"
                            class="form-control"
                            name="creator"
                            search-enabled="true"
