@@ -42,15 +42,13 @@ class TaskController implements ControllerErrorHandler {
             tasks = Sprint.withSprint(product, id).tasks
             if (params.context) {
                 tasks = tasks.findAll { Task task ->
-                    if (task.type) {
-                        if (params.context.type == 'tag') {
-                            return task.tags.contains(params.context.id)
-                        } else if (params.context.type == 'feature') {
-                            return false
-                        }
-                    } else {
-                        return true
+                    if (params.context.type == 'tag') {
+                        return task.tags.contains(params.context.id) || task.parentStory?.tags?.contains(params.context.id)
                     }
+                    else if (task.parentStory && params.context.type == 'feature') {
+                        return task.parentStory?.feature?.id == params.context.id.toLong()
+                    }
+                    return true
                 }
             }
         }

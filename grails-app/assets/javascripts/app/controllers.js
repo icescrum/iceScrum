@@ -385,7 +385,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
             $location.search('context', null);
         }
         $scope.app.context = context;
-        CacheService.emptyCache('story');
+        CacheService.emptyCaches();
         $state.reload();
     };
     $scope.setFeatureContext = function(feature) {

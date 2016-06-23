@@ -318,17 +318,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     };
     $scope.refreshTasks = function() {
         var tasks;
-        if ($scope.app.context) {
-            tasks = _.filter($scope.sprint.tasks, function(task) {
-                if ($scope.app.context.type == 'tag') {
-                    return _.includes(task.tags, $scope.app.context.term);
-                } else {
-                    return true;
-                }
-            });
-        } else {
-            tasks = $scope.sprint.tasks;
-        }
+        tasks = $scope.sprint.tasks;
         $scope.taskCountByState = _.countBy(tasks, 'state');
         switch ($scope.sprint.state) {
             case SprintStatesByName.TODO:
