@@ -483,7 +483,6 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                         }
                         cachedStory.tasks.push(newTask);
                         cachedStory.tasks_count = cachedStory.tasks.length;
-                        newTask.parentStory = cachedStory;
                     }
                 }
             }
@@ -635,7 +634,7 @@ services.service("DateService", [function() {
     };
 }]);
 
-services.service("OptionsCacheService", ['$injector', '$rootScope', function($injector, $rootScope) {
+services.service("OptionsCacheService", ['$rootScope', 'CacheService', function($rootScope, CacheService) {
     var options = {
         story: {
             allowable: function(item) {
@@ -667,8 +666,9 @@ services.service("OptionsCacheService", ['$injector', '$rootScope', function($in
         },
         task: {
             allowable: function(item) {
-                if ($rootScope.app.context && $rootScope.app.context.type == 'feature' && item.parentStory && item.parentStory.feature) {
-                    return item.parentStory.feature.id == $rootScope.app.context.id;
+                if ($rootScope.app.context && $rootScope.app.context.type == 'feature' && item.parentStory) {
+                    var cachedStory = CacheService.get('story', item.parentStory.id);
+                    return cachedStory && cachedStory.feature.id == $rootScope.app.context.id;
                 }
                 return true;
             },
