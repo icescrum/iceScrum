@@ -117,7 +117,7 @@
                 <div class="clearfix no-padding">
                     <div class="form-2-tiers">
                         <label for="name">${message(code:'is.task.name')}</label>
-                        <div class="input-group">
+                        <div ng-class="{'input-group': formHolder.editable}">
                             <input required
                                    ng-maxlength="100"
                                    ng-focus="editForm(true)"
