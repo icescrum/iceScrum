@@ -129,11 +129,9 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
         }
         return $localStorage[contextSizeName];
     };
-
     $scope.isAsListPostit = function(viewName) {
         return $scope.currentPostitSize(viewName) == "list-group"
     };
-
     $scope.iconCurrentPostitSize = function(viewName) {
         var icon;
         switch ($scope.currentPostitSize(viewName)) {

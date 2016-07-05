@@ -276,7 +276,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
-
         $scope.searchCreator = function(val) {
             UserService.search(val).then(function(users) {
                 $scope.creators = _.map(users, function(member) {
@@ -285,7 +284,6 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
                 });
             });
         };
-
         $scope.update = function(story) {
             StoryService.update(story).then(function() {
                 $scope.resetStoryForm();

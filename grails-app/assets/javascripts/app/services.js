@@ -332,31 +332,28 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         cache.splice(0, cache.length);
     };
     this.emptyCaches = function() {
-        for(var cacheName in caches) {
+        for (var cacheName in caches) {
             self.emptyCache(cacheName);
         }
     };
     this.addOrUpdate = function(cacheName, item) {
-            var cachedItem = self.get(cacheName, item.id);
-            var oldItem = _.cloneDeep(cachedItem);
-            var newItem;
-            if (cachedItem) {
-                _.merge(cachedItem, item);
-                newItem = cachedItem;
-                newItem = $injector.get('OptionsCacheService').addOrUpdate(cacheName, item, newItem);
-            } else {
-                newItem = item;
-            }
-            $injector.get('SyncService').sync(cacheName, oldItem, newItem);
-            if(!$injector.get('OptionsCacheService').allowable(cacheName, newItem)){
-                self.remove(cacheName, item.id);
-            }
-            else if(!oldItem) {
-                self.getCache(cacheName).push(newItem);
-            }
-
+        var cachedItem = self.get(cacheName, item.id);
+        var oldItem = _.cloneDeep(cachedItem);
+        var newItem;
+        if (cachedItem) {
+            _.merge(cachedItem, item);
+            newItem = cachedItem;
+            newItem = $injector.get('OptionsCacheService').addOrUpdate(cacheName, item, newItem);
+        } else {
+            newItem = item;
+        }
+        $injector.get('SyncService').sync(cacheName, oldItem, newItem);
+        if (!$injector.get('OptionsCacheService').allowable(cacheName, newItem)) {
+            self.remove(cacheName, item.id);
+        } else if (!oldItem) {
+            self.getCache(cacheName).push(newItem);
+        }
     };
-
     this.get = function(cacheName, id) {
         return _.find(self.getCache(cacheName), {id: parseInt(id)});
     };
@@ -638,17 +635,16 @@ services.service("DateService", [function() {
     };
 }]);
 
-
 services.service("OptionsCacheService", ['$injector', '$rootScope', function($injector, $rootScope) {
     var self = this;
     var options = {
         story: {
-            allowable:function(item){
+            allowable: function(item) {
                 if ($rootScope.app.context) {
-                    if($rootScope.app.context.type == 'feature'){
+                    if ($rootScope.app.context.type == 'feature') {
                         return item.feature.id == $rootScope.app.context.id;
                     }
-                    else if($rootScope.app.context.type == 'tag'){
+                    else if ($rootScope.app.context.type == 'tag') {
                         return _.includes(item.tags, $scope.app.context.term);
                     } else {
                         return false;
@@ -656,33 +652,33 @@ services.service("OptionsCacheService", ['$injector', '$rootScope', function($in
                 }
                 return true;
             },
-            addOrUpdate:function(item, newItem){
+            addOrUpdate: function(item, newItem) {
                 newItem.tags = item.tags;
                 return newItem;
             }
         },
         feature: {
-            allowable:function(item){
+            allowable: function(item) {
                 if ($rootScope.app.context) {
-                    if($rootScope.app.context.type == 'feature'){
+                    if ($rootScope.app.context.type == 'feature') {
                         return item.id == $rootScope.app.context.id;
                     }
                 }
                 return true;
             },
-            addOrUpdate:function(item, newItem){
+            addOrUpdate: function(item, newItem) {
                 newItem.tags = item.tags;
                 return newItem;
             }
         },
         task: {
-            addOrUpdate:function(item, newItem){
+            addOrUpdate: function(item, newItem) {
                 newItem.tags = item.tags;
                 return newItem;
             },
-            allowable:function(item){
+            allowable: function(item) {
                 if ($rootScope.app.context) {
-                    if($rootScope.app.context.type == 'feature' && item.parentStory && item.parentStory.feature){
+                    if ($rootScope.app.context.type == 'feature' && item.parentStory && item.parentStory.feature) {
                         return item.parentStory.feature.id == $rootScope.app.context.id;
                     }
                 }
@@ -690,16 +686,13 @@ services.service("OptionsCacheService", ['$injector', '$rootScope', function($in
             }
         }
     };
-
-    self.getOptions = function(){
+    self.getOptions = function() {
         return options;
     };
-
-    self.allowable = function(cacheName, item){
+    self.allowable = function(cacheName, item) {
         return options[cacheName] && options[cacheName].hasOwnProperty('allowable') ? options[cacheName].allowable(item) : true;
     };
-
-    self.addOrUpdate = function(cacheName, item, newItem){
+    self.addOrUpdate = function(cacheName, item, newItem) {
         return options[cacheName] && options[cacheName].hasOwnProperty('addOrUpdate') ? options[cacheName].addOrUpdate(item, newItem) : true;
     };
 }]);
