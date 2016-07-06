@@ -41,7 +41,7 @@
                              class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                             <div class="head">
                                 <div class="head-left">
-                                    <span class="id">{{ topFeature.id }}</span>
+                                    <span class="id">{{ topFeature.uid }}</span>
                                 </div>
                                 <div class="head-right">
                                     <span class="estimation">

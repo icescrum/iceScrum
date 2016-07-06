@@ -41,11 +41,11 @@
                              class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                             <div class="head">
                                 <div class="head-left">
-                                    <a class="follow"
+                                    <span class="id">{{ topStory.uid }}</span>
+                                    <a class="follow active"
                                        uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}">
                                         <i class="fa" ng-class="topStory.followed ? 'fa-star' : 'fa-star-o'"></i>
                                     </a>
-                                    <span class="id">{{ topStory.id }}</span>
                                 </div>
                                 <div class="head-right">
                                     <span class="value" ng-if="topStory.value">{{ topStory.value }}
