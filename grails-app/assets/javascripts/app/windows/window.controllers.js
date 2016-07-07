@@ -387,7 +387,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     };
     $scope.selectStory = function(event, storyId) {
         if (angular.element(event.target).closest('.action, button, a').length == 0) {
-            $state.go('taskBoard.story.details', {storyId: storyId});
+            $state.go('taskBoard.story.details' + ($state.params.storyTabId ? '.tab' : ''), {storyId: storyId});
         }
     };
     $scope.tasksShown = function(taskState, typeOrStory) {
