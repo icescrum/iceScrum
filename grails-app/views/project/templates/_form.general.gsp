@@ -36,6 +36,7 @@
                        ng-model="project.name"
                        ng-change="nameChanged()"
                        ng-required="isCurrentStep(1)"
+                       ng-remote-validate-code="product.name.unique"
                        ng-remote-validate="{{ checkProjectPropertyUrl }}/name">
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
@@ -60,6 +61,7 @@
                    ng-model="project.pkey"
                    ng-pattern="/^[A-Z0-9]*$/"
                    ng-required="isCurrentStep(1)"
+                   ng-remote-validate-code="product.pkey.unique"
                    ng-remote-validate="{{ checkProjectPropertyUrl }}/pkey">
         </div>
     </div>

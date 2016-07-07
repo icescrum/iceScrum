@@ -95,7 +95,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                             childScope.errorMessages = function(errors) {
                                 return _.transform(errors, function(errorMessages, value, key) {
                                     if (value) {
-                                        var name = input.siblings("label[for='" + input.attr('name') + "']").text();
                                         var errorMessage = '';
                                         if (key == 'required') {
                                             errorMessage = $rootScope.message('default.blank.message');
@@ -119,6 +118,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                                             errorMessage = $rootScope.message('is.user.password.check');
                                         } else if (key == 'unique') {
                                             errorMessage = $rootScope.message('default.unique.message');
+                                        } else if (key == 'ngRemoteValidate') {
+                                            errorMessage = $rootScope.message(input.attr('ng-remote-validate-code'), [value])
                                         }
                                         errorMessages.push(errorMessage);
                                     }

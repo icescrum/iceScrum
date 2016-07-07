@@ -39,6 +39,7 @@
                    name="user.username"
                    ng-model="user.username"
                    ng-remote-validate="/user/available/username"
+                   ng-remote-validate-code="user.username.unique"
                    autofocus/>
         </div>
     </div>
@@ -68,6 +69,7 @@
                    name="user.email"
                    class="form-control"
                    ng-model="user.email"
+                   ng-remote-validate-code="user.email.unique"
                    ng-remote-validate="/user/available/email"/>
         </div>
         <div class="form-half">
