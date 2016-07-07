@@ -84,46 +84,39 @@ class ProjectController implements ControllerErrorHandler {
         def team
         def product = new Product()
         product.preferences = new ProductPreferences()
-        try {
-            Product.withTransaction {
-                bindData(product, productParams, [include: ['name', 'description', 'startDate', 'endDate', 'pkey']])
-                bindData(product.preferences, productPreferencesParams, [exclude: ['archived']])
-                if (!teamParams?.id) {
-                    team = new Team()
-                    bindData(team, teamParams, [include: ['name']])
-                    def members = teamParams.members?.list('id').collect { it.toLong() } ?: []
-                    def scrumMasters = teamParams.scrumMasters?.list('id').collect { it.toLong() } ?: []
-                    def invitedMembers = teamParams.invitedMembers?.list('email') ?: []
-                    def invitedScrumMasters = teamParams.invitedScrumMasters?.list('email') ?: []
-                    if (!scrumMasters && !members) {
-                        returnError(code: 'is.product.error.noMember')
-                        return
-                    }
-                    teamService.save(team, members, scrumMasters)
-                    productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
-                } else {
-                    team = Team.withTeam(teamParams.long('id'))
+        Product.withTransaction {
+            bindData(product, productParams, [include: ['name', 'description', 'startDate', 'endDate', 'pkey']])
+            bindData(product.preferences, productPreferencesParams, [exclude: ['archived']])
+            if (!teamParams?.id) {
+                team = new Team()
+                bindData(team, teamParams, [include: ['name']])
+                def members = teamParams.members?.list('id').collect { it.toLong() } ?: []
+                def scrumMasters = teamParams.scrumMasters?.list('id').collect { it.toLong() } ?: []
+                def invitedMembers = teamParams.invitedMembers?.list('email') ?: []
+                def invitedScrumMasters = teamParams.invitedScrumMasters?.list('email') ?: []
+                if (!scrumMasters && !members) {
+                    returnError(code: 'is.product.error.noMember')
+                    return
                 }
-                def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
-                def stakeHolders = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
-                def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
-                def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
-                productService.save(product, productOwners, stakeHolders)
-                productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
-                productService.addTeamToProduct(product, team)
-                if (productParams.initialize) {
-                    def release = new Release(name: "Release 1", vision: productParams.vision, startDate: product.startDate, endDate: product.endDate)
-                    releaseService.save(release, product)
-                    sprintService.generateSprints(release, productParams.firstSprint)
-                }
+                teamService.save(team, members, scrumMasters)
+                productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
+            } else {
+                team = Team.withTeam(teamParams.long('id'))
             }
-            render(status: 201, contentType: 'application/json', text: product as JSON)
-        } catch (IllegalStateException ise) {
-            returnError(code: ise.message)
-        } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            returnError(text: renderErrors(bean: product) + renderErrors(bean: team))
+            def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
+            def stakeHolders = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
+            def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
+            def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
+            productService.save(product, productOwners, stakeHolders)
+            productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
+            productService.addTeamToProduct(product, team)
+            if (productParams.initialize) {
+                def release = new Release(name: "Release 1", vision: productParams.vision, startDate: product.startDate, endDate: product.endDate)
+                releaseService.save(release, product)
+                sprintService.generateSprints(release, productParams.firstSprint)
+            }
         }
+        render(status: 201, contentType: 'application/json', text: product as JSON)
     }
 
     @Secured('scrumMaster() and !archivedProduct()')
@@ -151,8 +144,7 @@ class ProjectController implements ControllerErrorHandler {
             productService.delete(_product)
             render(status: 200, contentType: 'application/json', text: [class: 'Product', id: product] as JSON)
         } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            returnError(code: 'is.product.error.not.deleted')
+            returnError(code: 'is.product.error.not.deleted', exception: re)
         }
     }
 
@@ -240,8 +232,7 @@ class ProjectController implements ControllerErrorHandler {
             productService.archive(_product)
             render(status: 200, contentType: 'application/json', text: [class: 'Product', id: _product.id] as JSON)
         } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            returnError(code: 'is.product.error.not.archived')
+            returnError(code: 'is.product.error.not.archived', exception: re)
         }
     }
 
@@ -252,8 +243,7 @@ class ProjectController implements ControllerErrorHandler {
             productService.unArchive(_product)
             render(status: 200, contentType: 'application/json', text: [class: 'Product', id: _product.id] as JSON)
         } catch (RuntimeException re) {
-            if (log.debugEnabled) re.printStackTrace()
-            returnError(code: 'is.product.error.not.archived')
+            returnError(code: 'is.product.error.not.archived', exception: re)
         }
     }
 

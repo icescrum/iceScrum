@@ -214,20 +214,17 @@ class UserController implements ControllerErrorHandler{
                 def code = !user ? 'is.user.error.not.exist' : (!user.enabled ? 'is.dialog.login.error.disabled' : 'is.user.error.externalAccount')
                 returnError(code: code)
             } else {
-                User.withTransaction { status ->
-                    try {
+                try {
+                    User.withTransaction {
                         userService.resetPassword(user)
                         render(status: 200, contentType: 'application/json', text: [text: message(code: 'is.dialog.retrieve.success', args: [user.email])] as JSON)
-                    } catch (MailException e) {
-                        status.setRollbackOnly()
-                        returnError(code: 'is.mail.error', exception: e)
-                    } catch (RuntimeException re) {
-                        status.setRollbackOnly()
-                        returnError(text: re.message, exception: re)
-                    } catch (Exception e) {
-                        status.setRollbackOnly()
-                        returnError(code: 'is.mail.error', exception: e)
                     }
+                } catch (MailException e) {
+                    returnError(code: 'is.mail.error', exception: e)
+                } catch (RuntimeException re) {
+                    returnError(text: re.message, exception: re)
+                } catch (Exception e) {
+                    returnError(code: 'is.mail.error', exception: e)
                 }
             }
         }

@@ -148,13 +148,10 @@ class ScrumOSController implements ControllerErrorHandler {
             render(status: 200)
         } catch (MailException e) {
             returnError(code: 'is.mail.error', exception: e)
-            return
         } catch (RuntimeException re) {
             returnError(code: re.message, exception: re)
-            return
         } catch (Exception e) {
             returnError(code: 'is.mail.error', exception: e)
-            return
         }
     }
 
