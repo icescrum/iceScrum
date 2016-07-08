@@ -84,7 +84,6 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 atmosphere.util.debug('Default transport is WebSocket, fallback is ' + options.fallbackTransport);
             }
         };
-
         options.onMessage = function(response) {
             $rootScope.app.loading = true;
             var textBody = response.responseBody;
@@ -157,12 +156,5 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 listener(object);
             });
         }
-    };
-    this.synchronizeItem = function(domain, item) {
-        return self.registerListener(domain, IceScrumEventType.UPDATE, function(object) {
-            if (item.id == object.id) {
-                angular.extend(item, object);
-            }
-        });
     };
 }]);

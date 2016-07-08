@@ -129,7 +129,7 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div class="postits {{ currentPostitSize(viewName, 'grid-group') + ' ' + (isSortingFeature() ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
+            <div class="postits {{ currentPostitSize(viewName, 'grid-group size-sm') + ' ' + (isSortingFeature() ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
                  postits-screen-size
                  ng-controller="featureCtrl"
                  as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
