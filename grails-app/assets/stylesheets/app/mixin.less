@@ -16,7 +16,7 @@
 }
 
 .make-flex-container(@direction: column; @grow: 1; @shrink: 0; @basis: auto) {
-  flex: @grow @shrink ;
+  flex: @grow @shrink @basis;
   -webkit-flex: @grow @shrink @basis;
   display: flex;
   flex-direction: @direction;
