@@ -37,7 +37,7 @@
             <div class="col-md-6">
                 <div class="postits standalone">
                     <div class="postit-container stack twisted">
-                        <div style="{{ topFeature.color | createGradientBackground }}"
+                        <div ng-style="topFeature.color | createGradientBackground"
                              class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                             <div class="head">
                                 <div class="head-left">

@@ -214,7 +214,7 @@
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr ng-class="{'sortable-disabled': !isSortingStory(story)}" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
+                    <tr ng-class="{'sortable-disabled': !isSortingStory(story)}" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
                         <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group size-sm') +' '+ (tasksShown(taskState, story) ? '' : 'show-tasks') }}"
                             postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"
@@ -252,7 +252,7 @@
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr class="sortable-disabled" style="border-left: 15px solid {{ story.feature ? story.feature.color : '#f9f157' }};">
+                    <tr class="sortable-disabled" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
                         <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group size-sm') +' '+ (tasksShown(taskState, story) ? '' : 'show-tasks')}}"
                             postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"

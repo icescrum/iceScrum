@@ -24,7 +24,7 @@
 <div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <i class="fa fa-sticky-note" style="color: {{ storyPreview.feature ? storyPreview.feature.color : '#f9f157' }}"></i>
+            <i class="fa fa-sticky-note" ng-style="{color: storyPreview.feature ? storyPreview.feature.color : '#f9f157'}"></i>
             ${message(code: 'todo.is.ui.story.new')}
             <a class="pull-right visible-on-hover btn btn-default"
                     href="#/{{ ::viewName }}/sandbox"
@@ -37,7 +37,7 @@
         <div class="help-block">${message(code:'is.ui.sandbox.help')}</div>
         <div class="postits standalone">
             <div class="postit-container">
-                <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
+                <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                      class="postit {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}">
                     <div class="head">
                         <div class="head-left">

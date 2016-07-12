@@ -37,7 +37,7 @@
             <div class="col-md-6">
                 <div class="postits standalone">
                     <div class="postit-container stack twisted">
-                        <div style="{{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground }}"
+                        <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                              class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                             <div class="head">
                                 <div class="head-left">
@@ -191,10 +191,10 @@
                                ng-model="storyPreview.feature">
                         <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
                             <i class="fa fa-sticky-note"
-                               style="color: {{ $select.selected.color }};"></i> {{ $select.selected.name }}
+                               ng-style="{color: $select.selected.color}"></i> {{ $select.selected.name }}
                         </ui-select-match>
                         <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
-                            <i class="fa fa-sticky-note" style="color: {{ feature.color }};"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
+                            <i class="fa fa-sticky-note" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-if="storyPreview.feature.id">

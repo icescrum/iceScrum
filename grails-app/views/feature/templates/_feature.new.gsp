@@ -37,7 +37,7 @@
         <div class="help-block">${message(code:'is.ui.feature.help')}</div>
         <div class="postits standalone">
             <div class="postit-container">
-                <div style="{{ '#2d8ccc' | createGradientBackground }}"
+                <div ng-style="'#2d8ccc' | createGradientBackground"
                      class="postit {{ '#2d8ccc' | contrastColor }}">
                     <div class="head">
                         <div class="head-left">

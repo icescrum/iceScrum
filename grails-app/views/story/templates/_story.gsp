@@ -23,7 +23,7 @@
 
 <script type="text/ng-template" id="story.html">
 <div fast-tooltip
-     style="{{ (story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)}}"
+     ng-style="(story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
      class="postit {{ app.postitSize.story + ' ' + ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
         <div class="head-left">
@@ -90,7 +90,7 @@
                 <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
                 <div class="progress-bar"
                      ng-class="'bg-'+(story.testState | acceptanceTestColor)"
-                     style="width: {{ story.countDoneTasks | percentProgress:story.tasks_count }}%">
+                     ng-style="{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
                 </div>
             </div>
             <div class="state"

@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="task.html">
-<div style="{{ task.color | createGradientBackground }}"
+<div ng-style="task.color | createGradientBackground"
      ng-class="{'task-blocked': task.blocked}"
      class="postit {{ app.postitSize.task + ' ' + (task.color | contrastColor) }}">
     <div class="head">

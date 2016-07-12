@@ -177,7 +177,7 @@
              ng-class="{'state-completed': state.completed, 'state-current': state.current}"
              tooltip-placement="left"
              uib-tooltip="{{ state.tooltip  }}"
-             style="width:{{ state.width }}%">
+             ng-style="{width: state.width + '%'}">
             <span class="state-name">{{ state.name }}</span>
         </div>
     </div>

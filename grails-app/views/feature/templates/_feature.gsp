@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="feature.html">
-<div style="{{ feature.color | createGradientBackground: isAsListPostit(viewName) }}"
+<div ng-style="feature.color | createGradientBackground: isAsListPostit(viewName)"
      class="postit {{ (feature.color | contrastColor) + ' ' + (feature.type | featureType) }}">
     <div class="head">
         <div class="head-left">
@@ -70,7 +70,7 @@
             <div class="progress">
                 <span class="status">{{ feature.countDoneStories + '/' + feature.stories_ids.length }}</span>
                 <div class="progress-bar"
-                     style="width: {{ feature.countDoneStories | percentProgress:feature.stories_ids.length }}%">
+                     ng-style="{width: (feature.countDoneStories | percentProgress:feature.stories_ids.length) + '%'}">
                 </div>
             </div>
             <div class="state hover-progress">{{ feature.state | i18n:'FeatureStates' }}</div>

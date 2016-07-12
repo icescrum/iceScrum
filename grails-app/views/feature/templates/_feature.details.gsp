@@ -116,7 +116,7 @@
                                 <button colorpicker
                                         class="btn {{ editableFeature.color | contrastColor }}"
                                         type="button"
-                                        style="background-color:{{ editableFeature.color }};"
+                                        ng-style="{'background-color': editableFeature.color}"
                                         colorpicker-position="top"
                                         ng-focus="editForm(true)"
                                         value="#bf3d3d"
