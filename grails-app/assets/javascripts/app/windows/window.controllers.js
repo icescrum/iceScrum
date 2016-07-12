@@ -425,6 +425,9 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             $scope.tasksShownByTypeOrStory[typeOrStory] = show;
         }
     };
+    $scope.sprintRemainingTime = function(sprint) {
+        return _.sumBy(sprint.tasks, 'estimation');
+    };
     // Init
     var fixTaskRank = function(tasks) {
         _.each(tasks, function(task, index) {

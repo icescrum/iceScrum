@@ -92,6 +92,17 @@
                                     ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </div>
+                        <div class="sprint-numbers">
+                            <div>
+                                <span ng-if="sprint.state > sprintStatesByName.TODO"
+                                      uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
+                                <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
+                                <i class="small-icon fa fa-dollar"></i>
+                            </div>
+                            <div uib-tooltip="${message(code: 'is.task.estimation')}">
+                                {{ sprintRemainingTime(sprint) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
+                            </div>
+                        </div>
                         <div class="btn-group btn-view">
                             <a class="btn btn-default"
                                href="{{ openSprintUrl(sprint) }}"

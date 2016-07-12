@@ -433,4 +433,9 @@ filters
                 return backlog.isDefault ? $rootScope.message(backlog.name) : backlog.name;
             }
         }
+    }]).filter('roundNumber', [function() {
+        return function(number, nbDecimals) {
+            var multiplicator = Math.pow(10, nbDecimals);
+            return Math.round(number * multiplicator) / multiplicator;
+        }
     }]);
