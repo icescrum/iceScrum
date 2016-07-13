@@ -4,15 +4,24 @@
 .logo {
   height: 44px;
   width: 44px;
+  .logois1 {
+    fill: @logo-color-bottom;
+  }
+  .logois2 {
+    fill: @logo-color-middle;
+  }
+  .logois3 {
+    fill: @logo-color-top;
+  }
   &.disconnected {
     .logois1 {
-      fill:@logo-color-bottom-gray;
+      fill: @logo-color-bottom-gray;
     }
     .logois2 {
-      fill:@logo-color-middle-gray;
+      fill: @logo-color-middle-gray;
     }
     .logois3 {
-      fill:@logo-color-top-gray;
+      fill: @logo-color-top-gray;
     }
   }
 }
@@ -20,20 +29,16 @@
 .loading {
   .logo {
     .logois {
+      .animation(3s linear infinite);
       .transition(all 21s ease-out);
     }
     .logois1 {
-      .animation(3s linear infinite);
       .animation-name(anim1A);
     }
-
     .logois2 {
-      .animation(3s linear infinite);
       .animation-name(anim1B);
     }
-
     .logois3 {
-      .animation(3s linear infinite);
       .animation-name(anim1C);
     }
   }
@@ -41,48 +46,69 @@
 
 @-webkit-keyframes anim1A {
   0%, 15% {
-    fill: @logo-color-bottom-gray;  }
+    fill: @logo-color-bottom-gray;
+  }
   25%, 90% {
-    fill: @logo-color-bottom; }
+    fill: @logo-color-bottom;
+  }
   100% {
-    fill: @logo-color-bottom-gray; } }
+    fill: @logo-color-bottom-gray;
+  }
+}
 
 @keyframes anim1A {
   0%, 15% {
     fill: @logo-color-bottom-gray;
-  } 25%, 90% {
-      fill: @logo-color-bottom; }
+  }
+  25%, 90% {
+    fill: @logo-color-bottom;
+  }
   100% {
-    fill: @logo-color-bottom-gray; } }
-
+    fill: @logo-color-bottom-gray;
+  }
+}
 @-webkit-keyframes anim1B {
   0%, 40% {
-    fill: @logo-color-middle-gray; }
+    fill: @logo-color-middle-gray;
+  }
   50%, 86% {
-    fill: @logo-color-middle; }
+    fill: @logo-color-middle;
+  }
   96%, 100% {
-    fill: @logo-color-middle-gray; } }
-
+    fill: @logo-color-middle-gray;
+  }
+}
 @keyframes anim1B {
   0%, 40% {
-    fill: @logo-color-middle-gray; }
+    fill: @logo-color-middle-gray;
+  }
   50%, 86% {
-    fill: @logo-color-middle; }
+    fill: @logo-color-middle;
+  }
   96%, 100% {
-    fill: @logo-color-middle-gray; } }
+    fill: @logo-color-middle-gray;
+  }
+}
 
 @-webkit-keyframes anim1C {
   0%, 65% {
-    fill: @logo-color-top-gray; }
+    fill: @logo-color-top-gray;
+  }
   75%, 82% {
-    fill: @logo-color-top; }
+    fill: @logo-color-top;
+  }
   92%, 100% {
-    fill: @logo-color-top-gray; } }
-
+    fill: @logo-color-top-gray;
+  }
+}
 @keyframes anim1C {
   0%, 65% {
-    fill: @logo-color-top-gray; }
+    fill: @logo-color-top-gray;
+  }
   75%, 82% {
-    fill: @logo-color-top; }
+    fill: @logo-color-top;
+  }
   92%, 100% {
-    fill: @logo-color-top-gray; } }
+    fill: @logo-color-top-gray;
+  }
+}
