@@ -159,6 +159,7 @@
                     </div>
                 </div>
             </div>
+            <entry:point id="project-dashboard-top-right"/>
             <div class="panel-container">
                 <div class="panel panel-light">
                     <div class="panel-heading">

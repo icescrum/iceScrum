@@ -809,7 +809,7 @@ angular.module('isApp', [
 .factory('UserTimeZone', function() {
     return jstz.determine();
 })
-.run(['Session', 'BundleService', 'PushService', 'UserService', 'WidgetService', 'ExtensionService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, BundleService, PushService, UserService, WidgetService, ExtensionService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
+.run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'ExtensionService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, I18nService, PushService, UserService, WidgetService, ExtensionService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
 
     //used to handle click with shortcut hotkeys
     $rootScope.hotkeyClick = function(event, hotkey) {
@@ -830,14 +830,8 @@ angular.module('isApp', [
         }
     };
 
-    $rootScope.message = function(code, args, defaultCode) {
-        var text = messages[code] ? messages[code] : (defaultCode && messages[defaultCode] ? messages[defaultCode] : code);
-        angular.forEach(args, function(arg, index) {
-            var placeholderMatcher = new RegExp('\\{' + index + '\\}', 'g');
-            text = text.replace(placeholderMatcher, arg);
-        });
-        return text;
-    };
+    $rootScope.message = I18nService.message;
+
     $rootScope.notifySuccess = function(code, options) {
         return notifications.success('', $rootScope.message(code), options);
     };
@@ -1022,11 +1016,6 @@ angular.module('isApp', [
     // To be able to track state in views
     $rootScope.$state = $state;
 
-    var messages = {};
-    $rootScope.initMessages = function(initMessages) {
-        messages = initMessages;
-    };
-
     $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
         if (!scrollableContainerSelector) {
             scrollableContainerSelector = '.panel-body';
@@ -1121,8 +1110,8 @@ angular.module('isApp', [
         }
 
         PushService.initPush(isSettings.pushContext);
-        $rootScope.initMessages(isSettings.messages);
-        BundleService.initBundles(isSettings.bundles);
+        I18nService.initMessages(isSettings.messages);
+        I18nService.initBundles(isSettings.bundles);
 
         Session.create(isSettings.user, isSettings.roles);
     }

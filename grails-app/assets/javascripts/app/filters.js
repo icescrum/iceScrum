@@ -149,10 +149,10 @@ filters
             return story.description ? javaStringToHtml(story.description).replace(/A\[(.+?)-(.*?)\]/g, actor) : "";
         };
     })
-    .filter('i18n', ['BundleService', function(BundleService) {
+    .filter('i18n', ['I18nService', function(I18nService) {
         return function(key, bundleName) {
-            if (key != undefined && key != null && BundleService.getBundle(bundleName)) {
-                return BundleService.getBundle(bundleName)[key];
+            if (key != undefined && key != null && I18nService.getBundle(bundleName)) {
+                return I18nService.getBundle(bundleName)[key];
             }
         }
     }])

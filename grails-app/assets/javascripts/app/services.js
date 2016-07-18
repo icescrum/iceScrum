@@ -304,14 +304,29 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         }
     };
 }])
-.service('BundleService', [function() {
+.service('I18nService', [function() {
+    var self = this;
+    // Bundles (already translated)
     this.bundles = {};
     this.initBundles = function(bundles) {
-        this.bundles = bundles;
+        self.bundles = bundles;
     };
     this.getBundle = function(bundleName) {
         return this.bundles[bundleName];
-    }
+    };
+    // Messages
+    this.messages = {};
+    this.initMessages = function(messages) {
+        self.messages = messages;
+    };
+    this.message = function(code, args, defaultCode) {
+        var text = self.messages[code] ? self.messages[code] : (defaultCode && self.messages[defaultCode] ? self.messages[defaultCode] : code);
+        angular.forEach(args, function(arg, index) {
+            var placeholderMatcher = new RegExp('\\{' + index + '\\}', 'g');
+            text = text.replace(placeholderMatcher, arg);
+        });
+        return text;
+    };
 }])
 .service('CacheService', ['$injector', function($injector) {
     var self = this;
