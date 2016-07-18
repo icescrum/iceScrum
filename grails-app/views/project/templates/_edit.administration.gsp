@@ -51,6 +51,7 @@
             <td class="text-right"><input type="checkbox" name="view.hidden" ng-model="view.hidden"></td>
         </tr>
     </table>
+    <entry:point id="project-edit-administration"/>
     <h4>${message(code:"todo.is.ui.project.administration.danger")}</h4>
     <div class="btn-toolbar">
         <button ng-if="authorizedProject('delete', project)"

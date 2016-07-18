@@ -123,7 +123,7 @@ class ProjectController implements ControllerErrorHandler {
     def update(long product) {
         Product _product = Product.withProduct(product)
         def productPreferencesParams = params.productd?.remove('preferences')
-        def productParams = params.remove('productd')
+        def productParams = params.productd
         Product.withTransaction {
             productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate);
             bindData(_product, productParams, [include: ['name', 'description', 'startDate', 'pkey', 'planningPokerGameType']])
@@ -132,7 +132,7 @@ class ProjectController implements ControllerErrorHandler {
                 _product.preferences.stakeHolderRestrictedViews = null
             }
             productService.update(_product, _product.preferences.isDirty('hidden'), _product.isDirty('pkey') ? _product.getPersistentValue('pkey') : null)
-            entry.hook(id: "${controllerName}-${actionName}", model: [product: _product])
+            entry.hook(id: "project-update", model: [product: _product])
             render(status: 200, contentType: 'application/json', text: _product as JSON)
         }
     }
