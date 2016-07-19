@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.acceptanceTests.html">
-<div class="acceptanceTests panel-body" ng-controller="acceptanceTestCtrl">
+<div class="acceptanceTests panel-body">
     <table class="table">
         <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
             <td class="content">

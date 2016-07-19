@@ -370,6 +370,7 @@ controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '
         };
         $scope.features = Session.getProject().features;
         FeatureService.list();
+        $scope.project = Session.getProject();
         var mapActors = function(actors) {
             return _.map(actors, function(actor) {
                 return {uid: actor.uid, name: actor.name};

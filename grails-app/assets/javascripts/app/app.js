@@ -163,11 +163,8 @@ angular.module('isApp', [
                                 }
                                 return tpl;
                             },
-                            controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
+                            controller: ['$scope', 'selected', function($scope, selected) {
                                 $scope.selected = selected;
-                                if ($stateParams.taskTabId == 'activities') {
-                                    $controller('activityCtrl', {$scope: $scope, selected: selected});
-                                }
                             }]
                         }
                     }
@@ -273,13 +270,8 @@ angular.module('isApp', [
                                 }
                                 return tpl;
                             },
-                            controller: ['$scope', '$controller', '$stateParams', 'selected', function($scope, $controller, $stateParams, selected) {
+                            controller: ['$scope', 'selected', function($scope, selected) {
                                 $scope.selected = selected;
-                                if ($stateParams.storyTabId == 'activities') {
-                                    $controller('activityCtrl', {$scope: $scope, selected: selected});
-                                } else if ($stateParams.storyTabId == 'tasks') {
-                                    $controller('taskStoryCtrl', {$scope: $scope});
-                                }
                             }]
                         }
                     }

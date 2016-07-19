@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'ActivityService', 'selected', function($scope, $state, DateService, ActivityService, selected) {
+controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'ActivityService', function($scope, $state, DateService, ActivityService) {
     //activities are ugly but it's working..
     $scope.activities = function(fluxiable, all) {
         $scope.allActivities = all;
@@ -31,7 +31,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'Acti
     var manageActivities = function(activities) {
         var groupedActivities = [];
         angular.forEach(activities, function(activity) {
-            var selectedType = selected.class.toLowerCase();
+            var selectedType = $scope.selected.class.toLowerCase();
             var tabId;
             if (activity.code == 'comment') {
                 tabId = 'comments'
@@ -74,5 +74,5 @@ controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'Acti
     //init
     $scope.allActivities = false;
     $scope.groupedActivities = {};
-    manageActivities(selected.activities);
+    manageActivities($scope.selected.activities);
 }]);

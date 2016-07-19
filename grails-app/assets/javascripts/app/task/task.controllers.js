@@ -126,7 +126,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     });
 }]);
 
-controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, TaskStatesByName, TaskConstants, TaskService, FormService, ProjectService, taskContext, detailsTask) {
+controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, ProjectService, taskContext, detailsTask) {
     $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions
@@ -160,6 +160,7 @@ controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$cont
             });
         }
     };
+    $scope.project = Session.getProject();
     var sortedTasks = $filter('orderBy')(taskContext.tasks, TaskConstants.ORDER_BY);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);

@@ -102,10 +102,11 @@
         <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'comments'}">
             <a href="{{ tabUrl('comments') }}"
                uib-tooltip="${message(code:'todo.is.ui.comments')}">
-                <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                <i class="fa fa-lg" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                 <span class="badge">{{ task.comments_count || '' }}</span>
             </a>
         </li>
+        <entry:point id="task-details-tab-button"/>
     </ul>
     <div ui-view="details-tab">
         <form ng-submit="update(editableTask)"

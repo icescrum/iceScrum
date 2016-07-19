@@ -98,7 +98,7 @@
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'comments'}">
             <a href="{{ tabUrl('comments') }}"
                uib-tooltip="${message(code:'todo.is.ui.comments')}">
-                <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                 <span class="badge">{{ story.comments_count || '' }}</span>
             </a>
         </li>
@@ -112,10 +112,11 @@
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tests'}">
             <a href="{{ tabUrl('tests') }}"
                uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
-                <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
                 <span class="badge">{{ story.acceptanceTests_count || '' }}</span>
             </a>
         </li>
+        <entry:point id="story-details-tab-button"/>
     </ul>
     <div ui-view="details-tab">
         <g:include view="story/templates/_story.properties.gsp"/>

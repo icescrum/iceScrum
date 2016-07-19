@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="activity.list.html">
-<div class="activities panel-body">
+<div class="activities panel-body" ng-controller="activityCtrl">
     <div ng-repeat="groupedActivity in groupedActivities">
         <div class="activity">
             <div class="media-left">

@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div class="tasks panel-body">
+<div class="tasks panel-body" ng-controller="taskStoryCtrl">
     <table class="table">
         <tr ng-repeat="task in selected.tasks | orderBy: tasksOrderBy">
             <td class="content {{:: authorizedTask('delete', task) ? 'toggle-container' : '' }}">
@@ -58,7 +58,7 @@
         </tr>
     </table>
 </div>
-<div class="panel-footer">
+<div class="panel-footer" ng-controller="taskStoryCtrl">
     <div ng-if="authorizedTask('create', {parentStory: selected})" ng-include="'story.task.new.html'"></div>
 </div>
 </script>
