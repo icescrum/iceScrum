@@ -39,18 +39,23 @@
     }
 })();
 
-angular.module('isPlugins', []).provider('controllerHooks', function() {
-    this.$get = angular.noop;
-    this.register = function(entryPoints) {
-        _.each(entryPoints, function(appControllerName, pluginControllerName) {
-            if (_.has(isSettings.controllerHooks, appControllerName)) {
-                isSettings.controllerHooks[appControllerName].push(pluginControllerName);
-            } else {
-                console.error("App controller " + appControllerName + " is not registered so plugin controller " + pluginControllerName + " cannot be hooked");
-            }
-        });
-    }
-});
+angular.module('isPlugins', [])
+    .provider('controllerHooks', function() {
+        this.$get = angular.noop;
+        this.register = function(entryPoints) {
+            _.each(entryPoints, function(appControllerName, pluginControllerName) {
+                if (_.has(isSettings.controllerHooks, appControllerName)) {
+                    isSettings.controllerHooks[appControllerName].push(pluginControllerName);
+                } else {
+                    console.error("App controller " + appControllerName + " is not registered so plugin controller " + pluginControllerName + " cannot be hooked");
+                }
+            });
+        }
+    })
+    .provider('pluginTabs', function() {
+        this.$get = angular.noop;
+        this.pluginTabs = {};
+    });
 
 angular.module('isApp', [
         'ngRoute',
@@ -83,7 +88,7 @@ angular.module('isApp', [
     $httpProvider.interceptors.push(['$injector', function($injector) { return $injector.get('AuthInterceptor'); }]);
     $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 }])
-.config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider) {
+.config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', 'pluginTabsProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider, pluginTabsProvider) {
     $stateProvider.decorator('parent', function(state, parentFn) {
         state.self.$$state = function() {
             return state;
@@ -95,6 +100,60 @@ angular.module('isApp', [
     });
 
     $urlRouterProvider.when('', '/');
+
+    var taskTabs = _.merge({
+        comments: {
+            data: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
+                if ($stateParams.taskTabId == 'comments') {
+                    return CommentService.list(detailsTask);
+                }
+            }],
+            templateUrl: 'comment.list.html'
+        },
+        activities: {
+            data: ['$stateParams', 'ActivityService', 'detailsTask', function($stateParams, ActivityService, detailsTask) {
+                if ($stateParams.taskTabId == 'activities') {
+                    return ActivityService.activities(detailsTask, false);
+                }
+            }],
+            templateUrl: 'activity.list.html'
+        }
+    }, pluginTabsProvider.pluginTabs['task']);
+
+    var storyTabs = _.merge({
+        tests: {
+            data: ['$stateParams', 'AcceptanceTestService', 'detailsStory', function($stateParams, AcceptanceTestService, detailsStory) {
+                if ($stateParams.storyTabId == 'tests') {
+                    return AcceptanceTestService.list(detailsStory);
+                }
+            }],
+            templateUrl: 'story.acceptanceTests.html'
+        },
+        tasks: {
+            data: ['$stateParams', 'TaskService', 'detailsStory', function($stateParams, TaskService, detailsStory) {
+                if ($stateParams.storyTabId == 'tasks') {
+                    return TaskService.list(detailsStory);
+                }
+            }],
+            templateUrl: 'story.tasks.html'
+        },
+        comments: {
+            data: ['$stateParams', 'CommentService', 'detailsStory', function($stateParams, CommentService, detailsStory) {
+                if ($stateParams.storyTabId == 'comments') {
+                    return CommentService.list(detailsStory);
+                }
+            }],
+            templateUrl: 'comment.list.html'
+        },
+        activities: {
+            data: ['$stateParams', 'ActivityService', 'detailsStory', function($stateParams, ActivityService, detailsStory) {
+                if ($stateParams.storyTabId == 'activities') {
+                    return ActivityService.activities(detailsStory, false);
+                }
+            }],
+            templateUrl: 'activity.list.html'
+        }
+    }, pluginTabsProvider.pluginTabs['story']);
 
     var getDetailsModalState = function(detailsType, options) {
         return _.merge({
@@ -133,44 +192,35 @@ angular.module('isApp', [
                     return _.find(taskContext.tasks, {id: $stateParams.taskId})
                 }]
             },
-            views: {},
-            children: [
-                {
-                    name: 'tab',
-                    url: "/{taskTabId:(?:comments|activities)}",
-                    resolve: {
-                        data: ['$stateParams', 'ActivityService', 'CommentService', 'detailsTask', function($stateParams, ActivityService, CommentService, detailsTask) {
-                            if ($stateParams.taskTabId == 'comments') {
-                                return CommentService.list(detailsTask);
-                            } else if ($stateParams.taskTabId == 'activities') {
-                                return ActivityService.activities(detailsTask, false);
+            views: {}
+        };
+        var tabNames = _.keys(taskTabs);
+        options.children = [
+            {
+                name: 'tab',
+                url: '/{taskTabId:(?:' + _.join(tabNames, '|') + ')}',
+                resolve: {
+                    selected: ['detailsTask', function(detailsTask) {
+                        return detailsTask;
+                    }]
+                },
+                views: {
+                    "details-tab": {
+                        templateUrl: function($stateParams) {
+                            if ($stateParams.taskTabId) {
+                                return taskTabs[$stateParams.taskTabId].templateUrl;
                             }
-                            return null;
-                        }],
-                        //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
-                        selected: ['data', 'detailsTask', function(data, detailsTask) {
-                            return detailsTask;
+                        },
+                        controller: ['$scope', 'selected', function($scope, selected) {
+                            $scope.selected = selected;
                         }]
-                    },
-                    views: {
-                        "details-tab": {
-                            templateUrl: function($stateParams) {
-                                var tpl;
-                                if ($stateParams.taskTabId == 'comments') {
-                                    tpl = 'comment.list.html';
-                                } else if ($stateParams.taskTabId == 'activities') {
-                                    tpl = 'activity.list.html';
-                                }
-                                return tpl;
-                            },
-                            controller: ['$scope', 'selected', function($scope, selected) {
-                                $scope.selected = selected;
-                            }]
-                        }
                     }
                 }
-            ]
-        };
+            }
+        ];
+        _.each(taskTabs, function(value, key) {
+            options.children[0].resolve['data' + key] = value.data;
+        });
         options.views['details' + (viewContext ? viewContext : '')] = {
             templateUrl: 'task.details.html',
             controller: 'taskDetailsCtrl'
@@ -232,52 +282,35 @@ angular.module('isApp', [
                     return StoryService.get($stateParams.storyId);
                 }]
             },
-            views: {},
-            children: [
-                {
-                    name: 'tab',
-                    url: "/{storyTabId:(?:tests|tasks|comments|activities)}",
-                    resolve: {
-                        data: ['$stateParams', 'AcceptanceTestService', 'CommentService', 'TaskService', 'ActivityService', 'detailsStory', function($stateParams, AcceptanceTestService, CommentService, TaskService, ActivityService, detailsStory) {
-                            if ($stateParams.storyTabId == 'tests') {
-                                return AcceptanceTestService.list(detailsStory);
-                            } else if ($stateParams.storyTabId == 'tasks') {
-                                return TaskService.list(detailsStory);
-                            } else if ($stateParams.storyTabId == 'comments') {
-                                return CommentService.list(detailsStory);
-                            } else if ($stateParams.storyTabId == 'activities') {
-                                return ActivityService.activities(detailsStory, false);
+            views: {}
+        };
+        var tabNames = _.keys(storyTabs);
+        options.children = [
+            {
+                name: 'tab',
+                url: '/{storyTabId:(?:' + _.join(tabNames, '|') + ')}',
+                resolve: {
+                    selected: ['detailsStory', function(detailsStory) {
+                        return detailsStory;
+                    }]
+                },
+                views: {
+                    "details-tab": {
+                        templateUrl: function($stateParams) {
+                            if ($stateParams.storyTabId) {
+                                return storyTabs[$stateParams.storyTabId].templateUrl;
                             }
-                            return null;
-                        }],
-                        //we add data to wait for dynamic resolution - not used only for story.xxxx to be loaded
-                        selected: ['data', 'detailsStory', function(data, detailsStory) {
-                            return detailsStory;
+                        },
+                        controller: ['$scope', 'selected', function($scope, selected) {
+                            $scope.selected = selected;
                         }]
-                    },
-                    views: {
-                        "details-tab": {
-                            templateUrl: function($stateParams) {
-                                var tpl;
-                                if ($stateParams.storyTabId == 'tests') {
-                                    tpl = 'story.acceptanceTests.html';
-                                } else if ($stateParams.storyTabId == 'tasks') {
-                                    tpl = 'story.tasks.html';
-                                } else if ($stateParams.storyTabId == 'comments') {
-                                    tpl = 'comment.list.html';
-                                } else if ($stateParams.storyTabId == 'activities') {
-                                    tpl = 'activity.list.html';
-                                }
-                                return tpl;
-                            },
-                            controller: ['$scope', 'selected', function($scope, selected) {
-                                $scope.selected = selected;
-                            }]
-                        }
                     }
                 }
-            ]
-        };
+            }
+        ];
+        _.each(storyTabs, function(value, key) {
+            options.children[0].resolve['data' + key] = value.data;
+        });
         options.views['details' + (viewContext ? viewContext : '')] = {
             templateUrl: 'story.details.html',
             controller: 'storyDetailsCtrl'
