@@ -155,6 +155,17 @@ angular.module('isApp', [
         }
     }, pluginTabsProvider.pluginTabs['story']);
 
+    var featureTabs = _.merge({
+        stories: {
+            data: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
+                if ($stateParams.featureTabId == 'stories') {
+                    StoryService.listByType(detailsFeature);
+                }
+            }],
+            templateUrl: 'nested.stories.html'
+        }
+    }, pluginTabsProvider.pluginTabs['feature']);
+
     var getDetailsModalState = function(detailsType, options) {
         return _.merge({
             name: detailsType,
@@ -199,11 +210,7 @@ angular.module('isApp', [
             {
                 name: 'tab',
                 url: '/{taskTabId:(?:' + _.join(tabNames, '|') + ')}',
-                resolve: {
-                    selected: ['detailsTask', function(detailsTask) {
-                        return detailsTask;
-                    }]
-                },
+                resolve: {},
                 views: {
                     "details-tab": {
                         templateUrl: function($stateParams) {
@@ -211,8 +218,8 @@ angular.module('isApp', [
                                 return taskTabs[$stateParams.taskTabId].templateUrl;
                             }
                         },
-                        controller: ['$scope', 'selected', function($scope, selected) {
-                            $scope.selected = selected;
+                        controller: ['$scope', 'detailsTask', function($scope, detailsTask) {
+                            $scope.selected = detailsTask;
                         }]
                     }
                 }
@@ -232,34 +239,36 @@ angular.module('isApp', [
             name: 'details',
             url: "/{featureId:int}",
             resolve: {
-                //we add features to wait for dynamic resolution from parent state
+                // Inject "features" to wait for resolution from parent state so FeatureService.get is ensured to find the feature in the cache
                 detailsFeature: ['FeatureService', '$stateParams', 'features', function(FeatureService, $stateParams, features) {
                     return FeatureService.get($stateParams.featureId);
                 }]
             },
-            views: {},
-            children: [
-                {
-                    name: 'tab',
-                    url: "/{featureTabId:stories}",
-                    resolve: {
-                        selected: ['StoryService', 'detailsFeature', function(StoryService, detailsFeature) {
-                            return StoryService.listByType(detailsFeature).then(function() {
-                                return detailsFeature;
-                            });
+            views: {}
+        };
+        var tabNames = _.keys(featureTabs);
+        options.children = [
+            {
+                name: 'tab',
+                url: '/{featureTabId:(?:' + _.join(tabNames, '|') + ')}',
+                resolve: {},
+                views: {
+                    "details-tab": {
+                        templateUrl: function($stateParams) {
+                            if ($stateParams.featureTabId) {
+                                return featureTabs[$stateParams.featureTabId].templateUrl;
+                            }
+                        },
+                        controller: ['$scope', 'detailsFeature', function($scope, detailsFeature) {
+                            $scope.selected = detailsFeature;
                         }]
-                    },
-                    views: {
-                        "details-tab": {
-                            templateUrl: 'nested.stories.html',
-                            controller: ['$scope', 'selected', function($scope, selected) {
-                                $scope.selected = selected;
-                            }]
-                        }
                     }
                 }
-            ]
-        };
+            }
+        ];
+        _.each(featureTabs, function(value, key) {
+            options.children[0].resolve['data' + key] = value.data;
+        });
         options.views['details' + (viewContext ? viewContext : '')] = {
             templateUrl: 'feature.details.html',
             controller: 'featureDetailsCtrl'
@@ -289,11 +298,7 @@ angular.module('isApp', [
             {
                 name: 'tab',
                 url: '/{storyTabId:(?:' + _.join(tabNames, '|') + ')}',
-                resolve: {
-                    selected: ['detailsStory', function(detailsStory) {
-                        return detailsStory;
-                    }]
-                },
+                resolve: {},
                 views: {
                     "details-tab": {
                         templateUrl: function($stateParams) {
@@ -301,8 +306,8 @@ angular.module('isApp', [
                                 return storyTabs[$stateParams.storyTabId].templateUrl;
                             }
                         },
-                        controller: ['$scope', 'selected', function($scope, selected) {
-                            $scope.selected = selected;
+                        controller: ['$scope', 'detailsStory', function($scope, detailsStory) {
+                            $scope.selected = detailsStory;
                         }]
                     }
                 }
