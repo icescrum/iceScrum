@@ -169,7 +169,6 @@ icescrum.resourceBundles = [
         ]
 ]
 
-//remove total*
 icescrum.marshaller = [
         story: [include: ['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed', 'countDoneTasks'],
                 includeCount: ['comments'],

@@ -198,7 +198,7 @@
                             </div>
                             <hr>
                         </div>
-                        <div ng-if="activities != undefined && activities.length == 0" class="panel-box-empty">
+                        <div ng-if="activities != undefined && activities.length == 0">
                             <div style="text-align: center; padding:5px; font-size:14px;">
                                 <a target="_blank" href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">${message(code:'is.ui.getting.started')}</a>
                             </div>
