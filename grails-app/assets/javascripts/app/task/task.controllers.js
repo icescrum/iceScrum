@@ -126,7 +126,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     });
 }]);
 
-controllers.controller('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, ProjectService, taskContext, detailsTask) {
+registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, ProjectService, taskContext, detailsTask) {
     $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions

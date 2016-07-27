@@ -271,7 +271,7 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'IceScrumEventType',
     };
 }]);
 
-controllers.controller('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
+registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
     function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, Session, StoryService, FormService, ActorService, FeatureService, ProjectService, UserService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
