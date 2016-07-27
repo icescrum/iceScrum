@@ -77,6 +77,31 @@ class UrlMappings {
                 uid(matches: /[0-9]*/)
             }
         }
+        // Legacy permalinks
+        "/p/$product-F$uid/" {
+            controller = 'feature'
+            action = 'permalink'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                uid(matches: /[0-9]*/)
+            }
+        }
+        "/p/$product-T$uid/" {
+            controller = 'task'
+            action = 'permalink'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                uid(matches: /[0-9]*/)
+            }
+        }
+        "/p/$product-$uid/" {
+            controller = 'story'
+            action = 'permalink'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+                uid(matches: /[0-9]*/)
+            }
+        }
         // Window
         "/ui/window/$windowDefinitionId" {
             controller = 'scrumOS'
