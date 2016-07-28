@@ -59,7 +59,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     };
     this.updateMenuPreferences = function(info) {
         var Session = $injector.get('Session');
-        $http({
+        return $http({
             url: $rootScope.serverUrl + '/user/' + Session.user.id + '/menu',
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},

@@ -28,7 +28,9 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'CacheService', 'Widget
         var widget = event.source.itemScope.modelValue;
         widget.position = event.dest.index + 1;
         widget.onRight = event.dest.sortableScope.options.sortableId === 'sortableRight';
-        WidgetService.update(widget);
+        WidgetService.update(widget).catch(function() {
+            $scope.revertSortable(event);
+        });
     };
     $scope.widgetSortableOptionsLeft = {
         itemMoved: position,

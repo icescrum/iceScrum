@@ -60,13 +60,20 @@ controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'Feat
     // Init
     $scope.viewName = 'feature';
     $scope.features = features;
-    var updateRank = function(event) {
-        _.each(event.dest.sortableScope.modelValue, function(feature, index) {
+    var fixFeatureRank = function(features) {
+        _.each(features, function(feature, index) {
             feature.rank = index + 1;
         });
+    };
+    var updateRank = function(event) {
+        fixFeatureRank(event.dest.sortableScope.modelValue);
         var feature = event.source.itemScope.modelValue;
         feature.rank = event.dest.index + 1;
-        FeatureService.update(feature);
+        FeatureService.update(feature).catch(function() {
+            $scope.revertSortable(event);
+            fixFeatureRank(event.dest.sortableScope.modelValue);
+            fixFeatureRank(event.source.itemScope.sortableScope);
+        });
     };
     $scope.featureSortableOptions = {
         itemMoved: updateRank,
@@ -436,10 +443,10 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     };
     $scope.taskSortableOptions = {
         itemMoved: function(event) {
-            fixTaskRank(event.source.sortableScope.modelValue);
-            fixTaskRank(event.dest.sortableScope.modelValue);
-            var task = event.source.itemScope.modelValue;
             var destScope = event.dest.sortableScope;
+            fixTaskRank(event.source.sortableScope.modelValue);
+            fixTaskRank(destScope.modelValue);
+            var task = event.source.itemScope.modelValue;
             task.rank = event.dest.index + 1;
             task.state = destScope.taskState;
             if (destScope.story) {
@@ -449,13 +456,20 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
                 task.type = destScope.taskType;
                 task.parentStory = null;
             }
-            TaskService.update(task);
+            TaskService.update(task).catch(function() {
+                $scope.revertSortable(event);
+                fixTaskRank(event.source.sortableScope.modelValue);
+                fixTaskRank(destScope.modelValue);
+            });
         },
         orderChanged: function(event) {
             fixTaskRank(event.dest.sortableScope.modelValue);
             var task = event.source.itemScope.modelValue;
             task.rank = event.dest.index + 1;
-            TaskService.update(task);
+            TaskService.update(task).catch(function() {
+                $scope.revertSortable(event);
+                fixTaskRank(event.dest.sortableScope.modelValue);
+            });
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;

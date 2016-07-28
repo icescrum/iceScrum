@@ -920,6 +920,11 @@ angular.module('isApp', [
         modal.result.then(callCloseCallback, callCloseCallback);
     };
 
+    $rootScope.revertSortable = function(event) {
+        event.dest.sortableScope.removeItem(event.dest.index);
+        event.source.itemScope.sortableScope.insertItem(event.source.index, event.source.itemScope.modelValue);
+    };
+
     $rootScope.showCopyModal = function(title, value) {
         $uibModal.open({
             templateUrl: 'copy.html',
