@@ -129,32 +129,6 @@ class ScrumOSController implements ControllerErrorHandler {
         render(text: wikitext.renderHtml([markup: "Textile"], data))
     }
 
-    def reportError(String report) {
-        try {
-            notificationEmailService.send([
-                    from   : springSecurityService.currentUser?.email ?: null,
-                    to     : grailsApplication.config.icescrum.alerts.errors.to,
-                    subject: "[iceScrum][report] Rapport d'erreur",
-                    view   : '/emails-templates/reportError',
-                    model  : [error  : report.stack,
-                              comment: report.comment,
-                              appID  : grailsApplication.config.icescrum.appID,
-                              ip     : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
-                              date   : g.formatDate(date: new Date(), formatName: 'is.date.format.short.time'),
-                              version: g.meta(name: 'app.version')],
-                    async  : true
-            ]);
-            //render(status: 200, contentType: 'application/json', text:message(code: 'is.blame.sended') as JSON)
-            render(status: 200)
-        } catch (MailException e) {
-            returnError(code: 'is.mail.error', exception: e)
-        } catch (RuntimeException re) {
-            returnError(code: re.message, exception: re)
-        } catch (Exception e) {
-            returnError(code: 'is.mail.error', exception: e)
-        }
-    }
-
     def templates() {
         render(status: 200, template: 'templatesJS')
     }
