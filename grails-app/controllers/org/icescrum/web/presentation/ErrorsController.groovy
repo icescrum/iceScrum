@@ -22,6 +22,7 @@
 package org.icescrum.web.presentation
 
 import grails.converters.JSON
+import grails.util.Environment
 import org.icescrum.core.error.ControllerErrorHandler
 
 class ErrorsController implements ControllerErrorHandler {
@@ -67,23 +68,28 @@ class ErrorsController implements ControllerErrorHandler {
     }
 
     def error500() {
-        try {
-            notificationEmailService.send([
-                    from   : springSecurityService.currentUser?.email ?: null,
-                    to     : grailsApplication.config.icescrum.alerts.errors.to,
-                    subject: "[iceScrum][report] Error report",
-                    view   : '/emails-templates/reportError',
-                    model  : [params      : params,
-                              version     : g.meta(name: 'app.version'),
-                              stackTrace  : request.exception.stackTrace,
-                              message     : request.exception.message,
-                              appID       : grailsApplication.config.icescrum.appID,
-                              ip          : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr()],
-                    async  : false
-            ]);
-            returnError(code: 'is.error.and.message.sent')
-        } catch (Exception e) {
-            returnError(code: 'is.error.and.message.not.sent', exception: e)
+        Exception exception = request.exception
+        if (Environment.current == Environment.PRODUCTION) {
+            try {
+                notificationEmailService.send([
+                        from   : springSecurityService.currentUser?.email ?: null,
+                        to     : grailsApplication.config.icescrum.alerts.errors.to,
+                        subject: "[iceScrum][report] Error report",
+                        view   : '/emails-templates/reportError',
+                        model  : [params      : params,
+                                  version     : g.meta(name: 'app.version'),
+                                  stackTrace  : exception.stackTrace,
+                                  message     : exception.message,
+                                  appID       : grailsApplication.config.icescrum.appID,
+                                  ip          : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr()],
+                        async  : false
+                ]);
+                returnError(code: 'is.error.and.message.sent', exception: exception)
+            } catch (Exception) {
+                returnError(code: 'is.error.and.message.not.sent', exception: exception)
+            }
+        } else {
+            returnError(text: "DEV ERROR: " + exception.message, exception: exception)
         }
     }
 }
