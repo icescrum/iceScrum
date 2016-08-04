@@ -40,6 +40,7 @@
                 <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('administration') }">
                     <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> ${ message(code: 'todo.is.ui.project.administration')}</a>
                 </li>
+                <entry:point id="project-edit-left"/>
             </ul>
         </div>
         <div class="right-panel steps col-sm-9" ng-switch="getCurrentPanel()">
@@ -68,6 +69,7 @@
                      title="${ message(code: 'todo.is.ui.project.administration')}">
                 <div ng-include="'edit.administration.project.html'"></div>
             </section>
+            <entry:point id="project-edit-right"/>
         </div>
     </div>
 </is:modal>

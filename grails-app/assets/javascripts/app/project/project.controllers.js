@@ -32,6 +32,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
         }
         $uibModal.open({
             keyboard: false,
+            backdrop: 'static',
             templateUrl: $scope.serverUrl + "/project/edit",
             size: 'lg',
             scope: childScope,
