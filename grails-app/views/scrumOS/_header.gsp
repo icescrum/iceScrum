@@ -33,7 +33,6 @@
         <div class="container-fluid">
             <div class="nav-header">
                 <div class="hidden-xs pull-left">
-
                 </div>
                 <is:errors/>
                 <ul ng-controller="projectCtrl"
@@ -49,12 +48,6 @@
                             </svg> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
-                            <li>
-                                <a hotkey="{ 'shift+h': goToHome}" href ng-click="goToHome()">
-                                    <g:message code="is.projectmenu.submenu.user.home"/> <small class="text-muted">(SHIFT+H)</small>
-                                </a>
-                            </li>
-                            <li role="presentation" class="divider"></li>
                             <li role="presentation" class="dropdown-header">
                                 ${message(code: 'todo.is.ui.projects')}
                             </li>
@@ -131,6 +124,16 @@
                             <li><a href hotkey="{'I': showAbout}" hotkey-description="${message(code: 'is.ui.app.extensions')}" ng-click="showManageExtensionsModal()">${message(code: 'is.ui.app.extensions')}</a></li>
                             <li><a href hotkey="{'I': showAbout}" hotkey-description="${message(code: 'is.ui.app.about')}" ng-click="showAbout()">${message(code: 'is.ui.app.about')}</a></li>
                         </ul>
+                    </li>
+                    <li ng-class="{'active':$state.includes('home')}"
+                        class="menuitem home-menuitem">
+                        <a hotkey="{ 'shift+h': goToHome}"
+                           hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
+                           uib-tooltip="${message(code:'is.ui.home')} (shift+h)"
+                           tooltip-placement="bottom" href ng-click="goToHome()">
+                            <i class="fa fa-home"></i>
+                            <span class="title hidden-sm ng-binding"><g:message code="is.ui.home"/></span>
+                        </a>
                     </li>
                     <li id="{{ menu.id }}"
                         as-sortable-item
