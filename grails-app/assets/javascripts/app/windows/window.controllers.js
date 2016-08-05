@@ -296,7 +296,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
-        if(selectable.class == "Story"){
+        if (selectable.class == "Story") {
             return $state.params.storyId ? $state.params.storyId == selectable.id : false;
         } else {
             return $state.params.taskId ? $state.params.taskId == selectable.id : false;
