@@ -230,20 +230,6 @@ class UserController implements ControllerErrorHandler{
         }
     }
 
-    @Secured(['permitAll()'])
-    def menus(long id) {
-        User user = springSecurityService.currentUser
-        if (user && id != user.id) {
-            render(status: 403)
-            return
-        }
-        def menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
-        menus?.each{
-            it.title = message(code: it.title)
-        }
-        render(status: 200, text:menus as JSON)
-    }
-
     @Secured('isAuthenticated()')
     def menu(long id, String menuId, String position, boolean hidden) {
         User user = springSecurityService.currentUser

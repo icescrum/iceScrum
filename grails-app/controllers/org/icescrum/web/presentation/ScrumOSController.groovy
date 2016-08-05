@@ -134,6 +134,7 @@ class ScrumOSController implements ControllerErrorHandler {
 
     def isSettings(Long product) {
         def projectMenus = []
+        def _product = product ? Product.get(product) : null
         uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
             if (windowDefinition.context == 'product') {
                 projectMenus << [id: windowId, title: message(code: windowDefinition.menu?.title)]
@@ -141,13 +142,17 @@ class ScrumOSController implements ControllerErrorHandler {
         }
         def menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
         menus?.each{
-            it.title = message(code: it.title)
+            if(it.id == 'project'){
+                it.title = _product.name
+            } else {
+                it.title = message(code: it.title)
+            }
         }
         def defaultView = product ? menus.find { it.position == 1 && it.visible }.id ?: 'project' : 'home'
         render(status: 200,
                 template: 'isSettings',
-                model: [user            : springSecurityService.currentUser,
-                        product         : product ? Product.get(product) : null,
+                model: [product         : _product,
+                        user            : springSecurityService.currentUser,
                         roles           : securityService.getRolesRequest(false),
                         i18nMessages    : messageSource.getAllMessages(RCU.getLocale(request)),
                         resourceBundles : grailsApplication.config.icescrum.resourceBundles,
