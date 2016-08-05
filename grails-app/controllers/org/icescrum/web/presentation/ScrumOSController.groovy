@@ -32,7 +32,6 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
-import org.springframework.mail.MailException
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import sun.misc.BASE64Decoder
 
@@ -140,6 +139,11 @@ class ScrumOSController implements ControllerErrorHandler {
                 projectMenus << [id: windowId, title: message(code: windowDefinition.menu?.title)]
             }
         }
+        def menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
+        menus?.each{
+            it.title = message(code: it.title)
+        }
+        def defaultView = product ? menus.find { it.position == 1 && it.visible }.id ?: 'project' : 'home'
         render(status: 200,
                 template: 'isSettings',
                 model: [user            : springSecurityService.currentUser,
@@ -147,6 +151,8 @@ class ScrumOSController implements ControllerErrorHandler {
                         roles           : securityService.getRolesRequest(false),
                         i18nMessages    : messageSource.getAllMessages(RCU.getLocale(request)),
                         resourceBundles : grailsApplication.config.icescrum.resourceBundles,
+                        menus           : menus,
+                        defaultView     : defaultView,
                         projectMenus    : projectMenus])
     }
 

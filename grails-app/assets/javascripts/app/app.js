@@ -395,9 +395,8 @@ angular.module('isApp', [
         .state({
             name: 'root',
             url: '/',
-            controller: ['$state', function($state) {
-                var isInProject = window.location.pathname.indexOf('/p/') != -1;
-                $state.go(isInProject ? 'project' : 'home', $state.params);
+            controller: ['$state', 'Session', function($state, Session) {
+                $state.go(Session.defaultView, $state.params);
             }]
         })
         .state({
@@ -1148,7 +1147,7 @@ angular.module('isApp', [
         I18nService.initMessages(isSettings.messages);
         I18nService.initBundles(isSettings.bundles);
 
-        Session.create(isSettings.user, isSettings.roles);
+        Session.create(isSettings.user, isSettings.roles, isSettings.menus, isSettings.defaultView);
     }
 
     $rootScope.authenticated = Session.authenticated;

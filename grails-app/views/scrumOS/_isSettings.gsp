@@ -24,7 +24,9 @@
 <script type="text/javascript">
     var isSettings = {
         user: ${user as JSON},
+        menus: ${menus as JSON},
         roles: ${roles as JSON},
+        defaultView: "${defaultView}",
         project: ${product ? product as JSON : 'null'},
         projectTeam: ${product ? product.firstTeam as JSON : 'null'},
         pushContext: ${product?.id ?: "''"},

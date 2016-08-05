@@ -40,6 +40,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
 }])
 .service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
     var self = this;
+    self.defaultView = '';
     self.menus = {visible: [], hidden: []};
     self.user = new User();
     self.project = new Project();
@@ -60,20 +61,21 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             document.location.reload(true);
         }, 2000);
     };
-    this.create = function(user, roles) {
+    this.create = function(user, roles, menus, defaultView) {
         _.extend(self.user, user);
         _.merge(self.roles, roles);
+        self.defaultView = defaultView;
         if (self.authenticated()) {
             UserService.getUnreadActivities(self.user)
                 .then(function(data) {
                     self.unreadActivitiesCount = data.unreadActivitiesCount;
                 });
         }
-        UserService.getMenus(self.user, self.project).then(function(menus) {
-            var menusByVisibility = _.groupBy(menus, 'visible');
-            self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
-            self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');
-        });
+
+        var menusByVisibility = _.groupBy(menus, 'visible');
+        self.menus.visible = _.sortBy(menusByVisibility[true], 'position');
+        self.menus.hidden = _.sortBy(menusByVisibility[false], 'position');
+
         if (self.listeners.activity) {
             self.listeners.activity.unregister();
         }

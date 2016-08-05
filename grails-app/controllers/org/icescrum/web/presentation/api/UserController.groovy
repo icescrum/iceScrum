@@ -237,25 +237,9 @@ class UserController implements ControllerErrorHandler{
             render(status: 403)
             return
         }
-        def menus = []
-        uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
-            def menu = windowDefinition.menu
-            if (menu && windowDefinition?.context) {
-                menu.show = ApplicationSupport.isAllowed(windowDefinition, params) ? ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: menu.defaultVisibility, pos:menu.defaultPosition] : false
-            }
-            def show = menu?.show
-            if (show in Closure) {
-                show.delegate = delegate
-                show = show()
-            }
-            if (show) {
-                menus << [title: message(code: menu?.title),
-                          id: windowDefinitionId,
-                          shortcut: "ctrl+" + (menus.size() + 1),
-                          icon: windowDefinition.icon,
-                          position: show instanceof Map ? show.pos.toInteger() ?: 1 : 1,
-                          visible: show.visible]
-            }
+        def menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
+        menus?.each{
+            it.title = message(code: it.title)
         }
         render(status: 200, text:menus as JSON)
     }
