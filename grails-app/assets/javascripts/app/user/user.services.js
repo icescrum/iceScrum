@@ -40,9 +40,6 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     this.getUnreadActivities = function(user) {
         return User.get({action: 'unreadActivitiesCount', id: user.id}).$promise;
     };
-    this.getMenus = function(user, project) {
-        return User.query({action: 'menus', id: user.id, product: project ? project.id : null}).$promise;
-    };
     this.update = function(user) {
         user.class = 'user';
         return user.$update(user);

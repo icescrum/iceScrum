@@ -21,7 +21,6 @@
  */
 
 
-import org.hibernate.ObjectNotFoundException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.acls.model.NotFoundException
 import org.springframework.transaction.CannotCreateTransactionException
@@ -142,13 +141,6 @@ class UrlMappings {
         "/user/retrieve" {
             controller = 'user'
             action = [GET: "retrieve", POST: "retrieve"]
-        }
-        "/user/$id?/menus" {
-            controller = 'user'
-            action = 'menus'
-            constraints {
-                id(matches: /\d*/)
-            }
         }
         "/user/$id" {
             controller = 'user'
