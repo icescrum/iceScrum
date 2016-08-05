@@ -1025,6 +1025,9 @@ tbody.story-ghost {
           border-top: none;
         }
       }
+      &:not(.cloned) .postit-container {     //ng-click doesn't work
+        cursor: pointer;  
+      }
       &.table-header {
         opacity: 1.0;
         > th {
@@ -1043,6 +1046,9 @@ tbody.story-ghost {
           padding: 6px;
           font-size: 16px;
           background: linear-gradient(#FCFCFC, #FFF);
+        }
+        &.is-selected {
+          border-top: 1px solid @brand-primary;
         }
       }
       &:not(.cloned) > td {
@@ -1068,7 +1074,12 @@ tbody.story-ghost {
           }
         }
       }
-
+    }
+    tr.is-selected {
+      td {
+        border-bottom: 1px solid @brand-primary;
+        border-left-color: @brand-primary;
+      }
     }
   }
 }

@@ -208,13 +208,13 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'" ng-class="{'story-done': story.state == 7}">
+                <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'" ng-class="{'story-done': story.state == 7 }">
                     <tr class="sticky-header list-group">
-                        <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)">
+                        <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr ng-class="{'sortable-disabled': !isSortingStory(story)}" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                    <tr ng-class="{'sortable-disabled': !isSortingStory(story), 'is-selected': isSelected(story)}" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
                         <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group size-sm') +' '+ (tasksShown(taskState, story) ? '' : 'show-tasks') }}"
                             postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"

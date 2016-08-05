@@ -296,7 +296,11 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
-        return $state.params.taskId ? $state.params.taskId == selectable.id : false;
+        if(selectable.class == "Story"){
+            return $state.params.storyId ? $state.params.storyId == selectable.id : false;
+        } else {
+            return $state.params.taskId ? $state.params.taskId == selectable.id : false;
+        }
     };
     $scope.hasSelected = function() {
         return $state.params.taskId != undefined;
