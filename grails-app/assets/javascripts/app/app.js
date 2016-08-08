@@ -1204,6 +1204,11 @@ angular.module('isApp', [
     "DONE": 7,
     "ICEBOX": -1
 })
+.constant('StoryTypesByName', {
+    "USER_STORY": 0,
+    "DEFECT": 2,
+    "TECHNICAL_STORY": 3,
+})
 .constant('TaskStatesByName', {
     "TODO": 0,
     "IN_PROGRESS": 1,
