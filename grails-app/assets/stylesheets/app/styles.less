@@ -590,18 +590,30 @@ a[data-toggle="tab"] button {
 }
 
 .split-modal {
-  .left-panel {
-    .left-panel-bottom, .left-panel-header {
-      margin: 15px;
+    .left-panel {
+      .make-sm-column(3);
+      .left-panel-bottom, .left-panel-header {
+        margin: 15px;
+      }
+      .left-panel-body {
+        height: 400px;
+        overflow: auto;
+      }
+      .left-panel-bottom {
+        text-align: center;
+      }
     }
-    .left-panel-body {
-      height: 400px;
-      overflow: auto;
+    .right-panel {
+      .make-sm-column(9);
     }
-    .left-panel-bottom {
-      text-align: center;
+    .hide-left-panel {
+      .left-panel {
+        display: none;
+      }
+      .right-panel {
+        .make-sm-column(12);
+      }
     }
-  }
 }
 
 .wizard, .split-modal {

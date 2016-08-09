@@ -838,7 +838,7 @@ angular.module('isApp', [
 .factory('UserTimeZone', function() {
     return jstz.determine();
 })
-.run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'ExtensionService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, I18nService, PushService, UserService, WidgetService, ExtensionService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
+.run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
 
     //used to handle click with shortcut hotkeys
     $rootScope.hotkeyClick = function(event, hotkey) {
@@ -988,30 +988,34 @@ angular.module('isApp', [
         });
     };
 
-    $rootScope.showManageExtensionsModal = function() {
+    $rootScope.showManageAppsModal = function() {
         $uibModal.open({
             keyboard: false,
-            templateUrl: 'manageExtensions.modal.html',
+            templateUrl: 'manageApps.modal.html',
             controller: ['$scope', function($scope) {
-                $scope.detailsExtension = function(extension) {
-                    $scope.holder.extension = extension;
-                    $scope.manageExtensionsForm.$invalid = !extension.available;
-                    $scope.selectScreenshot(extension.screenshots.length > 0 ? extension.screenshots[0] : null)
-                };
-                $scope.selectScreenshot = function(screenshot) {
-                    $scope.holder.screenshot = screenshot;
+                $scope.detailsApp = function(app) {
+                    $scope.holder.app = app;
+                    $scope.manageAppsForm.$invalid = !app || !app.available;
+                    $scope.viewApp = app ? 'details' : 'list';
                 };
                 // Init
                 $scope.holder = {
-                    extension: {}
+                    app: {}
                 };
-                $scope.extensions = [];
-                ExtensionService.getExtensions().then(function(extensions) {
-                    if (extensions.length > 0) {
-                        $scope.extensions = extensions;
-                        $scope.detailsExtension(extensions[0]);
+                $scope.appSearch = '';
+                $scope.search = function(query){
+                    $scope.viewApp = 'list';
+                    $scope.appSearch = query;
+                };
+                $scope.apps = [];
+                $scope.viewApp = 'list';
+                AppService.getApps().then(function(apps) {
+                    if (apps.length > 0) {
+                        $scope.apps = apps;
+                    } else {
+                        $scope.viewApp = 'empty';
                     }
-                    $scope.manageExtensionsForm.$invalid = extensions.length == 0;
+                    $scope.manageAppsForm.$invalid = apps.length == 0;
                 });
             }],
             size: 'lg'

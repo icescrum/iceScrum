@@ -618,9 +618,9 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
     };
 }]);
 
-services.service("ExtensionService", ['FormService', function(FormService) {
-    this.getExtensions = function() {
-        return FormService.httpGet('extensions', null, true);
+services.service("AppService", ['FormService', function(FormService) {
+    this.getApps = function() {
+        return FormService.httpGet('apps', null, true);
     };
 }]);
 

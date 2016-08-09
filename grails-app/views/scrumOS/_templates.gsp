@@ -226,19 +226,20 @@
 </script>
 
 
-<script type="text/ng-template" id="manageExtensions.modal.html">
-<is:modal title="${message(code: 'is.dialog.manageExtensions.title')}"
+<script type="text/ng-template" id="manageApps.modal.html">
+<is:modal title="${message(code: 'is.dialog.manageApps.title')}"
           validate="true"
-          name="manageExtensionsForm"
-          form="manageExtension(extension)"
-          class="manage-extensions split-modal">
-    <div class="row">
-        <div class="left-panel col-sm-3">
+          name="manageAppsForm"
+          form="manageApp(app)"
+          class="manage-apps split-modal">
+    <div class="row" ng-class="{ 'hide-left-panel': viewApp == 'list' }">
+        <div class="left-panel">
             <div class="left-panel-header">
                 <div class="input-group">
                     <input type="text"
-                           ng-model="extensionSearch"
-                           name="extension-search-input"
+                           ng-model="appSearch"
+                           name="app-search-input"
+                           value="{{ appSearch }}"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
@@ -247,83 +248,141 @@
                 </div>
             </div>
             <ul class="left-panel-body nav nav-list">
-                <li ng-class="{ 'current': currentExtension == holder.extension }"
-                    ng-repeat="currentExtension in extensions | filter:extensionSearch">
-                    <a ng-click="detailsExtension(currentExtension)" href>
-                        <i class="fa fa-{{ currentExtension.icon }}"></i>
-                        {{ currentExtension.name }}
-                        <i ng-if="currentExtension.installed" class="fa fa-check text-success"></i>
+                <div class="text-center more-results" ng-hide="filteredApps.length">
+                    <a href="${message(code: 'is.dialog.manageApps.store.query')}{{ appSearch }}">${message(code:'is.dialog.manageApps.store.search')}</a>
+                </div>
+                <li ng-class="{ 'current': currentApp == holder.app }"
+                    ng-repeat="currentApp in filteredApps = (apps | filter:appSearch)">
+                    <a ng-click="detailsApp(currentApp)" href>
+                        <i class="fa fa-{{ currentApp.icon }}"></i>
+                        {{ currentApp.name }}
+                        <i ng-if="currentApp.installed" class="fa fa-check text-success"></i>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="right-panel col-sm-9" ng-switch="extensions != undefined && extensions.length == 0">
-            <div ng-switch-when="true">
-                ${message(code: 'is.dialog.noAvailableExtensions')}
+        <div class="right-panel" ng-switch on="viewApp">
+            <div ng-switch-when="details" class="details-app">
+                <div ng-include="'app.details.html'"></div>
+            </div>
+            <div ng-switch-when="empty" class="more-results">
+                <a href="${message(code: 'is.dialog.manageApps.store.query')}">${message(code:'is.dialog.manageApps.store.search')}</a>
             </div>
             <div ng-switch-default>
-                <div ng-include="'extension.details.html'"></div>
+                <div ng-include="'app.list.html'"></div>
             </div>
         </div>
     </div>
 </is:modal>
 </script>
 
-<script type="text/ng-template" id="extension.details.html">
-<h4><i class="fa fa-{{ holder.extension.icon }}"></i> {{ holder.extension.name }} <small>v{{ holder.extension.version }} {{ holder.extension.publishDate ? ' - ' + holder.extension.publishDate : '' }}</small>
-    <div class="pull-right">
-        <div class="btn-group" ng-if="holder.extension.installed">
-            <a href
-               unavailable-feature="true"
-               uib-tooltip="${message(code: 'is.dialog.manageExtensions.configure')}" tooltip-placement="top"
-               class="btn btn-default">
-                <i class="fa fa-cog"></i>
-            </a>
-            <button ng-if="!holder.extension.includedWithLicense"
-                    unavailable-feature="true"
-                    uib-tooltip="${message(code: 'is.dialog.manageExtensions.uninstall')}" tooltip-placement="top"
-                    class="btn btn-default"><i class="fa fa-times"></i></button>
+<script type="text/ng-template" id="app.list.html">
+<div class="row">
+    <div class="col-md-offset-1 col-md-10 text-center">
+            <div class="input-group">
+                <input type="text"
+                   ng-model="appSearch"
+                   value="{{ appSearch }}"
+                   name="app-search-input"
+                   class="form-control"
+                   placeholder="${message(code: 'todo.is.ui.search.action')}">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+            </span>
         </div>
-        <button disabled
-                class="btn btn-success"
-                style="margin-left:15px"
-                ng-if="holder.extension.installed && holder.extension.includedWithLicense">${message(code: 'is.dialog.manageExtensions.includedWithLicense')}</button>
-        <button disabled
-                class="btn btn-success"
-                style="margin-left:15px"
-                ng-if="holder.extension.installed && !holder.extension.includedWithLicense">${message(code: 'is.dialog.manageExtensions.installed')}</button>
-        <button type="submit"
-                class="btn btn-primary"
-                unavailable-feature="true"
-                ng-if="!holder.extension.installed">${message(code: 'is.dialog.manageExtensions.install')}</button>
     </div>
-</h4>
-<p>${message(code: 'is.dialog.manageExtensions.from')} <a
-        href="{{ holder.extension.website }}">{{ holder.extension.author }}</a>, <a
-        href="{{ holder.extension.documentation }}">${message(code: 'is.dialog.manageExtensions.documentation')}</a></p>
-<uib-tabset type="tabs">
-    <uib-tab heading="${message(code: 'is.dialog.manageExtensions.description')}">
-        <p ng-bind-html="holder.extension.description"></p>
-    </uib-tab>
-    <uib-tab heading="${message(code: 'is.dialog.manageExtensions.screenshots')}">
-        <div class="row"
-             ng-if="holder.screenshot">
-            <div class="col-xs-10 col-md-9">
-                <img ng-src="{{ holder.screenshot }}" class="screenshot">
-            </div>
-            <div class="col-xs-2 col-md-3 screenshots">
-                <div class="row">
-                    <div class="col-md-12" ng-repeat="screenshot in holder.extension.screenshots">
-                        <a href
-                           class="thumbnail"
-                           ng-click="selectScreenshot(screenshot)"
-                           ng-class="{'current':holder.screenshot == screenshot}">
-                            <img ng-src="{{ screenshot }}">
-                        </a>
-                    </div>
-                </div>
-            </div>
+</div>
+<div class="row list">
+    <div class="col-xs-6 col-md-3" ng-repeat="currentApp in filteredApps = (apps | filter:appSearch)">
+        <a ng-click="detailsApp(currentApp)" class="thumbnail">
+            <img ng-src="currentApp.logo" alt="currentApp.name">
+        </a>
+    </div>
+    <div class="text-center more-results" ng-hide="filteredApps.length">
+        <a href="${message(code: 'is.dialog.manageApps.store.query')}{{ appSearch }}">${message(code:'is.dialog.manageApps.store.search')}</a>
+    </div>
+</div>
+</script>
+
+<script type="text/ng-template" id="app.details.html">
+<h3><i class="fa fa-{{ holder.app.icon }}"></i> {{ holder.app.name }}
+    <div class="pull-right">
+        <button ng-click="detailsApp()"
+                class="btn btn-default"><i class="fa fa-times"></i></button>
+    </a>
+    </div>
+</h3>
+<h4>${message(code: 'is.app.screenshots')}</h4>
+<div class="row">
+    <div class="col-md-8">
+        <div class="col-md-6" ng-repeat="screenshot in holder.app.screenshots">
+            <a href
+               class="thumbnail"
+               ng-click="selectScreenshot(screenshot)"
+               ng-class="{'current':holder.screenshot == screenshot}">
+                <img ng-src="{{ screenshot }}">
+            </a>
         </div>
-    </uib-tab>
-</uib-tabset>
+    </div>
+    <div class="col-md-4">
+        <div class="text-center actions">
+            <p>
+                <button type="submit"
+                        class="btn btn-success"
+                        ng-if="holder.app.enabled">${message(code: 'is.dialog.manageApps.enable')}</button>
+                <button type="submit"
+                        class="btn btn-danger"
+                        ng-if="!holder.app.enabled">${message(code: 'is.dialog.manageApps.disable')}</button>
+            </p>
+            <p>
+                <a href
+                   ng-if="!holder.app.enabled"
+                   class="btn btn-default">
+                    ${message(code: 'is.dialog.manageApps.configure')}
+                </a>
+            </p>
+            <p>
+                <a href="{{ holder.app.documentation }}"
+                   class="btn btn-default">
+                    ${message(code: 'is.app.url.documentation')}
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <h4>${message(code: 'is.app.description')}</h4>
+        <p class="description" ng-bind-html="holder.app.description"></p>
+    </div>
+    <div class="col-md-4">
+        <h4>${message(code: 'is.dialog.manageApps.information')}</h4>
+        <table class="table information">
+            <tr>
+                <td class="text-right">${message(code:'is.app.author')}</td>
+                <td><a href="mailto:{{ holder.app.email }}">{{ holder.app.author }}</a></td>
+            </tr>
+            <tr>
+                <td class="text-right">${message(code:'is.app.version')}</td>
+                <td>{{ holder.app.version }}</td>
+            </tr>
+            <tr>
+                <td class="text-right">${message(code:'is.app.updated')}</td>
+                <td>{{ holder.app.updated }}</td>
+            </tr>
+            <tr>
+                <td class="text-right">${message(code:'is.app.widgets')}</td>
+                <td>{{ holder.app.widgets ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center"><a href="{{ holder.app.website }}">${message(code:'is.app.url.website')}</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <span class="text-muted" ng-repeat="tag in holder.app.tags track by $index"><a href ng-click="search(tag)">{{ tag }}</a>{{$last ? '' : ', '}}</span>
+    </div>
+</div>
 </script>

@@ -890,24 +890,37 @@ table {
   }
 }
 
-.manage-extensions {
-  .screenshot {
-    max-width: 100%;
-    max-height: 310px;
-  }
-  .screenshots {
-    max-height: 310px;
-    overflow: auto;
-    .thumbnail {
-      height: 100px;
-      width: 100%;
-      display: block;
-      border: 2px solid transparent;
-      &.current {
-        border-color: @brand-primary;
+.manage-apps {
+
+  .details-app {
+    h3 {
+      margin-top: 0;
+    }
+    p.description {
+      max-height: 165px;
+      overflow-y: auto;
+    }
+    .thumbnail{
+      margin-bottom: 0;
+      > img {
+        height: 128px;
       }
     }
+    .actions .btn {
+      width:100%;
+    }
+    .table.information {
+      margin-bottom:0;
+    }
   }
+
+  .list {
+    margin-top: 15px;
+  }
+  .more-results {
+    margin:10px;
+  }
+
 }
 
 .postits {

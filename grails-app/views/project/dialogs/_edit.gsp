@@ -21,9 +21,21 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<is:modal title="${message(code: 'todo.is.ui.project.edit')}" class="wizard" footer="${false}">
+<is:modal title="${message(code: 'todo.is.ui.project.edit')}" class="wizard split-modal" footer="${false}">
     <div class="row wizard-row">
         <div class="left-panel col-sm-3">
+            <div class="left-panel-header">
+                <div class="input-group">
+                    <input type="text"
+                           ng-model="settingsSearch"
+                           name="settings-search-input"
+                           class="form-control"
+                           placeholder="${message(code: 'todo.is.ui.search.action')}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
             <ul class="left-panel-body nav nav-list">
                 <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('general') }">
                     <a ng-click="setCurrentPanel('general')"><i class="fa fa-pencil"></i> ${ message(code: 'is.dialog.wizard.section.project')}</a>

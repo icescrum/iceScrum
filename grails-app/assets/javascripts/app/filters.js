@@ -91,6 +91,11 @@ filters
             return type == 1 ? 'architectural' : '';
         };
     })
+    .filter('join', function() {
+        return function(array) {
+            return _.join(array, ', ');
+        };
+    })
     .filter('featureTypeIcon', function() {
         return function(type) {
             return type == 1 ? 'cogs' : '';
