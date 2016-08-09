@@ -314,7 +314,7 @@ class ScrumOSController implements ControllerErrorHandler {
                  website            : 'https://www.icescrum.com',
                  documentation      : 'https://www.icescrum.com/documentation/cloud-storage',
                  description        : 'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attach-a-document-from-the-cloud.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
                 ],
                 [name               : 'Feedback',
                  version            : '1.0',
@@ -344,7 +344,7 @@ class ScrumOSController implements ControllerErrorHandler {
                  website            : 'https://www.icescrum.com',
                  documentation      : 'https://www.icescrum.com/documentation/git-svn/',
                  description        : 'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg', 'https://www.icescrum.com/wp-content/uploads/2013/06/Build-information-in-story-details.jpg', 'https://www.icescrum.com/wp-content/uploads/2014/09/Choose-the-iceScrum-GitHub-Service-650x261@2x.png', 'https://www.icescrum.com/wp-content/uploads/2012/05/commit-googlecode.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
+                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
                 ],
                 [name               : 'Bug Trackers',
                  version            : '1.0',
