@@ -1003,7 +1003,7 @@ angular.module('isApp', [
                     app: {}
                 };
                 $scope.appSearch = '';
-                $scope.search = function(query){
+                $scope.search = function(query) {
                     $scope.viewApp = 'list';
                     $scope.appSearch = query;
                 };
