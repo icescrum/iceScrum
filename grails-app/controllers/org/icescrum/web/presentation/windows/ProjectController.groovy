@@ -543,7 +543,7 @@ class ProjectController implements ControllerErrorHandler {
                         effort: it.effort,
                         state: message(code: grailsApplication.config.icescrum.resourceBundles.storyStates[it.state]),
                         description: is.storyDescription([story: it, displayBR: true]),
-                        notes: wikitext.renderHtml([markup: 'Textile'], it.notes).decodeHTML(),
+                        notes: ServicesUtils.textileToHtml(it.notes),
                         type: message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.type]),
                         suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.suggestedDate]) : null,
                         acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.acceptedDate]) : null,

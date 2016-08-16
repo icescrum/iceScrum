@@ -32,6 +32,7 @@ import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.utils.ServicesUtils
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import sun.misc.BASE64Decoder
 
@@ -44,7 +45,6 @@ class ScrumOSController implements ControllerErrorHandler {
     def grailsApplication
     def uiDefinitionService
     def springSecurityService
-    def notificationEmailService
 
     def index() {
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
@@ -125,7 +125,7 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     def textileParser(String data) {
-        render(text: wikitext.renderHtml([markup: "Textile"], data))
+        render(text: ServicesUtils.textileToHtml(data))
     }
 
     def templates() {

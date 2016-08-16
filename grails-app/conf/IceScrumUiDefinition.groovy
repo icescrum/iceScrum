@@ -1,5 +1,4 @@
-import grails.plugins.wikitext.WikiTextTagLib
-import grails.util.Holders
+import org.icescrum.core.utils.ServicesUtils
 
 /*
 * Copyright (c) 2015 Kagilum SAS
@@ -239,8 +238,7 @@ widgets = {
         templatePath '/widgets/notes'
         defaultSettings = [text: '']
         onUpdate { widget, settings ->
-            WikiTextTagLib textileRenderer = (WikiTextTagLib) Holders.grailsApplication.mainContext["grails.plugins.wikitext.WikiTextTagLib"]
-            settings.text_html = textileRenderer.renderHtml([markup: "Textile"], settings.text)
+            settings.text_html = ServicesUtils.textileToHtml(settings.text)
         }
     }
     'publicProjects' {
