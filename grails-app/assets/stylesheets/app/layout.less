@@ -269,26 +269,28 @@ header {
         > div.panel-body {
           width: 100%;
           padding: 15px;
-          div.panel-loading {
+          div.loading-logo {
             display: none;
           }
-          &.loading > div.panel-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            z-index: 1000;
-            margin-left: -50px;
-            display: block;
-            opacity: 1;
-            .logo {
-              height: 100px;
-              width: 100px;
+          &.loading {
+            > div.loading-logo {
+              display: block;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              z-index: 1000;
+              margin-left: -50px;
+              opacity: 1;
+              .logo {
+                height: 100px;
+                width: 100px;
+              }
+            }
+            > div:not(.loading-logo) {
+              opacity: 0;
             }
           }
-          &.loading > div:not(.panel-loading) {
-            opacity: 0;
-          }
-          > div:not(.panel-loading) {
+          > div:not(.loading-logo) {
             -webkit-transition: opacity 0.1s ease-in-out;
             -moz-transition: opacity 0.1s ease-in-out;
             -ms-transition: opacity 0.1s ease-in-out;
@@ -1029,4 +1031,28 @@ body {
   font-size: 1.666em;
   line-height: .80em;
   vertical-align: -25%
+}
+
+.loadable {
+  div.loading-logo {
+    display: none;
+  }
+  &.loading {
+    > div.loading-logo {
+      display: block;
+      position: absolute;
+      top: 42%;
+      left: 50%;
+      z-index: 1000;
+      margin-left: -42px;
+      opacity: 1;
+      .logo {
+        height: 80px;
+        width: 80px;
+      }
+    }
+    > :not(.loading-logo) {
+      opacity: 0;
+    }
+  }
 }

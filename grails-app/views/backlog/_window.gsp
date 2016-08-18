@@ -134,7 +134,7 @@
                 </div>
             </div>
             <div class="panel-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
-                <div class="panel-loading" ng-include="'loading.html'"></div>
+                <div class="loading-logo" ng-include="'loading.html'"></div>
                 <div class="postits {{ currentPostitSize(viewName, 'grid-group size-sm') + ' ' + (backlogContainer.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '')  + ' ' + (app.sortableMoving ? 'sortable-moving' : '')}} "
                      ng-controller="storyCtrl"
                      postits-screen-size
