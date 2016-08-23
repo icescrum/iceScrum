@@ -907,7 +907,10 @@ angular.module('isApp', [
                 // Required because there is not input so the form cannot be submitted by "return"
                 hotkeys.bindTo($scope).add({
                     combo: 'return',
-                    callback: $scope.submit
+                    callback: function(event) {
+                        event.preventDefault(); // Prevents propagation of click to unwanted places
+                        $scope.submit();
+                    }
                 });
             }]
         });
