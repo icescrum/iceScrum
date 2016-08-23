@@ -95,10 +95,10 @@ class StoryController implements ControllerErrorHandler {
         def acceptanceTests
         if (storyParams.template != null) {
             def template = Template.findByParentProductAndId(_product, storyParams.template.id.toLong())
-            def parsedTemplateData = JSON.parse(template.serializedData) as Map
-            tasks = parsedTemplateData.remove('tasks')
-            acceptanceTests = parsedTemplateData.remove('acceptanceTests')
-            storyParams << parsedTemplateData
+            def parsedData = template.data
+            tasks = parsedData.remove('tasks')
+            acceptanceTests = parsedData.remove('acceptanceTests')
+            storyParams << parsedData
         }
         def story = new Story()
         Story.withTransaction {
@@ -438,7 +438,7 @@ class StoryController implements ControllerErrorHandler {
         if (params.template) {
             Product _product = Product.withProduct(product)
             def template = Template.findByParentProductAndId(_product, params.long('template'))
-            def parsedData = JSON.parse(template.serializedData) as Map
+            def parsedData = template.data
             if (parsedData.feature) {
                 def feature = Feature.getInProduct(_product.id, parsedData.feature.id.toLong()).list()
                 if (feature) {
