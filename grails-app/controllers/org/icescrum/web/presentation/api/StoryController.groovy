@@ -35,6 +35,7 @@ class StoryController implements ControllerErrorHandler {
     def acceptanceTestService
     def springSecurityService
     def activityService
+    def templateService
 
     @Secured('stakeHolder() or inProduct()')
     def index(long product, long typeId, String type) {
@@ -385,33 +386,12 @@ class StoryController implements ControllerErrorHandler {
     @Secured(['inProduct() and !archivedProduct()'])
     def saveTemplate(long id, long product) {
         Story story = Story.withStory(product, id)
-        Product _product = Product.withProduct(product)
-        def templateName = params.template.name
-        // Custom marshalling
-        def copyFields = { source, fieldNames ->
-            def copy = [:]
-            fieldNames.each { fieldName ->
-                def fieldValue = source."$fieldName"
-                if (fieldValue != null) {
-                    copy[fieldName] = fieldValue.hasProperty('id') ? [id: fieldValue.id] : fieldValue
-                }
-            }
-            return copy
+        Template template = new Template()
+        Template.withTransaction {
+            bindData(template, params.template, [include: ['name']])
+            templateService.save(template, story)
+            render(status: 200, contentType: 'application/json', text: [id: template.id, text: template.name] as JSON)
         }
-        def storyData = copyFields(story, ['affectVersion', 'description', 'notes', 'tags', 'type', 'dependsOn', 'feature'])
-        if (story.tasks) {
-            storyData.tasks = story.tasks.collect { task ->
-                copyFields(task, ['color', 'description', 'estimation', 'name', 'notes', 'tags', 'type'])
-            }
-        }
-        if (story.acceptanceTests) {
-            storyData.acceptanceTests = story.acceptanceTests.collect { acceptanceTest ->
-                copyFields(acceptanceTest, ['description', 'name'])
-            }
-        }
-        def template = new Template(name: templateName, itemClass: story.class.name, serializedData: (storyData as JSON).toString(), parentProduct: _product)
-        template.save()
-        render(text: [id: template.id, text: template.name] as JSON, contentType: 'application/json', status: 200)
     }
 
     @Secured('productOwner() and !archivedProduct()')
@@ -419,7 +399,7 @@ class StoryController implements ControllerErrorHandler {
         Product _product = Product.withProduct(product)
         def template = Template.findByIdAndParentProduct(params.long('template.id'), _product)
         if (template) {
-            template.delete()
+            templateService.delete(template)
             render(status: 204)
         } else {
             returnError(code: 'todo.is.ui.story.template.not.found')
