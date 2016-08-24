@@ -61,6 +61,7 @@
                         <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
                     </button>
                 </div>
+                <entry:point id="backlog-window-toolbar-right"/>
                 <a ng-if="authorizedStory('create')"
                    href="#/{{ ::viewName }}/sandbox/story/new"
                    class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
