@@ -562,28 +562,3 @@ environments {
 
 JavascriptTagLib.LIBRARY_MAPPINGS.jquery = ["jquery/jquery-${jQueryVersion}.min"]
 JavascriptTagLib.PROVIDER_MAPPINGS.jquery = JQueryProvider.class
-
-
-//cache config
-def uniqueCacheManagerName = appName + "-EhCacheManager-" + System.currentTimeMillis()
-grails {
-    cache {
-        order = 2000 // higher than default (1000) and plugins, usually 1500
-        enabled = true
-        clearAtStartup = true // reset caches when redeploying
-        ehcache {
-            cacheManagerName = uniqueCacheManagerName
-        }
-        config = {
-            provider {
-                // unique name when configuring caches
-                name uniqueCacheManagerName
-            }
-        }
-    }
-}
-beans {
-    cacheManager {
-        shared = true
-    }
-}

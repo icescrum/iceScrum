@@ -23,7 +23,7 @@
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = true
-    cache.region.factory_class = 'grails.plugin.cache.ehcache.hibernate.BeanEhcacheRegionFactory4'
+    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
 }
 // environment specific settings
 environments {
@@ -35,6 +35,14 @@ environments {
             username = "sa"
             password = ""
         }
+//        dataSource {
+////            logSql = true
+//            dbCreate = "update"
+//            username = "root"
+//            password = "root"
+//            driverClassName = "com.mysql.jdbc.Driver"
+//            url = "jdbc:mysql://localhost/icescrum"
+//        }
     }
     test {
         dataSource {
