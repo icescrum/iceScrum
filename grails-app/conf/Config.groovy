@@ -562,3 +562,9 @@ environments {
 
 JavascriptTagLib.LIBRARY_MAPPINGS.jquery = ["jquery/jquery-${jQueryVersion}.min"]
 JavascriptTagLib.PROVIDER_MAPPINGS.jquery = JQueryProvider.class
+
+beans {
+    cacheManager {
+        shared = true
+    }
+}
