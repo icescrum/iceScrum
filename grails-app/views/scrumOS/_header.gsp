@@ -121,7 +121,7 @@
                             </g:if>
                             <li role="presentation" class="divider"></li>
                             <li role="presentation" class="dropdown-header">${message(code: 'is.ui.app')}</li>
-                            <li><a href hotkey="{'a': showManageAppsModal}" hotkey-description="${message(code: 'is.ui.app.apps')}" ng-click="showManageAppsModal()">${message(code: 'is.ui.app.apps')}</a></li>
+                            %{--<li><a href hotkey="{'a': showManageAppsModal}" hotkey-description="${message(code: 'is.ui.app.apps')}" ng-click="showManageAppsModal()">${message(code: 'is.ui.app.apps')}</a></li>--}%
                             <li><a href hotkey="{'I': showAbout}" hotkey-description="${message(code: 'is.ui.app.about')}" ng-click="showAbout()">${message(code: 'is.ui.app.about')}</a></li>
                         </ul>
                     </li>
