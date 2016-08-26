@@ -25,6 +25,7 @@ import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.ScrumDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.i18n.IceScrumMessageSource
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean
 
 beans = {
 
@@ -48,5 +49,9 @@ beans = {
 
     messageSource(IceScrumMessageSource)  {
         basenames = "WEB-INF/grails-app/i18n/messages"
+    }
+
+    cacheManager(EhCacheManagerFactoryBean) {
+        cacheManagerName = 'foo-bar-cache-manager' + UUID.randomUUID()
     }
 }

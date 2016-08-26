@@ -564,8 +564,8 @@ JavascriptTagLib.LIBRARY_MAPPINGS.jquery = ["jquery/jquery-${jQueryVersion}.min"
 JavascriptTagLib.PROVIDER_MAPPINGS.jquery = JQueryProvider.class
 
 beans {
-    ehCacheManagerFactoryBean {
+    cacheManager {
         shared = true
-        cacheManagerName = 'fooBarCacheManager'
+        cacheManagerName = 'fooBarCacheManager2'
     }
 }
