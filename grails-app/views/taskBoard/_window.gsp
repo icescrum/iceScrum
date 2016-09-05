@@ -92,6 +92,7 @@
                                     ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </div>
+                        <entry:point id="taskBoard-window-toolbar-right"/>
                         <div class="sprint-numbers">
                             <div>
                                 <span ng-if="sprint.state > sprintStatesByName.TODO"
