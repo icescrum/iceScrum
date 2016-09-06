@@ -438,4 +438,14 @@ filters
             var multiplicator = Math.pow(10, nbDecimals);
             return Math.round(number * multiplicator) / multiplicator;
         }
+    }]).filter('preciseFloatSum', [function() {
+        return function(numbers) {
+            var multiplicator = Math.pow(10, _.max(_.map(numbers, function(number) {
+                var parts = number.toString().split('.');
+                return parts.length > 1 ? parts[1].length : 0;
+            })));
+            return _.sumBy(numbers, function(number) {
+                return number * multiplicator;
+            }) / multiplicator;
+        }
     }]);
