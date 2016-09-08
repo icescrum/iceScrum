@@ -260,19 +260,19 @@ icescrum {
                         [id:'burnup', name:'is.ui.project.charts.productBurnup'],
                         [id:'burndown', name:'is.ui.project.charts.productBurndown'],
                         [id:'velocity', name:'is.ui.project.charts.productVelocity'],
+                        [id:'velocityCapacity', name:'is.ui.project.charts.productVelocityCapacity'],
                         [id:'parkingLot', name:'is.ui.project.charts.productParkingLot'],
                         [id:'flowCumulative', name:'is.ui.project.charts.productCumulativeFlow'],
-                        [id:'velocityCapacity', name:'is.ui.project.charts.productVelocityCapacity'],
                     ],
                     release: [
                         [id:'burndown', name:'is.chart.releaseBurndown'],
-                        [id:'parkingLot', name:'is.chart.releaseParkingLot'],
+                        [id:'parkingLot', name:'is.chart.releaseParkingLot']
                     ],
                     sprint: [
+                        [id:'burndownRemaining', name:'is.ui.sprintPlan.charts.sprintBurndownRemainingChart'],
                         [id:'burnupTasks', name:'is.ui.sprintPlan.charts.sprintBurnupTasksChart'],
                         [id:'burnupPoints', name:'is.ui.sprintPlan.charts.sprintBurnupPointsChart'],
                         [id:'burnupStories', name:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart'],
-                        [id:'burndownRemaining', name:'is.ui.sprintPlan.charts.sprintBurndownRemainingChart']
                     ]
                 ]
             ]

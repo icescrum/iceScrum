@@ -147,6 +147,7 @@
                         </button>
                         <ul uib-dropdown-menu>
                             <li><a href ng-click="openChart('sprint', 'burndownRemaining', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart')}</a></li>
+                            <entry:point id="sprint-details-charts-bis"/>
                             <li><a href ng-click="openChart('sprint', 'burnupTasks', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart')}</a></li>
                             <li><a href ng-click="openChart('sprint', 'burnupPoints', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart')}</a></li>
                             <li><a href ng-click="openChart('sprint', 'burnupStories', sprint)">${message(code: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart')}</a></li>
