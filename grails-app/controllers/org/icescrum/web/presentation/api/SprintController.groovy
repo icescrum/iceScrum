@@ -134,10 +134,12 @@ class SprintController implements ControllerErrorHandler {
         Sprint sprint = Sprint.withSprint(product, id)
         def values = sprintService.sprintBurndownRemainingValues(sprint)
         def computedValues = [[key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
-                               values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime]}]]
+                               values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime]},
+                               color: '#1F77B4']]
         if (values.first()?.idealTime) {
             computedValues << [key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal"),
-                               values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime]}]
+                               values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime]},
+                               color: '#009900']
         }
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
                                yAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
