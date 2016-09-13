@@ -28,13 +28,9 @@
 *= require           vendors/todc/less/todc-bootstrap.less
 *= require           vendors/bootstrap/bootstrap.offcanvas.min.css
 
-*= require           vendors/select2/jquery.select2.css
-*= require_full_tree vendors/select2
-
 *= require_full_tree vendors/jquery
-*= require_full_tree vendors/font-awesome
 *= require_full_tree vendors/angular
-*= require_full_tree vendors/d3
+*= require_full_tree vendors/vanilla
 *= require_full_tree app
 
 Plugins probably need to come after all to override standard style

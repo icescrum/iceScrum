@@ -28,7 +28,7 @@
 //= require           vendors/jquery/jquery-migrate-1.2.1.min
 //= require_full_tree vendors/jquery
 
-//= require_full_tree vendors/d3
+//= require_full_tree vendors/vanilla
 
 //= require           vendors/bootstrap/bootstrap.min
 //= require           vendors/bootstrap/bootstrap.offcanvas.min
