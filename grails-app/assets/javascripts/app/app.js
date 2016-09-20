@@ -396,7 +396,7 @@ angular.module('isApp', [
             name: 'root',
             url: '/',
             controller: ['$state', 'Session', function($state, Session) {
-                $state.go(Session.defaultView, $state.params);
+                $state.go(Session.defaultView, $state.params, {location: 'replace'});
             }]
         })
         .state({
@@ -437,7 +437,8 @@ angular.module('isApp', [
             }]
         })
         .state({
-            name: 'project',  // should not be acceded directly, called by 'root'
+            name: 'project',
+            url: '/project',
             templateUrl: 'ui/window/project',
             controller: 'projectCtrl'
         })
@@ -1214,7 +1215,7 @@ angular.module('isApp', [
 .constant('StoryTypesByName', {
     "USER_STORY": 0,
     "DEFECT": 2,
-    "TECHNICAL_STORY": 3,
+    "TECHNICAL_STORY": 3
 })
 .constant('TaskStatesByName', {
     "TODO": 0,
