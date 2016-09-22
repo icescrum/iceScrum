@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<div class='templates'>
+<div id='templates'>
     <g:render template="templates"/>
     <g:render template="/team/templates"/>
     <g:render template="/sprint/templates"/>
