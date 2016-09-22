@@ -360,11 +360,16 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 element.css('width', element.parent().parent().width() - attrs.inputGroupFixWidth + 'px');
             };
             var promiseWindowResize;
-            angular.element($window).on('resize', function() {
+            var resize = function() {
                 if (promiseWindowResize) {
                     $timeout.cancel(promiseWindowResize);
                 }
                 promiseWindowResize = $timeout(resizer, 150, false);
+            };
+            var windowElement = angular.element($window);
+            windowElement.on('resize', resize);
+            scope.$on('$destroy', function() {
+                windowElement.off("resize", resize);
             });
             $timeout(resizer);
         }
@@ -381,11 +386,16 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 }
             };
             var promiseWindowResize;
-            angular.element($window).on('resize', function() {
+            var resize = function() {
                 if (promiseWindowResize) {
                     $timeout.cancel(promiseWindowResize);
                 }
                 promiseWindowResize = $timeout(checkSize, 25, false);
+            };
+            var windowElement = angular.element($window);
+            windowElement.on('resize', resize);
+            scope.$on('$destroy', function() {
+                windowElement.off("resize", resize);
             });
             $timeout(checkSize);
         }
