@@ -85,8 +85,8 @@ grails.project.dependency.resolution = {
     plugins {
         compile ':standalone:1.3'
         compile ':cache-headers:1.1.7'
-        compile ':asset-pipeline:2.7.4'
-        compile ':less-asset-pipeline:2.7.2'
+        compile ':asset-pipeline:2.11.0'
+        compile ':less-asset-pipeline:2.11.0'
         compile ':browser-detection:2.8.0'
         runtime ':hibernate4:4.3.10'
         build   ':tomcat:7.0.70'
