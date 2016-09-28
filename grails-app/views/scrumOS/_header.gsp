@@ -28,7 +28,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <entry:point id="before-menu-header"/>
+    <entry:point id="header-before-menu"/>
     <nav id="menu-header" class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse" role="navigation">
         <div class="container-fluid">
             <div class="nav-header">
@@ -123,6 +123,7 @@
                             <li role="presentation" class="dropdown-header">${message(code: 'is.ui.app')}</li>
                             %{--<li><a href hotkey="{'a': showManageAppsModal}" hotkey-description="${message(code: 'is.ui.app.apps')}" ng-click="showManageAppsModal()">${message(code: 'is.ui.app.apps')}</a></li>--}%
                             <li><a href hotkey="{'I': showAbout}" hotkey-description="${message(code: 'is.ui.app.about')}" ng-click="showAbout()">${message(code: 'is.ui.app.about')}</a></li>
+                            <entry:point id="header-menu-icescrum"/>
                         </ul>
                     </li>
                     <li ng-class="{'active':$state.includes('home')}"
