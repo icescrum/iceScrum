@@ -38,6 +38,7 @@
     <div class="col-sm-6">
         <ui-select class="form-control"
                    search-enabled="true"
+                   append-to-body="false"
                    ng-model="widget.settings.chart">
             <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.chart')}">{{ $select.selected.name }}</ui-select-match>
             <ui-select-choices repeat="chart in charts">{{chart.name}}</ui-select-choices>
