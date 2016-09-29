@@ -37,7 +37,6 @@ import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
-import org.icescrum.core.ui.WindowDefinition
 import org.icescrum.core.error.ControllerErrorHandler
 import org.springframework.mail.MailException
 import org.springframework.security.acls.domain.BasePermission
@@ -47,7 +46,6 @@ class UserController implements ControllerErrorHandler{
     def userService
     def securityService
     def grailsApplication
-    def uiDefinitionService
     def springSecurityService
 
     @Secured(["hasRole('ROLE_ADMIN')"])
@@ -68,7 +66,7 @@ class UserController implements ControllerErrorHandler{
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        if (!request.admin && (params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
+        if ((params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
             returnError(code: 'is.user.error.password.check')
             return
         }
@@ -85,8 +83,7 @@ class UserController implements ControllerErrorHandler{
     @Secured('isAuthenticated()')
     def update(long id) {
         User user = User.withUser(id)
-        // profile is personal
-        if ((user.id != springSecurityService.principal.id || request.format in ['json']) && !request.admin) {
+        if (user.id != springSecurityService.principal.id && !request.admin) {
             render(status: 403)
             return
         }
@@ -109,7 +106,7 @@ class UserController implements ControllerErrorHandler{
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        if (!request.admin && (params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
+        if ((params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
             returnError(code: 'is.user.error.password.check')
             return
         }
@@ -139,10 +136,12 @@ class UserController implements ControllerErrorHandler{
                                         autoFollow: params.remove('user.preferences.emailsSettings.autoFollow'),
                                         onUrgentTask: params.remove('user.preferences.emailsSettings.onUrgentTask')]
             }
+            if (request.admin && params.user.username != user.username) {
+                user.username = params.user.username
+            }
             bindData(user, params, [include: ['firstName', 'lastName', 'email', 'notes']], "user")
-            //preferences using as Map for REST & HTTP support
             if (params.user.preferences) {
-                bindData(user.preferences, params.user.preferences as Map, [include: ['language', 'filterTask', 'activity']], "")
+                bindData(user.preferences, params.user.preferences as Map, [include: ['language', 'filterTask', 'activity']], "") // Preferences using as Map for REST & HTTP support
             }
             entry.hook(id: "${controllerName}-${actionName}", model: [user: user, props: props])
             userService.update(user, props)
