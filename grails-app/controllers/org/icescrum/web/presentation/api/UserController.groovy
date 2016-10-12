@@ -49,33 +49,33 @@ class UserController implements ControllerErrorHandler{
     def springSecurityService
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def index(String term, String filter, Boolean paginate, Integer offset, String sort, String order) {
+    def index(String term, String filter, Boolean paginate, Integer count, Integer page, String sorting, String order) {
         def options = [cache: true]
         if (paginate) {
-            options.offset = offset ?: 0
-            options.max = 25
-            options.sort = sort ?: 'firstName'
+            options.offset = page ? (page - 1) * count : 0
+            options.max = count ?: 10
+            options.sort = sorting ?: 'firstName'
             options.order = order ?: 'asc'
         }
         def users
-        def count
+        def userCount
         if (filter == "enabledOnly") {
             users = term ? User.findUsersLikeAndEnabled(false, term, true, options) : User.findAllByEnabled(true, options)
             if (paginate) {
-                count = term ? User.countUsersLikeAndEnabled(false, term, true, [cache: true]) : User.countByEnabled(true)
+                userCount = term ? User.countUsersLikeAndEnabled(false, term, true, [cache: true]) : User.countByEnabled(true)
             }
         } else if (filter == "disabledOnly") {
             users = term ? User.findUsersLikeAndEnabled(false, term, false, options) : User.findAllByEnabled(false, options)
             if (paginate) {
-                count = term ? User.countUsersLikeAndEnabled(false, term, false, [cache: true]) : User.countByEnabled(false)
+                userCount = term ? User.countUsersLikeAndEnabled(false, term, false, [cache: true]) : User.countByEnabled(false)
             }
         } else {
             users = term ? User.findUsersLike(term, false, true, options) : User.list(options)
             if (paginate) {
-                count = term ? User.countUsersLike(false, term, [cache: true]) : User.count()
+                userCount = term ? User.countUsersLike(false, term, [cache: true]) : User.count()
             }
         }
-        def returnData = paginate ? [users: users, count: count] : users
+        def returnData = paginate ? [users: users, count: userCount] : users
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
