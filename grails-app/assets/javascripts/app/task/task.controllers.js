@@ -75,7 +75,7 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
     };
 }]);
 
-controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, hotkeys, sprint) {
+controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint) {
     $controller('taskCtrl', {$scope: $scope});
     // Functions
     $scope.resetTaskForm = function() {
@@ -115,7 +115,13 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     $scope.formHolder = {};
     $scope.formHolder.category = $stateParams.taskCategory;
     $scope.resetTaskForm();
-    var taskTypesCategories = _.map($scope.taskTypes, function(taskType) {
+    var taskTypesCategories = _.map(_.filter($scope.taskTypes, function(taskType) {
+        if (taskType == TaskTypesByName.URGENT) {
+            return TaskService.authorizedTask('showUrgent');
+        } else if (taskType == TaskTypesByName.RECURRENT) {
+            return TaskService.authorizedTask('showRecurrent');
+        }
+    }), function(taskType) {
         return {id: taskType, name: i18nFilter(taskType, 'TaskTypes')};
     });
     $scope.categories = _.concat(_.reverse(taskTypesCategories), sprint.stories);

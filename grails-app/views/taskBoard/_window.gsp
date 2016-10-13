@@ -133,7 +133,8 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody class="task-type">
+                <tbody class="task-type"
+                       ng-if="authorizedTask('showUrgent')">
                     <tr class="sticky-header">
                         <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                             <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</h3>
@@ -171,6 +172,9 @@
                             </div>
                         </td>
                     </tr>
+                </tbody>
+                <tbody class="task-type"
+                       ng-if="authorizedTask('showRecurrent')">
                     <tr class="sticky-header">
                         <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                             <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</h3>
