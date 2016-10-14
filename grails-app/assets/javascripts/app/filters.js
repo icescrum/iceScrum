@@ -448,4 +448,8 @@ filters
                 return number * multiplicator;
             }) / multiplicator;
         }
+    }]).filter('yesNo', ['$rootScope', function($rootScope) {
+        return function(boolean) {
+            return $rootScope.message(boolean ? 'is.yes' : 'is.no');
+        }
     }]);
