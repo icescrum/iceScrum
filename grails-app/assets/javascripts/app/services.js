@@ -143,6 +143,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     this.owner = function(item) {
         return !_.isEmpty(item) && !_.isEmpty(item.owner) && self.user.id == item.owner.id;
     };
+    this.current = function(user) {
+        return self.authenticated() && user && self.user.id == user.id;
+    };
     this.initProject = function(project) {
         _.extend(self.project, project);
         self.isProjectResolved.resolve();
