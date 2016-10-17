@@ -1,8 +1,9 @@
 <is:widget widgetDefinition="${widgetDefinition}">
     <div ng-controller="publicProjectListCtrl">
         <uib-accordion>
-            <uib-accordion-group is-open="openedProjects[currentProject.id]"
-                                 ng-repeat="currentProject in projects">
+            <div uib-accordion-group
+                 is-open="openedProjects[currentProject.id]"
+                 ng-repeat="currentProject in projects">
                 <uib-accordion-heading>
                     {{ currentProject.name }}
                     <button type="button"
@@ -16,7 +17,7 @@
                 <div ng-if="currentProject.id == project.id"
                      ng-include="'project.details.html'">
                 </div>
-            </uib-accordion-group>
+            </div>
         </uib-accordion>
     </div>
 </is:widget>
