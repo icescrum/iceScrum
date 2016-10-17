@@ -1,7 +1,7 @@
 /*
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
-
+ * CUSTOMIZED
  * Version: 2.2.0 - 2016-10-10
  * License: MIT
  */angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.tabindex","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.isClass","ui.bootstrap.datepicker","ui.bootstrap.position","ui.bootstrap.datepickerPopup","ui.bootstrap.debounce","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.paging","ui.bootstrap.pager","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
@@ -3248,7 +3248,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
   };
 }])
 
-.controller('UibDropdownController', ['$scope', '$element', '$attrs', '$parse', 'uibDropdownConfig', 'uibDropdownService', '$animate', '$uibPosition', '$document', '$compile', '$templateRequest', function($scope, $element, $attrs, $parse, dropdownConfig, uibDropdownService, $animate, $position, $document, $compile, $templateRequest) {
+.controller('UibDropdownController', ['$scope', '$element', '$attrs', '$parse', 'uibDropdownConfig', 'uibDropdownService', '$animate', '$uibPosition', '$document', '$compile', '$templateRequest', '$timeout', function($scope, $element, $attrs, $parse, dropdownConfig, uibDropdownService, $animate, $position, $document, $compile, $templateRequest, $timeout) {
   var self = this,
     scope = $scope.$new(), // create a child scope so we are not polluting original one
     templateScope,
@@ -3368,49 +3368,55 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
 
   scope.$watch('isOpen', function(isOpen, wasOpen) {
     if (appendTo && self.dropdownMenu) {
-      var pos = $position.positionElements($element, self.dropdownMenu, 'bottom-left', true),
-        css,
-        rightalign,
-        scrollbarPadding,
-        scrollbarWidth = 0;
+      var computePosition = function() {
+        var pos = $position.positionElements($element, self.dropdownMenu, 'bottom-left', true),
+            css,
+            rightalign,
+            scrollbarPadding,
+            scrollbarWidth = 0;
 
-      css = {
-        top: pos.top + 'px',
-        display: isOpen ? 'block' : 'none'
-      };
+        css = {
+          top: pos.top + 'px',
+          display: isOpen ? 'block' : 'none'
+        };
 
-      rightalign = self.dropdownMenu.hasClass('dropdown-menu-right');
-      if (!rightalign) {
-        css.left = pos.left + 'px';
-        css.right = 'auto';
-      } else {
-        css.left = 'auto';
-        scrollbarPadding = $position.scrollbarPadding(appendTo);
-
-        if (scrollbarPadding.heightOverflow && scrollbarPadding.scrollbarWidth) {
-          scrollbarWidth = scrollbarPadding.scrollbarWidth;
-        }
-
-        css.right = window.innerWidth - scrollbarWidth -
-          (pos.left + $element.prop('offsetWidth')) + 'px';
-      }
-
-      // Need to adjust our positioning to be relative to the appendTo container
-      // if it's not the body element
-      if (!appendToBody) {
-        var appendOffset = $position.offset(appendTo);
-
-        css.top = pos.top - appendOffset.top + 'px';
-
+        rightalign = self.dropdownMenu.hasClass('dropdown-menu-right');
         if (!rightalign) {
-          css.left = pos.left - appendOffset.left + 'px';
+          css.left = pos.left + 'px';
+          css.right = 'auto';
         } else {
-          css.right = window.innerWidth -
-            (pos.left - appendOffset.left + $element.prop('offsetWidth')) + 'px';
-        }
-      }
+          css.left = 'auto';
+          scrollbarPadding = $position.scrollbarPadding(appendTo);
 
-      self.dropdownMenu.css(css);
+          if (scrollbarPadding.heightOverflow && scrollbarPadding.scrollbarWidth) {
+            scrollbarWidth = scrollbarPadding.scrollbarWidth;
+          }
+
+          css.right = window.innerWidth - scrollbarWidth -
+              (pos.left + $element.prop('offsetWidth')) + 'px';
+        }
+
+        // Need to adjust our positioning to be relative to the appendTo container
+        // if it's not the body element
+        if (!appendToBody) {
+          var appendOffset = $position.offset(appendTo);
+
+          css.top = pos.top - appendOffset.top + 'px';
+
+          if (!rightalign) {
+            css.left = pos.left - appendOffset.left + 'px';
+          } else {
+            css.right = window.innerWidth -
+                (pos.left - appendOffset.left + $element.prop('offsetWidth')) + 'px';
+          }
+        } else if (pos.top + self.dropdownMenu.height() + $element.height() + $element.prop('offsetHeight') > window.innerHeight) {
+          css.top = pos.top - self.dropdownMenu.height() - $element.height() - $element.prop('offsetHeight');
+        }
+        self.dropdownMenu.css(css);
+      };
+      if (!self.dropdownMenuTemplateUrl) {
+        computePosition();
+      }
     }
 
     var openContainer = appendTo ? appendTo : $element;
@@ -3433,6 +3439,11 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
             self.dropdownMenu.replaceWith(newEl);
             self.dropdownMenu = newEl;
             $document.on('keydown', uibDropdownService.keybindFilter);
+            if (computePosition) {
+              $timeout(function() {
+                computePosition();
+              }, 100);
+            }
           });
         });
       } else {
