@@ -1,6 +1,5 @@
-<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
 %{--
-- Copyright (c) 2015 Kagilum SAS.
+- Copyright (c) 2016 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -21,14 +20,5 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal name="formHolder.registerForm"
-          form="register()"
-          validate="true"
-          submitButton="${message(code:'is.button.register')}"
-          closeButton="${message(code:'is.button.cancel')}"
-            title="${message(code:'is.dialog.register')}">
-        <p>
-            <g:message code="is.dialog.register.description"/>
-        </p>
-    <div ng-include="'user.form.html'"></div>
-</is:modal>
+
+<g:render template="/user/templates/user.form" />
