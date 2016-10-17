@@ -24,8 +24,8 @@
 
 //= encoding          UTF-8
 
-//= require           vendors/jquery/jquery-2.1.4.min
-//= require           vendors/jquery/jquery-migrate-1.2.1.min
+//= require           vendors/jquery/jquery-3.1.1.min
+//= require           vendors/jquery/jquery-migrate-1.4.1.min
 //= require_full_tree vendors/jquery
 
 //= require_full_tree vendors/vanilla
