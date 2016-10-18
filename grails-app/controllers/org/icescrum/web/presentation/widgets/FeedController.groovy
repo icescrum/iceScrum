@@ -38,7 +38,7 @@ class FeedController implements ControllerErrorHandler {
     def index() {
 
         def content
-        def url = params.url
+        def url
         User user = springSecurityService.currentUser
         try {
             if (user && params.widgetId) {
@@ -49,7 +49,8 @@ class FeedController implements ControllerErrorHandler {
                 //one feed or combined ?
                 def feeds = selectedFeed ? [selectedFeed] : widgetFeed.settings.feeds
                 feeds?.eachWithIndex { feed, index ->
-                    def feedContent = getFeedContent(feed.url)
+                    url = feed.url
+                    def feedContent = getFeedContent(url)
                     content.title = index > 0 ? "${content.title} / ${feedContent.title}" : feedContent.title
                     content.items.addAll(feedContent.items)
                 }
@@ -64,7 +65,7 @@ class FeedController implements ControllerErrorHandler {
                 render(status: 204)
             }
         } catch (Exception e) {
-            def text = '<a target="_blank" href="' + url + '">' + url + '</a><br/>' + message(code: 'todo.is.ui.panel.feed.error')
+            def text = message(code: 'todo.is.ui.panel.feed.error', args:[url])
             returnError(text: text, exception: e, silent: true)
         }
     }
