@@ -45,6 +45,7 @@ class ProductUrlMappings {
             action = 'window'
             constraints {
                 windowDefinitionId(matches: /[a-zA-Z]*/)
+                product(matches: /[0-9A-Z]*/)
             }
         }
         "/p/$product/$controller/$id?" {

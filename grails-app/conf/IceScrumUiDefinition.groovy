@@ -60,7 +60,6 @@ windows = {
         menu {
             defaultPosition 2
             defaultVisibility true
-            title 'is.ui.backlogs'
         }
         embedded = [
                 view: 'list',
@@ -84,7 +83,6 @@ windows = {
         menu {
             defaultPosition 5
             defaultVisibility true
-            title 'is.ui.feature'
         }
         embedded = [
                 view: 'list',
@@ -105,7 +103,6 @@ windows = {
         menu {
             defaultPosition 1
             defaultVisibility true
-            title 'is.ui.project'
         }
         embedded = [
                 view: 'productCumulativeFlowChart',
@@ -130,7 +127,6 @@ windows = {
         menu {
             defaultPosition 3
             defaultVisibility true
-            title 'todo.is.ui.planning'
         }
         embedded = [
                 view: 'index',
@@ -154,7 +150,6 @@ windows = {
         menu {
             defaultPosition 4
             defaultVisibility true
-            title 'todo.is.ui.taskBoard'
         }
         embedded = [
                 view : 'index',
