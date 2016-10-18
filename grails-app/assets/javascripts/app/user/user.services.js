@@ -49,7 +49,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         return user.$save();
     };
     this.retrievePassword = function(user) {
-        return $http.post($rootScope.serverUrl + '/user/retrieve?user.username=' + user.username);
+        return FormService.httpPost('user/retrieve', {user: {username: user.username}}, null, true);
     };
     this.getInvitationUserMock = function(token) {
         return FormService.httpGet('user/invitationUserMock', {params: {token: token}}, true);

@@ -512,11 +512,14 @@ controllers.controller('registerCtrl', ['$scope', '$state', 'User', 'UserService
     });
 }]);
 
-controllers.controller('retrieveCtrl', ['$scope', 'User', 'UserService', function($scope, User, UserService) {
+controllers.controller('retrieveCtrl', ['$scope', '$timeout', 'User', 'UserService', function($scope, $timeout, User, UserService) {
     // Functions
     $scope.retrieve = function() {
-        UserService.retrievePassword($scope.user).then(function() {
+        UserService.retrievePassword($scope.user).then(function(data) {
             $scope.$close();
+            $timeout(function() {
+                $scope.notifySuccess(data.text);
+            });
         });
     };
     // Init

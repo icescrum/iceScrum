@@ -29,12 +29,12 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
                 $scope.$close(); // Close auth modal if present
             }
             if (Session.user.preferences.language != userUpdated.preferences.language) {
-                $scope.notifySuccess($scope.message('todo.is.ui.profile.updated.refreshing'));
+                $scope.notifySuccess('todo.is.ui.profile.updated.refreshing');
                 $timeout(function() {
                     document.location.reload(true);
                 }, 2000);
             } else {
-                $scope.notifySuccess($scope.message('todo.is.ui.profile.updated'));
+                $scope.notifySuccess('todo.is.ui.profile.updated');
             }
             angular.extend(Session.user, userUpdated);
         });
