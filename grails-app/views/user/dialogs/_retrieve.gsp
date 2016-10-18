@@ -20,13 +20,13 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal   name="formHolder.retrieveForm"
-            form="retrieve()"
-            validate="true"
-            submitButton="${message(code:'is.dialog.retrieve.button.reset')}"
-            closeButton="${message(code:'is.button.cancel')}"
-            title="${message(code:'is.dialog.retrieve')}"
-            size="sm">
+<is:modal name="formHolder.retrieveForm"
+          form="retrieve()"
+          validate="true"
+          submitButton="${message(code:'is.dialog.retrieve')}"
+          closeButton="${message(code:'is.button.cancel')}"
+          title="${message(code:'is.dialog.retrieve')}"
+          size="sm">
         <p>
             <g:message code="is.dialog.retrieve.description"/>
         </p>
