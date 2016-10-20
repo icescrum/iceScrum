@@ -45,7 +45,7 @@ class FeedController implements ControllerErrorHandler {
                 Widget widgetFeed = Widget.findByUserPreferencesAndId(user.preferences, params.long('widgetId'))
                 //if user has select one feed
                 def selectedFeed = widgetFeed.settings.feeds?.find { it -> it.selected }
-                content = [title:'', items: []]
+                content = [title: '', items: []]
                 //one feed or combined ?
                 def feeds = selectedFeed ? [selectedFeed] : widgetFeed.settings.feeds
                 feeds?.eachWithIndex { feed, index ->
@@ -54,7 +54,7 @@ class FeedController implements ControllerErrorHandler {
                     content.title = index > 0 ? "${content.title} / ${feedContent.title}" : feedContent.title
                     content.items.addAll(feedContent.items)
                 }
-                content.items.sort{a,b ->
+                content.items.sort { a, b ->
                     return new Date(a.pubDate) <=> new Date(b.pubDate)
                 }
                 Collections.reverse(content.items)
@@ -65,7 +65,7 @@ class FeedController implements ControllerErrorHandler {
                 render(status: 204)
             }
         } catch (Exception e) {
-            def text = message(code: 'todo.is.ui.panel.feed.error', args:[url])
+            def text = message(code: 'todo.is.ui.panel.feed.error', args: [url])
             returnError(text: text, exception: e, silent: true)
         }
     }
@@ -74,11 +74,11 @@ class FeedController implements ControllerErrorHandler {
         def channel = new XmlSlurper().parse(url).channel
         def contentFeed = [title: channel.title.text()]
         contentFeed.items = channel.item.collect { xmlItem ->
-            return [feed: channel.title.text(),
-                    link: xmlItem.link.text(),
-                    title: xmlItem.title.text(),
+            return [feed       : channel.title.text(),
+                    link       : xmlItem.link.text(),
+                    title      : xmlItem.title.text(),
                     description: xmlItem.description.text(),
-                    pubDate: Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]
+                    pubDate    : Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]
         }
         return contentFeed
     }
