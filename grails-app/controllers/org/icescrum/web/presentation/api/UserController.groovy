@@ -59,12 +59,12 @@ class UserController implements ControllerErrorHandler{
         }
         def users
         def userCount
-        if (filter == "enabledOnly") {
+        if (filter == "enabled") {
             users = term ? User.findUsersLikeAndEnabled(false, term, true, options) : User.findAllByEnabled(true, options)
             if (paginate) {
                 userCount = term ? User.countUsersLikeAndEnabled(false, term, true, [cache: true]) : User.countByEnabled(true)
             }
-        } else if (filter == "disabledOnly") {
+        } else if (filter == "disabled") {
             users = term ? User.findUsersLikeAndEnabled(false, term, false, options) : User.findAllByEnabled(false, options)
             if (paginate) {
                 userCount = term ? User.countUsersLikeAndEnabled(false, term, false, [cache: true]) : User.countByEnabled(false)
