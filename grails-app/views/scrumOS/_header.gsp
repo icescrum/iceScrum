@@ -188,6 +188,24 @@
                                 </div>
                             </form>
                         </g:if>
+                        <g:else>
+                            <form class="navbar-form pull-left" role="search">
+                                <div class="input-group search">
+                                    <input autocomplete="off"
+                                           type="text"
+                                           name="app.search"
+                                           class="form-control"
+                                           ng-model="app.search"
+                                           placeholder="${message(code:'todo.is.ui.search.action')}"
+                                           ng-model-options="{ debounce: 300 }">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="app.search = null">
+                                            <i class="fa search-status" ng-class="app.search ? 'fa-times' : 'fa-search'"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </g:else>
                         <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
                             <div class="navbar-notif"
                                  uib-dropdown-toggle>
