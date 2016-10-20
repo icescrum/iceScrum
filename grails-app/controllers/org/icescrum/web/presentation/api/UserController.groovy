@@ -85,7 +85,7 @@ class UserController implements ControllerErrorHandler{
         render(status: 200, contentType: 'application/json', text: user as JSON)
     }
 
-    @Secured(["!isAuthenticated()"])
+    @Secured(["!isAuthenticated() or hasRole('ROLE_ADMIN')"])
     def save() {
         if (!params.user) {
             returnError(code: 'todo.is.ui.no.data')
