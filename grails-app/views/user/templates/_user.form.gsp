@@ -78,7 +78,7 @@
 <div class="row" ng-show="!editableUser.accountExternal">
     <div class="form-half">
         <label for="user.password">${message(code:'is.user.password')}</label>
-        <input required
+        <input ng-required="!user.id"
                name="user.password"
                type="password"
                class="form-control"

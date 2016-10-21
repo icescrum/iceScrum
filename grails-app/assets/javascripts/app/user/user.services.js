@@ -40,6 +40,9 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     this.getUnreadActivities = function(user) {
         return User.get({action: 'unreadActivitiesCount', id: user.id}).$promise;
     };
+    this.get = function(id) {
+        return User.get({id: id}).$promise;
+    };
     this.update = function(user) {
         user.class = 'user';
         return user.$update(user);

@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="btn-toolbar">
+                <div class="btn-toolbar buttons-margin-bottom">
                     <div ng-if="authorizedStories('accept', stories)"
                          class="btn-group"
                          uib-dropdown>

@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="btn-toolbar">
+                <div class="btn-toolbar buttons-margin-bottom">
                     <div ng-if="authorizedFeature('copyToBacklog')"
                          class="btn-group">
                         <button type="button"
