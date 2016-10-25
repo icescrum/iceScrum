@@ -55,6 +55,24 @@ class ProjectController implements ControllerErrorHandler {
     def attachmentableService
     def securityService
 
+    @Secured(["hasRole('ROLE_ADMIN')"])
+    def index(String term, Boolean paginate, Integer count, Integer page, String sorting, String order) {
+        def options = [cache: true]
+        if (paginate) {
+            options.offset = page ? (page - 1) * count : 0
+            options.max = count ?: 10
+            options.sort = sorting ?: 'name'
+            options.order = order ?: 'asc'
+        }
+        def projects = term ? Product.findAllLike(term, options) : Product.list(options)
+        def projectCount
+        if (paginate) {
+            projectCount = term ? Product.countAllLike(term, [cache: true]) : Product.count()
+        }
+        def returnData = paginate ? [projects: projects, count: projectCount] : projects
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
     @Secured(['isAuthenticated()'])
     def save() {
         def teamParams = params.product?.remove('team')
