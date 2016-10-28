@@ -1,4 +1,4 @@
-<script type="text/ng-template" id="project.details.html">
+<script type="text/ng-template" id="project.summary.html">
     <div class="row">
         <h4 class="col-md-6">{{ project.name + ' (' + project.pkey + ')' }}</h4>
         <h4 class="col-md-6 text-right"><i class="fa fa-users"></i> {{ project.team.name }}</h4>

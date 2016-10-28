@@ -15,7 +15,7 @@
                     </button>
                 </uib-accordion-heading>
                 <div ng-if="currentProject.id == project.id"
-                     ng-include="'project.details.html'">
+                     ng-include="'project.summary.html'">
                 </div>
             </div>
         </uib-accordion>

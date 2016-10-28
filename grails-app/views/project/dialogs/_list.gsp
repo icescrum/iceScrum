@@ -57,7 +57,7 @@
                 ${ message(code: 'todo.is.ui.project.noproject') }
             </div>
             <div class="col-md-12" ng-switch-default>
-                <div ng-include="'project.details.html'"></div>
+                <div ng-include="'project.summary.html'"></div>
             </div>
         </div>
     </div>
