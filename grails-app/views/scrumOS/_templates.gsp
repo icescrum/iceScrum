@@ -73,7 +73,6 @@
    hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
    uib-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
    tooltip-placement="bottom"
-   unavailable-feature="menu.id == 'search'"
    href="#/{{ menu.id }}">
     <i class="fa fa-{{ menu.icon }}" as-sortable-item-handle></i> <span class="title hidden-sm">{{ menu.title }}</span>
 </a>
