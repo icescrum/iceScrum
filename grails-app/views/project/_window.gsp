@@ -50,19 +50,7 @@
                             <div class="col-md-6" style="text-align: left;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${ message(code: 'todo.is.ui.stories') }</div>
                             <div class="col-md-6" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${ message(code: 'todo.is.ui.releases') }</div>
                         </div>
-                        <uib-progress class="form-control-static form-bar"
-                                      uib-tooltip="{{ release.name }}"
-                                      max="release.duration">
-                            <uib-bar ng-repeat="sprint in release.sprints"
-                                     class="{{ $last ? 'last-bar' : '' }}"
-                                     uib-tooltip-template="'sprint.tooltip.html'"
-                                     tooltip-placement="bottom"
-                                     type="{{ { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] }}"
-                                     value="sprint.duration">
-                                {{ sprint.orderNumber }}
-                            </uib-bar>
-                            <div class="progress-empty" ng-if="release.sprints != undefined && release.sprints.length == 0">${message(code: 'todo.is.ui.nosprint')}</div>
-                        </uib-progress>
+                        <ng-include src="'release.timeline.html'" ng-controller="releaseTimelineCtrl"></ng-include>
                         <div class="row project-rel-dates">
                             <div class="col-md-6">{{ release.startDate | dayShort }}</div>
                             <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>

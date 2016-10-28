@@ -151,3 +151,27 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
     $scope.previousRelease = FormService.previous($scope.project.releases, $scope.release);
     $scope.nextRelease = FormService.next($scope.project.releases, $scope.release);
 }]);
+
+controllers.controller('releaseTimelineCtrl', ['$scope', 'DateService', function($scope, DateService) {
+    // Functions
+    $scope.computeReleaseParts = function(release) {
+        var parts = [];
+        var latestDate = release.startDate;
+        _.each(release.sprints, function(sprint) {
+            var gapDuration = DateService.daysBetweenDates(latestDate, sprint.startDate);
+            if (gapDuration > 1) {
+                parts.push({duration: gapDuration - 1});
+            }
+            latestDate = sprint.endDate;
+            parts.push(sprint);
+        });
+        return parts;
+    };
+    // Init
+    $scope.releaseParts = [];
+    $scope.$watch('release', function(newRelease) {
+        if (newRelease) {
+            $scope.releaseParts = $scope.computeReleaseParts(newRelease);
+        }
+    }, true);
+}]);
