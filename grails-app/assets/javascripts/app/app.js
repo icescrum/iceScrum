@@ -1026,8 +1026,11 @@ angular.module('isApp', [
         });
     };
 
+    $rootScope.openProjectUrl = function(project) {
+        return $rootScope.serverUrl + '/p/' + project.pkey + '/';
+    };
     $rootScope.openProject = function(project) {
-        document.location = $rootScope.serverUrl + '/p/' + project.pkey + '/';
+        document.location = $scope.openProjectUrl(project);
     };
 
     $rootScope.openDatepicker = function($event, holder) {
