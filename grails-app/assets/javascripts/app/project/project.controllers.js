@@ -146,9 +146,6 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
     $scope.goToHome = function() {
         window.location.href = $scope.serverUrl;
     };
-    $scope.goToNewProject = function() {
-        $state.go('newProject');
-    };
     // Init
     $scope.sortableId = 'menu';
     $scope.currentProject = Session.getProject();

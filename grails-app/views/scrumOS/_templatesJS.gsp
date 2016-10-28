@@ -25,6 +25,7 @@
     <g:render template="/team/templates"/>
     <g:render template="/sprint/templates"/>
     <g:render template="/project/templates"/>
+    <g:render template="/release/templates"/>
     <g:render template="/task/templates/task.light"/>
     <g:render template="/user/templates"/>
     <entry:point id="templates"/>

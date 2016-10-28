@@ -54,8 +54,7 @@
                             <g:if test="${creationProjectEnable}">
                                 <li>
                                     <a hotkey="{ 'shift+n': hotkeyClick}"
-                                       href
-                                       ng-click="goToNewProject()">
+                                       ui-sref="newProject">
                                         <g:message code="is.projectmenu.submenu.project.create"/> <small class="text-muted">(SHIFT+N)</small>
                                     </a>
                                 </li>
