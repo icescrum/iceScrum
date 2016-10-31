@@ -28,9 +28,18 @@
         <div class="left-panel col-sm-3">
             <div class="left-panel-header">
                 <div class="input-group">
-                    <input type="text" ng-model="teamSearch" ng-change="searchTeams()" ng-model-options="{debounce: 300}" class="form-control" placeholder="${message(code:'todo.is.ui.search.action')}">
+                    <input type="text"
+                           ng-model="teamSearch"
+                           ng-change="searchTeams()"
+                           ng-model-options="{debounce: 300}"
+                           class="form-control"
+                           placeholder="${message(code:'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="teamSearch = null; searchTeams()">
+                            <i class="fa" ng-class="teamSearch ? 'fa-times' : 'fa-search'"></i>
+                        </button>
                     </span>
                 </div>
             </div>

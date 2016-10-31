@@ -31,7 +31,11 @@
                 <div class="input-group">
                     <input type="text" ng-model="projectSearch" ng-change="searchProjects()" ng-model-options="{debounce: 300}" class="form-control" placeholder="${message(code:'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="projectSearch = null; searchProjects()">
+                            <i class="fa" ng-class="projectSearch ? 'fa-times' : 'fa-search'"></i>
+                        </button>
                     </span>
                 </div>
             </div>

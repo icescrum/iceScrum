@@ -194,7 +194,11 @@
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="widgetDefinitionSearch = ''">
+                            <i class="fa" ng-class="widgetDefinitionSearch ? 'fa-times' : 'fa-search'"></i>
+                        </button>
                     </span>
                 </div>
             </div>

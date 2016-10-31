@@ -32,7 +32,11 @@
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="settingsSearch = null">
+                            <i class="fa" ng-class="settingsSearch ? 'fa-times' : 'fa-search'"></i>
+                        </button>
                     </span>
                 </div>
             </div>
