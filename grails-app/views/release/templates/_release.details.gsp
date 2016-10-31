@@ -71,7 +71,7 @@
               novalidate>
             <div class="panel-body">
                 <div class="clearfix no-padding">
-                    <div class="form-group">
+                    <div class="form-3-quarters">
                         <label for="name">${message(code:'is.release.name')}</label>
                         <input required
                                name="name"
@@ -82,6 +82,18 @@
                                class="form-control"
                                placeholder="${message(code: 'is.ui.release.noname')}"/>
                     </div>
+                    <div class="form-1-quarter">
+                        <label for="firstSprintIndex">${message(code:'is.release.firstSprintIndex')}</label>
+                        <input required
+                               name="firstSprintIndex"
+                               ng-focus="editForm(true)"
+                               ng-disabled="!formHolder.editable"
+                               ng-model="editableRelease.firstSprintIndex"
+                               type="number"
+                               class="form-control"/>
+                    </div>
+                </div>
+                <div class="clearfix no-padding">
                     <div class="form-half">
                         <label for="release.startDate">${message(code:'is.release.startDate')}</label>
                         <div ng-class="{'input-group': authorizedRelease('updateDates', release)}">

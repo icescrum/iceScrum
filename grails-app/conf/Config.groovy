@@ -193,7 +193,7 @@ icescrum.marshaller = [
                   withIds: ['stories'],
                   textile: ['notes'],
                   asShort: ['color', 'name']],
-        sprint: [include: ['activable', 'totalRemaining', 'duration', 'attachments'],
+        sprint: [include: ['activable', 'totalRemaining', 'duration', 'attachments', 'index'],
                  exclude: ['cliches'],
                  withIds: ['stories'],
                  textile: ['retrospective', 'doneDefinition'],

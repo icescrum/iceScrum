@@ -63,7 +63,7 @@ class ReleaseController implements ControllerErrorHandler {
         }
         def release = new Release()
         Release.withTransaction {
-            bindData(release, releaseParams, [include: ['name', 'goal', 'startDate', 'endDate']])
+            bindData(release, releaseParams, [include: ['name', 'goal', 'startDate', 'endDate', 'firstSprintIndex']])
             releaseService.save(release, _product)
         }
         render(status: 201, contentType: 'application/json', text: release as JSON)
@@ -76,7 +76,7 @@ class ReleaseController implements ControllerErrorHandler {
         def startDate = releaseParams.startDate ? ServicesUtils.parseDateISO8601(releaseParams.startDate) : release.startDate
         def endDate = releaseParams.endDate ? ServicesUtils.parseDateISO8601(releaseParams.endDate) : release.endDate
         Release.withTransaction {
-            bindData(release, releaseParams, [include: ['name', 'vision']])
+            bindData(release, releaseParams, [include: ['name', 'vision', 'firstSprintIndex']])
             releaseService.update(release, startDate, endDate)
         }
         render(status: 200, contentType: 'application/json', text: release as JSON)

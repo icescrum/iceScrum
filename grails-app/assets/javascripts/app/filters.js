@@ -388,7 +388,7 @@ filters
     }]).filter('sprintName', ['$rootScope', function($rootScope) {
         return function(sprint) {
             if (sprint) {
-                return $rootScope.message('is.sprint') + ' ' + sprint.orderNumber;
+                return $rootScope.message('is.sprint') + ' ' + sprint.index;
             }
         }
     }]).filter('acceptanceTestColor', ['AcceptanceTestStatesByName', function(AcceptanceTestStatesByName) {

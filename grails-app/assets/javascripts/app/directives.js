@@ -469,7 +469,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .attr("height", releaseHeight - sprintYMargin * 2);
                 sprintTextsSelector.enter().append("text")
                     .attr("y", 6 + height / 2)
-                    .text(function(sprint) { return sprint.orderNumber; })
                     .style("text-anchor", "middle")
                     .attr("font-size", "18px");
                 // Update
@@ -495,6 +494,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         return "sprint sprint-" + classByState[sprint.state] + selectedClass(sprint);
                     });
                 sprintTextsSelector
+                    .text(function(sprint) { return sprint.index; })
                     .attr('x', function(sprint) { return x(new Date(sprint.startDate.getTime() + (sprint.endDate.getTime() - sprint.startDate.getTime()) / 2)); })
                     .attr("class", function(sprint) { return "sprint-text" + selectedClass(sprint); });
             }

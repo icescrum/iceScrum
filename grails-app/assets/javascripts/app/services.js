@@ -536,6 +536,13 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
                     _.remove(cachedRelease.sprints, {id: oldSprint.id});
                 }
             }
+        },
+        release: function(oldRelease, newRelease) {
+            if (oldRelease && newRelease && oldRelease.firstSprintIndex != newRelease.firstSprintIndex && newRelease.sprints) {
+                _.each(newRelease.sprints, function(sprint) {
+                    sprint.index = newRelease.firstSprintIndex + sprint.orderNumber - 1;
+                });
+            }
         }
     };
     this.sync = function(clazz, oldItem, newItem) {
