@@ -140,7 +140,7 @@
                      uib-tooltip-template="'sprint.tooltip.html'"
                      type="default"
                      value="project.preferences.estimatedSprintsDuration">
-                    {{ sprint.orderNumber }}
+                    {{ sprint.index }}
                 </uib-bar>
             </uib-progress>
         </div>

@@ -376,7 +376,7 @@ class StoryController implements ControllerErrorHandler {
                 it.parentRelease
             }.each { Release release, List<Sprint> sprints ->
                 sprints.sort { it.orderNumber }.each { Sprint sprint ->
-                    sprintEntries << [id: sprint.id, parentRelease: [name: release.name], orderNumber: sprint.orderNumber]
+                    sprintEntries << [id: sprint.id, parentRelease: [name: release.name], index: sprint.index]
                 }
             }
         }

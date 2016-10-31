@@ -193,7 +193,7 @@
                     <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.noparentsprint')}">
                         {{ $select.selected.parentRelease.name + ' - ' + ($select.selected | sprintName) }}
                     </ui-select-match>
-                    <ui-select-choices group-by="groupSprintByParentRelease" repeat="parentSprintEntry in parentSprintEntries | filter: { orderNumber: $select.search }">
+                    <ui-select-choices group-by="groupSprintByParentRelease" repeat="parentSprintEntry in parentSprintEntries | filter: { index: $select.search }">
                         <span ng-bind-html="parentSprintEntry | sprintName | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>

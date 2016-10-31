@@ -157,7 +157,7 @@ windows = {
                 id: { product ->
                     def id = [label: message(code: 'is.sprint'), select: [[key: '', value: message(code: 'is.ui.sprintPlan.id.empty')]]]
                     product.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
-                        it.sprints?.collect { v -> id.select << [key: v.id, value: "${it.name} - Sprint ${v.orderNumber}"] }
+                        it.sprints?.collect { v -> id.select << [key: v.id, value: "${it.name} - Sprint ${v.index}"] }
                     }
                     id
                 }

@@ -359,7 +359,7 @@ controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService'
         for (var i = 1; i <= nbSprints; i++) {
             var startDate = DateService.immutableAddDaysToDate($scope.project.firstSprint, (i - 1) * sprintDuration);
             var endDate = DateService.immutableAddDaysToDate(startDate, sprintDuration - 1);
-            $scope.sprints.push({orderNumber: i, startDate: startDate, endDate: endDate});
+            $scope.sprints.push({index: i, startDate: startDate, endDate: endDate});
         }
     };
     $scope.nameChanged = function() {
