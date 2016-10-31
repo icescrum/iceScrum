@@ -45,15 +45,16 @@
                 </li>
             </ul>
             <div class="left-panel-bottom">
-                <uib-pagination boundary-links="true"
-                                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                                class="pagination-sm"
-                                max-size="3"
-                                total-items="totalProjects"
-                                items-per-page="projectsPerPage"
-                                ng-model="currentPage"
-                                ng-change="searchProjects()">
-                </uib-pagination>
+                <div uib-pagination
+                     boundary-links="true"
+                     previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                     class="pagination-sm"
+                     max-size="3"
+                     total-items="totalProjects"
+                     items-per-page="projectsPerPage"
+                     ng-model="currentPage"
+                     ng-change="searchProjects()">
+                </div>
             </div>
         </div>
         <div class="right-panel col-sm-9" ng-switch="projects != undefined && projects.length == 0">

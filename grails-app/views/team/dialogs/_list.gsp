@@ -49,15 +49,16 @@
                 </li>
             </ul>
             <div class="left-panel-bottom">
-                <uib-pagination boundary-links="true"
-                                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
-                                class="pagination-sm"
-                                max-size="3"
-                                total-items="totalTeams"
-                                items-per-page="teamsPerPage"
-                                ng-model="currentPage"
-                                ng-change="searchTeams()">
-                </uib-pagination>
+                <div uib-pagination
+                     boundary-links="true"
+                     previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
+                     class="pagination-sm"
+                     max-size="3"
+                     total-items="totalTeams"
+                     items-per-page="teamsPerPage"
+                     ng-model="currentPage"
+                     ng-change="searchTeams()">
+                </div>
             </div>
         </div>
         <div class="right-panel col-sm-9" ng-switch="teamSelected()">
