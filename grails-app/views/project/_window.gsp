@@ -23,86 +23,94 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="row" ng-controller="dashboardCtrl">
         <div class="widget-column">
-            <div class="panel-container"><div class="panel panel-light">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="fa fa-home"></i> {{ project.name + ' (' + project.pkey + ')' }}
-                        <button class="btn btn-default btn-sm pull-right visible-on-hover"
-                                ng-if="authorizedProject('update', project)"
-                                ng-click="showProjectEditModal()"
-                                type="button">
-                            <i class="fa fa-pencil"></i>
-                        </button>
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
+            <div class="panel-container">
+                <div class="panel panel-light">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-home"></i> {{ project.name + ' (' + project.pkey + ')' }}
+                            <button class="btn btn-default btn-sm pull-right visible-on-hover"
+                                    ng-if="authorizedProject('update', project)"
+                                    ng-click="showProjectEditModal()"
+                                    type="button">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div ng-bind-html="(project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>') | sanitize"></div>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <img ng-src="{{ user | userAvatar }}" ng-repeat="user in allMembers" height="36" width="36" style="margin-left:5px;" class="{{ user | userColorRoles }}" uib-tooltip="{{ user | userFullName }}"">
+                                <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
+                            </div>
                         </div>
-                        <div class="col-md-4 text-right">
-                            <img ng-src="{{ user | userAvatar }}" ng-repeat="user in allMembers" height="36" width="36" style="margin-left:5px;" class="{{ user | userColorRoles }}" uib-tooltip="{{ user | userFullName }}"">
-                            <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
+                        <div class="well">
+                            <div class="row project-info">
+                                <div class="col-md-6" style="text-align: left;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${ message(code: 'todo.is.ui.stories') }</div>
+                                <div class="col-md-6" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${ message(code: 'todo.is.ui.releases') }</div>
+                            </div>
+                            <ng-include src="'release.timeline.html'" ng-controller="releaseTimelineCtrl"></ng-include>
+                            <div class="row project-rel-dates">
+                                <div class="col-md-6">{{ release.startDate | dayShort }}</div>
+                                <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="well">
-                        <div class="row project-info">
-                            <div class="col-md-6" style="text-align: left;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${ message(code: 'todo.is.ui.stories') }</div>
-                            <div class="col-md-6" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${ message(code: 'todo.is.ui.releases') }</div>
-                        </div>
-                        <ng-include src="'release.timeline.html'" ng-controller="releaseTimelineCtrl"></ng-include>
-                        <div class="row project-rel-dates">
-                            <div class="col-md-6">{{ release.startDate | dayShort }}</div>
-                            <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>
-                        </div>
+                </div>
+            </div>
+            <div class="panel-container">
+                <div class="panel panel-light">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
+                            <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                               href="#/planning/{{ release.id }}/details"
+                               ng-if="release.id && authorizedRelease('update', release)">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="panel-body"
+                         ng-bind-html="(release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize">
                     </div>
                 </div>
-            </div></div>
-            <div class="panel-container"><div class="panel panel-light">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
-                        <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                           href="#/planning/{{ release.id }}/details"
-                           ng-if="release.id && authorizedRelease('update', release)">
-                            <i class="fa fa-pencil"></i>
-                        </a>
-                    </h3>
+            </div>
+            <div class="panel-container">
+                <div class="panel panel-light">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
+                            <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                               href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
+                               ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="panel-body"
+                         ng-bind-html="(currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize">
+                    </div>
                 </div>
-                <div class="panel-body"
-                     ng-bind-html="(release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize">
+            </div>
+            <div class="panel-container">
+                <div class="panel panel-light">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
+                            <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                               href="#/taskBoard/{{ lastSprint.id }}/details"
+                               ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="panel-body"
+                         ng-bind-html="(lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize">
+                    </div>
                 </div>
-            </div></div>
-            <div class="panel-container"><div class="panel panel-light">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
-                        <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                           href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
-                           ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
-                            <i class="fa fa-pencil"></i>
-                        </a>
-                    </h3>
-                </div>
-                <div class="panel-body"
-                     ng-bind-html="(currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize">
-                </div>
-            </div></div>
-            <div class="panel-container"><div class="panel panel-light">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
-                        <a class="btn btn-default btn-sm pull-right visible-on-hover"
-                           href="#/taskBoard/{{ lastSprint.id }}/details"
-                           ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
-                            <i class="fa fa-pencil"></i>
-                        </a>
-                    </h3>
-                </div>
-                <div class="panel-body"
-                     ng-bind-html="(lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize">
-                </div>
-            </div></div>
+            </div>
         </div>
         <div class="widget-column">
             <div class="panel-container">
