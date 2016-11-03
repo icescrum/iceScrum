@@ -43,8 +43,6 @@ import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
 
-
-
 /* Public URL */
 grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http') ?: '8080'}/${appName}"
 
@@ -355,7 +353,6 @@ environments {
         grails.tomcat.nio = true
     }
     production {
-        grails.config.locations = []
         icescrum.debug.enable = false
         grails.entryPoints.debug = false
     }
@@ -523,32 +520,21 @@ environments {
         if (!grails.config.locations || !(grails.config.locations instanceof List)) {
             grails.config.locations = []
         }
+        def homeConfig = "${userHome}${File.separator}.icescrum${File.separator}config.groovy"
+        def systemConfig = System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
+        def envConfig = System.getenv(ApplicationSupport.CONFIG_ENV_NAME)
         println "--------------------------------------------------------"
-        // 1: A command line option should override everything.
-        // Like grails -Dicescrum_config_location=C:\temp\icescrum-config.groovy run-app
-        if (System.getProperty(ApplicationSupport.CONFIG_ENV_NAME) && new File(System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)).exists()) {
-            println "Including configuration file specified on command line: " + System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
-            grails.config.locations << "file:" + System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
-        }
-        // 2: If this is a developer machine, then they will have their own config and I should use that.
-        else if (new File("${userHome}${File.separator}.grails${File.separator}${appName}-config.groovy").exists()) {
-            println "*** User defined config: file:${userHome}${File.separator}.grails${File.separator}${appName}-config.groovy. ***"
-            grails.config.locations = ["file:${userHome}${File.separator}.grails${File.separator}${appName}-config.groovy"]
-        }
-        // 3: Most QA and PROD machines should define a System Environment variable that will define where we should look.
-        else if (System.getenv(ApplicationSupport.CONFIG_ENV_NAME) && new File(System.getenv(ApplicationSupport.CONFIG_ENV_NAME)).exists()) {
-            println("Including System Environment configuration file: " + System.getenv(ApplicationSupport.CONFIG_ENV_NAME))
-            grails.config.locations << "file:" + System.getenv(ApplicationSupport.CONFIG_ENV_NAME)
-        }
-        // 4: Last resort is looking for a properties based configuration on the developer machine.
-        else if (new File("${userHome}${File.separator}.grails${File.separator}${appName}.properties").exists()) {
-            println "*** User defined config: file:${userHome}${File.separator}.grails${File.separator}${appName}.properties. ***"
-            grails.config.locations = ["file:${userHome}${File.separator}.grails${File.separator}${appName}.properties"]
-        } else if (new File("${userHome}${File.separator}.icescrum${File.separator}config.groovy").exists()) {
-            println "*** iceScrum home defined config: file:${userHome}${File.separator}.icescrum${File.separator}config.groovy. ***"
-            grails.config.locations = ["file:${userHome}${File.separator}.icescrum${File.separator}config.groovy"]
+        if (new File(homeConfig).exists()) {                          // 1. Default location home/.icescrum/config.groovy
+            println "iceScrum home defined configuration file: " + homeConfig
+            grails.config.locations << "file:" + homeConfig
+        } else if (systemConfig && new File(systemConfig).exists()) { // 2. System variable passed to the JVM : -Dicescrum_config_location=.../config.groovy
+            println "Including configuration file provided to the JVM as a System variable: " + systemConfig
+            grails.config.locations << "file:" + systemConfig
+        } else if (envConfig && new File(envConfig).exists()) {       // 2. Environment variable icescrum_config_location=.../config.groovy
+            println("Including System Environment configuration file: " + envConfig)
+            grails.config.locations << "file:" + envConfig
         } else {
-            println "*** No external configuration file defined (${ApplicationSupport.CONFIG_ENV_NAME}). ***"
+            println "No configuration file found"
         }
         try {
             String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum_config_location") ?: (String) new InitialContext().lookup("java:comp/env/icescrum.config.location")
