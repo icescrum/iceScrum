@@ -369,16 +369,15 @@ header {
           margin-bottom: @grid-gutter-width / 2;
         }
         @media (max-width: @screen-xs-max), (max-width: @screen-sm-max) {
-          &:last-child div.panel-container:first-child {
+          &:last-of-type div.panel-container:first-child {
             margin-top: @grid-gutter-width / 2;
           }
         }
         @media (min-width: @screen-md-min) {
-          &:first-child {
+          &:last-of-type {
             padding-right: (@grid-gutter-width / 4);
           }
-
-          &:last-child {
+          &:last-of-type {
             padding-left: (@grid-gutter-width / 4);
           }
         }
