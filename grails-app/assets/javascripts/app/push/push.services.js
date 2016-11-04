@@ -143,6 +143,12 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             }
         };
     };
+    this.registerScopedListener = function(namespace, eventType, listener, $scope) {
+        var registeredListener = self.registerListener(namespace, eventType, listener);
+        $scope.$on('$destroy', function() {
+            registeredListener.unregister();
+        });
+    };
     this.publishEvent = function(jsonBody) {
         var object = jsonBody.object;
         var domain = object['class'].toLowerCase();
