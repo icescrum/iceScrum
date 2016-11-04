@@ -251,7 +251,7 @@ class UrlMappings {
         }
         "/project/$product" {
             controller = 'project'
-            action = [DELETE: "delete", POST: "update"]
+            action = [GET: "show", DELETE: "delete", POST: "update"]
             constraints {
                 //must be the id
                 product(matches: /\d*/)

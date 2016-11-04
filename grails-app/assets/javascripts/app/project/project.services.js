@@ -25,6 +25,9 @@ services.factory('Project', ['Resource', function($resource) {
 }]);
 
 services.service("ProjectService", ['Project', 'Session', 'FormService', function(Project, Session, FormService) {
+    this.get = function(id) {
+        return Project.get({id: id}).$promise;
+    };
     this.save = function(project) {
         project.class = 'product';
         return Project.save(project).$promise;

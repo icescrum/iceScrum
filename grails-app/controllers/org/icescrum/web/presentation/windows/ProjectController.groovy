@@ -73,6 +73,12 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
+    @Secured(["hasRole('ROLE_ADMIN')"])
+    def show(long product) {
+        Product _product = Product.withProduct(product)
+        render(status: 200, contentType: 'application/json', text: _product as JSON)
+    }
+
     @Secured(['isAuthenticated()'])
     def save() {
         def teamParams = params.product?.remove('team')
