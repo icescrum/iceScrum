@@ -369,15 +369,19 @@ header {
           margin-bottom: @grid-gutter-width / 2;
         }
         @media (max-width: @screen-xs-max), (max-width: @screen-sm-max) {
-          &:last-of-type div.panel-container:first-child {
+          &:last-child div.panel-container:first-child {
             margin-top: @grid-gutter-width / 2;
+          }
+          div.panel-container {
+            margin-bottom: @grid-gutter-width / 2;
           }
         }
         @media (min-width: @screen-md-min) {
-          &:last-of-type {
+          &:nth-child(1) {
             padding-right: (@grid-gutter-width / 4);
           }
-          &:last-of-type {
+
+          &:nth-child(2) {
             padding-left: (@grid-gutter-width / 4);
           }
         }
