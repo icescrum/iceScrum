@@ -207,7 +207,7 @@
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
-                    <button class="btn confirmation btn-default"
+                    <button class="btn btn-default"
                             type="button"
                             ng-click="editForm(false)">
                         ${message(code:'is.button.cancel')}

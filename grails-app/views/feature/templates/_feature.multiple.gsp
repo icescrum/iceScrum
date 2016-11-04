@@ -134,7 +134,7 @@
                         type="submit">
                     ${message(code:'default.button.update.label')}
                 </button>
-                <a class="btn confirmation btn-default pull-right"
+                <a class="btn btn-default pull-right"
                    href="#/{{ ::viewName }}">
                     ${message(code: 'is.button.cancel')}
                 </a>
