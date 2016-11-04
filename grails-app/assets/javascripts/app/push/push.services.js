@@ -40,6 +40,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             return false;
         }
     };
+    this.atmosphereRequest = null;
     this.initPush = function(projectId) {
         var options = {
             url: $rootScope.serverUrl + '/stream/app' + (projectId ? ('/product-' + projectId) : ''),
@@ -117,7 +118,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 atmosphere.util.debug('Connection lost. Trying to reconnect ' + request.reconnectInterval);
             }
         };
-        atmosphereService.subscribe(options);
+        this.atmosphereRequest = atmosphereService.subscribe(options);
     };
     this.registerListener = function(namespace, eventType, listener) {
         namespace = namespace.toLowerCase();
