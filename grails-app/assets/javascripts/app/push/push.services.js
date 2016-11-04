@@ -119,23 +119,23 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
         };
         atmosphereService.subscribe(options);
     };
-    this.registerListener = function(domain, eventType, listener) {
-        domain = domain.toLowerCase();
-        if (_.isUndefined(self.listeners[domain])) {
-            self.listeners[domain] = {};
+    this.registerListener = function(namespace, eventType, listener) {
+        namespace = namespace.toLowerCase();
+        if (_.isUndefined(self.listeners[namespace])) {
+            self.listeners[namespace] = {};
         }
-        if (_.isUndefined(self.listeners[domain][eventType])) {
-            self.listeners[domain][eventType] = [];
+        if (_.isUndefined(self.listeners[namespace][eventType])) {
+            self.listeners[namespace][eventType] = [];
         }
-        var listeners = self.listeners[domain][eventType];
+        var listeners = self.listeners[namespace][eventType];
         if (_canLog('debug')) {
-            atmosphere.util.debug('Register listener on ' + eventType + ' ' + domain);
+            atmosphere.util.debug('Register listener on ' + eventType + ' ' + namespace);
         }
         listeners.push(listener);
         return {
             unregister: function() {
                 if (_canLog('debug')) {
-                    atmosphere.util.debug('Unregister listener on ' + eventType + ' ' + domain);
+                    atmosphere.util.debug('Unregister listener on ' + eventType + ' ' + namespace);
                 }
                 _.remove(listeners, function(registeredListener) {
                     return registeredListener == listener;
@@ -151,12 +151,12 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
     };
     this.publishEvent = function(jsonBody) {
         var object = jsonBody.object;
-        var domain = object['class'].toLowerCase();
-        if (!_.isEmpty(self.listeners[domain])) {
+        var namespace = jsonBody.namespace.toLowerCase();
+        if (!_.isEmpty(self.listeners[namespace])) {
             var eventType = jsonBody.eventType;
-            _.each(self.listeners[domain][eventType], function(listener) {
+            _.each(self.listeners[namespace][eventType], function(listener) {
                 if (_canLog('debug')) {
-                    atmosphere.util.debug('Call listener on ' + eventType + ' ' + domain);
+                    atmosphere.util.debug('Call listener on ' + eventType + ' ' + namespace);
                 }
                 FormService.transformStringToDate(object);
                 listener(object);
