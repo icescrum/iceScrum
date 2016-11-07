@@ -37,6 +37,10 @@
             </tr>
         </g:if>
         <g:if test="${request.admin}">
+            <tr>
+                <td><g:message code="is.dialog.about.version.configLocation"/></td>
+                <td>${configLocation}</td>
+            </tr>
             <g:if test="${g.meta(name: 'build.date')}">
                 <tr>
                     <td><g:message code="is.dialog.about.version.buildDate"/></td>

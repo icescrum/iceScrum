@@ -30,7 +30,7 @@
             <g:render template="/${controllerName}/about/help" model="[version: about.version]"/>
         </uib-tab>
         <uib-tab heading="${message(code: 'is.dialog.about.version')}">
-            <g:render template="/${controllerName}/about/version" model="[version: about.version, versionNumber: versionNumber, server: server]"/>
+            <g:render template="/${controllerName}/about/version" model="[version: about.version, versionNumber: versionNumber, server: server, configLocation: configLocation]"/>
         </uib-tab>
         <uib-tab heading="${message(code: 'is.dialog.about.legal')}">
             ${about.license.text().encodeAsNL2BR()}
