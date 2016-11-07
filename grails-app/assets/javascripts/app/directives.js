@@ -412,7 +412,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             $compile(element)(scope);
         }
     };
-}]).directive('timeline', ['ReleaseService', '$timeout', function(ReleaseService, $timeout) {
+}]).directive('timeline', ['ReleaseService', 'SprintStatesByName', '$timeout', function(ReleaseService, SprintStatesByName, $timeout) {
     return {
         restrict: 'A',
         scope: {
@@ -439,6 +439,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var sprintTexts = svg.append("g").attr("class", "sprint-texts");
             var brush = d3.svg.brush().x(x).y(y).on("brush", onBrush).on("brushend", onBrushEnd);
             var brushSelector = svg.append("g").attr("class", "brush").call(brush);
+            var versions = svg.append("g").attr("class", "versions");
+            var today = svg.append("path").attr("class", "today").attr("d", d3.svg.symbol().type("triangle-up"));
+            var getEffectiveEndDate = function(sprint) { return sprint.state == SprintStatesByName.DONE ? sprint.doneDate : sprint.endDate; };
             // Main rendering
             function render() {
                 var _releases = scope.timeline;
@@ -455,10 +458,15 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var releaseSelector = releases.selectAll('rect').data(_releases);
                 var sprintSelector = sprints.selectAll('rect').data(_sprints);
                 var sprintTextsSelector = sprintTexts.selectAll('text').data(_sprints);
+                var versionSelector = versions.selectAll('.version').data(_.filter(_sprints, 'deliveredVersion'));
+                var versionTriangleSelector = versionSelector.select('path');
+                var versionTextSelector = versionSelector.select('text');
+                var todaySelector = svg.select('.today').data([new Date()]);
                 // Remove
                 releaseSelector.exit().remove();
                 sprintSelector.exit().remove();
                 sprintTextsSelector.exit().remove();
+                versionSelector.exit().remove();
                 // Insert
                 var classByState = {1: 'default', 2: 'progress', 3: 'done'};
                 releaseSelector.enter().append("rect")
@@ -471,6 +479,14 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .attr("y", 6 + height / 2)
                     .style("text-anchor", "middle")
                     .attr("font-size", "18px");
+                var versionEnter = versionSelector.enter().append("g")
+                    .attr("class", "version");
+                versionEnter.append("path")
+                    .attr("d", d3.svg.symbol().type("triangle-down"));
+                versionEnter.append("text")
+                    .attr("y", 12)
+                    .style("text-anchor", "middle")
+                    .attr("font-size", "11px");
                 // Update
                 var getX = function(item) {
                     return x(item.startDate);
@@ -481,22 +497,33 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var selectedClass = function(item) {
                     return _.includes(selectedItems, item) ? ' selected' : ''
                 };
+                var dateSelectedClass = function(date) {
+                    return _.some(selectedItems, function(item) {
+                        return item.startDate <= date && item.endDate >= date;
+                    }) ? ' selected' : ''
+                };
                 releaseSelector
                     .attr('x', getX)
                     .attr("width", getWidth)
-                    .attr("class", function(release) {
-                        return "release release-" + classByState[release.state] + selectedClass(release);
-                    });
+                    .attr("class", function(release) { return "release release-" + classByState[release.state] + selectedClass(release); });
                 sprintSelector
                     .attr('x', getX)
                     .attr("width", getWidth)
-                    .attr("class", function(sprint) {
-                        return "sprint sprint-" + classByState[sprint.state] + selectedClass(sprint);
-                    });
+                    .attr("class", function(sprint) { return "sprint sprint-" + classByState[sprint.state] + selectedClass(sprint); });
                 sprintTextsSelector
                     .text(function(sprint) { return sprint.index; })
                     .attr('x', function(sprint) { return x(new Date(sprint.startDate.getTime() + (sprint.endDate.getTime() - sprint.startDate.getTime()) / 2)); })
                     .attr("class", function(sprint) { return "sprint-text" + selectedClass(sprint); });
+                versionSelector
+                    .attr("class", function(sprint) { return 'version' + dateSelectedClass(getEffectiveEndDate(sprint)); });
+                versionTriangleSelector
+                    .attr("transform", function(sprint) { return "translate(" + x(getEffectiveEndDate(sprint)) + "," + (releaseYMargin + sprintYMargin - 6) + ")"; }); // Offset to align border rather than center
+                versionTextSelector
+                    .text(function(sprint) { return sprint.deliveredVersion; })
+                    .attr('x', function(sprint) { return x(getEffectiveEndDate(sprint)); });
+                todaySelector
+                    .attr("transform", function(date) { return "translate(" + x(date) + "," +  (releaseYMargin + releaseHeight - 5) + ")"; }) // Offset to align border rather than center
+                    .attr("class", function(date) { return 'today' + dateSelectedClass(date); });
             }
             // Brush management
             function reinitializeBrush() {
@@ -842,8 +869,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         templateUrl: 'states.html',
         link: function(scope, element, attrs, modelCtrl) {
             var width = 100 / _.filter(_.keys(scope.modelStates), function(key) {
-                return scope.modelStates[key] >= 0
-            }).length;
+                    return scope.modelStates[key] >= 0
+                }).length;
             scope.$watch(function() { return modelCtrl.$modelValue.state; }, function(newState) {
                 scope.states = [];
                 _.each(scope.modelStates, function(state, code) {

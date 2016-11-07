@@ -301,12 +301,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         }
     };
     this.transformStringToDate = function(item) {
-        if (item.hasOwnProperty('startDate')) {
-            item.startDate = new Date(item.startDate);
-        }
-        if (item.hasOwnProperty('endDate')) {
-            item.endDate = new Date(item.endDate);
-        }
+        _.each(['startDate', 'endDate', 'inProgressDate', 'doneDate'], function(dateName) {
+            if (item.hasOwnProperty(dateName)) {
+                item[dateName] = new Date(item[dateName]);
+            }
+        });
     };
 }])
 .service('I18nService', [function() {
