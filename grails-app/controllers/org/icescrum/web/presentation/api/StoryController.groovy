@@ -271,14 +271,19 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
-    def returnToSandbox(long id, long product) {
-        def story = Story.withStory(product, id)
+    def returnToSandbox() {
+        def stories = Story.withStories(params)
         def rank
-        if (params.story?.rank) {
+        if (stories.size() == 1  && params.story?.rank) {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
-        storyService.returnToSandbox(story, rank)
-        render(status: 200, contentType: 'application/json', text: story as JSON)
+        Story.withTransaction {
+            stories.each { Story story ->
+                storyService.returnToSandbox(story, rank)
+            }
+        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])

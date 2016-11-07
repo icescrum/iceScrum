@@ -420,6 +420,11 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
             $scope.notifySuccess('todo.is.ui.story.multiple.accepted');
         });
     };
+    $scope.returnToSandboxMultiple = function() {
+        StoryService.returnToSandboxMultiple(storyListId).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.multiple.updated');
+        });
+    };
     $scope.followMultiple = function(follow) {
         StoryService.followMultiple(storyListId, follow).then(function() {
             refreshStories();

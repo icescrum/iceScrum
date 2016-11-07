@@ -217,6 +217,11 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
+    this.returnToSandboxMultiple = function(ids) {
+        return Story.updateArray({id: ids, action: 'returnToSandbox'}, {}, function(stories) {
+            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
+        }).$promise;
+    };
     this.acceptAsMultiple = function(ids, target) {
         return Story.updateArray({id: ids, action: 'acceptAs' + target}, {}, function() {
             _.each(ids, function(stringId) {

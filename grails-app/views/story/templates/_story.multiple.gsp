@@ -117,22 +117,22 @@
                         <button type="button"
                                 class="btn btn-default"
                                 uib-dropdown-toggle>
-                            <g:message code='is.dialog.acceptAs.acceptAs.title'/> <i class="fa fa-caret-down"></i>
+                            ${message(code:'is.dialog.acceptAs.acceptAs.title')} <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu role="menu">
                             <li>
                                 <a href ng-click="acceptToBacklogMultiple()">
-                                    <g:message code='is.ui.backlog.menu.acceptAsStory'/>
+                                    ${message(code:'is.ui.backlog.menu.acceptAsStory')}
                                 </a>
                             </li>
                             <li>
                                 <a href ng-click="acceptAsMultiple('Feature')">
-                                    <g:message code='is.ui.backlog.menu.acceptAsFeature'/>
+                                    ${message(code:'is.ui.backlog.menu.acceptAsFeature')}
                                 </a>
                             </li>
                             <li>
                                 <a href ng-click="acceptAsMultiple('Task')">
-                                    <g:message code='is.ui.backlog.menu.acceptAsUrgentTask'/>
+                                    ${message(code:'is.ui.backlog.menu.acceptAsUrgentTask')}
                                 </a>
                             </li>
                         </ul>
@@ -142,13 +142,19 @@
                                 ng-if="authorizedStories('copy', stories)"
                                 class="btn btn-default"
                                 ng-click="copyMultiple()">
-                            <g:message code='is.ui.releasePlan.menu.story.clone'/>
+                            ${message(code:'is.ui.releasePlan.menu.story.clone')}
+                        </button>
+                        <button type="button"
+                                ng-if="authorizedStories('returnToSandbox', stories)"
+                                class="btn btn-default"
+                                ng-click="returnToSandboxMultiple()">
+                            ${message(code:'is.ui.backlog.menu.returnToSandbox')}
                         </button>
                         <button type="button"
                                 ng-if="authorizedStories('delete', stories)"
                                 class="btn btn-default"
                                 ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
-                            <g:message code='is.ui.backlog.menu.delete'/>
+                            ${message(code:'is.ui.backlog.menu.delete')}
                         </button>
                     </div>
                     <div ng-if="authorizedStories('follow', stories)"
