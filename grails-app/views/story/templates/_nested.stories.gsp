@@ -24,11 +24,16 @@
 <script type="text/ng-template" id="nested.stories.html">
 <div class="panel-body">
     <div ng-repeat="story in selected.stories">
-        <button class="btn btn-xs btn-default"
-                disabled="disabled">{{ story.uid }}</button>
-        <a ng-if="!isModal"
-           ui-sref=".story.details({storyId: story.id})">{{ story.name }}</a>
-        <span ng-if="isModal">{{ story.name }}</span>
+        <div>
+            <button class="btn btn-xs btn-default"
+                    disabled="disabled">{{ story.uid }}</button>
+            {{ story.name }}
+            <a class="btn btn-xs btn-default pull-right"
+               ng-if="!isModal"
+               ui-sref=".story.details({storyId: story.id})">
+                <i class="fa fa-info-circle"></i>
+            </a>
+        </div>
         <div class="pretty-printed"
              ng-bind-html="story | storyDescription: true | sanitize">
         </div>

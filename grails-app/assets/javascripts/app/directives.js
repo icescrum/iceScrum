@@ -517,12 +517,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 versionSelector
                     .attr("class", function(sprint) { return 'version' + dateSelectedClass(getEffectiveEndDate(sprint)); });
                 versionTriangleSelector
-                    .attr("transform", function(sprint) { return "translate(" + x(getEffectiveEndDate(sprint)) + "," + (releaseYMargin + sprintYMargin - 6) + ")"; }); // Offset to align border rather than center
+                    .attr("transform", function(sprint) { return "translate(" + x(getEffectiveEndDate(sprint)) + "," + (releaseYMargin + sprintYMargin - 5) + ")"; }); // Offset to align border rather than center
                 versionTextSelector
                     .text(function(sprint) { return sprint.deliveredVersion; })
                     .attr('x', function(sprint) { return x(getEffectiveEndDate(sprint)); });
                 todaySelector
-                    .attr("transform", function(date) { return "translate(" + x(date) + "," +  (releaseYMargin + releaseHeight - 5) + ")"; }) // Offset to align border rather than center
+                    .attr("transform", function(date) { return "translate(" + x(date) + "," +  (releaseYMargin + releaseHeight - 6) + ")"; }) // Offset to align border rather than center
                     .attr("class", function(date) { return 'today' + dateSelectedClass(date); });
             }
             // Brush management

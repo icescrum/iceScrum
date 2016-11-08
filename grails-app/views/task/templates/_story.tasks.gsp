@@ -36,13 +36,19 @@
                     </div>
                     <div class="form-group col-sm-8">
                         <span class="name form-control-static">
-                            <a ng-if="!isModal"
-                               ui-sref=".task.details({taskId: task.id})">{{ task.name }}</a>
+                            {{ task.name }}
                             <span ng-if="isModal">{{ task.name }}</span>
                         </span>
                     </div>
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-sm-2">
                         <span class="form-control-static text-right">{{ task.estimation != undefined ? task.estimation : '?' }} <i class="small-icon fa {{ task.state | taskStateIcon }}"></i></span>
+                    </div>
+                    <div class="col-sm-1">
+                        <a class="btn btn-default"
+                           ng-if="!isModal"
+                           ui-sref=".task.details({taskId: task.id})">
+                            <i class="fa fa-info-circle"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="clearfix no-padding" ng-if="task.description">

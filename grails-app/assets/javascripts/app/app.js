@@ -236,7 +236,8 @@ angular.module('isApp', [
         return options;
     };
     var getFeatureDetailsState = function(viewContext, isModal) {
-        var options = {
+        var tabNames = _.keys(featureTabs);
+        var featureState = {
             name: 'details',
             url: "/{featureId:int}",
             resolve: {
@@ -245,46 +246,47 @@ angular.module('isApp', [
                     return FeatureService.get($stateParams.featureId);
                 }]
             },
-            views: {}
-        };
-        var tabNames = _.keys(featureTabs);
-        options.children = [
-            {
-                name: 'tab',
-                url: '/{featureTabId:(?:' + _.join(tabNames, '|') + ')}',
-                resolve: {},
-                views: {
-                    "details-tab": {
-                        templateUrl: function($stateParams) {
-                            if ($stateParams.featureTabId) {
-                                return featureTabs[$stateParams.featureTabId].templateUrl;
-                            }
-                        },
-                        controller: ['$scope', 'detailsFeature', function($scope, detailsFeature) {
-                            $scope.selected = detailsFeature;
-                        }]
+            views: {},
+            children: [
+                {
+                    name: 'tab',
+                    url: '/{featureTabId:(?:' + _.join(tabNames, '|') + ')}',
+                    resolve: {},
+                    views: {
+                        "details-tab": {
+                            templateUrl: function($stateParams) {
+                                if ($stateParams.featureTabId) {
+                                    return featureTabs[$stateParams.featureTabId].templateUrl;
+                                }
+                            },
+                            controller: ['$scope', 'detailsFeature', function($scope, detailsFeature) {
+                                $scope.selected = detailsFeature;
+                            }]
+                        }
                     }
                 }
-            }
-        ];
+            ]
+        };
+        var featureTabState = featureState.children[0];
         _.each(featureTabs, function(value, key) {
-            options.children[0].resolve['data' + key] = value.data;
+            featureTabState.resolve['data' + key] = value.data;
         });
-        options.views['details' + (viewContext ? viewContext : '')] = {
+        featureState.views['details' + (viewContext ? viewContext : '')] = {
             templateUrl: 'feature.details.html',
             controller: 'featureDetailsCtrl'
         };
         if (!isModal) {
-            options.children[0].children = [
+            featureTabState.children = [
                 getDetailsModalState('story', {
                     children: [getStoryDetailsState('@', true)]
                 })
             ];
         }
-        return options;
+        return featureState;
     };
     var getStoryDetailsState = function(viewContext, isModal) {
-        var options = {
+        var tabNames = _.keys(storyTabs);
+        var storyState = {
             name: 'details',
             url: "/{storyId:int}",
             resolve: {
@@ -292,47 +294,47 @@ angular.module('isApp', [
                     return StoryService.get($stateParams.storyId);
                 }]
             },
-            views: {}
-        };
-        var tabNames = _.keys(storyTabs);
-        options.children = [
-            {
-                name: 'tab',
-                url: '/{storyTabId:(?:' + _.join(tabNames, '|') + ')}',
-                resolve: {},
-                views: {
-                    "details-tab": {
-                        templateUrl: function($stateParams) {
-                            if ($stateParams.storyTabId) {
-                                return storyTabs[$stateParams.storyTabId].templateUrl;
-                            }
-                        },
-                        controller: ['$scope', 'detailsStory', function($scope, detailsStory) {
-                            $scope.selected = detailsStory;
-                        }]
+            views: {},
+            children: [
+                {
+                    name: 'tab',
+                    url: '/{storyTabId:(?:' + _.join(tabNames, '|') + ')}',
+                    resolve: {},
+                    views: {
+                        "details-tab": {
+                            templateUrl: function($stateParams) {
+                                if ($stateParams.storyTabId) {
+                                    return storyTabs[$stateParams.storyTabId].templateUrl;
+                                }
+                            },
+                            controller: ['$scope', 'detailsStory', function($scope, detailsStory) {
+                                $scope.selected = detailsStory;
+                            }]
+                        }
                     }
                 }
-            }
-        ];
+            ]
+        };
+        var storyTabState = storyState.children[0];
         _.each(storyTabs, function(value, key) {
-            options.children[0].resolve['data' + key] = value.data;
+            storyTabState.resolve['data' + key] = value.data;
         });
-        options.views['details' + (viewContext ? viewContext : '')] = {
+        storyState.views['details' + (viewContext ? viewContext : '')] = {
             templateUrl: 'story.details.html',
             controller: 'storyDetailsCtrl'
         };
         if (!isModal) {
-            options.children[0].children = [
+            storyTabState.children = [
                 getDetailsModalState('task', {
                     resolve: {
-                        taskContext: ['selected', function(selected) {
-                            return selected;
+                        taskContext: ['detailsStory', function(detailsStory) {
+                            return detailsStory;
                         }]
                     },
                     children: [getTaskDetailsState('@')]
                 })
             ];
-            options.children.push(getDetailsModalState('feature', {
+            storyState.children.push(getDetailsModalState('feature', {
                 resolve: {
                     features: ['FeatureService', function(FeatureService) {
                         return FeatureService.list();
@@ -341,7 +343,7 @@ angular.module('isApp', [
                 children: [getFeatureDetailsState('@', true)]
             }));
         }
-        return options;
+        return storyState;
     };
     var getBacklogStoryState = function() {
         return {
@@ -384,7 +386,7 @@ angular.module('isApp', [
                                     return FeatureService.list();
                                 }]
                             },
-                            children: [getFeatureDetailsState('@backlog', true)]
+                            children: [getFeatureDetailsState('@', true)]
                         })
                     ]
                 },
