@@ -43,30 +43,29 @@
                     ${message(code: 'todo.is.ui.sprint.new')}
                 </a>
             </div>
-            <div class="btn-group pull-right">
-                <button type="button"
-                        class="btn btn-danger hidden-on-simulation"
-                        ng-click="enterSimulationMode()">
-                        Simulation
-                </button>
-                <button type="button"
-                        class="btn btn-danger visible-on-simulation"
-                        ng-click="exitSimulationMode()">
-                    Exit simulation
-                </button>
-            </div>
-            <div  class="simulation-slider pull-right visible-on-simulation">
-                <slider
-                        ng-model="simulationMode.capacity"
-                        min="simulationMode.min"
-                        slider-tooltip-position="bottom"
-                        step="simulationMode.step"
-                        max="simulationMode.max"
-                        on-stop-slide="doSimulate($event,value)"
-                        value="simulationMode.capacity">
-                </slider>
-                {{ simulationMode.capacitySaved }}
-            </div>
+            %{--<div class="btn-group pull-right">--}%
+                %{--<button type="button"--}%
+                        %{--class="btn btn-danger hidden-on-simulation"--}%
+                        %{--ng-click="enterSimulationMode()">--}%
+                     %{--${message(code: 'todo.is.ui.planning.simulate.enter')}--}%
+                %{--</button>--}%
+                %{--<button type="button"--}%
+                        %{--class="btn btn-danger visible-on-simulation"--}%
+                        %{--ng-click="exitSimulationMode()">--}%
+                    %{--${message(code: 'todo.is.ui.planning.simulate.exit')}--}%
+                %{--</button>--}%
+            %{--</div>--}%
+            %{--<div class="simulation-slider pull-right visible-on-simulation text-center">--}%
+                %{--<slider tooltip="hide"--}%
+                        %{--ng-model="simulationMode.capacity"--}%
+                        %{--min="simulationMode.min"--}%
+                        %{--step="simulationMode.step"--}%
+                        %{--max="simulationMode.max"--}%
+                        %{--on-stop-slide="refreshSimulation($event,value)"--}%
+                        %{--value="simulationMode.capacity">--}%
+                %{--</slider>--}%
+                %{--${message(code: 'is.dialog.promptCapacityAutoPlan.title')} {{ simulationMode.capacity }}--}%
+            %{--</div>--}%
             <div class="btn-group pull-right hidden-on-simulation"
                  ng-if="isMultipleSprint()">
                 <a class="btn btn-default"
