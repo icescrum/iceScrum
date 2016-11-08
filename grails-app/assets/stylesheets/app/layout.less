@@ -866,14 +866,7 @@ table {
       shape-rendering: crispEdges;
     }
     .sprint, .release {
-      stroke: #ccc;
-    }
-    .sprint.selected {
-      stroke: #666;
-    }
-    .release.selected {
-      stroke: #777;
-      stroke-width: 2;
+      //stroke: #ccc;
     }
     .version {
       text, path {
@@ -894,17 +887,46 @@ table {
     .sprint-text {
       fill: #ccc;
       &.selected {
-        fill: #666;
+        fill: #FFF;
       }
     }
-    .release-default, .sprint-default {
+    .selected {
+      &.release-default {
+        fill: @state-suggested;
+      }
+      &.release-progress {
+        fill: @state-inProgress;
+      }
+      &.release-done {
+        fill: @state-done;
+      }
+      &.sprint-default {
+        fill: lighten(@state-suggested, 5%);
+      }
+      &.sprint-progress {
+        fill: lighten(@state-inProgress, 5%);
+      }
+      &.sprint-done {
+        fill: lighten(@state-done, 5%);
+      }
+    }
+    .release-default {
       fill: @state-suggested-light;
     }
-    .release-progress, .sprint-progress {
+    .release-progress {
       fill: @state-inProgress-light;
     }
-    .release-done, .sprint-done {
+    .release-done {
       fill: @state-done-light;
+    }
+    .sprint-default {
+      fill: darken(@state-suggested-light, 5%);
+    }
+    .sprint-progress {
+      fill: darken(@state-inProgress-light, 5%);
+    }
+    .sprint-done {
+      fill: darken(@state-done-light, 5%);
     }
   }
 }
