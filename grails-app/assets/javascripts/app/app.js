@@ -81,7 +81,8 @@ angular.module('isApp', [
         'as.sortable',
         'angular.atmosphere',
         'nvd3',
-        'ngStorage'
+        'ngStorage',
+        'ui.bootstrap-slider'
     ].concat(isSettings.plugins)
 )
 .config(['$httpProvider', function($httpProvider) {

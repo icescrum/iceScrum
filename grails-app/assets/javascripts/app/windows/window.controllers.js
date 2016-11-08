@@ -114,7 +114,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'Feat
     $scope.orderByRank();
 }]);
 
-controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'SprintService', 'ProjectService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, ReleaseService, SprintService, ProjectService, SprintStatesByName, ReleaseStatesByName, project, releases) {
+controllers.controller('planningCtrl', ['$scope', '$state', '$timeout', 'ReleaseService', 'SprintService', 'ProjectService', 'PushService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, $timeout, ReleaseService, SprintService, ProjectService, PushService, SprintStatesByName, ReleaseStatesByName, project, releases) {
     $scope.isSelected = function(selectable) {
         if ($state.params.storyId) {
             return $state.params.storyId == selectable.id;
@@ -188,6 +188,33 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     $scope.isMultipleSprint = function() {
         return _.startsWith($state.current.name, 'planning.release.sprint.multiple');
     };
+    $scope.enterSimulationMode = function(){
+        PushService.disable();
+        $scope.simulationMode.active = true;
+        $scope.visibleSprintMax = 5;
+        $scope.computeVisibleSprints();
+        if(!$scope.app.isFullScreen){
+            $scope.fullScreen();
+        }
+    };
+    $scope.exitSimulationMode = function(){
+        PushService.enable();
+        $scope.simulationMode.active = false;
+        $scope.visibleSprintMax = 3;
+        $scope.computeVisibleSprints();
+        //out of fullScreen
+        if($scope.app.isFullScreen){
+            $scope.fullScreen();
+        }
+    };
+    $scope.doSimulate = function(eventName, capacity){
+        $scope.simulationMode.capacitySaved = capacity;
+        $scope.simulationMode.working = true;
+        $timeout(function(){
+            //Do stuff here
+            $scope.simulationMode.working = false;
+        }, 2000);
+    };
     // Init
     $scope.viewName = 'planning';
     $scope.visibleSprintMax = 3;
@@ -196,6 +223,15 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'ReleaseService', 'S
     $scope.project = project;
     $scope.releases = project.releases;
     $scope.sprints = [];
+    $scope.simulationMode = {
+        active:false,
+        min:0,
+        max:100,
+        step:1,
+        capacity:50,
+        working: false
+    };
+
     $scope.timelineSelected = function(selectedItems) { // Timeline -> URL
         if (selectedItems.length == 0) {
             $state.go('planning');

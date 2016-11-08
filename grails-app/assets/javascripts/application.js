@@ -32,6 +32,7 @@
 
 //= require           vendors/bootstrap/bootstrap.min
 //= require           vendors/bootstrap/bootstrap.offcanvas.min
+//= require           vendors/bootstrap/bootstrap-slider.min
 
 //= require           vendors/angular/angular.min
 //= require           vendors/angular/angular-route.min

@@ -33,15 +33,42 @@
             </div>
             <div class="btn-group pull-right">
                 <a class="btn btn-primary"
-                   ng-if="authorizedRelease('create')"
+                   ng-if="authorizedRelease('create') && !simulationMode.active"
                    href="#{{ ::viewName }}/new">
                     ${message(code: 'todo.is.ui.release.new')}
                 </a>
                 <a class="btn btn-primary"
-                   ng-if="authorizedSprint('create')"
+                   ng-if="authorizedSprint('create') && !simulationMode.active"
                    href="#{{ viewName + '/' + release.id }}/sprint/new">
                     ${message(code: 'todo.is.ui.sprint.new')}
                 </a>
+            </div>
+            <div class="btn-group pull-right">
+                <button type="button"
+                        class="btn btn-danger"
+                        ng-if="!simulationMode.active"
+                        ng-click="enterSimulationMode()">
+                        Simulation
+                </button>
+                <button type="button"
+                        class="btn btn-danger"
+                        ng-if="simulationMode.active"
+                        ng-click="exitSimulationMode()">
+                    Exit simulation
+                </button>
+            </div>
+            <div  class="simulation-slider pull-right"
+                  ng-if="simulationMode.active">
+                <slider
+                        ng-model="simulationMode.capacity"
+                        min="simulationMode.min"
+                        slider-tooltip-position="bottom"
+                        step="simulationMode.step"
+                        max="simulationMode.max"
+                        on-stop-slide="doSimulate($event,value)"
+                        value="simulationMode.capacity">
+                </slider>
+                {{ simulationMode.capacitySaved }}
             </div>
             <div class="btn-group pull-right"
                  ng-if="isMultipleSprint()">
@@ -59,6 +86,7 @@
                 </button>
                 <button type="button"
                         class="btn btn-default"
+                        ng-if="!simulationMode.active"
                         ng-click="fullScreen()"
                         uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                 </button>
@@ -73,8 +101,10 @@
         <hr>
     </div>
     <div ng-if="releases.length > 0"
-         class="backlogs-list-details"
+         class="backlogs-list-details loadable"
+         ng-class="{'loading': simulationMode.working}"
          selectable="selectableOptions">
+        <div class="loading-logo" ng-include="'loading.html'"></div>
         <div class="panel panel-light"
              ng-repeat="sprint in visibleSprints"
              ng-controller="sprintBacklogCtrl">
@@ -90,15 +120,17 @@
                             <button class="btn btn-primary"
                                     type="button"
                                     ng-click="showStoriesSelectorModal({filter:planStories.filter, callback: planStories.callback, args:[sprint], code: 'plan'})"
-                                    ng-if="authorizedSprint('plan', sprint)" style="position:relative">
+                                    ng-if="authorizedSprint('plan', sprint) && !simulationMode.active" style="position:relative">
                                 ${message(code: 'todo.is.ui.story.plan')}
                             </button>
                             <a class="btn btn-default"
+                               ng-if="!simulationMode.active"
                                href="#/taskBoard/{{ sprint.id }}/details"
                                uib-tooltip="${message(code: 'todo.is.ui.taskBoard')}">
                                 <i class="fa fa-tasks"></i>
                             </a>
                             <a class="btn btn-default"
+                               ng-if="!simulationMode.active"
                                href="{{ openSprintUrl(sprint) }}"
                                uib-tooltip="${message(code: 'todo.is.ui.details')}">
                                 <i class="fa fa-info-circle"></i>

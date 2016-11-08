@@ -27,6 +27,7 @@
 *= require           vendors/bootstrap/less/bootstrap.less
 *= require           vendors/todc/less/todc-bootstrap.less
 *= require           vendors/bootstrap/bootstrap.offcanvas.min.css
+*= require           vendors/bootstrap/bootstrap-slider.min.css
 
 *= require_full_tree vendors/jquery
 *= require_full_tree vendors/angular

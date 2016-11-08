@@ -25,6 +25,7 @@
 services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', 'FormService', function($rootScope, $http, atmosphereService, IceScrumEventType, FormService) {
     var self = this;
     self.push = {};
+    self.disabled = false;
     this.listeners = {};
     var logLevel = 'info';
     var _canLog = function(level) {
@@ -151,6 +152,9 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
         });
     };
     this.publishEvent = function(jsonBody) {
+        if(isDisabled()){
+            return;
+        }
         var object = jsonBody.object;
         var namespace = jsonBody.namespace.toLowerCase();
         if (!_.isEmpty(self.listeners[namespace])) {
@@ -163,5 +167,14 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 listener(object);
             });
         }
+    };
+    this.isDisabled = function(){
+        return this.disabled;
+    };
+    this.disable = function(){
+        this.disabled = true;
+    };
+    this.enable = function(){
+        this.disabled = false;
     };
 }]);
