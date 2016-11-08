@@ -54,7 +54,7 @@
 </script>
 
 <script type="text/ng-template" id="story.backlog.planning.empty.html">
-<div ng-if="sprint.state < sprintStatesByName.DONE">
+<div ng-if="sprint.state < sprintStatesByName.DONE" class="hidden-on-simulation">
     <p class="help-block">${message(code: 'todo.is.ui.story.empty.planning')}</p>
     <button class="btn btn-primary"
             type="button"

@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-<div class="panel panel-light">
+<div class="panel panel-light" ng-class="{'simulation':simulationMode.active}">
     <div ng-if="releases.length > 0"
          class="backlogs-list">
         <div class="btn-toolbar">
@@ -32,33 +32,30 @@
                 </button>
             </div>
             <div class="btn-group pull-right">
-                <a class="btn btn-primary"
-                   ng-if="authorizedRelease('create') && !simulationMode.active"
+                <a class="btn btn-primary hidden-on-simulation"
+                   ng-if="authorizedRelease('create')"
                    href="#{{ ::viewName }}/new">
                     ${message(code: 'todo.is.ui.release.new')}
                 </a>
-                <a class="btn btn-primary"
-                   ng-if="authorizedSprint('create') && !simulationMode.active"
+                <a class="btn btn-primary hidden-on-simulation"
+                   ng-if="authorizedSprint('create')"
                    href="#{{ viewName + '/' + release.id }}/sprint/new">
                     ${message(code: 'todo.is.ui.sprint.new')}
                 </a>
             </div>
             <div class="btn-group pull-right">
                 <button type="button"
-                        class="btn btn-danger"
-                        ng-if="!simulationMode.active"
+                        class="btn btn-danger hidden-on-simulation"
                         ng-click="enterSimulationMode()">
                         Simulation
                 </button>
                 <button type="button"
-                        class="btn btn-danger"
-                        ng-if="simulationMode.active"
+                        class="btn btn-danger visible-on-simulation"
                         ng-click="exitSimulationMode()">
                     Exit simulation
                 </button>
             </div>
-            <div  class="simulation-slider pull-right"
-                  ng-if="simulationMode.active">
+            <div  class="simulation-slider pull-right visible-on-simulation">
                 <slider
                         ng-model="simulationMode.capacity"
                         min="simulationMode.min"
@@ -70,7 +67,7 @@
                 </slider>
                 {{ simulationMode.capacitySaved }}
             </div>
-            <div class="btn-group pull-right"
+            <div class="btn-group pull-right hidden-on-simulation"
                  ng-if="isMultipleSprint()">
                 <a class="btn btn-default"
                    href="{{ openMultipleSprintDetailsUrl() }}"
@@ -85,8 +82,7 @@
                         ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
                 </button>
                 <button type="button"
-                        class="btn btn-default"
-                        ng-if="!simulationMode.active"
+                        class="btn btn-default hidden-on-simulation"
                         ng-click="fullScreen()"
                         uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                 </button>
@@ -117,20 +113,18 @@
                                   uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
                             <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
                             <i class="small-icon fa fa-dollar"></i>
-                            <button class="btn btn-primary"
+                            <button class="btn btn-primary hidden-on-simulation"
                                     type="button"
                                     ng-click="showStoriesSelectorModal({filter:planStories.filter, callback: planStories.callback, args:[sprint], code: 'plan'})"
-                                    ng-if="authorizedSprint('plan', sprint) && !simulationMode.active" style="position:relative">
+                                    ng-if="authorizedSprint('plan', sprint)" style="position:relative">
                                 ${message(code: 'todo.is.ui.story.plan')}
                             </button>
-                            <a class="btn btn-default"
-                               ng-if="!simulationMode.active"
+                            <a class="btn btn-default hidden-on-simulation"
                                href="#/taskBoard/{{ sprint.id }}/details"
                                uib-tooltip="${message(code: 'todo.is.ui.taskBoard')}">
                                 <i class="fa fa-tasks"></i>
                             </a>
-                            <a class="btn btn-default"
-                               ng-if="!simulationMode.active"
+                            <a class="btn btn-default hidden-on-simulation"
                                href="{{ openSprintUrl(sprint) }}"
                                uib-tooltip="${message(code: 'todo.is.ui.details')}">
                                 <i class="fa fa-info-circle"></i>
@@ -159,7 +153,7 @@
             <div class="panel-body">
                 <div class="empty-view">
                     <p class="help-block">${message(code: 'is.ui.sprint.help')}<p>
-                    <a class="btn btn-primary"
+                    <a class="btn btn-primary hidden-on-simulation"
                        ng-if="authorizedSprint('create')"
                        href="#{{ viewName + '/' + release.id }}/sprint/new">
                         ${message(code: 'todo.is.ui.sprint.new')}
@@ -173,7 +167,7 @@
         <div class="panel-body">
             <div class="empty-view">
                 <p class="help-block">${message(code: 'is.ui.release.help')}<p>
-                <a class="btn btn-primary"
+                <a class="btn btn-primary hidden-on-simulation"
                    ng-if="authorizedRelease('create')"
                    href="#{{ ::viewName }}/new">
                     ${message(code: 'todo.is.ui.release.new')}
