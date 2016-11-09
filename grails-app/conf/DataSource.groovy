@@ -56,12 +56,12 @@ environments {
     production {
         dataSource {
             pooled = true
-            username = "root"
+            username = "sa"
             password = ""
-            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
-            driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/grails"
+            driverClassName = "org.h2.Driver"
+            url = "jdbc:h2:prodDb"
             dbCreate = "update"
+            jmxExport = true
             properties {
                 jmxEnabled = true
                 initialSize = 5
@@ -78,7 +78,7 @@ environments {
                 testOnBorrow = true
                 testWhileIdle = true
                 testOnReturn = false
-                jdbcInterceptors = "ConnectionState;StatementCache(max=200)"
+                jdbcInterceptors = "ConnectionState"
                 defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
             }
         }
