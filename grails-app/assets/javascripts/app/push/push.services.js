@@ -25,7 +25,7 @@
 services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', 'FormService', function($rootScope, $http, atmosphereService, IceScrumEventType, FormService) {
     var self = this;
     self.push = {};
-    self.disabled = false;
+    this.enabled = true;
     this.listeners = {};
     var logLevel = 'info';
     var _canLog = function(level) {
@@ -152,29 +152,19 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
         });
     };
     this.publishEvent = function(jsonBody) {
-        if(isDisabled()){
-            return;
+        if (this.enabled) {
+            var object = jsonBody.object;
+            var namespace = jsonBody.namespace.toLowerCase();
+            if (!_.isEmpty(self.listeners[namespace])) {
+                var eventType = jsonBody.eventType;
+                _.each(self.listeners[namespace][eventType], function(listener) {
+                    if (_canLog('debug')) {
+                        atmosphere.util.debug('Call listener on ' + eventType + ' ' + namespace);
+                    }
+                    FormService.transformStringToDate(object);
+                    listener(object);
+                });
+            }
         }
-        var object = jsonBody.object;
-        var namespace = jsonBody.namespace.toLowerCase();
-        if (!_.isEmpty(self.listeners[namespace])) {
-            var eventType = jsonBody.eventType;
-            _.each(self.listeners[namespace][eventType], function(listener) {
-                if (_canLog('debug')) {
-                    atmosphere.util.debug('Call listener on ' + eventType + ' ' + namespace);
-                }
-                FormService.transformStringToDate(object);
-                listener(object);
-            });
-        }
-    };
-    this.isDisabled = function(){
-        return this.disabled;
-    };
-    this.disable = function(){
-        this.disabled = true;
-    };
-    this.enable = function(){
-        this.disabled = false;
     };
 }]);
