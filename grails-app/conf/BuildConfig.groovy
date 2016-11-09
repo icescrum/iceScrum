@@ -83,7 +83,6 @@ grails.project.dependency.resolution = {
         //runtime "com.kagilum:icescrum-plugin-bugtracker:2.0"
     }
     plugins {
-        compile ':standalone:1.3'
         compile ':cache-headers:1.1.7'
         compile ':asset-pipeline:2.11.0'
         compile ':less-asset-pipeline:2.11.0'
