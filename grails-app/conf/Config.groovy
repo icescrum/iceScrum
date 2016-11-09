@@ -517,30 +517,28 @@ grails {
 /* User config */
 environments {
     production {
-        if (!grails.config.locations || !(grails.config.locations instanceof List)) {
-            grails.config.locations = []
-        }
-        def homeConfig = "${userHome}${File.separator}.icescrum${File.separator}config.groovy"
         def systemConfig = System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
         def envConfig = System.getenv(ApplicationSupport.CONFIG_ENV_NAME)
+        def homeConfig = "${userHome}${File.separator}.icescrum${File.separator}config.groovy"
         println "--------------------------------------------------------"
-        if (new File(homeConfig).exists()) {                          // 1. Default location home/.icescrum/config.groovy
-            println "iceScrum home defined configuration file: " + homeConfig
-            grails.config.locations << "file:" + homeConfig
-        } else if (systemConfig && new File(systemConfig).exists()) { // 2. System variable passed to the JVM : -Dicescrum_config_location=.../config.groovy
-            println "Including configuration file provided to the JVM as a System variable: " + systemConfig
-            grails.config.locations << "file:" + systemConfig
-        } else if (envConfig && new File(envConfig).exists()) {       // 2. Environment variable icescrum_config_location=.../config.groovy
-            println("Including System Environment configuration file: " + envConfig)
-            grails.config.locations << "file:" + envConfig
+        if (systemConfig && new File(systemConfig).exists()) {  // 1. System variable passed to the JVM : -Dicescrum_config_location=.../config.groovy
+            println "Use configuration file provided a JVM system variable: " + systemConfig
+            grails.config.locations = ["file:" + systemConfig]
+        } else if (envConfig && new File(envConfig).exists()) { // 2. Environment variable icescrum_config_location=.../config.groovy
+            println("Use configuration file provided by an environment variable: " + envConfig)
+            grails.config.locations = ["file:" + envConfig]
+        } else if (new File(homeConfig).exists()) {             // 3. Default location home/.icescrum/config.groovy
+            println "Use configuration file from the iceScrum home: " + homeConfig
+            grails.config.locations = ["file:" + homeConfig]
         } else {
             println "No configuration file found"
+            grails.config.locations = []
         }
         try {
             String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum_config_location") ?: (String) new InitialContext().lookup("java:comp/env/icescrum.config.location")
             if (extConfFile) {
                 grails.config.locations << extConfFile
-                println "*** JNDI defined config: file:${extConfFile}"
+                println "Use configuration file provided by JNDI: ${extConfFile}"
             }
         } catch (Exception e) {}
         println "(*) grails.config.locations = ${grails.config.locations}"
