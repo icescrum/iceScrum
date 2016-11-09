@@ -93,6 +93,7 @@ grails.project.dependency.resolution = {
         compile 'org.icescrum:entry-points:1.1'
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
+            compile 'org.icescrum:standalone:8.0.38'
         }
     }
 }
