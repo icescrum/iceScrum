@@ -49,7 +49,6 @@ class LoginController implements ControllerErrorHandler {
             return
         }
         session.invalidate()
-
         // required because locale is lost when session is invalidated
         def locale = params.lang ?: null
         try {
@@ -57,13 +56,10 @@ class LoginController implements ControllerErrorHandler {
             if (localeAccept?.size() > 0) {
                 locale = params.lang ?: localeAccept[0].toString()
             }
-        } catch (Exception e) {
-        }
-
+        } catch (Exception e) {}
         if (locale) {
             RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         }
-
         render(status: 200, template: "dialogs/auth", model: [
                 postUrl            : grailsApplication.config.grails.serverURL + config.apf.filterProcessesUrl,
                 rememberMeParameter: config.rememberMe.parameter,

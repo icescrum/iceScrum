@@ -73,11 +73,12 @@
         <g:if test="${activeLostPassword}"></div></g:if>
     </div>
     <div class="checkbox">
-        <label>
-            <input type='checkbox'
-                   name='${rememberMeParameter}'
-                   id='remember_me'
-                   <g:if test='${hasCookie}'>checked='checked'</g:if>/> <g:message code="is.dialog.login.rememberme"/>
+        <label for="credentials.remember_me">
+            <input type="checkbox"
+                   ng-model="credentials.${rememberMeParameter}"
+                   name="${rememberMeParameter}"
+                   id="credentials.remember_me"/>
+            ${message(code: 'is.dialog.login.rememberme')}
         </label>
     </div>
     <entry:point id="auth-dialog-after-form"/>

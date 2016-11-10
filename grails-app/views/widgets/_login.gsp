@@ -1,3 +1,4 @@
+<%@ page import="grails.plugin.springsecurity.SpringSecurityUtils" %>
 <is:widget widgetDefinition="${widgetDefinition}">
     <form novalidate role="form" ng-submit="login(credentials)" ng-controller="loginCtrl">
         <div class="form-group">
@@ -20,12 +21,12 @@
                    value="">
         </div>
         <div class="checkbox">
-            <label>
-                <input type='checkbox'
-                       name='${rememberMeParameter}'
-                       id='remember_me'
-                       <g:if test='${hasCookie}'>checked='checked'</g:if>/> <g:message
-                    code="is.dialog.login.rememberme"/>
+            <label for="credentials.remember_me">
+                <input type="checkbox"
+                       ng-model="credentials.${SpringSecurityUtils.securityConfig.rememberMe.parameter}"
+                       name="${SpringSecurityUtils.securityConfig.rememberMe.parameter}"
+                       id="credentials.remember_me"/>
+                    ${message(code: 'is.dialog.login.rememberme')}
             </label>
         </div>
         <div class="btn-toolbar pull-right">
