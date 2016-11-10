@@ -22,7 +22,6 @@
 
 import grails.util.Metadata
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
-import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.mime.DefaultAcceptHeaderParser
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.codehaus.groovy.grails.web.servlet.HttpHeaders
@@ -36,6 +35,7 @@ class BootStrap {
 
     def init = { servletContext ->
 
+        grailsApplication.config.grails.serverURL = System.getProperty('icescrum.serverURL') ?: grailsApplication.config.grails.serverURL
         localeResolver.defaultLocale = Locale.ENGLISH
         java.util.Locale.setDefault(Locale.ENGLISH)
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
