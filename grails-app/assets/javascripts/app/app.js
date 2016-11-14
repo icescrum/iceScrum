@@ -58,6 +58,7 @@ angular.module('isPlugins', [])
     });
 
 angular.module('isApp', [
+        'isPlugins', // To be able to use pluginTabsProvider
         'ngRoute',
         'ngAnimate',
         'ngSanitize',
