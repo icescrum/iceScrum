@@ -221,7 +221,6 @@ grails.assets.excludes = ["**/*.less"]
 grails.assets.includes = ["styles.less"]
 grails.assets.plugin."commentable".excludes = ["**/*"]
 grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
-grails.assets.minifyOptions.excludes = ["**/*.min.js"]
 
 /* CORS */
 icescrum.cors.enable = true
@@ -397,7 +396,6 @@ log4j = {
           'org.springframework',
           'org.hibernate',
           'net.sf.ehcache.hibernate'
-          // 'grails.plugin.springsecurity'
 
     warn  'org.mortbay.log'
     warn  'org.atmosphere.cpr'
@@ -427,6 +425,8 @@ log4j = {
     if (ApplicationSupport.booleanValue(Holders.config.icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
     }
+
+    error 'grails.plugin.springsecurity.web.access.intercept.AnnotationFilterInvocationDefinition' // Useless warning because are registered twice since it's based on controllerClazz.getMethods() which return the same method twice (1 with & 1 without params)
 
     appenders {
         appender new DailyRollingFileAppender(name: "icescrumFileLog",
