@@ -241,8 +241,12 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
         return $http.pendingRequests.length;
     }, function(newVal) {
         $scope.app.loading = newVal > 0 || $scope.app.loadingPercent < 100;
-        if ($scope.app.loading && $scope.app.loadingPercent < 100) {
-            $scope.app.loadingPercent = 100 - ((100 - $scope.app.loadingPercent) / newVal);
+        if ($scope.app.loadingPercent < 100) {
+            if (newVal == 0) {
+                $scope.app.loadingPercent = 100;
+            } else {
+                $scope.app.loadingPercent = 100 - ((100 - $scope.app.loadingPercent) / newVal);
+            }
         }
     });
     // Init error managmeent
