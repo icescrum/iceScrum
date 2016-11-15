@@ -39,18 +39,18 @@
     <g:layoutHead/>
 </head>
 <body class="error-template">
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div>
-                <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
-                    <g:render template="/scrumOS/logo"/>
-                </svg>
-                <g:layoutBody/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
+                        <g:render template="/scrumOS/logo"/>
+                    </svg>
+                    <g:layoutBody/>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<asset:javascript src="application.js"/>
+    <asset:javascript src="application.js"/>
 </body>
 </html>

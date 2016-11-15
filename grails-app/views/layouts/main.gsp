@@ -46,22 +46,22 @@
       fullscreen="app.isFullScreen"
       ng-class="{ 'app-ready':app != null, 'loading': (app.loading || app.loadingText), 'splash-screen': (app.loadingPercent != 100 || app.loadingText)  }"
       class="splash-screen loading">
-<div id="app-loading">
-    <svg class="logo" viewBox="0 0 150 150">
-        <g:render template="/scrumOS/logo"/>
-        <circle fill="none" cx="80px" cy="80px" r="63" style="stroke: #eee; stroke-width: 10px;"></circle>
-        <path fill="none" transform="" circle-coords="80,80,63,0" circle="app.loadingPercent"
-              class="loading-circle"></path>
-    </svg>
-    <div class="loading-text text-center">{{ app.loadingText }}</div>
-</div>
-<is:header/>
-<div class="container-fluid main" ui-view>
-    <g:layoutBody/>
-</div>
-<g:include controller="scrumOS" action="isSettings" params="[product: params.product]"/>
-<asset:javascript src="application.js"/>
-<g:include controller="scrumOS" action="templates" params="[product: params.product]"/>
-<entry:point id="icescrum-footer"/>
+    <div id="app-loading">
+        <svg class="logo" viewBox="0 0 150 150">
+            <g:render template="/scrumOS/logo"/>
+            <circle fill="none" cx="80px" cy="80px" r="63" style="stroke: #eee; stroke-width: 10px;"></circle>
+            <path fill="none" transform="" circle-coords="80,80,63,0" circle="app.loadingPercent"
+                  class="loading-circle"></path>
+        </svg>
+        <div class="loading-text text-center">{{ app.loadingText }}</div>
+    </div>
+    <is:header/>
+    <div class="container-fluid main" ui-view>
+        <g:layoutBody/>
+    </div>
+    <g:include controller="scrumOS" action="isSettings" params="[product: params.product]"/>
+    <asset:javascript src="application.js"/>
+    <g:include controller="scrumOS" action="templates" params="[product: params.product]"/>
+    <entry:point id="icescrum-footer"/>
 </body>
 </html>
