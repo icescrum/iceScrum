@@ -51,7 +51,7 @@
         <div class="loading-text text-center">{{ app.loadingText }}</div>
     </div>
     <div class="container-fluid">
-        <div class="row text-center">
+        <div class="text-center">
             <svg class="logo" viewBox="0 0 150 150">
                 <g:render template="/scrumOS/logo"/>
             </svg>

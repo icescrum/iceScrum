@@ -299,50 +299,6 @@ header {
           overflow-y: auto;
           overflow-x: hidden;
         }
-
-        &.panel-light {
-          .panel-default;
-          border-radius: 0;
-          border-bottom-width: 1px;
-          > .panel-heading {
-            .panel-border {
-              margin-top: 8px;
-              margin-bottom: 6px;
-            }
-          }
-          .right-title, .nav-justified {
-            .badge {
-              display: inline-block;
-              position: absolute;
-              left: 50%;
-              top: 20px;
-              margin-left: 5px;
-              background: none;
-              text-align: right;
-              font-weight: bold;
-              color: @gray-dark;
-            }
-          }
-          .right-title {
-            .btn-default {
-              position: relative;
-            }
-            .badge {
-              top: 15px;
-            }
-          }
-          .nav-justified {
-            li:first-of-type a {
-              border-left: none;
-            }
-            li:last-of-type a {
-              border-right: none;
-            }
-            li > a {
-              border-radius: 0;
-            }
-          }
-        }
       }
     }
     > .content {
@@ -509,6 +465,64 @@ header {
   }
 }
 
+.panel.panel-light {
+  .panel-default;
+  border-radius: 0;
+  border-bottom-width: 1px;
+  > .panel-heading {
+    .panel-title {
+      font-size: 20px;
+      &.small-title {
+        font-size: 15px;
+        .sub-title {
+          font-size: 13px;
+        }
+      }
+    }
+    .panel-border {
+      margin-top: 8px;
+      margin-bottom: 6px;
+    }
+  }
+  .right-title, .nav-justified {
+    .badge {
+      display: inline-block;
+      position: absolute;
+      left: 50%;
+      top: 20px;
+      margin-left: 5px;
+      background: none;
+      text-align: right;
+      font-weight: bold;
+      color: @gray-dark;
+    }
+  }
+  .right-title {
+    .btn-default {
+      position: relative;
+    }
+    .badge {
+      top: 15px;
+    }
+  }
+  .nav-justified {
+    li:first-of-type a {
+      border-left: none;
+    }
+    li:last-of-type a {
+      border-right: none;
+    }
+    li > a {
+      border-radius: 0;
+    }
+  }
+  > .panel-footer {
+    .panel-border {
+      border-top: 1px solid #eee;
+    }
+  }
+}
+
 table {
   tr {
     td {
@@ -645,6 +659,7 @@ table {
 
 .simple-template {
   background: @view-bg;
+  padding-top: 40px;
 }
 
 .comments, .tasks, .activities, .acceptanceTests {
