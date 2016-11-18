@@ -29,7 +29,7 @@
           show-validation
           novalidate>
         <wizard class="row wizard-row">
-            <wz-step title="${message(code:"is.dialog.wizard.section.project")}" icon="fa fa-pencil">
+            <wz-step wz-title="${message(code:"is.dialog.wizard.section.project")}" icon="fa fa-pencil">
                 <ng-include src="'form.general.project.html'"></ng-include>
                 <div class="btn-toolbar pull-right wizard-next">
                     <button type="button"
@@ -41,7 +41,7 @@
                     <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
                 </div>
             </wz-step>
-            <wz-step title="${message(code:"is.dialog.wizard.section.team")}" icon="fa fa-users">
+            <wz-step wz-title="${message(code:"is.dialog.wizard.section.team")}" icon="fa fa-users">
                 <div ng-controller="teamCtrl">
                     <ng-include src="'form.team.html'"></ng-include>
                     <ng-include src="'form.members.project.html'"></ng-include>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
             </wz-step>
-            <wz-step title="${message(code:"is.dialog.wizard.section.options")}" icon="fa fa-sliders">
+            <wz-step wz-title="${message(code:"is.dialog.wizard.section.options")}" icon="fa fa-sliders">
                 <ng-include src="'form.practices.project.html'"></ng-include>
                 <div class="btn-toolbar pull-right wizard-next">
                     <button type="button"
@@ -68,7 +68,7 @@
                     <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
                 </div>
             </wz-step>
-            <wz-step title="${message(code:"todo.is.ui.project.planning")}" icon="fa fa-calendar">
+            <wz-step wz-title="${message(code:"todo.is.ui.project.planning")}" icon="fa fa-calendar">
                 <ng-include src="'form.planning.project.html'"></ng-include>
                 <div class="btn-toolbar pull-right wizard-next">
                     <button type="button"
