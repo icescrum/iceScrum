@@ -243,6 +243,10 @@ class UrlMappings {
             controller = 'project'
             action = 'archive'
         }
+        "/project/$product/unArchive" {
+            controller = 'project'
+            action = 'unArchive'
+        }
         "/project/$product/$action" {
             controller = 'project'
             constraints {

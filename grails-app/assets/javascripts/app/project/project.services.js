@@ -49,6 +49,9 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
     this.archive = function(project) {
         return Project.update({id: project.id, action: 'archive'}, {}).$promise;
     };
+    this.unArchive = function(project) {
+        return Project.update({id: project.id, action: 'unArchive'}, {}).$promise;
+    };
     this['delete'] = function(project) {
         return Project.delete({id: project.id}).$promise;
     };

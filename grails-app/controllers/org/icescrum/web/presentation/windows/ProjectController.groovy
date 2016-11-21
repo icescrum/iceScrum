@@ -260,7 +260,7 @@ class ProjectController implements ControllerErrorHandler {
         }
     }
 
-    @Secured("hasRole('ROLE_ADMIN')")
+    @Secured("ROLE_ADMIN")
     def unArchive(long product) {
         Product _product = Product.withProduct(product)
         try {
