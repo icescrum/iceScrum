@@ -1009,6 +1009,11 @@ body {
         > .panel {
           .make-flex-panel();
         }
+        > .panel.form-inside {
+          > form {
+            .make-flex-panel();
+          }
+        }
       }
       &.with-details {
         overflow: hidden;
@@ -1017,7 +1022,7 @@ body {
           .make-flex-container();
           > .panel {
             .make-flex-container();
-            > [ui-view="details-tab"], > [ui-view="details-tab"] > form {
+            > [ui-view="details-tab"], > [ui-view="details-tab"] > form, > .details-no-tab, > .details-no-tab > form {
               .make-flex-panel();
               overflow: auto;
               height: 1px;
