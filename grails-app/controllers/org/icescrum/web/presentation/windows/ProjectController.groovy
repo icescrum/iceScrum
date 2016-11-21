@@ -56,7 +56,7 @@ class ProjectController implements ControllerErrorHandler {
     def securityService
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def index(String term, Boolean paginate, Integer count, Integer page, String sorting, String order) {
+    def index(String term, String filter, Boolean paginate, Integer count, Integer page, String sorting, String order) {
         def options = [cache: true]
         if (paginate) {
             options.offset = page ? (page - 1) * count : 0
@@ -64,12 +64,24 @@ class ProjectController implements ControllerErrorHandler {
             options.sort = sorting ?: 'name'
             options.order = order ?: 'asc'
         }
-        def projects = term ? Product.findAllLike(term, options) : Product.list(options)
-        def projectCount
-        if (paginate) {
-            projectCount = term ? Product.countAllLike(term, [cache: true]) : Product.count()
+        def projects = Product.createCriteria().list(options) {
+            if(filter){
+                preferences {
+                    if(filter == 'archived' || filter == 'actived'){
+                        eq 'archived', filter == 'archived'
+                    } else if(filter == 'hidden' || filter == 'public'){
+                        eq 'hidden', filter == 'hidden'
+                    }
+                }
+            }
+            if(term){
+                or {
+                    ilike 'name', "%${term}%"
+                    ilike 'pkey', "%${term}%"
+                }
+            }
         }
-        def returnData = paginate ? [projects: projects, count: projectCount] : projects
+        def returnData = paginate ? [projects: projects, count: projects.totalCount] : projects
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
