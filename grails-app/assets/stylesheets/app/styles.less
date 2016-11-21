@@ -1055,7 +1055,8 @@ tbody.story-ghost {
           background: linear-gradient(#FCFCFC, #FFF);
         }
         &.is-selected {
-          border-top: 1px solid @brand-primary;
+          border-top: none;
+          border-bottom: none;
         }
       }
       &:not(.cloned) > td {
@@ -1070,8 +1071,17 @@ tbody.story-ghost {
         margin-left: 0;
         margin-right: 0;
         .postit-container {
+          &.is-selected {
+            .postit {
+              border: 1px solid #4d90fe;
+              border-bottom: none;
+              border-right: none;
+            }
+          }
           .postit {
-            border: none;
+            .content, .head, .footer {
+              border: none;
+            }
             > div {
               background: linear-gradient(#FCFCFC, #FFF);
             }
