@@ -34,6 +34,7 @@ environments {
             driverClassName = "org.h2.Driver"
             username = "sa"
             password = ""
+            configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
         }
 //        dataSource {
 ////            logSql = true
@@ -51,6 +52,7 @@ environments {
             driverClassName = "org.h2.Driver"
             username = "sa"
             password = ""
+            configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
         }
     }
     production {
@@ -81,6 +83,7 @@ environments {
                 jdbcInterceptors = "ConnectionState"
                 defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
             }
+            configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
         }
     }
 }

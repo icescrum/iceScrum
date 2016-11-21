@@ -83,16 +83,16 @@ grails.project.dependency.resolution = {
         //runtime "com.kagilum:icescrum-plugin-bugtracker:2.0"
     }
     plugins {
-        compile ':cache-headers:1.1.7'
-        compile ':asset-pipeline:2.11.0'
-        compile ':less-asset-pipeline:2.11.0'
-        compile ':browser-detection:2.8.0'
-        runtime ':hibernate4:4.3.10'
-        build   ':tomcat:7.0.70'
-        compile 'org.icescrum:entry-points:1.1'
+        compile ':cache-headers:1.1.7'          //no support
+        compile ':asset-pipeline:2.11.0'        //:asset-pipeline:3.2.1
+        compile ':less-asset-pipeline:2.11.0'   //:less-asset-pipeline:2.11.6
+        compile ':browser-detection:2.8.0'      //:browser-detection:3.3.0
+        runtime ':hibernate4:4.3.10'            //hibernate5
+        build   ':tomcat:7.0.70'                //tomcat...
+        compile 'org.icescrum:entry-points:1.1' //to do
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
-            compile 'org.icescrum:standalone:8.0.38.2'
+            compile 'org.icescrum:standalone:8.0.38.2'        //remove
         }
     }
 }
