@@ -36,10 +36,10 @@ import org.icescrum.core.domain.*
 import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.ServicesUtils
-import org.icescrum.core.error.ControllerErrorHandler
 
 import static grails.async.Promises.task
 
@@ -64,23 +64,7 @@ class ProjectController implements ControllerErrorHandler {
             options.sort = sorting ?: 'name'
             options.order = order ?: 'asc'
         }
-        def projects = Product.createCriteria().list(options) {
-            if(filter){
-                preferences {
-                    if(filter == 'archived' || filter == 'actived'){
-                        eq 'archived', filter == 'archived'
-                    } else if(filter == 'hidden' || filter == 'public'){
-                        eq 'hidden', filter == 'hidden'
-                    }
-                }
-            }
-            if(term){
-                or {
-                    ilike 'name', "%${term}%"
-                    ilike 'pkey', "%${term}%"
-                }
-            }
-        }
+        def projects = Product.findAllByTermAndFilter(options, term, filter)
         def returnData = paginate ? [projects: projects, count: projects.totalCount] : projects
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
