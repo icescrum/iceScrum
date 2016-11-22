@@ -66,7 +66,7 @@
     <div ui-view="details-tab">
         <form ng-submit="update(editableRelease)"
               name='formHolder.releaseForm'
-              ng-class="{'form-editable':formHolder.editable, 'form-editing': formHolder.editing }"
+              ng-class="{'form-editable':formHolder.editable(), 'form-editing': formHolder.editing }"
               show-validation
               novalidate>
             <div class="panel-body">
@@ -76,7 +76,7 @@
                         <input required
                                name="name"
                                ng-focus="editForm(true)"
-                               ng-disabled="!formHolder.editable"
+                               ng-disabled="!formHolder.editable()"
                                ng-model="editableRelease.name"
                                type="text"
                                class="form-control"
@@ -87,7 +87,7 @@
                         <input required
                                name="firstSprintIndex"
                                ng-focus="editForm(true)"
-                               ng-disabled="!formHolder.editable"
+                               ng-disabled="!formHolder.editable()"
                                ng-model="editableRelease.firstSprintIndex"
                                type="number"
                                class="form-control"/>
@@ -176,10 +176,10 @@
                               ng-blur="showVisionTextarea = false"
                               placeholder="${message(code: 'todo.is.ui.release.novision')}"></textarea>
                     <div class="markitup-preview"
-                         ng-disabled="!formHolder.editable"
+                         ng-disabled="!formHolder.editable()"
                          ng-show="!showVisionTextarea"
-                         ng-click="showVisionTextarea = formHolder.editable"
-                         ng-focus="editForm(true); showVisionTextarea = formHolder.editable"
+                         ng-click="showVisionTextarea = formHolder.editable()"
+                         ng-focus="editForm(true); showVisionTextarea = formHolder.editable()"
                          ng-class="{'placeholder': !editableRelease.vision_html}"
                          tabindex="0"
                          ng-bind-html="(editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
@@ -207,10 +207,22 @@
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
+                    <button class="btn btn-danger"
+                            ng-if="editableRelease.lastUpdated != release.lastUpdated"
+                            ng-disabled="!isDirty() || formHolder.releaseForm.$invalid"
+                            type="submit">
+                        ${message(code:'default.button.override.label')}
+                    </button>
                     <button class="btn btn-default"
                             type="button"
                             ng-click="editForm(false)">
                         ${message(code:'is.button.cancel')}
+                    </button>
+                    <button class="btn btn-warning"
+                            type="button"
+                            ng-if="editableRelease.lastUpdated != release.lastUpdated"
+                            ng-click="resetReleaseForm()">
+                        <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
                     </button>
                 </div>
             </div>

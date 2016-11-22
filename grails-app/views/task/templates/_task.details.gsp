@@ -111,23 +111,23 @@
     <div ui-view="details-tab">
         <form ng-submit="update(editableTask)"
               name='formHolder.taskForm'
-              ng-class="{'form-editable':formHolder.editable, 'form-editing': formHolder.editing }"
+              ng-class="{'form-editable':formHolder.editable(), 'form-editing': formHolder.editing }"
               show-validation
               novalidate>
             <div class="panel-body">
                 <div class="clearfix no-padding">
                     <div class="form-2-tiers">
                         <label for="name">${message(code:'is.task.name')}</label>
-                        <div ng-class="{'input-group': formHolder.editable}">
+                        <div ng-class="{'input-group': formHolder.editable()}">
                             <input required
                                    ng-maxlength="100"
                                    ng-focus="editForm(true)"
-                                   ng-disabled="!formHolder.editable"
+                                   ng-disabled="!formHolder.editable()"
                                    name="name"
                                    ng-model="editableTask.name"
                                    type="text"
                                    class="form-control">
-                            <span class="input-group-btn" ng-if="formHolder.editable">
+                            <span class="input-group-btn" ng-if="formHolder.editable()">
                                 <button colorpicker
                                         class="btn {{ editableTask.color | contrastColor }}"
                                         type="button"
@@ -154,7 +154,7 @@
                     <textarea class="form-control important"
                               ng-maxlength="3000"
                               ng-focus="editForm(true)"
-                              ng-disabled="!formHolder.editable"
+                              ng-disabled="!formHolder.editable()"
                               placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                               name="description"
                               ng-model="editableTask.description"></textarea>
@@ -163,7 +163,7 @@
                     <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                     <ui-select class="form-control"
                                ng-click="retrieveTags(); editForm(true)"
-                               ng-disabled="!formHolder.editable"
+                               ng-disabled="!formHolder.editable()"
                                multiple
                                append-to-body="false"
                                tagging
@@ -182,7 +182,7 @@
                         <input type="number"
                                class="form-control"
                                ng-focus="editForm(true)"
-                               ng-disabled="!formHolder.editable"
+                               ng-disabled="!formHolder.editable()"
                                name="estimation"
                                ng-model="editableTask.estimation"/>
                     </div>
@@ -203,10 +203,10 @@
                               ng-blur="showNotesTextarea = false"
                               placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                     <div class="markitup-preview important"
-                         ng-disabled="!formHolder.editable"
+                         ng-disabled="!formHolder.editable()"
                          ng-show="!showNotesTextarea"
-                         ng-click="showNotesTextarea = formHolder.editable"
-                         ng-focus="editForm(true); showNotesTextarea = formHolder.editable"
+                         ng-click="showNotesTextarea = formHolder.editable()"
+                         ng-focus="editForm(true); showNotesTextarea = formHolder.editable()"
                          ng-class="{'placeholder': !editableTask.notes_html}"
                          tabindex="0"
                          ng-bind-html="(editableTask.notes_html ? editableTask.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
@@ -230,14 +230,27 @@
             <div class="panel-footer" ng-if="formHolder.editing">
                 <div class="btn-toolbar">
                     <button class="btn btn-primary"
+                            ng-if="editableTask.lastUpdated == task.lastUpdated"
                             ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
                             type="submit">
                         ${message(code:'default.button.update.label')}
+                    </button>
+                    <button class="btn btn-danger"
+                            ng-if="editableTask.lastUpdated != task.lastUpdated"
+                            ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
+                            type="submit">
+                        ${message(code:'default.button.override.label')}
                     </button>
                     <button class="btn btn-default"
                             type="button"
                             ng-click="editForm(false)">
                         ${message(code:'is.button.cancel')}
+                    </button>
+                    <button class="btn btn-warning"
+                            type="button"
+                            ng-if="editableTask.lastUpdated != task.lastUpdated"
+                            ng-click="resetTaskForm()">
+                        <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
                     </button>
                 </div>
             </div>

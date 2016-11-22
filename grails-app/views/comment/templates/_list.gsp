@@ -26,7 +26,7 @@
         <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
             <td class="content">
                 <form name="formHolder.commentForm"
-                      ng-class="{'toggle-container': formHolder.deletable, 'form-editable': formHolder.editable, 'form-editing': formHolder.editing }"
+                      ng-class="{'toggle-container': formHolder.deletable(), 'form-editable': formHolder.editable(), 'form-editing': formHolder.editing }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding">

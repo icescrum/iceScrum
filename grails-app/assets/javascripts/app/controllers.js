@@ -542,14 +542,16 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
         return !_.isEqual($scope[editable], $scope[editableReference]);
     };
     $scope.editForm = function(value) {
-        if ($scope.formHolder.editable && value != $scope.formHolder.editing) {
+        if ($scope.formHolder.editable() && value != $scope.formHolder.editing) {
             $scope.setInEditingMode(value); // global
             $scope[resetForm]();
         }
     };
     $scope[resetForm] = function() {
-        $scope.formHolder.editable = $scope[authorized]('update', $scope[type]);
-        $scope.formHolder.editing = $scope.formHolder.editable && $scope.isInEditingMode();
+        $scope.formHolder.editable = function() {
+            return $scope[authorized]('update', $scope[type]);
+        };
+        $scope.formHolder.editing = $scope.formHolder.editable() && $scope.isInEditingMode();
         if ($scope.formHolder.editing) {
             $scope[editable] = angular.copy($scope[type]);
             $scope[editableReference] = angular.copy($scope[type]);
@@ -568,11 +570,6 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     $scope[editableReference] = {};
     $scope.formHolder = {};
     $scope[resetForm]();
-    if (_.has(item, 'lastUpdated')) {
-        $scope.$watch(type + '.lastUpdated', function() {
-            $scope[resetForm]();
-        });
-    }
     FormService.addStateChangeDirtyFormListener($scope, type, true);
     if (resetOnProperties.length > 0) {
         var resetOnPropertiesW = '';

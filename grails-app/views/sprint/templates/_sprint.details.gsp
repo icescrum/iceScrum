@@ -78,7 +78,7 @@
     <div ui-view="details-tab">
         <form ng-submit="update(editableSprint)"
               name='formHolder.sprintForm'
-              ng-class="{'form-editable':formHolder.editable, 'form-editing': formHolder.editing }"
+              ng-class="{'form-editable':formHolder.editable(), 'form-editing': formHolder.editing }"
               show-validation
               novalidate>
             <div class="panel-body">
@@ -177,10 +177,10 @@
                               ng-blur="showRetrospectiveTextarea = false"
                               placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
                     <div class="markitup-preview important"
-                         ng-disabled="!formHolder.editable"
+                         ng-disabled="!formHolder.editable()"
                          ng-show="!showRetrospectiveTextarea"
-                         ng-click="showRetrospectiveTextarea = formHolder.editable"
-                         ng-focus="editForm(true); showRetrospectiveTextarea = formHolder.editable"
+                         ng-click="showRetrospectiveTextarea = formHolder.editable()"
+                         ng-focus="editForm(true); showRetrospectiveTextarea = formHolder.editable()"
                          ng-class="{'placeholder': !editableSprint.retrospective_html}"
                          tabindex="0"
                          ng-bind-html="(editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
@@ -190,7 +190,7 @@
                     <textarea name="goal"
                               class="form-control important"
                               ng-focus="editForm(true)"
-                              ng-disabled="!formHolder.editable"
+                              ng-disabled="!formHolder.editable()"
                               ng-maxlength="5000"
                               ng-model="editableSprint.goal"
                               placeholder="${message(code: 'todo.is.ui.sprint.nogoal')}"></textarea>
@@ -206,10 +206,10 @@
                               ng-blur="showDoneDefinitionTextarea = false"
                               placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
                     <div class="markitup-preview important"
-                         ng-disabled="!formHolder.editable"
+                         ng-disabled="!formHolder.editable()"
                          ng-show="!showDoneDefinitionTextarea"
-                         ng-click="showDoneDefinitionTextarea = formHolder.editable"
-                         ng-focus="editForm(true); showDoneDefinitionTextarea = formHolder.editable"
+                         ng-click="showDoneDefinitionTextarea = formHolder.editable()"
+                         ng-focus="editForm(true); showDoneDefinitionTextarea = formHolder.editable()"
                          ng-class="{'placeholder': !editableSprint.doneDefinition_html}"
                          tabindex="0"
                          ng-bind-html="(editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
@@ -237,10 +237,22 @@
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
+                    <button class="btn btn-danger"
+                            ng-if="editableSprint.lastUpdated != sprint.lastUpdated"
+                            ng-disabled="!isDirty() || formHolder.sprintForm.$invalid"
+                            type="submit">
+                        ${message(code:'default.button.override.label')}
+                    </button>
                     <button class="btn btn-default"
                             type="button"
                             ng-click="editForm(false)">
                         ${message(code:'is.button.cancel')}
+                    </button>
+                    <button class="btn btn-warning"
+                            type="button"
+                            ng-if="editableSprint.lastUpdated != sprint.lastUpdated"
+                            ng-click="resetStoryForm()">
+                        <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
                     </button>
                 </div>
             </div>

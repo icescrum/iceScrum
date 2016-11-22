@@ -26,7 +26,7 @@
         <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
             <td class="content">
                 <form name="formHolder.acceptanceTestForm"
-                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable, 'toggle-container':formHolder.deletable }"
+                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable(), 'toggle-container':formHolder.deletable() }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding form-group">
