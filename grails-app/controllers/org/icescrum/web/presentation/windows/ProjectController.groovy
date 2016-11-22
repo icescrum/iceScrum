@@ -406,15 +406,11 @@ class ProjectController implements ControllerErrorHandler {
                 def xmlFile
                 File uploadedProject = new File(uploadInfo.filePath)
                 if (FilenameUtils.getExtension(uploadedProject.name) == 'xml') {
-                    if (log.debugEnabled) {
-                        log.debug 'Export is an xml file, processing now'
-                    }
+                    log.debug 'Export is an xml file, processing now'
                     xmlFile = uploadedProject
                     path = uploadedProject.absolutePath
                 } else if (FilenameUtils.getExtension(uploadedProject.name) == 'zip') {
-                    if (log.debugEnabled) {
-                        log.debug 'Export is a zipped file, unzipping now'
-                    }
+                    log.debug 'Export is a zipped file, unzipping now'
                     def tmpDir = ApplicationSupport.createTempDir(FilenameUtils.getBaseName(uploadedProject.name))
                     ApplicationSupport.unzip(uploadedProject, tmpDir)
                     xmlFile = tmpDir.listFiles().find {
@@ -655,8 +651,9 @@ class ProjectController implements ControllerErrorHandler {
             response.contentType = 'application/zip'
             ApplicationSupport.zipExportFile(response.outputStream, files, xml, 'attachments')
         } catch (Exception e) {
-            if (log.debugEnabled)
+            if (log.debugEnabled) {
                 e.printStackTrace()
+            }
         } finally {
             xml.delete()
         }
