@@ -32,7 +32,7 @@
                         <div uib-dropdown-toggle>
                             {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down"></i>
                             <div class="sub-title text-muted">
-                                {{ sprint.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprint.endDate | dayShorter }}
+                                <i class="fa fa-calendar"></i> <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-long-arrow-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                             </div>
                         </div>
                         <ul uib-dropdown-menu role="menu" class="sprints-menu">
@@ -43,7 +43,7 @@
                                     href="{{ openSprintUrl(sprintEntry.item, true) }}">
                                     <span ng-class="{'strong': sprintEntry.item.id == sprint.id}">{{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}</span>
                                     <div class="sub-title text-muted">
-                                        {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
+                                        <i class="fa fa-calendar"></i> {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-long-arrow-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
                                     </div>
                                 </a>
                                 <span ng-switch-when="release">

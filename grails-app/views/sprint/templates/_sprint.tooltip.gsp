@@ -24,5 +24,5 @@
     <p ng-if="sprint.goal">{{ sprint.goal }}</p>
     <p ng-if="sprint.state">{{ sprint.state | i18n:'SprintStates' }}</p>
     <p ng-if="sprint.capacity || sprint.velocity">{{ (sprint.velocity | roundNumber:2) + '/' + (sprint.capacity | roundNumber:2) }} (${message(code: 'is.sprint.velocity')} / ${message(code: 'is.sprint.capacity')})</p>
-    <p>{{ sprint.startDate | dayShorter }} <i class="fa fa-arrow-right"></i> {{ sprint.endDate | dayShorter }}</p>
+    <p><i class="fa fa-calendar"></i> {{ sprint.startDate | dayShorter }} <i class="fa fa-arrow-right"></i> {{ sprint.endDate | dayShorter }}</p>
 </script>
