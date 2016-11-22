@@ -668,7 +668,7 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                     if ($rootScope.app.context.type == 'feature') {
                         return item.feature && item.feature.id == $rootScope.app.context.id;
                     } else if ($rootScope.app.context.type == 'tag') {
-                        return _.includes(item.tags, $scope.app.context.term);
+                        return _.includes(item.tags, $rootScope.app.context.term);
                     } else {
                         return false;
                     }
