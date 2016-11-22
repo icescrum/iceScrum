@@ -236,13 +236,13 @@ class ProjectController implements ControllerErrorHandler {
     @Secured(['scrumMaster() or productOwner()'])
     def export(long product) {
         Product _product = Product.withProduct(product)
-        return task {
+        //return task {
             session.progress = new ProgressSupport()
-            Product.withNewSession {
+          //  Product.withNewSession {
                 params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
                 session.progress.completeProgress(message(code: 'todo.is.ui.progress.complete'))
-            }
-        }
+          //  }
+        //}
     }
 
     @Secured('scrumMaster()')
@@ -637,7 +637,6 @@ class ProjectController implements ControllerErrorHandler {
             }
             def files = []
             product.stories*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.actors*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
             product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
             product.releases*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
             product.sprints*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
