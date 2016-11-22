@@ -125,16 +125,6 @@
                             <entry:point id="header-menu-icescrum"/>
                         </ul>
                     </li>
-                    <li ng-class="{'active':$state.includes('home')}"
-                        class="menuitem home-menuitem">
-                        <a hotkey="{ 'shift+h': goToHome}"
-                           hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
-                           uib-tooltip="${message(code:'is.ui.home')} (shift+h)"
-                           tooltip-placement="bottom" href ng-click="goToHome()">
-                            <i class="fa fa-home"></i>
-                            <span class="title hidden-sm ng-binding"><g:message code="is.ui.home"/></span>
-                        </a>
-                    </li>
                     <li id="{{ menu.id }}"
                         as-sortable-item
                         ng-repeat="menu in app.menus.visible"
@@ -212,6 +202,14 @@
                                 <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                             </div>
                             <div uib-dropdown-menu class="notifications selection-disable" ng-include="'notifications.panel.html'"></div>
+                        </div>
+                        <div class="navbar-home pull-left">
+                            <a hotkey="{ 'shift+h': goToHome}"
+                               hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
+                               uib-tooltip="${message(code:'is.ui.home')} (shift+h)"
+                               tooltip-placement="bottom" href ng-click="goToHome()">
+                                <i class="fa fa-home"></i>
+                            </a>
                         </div>
                         <div ng-if="currentUser.username" uib-dropdown class="pull-left">
                             <div class="navbar-user pull-left" uib-dropdown-toggle>

@@ -173,6 +173,9 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
         var contextSizeName = viewName + 'PostitSize';
         $localStorage[contextSizeName] = next;
     };
+    $scope.goToHome = function() {
+        window.location.href = $scope.serverUrl;
+    };
     // Print
     $scope.print = function(data) {
         var url = data;
