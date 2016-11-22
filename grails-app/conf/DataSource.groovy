@@ -25,7 +25,11 @@ hibernate {
     cache.use_query_cache = true
     cache.region.factory_class = 'grails.plugin.cache.ehcache.hibernate.BeanEhcacheRegionFactory4'
 }
-// environment specific settings
+
+dataSource {
+    configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
+}
+
 environments {
     development {
         dataSource {
@@ -34,7 +38,6 @@ environments {
             driverClassName = "org.h2.Driver"
             username = "sa"
             password = ""
-            configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
         }
 //        dataSource {
 ////            logSql = true
@@ -52,7 +55,6 @@ environments {
             driverClassName = "org.h2.Driver"
             username = "sa"
             password = ""
-            configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
         }
     }
     production {
@@ -83,7 +85,6 @@ environments {
                 jdbcInterceptors = "ConnectionState"
                 defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
             }
-            configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
         }
     }
 }
