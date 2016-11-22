@@ -236,13 +236,9 @@ class ProjectController implements ControllerErrorHandler {
     @Secured(['scrumMaster() or productOwner()'])
     def export(long product) {
         Product _product = Product.withProduct(product)
-        //return task {
-            session.progress = new ProgressSupport()
-          //  Product.withNewSession {
-                params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
-                session.progress.completeProgress(message(code: 'todo.is.ui.progress.complete'))
-          //  }
-        //}
+        session.progress = new ProgressSupport()
+        params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
+        session.progress.completeProgress(message(code: 'todo.is.ui.progress.complete'))
     }
 
     @Secured('scrumMaster()')
