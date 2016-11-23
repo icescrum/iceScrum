@@ -144,6 +144,13 @@ class TaskController implements ControllerErrorHandler {
     }
 
     @Secured('inProduct() and !archivedProduct()')
+    def makeStory(long id, long product) {
+        Task task = Task.withTask(product, id)
+        taskService.makeStory(task)
+        render(status: 204)
+    }
+
+    @Secured('inProduct() and !archivedProduct()')
     def take(long id, long product) {
         Task task = Task.withTask(product, id)
         User user = (User) springSecurityService.currentUser

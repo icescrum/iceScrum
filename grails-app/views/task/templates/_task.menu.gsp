@@ -38,6 +38,11 @@
             ${message(code: 'is.ui.sprintPlan.menu.task.copy')}
         </a>
     </li>
+    <li ng-if="authorizedTask('makeStory', task)">
+        <a href ng-click="makeStory(task)">
+            ${message(code: 'todo.is.ui.task.makeStory')}
+        </a>
+    </li>
     <li>
         <a href ng-click="showCopyModal('${message(code:'is.permalink')}', (task.uid | permalink: 'task'))">
             ${message(code: 'todo.is.ui.permalink.copy')}

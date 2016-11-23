@@ -25,7 +25,7 @@ services.factory('Task', ['Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action');
 }]);
 
-services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, $rootScope, Task, Session, IceScrumEventType, CacheService, PushService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
+services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'StoryService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, $rootScope, Task, Session, IceScrumEventType, CacheService, PushService, StoryService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(task) {
@@ -73,6 +73,11 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
     };
     this['delete'] = function(task) {
         return Task.delete({id: task.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
+    };
+    this.makeStory = function(task) {
+        return Task.update({id: task.id, action: 'makeStory'}, {}, function() {
+            crudMethods[IceScrumEventType.DELETE](task);
+        }).$promise;
     };
     this.copy = function(task) {
         return Task.update({id: task.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
@@ -128,6 +133,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 return Session.getProject().preferences.displayUrgentTasks;
             case 'showRecurrent':
                 return Session.getProject().preferences.displayRecurrentTasks;
+            case 'makeStory':
+                return self.authorizedTask('delete', task) && StoryService.authorizedStory('create');
             default:
                 return false;
         }

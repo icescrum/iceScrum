@@ -56,6 +56,11 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
     $scope.release = function(task) {
         TaskService.release(task);
     };
+    $scope.makeStory = function(task) {
+        TaskService.makeStory(task).then(function() {
+            $scope.notifySuccess('todo.is.ui.task.makeStory.success');
+        });
+    };
     $scope.copy = function(task) {
         TaskService.copy(task);
     };
