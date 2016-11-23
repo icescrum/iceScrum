@@ -284,7 +284,7 @@ class UrlMappings {
             action = 'print'
             constraints {
                 product(matches: /[0-9A-Z]*/)
-                controller(inList: ['backlog', 'actor', 'feature'])
+                controller(inList: ['backlog', 'feature'])
             }
         }
         // Export
@@ -309,7 +309,7 @@ class UrlMappings {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task', 'actor', 'feature', 'release', 'sprint'])
+                type(inList: ['story', 'task', 'feature', 'release', 'sprint'])
             }
         }
         "/p/$product/attachment/$type/$attachmentable" {
@@ -318,7 +318,7 @@ class UrlMappings {
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task', 'actor', 'feature'])
+                type(inList: ['story', 'task', 'feature'])
             }
         }
         "/p/$product/attachment/$type/$attachmentable/$id" {
@@ -328,7 +328,7 @@ class UrlMappings {
                 product(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
                 id(matches: /\d*/)
-                type(inList: ['story', 'task', 'actor', 'feature'])
+                type(inList: ['story', 'task', 'feature'])
             }
         }
         // Team

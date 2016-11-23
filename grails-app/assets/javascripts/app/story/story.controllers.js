@@ -369,7 +369,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $scope.versions = [];
         $scope.creators = [];
         $scope.atOptions = {
-            tpl: "<li data-value='A[${uid}-${name}]'>${name}</li>",
+            tpl: "<li data-value='A[${id}-${name}]'>${name}</li>",
             at: 'a'
         };
         $scope.features = Session.getProject().features;
@@ -377,7 +377,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $scope.project = Session.getProject();
         var mapActors = function(actors) {
             return _.map(actors, function(actor) {
-                return {uid: actor.uid, name: actor.name};
+                return {id: actor.id, name: actor.name};
             });
         };
         if (ActorService.list.$resolved) {

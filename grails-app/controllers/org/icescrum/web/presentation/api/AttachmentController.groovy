@@ -24,7 +24,6 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.components.UtilsWebComponents
-import org.icescrum.core.domain.Actor
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
@@ -121,9 +120,6 @@ class AttachmentController implements ControllerErrorHandler {
                 break
             case 'task':
                 attachmentable = Task.getInProduct(product, attachmentableId)
-                break
-            case 'actor':
-                attachmentable = Actor.getInProduct(product, attachmentableId).list()
                 break
             case 'feature':
                 attachmentable = Feature.getInProduct(product, attachmentableId).list()
