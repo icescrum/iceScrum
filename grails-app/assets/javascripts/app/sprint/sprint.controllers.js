@@ -69,31 +69,20 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
         return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
     };
     // Init
-    var fixStoryRank = function(stories) {
-        _.each(stories, function(story, index) {
-            story.rank = index + 1;
-        });
-    };
     $scope.sprintSortableOptions = {
         itemMoved: function(event) {
             var destScope = event.dest.sortableScope;
-            fixStoryRank(event.source.sortableScope.modelValue);
-            fixStoryRank(destScope.modelValue);
             var story = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
             StoryService.plan(story, destScope.sprint, newRank).catch(function() {
                 $scope.revertSortable(event);
-                fixStoryRank(event.source.sortableScope.modelValue);
-                fixStoryRank(destScope.modelValue);
-            });
+             });
         },
         orderChanged: function(event) {
-            fixStoryRank(event.dest.sortableScope.modelValue);
             var story = event.source.itemScope.modelValue;
             story.rank = event.dest.index + 1;
             StoryService.update(story).catch(function() {
                 $scope.revertSortable(event);
-                fixStoryRank(event.dest.sortableScope.modelValue);
             });
         },
         accept: function(sourceItemHandleScope, destSortableScope) {

@@ -195,19 +195,12 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
     });
     // Init
     $scope.viewName = 'backlog';
-    var fixStoryRank = function(stories) {
-        _.each(stories, function(story, index) {
-            story.rank = index + 1;
-        });
-    };
     $scope.backlogSortableOptions = {
         itemMoved: function(event) {
             var story = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
             var sourceScope = event.source.sortableScope;
             var destScope = event.dest.sortableScope;
-            fixStoryRank(sourceScope.modelValue);
-            fixStoryRank(destScope.modelValue);
             var promise;
             if (BacklogService.isBacklog(sourceScope.backlogContainer.backlog) && BacklogService.isSandbox(destScope.backlogContainer.backlog)) {
                 promise = StoryService.returnToSandbox(story, newRank);
@@ -217,18 +210,14 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
             if (promise) {
                 promise.catch(function() {
                     $scope.revertSortable(event);
-                    fixStoryRank(sourceScope.modelValue);
-                    fixStoryRank(destScope.modelValue);
-                });
+                 });
             }
         },
         orderChanged: function(event) {
-            fixStoryRank(event.dest.sortableScope.modelValue);
             var story = event.source.itemScope.modelValue;
             story.rank = event.dest.index + 1;
             StoryService.update(story).catch(function() {
                 $scope.revertSortable(event);
-                fixStoryRank(event.dest.sortableScope.modelValue);
             });
         },
         accept: function(sourceItemHandleScope, destSortableScope) {

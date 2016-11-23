@@ -60,19 +60,11 @@ controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'Feat
     // Init
     $scope.viewName = 'feature';
     $scope.features = features;
-    var fixFeatureRank = function(features) {
-        _.each(features, function(feature, index) {
-            feature.rank = index + 1;
-        });
-    };
     var updateRank = function(event) {
-        fixFeatureRank(event.dest.sortableScope.modelValue);
         var feature = event.source.itemScope.modelValue;
         feature.rank = event.dest.index + 1;
         FeatureService.update(feature).catch(function() {
             $scope.revertSortable(event);
-            fixFeatureRank(event.dest.sortableScope.modelValue);
-            fixFeatureRank(event.source.itemScope.sortableScope);
         });
     };
     $scope.featureSortableOptions = {
@@ -476,16 +468,9 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         return _.sumBy(sprint.tasks, 'estimation');
     };
     // Init
-    var fixTaskRank = function(tasks) {
-        _.each(tasks, function(task, index) {
-            task.rank = index + 1;
-        });
-    };
     $scope.taskSortableOptions = {
         itemMoved: function(event) {
             var destScope = event.dest.sortableScope;
-            fixTaskRank(event.source.sortableScope.modelValue);
-            fixTaskRank(destScope.modelValue);
             var task = event.source.itemScope.modelValue;
             task.rank = event.dest.index + 1;
             task.state = destScope.taskState;
@@ -498,17 +483,13 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             }
             TaskService.update(task).catch(function() {
                 $scope.revertSortable(event);
-                fixTaskRank(event.source.sortableScope.modelValue);
-                fixTaskRank(destScope.modelValue);
-            });
+               });
         },
         orderChanged: function(event) {
-            fixTaskRank(event.dest.sortableScope.modelValue);
             var task = event.source.itemScope.modelValue;
             task.rank = event.dest.index + 1;
             TaskService.update(task).catch(function() {
                 $scope.revertSortable(event);
-                fixTaskRank(event.dest.sortableScope.modelValue);
             });
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
