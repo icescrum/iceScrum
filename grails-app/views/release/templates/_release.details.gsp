@@ -203,12 +203,13 @@
             <div class="panel-footer" ng-if="formHolder.editing">
                 <div class="btn-toolbar">
                     <button class="btn btn-primary"
+                            ng-if="editableRelease.lastUpdated == release.lastUpdated"
                             ng-disabled="!isDirty() || formHolder.releaseForm.$invalid"
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
                     <button class="btn btn-danger"
-                            ng-if="editableRelease.lastUpdated != release.lastUpdated"
+                            ng-if="editableRelease.lastUpdated != release.lastUpdated && !formHolder.submitting"
                             ng-disabled="!isDirty() || formHolder.releaseForm.$invalid"
                             type="submit">
                         ${message(code:'default.button.override.label')}
@@ -220,7 +221,7 @@
                     </button>
                     <button class="btn btn-warning"
                             type="button"
-                            ng-if="editableRelease.lastUpdated != release.lastUpdated"
+                            ng-if="editableRelease.lastUpdated != release.lastUpdated && !formHolder.submitting"
                             ng-click="resetReleaseForm()">
                         <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
                     </button>

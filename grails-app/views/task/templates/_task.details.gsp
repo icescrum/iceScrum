@@ -236,7 +236,7 @@
                         ${message(code:'default.button.update.label')}
                     </button>
                     <button class="btn btn-danger"
-                            ng-if="editableTask.lastUpdated != task.lastUpdated"
+                            ng-if="editableTask.lastUpdated != task.lastUpdated && !formHolder.submitting"
                             ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
                             type="submit">
                         ${message(code:'default.button.override.label')}
@@ -248,7 +248,7 @@
                     </button>
                     <button class="btn btn-warning"
                             type="button"
-                            ng-if="editableTask.lastUpdated != task.lastUpdated"
+                            ng-if="editableTask.lastUpdated != task.lastUpdated && !formHolder.submitting"
                             ng-click="resetTaskForm()">
                         <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
                     </button>
