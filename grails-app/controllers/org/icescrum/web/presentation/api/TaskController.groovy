@@ -195,7 +195,7 @@ class TaskController implements ControllerErrorHandler {
         def options = [max: 8]
         def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
         def userTasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.withProduct(product), taskStates, options)
-                                        : Task.findAllByResponsibleAndStateInList(user, taskStates, options)
+                : Task.findAllByResponsibleAndStateInList(user, taskStates, options)
         def tasksByProject = userTasks.groupBy {
             it.parentProduct
         }.collect { project, tasks ->
@@ -215,5 +215,19 @@ class TaskController implements ControllerErrorHandler {
             uri += "backlog/$task.parentStory.id/tasks/task/$task.id"
         }
         redirect(uri: uri)
+    }
+
+    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
+    def colors(long product) {
+        def results = Task.createCriteria().list() {
+            eq("parentProduct.id", product)
+            projections {
+                groupProperty "color"
+                count "color", "colorSize"
+            }
+            order('colorSize', 'desc')
+            maxResults(7)
+        }?.collect{ it[0] }
+        render(status: 200, contentType: 'application/json', text: results as JSON)
     }
 }

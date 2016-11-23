@@ -25,7 +25,7 @@ services.factory('Task', ['Resource', function($resource) {
     return $resource('task/:type/:typeId/:id/:action');
 }]);
 
-services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'StoryService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, $rootScope, Task, Session, IceScrumEventType, CacheService, PushService, StoryService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
+services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'StoryService', 'FormService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, $rootScope, Task, Session, IceScrumEventType, CacheService, PushService, StoryService, FormService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(task) {
@@ -141,5 +141,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
     };
     this.listByUser = function() {
         return Task.query({action: 'listByUser'}).$promise;
+    };
+    this.getMostUsedColors = function() {
+        return FormService.httpGet('task/colors');
     };
 }]);

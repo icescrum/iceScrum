@@ -106,6 +106,13 @@ class ProductUrlMappings {
                 type(inList: ['story', 'sprint'])
             }
         }
+        "/p/$product/task/colors" {
+            controller = 'task'
+            action = [GET: "colors"]
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
         // Story
         "/p/$product/story" {
             controller = 'story'

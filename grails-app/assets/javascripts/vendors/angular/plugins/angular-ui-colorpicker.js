@@ -288,6 +288,9 @@ angular.module('colorpicker.module', [])
         return {
             require: '?ngModel',
             restrict: 'A',
+            scope: {
+                colors: '='
+            },
             link: function ($scope, elem, attrs, ngModel) {
                 var
                     thisFormat = attrs.colorpicker ? attrs.colorpicker : 'hex',
@@ -330,24 +333,26 @@ angular.module('colorpicker.module', [])
                     };
 
                 $compile(colorpickerTemplate)($scope);
-                $scope.colors = $scope.$eval(attrs.colors);
-                if($scope.colors){
-                    angular.forEach($scope.colors, function(value) {
-                        colorpickerLastColors.append('<div class="color" style="background:'+value+'"></div>')
-                    });
-                    colorpickerLastColors.find('.color').on('click', function(){
-                        var newColor = angular.element(this).css('backgroundColor');
-                        newColor = hexc(newColor);
-                        elem.val(newColor);
-                        if(ngModel) {
-                            $scope.$apply(ngModel.$setViewValue(newColor));
-                        }
-                        event.stopPropagation();
-                        event.preventDefault();
-                    });
-                } else {
-                    colorpickerLastColors.remove();
-                }
+
+                $scope.$watch('colors', function() {
+                    if($scope.colors){
+                        angular.forEach($scope.colors, function(value) {
+                            colorpickerLastColors.append('<div class="color" style="background:'+value+'"></div>')
+                        });
+                        colorpickerLastColors.find('.color').on('click', function(){
+                            var newColor = angular.element(this).css('backgroundColor');
+                            newColor = hexc(newColor);
+                            elem.val(newColor);
+                            if(ngModel) {
+                                $scope.$apply(ngModel.$setViewValue(newColor));
+                            }
+                            event.stopPropagation();
+                            event.preventDefault();
+                        });
+                    } else {
+                        colorpickerLastColors.remove();
+                    }
+                });
 
                 if (withInput) {
                     var pickerColorInput = colorpickerTemplate.find('input');
