@@ -186,8 +186,7 @@ icescrum.marshaller = [
                asShort: ['firstName', 'lastName'],
                includeCount: ['teams'],
                include: ['admin']],
-        actor: [include: ['tags', 'attachments'],
-                withIds: ['stories']],
+        actor: [withIds: ['stories']],
         feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'attachments', 'inProgressDate', 'doneDate'],
                   withIds: ['stories'],
                   textile: ['notes'],
@@ -286,7 +285,6 @@ icescrum {
  */
 grails.attachmentable.storyDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}stories${File.separator + it.id + File.separator}"}
 grails.attachmentable.featureDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}features${File.separator + it.id + File.separator}"}
-grails.attachmentable.actorDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}actors${File.separator + it.id + File.separator}"}
 grails.attachmentable.releaseDir = {"${File.separator + it.parentProduct.id + File.separator}attachments${File.separator}releases${File.separator + it.id + File.separator}"}
 grails.attachmentable.sprintDir = {"${File.separator + it.parentRelease.parentProduct.id + File.separator}attachments${File.separator}sprints${File.separator + it.id + File.separator}"}
 grails.attachmentable.productDir = {"${File.separator + it.id + File.separator}attachments${File.separator}product${File.separator + it.id + File.separator}"}

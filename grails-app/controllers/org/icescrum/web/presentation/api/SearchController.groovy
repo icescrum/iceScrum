@@ -47,7 +47,6 @@ class SearchController implements ControllerErrorHandler {
                    WHERE (
                             tagLink.tagRef IN (SELECT story.id From Story story where story.backlog.id = :product)
                           OR tagLink.tagRef IN (SELECT feature.id From Feature feature where feature.backlog.id = :product)
-                          OR tagLink.tagRef IN (SELECT actor.id From Actor actor where actor.backlog.id = :product)
                    )
                    AND tagLink.tag.name LIKE :term
                    ORDER BY tagLink.tag.name"""
