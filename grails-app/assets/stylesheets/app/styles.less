@@ -292,8 +292,10 @@ i.small-icon {
   }
 }
 
-.sortable .panel-heading, li.as-sortable-placeholder, li.menuitem.as-sortable-item i {
-  cursor: move;
+ul:not(.sortable-disabled) {
+  li.as-sortable-placeholder, li.menuitem.as-sortable-item i {
+    cursor: move;
+  }
 }
 
 .content {

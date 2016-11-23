@@ -118,11 +118,11 @@ class ScrumOSController implements ControllerErrorHandler {
 
     def about() {
         def aboutFile = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about.xml")
-        render(status: 200, template: "about/index", model: [server: servletContext.getServerInfo(),
-                                                             versionNumber: g.meta([name: 'app.version']),
-                                                             about: new XmlSlurper().parse(aboutFile),
+        render(status: 200, template: "about/index", model: [server        : servletContext.getServerInfo(),
+                                                             versionNumber : g.meta([name: 'app.version']),
+                                                             about         : new XmlSlurper().parse(aboutFile),
                                                              configLocation: grailsApplication.config.grails.config.locations instanceof List ? grailsApplication.config.grails.config.locations.join(', ') : '',
-                                                             errors: grailsApplication.config.icescrum.errors ?: false])
+                                                             errors        : grailsApplication.config.icescrum.errors ?: false])
     }
 
     def textileParser(String data) {
@@ -142,8 +142,8 @@ class ScrumOSController implements ControllerErrorHandler {
             }
         }
         def menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
-        menus?.each{
-            if(it.id == 'project'){
+        menus?.each {
+            if (it.id == 'project') {
                 it.title = _product.name
             } else {
                 it.title = message(code: it.title)
@@ -152,14 +152,15 @@ class ScrumOSController implements ControllerErrorHandler {
         def defaultView = product ? menus.find { it.position == 1 && it.visible }.id ?: 'project' : 'home'
         render(status: 200,
                 template: 'isSettings',
-                model: [product         : _product,
-                        user            : springSecurityService.currentUser,
-                        roles           : securityService.getRolesRequest(false),
-                        i18nMessages    : messageSource.getAllMessages(RCU.getLocale(request)),
-                        resourceBundles : grailsApplication.config.icescrum.resourceBundles,
-                        menus           : menus,
-                        defaultView     : defaultView,
-                        projectMenus    : projectMenus])
+                model: [product        : _product,
+                        user           : springSecurityService.currentUser,
+                        roles          : securityService.getRolesRequest(false),
+                        i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
+                        resourceBundles: grailsApplication.config.icescrum.resourceBundles,
+                        menus          : menus,
+                        context        : ApplicationSupport.getCurrentContext(params)?.name ?: '',
+                        defaultView    : defaultView,
+                        projectMenus   : projectMenus])
     }
 
     def saveImage(String image, String title) {
@@ -287,108 +288,108 @@ class ScrumOSController implements ControllerErrorHandler {
                          '</p>',
                  screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/06/Example-of-working-LDAP-Configuration1.jpg']
                 ],
-                [name               : 'Embedded',
-                 version            : '1.0',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/embedded',
-                 description        : 'Embed live iceScrum views into your online documents or websites in order to create custom dashboards and reports.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/01/Define-your-embedded-widgets.jpg']
+                [name         : 'Embedded',
+                 version      : '1.0',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com/documentation/embedded',
+                 description  : 'Embed live iceScrum views into your online documents or websites in order to create custom dashboards and reports.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2013/01/Define-your-embedded-widgets.jpg']
                 ],
-                [name               : 'Icebox',
-                 version            : '1.0',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/icebox/',
-                 description        : 'Product Owners freeze stories that don’t belong to the current product vision and restore them when the time has come.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/11/Freeze-a-story1.jpg']
+                [name         : 'Icebox',
+                 version      : '1.0',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com/documentation/icebox/',
+                 description  : 'Product Owners freeze stories that don’t belong to the current product vision and restore them when the time has come.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2012/11/Freeze-a-story1.jpg']
                 ],
-                [name               : 'Cloud Storage',
-                 version            : '1.0',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/cloud-storage',
-                 description        : 'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
+                [name         : 'Cloud Storage',
+                 version      : '1.0',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com/documentation/cloud-storage',
+                 description  : 'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
                 ],
-                [name               : 'Feedback',
-                 version            : '1.0',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/feedback',
-                 description        : 'Include the feedback module in your website and offer your users a way to provide feedback that your collect as stories in your iceScrum project',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2015/06/feedback-english-650x393@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/story-details-2-650x424@2x.png']
+                [name         : 'Feedback',
+                 version      : '1.0',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com/documentation/feedback',
+                 description  : 'Include the feedback module in your website and offer your users a way to provide feedback that your collect as stories in your iceScrum project',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2015/06/feedback-english-650x393@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/story-details-2-650x424@2x.png']
                 ],
-                [name               : 'Team communication',
-                 version            : '1.0',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/team-communication',
-                 description        : 'Stay informed of what happens in iceScrum by receiving important events about your stories in your Slack channel.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2015/06/admin-settings-650x401@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/Slack1-650x461@2x.png']
+                [name         : 'Team communication',
+                 version      : '1.0',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com/documentation/team-communication',
+                 description  : 'Stay informed of what happens in iceScrum by receiving important events about your stories in your Slack channel.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2015/06/admin-settings-650x401@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/Slack1-650x461@2x.png']
                 ],
-                [name               : 'SCM',
-                 version            : '1.0',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/git-svn/',
-                 description        : 'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
+                [name         : 'SCM',
+                 version      : '1.0',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com/documentation/git-svn/',
+                 description  : 'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
                 ],
-                [name               : 'Bug Trackers',
-                 version            : '1.0',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/bug-tracker/',
-                 description        : 'Automatically synchronize your project data between your bug tracker (JIRA, Mantis, Bugzilla, Redmine, TRAC…) and iceScrum.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/08/Set-up-bug-tracker-connection.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Create-an-import-rule.-Here-every-15-min-new-issues-from-vb-filter-are-imported-as-accepted-defect-stories.png']
+                [name         : 'Bug Trackers',
+                 version      : '1.0',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com/documentation/bug-tracker/',
+                 description  : 'Automatically synchronize your project data between your bug tracker (JIRA, Mantis, Bugzilla, Redmine, TRAC…) and iceScrum.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2013/08/Set-up-bug-tracker-connection.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Create-an-import-rule.-Here-every-15-min-new-issues-from-vb-filter-are-imported-as-accepted-defect-stories.png']
                 ],
-                [name               : 'Project Bundle',
-                 version            : '1.0',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/project-bundle/',
-                 description        : 'Project bundles allow you to group interrelated projects, providing a big picture of their planning and progress to help you make the best decisions.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2013/08/Bundle-timeline.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Total-line-for-synchronized-sprints.png']
+                [name         : 'Project Bundle',
+                 version      : '1.0',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com/documentation/project-bundle/',
+                 description  : 'Project bundles allow you to group interrelated projects, providing a big picture of their planning and progress to help you make the best decisions.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2013/08/Bundle-timeline.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Total-line-for-synchronized-sprints.png']
                 ],
-                [name               : 'Backlogs',
-                 version            : '0.1',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com',
-                 description        : 'Create your own story backlogs according to custom filters.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2016/05/extension-backlogs.png']
+                [name         : 'Backlogs',
+                 version      : '0.1',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com',
+                 description  : 'Create your own story backlogs according to custom filters.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2016/05/extension-backlogs.png']
                 ],
-                [name               : 'Mood',
-                 version            : '0.1',
-                 author             : 'iceScrum',
-                 email              : 'support@kagilum.com',
-                 updated            : '12/12/2016',
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com',
-                 description        : 'Enter you mood everyday and help track and improve the well-being of your teams.',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2016/05/extension-mood.png'],
-                 tags               : ["tags1","tags3","tags2","tags2","tags2","tags2","tags2"]
+                [name         : 'Mood',
+                 version      : '0.1',
+                 author       : 'iceScrum',
+                 email        : 'support@kagilum.com',
+                 updated      : '12/12/2016',
+                 website      : 'https://www.icescrum.com',
+                 documentation: 'https://www.icescrum.com',
+                 description  : 'Enter you mood everyday and help track and improve the well-being of your teams.',
+                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2016/05/extension-mood.png'],
+                 tags         : ["tags1", "tags3", "tags2", "tags2", "tags2", "tags2", "tags2"]
                 ]
         ]
-        render(status: 200, contentType: 'application/json', text: apps.sort {it.name} as JSON)
+        render(status: 200, contentType: 'application/json', text: apps.sort { it.name } as JSON)
     }
 }

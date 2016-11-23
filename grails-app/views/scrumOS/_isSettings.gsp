@@ -29,6 +29,7 @@
         defaultView: "${defaultView}",
         project: ${product ? product as JSON : 'null'},
         projectTeam: ${product ? product.firstTeam as JSON : 'null'},
+        context: '${context}',
         pushContext: ${product?.id ?: "''"},
         messages: ${i18nMessages as JSON},
         bundles: ${is.i18nBundle() as JSON},

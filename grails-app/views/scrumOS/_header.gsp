@@ -37,8 +37,8 @@
                 <is:errors/>
                 <ul ng-controller="projectCtrl"
                     class="nav navbar-nav menubar"
-                    ng-class="{'sortable':currentUser.id}"
-                    is-disabled="!currentUser.id"
+                    ng-class="{'sortable-disabled': !currentUser.id || context != 'product'}"
+                    is-disabled="!currentUser.id || context != 'product'"
                     as-sortable="menuSortableOptions"
                     ng-model="app.menus.visible">
                     <li class="contextual-menu" uib-dropdown>
@@ -135,8 +135,8 @@
                     <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && app.menus.hidden.length == 0 }">
                         <a uib-dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                         <ul uib-dropdown-menu class="menubar"
-                            ng-class="{'sortable':currentUser.id}"
-                            is-disabled="!currentUser.id"
+                            ng-class="{'sortable-disabled': !currentUser.id || context != 'product'}"
+                            is-disabled="!currentUser.id || context != 'product'"
                             as-sortable="menuSortableOptions"
                             ng-model="app.menus.hidden">
                             <li ng-repeat="menu in app.menus.hidden"
