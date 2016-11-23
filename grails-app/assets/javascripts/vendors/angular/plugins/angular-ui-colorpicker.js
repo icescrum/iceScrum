@@ -1,5 +1,7 @@
 /*
 
+ CUSTOMIZED
+
  The MIT License (MIT)
 
  Copyright (c) 2013 Michal Zielenkiewicz
@@ -343,6 +345,8 @@ angular.module('colorpicker.module', [])
                         event.stopPropagation();
                         event.preventDefault();
                     });
+                } else {
+                    colorpickerLastColors.remove();
                 }
 
                 if (withInput) {
