@@ -133,9 +133,11 @@
                                         type="button"
                                         ng-style="{'background-color': editableTask.color}"
                                         colorpicker-position="left"
+                                        colorpicker-with-input="true"
                                         ng-focus="editForm(true)"
                                         value="#bf3d3d"
                                         name="color"
+                                        last-colors="mostUsedColors"
                                         ng-model="editableTask.color"><i class="fa fa-pencil"></i></button>
                             </span>
                         </div>

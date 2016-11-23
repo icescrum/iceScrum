@@ -176,6 +176,15 @@ registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contr
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);
     $scope.taskStatesByName = TaskStatesByName;
+
+    $scope.mostUsedColors = _.chain(taskContext.tasks)
+        .map('color')
+        .countBy()
+        .map(function(v, k){ return {name: k, count: v } })
+        .sortBy('count')
+        .reverse()
+        .map('name')
+        .value().slice(0,7);
 }]);
 
 controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
