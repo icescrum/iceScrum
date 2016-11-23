@@ -210,11 +210,15 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         for (name in obj) {
             value = obj[name];
             if (value instanceof Array && !_.endsWith(name, '_ids')) {
-                for (i = 0; i < value.length; ++i) {
-                    subValue = value[i];
-                    innerObj = {};
-                    innerObj[name] = subValue;
-                    query += self.formObjectData(innerObj, _prefix) + '&';
+                if(value.length == 0){
+                    query += encodeURIComponent(_prefix + name) + '=&';
+                } else {
+                    for (i = 0; i < value.length; ++i) {
+                        subValue = value[i];
+                        innerObj = {};
+                        innerObj[name] = subValue;
+                        query += self.formObjectData(innerObj, _prefix) + '&';
+                    }
                 }
             } else if (value instanceof Date) {
                 var encodedDate = $filter('dateToIso')(value);
