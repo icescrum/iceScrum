@@ -305,7 +305,7 @@ angular.module('colorpicker.module', [])
                         '<colorpicker-hue><i></i></colorpicker-hue>' +
                         '<colorpicker-alpha><i></i></colorpicker-alpha>' +
                         '<colorpicker-preview></colorpicker-preview>' +
-                        '<div class="colorpicker-lastcolors"></div>' +
+                        '<div class="colorpicker-colors"></div>' +
                         inputTemplate +
                         closeButton +
                         '</div>' +
@@ -316,7 +316,7 @@ angular.module('colorpicker.module', [])
                     sliderHue = colorpickerTemplate.find('colorpicker-hue'),
                     sliderSaturation = colorpickerTemplate.find('colorpicker-saturation'),
                     colorpickerPreview = colorpickerTemplate.find('colorpicker-preview'),
-                    colorpickerLastColors = colorpickerTemplate.find('.colorpicker-lastcolors'),
+                    colorpickerLastColors = colorpickerTemplate.find('.colorpicker-colors'),
                     pickerColorPointers = colorpickerTemplate.find('i'),
                     hexc = function(colorval) {
                         var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
@@ -330,12 +330,12 @@ angular.module('colorpicker.module', [])
                     };
 
                 $compile(colorpickerTemplate)($scope);
-                $scope.colors = $scope.$eval(attrs.lastColors);
+                $scope.colors = $scope.$eval(attrs.colors);
                 if($scope.colors){
                     angular.forEach($scope.colors, function(value) {
-                        colorpickerLastColors.append('<div class="lastcolor" style="background:'+value+'"></div>')
+                        colorpickerLastColors.append('<div class="color" style="background:'+value+'"></div>')
                     });
-                    colorpickerLastColors.find('.lastcolor').on('click', function(){
+                    colorpickerLastColors.find('.color').on('click', function(){
                         var newColor = angular.element(this).css('backgroundColor');
                         newColor = hexc(newColor);
                         elem.val(newColor);

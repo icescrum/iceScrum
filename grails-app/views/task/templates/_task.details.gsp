@@ -137,7 +137,7 @@
                                         ng-focus="editForm(true)"
                                         value="#bf3d3d"
                                         name="color"
-                                        last-colors="mostUsedColors"
+                                        colors="mostUsedColors"
                                         ng-model="editableTask.color"><i class="fa fa-pencil"></i></button>
                             </span>
                         </div>
