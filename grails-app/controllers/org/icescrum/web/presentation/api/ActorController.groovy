@@ -38,7 +38,7 @@ class ActorController implements ControllerErrorHandler {
     def springSecurityService
 
     def index(long product) {
-        def actors = Actor.searchAllByTermOrTag(product, params.term).sort { Actor actor -> actor.useFrequency }
+        def actors = Actor.searchAllByTermOrTag(product, params.term)
         render(status: 200, text: actors as JSON, contentType: 'application/json')
     }
 
