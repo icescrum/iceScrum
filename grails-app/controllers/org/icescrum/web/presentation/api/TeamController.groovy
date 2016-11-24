@@ -49,22 +49,27 @@ class TeamController implements ControllerErrorHandler {
             render(status: 403)
             return
         }
+        def teamParams = params.team
         def newMembers = []
-        params.team.scrumMasters?.list('id').each {
-            newMembers << [id: it.toLong(), role: Authority.SCRUMMASTER]
-        }
-        params.team.members?.list('id').each {
-            def userId = it.toLong()
-            if (!newMembers.find { it.id == userId }) {
-                newMembers << [id: userId, role: Authority.MEMBER]
+        if (teamParams.scrumMasters) {
+            teamParams.scrumMasters.list('id').each {
+                newMembers << [id: it.toLong(), role: Authority.SCRUMMASTER]
             }
         }
-        def invitedMembers = params.team.invitedMembers?.list('email') ?: []
-        def invitedScrumMasters = params.team.invitedScrumMasters?.list('email') ?: []
-        def newOwnerId = params.team.owner?.id?.toLong()
+        if (teamParams.members) {
+            teamParams.members.list('id').each {
+                def userId = it.toLong()
+                if (!newMembers.find { it.id == userId }) {
+                    newMembers << [id: userId, role: Authority.MEMBER]
+                }
+            }
+        }
+        def invitedMembers = teamParams.invitedMembers ? teamParams.invitedMembers.list('email') : []
+        def invitedScrumMasters = teamParams.invitedScrumMasters ? teamParams.invitedScrumMasters.list('email') : []
+        def newOwnerId = teamParams.owner?.id?.toLong()
         Team.withTransaction {
-            if (team.name != params.team.name) {
-                team.name = params.team.name
+            if (team.name != teamParams.name) {
+                team.name = teamParams.name
                 team.save()
             }
             productService.updateTeamMembers(team, newMembers)

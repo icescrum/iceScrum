@@ -110,10 +110,10 @@ class ProjectController implements ControllerErrorHandler {
             if (!teamParams?.id) {
                 team = new Team()
                 bindData(team, teamParams, [include: ['name']])
-                def members = teamParams.members?.list('id').collect { it.toLong() } ?: []
-                def scrumMasters = teamParams.scrumMasters?.list('id').collect { it.toLong() } ?: []
-                def invitedMembers = teamParams.invitedMembers?.list('email') ?: []
-                def invitedScrumMasters = teamParams.invitedScrumMasters?.list('email') ?: []
+                def members = teamParams.members ? teamParams.members.list('id').collect { it.toLong() } : []
+                def scrumMasters = teamParams.scrumMasters ? teamParams.scrumMasters.list('id').collect { it.toLong() } : []
+                def invitedMembers = teamParams.invitedMembers ? teamParams.invitedMembers.list('email') : []
+                def invitedScrumMasters = teamParams.invitedScrumMasters ? teamParams.invitedScrumMasters.list('email') : []
                 if (!scrumMasters && !members) {
                     returnError(code: 'is.product.error.noMember')
                     return
@@ -123,10 +123,10 @@ class ProjectController implements ControllerErrorHandler {
             } else {
                 team = Team.withTeam(teamParams.long('id'))
             }
-            def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
-            def stakeHolders = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
-            def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
-            def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
+            def productOwners = productParams.productOwners ? productParams.productOwners.list('id').collect { it.toLong() } : []
+            def stakeHolders = productParams.stakeHolders ? productParams.stakeHolders.list('id').collect { it.toLong() } : []
+            def invitedProductOwners = productParams.invitedProductOwners ? productParams.invitedProductOwners.list('email') : []
+            def invitedStakeHolders = productParams.invitedStakeHolders ? productParams.invitedStakeHolders.list('email') : []
             productService.save(product, productOwners, stakeHolders)
             productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
             productService.addTeamToProduct(product, team)
@@ -173,10 +173,10 @@ class ProjectController implements ControllerErrorHandler {
         // Param extraction
         def teamParams = params.productd?.remove('team')
         def productParams = params.remove('productd')
-        def productOwners = productParams.productOwners?.list('id').collect { it.toLong() } ?: []
-        def stakeHolders = productParams.stakeHolders?.list('id').collect { it.toLong() } ?: []
-        def invitedProductOwners = productParams.invitedProductOwners?.list('email') ?: []
-        def invitedStakeHolders = productParams.invitedStakeHolders?.list('email') ?: []
+        def productOwners = productParams.productOwners ? productParams.productOwners.list('id').collect { it.toLong() } : []
+        def stakeHolders = productParams.stakeHolders ? productParams.stakeHolders.list('id').collect { it.toLong() } : []
+        def invitedProductOwners = productParams.invitedProductOwners ? productParams.invitedProductOwners.list('email') : []
+        def invitedStakeHolders = productParams.invitedStakeHolders ? productParams.invitedStakeHolders.list('email') : []
         assert !stakeHolders.intersect(productOwners)
         // Compute roles
         def newMembers = []
