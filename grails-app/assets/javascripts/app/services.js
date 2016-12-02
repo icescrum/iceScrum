@@ -665,6 +665,11 @@ services.service("DateService", [function() {
 }]);
 
 services.service("OptionsCacheService", ['$rootScope', 'CacheService', function($rootScope, CacheService) {
+    var updateTags = function(item, newItem) {
+        if (item.tags !== undefined) {
+            newItem.tags = item.tags;
+        }
+    };
     var options = {
         story: {
             allowable: function(item) {
@@ -679,9 +684,7 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                 }
                 return true;
             },
-            update: function(item, newItem) {
-                newItem.tags = item.tags;
-            }
+            update: updateTags
         },
         feature: {
             allowable: function(item) {
@@ -690,9 +693,7 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                 }
                 return true;
             },
-            update: function(item, newItem) {
-                newItem.tags = item.tags;
-            }
+            update: updateTags
         },
         task: {
             allowable: function(item) {
@@ -702,9 +703,7 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                 }
                 return true;
             },
-            update: function(item, newItem) {
-                newItem.tags = item.tags;
-            }
+            update: updateTags
         }
     };
     this.getOptions = function() {
