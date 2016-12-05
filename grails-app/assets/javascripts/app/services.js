@@ -195,7 +195,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
     };
 }]);
 
-services.service('FormService', ['$filter', '$http', '$rootScope', function($filter, $http, $rootScope) {
+services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfigService', function($filter, $http, $rootScope, DomainConfigService) {
     var self = this;
     this.previous = function(list, element) {
         var ind = _.findIndex(list, {id: element.id});
@@ -211,16 +211,23 @@ services.service('FormService', ['$filter', '$http', '$rootScope', function($fil
         _prefix = _.lowerFirst(_prefix);
         for (name in obj) {
             value = obj[name];
-            if (value instanceof Array && !_.endsWith(name, '_ids')) {
-                if (value.length == 0) {
-                    query += encodeURIComponent(_prefix + name) + '=&';
-                } else {
-                    for (i = 0; i < value.length; ++i) {
-                        subValue = value[i];
-                        innerObj = {};
-                        innerObj[name] = subValue;
-                        query += self.formObjectData(innerObj, _prefix) + '&';
+            if (value instanceof Array) {
+                var pair = _.takeRight(_.filter((_prefix + name).split('.'), _.identity), 2);
+                var context = pair[0];
+                var property = pair[1];
+                if (DomainConfigService.config[context] && _.includes(DomainConfigService.config[context].array, property)) {
+                    if (value.length == 0) {
+                        query += encodeURIComponent(_prefix + name) + '=&';
+                    } else {
+                        for (i = 0; i < value.length; ++i) {
+                            subValue = value[i];
+                            innerObj = {};
+                            innerObj[name] = subValue;
+                            query += self.formObjectData(innerObj, _prefix) + '&';
+                        }
                     }
+                } else {
+                    console.log('Not sending array to the server (add to DomainConfigService if you want to send it):', context, property); // TODO remove eventually
                 }
             } else if (value instanceof Date) {
                 var encodedDate = $filter('dateToIso')(value);
@@ -728,4 +735,28 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
             options[cacheName].update(item, newItem);
         }
     };
+}]);
+
+services.service("DomainConfigService", [function() {
+    this.config = {
+        availability: {
+            array: ['days']
+        },
+        feature: {
+            array: ['tags']
+        },
+        story: {
+            array: ['tags']
+        },
+        task: {
+            array: ['tags']
+        },
+        product: {
+            array: ['productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners']
+        },
+        team: {
+            array: ['members', 'scrumMasters', 'invitedMembers', 'invitedScrumMasters']
+        }
+    };
+    this.config.productd = this.config.product;
 }]);

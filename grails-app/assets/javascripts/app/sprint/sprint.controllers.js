@@ -93,7 +93,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
     $scope.planStories = {
         filter: {
             state: StoryStatesByName.ESTIMATED,
-            order: ['rank', 'id']// Order by id is crucial to ensure stable order regardles
+            order: 'rank'
         },
         callback: function(sprint, selectedIds) {
             if (selectedIds.length > 0) {
