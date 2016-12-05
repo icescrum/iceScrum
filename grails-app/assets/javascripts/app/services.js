@@ -37,8 +37,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             });
         }
     };
-}])
-.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
+}]);
+
+services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
     var self = this;
     self.defaultView = '';
     self.menus = {visible: [], hidden: []};
@@ -192,8 +193,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     this.getTimezones = function() {
         return FormService.httpGet('scrumOS/timezones', {cache: true});
     };
-}])
-.service('FormService', ['$filter', '$http', '$rootScope', function($filter, $http, $rootScope) {
+}]);
+
+services.service('FormService', ['$filter', '$http', '$rootScope', function($filter, $http, $rootScope) {
     var self = this;
     this.previous = function(list, element) {
         var ind = _.findIndex(list, {id: element.id});
@@ -210,7 +212,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         for (name in obj) {
             value = obj[name];
             if (value instanceof Array && !_.endsWith(name, '_ids')) {
-                if(value.length == 0){
+                if (value.length == 0) {
                     query += encodeURIComponent(_prefix + name) + '=&';
                 } else {
                     for (i = 0; i < value.length; ++i) {
@@ -311,8 +313,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             }
         });
     };
-}])
-.service('I18nService', [function() {
+}]);
+
+services.service('I18nService', [function() {
     var self = this;
     // Bundles (already translated)
     this.bundles = {};
@@ -335,8 +338,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
         });
         return text;
     };
-}])
-.service('CacheService', ['$injector', function($injector) {
+}]);
+
+services.service('CacheService', ['$injector', function($injector) {
     var self = this;
     var caches = {};
     this.cacheCreationDates = {};
@@ -387,7 +391,9 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             _.remove(self.getCache(cacheName), {id: parseInt(id)});
         }
     };
-}]).service('SyncService', ['$rootScope', 'CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', function($rootScope, CacheService, StoryService, FeatureService, SprintService, BacklogService) {
+}]);
+
+services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', function($rootScope, CacheService, StoryService, FeatureService, SprintService, BacklogService) {
     var syncFunctions = {
         story: function(oldStory, newStory) {
             var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
@@ -511,6 +517,11 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
             }
         },
         feature: function(oldFeature, newFeature) {
+            if (oldFeature && newFeature && oldFeature.rank != newFeature.rank) {
+                CacheService.getCache('feature').sort(function(f1, f2) {
+                    return f1.rank - f2.rank;
+                });
+            }
             _.each(CacheService.getCache('story'), function(story) {
                 var featureId = newFeature ? newFeature.id : oldFeature.id;
                 if (story.feature && story.feature.id == featureId) {
