@@ -233,13 +233,13 @@
             <div class="panel-footer" ng-if="formHolder.editing">
                 <div class="btn-toolbar">
                     <button class="btn btn-primary"
-                            ng-if="editableSprint.lastUpdated == editableSprint.lastUpdated"
+                            ng-if="isLatest()"
                             ng-disabled="!isDirty() || formHolder.sprintForm.$invalid"
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
                     <button class="btn btn-danger"
-                            ng-if="editableSprint.lastUpdated != sprint.lastUpdated && !formHolder.submitting"
+                            ng-if="!isLatest() && !formHolder.submitting"
                             ng-disabled="!isDirty() || formHolder.sprintForm.$invalid"
                             type="submit">
                         ${message(code:'default.button.override.label')}
@@ -251,7 +251,7 @@
                     </button>
                     <button class="btn btn-warning"
                             type="button"
-                            ng-if="editableSprint.lastUpdated != sprint.lastUpdated && !formHolder.submitting"
+                            ng-if="!isLatest() && !formHolder.submitting"
                             ng-click="resetStoryForm()">
                         <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
                     </button>

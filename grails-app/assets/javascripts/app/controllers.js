@@ -544,6 +544,9 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     $scope.isDirty = function() {
         return !_.isEqual($scope[editable], $scope[editableReference]);
     };
+    $scope.isLatest = function() {
+        return $scope[editable].lastUpdated == $scope[type].lastUpdated;
+    };
     $scope.editForm = function(value) {
         if ($scope.formHolder.editable() && value != $scope.formHolder.editing) {
             $scope.setInEditingMode(value); // global
