@@ -28,7 +28,7 @@
     </a>
 </li>
 <li ng-if="authorizedSprint('close', sprint)">
-    <a href ng-click="confirm({ message: '${message(code: 'is.ui.releasePlan.menu.sprint.close.confirm')}', callback: close, args: [sprint] })">
+    <a href ng-click="openCloseModal(sprint)">
         ${message(code:'is.ui.releasePlan.menu.sprint.close')}
     </a>
 </li>

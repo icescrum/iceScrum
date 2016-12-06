@@ -21,13 +21,13 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<script type="text/ng-template" id="sprint.plan.html">
+<script type="text/ng-template" id="story.selector.html">
 <is:modal form="submit(selectedIds)"
           submitButton="{{ message('todo.is.ui.story.selector.' + backlog.code + '.button') }}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="{{ message('todo.is.ui.story.selector.' + backlog.code + '.title') }}">
-    <p class="help-block">
-        {{ message('todo.is.ui.story.selector.' + backlog.code + '.description') }}
+    <p class="help-block"
+       ng-bind-html="message('todo.is.ui.story.selector.' + backlog.code + '.description')">
     </p>
     <div ng-if="backlog.storiesLoaded"
          selectable="selectableOptions">
@@ -36,7 +36,7 @@
              ng-model="backlog.stories"
              as-sortable
              is-disabled="true"
-             ng-init="emptyBacklogTemplate = 'story.backlog.plan.empty.html'"
+             ng-init="emptyBacklogTemplate = 'story.backlog.' + backlog.code + '.empty.html'"
              ng-include="'story.backlog.html'">
         </div>
     </div>

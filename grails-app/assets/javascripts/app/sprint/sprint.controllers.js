@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', function($scope, Session, SprintService) {
+controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService', 'StoryService', 'StoryStatesByName', function($scope, $q, Session, SprintService, StoryService, StoryStatesByName) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -33,11 +33,6 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
     $scope.activate = function(sprint) {
         SprintService.activate(sprint, $scope.project).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.activated');
-        });
-    };
-    $scope.close = function(sprint) {
-        SprintService.close(sprint, $scope.project).then(function() {
-            $scope.notifySuccess('todo.is.ui.sprint.closed');
         });
     };
     $scope.autoPlan = function(sprint, capacity) {
@@ -55,6 +50,47 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
+    $scope.openCloseModal = function(sprint) {
+        var project = $scope.project;
+        $scope.openStorySelectorModal({
+            code: 'close',
+            order: 'rank',
+            filter: {
+                parentSprint: sprint.id
+            },
+            initSelectedIds: function(stories) {
+                return _.chain(stories).filter({state: StoryStatesByName.DONE}).map('id').value();
+            },
+            submit: function(wannaBeDone, stories) {
+                var storyIdsByDone = _.chain(stories).groupBy(function(story) {
+                    return story.state == StoryStatesByName.DONE;
+                }).mapValues(function(stories) {
+                    return _.map(stories, 'id');
+                }).value();
+                var alreadyDone = storyIdsByDone[true];
+                var toBeDone = _.difference(wannaBeDone, alreadyDone);
+                var alreadyUndone = storyIdsByDone[false];
+                var wannabeUndone = _.difference(_.map(stories, 'id'), wannaBeDone);
+                var toBeUndone = _.difference(wannabeUndone, alreadyUndone);
+                var promise = $q.when();
+                if (toBeUndone.length) {
+                    promise = promise.then(function() {
+                        return toBeUndone.length > 1 ? StoryService.unDoneMultiple(toBeUndone) : StoryService.unDone({id: toBeUndone[0]});
+                    });
+                }
+                if (toBeDone.length) {
+                    promise = promise.then(function() {
+                        return toBeDone.length > 1 ? StoryService.doneMultiple(toBeDone) : StoryService.done({id: toBeDone[0]});
+                    });
+                }
+                return promise.then(function() {
+                    SprintService.close(sprint, project).then(function() {
+                        $scope.notifySuccess('todo.is.ui.sprint.closed');
+                    });
+                });
+            }
+        });
+    };
     // Init
     $scope.project = Session.getProject();
     $scope.startDateOptions = {
@@ -63,10 +99,29 @@ controllers.controller('sprintCtrl', ['$scope', 'Session', 'SprintService', func
     $scope.endDateOptions = angular.copy($scope.startDateOptions);
 }]);
 
-controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', function($scope, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
+controllers.controller('sprintBacklogCtrl', ['$scope', '$q', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', function($scope, $q, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
     // Functions
     $scope.isSortingSprint = function(sprint) {
         return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
+    };
+    $scope.openPlanModal = function(sprint) {
+        $scope.openStorySelectorModal({
+            code: 'plan',
+            order: 'rank',
+            filter: {
+                state: StoryStatesByName.ESTIMATED
+            },
+            submit: function(selectedIds) {
+                if (selectedIds.length > 0) {
+                    // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch
+                    return StoryService.updateMultiple(selectedIds, {parentSprint: sprint}).then(function() {
+                        $scope.notifySuccess('todo.is.ui.story.multiple.updated');
+                    });
+                } else {
+                    return $q.when();
+                }
+            }
+        });
     };
     // Init
     $scope.sprintSortableOptions = {
@@ -88,20 +143,6 @@ controllers.controller('sprintBacklogCtrl', ['$scope', 'StoryService', 'SprintSt
         accept: function(sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
             return sameSortable && destSortableScope.isSortingSprint(destSortableScope.sprint);
-        }
-    };
-    $scope.planStories = {
-        filter: {
-            state: StoryStatesByName.ESTIMATED,
-            order: 'rank'
-        },
-        callback: function(sprint, selectedIds) {
-            if (selectedIds.length > 0) {
-                // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch
-                StoryService.updateMultiple(selectedIds, {parentSprint: sprint}).then(function() {
-                    $scope.notifySuccess('todo.is.ui.story.multiple.updated');
-                });
-            }
         }
     };
     $scope.sortableId = 'sprint';

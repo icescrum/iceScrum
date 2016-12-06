@@ -45,7 +45,7 @@
                 <button class="btn btn-default"
                         ng-if="authorizedSprint('close', sprint)"
                         uib-tooltip="${message(code:'is.ui.releasePlan.menu.sprint.close')}"
-                        ng-click="confirm({ message: '${message(code: 'is.ui.releasePlan.menu.sprint.close.confirm')}', callback: close, args: [sprint] })">
+                        ng-click="openCloseModal(sprint)">
                     <i class="fa fa-stop"></i>
                 </button>
                 <div class="btn-group"

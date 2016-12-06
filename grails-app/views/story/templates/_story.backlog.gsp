@@ -44,6 +44,9 @@
 </div>
 </script>
 
+<script type="text/ng-template" id="story.backlog.close.empty.html">
+</script>
+
 <script type="text/ng-template" id="story.backlog.backlogs.empty.html">
 <p class="help-block">{{:: message('todo.is.ui.story.empty.backlogs.' + backlog.code, [], 'todo.is.ui.story.empty.backlogs.default') }}</p>
 <a class="btn btn-primary"
@@ -58,7 +61,7 @@
     <p class="help-block">${message(code: 'todo.is.ui.story.empty.planning')}</p>
     <button class="btn btn-primary"
             type="button"
-            ng-click="showStoriesSelectorModal({filter:planStories.filter,callback: planStories.callback, args:[sprint], code: 'plan'})"
+            ng-click="openPlanModal(sprint)"
             ng-if="authorizedSprint('plan', sprint)">
         ${message(code: 'todo.is.ui.story.plan')}
     </button>

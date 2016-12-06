@@ -81,9 +81,9 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
             }]
         });
     };
-    $scope.showStoriesSelectorModal = function(options) {
+    $scope.openStorySelectorModal = function(options) {
         $uibModal.open({
-            templateUrl: 'sprint.plan.html',
+            templateUrl: 'story.selector.html',
             size: 'md',
             controller: ["$scope", "$filter", "StoryService", function($scope, $filter, StoryService) {
                 // Functions
@@ -91,9 +91,9 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                     return _.includes($scope.selectedIds, story.id);
                 };
                 $scope.submit = function(selectedIds) {
-                    options.args.push(selectedIds);
-                    options.callback.apply(options.callback, options.args);
-                    $scope.$close(true);
+                    options.submit(selectedIds, $scope.backlog.stories).then(function() {
+                        $scope.$close(true);
+                    });
                 };
                 // Init
                 $scope.disabledGradient = true;
@@ -112,8 +112,11 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                     }
                 };
                 StoryService.filter(options.filter).then(function(stories) {
-                    $scope.backlog.stories = options.filter.order ? $filter('orderBy')(stories, options.filter.order) : stories;
+                    $scope.backlog.stories = options.order ? $filter('orderBy')(stories, options.order) : stories;
                     $scope.backlog.storiesLoaded = true;
+                    if (options.initSelectedIds) {
+                        $scope.selectedIds = options.initSelectedIds($scope.backlog.stories);
+                    }
                 });
             }]
         });
