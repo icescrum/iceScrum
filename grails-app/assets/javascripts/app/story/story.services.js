@@ -291,9 +291,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             case 'shiftToNext':
                 return Session.poOrSm() && story.state >= StoryStatesByName.PLANNED && story.state <= StoryStatesByName.IN_PROGRESS;
             case 'done':
-                return Session.po() && story.state == StoryStatesByName.IN_PROGRESS;
+                return Session.poOrSm() && story.state == StoryStatesByName.IN_PROGRESS;
             case 'unDone':
-                return Session.po() && story.state == StoryStatesByName.DONE && story.parentSprint.state == SprintStatesByName.IN_PROGRESS;
+                return Session.poOrSm() && story.state == StoryStatesByName.DONE && story.parentSprint.state == SprintStatesByName.IN_PROGRESS;
             default:
                 return false;
         }
