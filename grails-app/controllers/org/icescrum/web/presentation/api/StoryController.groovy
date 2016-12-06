@@ -287,17 +287,27 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
-    def done(long id, long product) {
-        def story = Story.withStory(product, id)
-        storyService.done(story)
-        render(status: 200, contentType: 'application/json', text: story as JSON)
+    def done() {
+        def stories = Story.withStories(params)
+        Story.withTransaction {
+            stories.each { Story story ->
+                storyService.done(story)
+            }
+        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
-    def unDone(long id, long product) {
-        def story = Story.withStory(product, id)
-        storyService.unDone(story)
-        render(status: 200, contentType: 'application/json', text: story as JSON)
+    def unDone() {
+        def stories = Story.withStories(params)
+        Story.withTransaction {
+            stories.each { Story story ->
+                storyService.unDone(story)
+            }
+        }
+        def returnData = stories.size() > 1 ? stories : stories.first()
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['productOwner() and !archivedProduct()'])
