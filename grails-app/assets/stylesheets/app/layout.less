@@ -992,6 +992,15 @@ table {
   margin-top: -6px;
   clear: both;
   overflow: hidden;
+  &.postits-disabled .postit-container {
+    button, a {
+      pointer-events: none;
+      cursor: default;
+    }
+    .action:not(.active) {
+      display: none !important;
+    }
+  }
 }
 
 //flex

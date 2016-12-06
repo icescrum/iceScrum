@@ -31,7 +31,7 @@
     </p>
     <div ng-if="backlog.storiesLoaded"
          selectable="selectableOptions">
-        <div class="postits list-group has-selected sortable-disabled"
+        <div class="postits list-group has-selected sortable-disabled postits-disabled"
              ng-controller="storyCtrl"
              ng-model="backlog.stories"
              as-sortable
