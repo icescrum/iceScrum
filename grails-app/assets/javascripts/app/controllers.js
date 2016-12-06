@@ -88,7 +88,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
             controller: ["$scope", "$filter", "StoryService", function($scope, $filter, StoryService) {
                 // Functions
                 $scope.isSelected = function(story) {
-                    return _.indexOf($scope.selectedIds, story.id.toString()) > -1;
+                    return _.includes($scope.selectedIds, story.id);
                 };
                 $scope.submit = function(selectedIds) {
                     options.args.push(selectedIds);

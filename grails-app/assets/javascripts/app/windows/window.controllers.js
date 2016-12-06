@@ -313,7 +313,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', '$timeout', 'Release
             if (selectedIds.length == 0 && storyIndexInStateName != -1) {
                 $state.go(currentStateName.slice(0, storyIndexInStateName - 1));
             } else {
-                var newStoryState = getNewStoryState(selectedIds, currentStateName);
+                var newStoryState = getNewStoryState(selectedIds[0], currentStateName);
                 $state.go(newStoryState.name, newStoryState.params);
             }
         }

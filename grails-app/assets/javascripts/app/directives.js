@@ -730,7 +730,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                             lastSelected = selectableElement.hasClass(selectedClass) ? selectableElement : null;
                         }
                         selectedIds = _.map(element.find(selectedSelector), function(selected) {
-                            return angular.element(selected).attr(selectedIdAttr);
+                            return parseInt(angular.element(selected).attr(selectedIdAttr));
                         });
                     } else {
                         lastSelected = null;
