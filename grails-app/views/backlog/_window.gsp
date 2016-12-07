@@ -119,7 +119,7 @@
                         role="menu">
                         <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
                             <li role="menuitem">
-                                <a href="${createLink(action:format.action?:'print',controller:format.controller?:controllerName,params:format.params)}&id={{ ::backlogContainer.backlog.id }}"
+                                <a href="${format.controller?:'backlog'}/{{ ::backlogContainer.backlog.id }}/${format.action?:'print'}/${format.params.format}"
                                    ng-click="print($event)">${format.name}</a>
                             </li>
                         </g:each>

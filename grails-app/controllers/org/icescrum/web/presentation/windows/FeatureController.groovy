@@ -125,27 +125,25 @@ class FeatureController implements ControllerErrorHandler {
         if (!features) {
             returnError(code: 'is.report.error.no.data')
         } else {
-            return task {
-                def data = []
-                Feature.withNewSession {
-                    features.eachWithIndex { feature, index ->
-                        data << [
-                                uid: feature.uid,
-                                name: feature.name,
-                                description: feature.description,
-                                notes: feature.notes?.replaceAll(/<.*?>/, ''),
-                                rank: feature.rank,
-                                type: message(code: grailsApplication.config.icescrum.resourceBundles.featureTypes[feature.type]),
-                                value: feature.value,
-                                effort: feature.effort,
-                                associatedStories: Story.countByFeature(feature),
-                                associatedStoriesDone: feature.countDoneStories,
-                                parkingLotValue: values[index].value
-                        ]
-                    }
+            def data = []
+            Feature.withNewSession {
+                features.eachWithIndex { feature, index ->
+                    data << [
+                            uid: feature.uid,
+                            name: feature.name,
+                            description: feature.description,
+                            notes: feature.notes?.replaceAll(/<.*?>/, ''),
+                            rank: feature.rank,
+                            type: message(code: grailsApplication.config.icescrum.resourceBundles.featureTypes[feature.type]),
+                            value: feature.value,
+                            effort: feature.effort,
+                            associatedStories: Story.countByFeature(feature),
+                            associatedStoriesDone: feature.countDoneStories,
+                            parkingLotValue: values[index].value
+                    ]
                 }
-                renderReport('features', format ? format.toUpperCase() : 'PDF', [[product: _product.name, features: data ?: null]], _product.name)
             }
+            renderReport('features', format ? format.toUpperCase() : 'PDF', [[product: _product.name, features: data ?: null]], _product.name)
         }
     }
 

@@ -67,6 +67,14 @@ class ProductUrlMappings {
             }
         }
         // new way to handle requests (REST Style)
+        "/p/$product/$controller/$id/print/$format?" {
+            action = 'print'
+            constraints {
+                id(matches: /\d*/)
+                product(matches: /[0-9A-Z]*/)
+                format(matches: /[0-9A-Z]*/)
+            }
+        }
         "/p/$product/$controller/print/$format?" {
             action = 'print'
             constraints {
@@ -251,6 +259,15 @@ class ProductUrlMappings {
             action = [GET: "index"]
             constraints {
                 product(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$product/backlog/$id/printPostits/$format?" {
+            controller = 'backlog'
+            action = 'printPostits'
+            constraints {
+                id(matches: /\d*/)
+                product(matches: /[0-9A-Z]*/)
+                format(matches: /[0-9A-Z]*/)
             }
         }
         // Release

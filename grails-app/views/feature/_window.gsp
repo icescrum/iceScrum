@@ -60,8 +60,8 @@
                     <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                            unavailable-feature="true"
-                            ng-href="{{ ::viewName }}/print"
+                            ng-click="print($event)"
+                            ng-href="feature/print"
                             hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                     </button>
                     <button class="btn btn-default"
@@ -71,9 +71,10 @@
                     </button>
                     <ul uib-dropdown-menu
                         role="menu">
-                        <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
+                        <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
                             <li role="menuitem">
-                                <a unavailable-feature="true">${format.name}</a>
+                                <a href="${format.controller?:'feature'}/${format.action?:'print'}/${format.params.format}"
+                                   ng-click="print($event)">${format.name}</a>
                             </li>
                         </g:each>
                     </ul>

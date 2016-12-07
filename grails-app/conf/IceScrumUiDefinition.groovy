@@ -67,6 +67,7 @@ windows = {
         ]
         exportFormats = {
             [
+                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [product: params.product, format: 'PDF']],
                     [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF']],
                     [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX']],
                     [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT']]
@@ -89,9 +90,11 @@ windows = {
                 viewTypes: ['postits', 'table', 'productParkingLotChart']
         ]
         exportFormats = {
-            [[code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF']],
-             [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX']],
-             [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT']]]
+            [
+                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF']],
+                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX']],
+                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT']]
+            ]
         }
     }
     'project' {
@@ -108,14 +111,6 @@ windows = {
                 view: 'productCumulativeFlowChart',
                 viewTypes: ['productCumulativeFlowChart', 'productVelocityCapacityChart', 'productBurnupChart', 'productBurndownChart', 'productVelocityChart', 'productParkingLotChart'],
         ]
-        exportFormats = {
-            [
-                    [code: 'pdf', name: message(code: 'is.report.format.pdf'), action: 'printPostits', params: [product: params.product, format: 'PDF']],
-                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF', locationHash: params.actionWindow ?: '']],
-                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX', locationHash: params.actionWindow ?: '']],
-                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT', locationHash: params.actionWindow ?: '']]
-            ]
-        }
     }
     'planning' {
         details true
