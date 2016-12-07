@@ -157,14 +157,14 @@ windows = {
                     id
                 }
         ]
-        exportFormats = {
+        /*exportFormats = {
             [
-                    [code: 'pdf', name: message(code: 'is.report.format.pdf'), action: 'printPostits', params: [product: params.product, format: 'PDF', id: params.id]],
+                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [product: params.product, format: 'PDF', id: params.id]],
                     [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF', id: params.id]],
                     [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX', id: params.id]],
                     [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT', id: params.id]]
             ]
-        }
+        }*/
     }
 
 }

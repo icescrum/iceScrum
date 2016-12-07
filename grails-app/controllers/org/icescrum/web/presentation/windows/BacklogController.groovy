@@ -31,10 +31,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
-import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.ServicesUtils
-
-import static grails.async.Promises.task
 
 @Secured(['stakeHolder() or inProduct()'])
 class BacklogController implements ControllerErrorHandler {
