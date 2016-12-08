@@ -237,7 +237,16 @@ class ProjectController implements ControllerErrorHandler {
     def export(long product) {
         Product _product = Product.withProduct(product)
         session.progress = new ProgressSupport()
-        params.zip ? exportProductZIP(_product) : render(text: exportProductXML(_product), contentType: "text/xml")
+        if (params.zip){
+            def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+                response.setHeader(k, v)
+            }
+            response.contentType = 'application/zip'
+            ApplicationSupport.exportProductZIP(_product, response.outputStream)
+        } else {
+            render(text: exportProductXML(_product), contentType: "text/xml")
+        }
         session.progress.completeProgress(message(code: 'todo.is.ui.progress.complete'))
     }
 
@@ -474,39 +483,6 @@ class ProjectController implements ControllerErrorHandler {
         }
         response.contentType = 'application/octet'
         return writer.toString()
-    }
-
-    private void exportProductZIP(Product product) {
-        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
-        def tempdir = System.getProperty("java.io.tmpdir");
-        tempdir = (tempdir.endsWith("/") || tempdir.endsWith("\\")) ? tempdir : tempdir + System.getProperty("file.separator")
-        def xml = new File(tempdir + projectName + '.xml')
-        try {
-            xml.withWriter('UTF-8') { writer ->
-                def builder = new MarkupBuilder(writer)
-                product.xml(builder)
-            }
-            def files = []
-            product.stories*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.features*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.releases*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.sprints*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            product.attachments.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            def tasks = []
-            product.releases*.each{ it.sprints*.each{ s -> tasks.addAll(s.tasks) } }
-            tasks*.attachments.findAll{ it.size() > 0 }?.each{ it?.each{ att -> files << attachmentableService.getFile(att) } }
-            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
-                response.setHeader(k, v)
-            }
-            response.contentType = 'application/zip'
-            ApplicationSupport.zipExportFile(response.outputStream, files, xml, 'attachments')
-        } catch (Exception e) {
-            if (log.debugEnabled) {
-                e.printStackTrace()
-            }
-        } finally {
-            xml.delete()
-        }
     }
 
     @Secured(['permitAll()'])
