@@ -129,9 +129,10 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                 $scope.zip = true;
                 $scope.progress = false;
                 $scope.start = function() {
-                    $scope.downloadFile("project/export" + ($scope.zip ? "?zip=true" : ""));
+                    $scope.downloadFile("project/export?zip=true");
                     $scope.progress = true;
-                }
+                };
+                $scope.start();
             }]
         });
         modal.result.then(

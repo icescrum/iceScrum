@@ -52,7 +52,6 @@ class ProjectController implements ControllerErrorHandler {
     def releaseService
     def springSecurityService
     def featureService
-    def attachmentableService
     def securityService
 
     @Secured(["hasRole('ROLE_ADMIN')"])
@@ -238,7 +237,7 @@ class ProjectController implements ControllerErrorHandler {
         Product _product = Product.withProduct(product)
         session.progress = new ProgressSupport()
         if (params.zip){
-            def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+            def projectName = "${_product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
             ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
                 response.setHeader(k, v)
             }
@@ -561,7 +560,7 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, template: "dialogs/import")
     }
 
-    @Secured(['scrumMaster() or productOwner()'])
+    @Secured(['isAuthenticated()'])
     def exportDialog() {
         render(status: 200, template: "dialogs/export")
     }
