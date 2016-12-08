@@ -29,7 +29,7 @@
             <td>
                 <div class="col-sm-8">
                     <div class="filename" title="{{ attachment.filename }}">
-                        <i class="fa fa-{{ attachment.ext | fileicon }}"></i> <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}">{{ attachment.filename }}</a></div>
+                        <i class="fa fa-{{ attachment.ext | fileicon }}"></i> <a ng-show="!isPreviewable(attachment)" href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}">{{ attachment.filename }}</a><a ng-show="isPreviewable(attachment)" href ng-click="showPreview(attachment, attachmentable, clazz)">{{ attachment.filename }}</a></div>
                     <div><small>{{ attachment.length | filesize }}</small></div>
                 </div>
                 <div class="col-sm-4 text-right">
