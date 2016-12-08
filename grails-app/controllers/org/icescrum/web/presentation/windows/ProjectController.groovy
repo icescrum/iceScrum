@@ -53,6 +53,7 @@ class ProjectController implements ControllerErrorHandler {
     def springSecurityService
     def featureService
     def securityService
+    def templateService
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def index(String term, String filter, Boolean paginate, Integer count, Integer page, String sorting, String order) {
@@ -134,6 +135,10 @@ class ProjectController implements ControllerErrorHandler {
                 releaseService.save(release, product)
                 sprintService.generateSprints(release, productParams.firstSprint)
             }
+            //create default defect template
+            def story = new Story(type:Story.TYPE_DEFECT, backlog: product)
+            templateService.save(new Template(name:'is.ui.sandbox.story.template.default.defect'), story)
+            story.delete()
         }
         render(status: 201, contentType: 'application/json', text: product as JSON)
     }
