@@ -303,7 +303,8 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
                 var $el = angular.element($event.currentTarget);
                 $el.prev().css('height', $el.outerHeight());
                 $scope.editForm(true);
-                if (!$scope.editableStory.description) {
+                //only user story have a template
+                if (!$scope.editableStory.description && $scope.editableStory.type == 0) {
                     ($scope.editableStory.description = template);
                 }
             }
