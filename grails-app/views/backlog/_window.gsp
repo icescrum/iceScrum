@@ -57,7 +57,7 @@
                     <button type="button"
                             class="btn btn-default"
                             ng-click="toggleSelectableMultiple()"
-                            uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.multiple.disable/)}' : '${message(code: /todo.is.ui.selectable.multiple.enable/)}' }}">
+                            uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
                         <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
                     </button>
                 </div>
