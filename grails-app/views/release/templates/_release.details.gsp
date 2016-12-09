@@ -32,33 +32,35 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span>{{ release.name }}</span>
+                <span>{{ release.id }}&nbsp;&nbsp;{{ release.name }}</span>
             </div>
             <div class="right-title">
-                <button class="btn btn-default elemid">{{ release.id }}</button>
-                <div class="btn-group"
-                     ng-if="showReleaseMenu()"
-                     uib-dropdown>
-                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul uib-dropdown-menu class="pull-right" ng-include="'release.menu.html'"></ul>
+                <div style="margin-bottom:10px">
+                    <a ng-if="previousRelease"
+                       class="btn btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#{{ ::viewName }}/{{ ::previousRelease.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                    <a ng-if="nextRelease"
+                       class="btn btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#{{ ::viewName }}/{{ ::nextRelease.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    <a class="btn btn-default"
+                       href="{{:: $state.href('^') }}"
+                       uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                        <i class="fa fa-times"></i>
+                    </a>
                 </div>
-                <a ng-if="previousRelease"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::previousRelease.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextRelease"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::nextRelease.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
-                <a class="btn btn-default"
-                   href="{{:: $state.href('^') }}"
-                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                    <i class="fa fa-times"></i>
-                </a>
+                <div class="btn-group" role="group">
+                    <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <i class="fa fa-ellipsis-h"></i></i>
+                        </button>
+                        <ul uib-dropdown-menu class="pull-right" template-url="release.menu.html"></ul>
+                    </div>
+                </div>
             </div>
         </h3>
         <visual-states ng-model="release" model-states="releaseStatesByName"/>

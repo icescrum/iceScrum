@@ -32,45 +32,35 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span>{{ release.name + ' - ' + (sprint | sprintName) }} </span>
+                <span>{{ sprint.id }}&nbsp;&nbsp;{{ release.name + ' - ' + (sprint | sprintName) }} </span>
             </div>
             <div class="right-title">
-                <button class="btn btn-default elemid">{{ sprint.id }}</button>
-                <button class="btn btn-default"
-                        ng-if="authorizedSprint('activate', sprint)"
-                        uib-tooltip="${message(code:'is.ui.releasePlan.menu.sprint.activate')}"
-                        ng-click="confirm({ message: '${message(code: 'is.ui.releasePlan.menu.sprint.activate.confirm')}', callback: activate, args: [sprint] })">
-                    <i class="fa fa-play"></i>
-                </button>
-                <button class="btn btn-default"
-                        ng-if="authorizedSprint('close', sprint)"
-                        uib-tooltip="${message(code:'is.ui.releasePlan.menu.sprint.close')}"
-                        ng-click="openCloseModal(sprint)">
-                    <i class="fa fa-stop"></i>
-                </button>
-                <div class="btn-group"
-                     ng-if="showSprintMenu()"
-                     uib-dropdown>
-                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul uib-dropdown-menu class="pull-right" ng-include="'sprint.menu.html'"></ul>
+                <div style="margin-bottom:10px">
+                    <a ng-if="previousSprint"
+                       class="btn btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + previousSprint.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                    <a ng-if="nextSprint"
+                       class="btn btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    <a class="btn btn-default"
+                       href="{{:: $state.href('^') }}"
+                       uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                        <i class="fa fa-times"></i>
+                    </a>
                 </div>
-                <a ng-if="previousSprint"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + previousSprint.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextSprint"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
-                <a class="btn btn-default"
-                   href="{{:: $state.href('^') }}"
-                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                    <i class="fa fa-times"></i>
-                </a>
+                <div class="btn-group" role="group">
+                    <shortcut-menu ng-model="sprint" model-menus="menus"></shortcut-menu>
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <i class="fa fa-ellipsis-h"></i></i>
+                        </button>
+                        <ul uib-dropdown-menu class="pull-right" template-url="sprint.menu.html"></ul>
+                    </div>
+                </div>
             </div>
         </h3>
         <visual-states ng-model="sprint" model-states="sprintStatesByName"/>

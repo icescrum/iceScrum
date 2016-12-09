@@ -20,31 +20,12 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
 <script type="text/ng-template" id="sprint.menu.html">
-<li ng-if="authorizedSprint('activate', sprint)">
-    <a href ng-click="confirm({ message: '${message(code: 'is.ui.releasePlan.menu.sprint.activate.confirm')}', callback: activate, args: [sprint] })">
-        ${message(code:'is.ui.releasePlan.menu.sprint.activate')}
-    </a>
-</li>
-<li ng-if="authorizedSprint('close', sprint)">
-    <a href ng-click="openCloseModal(sprint)">
-        ${message(code:'is.ui.releasePlan.menu.sprint.close')}
-    </a>
-</li>
-<li ng-if="authorizedSprint('autoPlan', sprint)">
-    <a href ng-click="showAutoPlanModal({callback: autoPlan, args: [sprint]})">
-        ${message(code:'is.ui.releasePlan.toolbar.autoPlan')}
-    </a>
-</li>
-<li ng-if="authorizedSprint('unPlan', sprint)">
-    <a href ng-click="unPlan(sprint)">
-        ${message(code:'is.ui.releasePlan.menu.sprint.dissociateAll')}
-    </a>
-</li>
-<li ng-if="authorizedSprint('delete', sprint)">
-    <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [sprint] })">
-        ${message(code:'is.ui.releasePlan.menu.sprint.delete')}
-    </a>
-</li>
+<ul class="dropdown-menu pull-right" uib-dropdown-menu role="menu">
+    <li ng-repeat="menuElement in menus | visibleMenuElement:sprint">
+        <a href ng-click="menuElement.action(sprint)">
+            {{ menuElement.name }}
+        </a>
+    </li>
+</ul>
 </script>

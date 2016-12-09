@@ -22,34 +22,11 @@
 --}%
 
 <script type="text/ng-template" id="release.menu.html">
-<li ng-if="authorizedRelease('activate', release)">
-    <a href ng-click="confirm({ message: '${message(code: 'is.ui.timeline.menu.activate.confirm')}', callback: activate, args: [release] })">
-        ${message(code:'is.ui.timeline.menu.activate')}
-    </a>
-</li>
-<li ng-if="authorizedRelease('close', release)">
-    <a href ng-click="confirm({ message: '${message(code: 'is.ui.timeline.menu.close.confirm')}', callback: close, args: [release] })">
-        ${message(code:'is.ui.timeline.menu.close')}
-    </a>
-</li>
-<li ng-if="authorizedRelease('generateSprints', release)">
-    <a href ng-click="generateSprints(release)">
-        ${message(code:'is.ui.releasePlan.toolbar.generateSprints')}
-    </a>
-</li>
-<li ng-if="authorizedRelease('autoPlan', release)">
-    <a href ng-click="showAutoPlanModal({callback: autoPlan, args: [release]})">
-        ${message(code:'is.ui.releasePlan.toolbar.autoPlan')}
-    </a>
-</li>
-<li ng-if="authorizedRelease('unPlan', release)">
-    <a href ng-click="unPlan(release)">
-        ${message(code:'is.ui.releasePlan.toolbar.dissociateAll')}
-    </a>
-</li>
-<li ng-if="authorizedRelease('delete', release)">
-    <a href ng-click="confirm({ message: '${message(code: 'is.ui.timeline.menu.delete.confirm')}', callback: delete, args: [release] })">
-        ${message(code:'is.ui.timeline.menu.delete')}
-    </a>
-</li>
+<ul class="dropdown-menu pull-right" uib-dropdown-menu role="menu">
+    <li ng-repeat="menuElement in menus | visibleMenuElement:release">
+        <a href ng-click="menuElement.action(release)">
+            {{ menuElement.name }}
+        </a>
+    </li>
+</ul>
 </script>

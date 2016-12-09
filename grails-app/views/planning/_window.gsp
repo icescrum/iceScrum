@@ -112,17 +112,6 @@
                                   uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
                             <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
                             <i class="small-icon fa fa-dollar"></i>
-                            <button class="btn btn-primary hidden-on-simulation"
-                                    type="button"
-                                    ng-click="openPlanModal(sprint)"
-                                    ng-if="authorizedSprint('plan', sprint)" style="position:relative">
-                                ${message(code: 'todo.is.ui.story.plan')}
-                            </button>
-                            <a class="btn btn-default hidden-on-simulation"
-                               href="#/taskBoard/{{ sprint.id }}/details"
-                               uib-tooltip="${message(code: 'todo.is.ui.taskBoard')}">
-                                <i class="fa fa-tasks"></i>
-                            </a>
                             <a class="btn btn-default hidden-on-simulation"
                                href="{{ openSprintUrl(sprint) }}"
                                uib-tooltip="${message(code: 'todo.is.ui.details')}">

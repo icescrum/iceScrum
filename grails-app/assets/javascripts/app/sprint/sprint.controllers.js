@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService', 'StoryService', 'StoryStatesByName', function($scope, $q, Session, SprintService, StoryService, StoryStatesByName) {
+controllers.controller('sprintCtrl', ['$scope', '$q', '$location', 'Session', 'SprintService', 'StoryService', 'StoryStatesByName', function($scope, $q, $location, Session, SprintService, StoryService, StoryStatesByName) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -91,19 +91,7 @@ controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService'
             }
         });
     };
-    // Init
-    $scope.project = Session.getProject();
-    $scope.startDateOptions = {
-        opened: false
-    };
-    $scope.endDateOptions = angular.copy($scope.startDateOptions);
-}]);
 
-controllers.controller('sprintBacklogCtrl', ['$scope', '$q', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', function($scope, $q, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
-    // Functions
-    $scope.isSortingSprint = function(sprint) {
-        return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
-    };
     $scope.openPlanModal = function(sprint) {
         $scope.openStorySelectorModal({
             code: 'plan',
@@ -122,6 +110,51 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$q', 'StoryService', 'Sp
                 }
             }
         });
+    };
+
+    $scope.menus = [{
+        name:$scope.message('todo.is.ui.story.plan'),
+        visible:function(sprint){ return $scope.authorizedSprint('plan', sprint) },
+        action:function(sprint){ $scope.openPlanModal(sprint) }
+    },{
+        name:$scope.message('is.ui.releasePlan.menu.sprint.activate'),
+        visible:function(sprint){ return $scope.authorizedSprint('activate', sprint) },
+        action:function(sprint){ $scope.confirm({ message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'), callback: $scope.activate, args: [sprint] }) }
+    },{
+        name:$scope.message('is.ui.releasePlan.menu.sprint.close'),
+        visible:function(sprint){ return $scope.authorizedSprint('close', sprint) },
+        action:function(sprint){ $scope.openCloseModal(sprint) }
+    },{
+        name:$scope.message('todo.is.ui.taskBoard'),
+        visible:function(sprint){ return true },
+        action:function(sprint){ $location.path("/taskBoard/"+sprint.id+"/details") }
+    },{
+        name:$scope.message('is.ui.releasePlan.toolbar.autoPlan'),
+        visible:function(sprint){ return $scope.authorizedSprint('autoPlan', sprint) },
+        action:function(sprint){ $scope.showAutoPlanModal({callback: $scope.autoPlan, args: [sprint]}) }
+    },{
+        name:$scope.message('is.ui.releasePlan.menu.sprint.dissociateAll'),
+        visible:function(sprint){ return $scope.authorizedSprint('unPlan', sprint) },
+        action:function(sprint){ $scope.unPlan(sprint) }
+    },{
+        name:$scope.message('is.ui.releasePlan.menu.sprint.delete'),
+        visible:function(sprint){ return $scope.authorizedSprint('delete', sprint) },
+        action:function(sprint){ $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args:[sprint] }) }
+    }];
+
+    // Init
+    $scope.project = Session.getProject();
+    $scope.startDateOptions = {
+        opened: false
+    };
+    $scope.endDateOptions = angular.copy($scope.startDateOptions);
+}]);
+
+controllers.controller('sprintBacklogCtrl', ['$scope', '$q', '$controller', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', function($scope, $q, $controller, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
+    $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
+    // Functions
+    $scope.isSortingSprint = function(sprint) {
+        return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
     };
     // Init
     $scope.sprintSortableOptions = {

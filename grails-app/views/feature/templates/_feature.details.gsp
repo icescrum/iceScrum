@@ -53,13 +53,14 @@
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
-                <div class="btn-group"
-                     uib-dropdown>
+                <div class="btn-group" uib-dropdown>
                     <shortcut-menu ng-model="feature" model-menus="menus"></shortcut-menu>
-                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-ellipsis-h"></i></i>
-                    </button>
-                    <ul uib-dropdown-menu class="pull-right" template-url="feature.menu.html"></ul>
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <i class="fa fa-ellipsis-h"></i></i>
+                        </button>
+                        <ul uib-dropdown-menu class="pull-right" template-url="feature.menu.html"></ul>
+                    </div>
                 </div>
             </div>
         </h3>
