@@ -604,7 +604,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 newElement.removeAttr('postit-menu');
                 newElement.attr('uib-dropdown', '');
                 newElement.attr('dropdown-append-to-body', '');
-                newElement.html('<a uib-dropdown-toggle><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a><ul uib-dropdown-menu template-url="' + attrs.postitMenu + '"></ul>');
+                newElement.html('<a uib-dropdown-toggle><i class="fa fa-ellipsis-h"></i></a><ul uib-dropdown-menu template-url="' + attrs.postitMenu + '"></ul>');
                 element.replaceWith(angular.element($compile(newElement)(scope)));
             });
         }
@@ -858,7 +858,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             render();
         }
     };
-}]).directive('visualStates', ['$compile', '$filter', function($compile, $filter) {
+}])
+    .directive('visualStates', ['$compile', '$filter', function($compile, $filter) {
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -889,6 +890,28 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         });
                     }
                 });
+            });
+        }
+    };
+}]).directive('shortcutMenu', [function() {
+    return {
+        restrict: 'E',
+        scope: {
+            ngModel: '=',
+            modelMenus: '='
+        },
+        replace: true,
+        template: '<button ng-show="button.name" class="btn btn-primary" ng-click="button.action(ngModel)">{{ button.name }}</button>',
+        link: function(scope) {
+            scope.$watch(function(){ return scope.ngModel.lastUpdated; }, function() {
+                var i = 0;
+                scope.button = {};
+                while (!scope.button.name && i < scope.modelMenus.length) {
+                    if (scope.modelMenus[i].visible(scope.ngModel)) {
+                        scope.button = scope.modelMenus[i];
+                    }
+                    i++;
+                }
             });
         }
     };

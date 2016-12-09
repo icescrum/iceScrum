@@ -32,52 +32,55 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                {{ ::story.uid }} <span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                       ng-click="follow(story)">
                     <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
                 </span>
                 <span>{{ story.name }}</span> <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
             </div>
             <div class="right-title">
-                <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
-                    <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
-                         height="30px"/>
-                </span>
-                <button class="btn btn-default elemid"
-                        uib-tooltip="${message(code: 'is.permalink')}"
-                        ng-click="showCopyModal('${message(code:'is.permalink')}', (story.uid  | permalink: 'story'))">{{ ::story.uid }}</button>
-                <button class="btn btn-default"
-                        type="button"
-                        ng-click="like(story)"
-                        role="button"
-                        tabindex="0"
-                        uib-tooltip="${message(code: 'todo.is.ui.likes')}">
-                    <i class="fa" ng-class="story.liked ? 'fa-thumbs-up' : 'fa-thumbs-o-up'"></i>
-                    <span class="badge">{{ story.likers_count || '' }}</span>
-                </button>
-                <div class="btn-group"
-                     uib-dropdown>
-                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
+                <div style="margin-bottom:10px">
+                    <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
+                        <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
+                             height="30px"/>
+                    </span>
+                    <button class="btn btn-default"
+                            type="button"
+                            ng-click="like(story)"
+                            role="button"
+                            tabindex="0"
+                            uib-tooltip="${message(code: 'todo.is.ui.likes')}">
+                        <i class="fa" ng-class="story.liked ? 'fa-thumbs-up' : 'fa-thumbs-o-up'"></i>
+                        <span class="badge">{{ story.likers_count || '' }}</span>
                     </button>
-                    <ul uib-dropdown-menu class="pull-right" template-url="story.menu.html"></ul>
+                    <a ng-if="previousStory"
+                       class="link"
+                       role="button"
+                       tabindex="0"
+                       href="{{:: currentStateUrl(previousStory.id) }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                    <a ng-if="nextStory"
+                       class="link"
+                       role="button"
+                       tabindex="0"
+                       href="{{:: currentStateUrl(nextStory.id) }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    <a ng-if="!isModal"
+                       class="btn btn-default"
+                       href="{{ closeUrl() }}"
+                       uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                        <i class="fa fa-times"></i>
+                    </a>
                 </div>
-                <a ng-if="previousStory"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="{{:: currentStateUrl(previousStory.id) }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextStory"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="{{:: currentStateUrl(nextStory.id) }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
-                <a ng-if="!isModal"
-                   class="btn btn-default"
-                   href="{{ closeUrl() }}"
-                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                    <i class="fa fa-times"></i>
-                </a>
+                <div>
+                    <div class="btn-group" role="group">
+                        <shortcut-menu ng-model="story" model-menus="menus"></shortcut-menu>
+                        <div class="btn-group" uib-dropdown>
+                            <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                <i class="fa fa-ellipsis-h"></i></i>
+                            </button>
+                            <ul uib-dropdown-menu class="pull-right" template-url="story.menu.html"></ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </h3>
         <visual-states ng-model="story" model-states="storyStatesByName"/>

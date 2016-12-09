@@ -59,7 +59,6 @@
             <a ng-repeat="tag in story.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
         </div>
         <div class="actions">
-            <span postit-menu="story.menu.html" class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
             <span class="action" ng-class="{'active':story.attachments.length}">
                 <a href="{{ openStoryUrl(story.id) }}">
                     <i class="fa fa-paperclip" fast-tooltip-el="${message(code:'todo.is.ui.backlogelement.attachments')}"></i>
@@ -84,6 +83,7 @@
                     <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
                 </a>
             </span>
+            <span postit-menu="story.menu.html" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
         </div>
         <div class="state-progress">
             <div ng-if="tasksProgress(story)" class="progress">

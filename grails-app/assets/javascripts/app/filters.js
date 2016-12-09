@@ -452,4 +452,10 @@ filters
         return function(boolean) {
             return $rootScope.message(boolean ? 'is.yes' : 'is.no');
         }
-    }]);
+    }]).filter('visibleMenuElement', function(){
+    return function (arr, param) {
+        return arr.filter(function(item, index){
+            return item.visible(param);
+        })
+    };
+});

@@ -87,6 +87,114 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', 'IceScrumEventType',
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };
+
+    $scope.menus = [{
+        name:$scope.message("is.ui.backlog.menu.acceptAsStory"),
+        visible:function(story){
+            return $scope.authorizedStory('accept', story)
+        },
+        action:function(story){
+            $scope.acceptToBacklog(story);
+        }
+    },{
+        name:$scope.message("is.ui.backlog.menu.acceptAsFeature"),
+        visible:function(story){
+            return $scope.authorizedStory('accept', story)
+        },
+        action:function(story){
+            $scope.acceptAs(story, 'Feature');
+        }
+    },{
+        name:$scope.message("is.ui.backlog.menu.acceptAsUrgentTask"),
+        visible:function(story){
+            return $scope.authorizedStory('accept', story)
+        },
+        action:function(story){
+            $scope.acceptAs(story, 'Task');
+        }
+    },{
+        name:$scope.message("is.ui.releasePlan.menu.story.done"),
+        visible:function(story){
+            return $scope.authorizedStory('done', story)
+        },
+        action:function(story){
+            $scope.done(story);
+        }
+    },{
+        name:$scope.message("is.ui.releasePlan.menu.story.undone"),
+        visible:function(story){
+            return $scope.authorizedStory('unDone', story)
+        },
+        action:function(story){
+            $scope.unDone(story);
+        }
+    },{
+        name:$scope.message("is.ui.releasePlan.menu.story.dissociate"),
+        visible:function(story){
+            return $scope.authorizedStory('unPlan', story)
+        },
+        action:function(story){
+            $scope.unPlan(story);
+        }
+    },{
+        name:$scope.message("is.ui.sprintPlan.menu.postit.shiftToNext"),
+        visible:function(story){
+            return $scope.authorizedStory('shiftToNext', story)
+        },
+        action:function(story){
+            $scope.shiftToNext(story);
+        }
+    },
+        {
+            name:$scope.message("is.ui.backlog.menu.estimate"),
+            visible:function(story){
+                return $scope.authorizedStory('updateEstimate', story)
+            },
+            action:function(story){
+                $scope.showEditEffortModal(story);
+            }
+        },{
+            name:$scope.message("is.ui.backlog.menu.returnToSandbox"),
+            visible:function(story){
+                return $scope.authorizedStory('returnToSandbox', story)
+            },
+            action:function(story){
+                $scope.returnToSandbox(story);
+            }
+        },{
+            name:$scope.message("is.ui.releasePlan.menu.story.clone"),
+            visible:function(story){
+                return $scope.authorizedStory('copy', story)
+            },
+            action:function(story){
+                $scope.copy(story);
+            }
+        },{
+            name:$scope.message("todo.is.ui.permalink.copy"),
+            visible:function(story){
+                return true
+            },
+            action:function(story){
+                $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(story.uid,'story')));
+            }
+        },{
+            name:$scope.message("todo.is.ui.story.template.new"),
+            visible:function(story){
+                return $scope.authorizedStory('createTemplate')
+            },
+            action:function(story){
+                $scope.showNewTemplateModal(story);
+            }
+        },{
+            name:$scope.message("is.ui.backlog.menu.delete"),
+            visible:function(story){
+                return $scope.authorizedStory('delete', story)
+            },
+            action:function(story){
+                $scope.delete(story);
+            }
+        }];
+
     $scope.tasksProgress = function(story) {
         return story.tasks_count > 0 && story.state < StoryStatesByName.DONE && story.state >= StoryStatesByName.PLANNED;
     };
