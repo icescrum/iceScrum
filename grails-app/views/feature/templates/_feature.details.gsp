@@ -32,37 +32,35 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span>{{ feature.name }}</span>
+                <span>{{ ::feature.uid }}&nbsp;&nbsp;{{ feature.name }}</span>
             </div>
             <div class="right-title">
-                <button class="btn btn-default elemid"
-                        uib-tooltip="${message(code: 'is.permalink')}"
-                        ng-click="showCopyModal('${message(code:'is.permalink')}', (feature.uid | permalink: 'feature'))">
-                    {{ ::feature.uid }}</i>
-                </button>
+                <div style="margin-bottom:10px">
+                    <a ng-if="previousFeature && !isModal"
+                       class="btn btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                    <a ng-if="nextFeature && !isModal"
+                       class="btn btn-default"
+                       role="button"
+                       tabindex="0"
+                       href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    <a ng-if="!isModal"
+                       class="btn btn-default"
+                       href="#{{ ::viewName }}"
+                       uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
                 <div class="btn-group"
                      uib-dropdown>
+                    <shortcut-menu ng-model="feature" model-menus="menus"></shortcut-menu>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-ellipsis-h"></i></i>
                     </button>
                     <ul uib-dropdown-menu class="pull-right" template-url="feature.menu.html"></ul>
                 </div>
-                <a ng-if="previousFeature && !isModal"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextFeature && !isModal"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
-                <a ng-if="!isModal"
-                   class="btn btn-default"
-                   href="#{{ ::viewName }}"
-                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                    <i class="fa fa-times"></i>
-                </a>
             </div>
         </h3>
         <visual-states ng-model="feature" model-states="featureStatesByName"/>

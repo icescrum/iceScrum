@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('featureCtrl', ['$scope', 'FeatureService', function($scope, FeatureService) {
+controllers.controller('featureCtrl', ['$scope', '$filter', 'FeatureService', function($scope, $filter, FeatureService) {
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
@@ -36,6 +36,31 @@ controllers.controller('featureCtrl', ['$scope', 'FeatureService', function($sco
             $scope.notifySuccess('todo.is.ui.feature.copied.to.backlog');
         });
     };
+    $scope.menus = [{
+        name:$scope.message('todo.is.ui.context.set'),
+        visible:function(feature){ return true; },
+        action:function(feature) {
+            $scope.setFeatureContext(feature)
+        }
+    },{
+        name:$scope.message('is.ui.feature.menu.copy'),
+        visible:function(feature){ return $scope.authorizedFeature('copyToBacklog'); },
+        action:function(feature) {
+            $scope.copyToBacklog(feature)
+        }
+    },{
+        name:$scope.message('todo.is.ui.permalink.copy'),
+        visible:function(feature){ return $scope.authorizedFeature('copyToBacklog'); },
+        action:function(feature) {
+            $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(feature.uid,'feature')));
+        }
+    },{
+        name:$scope.message('is.ui.feature.menu.delete'),
+        visible:function(feature){ return $scope.authorizedFeature('delete'); },
+        action:function(feature) {
+            $scope.confirm({ message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [feature] })
+        }
+    }];
 }]);
 
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'ProjectService', 'detailsFeature', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, ProjectService, detailsFeature) {

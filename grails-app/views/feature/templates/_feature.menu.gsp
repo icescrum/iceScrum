@@ -20,27 +20,11 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
 <script type="text/ng-template" id="feature.menu.html">
 <ul class="dropdown-menu pull-right" uib-dropdown-menu role="menu">
-    <li>
-        <a href ng-click="setFeatureContext(feature)">
-            ${message(code: 'todo.is.ui.context.set')}
-        </a>
-    </li>
-    <li ng-if="authorizedFeature('copyToBacklog')">
-        <a href ng-click="copyToBacklog(feature)">
-            ${message(code: 'is.ui.feature.menu.copy')}
-        </a>
-    </li>
-    <li>
-        <a href ng-click="showCopyModal('${message(code:'is.permalink')}', (feature.uid | permalink: 'feature'))">
-            ${message(code: 'todo.is.ui.permalink.copy')}
-        </a>
-    </li>
-    <li ng-if="authorizedFeature('delete')">
-        <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [feature] })">
-            ${message(code: 'is.ui.feature.menu.delete')}
+    <li ng-repeat="menuElement in menus | visibleMenuElement:feature">
+        <a href ng-click="menuElement.action(feature)">
+            {{ menuElement.name }}
         </a>
     </li>
 </ul>
