@@ -36,16 +36,18 @@
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
-                    <a ng-if="previousRelease"
-                       class="btn btn-default"
-                       role="button"
-                       tabindex="0"
-                       href="#{{ ::viewName }}/{{ ::previousRelease.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                    <a ng-if="nextRelease"
-                       class="btn btn-default"
-                       role="button"
-                       tabindex="0"
-                       href="#{{ ::viewName }}/{{ ::nextRelease.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    <div class="btn-group btn-view">
+                        <a ng-if="previousRelease"
+                           class="btn btn-default"
+                           role="button"
+                           tabindex="0"
+                           href="#{{ ::viewName }}/{{ ::previousRelease.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                        <a ng-if="nextRelease"
+                           class="btn btn-default"
+                           role="button"
+                           tabindex="0"
+                           href="#{{ ::viewName }}/{{ ::nextRelease.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    </div>
                     <a class="btn btn-default"
                        href="{{:: $state.href('^') }}"
                        uib-tooltip="${message(code: 'is.ui.window.closeable')}">

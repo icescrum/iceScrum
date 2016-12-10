@@ -25,23 +25,49 @@
     <div ng-if="releases.length > 0"
          class="backlogs-list">
         <div class="btn-toolbar">
-            <div class="btn-group visible-on-hover" ng-show="hasPreviousVisibleSprints()">
-                <button class="btn btn-default"
-                        ng-click="visibleSprintsPrevious()">
-                        <i class="fa fa-angle-left fa-lg"></i>
-                </button>
-            </div>
-            <div class="btn-group pull-right">
-                <a class="btn btn-primary hidden-on-simulation"
-                   ng-if="authorizedRelease('create')"
-                   href="#{{ ::viewName }}/new">
-                    ${message(code: 'todo.is.ui.release.new')}
+            <h4 class="pull-left">
+                <a class="link" href="#/planning/{{ release.id }}/details">
+                {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }}
                 </a>
-                <a class="btn btn-primary hidden-on-simulation"
-                   ng-if="authorizedSprint('create')"
-                   href="#{{ viewName + '/' + release.id }}/sprint/new">
-                    ${message(code: 'todo.is.ui.sprint.new')}
-                </a>
+            </h4>
+            <div class="pull-right">
+                <div class="btn-group btn-view">
+                    <button class="btn btn-default"
+                            ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
+                            ng-click="visibleSprintsPrevious()">
+                        <i class="fa fa-caret-left"></i>
+                    </button>
+                    <button class="btn btn-default"
+                            ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
+                            ng-click="visibleSprintsNext()">
+                        <i class="fa fa-caret-right"></i>
+                    </button>
+                </div>
+
+                <div class="btn-group btn-view visible-on-hover">
+                    <button type="button"
+                            class="btn btn-default"
+                            uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
+                    </button>
+                    <button type="button"
+                            class="btn btn-default hidden-on-simulation"
+                            ng-click="fullScreen()"
+                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                    </button>
+                </div>
+                <div class="btn-group btn-view">
+                    <a class="btn btn-primary hidden-on-simulation"
+                       ng-if="authorizedRelease('create')"
+                       href="#{{ ::viewName }}/new">
+                        ${message(code: 'todo.is.ui.release.new')}
+                    </a>
+                    <a class="btn btn-primary hidden-on-simulation"
+                       ng-if="authorizedSprint('create')"
+                       href="#{{ viewName + '/' + release.id }}/sprint/new">
+                        ${message(code: 'todo.is.ui.sprint.new')}
+                    </a>
+                </div>
             </div>
             %{--<div class="btn-group pull-right">--}%
                 %{--<button type="button"--}%
@@ -66,32 +92,6 @@
                 %{--</slider>--}%
                 %{--${message(code: 'is.dialog.promptCapacityAutoPlan.title')} {{ simulationMode.capacity }}--}%
             %{--</div>--}%
-            <div class="btn-group pull-right hidden-on-simulation"
-                 ng-if="isMultipleSprint()">
-                <a class="btn btn-default"
-                   href="{{ openMultipleSprintDetailsUrl() }}"
-                   uib-tooltip="${message(code: 'todo.is.ui.details')}">
-                    <i class="fa fa-info-circle"></i>
-                </a>
-            </div>
-            <div class="btn-group pull-right visible-on-hover">
-                <button type="button"
-                        class="btn btn-default"
-                        uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
-                </button>
-                <button type="button"
-                        class="btn btn-default hidden-on-simulation"
-                        ng-click="fullScreen()"
-                        uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
-                </button>
-            </div>
-            <div class="btn-group pull-right visible-on-hover" ng-if="hasNextVisibleSprints()">
-                <button class="btn btn-default"
-                        ng-click="visibleSprintsNext()">
-                    <i class="fa fa-angle-right fa-lg"></i>
-                </button>
-            </div>
         </div>
         <hr>
     </div>
@@ -103,24 +103,31 @@
         <div class="panel panel-light"
              ng-repeat="sprint in visibleSprints"
              ng-controller="sprintBacklogCtrl">
-            <div class="panel-heading">
+            <div class="panel-heading" style="padding-bottom:5px;">
                 <h3 class="panel-title small-title">
-                    <div>
-                        {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
-                        <span class="pull-right">
-                            <span ng-if="sprint.state > sprintStatesByName.TODO"
+                    <div class="pull-left">
+                        <a class="link" href="{{ openSprintUrl(sprint) }}">
+                            {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
+                        </a>
+                        <br/>
+                        <span class="sub-title text-muted" style="margin-top:10px;">
+                            <i class="fa fa-calendar"></i> <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                             | <span ng-if="sprint.state > sprintStatesByName.TODO"
                                   uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
                             <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
                             <i class="small-icon fa fa-dollar"></i>
-                            <a class="btn btn-default hidden-on-simulation"
-                               href="{{ openSprintUrl(sprint) }}"
-                               uib-tooltip="${message(code: 'todo.is.ui.details')}">
-                                <i class="fa fa-info-circle"></i>
-                            </a>
                         </span>
                     </div>
-                    <div class="sub-title text-muted">
-                        <i class="fa fa-calendar"></i> <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-long-arrow-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                    <div class="pull-right">
+                        <div class="btn-group" role="group">
+                            <shortcut-menu ng-model="sprint" model-menus="menus"></shortcut-menu>
+                            <div class="btn-group" uib-dropdown>
+                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-h"></i></i>
+                                </button>
+                                <ul uib-dropdown-menu class="pull-right" template-url="sprint.menu.html"></ul>
+                            </div>
+                        </div>
                     </div>
                 </h3>
             </div>
