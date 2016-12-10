@@ -307,6 +307,20 @@ ul:not(.sortable-disabled) {
     .visible-on-hover {
       opacity: 1;
     }
+    .panel-light {
+      > .panel-heading {
+        .visible-on-hover {
+          opacity: 0;
+        }
+      }
+      &:hover {
+        > .panel-heading {
+          .visible-on-hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
   }
 }
 

@@ -27,7 +27,7 @@
         <div class="btn-toolbar">
             <h4 class="pull-left">
                 <a class="link" href="#/planning/{{ release.id }}/details">
-                {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }}
+                {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }} <i class="fa fa-info-circle visible-on-hover"></i>
                 </a>
             </h4>
             <div class="pull-right">
@@ -44,7 +44,7 @@
                     </button>
                 </div>
 
-                <div class="btn-group btn-view visible-on-hover">
+                <div class="btn-group btn-view">
                     <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
@@ -107,7 +107,7 @@
                 <h3 class="panel-title small-title">
                     <div class="pull-left">
                         <a class="link" href="{{ openSprintUrl(sprint) }}">
-                            {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}
+                            {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i class="fa fa-info-circle visible-on-hover"></i>
                         </a>
                         <br/>
                         <span class="sub-title text-muted" style="margin-top:10px;">

@@ -28,7 +28,7 @@
                 ${ message(code: 'todo.is.ui.sprints') } ({{ sprints.length }})
             </div>
             <div class="right-title">
-                <a class="btn visible-on-hover btn-default"
+                <a class="btn btn-default"
                    href="{{:: $state.href('^') }}"
                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>

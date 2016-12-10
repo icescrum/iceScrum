@@ -80,7 +80,7 @@
                     </ul>
                 </div>
                 <div class="pull-right">
-                    <div class="btn-group btn-view visible-on-hover">
+                    <div class="btn-group btn-view">
                         <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
