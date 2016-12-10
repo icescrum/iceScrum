@@ -110,12 +110,14 @@
                             {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i class="fa fa-info-circle visible-on-hover"></i>
                         </a>
                         <br/>
-                        <span class="sub-title text-muted" style="margin-top:10px;">
+                        <span class="sub-title text-muted">
                             <i class="fa fa-calendar"></i> <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
-                             | <span ng-if="sprint.state > sprintStatesByName.TODO"
-                                  uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
-                            <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
-                            <i class="small-icon fa fa-dollar"></i>
+                            <span class="sprint-numbers">
+                                <span ng-if="sprint.state > sprintStatesByName.TODO"
+                                      uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
+                                <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
+                                <i class="small-icon fa fa-dollar"></i>
+                            </span>
                         </span>
                     </div>
                     <div class="pull-right">

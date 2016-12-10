@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
+controllers.controller('taskStoryCtrl', ['$scope', '$controller', '$filter', 'TaskService', function($scope, $controller, $filter, TaskService) {
     // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {};
@@ -78,6 +78,71 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
     $scope.authorizedTask = function(action, task) {
         return TaskService.authorizedTask(action, task);
     };
+    $scope.menus = [{
+        name:$scope.message("is.ui.sprintPlan.menu.task.take"),
+        visible:function(task){
+            return $scope.authorizedTask('take', task)
+        },
+        action:function(task){
+            $scope.take(task);
+        }
+    },{
+        name:$scope.message("is.ui.sprintPlan.menu.task.unassign"),
+        visible:function(task){
+            return $scope.authorizedTask('release', task)
+        },
+        action:function(task){
+            $scope.release(task);
+        }
+    },{
+        name:$scope.message("is.ui.sprintPlan.menu.task.copy"),
+        visible:function(task){
+            return $scope.authorizedTask('copy', task)
+        },
+        action:function(task){
+            $scope.copy(task);
+        }
+    },{
+        name:$scope.message("todo.is.ui.task.makeStory"),
+        visible:function(task){
+            return $scope.authorizedTask('makeStory', task)
+        },
+        action:function(task){
+            $scope.makeStory(task);
+        }
+    },{
+        name:$scope.message("todo.is.ui.permalink.copy"),
+        visible:function(task){
+            return true;
+        },
+        action:function(task){
+            $scope.showCopyModal($scope.message('is.permalink'), $filter('permalink')(task.uid,'task'));
+        }
+    },{
+        name:$scope.message("is.ui.sprintPlan.menu.task.delete"),
+        visible:function(task){
+            return $scope.authorizedTask('delete', task)
+        },
+        action:function(task){
+            $scope.delete(task);
+        }
+    },{
+        name:$scope.message("is.ui.sprintPlan.menu.task.block"),
+        visible:function(task){
+            return $scope.authorizedTask('block', task)
+        },
+        action:function(task){
+            $scope.block(task);
+        }
+    },{
+        name:$scope.message("is.ui.sprintPlan.menu.task.unblock"),
+        visible:function(task){
+            return $scope.authorizedTask('unBlock', task)
+        },
+        action:function(task){
+            $scope.unBlock(task);
+        }
+    }];
 }]);
 
 controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint) {

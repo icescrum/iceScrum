@@ -52,7 +52,6 @@
             <a ng-repeat="tag in task.tags" ng-click="setTagContext(tag)" href><span class="tag">{{ tag }}</span></a>
         </div>
         <div class="actions">
-            <span postit-menu="task.menu.html" class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
             <span class="action" ng-class="{'active':task.attachments.length}">
                 <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}"
                    uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
@@ -81,6 +80,7 @@
                     <i class="fa fa-user-times"></i>
                 </a>
             </span>
+            <span postit-menu="task.menu.html" class="action"><a><i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i></a></span>
         </div>
     </div>
 </div>

@@ -32,56 +32,45 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span>{{ task.name }}</span>
+                <span>{{ task.uid }}&nbsp;&nbsp;{{ task.name }}</span>
             </div>
             <div class="right-title">
-                <span ng-if="task.responsible"
-                      uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
-                    <img ng-src="{{ task.responsible | userAvatar }}"
-                         class="{{ task.responsible | userColorRoles }}"
-                         alt="{{ task.responsible | userFullName }}"
-                         height="30px"/>
-                </span>
-                <button type="button"
-                        ng-if="authorizedTask('take', task)"
-                        class="btn btn-default"
-                        ng-click="take(task)"
-                        uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.take')}">
-                    <i class="fa fa-user-plus"></i>
-                </button>
-                <button type="button"
-                        ng-if="authorizedTask('release', task)"
-                        class="btn btn-default"
-                        ng-click="release(task)"
-                        uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.unassign')}">
-                    <i class="fa fa-user-times"></i>
-                </button>
-                <button class="btn btn-default elemid"
-                        uib-tooltip="${message(code: 'is.permalink')}"
-                        ng-click="showCopyModal('${message(code:'is.permalink')}', (task.uid  | permalink: 'task'))">{{ ::task.uid }}</button>
-                <div class="btn-group"
-                     uib-dropdown>
-                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
-                    </button>
-                    <ul uib-dropdown-menu template-url="task.menu.html"></ul>
+                <div style="margin-bottom:10px">
+                    <span ng-if="task.responsible"
+                          uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
+                        <img ng-src="{{ task.responsible | userAvatar }}"
+                             class="{{ task.responsible | userColorRoles }}"
+                             alt="{{ task.responsible | userFullName }}"
+                             height="30px"/>
+                    </span>
+                    <div class="btn-group">
+                        <a ng-if="previousTask"
+                           class="btn btn-default"
+                           role="button"
+                           tabindex="0"
+                           href="{{:: currentStateUrl(previousTask.id) }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                        <a ng-if="nextTask"
+                           class="btn btn-default"
+                           role="button"
+                           tabindex="0"
+                           href="{{:: currentStateUrl(nextTask.id) }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    </div>
+                    <a ng-if="!isModal"
+                       class="btn btn-default"
+                       href="{{:: $state.href('^.^') }}"
+                       uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                        <i class="fa fa-times"></i>
+                    </a>
                 </div>
-                <a ng-if="previousTask"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="{{:: currentStateUrl(previousTask.id) }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                <a ng-if="nextTask"
-                   class="btn btn-default"
-                   role="button"
-                   tabindex="0"
-                   href="{{:: currentStateUrl(nextTask.id) }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
-                <a ng-if="!isModal"
-                   class="btn btn-default"
-                   href="{{:: $state.href('^.^') }}"
-                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                    <i class="fa fa-times"></i>
-                </a>
+                <div class="btn-group" role="group">
+                    <shortcut-menu ng-model="task" model-menus="menus"></shortcut-menu>
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <i class="fa fa-ellipsis-h"></i></i>
+                        </button>
+                        <ul uib-dropdown-menu class="pull-right" template-url="task.menu.html"></ul>
+                    </div>
+                </div>
             </div>
         </h3>
         <visual-states ng-model="task" model-states="taskStatesByName"/>

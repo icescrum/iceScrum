@@ -33,6 +33,15 @@
                             <a class="link" href="{{ openSprintUrl(sprint) }}">{{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i class="fa fa-info-circle visible-on-hover"></i></a> <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down" uib-dropdown-toggle></i>
                             <div class="sub-title text-muted" uib-dropdown-toggle>
                                 <i class="fa fa-calendar"></i> <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                                 <span class="sprint-numbers">
+                                    <span ng-if="sprint.state > sprintStatesByName.TODO"
+                                          uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
+                                    <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
+                                    <i class="small-icon fa fa-dollar"></i>
+                                </span>
+                                 <span class="sprint-remaining" uib-tooltip="${message(code: 'is.task.estimation')}">
+                                        {{ sprintRemainingTime(sprint) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
+                                 </span>
                             </div>
                         </div>
                         <ul uib-dropdown-menu role="menu" class="sprints-menu">
@@ -51,17 +60,6 @@
                                 </span>
                             </li>
                         </ul>
-                        <span class="sprint-numbers">
-                            <div>
-                                <span ng-if="sprint.state > sprintStatesByName.TODO"
-                                      uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
-                                <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
-                                <i class="small-icon fa fa-dollar"></i>
-                            </div>
-                            <div uib-tooltip="${message(code: 'is.task.estimation')}">
-                                {{ sprintRemainingTime(sprint) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
-                            </div>
-                        </span>
                     </div>
                     <div class="pull-right">
                         <div class="btn-group btn-view">
