@@ -149,7 +149,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group size-sm') +' '+ (tasksShown(taskState, taskTypesByName.URGENT) ? '' : 'show-tasks')}}"
+                        <td class="postits"
+                            ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
                             postits-screen-size
                             ng-model="tasksByTypeByState[taskTypesByName.URGENT][taskState]"
                             ng-init="taskType = taskTypesByName.URGENT"
@@ -189,8 +190,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group size-sm') +' '+ (tasksShown(taskState, taskTypesByName.RECURRENT) ? '' : 'show-tasks')}}"
+                        <td class="postits"
                             postits-screen-size
+                            ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
                             ng-model="tasksByTypeByState[taskTypesByName.RECURRENT][taskState]"
                             ng-init="taskType = taskTypesByName.RECURRENT"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
@@ -228,7 +230,8 @@
                         </td>
                     </tr>
                     <tr ng-class="{'sortable-disabled': !isSortingStory(story), 'is-selected': isSelected(story)}" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
-                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group size-sm') +' '+ (tasksShown(taskState, story) ? '' : 'show-tasks') }}"
+                        <td class="postits"
+                            ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                             postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
@@ -266,7 +269,8 @@
                         </td>
                     </tr>
                     <tr class="sortable-disabled" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
-                        <td class="postits {{ (hasSelected() ? 'has-selected' : '') +' '+ currentPostitSize(viewName, 'grid-group size-sm') +' '+ (tasksShown(taskState, story) ? '' : 'show-tasks')}}"
+                        <td class="postits"
+                            ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                             postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable

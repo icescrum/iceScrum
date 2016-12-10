@@ -374,30 +374,26 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             $timeout(resizer);
         }
     };
-}]).directive('postitsScreenSize', ['$window', '$timeout', function($window, $timeout) {
+}]).directive('postitsScreenSize', ['$window', '$timeout', '$localStorage', 'screenSize', function($window, $timeout, $localStorage, screenSize) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var checkSize = function() {
-                if (element.width() <= '400') {
-                    element.addClass('force-size-xs');
-                } else {
-                    element.removeClass('force-size-xs');
-                }
-            };
-            var promiseWindowResize;
-            var resize = function() {
-                if (promiseWindowResize) {
-                    $timeout.cancel(promiseWindowResize);
-                }
-                promiseWindowResize = $timeout(checkSize, 25, false);
-            };
-            var windowElement = angular.element($window);
-            windowElement.on('resize', resize);
-            scope.$on('$destroy', function() {
-                windowElement.off("resize", resize);
+            //on default
+            var postitsClass = function(){
+                element.removeClass('grid-group size-sm size-xs list-group').addClass(screenSize.is('xs, sm') ? 'list-group' : scope.currentPostitSize(scope.viewName, 'grid-group size-sm'));
+            }
+
+            //on resize change
+            screenSize.on('xs, sm', function(isMatch){
+                postitsClass();
             });
-            $timeout(checkSize);
+            //on manual change
+            scope.$watch(function () { return $localStorage[scope.viewName + 'PostitSize']; },function(newVal,oldVal){
+                if(oldVal!==newVal){
+                    postitsClass();
+                }
+            })
+            postitsClass();
         }
     };
 }]).directive('asSortableItemHandleIf', ['$compile', function($compile) {

@@ -44,7 +44,7 @@
                     </button>
                 </div>
 
-                <div class="btn-group btn-view">
+                <div class="btn-group btn-view hidden-xs">
                     <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
@@ -131,7 +131,8 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="postits {{ currentPostitSize(viewName, 'grid-group size-sm')+ ' ' + (isSortingSprint(sprint) ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') + ' ' + (app.sortableMoving ? 'sortable-moving' : '') }}"
+                <div class="postits"
+                     ng-class="{'sortable-moving':app.sortableMoving, 'has-selected' : hasSelected(), 'sortable-disabled':!isSortingSprint(sprint)}"
                      postits-screen-size
                      ng-controller="storyCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"

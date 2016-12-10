@@ -41,7 +41,7 @@
             </div>
             <entry:point id="backlog-window-toolbar"/>
             <div class="pull-right">
-                <div class="btn-group btn-view">
+                <div class="btn-group btn-view hidden-xs">
                     <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
@@ -53,7 +53,7 @@
                             ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
-                <div class="btn-group btn-view">
+                <div class="btn-group btn-view hidden-xs">
                     <button type="button"
                             class="btn btn-default"
                             ng-click="toggleSelectableMultiple()"
@@ -81,7 +81,7 @@
                         <div class="btn-group btn-view">
                             <button type="button"
                                     ng-if="backlogContainer.sortable"
-                                    class="btn btn-default"
+                                    class="btn btn-default hidden-xs"
                                     ng-click="enableSortable(backlogContainer)"
                                     tooltip-placement="right"
                                     uib-tooltip="{{ backlogContainer.sorting ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
@@ -106,7 +106,7 @@
                                 <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                             </button>
                         </div>
-                        <div class="btn-group btn-view" uib-dropdown>
+                        <div class="btn-group btn-view hidden-xs" uib-dropdown>
                             <button type="button"
                                     class="btn btn-default"
                                     uib-tooltip="${message(code:'is.ui.window.print')} (P)"
@@ -140,7 +140,8 @@
             </div>
             <div class="panel-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="loading-logo" ng-include="'loading.html'"></div>
-                <div class="postits {{ currentPostitSize(viewName, 'grid-group size-sm') + ' ' + (backlogContainer.sorting ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '')  + ' ' + (app.sortableMoving ? 'sortable-moving' : '')}} "
+                <div class="postits"
+                     ng-class="{'sortable-disabled':backlogContainer.sorting, 'has-selected':hasSelected(), 'sortable-moving': app.sortableMoving}"
                      ng-controller="storyCtrl"
                      postits-screen-size
                      as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"

@@ -25,10 +25,10 @@
     <div class="panel panel-light">
         <div class="panel-heading">
             <div class="btn-toolbar">
-                <div class="btn-group btn-view">
+                <div class="btn-group btn-view ">
                     <button type="button"
                             ng-if="isSortableFeature()"
-                            class="btn btn-default"
+                            class="btn btn-default hidden-sm hidden-xs"
                             ng-click="enableSortable()"
                             uib-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                         <i ng-class="isSortingFeature() ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
@@ -54,7 +54,7 @@
                         <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
                     </button>
                 </div>
-                <div class="btn-group btn-view"
+                <div class="btn-group btn-view hidden-sm hidden-xs"
                      uib-dropdown
                      uib-tooltip="${message(code:'todo.is.ui.export')}">
                     <button type="button"
@@ -80,7 +80,7 @@
                     </ul>
                 </div>
                 <div class="pull-right">
-                    <div class="btn-group btn-view">
+                    <div class="btn-group btn-view hidden-xs">
                         <button type="button"
                             class="btn btn-default"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
@@ -92,7 +92,7 @@
                                 uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                         </button>
                     </div>
-                    <div class="btn-group btn-view">
+                    <div class="btn-group btn-view hidden-xs">
                         <button type="button"
                                 class="btn btn-default"
                                 ng-click="toggleSelectableMultiple()"
@@ -130,7 +130,8 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div class="postits {{ currentPostitSize(viewName, 'grid-group size-sm') + ' ' + (isSortingFeature() ? '' : 'sortable-disabled') + ' ' + (hasSelected() ? 'has-selected' : '') }}"
+            <div class="postits"
+                 ng-class="{'sortable-disabled':isSortingFeature(), 'has-selected':hasSelected() }"
                  postits-screen-size
                  ng-controller="featureCtrl"
                  as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
