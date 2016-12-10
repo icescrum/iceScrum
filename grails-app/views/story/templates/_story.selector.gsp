@@ -29,8 +29,14 @@
     <p class="help-block"
        ng-bind-html="message('todo.is.ui.story.selector.' + backlog.code + '.description')">
     </p>
-    <div ng-if="backlog.storiesLoaded"
-         selectable="selectableOptions">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" class="form-control" ng-model="liveFilterName" placeholder="${message(code:'todo.is.ui.search.action')}">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        </div>
+    </div>
+    <div selectable="selectableOptions" class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
+        <div class="loading-logo" ng-include="'loading.html'"></div>
         <div class="postits list-group has-selected sortable-disabled postits-disabled"
              ng-controller="storyCtrl"
              ng-model="backlog.stories"

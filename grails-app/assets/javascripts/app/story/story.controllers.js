@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', '$uibModal', 'IceScrumEventType', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, IceScrumEventType, StoryService, $state, Session, StoryStatesByName) {
+controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, StoryService, $state, Session, StoryStatesByName) {
     // Functions
     $scope.acceptToBacklog = function(story) {
         StoryService.acceptToBacklog(story).then(function() {
