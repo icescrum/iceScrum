@@ -56,17 +56,14 @@
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
-                <div class="btn-group btn-view">
-                    <a class="btn btn-primary hidden-on-simulation"
-                       ng-if="authorizedRelease('create')"
-                       href="#{{ ::viewName }}/new">
-                        ${message(code: 'todo.is.ui.release.new')}
-                    </a>
-                    <a class="btn btn-primary hidden-on-simulation"
-                       ng-if="authorizedSprint('create')"
-                       href="#{{ viewName + '/' + release.id }}/sprint/new">
-                        ${message(code: 'todo.is.ui.sprint.new')}
-                    </a>
+                <div class="btn-group btn-view" role="group" ng-controller="releaseCtrl">
+                    <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
+                    <div class="btn-group" uib-dropdown>
+                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                            <i class="fa fa-ellipsis-h"></i></i>
+                        </button>
+                        <ul uib-dropdown-menu class="pull-right" template-url="release.menu.html"></ul>
+                    </div>
                 </div>
             </div>
             %{--<div class="btn-group pull-right">--}%
@@ -150,11 +147,6 @@
             <div class="panel-body">
                 <div class="empty-view">
                     <p class="help-block">${message(code: 'is.ui.sprint.help')}<p>
-                    <a class="btn btn-primary hidden-on-simulation"
-                       ng-if="authorizedSprint('create')"
-                       href="#{{ viewName + '/' + release.id }}/sprint/new">
-                        ${message(code: 'todo.is.ui.sprint.new')}
-                    </a>
                 </div>
             </div>
         </div>
@@ -162,7 +154,7 @@
     <div ng-if="releases.length == 0"
          class="panel panel-light">
         <div class="panel-body">
-            <div class="empty-view">
+            <div class="empty-view" ng-controller="releaseCtrl">
                 <p class="help-block">${message(code: 'is.ui.release.help')}<p>
                 <a class="btn btn-primary hidden-on-simulation"
                    ng-if="authorizedRelease('create')"

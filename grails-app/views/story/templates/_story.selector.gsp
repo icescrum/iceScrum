@@ -29,10 +29,10 @@
     <p class="help-block"
        ng-bind-html="message('todo.is.ui.story.selector.' + backlog.code + '.description')">
     </p>
-    <div class="form-group">
+    <div class="form-group" ng-if="inputFilterEnabled">
         <div class="input-group">
-            <input type="text" class="form-control" ng-model="liveFilterName" placeholder="${message(code:'todo.is.ui.search.action')}">
-            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input type="text" class="form-control" ng-model="liveFilterTerm" placeholder="${message(code:'todo.is.ui.story.selector.filter.action')}">
+            <span class="input-group-addon"><i class="fa fa-filter"></i></span>
         </div>
     </div>
     <div selectable="selectableOptions" class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">

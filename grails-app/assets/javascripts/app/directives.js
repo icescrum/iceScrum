@@ -901,14 +901,19 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             modelMenus: '='
         },
         replace: true,
-        template: '<button ng-show="button.name" class="btn btn-primary" ng-click="button.action(ngModel)">{{ button.name }}</button>',
-        link: function(scope) {
+        templateUrl:'button.shortcutMenu.html',
+        link: function(scope, elem, attr) {
             scope.$watch(function(){ return scope.ngModel.lastUpdated; }, function() {
                 var i = 0;
                 scope.button = {};
                 while (!scope.button.name && i < scope.modelMenus.length) {
                     if (scope.modelMenus[i].visible(scope.ngModel)) {
                         scope.button = scope.modelMenus[i];
+                        if(!scope.button.url) {
+                            elem.attr('href', null);
+                        } else {
+                            elem.attr('href', scope.button.url(scope.ngModel));
+                        }
                     }
                     i++;
                 }

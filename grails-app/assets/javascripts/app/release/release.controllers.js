@@ -24,6 +24,12 @@
 
 controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'SprintService', function($scope, Session, ReleaseService, SprintService) {
     // Functions
+    $scope.authorizedRelease = function(action, release) {
+        return ReleaseService.authorizedRelease(action, release);
+    };
+    $scope.authorizedSprint = function(action, sprint) {
+        return SprintService.authorizedSprint(action, sprint);
+    };
     $scope.showReleaseMenu = function() {
         return Session.poOrSm();
     };
@@ -64,12 +70,16 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'S
         visible:function(release){ return $scope.authorizedRelease('activate', release) },
         action:function(release){ $scope.confirm({ message: $scope.message('is.ui.timeline.menu.activate.confirm'), callback: $scope.activate, args: [release] }) }
     },{
-        name:$scope.message('is.ui.timeline.menu.close'),
-        visible:function(release){ return $scope.authorizedRelease('close', release) },
-        action:function(release){ $scope.confirm({ message: $scope.message('is.ui.timeline.menu.close.confirm'), callback: $scope.close, args: [release] }) }
+        name:$scope.message('todo.is.ui.sprint.new'),
+        visible:function(release){ return $scope.authorizedSprint('create') },
+        url: function(release) { return '#' + $scope.viewName + '/' + release.id  + '/sprint/new'; }
+    },{
+        name:$scope.message('todo.is.ui.release.new'),
+        visible:function(release){ return $scope.authorizedRelease('create') },
+        url: function(release) { return '#' + $scope.viewName + '/new'; }
     },{
         name:$scope.message('is.ui.releasePlan.toolbar.generateSprints'),
-        visible:function(release){ return $scope.authorizedRelease('generateSprints', release) },
+        visible:function(release){ return $scope.authorizedSprint('create') },
         action:function(release){ $scope.generateSprints(release) }
     },{
         name:$scope.message('is.ui.releasePlan.toolbar.autoPlan'),
@@ -83,6 +93,10 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'S
         name:$scope.message('is.ui.timeline.menu.delete'),
         visible:function(release){ return $scope.authorizedRelease('delete', release) },
         action:function(release){ $scope.confirm({ message: $scope.message('is.ui.timeline.menu.delete.confirm'), callback: $scope.delete, args: [release] }) }
+    },{
+        name:$scope.message('is.ui.timeline.menu.close'),
+        visible:function(release){ return $scope.authorizedRelease('close', release) },
+        action:function(release){ $scope.confirm({ message: $scope.message('is.ui.timeline.menu.close.confirm'), callback: $scope.close, args: [release] }) }
     }];
 
     // Init

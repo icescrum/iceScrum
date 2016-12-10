@@ -117,12 +117,6 @@ controllers.controller('planningCtrl', ['$scope', '$state', '$timeout', 'Release
     $scope.hasSelected = function() {
         return $state.params.storyId != undefined;
     };
-    $scope.authorizedRelease = function(action, release) {
-        return ReleaseService.authorizedRelease(action, release);
-    };
-    $scope.authorizedSprint = function(action, sprint) {
-        return SprintService.authorizedSprint(action, sprint);
-    };
     $scope.hasPreviousVisibleSprints = function() {
         return $scope.visibleSprintOffset > 0;
     };

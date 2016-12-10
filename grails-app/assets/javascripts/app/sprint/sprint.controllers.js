@@ -96,6 +96,7 @@ controllers.controller('sprintCtrl', ['$scope', '$q', '$location', 'Session', 'S
         $scope.openStorySelectorModal({
             code: 'plan',
             order: 'rank',
+            inputFilterEnabled:true,
             filter: {
                 state: StoryStatesByName.ESTIMATED
             },

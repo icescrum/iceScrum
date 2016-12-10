@@ -41,6 +41,10 @@
 </a>
 </script>
 
+<script type="text/ng-template" id="button.shortcutMenu.html">
+    <a ng-show="button.name" class="btn btn-primary" ng-click="button.action && button.action(ngModel)">{{ button.name }}</a>
+</script>
+
 <script type="text/ng-template" id="select.member.html">
 <a>
     <span ng-show="!match.model.id">${message(code: 'todo.is.ui.user.will.be.invited')}</span> <span>{{ match.model | userFullName }}</span>
