@@ -889,22 +889,28 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}]).directive('shortcutMenu', [function() {
+}]).directive('shortcutMenu', ['$filter', function($filter) {
     return {
         restrict: 'E',
         scope: {
             ngModel: '=',
+            viewName: '=',
             modelMenus: '='
         },
         replace: true,
         templateUrl:'button.shortcutMenu.html',
         link: function(scope, elem, attr) {
             scope.$watch(function(){ return scope.ngModel.lastUpdated; }, function() {
-                var i = 0;
+                var i = scope.modelMenus.length;
+                scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menu){
+                    return menu.priority ? menu.priority(scope.ngModel, scope.viewName) : i--;
+                }, true);
+                //reset i
+                i = 0;
                 scope.button = {};
-                while (!scope.button.name && i < scope.modelMenus.length) {
-                    if (scope.modelMenus[i].visible(scope.ngModel)) {
-                        scope.button = scope.modelMenus[i];
+                while (!scope.button.name && i < scope.sortedMenus.length) {
+                    if (scope.sortedMenus[i].visible(scope.ngModel)) {
+                        scope.button = scope.sortedMenus[i];
                         if(!scope.button.url) {
                             elem.attr('href', null);
                         } else {

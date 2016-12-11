@@ -75,6 +75,7 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'S
         url: function(release) { return '#' + $scope.viewName + '/' + release.id  + '/sprint/new'; }
     },{
         name:$scope.message('todo.is.ui.release.new'),
+        priority:function(release, viewName){ return viewName == 'planning' ? 100 : 3; },
         visible:function(release){ return $scope.authorizedRelease('create') },
         url: function(release) { return '#' + $scope.viewName + '/new'; }
     },{

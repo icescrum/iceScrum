@@ -57,7 +57,7 @@
                     </button>
                 </div>
                 <div class="btn-group btn-view" role="group" ng-controller="releaseCtrl">
-                    <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
+                    <shortcut-menu ng-model="release" model-menus="menus" view-name="viewName"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
                             <i class="fa fa-ellipsis-h"></i></i>
