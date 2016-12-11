@@ -48,7 +48,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', '$filter', 'Ta
     $scope.resetTaskForm();
 }]);
 
-controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', 'TaskService', function($scope, $timeout, $uibModal, TaskService) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -143,6 +143,29 @@ controllers.controller('taskCtrl', ['$scope', 'TaskService', function($scope, Ta
             $scope.unBlock(task);
         }
     }];
+    $scope.showEditEstimationModal = function(task) {
+        if (TaskService.authorizedTask('update', task)) {
+            $uibModal.open({
+                size: 'sm',
+                templateUrl: 'task.estimation.html',
+                controller: ["$scope", '$timeout', function($scope) {
+                    $scope.editableTask = angular.copy(task);
+                    $scope.initialValue = $scope.editableTask.value;
+                    $scope.submit = function(task) {
+                        TaskService.update(task).then(function() {
+                            $scope.$close();
+                            $scope.notifySuccess('todo.is.ui.task.remainingTime.updated');
+                        });
+                    };
+
+                    //why uibmodal loose focus
+                    $timeout(function(){
+                        angular.element('.modal-dialog .modal-body input:visible:first[autofocus]').focus();
+                    }, 500);
+                }]
+            });
+        }
+    };
 }]);
 
 controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint) {

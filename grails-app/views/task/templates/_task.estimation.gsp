@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2015 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -18,12 +18,21 @@
 - Authors:
 -
 - Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<g:render template="/task/templates/task" />
-<g:render template="/task/templates/task.menu" />
-<g:render template="/task/templates/task.new" />
-<g:render template="/task/templates/task.details" />
-<g:render template="/task/templates/story.tasks" />
-<g:render template="/task/templates/task.estimation"/>
-<g:render template="/task/templates/story.task.editor" />
+<script type="text/ng-template" id="task.estimation.html">
+<is:modal form="submit(editableTask)"
+          submitButton="${message(code:'default.button.update.label')}"
+          closeButton="${message(code:'is.button.cancel')}"
+          title="${message(code:'is.task.estimation')}">
+    <div>
+        <label for="estimation">${message(code:'is.task.estimation')}</label>
+        <input type="number"
+               class="form-control"
+               autofocus
+               name="estimation"
+               ng-model="editableTask.estimation"/>
+    </div>
+</is:modal>
+</script>
