@@ -903,13 +903,14 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             scope.$watch(function(){ return scope.ngModel.lastUpdated; }, function() {
                 var i = scope.modelMenus.length;
                 scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menu){
-                    return menu.priority ? menu.priority(scope.ngModel, scope.viewName) : i--;
+                    var defaultPriority = i--;
+                    return menu.priority ? menu.priority(scope.ngModel, scope.viewName, defaultPriority) : defaultPriority;
                 }, true);
                 //reset i
                 i = 0;
                 scope.button = {};
                 while (!scope.button.name && i < scope.sortedMenus.length) {
-                    if (scope.sortedMenus[i].visible(scope.ngModel)) {
+                    if (scope.sortedMenus[i].visible(scope.ngModel, scope.viewName)) {
                         scope.button = scope.sortedMenus[i];
                         if(!scope.button.url) {
                             elem.attr('href', null);

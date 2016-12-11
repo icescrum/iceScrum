@@ -119,9 +119,15 @@
                             </ul>
                         </div>
                         <entry:point id="taskBoard-window-toolbar-right"/>
-                        <a ng-if="authorizedTask('create', {sprint: sprint})"
-                           ui-sref="taskBoard.task.new"
-                           class="btn btn-primary">${message(code: "todo.is.ui.task.new")}</a>
+                        <div class="btn-group" role="group" ng-controller="sprintCtrl">
+                            <shortcut-menu ng-model="sprint" model-menus="menus" view-name="viewName"></shortcut-menu>
+                            <div class="btn-group" uib-dropdown>
+                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-h"></i></i>
+                                </button>
+                                <ul uib-dropdown-menu class="pull-right" template-url="sprint.menu.html"></ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </h3>

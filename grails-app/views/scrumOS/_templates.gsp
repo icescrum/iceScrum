@@ -42,7 +42,7 @@
 </script>
 
 <script type="text/ng-template" id="button.shortcutMenu.html">
-    <a ng-show="button.name" class="btn btn-primary" ng-click="button.action && button.action(ngModel)">{{ button.name }}</a>
+    <a ng-show="button.name" class="btn btn-primary" ng-click="button.action && button.action(ngModel, viewName)">{{ button.name }}</a>
 </script>
 
 <script type="text/ng-template" id="select.member.html">

@@ -38,26 +38,26 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'FeatureService', fu
     };
     $scope.menus = [{
         name:$scope.message('todo.is.ui.context.set'),
-        visible:function(feature){ return true; },
-        action:function(feature) {
+        visible:function(feature, viewName){ return true; },
+        action:function(feature, viewName) {
             $scope.setFeatureContext(feature)
         }
     },{
         name:$scope.message('is.ui.feature.menu.copy'),
-        visible:function(feature){ return $scope.authorizedFeature('copyToBacklog'); },
-        action:function(feature) {
+        visible:function(feature, viewName){ return $scope.authorizedFeature('copyToBacklog'); },
+        action:function(feature, viewName) {
             $scope.copyToBacklog(feature)
         }
     },{
         name:$scope.message('todo.is.ui.permalink.copy'),
-        visible:function(feature){ return $scope.authorizedFeature('copyToBacklog'); },
-        action:function(feature) {
+        visible:function(feature, viewName){ return $scope.authorizedFeature('copyToBacklog'); },
+        action:function(feature, viewName) {
             $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(feature.uid,'feature')));
         }
     },{
         name:$scope.message('is.ui.feature.menu.delete'),
-        visible:function(feature){ return $scope.authorizedFeature('delete'); },
-        action:function(feature) {
+        visible:function(feature, viewName){ return $scope.authorizedFeature('delete'); },
+        action:function(feature, viewName) {
             $scope.confirm({ message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [feature] })
         }
     }];
