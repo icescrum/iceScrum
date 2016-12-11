@@ -844,7 +844,7 @@ angular.module('isApp', [
 .factory('UserTimeZone', function() {
     return jstz.determine();
 })
-.run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications) {
+.run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications, screenSize) {
 
     //used to handle click with shortcut hotkeys
     $rootScope.hotkeyClick = function(event, hotkey) {
@@ -1060,7 +1060,8 @@ angular.module('isApp', [
         loadingPercent: 0,
         isFullScreen: false,
         menus: Session.menus,
-        selectableMultiple: false
+        selectableMultiple: false,
+        mobile: screenSize.is('xs, sm')
     };
 
     // To be able to track state in views
@@ -1193,6 +1194,10 @@ angular.module('isApp', [
                 }
             }
         }
+    });
+
+    screenSize.onChange($rootScope, 'xs, sm', function(isMatch){
+        $rootScope.app.mobile = isMatch;
     });
 }])
 .constant('SERVER_ERRORS', {

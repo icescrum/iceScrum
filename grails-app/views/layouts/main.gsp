@@ -44,7 +44,7 @@
 <body ng-controller="appCtrl"
       flow-prevent-drop=""
       fullscreen="app.isFullScreen"
-      ng-class="{ 'app-ready':app != null, 'loading': (app.loading || app.loadingText), 'splash-screen': (app.loadingPercent != 100 || app.loadingText)  }"
+      ng-class="{ 'mobile':app.mobile, 'app-ready':app != null, 'loading': (app.loading || app.loadingText), 'splash-screen': (app.loadingPercent != 100 || app.loadingText)  }"
       class="splash-screen loading">
     <div id="app-loading">
         <svg class="logo" viewBox="0 0 150 150">
