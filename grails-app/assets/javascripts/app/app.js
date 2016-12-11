@@ -900,9 +900,9 @@ angular.module('isApp', [
         var modal = $uibModal.open({
             templateUrl: 'confirm.modal.html',
             size: 'sm',
-            controller: ["$scope", "hotkeys", function($scope, hotkeys) {
+            controller: ["$scope", "hotkeys", function ($scope, hotkeys) {
                 $scope.message = options.message;
-                $scope.submit = function() {
+                $scope.submit = function () {
                     if (options.args) {
                         options.callback.apply(options.callback, options.args);
                     } else {
@@ -913,16 +913,56 @@ angular.module('isApp', [
                 // Required because there is not input so the form cannot be submitted by "return"
                 hotkeys.bindTo($scope).add({
                     combo: 'return',
-                    callback: function(event) {
+                    callback: function (event) {
                         event.preventDefault(); // Prevents propagation of click to unwanted places
                         $scope.submit();
                     }
                 });
             }]
         });
-        var callCloseCallback = function(confirmed) {
+        var callCloseCallback = function (confirmed) {
             if (!confirmed && options.closeCallback) {
                 options.closeCallback();
+            }
+        };
+        modal.result.then(callCloseCallback, callCloseCallback);
+    };
+
+    $rootScope.dirtyChangesConfirm = function(options) {
+        var modal = $uibModal.open({
+            templateUrl: 'confirm.dirty.modal.html',
+            size: 'sm',
+            controller: ["$scope", "hotkeys", function($scope, hotkeys) {
+                $scope.message = options.message;
+                $scope.saveChanges = function() {
+                    if (options.args) {
+                        options.saveChangesCallback.apply(options.saveChangesCallback, options.args);
+                    } else {
+                        options.saveChangesCallback();
+                    }
+                    $scope.$close(true);
+                };
+                $scope.dontSave = function() {
+                    if (options.args) {
+                        options.dontSaveChangesCallback.apply(options.dontSaveChangesCallback, options.args);
+                    } else {
+                        options.dontSaveChangesCallback();
+                    }
+                    $scope.$close(true);
+                };
+                // Required because there is not input so the form cannot be submitted by "return"
+                hotkeys.bindTo($scope).add({
+                    combo: 'return',
+                    callback: function(event) {
+                        event.preventDefault(); // Prevents propagation of click to unwanted places
+                        $scope.saveChanges();
+                    }
+                });
+            }]
+        });
+        var callCloseCallback = function(confirmed) {
+            if (!confirmed && options.cancelCallback) {
+                options.cancelCallback();
             }
         };
         modal.result.then(callCloseCallback, callCloseCallback);

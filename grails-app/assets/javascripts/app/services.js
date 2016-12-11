@@ -275,20 +275,24 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
             return response.data;
         });
     };
-    this.addStateChangeDirtyFormListener = function($scope, type, isModal) {
-        var triggerConfirmModal = function(event, confirmCallback) {
+    this.addStateChangeDirtyFormListener = function($scope, submit, type, isModal) {
+        var triggerChangesConfirmModal = function(event, saveChangesCallback, dontSaveChangesCallback) {
             if ($scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading())) {
                 event.preventDefault(); // cancel the state change
                 $scope.mustConfirmStateChange = false;
-                $scope.confirm({
+                $scope.dirtyChangesConfirm({
                     message: $scope.message('todo.is.ui.dirty.confirm'),
-                    callback: function() {
+                    saveChangesCallback: function(){
+                        submit();
+                        saveChangesCallback();
+                    },
+                    dontSaveChangesCallback: function() {
                         if ($scope.flow != undefined && $scope.flow.isUploading()) {
                             $scope.flow.cancel();
                         }
-                        confirmCallback();
+                        dontSaveChangesCallback();
                     },
-                    closeCallback: function() {
+                    cancelChangesCallback: function() {
                         $scope.app.loading = false;
                         $scope.mustConfirmStateChange = true;
                     }
@@ -298,7 +302,9 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             if ($scope.mustConfirmStateChange && fromParams[type + 'Id'] != toParams[type + 'Id']) {
-                triggerConfirmModal(event, function() {
+                triggerChangesConfirmModal(event, function(){
+                    $scope.$state.go(toState, toParams);
+                }, function() {
                     $scope.$state.go(toState, toParams);
                 });
             }
