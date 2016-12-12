@@ -96,6 +96,17 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                         $scope.$close(true);
                     });
                 };
+                $scope.filterStories = function() {
+                    $scope.selectedIds = [];
+                    $scope.backlog.storiesLoaded = false;
+                    StoryService.filter($scope.selectorOptions.filter).then(function(stories) {
+                        $scope.backlog.stories = $scope.selectorOptions.order ? $filter('orderBy')(stories, $scope.selectorOptions.order) : stories;
+                        $scope.backlog.storiesLoaded = true;
+                        if ($scope.selectorOptions.initSelectedIds) {
+                            $scope.selectedIds = $scope.selectorOptions.initSelectedIds($scope.backlog.stories);
+                        }
+                    });
+                };
                 // Init
                 $scope.disabledGradient = true;
                 $scope.selectedIds = [];
@@ -104,7 +115,6 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                     code: options.code,
                     storiesLoaded: false
                 };
-                $scope.inputFilterEnabled = options.inputFilterEnabled;
                 $scope.selectableOptions = {
                     notSelectableSelector: '.action, button, a',
                     allowMultiple: true,
@@ -113,41 +123,8 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                         $scope.selectedIds = selectedIds;
                     }
                 };
-                StoryService.filter(options.filter).then(function(stories) {
-                    $scope.backlog.stories = options.order ? $filter('orderBy')(stories, options.order) : stories;
-                    $scope.backlog.storiesLoaded = true;
-                    if (options.initSelectedIds) {
-                        $scope.selectedIds = options.initSelectedIds($scope.backlog.stories);
-                    }
-                });
-                if ($scope.filterEnabled) {
-                    $scope.$watch('liveFilterTerm', function() {
-                        $timeout.cancel(liveFilter);
-                        liveFilter = $timeout(function() {
-                            $scope.selectedIds = [];
-                            $scope.backlog.storiesLoaded = false;
-                            options.filter.term = $scope.liveFilterTerm;
-                            StoryService.filter(options.filter).then(function(stories) {
-                                $scope.backlog.stories = options.order ? $filter('orderBy')(stories, options.order) : stories;
-                                $scope.backlog.storiesLoaded = true;
-                                if (options.initSelectedIds) {
-                                    $scope.selectedIds = options.initSelectedIds($scope.backlog.stories);
-                                }
-                            });
-                        }, 500);
-                    });
-                    $scope.$on("$destroy", function() {
-                        $timeout.cancel(liveFilter);
-                    });
-                } else {
-                    StoryService.filter(options.filter).then(function(stories) {
-                        $scope.backlog.stories = options.order ? $filter('orderBy')(stories, options.order) : stories;
-                        $scope.backlog.storiesLoaded = true;
-                        if (options.initSelectedIds) {
-                            $scope.selectedIds = options.initSelectedIds($scope.backlog.stories);
-                        }
-                    });
-                }
+                $scope.selectorOptions = options;
+                $scope.filterStories();
             }]
         });
     };
