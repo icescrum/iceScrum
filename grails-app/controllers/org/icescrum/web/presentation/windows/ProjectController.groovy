@@ -132,7 +132,7 @@ class ProjectController implements ControllerErrorHandler {
                 sprintService.generateSprints(release, productParams.firstSprint)
             }
             def story = new Story(type: Story.TYPE_DEFECT, backlog: product)
-            templateService.save(new Template(name: 'is.ui.sandbox.story.template.default.defect'), story)
+            templateService.save(new Template(name: message(code: 'is.ui.sandbox.story.template.default.defect')), story)
             story.delete()
         }
         render(status: 201, contentType: 'application/json', text: product as JSON)
