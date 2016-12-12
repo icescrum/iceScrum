@@ -33,15 +33,12 @@ import groovy.xml.MarkupBuilder
 import org.apache.commons.io.FilenameUtils
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.*
-import org.icescrum.core.domain.AcceptanceTest.AcceptanceTestState
 import org.icescrum.core.domain.preferences.ProductPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.ServicesUtils
-
-import static grails.async.Promises.task
 
 @Secured('stakeHolder() or inProduct()')
 class ProjectController implements ControllerErrorHandler {
@@ -95,7 +92,6 @@ class ProjectController implements ControllerErrorHandler {
             productPreferencesParams.hidden = false
         }
 
-        //Case user choose to generate sprints
         if (productParams.initialize && (productParams.firstSprint?.before(productParams.startDate) || productParams.firstSprint?.after(productParams.endDate) || productParams.firstSprint == productParams.endDate)) {
             returnError(code: 'is.product.error.firstSprint')
             return
@@ -135,9 +131,8 @@ class ProjectController implements ControllerErrorHandler {
                 releaseService.save(release, product)
                 sprintService.generateSprints(release, productParams.firstSprint)
             }
-            //create default defect template
-            def story = new Story(type:Story.TYPE_DEFECT, backlog: product)
-            templateService.save(new Template(name:'is.ui.sandbox.story.template.default.defect'), story)
+            def story = new Story(type: Story.TYPE_DEFECT, backlog: product)
+            templateService.save(new Template(name: 'is.ui.sandbox.story.template.default.defect'), story)
             story.delete()
         }
         render(status: 201, contentType: 'application/json', text: product as JSON)
@@ -241,9 +236,9 @@ class ProjectController implements ControllerErrorHandler {
     def export(long product) {
         Product _product = Product.withProduct(product)
         session.progress = new ProgressSupport()
-        if (params.zip){
+        if (params.zip) {
             def projectName = "${_product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
-            ['Content-disposition': "attachment;filename=\"${projectName+'.zip'}\"",'Cache-Control': 'private','Pragma': ''].each {k, v ->
+            ['Content-disposition': "attachment;filename=\"${projectName + '.zip'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
                 response.setHeader(k, v)
             }
             response.contentType = 'application/zip'
@@ -286,24 +281,24 @@ class ProjectController implements ControllerErrorHandler {
     def flowCumulative(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.cumulativeFlowValues(_product)
-        def computedValues = [[key: message(code:"is.chart.productCumulativeflow.serie.suggested.name"),
-                               values: values.collect { return [it.suggested]},
-                               color:'#AAAAAA'],
-                              [key: message(code:"is.chart.productCumulativeflow.serie.accepted.name"),
-                               values: values.collect { return [it.accepted]},
-                               color:'#FFCC04'],
-                              [key: message(code:"is.chart.productCumulativeflow.serie.estimated.name"),
-                               values: values.collect { return [it.estimated]},
-                               color:'#FF9933'],
-                              [key: message(code:"is.chart.productCumulativeflow.serie.planned.name"),
-                               values: values.collect { return [it.planned]},
-                               color:'#CC3300'],
-                              [key: message(code:"is.chart.productCumulativeflow.serie.inprogress.name"),
-                               values: values.collect { return [it.inprogress]},
-                               color:'#42A9E0'],
-                              [key: message(code:"is.chart.productCumulativeflow.serie.done.name"),
-                               values: values.collect { return [it.done]},
-                               color:'#009900']].reverse()
+        def computedValues = [[key   : message(code: "is.chart.productCumulativeflow.serie.suggested.name"),
+                               values: values.collect { return [it.suggested] },
+                               color : '#AAAAAA'],
+                              [key   : message(code: "is.chart.productCumulativeflow.serie.accepted.name"),
+                               values: values.collect { return [it.accepted] },
+                               color : '#FFCC04'],
+                              [key   : message(code: "is.chart.productCumulativeflow.serie.estimated.name"),
+                               values: values.collect { return [it.estimated] },
+                               color : '#FF9933'],
+                              [key   : message(code: "is.chart.productCumulativeflow.serie.planned.name"),
+                               values: values.collect { return [it.planned] },
+                               color : '#CC3300'],
+                              [key   : message(code: "is.chart.productCumulativeflow.serie.inprogress.name"),
+                               values: values.collect { return [it.inprogress] },
+                               color : '#42A9E0'],
+                              [key   : message(code: "is.chart.productCumulativeflow.serie.done.name"),
+                               values: values.collect { return [it.done] },
+                               color : '#009900']].reverse()
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.xaxis.label')]],
                        title: [text: message(code: "is.chart.productCumulativeflow.title")]]
@@ -313,12 +308,12 @@ class ProjectController implements ControllerErrorHandler {
     def velocityCapacity(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityCapacityValues(_product)
-        def computedValues = [[key: message(code:"is.chart.productVelocityCapacity.serie.velocity.name"),
-                               values: values.collect { return [it.capacity]},
-                               color:'#009900'],
-                              [key: message(code:"is.chart.productVelocityCapacity.serie.capacity.name"),
-                               values: values.collect { return [it.velocity]},
-                               color: '#1C3660']]
+        def computedValues = [[key   : message(code: "is.chart.productVelocityCapacity.serie.velocity.name"),
+                               values: values.collect { return [it.capacity] },
+                               color : '#009900'],
+                              [key   : message(code: "is.chart.productVelocityCapacity.serie.capacity.name"),
+                               values: values.collect { return [it.velocity] },
+                               color : '#1C3660']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.xaxis.label')]],
                        title: [text: message(code: "is.chart.productVelocityCapacity.title")]]
@@ -329,12 +324,12 @@ class ProjectController implements ControllerErrorHandler {
     def burnup(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productBurnupValues(_product)
-        def computedValues = [[key: message(code:"is.chart.productBurnUp.serie.all.name"),
-                               values: values.collect { return [it.all]},
-                               color: '#1C3660'],
-                              [key: message(code:"is.chart.productBurnUp.serie.done.name"),
-                               values: values.collect { return [it.done]},
-                               color:'#009900']]
+        def computedValues = [[key   : message(code: "is.chart.productBurnUp.serie.all.name"),
+                               values: values.collect { return [it.all] },
+                               color : '#1C3660'],
+                              [key   : message(code: "is.chart.productBurnUp.serie.done.name"),
+                               values: values.collect { return [it.done] },
+                               color : '#009900']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnUp.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productBurnUp.xaxis.label')]],
                        title: [text: message(code: "is.chart.productBurnUp.title")]]
@@ -344,15 +339,15 @@ class ProjectController implements ControllerErrorHandler {
     def burndown(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productBurndownValues(_product)
-        def computedValues = [[key: message(code:'is.chart.productBurnDown.series.userstories.name'),
-                               values: values.collect { return [it.userstories]},
-                               color:'#009900'],
-                              [key: message(code:'is.chart.productBurnDown.series.technicalstories.name'),
-                               values: values.collect { return [it.technicalstories]},
-                               color:'#1F77B4'],
-                              [key: message(code:'is.chart.productBurnDown.series.defectstories.name'),
-                               values: values.collect { return [it.defectstories]},
-                               color:'#CC3300']]
+        def computedValues = [[key   : message(code: 'is.chart.productBurnDown.series.userstories.name'),
+                               values: values.collect { return [it.userstories] },
+                               color : '#009900'],
+                              [key   : message(code: 'is.chart.productBurnDown.series.technicalstories.name'),
+                               values: values.collect { return [it.technicalstories] },
+                               color : '#1F77B4'],
+                              [key   : message(code: 'is.chart.productBurnDown.series.defectstories.name'),
+                               values: values.collect { return [it.defectstories] },
+                               color : '#CC3300']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.productBurnDown.title")]]
@@ -362,15 +357,15 @@ class ProjectController implements ControllerErrorHandler {
     def velocity(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productVelocityValues(_product)
-        def computedValues = [[key: message(code:'is.chart.productVelocity.series.userstories.name'),
-                               values: values.collect { return [it.userstories]},
-                               color:'#009900'],
-                              [key: message(code:'is.chart.productVelocity.series.technicalstories.name'),
-                               values: values.collect { return [it.technicalstories]},
-                               color:'#1F77B4'],
-                              [key: message(code:'is.chart.productVelocity.series.defectstories.name'),
-                               values: values.collect { return [it.defectstories]},
-                               color:'#CC3300']]
+        def computedValues = [[key   : message(code: 'is.chart.productVelocity.series.userstories.name'),
+                               values: values.collect { return [it.userstories] },
+                               color : '#009900'],
+                              [key   : message(code: 'is.chart.productVelocity.series.technicalstories.name'),
+                               values: values.collect { return [it.technicalstories] },
+                               color : '#1F77B4'],
+                              [key   : message(code: 'is.chart.productVelocity.series.defectstories.name'),
+                               values: values.collect { return [it.defectstories] },
+                               color : '#CC3300']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocity.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productVelocity.xaxis.label')]],
                        title: [text: message(code: "is.chart.productVelocity.title")]]
@@ -380,8 +375,8 @@ class ProjectController implements ControllerErrorHandler {
     def parkingLot(long product) {
         Product _product = Product.withProduct(product)
         def values = featureService.productParkingLotValues(_product)
-        def computedValues = [[key: message(code:"is.chart.productParkinglot.serie.name"),
-                               values: values.collect { return [it.label, it.value]}]]
+        def computedValues = [[key   : message(code: "is.chart.productParkinglot.serie.name"),
+                               values: values.collect { return [it.label, it.value] }]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productParkinglot.xaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.productParkinglot.yaxis.label')]],
                        title: [text: message(code: "is.chart.productParkinglot.title")]]

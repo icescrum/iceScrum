@@ -26,12 +26,10 @@ package org.icescrum.web.presentation.windows
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
-
-import static grails.async.Promises.task
 
 @Secured('inProduct() or stakeHolder()')
 class FeatureController implements ControllerErrorHandler {
@@ -55,17 +53,17 @@ class FeatureController implements ControllerErrorHandler {
     @Secured('productOwner() and !archivedProduct()')
     def save(long product) {
         def featureParams = params.feature
-        if (!featureParams){
-            returnError(code:'todo.is.ui.no.data')
+        if (!featureParams) {
+            returnError(code: 'todo.is.ui.no.data')
             return
         }
         def feature = new Feature()
         Feature.withTransaction {
-            bindData(feature, featureParams, [include:['name','description','notes','color','type','value','rank']])
+            bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
             feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
             def _product = Product.load(product)
             featureService.save(feature, _product)
-            entry.hook(id:"${controllerName}-${actionName}", model:[feature:feature]) // TODO check if still needed
+            entry.hook(id: "${controllerName}-${actionName}", model: [feature: feature]) // TODO check if still needed
             render(status: 201, contentType: 'application/json', text: feature as JSON)
         }
     }
@@ -99,7 +97,7 @@ class FeatureController implements ControllerErrorHandler {
             features.each { feature ->
                 featureService.delete(feature)
             }
-            def returnData = features.size() > 1 ? features.collect {[id : it.id]} : (features ? [id: features.first().id] : [:])
+            def returnData = features.size() > 1 ? features.collect { [id: it.id] } : (features ? [id: features.first().id] : [:])
             render(status: 200, text: returnData as JSON)
         }
     }
@@ -109,7 +107,7 @@ class FeatureController implements ControllerErrorHandler {
         List<Feature> features = Feature.withFeatures(params)
         List<Story> stories = featureService.copyToBacklog(features)
         def returnData = stories.size() > 1 ? stories : stories.first()
-        render(status: 200, contentType: 'application/json', text:returnData as JSON)
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
 
     }
 
@@ -129,17 +127,17 @@ class FeatureController implements ControllerErrorHandler {
             Feature.withNewSession {
                 features.eachWithIndex { feature, index ->
                     data << [
-                            uid: feature.uid,
-                            name: feature.name,
-                            description: feature.description,
-                            notes: feature.notes?.replaceAll(/<.*?>/, ''),
-                            rank: feature.rank,
-                            type: message(code: grailsApplication.config.icescrum.resourceBundles.featureTypes[feature.type]),
-                            value: feature.value,
-                            effort: feature.effort,
-                            associatedStories: Story.countByFeature(feature),
+                            uid                  : feature.uid,
+                            name                 : feature.name,
+                            description          : feature.description,
+                            notes                : feature.notes?.replaceAll(/<.*?>/, ''),
+                            rank                 : feature.rank,
+                            type                 : message(code: grailsApplication.config.icescrum.resourceBundles.featureTypes[feature.type]),
+                            value                : feature.value,
+                            effort               : feature.effort,
+                            associatedStories    : Story.countByFeature(feature),
                             associatedStoriesDone: feature.countDoneStories,
-                            parkingLotValue: values[index].value
+                            parkingLotValue      : values[index].value
                     ]
                 }
             }

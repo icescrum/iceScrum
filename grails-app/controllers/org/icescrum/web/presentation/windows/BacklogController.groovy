@@ -25,9 +25,9 @@
 package org.icescrum.web.presentation.windows
 
 import grails.converters.JSON
+import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.Backlog
-import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Product
 import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
@@ -41,7 +41,7 @@ class BacklogController implements ControllerErrorHandler {
 
     @Secured(['stakeHolder() or inProduct()'])
     def index(long product) {
-        def backlogs = Backlog.findAllByProductAndShared(Product.load(product), true).findAll { it.isDefault }.sort { it.id}
+        def backlogs = Backlog.findAllByProductAndShared(Product.load(product), true).findAll { it.isDefault }.sort { it.id }
         render(status: 200, contentType: 'application/json', text: backlogs as JSON)
     }
 
@@ -49,7 +49,7 @@ class BacklogController implements ControllerErrorHandler {
     def print(long product, long id, String format) {
         def _product = Product.withProduct(product)
         def backlog = Backlog.get(id)
-        def outputFileName = _product.name + '-' + message(code:backlog.name)
+        def outputFileName = _product.name + '-' + message(code: backlog.name)
         def stories = Story.search(product, JSON.parse(backlog.filter)).sort { Story story -> story.rank }
         if (!stories) {
             returnError(code: 'is.report.error.no.data')
@@ -85,28 +85,28 @@ class BacklogController implements ControllerErrorHandler {
             stories.each {
                 def testsByState = it.countTestsByState()
                 def story = [
-                        name: it.name,
-                        id: it.uid,
-                        effort: it.effort,
-                        state: message(code: grailsApplication.config.icescrum.resourceBundles.storyStates[it.state]),
-                        description: is.storyDescription([story: it, displayBR: true]),
-                        notes: ServicesUtils.textileToHtml(it.notes),
-                        type: message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.type]),
-                        suggestedDate: it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.suggestedDate]) : null,
-                        acceptedDate: it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.acceptedDate]) : null,
-                        estimatedDate: it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.estimatedDate]) : null,
-                        plannedDate: it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.plannedDate]) : null,
+                        name          : it.name,
+                        id            : it.uid,
+                        effort        : it.effort,
+                        state         : message(code: grailsApplication.config.icescrum.resourceBundles.storyStates[it.state]),
+                        description   : is.storyDescription([story: it, displayBR: true]),
+                        notes         : ServicesUtils.textileToHtml(it.notes),
+                        type          : message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.type]),
+                        suggestedDate : it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.suggestedDate]) : null,
+                        acceptedDate  : it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.acceptedDate]) : null,
+                        estimatedDate : it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.estimatedDate]) : null,
+                        plannedDate   : it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.plannedDate]) : null,
                         inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.inProgressDate]) : null,
-                        doneDate: it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.doneDate ?: null]) : null,
-                        rank: it.rank ?: null,
-                        sprint: it.parentSprint?.index ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.index : null,
-                        creator: it.creator.firstName + ' ' + it.creator.lastName,
-                        feature: it.feature?.name ?: null,
-                        dependsOn: it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
-                        permalink: createLink(absolute: true, uri: '/' + _product.pkey + '-' + it.uid),
-                        featureColor: it.feature?.color ?: null,
+                        doneDate      : it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.doneDate ?: null]) : null,
+                        rank          : it.rank ?: null,
+                        sprint        : it.parentSprint?.index ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.index : null,
+                        creator       : it.creator.firstName + ' ' + it.creator.lastName,
+                        feature       : it.feature?.name ?: null,
+                        dependsOn     : it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
+                        permalink     : createLink(absolute: true, uri: '/' + _product.pkey + '-' + it.uid),
+                        featureColor  : it.feature?.color ?: null,
                         nbTestsTocheck: testsByState[AcceptanceTest.AcceptanceTestState.TOCHECK],
-                        nbTestsFailed: testsByState[AcceptanceTest.AcceptanceTestState.FAILED],
+                        nbTestsFailed : testsByState[AcceptanceTest.AcceptanceTestState.FAILED],
                         nbTestsSuccess: testsByState[AcceptanceTest.AcceptanceTestState.SUCCESS]
                 ]
                 if (first == 0) {
