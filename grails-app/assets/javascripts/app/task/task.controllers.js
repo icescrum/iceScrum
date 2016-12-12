@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('taskStoryCtrl', ['$scope', '$controller', '$filter', 'TaskService', function($scope, $controller, $filter, TaskService) {
+controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
     // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {};
@@ -48,7 +48,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', '$filter', 'Ta
     $scope.resetTaskForm();
 }]);
 
-controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', 'TaskService', function($scope, $timeout, $uibModal, TaskService) {
+controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 'TaskService', function($scope, $timeout, $uibModal, $filter, TaskService) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
