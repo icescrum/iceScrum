@@ -96,17 +96,6 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                         $scope.$close(true);
                     });
                 };
-                $scope.filterStories = function() {
-                    $scope.selectedIds = [];
-                    $scope.backlog.storiesLoaded = false;
-                    StoryService.filter($scope.selectorOptions.filter).then(function(stories) {
-                        $scope.backlog.stories = $scope.selectorOptions.order ? $filter('orderBy')(stories, $scope.selectorOptions.order) : stories;
-                        $scope.backlog.storiesLoaded = true;
-                        if ($scope.selectorOptions.initSelectedIds) {
-                            $scope.selectedIds = $scope.selectorOptions.initSelectedIds($scope.backlog.stories);
-                        }
-                    });
-                };
                 // Init
                 $scope.disabledGradient = true;
                 $scope.selectedIds = [];
@@ -114,6 +103,10 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                     stories: [],
                     code: options.code,
                     storiesLoaded: false
+                };
+                $scope.inputFilter = {
+                    enabled:options.inputFilterEnabled,
+                    term:''
                 };
                 $scope.selectableOptions = {
                     notSelectableSelector: '.action, button, a',
@@ -123,8 +116,37 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                         $scope.selectedIds = selectedIds;
                     }
                 };
-                $scope.selectorOptions = options;
-                $scope.filterStories();
+                if($scope.inputFilter.enabled){
+                    $scope.$watch('inputFilter.term', function(){
+                        $timeout.cancel( liveFilter );
+                        liveFilter = $timeout(function(){
+                            $scope.selectedIds = [];
+                            $scope.backlog.storiesLoaded = false;
+                            options.filter.term = $scope.inputFilter.term;
+                            StoryService.filter(options.filter).then(function(stories) {
+                                $scope.backlog.stories = options.order ? $filter('orderBy')(stories, options.order) : stories;
+                                $scope.backlog.storiesLoaded = true;
+                                if (options.initSelectedIds) {
+                                    $scope.selectedIds = options.initSelectedIds($scope.backlog.stories);
+                                }
+                            });
+                        }, 500);
+                    });
+                    $scope.$on(
+                        "$destroy",
+                        function( event ) {
+                            $timeout.cancel( liveFilter );
+                        }
+                    );
+                }else{
+                    StoryService.filter(options.filter).then(function(stories) {
+                        $scope.backlog.stories = options.order ? $filter('orderBy')(stories, options.order) : stories;
+                        $scope.backlog.storiesLoaded = true;
+                        if (options.initSelectedIds) {
+                            $scope.selectedIds = options.initSelectedIds($scope.backlog.stories);
+                        }
+                    });
+                }
             }]
         });
     };
@@ -586,7 +608,7 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     $scope[editableReference] = {};
     $scope.formHolder = {};
     $scope[resetForm]();
-    FormService.addStateChangeDirtyFormListener($scope, function() { $scope.update($scope[editable]); }, type, true);
+    FormService.addStateChangeDirtyFormListener($scope, function(){ $scope.update($scope[editable]); }, type, true);
     if (resetOnProperties.length > 0) {
         var resetOnPropertiesW = '';
         var length = resetOnProperties.length - 1;
