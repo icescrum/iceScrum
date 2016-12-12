@@ -87,114 +87,72 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrum
     $scope.authorizedStory = function(action, story) {
         return StoryService.authorizedStory(action, story);
     };
-
-    $scope.menus = [{
-        name:$scope.message("is.ui.backlog.menu.acceptAsStory"),
-        visible:function(story, viewName){
-            return $scope.authorizedStory('accept', story)
-        },
-        action:function(story, viewName){
-            $scope.acceptToBacklog(story);
-        }
-    },{
-        name:$scope.message("is.ui.backlog.menu.acceptAsFeature"),
-        visible:function(story, viewName){
-            return $scope.authorizedStory('accept', story)
-        },
-        action:function(story, viewName){
-            $scope.acceptAs(story, 'Feature');
-        }
-    },{
-        name:$scope.message("is.ui.backlog.menu.acceptAsUrgentTask"),
-        visible:function(story, viewName){
-            return $scope.authorizedStory('accept', story)
-        },
-        action:function(story, viewName){
-            $scope.acceptAs(story, 'Task');
-        }
-    },{
-        name:$scope.message("is.ui.releasePlan.menu.story.done"),
-        visible:function(story, viewName){
-            return $scope.authorizedStory('done', story)
-        },
-        action:function(story, viewName){
-            $scope.done(story);
-        }
-    },{
-        name:$scope.message("is.ui.releasePlan.menu.story.undone"),
-        visible:function(story, viewName){
-            return $scope.authorizedStory('unDone', story)
-        },
-        action:function(story, viewName){
-            $scope.unDone(story);
-        }
-    },{
-        name:$scope.message("is.ui.releasePlan.menu.story.dissociate"),
-        visible:function(story, viewName){
-            return $scope.authorizedStory('unPlan', story)
-        },
-        action:function(story, viewName){
-            $scope.unPlan(story);
-        }
-    },{
-        name:$scope.message("is.ui.sprintPlan.menu.postit.shiftToNext"),
-        visible:function(story, viewName){
-            return $scope.authorizedStory('shiftToNext', story)
-        },
-        action:function(story, viewName){
-            $scope.shiftToNext(story);
-        }
-    },
+    $scope.menus = [
         {
-            name:$scope.message("is.ui.backlog.menu.estimate"),
-            visible:function(story, viewName){
-                return $scope.authorizedStory('updateEstimate', story)
-            },
-            action:function(story, viewName){
-                $scope.showEditEffortModal(story);
-            }
-        },{
-            name:$scope.message("is.ui.backlog.menu.returnToSandbox"),
-            visible:function(story, viewName){
-                return $scope.authorizedStory('returnToSandbox', story)
-            },
-            action:function(story, viewName){
-                $scope.returnToSandbox(story);
-            }
-        },{
-            name:$scope.message("is.ui.releasePlan.menu.story.clone"),
-            visible:function(story, viewName){
-                return $scope.authorizedStory('copy', story)
-            },
-            action:function(story, viewName){
-                $scope.copy(story);
-            }
-        },{
-            name:$scope.message("todo.is.ui.permalink.copy"),
-            visible:function(story, viewName){
-                return true
-            },
-            action:function(story, viewName){
-                $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(story.uid,'story')));
-            }
-        },{
-            name:$scope.message("todo.is.ui.story.template.new"),
-            visible:function(story, viewName){
-                return $scope.authorizedStory('createTemplate')
-            },
-            action:function(story, viewName){
-                $scope.showNewTemplateModal(story);
-            }
-        },{
-            name:$scope.message("is.ui.backlog.menu.delete"),
-            visible:function(story, viewName){
-                return $scope.authorizedStory('delete', story)
-            },
-            action:function(story, viewName){
-                $scope.delete(story);
-            }
-        }];
-
+            name: $scope.message("is.ui.backlog.menu.acceptAsStory"),
+            visible: function(story, viewName) { return $scope.authorizedStory('accept', story) },
+            action: function(story, viewName) { $scope.acceptToBacklog(story); }
+        },
+        {
+            name: $scope.message("is.ui.backlog.menu.acceptAsFeature"),
+            visible: function(story, viewName) { return $scope.authorizedStory('accept', story) },
+            action: function(story, viewName) { $scope.acceptAs(story, 'Feature'); }
+        },
+        {
+            name: $scope.message("is.ui.backlog.menu.acceptAsUrgentTask"),
+            visible: function(story, viewName) { return $scope.authorizedStory('accept', story) },
+            action: function(story, viewName) { $scope.acceptAs(story, 'Task'); }
+        },
+        {
+            name: $scope.message("is.ui.releasePlan.menu.story.done"),
+            visible: function(story, viewName) { return $scope.authorizedStory('done', story) },
+            action: function(story, viewName) { $scope.done(story); }
+        },
+        {
+            name: $scope.message("is.ui.releasePlan.menu.story.undone"),
+            visible: function(story, viewName) { return $scope.authorizedStory('unDone', story) },
+            action: function(story, viewName) { $scope.unDone(story); }
+        },
+        {
+            name: $scope.message("is.ui.releasePlan.menu.story.dissociate"),
+            visible: function(story, viewName) { return $scope.authorizedStory('unPlan', story) },
+            action: function(story, viewName) { $scope.unPlan(story); }
+        },
+        {
+            name: $scope.message("is.ui.sprintPlan.menu.postit.shiftToNext"),
+            visible: function(story, viewName) { return $scope.authorizedStory('shiftToNext', story)},
+            action: function(story, viewName) { $scope.shiftToNext(story); }
+        },
+        {
+            name: $scope.message("is.ui.backlog.menu.estimate"),
+            visible: function(story, viewName) { return $scope.authorizedStory('updateEstimate', story) },
+            action: function(story, viewName) { $scope.showEditEffortModal(story); }
+        },
+        {
+            name: $scope.message("is.ui.backlog.menu.returnToSandbox"),
+            visible: function(story, viewName) { return $scope.authorizedStory('returnToSandbox', story) },
+            action: function(story, viewName) { $scope.returnToSandbox(story); }
+        },
+        {
+            name: $scope.message("is.ui.releasePlan.menu.story.clone"),
+            visible: function(story, viewName) { return $scope.authorizedStory('copy', story) },
+            action: function(story, viewName) { $scope.copy(story); }
+        }, {
+            name: $scope.message("todo.is.ui.permalink.copy"),
+            visible: function(story, viewName) { return true },
+            action: function(story, viewName) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(story.uid, 'story'))); }
+        },
+        {
+            name: $scope.message("todo.is.ui.story.template.new"),
+            visible: function(story, viewName) { return $scope.authorizedStory('createTemplate') },
+            action: function(story, viewName) { $scope.showNewTemplateModal(story); }
+        },
+        {
+            name: $scope.message("is.ui.backlog.menu.delete"),
+            visible: function(story, viewName) { return $scope.authorizedStory('delete', story) },
+            action: function(story, viewName) { $scope.delete(story); }
+        }
+    ];
     $scope.tasksProgress = function(story) {
         return story.tasks_count > 0 && story.state < StoryStatesByName.DONE && story.state >= StoryStatesByName.PLANNED;
     };
@@ -396,7 +354,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
             $scope.formHolder.submitting = true;
             StoryService.update(story).then(function() {
                 $scope.resetStoryForm();
-                if($scope.formHolder.submitting) {
+                if ($scope.formHolder.submitting) {
                     $scope.formHolder.submitting = false;
                 }
                 $scope.notifySuccess('todo.is.ui.story.updated');
@@ -411,7 +369,6 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
                 var $el = angular.element($event.currentTarget);
                 $el.prev().css('height', $el.outerHeight());
                 $scope.editForm(true);
-                //only user story have a template
                 if (!$scope.editableStory.description && $scope.editableStory.type == 0) {
                     ($scope.editableStory.description = template);
                 }

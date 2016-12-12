@@ -378,21 +378,20 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            //on default
-            var postitsClass = function(){
+            // On default
+            var postitsClass = function() {
                 element.removeClass('grid-group size-sm size-xs list-group').addClass(screenSize.is('xs, sm') ? 'list-group' : scope.currentPostitSize(scope.viewName, 'grid-group size-sm'));
-            }
-
-            //on resize change
-            screenSize.on('xs, sm', function(isMatch){
+            };
+            // On resize change
+            screenSize.on('xs, sm', function(isMatch) {
                 postitsClass();
             });
-            //on manual change
-            scope.$watch(function () { return $localStorage[scope.viewName + 'PostitSize']; },function(newVal,oldVal){
-                if(oldVal!==newVal){
+            // On manual change
+            scope.$watch(function() { return $localStorage[scope.viewName + 'PostitSize']; }, function(newVal, oldVal) {
+                if (oldVal !== newVal) {
                     postitsClass();
                 }
-            })
+            });
             postitsClass();
         }
     };
@@ -518,7 +517,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     .text(function(sprint) { return sprint.deliveredVersion; })
                     .attr('x', function(sprint) { return x(getEffectiveEndDate(sprint)); });
                 todaySelector
-                    .attr("transform", function(date) { return "translate(" + x(date) + "," +  (releaseYMargin + releaseHeight - 6) + ")"; }) // Offset to align border rather than center
+                    .attr("transform", function(date) { return "translate(" + x(date) + "," + (releaseYMargin + releaseHeight - 6) + ")"; }) // Offset to align border rather than center
                     .attr("class", function(date) { return 'today' + dateSelectedClass(date); });
             }
             // Brush management
@@ -854,8 +853,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             render();
         }
     };
-}])
-    .directive('visualStates', ['$compile', '$filter', function($compile, $filter) {
+}]).directive('visualStates', ['$compile', '$filter', function($compile, $filter) {
     return {
         restrict: 'E',
         require: 'ngModel',
@@ -898,21 +896,20 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             modelMenus: '='
         },
         replace: true,
-        templateUrl:'button.shortcutMenu.html',
+        templateUrl: 'button.shortcutMenu.html',
         link: function(scope, elem, attr) {
-            scope.$watch(function(){ return scope.ngModel.lastUpdated; }, function() {
+            scope.$watch(function() { return scope.ngModel.lastUpdated; }, function() {
                 var i = scope.modelMenus.length;
-                scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menu){
+                scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menu) {
                     var defaultPriority = i--;
                     return menu.priority ? menu.priority(scope.ngModel, scope.viewName, defaultPriority) : defaultPriority;
                 }, true);
-                //reset i
                 i = 0;
                 scope.button = {};
                 while (!scope.button.name && i < scope.sortedMenus.length) {
                     if (scope.sortedMenus[i].visible(scope.ngModel, scope.viewName)) {
                         scope.button = scope.sortedMenus[i];
-                        if(!scope.button.url) {
+                        if (!scope.button.url) {
                             elem.attr('href', null);
                         } else {
                             elem.attr('href', scope.button.url(scope.ngModel));

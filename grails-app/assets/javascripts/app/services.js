@@ -282,7 +282,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
                 $scope.mustConfirmStateChange = false;
                 $scope.dirtyChangesConfirm({
                     message: $scope.message('todo.is.ui.dirty.confirm'),
-                    saveChangesCallback: function(){
+                    saveChangesCallback: function() {
                         submit();
                         saveChangesCallback();
                     },
@@ -302,7 +302,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             if ($scope.mustConfirmStateChange && fromParams[type + 'Id'] != toParams[type + 'Id']) {
-                triggerChangesConfirmModal(event, function(){
+                triggerChangesConfirmModal(event, function() {
                     $scope.$state.go(toState, toParams);
                 }, function() {
                     $scope.$state.go(toState, toParams);

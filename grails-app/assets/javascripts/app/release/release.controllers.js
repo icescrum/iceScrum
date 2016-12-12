@@ -64,41 +64,49 @@ controllers.controller('releaseCtrl', ['$scope', 'Session', 'ReleaseService', 'S
                 $scope.notifySuccess('todo.is.ui.deleted');
             });
     };
-
-    $scope.menus = [{
-        name:$scope.message('is.ui.timeline.menu.activate'),
-        visible:function(release, viewName){ return $scope.authorizedRelease('activate', release) },
-        action:function(release, viewName){ $scope.confirm({ message: $scope.message('is.ui.timeline.menu.activate.confirm'), callback: $scope.activate, args: [release] }) }
-    },{
-        name:$scope.message('todo.is.ui.sprint.new'),
-        visible:function(release, viewName){ return $scope.authorizedSprint('create') },
-        url:function(release, viewName) { return '#' + $scope.viewName + '/' + release.id  + '/sprint/new'; }
-    },{
-        name:$scope.message('todo.is.ui.release.new'),
-        priority:function(release, viewName, priority){ return viewName == 'planning' ? 100 : priority; },
-        visible:function(release, viewName){ return $scope.authorizedRelease('create') },
-        url:function(release, viewName) { return '#' + $scope.viewName + '/new'; }
-    },{
-        name:$scope.message('is.ui.releasePlan.toolbar.generateSprints'),
-        visible:function(release, viewName){ return $scope.authorizedSprint('create') },
-        action:function(release, viewName){ $scope.generateSprints(release) }
-    },{
-        name:$scope.message('is.ui.releasePlan.toolbar.autoPlan'),
-        visible:function(release, viewName){ return $scope.authorizedRelease('autoPlan', release) },
-        action:function(release, viewName){ $scope.showAutoPlanModal({callback: $scope.autoPlan, args: [release]}) }
-    },{
-        name:$scope.message('is.ui.releasePlan.toolbar.dissociateAll'),
-        visible:function(release, viewName){ return $scope.authorizedRelease('unPlan', release) },
-        action:function(release, viewName){ $scope.unPlan(release) }
-    },{
-        name:$scope.message('is.ui.timeline.menu.delete'),
-        visible:function(release, viewName){ return $scope.authorizedRelease('delete', release) },
-        action:function(release, viewName){ $scope.confirm({ message: $scope.message('is.ui.timeline.menu.delete.confirm'), callback: $scope.delete, args: [release] }) }
-    },{
-        name:$scope.message('is.ui.timeline.menu.close'),
-        visible:function(release, viewName){ return $scope.authorizedRelease('close', release) },
-        action:function(release, viewName){ $scope.confirm({ message: $scope.message('is.ui.timeline.menu.close.confirm'), callback: $scope.close, args: [release] }) }
-    }];
+    $scope.menus = [
+        {
+            name: $scope.message('is.ui.timeline.menu.activate'),
+            visible: function(release, viewName) { return $scope.authorizedRelease('activate', release); },
+            action: function(release, viewName) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.activate.confirm'), callback: $scope.activate, args: [release]}); }
+        },
+        {
+            name: $scope.message('todo.is.ui.sprint.new'),
+            visible: function(release, viewName) { return $scope.authorizedSprint('create'); },
+            url: function(release, viewName) { return '#' + $scope.viewName + '/' + release.id + '/sprint/new'; }
+        },
+        {
+            name: $scope.message('todo.is.ui.release.new'),
+            priority: function(release, viewName, priority) { return viewName == 'planning' ? 100 : priority; },
+            visible: function(release, viewName) { return $scope.authorizedRelease('create'); },
+            url: function(release, viewName) { return '#' + $scope.viewName + '/new'; }
+        },
+        {
+            name: $scope.message('is.ui.releasePlan.toolbar.generateSprints'),
+            visible: function(release, viewName) { return $scope.authorizedSprint('create'); },
+            action: function(release, viewName) { $scope.generateSprints(release); }
+        },
+        {
+            name: $scope.message('is.ui.releasePlan.toolbar.autoPlan'),
+            visible: function(release, viewName) { return $scope.authorizedRelease('autoPlan', release); },
+            action: function(release, viewName) { $scope.showAutoPlanModal({callback: $scope.autoPlan, args: [release]}); }
+        },
+        {
+            name: $scope.message('is.ui.releasePlan.toolbar.dissociateAll'),
+            visible: function(release, viewName) { return $scope.authorizedRelease('unPlan', release); },
+            action: function(release, viewName) { $scope.unPlan(release); }
+        },
+        {
+            name: $scope.message('is.ui.timeline.menu.delete'),
+            visible: function(release, viewName) { return $scope.authorizedRelease('delete', release); },
+            action: function(release, viewName) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.delete.confirm'), callback: $scope.delete, args: [release]}); }
+        },
+        {
+            name: $scope.message('is.ui.timeline.menu.close'),
+            visible: function(release, viewName) { return $scope.authorizedRelease('close', release); },
+            action: function(release, viewName) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.close.confirm'), callback: $scope.close, args: [release]}); }
+        }
+    ];
 
     // Init
     $scope.project = Session.getProject();

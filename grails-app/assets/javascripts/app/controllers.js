@@ -120,10 +120,10 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                         $scope.selectedIds = options.initSelectedIds($scope.backlog.stories);
                     }
                 });
-                if($scope.filterEnabled){
-                    $scope.$watch('liveFilterTerm', function(){
-                        $timeout.cancel( liveFilter );
-                        liveFilter = $timeout(function(){
+                if ($scope.filterEnabled) {
+                    $scope.$watch('liveFilterTerm', function() {
+                        $timeout.cancel(liveFilter);
+                        liveFilter = $timeout(function() {
                             $scope.selectedIds = [];
                             $scope.backlog.storiesLoaded = false;
                             options.filter.term = $scope.liveFilterTerm;
@@ -136,13 +136,10 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                             });
                         }, 500);
                     });
-                    $scope.$on(
-                        "$destroy",
-                        function( event ) {
-                            $timeout.cancel( liveFilter );
-                        }
-                    );
-                }else{
+                    $scope.$on("$destroy", function() {
+                        $timeout.cancel(liveFilter);
+                    });
+                } else {
                     StoryService.filter(options.filter).then(function(stories) {
                         $scope.backlog.stories = options.order ? $filter('orderBy')(stories, options.order) : stories;
                         $scope.backlog.storiesLoaded = true;
@@ -612,7 +609,7 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     $scope[editableReference] = {};
     $scope.formHolder = {};
     $scope[resetForm]();
-    FormService.addStateChangeDirtyFormListener($scope, function(){ $scope.update($scope[editable]); }, type, true);
+    FormService.addStateChangeDirtyFormListener($scope, function() { $scope.update($scope[editable]); }, type, true);
     if (resetOnProperties.length > 0) {
         var resetOnPropertiesW = '';
         var length = resetOnProperties.length - 1;

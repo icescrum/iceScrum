@@ -846,7 +846,6 @@ angular.module('isApp', [
 })
 .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications, screenSize) {
 
-    //used to handle click with shortcut hotkeys
     $rootScope.hotkeyClick = function(event, hotkey) {
         if (hotkey.el && (hotkey.el.is("a") || hotkey.el.is("button"))) {
             event.preventDefault();
@@ -900,9 +899,9 @@ angular.module('isApp', [
         var modal = $uibModal.open({
             templateUrl: 'confirm.modal.html',
             size: 'sm',
-            controller: ["$scope", "hotkeys", function ($scope, hotkeys) {
+            controller: ["$scope", "hotkeys", function($scope, hotkeys) {
                 $scope.message = options.message;
-                $scope.submit = function () {
+                $scope.submit = function() {
                     if (options.args) {
                         options.callback.apply(options.callback, options.args);
                     } else {
@@ -913,14 +912,14 @@ angular.module('isApp', [
                 // Required because there is not input so the form cannot be submitted by "return"
                 hotkeys.bindTo($scope).add({
                     combo: 'return',
-                    callback: function (event) {
+                    callback: function(event) {
                         event.preventDefault(); // Prevents propagation of click to unwanted places
                         $scope.submit();
                     }
                 });
             }]
         });
-        var callCloseCallback = function (confirmed) {
+        var callCloseCallback = function(confirmed) {
             if (!confirmed && options.closeCallback) {
                 options.closeCallback();
             }
@@ -1236,7 +1235,7 @@ angular.module('isApp', [
         }
     });
 
-    screenSize.onChange($rootScope, 'xs, sm', function(isMatch){
+    screenSize.onChange($rootScope, 'xs, sm', function(isMatch) {
         $rootScope.app.mobile = isMatch;
     });
 }])
