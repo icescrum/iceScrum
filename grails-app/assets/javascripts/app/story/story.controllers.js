@@ -337,8 +337,8 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrum
     };
 }]);
 
-registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, Session, StoryService, FormService, ActorService, FeatureService, ProjectService, UserService, detailsStory) {
+registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, Session, StoryService, FormService, ActorService, FeatureService, ProjectService, UserService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
@@ -369,7 +369,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
                 var $el = angular.element($event.currentTarget);
                 $el.prev().css('height', $el.outerHeight());
                 $scope.editForm(true);
-                if (!$scope.editableStory.description && $scope.editableStory.type == 0) {
+                if (!$scope.editableStory.description && $scope.editableStory.type == StoryTypesByName.USER_STORY) {
                     ($scope.editableStory.description = template);
                 }
             }
