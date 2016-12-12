@@ -95,7 +95,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="btn-group btn-view" uib-dropdown>
+                        <div class="btn-group btn-view hidden" uib-dropdown>
                             <button type="button"
                                     class="btn btn-default"
                                     uib-tooltip="${message(code:'is.ui.window.print')} (P)"
