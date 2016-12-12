@@ -163,14 +163,14 @@ class ProductUrlMappings {
         // Actor
         "/p/$product/actor" {
             controller = 'actor'
-            action = [GET: "index", POST:"save"]
+            action = [GET: 'index', POST: 'save']
             constraints {
                 product(matches: /[0-9A-Z]*/)
             }
         }
         "/p/$product/actor/$id" {
             controller = 'actor'
-            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            action = [GET: 'show', PUT: 'update',  POST: 'update', DELETE: 'delete']
             constraints {
                 product(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)

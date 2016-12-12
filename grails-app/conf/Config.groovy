@@ -186,7 +186,7 @@ icescrum.marshaller = [
                asShort: ['firstName', 'lastName'],
                includeCount: ['teams'],
                include: ['admin']],
-        actor: [withIds: ['stories']],
+        actor: [],
         feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'attachments', 'inProgressDate', 'doneDate'],
                   withIds: ['stories'],
                   textile: ['notes'],

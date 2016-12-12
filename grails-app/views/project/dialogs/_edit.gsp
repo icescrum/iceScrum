@@ -44,6 +44,9 @@
                 <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('general') }">
                     <a ng-click="setCurrentPanel('general')"><i class="fa fa-pencil"></i> ${ message(code: 'is.dialog.wizard.section.project')}</a>
                 </li>
+                <li ng-class="{ current: isCurrentPanel('prodfoo') }">
+                    <a ng-click="setCurrentPanel('prodfoo')"><i class="fa fa-users"></i> ${ message(code: 'is.ui.actor.actors')}</a>
+                </li>
                 <li ng-class="{ current: isCurrentPanel('team') }">
                     <a ng-click="setCurrentPanel('team')"><i class="fa fa-users"></i> ${ message(code: 'is.dialog.wizard.section.team')}</a>
                 </li>
@@ -64,6 +67,11 @@
                      class="step current"
                      title="${ message(code: 'is.dialog.wizard.section.project')}">
                 <div ng-include="'edit.general.project.html'"></div>
+            </section>
+            <section ng-switch-when="prodfoo"
+                     class="step current"
+                     title="${ message(code: 'is.ui.actor.actors')}">
+                <div ng-include="'edit.general.prodfoo.html'"></div>
             </section>
             <section ng-switch-when="team"
                      class="step current"

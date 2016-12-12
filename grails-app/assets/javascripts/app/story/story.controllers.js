@@ -446,13 +446,9 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
                 return {id: actor.id, name: actor.name};
             });
         };
-        if (ActorService.list.$resolved) {
-            $scope.atOptions.data = mapActors(ActorService.list);
-        } else {
-            ActorService.list.$promise.then(function(actors) {
-                $scope.atOptions.data = mapActors(actors);
-            });
-        }
+        ActorService.list().then(function(actors) {
+            $scope.atOptions.data = mapActors(actors);
+        });
         // For header
         //$scope.previousStory = FormService.previous(list, $scope.story);
         //$scope.nextStory = FormService.next(list, $scope.story);

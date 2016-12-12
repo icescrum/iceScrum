@@ -27,6 +27,7 @@
 <g:render template="/project/templates/edit.general" />
 <g:render template="/project/templates/edit.members" />
 <g:render template="/project/templates/edit.practices" />
+<g:render template="/project/templates/edit.prodfoo" />
 <g:render template="/project/templates/edit.planning" />
 <g:render template="/project/templates/edit.administration" />
 <g:render template="/project/templates/user.item" />

@@ -25,6 +25,29 @@ services.factory('Actor', ['Resource', function($resource) {
     return $resource('actor/:id/:action');
 }]);
 
-services.service("ActorService", ['Actor', function(Actor) {
-    this.list = Actor.query();
+services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
+    this.save = function(actor) {
+        actor.class = 'actor';
+        return Actor.save(actor).$promise;
+    };
+    this.update = function(actor) {
+        return Actor.update(actor).$promise;
+    };
+    this.delete = function(actor) {
+        return Actor.delete(actor).$promise;
+    };
+    this.list = function() {
+        return Actor.query().$promise;
+    };
+    this.authorizedActor = function(action, actor) {
+        switch (action) {
+            case 'create':
+            case 'update':
+                return Session.po();
+            case 'delete':
+                return Session.po() && actor.stories_count == 0;
+            default:
+                return false;
+        }
+    };
 }]);
