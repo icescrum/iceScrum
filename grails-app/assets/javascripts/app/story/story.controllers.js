@@ -434,16 +434,25 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $scope.tags = [];
         $scope.versions = [];
         $scope.creators = [];
-        $scope.atOptions = {
-            insertTpl: "${atwho-at}A[${id}-${name}]",
-            at: $scope.message('is.story.template.as') + ' '
-        };
+        var actorTag = 'A[${id}-${name}]';
+        $scope.atOptions = [
+            {
+                insertTpl: '${atwho-at}' + actorTag,
+                at: $scope.message('is.story.template.as') + ' '
+            },
+            {
+                insertTpl: actorTag,
+                at: '@'
+            }
+        ];
         $scope.features = Session.getProject().features;
         FeatureService.list();
         $scope.project = Session.getProject();
         ActorService.list().then(function(actors) {
-            $scope.atOptions.data = _.map(actors, function(actor) {
-                return {id: actor.id, name: actor.name};
+            _.each($scope.atOptions, function(options) {
+                options.data = _.map(actors, function(actor) {
+                    return {id: actor.id, name: actor.name};
+                });
             });
         });
         // For header

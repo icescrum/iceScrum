@@ -212,18 +212,13 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            element.data('hasAt', false);
             scope.$watch(function() {
-                // Cannot use isolated scope (e.g. scope { at: '=' } because there are already isolated scope on the element)
-                return scope.$eval(attrs.at);
+                return scope.$eval(attrs.at); // Cannot use isolated scope (e.g. scope { at: '=' } because there is already an isolated scope on the element
             }, function(newOptions) {
-                if (element.data('hasAt')) {
-                    // recreate if options has changed, eg. promise completed for data
-                    element.atwho('destroy');
-                } else {
-                    element.data('hasAt', true);
-                }
-                element.atwho(newOptions);
+                element.atwho('destroy');
+                _.each(newOptions, function(options) {
+                    element.atwho(options);
+                });
             }, true);
         }
     };
