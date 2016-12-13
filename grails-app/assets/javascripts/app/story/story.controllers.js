@@ -435,19 +435,16 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $scope.versions = [];
         $scope.creators = [];
         $scope.atOptions = {
-            tpl: "<li data-value='A[${id}-${name}]'>${name}</li>",
-            at: 'a'
+            insertTpl: "${atwho-at}A[${id}-${name}]",
+            at: $scope.message('is.story.template.as') + ' '
         };
         $scope.features = Session.getProject().features;
         FeatureService.list();
         $scope.project = Session.getProject();
-        var mapActors = function(actors) {
-            return _.map(actors, function(actor) {
+        ActorService.list().then(function(actors) {
+            $scope.atOptions.data = _.map(actors, function(actor) {
                 return {id: actor.id, name: actor.name};
             });
-        };
-        ActorService.list().then(function(actors) {
-            $scope.atOptions.data = mapActors(actors);
         });
         // For header
         //$scope.previousStory = FormService.previous(list, $scope.story);

@@ -81,15 +81,15 @@
                 </td>
                 <td class="btn-toolbar"
                     ng-if="authorizedActor('update') || authorizedActor('delete', actor)">
-                    <a class="btn btn-danger btn-xs pull-right"
-                       ng-if="authorizedActor('delete', actor)"
-                       ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [actor] })">
-                        <i class="fa fa-close"></i>
-                    </a>
                     <a class="btn btn-primary btn-xs pull-right"
                        ng-if="authorizedActor('update')"
                        ng-click="edit(actor)">
                         <i class="fa fa-pencil"></i>
+                    </a>
+                    <a class="btn btn-danger btn-xs pull-right"
+                       ng-if="authorizedActor('delete', actor)"
+                       ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [actor] })">
+                        <i class="fa fa-close"></i>
                     </a>
                 </td>
             </tr>
