@@ -458,4 +458,12 @@ filters
                 return item.visible(param);
             })
         };
+    }).filter('contextIcon', function() {
+        return function(contextType) {
+            return {
+                feature: 'fa-sticky-note',
+                tag: 'fa-tag',
+                actor: 'fa-child'
+            }[contextType];
+        }
     });

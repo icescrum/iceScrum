@@ -45,7 +45,7 @@
                     <a ng-click="setCurrentPanel('general')"><i class="fa fa-pencil"></i> ${ message(code: 'is.dialog.wizard.section.project')}</a>
                 </li>
                 <li ng-class="{ current: isCurrentPanel('prodfoo') }">
-                    <a ng-click="setCurrentPanel('prodfoo')"><i class="fa fa-users"></i> ${ message(code: 'is.ui.actor.actors')}</a>
+                    <a ng-click="setCurrentPanel('prodfoo')"><i class="fa fa-child"></i> ${ message(code: 'is.ui.actor.actors')}</a>
                 </li>
                 <li ng-class="{ current: isCurrentPanel('team') }">
                     <a ng-click="setCurrentPanel('team')"><i class="fa fa-users"></i> ${ message(code: 'is.dialog.wizard.section.team')}</a>

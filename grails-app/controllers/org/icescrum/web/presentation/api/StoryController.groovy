@@ -64,6 +64,8 @@ class StoryController implements ControllerErrorHandler {
                     } else if (options.story.feature != params.context.id) { // If it tries to load the stories of another feature, return nothing!
                         options.story = null
                     }
+                } else if (params.context.type == 'actor') {
+                    options.story.actor = params.context.id
                 }
             }
         }

@@ -154,7 +154,7 @@
                                         <button class="btn btn-default"
                                                 type="button"
                                                 ng-click="setContext(null)">
-                                            <i class="fa" ng-class="app.context.type == 'feature' ? 'fa-sticky-note' : 'fa-tag'"></i>
+                                            <i class="fa" ng-class="app.context.type | contextIcon"></i>
                                             <span class="context">{{ app.context.term }}</span>
                                             <i class="fa fa-times"></i>
                                         </button>

@@ -380,7 +380,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
 }]);
 
-controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'CacheService', 'ProjectService', function($scope, $q, $location, $injector, $state, $timeout, Session, CacheService, ProjectService) {
+controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'CacheService', 'ProjectService', 'ActorService', function($scope, $q, $location, $injector, $state, $timeout, Session, CacheService, ProjectService, ActorService) {
     // Functions
     $scope.searchContext = function(term) {
         return !Session.authenticated() ? [] : $scope.loadContexts().then(function() {
@@ -422,14 +422,18 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
     };
     $scope.loadContexts = function() {
         var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the controller because it will init the service systematically and call Feature.query which require authentication
-        return $q.all([ProjectService.getTags(), FeatureService.list()]).then(function(data) {
+        return $q.all([ProjectService.getTags(), FeatureService.list(), ActorService.list()]).then(function(data) {
             var tags = data[0];
             var features = Session.getProject().features;
+            var actors = data[2];
             var contexts = _.map(tags, function(tag) {
                 return {type: 'tag', id: tag, term: tag};
             });
             contexts = contexts.concat(_.map(features, function(feature) {
                 return {type: 'feature', id: feature.uid.toString(), term: feature.name};
+            }));
+            contexts = contexts.concat(_.map(actors, function(actor) {
+                return {type: 'actor', id: actor.id.toString(), term: actor.name};
             }));
             $scope.contexts = contexts;
         });

@@ -167,7 +167,7 @@
 
 <script type="text/ng-template" id="search.context.html">
 <a class="text-ellipsis">
-    <i class="fa" ng-class="match.model.type == 'feature' ? 'fa-sticky-note' : 'fa-tag'"></i> {{ match.model.term }}
+    <i class="fa" ng-class="match.model.type | contextIcon"></i> {{ match.model.term }}
 </a>
 </script>
 

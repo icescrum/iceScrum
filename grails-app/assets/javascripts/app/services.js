@@ -700,6 +700,8 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                 if ($rootScope.app.context) {
                     if ($rootScope.app.context.type == 'feature') {
                         return item.feature && item.feature.id == $rootScope.app.context.id;
+                    } else if ($rootScope.app.context.type == 'actor') {
+                        return item.actor && item.actor.id == $rootScope.app.context.id;
                     } else if ($rootScope.app.context.type == 'tag') {
                         return _.includes(item.tags, $rootScope.app.context.term);
                     } else {
@@ -721,9 +723,13 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
         },
         task: {
             allowable: function(item) {
-                if ($rootScope.app.context && $rootScope.app.context.type == 'feature' && item.parentStory) {
+                if ($rootScope.app.context && item.parentStory) {
                     var cachedStory = CacheService.get('story', item.parentStory.id);
-                    return cachedStory && cachedStory.feature.id == $rootScope.app.context.id;
+                    if ($rootScope.app.context.type == 'feature') {
+                        return cachedStory && cachedStory.feature.id == $rootScope.app.context.id;
+                    } else if ($rootScope.app.context.type == 'actor') {
+                        return cachedStory && cachedStory.actor.id == $rootScope.app.context.id;
+                    }
                 }
                 return true;
             },
