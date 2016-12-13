@@ -37,7 +37,7 @@
                    type="text"
                    id="actor.name"
                    class="form-control"
-                   placeholder="{{ actor.id ? '' : '${message(code: /is.ui.actor.noname/)}' }}"
+                   placeholder="{{ actor.id ? '' : message('is.ui.actor.noname') }}"
                    ng-model="actor.name"/>
             <span class="input-group-btn">
                 <button class="btn btn-default"
