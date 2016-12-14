@@ -51,7 +51,8 @@
                             </div>
                             <div class="content">
                                 <h3 class="title">{{ topFeature.name }}</h3>
-                                <div class="description">{{ topFeature.description }}</div>
+                                <div class="description"
+                                     ng-bind-html="topFeature.description | lineReturns"></div>
                             </div>
                             <div class="footer">
                                 <div class="tags">

@@ -39,7 +39,8 @@
     <div class="content"
          as-sortable-item-handle>
         <h3 class="title">{{ feature.name }}</h3>
-        <div class="description">{{ feature.description }}</div>
+        <div class="description"
+             ng-bind-html="feature.description | lineReturns"></div>
     </div>
     <div class="footer">
         <div class="tags">

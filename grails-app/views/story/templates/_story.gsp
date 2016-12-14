@@ -49,7 +49,7 @@
     <div class="content" as-sortable-item-handle-if="sortableStory">
         <h3 class="title">{{ story.name }}</h3>
         <div class="description"
-             ng-bind-html="story.description"></div>
+             ng-bind-html="story.description | lineReturns | actorTag"></div>
     </div>
     <div class="footer">
         <div class="tags">

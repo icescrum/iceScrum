@@ -54,7 +54,7 @@
                 </th>
             </tr>
             <tr ng-repeat="storyRow in storyRows">
-                <td ng-repeat="story in storyRow" title="{{ story | storyDescription }}" ng-class="{ 'text-primary' : story.id == editableStory.id }">
+                <td ng-repeat="story in storyRow" title="{{ story.description | actorTag }}" ng-class="{ 'text-primary' : story.id == editableStory.id }">
                     <div ng-if="story.id != undefined">
                         <button class="btn btn-xs btn-default" disabled="disabled">{{ story.uid }}</button> {{ story.name }}
                         <div>{{ story.state | i18n:'StoryStates' }}</div>

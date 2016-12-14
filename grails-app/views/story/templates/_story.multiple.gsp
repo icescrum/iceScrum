@@ -60,7 +60,7 @@
                             <div class="content">
                                 <h3 class="title">{{ topStory.name }}</h3>
                                 <div class="description"
-                                     ng-bind-html="topStory.description"></div>
+                                     ng-bind-html="topStory.description | lineReturns | actorTag"></div>
                             </div>
                             <div class="footer">
                                 <div class="tags">

@@ -145,15 +145,12 @@ filters
             }
         };
     })
-    .filter('storyDescription', function() {
-        var javaStringToHtml = function(s) {
-            return s.replace(/\r\n/g, "<br/>").replace(/\n/g, "<br/>").replace(/"/g, '\\"');
-        };
-        return function(story, isHtml) {
+    .filter('actorTag', [function() {
+        return function(description, isHtml) {
             var actor = '$2'; // TODO reenable link when something to link to: isHtml ? '<a href="#/actor/$1">$2</a>' : '$2';
-            return story.description ? javaStringToHtml(story.description).replace(/A\[(.+?)-(.*?)\]/g, actor) : "";
+            return description ? description.replace(/A\[(.+?)-(.*?)\]/g, actor) : "";
         };
-    })
+    }])
     .filter('i18n', ['I18nService', function(I18nService) {
         return function(key, bundleName) {
             if (key != undefined && key != null && I18nService.getBundle(bundleName)) {
@@ -163,7 +160,7 @@ filters
     }])
     .filter('lineReturns', function() {
         return function(text) {
-            return text ? text.replace(/\n/g, '<br/>') : "";
+            return text ? _.escape(text).replace(/\r\n/g, "<br/>").replace(/\n/g, '<br/>') : "";
         }
     })
     .filter('filesize', function() {

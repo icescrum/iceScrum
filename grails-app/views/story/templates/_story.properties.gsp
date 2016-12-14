@@ -71,7 +71,7 @@
                  ng-mouseup="$parent.descriptionPreviewMouseDown = false"
                  ng-class="{'placeholder': !editableStory.description}"
                  tabindex="0"
-                 ng-bind-html="editableStory.description ? (editableStory | storyDescription: true) : '${message(code: 'is.ui.backlogelement.nodescription')}'"></div>
+                 ng-bind-html="editableStory.description ? (editableStory.description | lineReturns | actorTag: true) : '${message(code: 'is.ui.backlogelement.nodescription')}'"></div>
         </div>
         <div class="clearfix no-padding">
             <div class="form-half">
