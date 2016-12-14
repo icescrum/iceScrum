@@ -186,7 +186,7 @@
                          ng-focus="editForm(true); showVisionTextarea = formHolder.editable()"
                          ng-class="{'placeholder': !editableRelease.vision_html}"
                          tabindex="0"
-                         ng-bind-html="(editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
+                         ng-bind-html="editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'"></div>
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ release.attachments.length > 0 ? '(' + release.attachments.length + ')' : '' }}</label>

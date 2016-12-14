@@ -43,7 +43,7 @@
              ng-click="showCommentBodyTextarea = true"
              ng-focus="showCommentBodyTextarea = true"
              ng-class="{'placeholder': !editableComment.body_html}"
-             ng-bind-html="(editableComment.body_html ? editableComment.body_html : '<p>${message(code: 'todo.is.ui.comment')}</p>') | sanitize"></div>
+             ng-bind-html="editableComment.body_html ? editableComment.body_html : '<p>${message(code: 'todo.is.ui.comment')}</p>'"></div>
     </div>
     <div class="btn-toolbar">
         <button class="btn btn-primary pull-right"

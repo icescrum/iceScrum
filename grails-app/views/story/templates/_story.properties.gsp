@@ -71,7 +71,7 @@
                  ng-mouseup="$parent.descriptionPreviewMouseDown = false"
                  ng-class="{'placeholder': !editableStory.description}"
                  tabindex="0"
-                 ng-bind-html="(editableStory.description ? (editableStory | storyDescription: true) : '${message(code: 'is.ui.backlogelement.nodescription')}') | sanitize"></div>
+                 ng-bind-html="editableStory.description ? (editableStory | storyDescription: true) : '${message(code: 'is.ui.backlogelement.nodescription')}'"></div>
         </div>
         <div class="clearfix no-padding">
             <div class="form-half">
@@ -275,7 +275,7 @@
                  ng-focus="editForm(true); showNotesTextarea = formHolder.editable()"
                  ng-class="{'placeholder': !editableStory.notes_html}"
                  tabindex="0"
-                 ng-bind-html="(editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+                 ng-bind-html="editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
         </div>
         <div class="form-group">
             <label>${message(code: 'is.backlogelement.attachment')} {{ story.attachments.length > 0 ? '(' + story.attachments.length + ')' : '' }}</label>

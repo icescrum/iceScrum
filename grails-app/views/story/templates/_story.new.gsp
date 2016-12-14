@@ -45,12 +45,9 @@
                         </div>
                     </div>
                     <div class="content">
-                        <h3 class="title"
-                            ng-model="story.name"
-                            ng-bind-html="story.name | sanitize"></h3>
+                        <h3 class="title">{{ story.name }}</h3>
                         <div class="description-template"
-                             ng-model="storyPreview.description"
-                             ng-bind-html="storyPreview.description | sanitize"></div>
+                             ng-bind-html="storyPreview.description"></div>
                     </div>
                     <div class="footer">
                         <div class="tags">
@@ -108,7 +105,7 @@
                            ng-disabled="!authorizedStory('create')"/>
                     <div ng-if="messageDuplicate"
                          class="help-block bg-warning spaced-help-block"
-                         ng-bind-html="messageDuplicate | sanitize"></div>
+                         ng-bind-html="messageDuplicate"></div>
                 </div>
                 <div class="form-half" ng-if="templateEntries.length > 0">
                     <label for="story.template">${message(code: 'todo.is.ui.story.template')}</label>

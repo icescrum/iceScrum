@@ -35,7 +35,7 @@
             </a>
         </div>
         <div class="pretty-printed"
-             ng-bind-html="story | storyDescription: true | sanitize">
+             ng-bind-html="story | storyDescription: true">
         </div>
         <hr ng-if="!$last"/>
     </div>

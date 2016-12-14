@@ -175,7 +175,7 @@
                          ng-focus="editForm(true); showRetrospectiveTextarea = formHolder.editable()"
                          ng-class="{'placeholder': !editableSprint.retrospective_html}"
                          tabindex="0"
-                         ng-bind-html="(editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>') | sanitize"></div>
+                         ng-bind-html="editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'"></div>
                 </div>
                 <div class="form-group">
                     <label for="goal">${message(code:'is.sprint.goal')}</label>
@@ -204,7 +204,7 @@
                          ng-focus="editForm(true); showDoneDefinitionTextarea = formHolder.editable()"
                          ng-class="{'placeholder': !editableSprint.doneDefinition_html}"
                          tabindex="0"
-                         ng-bind-html="(editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>') | sanitize"></div>
+                         ng-bind-html="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments.length > 0 ? '(' + sprint.attachments.length + ')' : '' }}</label>

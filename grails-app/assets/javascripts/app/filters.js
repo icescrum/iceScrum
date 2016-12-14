@@ -247,11 +247,6 @@ filters
             }
         }
     })
-    .filter('sanitize', ['$sce', function($sce) {
-        return function(html) {
-            return html ? $sce.trustAsHtml(html) : "";
-        };
-    }])
     .filter('reverse', function() {
         return function(items) {
             return items.slice().reverse();

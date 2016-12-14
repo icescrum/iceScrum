@@ -45,9 +45,7 @@
                         </div>
                     </div>
                     <div class="content">
-                        <h3 class="title"
-                            ng-model="task.name"
-                            ng-bind-html="task.name | sanitize"></h3>
+                        <h3 class="title">{{ task.name }}</h3>
                     </div>
                     <div class="tags"></div>
                     <div class="actions">

@@ -58,12 +58,9 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <h3 class="title"
-                                    ng-model="topStory.name"
-                                    ng-bind-html="topStory.name | sanitize"></h3>
+                                <h3 class="title">{{ topStory.name }}</h3>
                                 <div class="description"
-                                     ng-model="topStory.description"
-                                     ng-bind-html="topStory.description | sanitize"></div>
+                                     ng-bind-html="topStory.description"></div>
                             </div>
                             <div class="footer">
                                 <div class="tags">

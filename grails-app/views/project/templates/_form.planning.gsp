@@ -160,7 +160,7 @@
                  ng-click="showVisionTextarea = true"
                  ng-focus="showVisionTextarea = true"
                  ng-class="{'placeholder': !project.vision_html}"
-                 ng-bind-html="(project.vision_html ? project.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>') | sanitize"></div>
+                 ng-bind-html="project.vision_html ? project.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'"></div>
         </div>
     </div>
 </script>

@@ -39,9 +39,7 @@
     </div>
     <div class="content"
          as-sortable-item-handle-if="authorizedTask('rank', task)">
-        <h3 class="title"
-            ng-model="task.name"
-            ng-bind-html="task.name | sanitize"></h3>
+        <h3 class="title">{{ task.name }}</h3>
     </div>
     <div class="footer">
         <div class="tags">

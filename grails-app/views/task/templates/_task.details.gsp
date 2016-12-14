@@ -200,7 +200,7 @@
                          ng-focus="editForm(true); showNotesTextarea = formHolder.editable()"
                          ng-class="{'placeholder': !editableTask.notes_html}"
                          tabindex="0"
-                         ng-bind-html="(editableTask.notes_html ? editableTask.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>') | sanitize"></div>
+                         ng-bind-html="editableTask.notes_html ? editableTask.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
                 </div>
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ task.attachments.length > 0 ? '(' + task.attachments.length + ')' : '' }}</label>

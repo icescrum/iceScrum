@@ -45,9 +45,7 @@
                         </div>
                     </div>
                     <div class="content">
-                        <h3 class="title"
-                            ng-model="feature.name"
-                            ng-bind-html="feature.name | sanitize"></h3>
+                        <h3 class="title">{{ feature.name }}</h3>
                     </div>
                     <div class="footer">
                         <div class="tags"></div>

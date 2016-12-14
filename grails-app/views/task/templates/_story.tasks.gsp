@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="clearfix no-padding" ng-if="task.description">
-                    <p class="description form-control-static" ng-bind-html="task.description | lineReturns | sanitize"></p>
+                    <p class="description form-control-static" ng-bind-html="task.description | lineReturns"></p>
                 </div>
                 <hr ng-if="!$last"/>
             </td>

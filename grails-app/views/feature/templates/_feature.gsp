@@ -38,12 +38,8 @@
     </div>
     <div class="content"
          as-sortable-item-handle>
-        <h3 class="title"
-            ng-model="feature.name"
-            ng-bind-html="feature.name | sanitize"></h3>
-        <div class="description"
-             ng-model="feature.description"
-             ng-bind-html="feature.description | sanitize"></div>
+        <h3 class="title">{{ feature.name }}</h3>
+        <div class="description">{{ feature.description }}</div>
     </div>
     <div class="footer">
         <div class="tags">

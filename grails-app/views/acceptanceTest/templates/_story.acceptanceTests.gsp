@@ -82,7 +82,7 @@
                              ng-focus="editForm(true); showAcceptanceTestDescriptionTextarea = true; editableAcceptanceTest.description || (editableAcceptanceTest.description = '${is.generateAcceptanceTestTemplate()}')"
                              ng-class="{'placeholder': !editableAcceptanceTest.description_html}"
                              tabindex="0"
-                             ng-bind-html="(editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>') | sanitize"></div>
+                             ng-bind-html="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>'"></div>
                     </div>
                 </form>
                 <hr ng-if="!$last"/>

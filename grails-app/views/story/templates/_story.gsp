@@ -47,12 +47,9 @@
         </div>
     </div>
     <div class="content" as-sortable-item-handle-if="sortableStory">
-        <h3 class="title"
-            ng-model="story.name"
-            ng-bind-html="story.name | sanitize"></h3>
+        <h3 class="title">{{ story.name }}</h3>
         <div class="description"
-             ng-model="story.description"
-             ng-bind-html="story.description | sanitize"></div>
+             ng-bind-html="story.description"></div>
     </div>
     <div class="footer">
         <div class="tags">

@@ -66,7 +66,7 @@
                              ng-click="editForm(true); showCommentBodyTextarea = true"
                              ng-focus="editForm(true); showCommentBodyTextarea = true"
                              tabindex="0"
-                             ng-bind-html="editableComment.body_html | sanitize"></div>
+                             ng-bind-html="editableComment.body_html"></div>
                     </div>
                 </form>
                 <hr ng-if="!$last"/>

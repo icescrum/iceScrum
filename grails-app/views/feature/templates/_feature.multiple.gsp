@@ -50,12 +50,8 @@
                                 </div>
                             </div>
                             <div class="content">
-                                <h3 class="title"
-                                    ng-model="topFeature.name"
-                                    ng-bind-html="topFeature.name | sanitize"></h3>
-                                <div class="description"
-                                     ng-model="topFeature.description"
-                                     ng-bind-html="topFeature.description | sanitize"></div>
+                                <h3 class="title">{{ topFeature.name }}</h3>
+                                <div class="description">{{ topFeature.description }}</div>
                             </div>
                             <div class="footer">
                                 <div class="tags">
