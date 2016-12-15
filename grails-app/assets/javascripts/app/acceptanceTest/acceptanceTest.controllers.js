@@ -30,7 +30,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         };
         $scope.formHolder.editing = false;
         $scope.formHolder.editable = function() { return $scope.acceptanceTest ? $scope.authorizedAcceptanceTest('update', $scope.editableAcceptanceTest) : false; };
-        $scope.formHolder.deletable = function() { $scope.acceptanceTest ? $scope.authorizedAcceptanceTest('delete', $scope.editableAcceptanceTest) : false; };
+        $scope.formHolder.deletable = function() { return $scope.acceptanceTest ? $scope.authorizedAcceptanceTest('delete', $scope.editableAcceptanceTest) : false; };
         $scope.resetFormValidation($scope.formHolder.acceptanceTestForm);
     };
     $scope.save = function(acceptanceTest, story) {
