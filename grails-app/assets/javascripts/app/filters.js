@@ -145,10 +145,11 @@ filters
             }
         };
     })
-    .filter('actorTag', [function() {
-        return function(description, isHtml) {
-            var actor = '$2'; // TODO reenable link when something to link to: isHtml ? '<a href="#/actor/$1">$2</a>' : '$2';
-            return description ? description.replace(/A\[(.+?)-(.*?)\]/g, actor) : "";
+    .filter('actorTag', ['$state', 'ContextService', function($state, ContextService) {
+        return function(description, linkActor) {
+            var contextUrl = $state.href($state.current.name, $state.params);
+            var actorTpl = linkActor ? '<a href="' + contextUrl + '?context=actor' + ContextService.contextSeparator + '$1">$2</a>' : '$2';
+            return description ? description.replace(/A\[(.+?)-(.+?)\]/g, actorTpl) : '';
         };
     }])
     .filter('i18n', ['I18nService', function(I18nService) {
