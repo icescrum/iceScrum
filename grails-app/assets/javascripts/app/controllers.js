@@ -382,6 +382,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
 
 controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'CacheService', 'ProjectService', 'ActorService', function($scope, $q, $location, $injector, $state, $timeout, Session, CacheService, ProjectService, ActorService) {
     // Functions
+    var contextSeparator = '_';
     $scope.searchContext = function(term) {
         return !Session.authenticated() ? [] : $scope.loadContexts().then(function() {
             var filteredResult = _.filter($scope.contexts, function(context) {
@@ -395,7 +396,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         });
     };
     $scope.setContext = function(context) {
-        $location.search('context', context ? context.type + ':' + context.id : null);
+        $location.search('context', context ? context.type + contextSeparator + context.id : null);
     };
     $scope.setFeatureContext = function(feature) {
         $scope.setContext({type: 'feature', id: feature.id, term: feature.name});
@@ -411,10 +412,10 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
     };
     $scope.getContextFromUrl = function() {
         var contextParam = $location.search().context;
-        if (contextParam === true || !contextParam || contextParam.indexOf(':') == -1) {
+        if (contextParam === true || !contextParam || contextParam.indexOf(contextSeparator) == -1) {
             return null
         } else {
-            var contextFields = contextParam.split(':');
+            var contextFields = contextParam.split(contextSeparator);
             return {type: contextFields[0], id: contextFields[1]};
         }
     };
