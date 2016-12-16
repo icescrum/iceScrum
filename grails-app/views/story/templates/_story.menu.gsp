@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.menu.html">
-<ul class="dropdown-menu pull-right" uib-dropdown-menu role="menu">
+<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
     <li ng-repeat="menuElement in menus | visibleMenuElement:story">
         <a href ng-click="menuElement.action(story)">
             {{ menuElement.name }}

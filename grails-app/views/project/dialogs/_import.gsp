@@ -52,7 +52,7 @@
         <div ng-hide="$flow.files.length" class="help-block">
             <g:message code="is.dialog.importProject.choose.description"/>
         </div>
-        <div ng-hide="$flow.files.length">
+        <div ng-hide="$flow.files.length" style="text-align: center">
             <button class="btn btn-primary" flow-btn><i class="fa fa-upload"></i> <g:message code="is.dialog.importProject.choose.file"/></button>
         </div>
         <div ng-show="$flow.files[0].isUploading() && !progress">
@@ -69,7 +69,7 @@
             <div class="help-block">
                 <g:message code="todo.is.ui.import.changes"/>
             </div>
-            <div class="changes row">
+            <div class="changes row" ng-if="_changes.erasable">
                 <div class="erase">
                     <label>
                         <input type="checkbox"
@@ -78,7 +78,7 @@
                     </label>
                 </div>
             </div>
-            <div class="changes row" ng-show="_changes.showProjectName && !changes.erase">
+            <div class="changes row" ng-if="_changes.showProjectName && !changes.erase">
                 <div class="changes-col-1">
                     <label for="project.name_">${message(code:'todo.is.ui.import.project.name')}</label>
                     <input required
@@ -103,7 +103,7 @@
                            ng-model="changes.product.name">
                 </div>
             </div>
-            <div class="changes row" ng-show="_changes.showProjectPkey && !changes.erase">
+            <div class="changes row" ng-if="_changes.showProjectPkey && !changes.erase">
                 <div class="changes-col-1">
                     <label for="project.pkey_">${message(code:'todo.is.ui.import.project.pkey')}</label>
                     <input required

@@ -392,11 +392,12 @@ class ProjectController implements ControllerErrorHandler {
             def endOfUpload = { uploadInfo ->
                 def path
                 def xmlFile
+                session.import= [:]
                 File uploadedProject = new File(uploadInfo.filePath)
                 if (FilenameUtils.getExtension(uploadedProject.name) == 'xml') {
                     log.debug 'Export is an xml file, processing now'
                     xmlFile = uploadedProject
-                    path = uploadedProject.absolutePath
+                    session.import.path = uploadedProject.absolutePath
                 } else if (FilenameUtils.getExtension(uploadedProject.name) == 'zip') {
                     log.debug 'Export is a zipped file, unzipping now'
                     def tmpDir = ApplicationSupport.createTempDir(FilenameUtils.getBaseName(uploadedProject.name))
@@ -404,15 +405,13 @@ class ProjectController implements ControllerErrorHandler {
                     xmlFile = tmpDir.listFiles().find {
                         !it.isDirectory() && FilenameUtils.getExtension(it.name) == 'xml'
                     }
-                    path = tmpDir.absolutePath
+                    session.import.path = tmpDir.absolutePath
                 } else {
                     render(status: 400)
                     return
                 }
-                def product = productService.parseXML(xmlFile, session.progress)
-                def changes = productService.validate(product, session.progress)
-                session.import.product = product
-                session.import.path = path
+                def product = productService.importXML(xmlFile, false)
+                def changes = productService.validate(product)
                 render(status: 200, contentType: 'application/json', text: changes as JSON)
             }
 
@@ -420,8 +419,8 @@ class ProjectController implements ControllerErrorHandler {
             UtilsWebComponents.handleUpload(request, params, endOfUpload)
 
         } else if (session.import) {
-            def product = session.import.product
-            def path = session.import.path
+
+            def test = new File(session.import.path)
             if (params.changes) {
                 def team = product.teams[0]
                 if (params.changes?.team?.name) {
@@ -444,13 +443,12 @@ class ProjectController implements ControllerErrorHandler {
                         }
                     }
                 }
+                def erase = params.boolean('changes.erase') ?: false
+                product.pkey = !erase && params.changes?.product?.pkey != null ? params.changes.product.pkey : product.pkey
+                product.name = !erase && params.changes?.product?.name != null ? params.changes.product.name : product.name
             }
 
-            def erase = params.boolean('changes.erase') ?: false
-            product.pkey = !erase && params.changes?.product?.pkey != null ? params.changes.product.pkey : product.pkey
-            product.name = !erase && params.changes?.product?.name != null ? params.changes.product.name : product.name
-
-            def changes = productService.validate(product, session.progress, erase)
+            def changes = productService.validate(product, erase)
             if (!changes) {
                 try {
                     productService.saveImport(product, path, erase)
@@ -459,8 +457,6 @@ class ProjectController implements ControllerErrorHandler {
                     returnError(code: 'is.import.error', exception: e)
                 }
             } else {
-                session.import.product = product
-                session.import.path = path
                 render(status: 200, contentType: 'application/json', text: changes as JSON)
                 if (log.infoEnabled) log.info(changes)
             }

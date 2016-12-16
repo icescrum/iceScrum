@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="release.menu.html">
-<ul class="dropdown-menu pull-right" uib-dropdown-menu role="menu">
+<ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
     <li ng-repeat="menuElement in menus | visibleMenuElement:release">
         <a ng-if="menuElement.url" href="{{ menuElement.url(release) }}">
             {{ menuElement.name }}

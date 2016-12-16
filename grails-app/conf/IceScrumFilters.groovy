@@ -178,7 +178,15 @@ class IceScrumFilters {
 
         locale(uri: '/ws/**', invert:true) {
             before = {
+
+                //manually set
                 def locale = params.lang ?: null
+                if(locale){
+                    RequestContextUtils.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
+                    return
+                }
+
+                //determine from browser to user set...
                 try {
                     def localeAccept = request.getHeader("accept-language")?.split(",")
                     if (localeAccept)
@@ -191,7 +199,7 @@ class IceScrumFilters {
 
                 if (springSecurityService.isLoggedIn()) {
                     def currentUserInstance = User.get(springSecurityService.principal.id)
-                    if (locale != currentUserInstance.preferences.language || RequestContextUtils.getLocale(request).toString() != currentUserInstance.preferences.language) {
+                    if (locale != currentUserInstance.preferences?.language || RequestContextUtils.getLocale(request).toString() != currentUserInstance.preferences?.language) {
                         RequestContextUtils.getLocaleResolver(request).setLocale(request, response, currentUserInstance.locale)
                     }
                 } else {
