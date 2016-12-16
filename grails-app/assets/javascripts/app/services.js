@@ -797,7 +797,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
                 return {type: 'tag', id: tag, term: tag};
             });
             contexts = contexts.concat(_.map(features, function(feature) {
-                return {type: 'feature', id: feature.uid.toString(), term: feature.name};
+                return {type: 'feature', id: feature.id.toString(), term: feature.name};
             }));
             contexts = contexts.concat(_.map(actors, function(actor) {
                 return {type: 'actor', id: actor.id.toString(), term: actor.name};
