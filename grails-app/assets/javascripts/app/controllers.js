@@ -380,12 +380,11 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     });
 }]);
 
-controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', '$state', '$timeout', 'Session', 'CacheService', 'ProjectService', 'ActorService', function($scope, $q, $location, $injector, $state, $timeout, Session, CacheService, ProjectService, ActorService) {
+controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout', 'Session', 'CacheService', 'ContextService', function($scope, $location, $state, $timeout, Session, CacheService, ContextService) {
     // Functions
-    var contextSeparator = '_';
     $scope.searchContext = function(term) {
-        return !Session.authenticated() ? [] : $scope.loadContexts().then(function() {
-            var filteredResult = _.filter($scope.contexts, function(context) {
+        return !Session.authenticated() ? [] : ContextService.loadContexts().then(function(contexts) {
+            var filteredResult = _.filter(contexts, function(context) {
                 return _.deburr(context.term.toLowerCase()).indexOf(_.deburr(term.toLowerCase())) != -1;
             });
             var context = $scope.app.context;
@@ -396,7 +395,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         });
     };
     $scope.setContext = function(context) {
-        $location.search('context', context ? context.type + contextSeparator + context.id : null);
+        $location.search('context', context ? context.type + ContextService.contextSeparator + context.id : null);
     };
     $scope.setFeatureContext = function(feature) {
         $scope.setContext({type: 'feature', id: feature.id, term: feature.name});
@@ -410,60 +409,30 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
     $scope.clearContextAndSearch = function() {
         $scope.setContext(null);
     };
-    $scope.getContextFromUrl = function() {
-        var contextParam = $location.search().context;
-        if (contextParam === true || !contextParam || contextParam.indexOf(contextSeparator) == -1) {
-            return null
-        } else {
-            var contextFields = contextParam.split(contextSeparator);
-            return {type: contextFields[0], id: contextFields[1]};
-        }
-    };
-    $scope.loadContexts = function() {
-        var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the controller because it will init the service systematically and call Feature.query which require authentication
-        return $q.all([ProjectService.getTags(), FeatureService.list(), ActorService.list()]).then(function(data) {
-            var tags = data[0];
-            var features = Session.getProject().features;
-            var actors = data[2];
-            var contexts = _.map(tags, function(tag) {
-                return {type: 'tag', id: tag, term: tag};
-            });
-            contexts = contexts.concat(_.map(features, function(feature) {
-                return {type: 'feature', id: feature.uid.toString(), term: feature.name};
-            }));
-            contexts = contexts.concat(_.map(actors, function(actor) {
-                return {type: 'actor', id: actor.id.toString(), term: actor.name};
-            }));
-            $scope.contexts = contexts;
-        });
-    };
-    $scope.equalContexts = function(context1, context2) {
-        return context1 == context2 || context1 && context2 && context1.type == context2.type && context1.id == context2.id;
-    };
     $scope.setContextTermIfNeeded = function() {
         if ($scope.app.context) {
-            var fullContext = _.find($scope.contexts, $scope.app.context);
-            if (fullContext) {
-                $scope.app.context.term = fullContext.term;
+            var cachedContext = _.find(ContextService.contexts, $scope.app.context);
+            if (cachedContext) {
+                $scope.app.context.term = cachedContext.term;
             } else {
-                $scope.loadContexts().then(function() {
-                    fullContext = _.find($scope.contexts, $scope.app.context);
-                    if (fullContext) {
-                        $scope.app.context.term = fullContext.term;
+                ContextService.loadContexts().then(function(contexts) {
+                    var fetchedContext = _.find(contexts, $scope.app.context);
+                    if (fetchedContext) {
+                        $scope.app.context.term = fetchedContext.term;
                     }
                 })
             }
         }
     };
     // Init
-    $scope.app.context = $scope.getContextFromUrl();
+    $scope.app.context = ContextService.getContextFromUrl();
     $scope.setContextTermIfNeeded();
     $scope.$on('$locationChangeSuccess', function() {
         if ($scope.app.ignoreUrlContextChange) {
             $scope.app.ignoreUrlContextChange = false;
         } else {
-            var urlContext = $scope.getContextFromUrl();
-            if (!$scope.equalContexts($scope.app.context, urlContext)) {
+            var urlContext = ContextService.getContextFromUrl();
+            if (!ContextService.equalContexts($scope.app.context, urlContext)) {
                 $scope.app.context = urlContext;
                 $scope.setContextTermIfNeeded();
                 $scope.app.search = null;
@@ -487,8 +456,8 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
             }
             // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
             var appContext = $scope.app.context;
-            var urlContext = $scope.getContextFromUrl();
-            if (appContext && !$scope.equalContexts(appContext, urlContext)) {
+            var urlContext = ContextService.getContextFromUrl();
+            if (appContext && !ContextService.equalContexts(appContext, urlContext)) {
                 $timeout(function() {
                     $location.replace(); // Prevent the state without the ?context... part to be save in browser history, must be in timeout to avoid that all changes during the current digest are lost
                     $scope.setContext(appContext);

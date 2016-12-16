@@ -772,3 +772,41 @@ services.service("DomainConfigService", [function() {
     };
     this.config.productd = this.config.product;
 }]);
+
+
+services.service('ContextService', ['$location', '$q', '$injector', 'Session', 'ProjectService', 'ActorService', function($location, $q, $injector, Session, ProjectService, ActorService) {
+    var self = this;
+    this.contextSeparator = '_';
+    this.getContextFromUrl = function() {
+        var contextParam = $location.search().context;
+        if (contextParam === true || !contextParam || contextParam.indexOf(self.contextSeparator) == -1) {
+            return null;
+        } else {
+            var contextFields = contextParam.split(self.contextSeparator);
+            return {type: contextFields[0], id: contextFields[1]};
+        }
+    };
+    this.contexts = [];
+    this.loadContexts = function() {
+        var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the directly because it will init the service systematically and call Feature.query which require authentication
+        return $q.all([ProjectService.getTags(), FeatureService.list(), ActorService.list()]).then(function(data) {
+            var tags = data[0];
+            var features = Session.getProject().features;
+            var actors = data[2];
+            var contexts = _.map(tags, function(tag) {
+                return {type: 'tag', id: tag, term: tag};
+            });
+            contexts = contexts.concat(_.map(features, function(feature) {
+                return {type: 'feature', id: feature.uid.toString(), term: feature.name};
+            }));
+            contexts = contexts.concat(_.map(actors, function(actor) {
+                return {type: 'actor', id: actor.id.toString(), term: actor.name};
+            }));
+            self.contexts = contexts;
+            return contexts;
+        });
+    };
+    this.equalContexts = function(context1, context2) {
+        return context1 == context2 || context1 && context2 && context1.type == context2.type && context1.id == context2.id;
+    };
+}]);
