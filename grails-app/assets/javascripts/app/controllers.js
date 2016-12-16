@@ -439,8 +439,24 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
     $scope.equalContexts = function(context1, context2) {
         return context1 == context2 || context1 && context2 && context1.type == context2.type && context1.id == context2.id;
     };
+    $scope.setContextTermIfNeeded = function() {
+        if ($scope.app.context) {
+            var fullContext = _.find($scope.contexts, $scope.app.context);
+            if (fullContext) {
+                $scope.app.context.term = fullContext.term;
+            } else {
+                $scope.loadContexts().then(function() {
+                    fullContext = _.find($scope.contexts, $scope.app.context);
+                    if (fullContext) {
+                        $scope.app.context.term = fullContext.term;
+                    }
+                })
+            }
+        }
+    };
     // Init
     $scope.app.context = $scope.getContextFromUrl();
+    $scope.setContextTermIfNeeded();
     $scope.$on('$locationChangeSuccess', function() {
         if ($scope.app.ignoreUrlContextChange) {
             $scope.app.ignoreUrlContextChange = false;
@@ -448,6 +464,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
             var urlContext = $scope.getContextFromUrl();
             if (!$scope.equalContexts($scope.app.context, urlContext)) {
                 $scope.app.context = urlContext;
+                $scope.setContextTermIfNeeded();
                 $scope.app.search = null;
                 CacheService.emptyCaches();
                 $state.reload();
