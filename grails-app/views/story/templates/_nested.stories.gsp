@@ -35,7 +35,7 @@
             </a>
         </div>
         <div class="pretty-printed"
-             ng-bind-html="story.description | lineReturns | actorTag: true">
+             ng-bind-html="story.description | lineReturns | actorTag: story.actor">
         </div>
         <hr ng-if="!$last"/>
     </div>

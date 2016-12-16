@@ -146,9 +146,9 @@ filters
         };
     })
     .filter('actorTag', ['$state', 'ContextService', function($state, ContextService) {
-        return function(description, linkActor) {
+        return function(description, actor) {
             var contextUrl = $state.href($state.current.name, $state.params);
-            var actorTpl = linkActor ? '<a href="' + contextUrl + '?context=actor' + ContextService.contextSeparator + '$1">$2</a>' : '$2';
+            var actorTpl = actor ? '<a href="' + contextUrl + '?context=actor' + ContextService.contextSeparator + actor.id + '">$2</a>' : '$2';
             return description ? description.replace(/A\[(.+?)-(.+?)\]/g, actorTpl) : '';
         };
     }])

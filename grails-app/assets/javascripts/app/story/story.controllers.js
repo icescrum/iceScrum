@@ -434,7 +434,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $scope.tags = [];
         $scope.versions = [];
         $scope.creators = [];
-        var actorTag = 'A[${id}-${name}]';
+        var actorTag = 'A[${uid}-${name}]';
         $scope.atOptions = [
             {
                 insertTpl: '${atwho-at}' + actorTag,
@@ -451,7 +451,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         ActorService.list().then(function(actors) {
             _.each($scope.atOptions, function(options) {
                 options.data = _.map(actors, function(actor) {
-                    return {id: actor.id, name: actor.name};
+                    return {uid: actor.uid, name: actor.name};
                 });
             });
         });
