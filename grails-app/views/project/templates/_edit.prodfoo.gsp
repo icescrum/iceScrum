@@ -28,6 +28,7 @@
       ng-controller="actorCtrl"
       name="formHolder.actorForm">
     <h4>${message(code:"is.ui.actor.actors")}</h4>
+    <p class="help-block">${message(code:'is.ui.actor.help')}</p>
     <div ng-if="authorizedActor('create') || authorizedActor('update')">
         <label for="actor.name">${message(code:'is.actor.name')}</label>
         <div class="input-group">
