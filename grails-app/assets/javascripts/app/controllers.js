@@ -395,15 +395,7 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         });
     };
     $scope.setContext = function(context) {
-        if (context) {
-            $location.search('context', context.type + ':' + context.id);
-            $scope.app.search = null; // Remove the context that has been typed in the input
-        } else {
-            $location.search('context', null);
-        }
-        $scope.app.context = context;
-        CacheService.emptyCaches();
-        $state.reload();
+        $location.search('context', context ? context.type + ':' + context.id : null);
     };
     $scope.setFeatureContext = function(feature) {
         $scope.setContext({type: 'feature', id: feature.id, term: feature.name});
@@ -415,9 +407,15 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
         return $scope.app.context || $scope.app.search;
     };
     $scope.clearContextAndSearch = function() {
-        $scope.app.search = null;
-        if ($scope.app.context) {
-            $scope.setContext(null);
+        $scope.setContext(null);
+    };
+    $scope.getContextFromUrl = function() {
+        var contextParam = $location.search().context;
+        if (contextParam === true || !contextParam || contextParam.indexOf(':') == -1) {
+            return null
+        } else {
+            var contextFields = contextParam.split(':');
+            return {type: contextFields[0], id: contextFields[1]};
         }
     };
     $scope.loadContexts = function() {
@@ -438,20 +436,30 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
             $scope.contexts = contexts;
         });
     };
+    $scope.equalContexts = function(context1, context2) {
+        return context1 == context2 || context1 && context2 && context1.type == context2.type && context1.id == context2.id;
+    };
     // Init
-    var context = $location.search().context;
-    if (context === true || !context || context.indexOf(':') == -1) { // ?context with no value returns true, we don't want that
-        $location.search('context', null);
-        $scope.app.context = null;
-    } else {
-        var contextFields = context.split(':');
-        var type = contextFields[0];
-        var id = contextFields[1];
-        $scope.app.context = {type: type, id: id}; // Partial context as soon as possible
-        $scope.loadContexts().then(function() {
-            $scope.app.context = _.find($scope.contexts, $scope.app.context); // Load the full context to get the name in case of feature
-        });
-    }
+    $scope.app.context = $scope.getContextFromUrl();
+    $scope.$on('$locationChangeSuccess', function() {
+        if ($scope.app.ignoreUrlContextChange) {
+            $scope.app.ignoreUrlContextChange = false;
+        } else {
+            var urlContext = $scope.getContextFromUrl();
+            if (!$scope.equalContexts($scope.app.context, urlContext)) {
+                $scope.app.context = urlContext;
+                $scope.app.search = null;
+                CacheService.emptyCaches();
+                $state.reload();
+            }
+        }
+    });
+    $scope.$on('$stateChangeStart', function() {
+        $scope.app.ignoreUrlContextChange = true;
+    });
+    $scope.$on('$stateChangeError', function() {
+        $scope.app.ignoreUrlContextChange = false;
+    });
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
         if (!event.defaultPrevented) {
             if (fromState.name && toState.name) {
@@ -460,13 +468,18 @@ controllers.controller('searchCtrl', ['$scope', '$q', '$location', '$injector', 
                 }
             }
             // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
-            var context = $scope.app.context;
-            if (context) {
+            var appContext = $scope.app.context;
+            var urlContext = $scope.getContextFromUrl();
+            if (appContext && !$scope.equalContexts(appContext, urlContext)) {
                 $timeout(function() {
                     $location.replace(); // Prevent the state without the ?context... part to be save in browser history, must be in timeout to avoid that all changes during the current digest are lost
-                    $location.search('context', context.type + ':' + context.id);
+                    $scope.setContext(appContext);
                 });
+            } else {
+                $scope.app.ignoreUrlContextChange = false;
             }
+        } else {
+            $scope.app.ignoreUrlContextChange = false;
         }
     });
 }]);
