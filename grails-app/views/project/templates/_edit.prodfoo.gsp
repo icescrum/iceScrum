@@ -77,7 +77,7 @@
                     {{ actor.name }}
                 </td>
                 <td>
-                    {{ actor.stories_count }}
+                    <a ng-click="$close()" href="{{ actorSearchUrl(actor) }}">{{ actor.stories_count }}</a>
                 </td>
                 <td class="btn-toolbar"
                     ng-if="authorizedActor('update') || authorizedActor('delete', actor)">

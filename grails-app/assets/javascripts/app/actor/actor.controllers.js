@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('actorCtrl', ['$scope', 'ActorService', function($scope, ActorService) {
+controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', function($scope, $state, ActorService) {
     // Functions
     $scope.save = function(actor) {
         ActorService.save(actor).then(function(actor) {
@@ -49,6 +49,9 @@ controllers.controller('actorCtrl', ['$scope', 'ActorService', function($scope, 
         $scope.resetFormValidation($scope.formHolder.actorForm);
     };
     $scope.authorizedActor = ActorService.authorizedActor;
+    $scope.actorSearchUrl = function(actor) {
+        return $state.href('backlog.backlog', {backlogCode: 'all'}) + '?context=actor_' + actor.id;
+    };
     // Init
     $scope.actor = {};
     $scope.actors = [];
