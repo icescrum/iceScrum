@@ -96,8 +96,8 @@
                         <button type="button"
                                 class="btn btn-default"
                                 ng-click="toggleSelectableMultiple()"
-                                uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
-                            <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
+                                uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
+                            <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
                         </button>
                     </div>
                     <a ng-if="authorizedFeature('create')"
@@ -105,6 +105,7 @@
                        class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
                 </div>
             </div>
+            <div class="help-block bg-warning spaced-help-block todo-multiple" ng-if="selectableOptions.selectingMultiple">MULTIPLE</div>
         </div>
         <div class="panel-body"
              selectable="selectableOptions">

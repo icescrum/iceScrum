@@ -57,8 +57,8 @@
                     <button type="button"
                             class="btn btn-default"
                             ng-click="toggleSelectableMultiple()"
-                            uib-tooltip="{{ app.selectableMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
-                        <i class="fa fa-object-ungroup" ng-class="app.selectableMultiple ? 'text-success' : 'text-danger'"></i>
+                            uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
+                        <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
                     </button>
                 </div>
                 <entry:point id="backlog-window-toolbar-right"/>
@@ -67,6 +67,7 @@
                    class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
             </div>
         </div>
+        <div class="help-block bg-warning spaced-help-block todo-multiple" ng-if="selectableOptions.selectingMultiple">MULTIPLE</div>
         <hr>
     </div>
     <div class="backlogs-list-details"

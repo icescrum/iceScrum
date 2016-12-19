@@ -118,7 +118,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                 $scope.selectableOptions = {
                     notSelectableSelector: '.action, button, a',
                     allowMultiple: true,
-                    selectableMultiple: true,
+                    forceMultiple: true,
                     selectionUpdated: function(selectedIds) {
                         $scope.selectedIds = selectedIds;
                     }

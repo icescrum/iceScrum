@@ -37,7 +37,7 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
         return $state.params.storyId != undefined || $state.params.storyListId != undefined;
     };
     $scope.toggleSelectableMultiple = function() {
-        $scope.app.selectableMultiple = !$scope.app.selectableMultiple;
+        $scope.selectableOptions.selectingMultiple = !$scope.selectableOptions.selectingMultiple;
         if ($state.params.storyListId != undefined) {
             var currentStateName = $state.current.name;
             var storyIndexInStateName = currentStateName.indexOf('story');

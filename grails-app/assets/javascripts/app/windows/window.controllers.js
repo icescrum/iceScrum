@@ -37,7 +37,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'Feat
         return $state.params.featureId != undefined || $state.params.featureListId != undefined;
     };
     $scope.toggleSelectableMultiple = function() {
-        $scope.app.selectableMultiple = !$scope.app.selectableMultiple;
+        $scope.selectableOptions.selectingMultiple = !$scope.selectableOptions.selectingMultiple;
         if ($state.params.featureListId != undefined) {
             $state.go($scope.viewName);
         }

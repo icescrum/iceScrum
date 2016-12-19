@@ -682,8 +682,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 if (!selectableOptions.notSelectableSelector || target.closest(selectableOptions.notSelectableSelector).length == 0) {
                     $document[0].getSelection().removeAllRanges(); // prevents text-selection when doing shift + click
                     var selectedIds = [];
-                    var selectableMultiple = selectableOptions.selectableMultiple != undefined ? selectableOptions.selectableMultiple : $rootScope.app.selectableMultiple;
-                    if (!selectableOptions.allowMultiple || (!event.ctrlKey && !event.metaKey && !event.shiftKey && !selectableMultiple)) {
+                    var selectingMultiple = selectableOptions.forceMultiple != undefined ? selectableOptions.forceMultiple : selectableOptions.selectingMultiple;
+                    if (!selectableOptions.allowMultiple || (!event.ctrlKey && !event.metaKey && !event.shiftKey && !selectingMultiple)) {
                         element.find(selectedSelector).removeClass(selectedClass);
                     }
                     var selectableElement = target.closest('[' + selectedIdAttr + ']');

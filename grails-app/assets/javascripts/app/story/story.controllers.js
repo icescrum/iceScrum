@@ -511,7 +511,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
         return StoryService.authorizedStories(action, stories);
     };
     // Init
-    $scope.app.selectableMultiple = true;
+    $scope.selectableOptions.selectingMultiple = true;
     $scope.topStory = {};
     $scope.storyPreview = {};
     $scope.stories = [];

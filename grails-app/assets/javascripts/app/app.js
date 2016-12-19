@@ -1099,7 +1099,6 @@ angular.module('isApp', [
         loadingPercent: 0,
         isFullScreen: false,
         menus: Session.menus,
-        selectableMultiple: false,
         mobile: screenSize.is('xs, sm')
     };
 
