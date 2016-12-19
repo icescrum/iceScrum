@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, Session, $uibModal, $state) {
+controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService', 'PushService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, PushService, Session, $uibModal, $state) {
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
@@ -97,6 +97,10 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                 };
 
                 $scope.applyChanges = function() {
+                    //don't display delete message if erasing project
+                    if($scope.changes.erase){
+                        PushService.enabled = false;
+                    }
                     $http({
                         url: url,
                         method: 'POST',
@@ -109,8 +113,8 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                             var data = response.data;
                             if (data && data.class == 'Product') {
                                 $scope.$close(true);
-                                $rootScope.app.loading = true;
                                 //to display full splashscreen
+                                $rootScope.app.loading = true;
                                 $rootScope.app.loadingText = " ";
                                 $timeout(function(){
                                     document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
@@ -125,7 +129,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                     $scope.progress = true;
                 };
             }]
-        });
+        }).result.then(function(){}, function(){ PushService.enabled = true; });
     };
     $scope['export'] = function(project) {
         var modal = $uibModal.open({
