@@ -42,7 +42,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal title="${message(code:'is.dialog.importProject.choose.title')}" class="import">
+<is:modal title="${message(code:'is.dialog.importProject.choose.title')}" footer="${false}" class="import">
     <div flow-drop
          flow-init="flowConfig"
          flow-file-added="!! {xml:1,zip:1}[$file.getExtension()]"

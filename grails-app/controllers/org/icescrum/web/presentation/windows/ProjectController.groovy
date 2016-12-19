@@ -320,7 +320,7 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
-    @Secured('stakeHolder(#product) or inProduct(#product)')
+    //@Secured('stakeHolder(#product) or inProduct(#product)')
     def burnup(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productBurnupValues(_product)
@@ -386,23 +386,25 @@ class ProjectController implements ControllerErrorHandler {
     @Secured('isAuthenticated()')
     def "import"() {
         if (params.flowFilename) {
-            session.import = [:]
             session.progress = new ProgressSupport()
-
+            session.import = [
+                    save:true,
+                    path:null,
+                    changes:null,
+                    validate:true,
+                    changesNeeded:null
+            ]
             def endOfUpload = { uploadInfo ->
-                def path
-                def xmlFile
-                session.import= [:]
                 File uploadedProject = new File(uploadInfo.filePath)
                 if (FilenameUtils.getExtension(uploadedProject.name) == 'xml') {
                     log.debug 'Export is an xml file, processing now'
-                    xmlFile = uploadedProject
+                    session.import.file = uploadedProject
                     session.import.path = uploadedProject.absolutePath
                 } else if (FilenameUtils.getExtension(uploadedProject.name) == 'zip') {
                     log.debug 'Export is a zipped file, unzipping now'
                     def tmpDir = ApplicationSupport.createTempDir(FilenameUtils.getBaseName(uploadedProject.name))
                     ApplicationSupport.unzip(uploadedProject, tmpDir)
-                    xmlFile = tmpDir.listFiles().find {
+                    session.import.file = tmpDir.listFiles().find {
                         !it.isDirectory() && FilenameUtils.getExtension(it.name) == 'xml'
                     }
                     session.import.path = tmpDir.absolutePath
@@ -410,58 +412,22 @@ class ProjectController implements ControllerErrorHandler {
                     render(status: 400)
                     return
                 }
-                def product = productService.importXML(xmlFile, false)
-                def changes = productService.validate(product)
-                render(status: 200, contentType: 'application/json', text: changes as JSON)
+                def product = productService.importXML(session.import.file, session.import)
+                if(!product)
+                    render(status: 200, contentType: 'application/json', text: session.import.changesNeeded as JSON)
+                else
+                    render(status: 200, contentType: 'application/json', text: product as JSON)
             }
-
             UtilsWebComponents.handleUpload.delegate = this
             UtilsWebComponents.handleUpload(request, params, endOfUpload)
-
-        } else if (session.import) {
-
-            def test = new File(session.import.path)
-            if (params.changes) {
-                def team = product.teams[0]
-                if (params.changes?.team?.name) {
-                    team.name = params.changes.team.name
-                }
-                if (params.changes?.users) {
-                    team.members?.each {
-                        if (params.changes.users."${it.uid}") {
-                            it.username = params.changes.users."${it.uid}"
-                        }
-                    }
-                    team.scrumMasters?.each {
-                        if (params.changes.users."${it.uid}") {
-                            it.username = params.changes.users."${it.uid}"
-                        }
-                    }
-                    product.productOwners?.each {
-                        if (params.changes.users."${it.uid}") {
-                            it.username = params.changes.users."${it.uid}"
-                        }
-                    }
-                }
-                def erase = params.boolean('changes.erase') ?: false
-                product.pkey = !erase && params.changes?.product?.pkey != null ? params.changes.product.pkey : product.pkey
-                product.name = !erase && params.changes?.product?.name != null ? params.changes.product.name : product.name
-            }
-
-            def changes = productService.validate(product, erase)
-            if (!changes) {
-                try {
-                    productService.saveImport(product, path, erase)
-                    render(status: 200, contentType: 'application/json', text: product as JSON)
-                } catch (RuntimeException e) {
-                    returnError(code: 'is.import.error', exception: e)
-                }
-            } else {
-                render(status: 200, contentType: 'application/json', text: changes as JSON)
-                if (log.infoEnabled) log.info(changes)
-            }
-        } else {
-            render(status: 500)
+        } else if(params.changes) {
+            session.progress = new ProgressSupport()
+            session.import.changes = params.changes
+            def product = productService.importXML(session.import.file, session.import)
+            if(!product)
+                render(status: 200, contentType: 'application/json', text: session.import.changesNeeded as JSON)
+            else
+                render(status: 200, contentType: 'application/json', text: product as JSON)
         }
     }
 

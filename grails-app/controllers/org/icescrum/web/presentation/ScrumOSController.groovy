@@ -195,11 +195,11 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     def progress() {
-        if (session.progress) {
-            render(status: 200, contentType: "application/json", text: session.progress as JSON)
+        if (session.import) {
+            render(status: 200, contentType: "application/json", text: session.import.progress as JSON)
             //we already sent the error so reset progress
-            if (session.progress.error || session.progress.complete) {
-                session.progress = null
+            if (session.import.progress || session.import.progress?.complete) {
+                session.import.progress = null
             }
         } else {
             render(status: 404)

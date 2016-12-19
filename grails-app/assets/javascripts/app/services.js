@@ -170,7 +170,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
         });
         PushService.registerListener('product', IceScrumEventType.DELETE, function() {
             $rootScope.notifyWarning('todo.is.ui.project.deleted');
-            reload();
+            //reload();
         });
     };
     this.updateProject = function(project) {

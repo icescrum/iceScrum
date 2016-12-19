@@ -73,7 +73,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
         $uibModal.open({
             keyboard: false,
             templateUrl: url + "Dialog",
-            controller: ['$scope', '$http', function($scope, $http) {
+            controller: ['$scope', '$http', '$rootScope', '$timeout', function($scope, $http, $rootScope, $timeout) {
                 $scope.flowConfig = {target: url, singleFile: true};
                 $scope.changes = false;
                 $scope._changes = {
@@ -108,7 +108,13 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                     }).then(function(response) {
                             var data = response.data;
                             if (data && data.class == 'Product') {
-                                document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
+                                $scope.$close(true);
+                                $rootScope.app.loading = true;
+                                //to display full splashscreen
+                                $rootScope.app.loadingText = " ";
+                                $timeout(function(){
+                                    document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
+                                }, 2000);
                             } else {
                                 $scope.checkValidation(data);
                             }
