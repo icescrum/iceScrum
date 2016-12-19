@@ -35,7 +35,6 @@ class BootStrap {
 
     def init = { servletContext ->
 
-        grailsApplication.config.grails.serverURL = System.getProperty('icescrum.serverURL') ?: grailsApplication.config.grails.serverURL
         localeResolver.defaultLocale = Locale.ENGLISH
         java.util.Locale.setDefault(Locale.ENGLISH)
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
@@ -43,8 +42,8 @@ class BootStrap {
         println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
         println("------------------");
 
-        //Hack grails 1.3.x bug with accept header for request.format should be remove when upgrade to grails 2.x
-        HttpServletRequest.metaClass.getMimeTypes = {->
+        // TODO Hack grails 1.3.x bug with accept header for request.format should be remove when upgrade to grails 2.x
+        HttpServletRequest.metaClass.getMimeTypes = { ->
             def result = delegate.getAttribute(GrailsApplicationAttributes.REQUEST_FORMATS)
             if (!result) {
 
@@ -68,11 +67,9 @@ class BootStrap {
         }
     }
 
-    static private boolean isValidType (String type) {
+    static private boolean isValidType(String type) {
         type?.toLowerCase() in ["application/json", "application/xml"]
     }
 
-    def destroy = {
-
-    }
+    def destroy = {}
 }
