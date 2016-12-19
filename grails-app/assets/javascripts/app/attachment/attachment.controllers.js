@@ -31,7 +31,8 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
     };
     $scope.isPreviewable = function(attachment) {
         var previewable;
-        switch (attachment.ext) {
+        var ext = attachment.ext ? attachment.ext.toLowerCase() : '';
+        switch (ext) {
             case 'pdf':
                 previewable = 'pdf';
                 break;

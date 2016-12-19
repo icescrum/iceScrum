@@ -189,6 +189,7 @@ filters
     .filter('fileicon', function() {
         return function(ext) {
             if (ext) {
+                ext = ext.toLowerCase();
                 if (ext.indexOf('.') > -1) {
                     ext = ext.substring(ext.indexOf('.') + 1);
                 }
