@@ -106,7 +106,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'Feat
     $scope.orderByRank();
 }]);
 
-controllers.controller('planningCtrl', ['$scope', '$state', '$timeout', 'ReleaseService', 'SprintService', 'ProjectService', 'PushService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, $timeout, ReleaseService, SprintService, ProjectService, PushService, SprintStatesByName, ReleaseStatesByName, project, releases) {
+controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, SprintStatesByName, ReleaseStatesByName, project, releases) {
     $scope.isSelected = function(selectable) {
         if ($state.params.storyId) {
             return $state.params.storyId == selectable.id;
