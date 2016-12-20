@@ -21,7 +21,6 @@
 --}%
 
 <g:render template="/task/templates/task" />
-<g:render template="/task/templates/task.menu" />
 <g:render template="/task/templates/task.new" />
 <g:render template="/task/templates/task.details" />
 <g:render template="/task/templates/story.tasks" />

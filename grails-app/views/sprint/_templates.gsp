@@ -22,7 +22,6 @@
 --}%
 <g:render template="/sprint/templates/sprint.autoPlan" />
 <g:render template="/sprint/templates/sprint.details" />
-<g:render template="/sprint/templates/sprint.menu" />
 <g:render template="/sprint/templates/sprint.multiple" />
 <g:render template="/sprint/templates/sprint.new" />
 <g:render template="/sprint/templates/sprint.tooltip" />

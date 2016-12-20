@@ -21,6 +21,5 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:render template="/release/templates/release.details" />
-<g:render template="/release/templates/release.menu" />
 <g:render template="/release/templates/release.new" />
 <g:render template="/release/templates/release.timeline" />
