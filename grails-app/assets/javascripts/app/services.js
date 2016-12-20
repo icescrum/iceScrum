@@ -794,13 +794,13 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
             var features = Session.getProject().features;
             var actors = data[2];
             var contexts = _.map(tags, function(tag) {
-                return {type: 'tag', id: tag, term: tag, color:'purple'};
+                return {type: 'tag', id: tag, term: tag, color: 'purple'};
             });
             contexts = contexts.concat(_.map(features, function(feature) {
-                return {type: 'feature', id: feature.id.toString(), term: feature.name, color:feature.color};
+                return {type: 'feature', id: feature.id.toString(), term: feature.name, color: feature.color};
             }));
             contexts = contexts.concat(_.map(actors, function(actor) {
-                return {type: 'actor', id: actor.id.toString(), term: actor.name, color:'#C6E4D6'};
+                return {type: 'actor', id: actor.id.toString(), term: actor.name, color: '#C6E4D6'};
             }));
             self.contexts = contexts;
             return contexts;

@@ -464,7 +464,7 @@ filters
         return function(context) {
             return context && context.color ? {
                 "background-color": context.color,
-                "border-color":context.color,
+                "border-color": context.color,
             } : '';
         }
     });
