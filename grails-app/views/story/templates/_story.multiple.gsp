@@ -64,7 +64,8 @@
                             </div>
                             <div class="footer">
                                 <div class="tags">
-                                    <a ng-repeat="tag in topStory.tags" ng-click="setTagContext(tag)" href>
+                                    <a ng-repeat="tag in topStory.tags"
+                                       href="{{ tagContextUrl(tag) }}">
                                         <span class="tag">{{ tag }}</span>
                                     </a>
                                 </div>

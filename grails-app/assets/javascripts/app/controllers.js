@@ -384,24 +384,24 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
     // Functions
     $scope.searchContext = function(term) {
         return !Session.authenticated() ? [] : ContextService.loadContexts().then(function(contexts) {
-            var filteredResult = _.filter(contexts, function(context) {
+            var filteredContexts = _.filter(contexts, function(context) {
                 return _.deburr(context.term.toLowerCase()).indexOf(_.deburr(term.toLowerCase())) != -1;
             });
             var context = $scope.app.context;
             if (context) {
-                _.remove(filteredResult, {type: context.type, id: context.id});
+                _.remove(filteredContexts, {type: context.type, id: context.id});
             }
-            return filteredResult;
+            return filteredContexts;
         });
     };
     $scope.setContext = function(context) {
         $location.search('context', context ? context.type + ContextService.contextSeparator + context.id : null);
     };
-    $scope.setFeatureContext = function(feature) {
-        $scope.setContext({type: 'feature', id: feature.id, term: feature.name});
+    $scope.featureContextUrl = function(feature) {
+        return $state.href($state.current.name, $state.params) + '?context=feature' + ContextService.contextSeparator + feature.id;
     };
-    $scope.setTagContext = function(tag) {
-        $scope.setContext({type: 'tag', id: tag, term: tag});
+    $scope.tagContextUrl = function(tag) {
+        return $state.href($state.current.name, $state.params) + '?context=tag' + ContextService.contextSeparator + tag;
     };
     $scope.hasContextOrSearch = function() {
         return $scope.app.context || $scope.app.search;

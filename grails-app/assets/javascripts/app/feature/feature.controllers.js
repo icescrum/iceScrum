@@ -40,7 +40,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'FeatureService', fu
         {
             name: 'todo.is.ui.context.set',
             visible: function(feature) { return true; },
-            action: function(feature) { $scope.setFeatureContext(feature); }
+            url: $scope.featureContextUrl
         },
         {
             name: 'is.ui.feature.menu.copy',
