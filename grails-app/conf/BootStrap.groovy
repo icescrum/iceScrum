@@ -21,13 +21,11 @@
  */
 
 
-import grails.util.Environment
 import grails.util.Metadata
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 import org.codehaus.groovy.grails.web.mime.DefaultAcceptHeaderParser
 import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
 import org.codehaus.groovy.grails.web.servlet.HttpHeaders
-import org.icescrum.core.test.DummyPopulator
 
 import javax.servlet.http.HttpServletRequest
 

@@ -81,7 +81,6 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                     showProject: false
                 };
                 $scope.progress = false;
-
                 $scope.checkValidation = function($message) {
                     if ($message) {
                         $scope.progress = false;
@@ -95,10 +94,8 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                         });
                     }
                 };
-
                 $scope.applyChanges = function() {
-                    //don't display delete message if erasing project
-                    if($scope.changes.erase){
+                    if ($scope.changes.erase) { // Don't display delete message if erasing project
                         PushService.enabled = false;
                     }
                     $http({
@@ -113,10 +110,9 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                             var data = response.data;
                             if (data && data.class == 'Product') {
                                 $scope.$close(true);
-                                //to display full splashscreen
                                 $rootScope.app.loading = true;
                                 $rootScope.app.loadingText = " ";
-                                $timeout(function(){
+                                $timeout(function() {
                                     document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
                                 }, 2000);
                             } else {
@@ -129,7 +125,9 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                     $scope.progress = true;
                 };
             }]
-        }).result.then(function(){}, function(){ PushService.enabled = true; });
+        }).result.then(function() {}, function() {
+            PushService.enabled = true;
+        });
     };
     $scope['export'] = function(project) {
         var modal = $uibModal.open({

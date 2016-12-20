@@ -320,7 +320,7 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
-    //@Secured('stakeHolder(#product) or inProduct(#product)')
+    @Secured('stakeHolder(#product) or inProduct(#product)')
     def burnup(long product) {
         Product _product = Product.withProduct(product)
         def values = productService.productBurnupValues(_product)
@@ -388,11 +388,11 @@ class ProjectController implements ControllerErrorHandler {
         if (params.flowFilename) {
             session.progress = new ProgressSupport()
             session.import = [
-                    save:true,
-                    path:null,
-                    changes:null,
-                    validate:true,
-                    changesNeeded:null
+                    save         : true,
+                    path         : null,
+                    changes      : null,
+                    validate     : true,
+                    changesNeeded: null
             ]
             def endOfUpload = { uploadInfo ->
                 File uploadedProject = new File(uploadInfo.filePath)
@@ -413,21 +413,15 @@ class ProjectController implements ControllerErrorHandler {
                     return
                 }
                 def product = productService.importXML(session.import.file, session.import)
-                if(!product)
-                    render(status: 200, contentType: 'application/json', text: session.import.changesNeeded as JSON)
-                else
-                    render(status: 200, contentType: 'application/json', text: product as JSON)
+                render(status: 200, contentType: 'application/json', text: (product ?: session.import.changesNeeded) as JSON)
             }
             UtilsWebComponents.handleUpload.delegate = this
             UtilsWebComponents.handleUpload(request, params, endOfUpload)
-        } else if(params.changes) {
+        } else if (params.changes) {
             session.progress = new ProgressSupport()
             session.import.changes = params.changes
             def product = productService.importXML(session.import.file, session.import)
-            if(!product)
-                render(status: 200, contentType: 'application/json', text: session.import.changesNeeded as JSON)
-            else
-                render(status: 200, contentType: 'application/json', text: product as JSON)
+            render(status: 200, contentType: 'application/json', text: (product ?: session.import.changesNeeded) as JSON)
         }
     }
 
