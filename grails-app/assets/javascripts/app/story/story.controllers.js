@@ -96,12 +96,12 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrum
         {
             name: 'is.ui.backlog.menu.acceptAsFeature',
             visible: function(story) { return $scope.authorizedStory('accept', story) },
-            action: function(story) { $scope.acceptAs(story, 'Feature'); }
+            action: function(story) { $scope.confirm({message: $scope.message('is.ui.backlog.menu.acceptAsFeature.confirm'), callback: $scope.acceptAs, args: [story, 'Feature']}); }
         },
         {
             name: 'is.ui.backlog.menu.acceptAsUrgentTask',
             visible: function(story) { return $scope.authorizedStory('accept', story) },
-            action: function(story) { $scope.acceptAs(story, 'Task'); }
+            action: function(story) { $scope.confirm({message: $scope.message('is.ui.backlog.menu.acceptAsUrgentTask.confirm'), callback: $scope.acceptAs, args: [story, 'Task']}); }
         },
         {
             name: 'is.ui.releasePlan.menu.story.done',

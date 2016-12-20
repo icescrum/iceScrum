@@ -94,7 +94,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', 'Session', 'ReleaseSe
         {
             name: 'is.ui.releasePlan.toolbar.dissociateAll',
             visible: function(release) { return $scope.authorizedRelease('unPlan', release); },
-            action: function(release) { $scope.unPlan(release); }
+            action: function(release) { $scope.confirm({message: $scope.message('is.ui.releasePlan.toolbar.warning.dissociateAll'), callback: $scope.unPlan, args: [release]}); }
         },
         {
             name: 'is.ui.timeline.menu.delete',

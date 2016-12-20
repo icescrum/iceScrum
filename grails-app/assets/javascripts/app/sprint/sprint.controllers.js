@@ -141,7 +141,7 @@ controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService'
         {
             name: 'is.ui.releasePlan.menu.sprint.dissociateAll',
             visible: function(sprint) { return $scope.authorizedSprint('unPlan', sprint); },
-            action: function(sprint) { $scope.unPlan(sprint); }
+            action: function(sprint) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.warning.dissociateAll'), callback: $scope.unPlan, args: [sprint]}); }
         },
         {
             name: 'is.ui.releasePlan.menu.sprint.delete',

@@ -97,7 +97,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
         {
             name: 'todo.is.ui.task.makeStory',
             visible: function(task) { return $scope.authorizedTask('makeStory', task); },
-            action: function(task) { $scope.makeStory(task); }
+            action: function(task) { return $scope.confirm({message: $scope.message('todo.is.ui.task.makeStory.confirm'), callback: $scope.makeStory, args: [task]}); }
         },
         {
             name: 'todo.is.ui.permalink.copy',
@@ -107,7 +107,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
         {
             name: 'is.ui.sprintPlan.menu.task.delete',
             visible: function(task) { return $scope.authorizedTask('delete', task); },
-            action: function(task) { $scope.delete(task); }
+            action: function(task) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [task]}); }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.block',
