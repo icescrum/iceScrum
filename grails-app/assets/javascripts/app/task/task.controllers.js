@@ -80,44 +80,44 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
     };
     $scope.menus = [
         {
-            name: $scope.message("is.ui.sprintPlan.menu.task.take"),
-            visible: function(task, viewName) { return $scope.authorizedTask('take', task); },
-            action: function(task, viewName) { $scope.take(task); }
+            name: 'is.ui.sprintPlan.menu.task.take',
+            visible: function(task) { return $scope.authorizedTask('take', task); },
+            action: function(task) { $scope.take(task); }
         },
         {
-            name: $scope.message("is.ui.sprintPlan.menu.task.unassign"),
-            visible: function(task, viewName) { return $scope.authorizedTask('release', task); },
-            action: function(task, viewName) { $scope.release(task); }
+            name: 'is.ui.sprintPlan.menu.task.unassign',
+            visible: function(task) { return $scope.authorizedTask('release', task); },
+            action: function(task) { $scope.release(task); }
         },
         {
-            name: $scope.message("is.ui.sprintPlan.menu.task.copy"),
-            visible: function(task, viewName) { return $scope.authorizedTask('copy', task); },
-            action: function(task, viewName) { $scope.copy(task); }
+            name: 'is.ui.sprintPlan.menu.task.copy',
+            visible: function(task) { return $scope.authorizedTask('copy', task); },
+            action: function(task) { $scope.copy(task); }
         },
         {
-            name: $scope.message("todo.is.ui.task.makeStory"),
-            visible: function(task, viewName) { return $scope.authorizedTask('makeStory', task); },
-            action: function(task, viewName) { $scope.makeStory(task); }
+            name: 'todo.is.ui.task.makeStory',
+            visible: function(task) { return $scope.authorizedTask('makeStory', task); },
+            action: function(task) { $scope.makeStory(task); }
         },
         {
-            name: $scope.message("todo.is.ui.permalink.copy"),
-            visible: function(task, viewName) { return true; },
-            action: function(task, viewName) { $scope.showCopyModal($scope.message('is.permalink'), $filter('permalink')(task.uid, 'task')); }
+            name: 'todo.is.ui.permalink.copy',
+            visible: function(task) { return true; },
+            action: function(task) { $scope.showCopyModal($scope.message('is.permalink'), $filter('permalink')(task.uid, 'task')); }
         },
         {
-            name: $scope.message("is.ui.sprintPlan.menu.task.delete"),
-            visible: function(task, viewName) { return $scope.authorizedTask('delete', task); },
-            action: function(task, viewName) { $scope.delete(task); }
+            name: 'is.ui.sprintPlan.menu.task.delete',
+            visible: function(task) { return $scope.authorizedTask('delete', task); },
+            action: function(task) { $scope.delete(task); }
         },
         {
-            name: $scope.message("is.ui.sprintPlan.menu.task.block"),
-            visible: function(task, viewName) { return $scope.authorizedTask('block', task); },
-            action: function(task, viewName) { $scope.block(task); }
+            name: 'is.ui.sprintPlan.menu.task.block',
+            visible: function(task) { return $scope.authorizedTask('block', task); },
+            action: function(task) { $scope.block(task); }
         },
         {
-            name: $scope.message("is.ui.sprintPlan.menu.task.unblock"),
-            visible: function(task, viewName) { return $scope.authorizedTask('unBlock', task); },
-            action: function(task, viewName) { $scope.unBlock(task); }
+            name: 'is.ui.sprintPlan.menu.task.unblock',
+            visible: function(task) { return $scope.authorizedTask('unBlock', task); },
+            action: function(task) { $scope.unBlock(task); }
         }
     ];
     $scope.showEditEstimationModal = function(task) {

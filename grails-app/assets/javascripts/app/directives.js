@@ -882,7 +882,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}]).directive('shortcutMenu', ['$filter', function($filter) {
+}]).directive('shortcutMenu', ['$filter', '$rootScope', function($filter, $rootScope) {
     return {
         restrict: 'E',
         scope: {
@@ -892,26 +892,17 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         },
         replace: true,
         templateUrl: 'button.shortcutMenu.html',
-        link: function(scope, elem, attr) {
+        link: function(scope) {
+            scope.message = $rootScope.message;
             scope.$watch(function() { return scope.ngModel.lastUpdated; }, function() {
                 var i = scope.modelMenus.length;
-                scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menu) {
+                scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menuElement) {
                     var defaultPriority = i--;
-                    return menu.priority ? menu.priority(scope.ngModel, scope.viewName, defaultPriority) : defaultPriority;
+                    return menuElement.priority ? menuElement.priority(scope.ngModel, defaultPriority, !scope.viewName) : defaultPriority;
                 }, true);
-                i = 0;
-                scope.button = {};
-                while (!scope.button.name && i < scope.sortedMenus.length) {
-                    if (scope.sortedMenus[i].visible(scope.ngModel, scope.viewName)) {
-                        scope.button = scope.sortedMenus[i];
-                        if (!scope.button.url) {
-                            elem.attr('href', null);
-                        } else {
-                            elem.attr('href', scope.button.url(scope.ngModel));
-                        }
-                    }
-                    i++;
-                }
+                scope.menuElement = _.find(scope.sortedMenus, function(menuElement) {
+                    return menuElement.visible(scope.ngModel);
+                });
             });
         }
     };

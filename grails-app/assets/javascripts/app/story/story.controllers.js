@@ -89,68 +89,68 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrum
     };
     $scope.menus = [
         {
-            name: $scope.message("is.ui.backlog.menu.acceptAsStory"),
-            visible: function(story, viewName) { return $scope.authorizedStory('accept', story) },
-            action: function(story, viewName) { $scope.acceptToBacklog(story); }
+            name: 'is.ui.backlog.menu.acceptAsStory',
+            visible: function(story) { return $scope.authorizedStory('accept', story) },
+            action: function(story) { $scope.acceptToBacklog(story); }
         },
         {
-            name: $scope.message("is.ui.backlog.menu.acceptAsFeature"),
-            visible: function(story, viewName) { return $scope.authorizedStory('accept', story) },
-            action: function(story, viewName) { $scope.acceptAs(story, 'Feature'); }
+            name: 'is.ui.backlog.menu.acceptAsFeature',
+            visible: function(story) { return $scope.authorizedStory('accept', story) },
+            action: function(story) { $scope.acceptAs(story, 'Feature'); }
         },
         {
-            name: $scope.message("is.ui.backlog.menu.acceptAsUrgentTask"),
-            visible: function(story, viewName) { return $scope.authorizedStory('accept', story) },
-            action: function(story, viewName) { $scope.acceptAs(story, 'Task'); }
+            name: 'is.ui.backlog.menu.acceptAsUrgentTask',
+            visible: function(story) { return $scope.authorizedStory('accept', story) },
+            action: function(story) { $scope.acceptAs(story, 'Task'); }
         },
         {
-            name: $scope.message("is.ui.releasePlan.menu.story.done"),
-            visible: function(story, viewName) { return $scope.authorizedStory('done', story) },
-            action: function(story, viewName) { $scope.done(story); }
+            name: 'is.ui.releasePlan.menu.story.done',
+            visible: function(story) { return $scope.authorizedStory('done', story) },
+            action: function(story) { $scope.done(story); }
         },
         {
-            name: $scope.message("is.ui.releasePlan.menu.story.undone"),
-            visible: function(story, viewName) { return $scope.authorizedStory('unDone', story) },
-            action: function(story, viewName) { $scope.unDone(story); }
+            name: 'is.ui.releasePlan.menu.story.undone',
+            visible: function(story) { return $scope.authorizedStory('unDone', story) },
+            action: function(story) { $scope.unDone(story); }
         },
         {
-            name: $scope.message("is.ui.releasePlan.menu.story.dissociate"),
-            visible: function(story, viewName) { return $scope.authorizedStory('unPlan', story) },
-            action: function(story, viewName) { $scope.unPlan(story); }
+            name: 'is.ui.releasePlan.menu.story.dissociate',
+            visible: function(story) { return $scope.authorizedStory('unPlan', story) },
+            action: function(story) { $scope.unPlan(story); }
         },
         {
-            name: $scope.message("is.ui.sprintPlan.menu.postit.shiftToNext"),
-            visible: function(story, viewName) { return $scope.authorizedStory('shiftToNext', story)},
-            action: function(story, viewName) { $scope.shiftToNext(story); }
+            name: 'is.ui.sprintPlan.menu.postit.shiftToNext',
+            visible: function(story) { return $scope.authorizedStory('shiftToNext', story)},
+            action: function(story) { $scope.shiftToNext(story); }
         },
         {
-            name: $scope.message("is.ui.backlog.menu.estimate"),
-            visible: function(story, viewName) { return $scope.authorizedStory('updateEstimate', story) },
-            action: function(story, viewName) { $scope.showEditEffortModal(story); }
+            name: 'is.ui.backlog.menu.estimate',
+            visible: function(story) { return $scope.authorizedStory('updateEstimate', story) },
+            action: function(story) { $scope.showEditEffortModal(story); }
         },
         {
-            name: $scope.message("is.ui.backlog.menu.returnToSandbox"),
-            visible: function(story, viewName) { return $scope.authorizedStory('returnToSandbox', story) },
-            action: function(story, viewName) { $scope.returnToSandbox(story); }
+            name: 'is.ui.backlog.menu.returnToSandbox',
+            visible: function(story) { return $scope.authorizedStory('returnToSandbox', story) },
+            action: function(story) { $scope.returnToSandbox(story); }
         },
         {
-            name: $scope.message("is.ui.releasePlan.menu.story.clone"),
-            visible: function(story, viewName) { return $scope.authorizedStory('copy', story) },
-            action: function(story, viewName) { $scope.copy(story); }
+            name: 'is.ui.releasePlan.menu.story.clone',
+            visible: function(story) { return $scope.authorizedStory('copy', story) },
+            action: function(story) { $scope.copy(story); }
         }, {
-            name: $scope.message("todo.is.ui.permalink.copy"),
-            visible: function(story, viewName) { return true },
-            action: function(story, viewName) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(story.uid, 'story'))); }
+            name: 'todo.is.ui.permalink.copy',
+            visible: function(story) { return true },
+            action: function(story) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(story.uid, 'story'))); }
         },
         {
-            name: $scope.message("todo.is.ui.story.template.new"),
-            visible: function(story, viewName) { return $scope.authorizedStory('createTemplate') },
-            action: function(story, viewName) { $scope.showNewTemplateModal(story); }
+            name: 'todo.is.ui.story.template.new',
+            visible: function(story) { return $scope.authorizedStory('createTemplate') },
+            action: function(story) { $scope.showNewTemplateModal(story); }
         },
         {
-            name: $scope.message("is.ui.backlog.menu.delete"),
-            visible: function(story, viewName) { return $scope.authorizedStory('delete', story) },
-            action: function(story, viewName) { $scope.delete(story); }
+            name: 'is.ui.backlog.menu.delete',
+            visible: function(story) { return $scope.authorizedStory('delete', story) },
+            action: function(story) { $scope.delete(story); }
         }
     ];
     $scope.tasksProgress = function(story) {

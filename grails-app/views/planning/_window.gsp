@@ -27,7 +27,7 @@
         <div class="btn-toolbar">
             <h4 class="pull-left">
                 <a class="link" href="#/planning/{{ release.id }}/details">
-                {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }} <i class="fa fa-info-circle visible-on-hover"></i>
+                    {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }} <i class="fa fa-info-circle visible-on-hover"></i>
                 </a>
             </h4>
             <div class="pull-right">
@@ -62,7 +62,7 @@
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
                             <i class="fa fa-ellipsis-h"></i>
                         </button>
-                        <ul uib-dropdown-menu class="pull-right" template-url="release.menu.html"></ul>
+                        <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
                     </div>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i></i>
                                 </button>
-                                <ul uib-dropdown-menu class="pull-right" template-url="sprint.menu.html"></ul>
+                                <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                             </div>
                         </div>
                     </div>

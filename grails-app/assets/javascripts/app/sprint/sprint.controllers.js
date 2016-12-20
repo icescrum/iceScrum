@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$scope', '$q', '$location', 'Session', 'SprintService', 'StoryService', 'StoryStatesByName', function($scope, $q, $location, Session, SprintService, StoryService, StoryStatesByName) {
+controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', function($scope, $q, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -113,40 +113,40 @@ controllers.controller('sprintCtrl', ['$scope', '$q', '$location', 'Session', 'S
     };
     $scope.menus = [
         {
-            name: $scope.message('todo.is.ui.story.plan'),
-            visible: function(sprint, viewName) { return $scope.authorizedSprint('plan', sprint); },
-            action: function(sprint, viewName) { $scope.openPlanModal(sprint); }
+            name: 'todo.is.ui.story.plan',
+            visible: function(sprint) { return $scope.authorizedSprint('plan', sprint); },
+            action: function(sprint) { $scope.openPlanModal(sprint); }
         },
         {
-            name: $scope.message('is.ui.releasePlan.menu.sprint.activate'),
-            visible: function(sprint, viewName) { return $scope.authorizedSprint('activate', sprint); },
-            action: function(sprint, viewName) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'), callback: $scope.activate, args: [sprint]}); }
+            name: 'is.ui.releasePlan.menu.sprint.activate',
+            visible: function(sprint) { return $scope.authorizedSprint('activate', sprint); },
+            action: function(sprint) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'), callback: $scope.activate, args: [sprint]}); }
         },
         {
-            name: $scope.message('is.ui.releasePlan.menu.sprint.close'),
-            priority: function(sprint, viewName, priority) { return sprint.state == 2 ? 100 : priority; },
-            visible: function(sprint, viewName) { return $scope.authorizedSprint('close', sprint); },
-            action: function(sprint, viewName) { $scope.openCloseModal(sprint); }
+            name: 'is.ui.releasePlan.menu.sprint.close',
+            priority: function(sprint, defaultPriority) { return sprint.state == 2 ? 100 : defaultPriority; },
+            visible: function(sprint) { return $scope.authorizedSprint('close', sprint); },
+            action: function(sprint) { $scope.openCloseModal(sprint); }
         },
         {
-            name: $scope.message('todo.is.ui.taskBoard'),
-            visible: function(sprint, viewName) { return true; },
-            action: function(sprint, viewName) { $location.path("/taskBoard/" + sprint.id + "/details"); }
+            name: 'todo.is.ui.taskBoard',
+            visible: function(sprint) { return true; },
+            url: function(sprint) { return '#taskBoard/' + sprint.id + '/details'; }
         },
         {
-            name: $scope.message('is.ui.releasePlan.toolbar.autoPlan'),
-            visible: function(sprint, viewName) { return $scope.authorizedSprint('autoPlan', sprint); },
-            action: function(sprint, viewName) { $scope.showAutoPlanModal({callback: $scope.autoPlan, args: [sprint]}); }
+            name: 'is.ui.releasePlan.toolbar.autoPlan',
+            visible: function(sprint) { return $scope.authorizedSprint('autoPlan', sprint); },
+            action: function(sprint) { $scope.showAutoPlanModal({callback: $scope.autoPlan, args: [sprint]}); }
         },
         {
-            name: $scope.message('is.ui.releasePlan.menu.sprint.dissociateAll'),
-            visible: function(sprint, viewName) { return $scope.authorizedSprint('unPlan', sprint); },
-            action: function(sprint, viewName) { $scope.unPlan(sprint); }
+            name: 'is.ui.releasePlan.menu.sprint.dissociateAll',
+            visible: function(sprint) { return $scope.authorizedSprint('unPlan', sprint); },
+            action: function(sprint) { $scope.unPlan(sprint); }
         },
         {
-            name: $scope.message('is.ui.releasePlan.menu.sprint.delete'),
-            visible: function(sprint, viewName) { return $scope.authorizedSprint('delete', sprint); },
-            action: function(sprint, viewName) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [sprint]}); }
+            name: 'is.ui.releasePlan.menu.sprint.delete',
+            visible: function(sprint) { return $scope.authorizedSprint('delete', sprint); },
+            action: function(sprint) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [sprint]}); }
         }
     ];
     // Init

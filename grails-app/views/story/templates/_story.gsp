@@ -80,7 +80,7 @@
                     <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
                 </a>
             </span>
-            <span postit-menu="story.menu.html" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+            <span postit-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
         </div>
         <div class="state-progress">
             <div ng-if="tasksProgress(story)" class="progress">

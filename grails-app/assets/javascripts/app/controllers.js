@@ -610,3 +610,9 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
         });
     }
 }]);
+
+controllers.controller('menuItemCtrl', ['$scope', function($scope) {
+    $scope.getItem = function() {
+        return $scope[$scope.itemType];
+    };
+}]);

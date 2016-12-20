@@ -447,9 +447,9 @@ filters
             return $rootScope.message(boolean ? 'is.yes' : 'is.no');
         }
     }]).filter('visibleMenuElement', function() {
-        return function(arr, param) {
-            return arr.filter(function(item, index) {
-                return item.visible(param);
+        return function(menus, item) {
+            return _.filter(menus, function(menuElement) {
+                return menuElement.visible(item);
             })
         };
     }).filter('contextIcon', function() {
@@ -464,7 +464,7 @@ filters
         return function(context) {
             return context && context.color ? {
                 "background-color": context.color,
-                "border-color": context.color,
+                "border-color": context.color
             } : '';
         }
     });

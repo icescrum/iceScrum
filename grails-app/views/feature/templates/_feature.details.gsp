@@ -59,7 +59,7 @@
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
                             <i class="fa fa-ellipsis-h"></i></i>
                         </button>
-                        <ul uib-dropdown-menu class="pull-right" template-url="feature.menu.html"></ul>
+                        <ul uib-dropdown-menu class="pull-right" template-url="item.menu.html" ng-init="itemType = 'feature'"></ul>
                     </div>
                 </div>
             </div>
