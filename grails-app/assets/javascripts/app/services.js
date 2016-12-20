@@ -713,12 +713,6 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
             update: updateTags
         },
         feature: {
-            allowable: function(item) {
-                if ($rootScope.app.context && $rootScope.app.context.type == 'feature') {
-                    return item.id == $rootScope.app.context.id;
-                }
-                return true;
-            },
             update: updateTags
         },
         task: {
