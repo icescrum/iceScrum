@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-<div class="panel panel-light" ng-class="{'simulation':simulationMode.active}">
+<div class="panel panel-light">
     <div ng-if="releases.length > 0"
          class="backlogs-list">
         <div class="btn-toolbar">
@@ -51,7 +51,7 @@
                             ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
                     </button>
                     <button type="button"
-                            class="btn btn-default hidden-on-simulation"
+                            class="btn btn-default"
                             ng-click="fullScreen()"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
@@ -60,43 +60,18 @@
                     <shortcut-menu ng-model="release" model-menus="menus" view-name="viewName"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-ellipsis-h"></i></i>
+                            <i class="fa fa-ellipsis-h"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" template-url="release.menu.html"></ul>
                     </div>
                 </div>
             </div>
-            %{--<div class="btn-group pull-right">--}%
-                %{--<button type="button"--}%
-                        %{--class="btn btn-danger hidden-on-simulation"--}%
-                        %{--ng-click="enterSimulationMode()">--}%
-                     %{--${message(code: 'todo.is.ui.planning.simulate.enter')}--}%
-                %{--</button>--}%
-                %{--<button type="button"--}%
-                        %{--class="btn btn-danger visible-on-simulation"--}%
-                        %{--ng-click="exitSimulationMode()">--}%
-                    %{--${message(code: 'todo.is.ui.planning.simulate.exit')}--}%
-                %{--</button>--}%
-            %{--</div>--}%
-            %{--<div class="simulation-slider pull-right visible-on-simulation text-center">--}%
-                %{--<slider tooltip="hide"--}%
-                        %{--ng-model="simulationMode.capacity"--}%
-                        %{--min="simulationMode.min"--}%
-                        %{--step="simulationMode.step"--}%
-                        %{--max="simulationMode.max"--}%
-                        %{--on-stop-slide="refreshSimulation($event,value)"--}%
-                        %{--value="simulationMode.capacity">--}%
-                %{--</slider>--}%
-                %{--${message(code: 'is.dialog.promptCapacityAutoPlan.title')} {{ simulationMode.capacity }}--}%
-            %{--</div>--}%
         </div>
         <hr>
     </div>
     <div ng-if="releases.length > 0"
-         class="backlogs-list-details loadable"
-         ng-class="{'loading': simulationMode.working}"
+         class="backlogs-list-details"
          selectable="selectableOptions">
-        <div class="loading-logo" ng-include="'loading.html'"></div>
         <div class="panel panel-light"
              ng-repeat="sprint in visibleSprints"
              ng-controller="sprintBacklogCtrl">
@@ -157,7 +132,7 @@
         <div class="panel-body">
             <div class="empty-view" ng-controller="releaseCtrl">
                 <p class="help-block">${message(code: 'is.ui.release.help')}<p>
-                <a class="btn btn-primary hidden-on-simulation"
+                <a class="btn btn-primary"
                    ng-if="authorizedRelease('create')"
                    href="#{{ ::viewName }}/new">
                     ${message(code: 'todo.is.ui.release.new')}
