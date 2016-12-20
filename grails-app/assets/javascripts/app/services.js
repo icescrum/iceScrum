@@ -302,19 +302,19 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             if ($scope.mustConfirmStateChange && fromParams[type + 'Id'] != toParams[type + 'Id']) {
-                triggerChangesConfirmModal(event, function() {
+                var callback = function() {
                     $scope.$state.go(toState, toParams);
-                }, function() {
-                    $scope.$state.go(toState, toParams);
-                });
+                };
+                triggerChangesConfirmModal(event, callback, callback);
             }
         });
         if (isModal) {
             $scope.$on('modal.closing', function(event) {
                 if ($scope.mustConfirmStateChange) {
-                    triggerConfirmModal(event, function() {
+                    var callback = function() {
                         $scope.$close();
-                    });
+                    };
+                    triggerChangesConfirmModal(event, callback, callback);
                 }
             });
         }
