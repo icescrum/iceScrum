@@ -409,16 +409,18 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
     $scope.clearContextAndSearch = function() {
         $scope.setContext(null);
     };
-    $scope.setContextTermIfNeeded = function() {
+    $scope.setContextTermAndColorIfNeeded = function() {
         if ($scope.app.context) {
             var cachedContext = _.find(ContextService.contexts, $scope.app.context);
             if (cachedContext) {
                 $scope.app.context.term = cachedContext.term;
+                $scope.app.context.color = cachedContext.color;
             } else {
                 ContextService.loadContexts().then(function(contexts) {
                     var fetchedContext = _.find(contexts, $scope.app.context);
                     if (fetchedContext) {
                         $scope.app.context.term = fetchedContext.term;
+                        $scope.app.context.color = fetchedContext.color;
                     }
                 })
             }
@@ -426,7 +428,7 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
     };
     // Init
     $scope.app.context = ContextService.getContextFromUrl();
-    $scope.setContextTermIfNeeded();
+    $scope.setContextTermAndColorIfNeeded();
     $scope.$on('$locationChangeSuccess', function() {
         if ($scope.app.ignoreUrlContextChange) {
             $scope.app.ignoreUrlContextChange = false;
@@ -434,7 +436,7 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
             var urlContext = ContextService.getContextFromUrl();
             if (!ContextService.equalContexts($scope.app.context, urlContext)) {
                 $scope.app.context = urlContext;
-                $scope.setContextTermIfNeeded();
+                $scope.setContextTermAndColorIfNeeded();
                 $scope.app.search = null;
                 CacheService.emptyCaches();
                 $state.reload();

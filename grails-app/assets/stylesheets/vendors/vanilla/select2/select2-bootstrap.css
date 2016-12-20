@@ -381,7 +381,7 @@
  * Address Multi Select2's choice close-button vertical alignment.
  */
 .select2-search-choice-close {
-    margin-top: -7px;
+    margin-top: -5px;
     top: 50%;
 }
 

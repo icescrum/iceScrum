@@ -87,6 +87,28 @@ header {
     margin-bottom: -15px;
     margin-top: -15px;
   }
+  .navbar-notif, .navbar-home {
+    margin: 9px 9px 0 0;
+    height: 28px;
+    width: 28px;
+    position: relative;
+    cursor: pointer;
+    .fa {
+      font-size: 28px;
+      color: #fff;
+      &.empty {
+        color: #ccc;
+      }
+    }
+    .badge {
+      position: absolute;
+      top: 18px;
+      left: 11px;
+      font-size: 0.8em;
+      background: none;
+      color: #fff;
+    }
+  }
   .navbar-masthead {
     margin-bottom: 0;
     .navbar-nav {
@@ -94,6 +116,9 @@ header {
     }
     .navbar-nav.menubar {
       > li {
+        a, a:hover {
+          color:#fff;
+        }
         &.menuitem {
           border: 1px solid transparent;
           margin-top: -2px;
@@ -101,6 +126,7 @@ header {
             > a {
               color: #fff;
               font-weight: bold;
+              background:none;
             }
             @media (min-width: @grid-float-breakpoint-max) {
               &:after {
@@ -155,33 +181,42 @@ header {
       }
       margin-right: 0;
     }
+    &.invert {
+      color:#000;
+      .navbar-nav {
+        li a, li a:hover {
+          color:#000;
+        }
+        .dropdown.open a {
+          background: none;
+          color:#000;
+        }
+        &.menubar {
+          > li {
+            &.menuitem {
+              &.active {
+                > a {
+                  color: #000;
+                }
+              }
+              > a {
+                color: #000;
+              }
+            }
+          }
+        }
+      }
+      .navbar-right {
+        .navbar-notif .fa, .navbar-home .fa, .navbar-notif .badge {
+          color:#000;
+        }
+      }
+    }
   }
 
   .navbar-user {
     margin-top: 6px;
     cursor: pointer;
-  }
-  .navbar-notif, .navbar-home {
-    margin: 9px 9px 0 0;
-    height: 28px;
-    width: 28px;
-    position: relative;
-    cursor: pointer;
-    .fa {
-      font-size: 28px;
-      color: #fff;
-      &.empty {
-        color: #ccc;
-      }
-    }
-    .badge {
-      position: absolute;
-      top: 18px;
-      left: 11px;
-      font-size: 0.8em;
-      background: none;
-      color: #fff;
-    }
   }
   .notifications {
     .disable-text-selection;

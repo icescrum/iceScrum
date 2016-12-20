@@ -29,7 +29,7 @@
         <span class="icon-bar"></span>
     </button>
     <entry:point id="header-before-menu"/>
-    <nav id="menu-header" class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse" role="navigation">
+    <nav id="menu-header" ng-style="app.context | contextStyle" class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ app.context.color | contrastColor:true }}" role="navigation">
         <div class="container-fluid">
             <div class="nav-header">
                 <div class="hidden-xs pull-left">

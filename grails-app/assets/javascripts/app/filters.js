@@ -102,9 +102,9 @@ filters
         };
     })
     .filter('contrastColor', function() {
-        return function(bg) {
+        return function(bg, invert) {
             if (bg && contrastColorCache[bg] != undefined) {
-                return contrastColorCache[bg];
+                return invert ? (contrastColorCache[bg] == 'invert' ? '' : 'invert') : contrastColorCache[bg];
             }
             else if (bg && contrastColorCache[bg] == undefined) {
                 //convert hex to rgb
@@ -120,7 +120,7 @@ filters
                 var rgb = color.replace(/^(rgb|rgba)\(/, '').replace(/\)$/, '').replace(/\s/g, '').split(',');
                 var yiq = ((rgb[0] * 299) + (rgb[1] * 587) + (rgb[2] * 114)) / 1000;
                 contrastColorCache[bg] = (yiq >= 169) ? '' : 'invert';
-                return contrastColorCache[bg];
+                return invert ? (contrastColorCache[bg] == 'invert' ? '' : 'invert') : contrastColorCache[bg];
             } else {
                 return '';
             }
@@ -459,5 +459,12 @@ filters
                 tag: 'fa-tag',
                 actor: 'fa-child'
             }[contextType];
+        }
+    }).filter('contextStyle', function() {
+        return function(context) {
+            return context && context.color ? {
+                "background-color": context.color,
+                "border-color":context.color,
+            } : '';
         }
     });
