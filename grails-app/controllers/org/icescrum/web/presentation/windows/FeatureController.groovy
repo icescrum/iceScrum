@@ -108,7 +108,6 @@ class FeatureController implements ControllerErrorHandler {
         List<Story> stories = featureService.copyToBacklog(features)
         def returnData = stories.size() > 1 ? stories : stories.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
-
     }
 
     def productParkingLotChart() {
