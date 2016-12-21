@@ -844,7 +844,7 @@ angular.module('isApp', [
 .factory('UserTimeZone', function() {
     return jstz.determine();
 })
-.run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications, screenSize) {
+.run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications, screenSize) {
 
     $rootScope.hotkeyClick = function(event, hotkey) {
         if (hotkey.el && (hotkey.el.is("a") || hotkey.el.is("button"))) {
@@ -1101,6 +1101,9 @@ angular.module('isApp', [
         menus: Session.menus,
         mobile: screenSize.is('xs, sm')
     };
+
+    // Mostly context stuff
+    $controller('searchCtrl', {$scope: $rootScope});
 
     // To be able to track state in views
     $rootScope.$state = $state;
