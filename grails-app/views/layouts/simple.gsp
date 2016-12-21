@@ -41,6 +41,7 @@
 <body ng-controller="appCtrl"
       ng-class="{ 'app-ready':app != null, 'loading': (app.loading || app.loadingText), 'splash-screen': (app.loadingPercent != 100 || app.loadingText)  }"
       class="simple-template splash-screen loading">
+    <g:render template="checkServerURL"/>
     <div id="app-loading">
         <svg class="logo" viewBox="0 0 150 150">
             <g:render template="/scrumOS/logo"/>
