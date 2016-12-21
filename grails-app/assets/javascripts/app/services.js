@@ -794,7 +794,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
                 return {type: 'feature', id: feature.id.toString(), term: feature.name, color: feature.color};
             }));
             contexts = contexts.concat(_.map(actors, function(actor) {
-                return {type: 'actor', id: actor.id.toString(), term: actor.name, color: '#C6E4D6'};
+                return {type: 'actor', id: actor.id.toString(), term: actor.name, color: '#94d4b6'};
             }));
             self.contexts = contexts;
             return contexts;

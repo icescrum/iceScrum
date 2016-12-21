@@ -411,18 +411,30 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
     };
     $scope.setContextTermAndColorIfNeeded = function() {
         if ($scope.app.context) {
+            var setContextTermAndColor = function(context) {
+                $scope.app.context.term = context.term;
+                $scope.app.context.color = context.color;
+            };
             var cachedContext = _.find(ContextService.contexts, $scope.app.context);
             if (cachedContext) {
-                $scope.app.context.term = cachedContext.term;
-                $scope.app.context.color = cachedContext.color;
+                setContextTermAndColor(cachedContext);
             } else {
-                ContextService.loadContexts().then(function(contexts) {
-                    var fetchedContext = _.find(contexts, $scope.app.context);
-                    if (fetchedContext) {
-                        $scope.app.context.term = fetchedContext.term;
-                        $scope.app.context.color = fetchedContext.color;
+                // Hack around the context loading if the context is a feature in the cache, othwervise setting feature context from feature backlog doesn't work properly
+                var cachedFeature;
+                if ($scope.app.context.type == 'feature') {
+                    cachedFeature = CacheService.get('feature', $scope.app.context.id);
+                    if (cachedFeature) {
+                        setContextTermAndColor({id: cachedFeature.id.toString(), term: cachedFeature.name, color: cachedFeature.color});
                     }
-                })
+                }
+                if (!cachedFeature) {
+                    ContextService.loadContexts().then(function(contexts) {
+                        var fetchedContext = _.find(contexts, $scope.app.context);
+                        if (fetchedContext) {
+                            setContextTermAndColor(fetchedContext);
+                        }
+                    });
+                }
             }
         }
     };
