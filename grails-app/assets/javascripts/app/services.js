@@ -512,9 +512,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                     var cachedStory = _.find(cachedStories, {id: oldStoryId});
                     if (cachedStory) {
                         _.remove(cachedStory.tasks, {id: oldTask.id});
-                        if (_.isArray(cachedStory.tasks)) {
-                            cachedStory.tasks_count = cachedStory.tasks.length;
-                        }
+                        cachedStory.tasks_count--;
                     }
                 }
                 if (newStoryId) {
@@ -524,7 +522,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                             cachedStory.tasks = [];
                         }
                         cachedStory.tasks.push(newTask);
-                        cachedStory.tasks_count = cachedStory.tasks.length;
+                        cachedStory.tasks_count++;
                     }
                 }
             }

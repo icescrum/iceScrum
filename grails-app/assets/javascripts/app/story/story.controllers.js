@@ -22,7 +22,8 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'StoryService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, StoryService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
+// Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We shoulw think of a better way to systematically register the listeners
+controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
     // Functions
     $scope.acceptToBacklog = function(story) {
         StoryService.acceptToBacklog(story).then(function() {
