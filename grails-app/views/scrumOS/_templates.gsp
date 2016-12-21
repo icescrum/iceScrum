@@ -31,7 +31,7 @@
           submitButton="${message(code: 'todo.is.ui.confirm')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.confirm.title')}">
-    {{ message }}
+    <span ng-bind-html="message"></span>
 </is:modal>
 </script>
 

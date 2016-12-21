@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'StoryService', '$state', 'Session', 'StoryStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, StoryService, $state, Session, StoryStatesByName) {
+controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'StoryService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, StoryService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
     // Functions
     $scope.acceptToBacklog = function(story) {
         StoryService.acceptToBacklog(story).then(function() {
@@ -106,7 +106,25 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrum
         {
             name: 'is.ui.releasePlan.menu.story.done',
             visible: function(story) { return $scope.authorizedStory('done', story) },
-            action: function(story) { $scope.done(story); }
+            action: function(story) {
+                var remainingAcceptanceTests = story.testState != AcceptanceTestStatesByName.SUCCESS;
+                var remainingTasks = story.countDoneTasks != story.tasks_count;
+                if (remainingAcceptanceTests || remainingTasks) {
+                    var messages = [];
+                    if (remainingAcceptanceTests) {
+                        messages.push('todo.is.ui.story.done.acceptanceTest.confirm');
+                    }
+                    if (remainingTasks) {
+                        messages.push('todo.is.ui.story.done.task.confirm');
+                    }
+                    $scope.confirm({
+                        message: _.map(messages, $scope.message).join('<br/><br/>'),
+                        callback: $scope.done,
+                        args: [story]});
+                } else {
+                    $scope.done(story);
+                }
+            }
         },
         {
             name: 'is.ui.releasePlan.menu.story.undone',
