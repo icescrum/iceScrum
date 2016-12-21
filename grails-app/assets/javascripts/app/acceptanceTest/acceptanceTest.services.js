@@ -62,6 +62,8 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
         return acceptanceTest.$update(self.getCrudMethods(story)[IceScrumEventType.UPDATE]);
     };
     this.list = function(story) {
+        // TODO use a global cache instead (don't forget to set appropriate sync to push count to story)
+        // The code below registers listeners each time we access a story acceptance tests tab, this is bad !
         if (_.isEmpty(story.acceptanceTests)) {
             return AcceptanceTest.query({storyId: story.id, type: 'story'}, function(data) {
                 story.acceptanceTests = data;
