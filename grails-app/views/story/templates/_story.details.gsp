@@ -32,11 +32,11 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                {{ ::story.uid }} <span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                <strong>{{ ::story.uid }}</strong><span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                       ng-click="follow(story)">
                     <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
                 </span>
-                <span>{{ story.name }}</span> <small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
+                <span class="item-name">{{ story.name }}</span>&nbsp;<small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">

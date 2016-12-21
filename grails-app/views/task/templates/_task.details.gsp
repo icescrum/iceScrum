@@ -32,7 +32,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span>{{ task.uid }}&nbsp;&nbsp;{{ task.name }}</span>
+                <span><strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name">{{ task.name }}</span></span>
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">

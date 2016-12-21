@@ -32,7 +32,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span>{{ sprint.id }}&nbsp;&nbsp;{{ release.name + ' - ' + (sprint | sprintName) }} </span>
+                {{ release.name + ' - ' + (sprint | sprintName) }}
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
