@@ -45,7 +45,7 @@
             <ui-select class="form-control"
                        name="state"
                        ng-model="editableAcceptanceTest.state"
-                       ng-disabled="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)">
+                       ng-disabled="!authorizedAcceptanceTest('updateState', selected)">
                 <ui-select-match>
                     <span ng-class="'text-'+($select.selected | acceptanceTestColor)"><i class='fa fa-check'></i> {{ $select.selected | i18n:'AcceptanceTestStates' }}</span>
                 </ui-select-match>

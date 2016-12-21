@@ -75,14 +75,14 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
             return $q.when(story.acceptanceTests);
         }
     };
-    this.authorizedAcceptanceTest = function(action, acceptanceTest) {
+    this.authorizedAcceptanceTest = function(action, story) {
         switch (action) {
             case 'create':
             case 'update':
             case 'delete':
-                return acceptanceTest.parentStory.state < StoryStatesByName.DONE && Session.inProduct();
+                return story.state < StoryStatesByName.DONE && Session.inProduct();
             case 'updateState':
-                return acceptanceTest.parentStory.state == StoryStatesByName.IN_PROGRESS && Session.inProduct();
+                return story.state == StoryStatesByName.IN_PROGRESS && Session.inProduct();
             default:
                 return false;
         }

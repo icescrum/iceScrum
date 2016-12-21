@@ -26,7 +26,7 @@
         <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
             <td class="content">
                 <form name="formHolder.acceptanceTestForm"
-                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable(), 'toggle-container':formHolder.deletable() }"
+                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable(), 'toggle-container': formHolder.deletable() }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding form-group">
@@ -50,7 +50,7 @@
                                        on-select="update(editableAcceptanceTest, selected)"
                                        name="state"
                                        ng-model="editableAcceptanceTest.state"
-                                       ng-disabled="!authorizedAcceptanceTest('updateState', editableAcceptanceTest)">
+                                       ng-disabled="!authorizedAcceptanceTest('updateState', selected)">
                                 <ui-select-match>
                                     <span ng-class="'text-'+($select.selected | acceptanceTestColor)"><i class='fa fa-check'></i> {{ $select.selected | i18n:'AcceptanceTestStates' }}</span>
                                 </ui-select-match>
@@ -96,6 +96,6 @@
     </table>
 </div>
 <div class="panel-footer" ng-controller="acceptanceTestCtrl">
-    <div ng-if="authorizedAcceptanceTest('create', {parentStory: selected})" ng-include="'story.acceptanceTest.editor.html'"></div>
+    <div ng-if="authorizedAcceptanceTest('create', selected)" ng-include="'story.acceptanceTest.editor.html'"></div>
 </div>
 </script>
