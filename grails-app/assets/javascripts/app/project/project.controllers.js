@@ -230,15 +230,31 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
     });
 }]);
 
-controllers.controller('quickProjectsListCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {
+controllers.controller('quickProjectsListCtrl', ['$scope', 'FormService', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, FormService, PushService, ProjectService, IceScrumEventType) {
     $scope.getProjectUrl = function(project, viewName) {
         return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
     };
+    $scope.createSampleProject = function() {
+        return FormService.httpGet('project/createSample');
+    };
     // Init
+    $scope.projectsLoaded = false;
     $scope.projects = [];
     ProjectService.listByUser().then(function(projectsAndTotal) {
+        $scope.projectsLoaded = true;
         $scope.projects = projectsAndTotal.projects;
     });
+    PushService.registerScopedListener('user', IceScrumEventType.UPDATE, function(user) {
+        if (user.updatedRole) {
+            var updatedRole = user.updatedRole;
+            var project = updatedRole.product;
+            if (updatedRole.role == undefined) {
+                _.remove($scope.projects, {id: project.id});
+            } else if (updatedRole.oldRole == undefined && !_.includes($scope.projects, {id: project.id})) {
+                $scope.projects.push(project);
+            }
+        }
+    }, $scope);
 }]);
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', 'UserService', function($scope, $filter, Session, UserService) {

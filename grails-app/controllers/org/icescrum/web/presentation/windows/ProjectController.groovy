@@ -50,6 +50,7 @@ class ProjectController implements ControllerErrorHandler {
     def springSecurityService
     def featureService
     def securityService
+    def dummyService
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def index(String term, String filter, Boolean paginate, Integer count, Integer page, String sorting, String order) {
@@ -515,5 +516,11 @@ class ProjectController implements ControllerErrorHandler {
     @Secured(['scrumMaster() or productOwner()'])
     def exportDialog() {
         render(status: 200, template: "dialogs/export")
+    }
+
+    @Secured(['isAuthenticated()'])
+    def createSample() {
+        dummyService.createSampleProject(springSecurityService.currentUser);
+        render(status: 200);
     }
 }
