@@ -53,7 +53,6 @@ icescrum.feed.default.title = "iceScrum Blog"
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = false
 icescrum.invitation.enable = false
-icescrum.user.createSampleProject = true
 icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = false
 icescrum.alerts.default.from = "webmaster@icescrum.org"
