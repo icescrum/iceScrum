@@ -67,8 +67,8 @@
                    class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
             </div>
         </div>
-        <div class="help-block bg-warning spaced-help-block todo-multiple" ng-if="selectableOptions.selectingMultiple">MULTIPLE</div>
         <hr>
+        <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
     </div>
     <div class="backlogs-list-details"
          selectable="selectableOptions">
