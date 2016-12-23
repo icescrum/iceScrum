@@ -230,7 +230,7 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
     });
 }]);
 
-controllers.controller('quickProjectsListCtrl', ['$scope', 'FormService', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, FormService, PushService, ProjectService, IceScrumEventType) {
+controllers.controller('quickProjectsListCtrl', ['$scope', '$timeout', 'FormService', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, $timeout, FormService, PushService, ProjectService, IceScrumEventType) {
     $scope.getProjectUrl = function(project, viewName) {
         return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
     };
@@ -251,7 +251,14 @@ controllers.controller('quickProjectsListCtrl', ['$scope', 'FormService', 'PushS
             if (updatedRole.role == undefined) {
                 _.remove($scope.projects, {id: project.id});
             } else if (updatedRole.oldRole == undefined && !_.includes($scope.projects, {id: project.id})) {
-                $scope.projects.push(project);
+                if ($scope.projects.length) {
+                    $scope.projects.push(project);
+                } else {
+                    // Hack to give time for the creation, TODO do better
+                    $timeout(function() {
+                        $scope.projects.push(project);
+                    }, 2000);
+                }
             }
         }
     }, $scope);
