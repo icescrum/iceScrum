@@ -65,28 +65,15 @@ class BootStrap {
 
         println " "
         println " "
-        println " "
-        println " "
-        println " "
-        println " "
-        println """
-,:       `::::::,        `:::::::        ;++++++'        '++++++:         +++++  ++          ++      '++++++:    +++++++
-::      :::::,::::`     ,::::,::::,     ++++;'++++      ++++++++++       ++++'`  ++          ++     ++++'+++++ ,++++'++++,
-::     :::      ,::`   ,::      `:::   :++      ++     +++      +++     +++      ++          ++    +++      ++'++:     :++
-::    ,::        `::  `::        ,::   '+:            ++;        '+;   ,++       ++          ++    ++        +++;       :++
-::    ::              ::       `:::`   `++           .++          `    ++        ++          ++   '+.        +++         ++
-::   .:,              ::      ::::      +++:         ++`               ++        ++          ++   ++         ,++         ++
-::   ::              `:,    `:::`        ;+++'       ++                ++        ++          ++   ++         `++         ++    ````   ,,
-::   ::              .:.   :::,            '++++     ++                ++        ++          ++   ++          ++         ++   :::::::::,
-::   ::              .:. .:::                ,+++.   ++                ++        ++          ++   ++          ++         +`  ::::::::::`
-::   ::`             `:: ::,                   ;++   ++                ++        ++          ++   ++          ++         +  `::::::::::
-::   `::              ::                        :++  ++.               ++        ++         ,+;   ++          ++            ::::::::::`
-::    ::          .`  ::.         `,  `;         ++   ++          ;    ++        ,+'        ++`   ++          ++           ,::::::::::
-::    .::        ,::   ::`       `::  '++       .++   +++        ++;   ++         ++       .++    ++          ++           ::::::::::
-::     ,::`     :::    `::,     ,::,   +++`    ;++     +++     `+++    ++         ;++;    '++.    ++          ++          ::::::::::,
-::      ,:::::::::       :::::::::.     +++++++++.      ++++++++++     ++          '++++++++:     ++          ++         `::::::::::
- ,        ,:::::`         `:::::.         '++++;          ++++++       ,.            '++++'       `,          :          ``````````
-"""
+        println """tt   tttttt   tttttt    EEEEE    EEEEEE    EEEE E     EE   EEEEEE EEEEE
+tt  tt   ttt ttt   tt  EE   EE  EE   EEE  EEE   E     EE  EE   EEEE   EEE
+tt tt     tt tt    tt  EE       E     EE  EE    E     EE  EE    EEE    EE
+tt t        tt   ttt   EEEE    EE         E     E     EE  E     EE     EE      ,
+tt t        tt ttt       EEEE  E         EE     E     EE  E     EE     EE ,,,,,,
+tt t        tt t            EE EE        EE     E     EE  E      E     E ,,,,,,,
+tt tt     tt tt     t EE    EE  E     EE EE     EE    EE  E      E       ,,,,,,
+tt  tt   ttt ttt   tt EEE   EE  EE   EEE EE     EE   EEE  E      E      ,,,,,,,
+t    tttttt    ttttt   EEEEEE    EEEEEE  EE      EEEEE    E      E     ,,,,,,,"""
         println " "
         println " "
         println "version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
