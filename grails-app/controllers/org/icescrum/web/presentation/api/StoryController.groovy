@@ -334,22 +334,6 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def like() {
-        def stories = Story.withStories(params)
-        stories.each { Story story ->
-            User user = springSecurityService.currentUser
-            if (story.liked) {
-                story.removeFromLikers(user)
-            } else {
-                story.addToLikers(user)
-            }
-            storyService.update(story)
-        }
-        def returnData = stories.size() > 1 ? stories : stories.first()
-        render(status: 200, contentType: 'application/json', text: returnData as JSON)
-    }
-
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
     def follow() {
         def stories = Story.withStories(params)
         stories.each { Story story ->

@@ -169,7 +169,7 @@ icescrum.resourceBundles = [
 ]
 
 icescrum.marshaller = [
-        story: [include: ['testState', 'tags', 'dependences', 'attachments', 'liked', 'followed', 'countDoneTasks'],
+        story: [include: ['testState', 'tags', 'dependences', 'attachments', 'followed', 'countDoneTasks'],
                 includeCount: ['comments'],
                 textile: ['notes'],
                 asShort: ['state', 'effort', 'uid', 'name', 'rank']],

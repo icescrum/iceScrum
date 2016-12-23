@@ -143,13 +143,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.unDone = function(story) {
         return Story.update({id: story.id, action: 'unDone'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.like = function(story) {
-        return Story.update({id: story.id, action: 'like'}, {}, function(resultStory) {
-            story.liked = resultStory.liked;
-            story.likers_count = resultStory.likers_count;
-            crudMethods[IceScrumEventType.UPDATE](story);
-        }).$promise;
-    };
     this.follow = function(story) {
         return Story.update({id: story.id, action: 'follow'}, {}, function(resultStory) {
             story.followed = resultStory.followed;

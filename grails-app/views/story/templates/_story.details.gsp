@@ -44,15 +44,6 @@
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
                              height="30px"/>
                     </span>
-                    <button class="btn btn-default"
-                            type="button"
-                            ng-click="like(story)"
-                            role="button"
-                            tabindex="0"
-                            uib-tooltip="${message(code: 'todo.is.ui.likes')}">
-                        <i class="fa" ng-class="story.liked ? 'fa-thumbs-up' : 'fa-thumbs-o-up'"></i>
-                        <span class="badge">{{ story.likers_count || '' }}</span>
-                    </button>
                     <a ng-if="previousStory"
                        class="link"
                        role="button"

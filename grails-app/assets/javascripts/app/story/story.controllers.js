@@ -379,9 +379,6 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
                 $scope.notifySuccess('todo.is.ui.story.updated');
             });
         };
-        $scope.like = function(story) {
-            StoryService.like(story);
-        };
         $scope.clickDescriptionPreview = function($event, template) {
             if ($event.target.nodeName != 'A' && $scope.formHolder.editable()) {
                 $scope.showDescriptionTextarea = true;
