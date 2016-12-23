@@ -23,7 +23,7 @@
  */
 
 // Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We shoulw think of a better way to systematically register the listeners
-controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
+registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
     // Functions
     $scope.acceptToBacklog = function(story) {
         StoryService.acceptToBacklog(story).then(function() {
@@ -162,11 +162,6 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrum
             action: function(story) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(story.uid, 'story'))); }
         },
         {
-            name: 'todo.is.ui.story.template.new',
-            visible: function(story) { return $scope.authorizedStory('createTemplate') },
-            action: function(story) { $scope.showNewTemplateModal(story); }
-        },
-        {
             name: 'is.ui.backlog.menu.delete',
             visible: function(story) { return $scope.authorizedStory('delete', story) },
             action: function(story) { $scope.delete(story); }
@@ -174,20 +169,6 @@ controllers.controller('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrum
     ];
     $scope.tasksProgress = function(story) {
         return story.tasks_count > 0 && story.state < StoryStatesByName.DONE && story.state >= StoryStatesByName.PLANNED;
-    };
-    $scope.showNewTemplateModal = function(story) {
-        $uibModal.open({
-            templateUrl: 'story.template.new.html',
-            size: 'sm',
-            controller: ["$scope", function($scope) {
-                $scope.submit = function(template) {
-                    StoryService.saveTemplate(story, template.name).then(function() {
-                        $scope.$close();
-                        $scope.notifySuccess('todo.is.ui.story.template.saved');
-                    });
-                };
-            }]
-        });
     };
     $scope.isEffortCustom = function() {
         return Session.getProject().planningPokerGameType == 2;
@@ -555,80 +536,47 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     refreshStories();
 }]);
 
-controllers.controller('storyNewCtrl', ['$scope', '$state', '$uibModal', '$timeout', '$controller', 'StoryService', 'hotkeys',
-    function($scope, $state, $uibModal, $timeout, $controller, StoryService, hotkeys) {
-        $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
-        // Functions
-        $scope.resetStoryForm = function() {
-            var defaultStory = {};
-            if ($scope.story && $scope.story.template) {
-                defaultStory.template = $scope.story.template
-            }
-            $scope.story = defaultStory;
-            $scope.resetFormValidation($scope.formHolder.storyForm);
-        };
-        $scope.templateSelected = function() {
-            if ($scope.story.template) {
-                StoryService.getTemplatePreview($scope.story.template.id).then(function(storyPreview) {
-                    $scope.storyPreview = storyPreview;
-                });
+registerAppController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'StoryService', 'hotkeys', function($scope, $state, $timeout, $controller, StoryService, hotkeys) {
+    $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
+    // Functions
+    $scope.resetStoryForm = function() {
+        $scope.story = {};
+        $scope.resetFormValidation($scope.formHolder.storyForm);
+    };
+    $scope.save = function(story, andContinue) {
+        StoryService.save(story).then(function(story) {
+            if (andContinue) {
+                $scope.resetStoryForm();
             } else {
-                $scope.storyPreview = {}
+                $scope.setInEditingMode(true);
+                $state.go('^.details', {storyId: story.id});
             }
-        };
-        $scope.showEditTemplateModal = function(story) {
-            var parentScope = $scope;
-            $uibModal.open({
-                templateUrl: 'story.template.edit.html',
-                size: 'sm',
-                controller: ["$scope", function($scope) {
-                    $scope.templateEntries = parentScope.templateEntries;
-                    $scope.deleteTemplate = function(templateEntry) {
-                        StoryService.deleteTemplate(templateEntry.id).then(function() {
-                            $scope.notifySuccess('todo.is.ui.deleted');
-                        });
-                    }
-                }]
-            });
-        };
-        $scope.save = function(story, andContinue) {
-            StoryService.save(story).then(function(story) {
-                if (andContinue) {
-                    $scope.resetStoryForm();
-                } else {
-                    $scope.setInEditingMode(true);
-                    $state.go('^.details', {storyId: story.id});
+            $scope.notifySuccess('todo.is.ui.story.saved');
+        });
+    };
+    $scope.findDuplicates = function(term) {
+        if (term == null || term.length <= 5) {
+            $scope.messageDuplicate = '';
+        } else if (term.length >= 5) {
+            var trimmedTerm = term.trim();
+            //TODO maybe local search ?
+            $timeout.cancel($scope.timerDuplicate);
+            $scope.timerDuplicate = $timeout(function() {
+                if ($scope.lastSearchedTerm != trimmedTerm) {
+                    StoryService.findDuplicates(trimmedTerm).then(function(messageDuplicate) {
+                        $scope.lastSearchedTerm = trimmedTerm;
+                        $scope.messageDuplicate = messageDuplicate ? messageDuplicate : '';
+                    });
                 }
-                $scope.notifySuccess('todo.is.ui.story.saved');
-            });
-        };
-        $scope.findDuplicates = function(term) {
-            if (term == null || term.length <= 5) {
-                $scope.messageDuplicate = '';
-            } else if (term.length >= 5) {
-                var trimmedTerm = term.trim();
-                //TODO maybe local search ?
-                $timeout.cancel($scope.timerDuplicate);
-                $scope.timerDuplicate = $timeout(function() {
-                    if ($scope.lastSearchedTerm != trimmedTerm) {
-                        StoryService.findDuplicates(trimmedTerm).then(function(messageDuplicate) {
-                            $scope.lastSearchedTerm = trimmedTerm;
-                            $scope.messageDuplicate = messageDuplicate ? messageDuplicate : '';
-                        });
-                    }
-                }, 500);
-            }
-        };
-        // Init
-        $scope.formHolder = {};
-        $scope.resetStoryForm();
-        hotkeys.bindTo($scope).add({
-            combo: 'esc',
-            allowIn: ['INPUT'],
-            callback: $scope.resetStoryForm
-        });
-        $scope.templateEntries = [];
-        StoryService.getTemplateEntries().then(function(templateEntries) {
-            $scope.templateEntries = templateEntries;
-        });
-    }]);
+            }, 500);
+        }
+    };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetStoryForm();
+    hotkeys.bindTo($scope).add({
+        combo: 'esc',
+        allowIn: ['INPUT'],
+        callback: $scope.resetStoryForm
+    });
+}]);

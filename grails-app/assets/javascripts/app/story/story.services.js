@@ -257,8 +257,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             case 'create':
             case 'follow':
                 return Session.authenticated();
-            case 'createTemplate':
-                return Session.inProduct();
             case 'upload':
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
@@ -271,7 +269,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                 return Session.poOrSm() && story.state > StoryStatesByName.ACCEPTED && story.state < StoryStatesByName.DONE;
             case 'accept':
                 return Session.po() && story.state == StoryStatesByName.SUGGESTED;
-            case 'updateTemplate':
             case 'rank':
                 return Session.po() && (!story || story.state < StoryStatesByName.DONE);
             case 'delete':
@@ -302,32 +299,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                 });
         }
     };
-    // Templates
-    var cachedTemplateEntries;
-    this.getTemplateEntries = function() {
-        var deferred = $q.defer();
-        if (angular.isArray(cachedTemplateEntries)) {
-            deferred.resolve(cachedTemplateEntries);
-        } else {
-            FormService.httpGet('story/templateEntries').then(function(templateEntries) {
-                cachedTemplateEntries = templateEntries;
-                deferred.resolve(templateEntries);
-            });
-        }
-        return deferred.promise;
-    };
-    this.saveTemplate = function(story, name) {
-        return Story.update({id: story.id, action: 'saveTemplate', 'template.name': name}, {}).$promise.then(function(templateEntry) {
-            if (angular.isArray(cachedTemplateEntries)) {
-                cachedTemplateEntries.push(templateEntry);
-            }
-        });
-    };
-    this.deleteTemplate = function(templateId) {
-        return $http.post('story/deleteTemplate?template.id=' + templateId).success(function() {
-            _.remove(cachedTemplateEntries, {id: templateId});
-        });
-    };
     this.listByField = function(field) {
         return Story.get({action: 'listByField', field: field}).$promise
     };
@@ -336,9 +307,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.getParentSprintEntries = function() {
         return FormService.httpGet('story/sprintEntries');
-    };
-    this.getTemplatePreview = function(templateId) {
-        return FormService.httpGet('story/templatePreview', {params: {template: templateId}});
     };
     this.findDuplicates = function(term) {
         return FormService.httpGet('story/findDuplicates', {params: {term: term}});

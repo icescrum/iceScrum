@@ -110,30 +110,7 @@
                          class="help-block bg-warning spaced-help-block"
                          ng-bind-html="messageDuplicate"></div>
                 </div>
-                <div class="form-half" ng-if="templateEntries.length > 0">
-                    <label for="story.template">${message(code: 'todo.is.ui.story.template')}</label>
-                    <div ng-class="{'input-group': authorizedStory('updateTemplate')}">
-                        <ui-select name="story.template"
-                                   class="form-control"
-                                   ng-model="story.template"
-                                   ng-disabled="!authorizedStory('create')"
-                                   on-select="templateSelected()">
-                            <ui-select-match allow-clear="true" placeholder="${message(code:'todo.is.ui.story.template.placeholder')}">{{ $select.selected.text }}</ui-select-match>
-                            <ui-select-choices repeat="templateEntry in templateEntries">{{ templateEntry.text }}</ui-select-choices>
-                        </ui-select>
-                        <span class="input-group-btn"
-                              ng-show="authorizedStory('updateTemplate')">
-                            <button type="button"
-                                    ng-disabled="templateEntries.length == 0"
-                                    tabindex="-1"
-                                    uib-tooltip="${message(code:'todo.is.ui.story.template.manage')}"
-                                    ng-click="showEditTemplateModal()"
-                                    class="btn btn-default">
-                                <i class="fa fa-pencil"></i>
-                            </button>
-                        </span>
-                    </div>
-                </div>
+                <entry:point id="story-new-form"/>
             </div>
             <div ng-if="authorizedStory('create')" class="btn-toolbar pull-right">
                 <button class="btn btn-primary"

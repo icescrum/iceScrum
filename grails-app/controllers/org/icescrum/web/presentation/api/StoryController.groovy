@@ -35,7 +35,6 @@ class StoryController implements ControllerErrorHandler {
     def acceptanceTestService
     def springSecurityService
     def activityService
-    def templateService
 
     @Secured('stakeHolder() or inProduct()')
     def index(long product, long typeId, String type) {
@@ -94,16 +93,10 @@ class StoryController implements ControllerErrorHandler {
             return
         }
         Product _product = Product.withProduct(product)
-        def tasks
-        def acceptanceTests
-        if (storyParams.template != null) {
-            def template = Template.findByParentProductAndId(_product, storyParams.template.id.toLong())
-            def parsedData = template.data
-            tasks = parsedData.remove('tasks')
-            acceptanceTests = parsedData.remove('acceptanceTests')
-            storyParams << parsedData
-        }
-        def story = new Story()
+        entry.hook(id: 'story-save-before', model: [product: _product])
+        def tasks = storyParams.remove('tasks')
+        def acceptanceTests = storyParams.remove('acceptanceTests')
+        Story story = new Story()
         Story.withTransaction {
             bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
             User user = (User) springSecurityService.currentUser
@@ -374,58 +367,6 @@ class StoryController implements ControllerErrorHandler {
             }
         }
         render(status: 200, contentType: 'application/json', text: sprintEntries as JSON)
-    }
-
-    @Secured(['inProduct() and !archivedProduct()'])
-    def saveTemplate(long id, long product) {
-        Story story = Story.withStory(product, id)
-        Template template = new Template()
-        Template.withTransaction {
-            bindData(template, params.template, [include: ['name']])
-            templateService.save(template, story)
-            render(status: 200, contentType: 'application/json', text: [id: template.id, text: template.name] as JSON)
-        }
-    }
-
-    @Secured('productOwner() and !archivedProduct()')
-    def deleteTemplate(long product) {
-        Product _product = Product.withProduct(product)
-        def template = Template.findByIdAndParentProduct(params.long('template.id'), _product)
-        if (template) {
-            templateService.delete(template)
-            render(status: 204)
-        } else {
-            returnError(code: 'todo.is.ui.story.template.not.found')
-        }
-    }
-
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def templateEntries(long product) {
-        Product _product = Product.withProduct(product)
-        def templates = Template.findAllByParentProduct(_product)
-        render(text: templates.collect {[id: it.id, text: it.name]} as JSON, contentType: 'application/json', status: 200)
-    }
-
-    @Secured(['inProduct() and !archivedProduct()'])
-    def templatePreview(long product) {
-        if (params.template) {
-            Product _product = Product.withProduct(product)
-            def template = Template.findByParentProductAndId(_product, params.long('template'))
-            def parsedData = template.data
-            if (parsedData.feature) {
-                def feature = Feature.getInProduct(_product.id, parsedData.feature.id.toLong()).list()
-                if (feature) {
-                    parsedData.feature.color = feature.color
-                }
-            }
-            if (parsedData.tasks) {
-                parsedData.tasks_count = parsedData.tasks.size()
-            }
-            if (parsedData.acceptanceTests) {
-                parsedData.acceptanceTests_count = parsedData.acceptanceTests.size()
-            }
-            render(text: parsedData as JSON, contentType: 'application/json', status: 200)
-        }
     }
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
