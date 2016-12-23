@@ -39,10 +39,6 @@ class BootStrap {
         localeResolver.defaultLocale = Locale.ENGLISH
         java.util.Locale.setDefault(Locale.ENGLISH)
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
-        println("------------------");
-        println "Starting iceScrum version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
-        println("------------------");
-
         // TODO Hack grails 1.3.x bug with accept header for request.format should be remove when upgrade to grails 2.x
         HttpServletRequest.metaClass.getMimeTypes = { ->
             def result = delegate.getAttribute(GrailsApplicationAttributes.REQUEST_FORMATS)
@@ -66,6 +62,40 @@ class BootStrap {
             }
             result
         }
+
+        println " "
+        println " "
+        println " "
+        println " "
+        println " "
+        println " "
+        println """
+,:       `::::::,        `:::::::        ;++++++'        '++++++:         +++++  ++          ++      '++++++:    +++++++
+::      :::::,::::`     ,::::,::::,     ++++;'++++      ++++++++++       ++++'`  ++          ++     ++++'+++++ ,++++'++++,
+::     :::      ,::`   ,::      `:::   :++      ++     +++      +++     +++      ++          ++    +++      ++'++:     :++
+::    ,::        `::  `::        ,::   '+:            ++;        '+;   ,++       ++          ++    ++        +++;       :++
+::    ::              ::       `:::`   `++           .++          `    ++        ++          ++   '+.        +++         ++
+::   .:,              ::      ::::      +++:         ++`               ++        ++          ++   ++         ,++         ++
+::   ::              `:,    `:::`        ;+++'       ++                ++        ++          ++   ++         `++         ++    ````   ,,
+::   ::              .:.   :::,            '++++     ++                ++        ++          ++   ++          ++         ++   :::::::::,
+::   ::              .:. .:::                ,+++.   ++                ++        ++          ++   ++          ++         +`  ::::::::::`
+::   ::`             `:: ::,                   ;++   ++                ++        ++          ++   ++          ++         +  `::::::::::
+::   `::              ::                        :++  ++.               ++        ++         ,+;   ++          ++            ::::::::::`
+::    ::          .`  ::.         `,  `;         ++   ++          ;    ++        ,+'        ++`   ++          ++           ,::::::::::
+::    .::        ,::   ::`       `::  '++       .++   +++        ++;   ++         ++       .++    ++          ++           ::::::::::
+::     ,::`     :::    `::,     ,::,   +++`    ;++     +++     `+++    ++         ;++;    '++.    ++          ++          ::::::::::,
+::      ,:::::::::       :::::::::.     +++++++++.      ++++++++++     ++          '++++++++:     ++          ++         `::::::::::
+ ,        ,:::::`         `:::::.         '++++;          ++++++       ,.            '++++'       `,          :          ``````````
+"""
+        println " "
+        println " "
+        println "version:${Metadata.current['app.version']} SCR:#${Metadata.current['scm.version']} Build date:${Metadata.current['build.date']}"
+        println "Check our website for training, coaching or custom development: https://www.icescrum.com"
+        println "Try or buy your license for iceScrum Pro and start using its nice features : https://www.icescrum.com/pricing"
+        println " "
+        println " "
+        println " "
+        println " "
     }
 
     static private boolean isValidType(String type) {
