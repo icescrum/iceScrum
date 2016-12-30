@@ -89,7 +89,7 @@ grails.project.dependency.resolution = {
         compile ':browser-detection:2.8.0'      //:browser-detection:3.3.0
         runtime ':hibernate4:4.3.10'            //hibernate5
         build   ':tomcat:7.0.70'                //tomcat...
-        compile 'org.icescrum:entry-points:1.1' //to do
+        compile 'org.icescrum:entry-points:1.2' //to do
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
             compile 'org.icescrum:standalone:8.0.38.2'        //remove
