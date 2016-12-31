@@ -1,3 +1,4 @@
+<%@ page import="grails.plugin.springsecurity.SpringSecurityUtils; org.icescrum.core.domain.security.Authority" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -
@@ -20,28 +21,20 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<table>
-    <thead>
+<table ng-controller="warningsCtrl">
+    <thead ng-if="warnings">
     <tr>
-        <th width="50%">${message(code:'is.dialog.about.errors.name')}</th>
-        <th width="50%">${message(code:'is.dialog.about.errors.message')}</th>
+        <th width="50%">${message(code:'is.dialog.about.warnings.name')}</th>
+        <th width="50%">${message(code:'is.dialog.about.warnings.message')}</th>
     </tr>
     </thead>
     <tbody>
-    <g:each in="${errors}" var="error">
-        <tr>
-            <td>${g.message(code:error.title)}
-                <g:if test="${error.version}">
-                    ${' (R'+error.version?.replaceFirst('\\.','#')+')'}
-                </g:if>
-            </td>
-            <td>${error.message?.startsWith('is.') ? g.message(code:error.message, args:error.args?:null) : error.message}
-                <g:if test="${error.version}">
-                    <br/>
-                    <a href="${error.url}">${g.message(code:'is.warning.version.download')}</a>
-                </g:if>
-            </td>
+        <tr ng-repeat="warning in warnings">
+            <td><i class="fa fa-{{ warning.icon }}"></i> {{ warning.title }}</td>
+            <td>{{ warning.message }}</td>
+            <g:if test="${SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
+                <td><button ng-if="warning.hideable" ng-click="hideWarning(warning)" class="btn btn-sm btn-default"><i class="fa" ng-class="{'fa-bell':!warning.silent,'fa-bell-slash':warning.silent}"></i></button></td>
+            </g:if>
         </tr>
-    </g:each>
     </tbody>
 </table>

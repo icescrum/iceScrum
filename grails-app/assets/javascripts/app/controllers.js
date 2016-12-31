@@ -560,6 +560,23 @@ controllers.controller('retrieveCtrl', ['$scope', '$timeout', 'User', 'UserServi
     $scope.user = new User();
 }]);
 
+controllers.controller('warningsCtrl', ['$scope', 'FormService', function($scope, FormService) {
+    // Functions
+    $scope.hideWarning = function(warning) {
+        FormService.httpPost('scrumOS/hideWarning',{warningId: warning.id}, null, true).then(function(data){
+            warning.silent = data.silent;
+        });
+    };
+    $scope.getWarnings = function() {
+        FormService.httpGet('scrumOS/warnings', {cache: true}).then(function(data){
+            $scope.warnings = data;
+        });
+    };
+    // Init
+    $scope.warnings = [];
+    $scope.getWarnings();
+}]);
+
 controllers.controller('updateFormController', ['$scope', 'FormService', 'type', 'item', 'resetOnProperties', function($scope, FormService, type, item, resetOnProperties) {
     var upperType = _.upperFirst(type);
     var resetForm = 'reset' + upperType + 'Form';

@@ -1195,6 +1195,7 @@ angular.module('isApp', [
         $rootScope.storyStates = isSettings.states.story;
         $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
         $rootScope.context = isSettings.context;
+        $rootScope.warning = isSettings.warning;
         if (isSettings.project) {
             isSettings.project.startDate = new Date(isSettings.project.startDate);
             isSettings.project.endDate = new Date(isSettings.project.endDate);

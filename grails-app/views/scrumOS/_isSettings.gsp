@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="grails.converters.JSON;" %>
+<%@ page import="org.icescrum.core.support.ApplicationSupport; grails.converters.JSON;" %>
 <script type="text/javascript">
     var isSettings = {
         user: ${user as JSON},
@@ -48,7 +48,8 @@
         plugins: [],
         controllerHooks: {},
         version: "${g.meta(name: 'app.version')}",
-        serverUrl: "${grailsApplication.config.grails.serverURL}"
+        serverUrl: "${grailsApplication.config.grails.serverURL}",
+        warning: ${ApplicationSupport.getLastWarning() as JSON}
         <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, product:product]"/>
     };
 </script>

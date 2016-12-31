@@ -34,7 +34,13 @@
             <div class="nav-header">
                 <div class="hidden-xs pull-left">
                 </div>
-                <is:errors/>
+                <a ng-if="warning"
+                   class="show-warning link"
+                   ng-click="showAbout()"
+                   href
+                   tooltip-placement="right"
+                   uib-tooltip="{{ warning.title }}"><i class="fa fa-{{ warning.icon }}"></i>
+                </a>
                 <ul ng-controller="projectCtrl"
                     class="nav navbar-nav menubar"
                     ng-class="{'sortable-disabled': !currentUser.id || context != 'product'}"
@@ -121,6 +127,7 @@
                             <li role="presentation" class="divider"></li>
                             <li role="presentation" class="dropdown-header">${message(code: 'is.ui.app')}</li>
                             %{--<li><a href hotkey="{'a': showManageAppsModal}" hotkey-description="${message(code: 'is.ui.app.apps')}" ng-click="showManageAppsModal()">${message(code: 'is.ui.app.apps')}</a></li>--}%
+                            <entry:point id="header-menu-icescrum-first"/>
                             <li><a href hotkey="{'I': showAbout}" hotkey-description="${message(code: 'is.ui.app.about')}" ng-click="showAbout()">${message(code: 'is.ui.app.about')}</a></li>
                             <entry:point id="header-menu-icescrum"/>
                         </ul>

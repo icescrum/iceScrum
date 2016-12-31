@@ -21,11 +21,10 @@
 --}%
 <is:modal title="${message(code: 'is.ui.app.about')}">
     <uib-tabset type="pills" justified="true">
-        <g:if test="${errors}">
-            <uib-tab heading="${message(code: 'is.dialog.about.errors')}">
-                <g:render template="/${controllerName}/about/errors" model="[errors: errors]"/>
-            </uib-tab>
-        </g:if>
+        <uib-tab heading="${message(code: 'is.dialog.about.warnings')}">
+            <g:render template="/${controllerName}/about/warnings"/>
+        </uib-tab>
+        <entry:point id="about-first-tab"/>
         <uib-tab heading="${message(code: 'is.dialog.about.help')}">
             <g:render template="/${controllerName}/about/help" model="[version: about.version]"/>
         </uib-tab>
@@ -35,5 +34,6 @@
         <uib-tab heading="${message(code: 'is.dialog.about.legal')}">
             ${about.license.text().encodeAsNL2BR()}
         </uib-tab>
+        <entry:point id="about-last-tab"/>
     </uib-tabset>
 </is:modal>
