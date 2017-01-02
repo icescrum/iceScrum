@@ -395,12 +395,12 @@ class ScrumOSController implements ControllerErrorHandler {
 
     @Secured(['permitAll()'])
     def warnings() {
-        def warnings = grailsApplication.config.icescrum.errors.collect{ it -> [id:it.id, icon:it.icon, title:message(it.title), message:message(it.message), hideable:it.hideable, silent:it.silent]}
-        render(status:200, contentType: 'application/json', text:warnings as JSON)
+        def warnings = grailsApplication.config.icescrum.errors.collect { it -> [id: it.id, icon: it.icon, title: message(it.title), message: message(it.message), hideable: it.hideable, silent: it.silent] }
+        render(status: 200, contentType: 'application/json', text: warnings as JSON)
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def hideWarning(String warningId){
-        render(status:200, contentType: 'application/json', text:ApplicationSupport.toggleSilentWarningMessage(warningId) as JSON)
+    def hideWarning(String warningId) {
+        render(status: 200, contentType: 'application/json', text: ApplicationSupport.toggleSilentWarningMessage(warningId) as JSON)
     }
 }

@@ -563,12 +563,12 @@ controllers.controller('retrieveCtrl', ['$scope', '$timeout', 'User', 'UserServi
 controllers.controller('warningsCtrl', ['$scope', 'FormService', function($scope, FormService) {
     // Functions
     $scope.hideWarning = function(warning) {
-        FormService.httpPost('scrumOS/hideWarning',{warningId: warning.id}, null, true).then(function(data){
+        FormService.httpPost('scrumOS/hideWarning', {warningId: warning.id}, null, true).then(function(data) {
             warning.silent = data.silent;
         });
     };
     $scope.getWarnings = function() {
-        FormService.httpGet('scrumOS/warnings', {cache: true}).then(function(data){
+        FormService.httpGet('scrumOS/warnings', {cache: true}).then(function(data) {
             $scope.warnings = data;
         });
     };
