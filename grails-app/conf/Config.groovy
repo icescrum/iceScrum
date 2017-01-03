@@ -232,8 +232,8 @@ icescrum.check.path     = 'wc-api/v2/kagilum/version'
 icescrum.check.interval = 1440 //in minutes (24h)
 icescrum.check.timeout  = 5000
 
-/* Array for visual & catched errors */
-icescrum.errors = []
+/* Server warnings to display to users */
+icescrum.warnings = []
 
 /* Contexts */
 icescrum {

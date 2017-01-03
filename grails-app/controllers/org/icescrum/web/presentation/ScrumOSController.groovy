@@ -121,8 +121,7 @@ class ScrumOSController implements ControllerErrorHandler {
         render(status: 200, template: "about/index", model: [server        : servletContext.getServerInfo(),
                                                              versionNumber : g.meta([name: 'app.version']),
                                                              about         : new XmlSlurper().parse(aboutFile),
-                                                             configLocation: grailsApplication.config.grails.config.locations instanceof List ? grailsApplication.config.grails.config.locations.join(', ') : '',
-                                                             errors        : grailsApplication.config.icescrum.errors ?: false])
+                                                             configLocation: grailsApplication.config.grails.config.locations instanceof List ? grailsApplication.config.grails.config.locations.join(', ') : ''])
     }
 
     def textileParser(String data) {
@@ -395,12 +394,14 @@ class ScrumOSController implements ControllerErrorHandler {
 
     @Secured(['permitAll()'])
     def warnings() {
-        def warnings = grailsApplication.config.icescrum.errors.collect { it -> [id: it.id, icon: it.icon, title: message(it.title), message: message(it.message), hideable: it.hideable, silent: it.silent] }
+        def warnings = grailsApplication.config.icescrum.warnings.collect { it ->
+            [id: it.id, icon: it.icon, title: message(it.title), message: message(it.message), hideable: it.hideable, silent: it.silent]
+        }
         render(status: 200, contentType: 'application/json', text: warnings as JSON)
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
     def hideWarning(String warningId) {
-        render(status: 200, contentType: 'application/json', text: ApplicationSupport.toggleSilentWarningMessage(warningId) as JSON)
+        render(status: 200, contentType: 'application/json', text: ApplicationSupport.toggleSilentWarning(warningId) as JSON)
     }
 }

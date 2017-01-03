@@ -567,14 +567,10 @@ controllers.controller('warningsCtrl', ['$scope', 'FormService', function($scope
             warning.silent = data.silent;
         });
     };
-    $scope.getWarnings = function() {
-        FormService.httpGet('scrumOS/warnings', {cache: true}).then(function(data) {
-            $scope.warnings = data;
-        });
-    };
     // Init
-    $scope.warnings = [];
-    $scope.getWarnings();
+    FormService.httpGet('scrumOS/warnings').then(function(data) {
+        $scope.warnings = data;
+    });
 }]);
 
 controllers.controller('updateFormController', ['$scope', 'FormService', 'type', 'item', 'resetOnProperties', function($scope, FormService, type, item, resetOnProperties) {
