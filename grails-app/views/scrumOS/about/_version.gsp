@@ -87,15 +87,17 @@
         </tbody>
     </table>
 </div>
-<h4><g:message code="is.dialog.about.version.libraries.title"/></h4>
-<div class="table-responsive">
-    <table class="table table-bordered table-striped">
-        <tbody>
-        <g:each in="${version.library}" var="library">
-            <tr>
-                <td>${library.name}</td>
-            </tr>
-        </g:each>
-        </tbody>
-    </table>
-</div>
+<g:if test="${request.authenticated}">
+    <h4><g:message code="is.dialog.about.version.libraries.title"/></h4>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <tbody>
+            <g:each in="${version.library}" var="library">
+                <tr>
+                    <td>${library.name}</td>
+                </tr>
+            </g:each>
+            </tbody>
+        </table>
+    </div>
+</g:if>
