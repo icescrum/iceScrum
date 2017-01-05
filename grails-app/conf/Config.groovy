@@ -228,7 +228,7 @@ icescrum.cors.url.pattern = '/ws/*'
 /* Check for update */
 icescrum.check.enable   = true
 icescrum.check.url      = 'https://www.icescrum.com'
-icescrum.check.path     = 'wc-api/v2/kagilum/version'
+icescrum.check.path     = 'wp-json/kagilum/v1/version'
 icescrum.check.interval = 1440 //in minutes (24h)
 icescrum.check.timeout  = 5000
 
