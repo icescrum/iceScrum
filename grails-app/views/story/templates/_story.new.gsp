@@ -38,7 +38,7 @@
         <div class="postits standalone">
             <div class="postit-container">
                 <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
-                     class="postit {{ (storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor }}">
+                     class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
                     <div class="head">
                         <div class="head-left">
                             <span class="id">42</span>
