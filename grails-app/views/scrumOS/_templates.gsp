@@ -125,7 +125,7 @@
             <div>{{currentUser.preferences.activity}}</div>
             <g:if test="${product}">
                 <div>
-                    <strong><is:displayRole product="${product.id}"/></strong>
+                    <strong><is:displayRole product="${product}"/></strong>
                 </div>
             </g:if>
             <entry:point id="user-profile-panel"/>

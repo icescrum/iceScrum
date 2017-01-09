@@ -128,10 +128,6 @@ class ScrumOSController implements ControllerErrorHandler {
         render(text: ServicesUtils.textileToHtml(data))
     }
 
-    def templates() {
-        render(status: 200, template: 'templatesJS')
-    }
-
     def isSettings(Long product) {
         def projectMenus = []
         def _product = product ? Product.get(product) : null

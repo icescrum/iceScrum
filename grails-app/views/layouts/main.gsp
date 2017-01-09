@@ -62,7 +62,7 @@
     </div>
     <g:include controller="scrumOS" action="isSettings" params="[product: params.product]"/>
     <asset:javascript src="application.js"/>
-    <g:include controller="scrumOS" action="templates" params="[product: params.product]"/>
+    <g:render template="/scrumOS/templatesJS" model="[product: params.product]"/>
     <entry:point id="icescrum-footer"/>
 </body>
 </html>

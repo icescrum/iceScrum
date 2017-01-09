@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <div id='templates'>
-    <g:render template="templates"/>
+    <g:render template="/scrumOS/templates"/>
     <g:render template="/team/templates"/>
     <g:render template="/sprint/templates"/>
     <g:render template="/project/templates"/>
