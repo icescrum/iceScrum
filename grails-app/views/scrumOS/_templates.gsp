@@ -125,7 +125,7 @@
             <div>{{currentUser.preferences.activity}}</div>
             <g:if test="${project}">
                 <div>
-                    <strong><is:displayRole product="${project}"/></strong>
+                    <strong><is:displayRole project="${project}"/></strong>
                 </div>
             </g:if>
             <entry:point id="user-profile-panel"/>
