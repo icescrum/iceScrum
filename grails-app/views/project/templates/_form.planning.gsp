@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="form-half">
-            <label for="project.preferences.timezone">${message(code:'is.product.preferences.timezone')}</label>
+            <label for="project.preferences.timezone">${message(code:'is.project.preferences.timezone')}</label>
             <ui-select required="required"
                        class="form-control"
                        ng-required="isCurrentStep(4)"
@@ -57,7 +57,7 @@
     </div>
     <div class="row">
         <div class="form-half">
-            <label for="estimatedSprintsDuration">${message(code:'is.product.preferences.planification.estimatedSprintsDuration')}</label>
+            <label for="estimatedSprintsDuration">${message(code:'is.project.preferences.planification.estimatedSprintsDuration')}</label>
             <div class="input-group">
                 <input class="form-control"
                        type="number"
@@ -90,7 +90,7 @@
                        name="project.preferences.hideWeekend"
                        id="hideWeekend"
                        ng-model="project.preferences.hideWeekend">
-                ${message(code:'is.product.preferences.project.hideWeekend')}
+                ${message(code:'is.project.preferences.project.hideWeekend')}
             </label>
         </div>
     </div>

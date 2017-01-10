@@ -43,8 +43,8 @@
                 </a>
                 <ul ng-controller="projectCtrl"
                     class="nav navbar-nav menubar"
-                    ng-class="{'sortable-disabled': !currentUser.id || context != 'product'}"
-                    is-disabled="!currentUser.id || context != 'product'"
+                    ng-class="{'sortable-disabled': !currentUser.id || context != 'project'}"
+                    is-disabled="!currentUser.id || context != 'project'"
                     as-sortable="menuSortableOptions"
                     ng-model="app.menus.visible">
                     <li class="contextual-menu" uib-dropdown>
@@ -72,17 +72,17 @@
                                     </a>
                                 </li>
                             </g:if>
-                            <g:if test="${browsableProductsExist}">
+                            <g:if test="${browsableProjectsExist}">
                                 <li>
                                     <a hotkey="{ 'shift+a': hotkeyClick}" href ng-click="showProjectListModal('public')">
                                         <g:message code="is.projectmenu.submenu.project.browse"/> <small class="text-muted">(SHIFT+A)</small>
                                     </a>
                                 </li>
                             </g:if>
-                            <g:if test="${product}">
+                            <g:if test="${project}">
                                 <li ng-if="authorizedProject('edit')" role="presentation" class="divider"></li>
                                 <li ng-if="authorizedProject('edit')" role="presentation" class="dropdown-header">
-                                    ${message(code: 'todo.is.ui.projects.current')} <span class="current-project-name"><b>${product.name}</b></span>
+                                    ${message(code: 'todo.is.ui.projects.current')} <span class="current-project-name"><b>${project.name}</b></span>
                                 </li>
                                 <li ng-if="authorizedProject('edit')">
                                     <a hotkey="{ 'shift+e': hotkeyClick}" href ng-click="showProjectEditModal()">
@@ -97,22 +97,22 @@
                                     </li>
                                 </g:if>
                             </g:if>
-                            <g:if test="${productFilteredsList}">
-                                <li role="presentation" class="divider" style='display:${productFilteredsList ?'block':'none'}'></li>
-                                <li role="presentation" class="dropdown-header" id="my-projects" style='display:${productFilteredsList ?'block':'none'}'>
+                            <g:if test="${projectFilteredsList}">
+                                <li role="presentation" class="divider" style='display:${projectFilteredsList ?'block':'none'}'></li>
+                                <li role="presentation" class="dropdown-header" id="my-projects" style='display:${projectFilteredsList ?'block':'none'}'>
                                     ${message(code: 'is.projectmenu.submenu.project.my.title')}
                                 </li>
-                                <g:each var="curProduct" in="${productFilteredsList}">
+                                <g:each var="curProject" in="${projectFilteredsList}">
                                     <li class="project">
-                                        <a class="${product?.id == curProduct.id ? 'active' : ''}"
-                                           href="${product?.id == curProduct.id ? '' : createLink(controller: "scrumOS", params: [product:curProduct.pkey])+'/'}"
-                                           title="${curProduct.name.encodeAsHTML()}">
-                                            ${curProduct.name.encodeAsHTML()}
+                                        <a class="${project?.id == curProject.id ? 'active' : ''}"
+                                           href="${project?.id == curProject.id ? '' : createLink(controller: "scrumOS", params: [project:curProject.pkey])+'/'}"
+                                           title="${curProject.name.encodeAsHTML()}">
+                                            ${curProject.name.encodeAsHTML()}
                                         </a>
                                     </li>
                                 </g:each>
                             </g:if>
-                            <g:if test="${moreProductsExist}">
+                            <g:if test="${moreProjectsExist}">
                                 <li>
                                     <a href ng-click="showProjectListModal('user')">
                                         <g:message code="is.projectmenu.submenu.project.more"/>
@@ -142,8 +142,8 @@
                     <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && app.menus.hidden.length == 0 }">
                         <a uib-dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                         <ul uib-dropdown-menu class="menubar"
-                            ng-class="{'sortable-disabled': !currentUser.id || context != 'product'}"
-                            is-disabled="!currentUser.id || context != 'product'"
+                            ng-class="{'sortable-disabled': !currentUser.id || context != 'project'}"
+                            is-disabled="!currentUser.id || context != 'project'"
                             as-sortable="menuSortableOptions"
                             ng-model="app.menus.hidden">
                             <li ng-repeat="menu in app.menus.hidden"
@@ -154,7 +154,7 @@
                     </li>
                 </ul>
                 <div class="navbar-right">
-                        <g:if test="${product}">
+                        <g:if test="${project}">
                             <form class="navbar-form pull-left" role="search">
                                 <div class="input-group search">
                                     <span class="input-group-btn" ng-if="app.context">

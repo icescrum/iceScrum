@@ -29,7 +29,7 @@
     <g:render template="/task/templates/task.light"/>
     <g:render template="/user/templates"/>
     <entry:point id="templates"/>
-    <g:if test="${params.product}">
+    <g:if test="${params.project}">
         <g:render template="/story/templates"/>
         <g:render template="/task/templates"/>
         <g:render template="/comment/templates"/>
@@ -38,6 +38,6 @@
         <g:render template="/feature/templates"/>
         <g:render template="/acceptanceTest/templates"/>
         <g:render template="/release/templates"/>
-        <entry:point id="templates-product"/>
+        <entry:point id="templates-project"/>
     </g:if>
 </div>

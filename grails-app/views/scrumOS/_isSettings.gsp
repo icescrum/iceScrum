@@ -27,10 +27,10 @@
         menus: ${menus as JSON},
         roles: ${roles as JSON},
         defaultView: "${defaultView}",
-        project: ${product ? product as JSON : 'null'},
-        projectTeam: ${product ? product.firstTeam as JSON : 'null'},
+        project: ${project ? project as JSON : 'null'},
+        projectTeam: ${project ? project.firstTeam as JSON : 'null'},
         context: '${context}',
-        pushContext: ${product?.id ?: "''"},
+        pushContext: ${project?.id ?: "''"},
         messages: ${i18nMessages as JSON},
         bundles: ${is.i18nBundle() as JSON},
         projectMenus: ${projectMenus as JSON},
@@ -50,6 +50,6 @@
         version: "${g.meta(name: 'app.version')}",
         serverUrl: "${grailsApplication.config.grails.serverURL}",
         warning: ${ApplicationSupport.getLastWarning() as JSON}
-        <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, product:product]"/>
+        <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, project:project]"/>
     };
 </script>

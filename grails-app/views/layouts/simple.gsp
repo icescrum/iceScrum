@@ -59,8 +59,8 @@
         </div>
         <g:layoutBody/>
     </div>
-    <g:include controller="scrumOS" action="isSettings" params="[product: params.product]"/>
-    <g:render template="/scrumOS/templatesJS" model="[product: params.product]"/>
+    <g:include controller="scrumOS" action="isSettings" params="[project: params.project]"/>
+    <g:render template="/scrumOS/templatesJS" model="[project: params.project]"/>
     <asset:javascript src="application.js"/>
 </body>
 </html>

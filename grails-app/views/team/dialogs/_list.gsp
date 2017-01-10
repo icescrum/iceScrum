@@ -157,7 +157,7 @@
                                 ng-click="cancel()">
                             ${message(code:'is.button.cancel')}
                         </button>
-                        <button ng-if="authorizedTeam('delete', team) && team.products_count == 0"
+                        <button ng-if="authorizedTeam('delete', team) && team.projects_count == 0"
                                 class="btn btn-danger"
                                 type="button"
                                 ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [team] })">

@@ -28,7 +28,7 @@
       novalidate
       ng-submit='update(project)'
       name="formHolder.editProjectForm">
-    <h4>${message(code:"is.product.preferences.project.webservices")}</h4>
+    <h4>${message(code:"is.project.preferences.project.webservices")}</h4>
     <div class="row">
         <div class="form-half">
             <label for="webservices" class="checkbox-inline">
@@ -36,14 +36,14 @@
                        name="project.preferences.webservices"
                        id="webservices"
                        ng-model="project.preferences.webservices"/>
-                ${message(code:'is.product.preferences.project.webservices.enable')}
+                ${message(code:'is.project.preferences.project.webservices.enable')}
             </label>
         </div>
     </div>
-    <h4>${message(code:"is.product.preferences.project.stakeHolderAccess")}</h4>
+    <h4>${message(code:"is.project.preferences.project.stakeHolderAccess")}</h4>
     <table class="table table-striped table-responsive">
         <tr>
-            <th>${message(code:'is.product.preferences.project.stakeHolderRestrictedViews')}</th>
+            <th>${message(code:'is.project.preferences.project.stakeHolderRestrictedViews')}</th>
             <th></th>
         </tr>
         <tr ng-repeat="view in stakeHolderViews">

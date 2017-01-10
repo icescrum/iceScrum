@@ -87,7 +87,7 @@
                            name="project.name_"
                            class="form-control"
                            disabled="disabled"
-                           ng-model="_changes.product.name">
+                           ng-model="_changes.project.name">
                 </div>
                 <div class="changes-arrow">
                     <i class="fa fa-arrow-right"></i>
@@ -95,12 +95,12 @@
                 <div class="changes-col-2">
                     <label for="project.name">${message(code:'todo.is.ui.import.changes.project.name')}</label>
                     <input required
-                           not-match="_changes.product.name"
+                           not-match="_changes.project.name"
                            type="text"
                            id="project.name"
                            name="project.name"
                            class="form-control"
-                           ng-model="changes.product.name">
+                           ng-model="changes.project.name">
                 </div>
             </div>
             <div class="changes row" ng-if="_changes.showProjectPkey && !changes.erase">
@@ -112,7 +112,7 @@
                            name="project.pkey_"
                            class="form-control text-capitalize"
                            disabled="disabled"
-                           ng-model="_changes.product.pkey">
+                           ng-model="_changes.project.pkey">
                 </div>
                 <div class="changes-arrow">
                     <i class="fa fa-arrow-right"></i>
@@ -120,14 +120,14 @@
                 <div class="changes-col-2">
                     <label for="project.pkey">${message(code:'todo.is.ui.import.changes.project.pkey')}</label>
                     <input required
-                           not-match="_changes.product.pkey"
+                           not-match="_changes.project.pkey"
                            type="text"
                            capitalize
                            id="project.pkey"
                            name="project.pkey"
                            class="form-control text-capitalize"
                            ng-pattern="/^[A-Z0-9]*$/"
-                           ng-model="changes.product.pkey">
+                           ng-model="changes.project.pkey">
                 </div>
             </div>
             <div class="changes row" ng-if="_changes.showTeam">
@@ -184,7 +184,7 @@
                 <input type="submit" ng-disabled="importProjectForm.$invalid" class="btn btn-primary" value="${message(code:'todo.is.ui.import.changes.submit')}">
             </div>
         </form>
-        <div ng-show="product.name">
+        <div ng-show="project.name">
         </div>
     </div>
 </is:modal>

@@ -30,11 +30,11 @@
                        name="project.preferences.noEstimation"
                        id="noEstimation"
                        ng-model="project.preferences.noEstimation">
-                ${message(code:'is.product.preferences.planification.noEstimation')}
+                ${message(code:'is.project.preferences.planification.noEstimation')}
             </label>
         </div>
         <div class="form-half" ng-show="!project.preferences.noEstimation">
-            <label for="estimationSuite">${message(code:'is.product.preferences.planification.estimationSuite')}</label>
+            <label for="estimationSuite">${message(code:'is.project.preferences.planification.estimationSuite')}</label>
             <ui-select class="form-control"
                        name="type"
                        ng-disabled="project.preferences.noEstimation"
@@ -52,7 +52,7 @@
                        name="project.preferences.autoDoneStory"
                        id="autoDoneStory"
                        ng-model="project.preferences.autoDoneStory">
-                ${message(code:'is.product.preferences.sprint.autoDoneStory')}
+                ${message(code:'is.project.preferences.sprint.autoDoneStory')}
             </label>
         </div>
         <div class="form-half">
@@ -61,7 +61,7 @@
                        name="project.preferences.autoCreateTaskOnEmptyStory"
                        id="autoCreateTaskOnEmptyStory"
                        ng-model="project.preferences.autoCreateTaskOnEmptyStory">
-                ${message(code:'is.product.preferences.sprint.autoCreateTaskOnEmptyStory')}
+                ${message(code:'is.project.preferences.sprint.autoCreateTaskOnEmptyStory')}
             </label>
         </div>
         <div class="form-half">
@@ -70,7 +70,7 @@
                        name="project.preferences.assignOnCreateTask"
                        id="assignOnCreateTask"
                        ng-model="project.preferences.assignOnCreateTask">
-                ${message(code:'is.product.preferences.sprint.assignOnCreateTask')}
+                ${message(code:'is.project.preferences.sprint.assignOnCreateTask')}
             </label>
         </div>
         <div class="form-half">
@@ -79,7 +79,7 @@
                        name="project.preferences.assignOnBeginTask"
                        id="assignOnBeginTask"
                        ng-model="project.preferences.assignOnBeginTask">
-                ${message(code:'is.product.preferences.sprint.assignOnBeginTask')}
+                ${message(code:'is.project.preferences.sprint.assignOnBeginTask')}
             </label>
         </div>
         <div class="form-half">
@@ -88,7 +88,7 @@
                        name="project.preferences.displayRecurrentTasks"
                        id="displayRecurrentTasks"
                        ng-model="project.preferences.displayRecurrentTasks">
-                ${message(code:'is.product.preferences.sprint.displayRecurrentTasks')}
+                ${message(code:'is.project.preferences.sprint.displayRecurrentTasks')}
             </label>
         </div>
     </div>
@@ -99,11 +99,11 @@
                        name="project.preferences.displayUrgentTasks"
                        id="displayUrgentTasks"
                        ng-model="project.preferences.displayUrgentTasks">
-                ${message(code:'is.product.preferences.sprint.displayUrgentTasks')}
+                ${message(code:'is.project.preferences.sprint.displayUrgentTasks')}
             </label>
         </div>
         <div class="form-half" ng-show="project.preferences.displayUrgentTasks">
-            <label for="limitUrgentTasks">${message(code:'is.product.preferences.sprint.limitUrgentTasks')}</label>
+            <label for="limitUrgentTasks">${message(code:'is.project.preferences.sprint.limitUrgentTasks')}</label>
             <input type="number"
                    class="form-control"
                    name="project.preferences.limitUrgentTasks"

@@ -130,7 +130,7 @@
                                     <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
                                 </button>
                                 <ul uib-dropdown-menu>
-                                    <li role="presentation" class="dropdown-header">${message(code: 'is.product')}</li>
+                                    <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>
                                     <g:each var="chart" in="${contextScope.charts.project}">
                                         <li><a href ng-click="openChart('project', '${chart.id}')">${message(code: chart.name)}</a></li>
                                     </g:each>
@@ -160,7 +160,7 @@
                         <h3 class="panel-title">
                             <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
                             <small class="pull-right">
-                                <g:link class="rss" uib-tooltip="${message(code: 'todo.is.ui.feed')}" mapping="${product.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[product:product.pkey,lang:lang]">
+                                <g:link class="rss" uib-tooltip="${message(code: 'todo.is.ui.feed')}" mapping="${project.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[project:project.pkey,lang:lang]">
                                     <i class="fa fa-rss fa-lg visible-on-hover"></i>
                                 </g:link>
                             </small>

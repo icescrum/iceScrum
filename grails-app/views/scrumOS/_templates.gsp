@@ -123,9 +123,9 @@
         <div class="text-muted">
             <div>{{currentUser.email}}</div>
             <div>{{currentUser.preferences.activity}}</div>
-            <g:if test="${product}">
+            <g:if test="${project}">
                 <div>
-                    <strong><is:displayRole product="${product}"/></strong>
+                    <strong><is:displayRole product="${project}"/></strong>
                 </div>
             </g:if>
             <entry:point id="user-profile-panel"/>

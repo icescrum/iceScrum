@@ -26,7 +26,7 @@
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
     <div class="row">
         <div class="col-sm-7 col-xs-7 form-group">
-            <label for="name">${message(code:'is.product.name')}</label>
+            <label for="name">${message(code:'is.project.name')}</label>
             <div class="input-group">
                 <input autofocus
                        name="name"
@@ -36,12 +36,12 @@
                        ng-model="project.name"
                        ng-change="nameChanged()"
                        ng-required="isCurrentStep(1)"
-                       ng-remote-validate-code="product.name.unique"
+                       ng-remote-validate-code="project.name.unique"
                        ng-remote-validate="{{ checkProjectPropertyUrl }}/name">
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
                         <a class="btn btn-model"
-                           uib-tooltip="{{project.preferences.hidden ? '${message(code: /is.product.preferences.project.hidden/)}' : '${message(code: /todo.is.ui.product.preferences.project.public/)}' }}"
+                           uib-tooltip="{{project.preferences.hidden ? '${message(code: /is.project.preferences.project.hidden/)}' : '${message(code: /todo.is.ui.project.preferences.project.public/)}' }}"
                            ng-model="project.preferences.hidden"
                            ng-click="project.preferences.hidden = !project.preferences.hidden;"
                            ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="col-sm-5 col-xs-5 form-group">
-            <label for="pkey">${message(code:'is.product.pkey')}</label>
+            <label for="pkey">${message(code:'is.project.pkey')}</label>
             <input name="pkey"
                    type="text"
                    capitalize
@@ -61,13 +61,13 @@
                    ng-model="project.pkey"
                    ng-pattern="/^[A-Z0-9]*$/"
                    ng-required="isCurrentStep(1)"
-                   ng-remote-validate-code="product.pkey.unique"
+                   ng-remote-validate-code="project.pkey.unique"
                    ng-remote-validate="{{ checkProjectPropertyUrl }}/pkey">
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12 form-group">
-            <label for="description">${message(code:'is.product.description')}</label>
+            <label for="description">${message(code:'is.project.description')}</label>
             <textarea is-markitup
                       name="project.description"
                       class="form-control"
