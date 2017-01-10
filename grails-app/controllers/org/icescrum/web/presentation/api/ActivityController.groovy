@@ -33,9 +33,9 @@ class ActivityController implements ControllerErrorHandler {
 
     def springSecurityService
 
-    @Secured('stakeHolder() or inProduct()')
-    def index(long fluxiableId, boolean all, long product, String type) {
-        def fluxiable = type == 'story' ? Story.withStory(product, fluxiableId) : Task.withTask(product, fluxiableId)
+    @Secured('stakeHolder() or inProject()')
+    def index(long fluxiableId, boolean all, long project, String type) {
+        def fluxiable = type == 'story' ? Story.withStory(project, fluxiableId) : Task.withTask(project, fluxiableId)
         def activities = fluxiable.activity
         if (!all) {
             def selectedActivities = activities.findAll { it.important }
@@ -46,4 +46,3 @@ class ActivityController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: activities as JSON)
     }
 }
-

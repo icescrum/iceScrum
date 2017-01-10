@@ -27,9 +27,9 @@ package org.icescrum.web.presentation
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.BuildSettingsHolder
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
-import org.icescrum.core.domain.preferences.ProductPreferences
+import org.icescrum.core.domain.preferences.ProjectPreferences
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.utils.ServicesUtils
@@ -40,7 +40,7 @@ class ScrumOSController implements ControllerErrorHandler {
 
     def messageSource
     def servletContext
-    def productService
+    def projectService
     def securityService
     def grailsApplication
     def uiDefinitionService
@@ -55,17 +55,17 @@ class ScrumOSController implements ControllerErrorHandler {
             context.indexScrumOS(context, user, securityService, springSecurityService)
         }
 
-        def products = user ? productService.getAllActiveProductsByUser(user).take(10) : []
-        def productsLimit = 9
-        def moreProductExist = products?.size() > productsLimit
-        def browsableProductsCount = request.admin ? Product.count() : ProductPreferences.countByHidden(false, [cache: true])
+        def projects = user ? projectService.getAllActiveProjectsByUser(user).take(10) : []
+        def projectsLimit = 9
+        def moreProjectExist = projects?.size() > projectsLimit
+        def browsableProjectsCount = request.admin ? Project.count() : ProjectPreferences.countByHidden(false, [cache: true])
 
         def attrs = [user                  : user,
                      lang                  : RCU.getLocale(request).toString().substring(0, 2),
                      context               : context,
-                     browsableProductsExist: browsableProductsCount > 0,
-                     moreProductsExist     : moreProductExist,
-                     productFilteredsList  : products.take(productsLimit)]
+                     browsableProjectsExist: browsableProjectsCount > 0,
+                     moreProjectsExist     : moreProjectExist,
+                     projectFilteredsList  : projects.take(projectsLimit)]
         if (context) {
             attrs."$context.name" = context.object
         }
@@ -128,26 +128,26 @@ class ScrumOSController implements ControllerErrorHandler {
         render(text: ServicesUtils.textileToHtml(data))
     }
 
-    def isSettings(Long product) {
+    def isSettings(Long project) {
         def projectMenus = []
-        def _product = product ? Product.get(product) : null
+        def _project = project ? Project.get(project) : null
         uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
-            if (windowDefinition.context == 'product') {
+            if (windowDefinition.context == 'project') {
                 projectMenus << [id: windowId, title: message(code: windowDefinition.menu?.title)]
             }
         }
         def menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
         menus?.each {
             if (it.id == 'project') {
-                it.title = _product.name
+                it.title = _project.name
             } else {
                 it.title = message(code: it.title)
             }
         }
-        def defaultView = product ? menus.find { it.position == 1 && it.visible }.id ?: 'project' : 'home'
+        def defaultView = project ? menus.find { it.position == 1 && it.visible }.id ?: 'project' : 'home'
         render(status: 200,
                 template: 'isSettings',
-                model: [product        : _product,
+                model: [project        : _project,
                         user           : springSecurityService.currentUser,
                         roles          : securityService.getRolesRequest(false),
                         i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),

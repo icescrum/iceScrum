@@ -35,7 +35,7 @@ class CommentController implements ControllerErrorHandler {
     def springSecurityService
     def activityService
 
-    @Secured('stakeHolder() or inProduct()')
+    @Secured('stakeHolder() or inProject()')
     def index() {
         def commentable = commentableObject
         if (commentable) {
@@ -45,7 +45,7 @@ class CommentController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('stakeHolder() or inProduct()')
+    @Secured('stakeHolder() or inProject()')
     def show() {
         if (!params.id) {
             returnError(code: 'is.comment.error.not.exist')
@@ -59,7 +59,7 @@ class CommentController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: comment as JSON)
     }
 
-    @Secured('((isAuthenticated() and stakeHolder()) or inProduct()) and !archivedProduct()')
+    @Secured('((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()')
     def save() {
         def poster = springSecurityService.currentUser
         def commentable = commentableObject
@@ -79,7 +79,7 @@ class CommentController implements ControllerErrorHandler {
         render(status: 201, contentType: 'application/json', text: comment as JSON)
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured('isAuthenticated() and !archivedProject()')
     def update() {
         if (params.id == null) {
             returnError(code: 'is.ui.backlogelement.comment.error.not.exists')
@@ -101,7 +101,7 @@ class CommentController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text:comment as JSON)
     }
 
-    @Secured('isAuthenticated() and !archivedProduct()')
+    @Secured('isAuthenticated() and !archivedProject()')
     def delete() {
         if (params.id == null) {
             returnError(code: 'is.ui.backlogelement.comment.error.not.exists')
@@ -128,14 +128,14 @@ class CommentController implements ControllerErrorHandler {
 
     private getCommentableObject(){
         def commentable
-        long product = params.long('product')
+        long project = params.long('project')
         long commentableId = params.long('commentable')
         switch (params.type){
             case 'story':
-                commentable = Story.getInProduct(product, commentableId).list()
+                commentable = Story.getInProject(project, commentableId).list()
                 break
             case 'task':
-                commentable = Task.getInProduct(product, commentableId)
+                commentable = Task.getInProject(project, commentableId)
                 break
             default:
                 commentable = null

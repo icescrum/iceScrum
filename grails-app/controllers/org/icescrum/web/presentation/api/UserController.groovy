@@ -33,7 +33,7 @@ import org.icescrum.components.FileUploadInfo
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Invitation
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
 import org.icescrum.core.support.ApplicationSupport
@@ -212,7 +212,7 @@ class UserController implements ControllerErrorHandler{
     @Secured(['isAuthenticated()'])
     def openProfile() {
         def user = springSecurityService.currentUser
-        render(status: 200, template: 'dialogs/profile', model: [user: user, projects: grailsApplication.config.icescrum.alerts.enable ? Product.findAllByRole(user, [BasePermission.WRITE, BasePermission.READ], [cache: true, max: 11], true, false) : null])
+        render(status: 200, template: 'dialogs/profile', model: [user: user, projects: grailsApplication.config.icescrum.alerts.enable ? Project.findAllByRole(user, [BasePermission.WRITE, BasePermission.READ], [cache: true, max: 11], true, false) : null])
     }
 
     //fake save method to force authentication when using rest service (with admin

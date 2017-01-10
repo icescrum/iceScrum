@@ -28,29 +28,29 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.Backlog
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.utils.ServicesUtils
 
-@Secured(['stakeHolder() or inProduct()'])
+@Secured(['stakeHolder() or inProject()'])
 class BacklogController implements ControllerErrorHandler {
 
     def springSecurityService
     def grailsApplication
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def index(long product) {
-        def backlogs = Backlog.findAllByProductAndShared(Product.load(product), true).findAll { it.isDefault }.sort { it.id }
+    @Secured(['stakeHolder() or inProject()'])
+    def index(long project) {
+        def backlogs = Backlog.findAllByProjectAndShared(Project.load(project), true).findAll { it.isDefault }.sort { it.id }
         render(status: 200, contentType: 'application/json', text: backlogs as JSON)
     }
 
-    @Secured('stakeHolder() or inProduct()')
-    def print(long product, long id, String format) {
-        def _product = Product.withProduct(product)
+    @Secured('stakeHolder() or inProject()')
+    def print(long project, long id, String format) {
+        def _project = Project.withProject(project)
         def backlog = Backlog.get(id)
-        def outputFileName = _product.name + '-' + message(code: backlog.name)
-        def stories = Story.search(product, JSON.parse(backlog.filter)).sort { Story story -> story.rank }
+        def outputFileName = _project.name + '-' + message(code: backlog.name)
+        def stories = Story.search(project, JSON.parse(backlog.filter)).sort { Story story -> story.rank }
         if (!stories) {
             returnError(code: 'is.report.error.no.data')
         } else {
@@ -67,18 +67,18 @@ class BacklogController implements ControllerErrorHandler {
                         feature      : it.feature?.name,
                 ]
             }
-            renderReport('backlog', format ? format.toUpperCase() : 'PDF', [[product: _product.name, stories: data ?: null]], outputFileName)
+            renderReport('backlog', format ? format.toUpperCase() : 'PDF', [[project: _project.name, stories: data ?: null]], outputFileName)
         }
     }
 
-    @Secured('stakeHolder() or inProduct()')
-    def printPostits(long product, long id) {
-        Product _product = Product.withProduct(product)
+    @Secured('stakeHolder() or inProject()')
+    def printPostits(long project, long id) {
+        Project _project = Project.withProject(project)
         def backlog = Backlog.get(id)
         def stories1 = []
         def stories2 = []
         def first = 0
-        def stories = Story.search(product, JSON.parse(backlog.filter)).sort { Story story -> story.rank }
+        def stories = Story.search(project, JSON.parse(backlog.filter)).sort { Story story -> story.rank }
         if (!stories) {
             returnError(code: 'is.report.error.no.data')
         } else {
@@ -92,18 +92,18 @@ class BacklogController implements ControllerErrorHandler {
                         description   : is.storyDescription([story: it, displayBR: true]),
                         notes         : ServicesUtils.textileToHtml(it.notes),
                         type          : message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.type]),
-                        suggestedDate : it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.suggestedDate]) : null,
-                        acceptedDate  : it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.acceptedDate]) : null,
-                        estimatedDate : it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.estimatedDate]) : null,
-                        plannedDate   : it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.plannedDate]) : null,
-                        inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.inProgressDate]) : null,
-                        doneDate      : it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _product.preferences.timezone, date: it.doneDate ?: null]) : null,
+                        suggestedDate : it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.suggestedDate]) : null,
+                        acceptedDate  : it.acceptedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.acceptedDate]) : null,
+                        estimatedDate : it.estimatedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.estimatedDate]) : null,
+                        plannedDate   : it.plannedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.plannedDate]) : null,
+                        inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.inProgressDate]) : null,
+                        doneDate      : it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.doneDate ?: null]) : null,
                         rank          : it.rank ?: null,
                         sprint        : it.parentSprint?.index ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.index : null,
                         creator       : it.creator.firstName + ' ' + it.creator.lastName,
                         feature       : it.feature?.name ?: null,
                         dependsOn     : it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
-                        permalink     : createLink(absolute: true, uri: '/' + _product.pkey + '-' + it.uid),
+                        permalink     : createLink(absolute: true, uri: '/' + _project.pkey + '-' + it.uid),
                         featureColor  : it.feature?.color ?: null,
                         nbTestsTocheck: testsByState[AcceptanceTest.AcceptanceTestState.TOCHECK],
                         nbTestsFailed : testsByState[AcceptanceTest.AcceptanceTestState.FAILED],
@@ -118,7 +118,7 @@ class BacklogController implements ControllerErrorHandler {
                 }
 
             }
-            renderReport('stories', 'PDF', [[product: _product.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], _product.name)
+            renderReport('stories', 'PDF', [[project: _project.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], _project.name)
         }
     }
 }

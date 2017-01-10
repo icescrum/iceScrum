@@ -105,7 +105,7 @@ class LoginController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [
                 user : u,
                 roles: securityService.getRolesRequest(true),
-                url  : u.preferences.lastProductOpened ? grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProductOpened + '/' : null
+                url  : u.preferences.lastProjectOpened ? grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProjectOpened + '/' : null
         ] as JSON)
     }
 

@@ -36,26 +36,26 @@ class AcceptanceTestController implements ControllerErrorHandler {
     def springSecurityService
     def acceptanceTestService
 
-    @Secured('(stakeHolder() or inProduct()) and !archivedProduct()')
-    def index(long product) {
-        def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(product, params.long('parentStory')) : AcceptanceTest.getAllInProduct(product)
+    @Secured('(stakeHolder() or inProject()) and !archivedProject()')
+    def index(long project) {
+        def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(project, params.long('parentStory')) : AcceptanceTest.getAllInProject(project)
         render(status: 200, contentType: 'application/json', text: acceptanceTests as JSON)
     }
 
-    @Secured('(stakeHolder() or inProduct()) and !archivedProduct()')
-    def show(long id, long product) {
-        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
+    @Secured('(stakeHolder() or inProject()) and !archivedProject()')
+    def show(long id, long project) {
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(project, id)
         render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def save(long product) {
+    @Secured('inProject() and !archivedProject()')
+    def save(long project) {
         def acceptanceTestParams = params.acceptanceTest
         if (!acceptanceTestParams) {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        def story = Story.withStory(product, acceptanceTestParams.parentStory.id.toLong())
+        def story = Story.withStory(project, acceptanceTestParams.parentStory.id.toLong())
         if (story.state >= Story.STATE_DONE) {
             returnError(code: 'is.acceptanceTest.error.save.storyState')
             return
@@ -86,14 +86,14 @@ class AcceptanceTestController implements ControllerErrorHandler {
         render(status: 201, contentType: 'application/json', text: acceptanceTest as JSON)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def update(long id, long product) {
+    @Secured('inProject() and !archivedProject()')
+    def update(long id, long project) {
         def acceptanceTestParams = params.acceptanceTest
         if (!acceptanceTestParams) {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(project, id)
         def story = acceptanceTest.parentStory
         if (story.state >= Story.STATE_DONE) {
             returnError(code: 'is.acceptanceTest.error.update.storyState')
@@ -123,9 +123,9 @@ class AcceptanceTestController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def delete(long id, long product) {
-        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(product, id)
+    @Secured('inProject() and !archivedProject()')
+    def delete(long id, long project) {
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(project, id)
         def deleted = [id: acceptanceTest.id, parentStory: [id: acceptanceTest.parentStory.id]]
         acceptanceTestService.delete(acceptanceTest)
         render(status: 200, contentType: 'application/json', text: deleted as JSON)

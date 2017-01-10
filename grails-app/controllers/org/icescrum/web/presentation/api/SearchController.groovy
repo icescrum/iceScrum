@@ -27,35 +27,35 @@ package org.icescrum.web.presentation.api
 import org.grails.taggable.Tag
 import grails.converters.JSON
 import org.icescrum.core.domain.BacklogElement
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.error.ControllerErrorHandler
 
-@Secured('inProduct() or (isAuthenticated() and stakeHolder())')
+@Secured('inProject() or (isAuthenticated() and stakeHolder())')
 class SearchController implements ControllerErrorHandler {
 
     def springSecurityService
 
-    def tag(long product) {
-        Product _product = Product.withProduct(product)
-        if ((_product.preferences.hidden && !request.inProduct) || (!_product.preferences.hidden && !springSecurityService.isLoggedIn())){
+    def tag(long project) {
+        Project _project = Project.withProject(project)
+        if ((_project.preferences.hidden && !request.inProject) || (!_project.preferences.hidden && !springSecurityService.isLoggedIn())){
             render (status:403, text:'')
             return
         }
-        String findTagsByTermAndProduct = """SELECT DISTINCT tagLink.tag.name
+        String findTagsByTermAndProject = """SELECT DISTINCT tagLink.tag.name
                    FROM org.grails.taggable.TagLink tagLink
                    WHERE (
-                            tagLink.tagRef IN (SELECT story.id From Story story where story.backlog.id = :product)
-                          OR tagLink.tagRef IN (SELECT feature.id From Feature feature where feature.backlog.id = :product)
+                            tagLink.tagRef IN (SELECT story.id From Story story where story.backlog.id = :project)
+                          OR tagLink.tagRef IN (SELECT feature.id From Feature feature where feature.backlog.id = :project)
                    )
                    AND tagLink.tag.name LIKE :term
                    ORDER BY tagLink.tag.name"""
 
-        String findTagsByTermAndProductInTasks = """SELECT DISTINCT tagLink.tag.name
+        String findTagsByTermAndProjectInTasks = """SELECT DISTINCT tagLink.tag.name
                    FROM Task task, org.grails.taggable.TagLink tagLink
                    WHERE task.id = tagLink.tagRef
                    AND tagLink.type = 'task'
-                   AND task.backlog.id IN (select sprint.id from Sprint sprint, Release release WHERE sprint.parentRelease.id = release.id AND release.parentProduct.id = :product)
+                   AND task.backlog.id IN (select sprint.id from Sprint sprint, Release release WHERE sprint.parentRelease.id = release.id AND release.parentProject.id = :project)
                    AND tagLink.tag.name LIKE :term
                    ORDER BY tagLink.tag.name"""
 
@@ -70,8 +70,8 @@ class SearchController implements ControllerErrorHandler {
             term = '%'
         }
 
-        def tags = Tag.executeQuery(findTagsByTermAndProduct, [term: term +'%', product: _product.id])
-        tags.addAll(Tag.executeQuery(findTagsByTermAndProductInTasks, [term: term +'%', product: _product.id]))
+        def tags = Tag.executeQuery(findTagsByTermAndProject, [term: term +'%', project: _project.id])
+        tags.addAll(Tag.executeQuery(findTagsByTermAndProjectInTasks, [term: term +'%', project: _project.id]))
         tags.unique()
 
         if (params.withKeyword) {

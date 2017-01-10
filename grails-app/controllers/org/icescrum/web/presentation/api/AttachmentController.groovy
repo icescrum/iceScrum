@@ -39,7 +39,7 @@ class AttachmentController implements ControllerErrorHandler {
     def springSecurityService
     def attachmentableService
 
-    @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
+    @Secured('(isAuthenticated() and stakeHolder()) or inProject()')
     def index() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
@@ -49,7 +49,7 @@ class AttachmentController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
+    @Secured('(isAuthenticated() and stakeHolder()) or inProject()')
     def show() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
@@ -76,7 +76,7 @@ class AttachmentController implements ControllerErrorHandler {
         response.status = HttpServletResponse.SC_NOT_FOUND
     }
 
-    @Secured('(isAuthenticated() and stakeHolder()) or inProduct()')
+    @Secured('(isAuthenticated() and stakeHolder()) or inProject()')
     def save() {
         def _attachmentable = getAttachmentableObject(params)
         def endOfUpload = { uploadInfo ->
@@ -112,23 +112,23 @@ class AttachmentController implements ControllerErrorHandler {
 
     private static getAttachmentableObject(def params) {
         def attachmentable
-        long product = params.long('product')
+        long project = params.long('project')
         long attachmentableId = params.long('attachmentable')
         switch (params.type){
             case 'story':
-                attachmentable = Story.getInProduct(product, attachmentableId).list()
+                attachmentable = Story.getInProject(project, attachmentableId).list()
                 break
             case 'task':
-                attachmentable = Task.getInProduct(product, attachmentableId)
+                attachmentable = Task.getInProject(project, attachmentableId)
                 break
             case 'feature':
-                attachmentable = Feature.getInProduct(product, attachmentableId).list()
+                attachmentable = Feature.getInProject(project, attachmentableId).list()
                 break
             case 'release':
-                attachmentable = Release.getInProduct(product, attachmentableId).list()
+                attachmentable = Release.getInProject(project, attachmentableId).list()
                 break
             case 'sprint':
-                attachmentable = Sprint.getInProduct(product, attachmentableId).list()
+                attachmentable = Sprint.getInProject(project, attachmentableId).list()
                 break
             default:
                 attachmentable = null

@@ -2,7 +2,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
@@ -11,7 +11,7 @@ import org.icescrum.core.error.ControllerErrorHandler
 class TeamController implements ControllerErrorHandler {
 
     def springSecurityService
-    def productService
+    def projectService
     def teamService
     def securityService
 
@@ -26,10 +26,10 @@ class TeamController implements ControllerErrorHandler {
         render(status: 200, text: teams as JSON, contentType: 'application/json')
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def show(long product) {
-        Product _product = Product.withProduct(product)
-        render(status: 200, text: _product.firstTeam as JSON, contentType: 'application/json')
+    @Secured(['stakeHolder() or inProject()'])
+    def show(long project) {
+        Project _project = Project.withProject(project)
+        render(status: 200, text: _project.firstTeam as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')
@@ -72,13 +72,13 @@ class TeamController implements ControllerErrorHandler {
                 team.name = teamParams.name
                 team.save()
             }
-            productService.updateTeamMembers(team, newMembers)
-            productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
+            projectService.updateTeamMembers(team, newMembers)
+            projectService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
             if (request.admin && newOwnerId && newOwnerId != team.owner.id) {
                 def newOwner = User.get(newOwnerId)
                 securityService.changeOwner(newOwner, team)
-                team.products.each { Product product ->
-                    securityService.changeOwner(newOwner, product)
+                team.projects.each { Project project ->
+                    securityService.changeOwner(newOwner, project)
                 }
             }
         }

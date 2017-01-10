@@ -36,28 +36,28 @@ class SprintController implements ControllerErrorHandler {
     def storyService
     def springSecurityService
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def index(long product, Long releaseId) {
-        Release release = releaseId ? Release.withRelease(product, releaseId) : Release.findCurrentOrNextRelease(product).list()[0]
+    @Secured(['stakeHolder() or inProject()'])
+    def index(long project, Long releaseId) {
+        Release release = releaseId ? Release.withRelease(project, releaseId) : Release.findCurrentOrNextRelease(project).list()[0]
         def sprints = release?.sprints ?: []
         render(status: 200, contentType: 'application/json', text: sprints as JSON)
     }
 
-    @Secured('inProduct()')
-    def show(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
+    @Secured('inProject()')
+    def show(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
         render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def save(long product) {
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def save(long project) {
         def sprintParams = params.sprint
         def releaseId = params.parentRelease?.id ?: sprintParams.parentRelease?.id
         if (!releaseId) {
             returnError(code: 'is.release.error.not.exist')
             return
         }
-        Release release = Release.withRelease(product, releaseId.toLong())
+        Release release = Release.withRelease(project, releaseId.toLong())
         if (sprintParams.startDate) {
             sprintParams.startDate = ServicesUtils.parseDateISO8601(sprintParams.startDate)
         }
@@ -72,10 +72,10 @@ class SprintController implements ControllerErrorHandler {
         render(status: 201, contentType: 'application/json', text: sprint as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def update(long product, long id) {
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def update(long project, long id) {
         def sprintParams = params.sprint
-        Sprint sprint = Sprint.withSprint(product, id)
+        Sprint sprint = Sprint.withSprint(project, id)
         def startDate = sprintParams.startDate ? ServicesUtils.parseDateISO8601(sprintParams.startDate) : sprint.startDate
         def endDate = sprintParams.endDate ? ServicesUtils.parseDateISO8601(sprintParams.endDate) : sprint.endDate
         Sprint.withTransaction {
@@ -85,21 +85,21 @@ class SprintController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def delete(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def delete(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
         sprintService.delete(sprint)
         render(status: 200, text: [id: id] as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def generateSprints(long product, long releaseId) {
-        Release release = Release.withRelease(product, releaseId)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def generateSprints(long project, long releaseId) {
+        Release release = Release.withRelease(project, releaseId)
         def sprints = sprintService.generateSprints(release)
         render(status: 200, contentType: 'application/json', text: sprints as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
     def autoPlan(Double capacity) {
         def sprints = Sprint.withSprints(params)
         storyService.autoPlan(sprints, capacity)
@@ -107,7 +107,7 @@ class SprintController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
     def unPlan() {
         def sprints = Sprint.withSprints(params)
         storyService.unPlanAll(sprints)
@@ -115,23 +115,23 @@ class SprintController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def activate(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def activate(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
         sprintService.activate(sprint)
         render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def close(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def close(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
         sprintService.close(sprint)
         render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def burndownRemaining(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
+    @Secured(['stakeHolder() or inProject()'])
+    def burndownRemaining(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
         def values = sprintService.sprintBurndownRemainingValues(sprint)
         def computedValues = [[key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
                                values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime]},
@@ -148,9 +148,9 @@ class SprintController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def burnupTasks(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
+    @Secured(['stakeHolder() or inProject()'])
+    def burnupTasks(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
         def values = sprintService.sprintBurnupTasksValues(sprint)
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasksDone.name"),
@@ -167,9 +167,9 @@ class SprintController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def burnupPoints(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
+    @Secured(['stakeHolder() or inProject()'])
+    def burnupPoints(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
@@ -186,9 +186,9 @@ class SprintController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def burnupStories(long product, long id) {
-        Sprint sprint = Sprint.withSprint(product, id)
+    @Secured(['stakeHolder() or inProject()'])
+    def burnupStories(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
                 [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),

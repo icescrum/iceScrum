@@ -28,25 +28,25 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Actor
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.error.ControllerErrorHandler
 
-@Secured('inProduct() or stakeHolder()')
+@Secured('inProject() or stakeHolder()')
 class ActorController implements ControllerErrorHandler {
 
     def actorService
     def springSecurityService
 
-    def index(long product) {
-        render(status: 200, text: Actor.search(product, params.term) as JSON, contentType: 'application/json')
+    def index(long project) {
+        render(status: 200, text: Actor.search(project, params.term) as JSON, contentType: 'application/json')
     }
 
-    def show(long id, long product) {
-        render(status: 200, text: Actor.withActor(product, id) as JSON, contentType: 'application/json')
+    def show(long id, long project) {
+        render(status: 200, text: Actor.withActor(project, id) as JSON, contentType: 'application/json')
     }
 
-    @Secured('productOwner() and !archivedProduct()')
-    def save(long product) {
+    @Secured('productOwner() and !archivedProject()')
+    def save(long project) {
         def actorParams = params.actor
         if (!actorParams) {
             returnError(code: 'todo.is.ui.no.data')
@@ -54,20 +54,20 @@ class ActorController implements ControllerErrorHandler {
         }
         Actor.withTransaction {
             Actor actor = new Actor(name: actorParams.name);
-            Product _product = Product.load(product)
-            actorService.save(actor, _product)
+            Project _project = Project.load(project)
+            actorService.save(actor, _project)
             render(status: 201, contentType: 'application/json', text: actor as JSON)
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
-    def update(long id, long product) {
+    @Secured('productOwner() and !archivedProject()')
+    def update(long id, long project) {
         def actorParams = params.actor
         if (!actorParams) {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        Actor actor = Actor.withActor(product, id)
+        Actor actor = Actor.withActor(project, id)
         Actor.withTransaction {
             actor.name = actorParams.name
             actorService.update(actor)
@@ -75,7 +75,7 @@ class ActorController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: actor as JSON)
     }
 
-    @Secured('productOwner() and !archivedProduct()')
+    @Secured('productOwner() and !archivedProject()')
     def delete() {
         List<Actor> actors = Actor.withActors(params)
         Actor.withTransaction {

@@ -33,13 +33,13 @@ class TaskController implements ControllerErrorHandler {
     def springSecurityService
     def taskService
 
-    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def index(long id, long product, String type) {
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
+    def index(long id, long project, String type) {
         def tasks
         if (type == 'story') {
-            tasks = Story.withStory(product, id).tasks
+            tasks = Story.withStory(project, id).tasks
         } else if (type == 'sprint') {
-            tasks = Sprint.withSprint(product, id).tasks
+            tasks = Sprint.withSprint(project, id).tasks
             if (params.context) {
                 tasks = tasks.findAll { Task task ->
                     if (params.context.type == 'tag') {
@@ -59,13 +59,13 @@ class TaskController implements ControllerErrorHandler {
     }
 
 
-    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def show(long id, long product) {
-        Task task = Task.withTask(product, id)
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
+    def show(long id, long project) {
+        Task task = Task.withTask(project, id)
         render(status: 200, contentType: 'application/json', text: task as JSON)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
+    @Secured('inProject() and !archivedProject()')
     def save() {
         def taskParams = params.task
         if (!taskParams) {
@@ -92,14 +92,14 @@ class TaskController implements ControllerErrorHandler {
         render(status: 201, contentType: 'application/json', text: task as JSON)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def update(long id, long product) {
+    @Secured('inProject() and !archivedProject()')
+    def update(long id, long project) {
         def taskParams = params.task
         if (!taskParams) {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        Task task = Task.withTask(product, id)
+        Task task = Task.withTask(project, id)
         User user = (User) springSecurityService.currentUser
         if (taskParams.estimation instanceof String) {
             try {
@@ -134,7 +134,7 @@ class TaskController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('inProduct() and !archivedProduct()')
+    @Secured('inProject() and !archivedProject()')
     def delete() {
         List<Task> tasks = Task.withTasks(params)
         User user = (User) springSecurityService.currentUser
@@ -147,16 +147,16 @@ class TaskController implements ControllerErrorHandler {
         render(status: 200, text: returnData as JSON)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def makeStory(long id, long product) {
-        Task task = Task.withTask(product, id)
+    @Secured('inProject() and !archivedProject()')
+    def makeStory(long id, long project) {
+        Task task = Task.withTask(project, id)
         taskService.makeStory(task)
         render(status: 204)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def take(long id, long product) {
-        Task task = Task.withTask(product, id)
+    @Secured('inProject() and !archivedProject()')
+    def take(long id, long project) {
+        Task task = Task.withTask(project, id)
         User user = (User) springSecurityService.currentUser
         Task.withTransaction {
             task.responsible = user
@@ -165,9 +165,9 @@ class TaskController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: task as JSON)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def unassign(long id, long product) {
-        Task task = Task.withTask(product, id)
+    @Secured('inProject() and !archivedProject()')
+    def unassign(long id, long project) {
+        Task task = Task.withTask(project, id)
         User user = (User) springSecurityService.currentUser
         if (task.responsible?.id != user.id) {
             returnError(code: 'is.task.error.unassign.not.responsible')
@@ -185,34 +185,34 @@ class TaskController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: task as JSON)
     }
 
-    @Secured('inProduct() and !archivedProduct()')
-    def copy(long id, long product) {
-        Task task = Task.withTask(product, id)
+    @Secured('inProject() and !archivedProject()')
+    def copy(long id, long project) {
+        Task task = Task.withTask(project, id)
         User user = (User) springSecurityService.currentUser
         def copiedTask = taskService.copy(task, user)
         render(status: 200, contentType: 'application/json', text: copiedTask as JSON)
     }
 
     @Secured('isAuthenticated()')
-    def listByUser(Long product) {
+    def listByUser(Long projectId) {
         def user = springSecurityService.currentUser
         def options = [max: 8]
         def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
-        def userTasks = product != null ? Task.findAllByResponsibleAndParentProductAndStateInList(user, Product.withProduct(product), taskStates, options)
+        def userTasks = projectId != null ? Task.findAllByResponsibleAndParentProjectAndStateInList(user, Project.withProject(projectId), taskStates, options)
                 : Task.findAllByResponsibleAndStateInList(user, taskStates, options)
         def tasksByProject = userTasks.groupBy {
-            it.parentProduct
+            it.parentProject
         }.collect { project, tasks ->
             [project: project, tasks: tasks]
         }
         render(status: 200, contentType: 'application/json', text: tasksByProject as JSON)
     }
 
-    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def permalink(int uid, long product) {
-        Product _product = Product.withProduct(product)
-        Task task = Task.findByParentProductAndUid(_product, uid)
-        String uri = "/p/$_product.pkey/#/"
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
+    def permalink(int uid, long project) {
+        Project _project = Project.withProject(project)
+        Task task = Task.findByParentProjectAndUid(_project, uid)
+        String uri = "/p/$_project.pkey/#/"
         if (task.backlog) {
             uri += "taskBoard/$task.backlog.id/task/$task.id"
         } else {
@@ -221,10 +221,10 @@ class TaskController implements ControllerErrorHandler {
         redirect(uri: uri)
     }
 
-    @Secured('inProduct() or (isAuthenticated() and stakeHolder())')
-    def colors(long product) {
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
+    def colors(long project) {
         def results = Task.createCriteria().list() {
-            eq("parentProduct.id", product)
+            eq("parentProject.id", project)
             projections {
                 groupProperty "color"
                 count "color", "colorSize"

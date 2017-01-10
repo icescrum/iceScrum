@@ -36,8 +36,8 @@ class StoryController implements ControllerErrorHandler {
     def springSecurityService
     def activityService
 
-    @Secured('stakeHolder() or inProduct()')
-    def index(long product, long typeId, String type) {
+    @Secured('stakeHolder() or inProject()')
+    def index(long project, long typeId, String type) {
         def options
         if (params.filter) {
             options = params.filter
@@ -70,7 +70,7 @@ class StoryController implements ControllerErrorHandler {
         }
         def stories
         try {
-            stories = Story.search(product, options).sort { Story story -> story.id }
+            stories = Story.search(project, options).sort { Story story -> story.id }
         } catch (RuntimeException e) {
             returnError(code: 'todo.is.ui.search.error', exception: e)
             return
@@ -78,29 +78,29 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, text: stories as JSON, contentType: 'application/json')
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
+    @Secured(['stakeHolder() or inProject()'])
     def show() {
         def stories = Story.withStories(params)
         def returnData = stories.size() > 1 ? stories : stories.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def save(long product) {
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
+    def save(long project) {
         def storyParams = params.story
         if (!storyParams) {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        Product _product = Product.withProduct(product)
-        entry.hook(id: 'story-save-before', model: [product: _product])
+        Project _project = Project.withProject(project)
+        entry.hook(id: 'story-save-before', model: [project: _project])
         def tasks = storyParams.remove('tasks')
         def acceptanceTests = storyParams.remove('acceptanceTests')
         Story story = new Story()
         Story.withTransaction {
             bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
             User user = (User) springSecurityService.currentUser
-            storyService.save(story, _product, user)
+            storyService.save(story, _project, user)
             story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
             tasks.each {
                 def task = new Task()
@@ -119,8 +119,8 @@ class StoryController implements ControllerErrorHandler {
         }
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def update(long product) {
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
+    def update(long project) {
         def stories = Story.withStories(params)
         def storyParams = params.story
         if (!storyParams) {
@@ -162,7 +162,7 @@ class StoryController implements ControllerErrorHandler {
                 // Independently manage the sprint change, manage the "null" value manually
                 def sprintId = storyParams.parentSprint == 'null' ? storyParams.parentSprint : storyParams.parentSprint?.id?.toLong()
                 if (sprintId instanceof Long && story.parentSprint?.id != sprintId) {
-                    def sprint = Sprint.withSprint(product, sprintId)
+                    def sprint = Sprint.withSprint(project, sprintId)
                     storyService.plan(sprint, story)
                 } else if (sprintId == "null") {
                     storyService.unPlan(story)
@@ -173,7 +173,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
     def delete() {
         def stories = Story.withStories(params)
         storyService.delete(stories, null, params.reason ? params.reason.replaceAll("(\r\n|\n)", "<br/>") : null)
@@ -181,7 +181,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
     def copy() {
         def stories = Story.withStories(params)
         def copiedStories = storyService.copy(stories)
@@ -190,10 +190,10 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['permitAll()'])
-    def permalink(int uid, long product) {
-        Product _product = Product.withProduct(product)
-        Story story = Story.findByBacklogAndUid(_product, uid)
-        String uri = "/p/$_product.pkey/#/"
+    def permalink(int uid, long project) {
+        Project _project = Project.withProject(project)
+        Story story = Story.findByBacklogAndUid(_project, uid)
+        String uri = "/p/$_project.pkey/#/"
         switch (story.state) {
             case Story.STATE_SUGGESTED:
                 uri += "backlog/sandbox/story/$story.id"
@@ -211,13 +211,13 @@ class StoryController implements ControllerErrorHandler {
         redirect(uri: uri)
     }
 
-    @Secured(['productOwner() and !archivedProduct()'])
-    def plan(long id, long product) {
+    @Secured(['productOwner() and !archivedProject()'])
+    def plan(long id, long project) {
         // Separate method to manage changing the rank and the state at the same time (too complicated to manage them properly in the update method)
-        def story = Story.withStory(product, id)
+        def story = Story.withStory(project, id)
         def storyParams = params.story
         def sprintId = storyParams.'parentSprint.id'?.toLong() ?: storyParams.parentSprint?.id?.toLong()
-        def sprint = Sprint.withSprint(product, sprintId)
+        def sprint = Sprint.withSprint(project, sprintId)
         if (!sprint) {
             returnError(code: 'is.sprint.error.not.exist')
             return
@@ -230,16 +230,16 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProduct()'])
-    def unPlan(long id, long product) {
-        def story = Story.withStory(product, id)
+    @Secured(['productOwner() and !archivedProject()'])
+    def unPlan(long id, long project) {
+        def story = Story.withStory(project, id)
         storyService.unPlan(story)
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProduct()'])
-    def shiftToNextSprint(long id, long product) {
-        def story = Story.withStory(product, id)
+    @Secured(['productOwner() and !archivedProject()'])
+    def shiftToNextSprint(long id, long project) {
+        def story = Story.withStory(project, id)
         def nextSprint = story.parentSprint.nextSprint
         if (!nextSprint) {
             returnError(code: 'is.sprint.error.not.exist')
@@ -249,7 +249,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProduct()'])
+    @Secured(['productOwner() and !archivedProject()'])
     def acceptToBacklog() {
         def stories = Story.withStories(params)
         def rank
@@ -265,7 +265,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProduct()'])
+    @Secured(['productOwner() and !archivedProject()'])
     def returnToSandbox() {
         def stories = Story.withStories(params)
         def rank
@@ -281,7 +281,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['(productOwner() or scrumMaster()) and !archivedProduct()'])
+    @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def done() {
         def stories = Story.withStories(params)
         storyService.done(stories)
@@ -289,7 +289,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['(productOwner() or scrumMaster()) and !archivedProduct()'])
+    @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def unDone() {
         def stories = Story.withStories(params)
         storyService.unDone(stories)
@@ -297,7 +297,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProduct()'])
+    @Secured(['productOwner() and !archivedProject()'])
     def acceptAsFeature() {
         def stories = Story.withStories(params)?.reverse()
         def features = storyService.acceptToFeature(stories)
@@ -305,7 +305,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProduct()'])
+    @Secured(['productOwner() and !archivedProject()'])
     def acceptAsTask() {
         def stories = Story.withStories(params)?.reverse()
         def tasks = storyService.acceptToUrgentTask(stories)
@@ -313,20 +313,20 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def findDuplicates(long product) {
-        Product _product = Product.withProduct(product)
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
+    def findDuplicates(long project) {
+        Project _project = Project.withProject(project)
         def stories
         def terms = params.term?.tokenize()?.findAll { it.size() >= 5 }
         if (terms) {
-            stories = Story.search(_product.id, [story: [term: terms], list: [max: 3]]).collect {
-                "<a href='${createLink(absolute: true, action: 'permalink', params: [product: _product.pkey, uid: it.uid])}'>$it.name</a>"
+            stories = Story.search(_project.id, [story: [term: terms], list: [max: 3]]).collect {
+                "<a href='${createLink(absolute: true, action: 'permalink', params: [project: _project.pkey, uid: it.uid])}'>$it.name</a>"
             }
         }
         render(status: 200, text: stories ? message(code: 'is.ui.story.duplicate') + ' ' + stories.join(" or ") : "")
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
     def follow() {
         def stories = Story.withStories(params)
         stories.each { Story story ->
@@ -344,19 +344,19 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def dependenceEntries(long id, long product) {
-        def story = Story.withStory(product, id)
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
+    def dependenceEntries(long id, long project) {
+        def story = Story.withStory(project, id)
         def stories = Story.findPossiblesDependences(story).list()?.sort { a -> a.feature == story.feature ? 0 : 1 }
         def storyEntries = stories.collect { [id: it.id, name: it.name, uid: it.uid] }
         render(status: 200, contentType: 'application/json', text: storyEntries as JSON)
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def sprintEntries(long product) {
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
+    def sprintEntries(long project) {
         def sprintEntries = []
-        Product _product = Product.withProduct(product)
-        def releases = Release.findAllByParentProductAndStateNotEqual(_product, Release.STATE_DONE)
+        Project _project = Project.withProject(project)
+        def releases = Release.findAllByParentProjectAndStateNotEqual(_project, Release.STATE_DONE)
         if (releases) {
             Sprint.findAllByStateNotEqualAndParentReleaseInList(Sprint.STATE_DONE, releases).groupBy {
                 it.parentRelease
@@ -369,15 +369,15 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: sprintEntries as JSON)
     }
 
-    @Secured(['isAuthenticated() && (stakeHolder() or inProduct()) and !archivedProduct()'])
-    def listByField(long product, String field) {
-        Product _product = Product.withProduct(product)
-        def productStories = _product.stories;
+    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
+    def listByField(long project, String field) {
+        Project _project = Project.withProject(project)
+        def projectStories = _project.stories;
         def groupedStories = [:]
         if (field == "effort") {
-            groupedStories = productStories.groupBy { it.effort }
+            groupedStories = projectStories.groupBy { it.effort }
         } else if (field == "value") {
-            groupedStories = productStories.groupBy { it.value }
+            groupedStories = projectStories.groupBy { it.value }
         }
         def fieldValues = []
         def stories = []

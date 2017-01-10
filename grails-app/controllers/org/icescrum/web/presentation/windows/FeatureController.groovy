@@ -27,19 +27,19 @@ package org.icescrum.web.presentation.windows
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
 
-@Secured('inProduct() or stakeHolder()')
+@Secured('inProject() or stakeHolder()')
 class FeatureController implements ControllerErrorHandler {
 
     def featureService
     def springSecurityService
     def grailsApplication
 
-    def index(long product) {
-        def features = Feature.searchAllByTermOrTag(product, params.term).sort { Feature feature -> feature.rank }
+    def index(long project) {
+        def features = Feature.searchAllByTermOrTag(project, params.term).sort { Feature feature -> feature.rank }
         render(status: 200, text: features as JSON, contentType: 'application/json')
     }
 
@@ -50,8 +50,8 @@ class FeatureController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured('productOwner() and !archivedProduct()')
-    def save(long product) {
+    @Secured('productOwner() and !archivedProject()')
+    def save(long project) {
         def featureParams = params.feature
         if (!featureParams) {
             returnError(code: 'todo.is.ui.no.data')
@@ -61,14 +61,14 @@ class FeatureController implements ControllerErrorHandler {
         Feature.withTransaction {
             bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
             feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
-            def _product = Product.load(product)
-            featureService.save(feature, _product)
+            def _project = Project.load(project)
+            featureService.save(feature, _project)
             entry.hook(id: "${controllerName}-${actionName}", model: [feature: feature]) // TODO check if still needed
             render(status: 201, contentType: 'application/json', text: feature as JSON)
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
+    @Secured('productOwner() and !archivedProject()')
     def update() {
         List<Feature> features = Feature.withFeatures(params)
         def featureParams = params.feature
@@ -90,7 +90,7 @@ class FeatureController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured('productOwner() and !archivedProduct()')
+    @Secured('productOwner() and !archivedProject()')
     def delete() {
         Feature.withTransaction {
             def features = Feature.withFeatures(params)
@@ -102,7 +102,7 @@ class FeatureController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('productOwner() and !archivedProduct()')
+    @Secured('productOwner() and !archivedProject()')
     def copyToBacklog() {
         List<Feature> features = Feature.withFeatures(params)
         List<Story> stories = featureService.copyToBacklog(features)
@@ -110,15 +110,15 @@ class FeatureController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    def productParkingLotChart() {
-        forward(controller: 'project', action: 'productParkingLotChart', params: ['controllerName': controllerName])
+    def projectParkingLotChart() {
+        forward(controller: 'project', action: 'projectParkingLotChart', params: ['controllerName': controllerName])
     }
 
     @Secured('isAuthenticated()')
-    def print(long product, String format) {
-        def _product = Product.withProduct(product)
-        def values = featureService.productParkingLotValues(_product)
-        def features = _product.features
+    def print(long project, String format) {
+        def _project = Project.withProject(project)
+        def values = featureService.projectParkingLotValues(_project)
+        def features = _project.features
         if (!features) {
             returnError(code: 'is.report.error.no.data')
         } else {
@@ -140,14 +140,14 @@ class FeatureController implements ControllerErrorHandler {
                     ]
                 }
             }
-            renderReport('features', format ? format.toUpperCase() : 'PDF', [[product: _product.name, features: data ?: null]], _product.name)
+            renderReport('features', format ? format.toUpperCase() : 'PDF', [[project: _project.name, features: data ?: null]], _project.name)
         }
     }
 
     @Secured(['permitAll()'])
-    def permalink(int uid, long product) {
-        Product _product = Product.withProduct(product)
-        Feature feature = Feature.findByBacklogAndUid(_product, uid)
-        redirect(uri: "/p/$_product.pkey/#/feature/$feature.id")
+    def permalink(int uid, long project) {
+        Project _project = Project.withProject(project)
+        Feature feature = Feature.findByBacklogAndUid(_project, uid)
+        redirect(uri: "/p/$_project.pkey/#/feature/$feature.id")
     }
 }

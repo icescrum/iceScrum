@@ -33,17 +33,17 @@ import groovy.xml.MarkupBuilder
 import org.apache.commons.io.FilenameUtils
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.*
-import org.icescrum.core.domain.preferences.ProductPreferences
+import org.icescrum.core.domain.preferences.ProjectPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.ServicesUtils
 
-@Secured('stakeHolder() or inProduct()')
+@Secured('stakeHolder() or inProject()')
 class ProjectController implements ControllerErrorHandler {
 
-    def productService
+    def projectService
     def sprintService
     def teamService
     def releaseService
@@ -61,48 +61,48 @@ class ProjectController implements ControllerErrorHandler {
             options.sort = sorting ?: 'name'
             options.order = order ?: 'asc'
         }
-        def projects = Product.findAllByTermAndFilter(options, term, filter)
+        def projects = Project.findAllByTermAndFilter(options, term, filter)
         def returnData = paginate ? [projects: projects, count: projects.totalCount] : projects
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def show(long product) {
-        Product _product = Product.withProduct(product)
-        render(status: 200, contentType: 'application/json', text: _product as JSON)
+    def show(long project) {
+        Project _project = Project.withProject(project)
+        render(status: 200, contentType: 'application/json', text: _project as JSON)
     }
 
     @Secured(['isAuthenticated()'])
     def save() {
-        def teamParams = params.product?.remove('team')
-        def productPreferencesParams = params.product?.remove('preferences')
-        def productParams = params.remove('product')
+        def teamParams = params.project?.remove('team')
+        def projectPreferencesParams = params.project?.remove('preferences')
+        def projectParams = params.remove('project')
 
-        if (!productParams || !teamParams) {
+        if (!projectParams || !teamParams) {
             returnError(code: 'todo.is.ui.no.data')
         }
 
-        productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate)
-        productParams.endDate = ServicesUtils.parseDateISO8601(productParams.endDate)
-        if (productParams.firstSprint) {
-            productParams.firstSprint = ServicesUtils.parseDateISO8601(productParams.firstSprint)
+        projectParams.startDate = ServicesUtils.parseDateISO8601(projectParams.startDate)
+        projectParams.endDate = ServicesUtils.parseDateISO8601(projectParams.endDate)
+        if (projectParams.firstSprint) {
+            projectParams.firstSprint = ServicesUtils.parseDateISO8601(projectParams.firstSprint)
         }
 
-        if (productPreferencesParams.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-            productPreferencesParams.hidden = false
+        if (projectPreferencesParams.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+            projectPreferencesParams.hidden = false
         }
 
-        if (productParams.initialize && (productParams.firstSprint?.before(productParams.startDate) || productParams.firstSprint?.after(productParams.endDate) || productParams.firstSprint == productParams.endDate)) {
-            returnError(code: 'is.product.error.firstSprint')
+        if (projectParams.initialize && (projectParams.firstSprint?.before(projectParams.startDate) || projectParams.firstSprint?.after(projectParams.endDate) || projectParams.firstSprint == projectParams.endDate)) {
+            returnError(code: 'is.project.error.firstSprint')
             return
         }
 
         def team
-        def product = new Product()
-        product.preferences = new ProductPreferences()
-        Product.withTransaction {
-            bindData(product, productParams, [include: ['name', 'description', 'startDate', 'endDate', 'pkey']])
-            bindData(product.preferences, productPreferencesParams, [exclude: ['archived']])
+        def project = new Project()
+        project.preferences = new ProjectPreferences()
+        Project.withTransaction {
+            bindData(project, projectParams, [include: ['name', 'description', 'startDate', 'endDate', 'pkey']])
+            bindData(project.preferences, projectPreferencesParams, [exclude: ['archived']])
             if (!teamParams?.id) {
                 team = new Team()
                 bindData(team, teamParams, [include: ['name']])
@@ -111,101 +111,101 @@ class ProjectController implements ControllerErrorHandler {
                 def invitedMembers = teamParams.invitedMembers ? teamParams.invitedMembers.list('email') : []
                 def invitedScrumMasters = teamParams.invitedScrumMasters ? teamParams.invitedScrumMasters.list('email') : []
                 if (!scrumMasters && !members) {
-                    returnError(code: 'is.product.error.noMember')
+                    returnError(code: 'is.project.error.noMember')
                     return
                 }
                 teamService.save(team, members, scrumMasters)
-                productService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
+                projectService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
             } else {
                 team = Team.withTeam(teamParams.long('id'))
             }
-            def productOwners = productParams.productOwners ? productParams.productOwners.list('id').collect { it.toLong() } : []
-            def stakeHolders = productParams.stakeHolders ? productParams.stakeHolders.list('id').collect { it.toLong() } : []
-            def invitedProductOwners = productParams.invitedProductOwners ? productParams.invitedProductOwners.list('email') : []
-            def invitedStakeHolders = productParams.invitedStakeHolders ? productParams.invitedStakeHolders.list('email') : []
-            productService.save(product, productOwners, stakeHolders)
-            productService.manageProductInvitations(product, invitedProductOwners, invitedStakeHolders)
-            productService.addTeamToProduct(product, team)
-            if (productParams.initialize) {
-                def release = new Release(name: "Release 1", vision: productParams.vision, startDate: product.startDate, endDate: product.endDate)
-                releaseService.save(release, product)
-                sprintService.generateSprints(release, productParams.firstSprint)
+            def productOwners = projectParams.productOwners ? projectParams.productOwners.list('id').collect { it.toLong() } : []
+            def stakeHolders = projectParams.stakeHolders ? projectParams.stakeHolders.list('id').collect { it.toLong() } : []
+            def invitedProductOwners = projectParams.invitedProductOwners ? projectParams.invitedProductOwners.list('email') : []
+            def invitedStakeHolders = projectParams.invitedStakeHolders ? projectParams.invitedStakeHolders.list('email') : []
+            projectService.save(project, productOwners, stakeHolders)
+            projectService.manageProjectInvitations(project, invitedProductOwners, invitedStakeHolders)
+            projectService.addTeamToProject(project, team)
+            if (projectParams.initialize) {
+                def release = new Release(name: "Release 1", vision: projectParams.vision, startDate: project.startDate, endDate: project.endDate)
+                releaseService.save(release, project)
+                sprintService.generateSprints(release, projectParams.firstSprint)
             }
         }
-        render(status: 201, contentType: 'application/json', text: product as JSON)
+        render(status: 201, contentType: 'application/json', text: project as JSON)
     }
 
-    @Secured('scrumMaster() and !archivedProduct()')
-    def update(long product) {
-        Product _product = Product.withProduct(product)
-        def productPreferencesParams = params.productd?.remove('preferences')
-        def productParams = params.productd
-        Product.withTransaction {
-            productParams.startDate = ServicesUtils.parseDateISO8601(productParams.startDate);
-            bindData(_product, productParams, [include: ['name', 'description', 'startDate', 'pkey', 'planningPokerGameType']])
-            bindData(_product.preferences, productPreferencesParams, [exclude: ['archived']])
-            if (!productPreferencesParams?.stakeHolderRestrictedViews) {
-                _product.preferences.stakeHolderRestrictedViews = null
+    @Secured('scrumMaster() and !archivedProject()')
+    def update(long project) {
+        Project _project = Project.withProject(project)
+        def projectPreferencesParams = params.projectd?.remove('preferences')
+        def projectParams = params.projectd
+        Project.withTransaction {
+            projectParams.startDate = ServicesUtils.parseDateISO8601(projectParams.startDate);
+            bindData(_project, projectParams, [include: ['name', 'description', 'startDate', 'pkey', 'planningPokerGameType']])
+            bindData(_project.preferences, projectPreferencesParams, [exclude: ['archived']])
+            if (!projectPreferencesParams?.stakeHolderRestrictedViews) {
+                _project.preferences.stakeHolderRestrictedViews = null
             }
-            productService.update(_product, _product.preferences.isDirty('hidden'), _product.isDirty('pkey') ? _product.getPersistentValue('pkey') : null)
-            entry.hook(id: "project-update", model: [product: _product])
-            render(status: 200, contentType: 'application/json', text: _product as JSON)
+            projectService.update(_project, _project.preferences.isDirty('hidden'), _project.isDirty('pkey') ? _project.getPersistentValue('pkey') : null)
+            entry.hook(id: "project-update", model: [project: _project])
+            render(status: 200, contentType: 'application/json', text: _project as JSON)
         }
     }
 
     @Secured(['owner()'])
-    def delete(long product) {
+    def delete(long project) {
         try {
-            Product _product = Product.withProduct(product)
-            productService.delete(_product)
-            render(status: 200, contentType: 'application/json', text: [class: 'Product', id: product] as JSON)
+            Project _project = Project.withProject(project)
+            projectService.delete(_project)
+            render(status: 200, contentType: 'application/json', text: [class: 'Project', id: project] as JSON)
         } catch (RuntimeException re) {
-            returnError(code: 'is.product.error.not.deleted', exception: re)
+            returnError(code: 'is.project.error.not.deleted', exception: re)
         }
     }
 
-    @Secured(['scrumMaster() and !archivedProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
-    def updateTeam(long product) {
+    @Secured(['scrumMaster() and !archivedProject()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    def updateTeam(long project) {
         // Param extraction
-        def teamParams = params.productd?.remove('team')
-        def productParams = params.remove('productd')
-        def productOwners = productParams.productOwners ? productParams.productOwners.list('id').collect { it.toLong() } : []
-        def stakeHolders = productParams.stakeHolders ? productParams.stakeHolders.list('id').collect { it.toLong() } : []
-        def invitedProductOwners = productParams.invitedProductOwners ? productParams.invitedProductOwners.list('email') : []
-        def invitedStakeHolders = productParams.invitedStakeHolders ? productParams.invitedStakeHolders.list('email') : []
+        def teamParams = params.projectd?.remove('team')
+        def projectParams = params.remove('projectd')
+        def productOwners = projectParams.productOwners ? projectParams.productOwners.list('id').collect { it.toLong() } : []
+        def stakeHolders = projectParams.stakeHolders ? projectParams.stakeHolders.list('id').collect { it.toLong() } : []
+        def invitedProductOwners = projectParams.invitedProductOwners ? projectParams.invitedProductOwners.list('email') : []
+        def invitedStakeHolders = projectParams.invitedStakeHolders ? projectParams.invitedStakeHolders.list('email') : []
         assert !stakeHolders.intersect(productOwners)
         // Compute roles
         def newMembers = []
         productOwners.each { newMembers << [id: it, role: Authority.PRODUCTOWNER] }
         stakeHolders.each { newMembers << [id: it, role: Authority.STAKEHOLDER] }
-        // Update product & team
-        Product _product = Product.withProduct(product)
-        _product.withTransaction {
+        // Update project & team
+        Project _project = Project.withProject(project)
+        _project.withTransaction {
             def teamId = teamParams.id
-            if (teamId != _product.firstTeam.id && securityService.owner(null, springSecurityService.authentication)) {
-                productService.changeTeam(_product, Team.get(teamId))
+            if (teamId != _project.firstTeam.id && securityService.owner(null, springSecurityService.authentication)) {
+                projectService.changeTeam(_project, Team.get(teamId))
             }
-            productService.updateProductMembers(_product, newMembers)
-            productService.manageProductInvitations(_product, invitedProductOwners, invitedStakeHolders)
+            projectService.updateProjectMembers(_project, newMembers)
+            projectService.manageProjectInvitations(_project, invitedProductOwners, invitedStakeHolders)
         }
-        render(status: 200, contentType: 'application/json', text: _product as JSON)
+        render(status: 200, contentType: 'application/json', text: _project as JSON)
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def feed(long product) {
+    @Secured(['stakeHolder() or inProject()'])
+    def feed(long project) {
         //todo make cache
-        Product _product = Product.withProduct(product)
-        def activities = Activity.recentProductActivity(_product)
-        activities.addAll(Activity.recentStoryActivity(_product))
+        Project _project = Project.withProject(project)
+        def activities = Activity.recentProjectActivity(_project)
+        activities.addAll(Activity.recentStoryActivity(_project))
         activities = activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
         def builder = new FeedBuilder()
-        builder.feed(description: "${_product.description ?: ''}", title: "$_product.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}") {
+        builder.feed(description: "${_project.description ?: ''}", title: "$_project.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [project: _project.pkey])}") {
             activities.each() { a ->
                 entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.label.encodeAsHTML()}") { e ->
                     if (a.code == Activity.CODE_DELETE) {
-                        e.link = "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [product: _product.pkey])}"
+                        e.link = "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [project: _project.pkey])}"
                     } else {
-                        e.link = "${createLink(absolute: true, uri: '/' + _product.pkey + '-' + Story.get(a.parentRef).uid)}"
+                        e.link = "${createLink(absolute: true, uri: '/' + _project.pkey + '-' + Story.get(a.parentRef).uid)}"
                     }
                     e.publishedDate = a.dateCreated
                 }
@@ -217,166 +217,166 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['permitAll()'])
-    def available(long product, String property) {
+    def available(long project, String property) {
         def result = false
         //test for name
         if (property == 'name') {
-            result = request.JSON.value && (product ? Product.countByNameAndIdNotEqual(request.JSON.value, product) : Product.countByName(request.JSON.value)) == 0
+            result = request.JSON.value && (project ? Project.countByNameAndIdNotEqual(request.JSON.value, project) : Project.countByName(request.JSON.value)) == 0
             //test for pkey
         } else if (property == 'pkey') {
-            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && (product ? Product.countByPkeyAndId(request.JSON.value, product) : Product.countByPkey(request.JSON.value)) == 0
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && (project ? Project.countByPkeyAndId(request.JSON.value, project) : Project.countByPkey(request.JSON.value)) == 0
         }
         render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
     }
 
     @Secured(['scrumMaster() or productOwner()'])
-    def export(long product) {
-        Product _product = Product.withProduct(product)
+    def export(long project) {
+        Project _project = Project.withProject(project)
         session.progress = new ProgressSupport()
         if (params.zip) {
-            def projectName = "${_product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+            def projectName = "${_project.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
             ['Content-disposition': "attachment;filename=\"${projectName + '.zip'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
                 response.setHeader(k, v)
             }
             response.contentType = 'application/zip'
-            ApplicationSupport.exportProductZIP(_product, response.outputStream)
+            ApplicationSupport.exportProjectZIP(_project, response.outputStream)
         } else {
-            render(text: exportProductXML(_product), contentType: "text/xml")
+            render(text: exportProjectXML(_project), contentType: "text/xml")
         }
         session.progress.completeProgress(message(code: 'todo.is.ui.progress.complete'))
     }
 
     @Secured('scrumMaster()')
-    def archive(long product) {
-        Product _product = Product.withProduct(product)
+    def archive(long project) {
+        Project _project = Project.withProject(project)
         try {
-            productService.archive(_product)
-            render(status: 200, contentType: 'application/json', text: [class: 'Product', id: _product.id] as JSON)
+            projectService.archive(_project)
+            render(status: 200, contentType: 'application/json', text: [class: 'Project', id: _project.id] as JSON)
         } catch (RuntimeException re) {
-            returnError(code: 'is.product.error.not.archived', exception: re)
+            returnError(code: 'is.project.error.not.archived', exception: re)
         }
     }
 
     @Secured("ROLE_ADMIN")
-    def unArchive(long product) {
-        Product _product = Product.withProduct(product)
+    def unArchive(long project) {
+        Project _project = Project.withProject(project)
         try {
-            productService.unArchive(_product)
-            render(status: 200, contentType: 'application/json', text: [class: 'Product', id: _product.id] as JSON)
+            projectService.unArchive(_project)
+            render(status: 200, contentType: 'application/json', text: [class: 'Project', id: _project.id] as JSON)
         } catch (RuntimeException re) {
-            returnError(code: 'is.product.error.not.archived', exception: re)
+            returnError(code: 'is.project.error.not.archived', exception: re)
         }
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def versions(long product) {
-        Product _product = Product.withProduct(product)
-        render(_product.getVersions(false, true) as JSON)
+    @Secured(['stakeHolder() or inProject()'])
+    def versions(long project) {
+        Project _project = Project.withProject(project)
+        render(_project.getVersions(false, true) as JSON)
     }
 
     // Cannot end with Flow because of f*cked up filter in SpringSecurity (AnnotationFilterInvocationDefinition.java:256)
-    def flowCumulative(long product) {
-        Product _product = Product.withProduct(product)
-        def values = productService.cumulativeFlowValues(_product)
-        def computedValues = [[key   : message(code: "is.chart.productCumulativeflow.serie.suggested.name"),
+    def flowCumulative(long project) {
+        Project _project = Project.withProject(project)
+        def values = projectService.cumulativeFlowValues(_project)
+        def computedValues = [[key   : message(code: "is.chart.projectCumulativeflow.serie.suggested.name"),
                                values: values.collect { return [it.suggested] },
                                color : '#AAAAAA'],
-                              [key   : message(code: "is.chart.productCumulativeflow.serie.accepted.name"),
+                              [key   : message(code: "is.chart.projectCumulativeflow.serie.accepted.name"),
                                values: values.collect { return [it.accepted] },
                                color : '#FFCC04'],
-                              [key   : message(code: "is.chart.productCumulativeflow.serie.estimated.name"),
+                              [key   : message(code: "is.chart.projectCumulativeflow.serie.estimated.name"),
                                values: values.collect { return [it.estimated] },
                                color : '#FF9933'],
-                              [key   : message(code: "is.chart.productCumulativeflow.serie.planned.name"),
+                              [key   : message(code: "is.chart.projectCumulativeflow.serie.planned.name"),
                                values: values.collect { return [it.planned] },
                                color : '#CC3300'],
-                              [key   : message(code: "is.chart.productCumulativeflow.serie.inprogress.name"),
+                              [key   : message(code: "is.chart.projectCumulativeflow.serie.inprogress.name"),
                                values: values.collect { return [it.inprogress] },
                                color : '#42A9E0'],
-                              [key   : message(code: "is.chart.productCumulativeflow.serie.done.name"),
+                              [key   : message(code: "is.chart.projectCumulativeflow.serie.done.name"),
                                values: values.collect { return [it.done] },
                                color : '#009900']].reverse()
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.productCumulativeflow.xaxis.label')]],
-                       title: [text: message(code: "is.chart.productCumulativeflow.title")]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectCumulativeflow.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.projectCumulativeflow.xaxis.label')]],
+                       title: [text: message(code: "is.chart.projectCumulativeflow.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
-    def velocityCapacity(long product) {
-        Product _product = Product.withProduct(product)
-        def values = productService.productVelocityCapacityValues(_product)
-        def computedValues = [[key   : message(code: "is.chart.productVelocityCapacity.serie.velocity.name"),
+    def velocityCapacity(long project) {
+        Project _project = Project.withProject(project)
+        def values = projectService.projectVelocityCapacityValues(_project)
+        def computedValues = [[key   : message(code: "is.chart.projectVelocityCapacity.serie.velocity.name"),
                                values: values.collect { return [it.capacity] },
                                color : '#009900'],
-                              [key   : message(code: "is.chart.productVelocityCapacity.serie.capacity.name"),
+                              [key   : message(code: "is.chart.projectVelocityCapacity.serie.capacity.name"),
                                values: values.collect { return [it.velocity] },
                                color : '#1C3660']]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.productVelocityCapacity.xaxis.label')]],
-                       title: [text: message(code: "is.chart.productVelocityCapacity.title")]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectVelocityCapacity.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.projectVelocityCapacity.xaxis.label')]],
+                       title: [text: message(code: "is.chart.projectVelocityCapacity.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
-    @Secured('stakeHolder(#product) or inProduct(#product)')
-    def burnup(long product) {
-        Product _product = Product.withProduct(product)
-        def values = productService.productBurnupValues(_product)
-        def computedValues = [[key   : message(code: "is.chart.productBurnUp.serie.all.name"),
+    @Secured('stakeHolder(#project) or inProject(#project)')
+    def burnup(long project) {
+        Project _project = Project.withProject(project)
+        def values = projectService.projectBurnupValues(_project)
+        def computedValues = [[key   : message(code: "is.chart.projectBurnUp.serie.all.name"),
                                values: values.collect { return [it.all] },
                                color : '#1C3660'],
-                              [key   : message(code: "is.chart.productBurnUp.serie.done.name"),
+                              [key   : message(code: "is.chart.projectBurnUp.serie.done.name"),
                                values: values.collect { return [it.done] },
                                color : '#009900']]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnUp.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.productBurnUp.xaxis.label')]],
-                       title: [text: message(code: "is.chart.productBurnUp.title")]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectBurnUp.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.projectBurnUp.xaxis.label')]],
+                       title: [text: message(code: "is.chart.projectBurnUp.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
-    def burndown(long product) {
-        Product _product = Product.withProduct(product)
-        def values = productService.productBurndownValues(_product)
-        def computedValues = [[key   : message(code: 'is.chart.productBurnDown.series.userstories.name'),
+    def burndown(long project) {
+        Project _project = Project.withProject(project)
+        def values = projectService.projectBurndownValues(_project)
+        def computedValues = [[key   : message(code: 'is.chart.projectBurnDown.series.userstories.name'),
                                values: values.collect { return [it.userstories] },
                                color : '#009900'],
-                              [key   : message(code: 'is.chart.productBurnDown.series.technicalstories.name'),
+                              [key   : message(code: 'is.chart.projectBurnDown.series.technicalstories.name'),
                                values: values.collect { return [it.technicalstories] },
                                color : '#1F77B4'],
-                              [key   : message(code: 'is.chart.productBurnDown.series.defectstories.name'),
+                              [key   : message(code: 'is.chart.projectBurnDown.series.defectstories.name'),
                                values: values.collect { return [it.defectstories] },
                                color : '#CC3300']]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productBurnDown.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.productBurnDown.xaxis.label')]],
-                       title: [text: message(code: "is.chart.productBurnDown.title")]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectBurnDown.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.projectBurnDown.xaxis.label')]],
+                       title: [text: message(code: "is.chart.projectBurnDown.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
-    def velocity(long product) {
-        Product _product = Product.withProduct(product)
-        def values = productService.productVelocityValues(_product)
-        def computedValues = [[key   : message(code: 'is.chart.productVelocity.series.userstories.name'),
+    def velocity(long project) {
+        Project _project = Project.withProject(project)
+        def values = projectService.projectVelocityValues(_project)
+        def computedValues = [[key   : message(code: 'is.chart.projectVelocity.series.userstories.name'),
                                values: values.collect { return [it.userstories] },
                                color : '#009900'],
-                              [key   : message(code: 'is.chart.productVelocity.series.technicalstories.name'),
+                              [key   : message(code: 'is.chart.projectVelocity.series.technicalstories.name'),
                                values: values.collect { return [it.technicalstories] },
                                color : '#1F77B4'],
-                              [key   : message(code: 'is.chart.productVelocity.series.defectstories.name'),
+                              [key   : message(code: 'is.chart.projectVelocity.series.defectstories.name'),
                                values: values.collect { return [it.defectstories] },
                                color : '#CC3300']]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productVelocity.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.productVelocity.xaxis.label')]],
-                       title: [text: message(code: "is.chart.productVelocity.title")]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectVelocity.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.projectVelocity.xaxis.label')]],
+                       title: [text: message(code: "is.chart.projectVelocity.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
-    def parkingLot(long product) {
-        Product _product = Product.withProduct(product)
-        def values = featureService.productParkingLotValues(_product)
-        def computedValues = [[key   : message(code: "is.chart.productParkinglot.serie.name"),
+    def parkingLot(long project) {
+        Project _project = Project.withProject(project)
+        def values = featureService.projectParkingLotValues(_project)
+        def computedValues = [[key   : message(code: "is.chart.projectParkinglot.serie.name"),
                                values: values.collect { return [it.label, it.value] }]]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.productParkinglot.xaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.productParkinglot.yaxis.label')]],
-                       title: [text: message(code: "is.chart.productParkinglot.title")]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectParkinglot.xaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.projectParkinglot.yaxis.label')]],
+                       title: [text: message(code: "is.chart.projectParkinglot.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
 
@@ -409,27 +409,27 @@ class ProjectController implements ControllerErrorHandler {
                     render(status: 400)
                     return
                 }
-                def product = productService.importXML(session.import.file, session.import)
-                render(status: 200, contentType: 'application/json', text: (product ?: session.import.changesNeeded) as JSON)
+                def project = projectService.importXML(session.import.file, session.import)
+                render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
             }
             UtilsWebComponents.handleUpload.delegate = this
             UtilsWebComponents.handleUpload(request, params, endOfUpload)
         } else if (params.changes) {
             session.progress = new ProgressSupport()
             session.import.changes = params.changes
-            def product = productService.importXML(session.import.file, session.import)
-            render(status: 200, contentType: 'application/json', text: (product ?: session.import.changesNeeded) as JSON)
+            def project = projectService.importXML(session.import.file, session.import)
+            render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
         }
     }
 
-    private String exportProductXML(Product product) {
+    private String exportProjectXML(Project project) {
         def writer = new StringWriter()
         def builder = new MarkupBuilder(writer)
         builder.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8")
         builder.export(version: meta(name: "app.version")) {
-            product.xml(builder)
+            project.xml(builder)
         }
-        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+        def projectName = "${project.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
         ['Content-disposition': "attachment;filename=\"${projectName + '.xml'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
             response.setHeader(k, v)
         }
@@ -444,8 +444,8 @@ class ProjectController implements ControllerErrorHandler {
         }
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def limit = 9
-        def publicProjects = Product.where { preferences.hidden == false && name =~ searchTerm }.list(sort: "name")
-        def userProjects = Product.findAllByUserAndActive(springSecurityService.currentUser, null, null)
+        def publicProjects = Project.where { preferences.hidden == false && name =~ searchTerm }.list(sort: "name")
+        def userProjects = Project.findAllByUserAndActive(springSecurityService.currentUser, null, null)
         def projects = publicProjects - userProjects
         def projectsAndTotal = [projects: projects.drop(offset).take(limit), total: projects.size()]
         render(status: 200, contentType: 'application/json', text: projectsAndTotal as JSON)
@@ -458,32 +458,32 @@ class ProjectController implements ControllerErrorHandler {
         }
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def limit = 9
-        def projects = productService.getAllActiveProductsByUser(springSecurityService.currentUser, searchTerm)
+        def projects = projectService.getAllActiveProjectsByUser(springSecurityService.currentUser, searchTerm)
         def projectsAndTotal = [projects: projects.drop(offset).take(limit), total: projects.size()]
         render(status: 200, contentType: 'application/json', text: projectsAndTotal as JSON)
     }
 
-    @Secured(['stakeHolder() or inProduct()', 'RUN_AS_PERMISSIONS_MANAGER'])
-    def leaveTeam(long product) {
-        Product _product = Product.withProduct(product)
-        _product.withTransaction {
-            def oldMembersByProduct = [:]
-            _product.firstTeam.products.each { Product teamProduct ->
-                oldMembersByProduct[teamProduct.id] = productService.getAllMembersProductByRole(teamProduct)
+    @Secured(['stakeHolder() or inProject()', 'RUN_AS_PERMISSIONS_MANAGER'])
+    def leaveTeam(long project) {
+        Project _project = Project.withProject(project)
+        _project.withTransaction {
+            def oldMembersByProject = [:]
+            _project.firstTeam.projects.each { Project teamProject ->
+                oldMembersByProject[teamProject.id] = projectService.getAllMembersProjectByRole(teamProject)
             }
-            productService.removeAllRoles(_product.firstTeam, springSecurityService.currentUser)
-            oldMembersByProduct.each { Long productId, Map oldMembers ->
-                productService.manageProductEvents(Product.get(productId), oldMembers)
+            projectService.removeAllRoles(_project.firstTeam, springSecurityService.currentUser)
+            oldMembersByProject.each { Long projectId, Map oldMembers ->
+                projectService.manageProjectEvents(Project.get(projectId), oldMembers)
             }
         }
         render(status: 200)
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def activities(long product) {
-        Product _product = Product.withProduct(product)
-        def activities = Activity.recentStoryActivity(_product)
-        activities.addAll(Activity.recentProductActivity(_product))
+    @Secured(['stakeHolder() or inProject()'])
+    def activities(long project) {
+        Project _project = Project.withProject(project)
+        def activities = Activity.recentStoryActivity(_project)
+        activities.addAll(Activity.recentProjectActivity(_project))
         activities = activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
         render(status: 200, text: activities as JSON, contentType: 'application/json')
     }

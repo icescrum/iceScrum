@@ -24,7 +24,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.utils.ServicesUtils
@@ -33,27 +33,26 @@ import org.icescrum.core.error.ControllerErrorHandler
 class ReleaseController implements ControllerErrorHandler {
 
     def releaseService
-    def sprintService
     def storyService
     def springSecurityService
     def featureService
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def index(long product) {
-        Product _product = Product.withProduct(product)
-        def releases = _product.releases
+    @Secured(['stakeHolder() or inProject()'])
+    def index(long project) {
+        Project _project = Project.withProject(project)
+        def releases = _project.releases
         render(status: 200, contentType: 'application/json', text: releases as JSON)
     }
 
-    @Secured('inProduct()')
-    def show(long product, long id) {
-        Release release = Release.withRelease(product, id)
+    @Secured('inProject()')
+    def show(long project, long id) {
+        Release release = Release.withRelease(project, id)
         render(status: 200, contentType: 'application/json', text: release as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def save(long product) {
-        Product _product = Product.withProduct(product)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def save(long project) {
+        Project _project = Project.withProject(project)
         def releaseParams = params.release
         if (releaseParams.startDate) {
             releaseParams.startDate = ServicesUtils.parseDateISO8601(releaseParams.startDate)
@@ -64,15 +63,15 @@ class ReleaseController implements ControllerErrorHandler {
         def release = new Release()
         Release.withTransaction {
             bindData(release, releaseParams, [include: ['name', 'goal', 'startDate', 'endDate', 'firstSprintIndex']])
-            releaseService.save(release, _product)
+            releaseService.save(release, _project)
         }
         render(status: 201, contentType: 'application/json', text: release as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def update(long product, long id) {
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def update(long project, long id) {
         def releaseParams = params.release
-        Release release = Release.withRelease(product, id)
+        Release release = Release.withRelease(project, id)
         def startDate = releaseParams.startDate ? ServicesUtils.parseDateISO8601(releaseParams.startDate) : release.startDate
         def endDate = releaseParams.endDate ? ServicesUtils.parseDateISO8601(releaseParams.endDate) : release.endDate
         Release.withTransaction {
@@ -82,37 +81,37 @@ class ReleaseController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: release as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def delete(long product, long id) {
-        Release release = Release.withRelease(product, id)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def delete(long project, long id) {
+        Release release = Release.withRelease(project, id)
         releaseService.delete(release)
         render(status: 200, contentType: 'application/json', text: [id: id] as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def close(long product, long id) {
-        Release release = Release.withRelease(product, id)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def close(long project, long id) {
+        Release release = Release.withRelease(project, id)
         releaseService.close(release)
         render(status: 200, contentType: 'application/json', text: release as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def activate(long product, long id) {
-        Release release = Release.withRelease(product, id)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def activate(long project, long id) {
+        Release release = Release.withRelease(project, id)
         releaseService.activate(release)
         render(status: 200, contentType: 'application/json', text: release as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def autoPlan(long product, long id, Double capacity) {
-        Release release = Release.withRelease(product, id)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def autoPlan(long project, long id, Double capacity) {
+        Release release = Release.withRelease(project, id)
         def plannedStories = storyService.autoPlan(release.sprints.asList(), capacity)
         render(status: 200, contentType: 'application/json', text: plannedStories as JSON)
     }
 
-    @Secured('(productOwner() or scrumMaster()) and !archivedProduct()')
-    def unPlan(long product, long id) {
-        Release release = Release.withRelease(product, id)
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def unPlan(long project, long id) {
+        Release release = Release.withRelease(project, id)
         def sprints = Sprint.findAllByParentRelease(release)
         def unPlanAllStories = []
         if (sprints) {
@@ -121,9 +120,9 @@ class ReleaseController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON)
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def burndown(long product, long id) {
-        Release release = Release.withRelease(product, id)
+    @Secured(['stakeHolder() or inProject()'])
+    def burndown(long project, long id) {
+        Release release = Release.withRelease(project, id)
         def values = releaseService.releaseBurndownValues(release)
         def computedValues = [[key: message(code:'is.chart.releaseBurnDown.series.userstories.name'),
                                values: values.collect { return [it.userstories]},
@@ -140,9 +139,9 @@ class ReleaseController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 
-    @Secured(['stakeHolder() or inProduct()'])
-    def parkingLot(long product, long id) {
-        Release release = Release.withRelease(product, id)
+    @Secured(['stakeHolder() or inProject()'])
+    def parkingLot(long project, long id) {
+        Release release = Release.withRelease(project, id)
         def values = featureService.releaseParkingLotValues(release)
         def computedValues = [[key: message(code:"is.chart.releaseParkingLot.serie.name"),
                                values: values.collect { return [it.label, it.value]}]]
