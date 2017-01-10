@@ -30,7 +30,7 @@ import org.icescrum.core.utils.ServicesUtils
         title                       default: ''                   | String (i18n key)
         help                        default: ''                   | String (i18n key)
         secured                     default: "permitAll()"        | String (spEl expression)
-        context                     default: "product"            | String (product or ...)
+        context                     default: "project"            | String (project or ...)
         templatePath                default: "windowName/window"  | String (full path to template)
         menu { => default: null
             defaultPosition         default:null                  | Integer
@@ -52,11 +52,11 @@ windows = {
     }
     'backlog' {
         details true
-        context 'product'
+        context 'project'
         icon    'inbox'
         help    'is.ui.backlog.help'
         title   'is.ui.backlogs'
-        secured 'stakeHolder() or inProduct()'
+        secured 'stakeHolder() or inProject()'
         menu {
             defaultPosition 2
             defaultVisibility true
@@ -67,16 +67,16 @@ windows = {
         ]
         exportFormats = {
             [
-                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [product: params.product, format: 'PDF']],
-                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF']],
-                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX']],
-                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT']]
+                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project, format: 'PDF']],
+                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF']],
+                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX']],
+                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT']]
             ]
         }
     }
     'feature' {
         details true
-        context 'product'
+        context 'project'
         icon    'puzzle-piece'
         help    'is.ui.feature.help'
         title   'is.ui.feature'
@@ -87,18 +87,18 @@ windows = {
         }
         embedded = [
                 view: 'list',
-                viewTypes: ['postits', 'table', 'productParkingLotChart']
+                viewTypes: ['postits', 'table', 'projectParkingLotChart']
         ]
         exportFormats = {
             [
-                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF']],
-                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX']],
-                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT']]
+                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF']],
+                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX']],
+                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT']]
             ]
         }
     }
     'project' {
-        context 'product'
+        context 'project'
         flex    false
         icon    'dashboard'
         help    'is.ui.project.help'
@@ -108,17 +108,17 @@ windows = {
             defaultVisibility true
         }
         embedded = [
-                view: 'productCumulativeFlowChart',
-                viewTypes: ['productCumulativeFlowChart', 'productVelocityCapacityChart', 'productBurnupChart', 'productBurndownChart', 'productVelocityChart', 'productParkingLotChart'],
+                view: 'projectCumulativeFlowChart',
+                viewTypes: ['projectCumulativeFlowChart', 'projectVelocityCapacityChart', 'projectBurnupChart', 'projectBurndownChart', 'projectVelocityChart', 'projectParkingLotChart'],
         ]
     }
     'planning' {
         details true
-        context 'product'
+        context 'project'
         icon    'calendar'
         help    'todo.is.ui.planning.help'
         title   'todo.is.ui.planning'
-        secured 'inProduct() or (isAuthenticated() and stakeHolder())'
+        secured 'inProject() or (isAuthenticated() and stakeHolder())'
         menu {
             defaultPosition 3
             defaultVisibility true
@@ -126,9 +126,9 @@ windows = {
         embedded = [
                 view: 'index',
                 viewTypes: ['postits', 'notes', 'releaseBurndownChart', 'releaseParkingLotChart'],
-                id: { product ->
+                id: { project ->
                     def id = [label: message(code: 'is.release'), select: [[key: '', value: message(code: 'is.ui.releasePlan.id.empty')]]]
-                    product.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
+                    project.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
                         id.select << [key: it.id, value: "${it.name}"]
                     }
                     id
@@ -137,11 +137,11 @@ windows = {
     }
     'taskBoard' {
         details true
-        context 'product'
+        context 'project'
         icon    'tasks'
         help    'todo.is.ui.taskBoard.help'
         title   'todo.is.ui.taskBoard'
-        secured 'inProduct() or (isAuthenticated() and stakeHolder())'
+        secured 'inProject() or (isAuthenticated() and stakeHolder())'
         menu {
             defaultPosition 4
             defaultVisibility true
@@ -149,9 +149,9 @@ windows = {
         embedded = [
                 view : 'index',
                 viewTypes: ['postits', 'table', 'notes', 'sprintBurndownRemainingChart', 'sprintBurnupTasksChart', 'sprintBurnupStoriesChart', 'sprintBurnupPointsChart'],
-                id: { product ->
+                id: { project ->
                     def id = [label: message(code: 'is.sprint'), select: [[key: '', value: message(code: 'is.ui.sprintPlan.id.empty')]]]
-                    product.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
+                    project.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
                         it.sprints?.collect { v -> id.select << [key: v.id, value: "${it.name} - Sprint ${v.index}"] }
                     }
                     id
@@ -159,10 +159,10 @@ windows = {
         ]
         /*exportFormats = {
             [
-                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [product: params.product, format: 'PDF', id: params.id]],
-                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [product: params.product, format: 'RTF', id: params.id]],
-                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [product: params.product, format: 'DOCX', id: params.id]],
-                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [product: params.product, format: 'ODT', id: params.id]]
+                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project, format: 'PDF', id: params.id]],
+                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF', id: params.id]],
+                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX', id: params.id]],
+                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT', id: params.id]]
             ]
         }*/
     }
@@ -174,8 +174,8 @@ windows = {
         icon                        default: ''                   | String (fontawesome)
         title                       default: name                 | String (i18n key or ...)
         secured                     default: "permitAll()"        | String (spEl expression)
-        context                     default: null                 | String (product or ...)
-        context                     default: null                 | String (product or ...)
+        context                     default: null                 | String (project or ...)
+        context                     default: null                 | String (project or ...)
         ngController                default: null                 | String
         templatePath                default: " widgetName /window"| String (full path to template)
 

@@ -43,75 +43,75 @@ class RestUrlMappings {
             }
         }
 
-        "/ws/p/$product/$controller" {
+        "/ws/p/$project/$controller" {
             action = [POST: "save", GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/$id/sprint" {
+        "/ws/p/$project/$id/sprint" {
             controller = 'sprint'
             action = [GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
             }
         }
 
-        "/ws/p/$product/task/$filter" {
+        "/ws/p/$project/task/$filter" {
             controller = 'task'
             action = [GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 filter(matches:/[A-Za-z]*/)
             }
         }
 
-        "/ws/p/$product/search/tag" {
+        "/ws/p/$project/search/tag" {
             controller = 'search'
             action = [GET: "tag"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/search" {
+        "/ws/p/$project/search" {
             controller = 'search'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
 
-        "/ws/p/$product/$sprint/task/$filter?" {
+        "/ws/p/$project/$sprint/task/$filter?" {
             controller = 'task'
             action = [GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 sprint(matches: /\d*/)
             }
         }
 
-        "/ws/p/$product/$story/acceptanceTest" {
+        "/ws/p/$project/$story/acceptanceTest" {
             controller = 'acceptanceTest'
             action = [GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 story(matches: /\d*/)
             }
         }
 
-        "/ws/p/$product/$controller/$id" {
+        "/ws/p/$project/$controller/$id" {
             action = [GET: "show", PUT: "update", DELETE: "delete"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
             }
         }
 
-        "/ws/p/$product/$controller/$id/$action" {
+        "/ws/p/$project/$controller/$id/$action" {
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
             }
         }

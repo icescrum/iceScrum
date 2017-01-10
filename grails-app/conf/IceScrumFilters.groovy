@@ -25,7 +25,7 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import groovy.util.slurpersupport.GPathResult
 import org.geeks.browserdetection.ComparisonType
 import org.grails.databinding.xml.GPathResultMap
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
@@ -59,9 +59,9 @@ class IceScrumFilters {
                         }
                     }
                 }
-                if (params.product && !(actionName == 'save' && controllerName == 'project')) {
-                    params.product = params.product.decodeProductKey()
-                    if (!params.product) {
+                if (params.project && !(actionName == 'save' && controllerName == 'project')) {
+                    params.project = params.project.decodeProjectKey()
+                    if (!params.project) {
                         forward(controller:"errors", action:"error404")
                         return false
                     }
@@ -147,10 +147,10 @@ class IceScrumFilters {
         webservices(uri: '/ws/**') {
             before = {
                 def webservices
-                if (params.product) {
-                    webservices = Product.createCriteria().get {
-                        //TODO test if product is really a long
-                        eq 'id', params.product.toLong()
+                if (params.project) {
+                    webservices = Project.createCriteria().get {
+                        //TODO test if project is really a long
+                        eq 'id', params.project.toLong()
                         preferences {
                             projections {
                                 property 'webservices'

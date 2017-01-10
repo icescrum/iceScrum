@@ -52,52 +52,52 @@ class UrlMappings {
             }
         }
         // Permalinks
-        "/$product-F$uid/" {
+        "/$project-F$uid/" {
             controller = 'feature'
             action = 'permalink'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
             }
         }
-        "/$product-T$uid/" {
+        "/$project-T$uid/" {
             controller = 'task'
             action = 'permalink'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
             }
         }
-        "/$product-$uid/" {
+        "/$project-$uid/" {
             controller = 'story'
             action = 'permalink'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
             }
         }
         // Legacy permalinks
-        "/p/$product-F$uid/" {
+        "/p/$project-F$uid/" {
             controller = 'feature'
             action = 'permalink'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
             }
         }
-        "/p/$product-T$uid/" {
+        "/p/$project-T$uid/" {
             controller = 'task'
             action = 'permalink'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
             }
         }
-        "/p/$product-$uid/" {
+        "/p/$project-$uid/" {
             controller = 'story'
             action = 'permalink'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 uid(matches: /[0-9]*/)
             }
         }
@@ -190,11 +190,11 @@ class UrlMappings {
             }
         }
         // Feed
-        "/feed/$product" {
+        "/feed/$project" {
             controller = 'project'
             action = 'feed'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Project
@@ -214,51 +214,51 @@ class UrlMappings {
             controller = 'project'
             action = 'edit'
         }
-        "/project/$product/leaveTeam" {
+        "/project/$project/leaveTeam" {
             controller = 'project'
             action = 'leaveTeam'
             constraints {
-                product(matches: /\d*/)
+                project(matches: /\d*/)
             }
         }
-        "/project/$product/team" {
+        "/project/$project/team" {
             controller = 'project'
             action = 'team'
             constraints {
-                product(matches: /\d*/)
+                project(matches: /\d*/)
             }
         }
-        "/project/$product/activities" {
+        "/project/$project/activities" {
             controller = 'project'
             action = 'activities'
             constraints {
-                product(matches: /\d*/)
+                project(matches: /\d*/)
             }
         }
-        "/project/$product/updateTeam" {
+        "/project/$project/updateTeam" {
             controller = 'project'
             action = 'updateTeam'
         }
-        "/project/$product/archive" {
+        "/project/$project/archive" {
             controller = 'project'
             action = 'archive'
         }
-        "/project/$product/unArchive" {
+        "/project/$project/unArchive" {
             controller = 'project'
             action = 'unArchive'
         }
-        "/project/$product/$action" {
+        "/project/$project/$action" {
             controller = 'project'
             constraints {
                 action(inList: ['flowCumulative', 'velocityCapacity', 'velocity', 'parkingLot', 'burndown', 'burnup'])
             }
         }
-        "/project/$product" {
+        "/project/$project" {
             controller = 'project'
             action = [GET: "show", DELETE: "delete", POST: "update"]
             constraints {
                 //must be the id
-                product(matches: /\d*/)
+                project(matches: /\d*/)
             }
         }
         // New project
@@ -271,61 +271,61 @@ class UrlMappings {
         }
 
         // Update project
-        "/project/$product/available/$property" {
+        "/project/$project/available/$property" {
             controller = 'project'
             action = [POST: "available"]
             constraints {
-                product(matches: /\d*/)
+                project(matches: /\d*/)
                 property(inList: ['name', 'pkey'])
             }
         }
         // Print
-        "/p/$product/$controller/print" {
+        "/p/$project/$controller/print" {
             action = 'print'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 controller(inList: ['backlog', 'feature'])
             }
         }
         // Export
-        "/p/$product/export" {
+        "/p/$project/export" {
             controller = 'project'
             action = 'export'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/exportDialog" {
+        "/p/$project/exportDialog" {
             controller = 'project'
             action = 'exportDialog'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Attachment
-        "/p/$product/attachment/$type/$attachmentable/flow" {
+        "/p/$project/attachment/$type/$attachmentable/flow" {
             controller = 'attachment'
             action = [GET: "save", POST: "save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
                 type(inList: ['story', 'task', 'feature', 'release', 'sprint'])
             }
         }
-        "/p/$product/attachment/$type/$attachmentable" {
+        "/p/$project/attachment/$type/$attachmentable" {
             controller = 'attachment'
             action = [GET: "index", POST: "save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
                 type(inList: ['story', 'task', 'feature'])
             }
         }
-        "/p/$product/attachment/$type/$attachmentable/$id" {
+        "/p/$project/attachment/$type/$attachmentable/$id" {
             controller = 'attachment'
             action = [GET: "show", DELETE: "delete"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
                 id(matches: /\d*/)
                 type(inList: ['story', 'task', 'feature'])
@@ -343,11 +343,11 @@ class UrlMappings {
                 id(matches: /\d*/)
             }
         }
-        "/team/project/$product" {
+        "/team/project/$project" {
             controller = 'team'
             action = 'show'
             constraints {
-                product(matches: /\d*/)
+                project(matches: /\d*/)
             }
         }
         // Widget

@@ -31,7 +31,7 @@ import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.PlanningPokerGame
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
@@ -174,7 +174,7 @@ icescrum.marshaller = [
                 textile: ['notes'],
                 asShort: ['state', 'effort', 'uid', 'name', 'rank']],
         comment: [textile: ['body'], include: ['poster']],
-        product: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
+        project: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
                   exclude: ['cliches'],
                   textile: ['description']],
         team: [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
@@ -205,7 +205,7 @@ icescrum.marshaller = [
                   textile: ['notes']],
         activity: [include: ['important']],
         userpreferences: [asShort: ['activity', 'language', 'emailsSettings', 'filterTask']],
-        productpreferences: [asShort: ['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
+        projectpreferences: [asShort: ['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
                                        'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment: [include: ['filename']],
         acceptancetest: [textile: ['description'], asShort: ['state']],
@@ -238,31 +238,31 @@ icescrum.warnings = []
 /* Contexts */
 icescrum {
     contexts {
-        product {
-            contextClass = Product
-            config = { product -> [key: product.pkey, path: 'p'] }
-            params = { product -> [product: product.id] }
-            indexScrumOS = { productContext, user, securityService, springSecurityService ->
-                def product = productContext.object
-                if (product?.preferences?.hidden && !securityService.inProduct(product, springSecurityService.authentication) && !securityService.stakeHolder(product, springSecurityService.authentication, false)) {
+        project {
+            contextClass = Project
+            config = { project -> [key: project.pkey, path: 'p'] }
+            params = { project -> [project: project.id] }
+            indexScrumOS = { projectContext, user, securityService, springSecurityService ->
+                def project = projectContext.object
+                if (project?.preferences?.hidden && !securityService.inProject(project, springSecurityService.authentication) && !securityService.stakeHolder(project, springSecurityService.authentication, false)) {
                     forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
                     return
                 }
 
-                if (product && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProductOpened != product.pkey) {
-                    user.preferences.lastProductOpened = product.pkey
+                if (project && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProjectOpened != project.pkey) {
+                    user.preferences.lastProjectOpened = project.pkey
                     user.save()
                 }
             }
             contextScope = [
                 charts: [
                     project: [
-                        [id:'burnup', name:'is.ui.project.charts.productBurnup'],
-                        [id:'burndown', name:'is.ui.project.charts.productBurndown'],
-                        [id:'velocity', name:'is.ui.project.charts.productVelocity'],
-                        [id:'velocityCapacity', name:'is.ui.project.charts.productVelocityCapacity'],
-                        [id:'parkingLot', name:'is.ui.project.charts.productParkingLot'],
-                        [id:'flowCumulative', name:'is.ui.project.charts.productCumulativeFlow'],
+                        [id:'burnup', name:'is.ui.project.charts.projectBurnup'],
+                        [id:'burndown', name:'is.ui.project.charts.projectBurndown'],
+                        [id:'velocity', name:'is.ui.project.charts.projectVelocity'],
+                        [id:'velocityCapacity', name:'is.ui.project.charts.projectVelocityCapacity'],
+                        [id:'parkingLot', name:'is.ui.project.charts.projectParkingLot'],
+                        [id:'flowCumulative', name:'is.ui.project.charts.projectCumulativeFlow'],
                     ],
                     release: [
                         [id:'burndown', name:'is.chart.releaseBurndown'],
@@ -285,14 +285,14 @@ icescrum {
  */
 grails.attachmentable.storyDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}stories${File.separator + it.id + File.separator}"}
 grails.attachmentable.featureDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}features${File.separator + it.id + File.separator}"}
-grails.attachmentable.releaseDir = {"${File.separator + it.parentProduct.id + File.separator}attachments${File.separator}releases${File.separator + it.id + File.separator}"}
-grails.attachmentable.sprintDir = {"${File.separator + it.parentRelease.parentProduct.id + File.separator}attachments${File.separator}sprints${File.separator + it.id + File.separator}"}
-grails.attachmentable.productDir = {"${File.separator + it.id + File.separator}attachments${File.separator}product${File.separator + it.id + File.separator}"}
+grails.attachmentable.releaseDir = {"${File.separator + it.parentProject.id + File.separator}attachments${File.separator}releases${File.separator + it.id + File.separator}"}
+grails.attachmentable.sprintDir = {"${File.separator + it.parentRelease.parentProject.id + File.separator}attachments${File.separator}sprints${File.separator + it.id + File.separator}"}
+grails.attachmentable.projectDir = {"${File.separator + it.id + File.separator}attachments${File.separator}project${File.separator + it.id + File.separator}"}
 grails.attachmentable.taskDir = {
     if (it.parentStory)
         return "${File.separator + it.parentStory?.backlog?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
     else
-        return "${File.separator + it.backlog?.parentRelease?.parentProduct?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
+        return "${File.separator + it.backlog?.parentRelease?.parentProject?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
 }
 
 grails.taggable.preserve.case = true

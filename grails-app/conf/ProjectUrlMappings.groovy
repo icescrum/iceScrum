@@ -21,314 +21,314 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
-class ProductUrlMappings {
+class ProjectUrlMappings {
 
     static mappings = {
 
-        "/p/$product/search" {
+        "/p/$project/search" {
             controller = 'search'
             action = 'index'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        name baseUrlProduct: "/p/$product/" {
+        name baseUrlProject: "/p/$project/" {
             controller = 'scrumOS'
             action = 'index'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Scrum OS & generic
-        "/p/$product/ui/window/$windowDefinitionId" {
+        "/p/$project/ui/window/$windowDefinitionId" {
             controller = 'scrumOS'
             action = 'window'
             constraints {
                 windowDefinitionId(matches: /[a-zA-Z]*/)
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/$controller/$id?" {
+        "/p/$project/$controller/$id?" {
             constraints {
                 id(matches: /\d*/)
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/$controller/$id?/$action?/$subid?" {
+        "/p/$project/$controller/$id?/$action?/$subid?" {
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
                 subid(matches: /\d*/)
             }
         }
-        name urlProduct: "/p/$product/$controller/$action?/$id?/$type?" {
+        name urlProject: "/p/$project/$controller/$action?/$id?/$type?" {
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // new way to handle requests (REST Style)
-        "/p/$product/$controller/$id/print/$format?" {
+        "/p/$project/$controller/$id/print/$format?" {
             action = 'print'
             constraints {
                 id(matches: /\d*/)
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 format(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/$controller/print/$format?" {
+        "/p/$project/$controller/print/$format?" {
             action = 'print'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 format(matches: /[0-9A-Z]*/)
             }
         }
         // Task
-        "/p/$product/task" {
+        "/p/$project/task" {
             controller = 'task'
             action = [POST:"save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/task/$id" {
+        "/p/$project/task/$id" {
             controller = 'task'
             action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
             }
         }
-        "/p/$product/task/$id/$action" {
+        "/p/$project/task/$id/$action" {
             controller = 'task'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
             }
         }
-        "/p/$product/task/$type/$id" {
+        "/p/$project/task/$type/$id" {
             controller = 'task'
             action = [GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
                 type(inList: ['story', 'sprint'])
             }
         }
-        "/p/$product/task/colors" {
+        "/p/$project/task/colors" {
             controller = 'task'
             action = [GET: "colors"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Story
-        "/p/$product/story" {
+        "/p/$project/story" {
             controller = 'story'
             action = [GET: "index", POST:"save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/story/$type/$typeId" {
+        "/p/$project/story/$type/$typeId" {
             controller = 'story'
             action = 'index'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 typeId(matches: /\d*/)
                 type(inList: ['actor', 'feature', 'sprint', 'backlog'])
             }
         }
-        "/p/$product/story/$id" {
+        "/p/$project/story/$id" {
             controller = 'story'
             action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/story/$id/$action" {
+        "/p/$project/story/$id/$action" {
             controller = 'story'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/story/listByField" {
+        "/p/$project/story/listByField" {
             controller = 'story'
             action = 'listByField'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Actor
-        "/p/$product/actor" {
+        "/p/$project/actor" {
             controller = 'actor'
             action = [GET: 'index', POST: 'save']
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/actor/$id" {
+        "/p/$project/actor/$id" {
             controller = 'actor'
             action = [GET: 'show', PUT: 'update',  POST: 'update', DELETE: 'delete']
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
         // Feature
-        "/p/$product/feature" {
+        "/p/$project/feature" {
             controller = 'feature'
             action = [GET: "index", POST:"save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/feature/$id" {
+        "/p/$project/feature/$id" {
             controller = 'feature'
             action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/feature/$id/$action" {
+        "/p/$project/feature/$id/$action" {
             controller = 'feature'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
         // Activity
-        "/p/$product/activity/$type/$fluxiableId" {
+        "/p/$project/activity/$type/$fluxiableId" {
             controller = 'activity'
             action = [GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task'])
                 fluxiableId(matches: /\d*/)
             }
         }
         // Comment
-        "/p/$product/comment/$type/$commentable" {
+        "/p/$project/comment/$type/$commentable" {
             controller = 'comment'
             action = [GET: "index", POST:"save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task'])
                 commentable(matches: /\d*/)
             }
         }
-        "/p/$product/comment/$type/$commentable/$id" {
+        "/p/$project/comment/$type/$commentable/$id" {
             controller = 'comment'
             action = [GET: "show", PUT:"update", DELETE:"delete", POST:'update']
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task'])
                 id(matches: /\d*/)
                 commentable(matches: /\d*/)
             }
         }
         // Acceptance test
-        "/p/$product/acceptanceTest/story/$parentStory" {
+        "/p/$project/acceptanceTest/story/$parentStory" {
             controller = 'acceptanceTest'
             action = [GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 parentStory(matches: /\d*/)
             }
         }
-        "/p/$product/acceptanceTest" {
+        "/p/$project/acceptanceTest" {
             controller = 'acceptanceTest'
             action = [POST:"save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/acceptanceTest/$id" {
+        "/p/$project/acceptanceTest/$id" {
             controller = 'acceptanceTest'
             action = [POST:"update", DELETE:"delete"]
             constraints {
                 id(matches: /\d*/)
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Backlog
-        "/p/$product/backlog" {
+        "/p/$project/backlog" {
             controller = 'backlog'
             action = [GET: "index"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/backlog/$id/printPostits/$format?" {
+        "/p/$project/backlog/$id/printPostits/$format?" {
             controller = 'backlog'
             action = 'printPostits'
             constraints {
                 id(matches: /\d*/)
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 format(matches: /[0-9A-Z]*/)
             }
         }
         // Release
-        "/p/$product/release" {
+        "/p/$project/release" {
             controller = 'release'
             action = [GET: "index", POST: "save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/release/$id" {
+        "/p/$project/release/$id" {
             controller = 'release'
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/release/$id/$action" {
+        "/p/$project/release/$id/$action" {
             controller = 'release'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
         // Sprint
-        "/p/$product/sprint" {
+        "/p/$project/sprint" {
             controller = 'sprint'
             action = [POST: "save"]
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/sprint/$id" {
+        "/p/$project/sprint/$id" {
             controller = 'sprint'
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/sprint/$id/$action" {
+        "/p/$project/sprint/$id/$action" {
             controller = 'sprint'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$product/sprint/release/$releaseId" {
+        "/p/$project/sprint/release/$releaseId" {
             controller = 'sprint'
             action = 'index'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$product/sprint/release/$releaseId/generateSprints" {
+        "/p/$project/sprint/release/$releaseId/generateSprints" {
             controller = 'sprint'
             action = 'generateSprints'
             constraints {
-                product(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /[0-9A-Z]*/)
             }
         }
