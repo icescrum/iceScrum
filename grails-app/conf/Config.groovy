@@ -229,8 +229,13 @@ icescrum.cors.url.pattern = '/ws/*'
 icescrum.check.enable   = true
 icescrum.check.url      = 'https://www.icescrum.com'
 icescrum.check.path     = 'wp-json/kagilum/v1/version'
-icescrum.check.interval = 1440 //in minutes (24h)
+icescrum.check.interval = 1440 // in minutes (24h)
 icescrum.check.timeout  = 5000
+
+/* Report data to improve IS */
+icescrum.reportUsage.enable = true
+icescrum.reportUsage.url    = 'https://www.icescrum.com'
+icescrum.reportUsage.path   = 'wp-json/kagilum/v1/report'
 
 /* Server warnings to display to users */
 icescrum.warnings = []
