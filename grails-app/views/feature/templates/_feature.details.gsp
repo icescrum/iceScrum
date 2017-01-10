@@ -155,7 +155,6 @@
                                ng-click="retrieveTags(); editForm(true)"
                                ng-disabled="!formHolder.editable()"
                                multiple
-                               append-to-body="false"
                                tagging
                                tagging-tokens="SPACE|,"
                                tagging-label="${message(code: 'todo.is.ui.tag.create')}"

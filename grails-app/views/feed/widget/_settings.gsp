@@ -19,7 +19,6 @@
     <div class="col-sm-7">
         <ui-select class="form-control"
                    ng-model="holder.selected"
-                   append-to-body="false"
                    on-select="onSelect($item, $model)"
                    on-remove="onRemove($item, $model)">
             <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.widget.feed.title.allFeed')}">{{ $select.selected.title }}</ui-select-match>

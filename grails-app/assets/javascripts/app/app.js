@@ -818,7 +818,7 @@ angular.module('isApp', [
 }])
 .config(['uiSelectConfig', function(uiSelectConfig) {
     uiSelectConfig.theme = 'select2';
-    uiSelectConfig.appendToBody = true;
+    uiSelectConfig.appendToBody = false;
     uiSelectConfig.searchEnabled = false;
 }])
 .config(['$animateProvider', function($animateProvider) {

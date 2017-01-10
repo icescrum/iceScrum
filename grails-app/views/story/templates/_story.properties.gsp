@@ -139,7 +139,6 @@
                        ng-disabled="!formHolder.editable()"
                        class="form-control"
                        multiple
-                       append-to-body="false"
                        tagging
                        tagging-tokens="SPACE|,"
                        tagging-label="${message(code: 'todo.is.ui.tag.create')}"
