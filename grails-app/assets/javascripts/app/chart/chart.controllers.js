@@ -179,7 +179,7 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
     $scope.charts = [];
     $scope.projects = [];
     $scope.listProjects($scope.widgetReady(widget) ? widget.settings.project.id : '');
-    FormService.httpGet('charts/product').then(function(charts) {
+    FormService.httpGet('charts/project').then(function(charts) {
         $scope.charts = charts;
     });
 }]);

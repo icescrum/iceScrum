@@ -30,7 +30,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         var Session = $injector.get('Session');
         var params = {action: 'current'};
         if (Session.getProject()) {
-            params.product = Session.getProject().pkey;
+            params.project = Session.getProject().pkey;
         }
         return User.get(params).$promise;
     };

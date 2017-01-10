@@ -358,7 +358,7 @@ angular.module('isApp', [
                     url: "/new",
                     data: {
                         authorize: {
-                            roles: ['inProduct or stakeHolder']
+                            roles: ['inProject or stakeHolder']
                         }
                     },
                     views: {
@@ -755,7 +755,7 @@ angular.module('isApp', [
                             url: "/new",
                             data: {
                                 authorize: {
-                                    roles: ['inProduct']
+                                    roles: ['inProject']
                                 }
                             },
                             params: {

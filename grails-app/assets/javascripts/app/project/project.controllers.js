@@ -89,8 +89,8 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                         $scope._changes = angular.extend($scope._changes, {
                             showTeam: $scope.changes.team ? true : false,
                             showUsers: $scope.changes.users ? true : false,
-                            showProjectName: $scope.changes.product ? ($scope.changes.product.name ? true : false) : false,
-                            showProjectPkey: $scope.changes.product ? ($scope.changes.product.pkey ? true : false) : false
+                            showProjectName: $scope.changes.project ? ($scope.changes.project.name ? true : false) : false,
+                            showProjectPkey: $scope.changes.project ? ($scope.changes.project.pkey ? true : false) : false
                         });
                     }
                 };
@@ -108,7 +108,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                         data: $scope.changes
                     }).then(function(response) {
                             var data = response.data;
-                            if (data && data.class == 'Product') {
+                            if (data && data.class == 'Project') {
                                 $scope.$close(true);
                                 $rootScope.app.loading = true;
                                 $rootScope.app.loadingText = " ";
@@ -247,7 +247,7 @@ controllers.controller('quickProjectsListCtrl', ['$scope', '$timeout', 'FormServ
     PushService.registerScopedListener('user', IceScrumEventType.UPDATE, function(user) {
         if (user.updatedRole) {
             var updatedRole = user.updatedRole;
-            var project = updatedRole.product;
+            var project = updatedRole.project;
             if (updatedRole.role == undefined) {
                 _.remove($scope.projects, {id: project.id});
             } else if (updatedRole.oldRole == undefined && !_.includes($scope.projects, {id: project.id})) {

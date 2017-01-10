@@ -82,9 +82,9 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
             case 'create':
             case 'update':
             case 'delete':
-                return story.state < StoryStatesByName.DONE && Session.inProduct();
+                return story.state < StoryStatesByName.DONE && Session.inProject();
             case 'updateState':
-                return story.state == StoryStatesByName.IN_PROGRESS && Session.inProduct();
+                return story.state == StoryStatesByName.IN_PROGRESS && Session.inProject();
             default:
                 return false;
         }

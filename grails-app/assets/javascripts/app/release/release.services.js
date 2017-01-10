@@ -68,29 +68,29 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     };
     this.update = function(release) {
         var releaseToUpdate = _.omit(release, 'sprints');
-        return Release.update({id: release.id, projectId: release.parentProduct.id}, releaseToUpdate, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Release.update({id: release.id, projectId: release.parentProject.id}, releaseToUpdate, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.save = function(release, project) {
         release.class = 'release';
         return Release.save({projectId: project.id}, release, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.activate = function(release) {
-        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'activate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Release.update({id: release.id, projectId: release.parentProject.id, action: 'activate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.close = function(release) {
-        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Release.update({id: release.id, projectId: release.parentProject.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.autoPlan = function(release, capacity) {
-        return Release.updateArray({id: release.id, projectId: release.parentProduct.id, action: 'autoPlan'}, {capacity: capacity}).$promise; // TODO release resource returns stories, this is not good
+        return Release.updateArray({id: release.id, projectId: release.parentProject.id, action: 'autoPlan'}, {capacity: capacity}).$promise; // TODO release resource returns stories, this is not good
     };
     this.unPlan = function(release) {
-        return Release.update({id: release.id, projectId: release.parentProduct.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Release.update({id: release.id, projectId: release.parentProject.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(release, project) {
         return Release.delete({id: release.id, projectId: project.id}, {}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.openChart = function(release, chart) {
-        return Release.get({id: release.id, projectId: release.parentProduct.id, action: chart}).$promise;
+        return Release.get({id: release.id, projectId: release.parentProject.id, action: chart}).$promise;
     };
     this.findAllSprints = function(releases) {
         return _.filter(_.flatMap(releases, 'sprints'), _.identity);
@@ -112,7 +112,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
             case 'update':
                 return Session.poOrSm();
             case 'upload':
-                return Session.inProduct();
+                return Session.inProject();
             default:
                 return false;
         }

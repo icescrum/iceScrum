@@ -112,7 +112,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         switch (action) {
             case 'create':
             case 'copy':
-                return Session.inProduct() &&
+                return Session.inProject() &&
                        (!task || !task.parentStory && task.sprint && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
             case 'rank':
                 return Session.sm() || Session.responsible(task) || Session.creator(task); // no check on sprint & story state because rank cannot be called from there

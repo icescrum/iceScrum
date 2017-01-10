@@ -44,7 +44,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
     this.atmosphereRequest = null;
     this.initPush = function(projectId) {
         var options = {
-            url: $rootScope.serverUrl + '/stream/app' + (projectId ? ('/product-' + projectId) : ''),
+            url: $rootScope.serverUrl + '/stream/app' + (projectId ? ('/project-' + projectId) : ''),
             contentType: 'application/json',
             logLevel: logLevel,
             transport: 'websocket',

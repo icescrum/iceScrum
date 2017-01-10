@@ -29,19 +29,19 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
         return Project.get({id: id}).$promise;
     };
     this.save = function(project) {
-        project.class = 'product';
+        project.class = 'project';
         return Project.save(project).$promise;
     };
     this.countMembers = function(project) { // Requires the team to be loaded !
         return _.union(_.map(project.team.scrumMasters, 'id'), _.map(project.team.members, 'id'), _.map(project.productOwners, 'id')).length;
     };
     this.updateTeam = function(project) {
-        // Wrap the product inside a "productd" because by default the formObjectData function will turn it into a "product" object
-        // The "product" object conflicts with the "product" attribute expected by a filter which expects it to be either a number (id) or string (pkey)
-        return Project.update({id: project.id, action: 'updateTeam'}, {productd: project}).$promise;
+        // Wrap the project inside a "projectd" because by default the formObjectData function will turn it into a "project" object
+        // The "project" object conflicts with the "project" attribute expected by a filter which expects it to be either a number (id) or string (pkey)
+        return Project.update({id: project.id, action: 'updateTeam'}, {projectd: project}).$promise;
     };
     this.update = function(project) {
-        return Project.update({id: project.id}, {productd: project}).$promise;
+        return Project.update({id: project.id}, {projectd: project}).$promise;
     };
     this.leaveTeam = function(project) {
         return Project.update({id: project.id, action: 'leaveTeam'}, {}).$promise;

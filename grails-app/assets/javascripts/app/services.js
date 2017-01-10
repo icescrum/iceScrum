@@ -89,21 +89,21 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
         self.listeners.user = PushService.registerListener('user', IceScrumEventType.UPDATE, function(user) {
             if (user.updatedRole) {
                 var updatedRole = user.updatedRole;
-                var updatedProject = updatedRole.product;
+                var updatedProject = updatedRole.project;
                 if (updatedRole.role == undefined) {
-                    $rootScope.notifyWarning($rootScope.message('is.user.role.removed.product') + ' ' + updatedProject.name);
+                    $rootScope.notifyWarning($rootScope.message('is.user.role.removed.project') + ' ' + updatedProject.name);
                     if (updatedProject.id == self.project.id) {
                         $timeout(function() {
                             document.location = $rootScope.serverUrl
                         }, 2000);
                     }
                 } else if (updatedRole.oldRole == undefined) {
-                    $rootScope.notifySuccess($rootScope.message('is.user.role.added.product') + ' ' + updatedProject.name);
+                    $rootScope.notifySuccess($rootScope.message('is.user.role.added.project') + ' ' + updatedProject.name);
                     if (updatedProject.id == self.project.id) {
                         reload();
                     }
                 } else {
-                    $rootScope.notifySuccess($rootScope.message('is.user.role.updated.product') + ' ' + updatedProject.name);
+                    $rootScope.notifySuccess($rootScope.message('is.user.role.updated.project') + ' ' + updatedProject.name);
                     if (updatedProject.id == self.project.id) {
                         reload();
                     }
@@ -126,7 +126,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
     this.authenticated = function() {
         return !_.isEmpty(self.user);
     };
-    this.inProduct = function() {
+    this.inProject = function() {
         return self.roles.productOwner || self.roles.scrumMaster || self.roles.teamMember;
     };
     this.stakeHolder = function() {
@@ -150,11 +150,11 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
     this.initProject = function(project) {
         _.extend(self.project, project);
         self.isProjectResolved.resolve();
-        PushService.registerListener('product', IceScrumEventType.UPDATE, function(updatedProject) {
+        PushService.registerListener('project', IceScrumEventType.UPDATE, function(updatedProject) {
             if (updatedProject.pkey != self.project.pkey) {
                 $rootScope.notifyWarning('todo.is.ui.project.updated.pkey');
                 document.location = document.location.href.replace(self.project.pkey, updatedProject.pkey);
-            } else if (updatedProject.preferences.hidden && !self.project.preferences.hidden && !self.inProduct()) {
+            } else if (updatedProject.preferences.hidden && !self.project.preferences.hidden && !self.inProject()) {
                 $rootScope.notifyWarning('todo.is.ui.project.updated.visibility');
                 reload();
             } else if (updatedProject.preferences.archived != self.project.preferences.archived) {
@@ -168,7 +168,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
                 self.updateProject(updatedProject);
             }
         });
-        PushService.registerListener('product', IceScrumEventType.DELETE, function() {
+        PushService.registerListener('project', IceScrumEventType.DELETE, function() {
             $rootScope.notifyWarning('todo.is.ui.project.deleted');
             reload();
         });
@@ -755,14 +755,14 @@ services.service("DomainConfigService", [function() {
         task: {
             array: ['tags']
         },
-        product: {
+        project: {
             array: ['productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners']
         },
         team: {
             array: ['members', 'scrumMasters', 'invitedMembers', 'invitedScrumMasters']
         }
     };
-    this.config.productd = this.config.product;
+    this.config.projectd = this.config.project;
 }]);
 
 
