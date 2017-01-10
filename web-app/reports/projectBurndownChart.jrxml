@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="productBurndownChart" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="projectBurndownChart" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
 	<property name="ireport.zoom" value="0.9090909090909113"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="13"/>
@@ -83,7 +83,7 @@
 				<textElement>
 					<font size="20" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productBurnDown.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectBurnDown.title}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -135,18 +135,18 @@
 				</chart>
 				<categoryDataset>
 					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productBurnDown.series.userstories.name}]]></seriesExpression>
+						<seriesExpression><![CDATA[$R{is.report.chart.projectBurnDown.series.userstories.name}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{userstories}]]></valueExpression>
 						<labelExpression><![CDATA[$F{userstories}]]></labelExpression>
 					</categorySeries>
 					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productBurnDown.series.technicalstories.name}]]></seriesExpression>
+						<seriesExpression><![CDATA[$R{is.report.chart.projectBurnDown.series.technicalstories.name}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{technicalstories}]]></valueExpression>
 					</categorySeries>
 					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productBurnDown.series.defectstories.name}]]></seriesExpression>
+						<seriesExpression><![CDATA[$R{is.report.chart.projectBurnDown.series.defectstories.name}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{defectstories}]]></valueExpression>
 					</categorySeries>
@@ -173,21 +173,21 @@
 				<textElement textAlignment="Center">
 					<font size="11" isBold="true" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productBurnDown.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectBurnDown.title}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="20" width="115" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productBurnDown.yaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectBurnDown.yaxis.label}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="568" y="226" width="115" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productBurnDown.xaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectBurnDown.xaxis.label}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

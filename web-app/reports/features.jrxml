@@ -77,7 +77,7 @@
 		<field name="parkingLotValue" class="java.lang.Double"/>
 	</subDataset>
 	<field name="features" class="java.util.List"/>
-	<field name="product" class="java.lang.String"/>
+	<field name="project" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -95,7 +95,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{product}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{project}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -288,7 +288,7 @@
 						</datasetRun>
 					</dataset>
 					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productParkinglot.serie.name}]]></seriesExpression>
+						<seriesExpression><![CDATA[$R{is.report.chart.projectParkinglot.serie.name}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{name}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{parkingLotValue}]]></valueExpression>
 					</categorySeries>
@@ -317,21 +317,21 @@
 				<textElement textAlignment="Center">
 					<font size="11" isBold="true" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productParkinglot.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectParkinglot.title}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="22" y="52" width="115" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productParkinglot.yaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectParkinglot.yaxis.label}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="557" y="241" width="115" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productParkinglot.xaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectParkinglot.xaxis.label}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

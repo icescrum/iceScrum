@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="productCumulativeFlowChart" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="projectVelocityCapacityChart" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
 	<property name="ireport.zoom" value="0.9090909090909113"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="1"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -65,16 +65,10 @@
 	</style>
 	<parameter name="_name" class="java.lang.String"/>
 	<parameter name="labels.projectName" class="java.lang.String"/>
-	<parameter name="_isSubreport" class="java.lang.Boolean">
-		<defaultValueExpression><![CDATA[Boolean.FALSE]]></defaultValueExpression>
-	</parameter>
+	<parameter name="_isSubreport" class="java.lang.Boolean"/>
 	<field name="label" class="java.lang.String"/>
-	<field name="done" class="java.lang.Number"/>
-	<field name="inprogress" class="java.lang.Number"/>
-	<field name="planned" class="java.lang.Number"/>
-	<field name="estimated" class="java.lang.Number"/>
-	<field name="accepted" class="java.lang.Number"/>
-	<field name="suggested" class="java.lang.Number"/>
+	<field name="velocity" class="java.lang.Number"/>
+	<field name="capacity" class="java.lang.Number"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -84,9 +78,9 @@
 			<textField>
 				<reportElement x="0" y="9" width="351" height="27" forecolor="#0066CC"/>
 				<textElement>
-					<font fontName="Arial Unicode MS" size="20" isBold="true"/>
+					<font size="20" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productCumulativeflow.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectVelocityCapacity.title}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -96,7 +90,7 @@
 			<textField>
 				<reportElement x="575" y="0" width="227" height="15" isPrintWhenDetailOverflows="true"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial Unicode MS" size="11" isBold="true"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{labels.projectName}]]></textFieldExpression>
 			</textField>
@@ -107,16 +101,12 @@
 			<printWhenExpression><![CDATA[($P{_isSubreport} ? Boolean.FALSE : Boolean.TRUE)]]></printWhenExpression>
 			<textField>
 				<reportElement x="0" y="21" width="289" height="20"/>
-				<textElement markup="none">
-					<font fontName="Arial Unicode MS"/>
-				</textElement>
+				<textElement markup="none"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.footer.credit}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="682" y="20" width="80" height="20"/>
-				<textElement textAlignment="Right">
-					<font fontName="Arial Unicode MS"/>
-				</textElement>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.footer.page}+" "+$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
@@ -126,55 +116,40 @@
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="289" y="20" width="393" height="20"/>
-				<textElement>
-					<font fontName="Arial Unicode MS"/>
-				</textElement>
+				<textElement/>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="246">
-			<stackedAreaChart>
+		<band height="280">
+			<textField>
+				<reportElement x="115" y="0" width="568" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectVelocityCapacity.title}]]></textFieldExpression>
+			</textField>
+			<lineChart>
 				<chart>
-					<reportElement x="100" y="20" width="575" height="200"/>
+					<reportElement x="115" y="20" width="568" height="226"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
 					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productCumulativeflow.serie.done.name}]]></seriesExpression>
+						<seriesExpression><![CDATA[$R{is.report.chart.projectVelocityCapacity.serie.velocity.name}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{done}]]></valueExpression>
+						<valueExpression><![CDATA[$F{velocity}]]></valueExpression>
 					</categorySeries>
 					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productCumulativeflow.serie.inprogress.name}]]></seriesExpression>
+						<seriesExpression><![CDATA[$R{is.report.chart.projectVelocityCapacity.serie.capacity.name}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{inprogress}]]></valueExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productCumulativeflow.serie.planned.name}]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{planned}]]></valueExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productCumulativeflow.serie.estimated.name}]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{estimated}]]></valueExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productCumulativeflow.serie.accepted.name}]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{accepted}]]></valueExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productCumulativeflow.serie.suggested.name}]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{suggested}]]></valueExpression>
+						<valueExpression><![CDATA[$F{capacity}]]></valueExpression>
 					</categorySeries>
 				</categoryDataset>
-				<areaPlot>
+				<linePlot>
 					<plot/>
 					<categoryAxisFormat>
 						<axisFormat>
@@ -188,28 +163,21 @@
 							<tickLabelFont/>
 						</axisFormat>
 					</valueAxisFormat>
-				</areaPlot>
-			</stackedAreaChart>
+				</linePlot>
+			</lineChart>
 			<textField>
-				<reportElement x="100" y="0" width="575" height="20"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial Unicode MS" size="11" isBold="true" isUnderline="true"/>
+				<reportElement x="0" y="20" width="115" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productCumulativeflow.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectVelocityCapacity.yaxis.label}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="20" width="100" height="20"/>
+				<reportElement x="568" y="226" width="115" height="20"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial Unicode MS" size="11" isBold="true"/>
+					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productCumulativeflow.yaxis.label}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="575" y="200" width="100" height="20"/>
-				<textElement textAlignment="Right">
-					<font fontName="Arial Unicode MS" size="11" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productCumulativeflow.xaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectVelocityCapacity.xaxis.label}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

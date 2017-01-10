@@ -66,12 +66,12 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="_name" class="java.lang.String"/>
 	<parameter name="labels.projectName" class="java.lang.String"/>
-	<field name="productCumulativeFlowChart" class="java.util.List"/>
-	<field name="productBurnupChart" class="java.util.List"/>
-	<field name="productBurndownChart" class="java.util.List"/>
-	<field name="productParkingLotChart" class="java.util.List"/>
-	<field name="productVelocityChart" class="java.util.List"/>
-	<field name="productVelocityCapacityChart" class="java.util.List"/>
+	<field name="projectCumulativeFlowChart" class="java.util.List"/>
+	<field name="projectBurnupChart" class="java.util.List"/>
+	<field name="projectBurndownChart" class="java.util.List"/>
+	<field name="projectParkingLotChart" class="java.util.List"/>
+	<field name="projectVelocityChart" class="java.util.List"/>
+	<field name="projectVelocityCapacityChart" class="java.util.List"/>
 	<field name="releases" class="java.lang.Object"/>
 	<field name="releaseStateBundle" class="java.util.Map"/>
 	<background>
@@ -127,8 +127,8 @@
 				<subreportParameter name="_name">
 					<subreportParameterExpression><![CDATA[$R{is.report.timeline}]]></subreportParameterExpression>
 				</subreportParameter>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{productCumulativeFlowChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "productCumulativeFlowChart.jasper"]]></subreportExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{projectCumulativeFlowChart})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "projectCumulativeFlowChart.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="103">
@@ -143,8 +143,8 @@
 				<subreportParameter name="_name">
 					<subreportParameterExpression><![CDATA[$R{is.report.timeline}]]></subreportParameterExpression>
 				</subreportParameter>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{productBurnupChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "productBurnupChart.jasper"]]></subreportExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{projectBurnupChart})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "projectBurnupChart.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="93">
@@ -157,8 +157,8 @@
 				<subreportParameter name="_name">
 					<subreportParameterExpression><![CDATA[$R{is.report.timeline}]]></subreportParameterExpression>
 				</subreportParameter>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{productBurndownChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "productBurndownChart.jasper"]]></subreportExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{projectBurndownChart})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "projectBurndownChart.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="100">
@@ -169,8 +169,8 @@
 					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="_name"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{productParkingLotChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "productParkingLotChart.jasper"]]></subreportExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{projectParkingLotChart})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "projectParkingLotChart.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="91">
@@ -181,8 +181,8 @@
 					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="_name"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{productVelocityChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "productVelocityChart.jasper"]]></subreportExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{projectVelocityChart})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "projectVelocityChart.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="92">
@@ -193,8 +193,8 @@
 					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="_name"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{productVelocityCapacityChart})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "productVelocityCapacityChart.jasper"]]></subreportExpression>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{projectVelocityCapacityChart})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "projectVelocityCapacityChart.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

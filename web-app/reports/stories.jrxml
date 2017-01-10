@@ -15,7 +15,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 	</parameter>
 	<field name="stories1" class="java.util.List"/>
-	<field name="product" class="java.lang.String"/>
+	<field name="project" class="java.lang.String"/>
 	<field name="stories2" class="java.util.List"/>
 	<background>
 		<band height="567" splitType="Stretch">

@@ -74,9 +74,9 @@
     <field name="sprintBurndownRemainingChart" class="java.util.List"/>
     <field name="sprintBurnupTasksChart" class="java.util.List"/>
     <field name="sprintBurnupStoriesChart" class="java.util.List"/>
-    <field name="productParkingLotChart" class="java.util.List"/>
-    <field name="productVelocityChart" class="java.util.List"/>
-    <field name="productVelocityCapacityChart" class="java.util.List"/>
+    <field name="projectParkingLotChart" class="java.util.List"/>
+    <field name="projectVelocityChart" class="java.util.List"/>
+    <field name="projectVelocityCapacityChart" class="java.util.List"/>
     <field name="tasks" class="java.lang.Object"/>
     <field name="taskStateBundle" class="java.util.Map"/>
     <background>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="productVelocityCapacityChart" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="projectParkingLotChart" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" resourceBundle="grails-app/i18n/report">
 	<property name="ireport.zoom" value="0.9090909090909113"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1"/>
+	<property name="ireport.y" value="13"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -67,8 +67,7 @@
 	<parameter name="labels.projectName" class="java.lang.String"/>
 	<parameter name="_isSubreport" class="java.lang.Boolean"/>
 	<field name="label" class="java.lang.String"/>
-	<field name="velocity" class="java.lang.Number"/>
-	<field name="capacity" class="java.lang.Number"/>
+	<field name="value" class="java.lang.Number"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -80,7 +79,7 @@
 				<textElement>
 					<font size="20" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productVelocityCapacity.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectParkinglot.title}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -123,36 +122,25 @@
 	</pageFooter>
 	<summary>
 		<band height="280">
-			<textField>
-				<reportElement x="115" y="0" width="568" height="20"/>
-				<textElement textAlignment="Center">
-					<font size="11" isBold="true" isUnderline="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productVelocityCapacity.title}]]></textFieldExpression>
-			</textField>
-			<lineChart>
+			<barChart>
 				<chart>
-					<reportElement x="115" y="20" width="568" height="226"/>
+					<reportElement x="115" y="20" width="567" height="226"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
 					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productVelocityCapacity.serie.velocity.name}]]></seriesExpression>
+						<seriesExpression><![CDATA[$R{is.report.chart.projectParkinglot.serie.name}]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{velocity}]]></valueExpression>
-					</categorySeries>
-					<categorySeries>
-						<seriesExpression><![CDATA[$R{is.report.chart.productVelocityCapacity.serie.capacity.name}]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{label}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{capacity}]]></valueExpression>
+						<valueExpression><![CDATA[$F{value}]]></valueExpression>
 					</categorySeries>
 				</categoryDataset>
-				<linePlot>
-					<plot/>
+				<barPlot isShowLabels="true" isShowTickMarks="true">
+					<plot orientation="Horizontal"/>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
 					<categoryAxisFormat>
-						<axisFormat>
+						<axisFormat verticalTickLabels="true">
 							<labelFont/>
 							<tickLabelFont/>
 						</axisFormat>
@@ -163,21 +151,30 @@
 							<tickLabelFont/>
 						</axisFormat>
 					</valueAxisFormat>
-				</linePlot>
-			</lineChart>
+					<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+					<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+				</barPlot>
+			</barChart>
+			<textField>
+				<reportElement x="115" y="0" width="567" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectParkinglot.title}]]></textFieldExpression>
+			</textField>
 			<textField>
 				<reportElement x="0" y="20" width="115" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productVelocityCapacity.yaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectParkinglot.yaxis.label}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="568" y="226" width="115" height="20"/>
+				<reportElement x="567" y="226" width="115" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.productVelocityCapacity.xaxis.label}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{is.report.chart.projectParkinglot.xaxis.label}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

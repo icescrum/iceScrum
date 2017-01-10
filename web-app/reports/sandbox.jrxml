@@ -94,7 +94,7 @@
 		<field name="feature" class="java.lang.String"/>
 	</subDataset>
 	<field name="stories" class="java.util.List"/>
-	<field name="product" class="java.lang.String"/>
+	<field name="project" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -112,7 +112,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{product}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{project}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
