@@ -34,8 +34,8 @@ class SecurityTagLib {
         if (request.admin) {
             res << message(code: 'is.role.admin')
         } else {
-            if (securityService.archivedProduct(attrs.product)) {
-                res << message(code: 'is.product.archived')
+            if (securityService.archivedProject(attrs.project)) {
+                res << message(code: 'is.project.archived')
             } else {
                 if (request.owner) {
                     res << message(code: 'is.role.owner')

@@ -22,9 +22,9 @@
 
 package org.icescrum.codecs
 
-import org.icescrum.core.domain.Product
+import org.icescrum.core.domain.Project
 
-class ProductKeyCodec {
+class ProjectKeyCodec {
 
   static final numeric = /[0-9]*/
 
@@ -34,7 +34,7 @@ class ProductKeyCodec {
       return theTarget
     }
 
-    Product.createCriteria().get {
+    Project.createCriteria().get {
       eq 'pkey', theTarget
       projections {
         property 'id'
