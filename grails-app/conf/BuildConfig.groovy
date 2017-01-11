@@ -84,8 +84,8 @@ grails.project.dependency.resolution = {
     }
     plugins {
         compile ':cache-headers:1.1.7'          //no support
-        compile ':asset-pipeline:2.12.4'        //:asset-pipeline:3.2.1
-        compile ':less-asset-pipeline:2.12.4'   //:less-asset-pipeline:2.11.6
+        compile ':asset-pipeline:2.11.0'        //:asset-pipeline:3.2.1
+        compile ':less-asset-pipeline:2.11.0'   //:less-asset-pipeline:2.11.6
         compile ':browser-detection:2.8.0'      //:browser-detection:3.3.0
         runtime ':hibernate4:4.3.10'            //hibernate5
         build   ':tomcat:7.0.70'                //tomcat...
