@@ -44,14 +44,14 @@
                     </button>
                 </div>
 
-                <div class="btn-group btn-view hidden-xs">
+                <div class="btn-group btn-view">
                     <button type="button"
-                            class="btn btn-default"
+                            class="btn btn-default hidden-xs hidden-sm"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                             ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
                     </button>
                     <button type="button"
-                            class="btn btn-default"
+                            class="btn btn-default hidden-xs"
                             ng-click="fullScreen()"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>

@@ -183,6 +183,10 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
             $state.go('backlog.backlog', {backlogCode: _.head($scope.availableBacklogs).code}, {location: 'replace'});
         } else if (_.startsWith(stateName, 'backlog')) {
             if (pinnedBacklogCode) {
+                if($scope.app.mobile){
+                    $scope.enforceOneBacklog({code:pinnedBacklogCode});
+                    return;
+                }
                 $scope.showBacklog(pinnedBacklogCode);
             }
             if (backlogCode) {
@@ -193,6 +197,9 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
             });
         }
     });
+    $scope.enforceOneBacklog = function(backlog){
+            window.location.hash = $scope.togglePinBacklogUrl(backlog);
+    };
     // Init
     $scope.viewName = 'backlog';
     $scope.backlogSortableOptions = {
@@ -270,5 +277,11 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
                 })
             }
         });
+    });
+
+    $scope.$watch('app.mobile', function(newValue, oldValue) {
+        if($scope.backlogContainers.length > 1 && newValue) {
+            $scope.enforceOneBacklog($scope.isPinned($scope.backlogContainers[0].backlog) ? $scope.backlogContainers[0].backlog : $scope.backlogContainers[1].backlog);
+        }
     });
 }]);

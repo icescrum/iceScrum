@@ -24,7 +24,7 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="backlogs-list">
         <div class="btn-toolbar">
-            <div class="btn-group" ng-repeat="availableBacklog in availableBacklogs">
+            <div class="btn-group hidden-xs hidden-sm" ng-repeat="availableBacklog in availableBacklogs">
                 <a class="btn btn-default btn-backlog pin"
                    href="{{ togglePinBacklogUrl(availableBacklog) }}"
                    ng-class="{'shown': isShown(availableBacklog)}"
@@ -39,16 +39,28 @@
                     <span class="badge">{{ availableBacklog.count }}</span>
                 </a>
             </div>
+            <div class="btn-group hidden-md hidden-lg">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 {{ backlogContainers[0].backlog | backlogName }} <span class="badge">{{ backlogContainers[0].backlog.count }} </span><span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li ng-repeat="availableBacklog in availableBacklogs">
+                        <a  href="{{ toggleBacklogUrl(availableBacklog) }}">
+                            {{ availableBacklog | backlogName }}
+                            <span class="badge">{{ availableBacklog.count }}</span>
+                        </a>
+                </ul>
+            </div>
             <entry:point id="backlog-window-toolbar"/>
             <div class="pull-right">
-                <div class="btn-group btn-view hidden-xs">
+                <div class="btn-group btn-view">
                     <button type="button"
-                            class="btn btn-default"
+                            class="btn btn-default hidden-xs hidden-sm"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                             ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
                     </button>
                     <button type="button"
-                            class="btn btn-default"
+                            class="btn btn-default hidden-xs"
                             uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
                             ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                     </button>
@@ -70,8 +82,7 @@
         <hr>
         <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
     </div>
-    <div class="backlogs-list-details"
-         selectable="selectableOptions">
+    <div class="backlogs-list-details" selectable="selectableOptions">
         <div class="panel panel-light" ng-repeat="backlogContainer in backlogContainers">
             <div class="panel-heading">
                 <h3 class="panel-title small-title">

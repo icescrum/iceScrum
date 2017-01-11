@@ -1175,3 +1175,28 @@ body {
 .buttons-margin-bottom .btn {
   margin-bottom: 5px;
 }
+
+.mobile {
+  .split-modal {
+    .left-panel {
+      min-height: 0;
+      background-color:#fff;
+      .left-panel-body {
+        height:auto;
+      }
+    }
+  }
+  &.mobile-xs {
+    .wizard {
+      .left-panel {
+        min-height:0;
+        ul.nav-list {
+          display: inline;
+          li {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}

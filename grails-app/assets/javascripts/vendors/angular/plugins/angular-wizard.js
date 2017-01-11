@@ -15,14 +15,14 @@ angular.module("step.html", []).run(["$templateCache", function($templateCache) 
 angular.module("wizard.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("wizard.html",
         "<div>\n" +
-        "   <div class=\"left-panel col-sm-3\">\n" +
+        "   <div class=\"left-panel col-xs-12 col-sm-3\">\n" +
         "       <ul class=\"left-panel-body steps-{{getEnabledSteps().length}} nav nav-list\" ng-if=\"!hideIndicators\">\n" +
         "           <li ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
-        "               <a ng-click=\"goTo(step)\"><i ng-if=\"step.icon\" class=\"{{ step.icon }}\"></i> <i class=\"fa fa-check text-success\" ng-show=\"step.completed\"></i> {{step.title || step.wzTitle}}</a>\n" +
+        "               <a ng-click=\"goTo(step)\"><i ng-if=\"step.icon\" class=\"{{ step.icon }}\"></i> <i class=\"fa fa-check text-success hidden-xs\" ng-show=\"step.completed\"></i> <span class=\"hidden-xs\">{{step.title || step.wzTitle}}</span></a>\n" +
         "           </li>\n" +
         "       </ul>\n" +
         "   </div>\n" +
-        "   <div class=\"right-panel steps col-sm-9\" ng-transclude></div>\n" +
+        "   <div class=\"right-panel steps col-xs-12 col-sm-9\" ng-transclude></div>\n" +
         "</div>\n" +
     "");
 }]);

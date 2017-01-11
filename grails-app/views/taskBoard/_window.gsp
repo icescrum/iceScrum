@@ -64,12 +64,12 @@
                     <div class="pull-right">
                         <div class="btn-group btn-view">
                             <button type="button"
-                                    class="btn btn-default"
+                                    class="btn btn-default hidden-xs hidden-sm"
                                     uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                                     ng-click="setPostitSize(viewName)"><i class="fa" ng-class="iconCurrentPostitSize(viewName, 'grid-group size-sm')"></i>
                             </button>
                             <button type="button"
-                                    class="btn btn-default"
+                                    class="btn btn-default hidden-xs"
                                     uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
                                     ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                             </button>
@@ -77,7 +77,7 @@
                         <div class="btn-group btn-view" uib-dropdown>
                             <button type="button"
                                     ng-if="isSortableTaskBoard(sprint)"
-                                    class="btn btn-default"
+                                    class="btn btn-default hidden-xs hidden-sm"
                                     ng-click="enableSortable()"
                                     uib-tooltip="{{ isSortingTaskBoard(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                                 <span ng-class="isSortingTaskBoard(sprint) ? 'text-success' : 'forbidden-stack text-danger'" class="fa fa-hand-pointer-o"></span>

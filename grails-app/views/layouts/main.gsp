@@ -44,7 +44,7 @@
 <body ng-controller="appCtrl"
       flow-prevent-drop=""
       fullscreen="app.isFullScreen"
-      ng-class="{ 'mobile':app.mobile, 'app-ready':app != null, 'loading': (app.loading || app.loadingText), 'splash-screen': (app.loadingPercent != 100 || app.loadingText)  }"
+      ng-class="{ 'mobile':app.mobile, 'mobile-xs':app.mobilexs, 'app-ready':app != null, 'loading': (app.loading || app.loadingText), 'splash-screen': (app.loadingPercent != 100 || app.loadingText)  }"
       class="splash-screen loading">
     <g:render template="/scrumOS/checkServerURL"/>
     <div id="app-loading">
