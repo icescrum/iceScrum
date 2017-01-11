@@ -48,8 +48,9 @@
          flow-file-added="!! {xml:1,zip:1}[$file.getExtension()]"
          flow-drop-enabled="!$flow.files.length"
          flow-file-success="checkValidation($message)"
+         flow-error="handleImportError($file, $message, $flow)"
          flow-files-submitted="$flow.upload(); progressStatus();">
-        <div ng-hide="$flow.files.length" class="help-block">
+        <div ng-hide="$flow.files.length" class="help-block text-center">
             <g:message code="is.dialog.importProject.choose.description"/>
         </div>
         <div ng-hide="$flow.files.length" style="text-align: center">

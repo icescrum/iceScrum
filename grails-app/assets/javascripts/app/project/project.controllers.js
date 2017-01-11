@@ -81,6 +81,10 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                     showProject: false
                 };
                 $scope.progress = false;
+                $scope.handleImportError = function($file, $message) {
+                    $scope.notifyError(JSON.parse($message).text);
+                    $scope.$close(true);
+                };
                 $scope.checkValidation = function($message) {
                     var data = !angular.isObject($message) ? JSON.parse($message) : $message;
                     if (data && data.class == 'Project') {
