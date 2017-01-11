@@ -165,12 +165,19 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
     $scope.currentProject = Session.getProject();
 }]);
 
-controllers.controller('dashboardCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, TeamService) {
+controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, $state, ProjectService, ReleaseService, SprintService, TeamService) {
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
     };
     $scope.authorizedSprint = function(action, sprint) {
         return SprintService.authorizedSprint(action, sprint);
+    };
+    $scope.openSprintUrl = function(sprint) {
+        var stateName = 'planning.release.sprint.withId';
+        if ($state.current.name != 'planning.release.sprint.withId.details') {
+            stateName += '.details';
+        }
+        return $state.href(stateName, {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
     };
     // Init
     $scope.release = {};
