@@ -31,7 +31,7 @@
         <wizard class="row wizard-row">
             <wz-step wz-title="${message(code:"is.dialog.wizard.section.project")}" icon="fa fa-pencil">
                 <ng-include src="'form.general.project.html'"></ng-include>
-                <div class="btn-toolbar pull-right wizard-next">
+                <div class="btn-toolbar wizard-next">
                     <button type="button"
                             role="button"
                             class="btn btn-default"
@@ -45,7 +45,7 @@
                 <div ng-controller="teamCtrl">
                     <ng-include src="'form.team.html'"></ng-include>
                     <ng-include src="'form.members.project.html'"></ng-include>
-                    <div class="btn-toolbar pull-right wizard-next">
+                    <div class="btn-toolbar wizard-next">
                         <button type="button"
                                 role="button"
                                 class="btn btn-default"
@@ -58,7 +58,7 @@
             </wz-step>
             <wz-step wz-title="${message(code:"is.dialog.wizard.section.options")}" icon="fa fa-sliders">
                 <ng-include src="'form.practices.project.html'"></ng-include>
-                <div class="btn-toolbar pull-right wizard-next">
+                <div class="btn-toolbar wizard-next">
                     <button type="button"
                             role="button"
                             class="btn btn-default"
@@ -70,7 +70,7 @@
             </wz-step>
             <wz-step wz-title="${message(code:"todo.is.ui.project.planning")}" icon="fa fa-calendar">
                 <ng-include src="'form.planning.project.html'"></ng-include>
-                <div class="btn-toolbar pull-right wizard-next">
+                <div class="btn-toolbar wizard-next">
                     <button type="button"
                             role="button"
                             class="btn btn-default"
