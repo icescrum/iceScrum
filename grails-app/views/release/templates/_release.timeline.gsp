@@ -24,7 +24,8 @@
 <uib-progress class="form-control-static form-bar"
               uib-tooltip="{{ release.name }}"
               max="release.duration">
-    <uib-bar ng-repeat="sprint in releaseParts" class="{{ $last ? 'last-bar' : '' }}"
+    <uib-bar ng-repeat="sprint in releaseParts"
+             class="{{ $last ? 'last-bar' : '' }}"
              uib-tooltip-template="'sprint.tooltip.html'"
              tooltip-enable="sprint.id"
              tooltip-placement="bottom"
@@ -39,7 +40,8 @@
 <uib-progress class="form-control-static form-bar"
               uib-tooltip="{{ release.name }}"
               max="release.duration">
-    <a href="{{ openSprintUrl(sprint) }}" ng-repeat="sprint in releaseParts">
+    <a href="{{ openSprintUrl(sprint) }}"
+       ng-repeat="sprint in releaseParts">
         <uib-bar class="{{ $last ? 'last-bar' : '' }}"
                  uib-tooltip-template="'sprint.tooltip.html'"
                  tooltip-enable="sprint.id"
