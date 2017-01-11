@@ -82,9 +82,17 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                 };
                 $scope.progress = false;
                 $scope.checkValidation = function($message) {
-                    if ($message) {
+                    var data = !angular.isObject($message) ? JSON.parse($message) : $message;
+                    if (data && data.class == 'Project') {
+                        $scope.$close(true);
+                        $rootScope.app.loading = true;
+                        $rootScope.app.loadingText = " ";
+                        $timeout(function() {
+                            document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
+                        }, 2000);
+                    } else {
                         $scope.progress = false;
-                        $scope.changes = !angular.isObject($message) ? JSON.parse($message) : $message;
+                        $scope.changes = data;
                         $scope._changes = angular.copy($scope.changes);
                         $scope._changes = angular.extend($scope._changes, {
                             showTeam: $scope.changes.team ? true : false,
