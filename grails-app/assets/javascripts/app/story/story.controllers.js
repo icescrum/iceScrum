@@ -91,12 +91,8 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
     $scope.menus = [
         {
             name: 'todo.is.ui.details',
-            visible: function(story) {
-                return $state.current.name.indexOf('story.details') == -1;
-            },
-            action: function(story) {
-                $state.go('.story.details', {storyId: story.id});
-            }
+            visible: function(story) { return $state.current.name.indexOf('story.details') == -1; },
+            action: function(story) { $state.go('.story.details', {storyId: story.id}); }
         },
         {
             name: 'is.ui.backlog.menu.acceptAsStory',

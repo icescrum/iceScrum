@@ -54,7 +54,7 @@
 <script type="text/ng-template" id="button.shortcutMenu.html">
     <a ng-show="menuElement.name"
        class="btn btn-primary"
-       ng-class="{'btn-sm':btnSm}"
+       ng-class="{'btn-sm': btnSm}"
        ng-href="{{ menuElement.url(ngModel) }}"
        ng-click="menuElement.action(ngModel)">
         {{ message(menuElement.name) }}
