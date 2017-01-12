@@ -60,7 +60,7 @@
                             </ui-select>
                         </div>
                         <div class="col-sm-1 text-right">
-                            <div class="btn-group" ng-show="formHolder.deletable() || formHolder.editable()" uib-dropdown>
+                            <div class="btn-group btn-group-sm" ng-show="formHolder.deletable() || formHolder.editable()" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i></i>
                                 </button>

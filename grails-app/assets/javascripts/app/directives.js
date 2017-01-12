@@ -886,6 +886,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
     return {
         restrict: 'E',
         scope: {
+            btnSm: '=',
             ngModel: '=',
             viewName: '=',
             modelMenus: '='

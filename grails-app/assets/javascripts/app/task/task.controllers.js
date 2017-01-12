@@ -80,14 +80,14 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
     };
     $scope.menus = [
         {
-            name: 'is.ui.sprintPlan.menu.task.take',
-            visible: function(task) { return $scope.authorizedTask('take', task); },
-            action: function(task) { $scope.take(task); }
-        },
-        {
             name: 'todo.is.ui.details',
             visible: function(task) { return $state.current.name.indexOf('task.details') == -1; },
             action: function(task) { $state.go('.task.details', {taskId: task.id}); }
+        },
+        {
+            name: 'is.ui.sprintPlan.menu.task.take',
+            visible: function(task) { return $scope.authorizedTask('take', task); },
+            action: function(task) { $scope.take(task); }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.unassign',

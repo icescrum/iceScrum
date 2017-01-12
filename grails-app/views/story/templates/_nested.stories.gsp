@@ -22,27 +22,39 @@
 --}%
 
 <script type="text/ng-template" id="nested.stories.html">
-<div class="panel-body">
-    <div ng-repeat="story in selected.stories">
-        <div>
-            <button class="btn btn-xs btn-default"
-                    disabled="disabled">{{ story.uid }}</button>
-            {{ story.name }}
-            <a class="btn btn-xs btn-default pull-right"
-               ng-if="!isModal"
-               ui-sref=".story.details({storyId: story.id})">
-                <i class="fa fa-info-circle"></i>
-            </a>
-        </div>
-        <div class="pretty-printed"
-             ng-bind-html="story.description | lineReturns | actorTag: story.actor">
-        </div>
-        <hr ng-if="!$last"/>
-    </div>
-    <div ng-show="selected.stories !== undefined && selected.stories.length == 0">
-        <div class="empty-content">
-            <small>${message(code:'todo.is.ui.story.empty')}</small>
-        </div>
-    </div>
+<div class="stories panel-body">
+    <table class="table">
+        <tr ng-repeat="story in selected.stories">
+            <td class="content">
+                <div class="clearfix no-padding">
+                    <div class="form-group col-sm-8">
+                        <span class="name form-control-static">
+                            <strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
+                        </span>
+                    </div>
+                    <div class="form-group col-sm-4" ng-controller="storyCtrl">
+                        <div class="btn-group pull-right">
+                            <shortcut-menu ng-model="story" model-menus="menus" view-name="list" btn-sm="true"></shortcut-menu>
+                            <div class="btn-group btn-group-sm" uib-dropdown>
+                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-h"></i></i>
+                                </button>
+                                <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'story'" template-url="item.menu.html"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix no-padding" ng-if="story.description">
+                    <p class="description form-control-static" ng-bind-html="story.description | lineReturns | actorTag: story.actor"></p>
+                </div>
+                <hr ng-if="!$last"/>
+            </td>
+        </tr>
+        <tr ng-show="selected.stories !== undefined && !selected.stories.length">
+            <td class="empty-content">
+                <small>${message(code:'todo.is.ui.story.empty')}</small>
+            </td>
+        </tr>
+    </table>
 </div>
 </script>

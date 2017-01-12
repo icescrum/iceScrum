@@ -45,7 +45,7 @@
                                     {{ comment.dateCreated | dateTime }}
                                 </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>&nbsp;
                             </span>
-                            <div class="btn-group" ng-show="formHolder.deletable() || formHolder.editable()" uib-dropdown>
+                            <div class="btn-group btn-group-sm" ng-show="formHolder.deletable() || formHolder.editable()" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i></i>
                                 </button>

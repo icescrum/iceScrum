@@ -33,8 +33,8 @@
                     </div>
                     <div class="form-group col-sm-4" ng-controller="taskCtrl">
                         <div class="btn-group pull-right">
-                            <shortcut-menu ng-model="task" model-menus="menus" view-name="list"></shortcut-menu>
-                            <div class="btn-group" uib-dropdown>
+                            <shortcut-menu ng-model="task" model-menus="menus" view-name="list" btn-sm="true"></shortcut-menu>
+                            <div class="btn-group btn-group-sm" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i></i>
                                 </button>
