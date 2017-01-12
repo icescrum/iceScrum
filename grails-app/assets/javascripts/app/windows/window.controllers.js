@@ -262,10 +262,10 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName'
         $scope.release = release;
         $scope.computeVisibleSprints();
     });
-    $scope.$watchGroup(['app.mobile', 'app.mobilexs'], function(n,o){
+    $scope.$watchGroup(['app.mobile', 'app.mobilexs'], function(n, o) {
         var oldVisible = $scope.visibleSprintMax;
         $scope.visibleSprintMax = $scope.app.mobilexs ? 1 : ($scope.app.mobile ? 2 : 3);
-        if(oldVisible != $scope.visibleSprintMax){
+        if (oldVisible != $scope.visibleSprintMax) {
             $state.reload();
         }
     });
@@ -448,7 +448,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             }
             TaskService.update(task).catch(function() {
                 $scope.revertSortable(event);
-               });
+            });
         },
         orderChanged: function(event) {
             var task = event.source.itemScope.modelValue;

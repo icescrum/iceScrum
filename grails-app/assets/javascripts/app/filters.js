@@ -447,9 +447,8 @@ filters
             return $rootScope.message(boolean ? 'is.yes' : 'is.no');
         }
     }]).filter('visibleMenuElement', function() {
-        return function(menus, item, viewName) {
+        return function(menus, item) {
             return _.filter(menus, function(menuElement) {
-                console.log(viewName);
                 return menuElement.visible(item);
             })
         };

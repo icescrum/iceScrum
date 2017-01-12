@@ -86,12 +86,8 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
         },
         {
             name: 'todo.is.ui.details',
-            visible: function(task) {
-                return $state.current.name.indexOf('task.details') == -1;
-            },
-            action: function(task) {
-                $state.go('.task.details', {taskId: task.id});
-            }
+            visible: function(task) { return $state.current.name.indexOf('task.details') == -1; },
+            action: function(task) { $state.go('.task.details', {taskId: task.id}); }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.unassign',
