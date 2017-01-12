@@ -25,17 +25,13 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
-    $scope.showProjectEditModal = function(view) {
-        var childScope = $scope.$new();
-        if (view) {
-            $scope.panel = {current: view};
-        }
+    $scope.showProjectEditModal = function() {
         $uibModal.open({
             keyboard: false,
             backdrop: 'static',
             templateUrl: $scope.serverUrl + "/project/edit",
             size: 'lg',
-            scope: childScope,
+            scope: $scope.$new(),
             controller: 'editProjectModalCtrl'
         });
     };
@@ -396,6 +392,9 @@ controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService'
     $scope.projectMembersEditable = function() {
         return true;
     };
+    $scope.teamManageable = function() {
+        return false;
+    };
     $scope.computePlanning = function() {
         $scope.totalDuration = DateService.daysBetweenDays($scope.project.firstSprint, $scope.project.endDate);
         if ($scope.project.preferences.estimatedSprintsDuration > $scope.totalDuration) {
@@ -487,7 +486,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
         opened: false
     };
     if (!$scope.panel) {
-        var defaultView = $scope.authorizedProject('update', $scope.currentProject) ? 'general' : 'team';
+        var defaultView = $scope.authorizedProject('update', $scope.currentProject) ? 'general' : 'actors';
         $scope.panel = {current: defaultView};
     }
 }]);
@@ -501,10 +500,13 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         return false;
     };
     $scope.teamRemovable = function() {
-        return ProjectService.authorizedProject('updateTeamMembers', $scope.project);
+        return TeamService.authorizedTeam('updateMembers');
     };
     $scope.projectMembersEditable = function(project) {
         return ProjectService.authorizedProject('updateProjectMembers', project);
+    };
+    $scope.teamManageable = function(team) {
+        return team.selected && TeamService.authorizedTeam('updateMembers');
     };
     $scope.resetTeamForm = function() {
         $scope.resetFormValidation($scope.formHolder.editMembersForm);
@@ -526,6 +528,10 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         ProjectService.leaveTeam(project).then(function() {
             document.location.reload(true);
         });
+    };
+    $scope.manageTeam = function() {
+        $scope.$close(true);
+        $scope.showManageTeamsModal();
     };
     // Init
     $scope.formHolder = {};

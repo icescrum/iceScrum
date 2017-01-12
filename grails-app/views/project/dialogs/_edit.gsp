@@ -28,7 +28,7 @@
                 <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('general') }">
                     <a ng-click="setCurrentPanel('general')"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm">${ message(code: 'is.dialog.wizard.section.project')}</span></a>
                 </li>
-                <li ng-class="{ current: isCurrentPanel('prodfoo') }">
+                <li ng-class="{ current: isCurrentPanel('actors') }">
                     <a ng-click="setCurrentPanel('actors')"><i class="fa fa-child"></i> <span class="hidden-xs hidden-sm">${ message(code: 'is.ui.actor.actors')}</span></a>
                 </li>
                 <li ng-class="{ current: isCurrentPanel('team') }">
@@ -55,7 +55,7 @@
             <section ng-switch-when="actors"
                      class="step current"
                      title="${ message(code: 'is.ui.actor.actors')}">
-                <div ng-include="'edit.general.prodfoo.html'"></div>
+                <div ng-include="'edit.general.actors.html'"></div>
             </section>
             <section ng-switch-when="team"
                      class="step current"

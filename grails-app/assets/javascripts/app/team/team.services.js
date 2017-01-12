@@ -42,6 +42,8 @@ services.service("TeamService", ['$q', 'Team', 'Session', 'FormService', functio
     };
     this.authorizedTeam = function(action, team) {
         switch (action) {
+            case 'updateMembers':
+                return Session.sm();
             case 'delete':
                 return Session.owner(team);
             case 'changeOwner':

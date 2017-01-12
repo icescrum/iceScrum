@@ -23,11 +23,10 @@
 <script type="text/ng-template" id="form.team.html">
     <div class="row">
         <div class="col-sm-12">
-            <h4>${message(code:"is.dialog.wizard.section.team")}</h4>
-            <p class="help-block">${message(code:'is.dialog.wizard.section.team.description')}</p>
+            <h4>${message(code:"is.team")}</h4>
+            <p class="help-block">{{ message(teamCreatable() ? 'is.dialog.wizard.section.team.description' : 'todo.is.ui.projet.team.description') }}</p>
         </div>
         <div class="col-sm-4">
-            <h4>${message(code:'is.team')}</h4>
             <label for="team.name">{{ message(teamCreatable() ? 'todo.is.ui.create.or.select.team' : 'todo.is.ui.select.team' )}}</label>
             <p class="input-group">
                 <input autocomplete="off"
@@ -47,9 +46,14 @@
                 <span class="input-group-addon" ng-if="teamRemovable()"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>
             </p>
             <div ng-if="warning.on" class="help-block bg-danger">${ message(code: 'todo.is.ui.team.warning.project.members') }</div>
+            <button ng-if="teamManageable(team)"
+                    type="button"
+                    class="btn btn-primary"
+                    ng-click="manageTeam()">
+                ${message(code: 'todo.is.ui.team.manage')}
+            </button>
         </div>
         <div class="col-sm-8" ng-show="team.selected">
-            <h4>{{ team.name }} <small>{{ team.members.length }} ${message(code:'todo.is.ui.team.members')}</small></h4>
             <div ng-show="teamMembersEditable(team)">
                 <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
                 <p class="input-group">

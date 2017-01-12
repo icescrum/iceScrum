@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<script type="text/ng-template" id="edit.general.prodfoo.html">
+<script type="text/ng-template" id="edit.general.actors.html">
 <form role='form'
       show-validation
       novalidate
@@ -77,8 +77,11 @@
                 <td>
                     {{ actor.name }}
                 </td>
-                <td>
+                <td ng-if="actor.stories_count">
                     <a ng-click="$close()" href="{{ actorSearchUrl(actor) }}">{{ actor.stories_count }}</a>
+                </td>
+                <td ng-if="!actor.stories_count">
+                    {{ actor.stories_count }}
                 </td>
                 <td class="btn-toolbar"
                     ng-if="authorizedActor('update') || authorizedActor('delete', actor)">
@@ -96,8 +99,8 @@
             </tr>
         </tbody>
     </table>
-    <div ng-if="actor.length == 0">
-        ${message(code: 'todo.is.ui.actor.placeholder')}
+    <div class="empty-content" ng-if="actors.length == 0">
+        ${message(code: 'is.ui.actor.placeholder')}
     </div>
 </form>
 </script>
