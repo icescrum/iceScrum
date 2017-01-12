@@ -24,31 +24,23 @@
 <div class="tasks panel-body" ng-controller="taskStoryCtrl">
     <table class="table">
         <tr ng-repeat="task in selected.tasks | orderBy: tasksOrderBy">
-            <td class="content {{:: authorizedTask('delete', task) ? 'toggle-container' : '' }}">
+            <td class="content">
                 <div class="clearfix no-padding">
-                    <div class="col-sm-1">
-                        <button class="btn btn-default elemid toggle-hidden"
-                                disabled="disabled">{{ task.uid }}</button>
-                        <button class="btn btn-danger toggle-visible"
-                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [task] })"
-                                uib-tooltip="${message(code:'default.button.delete.label')}"><i class="fa fa-times"></i>
-                        </button>
-                    </div>
                     <div class="form-group col-sm-8">
                         <span class="name form-control-static">
-                            {{ task.name }}
-                            <span ng-if="isModal">{{ task.name }}</span>
+                            <strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
                         </span>
                     </div>
-                    <div class="form-group col-sm-2">
-                        <span class="form-control-static text-right">{{ task.estimation != undefined ? task.estimation : '?' }} <i class="small-icon fa {{ task.state | taskStateIcon }}"></i></span>
-                    </div>
-                    <div class="col-sm-1">
-                        <a class="btn btn-default"
-                           ng-if="!isModal"
-                           ui-sref=".task.details({taskId: task.id})">
-                            <i class="fa fa-info-circle"></i>
-                        </a>
+                    <div class="form-group col-sm-4" ng-controller="taskCtrl">
+                        <div class="btn-group pull-right">
+                            <shortcut-menu ng-model="task" model-menus="menus" view-name="list"></shortcut-menu>
+                            <div class="btn-group" uib-dropdown>
+                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-h"></i></i>
+                                </button>
+                                <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="clearfix no-padding" ng-if="task.description">

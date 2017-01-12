@@ -36,7 +36,7 @@
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
-                    <div class="btn-group btn-view">
+                    <div class="btn-group">
                         <a ng-if="previousRelease"
                            class="btn btn-default"
                            role="button"

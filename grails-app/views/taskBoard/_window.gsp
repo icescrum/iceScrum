@@ -26,9 +26,8 @@
          ng-class="{'sortable-disabled': !isSortingTaskBoard(sprint), 'sprint-not-done': sprint.state != sprintStatesByName.DONE}">
         <div class="panel-heading">
             <h3 class="panel-title small-title">
-                <div class="btn-toolbar"
-                     ng-controller="taskCtrl">
-                    <div class="sprints-dropdown" uib-dropdown>
+                <div ng-controller="taskCtrl">
+                    <div class="sprints-dropdown pull-left" uib-dropdown>
                         <div>
                             <a class="link" href="{{ openSprintUrl(sprint) }}">{{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i class="fa fa-info-circle visible-on-hover"></i></a> <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down" uib-dropdown-toggle></i>
                             <div class="sub-title text-muted" uib-dropdown-toggle>
@@ -61,8 +60,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="pull-right">
-                        <div class="btn-group btn-view">
+                    <div class="btn-toolbar pull-right">
+                        <div class="btn-group">
                             <button type="button"
                                     class="btn btn-default hidden-xs hidden-sm"
                                     uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
@@ -74,7 +73,7 @@
                                     ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </div>
-                        <div class="btn-group btn-view" uib-dropdown>
+                        <div class="btn-group" uib-dropdown>
                             <button type="button"
                                     ng-if="isSortableTaskBoard(sprint)"
                                     class="btn btn-default hidden-xs hidden-sm"
@@ -95,7 +94,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="btn-group btn-view hidden" uib-dropdown>
+                        <div class="btn-group hidden" uib-dropdown>
                             <button type="button"
                                     class="btn btn-default"
                                     uib-tooltip="${message(code:'is.ui.window.print')} (P)"
@@ -129,6 +128,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="clearfix"></div>
                 </div>
             </h3>
         </div>

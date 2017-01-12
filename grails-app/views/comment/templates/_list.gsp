@@ -26,29 +26,42 @@
         <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
             <td class="content">
                 <form name="formHolder.commentForm"
-                      ng-class="{'toggle-container': formHolder.deletable(), 'form-editable': formHolder.editable(), 'form-editing': formHolder.editing }"
+                      ng-class="{'form-editable': formHolder.editable(), 'form-editing': formHolder.editing }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding">
                         <div class="col-sm-1">
                             <img height="30px"
-                                 class="toggle-hidden {{ comment.poster | userColorRoles }}"
+                                 class="{{ comment.poster | userColorRoles }}"
                                  ng-src="{{comment.poster | userAvatar}}"
                                  alt="{{comment.poster | userFullName}}"/>
-                            <button class="btn btn-danger toggle-visible"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, selected] })"
-                                    uib-tooltip="${message(code:'default.button.delete.label')}"><i class="fa fa-times"></i>
-                            </button>
                         </div>
                         <div class="form-half">
                             <span class="poster form-control-static">{{comment.poster | userFullName}}</span>
                         </div>
                         <div class="col-sm-5 form-group text-right">
-                            <span class="dateCreated form-control-static text-muted">
+                            <span class="dateCreated text-muted">
                                 <time timeago datetime="{{ comment.dateCreated }}">
                                     {{ comment.dateCreated | dateTime }}
-                                </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>
+                                </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>&nbsp;
                             </span>
+                            <div class="btn-group" ng-show="formHolder.deletable() || formHolder.editable()" uib-dropdown>
+                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-h"></i></i>
+                                </button>
+                                <ul uib-dropdown-menu class="pull-right">
+                                    <li>
+                                        <a href ng-click="editForm(true); showCommentBodyTextarea = true;">
+                                            ${message(code:'is.ui.backlogelement.comment.edit')}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [editableComment, selected] })">
+                                            ${message(code:'default.button.delete.label')}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">

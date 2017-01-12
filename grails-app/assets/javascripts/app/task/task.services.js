@@ -126,7 +126,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             case 'unBlock':
                 return task.blocked && (Session.sm() || Session.responsible(task)) && task.state != TaskStatesByName.DONE;
             case 'take':
-                return !Session.responsible(task) && task.state != TaskStatesByName.DONE;
+                return !Session.responsible(task) && task.state != TaskStatesByName.DONE && task.sprint;
             case 'release':
                 return Session.responsible(task) && task.state != TaskStatesByName.DONE;
             case 'showUrgent':

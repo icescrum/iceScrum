@@ -36,16 +36,18 @@
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
-                    <a ng-if="previousFeature && !isModal"
-                       class="btn btn-default"
-                       role="button"
-                       tabindex="0"
-                       href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                    <a ng-if="nextFeature && !isModal"
-                       class="btn btn-default"
-                       role="button"
-                       tabindex="0"
-                       href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    <div class="btn-group">
+                        <a ng-if="previousFeature && !isModal"
+                           class="btn btn-default"
+                           role="button"
+                           tabindex="0"
+                           href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                        <a ng-if="nextFeature && !isModal"
+                           class="btn btn-default"
+                           role="button"
+                           tabindex="0"
+                           href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                    </div>
                     <a ng-if="!isModal"
                        class="btn btn-default"
                        href="#{{ ::viewName }}"

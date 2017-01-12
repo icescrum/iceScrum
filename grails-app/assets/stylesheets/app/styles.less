@@ -476,14 +476,20 @@ tr:hover .on-hover span {
 .panel-heading {
   .panel-title {
     .left-title {
-      .make-lg-column(6);
+      float:left;
+      padding-left:  (@grid-gutter-width / 2);
+      padding-right: (@grid-gutter-width / 2);
+      max-width: 60%;
       .item-name {
         margin-left: 5px;
       }
     }
     .right-title {
+      float:right;
+      padding-left:  (@grid-gutter-width / 2);
+      padding-right: (@grid-gutter-width / 2);
       text-align: right;
-      .make-lg-column(6);
+      max-width: 40%;
       > span > img, > .btn, > .btn-group {
         margin-bottom: 5px;
       }
@@ -808,6 +814,10 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
   .input-group-addon {
     & > i.fa-close {
       cursor: pointer;
+    }
+    &.no-style {
+      background: none;
+      border:none !important;
     }
   }
 }

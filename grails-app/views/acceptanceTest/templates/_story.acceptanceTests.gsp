@@ -26,13 +26,13 @@
         <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
             <td class="content">
                 <form name="formHolder.acceptanceTestForm"
-                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable(), 'toggle-container': formHolder.deletable() }"
+                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable() }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding form-group">
-                        <div class="col-sm-6">
+                        <div class="col-sm-7">
                             <div class="input-group">
-                                <span class="input-group-addon">{{ editableAcceptanceTest.uid }}</span>
+                                <span class="input-group-addon no-style"><strong>{{ editableAcceptanceTest.uid }}</strong></span>
                                 <input required
                                        ng-maxlength="255"
                                        ng-focus="editForm(true)"
@@ -59,11 +59,24 @@
                                 </ui-select-choices>
                             </ui-select>
                         </div>
-                        <div class="col-sm-2 text-right">
-                            <button class="btn btn-danger pull-right toggle-visible"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, selected] })"
-                                    uib-tooltip="${message(code:'default.button.delete.label')}"><i class="fa fa-times"></i>
-                            </button>
+                        <div class="col-sm-1 text-right">
+                            <div class="btn-group" ng-show="formHolder.deletable() || formHolder.editable()" uib-dropdown>
+                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-h"></i></i>
+                                </button>
+                                <ul uib-dropdown-menu class="pull-right">
+                                    <li>
+                                        <a href ng-click="showAcceptanceTestDescriptionTextarea = true;">
+                                            ${message(code:'is.ui.backlogelement.comment.edit')}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, selected] })">
+                                            ${message(code:'default.button.delete.label')}
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">

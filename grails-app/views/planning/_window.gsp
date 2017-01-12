@@ -24,49 +24,48 @@
 <div class="panel panel-light">
     <div ng-if="releases.length > 0"
          class="backlogs-list">
-        <div class="btn-toolbar">
-            <h4 class="pull-left">
-                <a class="link" href="#/planning/{{ release.id }}/details">
-                    {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }} <i class="fa fa-info-circle visible-on-hover"></i>
-                </a>
-            </h4>
-            <div class="pull-right">
-                <div class="btn-group btn-view">
-                    <button class="btn btn-default"
-                            ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
-                            ng-click="visibleSprintsPrevious()">
-                        <i class="fa fa-caret-left"></i>
-                    </button>
-                    <button class="btn btn-default"
-                            ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
-                            ng-click="visibleSprintsNext()">
-                        <i class="fa fa-caret-right"></i>
-                    </button>
-                </div>
+        <h4 class="btn-toolbar pull-left">
+            <a class="link" href="#/planning/{{ release.id }}/details">
+                {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }} <i class="fa fa-info-circle visible-on-hover"></i>
+            </a>
+        </h4>
+        <div class="btn-toolbar pull-right">
+            <div class="btn-group">
+                <button class="btn btn-default"
+                        ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
+                        ng-click="visibleSprintsPrevious()">
+                    <i class="fa fa-caret-left"></i>
+                </button>
+                <button class="btn btn-default"
+                        ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
+                        ng-click="visibleSprintsNext()">
+                    <i class="fa fa-caret-right"></i>
+                </button>
+            </div>
 
-                <div class="btn-group btn-view">
-                    <button type="button"
-                            class="btn btn-default hidden-xs hidden-sm"
-                            uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
+            <div class="btn-group">
+                <button type="button"
+                        class="btn btn-default hidden-xs hidden-sm"
+                        uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
+                </button>
+                <button type="button"
+                        class="btn btn-default hidden-xs"
+                        ng-click="fullScreen()"
+                        uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                </button>
+            </div>
+            <div class="btn-group" role="group" ng-controller="releaseCtrl">
+                <shortcut-menu ng-model="release" model-menus="menus" view-name="viewName"></shortcut-menu>
+                <div class="btn-group" uib-dropdown>
+                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                        <i class="fa fa-ellipsis-h"></i>
                     </button>
-                    <button type="button"
-                            class="btn btn-default hidden-xs"
-                            ng-click="fullScreen()"
-                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
-                    </button>
-                </div>
-                <div class="btn-group btn-view" role="group" ng-controller="releaseCtrl">
-                    <shortcut-menu ng-model="release" model-menus="menus" view-name="viewName"></shortcut-menu>
-                    <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-ellipsis-h"></i>
-                        </button>
-                        <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
-                    </div>
+                    <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
                 </div>
             </div>
         </div>
+        <div class="clearfix"></div>
         <hr>
     </div>
     <div ng-if="releases.length > 0"

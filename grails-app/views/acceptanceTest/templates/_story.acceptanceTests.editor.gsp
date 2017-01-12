@@ -30,7 +30,7 @@
     <div class="clearfix no-padding">
         <div class="col-sm-8 form-group">
             <div class="input-group">
-                <span class="input-group-addon">42</span>
+                <span class="input-group-addon no-style"><strong>42</strong></span>
                 <input required
                        type="text"
                        ng-maxlength="255"

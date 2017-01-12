@@ -23,7 +23,7 @@
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="backlogs-list">
-        <div class="btn-toolbar">
+        <div class="btn-toolbar pull-left">
             <div class="btn-group hidden-xs hidden-sm" ng-repeat="availableBacklog in availableBacklogs">
                 <a class="btn btn-default btn-backlog pin"
                    href="{{ togglePinBacklogUrl(availableBacklog) }}"
@@ -52,33 +52,34 @@
                 </ul>
             </div>
             <entry:point id="backlog-window-toolbar"/>
-            <div class="pull-right">
-                <div class="btn-group btn-view">
-                    <button type="button"
-                            class="btn btn-default hidden-xs hidden-sm"
-                            uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
-                    </button>
-                    <button type="button"
-                            class="btn btn-default hidden-xs"
-                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                            ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
-                    </button>
-                </div>
-                <div class="btn-group btn-view hidden-xs">
-                    <button type="button"
-                            class="btn btn-default"
-                            ng-click="toggleSelectableMultiple()"
-                            uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
-                        <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
-                    </button>
-                </div>
-                <entry:point id="backlog-window-toolbar-right"/>
-                <a ng-if="authorizedStory('create')"
-                   href="#/{{ ::viewName }}/sandbox/story/new"
-                   class="btn btn-primary">${message(code: "todo.is.ui.story.new")}</a>
-            </div>
         </div>
+        <div class="btn-toolbar pull-right">
+            <div class="btn-group">
+                <button type="button"
+                        class="btn btn-default hidden-xs hidden-sm"
+                        uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
+                </button>
+                <button type="button"
+                        class="btn btn-default hidden-xs"
+                        uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                        ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
+                </button>
+            </div>
+            <div class="btn-group hidden-xs">
+                <button type="button"
+                        class="btn btn-default"
+                        ng-click="toggleSelectableMultiple()"
+                        uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
+                    <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
+                </button>
+            </div>
+            <entry:point id="backlog-window-toolbar-right"/>
+            <a ng-if="authorizedStory('create')"
+               href="#/{{ ::viewName }}/sandbox/story/new"
+               class="btn btn-primary"><i class="visible-xs fa fa-plus"></i><span class="hidden-xs">${message(code: "todo.is.ui.story.new")}</span></a>
+        </div>
+        <div class="clearfix"></div>
         <hr>
         <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
     </div>
@@ -88,9 +89,9 @@
                 <h3 class="panel-title small-title">
                     <span class="title">{{ backlogContainer.backlog | backlogName }}</span>
                     <entry:point id="backlog-list-details-heading"/>
-                    <div class="pull-right">
+                    <div class="btn-toolbar pull-right">
                         <entry:point id="backlog-list-details-heading-right"/>
-                        <div class="btn-group btn-view">
+                        <div class="btn-group">
                             <button type="button"
                                     ng-if="backlogContainer.sortable"
                                     class="btn btn-default hidden-xs"
@@ -118,7 +119,7 @@
                                 <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                             </button>
                         </div>
-                        <div class="btn-group btn-view hidden-xs" uib-dropdown>
+                        <div class="btn-group hidden-xs" uib-dropdown>
                             <button type="button"
                                     class="btn btn-default"
                                     uib-tooltip="${message(code:'is.ui.window.print')} (P)"

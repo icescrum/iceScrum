@@ -350,9 +350,6 @@ header {
         .panel-heading {
           > .btn-toolbar {
             margin-left: 0;
-            > .btn-group {
-              margin-left: 0;
-            }
           }
         }
       }
@@ -710,6 +707,12 @@ table {
 }
 
 .comments, .tasks, .activities, .acceptanceTests {
+  .name {
+    line-height: 19px;
+    strong {
+      font-size: 15px;
+    }
+  }
   .form-control-static {
     display: block;
     padding-left: 9px;
@@ -734,13 +737,12 @@ table {
     min-height: inherit;
     max-height: inherit;
   }
+  .description {
+    background-color:#fafafa;
+  }
 }
 
-.btn-group.btn-view {
-  margin-right: 10px;
-}
-
-#view-backlog, #view-planning, #view-feature {
+#view-backlog, #view-planning {
   .content {
     .backlogs-list {
       background: @panel-bg;
@@ -798,6 +800,20 @@ table {
           border-right-width: 0;
         }
       }
+    }
+  }
+}
+
+#view-feature {
+  > .content > .panel-light > .panel-heading {
+    padding: 0;
+  }
+  .btn-toolbar {
+    padding: 15px;
+    padding-bottom: 0;
+    margin-left: 0;
+    div:first-child {
+      margin-left: 0;
     }
   }
 }
@@ -1195,6 +1211,38 @@ body {
           li {
             display: inline-block;
           }
+        }
+      }
+    }
+    .with-details {
+      > .content {
+        opacity:0.5;
+      }
+      div[ui-view="details"] {
+        position: absolute !important;
+        top:42px;
+        left:20px;
+        right: 0;
+        bottom: 0;
+      }
+    }
+    .modal-body, .with-details {
+      div[ui-view="details"], .modal-body {
+        .nav-tabs.nav-justified > li {
+          display: table-cell;
+          width: 1%;
+        }
+        .nav-tabs.nav-justified > li > a {
+          margin-bottom: 0;
+        }
+        .nav-tabs.nav-justified > li > a {
+          border-bottom: 1px solid #ddd;
+          border-radius: 4px 4px 0 0;
+        }
+        .nav-tabs.nav-justified > .active > a,
+        .nav-tabs.nav-justified > .active > a:hover,
+        .nav-tabs.nav-justified > .active > a:focus {
+          border-bottom-color: #fff;
         }
       }
     }

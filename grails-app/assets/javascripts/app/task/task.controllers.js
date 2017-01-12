@@ -48,7 +48,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
     $scope.resetTaskForm();
 }]);
 
-controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 'TaskService', function($scope, $timeout, $uibModal, $filter, TaskService) {
+controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', function($scope, $timeout, $uibModal, $filter, $state, TaskService) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -83,6 +83,15 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
             name: 'is.ui.sprintPlan.menu.task.take',
             visible: function(task) { return $scope.authorizedTask('take', task); },
             action: function(task) { $scope.take(task); }
+        },
+        {
+            name: 'todo.is.ui.details',
+            visible: function(task) {
+                return $state.current.name.indexOf('task.details') == -1;
+            },
+            action: function(task) {
+                $state.go('.task.details', {taskId: task.id});
+            }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.unassign',
