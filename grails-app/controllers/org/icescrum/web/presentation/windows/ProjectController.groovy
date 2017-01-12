@@ -424,11 +424,7 @@ class ProjectController implements ControllerErrorHandler {
 
     private String exportProjectXML(Project project) {
         def writer = new StringWriter()
-        def builder = new MarkupBuilder(writer)
-        builder.mkp.xmlDeclaration(version: "1.0", encoding: "UTF-8")
-        builder.export(version: meta(name: "app.version")) {
-            project.xml(builder)
-        }
+        projectService.export(writer, project)
         def projectName = "${project.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
         ['Content-disposition': "attachment;filename=\"${projectName + '.xml'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
             response.setHeader(k, v)
