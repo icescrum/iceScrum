@@ -22,12 +22,8 @@
 
 
 import grails.plugin.springsecurity.SpringSecurityUtils
-import groovy.util.slurpersupport.GPathResult
 import org.geeks.browserdetection.ComparisonType
-import org.grails.databinding.xml.GPathResultMap
 import org.icescrum.core.domain.Project
-import org.icescrum.core.domain.Release
-import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
@@ -51,18 +47,18 @@ class IceScrumFilters {
 
         permissions(controller: '*', action: '*') {
             before = {
-                if (!request.getRequestURI().contains('/ws/') && controllerName != "errors" && actionName != "browserNotSupported"){
-                    if(userAgentIdentService.isMsie(ComparisonType.LOWER, "9")){
-                        if (!request.getHeader('user-agent').contains('chromeframe')){
-                            redirect(controller:'errors',action:'browserNotSupported')
-                            return false
-                        }
-                    }
+                if (!request.getRequestURI().contains('/ws/')
+                        && controllerName != "errors"
+                        && actionName != "browserNotSupported"
+                        && userAgentIdentService.isMsie(ComparisonType.LOWER, "9")
+                        && !request.getHeader('user-agent').contains('chromeframe')) {
+                    redirect(controller: 'errors', action: 'browserNotSupported')
+                    return false
                 }
                 if (params.project && !(actionName == 'save' && controllerName == 'project')) {
                     params.project = params.project.decodeProjectKey()
                     if (!params.project) {
-                        forward(controller:"errors", action:"error404")
+                        forward(controller: "errors", action: "error404")
                         return false
                     }
                 }
@@ -71,74 +67,64 @@ class IceScrumFilters {
             }
         }
 
-        projectCreationEnableSave(controller:'project', action:'save') {
+        projectCreationEnableSave(controller: 'project', action: 'save') {
             before = {
-                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
-                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        forward(controller:"errors", action:"error403")
-                        return false
-                    }
-                }
-            }
-        }
-
-        projectCreationEnableAdd(controller:'project', action:'add'){
-            before = {
-                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)) {
-                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        forward(controller:"errors", action:"error403")
-                        return false
-                    }
-                }
-            }
-        }
-
-        projectImportEnable(controller:'project', action:'import'){
-            before = {
-                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {
-                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        render(status: 403)
-                        return false
-                    }
-                }
-            }
-        }
-
-        projectExportEnable(controller:'project', action:'export'){
-            before = {
-                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
-                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        forward(controller:"errors", action:"error403")
-                        return false
-                    }
-                }
-            }
-        }
-
-        userRegistrationEnable(controller:'user', action:'register'){
-            before = {
-                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
-                    forward(controller:"errors", action:"error403")
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                    forward(controller: "errors", action: "error403")
                     return false
                 }
             }
         }
 
-        userRegistrationEnable2(controller:'user', action:'save'){
+        projectCreationEnableAdd(controller: 'project', action: 'add') {
             before = {
-                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
-                    if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
-                        forward(controller:"errors", action:"error403")
-                        return false
-                    }
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                    forward(controller: "errors", action: "error403")
+                    return false
                 }
             }
         }
 
-        userRetrieveEnable(controller:'user', action:'retrieve'){
+        projectImportEnable(controller: 'project', action: 'import') {
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                    render(status: 403)
+                    return false
+                }
+            }
+        }
+
+        projectExportEnable(controller: 'project', action: 'export') {
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                    forward(controller: "errors", action: "error403")
+                    return false
+                }
+            }
+        }
+
+        userRegistrationEnable(controller: 'user', action: 'register') {
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)) {
+                    forward(controller: "errors", action: "error403")
+                    return false
+                }
+            }
+        }
+
+        userRegistrationEnable2(controller: 'user', action: 'save') {
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                    forward(controller: "errors", action: "error403")
+                    return false
+                }
+            }
+        }
+
+        userRetrieveEnable(controller: 'user', action: 'retrieve') {
             before = {
                 if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)) {
-                    forward(controller:"errors", action:"error403")
+                    forward(controller: "errors", action: "error403")
                     return false
                 }
             }
@@ -176,41 +162,36 @@ class IceScrumFilters {
             }
         }
 
-        locale(uri: '/ws/**', invert:true) {
+        locale(uri: '/ws/**', invert: true) {
             before = {
-
-                //manually set
+                // Manually set
                 def locale = params.lang ?: null
-                if(locale){
+                if (locale) {
                     RequestContextUtils.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
                     return
                 }
-
-                //determine from browser to user set...
+                // Determine from browser to user set...
                 try {
                     def localeAccept = request.getHeader("accept-language")?.split(",")
-                    if (localeAccept)
+                    if (localeAccept) {
                         localeAccept = localeAccept[0]?.split("-")
-
+                    }
                     if (localeAccept?.size() > 0) {
                         locale = params.lang ?: localeAccept[0].toString()
                     }
                 } catch (Exception e) {}
-
                 if (springSecurityService.isLoggedIn()) {
                     def currentUserInstance = User.get(springSecurityService.principal.id)
-                    if (locale != currentUserInstance.preferences?.language || RequestContextUtils.getLocale(request).toString() != currentUserInstance.preferences?.language) {
+                    if (currentUserInstance && (locale != currentUserInstance.preferences?.language || RequestContextUtils.getLocale(request).toString() != currentUserInstance.preferences?.language)) {
                         RequestContextUtils.getLocaleResolver(request).setLocale(request, response, currentUserInstance.locale)
                     }
-                } else {
-                    if (locale) {
-                        RequestContextUtils.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
-                    }
+                } else if (locale) {
+                    RequestContextUtils.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
                 }
             }
         }
 
-        attachmentable(controller:'attachmentable', action:'download'){
+        attachmentable(controller: 'attachmentable', action: 'download') {
             before = {
                 redirect(controller: "errors", action: "error403")
             }
