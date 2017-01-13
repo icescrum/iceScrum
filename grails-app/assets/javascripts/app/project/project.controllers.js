@@ -272,7 +272,7 @@ controllers.controller('quickProjectsListCtrl', ['$scope', '$timeout', 'FormServ
                     // Hack to give time for the creation, TODO do better
                     $timeout(function() {
                         $scope.projects.push(project);
-                    }, 2000);
+                    }, 3500);
                 }
             }
         }
