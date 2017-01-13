@@ -49,7 +49,7 @@
             <button ng-if="teamManageable(team)"
                     type="button"
                     class="btn btn-primary"
-                    ng-click="manageTeam()">
+                    ng-click="manageTeam(team)">
                 ${message(code: 'todo.is.ui.team.manage')}
             </button>
         </div>

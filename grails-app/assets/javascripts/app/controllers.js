@@ -330,12 +330,17 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             controller: 'userCtrl'
         });
     };
-    $scope.showManageTeamsModal = function() {
+    $scope.showManageTeamsModal = function(team) {
         $uibModal.open({
             keyboard: false,
             templateUrl: $scope.serverUrl + "/team/manage",
             size: 'lg',
-            controller: 'manageTeamsModalCtrl'
+            controller: ['$scope', '$controller', function($scope, $controller) {
+                if (team) {
+                    $scope.team = team;
+                }
+                $controller('manageTeamsModalCtrl', {$scope: $scope});
+            }]
         });
     };
     $scope.getPushState = function() {

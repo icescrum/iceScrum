@@ -56,7 +56,7 @@ controllers.controller('abstractTeamCtrl', ['$scope', '$filter', 'Session', 'Tea
         });
     };
     // Init
-    $scope.team = {};
+    $scope.team = $scope.team ? $scope.team : {};
     $scope.member = {};
 }]);
 

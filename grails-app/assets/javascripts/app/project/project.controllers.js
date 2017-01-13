@@ -529,9 +529,9 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
             document.location.reload(true);
         });
     };
-    $scope.manageTeam = function() {
+    $scope.manageTeam = function(team) {
         $scope.$close(true);
-        $scope.showManageTeamsModal();
+        $scope.showManageTeamsModal(team);
     };
     // Init
     $scope.formHolder = {};
