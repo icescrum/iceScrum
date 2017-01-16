@@ -61,6 +61,7 @@
                    ng-model="project.pkey"
                    ng-pattern="/^[A-Z0-9]*$/"
                    ng-required="isCurrentStep(1)"
+                   ng-maxlength="10"
                    ng-remote-validate-code="project.pkey.unique"
                    ng-remote-validate="{{ checkProjectPropertyUrl }}/pkey">
         </div>

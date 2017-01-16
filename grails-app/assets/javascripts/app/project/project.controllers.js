@@ -405,7 +405,7 @@ controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService'
     $scope.nameChanged = function() {
         var pkeyModel = $scope.formHolder.projectForm.pkey;
         if (!pkeyModel.$touched) {
-            $scope.project.pkey = _.upperCase($scope.project.name).replace(/\W+/g, "");
+            $scope.project.pkey = _.upperCase($scope.project.name).replace(/\W+/g, "").substring(0, 10);
             pkeyModel.$setDirty(); // To trigger remote validation
         }
     };
