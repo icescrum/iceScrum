@@ -522,14 +522,15 @@ grails {
 /* User config */
 environments {
     production {
-        def systemConfig = System.getProperty(ApplicationSupport.CONFIG_ENV_NAME)
-        def envConfig = System.getenv(ApplicationSupport.CONFIG_ENV_NAME)
+        def oldConfigEnvName = 'icescrum_config_location'
+        def systemConfig = System.getProperty(ApplicationSupport.CONFIG_ENV_NAME) ?: System.getProperty(oldConfigEnvName)
+        def envConfig = System.getenv(ApplicationSupport.CONFIG_ENV_NAME) ?: System.getenv(oldConfigEnvName)
         def homeConfig = "${userHome}${File.separator}.icescrum${File.separator}config.groovy"
         println "--------------------------------------------------------"
-        if (systemConfig && new File(systemConfig).exists()) {  // 1. System variable passed to the JVM : -Dicescrum_config_location=.../config.groovy
+        if (systemConfig && new File(systemConfig).exists()) {  // 1. System variable passed to the JVM : -Dicescrum.config.file=.../config.groovy
             println "Use configuration file provided a JVM system variable: " + systemConfig
             grails.config.locations = ["file:" + systemConfig]
-        } else if (envConfig && new File(envConfig).exists()) { // 2. Environment variable icescrum_config_location=.../config.groovy
+        } else if (envConfig && new File(envConfig).exists()) { // 2. Environment variable icescrum.config.file=.../config.groovy
             println("Use configuration file provided by an environment variable: " + envConfig)
             grails.config.locations = ["file:" + envConfig]
         } else if (new File(homeConfig).exists()) {             // 3. Default location home/.icescrum/config.groovy
@@ -540,7 +541,7 @@ environments {
             grails.config.locations = []
         }
         try {
-            String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum_config_location") ?: (String) new InitialContext().lookup("java:comp/env/icescrum.config.location")
+            String extConfFile = (String) new InitialContext().lookup('java:comp/env/' + ApplicationSupport.CONFIG_ENV_NAME) ?: (String) new InitialContext().lookup('java:comp/env/' + oldConfigEnvName)
             if (extConfFile) {
                 grails.config.locations << extConfFile
                 println "Use configuration file provided by JNDI: ${extConfFile}"
