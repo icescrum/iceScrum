@@ -266,14 +266,7 @@ controllers.controller('quickProjectsListCtrl', ['$scope', '$timeout', 'FormServ
             if (updatedRole.role == undefined) {
                 _.remove($scope.projects, {id: project.id});
             } else if (updatedRole.oldRole == undefined && !_.includes($scope.projects, {id: project.id})) {
-                if ($scope.projects.length) {
-                    $scope.projects.push(project);
-                } else {
-                    // Hack to give time for the creation, TODO do better
-                    $timeout(function() {
-                        $scope.projects.push(project);
-                    }, 3500);
-                }
+                $scope.projects.push(project);
             }
         }
     }, $scope);
