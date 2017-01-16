@@ -7,7 +7,7 @@
     <div ng-if="!projects.length && projectsLoaded">
         <button class="btn btn-primary"
                 type="button"
-                ng-click="createSampleProject()">
+                click-async="createSampleProject()">
             ${message(code: 'todo.is.ui.project.createSample')}
         </button>
     </div>

@@ -907,4 +907,21 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}]);
+}]).directive('clickAsync', function () {
+    return {
+        restrict: 'A',
+        scope: {
+            clickAsync: '&clickAsync'
+        },
+        link: function link(scope, element) {
+            element.on('click', function () {
+                element.prop('disabled', true);
+                scope.$apply(function () {
+                    scope.clickAsync().finally(function () {
+                        element.prop('disabled', false); // TODO check if ng-disable and this directive don't conflict!
+                    });
+                });
+            });
+        }
+    };
+});
