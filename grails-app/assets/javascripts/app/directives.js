@@ -288,7 +288,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var progress = function() {
                 $http({
                     method: "get",
-                    url: $rootScope.serverUrl + "/progress?lang="+ ($window.navigator.language.split('-')[0])
+                    url: $rootScope.serverUrl + "/progress?lang=" + ($window.navigator.language.split('-')[0])
                 }).then(function(response) {
                     var data = response.data;
                     scope.progress = data;
@@ -907,18 +907,18 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}]).directive('clickAsync', function () {
+}]).directive('clickAsync', function() {
     return {
         restrict: 'A',
         scope: {
-            clickAsync: '&clickAsync'
+            clickAsync: '&'
         },
-        link: function link(scope, element) {
-            element.on('click', function () {
+        link: function(scope, element) {
+            element.on('click', function() {
                 element.prop('disabled', true);
-                scope.$apply(function () {
-                    scope.clickAsync().finally(function () {
-                        element.prop('disabled', false); // TODO check if ng-disable and this directive don't conflict!
+                scope.$apply(function() {
+                    scope.clickAsync().finally(function() {
+                        element.prop('disabled', false);
                     });
                 });
             });
