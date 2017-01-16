@@ -48,7 +48,7 @@
         plugins: [],
         controllerHooks: {},
         version: "${g.meta(name: 'app.version')}",
-        serverUrl: "${grailsApplication.config.grails.serverURL}",
+        serverUrl: "${serverURL}",
         warning: ${ApplicationSupport.getLastWarning() as JSON}
         <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, project:project]"/>
     };

@@ -44,7 +44,6 @@ import org.icescrum.web.JQueryProvider
 import javax.naming.InitialContext
 
 /* Public URL */
-grails.serverURL = "http://localhost:${System.getProperty('grails.server.port.http')?:'8080'}/${appName}"
 grails.serverURLReadonly = System.getProperty('icescrum.serverURL') ? true : false
 
 /* Administration */
