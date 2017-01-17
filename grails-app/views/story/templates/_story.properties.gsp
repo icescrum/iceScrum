@@ -199,23 +199,6 @@
             </div>
         </div>
         <div class="clearfix no-padding">
-            <div class="form-half">
-                <label for="creator">${message(code: 'is.story.creator')}</label>
-                <ui-select ng-click="editForm(true)"
-                           ng-change="editForm(true)"
-                           ng-disabled="!formHolder.editable() || !authorizedStory('updateCreator', editableStory)"
-                           class="form-control"
-                           name="creator"
-                           search-enabled="true"
-                           ng-model="editableStory.creator">
-                    <ui-select-match>
-                        {{ $select.selected | userFullName }}
-                    </ui-select-match>
-                    <ui-select-choices refresh="searchCreator($select.search)" refresh-day="100" repeat="creator in creators | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
-                        <span ng-bind-html="(creator | userFullName) | highlight: $select.search"></span>
-                    </ui-select-choices>
-                </ui-select>
-            </div>
             <div class="form-1-quarter">
                 <label for="value">${message(code: 'is.story.value')}</label>
                 <div class="input-group">
@@ -252,6 +235,23 @@
                     <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.noaffectversion')}">{{ $select.selected }}</ui-select-match>
                     <ui-select-choices repeat="version in versions | filter: $select.search">
                         <span ng-bind-html="version | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="form-half">
+                <label for="creator">${message(code: 'is.story.creator')}</label>
+                <ui-select ng-click="editForm(true)"
+                           ng-change="editForm(true)"
+                           ng-disabled="!formHolder.editable() || !authorizedStory('updateCreator', editableStory)"
+                           class="form-control"
+                           name="creator"
+                           search-enabled="true"
+                           ng-model="editableStory.creator">
+                    <ui-select-match>
+                        {{ $select.selected | userFullName }}
+                    </ui-select-match>
+                    <ui-select-choices refresh="searchCreator($select.search)" refresh-day="100" repeat="creator in creators | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
+                        <span ng-bind-html="(creator | userFullName) | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>
             </div>
