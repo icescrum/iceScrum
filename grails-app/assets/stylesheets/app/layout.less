@@ -610,8 +610,14 @@ table {
         > td:not(.title) {
           padding: 0;
           > table {
-            td:first-of-type {
-              border-top: none;
+            .table-bordered;
+            border:none;
+            td {
+              border-left: none !important;
+              border-right: none !important;
+              &:first-of-type {
+                border-top: none;
+              }
             }
           }
         }
