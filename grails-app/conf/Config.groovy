@@ -487,8 +487,9 @@ grails {
             useBasicAuth = true
             basic.realmName = "iceScrum authentication for REST API"
             filterChain.chainMap = [
-                    '/ws/**': 'JOINED_FILTERS,-exceptionTranslationFilter',
-                    '/**'   : 'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+                    '/ws/**':           'JOINED_FILTERS,-exceptionTranslationFilter',
+                    '/**/project/feed': 'JOINED_FILTERS,-exceptionTranslationFilter', // Too specific, should probably be more generic, e.g. /basic/ (not ws because it requires enabling)
+                    '/**'   :           'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
             ]
 
             auth.loginFormUrl = '/login'

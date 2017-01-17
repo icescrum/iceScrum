@@ -160,9 +160,11 @@
                         <h3 class="panel-title">
                             <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
                             <small class="pull-right">
-                                <g:link class="rss" uib-tooltip="${message(code: 'todo.is.ui.feed')}" mapping="${project.preferences.hidden ? 'privateURL' : ''}" action="feed" params="[project:project.pkey,lang:lang]">
+                                <a class="rss"
+                                   uib-tooltip="${message(code: 'todo.is.ui.feed')}"
+                                   href="{{ openProjectUrl(project) + 'project/feed' }}">
                                     <i class="fa fa-rss fa-lg visible-on-hover"></i>
-                                </g:link>
+                                </a>
                             </small>
                         </h3>
                     </div>

@@ -31,7 +31,6 @@ class UrlMappings {
     static mappings = {
 
         name default: "/$controller/$action/$id?" {}
-        name privateURL: "/ws/$controller/$action/$id?" {}
         // Scrum OS
         "/" {
             controller = 'scrumOS'
