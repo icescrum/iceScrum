@@ -585,11 +585,36 @@ table {
 .table-scrollable {
   margin-top: 10px;
   overflow: auto;
-  table {
+  > table {
     width: auto;
-    tr {
-      td, th {
-        min-width: floor((@modal-md - 2*@modal-inner-padding) / 3);
+    > tbody {
+      > tr {
+        > td, th {
+          min-width: floor((@modal-md - 2*@modal-inner-padding) / 3);
+        }
+        > td.title, th.title {
+          min-width: 100px;
+          font-size: 1.3em;
+        }
+        th, td.title, th.title {
+          font-size: 1.3em;
+          position: relative;
+          .badge {
+            font-weight: bold;
+            display: inline-block;
+            position: absolute;
+            right:5px;
+            top:5px;
+          }
+        }
+        > td:not(.title) {
+          padding: 0;
+          > table {
+            td:first-of-type {
+              border-top: none;
+            }
+          }
+        }
       }
     }
   }

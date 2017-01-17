@@ -269,7 +269,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                         var initialEffortIndex = $scope.efforts.indexOf($scope.initialEffort);
                         _.remove(storiesByEffort[initialEffortIndex], {id: $scope.editableStory.id});
                         storiesByEffort[effortIndex].unshift($scope.editableStory);
-                        $scope.storyRows = makeRows(storiesByEffort);
+                        $scope.storiesByEffort = storiesByEffort;
                         $timeout(function() {
                             scrollTable(dontAnimate, effortIndex);
                         });
@@ -318,7 +318,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                         var initialValueIndex = $scope.values.indexOf($scope.initialValue);
                         _.remove(storiesByValue[initialValueIndex], {id: $scope.editableStory.id});
                         storiesByValue[valueIndex].unshift($scope.editableStory);
-                        $scope.storyRows = makeRows(storiesByValue);
+                        $scope.storiesByValue = storiesByValue;
                         $timeout(function() {
                             scrollTable(dontAnimate, valueIndex);
                         });
