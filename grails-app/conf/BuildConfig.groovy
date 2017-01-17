@@ -55,6 +55,7 @@ grails.war.resources = { stagingDir ->
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global"){
+        excludes 'mail'
         excludes "xml-apis"
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
