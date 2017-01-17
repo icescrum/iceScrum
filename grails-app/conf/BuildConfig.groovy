@@ -72,11 +72,13 @@ grails.project.dependency.resolution = {
         grailsHome()
         mavenCentral()
         //To help grails to compile and find jar depencies form icescrum-core on jenkins WTF!?
-        mavenRepo "http://repo.spring.io/libs-release"
-        mavenRepo "http://repo.icescrum.org/artifactory/plugins-release/" {
+        mavenRepo("http://repo.spring.io/libs-release"){
+            updatePolicy"interval:1"
+        }
+        mavenRepo("http://repo.icescrum.org/artifactory/plugins-release/"){
             updatePolicy "interval:1"
         }
-        mavenRepo "http://repo.icescrum.org/artifactory/plugins-snapshot/" {
+        mavenRepo("http://repo.icescrum.org/artifactory/plugins-snapshot/"){
             updatePolicy "interval:1"
         }
     }
