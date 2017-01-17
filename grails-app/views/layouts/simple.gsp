@@ -51,11 +51,6 @@
         <div class="loading-text text-center">{{ app.loadingText }}</div>
     </div>
     <div class="container-fluid">
-        <div class="text-center">
-            <svg class="logo" viewBox="0 0 150 150">
-                <g:render template="/scrumOS/logo"/>
-            </svg>
-        </div>
         <g:layoutBody/>
     </div>
     <g:include controller="scrumOS" action="isSettings" params="[project: params.project]"/>

@@ -36,9 +36,6 @@
     <!-- end iOS web app-->
     <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
     <asset:stylesheet href="application.css"/>
-    <script type="text/javascript"
-            src="${grailsApplication.config.grails.serverURL}/assets/pdfjs/pdf.compat.js"></script>
-    <script type="text/javascript" src="${grailsApplication.config.grails.serverURL}/assets/pdfjs/pdf.js"></script>
     <g:layoutHead/>
 </head>
 <body ng-controller="appCtrl"
