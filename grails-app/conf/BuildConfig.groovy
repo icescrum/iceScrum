@@ -55,7 +55,7 @@ grails.war.resources = { stagingDir ->
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global"){
-        excludes 'mail', 'xml-apis'
+        excludes 'xml-apis'
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     repositories {
@@ -77,7 +77,6 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
         runtime 'mysql:mysql-connector-java:5.1.37'
         runtime 'commons-dbcp:commons-dbcp:1.4'
-        compile 'javax.mail:mail:1.4.7' // By default, grails installs 1.4.3 which doesn't support NTLM
     }
 
     plugins {
