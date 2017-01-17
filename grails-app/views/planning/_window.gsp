@@ -139,6 +139,6 @@
             </div>
         </div>
     </div>
-    <div class="timeline" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
+    <div class="timeline" ng-show="releases.length" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>
 </div>
 </is:window>
