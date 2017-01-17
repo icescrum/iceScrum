@@ -24,7 +24,6 @@
 
 package org.icescrum.web.presentation
 
-import asset.pipeline.grails.utils.net.HttpServletRequests
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import grails.util.BuildSettingsHolder
