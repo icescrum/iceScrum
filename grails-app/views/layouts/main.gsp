@@ -43,7 +43,6 @@
       fullscreen="app.isFullScreen"
       ng-class="{ 'mobile':app.mobile, 'mobile-xs':app.mobilexs, 'app-ready':app != null, 'loading': (app.loading || app.loadingText), 'splash-screen': (app.loadingPercent != 100 || app.loadingText)  }"
       class="splash-screen loading">
-    <g:render template="/scrumOS/checkServerURL"/>
     <div id="app-loading">
         <svg class="logo" viewBox="0 0 150 150">
             <g:render template="/scrumOS/logo"/>

@@ -156,7 +156,7 @@ class ScrumOSController implements ControllerErrorHandler {
                         menus          : menus,
                         context        : ApplicationSupport.getCurrentContext(params)?.name ?: '',
                         defaultView    : defaultView,
-                        serverURL      : grailsApplication.config.grails.serverURL ?: HttpServletRequests.getBaseUrl(request, true),
+                        serverURL      : ApplicationSupport.serverURL(request),
                         projectMenus   : projectMenus])
     }
 

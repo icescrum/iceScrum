@@ -24,6 +24,7 @@ package org.icescrum.web.presentation
 import grails.converters.JSON
 import grails.util.Environment
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.support.ApplicationSupport
 
 class ErrorsController implements ControllerErrorHandler {
 
@@ -35,7 +36,7 @@ class ErrorsController implements ControllerErrorHandler {
         if (springSecurityService.isAjax(request)) {
             render(status: 403, text: [error: message(code: 'is.error.denied')])
         } else {
-            render(status: 403, view: '403.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL, supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
+            render(status: 403, view: '403.gsp', model: [homeUrl: ApplicationSupport.serverURL(request), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
         }
     }
 
@@ -43,7 +44,7 @@ class ErrorsController implements ControllerErrorHandler {
         if (springSecurityService.isAjax(request)) {
             render(status: 404)
         } else {
-            render(status: 404, view: '404.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL, supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
+            render(status: 404, view: '404.gsp', model: [homeUrl: ApplicationSupport.serverURL(request), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
         }
     }
 
@@ -51,7 +52,7 @@ class ErrorsController implements ControllerErrorHandler {
         if (springSecurityService.isAjax(request)) {
             render(status: 401)
         } else {
-            render(status: 401, view: '401.gsp', model: [homeUrl: grailsApplication.config.grails.serverURL])
+            render(status: 401, view: '401.gsp', model: [homeUrl: ApplicationSupport.serverURL(request)])
         }
     }
 

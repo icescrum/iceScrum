@@ -44,7 +44,7 @@ import org.icescrum.web.JQueryProvider
 import javax.naming.InitialContext
 
 /* Public URL */
-grails.serverURLReadonly = System.getProperty('icescrum.serverURL') ? true : false
+/* icescrum.serverURL = "" */
 
 /* Administration */
 icescrum.feed.default.url = "https://www.icescrum.com/blog/feed/"

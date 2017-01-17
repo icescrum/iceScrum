@@ -61,7 +61,7 @@ class LoginController implements ControllerErrorHandler {
             RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         }
         render(status: 200, template: "dialogs/auth", model: [
-                postUrl            : grailsApplication.config.grails.serverURL + config.apf.filterProcessesUrl,
+                postUrl            : ApplicationSupport.serverURL(request) + config.apf.filterProcessesUrl,
                 rememberMeParameter: config.rememberMe.parameter,
                 activeLostPassword : ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable),
                 enableRegistration : ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)])
@@ -105,7 +105,7 @@ class LoginController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: [
                 user : u,
                 roles: securityService.getRolesRequest(true),
-                url  : u.preferences.lastProjectOpened ? grailsApplication.config.grails.serverURL + '/p/' + u.preferences.lastProjectOpened + '/' : null
+                url  : u.preferences.lastProjectOpened ? ApplicationSupport.serverURL(request) + '/p/' + u.preferences.lastProjectOpened + '/' : null
         ] as JSON)
     }
 
