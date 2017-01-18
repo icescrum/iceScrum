@@ -623,13 +623,11 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     $scope[editableReference] = {};
     $scope.formHolder = {};
     $scope[resetForm]();
-
-    if(typeof resetOnProperties !== 'undefined' && resetOnProperties.length > 0){
+    if (typeof resetOnProperties !== 'undefined' && resetOnProperties.length > 0) {
         resetOnProperties.push('lastUpdated')
     } else {
         resetOnProperties = ['lastUpdated']
     }
-
     FormService.addStateChangeDirtyFormListener($scope, function() { $scope.update($scope[editable]); }, type, true);
     var resetOnPropertiesW = '';
     var length = resetOnProperties.length - 1;

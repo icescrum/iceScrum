@@ -35,9 +35,7 @@
                        placeholder="${message(code: 'todo.is.ui.project.noname')}"
                        ng-model="project.name"
                        ng-change="nameChanged()"
-                       ng-required="isCurrentStep(1)"
-                       ng-remote-validate-code="project.name.unique"
-                       ng-remote-validate="{{ checkProjectPropertyUrl }}/name">
+                       ng-required="isCurrentStep(1)">
                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <span class="input-group-btn">
                         <a class="btn btn-model"

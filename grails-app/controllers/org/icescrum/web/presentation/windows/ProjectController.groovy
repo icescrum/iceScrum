@@ -219,11 +219,7 @@ class ProjectController implements ControllerErrorHandler {
     @Secured(['permitAll()'])
     def available(long project, String property) {
         def result = false
-        //test for name
-        if (property == 'name') {
-            result = request.JSON.value && (project ? Project.countByNameAndIdNotEqual(request.JSON.value, project) : Project.countByName(request.JSON.value)) == 0
-            //test for pkey
-        } else if (property == 'pkey') {
+        if (property == 'pkey') {
             result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && (project ? Project.countByPkeyAndId(request.JSON.value, project) : Project.countByPkey(request.JSON.value)) == 0
         }
         render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
