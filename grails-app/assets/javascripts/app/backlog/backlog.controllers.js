@@ -151,18 +151,7 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
                 backlog: _.find($scope.availableBacklogs, {code: backlogCode}),
                 storiesLoaded: false,
                 orderBy: {
-                    values: _.sortBy([
-                        {id: 'effort', value: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
-                        {id: 'rank', value: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
-                        {id: 'name', value: 'name', name: $scope.message('todo.is.ui.sort.name')},
-                        {id: 'tasks_count', value: 'tasks_count', name: $scope.message('todo.is.ui.sort.tasks')},
-                        {id: 'suggestedDate', value: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
-                        {id: 'feature.id', value: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
-                        {id: 'value', value: 'value', name: $scope.message('todo.is.ui.sort.value')},
-                        {id: 'type', value: 'type', name: $scope.message('todo.is.ui.sort.type')},
-                        {id: 'state', value: 'state', name: $scope.message('todo.is.ui.sort.state')},
-                        {id: 'value/effort', value: getValueEffortRateForSorting, name: $scope.message('todo.is.ui.sort.value.effort.rate')}
-                    ], 'name')
+                    values: _.sortBy($scope.sortOptions, 'name')
                 }
             };
             $scope.orderBacklogByRank(backlogContainer); // Initialize order {current, reverse}, sortable, sorting and init the backlog from client data (storyService.list)
@@ -202,6 +191,18 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
     };
     // Init
     $scope.viewName = 'backlog';
+    $scope.sortOptions = [
+        {id: 'effort', value: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
+        {id: 'rank', value: 'rank', name: $scope.message('todo.is.ui.sort.rank')},
+        {id: 'name', value: 'name', name: $scope.message('todo.is.ui.sort.name')},
+        {id: 'tasks_count', value: 'tasks_count', name: $scope.message('todo.is.ui.sort.tasks')},
+        {id: 'suggestedDate', value: 'suggestedDate', name: $scope.message('todo.is.ui.sort.date')},
+        {id: 'feature.id', value: 'feature.id', name: $scope.message('todo.is.ui.sort.feature')},
+        {id: 'value', value: 'value', name: $scope.message('todo.is.ui.sort.value')},
+        {id: 'type', value: 'type', name: $scope.message('todo.is.ui.sort.type')},
+        {id: 'state', value: 'state', name: $scope.message('todo.is.ui.sort.state')},
+        {id: 'value/effort', value: getValueEffortRateForSorting, name: $scope.message('todo.is.ui.sort.value.effort.rate')}
+    ];
     $scope.backlogSortableOptions = {
         itemMoved: function(event) {
             var story = event.source.itemScope.modelValue;
