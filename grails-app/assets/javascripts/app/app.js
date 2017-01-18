@@ -989,7 +989,7 @@ angular.module('isApp', [
             if (username) {
                 childScope.username = username;
             }
-            var loginCallback = function(){
+            var loginCallback = function() {
                 $rootScope.app.visibleAuthModal = false;
             };
             if (loginSuccess) {

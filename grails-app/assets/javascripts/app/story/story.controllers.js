@@ -126,7 +126,8 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                     $scope.confirm({
                         message: _.map(messages, $scope.message).join('<br/><br/>'),
                         callback: $scope.done,
-                        args: [story]});
+                        args: [story]
+                    });
                 } else {
                     $scope.done(story);
                 }
@@ -200,28 +201,6 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                 scrollLeft: scrollLeft
             }, 400);
         }
-    };
-    var makeRows = function(storiesByField) {
-        var nbRows = _.maxBy(storiesByField, function(stories) {
-            return stories.length;
-        }).length;
-        var nbColumns = storiesByField.length;
-        var rows = [];
-        for (var i = 0; i < nbRows; i++) {
-            var row = [];
-            for (var j = 0; j < nbColumns; j++) {
-                row = [];
-                angular.forEach(storiesByField, function(stories) {
-                    if (stories[i]) {
-                        row.push(stories[i]);
-                    } else {
-                        row.push({});
-                    }
-                });
-            }
-            rows.push(row);
-        }
-        return rows;
     };
     $scope.showEditEffortModal = function(story) {
         if (StoryService.authorizedStory('updateEstimate', story)) {
