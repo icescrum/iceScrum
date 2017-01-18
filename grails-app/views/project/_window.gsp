@@ -124,7 +124,7 @@
                                     <i class="fa fa-floppy-o"></i>
                                 </button>
                                 <button class="btn btn-default btn-sm"
-                                        uib-tooltip="${message(code:'todo.is.ui.charts')}"
+                                        uib-tooltip="${message(code: 'todo.is.ui.charts')}"
                                         type="button"
                                         uib-dropdown-toggle>
                                     <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
@@ -188,7 +188,11 @@
                                     </div>
                                     <div>
                                         <span class="{{ activity | activityIcon}}"></span>
-                                        <span>{{ message('is.fluxiable.' + activity.code ) }} <strong>{{ activity.label }}</strong></span>
+                                        {{ message('is.fluxiable.' + activity.code ) }}
+                                        <strong ng-if="activity.code != 'delete'">
+                                            <a ng-href="{{ activity | activityLink }}">{{ activity.label }}</a>
+                                        </strong>
+                                        <strong ng-if="activity.code == 'delete'">{{ activity.label }}</strong>
                                     </div>
                                 </div>
                             </div>
