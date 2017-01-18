@@ -263,8 +263,8 @@ filters
     }])
     .filter('activityLink', ['$state', function($state) {
         return function(activity) {
-            if(activity.parentType == 'story'){
-                return $state.href('backlog.backlog.story.details',{backlogCode:'all', storyId:activity.parentRef});
+            if (activity.parentType == 'story') {
+                return $state.href('backlog.backlog.story.details', {backlogCode: 'all', storyId: activity.parentRef});
             }
         };
     }])
@@ -446,8 +446,8 @@ filters
                 return parts.length > 1 ? parts[1].length : 0;
             })));
             return _.sumBy(numbers, function(number) {
-                return number * multiplicator;
-            }) / multiplicator;
+                    return number * multiplicator;
+                }) / multiplicator;
         }
     }]).filter('yesNo', ['$rootScope', function($rootScope) {
         return function(boolean) {
