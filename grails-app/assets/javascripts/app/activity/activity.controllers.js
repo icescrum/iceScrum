@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'ActivityService', function($scope, $state, DateService, ActivityService) {
+controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateService', 'ActivityService', 'ActivityCodeByName', function($scope, $state, $filter, DateService, ActivityService, ActivityCodeByName) {
     //activities are ugly but it's working..
     $scope.activities = function(fluxiable, all) {
         $scope.allActivities = all;
@@ -30,8 +30,8 @@ controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'Acti
     };
     var manageActivities = function(activities) {
         var groupedActivities = [];
-        angular.forEach(activities, function(activity) {
-            var selectedType = $scope.selected.class.toLowerCase();
+        var selectedType = $scope.selected.class.toLowerCase();
+        _.each(activities, function(activity) {
             var tabId;
             if (activity.code == 'comment') {
                 tabId = 'comments'
@@ -60,6 +60,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'Acti
             } else {
                 var lastActivity = _.last(_.last(groupedActivities).activities);
                 if (activity.code == lastActivity.code
+                    && activity.code == ActivityCodeByName.UPDATE
                     && activity.parentType == lastActivity.parentType
                     && activity.field == lastActivity.field) {
                     lastActivity.count += 1;
@@ -68,6 +69,29 @@ controllers.controller('activityCtrl', ['$scope', '$state', 'DateService', 'Acti
                     _.last(groupedActivities).activities.push(activity);
                 }
             }
+        });
+        _.each(groupedActivities, function(activityGroup) {
+            _.map(activityGroup.activities, function(activity) {
+                var hideType = selectedType == activity.parentType && activity.code != ActivityCodeByName.SAVE;
+                var text = $filter('activityName')(activity, hideType);
+                if (activity.code == ActivityCodeByName.UPDATE) {
+                    var fieldI18n = {
+                        name: 'is.story.name',
+                        type: 'is.story.type',
+                        value: 'is.story.value',
+                        feature: 'is.feature',
+                        dependsOn: 'is.story.dependsOn',
+                        notes: 'is.backlogelement.notes',
+                        description: 'is.backlogelement.description',
+                        tags: 'is.backlogelement.tags'
+                    };
+                    text += ' ' + $scope.message(fieldI18n[activity.field]) + ' ';
+                }
+                activity.text = text;
+                if (activity.code == ActivityCodeByName.UPDATE && activity.field == 'type') {
+                    activity.afterValue = $filter('i18n')(activity.afterValue, 'StoryTypes');
+                }
+            });
         });
         $scope.groupedActivities = groupedActivities;
     };

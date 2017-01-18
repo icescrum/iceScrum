@@ -34,23 +34,21 @@
                     <i class="fa fa-clock-o"></i>
                 </div>
                 <div>{{groupedActivity.poster | userFullName}}</div>
-                <div ng-switch="activity.onClick !== undefined" ng-repeat="activity in groupedActivity.activities">
+                <div  ng-repeat="activity in groupedActivity.activities">
                     <span uib-tooltip="{{:: activity.dateCreated | dateTime }}"
                           class="{{:: activity | activityIcon}}"
-                          ng-class="{ 'important-activity' : activity.important }"></span>
-                    <span ng-switch-default>
-                        {{:: message('is.fluxiable.' + activity.code) + ' ' + (activity.field ? activity.field : '') + ' ' + (activity.count > 1 ? '(x' + activity.count + ')' : '')}}
+                          ng-class="{ 'important-activity' : activity.important }">
                     </span>
-                    <span ng-switch-when="true">
-                        <a href ng-click="activity.onClick()">
-                            {{:: message('is.fluxiable.' + activity.code ) + ' ' + (activity.field ? activity.field : '') + ' ' +  (activity.count > 1 ? '(x' + activity.count + ')' : '')}}
+                    <span>
+                        {{:: activity.text }}
+                        <a ng-if="activity.onClick !== undefined"
+                           ng-click="activity.onClick()"
+                           href>
+                            {{ (activity.label | limitTo: 50) + (activity.label.length > 50 ? '...' : '') }}
                         </a>
                     </span>
                     <span ng-if="activity.beforeValue != null || activity.afterValue != null">
-                        <i class="fa fa-question"
-                           ng-if="activity.beforeValue == null"></i>{{:: activity.beforeValue != '' ? activity.beforeValue : '' }} <i
-                            class="fa fa-arrow-right"></i> <i class="fa fa-question"
-                                                              ng-if="activity.afterValue == null"></i>{{:: activity.afterValue != '' ? activity.afterValue : '' }}
+                         ${message(code: 'is.fluxiable.updateField.newValue')} <em>{{:: activity.afterValue != null && activity.afterValue != '' ? activity.afterValue : '?' }}</em>
                     </span>
                 </div>
             </div>
@@ -68,7 +66,7 @@
         <button ng-switch-when="true"
                 class="btn btn-default"
                 ng-click="activities(selected, false)">
-            <i class="fa fa-minus-square"> </i> ${message(code: 'todo.is.ui.activities.less')}
+            <i class="fa fa-minus-square"></i> ${message(code: 'todo.is.ui.activities.less')}
         </button>
     </div>
 </div>

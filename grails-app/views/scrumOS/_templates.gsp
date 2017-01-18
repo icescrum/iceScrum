@@ -172,7 +172,7 @@
             </div>
             <div>
                 <span class="{{ activity | activityIcon}}"></span>
-                <span>{{ message('is.fluxiable.' + activity.code ) }} <a href="{{ activity.story.uid | permalink: 'story': groupedActivity.project.pkey }}">{{ activity.story.name }}</a></span>
+                <span>{{ activity | activityName }} <a href="{{ activity.story.uid | permalink: 'story': groupedActivity.project.pkey }}">{{ activity.story.name }}</a></span>
             </div>
         </div>
     </div>

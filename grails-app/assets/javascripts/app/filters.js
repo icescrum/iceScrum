@@ -261,13 +261,6 @@ filters
             return $rootScope.serverUrl + '/' + (projectKey ? projectKey : Session.getProject().pkey) + '-' + prefixByType[type] + uid;
         };
     }])
-    .filter('activityLink', ['$state', function($state) {
-        return function(activity) {
-            if (activity.parentType == 'story') {
-                return $state.href('backlog.backlog.story.details', {backlogCode: 'all', storyId: activity.parentRef});
-            }
-        };
-    }])
     .filter('flowFilesNotCompleted', function() {
         return function(items) {
             var filtered = [];
@@ -281,7 +274,25 @@ filters
             }
             return filtered;
         };
-    }).filter('activityIcon', function() {
+    })
+    .filter('activityLink', ['$state', function($state) {
+        return function(activity) {
+            if (activity.parentType == 'story') {
+                return $state.href('backlog.backlog.story.details', {backlogCode: 'all', storyId: activity.parentRef});
+            }
+        };
+    }])
+    .filter('activityName', ['$rootScope', function($rootScope) {
+        return function(activity, hideType) {
+            if (hideType) {
+                var code = activity.code == 'update' ? 'updateField' : activity.code;
+                return $rootScope.message('is.fluxiable.' + code);
+            } else {
+                return $rootScope.message('is.fluxiable.' + activity.code) + ' ' + $rootScope.message('is.' + activity.parentType);
+            }
+        };
+    }])
+    .filter('activityIcon', function() {
         return function(activity) {
             if (activity) {
                 switch (activity.code) {
@@ -304,7 +315,7 @@ filters
                     case "restored":
                         return "fa fa-repeat";
                     case "estimate":
-                        return "fa fa-calculator";
+                        return "fa fa-dollar";
                     case "returnToSandbox":
                         return "fa fa-undo";
                     case "done":

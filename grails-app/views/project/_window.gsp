@@ -188,7 +188,7 @@
                                     </div>
                                     <div>
                                         <span class="{{ activity | activityIcon}}"></span>
-                                        {{ message('is.fluxiable.' + activity.code ) }}
+                                        {{ activity | activityName }}
                                         <strong ng-if="activity.code != 'delete'">
                                             <a ng-href="{{ activity | activityLink }}">{{ activity.label }}</a>
                                         </strong>

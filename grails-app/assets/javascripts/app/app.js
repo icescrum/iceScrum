@@ -1322,4 +1322,9 @@ angular.module('isApp', [
     })
     .constant('TaskConstants', {
         ORDER_BY: [function(task) { return -task.type }, 'parentStory.rank', 'state', 'rank']
+    })
+    .constant('ActivityCodeByName', {
+        SAVE:   'save',
+        UPDATE: 'update',
+        DELETE: 'delete'
     });
