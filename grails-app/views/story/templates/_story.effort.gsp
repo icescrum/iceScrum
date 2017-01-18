@@ -46,8 +46,9 @@
                name="effort"
                ng-model="editableStory.effort"/>
     </div>
+    <h5><strong><g:message code="todo.is.ui.story.by.comparison"/></strong></h5>
     <div class="table-scrollable">
-        <table class="table table-bordered">
+        <table class="table">
             <tr>
                 <th class="title">${g.message(code:'is.story.effort')}</th>
                 <th ng-repeat="effort in efforts">
@@ -64,6 +65,9 @@
                                 <strong>{{ story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
                                 <div class="text-right"> <span class="badge">{{ story.state | i18n:'StoryStates' }}</span></div>
                             </td>
+                        </tr>
+                        <tr ng-if="count[$index] > 3">
+                            <td class="text-center"><span class="small">{{ message('todo.is.ui.story.by.comparison.count', [(count[$index] - 3)]) }}</span></td>
                         </tr>
                     </table>
                 </td>

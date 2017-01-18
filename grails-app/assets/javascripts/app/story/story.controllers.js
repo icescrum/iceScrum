@@ -189,8 +189,10 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
         return story.state <= StoryStatesByName.ESTIMATED;
     };
     var scrollTable = function(dontAnimate, nbItems) {
-        var tableWidth = angular.element(angular.element('.table-scrollable').find('th')[0]).prop('offsetWidth');
-        var scrollLeft = (nbItems - 1) * tableWidth;
+        var ths = angular.element('.table-scrollable').find('th');
+        var titleWidth = angular.element(ths[0]).prop('offsetWidth');
+        var tableWidth = ths.size() > 0 ? angular.element(angular.element('.table-scrollable').find('th')[1]).prop('offsetWidth') : titleWidth;
+        var scrollLeft = titleWidth + (nbItems - 1) * tableWidth;
         if (dontAnimate) {
             $('.table-scrollable').scrollLeft(scrollLeft);
         } else {
