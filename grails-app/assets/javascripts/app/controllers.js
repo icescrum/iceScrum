@@ -623,23 +623,28 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     $scope[editableReference] = {};
     $scope.formHolder = {};
     $scope[resetForm]();
-    FormService.addStateChangeDirtyFormListener($scope, function() { $scope.update($scope[editable]); }, type, true);
-    if (resetOnProperties.length > 0) {
-        var resetOnPropertiesW = '';
-        var length = resetOnProperties.length - 1;
-        _.each(resetOnProperties, function(resetOnProperty, index) {
-            resetOnPropertiesW += type + '.' + resetOnProperty;
-            if (index != length) {
-                resetOnPropertiesW += ';';
-            }
-        });
-        $scope.$watch(resetOnPropertiesW, function() {
-            if ($scope.isInEditingMode() && !$scope.isDirty()) {
-                $scope[resetForm]();
-                $scope.editForm(true);
-            }
-        });
+
+    if(typeof resetOnProperties !== 'undefined' && resetOnProperties.length > 0){
+        resetOnProperties.push('lastUpdated')
+    } else {
+        resetOnProperties = ['lastUpdated']
     }
+
+    FormService.addStateChangeDirtyFormListener($scope, function() { $scope.update($scope[editable]); }, type, true);
+    var resetOnPropertiesW = '';
+    var length = resetOnProperties.length - 1;
+    _.each(resetOnProperties, function(resetOnProperty, index) {
+        resetOnPropertiesW += type + '.' + resetOnProperty;
+        if (index != length) {
+            resetOnPropertiesW += ';';
+        }
+    });
+    $scope.$watch(resetOnPropertiesW, function() {
+        if ($scope.isInEditingMode() && !$scope.isDirty()) {
+            $scope[resetForm]();
+            $scope.editForm(true);
+        }
+    });
 }]);
 
 controllers.controller('menuItemCtrl', ['$scope', function($scope) {
