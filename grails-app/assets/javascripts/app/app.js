@@ -989,10 +989,13 @@ angular.module('isApp', [
             if (username) {
                 childScope.username = username;
             }
-            var loginCallback = null;
+            var loginCallback = function(){
+                $rootScope.app.visibleAuthModal = false;
+            };
             if (loginSuccess) {
                 childScope.loginCallback = true;
                 loginCallback = function(loggedIn) {
+                    $rootScope.app.visibleAuthModal = false;
                     if (loggedIn) {
                         loginSuccess();
                     } else {
@@ -1000,6 +1003,7 @@ angular.module('isApp', [
                     }
                 };
             }
+            $rootScope.app.visibleAuthModal = true;
             $uibModal.open({
                 keyboard: false,
                 templateUrl: $rootScope.serverUrl + '/login/auth',

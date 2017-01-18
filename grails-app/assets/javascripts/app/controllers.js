@@ -263,7 +263,9 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
     });
     // Init error managmeent
     $scope.$on(SERVER_ERRORS.notAuthenticated, function() {
-        $scope.showAuthModal();
+        if(!$scope.app.visibleAuthModal){
+            $scope.showAuthModal();
+        }
     });
     $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
         var data = error.data;
