@@ -95,7 +95,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                             childScope.errorMessages = function(errors) {
                                 return _.transform(errors, function(errorMessages, value, key) {
                                     if (value) {
-                                        var errorMessage = '';
+                                        var errorMessage = $rootScope.message('default.invalid.message');
                                         if (key == 'required') {
                                             errorMessage = $rootScope.message('default.blank.message');
                                         } else if (key == 'min') {
@@ -114,7 +114,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                                             errorMessage = $rootScope.message('default.invalid.email.message');
                                         } else if (key == 'number') {
                                             errorMessage = $rootScope.message('typeMismatch.java.lang.Integer');
-                                        } else if (key == 'match') {
+                                        } else if (key == 'isMatch') {
                                             errorMessage = $rootScope.message('is.user.password.check');
                                         } else if (key == 'unique') {
                                             errorMessage = $rootScope.message('default.unique.message');
