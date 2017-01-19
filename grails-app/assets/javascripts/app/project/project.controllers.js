@@ -373,8 +373,11 @@ controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService'
     };
     $scope.createProject = function(project) {
         var p = $scope.prepareProject(project);
+        $scope.formHolder.creating = true;
         ProjectService.save(p).then(function(project) {
             $scope.openProject(project);
+        }).catch(function() {
+            $scope.formHolder.creating = false;
         });
     };
     $scope.teamMembersEditable = function(team) {

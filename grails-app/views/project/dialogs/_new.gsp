@@ -77,7 +77,11 @@
                             ng-click="$close()">
                         ${ message(code:'is.button.cancel')}
                     </button>
-                    <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-finish="createProject(project)" value="${message(code:'todo.is.ui.wizard.finish')}" />
+                    <input type="submit"
+                           class="btn btn-default"
+                           ng-disabled="formHolder.projectForm.$invalid || formHolder.creating"
+                           wz-finish="createProject(project)"
+                           value="${message(code:'todo.is.ui.wizard.finish')}" />
                 </div>
             </wz-step>
         </wizard>
