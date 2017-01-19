@@ -28,22 +28,24 @@
               title="${message(code:'todo.is.ui.story.estimate.effort.by.comparison')}">
     <div>
         <label for="effort">${message(code:'is.story.effort')}</label>
-        <ui-select ng-if="!isEffortCustom()"
-                   class="form-control"
-                   name="effort"
-                   search-enabled="true"
-                   on-select="updateTable()"
-                   ng-model="editableStory.effort">
-            <ui-select-match>{{ $select.selected }}</ui-select-match>
-            <ui-select-choices repeat="i in effortSuite(isEffortNullable(editableStory)) | filter: $select.search">
-                <span ng-bind-html="'' + i | highlight: $select.search"></span>
-            </ui-select-choices>
-        </ui-select>
+
+        <slider ng-if="!isEffortCustom()"
+                ng-model="sliderEffort.labelValue"
+                min="sliderEffort.min"
+                step="sliderEffort.step"
+                max="sliderEffort.max"
+                value="sliderEffort.labelValue"
+                formatter="sliderEffort.formatter"
+                sliderid="sliderEffort.sliderid"
+                range-highlights="sliderEffort.rangeHighlights"
+                on-stop-slide="updateTable()"></slider>
+
         <input type="number"
                ng-if="isEffortCustom()"
                class="form-control"
                ng-change="updateTable()"
                name="effort"
+               min="0"
                ng-model="editableStory.effort"/>
     </div>
     <h5><strong><g:message code="todo.is.ui.story.by.comparison"/></strong></h5>
@@ -51,7 +53,7 @@
         <table class="table">
             <tr>
                 <th class="title">${g.message(code:'is.story.effort')}</th>
-                <th ng-repeat="effort in efforts">
+                <th ng-repeat="effort in efforts track by $index">
                     {{ effort }}
                     <span class="badge">{{ count[$index] }} <g:message code="is.ui.backlog.title.details.stories"/></span>
                 </th>

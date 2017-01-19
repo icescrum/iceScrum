@@ -1211,3 +1211,17 @@ a.link {
 .text-warning {
   color: #8a6d3b;
 }
+
+#slider-effort {
+  div.slider-track-high {
+    + div {
+      background: @effort-normal;
+    }
+    + div + div {
+      background: @effort-abitmuch;
+    }
+    + div + div + div {
+      background: @effort-toomuch;
+    }
+  }
+}

@@ -32,6 +32,7 @@
                class="form-control"
                autofocus
                name="estimation"
+               min="0"
                ng-model="editableTask.estimation"/>
     </div>
 </is:modal>

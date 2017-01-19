@@ -171,6 +171,7 @@
                            ng-focus="editForm(true)"
                            ng-disabled="!formHolder.editable()"
                            name="effort"
+                           min="0"
                            ng-model="editableStory.effort"/>
                     <span class="input-group-btn">
                         <button class="btn btn-default"
