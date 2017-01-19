@@ -288,7 +288,15 @@ filters
                 var code = activity.code == 'update' ? 'updateField' : activity.code;
                 return $rootScope.message('is.fluxiable.' + code);
             } else {
-                return $rootScope.message('is.fluxiable.' + activity.code) + ' ' + $rootScope.message('is.' + activity.parentType);
+                var type = activity.parentType;
+                if (activity.code == 'acceptanceTestDelete') {
+                    type = 'acceptanceTest';
+                } else if (activity.code == 'taskDelete') {
+                    type = 'task';
+                } else if (activity.code == 'delete') {
+                    type = 'story'
+                }
+                return $rootScope.message('is.fluxiable.' + activity.code) + ' ' + $rootScope.message('is.' + type);
             }
         };
     }])

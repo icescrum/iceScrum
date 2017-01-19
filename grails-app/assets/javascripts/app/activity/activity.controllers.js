@@ -23,7 +23,6 @@
  */
 
 controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateService', 'ActivityService', 'ActivityCodeByName', function($scope, $state, $filter, DateService, ActivityService, ActivityCodeByName) {
-    //activities are ugly but it's working..
     $scope.activities = function(fluxiable, all) {
         $scope.allActivities = all;
         ActivityService.activities(fluxiable, all).then(manageActivities);
@@ -72,7 +71,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
         });
         _.each(groupedActivities, function(activityGroup) {
             _.map(activityGroup.activities, function(activity) {
-                var hideType = selectedType == activity.parentType && activity.code != ActivityCodeByName.SAVE;
+                var hideType = activity.code == ActivityCodeByName.UPDATE;
                 var text = $filter('activityName')(activity, hideType);
                 if (activity.code == ActivityCodeByName.UPDATE) {
                     var fieldI18n = {
@@ -81,11 +80,12 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
                         value: 'is.story.value',
                         feature: 'is.feature',
                         dependsOn: 'is.story.dependsOn',
+                        effort: 'is.story.effort',
                         notes: 'is.backlogelement.notes',
                         description: 'is.backlogelement.description',
                         tags: 'is.backlogelement.tags'
                     };
-            text += ' ' + $scope.message(fieldI18n[activity.field]) + ' ';
+                    text += ' ' + $scope.message(fieldI18n[activity.field]) + ' ';
                 }
                 activity.text = text;
                 if (activity.code == ActivityCodeByName.UPDATE) {
@@ -99,7 +99,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
         });
         $scope.groupedActivities = groupedActivities;
     };
-    //init
+    // Init
     $scope.allActivities = false;
     $scope.groupedActivities = {};
     manageActivities($scope.selected.activities);

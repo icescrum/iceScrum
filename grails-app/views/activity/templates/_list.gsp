@@ -34,29 +34,23 @@
                     <i class="fa fa-clock-o"></i>
                 </div>
                 <div>{{groupedActivity.poster | userFullName}}</div>
-                    <ul>
-                         <li ng-repeat="activity in groupedActivity.activities">
-                             <span uib-tooltip="{{:: activity.dateCreated | dateTime }}"
-                                   ng-class="{ 'important-activity' : activity.important }">
-                             </span>
-                             <span>
-                                 {{:: activity.text }}
-                                 <a ng-if="activity.onClick !== undefined"
-                                    ng-click="activity.onClick()"
-                                    href>
-                                     {{ (activity.label | limitTo: 50) + (activity.label.length > 50 ? '...' : '') }}
-                                 </a>
-                             </span>
-                         </li>
-                    </ul>
-                    <span ng-if="activity.beforeValue != null || activity.afterValue != null">
-                         ${message(code: 'is.fluxiable.updateField.newValue')} <em>{{:: activity.afterValue != null && activity.afterValue != '' ? activity.afterValue : '_' }}</em>
-                    </span>
-                </div>
+                <ul>
+                    <li ng-repeat="activity in groupedActivity.activities">
+                        <span uib-tooltip="{{:: activity.dateCreated | dateTime }}">{{:: activity.text }}</span>
+                        <a ng-if="activity.onClick !== undefined"
+                           ng-click="activity.onClick()"
+                           href>
+                            {{ (activity.label | limitTo: 50) + (activity.label.length > 50 ? '...' : '') }}
+                        </a>
+                        <span ng-if="(activity.beforeValue != null || activity.afterValue != null) && activity.code == 'update'">
+                            ${message(code: 'is.fluxiable.updateField.newValue')} <em>{{:: activity.afterValue != null && activity.afterValue != '' ? activity.afterValue : '_' }}</em>
+                        </span>
+                    </li>
+                </ul>
             </div>
         </div>
-        <hr/>
     </div>
+    <hr/>
     <div ng-if="selected.activities.length >= 10"
          ng-switch="allActivities"
          class="text-center">
