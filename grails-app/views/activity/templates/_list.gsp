@@ -48,7 +48,7 @@
                         </a>
                     </span>
                     <span ng-if="activity.beforeValue != null || activity.afterValue != null">
-                         ${message(code: 'is.fluxiable.updateField.newValue')} <em>{{:: activity.afterValue != null && activity.afterValue != '' ? activity.afterValue : '?' }}</em>
+                         ${message(code: 'is.fluxiable.updateField.newValue')} <em>{{:: activity.afterValue != null && activity.afterValue != '' ? activity.afterValue : '_' }}</em>
                     </span>
                 </div>
             </div>

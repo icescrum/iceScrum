@@ -88,8 +88,12 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
                     text += ' ' + $scope.message(fieldI18n[activity.field]) + ' ';
                 }
                 activity.text = text;
-                if (activity.code == ActivityCodeByName.UPDATE && activity.field == 'type') {
-                    activity.afterValue = $filter('i18n')(activity.afterValue, 'StoryTypes');
+                if (activity.code == ActivityCodeByName.UPDATE) {
+                    if (activity.field == 'type') {
+                        activity.afterValue = $filter('i18n')(activity.afterValue, 'StoryTypes');
+                    } else if (_.includes(['dependsOn', 'feature'], activity.field)) {
+                        activity.afterValue = activity.afterLabel;
+                    }
                 }
             });
         });
