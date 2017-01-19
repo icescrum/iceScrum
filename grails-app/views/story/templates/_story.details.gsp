@@ -40,17 +40,18 @@
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
+                    <entry:point id="story-details-right-title"/>
                     <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
                              height="30px"/>
                     </span>
                     <a ng-if="previousStory"
-                       class="link"
+                       class="btn btn-default"
                        role="button"
                        tabindex="0"
                        href="{{:: currentStateUrl(previousStory.id) }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
                     <a ng-if="nextStory"
-                       class="link"
+                       class="btn btn-default"
                        role="button"
                        tabindex="0"
                        href="{{:: currentStateUrl(nextStory.id) }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
@@ -73,6 +74,7 @@
             </div>
         </h3>
         <visual-states ng-model="story" model-states="storyStatesByName"/>
+        <entry:point id="story-details-before-tabs"/>
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">

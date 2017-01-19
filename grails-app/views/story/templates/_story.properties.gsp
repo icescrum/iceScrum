@@ -20,7 +20,6 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
 <form ng-submit="update(editableStory)"
       name='formHolder.storyForm'
       ng-class="{'form-editable':formHolder.editable(), 'form-editing': formHolder.editing }"
@@ -28,6 +27,7 @@
       novalidate>
     <div class="panel-body">
         <div class="clearfix no-padding">
+            <entry:point id="story-properties-before-properties"/>
             <div class="form-2-tiers">
                 <label for="name">${message(code: 'is.story.name')}</label>
                 <input required

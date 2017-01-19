@@ -32,8 +32,10 @@
                class="follow {{ story.followed ? 'active' : '' }}"
                uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
+            <entry:point id="story-head-left"/>
         </div>
         <div class="head-right">
+            <entry:point id="story-head-right"/>
             <span class="value editable"
                   ng-click="showEditValueModal(story)"
                   ng-if="story.value">
