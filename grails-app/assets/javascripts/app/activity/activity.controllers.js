@@ -85,7 +85,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
                         description: 'is.backlogelement.description',
                         tags: 'is.backlogelement.tags'
                     };
-                    text += ' ' + $scope.message(fieldI18n[activity.field]) + ' ';
+            text += ' ' + $scope.message(fieldI18n[activity.field]) + ' ';
                 }
                 activity.text = text;
                 if (activity.code == ActivityCodeByName.UPDATE) {

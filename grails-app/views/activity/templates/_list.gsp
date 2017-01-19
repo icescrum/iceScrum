@@ -34,19 +34,21 @@
                     <i class="fa fa-clock-o"></i>
                 </div>
                 <div>{{groupedActivity.poster | userFullName}}</div>
-                <div  ng-repeat="activity in groupedActivity.activities">
-                    <span uib-tooltip="{{:: activity.dateCreated | dateTime }}"
-                          class="{{:: activity | activityIcon}}"
-                          ng-class="{ 'important-activity' : activity.important }">
-                    </span>
-                    <span>
-                        {{:: activity.text }}
-                        <a ng-if="activity.onClick !== undefined"
-                           ng-click="activity.onClick()"
-                           href>
-                            {{ (activity.label | limitTo: 50) + (activity.label.length > 50 ? '...' : '') }}
-                        </a>
-                    </span>
+                    <ul>
+                         <li ng-repeat="activity in groupedActivity.activities">
+                             <span uib-tooltip="{{:: activity.dateCreated | dateTime }}"
+                                   ng-class="{ 'important-activity' : activity.important }">
+                             </span>
+                             <span>
+                                 {{:: activity.text }}
+                                 <a ng-if="activity.onClick !== undefined"
+                                    ng-click="activity.onClick()"
+                                    href>
+                                     {{ (activity.label | limitTo: 50) + (activity.label.length > 50 ? '...' : '') }}
+                                 </a>
+                             </span>
+                         </li>
+                    </ul>
                     <span ng-if="activity.beforeValue != null || activity.afterValue != null">
                          ${message(code: 'is.fluxiable.updateField.newValue')} <em>{{:: activity.afterValue != null && activity.afterValue != '' ? activity.afterValue : '_' }}</em>
                     </span>
