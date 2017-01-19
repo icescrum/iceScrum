@@ -55,17 +55,16 @@ class ScrumOSController implements ControllerErrorHandler {
             context.indexScrumOS(context, user, securityService, springSecurityService)
         }
 
-        def projects = user ? projectService.getAllActiveProjectsByUser(user).take(10) : []
+        def userProjects = user ? projectService.getAllActiveProjectsByUser(user) : []
         def projectsLimit = 9
-        def moreProjectExist = projects?.size() > projectsLimit
         def browsableProjectsCount = request.admin ? Project.count() : ProjectPreferences.countByHidden(false, [cache: true])
 
         def attrs = [user                  : user,
                      lang                  : RCU.getLocale(request).toString().substring(0, 2),
                      context               : context,
                      browsableProjectsExist: browsableProjectsCount > 0,
-                     moreProjectsExist     : moreProjectExist,
-                     projectFilteredsList  : projects.take(projectsLimit)]
+                     moreProjectsExist     : userProjects?.size() > projectsLimit,
+                     projectFilteredsList  : userProjects.take(projectsLimit)]
         if (context) {
             attrs."$context.name" = context.object
         }

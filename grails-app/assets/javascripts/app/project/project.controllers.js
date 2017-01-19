@@ -61,7 +61,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                 // Init
                 $scope.projectCount = 0;
                 $scope.currentPage = 1;
-                $scope.projectsPerPage = 10; // Constant
+                $scope.projectsPerPage = 9; // Constant
                 $scope.projectSearch = '';
                 $scope.projects = [];
                 $scope.searchProjects();
@@ -244,7 +244,7 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
             $scope.selectProject(selectedProject);
         }
     }, true); // Be careful of circular objects, it will blow up the stack when comparing equality by value
-    ProjectService.listPublic({paginate: true}).then(function(projectsAndCount) {
+    ProjectService.listPublic({paginate: true, count: 9}).then(function(projectsAndCount) {
         $scope.projects = projectsAndCount.projects;
     });
 }]);
@@ -259,7 +259,7 @@ controllers.controller('quickProjectsListCtrl', ['$scope', '$timeout', 'FormServ
     // Init
     $scope.projectsLoaded = false;
     $scope.projects = [];
-    ProjectService.listByUser({paginate: true}).then(function(projectsAndCount) {
+    ProjectService.listByUser({paginate: true, count: 9}).then(function(projectsAndCount) {
         $scope.projectsLoaded = true;
         $scope.projects = projectsAndCount.projects;
     });
