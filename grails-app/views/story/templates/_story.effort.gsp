@@ -28,7 +28,6 @@
               title="${message(code:'todo.is.ui.story.estimate.effort.by.comparison')}">
     <div>
         <label for="effort">${message(code:'is.story.effort')}</label>
-
         <slider ng-if="!isEffortCustom()"
                 ng-model="sliderEffort.labelValue"
                 min="sliderEffort.min"
@@ -39,7 +38,6 @@
                 sliderid="sliderEffort.sliderid"
                 range-highlights="sliderEffort.rangeHighlights"
                 on-stop-slide="updateTable()"></slider>
-
         <input type="number"
                ng-if="isEffortCustom()"
                class="form-control"

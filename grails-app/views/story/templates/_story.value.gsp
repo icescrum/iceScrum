@@ -28,7 +28,7 @@
           title="${message(code:'todo.is.ui.story.estimate.value.by.comparison')}">
     <div>
         <label for="value">${message(code:'is.story.value')}</label>
-        <slider ng-model="editableStory.value" min="1" step="1" max="99" value="editableStory.value"  on-stop-slide="updateTable()"></slider>
+        <slider ng-model="editableStory.value" min="0" step="1" max="99" value="editableStory.value" on-stop-slide="updateTable()"></slider>
     </div>
     <h5><strong><g:message code="todo.is.ui.story.by.comparison"/></strong></h5>
     <div class="table-scrollable">

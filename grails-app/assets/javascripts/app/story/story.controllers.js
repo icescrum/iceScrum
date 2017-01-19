@@ -208,13 +208,10 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
             $uibModal.open({
                 templateUrl: 'story.effort.html',
                 controller: ['$scope', '$timeout', function($scope, $timeout) {
-
                     $scope.editableStory = angular.copy(story);
-
                     if ($scope.editableStory.effort == undefined) {
                         $scope.editableStory.effort = '?';
                     }
-
                     $scope.initialEffort = $scope.editableStory.effort;
                     var initialEfforts = [];
                     var initialStoriesByEffort = [];
@@ -222,31 +219,28 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                     $scope.efforts = [];
                     $scope.storyRows = [];
                     $scope.count = [];
-
                     $scope.isEffortCustom = parentScope.isEffortCustom;
-
-                    if(!$scope.isEffortCustom()){
+                    if (!$scope.isEffortCustom()) {
                         $scope.effortSuiteValues = parentScope.effortSuite(parentScope.isEffortNullable);
                         $scope.sliderEffort = {
-                            min:0,
-                            step:1,
-                            max:$scope.effortSuiteValues.length - 1,
+                            min: 0,
+                            step: 1,
+                            max: $scope.effortSuiteValues.length - 1,
                             labelValue: $scope.effortSuiteValues.indexOf($scope.initialEffort),
                             formatter: function(val) {
                                 return $scope.effortSuiteValues[val.value];
                             },
-                            rangeHighlights:[
-                                { "start": 0, "end": $scope.effortSuiteValues.indexOf(5) },
-                                { "start": $scope.effortSuiteValues.indexOf(5), "end": $scope.effortSuiteValues.indexOf(13) },
-                                { "start": $scope.effortSuiteValues.indexOf(13), "end": $scope.effortSuiteValues.length - 1 }
+                            rangeHighlights: [
+                                {"start": 0, "end": $scope.effortSuiteValues.indexOf(5)},
+                                {"start": $scope.effortSuiteValues.indexOf(5), "end": $scope.effortSuiteValues.indexOf(13)},
+                                {"start": $scope.effortSuiteValues.indexOf(13), "end": $scope.effortSuiteValues.length - 1}
                             ],
-                            sliderid:"slider-effort"
+                            sliderid: "slider-effort"
                         };
-                        $scope.$watch('sliderEffort.labelValue', function(newVal){
+                        $scope.$watch('sliderEffort.labelValue', function(newVal) {
                             $scope.editableStory.effort = $scope.effortSuiteValues[newVal];
                         });
                     }
-
                     StoryService.listByField('effort').then(function(effortsAndStories) {
                         initialEfforts = effortsAndStories.fieldValues;
                         var indexOfNull = initialEfforts.indexOf(null);
@@ -310,7 +304,6 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                         $scope.updateTable(true)
                     });
                     $scope.updateTable = function(dontAnimate) {
-
                         var value = $scope.editableStory.value;
                         $scope.values = angular.copy(initialValues);
                         var storiesByValue = angular.copy(initialStoriesByValue);
