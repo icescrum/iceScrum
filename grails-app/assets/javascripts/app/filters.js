@@ -292,48 +292,7 @@ filters
             }
         };
     }])
-    .filter('activityIcon', function() {
-        return function(activity) {
-            if (activity) {
-                switch (activity.code) {
-                    case 'save':
-                    case 'taskSave':
-                    case 'acceptanceTestSave':
-                        return "fa fa-plus";
-                    case 'update':
-                        return "fa fa-pencil";
-                    case 'delete':
-                    case 'taskDelete':
-                    case 'acceptanceTestDelete':
-                        return "fa fa-times";
-                    case "acceptAs":
-                        return "fa fa-thumbs-up";
-                    case "comment":
-                        return "fa fa-comment";
-                    case "icebox":
-                        return "fa fa-askerisk";
-                    case "restored":
-                        return "fa fa-repeat";
-                    case "estimate":
-                        return "fa fa-dollar";
-                    case "returnToSandbox":
-                        return "fa fa-undo";
-                    case "done":
-                        return "fa fa-check";
-                    case "unDone":
-                        return "fa fa-undo";
-                    case "plan":
-                        return "fa fa-calendar";
-                    case "unPlan":
-                        return "fa fa-calendar-o";
-                    case "taskInProgress":
-                        return "fa fa-?";
-                    case "taskWait":
-                        return "fa fa-?";
-                }
-            }
-        };
-    }).filter('percentProgress', [function() {
+    .filter('percentProgress', [function() {
         return function(current, count) {
             return Math.floor((current * 100) / count);
         }

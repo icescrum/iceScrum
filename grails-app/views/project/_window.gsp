@@ -184,7 +184,10 @@
                                         <i class="fa fa-clock-o"></i>
                                     </div>
                                     <div>
-                                        {{activity.poster | userFullName}} {{ activity | activityName }}
+                                        {{activity.poster | userFullName}}
+                                    </div>
+                                    <div>
+                                        {{ activity | activityName }}
                                         <strong ng-if="activity.code != 'delete'">
                                             <a ng-href="{{ activity | activityLink }}">{{ activity.label }}</a>
                                         </strong>
