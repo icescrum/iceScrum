@@ -170,6 +170,7 @@
                     <div class="form-1-tier">
                         <label for="estimation">${message(code:'is.task.estimation')}</label>
                         <input type="number"
+                               min="0"
                                class="form-control"
                                ng-focus="editForm(true)"
                                ng-disabled="!formHolder.editable()"
