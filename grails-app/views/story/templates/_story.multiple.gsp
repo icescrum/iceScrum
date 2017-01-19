@@ -109,6 +109,7 @@
             </div>
             <div class="col-md-6">
                 <div class="btn-toolbar buttons-margin-bottom">
+                    <entry:point id="story.multiple.toolbar.first"/>
                     <div ng-if="authorizedStories('accept', stories)"
                          class="btn-group"
                          uib-dropdown>
@@ -169,6 +170,7 @@
                                uib-tooltip="${message(code: 'is.followable.stop')}"></i>
                         </button>
                     </div>
+                    <entry:point id="story.multiple.toolbar.last"/>
                 </div>
                 <br>
                 <div class="table-responsive">
