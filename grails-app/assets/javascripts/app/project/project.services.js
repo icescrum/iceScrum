@@ -55,11 +55,25 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
     this['delete'] = function(project) {
         return Project.delete({id: project.id}).$promise;
     };
-    this.listPublic = function(term, offset) {
-        return Project.get({action: 'listPublic', term: term, offset: offset}).$promise;
+    this.list = function(params) {
+        if (!params) {
+            params = {};
+        }
+        return Project.get(params).$promise;
     };
-    this.listByUser = function(term, offset) {
-        return Project.get({action: 'listByUser', term: term, offset: offset}).$promise;
+    this.listPublic = function(params) {
+        if (!params) {
+            params = {};
+        }
+        params.action = 'listPublic';
+        return Project.get(params).$promise;
+    };
+    this.listByUser = function(params) {
+        if (!params) {
+            params = {};
+        }
+        params.action = 'listByUser';
+        return Project.get(params).$promise;
     };
     this.getActivities = function(project) {
         return Project.query({action: 'activities', id: project.id}).$promise;

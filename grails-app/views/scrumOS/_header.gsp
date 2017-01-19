@@ -74,9 +74,17 @@
                             </g:if>
                             <g:if test="${browsableProjectsExist}">
                                 <li>
-                                    <a hotkey="{ 'shift+a': hotkeyClick}" href ng-click="showProjectListModal('public')">
-                                        <g:message code="is.projectmenu.submenu.project.browse"/> <small class="text-muted">(SHIFT+A)</small>
-                                    </a>
+                                    <g:if test="${request.admin}">
+                                        <a hotkey="{ 'shift+a': hotkeyClick}" href ng-click="showProjectListModal('all')">
+                                            <g:message code="todo.is.ui.project.list.all"/>
+                                            <small class="text-muted">(SHIFT+A)</small>
+                                        </a>
+                                    </g:if><g:else>
+                                        <a hotkey="{ 'shift+a': hotkeyClick}" href ng-click="showProjectListModal('public')">
+                                            <g:message code="todo.is.ui.project.list.public"/>
+                                            <small class="text-muted">(SHIFT+A)</small>
+                                        </a>
+                                    </g:else>
                                 </li>
                             </g:if>
                             <g:if test="${project}">

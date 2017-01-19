@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<is:modal title="${message(code: 'is.projectmenu.submenu.project.browse')}"
+<is:modal title="${message(code: 'todo.is.ui.projects')}"
           form="openProject(project)"
           submitButton="${message(code:'todo.is.ui.open')}"
           class="split-modal">
@@ -50,7 +50,7 @@
                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
                      class="pagination-sm"
                      max-size="3"
-                     total-items="totalProjects"
+                     total-items="projectCount"
                      items-per-page="projectsPerPage"
                      ng-model="currentPage"
                      ng-change="searchProjects()">

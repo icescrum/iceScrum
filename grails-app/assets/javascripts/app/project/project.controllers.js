@@ -35,7 +35,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
             controller: 'editProjectModalCtrl'
         });
     };
-    $scope.showProjectListModal = function(type) {
+    $scope.showProjectListModal = function(listType) {
         $uibModal.open({
             keyboard: false,
             templateUrl: $scope.serverUrl + "/project/listModal",
@@ -44,20 +44,24 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                 $controller('abstractProjectListCtrl', {$scope: $scope});
                 // Functions
                 $scope.searchProjects = function() {
-                    var offset = $scope.projectsPerPage * ($scope.currentPage - 1);
-                    var listFunction = type == 'public' ? ProjectService.listPublic : ProjectService.listByUser;
-                    listFunction($scope.projectSearch, offset).then(function(projectsAndTotal) {
-                        $scope.totalProjects = projectsAndTotal.total;
-                        $scope.projects = projectsAndTotal.projects;
+                    var listFunction = {
+                        public: ProjectService.listPublic,
+                        user: ProjectService.listByUser,
+                        all: ProjectService.list
+                    }[listType];
+                    var params = {term: $scope.projectSearch, paginate: true, page: $scope.currentPage, count: $scope.projectsPerPage};
+                    listFunction(params).then(function(projectsAndCount) {
+                        $scope.projectCount = projectsAndCount.count;
+                        $scope.projects = projectsAndCount.projects;
                         if (!_.isEmpty($scope.projects) && _.isEmpty($scope.project)) {
                             $scope.selectProject(_.head($scope.projects));
                         }
                     });
                 };
                 // Init
-                $scope.totalProjects = 0;
+                $scope.projectCount = 0;
                 $scope.currentPage = 1;
-                $scope.projectsPerPage = 9; // Constant
+                $scope.projectsPerPage = 10; // Constant
                 $scope.projectSearch = '';
                 $scope.projects = [];
                 $scope.searchProjects();
@@ -240,8 +244,8 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
             $scope.selectProject(selectedProject);
         }
     }, true); // Be careful of circular objects, it will blow up the stack when comparing equality by value
-    ProjectService.listPublic().then(function(projectsAndTotal) {
-        $scope.projects = projectsAndTotal.projects;
+    ProjectService.listPublic({paginate: true}).then(function(projectsAndCount) {
+        $scope.projects = projectsAndCount.projects;
     });
 }]);
 
@@ -255,9 +259,9 @@ controllers.controller('quickProjectsListCtrl', ['$scope', '$timeout', 'FormServ
     // Init
     $scope.projectsLoaded = false;
     $scope.projects = [];
-    ProjectService.listByUser().then(function(projectsAndTotal) {
+    ProjectService.listByUser({paginate: true}).then(function(projectsAndCount) {
         $scope.projectsLoaded = true;
-        $scope.projects = projectsAndTotal.projects;
+        $scope.projects = projectsAndCount.projects;
     });
     PushService.registerScopedListener('user', IceScrumEventType.UPDATE, function(user) {
         if (user.updatedRole) {

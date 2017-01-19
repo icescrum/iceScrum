@@ -162,11 +162,10 @@ registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 
 }]);
 
 controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormService', 'ProjectService', function($scope, WidgetService, FormService, ProjectService) {
-    //$scope.widget inherited
-    var widget = $scope.widget;
+    var widget = $scope.widget; // $scope.widget is inherited
     $scope.listProjects = function(term) {
-        return ProjectService.listByUser(term, 0).then(function(projectsAndTotal) {
-            $scope.projects = projectsAndTotal.projects;
+        return ProjectService.listByUser({term: term, paginate: true}).then(function(projectsAndCount) {
+            $scope.projects = projectsAndCount.projects;
         });
     };
     $scope.widgetReady = function(widget) {

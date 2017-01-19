@@ -29,7 +29,6 @@ import feedsplugin.FeedBuilder
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
-import groovy.xml.MarkupBuilder
 import org.apache.commons.io.FilenameUtils
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.*
@@ -56,8 +55,11 @@ class ProjectController implements ControllerErrorHandler {
     def index(String term, String filter, Boolean paginate, Integer count, Integer page, String sorting, String order) {
         def options = [cache: true]
         if (paginate) {
+            if (!count) {
+                count = 10
+            }
             options.offset = page ? (page - 1) * count : 0
-            options.max = count ?: 10
+            options.max = count
             options.sort = sorting ?: 'name'
             options.order = order ?: 'asc'
         }
@@ -430,29 +432,27 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['permitAll()'])
-    def listPublic(String term, Integer offset) {
-        if (!offset) {
-            offset = 0
-        }
+    def listPublic(String term, Boolean paginate, Integer page, Integer count) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def limit = 9
         def publicProjects = Project.where { preferences.hidden == false && name =~ searchTerm }.list(sort: "name")
         def userProjects = Project.findAllByUserAndActive(springSecurityService.currentUser, null, null)
         def projects = publicProjects - userProjects
-        def projectsAndTotal = [projects: projects.drop(offset).take(limit), total: projects.size()]
-        render(status: 200, contentType: 'application/json', text: projectsAndTotal as JSON)
+        if (paginate && !count) {
+            count = 10
+        }
+        def returnData = paginate ? [projects: projects.drop(page ? (page - 1) * count : 0).take(count), count: projects.size()] : projects
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['isAuthenticated()'])
-    def listByUser(String term, Integer offset) {
-        if (!offset) {
-            offset = 0
-        }
+    def listByUser(String term, Boolean paginate, Integer page, Integer count) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def limit = 9
         def projects = projectService.getAllActiveProjectsByUser(springSecurityService.currentUser, searchTerm)
-        def projectsAndTotal = [projects: projects.drop(offset).take(limit), total: projects.size()]
-        render(status: 200, contentType: 'application/json', text: projectsAndTotal as JSON)
+        if (paginate && !count) {
+            count = 10
+        }
+        def returnData = paginate ? [projects: projects.drop(page ? (page - 1) * count : 0).take(count), count: projects.size()] : projects
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['stakeHolder() or inProject()', 'RUN_AS_PERMISSIONS_MANAGER'])
