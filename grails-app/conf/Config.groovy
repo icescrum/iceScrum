@@ -43,9 +43,6 @@ import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
 
-/* Public URL */
-/* icescrum.serverURL = "" */
-
 /* Administration */
 icescrum.feed.default.url = "https://www.icescrum.com/blog/feed/"
 icescrum.feed.default.title = "iceScrum Blog"
@@ -347,6 +344,7 @@ grails.views.javascript.library = 'jquery'
 
 environments {
     development {
+        icescrum.serverURL = "http://localhost:8080/icescrum"
         icescrum.debug.enable = true
         grails.entryPoints.debug = false
         grails.tomcat.nio = true
