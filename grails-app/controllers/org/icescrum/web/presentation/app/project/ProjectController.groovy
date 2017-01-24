@@ -546,6 +546,39 @@ class ProjectController {
         }
     }
 
+    // V7
+    @Secured('productOwner() or scrumMaster()')
+    def exportV7 = {
+        withProduct{ Product product ->
+            if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable)) {
+                if (!SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                    render(status: 403)
+                    return
+                }
+            }
+            withFormat {
+                html {
+                    if (params.status) {
+                        render(status: 200, contentType: 'application/json', text: session.progress as JSON)
+                    } else if (params.get) {
+                        session.progress.updateProgress(0, message(code: 'is.export.start'))
+                        def projectName = "${product.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
+                        ['Content-disposition': "attachment;filename=\"${projectName + '.zip'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
+                            response.setHeader(k, v)
+                        }
+                        response.contentType = 'application/zip'
+                        ApplicationSupport.exportProjectZIPV7(product, response.outputStream)
+                        session.progress?.completeProgress(message(code: 'is.export.complete'))
+                    } else {
+                        session.progress = new ProgressSupport()
+                        def dialog = g.render(template: 'dialogs/exportV7')
+                        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
+                    }
+                }
+            }
+        }
+    }
+
     @Secured('isAuthenticated()')
     def importProject = {
         if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable)) {

@@ -98,6 +98,13 @@
                           </a>
                       </li>
                   </g:if>
+                  <g:if test="${exportEnable && product != null && (request.scrumMaster || request.productOwner)}">
+                      <li>
+                          <a href="${createLink(controller:'project', action:'exportV7',params:[product:product.id])}" data-ajax="true">
+                              <g:message code="is.projectmenu.submenu.project.exportV7"/>
+                          </a>
+                      </li>
+                  </g:if>
                   <entry:point id="menu-project" model="[curProduct:product,user:user]"/>
                   <li class="menu-label" id="my-projects" style='display:${productFilteredsList ?'block':'none'}'>
                       ${message(code: 'is.projectmenu.submenu.project.my.title')}
