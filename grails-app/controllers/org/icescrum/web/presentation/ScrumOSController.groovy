@@ -400,4 +400,9 @@ class ScrumOSController implements ControllerErrorHandler {
     def hideWarning(String warningId) {
         render(status: 200, contentType: 'application/json', text: ApplicationSupport.toggleSilentWarning(warningId) as JSON)
     }
+
+    @Secured(['permitAll()'])
+    def robots() {
+        render(status: 200, contentType: 'text/plain', text: 'User-agent: *\nDisallow: /')
+    }
 }

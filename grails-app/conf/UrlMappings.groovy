@@ -39,6 +39,10 @@ class UrlMappings {
         "/$action" {
             controller = 'scrumOS'
         }
+        "/robots.txt" {
+            controller = 'scrumOS'
+            action = 'robots'
+        }
         "/textileParser" {
             controller = 'scrumOS'
             action = 'textileParser'
