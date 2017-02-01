@@ -102,6 +102,8 @@ class ErrorsController implements ControllerErrorHandler {
                 log.debug(e.message)
                 returnError(code: 'is.error.and.message.not.sent', exception: exception)
             }
+        } else {
+            returnError(text: "DEV ERROR: " + exception.message, exception: exception)
         }
     }
 }
