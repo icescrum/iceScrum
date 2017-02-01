@@ -142,7 +142,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
         return this.authenticated && !_.isEmpty(item) && !_.isEmpty(item.responsible) && self.user.id == item.responsible.id;
     };
     this.owner = function(item) {
-        return !_.isEmpty(item) && !_.isEmpty(item.owner) && self.user.id == item.owner.id;
+        return !_.isEmpty(item) && !_.isEmpty(item.owner) && (self.user.id == item.owner.id || self.admin());
     };
     this.current = function(user) {
         return self.authenticated() && user && self.user.id == user.id;
