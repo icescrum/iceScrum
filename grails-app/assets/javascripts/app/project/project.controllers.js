@@ -82,7 +82,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                 };
                 $scope.progress = false;
                 $scope.handleImportError = function($file, $message) {
-                    $scope.notifyError(JSON.parse($message).text);
+                    $scope.notifyError(JSON.parse($message).text, {duration: 8000});
                     $scope.$close(true);
                 };
                 $scope.checkValidation = function($message) {
