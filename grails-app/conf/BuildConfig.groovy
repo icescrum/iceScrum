@@ -85,8 +85,7 @@ grails.project.dependency.resolution = {
     dependencies {
         build 'com.lowagie:itext:2.1.7'
         runtime 'mysql:mysql-connector-java:5.1.40'
-        //runtime "com.kagilum:kagilum-licenseable:2.0"
-        //runtime "com.kagilum:icescrum-plugin-bugtracker:2.0"
+        runtime 'com.h2database:h2:1.4.193'
     }
     plugins {
         compile ':cache-headers:1.1.7'          //no support
