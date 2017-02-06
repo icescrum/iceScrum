@@ -94,6 +94,7 @@ grails.project.dependency.resolution = {
         compile ':less-asset-pipeline:2.11.0'   //:less-asset-pipeline:2.11.6
         compile ':browser-detection:2.8.0'      //:browser-detection:3.3.0
         runtime ':hibernate4:4.3.10'            //hibernate5
+        runtime 'org.grails.plugins:database-migration:1.4.1'
         build   ':tomcat:7.0.70'                //tomcat...
         compile 'org.icescrum:entry-points:1.2' //to do
         if (Environment.current == Environment.PRODUCTION) {
