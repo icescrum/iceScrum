@@ -25,7 +25,11 @@
 databaseChangeLog = {
     changeSet(author: 'noullet', id: 'is_task-name-dropUniqueConstraint') {
         preConditions(onFail: 'MARK_RAN') {
-            indexExists(indexName: 'unique_nameistask')
+            // There is no uniqueConstraintExists so we use indexExists
+            or {
+                indexExists(indexName: 'unique_nameistask') // Index name is the same as unique key constraint on MySQL
+                indexExists(indexName: 'unique_nameistask_index_a') // Index name is different on H2
+            }
         }
         // Drop foreign keys on task backlog_id, required to drop unique constraint
         dropForeignKeyConstraint(
