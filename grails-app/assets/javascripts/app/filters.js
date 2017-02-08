@@ -28,7 +28,7 @@ var filters = angular.module('filters', []);
 filters
     .filter('userNamesFromEmail', function() {
         return function(email) {
-            var namesFromEmail = {};
+            var namesFromEmail = {email: email};
             var emailPrefix = email.split('@')[0];
             namesFromEmail.firstName = emailPrefix;
             var dotPosition = emailPrefix.indexOf('.');
