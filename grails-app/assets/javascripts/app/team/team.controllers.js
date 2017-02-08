@@ -177,9 +177,19 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
         });
     };
     $scope.update = function(team) {
+        var invited = function(members) {
+            return _.filter(members, function(member) {
+                return !member.id
+            });
+        };
+        team.invitedScrumMasters = invited(team.scrumMasters);
+        team.invitedMembers = _.filter(invited(team.members), function(member) {
+            return !_.some(team.invitedScrumMasters, {email: member.email});
+        });
         TeamService.update(team).then(function(returnedTeam) {
             $scope.resetFormValidation($scope.formHolder.updateTeamForm);
-            angular.extend(_.find($scope.teams, {id: team.id}), returnedTeam);
+            $scope.teams.splice(_.indexOf($scope.teams, {id: team.id}), 1, returnedTeam);
+            $scope.selectTeam(returnedTeam);
             $scope.notifySuccess('todo.is.ui.team.updated');
         });
     };

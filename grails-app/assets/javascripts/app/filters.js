@@ -61,7 +61,7 @@ filters
             if (Session.current(user)) {
                 user = Session.user; // Bind to current user to see avatar change immediately
             }
-            return user ? ($rootScope.serverUrl + '/user/avatar/' + user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
+            return user && user.id ? ($rootScope.serverUrl + '/user/avatar/' + user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
         };
     }])
     .filter('userColorRoles', ['$rootScope', 'Session', function($rootScope, Session) {

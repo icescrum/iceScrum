@@ -343,7 +343,9 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
         p.stakeHolders = mapId(project.stakeHolders);
         p.productOwners = mapId(project.productOwners);
         var invited = function(members) {
-            return _.chain(members).filter({id: null}).map(function(member) { return {email: member.email}; }).value();
+            return _.filter(members, function(member) {
+                return !member.id
+            });
         };
         p.team.invitedScrumMasters = invited(project.team.scrumMasters);
         p.team.invitedMembers = _.filter(invited(project.team.members), function(member) {
@@ -509,11 +511,14 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
     $scope.teamManageable = function(team) {
         return team.selected && TeamService.authorizedTeam('updateMembers');
     };
+    $scope.invitationToUserMock = function(invitation) {
+        return {email: invitation.email};
+    };
     $scope.resetTeamForm = function() {
         $scope.resetFormValidation($scope.formHolder.editMembersForm);
         $scope.project = angular.copy($scope.currentProject);
-        $scope.project.stakeHolders = $scope.project.stakeHolders.concat($scope.project.invitedStakeHolders);
-        $scope.project.productOwners = $scope.project.productOwners.concat($scope.project.invitedProductOwners);
+        $scope.project.stakeHolders = $scope.project.stakeHolders.concat(_.map($scope.project.invitedStakeHolders, $scope.invitationToUserMock));
+        $scope.project.productOwners = $scope.project.productOwners.concat(_.map($scope.project.invitedProductOwners, $scope.invitationToUserMock));
         $scope.teamPromise = TeamService.get($scope.project);
     };
     $scope.updateProjectTeam = function(project) {
