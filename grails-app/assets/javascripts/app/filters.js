@@ -26,11 +26,36 @@ var contrastColorCache = {}, gradientBackgroundCache = {}, userVisualRolesCache 
 var filters = angular.module('filters', []);
 
 filters
-    .filter('userFullName', function() {
-        return function(user) {
-            return user ? user.firstName + ' ' + user.lastName : '';
+    .filter('userNamesFromEmail', function() {
+        return function(email) {
+            var namesFromEmail = {};
+            var emailPrefix = email.split('@')[0];
+            namesFromEmail.firstName = emailPrefix;
+            var dotPosition = emailPrefix.indexOf('.');
+            if (dotPosition != -1) {
+                namesFromEmail.firstName = _.capitalize(emailPrefix.substring(0, dotPosition));
+                namesFromEmail.lastName = _.capitalize(emailPrefix.substring(dotPosition + 1));
+            }
+            return namesFromEmail;
         };
     })
+    .filter('userFullName', ['$filter', function($filter) {
+        return function(user) {
+            var firstName = '';
+            var lastName = '';
+            if (user) {
+                if (user.id) {
+                    firstName = user.firstName;
+                    lastName = user.lastName;
+                } else if (user.email) {
+                    var namesFromEmail = $filter('userNamesFromEmail')(user.email);
+                    firstName = namesFromEmail.firstName;
+                    lastName = namesFromEmail.lastName;
+                }
+            }
+            return firstName + (lastName ? ' ' + lastName : '');
+        };
+    }])
     .filter('userAvatar', ['$rootScope', 'Session', function($rootScope, Session) {
         return function(user) {
             if (Session.current(user)) {

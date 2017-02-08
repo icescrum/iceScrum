@@ -524,7 +524,7 @@ controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_E
     };
 }]);
 
-controllers.controller('registerCtrl', ['$scope', '$state', 'User', 'UserService', 'Session', function($scope, $state, User, UserService, Session) {
+controllers.controller('registerCtrl', ['$scope', '$state', '$filter', 'User', 'UserService', 'Session', function($scope, $state, $filter, User, UserService, Session) {
     // Functions
     $scope.register = function() {
         UserService.save($scope.user).then(function() {
@@ -534,8 +534,9 @@ controllers.controller('registerCtrl', ['$scope', '$state', 'User', 'UserService
     // Init
     $scope.user = new User();
     if ($state.params.token) {
-        UserService.getInvitationUserMock($state.params.token).then(function(mockUser) {
-            _.merge($scope.user, mockUser);
+        UserService.invitationEmail($state.params.token).then(function(invitation) {
+            var namesFromEmail = $filter('userNamesFromEmail')(invitation.email);
+            _.merge($scope.user, namesFromEmail);
             $scope.user.token = $state.params.token;
         });
     }

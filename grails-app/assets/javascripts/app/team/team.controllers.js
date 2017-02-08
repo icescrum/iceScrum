@@ -55,6 +55,9 @@ controllers.controller('abstractTeamCtrl', ['$scope', '$filter', 'Session', 'Tea
                 .value();
         });
     };
+    $scope.invitationToUserMock = function(invitation) {
+        return {email: invitation.email};
+    };
     // Init
     $scope.team = $scope.team ? $scope.team : {};
     $scope.member = {};
@@ -104,11 +107,11 @@ controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session
             $scope.project.team = $scope.team;
         }
         if (!_.isEmpty($model.invitedMembers)) {
-            $scope.team.members = $scope.team.members.concat($model.invitedMembers);
+            $scope.team.members = $scope.team.members.concat(_.map($model.invitedMembers, $scope.invitationToUserMock));
         }
         if (!_.isEmpty($model.invitedScrumMasters)) {
-            $scope.team.members = $scope.team.members.concat(_.map($model.invitedScrumMasters, function(member) {
-                return _.merge(member, {scrumMaster: true})
+            $scope.team.members = $scope.team.members.concat(_.map($model.invitedScrumMasters, function(invitation) {
+                return _.merge($scope.invitationToUserMock(invitation), {scrumMaster: true});
             }));
         }
     };
@@ -150,11 +153,11 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
                 return member;
             });
             if (!_.isEmpty(team.invitedMembers)) {
-                $scope.team.members = $scope.team.members.concat(team.invitedMembers);
+                $scope.team.members = $scope.team.members.concat(_.map(team.invitedMembers, $scope.invitationToUserMock));
             }
             if (!_.isEmpty(team.invitedScrumMasters)) {
-                $scope.team.members = $scope.team.members.concat(_.map(team.invitedScrumMasters, function(member) {
-                    return _.merge(member, {scrumMaster: true})
+                $scope.team.members = $scope.team.members.concat(_.map(team.invitedScrumMasters, function(invitation) {
+                    return _.merge($scope.invitationToUserMock(invitation), {scrumMaster: true});
                 }));
             }
         }

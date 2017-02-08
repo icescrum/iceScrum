@@ -204,7 +204,7 @@ class UserController implements ControllerErrorHandler{
         def users = User.findUsersLike(value ?: '', false, showDisabled, [max: 9])
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
         if (!users && invit && GenericValidator.isEmail(value) && enableInvitation) {
-            users << Invitation.getUserMock(value)
+            users << [id: null, email: value]
         }
         render(status: 200, contentType: 'application/json', text: users as JSON)
     }
@@ -323,13 +323,13 @@ class UserController implements ControllerErrorHandler{
         render(status: 200, text: [unreadActivitiesCount: unreadActivities.size()] as JSON, contentType: 'application/json')
     }
 
-    def invitationUserMock(String token) {
+    def invitationEmail(String token) {
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
-        def invitation = Invitation.findByToken(token)
+        Invitation invitation = Invitation.findByToken(token)
         if (!invitation || !enableInvitation) {
             throw new ObjectNotFoundException(token, 'Invitation') // TODO manage error independently
         }
-        render(status: 200, text: invitation.userMock as JSON, contentType: 'application/json')
+        render(status: 200, text: [email: invitation.email] as JSON, contentType: 'application/json')
     }
 
     private File getAssetAvatarFile(String avatarFileName) {
