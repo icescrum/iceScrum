@@ -932,6 +932,8 @@ angular.module('isApp', [
             var modal = $uibModal.open({
                 templateUrl: 'confirm.dirty.modal.html',
                 size: 'sm',
+                keyboard: false,
+                backdrop: 'static',
                 controller: ["$scope", "hotkeys", function($scope, hotkeys) {
                     $scope.message = options.message;
                     $scope.saveChanges = function() {
