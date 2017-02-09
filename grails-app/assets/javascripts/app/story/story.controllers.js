@@ -113,7 +113,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
             name: 'is.ui.releasePlan.menu.story.done',
             visible: function(story) { return $scope.authorizedStory('done', story) },
             action: function(story) {
-                var remainingAcceptanceTests = story.testState != AcceptanceTestStatesByName.SUCCESS;
+                var remainingAcceptanceTests = story.testState != AcceptanceTestStatesByName.SUCCESS && story.acceptanceTests_count;
                 var remainingTasks = story.countDoneTasks != story.tasks_count;
                 if (remainingAcceptanceTests || remainingTasks) {
                     var messages = [];
