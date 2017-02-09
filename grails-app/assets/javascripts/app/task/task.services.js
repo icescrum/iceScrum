@@ -129,6 +129,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 return !Session.responsible(task) && task.state != TaskStatesByName.DONE && task.sprint;
             case 'release':
                 return Session.responsible(task) && task.state != TaskStatesByName.DONE;
+            case 'setResponsible':
+                return Session.sm();
             case 'showUrgent':
                 return Session.getProject().preferences.displayUrgentTasks;
             case 'showRecurrent':

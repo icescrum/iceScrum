@@ -132,14 +132,15 @@
                         </div>
                     </div>
                     <div ng-if="task.parentStory" class="form-1-tier">
-                        <label for="name">${message(code:'is.story')}</label>
+                        <label for="parentStory">${message(code:'is.story')}</label>
                         <input class="form-control" disabled="disabled" type="text" value="{{ task.parentStory.name }}"/>
                     </div>
                     <div ng-if="task.type" class="form-1-tier">
-                        <label for="name">${message(code:'is.task.type')}</label>
+                        <label for="type">${message(code:'is.task.type')}</label>
                         <input class="form-control" disabled="disabled" type="text" value="{{ task.type | i18n: 'TaskTypes' }}"/>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <label for="description">${message(code:'is.backlogelement.description')}</label>
                     <textarea class="form-control important"
@@ -149,6 +150,23 @@
                               placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                               name="description"
                               ng-model="editableTask.description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="responsible">${message(code: 'is.task.responsible')}</label>
+                    <ui-select ng-click="editForm(true)"
+                               ng-change="editForm(true)"
+                               ng-disabled="!formHolder.editable() || !authorizedTask('setResponsible', editableTask)"
+                               class="form-control"
+                               name="responsible"
+                               search-enabled="true"
+                               ng-model="editableTask.responsible">
+                        <ui-select-match>
+                            {{ $select.selected | userFullName }}
+                        </ui-select-match>
+                        <ui-select-choices refresh="searchResponsible($select.search)" refresh-day="100" repeat="responsible in responsibles | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
+                            <span ng-bind-html="(responsible | userFullName) | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
                 <div class="form-group">
                     <label for="tags">${message(code:'is.backlogelement.tags')}</label>

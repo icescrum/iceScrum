@@ -205,10 +205,18 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     });
 }]);
 
-registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'ProjectService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, ProjectService, taskContext, detailsTask) {
+registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'ProjectService', 'UserService', 'taskContext', 'detailsTask', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, ProjectService, UserService, taskContext, detailsTask) {
     $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions
+    $scope.searchResponsible = function(val) {
+        UserService.search(val, $scope.project).then(function(users) {
+            $scope.responsibles = _.map(users, function(member) {
+                member.name = $filter('userFullName')(member);
+                return member;
+            });
+        });
+    };
     $scope.update = function(task) {
         TaskService.update(task, true).then(function() {
             $scope.resetTaskForm();
@@ -232,6 +240,7 @@ registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contr
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task', resetOnProperties: []});
     $scope.tags = [];
+    $scope.responsibles = [];
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
             ProjectService.getTags().then(function(tags) {

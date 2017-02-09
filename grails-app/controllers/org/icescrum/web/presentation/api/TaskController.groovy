@@ -122,7 +122,7 @@ class TaskController implements ControllerErrorHandler {
             props.state = state
         }
         Task.withTransaction {
-            bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']])
+            bindData(task, taskParams, [include: ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked', 'responsible']])
             if (taskParams.parentStory && !taskParams.type) {
                 task.type = null
             } else if (taskParams.type && !taskParams.parentStory) {
