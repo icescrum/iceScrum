@@ -518,6 +518,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                     if (cachedStory && !_.find(cachedStory.tasks, {id: newTask.id})) {
                         if (!_.isArray(cachedStory.tasks)) {
                             cachedStory.tasks = [];
+                            cachedStory.tasks_count = 0;
                         }
                         cachedStory.tasks.push(newTask);
                         cachedStory.tasks_count++;
