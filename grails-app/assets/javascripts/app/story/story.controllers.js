@@ -368,9 +368,6 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
             $scope.formHolder.submitting = true;
             StoryService.update(story).then(function() {
                 $scope.resetStoryForm();
-                if ($scope.formHolder.submitting) {
-                    $scope.formHolder.submitting = false;
-                }
                 $scope.notifySuccess('todo.is.ui.story.updated');
             });
         };

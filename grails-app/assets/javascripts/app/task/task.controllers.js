@@ -218,6 +218,7 @@ registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contr
         });
     };
     $scope.update = function(task) {
+        $scope.formHolder.submitting = true;
         TaskService.update(task, true).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.updated');

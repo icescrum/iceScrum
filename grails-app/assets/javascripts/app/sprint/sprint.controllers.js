@@ -266,6 +266,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint'});
     // Functions
     $scope.update = function(sprint) {
+        $scope.formHolder.submitting = true;
         SprintService.update(sprint, $scope.release).then(function() {
             $scope.resetSprintForm();
             $scope.notifySuccess('todo.is.ui.sprint.updated');
