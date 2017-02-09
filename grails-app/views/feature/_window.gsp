@@ -105,7 +105,8 @@
                    href="#/{{ ::viewName }}/new"
                    class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
             </div>
-            <div class="bulk-selection-enabled bg-warning no-margin" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
+            <div class="clearfix"></div>
+            <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
         </div>
         <div class="panel-body"
              selectable="selectableOptions">
