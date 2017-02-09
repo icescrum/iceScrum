@@ -581,7 +581,7 @@ controllers.controller('warningsCtrl', ['$scope', 'FormService', function($scope
     });
 }]);
 
-controllers.controller('updateFormController', ['$scope', 'FormService', 'type', 'item', 'resetOnProperties', function($scope, FormService, type, item, resetOnProperties) {
+controllers.controller('updateFormController', ['$scope', 'FormService', 'type', 'item', function($scope, FormService, type, item) {
     var upperType = _.upperFirst(type);
     var resetForm = 'reset' + upperType + 'Form';
     var authorized = 'authorized' + upperType;
@@ -624,24 +624,10 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     $scope[editableReference] = {};
     $scope.formHolder = {};
     $scope[resetForm]();
-    if (typeof resetOnProperties !== 'undefined' && resetOnProperties.length > 0) {
-        resetOnProperties.push('lastUpdated')
-    } else {
-        resetOnProperties = ['lastUpdated']
-    }
     FormService.addStateChangeDirtyFormListener($scope, function() { $scope.update($scope[editable]); }, type, true);
-    var resetOnPropertiesW = '';
-    var length = resetOnProperties.length - 1;
-    _.each(resetOnProperties, function(resetOnProperty, index) {
-        resetOnPropertiesW += type + '.' + resetOnProperty;
-        if (index != length) {
-            resetOnPropertiesW += ';';
-        }
-    });
-    $scope.$watch(resetOnPropertiesW, function() {
+    $scope.$watch(type + '.lastUpdated', function() {
         if ($scope.isInEditingMode() && !$scope.isDirty()) {
             $scope[resetForm]();
-            $scope.editForm(true);
         }
     });
 }]);

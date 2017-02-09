@@ -85,7 +85,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
         return $state.href(stateName, {featureTabId: featureTabId});
     };
     // Init
-    $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature', resetOnProperties: []});
+    $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
     $scope.previousFeature = FormService.previous(Session.getProject().features, $scope.feature);
     $scope.nextFeature = FormService.next(Session.getProject().features, $scope.feature);
     $scope.featureStatesByName = FeatureStatesByName;

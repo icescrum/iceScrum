@@ -238,7 +238,7 @@ registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contr
         return $state.href($state.current.name, {taskId: id});
     };
     // Init
-    $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task', resetOnProperties: []});
+    $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task'});
     $scope.tags = [];
     $scope.responsibles = [];
     $scope.project = Session.getProject();

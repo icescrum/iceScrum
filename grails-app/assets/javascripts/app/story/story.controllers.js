@@ -432,7 +432,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
             return $state.href(stateName);
         };
         // Init
-        $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story', resetOnProperties: []});
+        $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});
         $scope.dependenceEntries = [];
         $scope.parentSprintEntries = [];
         $scope.versions = [];
