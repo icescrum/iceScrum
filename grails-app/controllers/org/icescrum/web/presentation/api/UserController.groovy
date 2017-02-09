@@ -34,15 +34,14 @@ import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.Activity
 import org.icescrum.core.domain.Invitation
 import org.icescrum.core.domain.Project
-import org.icescrum.core.domain.Team
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
-import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
 import org.springframework.security.acls.domain.BasePermission
 
-class UserController implements ControllerErrorHandler{
+class UserController implements ControllerErrorHandler {
 
     def userService
     def securityService
@@ -158,8 +157,8 @@ class UserController implements ControllerErrorHandler{
                 props.avatar = null
             }
             if (params.user.preferences && params.user.preferences['emailsSettings']) {
-                props.emailsSettings = [onStory: params.remove('user.preferences.emailsSettings.onStory'),
-                                        autoFollow: params.remove('user.preferences.emailsSettings.autoFollow'),
+                props.emailsSettings = [onStory     : params.remove('user.preferences.emailsSettings.onStory'),
+                                        autoFollow  : params.remove('user.preferences.emailsSettings.autoFollow'),
                                         onUrgentTask: params.remove('user.preferences.emailsSettings.onUrgentTask')]
             }
             if (request.admin && params.user.username != user.username) {
@@ -202,12 +201,15 @@ class UserController implements ControllerErrorHandler{
 
     @Secured(['isAuthenticated()'])
     def search(String value, boolean showDisabled, String pkey, boolean invit) {
-        def projectUsers = []
-        if(pkey){
+        def users
+        if (pkey) {
             def valueLower = value.toLowerCase()
-            projectUsers = Project.findByPkey(pkey).getAllUsers().findAll{ it.email.toLowerCase().contains(valueLower) || it.username.toLowerCase().contains(valueLower) || it.firstName.toLowerCase().contains(valueLower) || "${it.lastName} ${it.firstName}".toLowerCase().contains(valueLower) || "${it.firstName} ${it.lastName}".toLowerCase().contains(valueLower) }.take(9)
+            users = Project.findByPkey(pkey).getAllUsers().findAll {
+                it.email.toLowerCase().contains(valueLower) || it.username.toLowerCase().contains(valueLower) || "$it.lastName $it.firstName".toLowerCase().contains(valueLower) || "$it.firstName $it.lastName".toLowerCase().contains(valueLower)
+            }.take(9)
+        } else {
+            users = User.findUsersLike(value ?: '', false, showDisabled, [max: 9])
         }
-        def users = pkey ? projectUsers : User.findUsersLike(value ?: '', false, showDisabled, [max: 9])
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
         if (!users && invit && GenericValidator.isEmail(value) && enableInvitation) {
             users << [id: null, email: value]
@@ -229,7 +231,7 @@ class UserController implements ControllerErrorHandler{
 
     @Secured(['permitAll()'])
     def current() {
-        def user = [user: springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
+        def user = [user : springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',
                     roles: securityService.getRolesRequest(true)]
         render(status: 200, contentType: 'application/json', text: user as JSON)
     }
@@ -305,9 +307,9 @@ class UserController implements ControllerErrorHandler{
             def project = story.backlog
             [
                     activity: activity,
-                    story: [uid: story.uid, name: story.name],
-                    project: [pkey: project.pkey, name: project.name],
-                    notRead: activity.dateCreated > user.preferences.lastReadActivities
+                    story   : [uid: story.uid, name: story.name],
+                    project : [pkey: project.pkey, name: project.name],
+                    notRead : activity.dateCreated > user.preferences.lastReadActivities
             ]
         }
         user.preferences.lastReadActivities = new Date()

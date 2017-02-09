@@ -231,7 +231,7 @@ class TaskController implements ControllerErrorHandler {
             }
             order('colorSize', 'desc')
             maxResults(7)
-        }?.collect{ it[0] }
+        }?.collect { it[0] }
         render(status: 200, contentType: 'application/json', text: results as JSON)
     }
 }
