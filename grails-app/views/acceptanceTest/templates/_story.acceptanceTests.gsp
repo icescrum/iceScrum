@@ -26,7 +26,7 @@
         <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
             <td class="content">
                 <form name="formHolder.acceptanceTestForm"
-                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formHolder.editable() }"
+                      ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formEditable() }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding form-group">
@@ -60,7 +60,7 @@
                             </ui-select>
                         </div>
                         <div class="col-sm-1 text-right">
-                            <div class="btn-group btn-group-sm" ng-show="formHolder.deletable() || formHolder.editable()" uib-dropdown>
+                            <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i></i>
                                 </button>

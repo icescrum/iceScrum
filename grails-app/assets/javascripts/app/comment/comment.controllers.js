@@ -26,9 +26,13 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
     $scope.resetCommentForm = function() {
         $scope.editableComment = $scope.comment ? angular.copy($scope.comment) : {};
         $scope.formHolder.editing = false;
-        $scope.formHolder.editable = function() { return $scope.comment ? $scope.authorizedComment('update', $scope.editableComment) : false };
-        $scope.formHolder.deletable = function() { return $scope.comment ? $scope.authorizedComment('delete', $scope.editableComment) : false };
         $scope.resetFormValidation($scope.formHolder.commentForm);
+    };
+    $scope.formEditable = function() {
+        return $scope.comment ? $scope.authorizedComment('update', $scope.editableComment) : false
+    };
+    $scope.formDeletable = function() { 
+        return $scope.comment ? $scope.authorizedComment('delete', $scope.editableComment) : false
     };
     $scope.save = function(comment, commentable) {
         CommentService.save(comment, commentable)
@@ -47,7 +51,7 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
         return CommentService.authorizedComment(action, comment);
     };
     $scope.editForm = function(value) {
-        $scope.formHolder.editing = $scope.formHolder.editable() && value;
+        $scope.formHolder.editing = $scope.formEditable() && value;
         if (value) {
             hotkeys.bindTo($scope).add({
                 combo: 'esc',

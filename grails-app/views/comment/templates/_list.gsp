@@ -26,7 +26,7 @@
         <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
             <td class="content">
                 <form name="formHolder.commentForm"
-                      ng-class="{'form-editable': formHolder.editable(), 'form-editing': formHolder.editing }"
+                      ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding">
@@ -45,7 +45,7 @@
                                     {{ comment.dateCreated | dateTime }}
                                 </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>&nbsp;
                             </span>
-                            <div class="btn-group btn-group-sm" ng-show="formHolder.deletable() || formHolder.editable()" uib-dropdown>
+                            <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i></i>
                                 </button>

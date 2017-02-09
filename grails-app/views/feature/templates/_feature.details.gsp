@@ -86,7 +86,7 @@
     <div ui-view="details-tab">
         <form ng-submit="update(editableFeature)"
               name='formHolder.featureForm'
-              ng-class="{'form-editable':formHolder.editable(), 'form-editing': formHolder.editing }"
+              ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
               show-validation
               novalidate>
             <div class="panel-body">
@@ -95,7 +95,7 @@
                     <input required
                            ng-maxlength="100"
                            ng-focus="editForm(true)"
-                           ng-disabled="!formHolder.editable()"
+                           ng-disabled="!formEditable()"
                            name="name"
                            ng-model="editableFeature.name"
                            type="text"
@@ -107,13 +107,13 @@
                         <div class="input-group">
                             <ui-select class="form-control"
                                        ng-click="editForm(true)"
-                                       ng-disabled="!formHolder.editable()"
+                                       ng-disabled="!formEditable()"
                                        name="type"
                                        ng-model="editableFeature.type">
                                 <ui-select-match><i class="fa fa-{{ $select.selected | featureTypeIcon }}"></i> {{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
                                 <ui-select-choices repeat="featureType in featureTypes"><i class="fa fa-{{ ::featureType | featureTypeIcon }}"></i> {{ ::featureType | i18n:'FeatureTypes' }}</ui-select-choices>
                             </ui-select>
-                            <span class="input-group-btn" ng-if="formHolder.editable()">
+                            <span class="input-group-btn" ng-if="formEditable()">
                                 <button colorpicker
                                         class="btn {{ editableFeature.color | contrastColor }}"
                                         type="button"
@@ -130,7 +130,7 @@
                         <label for="value">${message(code:'is.feature.value')}</label>
                         <ui-select class="form-control"
                                    ng-click="editForm(true)"
-                                   ng-disabled="!formHolder.editable()"
+                                   ng-disabled="!formEditable()"
                                    name="value"
                                    search-enabled="true"
                                    ng-model="editableFeature.value">
@@ -146,7 +146,7 @@
                     <textarea class="form-control"
                               ng-maxlength="3000"
                               ng-focus="editForm(true)"
-                              ng-disabled="!formHolder.editable()"
+                              ng-disabled="!formEditable()"
                               placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
                               name="description"
                               ng-model="editableFeature.description"></textarea>
@@ -155,7 +155,7 @@
                     <label for="tags">${message(code:'is.backlogelement.tags')}</label>
                     <ui-select class="form-control"
                                ng-click="retrieveTags(); editForm(true)"
-                               ng-disabled="!formHolder.editable()"
+                               ng-disabled="!formEditable()"
                                multiple
                                tagging
                                tagging-tokens="SPACE|,"
@@ -179,10 +179,10 @@
                               ng-blur="showNotesTextarea = false"
                               placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
                     <div class="markitup-preview"
-                         ng-disabled="!formHolder.editable()"
+                         ng-disabled="!formEditable()"
                          ng-show="!showNotesTextarea"
-                         ng-click="showNotesTextarea = formHolder.editable()"
-                         ng-focus="editForm(true); showNotesTextarea = formHolder.editable()"
+                         ng-click="showNotesTextarea = formEditable()"
+                         ng-focus="editForm(true); showNotesTextarea = formEditable()"
                          ng-class="{'placeholder': !editableFeature.notes_html}"
                          tabindex="0"
                          ng-bind-html="editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>

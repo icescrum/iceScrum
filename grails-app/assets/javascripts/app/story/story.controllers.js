@@ -375,7 +375,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
             });
         };
         $scope.clickDescriptionPreview = function($event, template) {
-            if ($event.target.nodeName != 'A' && $scope.formHolder.editable()) {
+            if ($event.target.nodeName != 'A' && $scope.formEditable()) {
                 $scope.showDescriptionTextarea = true;
                 var $el = angular.element($event.currentTarget);
                 $el.prev().css('height', $el.outerHeight());

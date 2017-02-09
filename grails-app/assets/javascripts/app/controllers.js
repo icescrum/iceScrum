@@ -596,16 +596,16 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
         return $scope[editable].lastUpdated == $scope[type].lastUpdated;
     };
     $scope.editForm = function(value) {
-        if ($scope.formHolder.editable() && value != $scope.formHolder.editing) {
+        if ($scope.formEditable() && value != $scope.formHolder.editing) {
             $scope.setInEditingMode(value); // global
             $scope[resetForm]();
         }
     };
+    $scope.formEditable = function() {
+        return $scope[authorized]('update', $scope[type]);
+    };
     $scope[resetForm] = function() {
-        $scope.formHolder.editable = function() {
-            return $scope[authorized]('update', $scope[type]);
-        };
-        $scope.formHolder.editing = $scope.formHolder.editable() && $scope.isInEditingMode();
+        $scope.formHolder.editing = $scope.formEditable() && $scope.isInEditingMode();
         if ($scope.formHolder.editing) {
             $scope[editable] = angular.copy($scope[type]);
             $scope[editableReference] = angular.copy($scope[type]);

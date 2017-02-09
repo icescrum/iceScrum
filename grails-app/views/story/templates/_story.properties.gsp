@@ -22,7 +22,7 @@
 --}%
 <form ng-submit="update(editableStory)"
       name='formHolder.storyForm'
-      ng-class="{'form-editable':formHolder.editable(), 'form-editing': formHolder.editing }"
+      ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
       show-validation
       novalidate>
     <div class="panel-body">
@@ -33,7 +33,7 @@
                 <input required
                        ng-maxlength="100"
                        ng-focus="editForm(true)"
-                       ng-disabled="!formHolder.editable()"
+                       ng-disabled="!formEditable()"
                        name="name"
                        ng-model="editableStory.name"
                        type="text"
@@ -43,7 +43,7 @@
                 <label for="type">${message(code: 'is.story.type')}</label>
                 <ui-select class="form-control"
                            ng-click="editForm(true)"
-                           ng-disabled="!formHolder.editable()"
+                           ng-disabled="!formEditable()"
                            name="type"
                            ng-model="editableStory.type">
                     <ui-select-match><i class="fa fa-{{ $select.selected | storyTypeIcon }}"></i> {{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
@@ -63,7 +63,7 @@
                       autofocus
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
             <div class="atwho-preview form-control-static important"
-                 ng-disabled="!formHolder.editable()"
+                 ng-disabled="!formEditable()"
                  ng-show="!showDescriptionTextarea"
                  ng-click="clickDescriptionPreview($event, '${is.generateStoryTemplate(newLine: '\\n')}')"
                  ng-focus="focusDescriptionPreview($event)"
@@ -80,7 +80,7 @@
                     <ui-select input-group-fix-width="38"
                                ng-click="editForm(true)"
                                ng-change="editForm(true)"
-                               ng-disabled="!formHolder.editable()"
+                               ng-disabled="!formEditable()"
                                class="form-control"
                                name="feature"
                                search-enabled="true"
@@ -108,7 +108,7 @@
                                class="form-control"
                                ng-click="retrieveDependenceEntries(editableStory); editForm(true)"
                                ng-change="editForm(true)"
-                               ng-disabled="!formHolder.editable()"
+                               ng-disabled="!formEditable()"
                                name="dependsOn"
                                search-enabled="true"
                                ng-model="editableStory.dependsOn">
@@ -136,7 +136,7 @@
         <div class="form-group">
             <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
             <ui-select ng-click="retrieveTags(); editForm(true)"
-                       ng-disabled="!formHolder.editable()"
+                       ng-disabled="!formEditable()"
                        class="form-control"
                        multiple
                        tagging
@@ -156,7 +156,7 @@
                     <ui-select ng-if="!isEffortCustom()"
                                class="form-control"
                                ng-click="editForm(true)"
-                               ng-disabled="!formHolder.editable()"
+                               ng-disabled="!formEditable()"
                                name="effort"
                                search-enabled="true"
                                ng-model="editableStory.effort">
@@ -169,7 +169,7 @@
                            ng-if="isEffortCustom()"
                            class="form-control"
                            ng-focus="editForm(true)"
-                           ng-disabled="!formHolder.editable()"
+                           ng-disabled="!formEditable()"
                            name="effort"
                            min="0"
                            ng-model="editableStory.effort"/>
@@ -185,7 +185,7 @@
                 <label for="parentSprint">${message(code: 'is.sprint')}</label>
                 <ui-select ng-click="retrieveParentSprintEntries(); editForm(true)"
                            ng-change="editForm(true)"
-                           ng-disabled="!formHolder.editable()"
+                           ng-disabled="!formEditable()"
                            class="form-control"
                            name="parentSprint"
                            search-enabled="true"
@@ -205,7 +205,7 @@
                 <div class="input-group">
                     <ui-select class="form-control"
                                ng-click="editForm(true)"
-                               ng-disabled="!formHolder.editable()"
+                               ng-disabled="!formEditable()"
                                name="value"
                                search-enabled="true"
                                ng-model="editableStory.value">
@@ -227,7 +227,7 @@
                 <ui-select class="form-control"
                            ng-click="retrieveVersions(); editForm(true)"
                            ng-change="editForm(true)"
-                           ng-disabled="!formHolder.editable()"
+                           ng-disabled="!formEditable()"
                            search-enabled="true"
                            tagging
                            tagging-tokens="SPACE|,"
@@ -243,7 +243,7 @@
                 <label for="creator">${message(code: 'is.story.creator')}</label>
                 <ui-select ng-click="editForm(true)"
                            ng-change="editForm(true)"
-                           ng-disabled="!formHolder.editable() || !authorizedStory('updateCreator', editableStory)"
+                           ng-disabled="!formEditable() || !authorizedStory('updateCreator', editableStory)"
                            class="form-control"
                            name="creator"
                            search-enabled="true"
@@ -271,10 +271,10 @@
                       ng-blur="showNotesTextarea = false"
                       placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
             <div class="markitup-preview important"
-                 ng-disabled="!formHolder.editable()"
+                 ng-disabled="!formEditable()"
                  ng-show="!showNotesTextarea"
-                 ng-click="showNotesTextarea = formHolder.editable()"
-                 ng-focus="editForm(true); showNotesTextarea = formHolder.editable()"
+                 ng-click="showNotesTextarea = formEditable()"
+                 ng-focus="editForm(true); showNotesTextarea = formEditable()"
                  ng-class="{'placeholder': !editableStory.notes_html}"
                  tabindex="0"
                  ng-bind-html="editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
