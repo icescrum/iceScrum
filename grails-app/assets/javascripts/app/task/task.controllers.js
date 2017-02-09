@@ -241,13 +241,6 @@ registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contr
     $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task', resetOnProperties: []});
     $scope.tags = [];
     $scope.responsibles = [];
-    $scope.retrieveTags = function() {
-        if (_.isEmpty($scope.tags)) {
-            ProjectService.getTags().then(function(tags) {
-                $scope.tags = tags;
-            });
-        }
-    };
     $scope.project = Session.getProject();
     var sortedTasks = $filter('orderBy')(taskContext.tasks, TaskConstants.ORDER_BY);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);

@@ -23,8 +23,15 @@
  */
 
 // Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We shoulw think of a better way to systematically register the listeners
-registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
+registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'ProjectService', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, ProjectService, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
     // Functions
+    $scope.retrieveTags = function() {
+        if (_.isEmpty($scope.tags)) {
+            ProjectService.getTags().then(function(tags) {
+                $scope.tags = tags;
+            });
+        }
+    };
     $scope.acceptToBacklog = function(story) {
         StoryService.acceptToBacklog(story).then(function() {
             $scope.notifySuccess('todo.is.ui.story.accepted');
@@ -340,6 +347,8 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
             });
         }
     };
+    // Init
+    $scope.tags = [];
 }]);
 
 registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
@@ -401,13 +410,6 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
                 });
             }
         };
-        $scope.retrieveTags = function() {
-            if (_.isEmpty($scope.tags)) {
-                ProjectService.getTags().then(function(tags) {
-                    $scope.tags = tags;
-                });
-            }
-        };
         $scope.retrieveVersions = function() {
             if (_.isEmpty($scope.versions)) {
                 ProjectService.getVersions().then(function(versions) {
@@ -433,7 +435,6 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story', resetOnProperties: []});
         $scope.dependenceEntries = [];
         $scope.parentSprintEntries = [];
-        $scope.tags = [];
         $scope.versions = [];
         $scope.creators = [];
         var actorTag = 'A[${uid}-${name}]';
@@ -532,7 +533,10 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
                 value: _.every(stories, {value: $scope.topStory.value}) ? $scope.topStory.value : null,
                 effort: _.every(stories, {value: $scope.topStory.effort}) ? $scope.topStory.effort : null,
                 feature: _.every(stories, {feature: $scope.topStory.feature}) ? $scope.topStory.feature : null,
-                type: _.every(stories, {type: $scope.topStory.type}) ? $scope.topStory.type : null
+                type: _.every(stories, {type: $scope.topStory.type}) ? $scope.topStory.type : null,
+                tags: _.every(stories, function(story) {
+                    return _.isEqual($scope.topStory.tags, story.tags);
+                }) ? $scope.topStory.tags : []
             };
             $scope.stories = stories;
         });

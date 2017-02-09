@@ -22,7 +22,15 @@
  *
  */
 
-controllers.controller('featureCtrl', ['$scope', '$filter', 'FeatureService', function($scope, $filter, FeatureService) {
+controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'FeatureService', function($scope, $filter, ProjectService, FeatureService) {
+    // Functions
+    $scope.retrieveTags = function() {
+        if (_.isEmpty($scope.tags)) {
+            ProjectService.getTags().then(function(tags) {
+                $scope.tags = tags;
+            });
+        }
+    };
     $scope.authorizedFeature = function(action) {
         return FeatureService.authorizedFeature(action);
     };
@@ -58,9 +66,11 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'FeatureService', fu
             action: function(feature) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [feature]}); }
         }
     ];
+    // Init
+    $scope.tags = [];
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'ProjectService', 'detailsFeature', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, ProjectService, detailsFeature) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature'});
     // Functions
@@ -70,27 +80,12 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
             $scope.notifySuccess('todo.is.ui.feature.updated');
         });
     };
-    $scope.retrieveTags = function() {
-        if (_.isEmpty($scope.tags)) {
-            ProjectService.getTags().then(function(tags) {
-                $scope.tags = tags;
-            });
-        }
-    };
     $scope.tabUrl = function(featureTabId) {
         var stateName = $state.params.featureTabId ? (featureTabId ? '.' : '^') : (featureTabId ? '.tab' : '.');
         return $state.href(stateName, {featureTabId: featureTabId});
     };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature', resetOnProperties: []});
-    $scope.tags = [];
-    $scope.retrieveTags = function() {
-        if (_.isEmpty($scope.tags)) {
-            ProjectService.getTags().then(function(tags) {
-                $scope.tags = tags;
-            });
-        }
-    };
     $scope.previousFeature = FormService.previous(Session.getProject().features, $scope.feature);
     $scope.nextFeature = FormService.next(Session.getProject().features, $scope.feature);
     $scope.featureStatesByName = FeatureStatesByName;
@@ -160,7 +155,10 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'feature
         $scope.features = features;
         $scope.topFeature = _.head(features);
         $scope.featurePreview = {
-            type: _.every(features, {type: $scope.topFeature.type}) ? $scope.topFeature.type : null
+            type: _.every(features, {type: $scope.topFeature.type}) ? $scope.topFeature.type : null,
+            tags: _.every(features, function(feature) {
+                return _.isEqual($scope.topFeature.tags, feature.tags);
+            }) ? $scope.topFeature.tags : []
         };
     });
 }]);

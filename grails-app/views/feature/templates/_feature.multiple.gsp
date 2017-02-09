@@ -112,11 +112,11 @@
             </div>
         </div>
         <form ng-submit="updateMultiple(featurePreview)"
+              ng-if="authorizedFeature('update')"
               name='featureForm'
               show-validation
               novalidate>
-            <div ng-if="authorizedFeature('update')"
-                 class="clearfix no-padding">
+            <div class="clearfix no-padding">
                 <div class="form-half">
                     <label for="type">${message(code: 'is.feature.type')}</label>
                     <ui-select class="form-control"
@@ -128,8 +128,22 @@
                     </ui-select>
                 </div>
             </div>
-            <div ng-if="authorizedFeature('update')"
-                 class="btn-toolbar">
+            <div class="form-group">
+                <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
+                <ui-select ng-click="retrieveTags()"
+                           class="form-control"
+                           multiple
+                           tagging
+                           tagging-tokens="SPACE|,"
+                           tagging-label="${message(code: 'todo.is.ui.tag.create')}"
+                           ng-model="featurePreview.tags">
+                    <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
+                    <ui-select-choices repeat="tag in tags | filter: $select.search">
+                        <span ng-bind-html="tag | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="btn-toolbar">
                 <button class="btn btn-primary pull-right"
                         type="submit">
                     ${message(code:'default.button.update.label')}

@@ -222,6 +222,21 @@
                     <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
                 </ui-select>
             </div>
+            <div class="form-group">
+                <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
+                <ui-select ng-click="retrieveTags()"
+                           class="form-control"
+                           multiple
+                           tagging
+                           tagging-tokens="SPACE|,"
+                           tagging-label="${message(code: 'todo.is.ui.tag.create')}"
+                           ng-model="storyPreview.tags">
+                    <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
+                    <ui-select-choices repeat="tag in tags | filter: $select.search">
+                        <span ng-bind-html="tag | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
             <div class="clearfix no-padding">
                 <div class="form-group"
                      ng-class="{ 'form-half' : authorizedStories('updateEstimate', stories) }">
