@@ -225,8 +225,8 @@
             <div class="panel-footer" ng-if="formHolder.editing">
                 <div class="btn-toolbar">
                     <button class="btn btn-primary"
-                            ng-if="isLatest()"
-                            ng-disabled="!isDirty() || formHolder.sprintForm.$invalid"
+                            ng-if="isLatest() || formHolder.submitting"
+                            ng-disabled="!isDirty() || formHolder.sprintForm.$invalid || formHolder.submitting"
                             type="submit">
                         ${message(code:'default.button.update.label')}
                     </button>
