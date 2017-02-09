@@ -35,7 +35,7 @@
         <table class="table">
             <tr>
                 <th class="title">${g.message(code:'is.story.value')}</th>
-                <th ng-repeat="value in values">
+                <th ng-repeat="value in values" ng-click="setValue(value)" class="clickable">
                     <span class="badge">{{ count[$index] }} <g:message code="is.ui.backlog.title.details.stories"/></span>
                     {{ value }}
                 </th>

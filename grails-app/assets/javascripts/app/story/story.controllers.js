@@ -281,6 +281,11 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                             scrollTable(dontAnimate, effortIndex);
                         });
                     };
+                    $scope.setEffort = function(effort){
+                        $scope.editableStory.effort = effort;
+                        $scope.sliderEffort.labelValue = $scope.effortSuiteValues.indexOf(effort);
+                        $scope.updateTable();
+                    };
                     $scope.submit = function(story) {
                         StoryService.update(story).then(function() {
                             $scope.$close();
@@ -329,6 +334,11 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                         $timeout(function() {
                             scrollTable(dontAnimate, valueIndex);
                         });
+                    };
+                    $scope.setValue = function(value){
+                        $scope.editableStory.value = value;
+                        $scope.sliderEffort.labelValue = value;
+                        $scope.updateTable();
                     };
                     $scope.submit = function(story) {
                         StoryService.update(story).then(function() {

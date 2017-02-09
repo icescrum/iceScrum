@@ -51,7 +51,7 @@
         <table class="table">
             <tr>
                 <th class="title">${g.message(code:'is.story.effort')}</th>
-                <th ng-repeat="effort in efforts track by $index">
+                <th ng-repeat="effort in efforts track by $index" ng-click="setEffort(effort)" class="clickable">
                     {{ effort }}
                     <span class="badge">{{ count[$index] }} <g:message code="is.ui.backlog.title.details.stories"/></span>
                 </th>
