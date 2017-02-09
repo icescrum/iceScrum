@@ -226,8 +226,6 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
                             query += self.formObjectData(innerObj, _prefix) + '&';
                         }
                     }
-                } else {
-                    console.log('Not sending array to the server (add to DomainConfigService if you want to send it):', context, property); // TODO remove eventually
                 }
             } else if (value instanceof Date) {
                 var encodedDate = $filter('dateToIso')(value);
