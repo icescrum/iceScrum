@@ -251,7 +251,9 @@
                     <ui-select-match>
                         {{ $select.selected | userFullName }}
                     </ui-select-match>
-                    <ui-select-choices refresh="searchCreator($select.search)" refresh-day="100" repeat="creator in creators | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
+                    <ui-select-choices refresh="searchCreator($select.search)"
+                                       refresh-delay="100"
+                                       repeat="creator in creators | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
                         <span ng-bind-html="(creator | userFullName) | highlight: $select.search"></span>
                     </ui-select-choices>
                 </ui-select>

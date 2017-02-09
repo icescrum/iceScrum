@@ -163,7 +163,7 @@
                             {{ $select.selected | userFullName }}
                         </ui-select-match>
                         <ui-select-choices refresh="searchResponsible($select.search)"
-                                           refresh-day="100"
+                                           refresh-delay="100"
                                            repeat="responsible in responsibles | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
                             <span ng-bind-html="(responsible | userFullName) | highlight: $select.search"></span>
                         </ui-select-choices>
