@@ -390,7 +390,30 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             postitsClass();
         }
     };
-}]).directive('asSortableItemHandleIf', ['$compile', function($compile) {
+}])
+    .directive('postitsScreenSizeStandalone', ['$window', '$timeout', '$localStorage', 'screenSize', function($window, $timeout, $localStorage, screenSize) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                // On default
+                var postitsClass = function() {
+                    element.removeClass('size-l size-sm size-xs').addClass(screenSize.is('xs, sm') ? 'size-xs' : scope.currentPostitSize(scope.viewName, 'grid-group size-sm'));
+                    element.removeClass('list-group');
+                };
+                // On resize change
+                screenSize.on('xs, sm', function(isMatch) {
+                    postitsClass();
+                });
+                // On manual change
+                scope.$watch(function() { return $localStorage[scope.viewName + 'PostitSize']; }, function(newVal, oldVal) {
+                    if (oldVal !== newVal) {
+                        postitsClass();
+                    }
+                });
+                postitsClass();
+            }
+        };
+    }]).directive('asSortableItemHandleIf', ['$compile', function($compile) {
     return {
         restrict: 'A',
         priority: 1000,

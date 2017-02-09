@@ -7,15 +7,22 @@
 .standalone {
   .postit-container {
     font-family: "Myriad Pro", Arial, sans-serif;
-    float: left;
     padding: 0;
-    margin: 0 30px 10px 0;
     .postit {
       z-index: 10;
       .grid-group .postit-container .postit;
       background: white;
     }
+    &.solo {
+      width:100%;
+      margin:10px;
+      .postit {
+        margin: 0 auto;
+      }
+    }
     &.stack {
+      float: left;
+      margin: 0 30px 10px 0;
       margin-bottom: 20px;
       &:before, &:after {
         width: @postit-width;

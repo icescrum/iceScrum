@@ -36,7 +36,7 @@
     <div class="panel-body">
         <div class="help-block">${message(code:'is.ui.task.help')}</div>
         <div class="postits standalone">
-            <div class="postit-container">
+            <div class="postit-container solo">
                 <div ng-style="'#f9f157' | createGradientBackground"
                      class="postit postit-sm {{ ('#f9f157' | contrastColor) }}">
                     <div class="head">
