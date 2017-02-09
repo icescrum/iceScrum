@@ -244,7 +244,7 @@
                     <button class="btn btn-warning"
                             type="button"
                             ng-if="!isLatest() && !formHolder.submitting"
-                            ng-click="resetStoryForm()">
+                            ng-click="resetSprintForm()">
                         <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
                     </button>
                 </div>
