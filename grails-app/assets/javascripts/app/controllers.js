@@ -144,7 +144,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
     $scope.iconCurrentPostitSize = function(viewName) {
         var icon;
         switch ($scope.currentPostitSize(viewName)) {
-            case 'grid-group':
+            case 'grid-group size-l':
                 icon = 'fa-sticky-note fa-xl';
                 break;
             case 'grid-group size-sm':
@@ -165,7 +165,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
     $scope.setPostitSize = function(viewName) {
         var next;
         switch ($scope.currentPostitSize(viewName)) {
-            case 'grid-group':
+            case 'grid-group size-l':
                 next = 'grid-group size-sm';
                 break;
             case 'grid-group size-sm':
@@ -176,7 +176,7 @@ controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$s
                 break;
             default:
             case 'list-group':
-                next = 'grid-group';
+                next = 'grid-group size-l';
                 break;
         }
         var contextSizeName = viewName + 'PostitSize';

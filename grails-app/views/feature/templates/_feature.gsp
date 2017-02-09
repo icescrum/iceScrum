@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="content"
-         as-sortable-item-handle>
+         as-sortable-item-handle ng-class="{'without-description':!feature.description}">
         <h3 class="title">{{ feature.name }}</h3>
         <div class="description"
              ng-bind-html="feature.description | lineReturns"></div>

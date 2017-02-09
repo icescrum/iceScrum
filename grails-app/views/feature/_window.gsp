@@ -85,7 +85,7 @@
                     <button type="button"
                         class="btn btn-default hidden-xs hidden-sm"
                         uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group') }}"></i>
+                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group size-l') }}"></i>
                     </button>
                     <button type="button"
                             class="btn btn-default hidden-xs"

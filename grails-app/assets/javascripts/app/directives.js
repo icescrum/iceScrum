@@ -375,7 +375,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         link: function(scope, element, attrs) {
             // On default
             var postitsClass = function() {
-                element.removeClass('grid-group size-sm size-xs list-group').addClass(screenSize.is('xs, sm') ? 'list-group' : scope.currentPostitSize(scope.viewName, 'grid-group size-sm'));
+                element.removeClass('grid-group size-l size-sm size-xs list-group').addClass(screenSize.is('xs, sm') ? 'list-group' : scope.currentPostitSize(scope.viewName, 'grid-group size-sm'));
             };
             // On resize change
             screenSize.on('xs, sm', function(isMatch) {

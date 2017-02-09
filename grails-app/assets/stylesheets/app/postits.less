@@ -339,16 +339,6 @@
             }
           }
         }
-        .content {
-          .title {
-            .text-overflow();
-          }
-          .description {
-            overflow: hidden;
-            font-style: italic;
-            visibility: visible;
-          }
-        }
         .actions {
           > .action * {
             visibility: visible;
@@ -423,6 +413,20 @@
         content: "\f085";
       }
 
+    }
+  }
+  &.size-l {
+    .postit-container .postit:hover {
+      .content:not(.without-description) {
+        .title {
+          .text-overflow();
+        }
+        .description {
+          overflow: hidden;
+          font-style: italic;
+          visibility: visible;
+        }
+      }
     }
   }
   &.size-sm {
