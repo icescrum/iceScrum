@@ -390,8 +390,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             postitsClass();
         }
     };
-}])
-    .directive('postitsScreenSizeStandalone', ['$window', '$timeout', '$localStorage', 'screenSize', function($window, $timeout, $localStorage, screenSize) {
+}]).directive('postitsScreenSizeStandalone', ['$window', '$timeout', '$localStorage', 'screenSize', function($window, $timeout, $localStorage, screenSize) {
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
@@ -413,7 +412,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 postitsClass();
             }
         };
-    }]).directive('asSortableItemHandleIf', ['$compile', function($compile) {
+}]).directive('asSortableItemHandleIf', ['$compile', function($compile) {
     return {
         restrict: 'A',
         priority: 1000,
