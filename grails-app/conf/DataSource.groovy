@@ -63,7 +63,7 @@ environments {
             username = "sa"
             password = ""
             driverClassName = "org.h2.Driver"
-            url = "jdbc:h2:prodDb"
+            url = "jdbc:h2:./prodDb"
             dbCreate = "update"
             jmxExport = true
             properties {
