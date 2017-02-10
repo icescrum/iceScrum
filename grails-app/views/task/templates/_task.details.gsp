@@ -150,25 +150,7 @@
                               name="description"
                               ng-model="editableTask.description"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="responsible">${message(code: 'is.task.responsible')}</label>
-                    <ui-select ng-click="editForm(true)"
-                               ng-change="editForm(true)"
-                               ng-disabled="!formEditable() || !authorizedTask('setResponsible', editableTask)"
-                               class="form-control"
-                               name="responsible"
-                               search-enabled="true"
-                               ng-model="editableTask.responsible">
-                        <ui-select-match>
-                            {{ $select.selected | userFullName }}
-                        </ui-select-match>
-                        <ui-select-choices refresh="searchResponsible($select.search)"
-                                           refresh-delay="100"
-                                           repeat="responsible in responsibles | orFilter: { username: $select.search, name: $select.search, email: $select.search }">
-                            <span ng-bind-html="(responsible | userFullName) | highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
+                <entry:point id="task-detail-middle"/>
                 <div class="form-group">
                     <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
                     <ui-select class="form-control"
