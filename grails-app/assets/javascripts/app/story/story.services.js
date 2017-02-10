@@ -257,6 +257,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             case 'create':
             case 'follow':
                 return Session.authenticated();
+            case 'createAccepted':
+                return Session.po();
             case 'upload':
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||

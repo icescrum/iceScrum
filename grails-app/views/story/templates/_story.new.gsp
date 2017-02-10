@@ -27,14 +27,14 @@
             <i class="fa fa-sticky-note" ng-style="{color: storyPreview.feature ? storyPreview.feature.color : '#f9f157'}"></i>
             ${message(code: 'todo.is.ui.story.new')}
             <a class="pull-right btn btn-default"
-                    href="#/{{ ::viewName }}/sandbox"
-                    uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+               href="#/{{ ::viewName }}/sandbox"
+               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
             </a>
         </h3>
     </div>
     <div class="panel-body">
-        <div class="help-block">${message(code:'is.ui.sandbox.help')}</div>
+        <div class="help-block">${message(code: 'is.ui.sandbox.help')}</div>
         <div class="postits standalone" postits-screen-size-standalone>
             <div class="postit-container solo">
                 <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
@@ -63,23 +63,23 @@
                                 </a>
                             </span>
                             <span class="action">
-                                <a uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                                <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                     <i class="fa fa-paperclip"></i>
                                 </a>
                             </span>
                             <span class="action">
-                                <a uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                                <a uib-tooltip="${message(code: 'todo.is.ui.comments')}">
                                     <i class="fa fa-comment-o"></i>
                                 </a>
                             </span>
                             <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                                <a uib-tooltip="${message(code:'todo.is.ui.tasks')}">
+                                <a uib-tooltip="${message(code: 'todo.is.ui.tasks')}">
                                     <i class="fa fa-tasks"></i>
                                     <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
                                 </a>
                             </span>
                             <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                                <a uib-tooltip="${message(code:'todo.is.ui.acceptanceTests')}">
+                                <a uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
                                     <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
                                     <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
                                 </a>
@@ -89,13 +89,13 @@
                 </div>
             </div>
         </div>
-
-        <form ng-submit="save(story, false)"
+        <form ng-if="authorizedStory('create')"
+              ng-submit="save(story, false)"
               name='formHolder.storyForm'
               novalidate>
             <div class="clearfix no-padding">
                 <div class="form-half">
-                    <label for="name">${message(code:'is.story.name')}</label>
+                    <label for="name">${message(code: 'is.story.name')}</label>
                     <input required
                            name="name"
                            type="text"
@@ -104,28 +104,40 @@
                            placeholder="${message(code: 'is.ui.story.noname')}"
                            ng-maxlength="100"
                            ng-model="story.name"
-                           ng-change="findDuplicates(story.name)"
-                           ng-disabled="!authorizedStory('create')"/>
+                           ng-change="findDuplicates(story.name)"/>
                     <div ng-if="messageDuplicate"
                          class="help-block bg-warning spaced-help-block"
                          ng-bind-html="messageDuplicate"></div>
                 </div>
                 <entry:point id="story-new-form"/>
             </div>
-            <div ng-if="authorizedStory('create')" class="btn-toolbar pull-right">
+            <div ng-if="authorizedStory('createAccepted')"
+                 class="clearfix no-padding" >
+                <div class="form-half">
+                    <label for="state">${message(code: 'is.story.state')}</label>
+                    <ui-select name="story.state"
+                               required
+                               class="form-control"
+                               ng-model="story.state">
+                        <ui-select-match>{{ $select.selected | i18n:'StoryStates' }}</ui-select-match>
+                        <ui-select-choices repeat="storyState in newStoryStates">{{ ::storyState | i18n:'StoryStates' }}</ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+            <div class="btn-toolbar pull-right">
                 <button class="btn btn-primary"
                         ng-disabled="formHolder.storyForm.$invalid"
-                        uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                        uib-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                         hotkey="{'shift+return': hotkeyClick }"
                         hotkey-allow-in="INPUT"
                         type='button'
                         ng-click="save(story, true)">
-                    ${message(code:'todo.is.ui.create.and.continue')}
+                    ${message(code: 'todo.is.ui.create.and.continue')}
                 </button>
                 <button class="btn btn-primary"
                         ng-disabled="formHolder.storyForm.$invalid"
                         type="submit">
-                    ${message(code:'default.button.create.label')}
+                    ${message(code: 'default.button.create.label')}
                 </button>
             </div>
         </form>

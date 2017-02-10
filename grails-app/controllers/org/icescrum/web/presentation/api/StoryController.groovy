@@ -114,6 +114,9 @@ class StoryController implements ControllerErrorHandler {
                 acceptanceTestService.save(acceptanceTest, story, user)
                 story.addToAcceptanceTests(acceptanceTest) // required so the acceptance tests are returned with the story in JSON
             }
+            if (storyParams.state && storyParams.state.toInteger() == Story.STATE_ACCEPTED && request.productOwner) {
+                storyService.acceptToBacklog(story)
+            }
             entry.hook(id: "${controllerName}-${actionName}", model: [story: story])
             render(status: 201, contentType: 'application/json', text: story as JSON)
         }

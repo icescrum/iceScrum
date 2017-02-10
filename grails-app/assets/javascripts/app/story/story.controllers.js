@@ -281,7 +281,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                             scrollTable(dontAnimate, effortIndex);
                         });
                     };
-                    $scope.setEffort = function(effort){
+                    $scope.setEffort = function(effort) {
                         $scope.editableStory.effort = effort;
                         $scope.sliderEffort.labelValue = $scope.effortSuiteValues.indexOf(effort);
                         $scope.updateTable();
@@ -335,7 +335,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                             scrollTable(dontAnimate, valueIndex);
                         });
                     };
-                    $scope.setValue = function(value){
+                    $scope.setValue = function(value) {
                         $scope.editableStory.value = value;
                         $scope.sliderEffort.labelValue = value;
                         $scope.updateTable();
@@ -552,11 +552,11 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     refreshStories();
 }]);
 
-registerAppController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'StoryService', 'hotkeys', function($scope, $state, $timeout, $controller, StoryService, hotkeys) {
+registerAppController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'StoryService', 'hotkeys', 'StoryStatesByName', function($scope, $state, $timeout, $controller, StoryService, hotkeys, StoryStatesByName) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.resetStoryForm = function() {
-        $scope.story = {};
+        $scope.story = {state: $scope.story ? $scope.story.state : StoryStatesByName.SUGGESTED};
         $scope.resetFormValidation($scope.formHolder.storyForm);
     };
     $scope.save = function(story, andContinue) {
@@ -590,6 +590,7 @@ registerAppController('storyNewCtrl', ['$scope', '$state', '$timeout', '$control
     // Init
     $scope.formHolder = {};
     $scope.resetStoryForm();
+    $scope.newStoryStates = [StoryStatesByName.SUGGESTED, StoryStatesByName.ACCEPTED];
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],
