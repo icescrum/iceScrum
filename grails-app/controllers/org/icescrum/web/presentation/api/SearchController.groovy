@@ -24,11 +24,10 @@
 
 package org.icescrum.web.presentation.api
 
-import org.grails.taggable.Tag
 import grails.converters.JSON
-import org.icescrum.core.domain.BacklogElement
-import org.icescrum.core.domain.Project
 import grails.plugin.springsecurity.annotation.Secured
+import org.grails.taggable.Tag
+import org.icescrum.core.domain.Project
 import org.icescrum.core.error.ControllerErrorHandler
 
 @Secured('inProject() or (isAuthenticated() and stakeHolder())')
@@ -36,48 +35,44 @@ class SearchController implements ControllerErrorHandler {
 
     def springSecurityService
 
-    def tag(long project) {
+    def tag(long project, String term) {
         Project _project = Project.withProject(project)
-        if ((_project.preferences.hidden && !request.inProject) || (!_project.preferences.hidden && !springSecurityService.isLoggedIn())){
-            render (status:403, text:'')
+        if ((_project.preferences.hidden && !request.inProject) || (!_project.preferences.hidden && !springSecurityService.isLoggedIn())) {
+            render(status: 403, text: '')
             return
         }
-        String findTagsByTermAndProject = """SELECT DISTINCT tagLink.tag.name
-                   FROM org.grails.taggable.TagLink tagLink
-                   WHERE (
-                            tagLink.tagRef IN (SELECT story.id From Story story where story.backlog.id = :project)
-                          OR tagLink.tagRef IN (SELECT feature.id From Feature feature where feature.backlog.id = :project)
-                   )
-                   AND tagLink.tag.name LIKE :term
-                   ORDER BY tagLink.tag.name"""
-
-        String findTagsByTermAndProjectInTasks = """SELECT DISTINCT tagLink.tag.name
-                   FROM Task task, org.grails.taggable.TagLink tagLink
-                   WHERE task.id = tagLink.tagRef
-                   AND tagLink.type = 'task'
-                   AND task.backlog.id IN (select sprint.id from Sprint sprint, Release release WHERE sprint.parentRelease.id = release.id AND release.parentProject.id = :project)
-                   AND tagLink.tag.name LIKE :term
-                   ORDER BY tagLink.tag.name"""
-
-        def term = params.term
-        if (params.withKeyword) {
-            if (BacklogElement.hasTagKeyword(term)) {
-                term = BacklogElement.removeTagKeyword(term)
-            }
-        }
-
-        if (term == null) {
-            term = '%'
-        }
-
-        def tags = Tag.executeQuery(findTagsByTermAndProject, [term: term +'%', project: _project.id])
-        tags.addAll(Tag.executeQuery(findTagsByTermAndProjectInTasks, [term: term +'%', project: _project.id]))
-        tags.unique()
-
-        if (params.withKeyword) {
-            tags = tags.collect { BacklogElement.TAG_KEYWORD + it }
-        }
-
+        def tags = Tag.executeQuery("""
+            SELECT DISTINCT tagLink.tag.name
+            FROM org.grails.taggable.TagLink tagLink
+            WHERE (
+                (
+                    tagLink.tagRef IN (
+                        SELECT story.id
+                        FROM Story story
+                        WHERE story.backlog.id = :project
+                    )
+                    AND tagLink.type = 'story'
+                )
+                OR (
+                    tagLink.tagRef IN (
+                        SELECT feature.id
+                        FROM Feature feature
+                        WHERE feature.backlog.id = :project
+                    )
+                    AND tagLink.type = 'feature'
+                )
+                OR (
+                    tagLink.tagRef IN (
+                        SELECT task.id
+                        FROM Task task
+                        WHERE task.parentProject.id = :project
+                    )
+                    AND tagLink.type = 'task'
+                )
+            )
+            AND tagLink.tag.name LIKE :term
+            ORDER BY tagLink.tag.name
+        """, [term: (term ?: '%') + '%', project: _project.id])
         render(tags as JSON)
     }
 }
