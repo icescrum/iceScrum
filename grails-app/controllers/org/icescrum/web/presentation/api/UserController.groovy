@@ -168,7 +168,6 @@ class UserController implements ControllerErrorHandler {
             if (params.user.preferences) {
                 bindData(user.preferences, params.user.preferences as Map, [include: ['language', 'filterTask', 'activity']], "") // Preferences using as Map for REST & HTTP support
             }
-            entry.hook(id: "${controllerName}-${actionName}", model: [user: user, props: props])
             userService.update(user, props)
         }
         render(status: 200, contentType: 'application/json', text: user as JSON)

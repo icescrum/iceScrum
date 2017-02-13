@@ -63,7 +63,6 @@ class FeatureController implements ControllerErrorHandler {
             feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
             def _project = Project.load(project)
             featureService.save(feature, _project)
-            entry.hook(id: "${controllerName}-${actionName}", model: [feature: feature]) // TODO check if still needed
             render(status: 201, contentType: 'application/json', text: feature as JSON)
         }
     }
@@ -83,7 +82,6 @@ class FeatureController implements ControllerErrorHandler {
                     feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
                 }
                 featureService.update(feature)
-                entry.hook(id: "${controllerName}-${actionName}", model: [feature: feature]) // TODO check if still needed
             }
         }
         def returnData = features.size() > 1 ? features : features.first()
