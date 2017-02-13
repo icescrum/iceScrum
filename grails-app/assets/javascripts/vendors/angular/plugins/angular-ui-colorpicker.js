@@ -363,7 +363,6 @@ angular.module('colorpicker.module', [])
                         .on('keyup', function(event) {
                             var newColor = this.value;
                             elem.val(newColor);
-                            debugger;
                             if(ngModel) {
                                 $scope.$apply(ngModel.$setViewValue(newColor));
                             }
