@@ -69,7 +69,14 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
             data: info
         });
     };
-    this.search = function(term, project) {
-        return FormService.httpGet('user/search', {params: {value: term, invit: true, pkey: project ? project.pkey : null}}, true);
+    this.search = function(term, invite, project) {
+        var params = {value: term};
+        if (project) {
+            params.pkey = project.pkey;
+        }
+        if (invite) {
+            params.invite = true;
+        }
+        return FormService.httpGet('user/search', {params: params}, true);
     }
 }]);

@@ -36,7 +36,7 @@ controllers.controller('abstractTeamCtrl', ['$scope', '$filter', 'Session', 'Tea
         }
     };
     $scope.searchMembers = function(val) {
-        return UserService.search(val).then(function(users) {
+        return UserService.search(val, true).then(function(users) {
             return _.chain(users)
                 .filter(function(member) {
                     var found = false;

@@ -279,7 +279,7 @@ controllers.controller('quickProjectsListCtrl', ['$scope', '$timeout', 'FormServ
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', 'UserService', function($scope, $filter, Session, UserService) {
     $scope.searchUsers = function(val, isPo) {
-        return UserService.search(val).then(function(users) {
+        return UserService.search(val, true).then(function(users) {
             return _.chain(users)
                 .filter(function(u) {
                     var found = _.find($scope.project.productOwners, {email: u.email});
