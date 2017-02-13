@@ -124,6 +124,7 @@
                                         colorpicker-position="left"
                                         colorpicker-with-input="true"
                                         ng-focus="editForm(true)"
+                                        ng-click="refreshMostUsedColors()"
                                         value="#bf3d3d"
                                         name="color"
                                         colors="mostUsedColors"

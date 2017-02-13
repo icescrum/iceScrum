@@ -335,23 +335,20 @@ angular.module('colorpicker.module', [])
                 $compile(colorpickerTemplate)($scope);
 
                 $scope.$watch('colors', function() {
-                    if($scope.colors){
-                        angular.forEach($scope.colors, function(value) {
-                            colorpickerLastColors.append('<div class="color" style="background:'+value+'"></div>')
-                        });
-                        colorpickerLastColors.find('.color').on('click', function(){
-                            var newColor = angular.element(this).css('backgroundColor');
-                            newColor = hexc(newColor);
-                            elem.val(newColor);
-                            if(ngModel) {
-                                $scope.$apply(ngModel.$setViewValue(newColor));
-                            }
-                            event.stopPropagation();
-                            event.preventDefault();
-                        });
-                    } else {
-                        colorpickerLastColors.remove();
-                    }
+                    colorpickerLastColors.find('.color').remove();
+                    angular.forEach($scope.colors, function(value) {
+                        colorpickerLastColors.append('<div class="color" style="background:'+value+'"></div>')
+                    });
+                    colorpickerLastColors.find('.color').on('click', function(){
+                        var newColor = angular.element(this).css('backgroundColor');
+                        newColor = hexc(newColor);
+                        elem.val(newColor);
+                        if(ngModel) {
+                            $scope.$apply(ngModel.$setViewValue(newColor));
+                        }
+                        event.stopPropagation();
+                        event.preventDefault();
+                    });
                 });
 
                 if (withInput) {

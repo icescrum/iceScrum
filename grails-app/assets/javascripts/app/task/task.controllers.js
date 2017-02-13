@@ -230,6 +230,11 @@ registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contr
     $scope.currentStateUrl = function(id) {
         return $state.href($state.current.name, {taskId: id});
     };
+    $scope.refreshMostUsedColors = function() {
+        TaskService.getMostUsedColors().then(function(colors) {
+            $scope.mostUsedColors = colors;
+        });
+    };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task'});
     $scope.tags = [];
@@ -238,11 +243,7 @@ registerAppController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contr
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);
     $scope.taskStatesByName = TaskStatesByName;
-
     $scope.mostUsedColors = [];
-    TaskService.getMostUsedColors().then(function(colors) {
-        $scope.mostUsedColors = colors;
-    });
 }]);
 
 controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
