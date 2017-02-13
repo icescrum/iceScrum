@@ -367,12 +367,14 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
         $scope.searchCreator = function(val) {
-            UserService.search(val).then(function(users) {
-                $scope.creators = _.map(users, function(member) {
-                    member.name = $filter('userFullName')(member);
-                    return member;
+            if ($scope.formHolder.editing) { // Could do better, e.g. check if permission to update creator or even better load only if dropdown opens (same as task responsible)
+                UserService.search(val).then(function(users) {
+                    $scope.creators = _.map(users, function(member) {
+                        member.name = $filter('userFullName')(member);
+                        return member;
+                    });
                 });
-            });
+            }
         };
         $scope.update = function(story) {
             $scope.formHolder.submitting = true;
@@ -383,6 +385,13 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         };
         $scope.clickDescriptionPreview = function($event, template) {
             if ($event.target.nodeName != 'A' && $scope.formEditable()) {
+                ActorService.list().then(function(actors) {
+                    _.each($scope.atOptions, function(options) {
+                        options.data = _.map(actors, function(actor) {
+                            return {uid: actor.uid, name: actor.name};
+                        });
+                    });
+                });
                 $scope.showDescriptionTextarea = true;
                 var $el = angular.element($event.currentTarget);
                 $el.prev().css('height', $el.outerHeight());
@@ -458,13 +467,6 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $scope.features = Session.getProject().features;
         FeatureService.list();
         $scope.project = Session.getProject();
-        ActorService.list().then(function(actors) {
-            _.each($scope.atOptions, function(options) {
-                options.data = _.map(actors, function(actor) {
-                    return {uid: actor.uid, name: actor.name};
-                });
-            });
-        });
         // For header
         //$scope.previousStory = FormService.previous(list, $scope.story);
         //$scope.nextStory = FormService.next(list, $scope.story);
