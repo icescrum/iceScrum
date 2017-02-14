@@ -39,7 +39,7 @@ class FeatureController implements ControllerErrorHandler {
     def grailsApplication
 
     def index(long project) {
-        def features = Feature.searchAllByTermOrTag(project, params.term).sort { Feature feature -> feature.rank }
+        def features = Feature.search(project, [feature: [:]]).sort { Feature feature -> feature.rank }
         render(status: 200, text: features as JSON, contentType: 'application/json')
     }
 
