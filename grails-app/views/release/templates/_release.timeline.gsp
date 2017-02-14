@@ -40,7 +40,8 @@
 <uib-progress class="form-control-static form-bar"
               uib-tooltip="{{ release.name }}"
               max="release.duration">
-    <a href="{{ openSprintUrl(sprint) }}"
+    <a href="{{ sprint.id ? openSprintUrl(sprint) : '' }}"
+       ng-class="{'disabled-link':!sprint.id}"
        ng-repeat="sprint in releaseParts">
         <uib-bar class="{{ $last ? 'last-bar' : '' }}"
                  uib-tooltip-template="'sprint.tooltip.html'"
