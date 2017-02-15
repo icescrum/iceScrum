@@ -321,7 +321,7 @@ class UrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
-                type(inList: ['story', 'task', 'feature'])
+                type(inList: ['story', 'task', 'feature', 'release', 'sprint'])
             }
         }
         "/p/$project/attachment/$type/$attachmentable/$id" {
@@ -331,7 +331,7 @@ class UrlMappings {
                 project(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)
                 id(matches: /\d*/)
-                type(inList: ['story', 'task', 'feature'])
+                type(inList: ['story', 'task', 'feature', 'release', 'sprint'])
             }
         }
         // Team
