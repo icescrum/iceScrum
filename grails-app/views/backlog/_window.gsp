@@ -133,6 +133,7 @@
                                 <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
                             </button>
                             <ul uib-dropdown-menu
+                                class="pull-right"
                                 role="menu">
                                 <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
                                     <li role="menuitem">
