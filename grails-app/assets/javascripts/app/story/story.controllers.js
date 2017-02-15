@@ -454,14 +454,17 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $scope.versions = [];
         $scope.creators = [];
         var actorTag = 'A[${uid}-${name}]';
+        var atWhoLimit = 15;
         $scope.atOptions = [
             {
                 insertTpl: '${atwho-at}' + actorTag,
-                at: $scope.message('is.story.template.as') + ' '
+                at: $scope.message('is.story.template.as') + ' ',
+                limit: atWhoLimit
             },
             {
                 insertTpl: actorTag,
-                at: '@'
+                at: '@',
+                limit: atWhoLimit
             }
         ];
         $scope.features = Session.getProject().features;
