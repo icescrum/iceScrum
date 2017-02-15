@@ -105,6 +105,7 @@
         <div class="form-half" ng-show="project.preferences.displayUrgentTasks">
             <label for="limitUrgentTasks">${message(code:'is.project.preferences.sprint.limitUrgentTasks')}</label>
             <input type="number"
+                   min="0"
                    class="form-control"
                    name="project.preferences.limitUrgentTasks"
                    id="limitUrgentTasks"

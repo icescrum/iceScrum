@@ -42,6 +42,7 @@
                 <input name="estimation"
                        ng-model="task.estimation"
                        type="number"
+                       min="0"
                        step="any"
                        placeholder="${message(code: 'is.task.estimation')}"
                        class="form-control text-right">

@@ -34,6 +34,7 @@
         <input autofocus
                name="capacity"
                type="number"
+               min="0"
                class="form-control"
                ng-model="modelHolder.capacity"/>
     </div>

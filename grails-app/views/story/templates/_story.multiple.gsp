@@ -266,6 +266,7 @@
                     </ui-select>
                     <input type="number"
                            ng-if="isEffortCustom()"
+                           min="0"
                            class="form-control"
                            name="effort"
                            ng-model="storyPreview.effort"/>
