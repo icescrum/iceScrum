@@ -294,7 +294,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                     };
                 }]
             });
-            if($event){
+            if ($event) {
                 $event.stopPropagation();
             }
         }
@@ -351,7 +351,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                     };
                 }]
             });
-            if($event){
+            if ($event) {
                 $event.stopPropagation();
             }
         }

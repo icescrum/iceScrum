@@ -144,7 +144,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
                     }, 500);
                 }]
             });
-            if($event){
+            if ($event) {
                 $event.stopPropagation();
             }
         }
