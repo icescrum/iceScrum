@@ -910,7 +910,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         scope: {
             btnSm: '=',
             ngModel: '=',
-            viewName: '=',
+            viewType: '=',
             modelMenus: '='
         },
         replace: true,
@@ -921,10 +921,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var i = scope.modelMenus.length;
                 scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menuElement) {
                     var defaultPriority = i--;
-                    return menuElement.priority ? menuElement.priority(scope.ngModel, defaultPriority, scope.viewName) : defaultPriority;
+                    return menuElement.priority ? menuElement.priority(scope.ngModel, defaultPriority, scope.viewType) : defaultPriority;
                 }, true);
                 scope.menuElement = _.find(scope.sortedMenus, function(menuElement) {
-                    return menuElement.visible(scope.ngModel, scope.viewName);
+                    return menuElement.visible(scope.ngModel, scope.viewType);
                 });
             });
         }
