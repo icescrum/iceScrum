@@ -81,7 +81,8 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
     $scope.menus = [
         {
             name: 'todo.is.ui.details',
-            visible: function(task) { return $state.current.name.indexOf('task.details') == -1; },
+            priority: function(task, defaultPriority, viewName) { return viewName === 'list' ? 100 : defaultPriority; },
+            visible: function(task, viewName) { return viewName !== 'details'; },
             action: function(task) { $state.go('.task.details', {taskId: task.id}); }
         },
         {

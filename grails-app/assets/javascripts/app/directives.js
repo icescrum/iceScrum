@@ -921,10 +921,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var i = scope.modelMenus.length;
                 scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menuElement) {
                     var defaultPriority = i--;
-                    return menuElement.priority ? menuElement.priority(scope.ngModel, defaultPriority, !scope.viewName) : defaultPriority;
+                    return menuElement.priority ? menuElement.priority(scope.ngModel, defaultPriority, scope.viewName) : defaultPriority;
                 }, true);
                 scope.menuElement = _.find(scope.sortedMenus, function(menuElement) {
-                    return menuElement.visible(scope.ngModel);
+                    return menuElement.visible(scope.ngModel, scope.viewName);
                 });
             });
         }
