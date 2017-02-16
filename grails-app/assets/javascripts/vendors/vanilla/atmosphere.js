@@ -38,8 +38,7 @@
 
     "use strict";
 
-    var version = "2.3.1-javascript",
-        atmosphere = {},
+    var atmosphere = {},
         guid,
         offline = false,
         requests = [],
@@ -48,7 +47,7 @@
         hasOwn = Object.prototype.hasOwnProperty;
 
     atmosphere = {
-
+        version: "2.3.3-javascript",
         onError: function (response) {
         },
         onClose: function (response) {
@@ -592,11 +591,11 @@
                 var parts = /^([\w\+\.\-]+:)(?:\/\/([^\/?#:]*)(?::(\d+))?)?/.exec(url);
                 var crossOrigin = !!(parts && (
                     // protocol
-                parts[1] != window.location.protocol ||
+                    parts[1] != window.location.protocol ||
                     // hostname
-                parts[2] != window.location.hostname ||
+                    parts[2] != window.location.hostname ||
                     // port
-                (parts[3] || (parts[1] === "http:" ? 80 : 443)) != (window.location.port || (window.location.protocol === "http:" ? 80 : 443))
+                    (parts[3] || (parts[1] === "http:" ? 80 : 443)) != (window.location.port || (window.location.protocol === "http:" ? 80 : 443))
                 ));
                 return window.EventSource && (!crossOrigin || !atmosphere.util.browser.safari || atmosphere.util.browser.vmajor >= 7);
             }
@@ -646,14 +645,14 @@
                 } else if (_request.transport === 'websocket') {
                     if (!_supportWebsocket()) {
                         _reconnectWithFallbackTransport("Websocket is not supported, using request.fallbackTransport (" + _request.fallbackTransport
-                        + ")");
+                            + ")");
                     } else {
                         _executeWebSocket(false);
                     }
                 } else if (_request.transport === 'sse') {
                     if (!_supportSSE()) {
                         _reconnectWithFallbackTransport("Server Side Events(SSE) is not supported, using request.fallbackTransport ("
-                        + _request.fallbackTransport + ")");
+                            + _request.fallbackTransport + ")");
                     } else {
                         _executeSSE(false);
                     }
@@ -675,7 +674,8 @@
 
                         var storage = window.localStorage,
                             get = function (key) {
-                                return atmosphere.util.parseJSON(storage.getItem(name + "-" + key));
+                                var item = storage.getItem(name + "-" + key);
+                                return item === null ? [] : atmosphere.util.parseJSON(item);
                             },
                             set = function (key, value) {
                                 storage.setItem(name + "-" + key, atmosphere.util.stringifyJSON(value));
@@ -982,10 +982,10 @@
                     document.cookie = _sharingKey + "=" +
                         // Opera's JSON implementation ignores a number whose a last digit of 0 strangely
                         // but has no problem with a number whose a last digit of 9 + 1
-                    encodeURIComponent(atmosphere.util.stringifyJSON({
-                        ts: atmosphere.util.now() + 1,
-                        heir: (storageService.get("children") || [])[0]
-                    })) + "; path=/";
+                        encodeURIComponent(atmosphere.util.stringifyJSON({
+                            ts: atmosphere.util.now() + 1,
+                            heir: (storageService.get("children") || [])[0]
+                        })) + "; path=/";
                 }
 
                 // Chooses a storageService
@@ -1491,14 +1491,14 @@
                                 break;
                             case 1001:
                                 reason = "The endpoint is going away, either because of a server failure or because the "
-                                + "browser is navigating away from the page that opened the connection.";
+                                    + "browser is navigating away from the page that opened the connection.";
                                 break;
                             case 1002:
                                 reason = "The endpoint is terminating the connection due to a protocol error.";
                                 break;
                             case 1003:
                                 reason = "The connection is being terminated because the endpoint received data of a type it "
-                                + "cannot accept (for example, a text-only endpoint received binary data).";
+                                    + "cannot accept (for example, a text-only endpoint received binary data).";
                                 break;
                             case 1004:
                                 reason = "The endpoint is terminating the connection because a data frame was received that is too large.";
@@ -1688,8 +1688,11 @@
                         while (messageStart !== -1) {
                             var str = message.substring(0, messageStart);
                             var messageLength = +str;
-                            if (isNaN(messageLength))
+                            if (isNaN(messageLength)) {
+                                // Discard partial message, otherwise it would never recover from this condition
+                                response.partialMessage = '';
                                 throw new Error('message length "' + str + '" is not a number');
+                            }
                             messageStart += request.messageDelimiter.length;
                             if (messageStart + messageLength > message.length) {
                                 // message not complete, so there is no trailing messageDelimiter
@@ -1784,7 +1787,7 @@
 
                 url += (url.indexOf('?') !== -1) ? '&' : '?';
                 url += "X-Atmosphere-tracking-id=" + rq.uuid;
-                url += "&X-Atmosphere-Framework=" + version;
+                url += "&X-Atmosphere-Framework=" + atmosphere.version;
                 url += "&X-Atmosphere-Transport=" + rq.transport;
 
                 if (rq.trackMessageLength) {
@@ -2178,7 +2181,7 @@
                 }
 
                 if (!_request.dropHeaders) {
-                    ajaxRequest.setRequestHeader("X-Atmosphere-Framework", version);
+                    ajaxRequest.setRequestHeader("X-Atmosphere-Framework", atmosphere.version);
                     ajaxRequest.setRequestHeader("X-Atmosphere-Transport", request.transport);
 
                     if (request.heartbeat !== null && request.heartbeat.server !== null) {
@@ -2422,6 +2425,9 @@
                                 }
 
                                 var res = cdoc.body ? cdoc.body.lastChild : cdoc;
+                                if (res.omgThisIsBroken) {
+                                    // Cause an exception when res is null, to trigger a reconnect...
+                                }
                                 var readResponse = function () {
                                     // Clones the element not to disturb the original one
                                     var clone = res.cloneNode(true);
@@ -3334,8 +3340,8 @@
                         switch (Object.prototype.toString.call(value)) {
                             case "[object Date]":
                                 return isFinite(value.valueOf()) ? '"' + value.getUTCFullYear() + "-" + f(value.getUTCMonth() + 1) + "-"
-                                + f(value.getUTCDate()) + "T" + f(value.getUTCHours()) + ":" + f(value.getUTCMinutes()) + ":" + f(value.getUTCSeconds())
-                                + "Z" + '"' : "null";
+                                    + f(value.getUTCDate()) + "T" + f(value.getUTCHours()) + ":" + f(value.getUTCMinutes()) + ":" + f(value.getUTCSeconds())
+                                    + "Z" + '"' : "null";
                             case "[object Array]":
                                 len = value.length;
                                 partial = [];
@@ -3424,64 +3430,68 @@
         }
     })();
 
-    atmosphere.util.on(window, "unload", function (event) {
-        atmosphere.util.debug(new Date() + " Atmosphere: " + "unload event");
-        atmosphere.unsubscribe();
-    });
+    atmosphere.callbacks = {
+        unload: function() {
+            atmosphere.util.debug(new Date() + " Atmosphere: " + "unload event");
+            atmosphere.unsubscribe();
+        },
+        beforeUnload: function() {
+            atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event");
 
-    atmosphere.util.on(window, "beforeunload", function (event) {
-        atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event");
+            // ATMOSPHERE-JAVASCRIPT-143: Delay reconnect to avoid reconnect attempts before an actual unload (we don't know if an unload will happen, yet)
+            atmosphere._beforeUnloadState = true;
+            setTimeout(function () {
+                atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event timeout reached. Reset _beforeUnloadState flag");
+                atmosphere._beforeUnloadState = false;
+            }, 5000);
+        },
+        offline: function() {
+            atmosphere.util.debug(new Date() + " Atmosphere: offline event");
+            offline = true;
+            if (requests.length > 0) {
+                var requestsClone = [].concat(requests);
+                for (var i = 0; i < requestsClone.length; i++) {
+                    var rq = requestsClone[i];
+                    if(rq.request.handleOnlineOffline) {
+                        rq.close();
+                        clearTimeout(rq.response.request.id);
 
-        // ATMOSPHERE-JAVASCRIPT-143: Delay reconnect to avoid reconnect attempts before an actual unload (we don't know if an unload will happen, yet)
-        atmosphere._beforeUnloadState = true;
-        setTimeout(function () {
-            atmosphere.util.debug(new Date() + " Atmosphere: " + "beforeunload event timeout reached. Reset _beforeUnloadState flag");
-            atmosphere._beforeUnloadState = false;
-        }, 5000);
-    });
-
-    // Pressing ESC key in Firefox kills the connection
-    // for your information, this is fixed in Firefox 20
-    // https://bugzilla.mozilla.org/show_bug.cgi?id=614304
-    atmosphere.util.on(window, "keypress", function (event) {
-        if (event.charCode === 27 || event.keyCode === 27) {
-            if (event.preventDefault) {
-                event.preventDefault();
-            }
-        }
-    });
-
-    atmosphere.util.on(window, "offline", function () {
-        atmosphere.util.debug(new Date() + " Atmosphere: offline event");
-        offline = true;
-        if (requests.length > 0) {
-            var requestsClone = [].concat(requests);
-            for (var i = 0; i < requestsClone.length; i++) {
-                var rq = requestsClone[i];
-                if(rq.request.handleOnlineOffline) {
-                    rq.close();
-                    clearTimeout(rq.response.request.id);
-
-                    if (rq.heartbeatTimer) {
-                        clearTimeout(rq.heartbeatTimer);
+                        if (rq.heartbeatTimer) {
+                            clearTimeout(rq.heartbeatTimer);
+                        }
                     }
                 }
             }
-        }
-    });
-
-    atmosphere.util.on(window, "online", function () {
-        atmosphere.util.debug(new Date() + " Atmosphere: online event");
-        if (requests.length > 0) {
-            for (var i = 0; i < requests.length; i++) {
-                if(requests[i].request.handleOnlineOffline) {
-                    requests[i].init();
-                    requests[i].execute();
+        },
+        online: function() {
+            atmosphere.util.debug(new Date() + " Atmosphere: online event");
+            if (requests.length > 0) {
+                for (var i = 0; i < requests.length; i++) {
+                    if(requests[i].request.handleOnlineOffline) {
+                        requests[i].init();
+                        requests[i].execute();
+                    }
                 }
             }
+            offline = false;
         }
-        offline = false;
-    });
+    };
+
+    atmosphere.bindEvents = function() {
+        atmosphere.util.on(window, "unload", atmosphere.callbacks.unload);
+        atmosphere.util.on(window, "beforeunload", atmosphere.callbacks.beforeUnload);
+        atmosphere.util.on(window, "offline", atmosphere.callbacks.offline);
+        atmosphere.util.on(window, "online", atmosphere.callbacks.online);
+    };
+
+    atmosphere.unbindEvents = function() {
+        atmosphere.util.off(window, "unload", atmosphere.callbacks.unload);
+        atmosphere.util.off(window, "beforeunload", atmosphere.callbacks.beforeUnload);
+        atmosphere.util.off(window, "offline", atmosphere.callbacks.offline);
+        atmosphere.util.off(window, "online", atmosphere.callbacks.online);
+    };
+
+    atmosphere.bindEvents();
 
     return atmosphere;
 }));

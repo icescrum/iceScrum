@@ -32,82 +32,84 @@
             </a>
         </h3>
     </div>
-    <div class="panel-body">
-        <div class="help-block">${message(code:'is.ui.release.help')}</div>
-        <form ng-submit="save(release, false)"
-              name='formHolder.releaseForm'
-              novalidate>
-            <div class="form-group">
-                <label for="name">${message(code:'is.release.name')}</label>
-                <input required
-                       name="name"
-                       autofocus
-                       ng-model="release.name"
-                       type="text"
-                       class="form-control"
-                       placeholder="${message(code: 'is.ui.release.noname')}"/>
-            </div>
-            <div class="clearfix no-padding">
-                <div class="form-half">
-                    <label for="release.startDate">${message(code:'is.release.startDate')}</label>
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <button type="button"
-                                    class="btn btn-default"
-                                    ng-click="openDatepicker($event, startDateOptions)">
-                                <i class="fa fa-calendar"></i>
-                            </button>
-                        </span>
-                        <input type="text"
-                               class="form-control"
-                               required
-                               name="release.startDate"
-                               ng-model="release.startDate"
-                               ng-model-options="{timezone: 'utc'}"
-                               uib-datepicker-popup
-                               datepicker-options="startDateOptions"
-                               is-open="startDateOptions.opened"/>
+    <div class="details-no-tab">
+        <div class="panel-body">
+            <div class="help-block">${message(code:'is.ui.release.help')}</div>
+            <form ng-submit="save(release, false)"
+                  name='formHolder.releaseForm'
+                  novalidate>
+                <div class="form-group">
+                    <label for="name">${message(code:'is.release.name')}</label>
+                    <input required
+                           name="name"
+                           autofocus
+                           ng-model="release.name"
+                           type="text"
+                           class="form-control"
+                           placeholder="${message(code: 'is.ui.release.noname')}"/>
+                </div>
+                <div class="clearfix no-padding">
+                    <div class="form-half">
+                        <label for="release.startDate">${message(code:'is.release.startDate')}</label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        ng-click="openDatepicker($event, startDateOptions)">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                            <input type="text"
+                                   class="form-control"
+                                   required
+                                   name="release.startDate"
+                                   ng-model="release.startDate"
+                                   ng-model-options="{timezone: 'utc'}"
+                                   uib-datepicker-popup
+                                   datepicker-options="startDateOptions"
+                                   is-open="startDateOptions.opened"/>
+                        </div>
+                    </div>
+                    <div class="form-half">
+                        <label for="release.endDate" class="text-right">${message(code:'is.release.endDate')}</label>
+                        <div class="input-group">
+                            <input type="text"
+                                   class="form-control text-right"
+                                   required
+                                   name="release.endDate"
+                                   ng-model="release.endDate"
+                                   ng-model-options="{timezone: 'utc'}"
+                                   uib-datepicker-popup
+                                   datepicker-options="endDateOptions"
+                                   is-open="endDateOptions.opened"/>
+                            <span class="input-group-btn">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        ng-click="openDatepicker($event, endDateOptions)">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="form-half">
-                    <label for="release.endDate" class="text-right">${message(code:'is.release.endDate')}</label>
-                    <div class="input-group">
-                        <input type="text"
-                               class="form-control text-right"
-                               required
-                               name="release.endDate"
-                               ng-model="release.endDate"
-                               ng-model-options="{timezone: 'utc'}"
-                               uib-datepicker-popup
-                               datepicker-options="endDateOptions"
-                               is-open="endDateOptions.opened"/>
-                        <span class="input-group-btn">
-                            <button type="button"
-                                    class="btn btn-default"
-                                    ng-click="openDatepicker($event, endDateOptions)">
-                                <i class="fa fa-calendar"></i>
-                            </button>
-                        </span>
-                    </div>
+                <div class="btn-toolbar pull-right">
+                    <button class="btn btn-primary"
+                            ng-disabled="formHolder.releaseForm.$invalid"
+                            uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                            hotkey="{'shift+return': hotkeyClick }"
+                            hotkey-allow-in="INPUT"
+                            type='button'
+                            ng-click="save(release, true)">
+                        ${message(code:'todo.is.ui.create.and.continue')}
+                    </button>
+                    <button class="btn btn-primary"
+                            ng-disabled="formHolder.releaseForm.$invalid"
+                            type="submit">
+                        ${message(code:'default.button.create.label')}
+                    </button>
                 </div>
-            </div>
-            <div class="btn-toolbar pull-right">
-                <button class="btn btn-primary"
-                        ng-disabled="formHolder.releaseForm.$invalid"
-                        uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
-                        hotkey="{'shift+return': hotkeyClick }"
-                        hotkey-allow-in="INPUT"
-                        type='button'
-                        ng-click="save(release, true)">
-                    ${message(code:'todo.is.ui.create.and.continue')}
-                </button>
-                <button class="btn btn-primary"
-                        ng-disabled="formHolder.releaseForm.$invalid"
-                        type="submit">
-                    ${message(code:'default.button.create.label')}
-                </button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 </script>

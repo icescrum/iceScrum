@@ -33,76 +33,78 @@
             </a>
         </h3>
     </div>
-    <div class="panel-body">
-        <div class="help-block">${message(code:'is.ui.task.help')}</div>
-        <div class="postits standalone">
-            <div class="postit-container solo">
-                <div ng-style="'#f9f157' | createGradientBackground"
-                     class="postit postit-sm {{ ('#f9f157' | contrastColor) }}">
-                    <div class="head">
-                        <div class="head-left">
-                            <span class="id">42</span>
+    <div class="details-no-tab">
+        <div class="panel-body">
+            <div class="help-block">${message(code:'is.ui.task.help')}</div>
+            <div class="postits standalone">
+                <div class="postit-container solo">
+                    <div ng-style="'#f9f157' | createGradientBackground"
+                         class="postit postit-sm {{ ('#f9f157' | contrastColor) }}">
+                        <div class="head">
+                            <div class="head-left">
+                                <span class="id">42</span>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <h3 class="title">{{ task.name }}</h3>
+                        </div>
+                        <div class="tags"></div>
+                        <div class="actions">
+                            <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
+                            <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
+                            <span class="action"><a><i class="fa fa-tasks"></i></a></span>
                         </div>
                     </div>
-                    <div class="content">
-                        <h3 class="title">{{ task.name }}</h3>
-                    </div>
-                    <div class="tags"></div>
-                    <div class="actions">
-                        <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
-                        <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
-                        <span class="action"><a><i class="fa fa-tasks"></i></a></span>
-                    </div>
                 </div>
             </div>
+            <form ng-submit="save(task, false)"
+                  name='formHolder.taskForm'
+                  novalidate>
+                <div class="clearfix no-padding">
+                    <div class="form-half">
+                        <label for="name">${message(code:'is.task.name')}</label>
+                        <input required
+                               name="name"
+                               autofocus
+                               ng-model="task.name"
+                               type="text"
+                               class="form-control"
+                               ng-disabled="!authorizedTask('create')"
+                               placeholder="${message(code: 'is.ui.task.noname')}"/>
+                    </div>
+                    <div class="form-half">
+                        <label for="category">${message(code:'todo.is.ui.task.category')}</label>
+                        <ui-select class="form-control"
+                                   required
+                                   name="category"
+                                   search-enabled="true"
+                                   on-select="selectCategory()"
+                                   ng-model="formHolder.category">
+                            <ui-select-match placeholder="${message(code: 'todo.is.ui.task.nocategory')}">{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices group-by="groupCategory" repeat="category in categories | filter: $select.search">
+                                <span ng-bind-html="category.name | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div ng-if="authorizedTask('create')" class="btn-toolbar pull-right">
+                    <button class="btn btn-primary"
+                            ng-disabled="formHolder.taskForm.$invalid"
+                            uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                            hotkey="{'shift+return': hotkeyClick }"
+                            hotkey-allow-in="INPUT"
+                            type='button'
+                            ng-click="save(task, true)">
+                        ${message(code:'todo.is.ui.create.and.continue')}
+                    </button>
+                    <button class="btn btn-primary"
+                            ng-disabled="formHolder.taskForm.$invalid"
+                            type="submit">
+                        ${message(code:'default.button.create.label')}
+                    </button>
+                </div>
+            </form>
         </div>
-        <form ng-submit="save(task, false)"
-              name='formHolder.taskForm'
-              novalidate>
-            <div class="clearfix no-padding">
-                <div class="form-half">
-                    <label for="name">${message(code:'is.task.name')}</label>
-                    <input required
-                           name="name"
-                           autofocus
-                           ng-model="task.name"
-                           type="text"
-                           class="form-control"
-                           ng-disabled="!authorizedTask('create')"
-                           placeholder="${message(code: 'is.ui.task.noname')}"/>
-                </div>
-                <div class="form-half">
-                    <label for="category">${message(code:'todo.is.ui.task.category')}</label>
-                    <ui-select class="form-control"
-                               required
-                               name="category"
-                               search-enabled="true"
-                               on-select="selectCategory()"
-                               ng-model="formHolder.category">
-                        <ui-select-match placeholder="${message(code: 'todo.is.ui.task.nocategory')}">{{ $select.selected.name }}</ui-select-match>
-                        <ui-select-choices group-by="groupCategory" repeat="category in categories | filter: $select.search">
-                            <span ng-bind-html="category.name | highlight: $select.search"></span>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
-            <div ng-if="authorizedTask('create')" class="btn-toolbar pull-right">
-                <button class="btn btn-primary"
-                        ng-disabled="formHolder.taskForm.$invalid"
-                        uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
-                        hotkey="{'shift+return': hotkeyClick }"
-                        hotkey-allow-in="INPUT"
-                        type='button'
-                        ng-click="save(task, true)">
-                    ${message(code:'todo.is.ui.create.and.continue')}
-                </button>
-                <button class="btn btn-primary"
-                        ng-disabled="formHolder.taskForm.$invalid"
-                        type="submit">
-                    ${message(code:'default.button.create.label')}
-                </button>
-            </div>
-        </form>
     </div>
 </div>
 </script>

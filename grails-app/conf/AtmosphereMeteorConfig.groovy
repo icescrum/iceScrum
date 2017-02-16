@@ -17,7 +17,8 @@ servlets = [
                                 org.atmosphere.interceptor.HeartbeatInterceptor,
                                 org.atmosphere.interceptor.OnDisconnectInterceptor
                         """,
-                        "org.atmosphere.cpr.broadcasterLifeCyclePolicy": "EMPTY_DESTROY"
+                        "org.atmosphere.cpr.broadcasterLifeCyclePolicy": "EMPTY_DESTROY",
+                        "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 30
                 ]
         ]
 ]
