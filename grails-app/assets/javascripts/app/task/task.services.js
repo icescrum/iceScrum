@@ -108,6 +108,11 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             return $q.when(taskContext.tasks);
         }
     };
+    this.get = function(id, taskContext) {
+        return self.list(taskContext).then(function(tasks) {
+            return _.find(tasks, {id: id});
+        });
+    };
     this.authorizedTask = function(action, task) {
         switch (action) {
             case 'create':

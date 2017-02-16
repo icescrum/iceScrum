@@ -203,8 +203,8 @@ angular.module('isApp', [
                 name: 'details',
                 url: "/{taskId:int}",
                 resolve: {
-                    detailsTask: ['$stateParams', 'taskContext', function($stateParams, taskContext) {
-                        return _.find(taskContext.tasks, {id: $stateParams.taskId})
+                    detailsTask: ['$stateParams', 'taskContext', 'TaskService', function($stateParams, taskContext, TaskService) {
+                        return TaskService.get($stateParams.taskId, taskContext);
                     }]
                 },
                 views: {}
