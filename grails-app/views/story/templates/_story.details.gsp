@@ -63,7 +63,7 @@
                     </a>
                 </div>
                 <div class="btn-group" role="group">
-                    <shortcut-menu ng-model="story" model-menus="menus" view-name="'details'"></shortcut-menu>
+                    <shortcut-menu ng-model="story" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
                             <i class="fa fa-ellipsis-h"></i></i>

@@ -98,8 +98,10 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
     $scope.menus = [
         {
             name: 'todo.is.ui.details',
-            priority: function(story, defaultPriority, viewName) { return viewName === 'list' ? 100 : defaultPriority; },
-            visible: function(story, viewName) { return viewName !== 'details'; },
+            priority: function(story, defaultPriority, viewType) {
+                return viewType === 'list' ? 100 : defaultPriority;
+                },
+            visible: function(story, viewType) { return viewType !== 'details'; },
             action: function(story) { $state.go('.story.details', {storyId: story.id}); }
         },
         {

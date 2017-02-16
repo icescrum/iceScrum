@@ -119,7 +119,7 @@
                         </div>
                         <entry:point id="taskBoard-window-toolbar-right"/>
                         <div class="btn-group" role="group" ng-controller="sprintCtrl">
-                            <shortcut-menu ng-model="sprint" model-menus="menus" view-name="viewName"></shortcut-menu>
+                            <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                             <div class="btn-group" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i></i>

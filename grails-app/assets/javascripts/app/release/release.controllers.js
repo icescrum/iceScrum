@@ -77,7 +77,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', 'Session', 'ReleaseSe
         },
         {
             name: 'todo.is.ui.release.new',
-            priority: function(release, defaultPriority, viewName) { return viewName !== 'details' ? 100 : defaultPriority; },
+            priority: function(release, defaultPriority, viewType) { return viewType !== 'details' ? 100 : defaultPriority; },
             visible: function(release) { return $scope.authorizedRelease('create'); },
             url: function(release) { return '#' + $scope.viewName + '/new'; }
         },
