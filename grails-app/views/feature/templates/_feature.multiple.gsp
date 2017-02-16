@@ -32,128 +32,130 @@
             </a>
         </h3>
     </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="postits standalone">
-                    <div class="postit-container stack twisted">
-                        <div ng-style="topFeature.color | createGradientBackground"
-                             class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
-                            <div class="head">
-                                <div class="head-left">
-                                    <span class="id">{{ topFeature.uid }}</span>
+    <div class="details-no-tab">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="postits standalone">
+                        <div class="postit-container stack twisted">
+                            <div ng-style="topFeature.color | createGradientBackground"
+                                 class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
+                                <div class="head">
+                                    <div class="head-left">
+                                        <span class="id">{{ topFeature.uid }}</span>
+                                    </div>
+                                    <div class="head-right">
+                                        <span class="estimation">
+                                            {{ topFeature.value ? topFeature.value : '' }} <i class="fa fa-line-chart"></i>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="head-right">
-                                    <span class="estimation">
-                                        {{ topFeature.value ? topFeature.value : '' }} <i class="fa fa-line-chart"></i>
-                                    </span>
+                                <div class="content">
+                                    <h3 class="title">{{ topFeature.name }}</h3>
+                                    <div class="description"
+                                         ng-bind-html="topFeature.description | lineReturns"></div>
                                 </div>
-                            </div>
-                            <div class="content">
-                                <h3 class="title">{{ topFeature.name }}</h3>
-                                <div class="description"
-                                     ng-bind-html="topFeature.description | lineReturns"></div>
-                            </div>
-                            <div class="footer">
-                                <div class="tags">
-                                    <a ng-repeat="tag in topFeature.tags"
-                                       href="{{ tagContextUrl(tag) }}">
-                                        <span class="tag">{{ tag }}</span>
-                                    </a>
-                                </div>
-                                <div class="actions">
-                                    <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
-                                    <span class="action" ng-class="{'active':topFeature.attachments.length}">
-                                        <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                            <i class="fa fa-paperclip"></i>
+                                <div class="footer">
+                                    <div class="tags">
+                                        <a ng-repeat="tag in topFeature.tags"
+                                           href="{{ tagContextUrl(tag) }}">
+                                            <span class="tag">{{ tag }}</span>
                                         </a>
-                                    </span>
-                                    <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                                        <a uib-tooltip="${message(code: 'todo.is.ui.stories')}">
-                                            <i class="fa fa-tasks"></i>
-                                            <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
-                                        </a>
-                                    </span>
-                                </div>
-                                <div class="state-progress">
-                                    <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
+                                    </div>
+                                    <div class="actions">
+                                        <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
+                                        <span class="action" ng-class="{'active':topFeature.attachments.length}">
+                                            <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                                <i class="fa fa-paperclip"></i>
+                                            </a>
+                                        </span>
+                                        <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
+                                            <a uib-tooltip="${message(code: 'todo.is.ui.stories')}">
+                                                <i class="fa fa-tasks"></i>
+                                                <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <div class="state-progress">
+                                        <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="btn-toolbar buttons-margin-bottom">
-                    <div ng-if="authorizedFeature('copyToBacklog')"
-                         class="btn-group">
-                        <button type="button"
-                                class="btn btn-default"
-                                ng-click="copyToBacklogMultiple()">
-                            <g:message code='is.ui.feature.menu.copy'/>
-                        </button>
+                <div class="col-md-6">
+                    <div class="btn-toolbar buttons-margin-bottom">
+                        <div ng-if="authorizedFeature('copyToBacklog')"
+                             class="btn-group">
+                            <button type="button"
+                                    class="btn btn-default"
+                                    ng-click="copyToBacklogMultiple()">
+                                <g:message code='is.ui.feature.menu.copy'/>
+                            </button>
+                        </div>
+                        <div ng-if="authorizedFeature('delete')"
+                             class="btn-group">
+                            <button type="button"
+                                    class="btn btn-default"
+                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
+                                <g:message code='is.ui.feature.menu.delete'/>
+                            </button>
+                        </div>
                     </div>
-                    <div ng-if="authorizedFeature('delete')"
-                         class="btn-group">
-                        <button type="button"
-                                class="btn btn-default"
-                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
-                            <g:message code='is.ui.feature.menu.delete'/>
-                        </button>
+                    <br/>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr><td>${message(code: 'is.feature.value')}</td><td>{{ sumValues(features) }}</td></tr>
+                            <tr><td>${message(code: 'todo.is.ui.stories')}</td><td>{{ sumStories(features) }}</td></tr>
+                        </table>
                     </div>
                 </div>
-                <br/>
-                <div class="table-responsive">
-                    <table class="table">
-                        <tr><td>${message(code: 'is.feature.value')}</td><td>{{ sumValues(features) }}</td></tr>
-                        <tr><td>${message(code: 'todo.is.ui.stories')}</td><td>{{ sumStories(features) }}</td></tr>
-                    </table>
-                </div>
             </div>
-        </div>
-        <form ng-submit="updateMultiple(featurePreview)"
-              ng-if="authorizedFeature('update')"
-              name='featureForm'
-              show-validation
-              novalidate>
-            <div class="clearfix no-padding">
-                <div class="form-half">
-                    <label for="type">${message(code: 'is.feature.type')}</label>
-                    <ui-select class="form-control"
-                               required
-                               name="type"
-                               ng-model="featurePreview.type">
-                        <ui-select-match placeholder="${message(code: 'todo.is.ui.feature.type.placeholder')}">{{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
-                        <ui-select-choices repeat="featureType in featureTypes">{{ featureType | i18n:'FeatureTypes' }}</ui-select-choices>
+            <form ng-submit="updateMultiple(featurePreview)"
+                  ng-if="authorizedFeature('update')"
+                  name='featureForm'
+                  show-validation
+                  novalidate>
+                <div class="clearfix no-padding">
+                    <div class="form-half">
+                        <label for="type">${message(code: 'is.feature.type')}</label>
+                        <ui-select class="form-control"
+                                   required
+                                   name="type"
+                                   ng-model="featurePreview.type">
+                            <ui-select-match placeholder="${message(code: 'todo.is.ui.feature.type.placeholder')}">{{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
+                            <ui-select-choices repeat="featureType in featureTypes">{{ featureType | i18n:'FeatureTypes' }}</ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
+                    <ui-select ng-click="retrieveTags()"
+                               class="form-control"
+                               multiple
+                               tagging
+                               tagging-tokens="SPACE|,"
+                               tagging-label="${message(code: 'todo.is.ui.tag.create')}"
+                               ng-model="featurePreview.tags">
+                        <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
+                        <ui-select-choices repeat="tag in tags | filter: $select.search">
+                            <span ng-bind-html="tag | highlight: $select.search"></span>
+                        </ui-select-choices>
                     </ui-select>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
-                <ui-select ng-click="retrieveTags()"
-                           class="form-control"
-                           multiple
-                           tagging
-                           tagging-tokens="SPACE|,"
-                           tagging-label="${message(code: 'todo.is.ui.tag.create')}"
-                           ng-model="featurePreview.tags">
-                    <ui-select-match placeholder="${message(code: 'is.ui.backlogelement.notags')}">{{ $item }}</ui-select-match>
-                    <ui-select-choices repeat="tag in tags | filter: $select.search">
-                        <span ng-bind-html="tag | highlight: $select.search"></span>
-                    </ui-select-choices>
-                </ui-select>
-            </div>
-            <div class="btn-toolbar">
-                <button class="btn btn-primary pull-right"
-                        type="submit">
-                    ${message(code:'default.button.update.label')}
-                </button>
-                <a class="btn btn-default pull-right"
-                   href="#/{{ ::viewName }}">
-                    ${message(code: 'is.button.cancel')}
-                </a>
-            </div>
-        </form>
+                <div class="btn-toolbar">
+                    <button class="btn btn-primary pull-right"
+                            type="submit">
+                        ${message(code:'default.button.update.label')}
+                    </button>
+                    <a class="btn btn-default pull-right"
+                       href="#/{{ ::viewName }}">
+                        ${message(code: 'is.button.cancel')}
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 </script>
