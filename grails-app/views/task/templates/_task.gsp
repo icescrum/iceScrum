@@ -36,7 +36,7 @@
         <div class="head-right">
             <span class="remaining-time editable"
                   ng-if="task.estimation != 0"
-                  ng-click="showEditEstimationModal(task)"
+                  ng-click="showEditEstimationModal(task, $event)"
                   uib-tooltip="${message(code: 'is.task.estimation')}">
                 {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
             </span>

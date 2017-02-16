@@ -209,7 +209,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
             }, 400);
         }
     };
-    $scope.showEditEffortModal = function(story) {
+    $scope.showEditEffortModal = function(story, $event) {
         if (StoryService.authorizedStory('updateEstimate', story)) {
             var parentScope = $scope;
             $uibModal.open({
@@ -294,9 +294,12 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                     };
                 }]
             });
+            if($event){
+                $event.stopPropagation();
+            }
         }
     };
-    $scope.showEditValueModal = function(story) {
+    $scope.showEditValueModal = function(story, $event) {
         if (StoryService.authorizedStory('update', story)) {
             $uibModal.open({
                 templateUrl: 'story.value.html',
@@ -337,7 +340,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                     };
                     $scope.setValue = function(value) {
                         $scope.editableStory.value = value;
-                        $scope.sliderEffort.labelValue = value;
+                        $scope.sliderEffort.labelValue = $scope.values.indexOf($scope.value);
                         $scope.updateTable();
                     };
                     $scope.submit = function(story) {
@@ -348,6 +351,9 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                     };
                 }]
             });
+            if($event){
+                $event.stopPropagation();
+            }
         }
     };
     $scope.retrieveParentSprintEntries = function() {

@@ -37,13 +37,13 @@
         <div class="head-right">
             <entry:point id="story-head-right"/>
             <span class="value editable"
-                  ng-click="showEditValueModal(story)"
+                  ng-click="showEditValueModal(story, $event)"
                   ng-if="story.value">
                 {{ story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
             </span>
             <span class="estimation editable"
                   ng-if="story.state > 1"
-                  ng-click="showEditEffortModal(story)">
+                  ng-click="showEditEffortModal(story, $event)">
                 {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
             </span>
         </div>

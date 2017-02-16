@@ -125,7 +125,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
             action: function(task) { $scope.unBlock(task); }
         }
     ];
-    $scope.showEditEstimationModal = function(task) {
+    $scope.showEditEstimationModal = function(task, $event) {
         if (TaskService.authorizedTask('update', task)) {
             $uibModal.open({
                 size: 'sm',
@@ -144,6 +144,9 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
                     }, 500);
                 }]
             });
+            if($event){
+                $event.stopPropagation();
+            }
         }
     };
 }]);
