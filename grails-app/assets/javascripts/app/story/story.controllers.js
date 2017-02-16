@@ -463,7 +463,7 @@ registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$
         $scope.versions = [];
         $scope.creators = [];
         var actorTag = 'A[${uid}-${name}]';
-        var atWhoLimit = 15;
+        var atWhoLimit = 100;
         $scope.atOptions = [
             {
                 insertTpl: '${atwho-at}' + actorTag,
