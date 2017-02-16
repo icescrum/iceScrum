@@ -170,7 +170,7 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
     $scope.currentProject = Session.getProject();
 }]);
 
-controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, $state, ProjectService, ReleaseService, SprintService, TeamService) {
+controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, $state, ProjectService, ReleaseService, SprintService) {
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
     };

@@ -163,22 +163,69 @@ registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 
 
 controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormService', 'ProjectService', function($scope, WidgetService, FormService, ProjectService) {
     var widget = $scope.widget; // $scope.widget is inherited
-    $scope.listProjects = function(term) {
-        return ProjectService.listByUser({term: term, paginate: true}).then(function(projectsAndCount) {
+    $scope.refreshProjects = function(term) {
+        ProjectService.listByUser({term: term, paginate: true}).then(function(projectsAndCount) {
             $scope.projects = projectsAndCount.projects;
+            if (!term && widget.settings && widget.settings.project && !_.find($scope.projects, {id: widget.settings.project.id})) {
+                $scope.projects.unshift(widget.settings.project);
+            }
         });
+    };
+    $scope.refreshCharts = function() {
+        if (!$scope.charts.length) {
+            FormService.httpGet('charts/project').then(function(charts) {
+                $scope.charts = charts;
+            });
+        }
     };
     $scope.widgetReady = function(widget) {
         return widget.settings && widget.settings.project && widget.settings.chart ? true : false;
     };
     $scope.getTitle = function() {
-        return $scope.widgetReady(widget) ? widget.settings.project.name + ' - ' + widget.settings.chart.name : '';
+        return $scope.widgetReady(widget) ? widget.settings.project.name + ' - ' + widget.settings.chart.group + ' - ' + widget.settings.chart.name : '';
     };
-    //Init
+    $scope.projectChanged = function() {
+        if (!widget.settings) {
+            widget.settings = {};
+        }
+        widget.settings.project = _.pick($scope.holder.project, ['id', 'name']);
+    };
+    $scope.chartChanged = function() {
+        widget.settings.chart = _.pick($scope.holder.chart, ['id', 'name', 'type', 'group']);
+    };
+    // Init
+    $scope.holder = {};
     $scope.charts = [];
     $scope.projects = [];
-    $scope.listProjects($scope.widgetReady(widget) ? widget.settings.project.id : '');
-    FormService.httpGet('charts/project').then(function(charts) {
-        $scope.charts = charts;
+    $scope.$watch('widget.settings.project', function(newProject) {
+        $scope.holder.project = newProject;
     });
+    $scope.$watch('widget.settings.chart', function(newChart) {
+        $scope.holder.chart = newChart;
+    })
+}]);
+
+
+controllers.controller('chartWidgetChartCtrl', ['$scope', '$element', '$controller', 'ReleaseService', 'SprintService', function($scope, $element, $controller, ReleaseService, SprintService) {
+    $controller('chartCtrl', {$scope: $scope, $element: $element});
+    $scope.currentProject = $scope.widget.settings.project; // Required to provide a contexte to chart
+    switch ($scope.widget.settings.chart.type) {
+        case 'project':
+            $scope.openChart('project', $scope.widget.settings.chart.id, $scope.currentProject);
+            break;
+        case 'release':
+            ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
+                if (release && release.id) {
+                    $scope.openChart('release', $scope.widget.settings.chart.id, release);
+                }
+            });
+            break;
+        case 'sprint':
+            SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
+                if (sprint && sprint.id) {
+                    $scope.openChart('sprint', $scope.widget.settings.chart.id, sprint);
+                }
+            });
+            break;
+    }
 }]);

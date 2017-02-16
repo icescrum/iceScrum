@@ -25,10 +25,11 @@
     <div class="col-sm-6">
         <ui-select class="form-control"
                    search-enabled="true"
-                   ng-model="widget.settings.project">
+                   ng-change="projectChanged()"
+                   ng-model="holder.project">
             <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.project')}">{{ $select.selected.name }}</ui-select-match>
             <ui-select-choices repeat="proj in projects track by $index"
-                               refresh="listProjects($select.search)"
+                               refresh="refreshProjects($select.search)"
                                refresh-delay="150">{{proj.name}}</ui-select-choices>
         </ui-select>
     </div>
@@ -38,9 +39,13 @@
     <div class="col-sm-6">
         <ui-select class="form-control"
                    search-enabled="true"
-                   ng-model="widget.settings.chart">
+                   ng-change="chartChanged()"
+                   ng-model="holder.chart">
             <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.chart')}">{{ $select.selected.name }}</ui-select-match>
-            <ui-select-choices repeat="chart in charts">{{chart.name}}</ui-select-choices>
+            <ui-select-choices group-by="'group'"
+                               repeat="chart in charts"
+                               refresh="refreshCharts()"
+                               refresh-delay="150">{{chart.name}}</ui-select-choices>
         </ui-select>
     </div>
 </div>

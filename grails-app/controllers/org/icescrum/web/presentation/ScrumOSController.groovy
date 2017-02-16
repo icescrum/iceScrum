@@ -246,10 +246,8 @@ class ScrumOSController implements ControllerErrorHandler {
     @Secured(['isAuthenticated()'])
     def charts(String context) {
         def _charts = []
-        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each { groupName, charts ->
-            if (groupName == 'project') { // TODO support charts at release / sprint levels...
-                _charts.addAll(charts.collect { chart -> [id: chart.id, name: message(code: chart.name)] })
-            }
+        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each { type, charts ->
+            _charts.addAll(charts.collect { chart -> [group: message(code: 'is.' + type), type: type, id: chart.id, name: message(code: chart.name)] })
         }
         render(status: 200, contentType: 'application/json', text: _charts as JSON)
     }
