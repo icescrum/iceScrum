@@ -182,7 +182,7 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
         return widget.settings && widget.settings.project && widget.settings.chart ? true : false;
     };
     $scope.getTitle = function() {
-        return $scope.widgetReady(widget) ? widget.settings.project.name + ' - ' + widget.settings.chart.group + ' - ' + widget.settings.chart.name : '';
+        return $scope.widgetReady(widget) ? widget.settings.project.name + ' - ' + (widget.settings.chart.group ? widget.settings.chart.group + ' ' : '') + widget.settings.chart.name : '';
     };
     $scope.projectChanged = function() {
         if (!widget.settings) {
@@ -210,9 +210,6 @@ controllers.controller('chartWidgetChartCtrl', ['$scope', '$element', '$controll
     $controller('chartCtrl', {$scope: $scope, $element: $element});
     $scope.currentProject = $scope.widget.settings.project; // Required to provide a contexte to chart
     switch ($scope.widget.settings.chart.type) {
-        case 'project':
-            $scope.openChart('project', $scope.widget.settings.chart.id, $scope.currentProject);
-            break;
         case 'release':
             ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
                 if (release && release.id) {
@@ -226,6 +223,9 @@ controllers.controller('chartWidgetChartCtrl', ['$scope', '$element', '$controll
                     $scope.openChart('sprint', $scope.widget.settings.chart.id, sprint);
                 }
             });
+            break;
+        default:
+            $scope.openChart('project', $scope.widget.settings.chart.id, $scope.currentProject);
             break;
     }
 }]);
