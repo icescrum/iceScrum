@@ -189,6 +189,8 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
             widget.settings = {};
         }
         widget.settings.project = _.pick($scope.holder.project, ['id', 'name']);
+        widget.type = 'project';
+        widget.typeId = $scope.holder.project.id;
     };
     $scope.chartChanged = function() {
         widget.settings.chart = _.pick($scope.holder.chart, ['id', 'name', 'type', 'group']);

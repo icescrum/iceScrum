@@ -96,7 +96,8 @@ class WidgetController implements ControllerErrorHandler {
     @Secured('isAuthenticated()')
     def update(long id) {
         User user = springSecurityService.currentUser
-        if (!id || !params.widget) {
+        def widgetParams = params.widget
+        if (!id || !widgetParams) {
             returnError(code: 'is.user.preferences.error.widget')
             return
         }
@@ -105,14 +106,18 @@ class WidgetController implements ControllerErrorHandler {
             render(status: 403)
         } else {
             Map props = [:]
-            if (params.widget.position) {
-                props.position = params.widget.int('position')
+            if (widgetParams.position) {
+                props.position = widgetParams.int('position')
             }
-            if (params.widget.onRight) {
-                props.onRight = params.widget.boolean('onRight')
+            if (widgetParams.onRight) {
+                props.onRight = widgetParams.boolean('onRight')
             }
-            if (params.widget.settingsData) {
-                props.settings = JSON.parse(params.widget.settingsData)
+            if (widgetParams.settingsData) {
+                props.settings = JSON.parse(widgetParams.settingsData)
+            }
+            if (widgetParams.type && widgetParams.typeId) {
+                widget.typeId = widgetParams.long('typeId')
+                widget.type = widgetParams.type
             }
             widgetService.update(widget, props)
             render(status: 200, contentType: 'application/json', text: widget as JSON)
