@@ -25,28 +25,28 @@
 services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', 'FormService', function($rootScope, $http, atmosphereService, IceScrumEventType, FormService) {
     var self = this;
     self.push = {};
-    this.logLevel = 'info';
+    self.logLevel = isSettings && isSettings.pushLogLevel ? isSettings.pushLogLevel : 'info';
     this.enabled = true;
     this.listeners = {};
     var _canLog = function(level) {
         if (level == 'debug') {
-            return logLevel === 'debug';
+            return self.logLevel === 'debug';
         } else if (level == 'info') {
-            return logLevel === 'info' || logLevel === 'debug';
+            return self.logLevel === 'info' || self.logLevel === 'debug';
         } else if (level == 'warn') {
-            return logLevel === 'warn' || logLevel === 'info' || logLevel === 'debug';
+            return self.logLevel === 'warn' || self.logLevel === 'info' || self.logLevel === 'debug';
         } else if (level == 'error') {
-            return logLevel === 'error' || logLevel === 'warn' || logLevel === 'info' || logLevel === 'debug';
+            return self.logLevel === 'error' || self.logLevel === 'warn' || self.logLevel === 'info' || self.logLevel === 'debug';
         } else {
             return false;
         }
     };
     this.atmosphereRequest = null;
-    this.initPush = function(projectId, logging) {
+    this.initPush = function(projectId) {
         var options = {
             url: $rootScope.serverUrl + '/stream/app' + (projectId ? ('/project-' + projectId) : ''),
             contentType: 'application/json',
-            logLevel: logging ? logging : logLevel,
+            logLevel: self.logLevel,
             transport: 'websocket',
             fallbackTransport: 'streaming',
             trackMessageLength: true,
@@ -54,7 +54,6 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             enableXDR: true,
             timeout: 60000
         };
-
         options.onOpen = function(response) {
             self.push.transport = response.transport;
             self.push.connected = true;

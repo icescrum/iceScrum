@@ -31,7 +31,7 @@
         projectTeam: ${project ? project.firstTeam as JSON : 'null'},
         context: '${context}',
         pushContext: ${project?.id ?: "''"},
-        pushLogLevel: ${Holders.config.icescrum.debug.enable ? 'debug' : 'info'},
+        pushLogLevel: "${Holders.config.icescrum.debug.enable ? 'debug' : 'info'}",
         messages: ${i18nMessages as JSON},
         bundles: ${is.i18nBundle() as JSON},
         projectMenus: ${projectMenus as JSON},
