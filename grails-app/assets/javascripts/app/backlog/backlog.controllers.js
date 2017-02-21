@@ -47,20 +47,11 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
     $scope.refreshSingleBacklog = function(backlogContainer) {
         var backlog = backlogContainer.backlog;
         var filteredStories = BacklogService.filterStories(backlog, Session.getProject().stories);
-        var sortOrder = [backlogContainer.orderBy.current.value, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
-        if (BacklogService.isAll(backlog) && backlogContainer.orderBy.current.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
-            var sortByStateGroupingByBacklogState = function(story) {
-                var orderCriteria = story.state == StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state; // Ignore the differences betweed accepted and estimated
-                return -orderCriteria; // "minus" the state to make done stories more prioritary
-            };
-            sortOrder.unshift(sortByStateGroupingByBacklogState);
-        }
-        backlog.stories = $filter('orderBy')(filteredStories, sortOrder, backlogContainer.orderBy.reverse);
+        backlog.stories = $filter('orderBy')(filteredStories, 'rank'); // This will be the model for the sortable directive so it must be in sort order, regardless of current display order
         if (backlog.stories && backlog.stories.length > 0) {
             backlogContainer.storiesLoaded = true; // To render stories already there in the client
         }
         backlogContainer.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog));
-        backlogContainer.sorting = backlogContainer.sortable && backlogContainer.orderBy.current.id == 'rank' && !backlogContainer.orderBy.reverse && !$scope.hasContextOrSearch();
         $timeout(function() { // Timeout to wait for story rendering
             $scope.$emit('selectable-refresh');
         }, 0);
@@ -85,12 +76,22 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
         $scope.changeBacklogOrder(backlogContainer, _.find(backlogContainer.orderBy.values, {id: 'rank'}));
     };
     $scope.changeBacklogOrder = function(backlogContainer, order) {
-        backlogContainer.orderBy.current = order;
-        $scope.refreshSingleBacklog(backlogContainer);
+        var newOrder = _.clone(order);
+        newOrder.value = [order.value, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
+        if (BacklogService.isAll(backlogContainer.backlog) && order.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
+            var sortByStateGroupingByBacklogState = function(story) {
+                var orderCriteria = story.state == StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state; // Ignore the differences betweed accepted and estimated
+                return -orderCriteria; // "minus" the state to make done stories more prioritary
+            };
+            newOrder.value.unshift(sortByStateGroupingByBacklogState);
+        }
+        backlogContainer.orderBy.current = newOrder;
     };
     $scope.reverseBacklogOrder = function(backlogContainer) {
         backlogContainer.orderBy.reverse = !backlogContainer.orderBy.reverse;
-        $scope.refreshSingleBacklog(backlogContainer);
+    };
+    $scope.isSortingBacklog = function(backlogContainer) {
+        return backlogContainer.sortable && backlogContainer.orderBy.current.id == 'rank' && !backlogContainer.orderBy.reverse && !$scope.hasContextOrSearch();
     };
     $scope.enableSortable = function(backlogContainer) {
         $scope.clearContextAndSearch();
@@ -232,7 +233,7 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
             // We don't check more that the fact that the dest backlog is also sorting
             // because we know that the only backlogs that can be sorted (Sandbox & Backlog) can always be inter-sorted (accept <-> return to backlog)
-            return sameSortable && destSortableScope.backlogContainer.sorting;
+            return sameSortable && destSortableScope.isSortingBacklog(destSortableScope.backlogContainer);
         }
     };
     $scope.sortableId = 'backlog';

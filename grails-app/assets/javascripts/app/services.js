@@ -472,7 +472,11 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                     _.each(backlogsToIncrement, function(backlog) { backlog['count']++ });
                     _.each(backlogsToDecrement, function(backlog) { backlog['count']-- });
                 }
-                var updatedBacklogCodes = _.map(_.union(backlogsToDecrement, backlogsToIncrement), 'code');
+                var backlogsToRank = [];
+                if (oldStory && newStory && oldStory.rank != newStory.rank) {
+                    backlogsToRank = _.map(newBacklogsIds, backlogGetter);
+                }
+                var updatedBacklogCodes = _.uniq(_.map(_.union(backlogsToDecrement, backlogsToIncrement, backlogsToRank), 'code'));
                 if (updatedBacklogCodes) {
                     $rootScope.$broadcast('is:backlogsUpdated', updatedBacklogCodes);
                 }

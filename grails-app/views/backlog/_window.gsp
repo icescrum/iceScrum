@@ -97,8 +97,8 @@
                                     class="btn btn-default hidden-xs"
                                     ng-click="enableSortable(backlogContainer)"
                                     tooltip-placement="right"
-                                    uib-tooltip="{{ backlogContainer.sorting ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
-                                <i ng-class="backlogContainer.sorting ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
+                                    uib-tooltip="{{ isSortingBacklog(backlogContainer) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
+                                <i ng-class="isSortingBacklog(backlogContainer) ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
                             </button>
                             <div class="btn-group"
                                  uib-dropdown
@@ -155,13 +155,13 @@
             <div class="panel-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="loading-logo" ng-include="'loading.html'"></div>
                 <div class="postits"
-                     ng-class="{'sortable-disabled': !backlogContainer.sorting, 'has-selected': hasSelected(), 'sortable-moving': app.sortableMoving}"
+                     ng-class="{'sortable-disabled': !isSortingBacklog(backlogContainer), 'has-selected': hasSelected(), 'sortable-moving': app.sortableMoving}"
                      ng-controller="storyCtrl"
                      postits-screen-size
                      as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
-                     is-disabled="!backlogContainer.sorting"
+                     is-disabled="!isSortingBacklog(backlogContainer)"
                      ng-model="backlogContainer.backlog.stories"
-                     ng-init="(backlog = backlogContainer.backlog) && (emptyBacklogTemplate = 'story.backlog.backlogs.empty.html')"
+                     ng-init="(backlog = backlogContainer.backlog) && (emptyBacklogTemplate = 'story.backlog.backlogs.empty.html') && (orderBy = backlogContainer.orderBy)"
                      ng-include="'story.backlog.html'">
                 </div>
             </div>

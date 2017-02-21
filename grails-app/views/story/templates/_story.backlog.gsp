@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="story.backlog.html">
 <div ng-class="{ 'is-selected': isSelected(story) }"
      selectable-id="{{ ::story.id }}"
-     ng-repeat="story in backlog.stories | search"
+     ng-repeat="story in backlog.stories | search | orderBy:orderBy.current.id:orderBy.reverse "
      as-sortable-item
      class="postit-container">
     <div ng-include="'story.html'"
