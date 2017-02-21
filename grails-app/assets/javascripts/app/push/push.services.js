@@ -25,9 +25,9 @@
 services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', 'FormService', function($rootScope, $http, atmosphereService, IceScrumEventType, FormService) {
     var self = this;
     self.push = {};
+    this.logLevel = 'info';
     this.enabled = true;
     this.listeners = {};
-    var logLevel = 'info';
     var _canLog = function(level) {
         if (level == 'debug') {
             return logLevel === 'debug';
@@ -42,11 +42,11 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
         }
     };
     this.atmosphereRequest = null;
-    this.initPush = function(projectId) {
+    this.initPush = function(projectId, logging) {
         var options = {
             url: $rootScope.serverUrl + '/stream/app' + (projectId ? ('/project-' + projectId) : ''),
             contentType: 'application/json',
-            logLevel: logLevel,
+            logLevel: logging ? logging : logLevel,
             transport: 'websocket',
             fallbackTransport: 'streaming',
             trackMessageLength: true,
@@ -54,6 +54,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             enableXDR: true,
             timeout: 60000
         };
+
         options.onOpen = function(response) {
             self.push.transport = response.transport;
             self.push.connected = true;

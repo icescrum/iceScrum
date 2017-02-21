@@ -1209,7 +1209,7 @@ angular.module('isApp', [
                 Session.initProject(isSettings.project);
                 Session.updateProject({team: isSettings.projectTeam});
             }
-            PushService.initPush(isSettings.pushContext);
+            PushService.initPush(isSettings.pushContext, isSettings.pushLogLevel);
             I18nService.initMessages(isSettings.messages);
             I18nService.initBundles(isSettings.bundles);
             Session.create(isSettings.user, isSettings.roles, isSettings.menus, isSettings.defaultView);

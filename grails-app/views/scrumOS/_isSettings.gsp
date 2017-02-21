@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.support.ApplicationSupport; grails.converters.JSON;" %>
+<%@ page import="org.icescrum.core.support.ApplicationSupport; grails.converters.JSON;grails.util.Holders;" %>
 <script type="text/javascript">
     var isSettings = {
         user: ${user as JSON},
@@ -31,6 +31,7 @@
         projectTeam: ${project ? project.firstTeam as JSON : 'null'},
         context: '${context}',
         pushContext: ${project?.id ?: "''"},
+        pushLogLevel: ${Holders.config.icescrum.debug.enable ? 'debug' : 'info'},
         messages: ${i18nMessages as JSON},
         bundles: ${is.i18nBundle() as JSON},
         projectMenus: ${projectMenus as JSON},
