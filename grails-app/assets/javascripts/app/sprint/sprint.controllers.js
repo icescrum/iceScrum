@@ -189,10 +189,9 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$q', '$controller', 'Sto
     $scope.backlogCodes = BacklogCodes;
     $scope.sprintStatesByName = SprintStatesByName;
     $scope.backlog = {stories: [], code: 'sprint'};
-    $scope.$watchCollection('sprint.stories', function(newStories) {
-        $scope.backlog.stories = _.sortBy(newStories, 'rank');
+    StoryService.listByType($scope.sprint).then(function() {
+        $scope.backlog.stories = $scope.sprint.stories;
     });
-    StoryService.listByType($scope.sprint); // will trigger the update automatically through the watch
 }]);
 
 controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'DateService', 'SprintService', 'ReleaseService', 'ReleaseStatesByName', 'hotkeys', 'releases', 'detailsRelease', function($scope, $controller, $state, DateService, SprintService, ReleaseService, ReleaseStatesByName, hotkeys, releases, detailsRelease) {

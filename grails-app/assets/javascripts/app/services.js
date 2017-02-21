@@ -405,16 +405,20 @@ services.service('CacheService', ['$injector', function($injector) {
 }]);
 
 services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', function($rootScope, CacheService, StoryService, FeatureService, SprintService, BacklogService) {
+    var sortByRank = function(obj1, obj2) {
+        return obj1.rank - obj2.rank;
+    };
     var syncFunctions = {
         story: function(oldStory, newStory) {
             var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
             var newSprintId = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
+            var cachedSprints = CacheService.getCache('sprint');
             if (newSprintId != oldSprintId) {
-                var cachedSprints = CacheService.getCache('sprint');
                 if (oldSprintId) {
                     var cachedSprint = _.find(cachedSprints, {id: oldSprintId});
                     if (cachedSprint) {
                         _.remove(cachedSprint.stories, {id: oldStory.id});
+                        cachedSprint.stories.sort(sortByRank);
                         if (_.isArray(cachedSprint.stories)) {
                             cachedSprint.stories_count = cachedSprint.stories.length;
                         }
@@ -427,7 +431,13 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                             cachedSprint.stories = [];
                         }
                         cachedSprint.stories.push(newStory);
+                        cachedSprint.stories.sort(sortByRank);
                     }
+                }
+            } else if (newSprintId && oldStory.rank != newStory.rank) {
+                var cachedSprint = _.find(cachedSprints, {id: newSprintId});
+                if (cachedSprint && cachedSprint.stories) {
+                    cachedSprint.stories.sort(sortByRank);
                 }
             }
             var oldFeatureId = (oldStory && oldStory.feature) ? oldStory.feature.id : null;
@@ -532,9 +542,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
         },
         feature: function(oldFeature, newFeature) {
             if (oldFeature && newFeature && oldFeature.rank != newFeature.rank) {
-                CacheService.getCache('feature').sort(function(f1, f2) {
-                    return f1.rank - f2.rank;
-                });
+                CacheService.getCache('feature').sort(sortByRank);
             }
             _.each(CacheService.getCache('story'), function(story) {
                 var featureId = newFeature ? newFeature.id : oldFeature.id;
