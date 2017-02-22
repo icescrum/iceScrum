@@ -155,8 +155,9 @@ registerAppController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state',
                     values: _.sortBy($scope.sortOptions, 'name')
                 }
             };
-            $scope.orderBacklogByRank(backlogContainer); // Initialize order {current, reverse}, sortable, sorting and init the backlog from client data (storyService.list)
-            StoryService.listByBacklog(backlogContainer.backlog).then(function() { // Retrieve server data, stories that were missing will be automatically added through the watch on storyService.list
+            $scope.orderBacklogByRank(backlogContainer);
+            $scope.refreshSingleBacklog(backlogContainer); // Init the backlog from client data (storyService.list) + init sortable variable
+            StoryService.listByBacklog(backlogContainer.backlog).then(function() { // Retrieve server data, stories that were missing will be automatically added
                 backlogContainer.storiesLoaded = true;
             });
             $scope.backlogContainers.push(backlogContainer);
