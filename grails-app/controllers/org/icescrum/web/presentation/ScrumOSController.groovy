@@ -47,7 +47,6 @@ class ScrumOSController implements ControllerErrorHandler {
     def springSecurityService
 
     def index() {
-        projectService.showListeners('scrumOs index')
         def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
 
         def context = ApplicationSupport.getCurrentContext(params)
