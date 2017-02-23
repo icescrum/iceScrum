@@ -169,6 +169,11 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
             action: function(story) { $scope.returnToSandbox(story); }
         },
         {
+            name: 'is.ui.backlog.menu.split',
+            visible: function(story) { return $scope.authorizedStory('split', story) },
+            action: function(story) { $scope.showStorySplitModal(story); }
+        },
+        {
             name: 'is.ui.releasePlan.menu.story.clone',
             visible: function(story) { return $scope.authorizedStory('copy', story) },
             action: function(story) { $scope.copy(story); }
@@ -365,6 +370,86 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                 $scope.parentSprintEntries = parentSprintEntries;
             });
         }
+    };
+    $scope.showStorySplitModal = function(story) {
+        $uibModal.open({
+            templateUrl: 'story.split.html',
+            controller: ['$scope', '$q', function($scope, $q) {
+                $scope.onChangeSplitNumber = function(){
+                    if($scope.stories.length < $scope.splitCount){
+                        while($scope.stories.length < $scope.splitCount){
+                            var newStory = angular.copy(story);
+                            newStory.name = "";
+                            newStory.id = null;
+                            newStory.notes = "";
+                            newStory.description = "";
+                            newStory.origin = story.name;
+                            newStory.state = story.state >= StoryStatesByName.ACCEPTED ? StoryStatesByName.ACCEPTED : StoryStatesByName.SUGGESTED;
+                            $scope.stories.push(newStory);
+                        }
+                    } else if($scope.stories.length > $scope.splitCount){
+                        while($scope.stories.length > $scope.splitCount){
+                            $scope.stories.splice($scope.stories.length - 1, 1);
+                        }
+                    }
+                    //split effort from original story
+                    if (originalEffort > 0){
+                        var effort = parseInt(originalEffort / $scope.splitCount);
+                        effort = effort >= 1 ? effort : 1;
+                        _.each($scope.stories, function(story){
+                            story.effort = effort;
+                        });
+                    }
+                    if (originalValue > 0){
+                        var value = parseInt(originalValue / $scope.splitCount);
+                        value = value >= 1 ? value : 1;
+                        _.each($scope.stories, function(story){
+                            story.value = value;
+                        });
+                    }
+                };
+                $scope.submit = function(stories) {
+                    var tasks = [];
+                    _.each(stories, function(story){
+                        if(story.id){
+                            tasks.push(function(){
+                                return StoryService.update(story)
+                            });
+                        } else {
+                            var effort = story.effort;
+                            tasks.push({
+                                success:function(){
+                                    return StoryService.save(story);
+                                }
+                            });
+                            if(effort >= 0){
+                                tasks.push({
+                                    success:function(createdStory) {
+                                        createdStory.effort = effort;
+                                        return StoryService.update(createdStory);
+                                    }
+                                })
+                            }
+                        }
+                    });
+                    tasks.push({
+                        success:function(){
+                            $scope.$close();
+                            $scope.notifySuccess('todo.is.ui.story.effort.updated');
+                            return $q.when();
+                        }
+                    });
+                    $q.serial(tasks);
+                };
+                //init values
+                $scope.stories = [];
+                $scope.stories.push(angular.copy(story));
+                $scope.splitCount = 2;
+                var originalValue = story.value;
+                var originalEffort = story.effort;
+                $scope.onChangeSplitNumber();
+            }]
+        });
     };
     // Init
     $scope.tags = [];

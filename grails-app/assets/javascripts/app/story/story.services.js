@@ -271,6 +271,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                 return Session.poOrSm() && story.state > StoryStatesByName.ACCEPTED && story.state < StoryStatesByName.DONE;
             case 'accept':
                 return Session.po() && story.state == StoryStatesByName.SUGGESTED;
+            case 'split':
+                return story.state < StoryStatesByName.PLANNED && Session.po();
             case 'rank':
                 return Session.po() && (!story || story.state < StoryStatesByName.DONE);
             case 'delete':

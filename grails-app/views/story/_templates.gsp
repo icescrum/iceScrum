@@ -29,3 +29,4 @@
 <g:render template="/story/templates/story.value"/>
 <g:render template="/story/templates/nested.stories"/>
 <g:render template="/story/templates/story.selector"/>
+<g:render template="/story/templates/story.split"/>
