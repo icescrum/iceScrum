@@ -100,7 +100,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
             name: 'todo.is.ui.details',
             priority: function(story, defaultPriority, viewType) {
                 return viewType === 'list' ? 100 : defaultPriority;
-                },
+            },
             visible: function(story, viewType) { return viewType !== 'details'; },
             action: function(story) { $state.go('.story.details', {storyId: story.id}); }
         },
@@ -375,9 +375,9 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
         $uibModal.open({
             templateUrl: 'story.split.html',
             controller: ['$scope', '$q', function($scope, $q) {
-                $scope.onChangeSplitNumber = function(){
-                    if($scope.stories.length < $scope.splitCount){
-                        while($scope.stories.length < $scope.splitCount){
+                $scope.onChangeSplitNumber = function() {
+                    if ($scope.stories.length < $scope.splitCount) {
+                        while ($scope.stories.length < $scope.splitCount) {
                             var newStory = angular.copy(story);
                             newStory.name = "";
                             newStory.id = null;
@@ -387,44 +387,44 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                             newStory.state = story.state >= StoryStatesByName.ACCEPTED ? StoryStatesByName.ACCEPTED : StoryStatesByName.SUGGESTED;
                             $scope.stories.push(newStory);
                         }
-                    } else if($scope.stories.length > $scope.splitCount){
-                        while($scope.stories.length > $scope.splitCount){
+                    } else if ($scope.stories.length > $scope.splitCount) {
+                        while ($scope.stories.length > $scope.splitCount) {
                             $scope.stories.splice($scope.stories.length - 1, 1);
                         }
                     }
                     //split effort from original story
-                    if (originalEffort > 0){
+                    if (originalEffort > 0) {
                         var effort = parseInt(originalEffort / $scope.splitCount);
                         effort = effort >= 1 ? effort : 1;
-                        _.each($scope.stories, function(story){
+                        _.each($scope.stories, function(story) {
                             story.effort = effort;
                         });
                     }
-                    if (originalValue > 0){
+                    if (originalValue > 0) {
                         var value = parseInt(originalValue / $scope.splitCount);
                         value = value >= 1 ? value : 1;
-                        _.each($scope.stories, function(story){
+                        _.each($scope.stories, function(story) {
                             story.value = value;
                         });
                     }
                 };
                 $scope.submit = function(stories) {
                     var tasks = [];
-                    _.each(stories, function(story){
-                        if(story.id){
-                            tasks.push(function(){
+                    _.each(stories, function(story) {
+                        if (story.id) {
+                            tasks.push(function() {
                                 return StoryService.update(story)
                             });
                         } else {
                             var effort = story.effort;
                             tasks.push({
-                                success:function(){
+                                success: function() {
                                     return StoryService.save(story);
                                 }
                             });
-                            if(effort >= 0){
+                            if (effort >= 0) {
                                 tasks.push({
-                                    success:function(createdStory) {
+                                    success: function(createdStory) {
                                         createdStory.effort = effort;
                                         return StoryService.update(createdStory);
                                     }
@@ -433,7 +433,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
                         }
                     });
                     tasks.push({
-                        success:function(){
+                        success: function() {
                             $scope.$close();
                             $scope.notifySuccess('todo.is.ui.story.effort.updated');
                             return $q.when();
