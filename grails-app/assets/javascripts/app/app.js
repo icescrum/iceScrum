@@ -85,7 +85,8 @@ angular.module('isApp', [
         'ngStorage',
         'ui.bootstrap-slider',
         'matchMedia',
-        'satellizer'
+        'satellizer',
+        'angular.qserial'
     ].concat(isSettings.plugins)
 )
     .config(['$httpProvider', function($httpProvider) {
