@@ -112,9 +112,9 @@
                     </div>
                     <entry:point id="story-new-form"/>
                 </div>
-                <div ng-if="authorizedStory('createAccepted')"
-                     class="clearfix no-padding" >
-                    <div class="form-half">
+                <div class="clearfix no-padding" >
+                    <div ng-if="authorizedStory('createAccepted')"
+                         class="form-half" >
                         <label for="state">${message(code: 'is.story.state')}</label>
                         <ui-select name="story.state"
                                    required
@@ -122,6 +122,22 @@
                                    ng-model="story.state">
                             <ui-select-match>{{ $select.selected | i18n:'StoryStates' }}</ui-select-match>
                             <ui-select-choices repeat="storyState in newStoryStates">{{ ::storyState | i18n:'StoryStates' }}</ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-half">
+                        <label for="feature">${message(code: 'is.feature')}</label>
+                        <ui-select class="form-control"
+                                   name="feature"
+                                   search-enabled="true"
+                                   ng-change="featureChanged()"
+                                   ng-disabled="formHolder.featureDisabled"
+                                   ng-model="story.feature">
+                            <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
+                                <i class="fa fa-sticky-note" ng-style="{color: $select.selected.color}"></i> {{ $select.selected.name }}
+                            </ui-select-match>
+                            <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
+                                <i class="fa fa-sticky-note" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
+                            </ui-select-choices>
                         </ui-select>
                     </div>
                 </div>

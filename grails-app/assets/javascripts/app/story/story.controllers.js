@@ -651,11 +651,14 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     refreshStories();
 }]);
 
-registerAppController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'StoryService', 'hotkeys', 'StoryStatesByName', function($scope, $state, $timeout, $controller, StoryService, hotkeys, StoryStatesByName) {
+registerAppController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.resetStoryForm = function() {
-        $scope.story = {state: $scope.story ? $scope.story.state : StoryStatesByName.SUGGESTED};
+        $scope.story = {
+            state: $scope.story ? $scope.story.state : StoryStatesByName.SUGGESTED,
+            feature: $scope.story && $scope.story.feature ? $scope.story.feature : undefined
+        };
         $scope.resetFormValidation($scope.formHolder.storyForm);
     };
     $scope.save = function(story, andContinue) {
@@ -686,10 +689,16 @@ registerAppController('storyNewCtrl', ['$scope', '$state', '$timeout', '$control
             }, 500);
         }
     };
+    $scope.featureChanged = function() {
+        $scope.storyPreview.feature = $scope.story.feature;
+    };
     // Init
     $scope.formHolder = {};
+    $scope.storyPreview = {};
     $scope.resetStoryForm();
     $scope.newStoryStates = [StoryStatesByName.SUGGESTED, StoryStatesByName.ACCEPTED];
+    $scope.features = Session.getProject().features;
+    FeatureService.list();
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],
