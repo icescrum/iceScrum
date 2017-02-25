@@ -82,15 +82,23 @@ class AttachmentController implements ControllerErrorHandler {
         def endOfUpload = { uploadInfo ->
             def service = grailsApplication.mainContext[params.type + 'Service']
             service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, _attachmentable, ['addAttachment': null])
-            _attachmentable.addAttachment(springSecurityService.currentUser, new File(uploadInfo.filePath), uploadInfo.filename)
+            if(uploadInfo.filePath){
+                _attachmentable.addAttachment(springSecurityService.currentUser, new File(uploadInfo.filePath), uploadInfo.filename)
+            } else {
+                _attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
+            }
             def attachment = _attachmentable.attachments.first()
             service.publishSynchronousEvent(IceScrumEventType.UPDATE, _attachmentable, ['addedAttachment': attachment])
             def res = ['filename':attachment.filename, 'length':attachment.length, 'ext':attachment.ext, 'id':attachment.id, attachmentable:[id:_attachmentable.id, 'class':params.type]]
             render(status: 201, contentType: 'application/json', text:res as JSON)
         }
         if (_attachmentable) {
-            UtilsWebComponents.handleUpload.delegate = this
-            UtilsWebComponents.handleUpload(request, params, endOfUpload)
+            if(!params.url){
+                UtilsWebComponents.handleUpload.delegate = this
+                UtilsWebComponents.handleUpload(request, params, endOfUpload)
+            } else {
+                endOfUpload(params)
+            }
         } else {
             render(status:404)
         }

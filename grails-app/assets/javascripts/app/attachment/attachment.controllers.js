@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', function($scope, $uibModal, AttachmentService, attachmentable, clazz) {
+registerAppController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', function($scope, $uibModal, AttachmentService, attachmentable, clazz) {
     // Functions
     $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
         AttachmentService.delete(attachment, attachmentable);
@@ -29,7 +29,13 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
     $scope.authorizedAttachment = function(action, attachment) {
         return AttachmentService.authorizedAttachment(action, attachment);
     };
+    $scope.getUrl = function(clazz, attachmentable, attachment){
+        return attachment.url ? attachment.url : "attachment/" + clazz + "/" +attachmentable.id + "/" + attachment.id;
+    };
     $scope.isPreviewable = function(attachment) {
+        if(attachment.provider){
+            return false;
+        }
         var previewable;
         var ext = attachment.ext ? attachment.ext.toLowerCase() : '';
         switch (ext) {
@@ -97,9 +103,10 @@ controllers.controller('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServ
 
 // Flow events are triggered by "$scope.$broadcast so they can be received only on controllers that are at the same level or below
 // Thus, this controller must be added at the lowest level where the event can be broadcasted from, i.e. the buttons
-controllers.controller('attachmentNestedCtrl', ['$scope', 'AttachmentService', function($scope, AttachmentService) {
+registerAppController('attachmentNestedCtrl', ['$scope', 'AttachmentService', function($scope, AttachmentService) {
     $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
         var attachment = JSON.parse(message);
         AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
     });
 }]);
+
