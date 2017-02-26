@@ -215,6 +215,7 @@
                                 flow-btn>
                             <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
                         </button>
+                        <entry:point id="attachment-add-buttons"/>
                     </div>
                     <div class="form-control-static" ng-include="'attachment.list.html'">
                     </div>
