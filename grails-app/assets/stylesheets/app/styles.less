@@ -152,6 +152,9 @@ table {
       color: #999;
     }
     padding: 5px;
+    > img, p > img {
+      .img-responsive();
+    }
   }
 }
 
@@ -1232,5 +1235,11 @@ a.link {
   cursor:pointer;
   &:hover {
     color:@brand-primary;
+  }
+}
+
+.rich-content {
+  > img, p > img {
+    .img-responsive();
   }
 }

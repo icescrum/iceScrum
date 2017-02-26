@@ -39,7 +39,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-8">
-                                <div ng-bind-html="project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>'"></div>
+                                <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.nodescription')}</p>'"></div>
                             </div>
                             <div class="col-md-4 text-right">
                                 <img ng-src="{{ user | userAvatar }}" ng-repeat="user in allMembers" height="36" width="36" style="margin-left:5px;" class="{{ user | userColorRoles }}" uib-tooltip="{{ user | userFullName }}"">
@@ -70,7 +70,7 @@
                             </a>
                         </h3>
                     </div>
-                    <div class="panel-body"
+                    <div class="panel-body rich-content"
                          ng-bind-html="release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'">
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                             </a>
                         </h3>
                     </div>
-                    <div class="panel-body"
+                    <div class="panel-body rich-content"
                          ng-bind-html="currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'">
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                             </a>
                         </h3>
                     </div>
-                    <div class="panel-body"
+                    <div class="panel-body rich-content"
                          ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'">
                     </div>
                 </div>
