@@ -34,7 +34,9 @@
     <asset:link rel="apple-touch-icon" href="iOS/icon-iphone-retina.png" sizes="120x120"/>
     <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
     <!-- end iOS web app-->
+    <asset:link rel="mask-icon" href="browser/safari-pinned-tab.svg" color="#FFCC04"/>
     <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <meta name="theme-color" content="#ffffff">
     <asset:stylesheet href="application.css"/>
     <g:layoutHead/>
 </head>

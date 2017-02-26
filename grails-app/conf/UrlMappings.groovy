@@ -43,6 +43,10 @@ class UrlMappings {
             controller = 'scrumOS'
             action = 'robots'
         }
+        "/browserconfig.xml" {
+            controller = 'scrumOS'
+            action = 'browserconfig'
+        }
         "/textileParser" {
             controller = 'scrumOS'
             action = 'textileParser'

@@ -403,4 +403,19 @@ class ScrumOSController implements ControllerErrorHandler {
     def robots() {
         render(status: 200, contentType: 'text/plain', text: 'User-agent: *\nDisallow: /')
     }
+
+    @Secured(['permitAll()'])
+    def browserconfig() {
+        def content = """<?xml version="1.0" encoding="utf-8"?>
+        <browserconfig>
+            <msapplication>
+                <tile>
+                    <square150x150logo src="${assetPath(src:"browser/mstile-150x150.png")}"/>
+                    <TileColor>#da532c</TileColor>
+                </tile>
+            </msapplication>
+        </browserconfig>
+        """
+        render(status: 200, contentType: 'text/xml', text: content)
+    }
 }
