@@ -410,7 +410,7 @@ class ScrumOSController implements ControllerErrorHandler {
         <browserconfig>
             <msapplication>
                 <tile>
-                    <square150x150logo src="${assetPath(src:"browser/mstile-150x150.png")}"/>
+                    <square150x150logo src="${assetPath(src: "browser/mstile-150x150.png")}"/>
                     <TileColor>#da532c</TileColor>
                 </tile>
             </msapplication>

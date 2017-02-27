@@ -29,11 +29,11 @@ registerAppController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServi
     $scope.authorizedAttachment = function(action, attachment) {
         return AttachmentService.authorizedAttachment(action, attachment);
     };
-    $scope.getUrl = function(clazz, attachmentable, attachment){
-        return attachment.url ? attachment.url : "attachment/" + clazz + "/" +attachmentable.id + "/" + attachment.id;
+    $scope.getUrl = function(clazz, attachmentable, attachment) {
+        return attachment.url ? attachment.url : "attachment/" + clazz + "/" + attachmentable.id + "/" + attachment.id;
     };
     $scope.isPreviewable = function(attachment) {
-        if(attachment.provider){
+        if (attachment.provider) {
             return false;
         }
         var previewable;
