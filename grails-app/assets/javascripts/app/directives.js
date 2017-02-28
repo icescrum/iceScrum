@@ -60,7 +60,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     method: 'POST',
                     url: $rootScope.serverUrl + '/textileParser',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                    data: 'data=' + val
+                    data: 'data=' + encodeURIComponent(val)
                 }).success(function(data) {
                     scope.html = data;
                 }));
