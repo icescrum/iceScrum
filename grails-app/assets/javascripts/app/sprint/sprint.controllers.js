@@ -120,17 +120,19 @@ controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService'
         {
             name: 'is.ui.releasePlan.menu.sprint.activate',
             visible: function(sprint) { return $scope.authorizedSprint('activate', sprint); },
+            priority: function(sprint, defaultPriority) { return sprint.state === 1 && (sprint.stories.length > 0 || sprint.startDate.getTime() < (new Date()).getTime()) ? 100 : defaultPriority; },
             action: function(sprint) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'), callback: $scope.activate, args: [sprint]}); }
         },
         {
             name: 'is.ui.releasePlan.menu.sprint.close',
-            priority: function(sprint, defaultPriority) { return sprint.state == 2 ? 100 : defaultPriority; },
+            priority: function(sprint, defaultPriority, viewType) { return sprint.state === 2 && viewType === 'details' ? 120 : (sprint.state === 2 ? 100 : defaultPriority); },
             visible: function(sprint) { return $scope.authorizedSprint('close', sprint); },
             action: function(sprint) { $scope.openCloseModal(sprint); }
         },
         {
             name: 'todo.is.ui.taskBoard',
-            visible: function(sprint) { return true; },
+            visible: function(sprint, viewType) { return viewType !== 'taskBoard'; },
+            priority: function(sprint, defaultPriority, viewType) { return viewType !== 'taskBoard' && sprint.state === 2 && sprint.endDate.getTime() > (new Date()).getTime()  ? 110 : defaultPriority; },
             url: function(sprint) { return '#taskBoard/' + sprint.id + '/details'; }
         },
         {
