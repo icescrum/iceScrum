@@ -18,11 +18,10 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
- * Stephane Maldini (stephane.maldini@icescrum.com)
  */
 
 import org.icescrum.core.security.MethodScrumExpressionHandler
-import org.icescrum.core.security.ScrumDetailsService
+import org.icescrum.core.security.ScrumUserDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.i18n.IceScrumMessageSource
 
@@ -42,7 +41,7 @@ beans = {
         trustResolver = ref('authenticationTrustResolver')
     }
 
-    userDetailsService(ScrumDetailsService) {
+    userDetailsService(ScrumUserDetailsService) {
         grailsApplication = ref('grailsApplication')
     }
 

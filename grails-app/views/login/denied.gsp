@@ -17,7 +17,7 @@
 -
 - Authors:
 -
-- Stephane Maldini (stephane.maldini@icescrum.com)
+ * Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <head>
   <meta name='layout' content='main'/>
