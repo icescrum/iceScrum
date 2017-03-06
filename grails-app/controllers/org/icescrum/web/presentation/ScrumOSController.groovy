@@ -38,6 +38,7 @@ import sun.misc.BASE64Decoder
 
 class ScrumOSController implements ControllerErrorHandler {
 
+    def appsService
     def messageSource
     def servletContext
     def projectService
@@ -254,136 +255,7 @@ class ScrumOSController implements ControllerErrorHandler {
 
     @Secured(['permitAll()'])
     def apps() {
-        def apps = [
-                [name               : 'Management',
-                 version            : '1.0',
-                 installed          : false,
-                 author             : 'iceScrum team',
-                 publishDate        : '',
-                 includedWithLicense: true,
-                 website            : 'https://www.icescrum.com',
-                 documentation      : 'https://www.icescrum.com/documentation/',
-                 description        : 'This extension is the core of iceScrum Pro. It helps you to configure and manage your iceScrum server:' +
-                         '<p>' +
-                         '<ul>' +
-                         '<li>Administrate your users</li>' +
-                         '<li>Administrate your projects</li>' +
-                         '<li>Define new administrators</li>' +
-                         '<li>Update your server configuration in an nice user interface</li>' +
-                         '<li>Authenticate your users through LDAP</li>' +
-                         '<li>Define your product vision with the Roadmap view</li>' +
-                         '<li>Define your team availabilities</li>' +
-                         '<li>Export iceScrum items as custom CSV documents</li>' +
-                         '<li>Switch user in the task board</li>' +
-                         '<li>Create items from emails</li>' +
-                         '<li>Create stories directly in the backlog, copy stories from one project to another, filter by user in the sprint plan...</li>' +
-                         '</ul>' +
-                         '</p>',
-                 screenshots        : ['https://www.icescrum.com/wp-content/uploads/2012/06/Example-of-working-LDAP-Configuration1.jpg']
-                ],
-                [name         : 'Embedded',
-                 version      : '1.0',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com/documentation/embedded',
-                 description  : 'Embed live iceScrum views into your online documents or websites in order to create custom dashboards and reports.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2013/01/Define-your-embedded-widgets.jpg']
-                ],
-                [name         : 'Icebox',
-                 version      : '1.0',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com/documentation/icebox/',
-                 description  : 'Product Owners freeze stories that don’t belong to the current product vision and restore them when the time has come.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2012/11/Freeze-a-story1.jpg']
-                ],
-                [name         : 'Cloud Storage',
-                 version      : '1.0',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com/documentation/cloud-storage',
-                 description  : 'Attach your cloud documents in iceScrum directly from Dropbox, Google Drive or Microsoft OneDrive.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2012/11/Cloud-storage-settings1.png', 'https://www.icescrum.com/wp-content/uploads/2012/11/Attachment-display1.jpg']
-                ],
-                [name         : 'Feedback',
-                 version      : '1.0',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com/documentation/feedback',
-                 description  : 'Include the feedback module in your website and offer your users a way to provide feedback that your collect as stories in your iceScrum project',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2015/06/feedback-english-650x393@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/story-details-2-650x424@2x.png']
-                ],
-                [name         : 'Team communication',
-                 version      : '1.0',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com/documentation/team-communication',
-                 description  : 'Stay informed of what happens in iceScrum by receiving important events about your stories in your Slack channel.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2015/06/admin-settings-650x401@2x.png', 'https://www.icescrum.com/wp-content/uploads/2015/06/Slack1-650x461@2x.png']
-                ],
-                [name         : 'SCM',
-                 version      : '1.0',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com/documentation/git-svn/',
-                 description  : 'Keep track of code changes by linking your commits (from Git, GitHub, SVN…) to your tasks and user stories. Display the latest build information (status, commits, build #) from Jenkins/Hudson in iceScrum.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2013/06/Build-status-on-your-project-dashboard1.jpg', 'https://www.icescrum.com/wp-content/uploads/2012/06/Enable-SCM-integration-in-your-project-settings.jpg']
-                ],
-                [name         : 'Bug Trackers',
-                 version      : '1.0',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com/documentation/bug-tracker/',
-                 description  : 'Automatically synchronize your project data between your bug tracker (JIRA, Mantis, Bugzilla, Redmine, TRAC…) and iceScrum.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2013/08/Set-up-bug-tracker-connection.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Create-an-import-rule.-Here-every-15-min-new-issues-from-vb-filter-are-imported-as-accepted-defect-stories.png']
-                ],
-                [name         : 'Project Bundle',
-                 version      : '1.0',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com/documentation/project-bundle/',
-                 description  : 'Project bundles allow you to group interrelated projects, providing a big picture of their planning and progress to help you make the best decisions.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2013/08/Bundle-timeline.png', 'https://www.icescrum.com/wp-content/uploads/2013/08/Total-line-for-synchronized-sprints.png']
-                ],
-                [name         : 'Backlogs',
-                 version      : '0.1',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com',
-                 description  : 'Create your own story backlogs according to custom filters.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2016/05/extension-backlogs.png']
-                ],
-                [name         : 'Mood',
-                 version      : '0.1',
-                 author       : 'iceScrum',
-                 email        : 'support@kagilum.com',
-                 updated      : '12/12/2016',
-                 website      : 'https://www.icescrum.com',
-                 documentation: 'https://www.icescrum.com',
-                 description  : 'Enter you mood everyday and help track and improve the well-being of your teams.',
-                 screenshots  : ['https://www.icescrum.com/wp-content/uploads/2016/05/extension-mood.png'],
-                 tags         : ["tags1", "tags3", "tags2", "tags2", "tags2", "tags2", "tags2"]
-                ]
-        ]
-        render(status: 200, contentType: 'application/json', text: apps.sort { it.name } as JSON)
+        render(status: 200, contentType: 'application/json', text: appsService.getApps().sort { it.name } as JSON)
     }
 
     @Secured(['permitAll()'])
