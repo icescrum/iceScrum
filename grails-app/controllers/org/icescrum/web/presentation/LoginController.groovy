@@ -87,6 +87,13 @@ class LoginController implements ControllerErrorHandler {
             } else if (exception instanceof LockedException) {
                 msg = 'is.dialog.login.error.locked'
             } else {
+                if(log.isErrorEnabled()){
+                    log.error(exception)
+                    log.error(exception.cause)
+                    exception.stackTrace.each {
+                        log.error(it)
+                    }
+                }
                 msg = 'is.dialog.login.error'
             }
         }
@@ -95,7 +102,7 @@ class LoginController implements ControllerErrorHandler {
             return
         } else {
             flash.message = msg
-            redirect(action: auth, params: params)
+            redirect(action: 'auth', params: params)
         }
     }
 
