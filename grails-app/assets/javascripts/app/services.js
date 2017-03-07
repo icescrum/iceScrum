@@ -665,8 +665,8 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
 }]);
 
 services.service("AppService", ['FormService', function(FormService) {
-    this.getApps = function() {
-        return FormService.httpGet('apps', null, true);
+    this.getAppDefinitions = function() {
+        return FormService.httpGet('appDefinitions', null, true);
     };
 }]);
 

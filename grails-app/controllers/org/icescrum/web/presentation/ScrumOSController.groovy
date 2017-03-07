@@ -38,7 +38,7 @@ import sun.misc.BASE64Decoder
 
 class ScrumOSController implements ControllerErrorHandler {
 
-    def appsService
+    def appDefinitionService
     def messageSource
     def servletContext
     def projectService
@@ -254,8 +254,8 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     @Secured(['permitAll()'])
-    def apps() {
-        render(status: 200, contentType: 'application/json', text: appsService.getApps().sort { it.name } as JSON)
+    def appDefinitions() {
+        render(status: 200, contentType: 'application/json', text: appDefinitionService.getAppDefinitions().sort { it.name } as JSON)
     }
 
     @Secured(['permitAll()'])

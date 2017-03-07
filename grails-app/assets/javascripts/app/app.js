@@ -1065,7 +1065,7 @@ angular.module('isApp', [
                     };
                     $scope.apps = [];
                     $scope.viewApp = 'list';
-                    AppService.getApps().then(function(apps) {
+                    AppService.getAppDefinitions().then(function(apps) {
                         if (apps.length > 0) {
                             $scope.apps = apps;
                         } else {
