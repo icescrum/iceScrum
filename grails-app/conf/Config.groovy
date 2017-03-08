@@ -515,37 +515,6 @@ grails {
                     user.save(flush: true)
                 }
             }
-            saml {
-                active = true
-                metadata {
-                    defaultIdp = 'https://www.icescrum.com/auth/saml2/idp/metadata.php'
-                    idp{
-                        file = '/Users/vbarrier/icescrum/saml/idp/idp-icescrum-com.xml'
-                        alias = 'https://www.icescrum.com/auth/saml2/idp/metadata.php'
-                    }
-                    sp {
-                        file = '/Users/vbarrier/icescrum/saml/sp/sp-icescrum-com.xml'
-                        alias = 'sp_icescrum'
-                        defaults{
-                            local = true
-                            alias = 'sp_icescrum'
-                            signingKey = 'ping'
-                            encryptionKey = 'ping'
-                            tlsKey = 'ping'
-                            requireArtifactResolveSigned = false
-                            requireLogoutRequestSigned = false
-                            requireLogoutResponseSigned = false
-                            idpDiscoveryEnabled = true
-                        }
-                    }
-                }
-                keyManager {
-                    storeFile = '/Users/vbarrier/icescrum/saml/keystore.jks'
-                    storePass = 'nalle123'
-                    passwords = [ ping: 'ping123' ]
-                    defaultKey = 'ping'
-                }
-            }
         }
     }
 }
