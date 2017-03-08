@@ -506,10 +506,6 @@ grails {
             useRunAs = true
             runAs.key = 'VincNicoJuShazam!'
             acl.authority.changeAclDetails = 'ROLE_RUN_AS_PERMISSIONS_MANAGER'
-            ldap.authorities.retrieveGroupRoles = false
-            ldap.authorities.groupSearchFilter = ""
-            ldap.authorities.groupSearchBase = ""
-            ldap.active = false
 
             useSecurityEventListener = true
             onInteractiveAuthenticationSuccessEvent = { e, appCtx ->
