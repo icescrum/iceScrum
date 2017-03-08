@@ -51,7 +51,7 @@ var registerAppController = function(appControllerName, controllerArray) {
     controllers.controller(appControllerName, newControllerArray);
 };
 
-controllers.controller('appCtrl', ['$controller', '$scope', '$localStorage', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $localStorage, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
+registerAppController('appCtrl', ['$controller', '$scope', '$localStorage', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $localStorage, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
     $controller('headerCtrl', {$scope: $scope});
     // Functions
     $scope.displayDetailsView = function() {
@@ -491,7 +491,7 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
     });
 }]);
 
-controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
+registerAppController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERRORS', 'AuthService', function($scope, $state, $rootScope, SERVER_ERRORS, AuthService) {
     $scope.credentials = {
         j_username: $scope.username ? $scope.username : '',
         j_password: ''
@@ -524,7 +524,7 @@ controllers.controller('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_E
     };
 }]);
 
-controllers.controller('registerCtrl', ['$scope', '$state', '$filter', 'User', 'UserService', 'Session', function($scope, $state, $filter, User, UserService, Session) {
+registerAppController('registerCtrl', ['$scope', '$state', '$filter', 'User', 'UserService', 'Session', function($scope, $state, $filter, User, UserService, Session) {
     // Functions
     $scope.register = function() {
         UserService.save($scope.user).then(function() {
@@ -554,7 +554,7 @@ controllers.controller('registerCtrl', ['$scope', '$state', '$filter', 'User', '
     });
 }]);
 
-controllers.controller('retrieveCtrl', ['$scope', '$timeout', 'User', 'UserService', function($scope, $timeout, User, UserService) {
+registerAppController('retrieveCtrl', ['$scope', '$timeout', 'User', 'UserService', function($scope, $timeout, User, UserService) {
     // Functions
     $scope.retrieve = function() {
         UserService.retrievePassword($scope.user).then(function(data) {
