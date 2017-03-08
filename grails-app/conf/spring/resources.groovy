@@ -21,7 +21,6 @@
  */
 
 import org.icescrum.core.security.MethodScrumExpressionHandler
-import org.icescrum.core.security.ScrumUserDetailsService
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.i18n.IceScrumMessageSource
 
@@ -39,10 +38,6 @@ beans = {
         permissionEvaluator = ref('permissionEvaluator')
         roleHierarchy = ref('roleHierarchy')
         trustResolver = ref('authenticationTrustResolver')
-    }
-
-    userDetailsService(ScrumUserDetailsService) {
-        grailsApplication = ref('grailsApplication')
     }
 
     messageSource(IceScrumMessageSource)  {
