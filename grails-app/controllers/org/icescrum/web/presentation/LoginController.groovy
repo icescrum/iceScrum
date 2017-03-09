@@ -28,6 +28,7 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import org.icescrum.core.domain.User
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.CredentialsExpiredException
 import org.springframework.security.authentication.DisabledException
 import org.springframework.security.authentication.LockedException
@@ -87,7 +88,7 @@ class LoginController implements ControllerErrorHandler {
             } else if (exception instanceof LockedException) {
                 msg = 'is.dialog.login.error.locked'
             } else {
-                if(log.isErrorEnabled()){
+                if (log.isErrorEnabled() && !(exception instanceof BadCredentialsException)) {
                     log.error(exception)
                     log.error(exception.cause)
                     exception.stackTrace.each {
