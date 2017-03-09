@@ -1044,10 +1044,10 @@ angular.module('isApp', [
             });
         };
 
-        $rootScope.showManageAppsModal = function() {
+        $rootScope.showAppsModal = function() {
             $uibModal.open({
                 keyboard: false,
-                templateUrl: 'manageApps.modal.html',
+                templateUrl: 'apps.modal.html',
                 controller: ['$scope', function($scope) {
                     $scope.detailsApp = function(app) {
                         $scope.holder.app = app;
