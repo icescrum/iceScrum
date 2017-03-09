@@ -199,7 +199,7 @@ class UserController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def search(String value, boolean showDisabled, String pkey, boolean invit) {
+    def search(String value, boolean showDisabled, String pkey, boolean invite) {
         def users
         if (pkey) {
             def valueLower = value.toLowerCase()
@@ -210,7 +210,7 @@ class UserController implements ControllerErrorHandler {
             users = User.findUsersLike(value ?: '', false, showDisabled, [max: 9])
         }
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
-        if (!users && invit && GenericValidator.isEmail(value) && enableInvitation) {
+        if (!users && invite && GenericValidator.isEmail(value) && enableInvitation) {
             users << [id: null, email: value]
         }
         render(status: 200, contentType: 'application/json', text: users as JSON)
