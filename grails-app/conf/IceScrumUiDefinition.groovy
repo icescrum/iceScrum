@@ -233,10 +233,12 @@ widgets = {
     }
     'publicProjects' {
         icon 'folder-open'
+        allowDuplicate false
         templatePath '/widgets/publicProjects'
     }
     'tasks' {
         icon 'tasks'
+        allowDuplicate false
         secured 'isAuthenticated()'
         templatePath '/widgets/tasks'
     }
