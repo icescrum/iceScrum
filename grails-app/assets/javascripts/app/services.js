@@ -664,12 +664,6 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
     };
 }]);
 
-services.service("AppService", ['FormService', function(FormService) {
-    this.getAppDefinitions = function() {
-        return FormService.httpGet('appDefinitions', null, true);
-    };
-}]);
-
 services.service("DateService", [function() {
     var self = this;
     this.immutableAddDaysToDate = function(date, days) {

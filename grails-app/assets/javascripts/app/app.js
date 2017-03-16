@@ -1048,32 +1048,7 @@ angular.module('isApp', [
             $uibModal.open({
                 keyboard: false,
                 templateUrl: 'apps.modal.html',
-                controller: ['$scope', function($scope) {
-                    $scope.detailsApp = function(app) {
-                        $scope.holder.app = app;
-                        $scope.manageAppsForm.$invalid = !app || !app.available;
-                        $scope.viewApp = app ? 'details' : 'list';
-                    };
-                    // Init
-                    $scope.holder = {
-                        app: {}
-                    };
-                    $scope.appSearch = '';
-                    $scope.search = function(query) {
-                        $scope.viewApp = 'list';
-                        $scope.appSearch = query;
-                    };
-                    $scope.apps = [];
-                    $scope.viewApp = 'list';
-                    AppService.getAppDefinitions().then(function(apps) {
-                        if (apps.length > 0) {
-                            $scope.apps = apps;
-                        } else {
-                            $scope.viewApp = 'empty';
-                        }
-                        $scope.manageAppsForm.$invalid = apps.length == 0;
-                    });
-                }],
+                controller: 'appsCtrl',
                 size: 'lg'
             });
         };

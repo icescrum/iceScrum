@@ -254,11 +254,6 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     @Secured(['permitAll()'])
-    def appDefinitions() {
-        render(status: 200, contentType: 'application/json', text: appDefinitionService.getAppDefinitions().sort { it.name } as JSON)
-    }
-
-    @Secured(['permitAll()'])
     def warnings() {
         def warnings = grailsApplication.config.icescrum.warnings.collect { it ->
             [id: it.id, icon: it.icon, title: message(it.title), message: message(it.message), hideable: it.hideable, silent: it.silent]

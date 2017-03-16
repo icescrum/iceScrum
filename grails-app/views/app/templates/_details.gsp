@@ -22,43 +22,46 @@
 --}%
 
 <script type="text/ng-template" id="app.details.html">
-<h3><i class="fa fa-{{ holder.app.icon }}"></i> {{ holder.app.name }}
+<h3>
+    <i class="fa fa-{{ appDefinition.icon }}"></i> {{ appDefinition.name }}
     <div class="pull-right">
-        <button ng-click="detailsApp()"
-                class="btn btn-default"><i class="fa fa-times"></i></button>
+        <button ng-click="openAppDefinition()"
+                class="btn btn-default">
+            <i class="fa fa-times"></i>
+        </button>
     </div>
 </h3>
-<h4>${message(code: 'is.app.screenshots')}</h4>
 <div class="row">
     <div class="col-md-8">
-        <div class="col-md-6" ng-repeat="screenshot in holder.app.screenshots">
-            <a href
-               class="thumbnail"
-               ng-click="selectScreenshot(screenshot)"
-               ng-class="{'current':holder.screenshot == screenshot}">
-                <img ng-src="{{ screenshot }}">
-            </a>
+        <div class="col-md-6 thumbnail"
+             ng-repeat="screenshot in holder.app.screenshots">
+            <img ng-src="{{ screenshot }}">
         </div>
     </div>
     <div class="col-md-4">
-        <div class="text-center actions">
+        <div class="text-center actions"
+             ng-if="appDefinition.isProject">
             <p>
-                <button type="submit"
+                <button ng-if="!appDefinition.enabledForProject"
+                        type="button"
                         class="btn btn-success"
-                        ng-if="holder.app.enabled">${message(code: 'is.dialog.manageApps.enable')}</button>
-                <button type="submit"
+                        ng-click="updateEnabledForProject(appDefinition, true)">${message(code: 'is.ui.apps.enable')}</button>
+                <button ng-if="appDefinition.enabledForProject"
+                        type="button"
                         class="btn btn-danger"
-                        ng-if="!holder.app.enabled">${message(code: 'is.dialog.manageApps.disable')}</button>
+                        ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
             </p>
             <p>
                 <a href
-                   ng-if="!holder.app.enabled"
+                   ng-if="appDefinition.hasProjectSettings && appDefinition.enabledForProject"
                    class="btn btn-default">
-                    ${message(code: 'is.dialog.manageApps.configure')}
+                    ${message(code: 'is.ui.apps.configure')}
                 </a>
             </p>
+        </div>
+        <div class="text-center actions">
             <p>
-                <a href="{{ holder.app.documentation }}"
+                <a href="{{ appDefinition.docUrl }}"
                    class="btn btn-default">
                     ${message(code: 'is.app.url.documentation')}
                 </a>
@@ -68,37 +71,42 @@
 </div>
 <div class="row">
     <div class="col-md-8">
-        <h4>${message(code: 'is.app.description')}</h4>
-        <p class="description" ng-bind-html="holder.app.description"></p>
+        <em>{{appDefinition.baseline}}</em>
+        <p class="description" ng-bind-html="appDefinition.description"></p>
     </div>
     <div class="col-md-4">
-        <h4>${message(code: 'is.dialog.manageApps.information')}</h4>
+        <h4>${message(code: 'is.ui.apps.information')}</h4>
         <table class="table information">
             <tr>
                 <td class="text-right">${message(code:'is.app.author')}</td>
-                <td><a href="mailto:{{ holder.app.email }}">{{ holder.app.author }}</a></td>
+                <td><a href="mailto:{{ appDefinition.email }}">{{ appDefinition.author }}</a></td>
             </tr>
             <tr>
                 <td class="text-right">${message(code:'is.app.version')}</td>
-                <td>{{ holder.app.version }}</td>
-            </tr>
-            <tr>
-                <td class="text-right">${message(code:'is.app.updated')}</td>
-                <td>{{ holder.app.updated }}</td>
+                <td>{{ appDefinition.version }}</td>
             </tr>
             <tr>
                 <td class="text-right">${message(code:'is.app.widgets')}</td>
-                <td>{{ holder.app.widgets ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
+                <td>{{ appDefinition.hasWidgets ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
             </tr>
             <tr>
-                <td colspan="2" class="text-center"><a href="{{ holder.app.website }}">${message(code:'is.app.url.website')}</a></td>
+                <td class="text-right">${message(code:'is.app.windows')}</td>
+                <td>{{ appDefinition.hasWindows ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
+            </tr>
+            <tr ng-if="appDefinition.websiteUrl">
+                <td colspan="2"
+                    class="text-center">
+                    <a href="{{ appDefinition.websiteUrl }}">${message(code:'is.app.url.website')}</a>
+                </td>
             </tr>
         </table>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
-        <span class="text-muted" ng-repeat="tag in holder.app.tags track by $index"><a href ng-click="search(tag)">{{ tag }}</a>{{$last ? '' : ', '}}</span>
+        <span class="text-muted" ng-repeat="tag in appDefinition.tags track by $index">
+            <a href ng-click="searchApp(tag)">{{ tag }}</a>{{$last ? '' : ', '}}
+        </span>
     </div>
 </div>
 </script>

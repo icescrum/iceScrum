@@ -332,5 +332,20 @@ class ProjectUrlMappings {
                 releaseId(matches: /[0-9A-Z]*/)
             }
         }
+        // Apps
+        "/p/$project/app/definitions" {
+            controller = 'app'
+            action = [GET: 'definitions']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$project/app/updateEnabledForProject" {
+            controller = 'app'
+            action = [POST: 'updateEnabledForProject']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
     }
 }

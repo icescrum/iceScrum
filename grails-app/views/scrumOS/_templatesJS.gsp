@@ -30,6 +30,7 @@
     <g:render template="/user/templates"/>
     <entry:point id="templates"/>
     <g:if test="${params.project}">
+        <g:render template="/app/templates"/>
         <g:render template="/story/templates"/>
         <g:render template="/task/templates"/>
         <g:render template="/comment/templates"/>

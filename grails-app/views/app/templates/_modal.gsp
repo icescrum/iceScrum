@@ -22,48 +22,46 @@
 --}%
 
 <script type="text/ng-template" id="apps.modal.html">
-<is:modal title="${message(code: 'is.dialog.manageApps.title')}"
-          validate="true"
-          name="manageAppsForm"
-          form="manageApp(app)"
-          class="manage-apps split-modal">
-    <div class="row" ng-class="{ 'hide-left-panel': viewApp == 'list' }">
+<is:modal title="${message(code: 'is.ui.apps.title')}"
+          class="apps-modal split-modal">
+    <div class="row" ng-class="{'hide-left-panel': !appDefinition}">
         <div class="left-panel">
             <div class="left-panel-header">
                 <div class="input-group">
                     <input type="text"
-                           ng-model="appSearch"
+                           ng-model="holder.appSearch"
                            name="app-search-input"
-                           value="{{ appSearch }}"
+                           value="{{ holder.appSearch }}"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="searchApp('')">
+                            <i class="fa" ng-class="holder.appSearch ? 'fa-times' : 'fa-search'"></i>
+                        </button>
                     </span>
                 </div>
             </div>
             <ul class="left-panel-body nav nav-list">
                 <div class="text-center more-results" ng-hide="filteredApps.length">
-                    <a href="${message(code: 'is.dialog.manageApps.store.query')}{{ appSearch }}">${message(code:'is.dialog.manageApps.store.search')}</a>
+                    <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code:'is.ui.apps.store.search')}</a>
                 </div>
-                <li ng-class="{ 'current': currentApp == holder.app }"
-                    ng-repeat="currentApp in filteredApps = (apps | filter:appSearch)">
-                    <a ng-click="detailsApp(currentApp)" href>
-                        <i class="fa fa-{{ currentApp.icon }}"></i>
-                        {{ currentApp.name }}
-                        <i ng-if="currentApp.installed" class="fa fa-check text-success"></i>
+                <li ng-class="{'current': currentAppDefinition == appDefinition}"
+                    ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:holder.appSearch)">
+                    <a ng-click="openAppDefinition(currentAppDefinition)" href>
+                        <i class="fa fa-{{ currentAppDefinition.icon }}"></i>
+                        {{ currentAppDefinition.name }}
+                        <i ng-if="currentAppDefinition.installed" class="fa fa-check text-success"></i>
                     </a>
                 </li>
             </ul>
         </div>
-        <div class="right-panel" ng-switch on="viewApp">
-            <div ng-switch-when="details" class="details-app">
+        <div class="right-panel">
+            <div ng-if="appDefinition" class="app-details">
                 <div ng-include="'app.details.html'"></div>
             </div>
-            <div ng-switch-when="empty" class="more-results">
-                <a href="${message(code: 'is.dialog.manageApps.store.query')}">${message(code:'is.dialog.manageApps.store.search')}</a>
-            </div>
-            <div ng-switch-default>
+            <div ng-if="!appDefinition">
                 <div ng-include="'app.list.html'"></div>
             </div>
         </div>

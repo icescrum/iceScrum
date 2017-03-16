@@ -26,25 +26,34 @@
     <div class="col-md-offset-1 col-md-10 text-center">
         <div class="input-group">
             <input type="text"
-                   ng-model="appSearch"
-                   value="{{ appSearch }}"
+                   ng-model="holder.appSearch"
                    name="app-search-input"
                    class="form-control"
                    placeholder="${message(code: 'todo.is.ui.search.action')}">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+                <button class="btn btn-default"
+                        type="button"
+                        ng-click="searchApp('')">
+                    <i class="fa" ng-class="holder.appSearch ? 'fa-times' : 'fa-search'"></i>
+                </button>
             </span>
         </div>
     </div>
 </div>
 <div class="row list">
-    <div class="col-xs-6 col-md-3" ng-repeat="currentApp in filteredApps = (apps | filter:appSearch)">
-        <a ng-click="detailsApp(currentApp)" class="thumbnail">
-            <img ng-src="currentApp.logo" alt="{{ currentApp.name }}">
+    <div class="col-xs-6 col-md-3" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:holder.appSearch)">
+        <a ng-click="openAppDefinition(currentAppDefinition)"
+           class="text-center thumbnail">
+            <img ng-src="currentAppDefinition.logo"
+                 ng-if="currentAppDefinition.logo"
+                 alt="{{ currentAppDefinition.name }}">
+            <span >
+                {{ currentAppDefinition.name }}
+            </span>
         </a>
     </div>
     <div class="text-center more-results" ng-hide="filteredApps.length">
-        <a href="${message(code: 'is.dialog.manageApps.store.query')}{{ appSearch }}">${message(code:'is.dialog.manageApps.store.search')}</a>
+        <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code:'is.ui.apps.store.search')}</a>
     </div>
 </div>
 </script>
