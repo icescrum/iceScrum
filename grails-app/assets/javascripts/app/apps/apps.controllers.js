@@ -34,6 +34,23 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', function($scope, App
             appDefinition.enabledForProject = enabledForProject;
         });
     };
+    $scope.appDefinitionFilter = function(appDefinition) {
+        var search = $scope.holder.appSearch;
+        if (search) {
+            var containsText = function(text, subText) {
+                return text.toLowerCase().indexOf(subText) != -1;
+            };
+            var textContainsSearch = _.some(['name', 'baseline'], function(attributeName) {
+                return containsText(appDefinition[attributeName], search);
+            });
+            var tagContainsSearch = _.some(appDefinition.tags, function(tag) {
+                return containsText(tag, search);
+            });
+            return textContainsSearch || tagContainsSearch;
+        } else {
+            return true;
+        }
+    };
     // Init
     $scope.holder = {};
     $scope.appDefinitions = [];

@@ -62,8 +62,9 @@
         <div class="text-center actions">
             <p>
                 <a href="{{ appDefinition.docUrl }}"
+                   target="_blank"
                    class="btn btn-default">
-                    ${message(code: 'is.app.url.documentation')}
+                    ${message(code: 'is.app.documentation')}
                 </a>
             </p>
         </div>
@@ -94,9 +95,12 @@
                 <td>{{ appDefinition.hasWindows ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
             </tr>
             <tr ng-if="appDefinition.websiteUrl">
-                <td colspan="2"
-                    class="text-center">
-                    <a href="{{ appDefinition.websiteUrl }}">${message(code:'is.app.url.website')}</a>
+                <td class="text-right"></td>
+                <td>
+                    <a href="{{ appDefinition.websiteUrl }}"
+                       target="_blank">
+                        ${message(code:'is.app.website')}
+                    </a>
                 </td>
             </tr>
         </table>

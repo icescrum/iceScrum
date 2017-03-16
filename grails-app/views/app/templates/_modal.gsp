@@ -48,7 +48,7 @@
                     <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code:'is.ui.apps.store.search')}</a>
                 </div>
                 <li ng-class="{'current': currentAppDefinition == appDefinition}"
-                    ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:holder.appSearch)">
+                    ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter)">
                     <a ng-click="openAppDefinition(currentAppDefinition)" href>
                         <i class="fa fa-{{ currentAppDefinition.icon }}"></i>
                         {{ currentAppDefinition.name }}
