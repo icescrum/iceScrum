@@ -25,16 +25,6 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
-    $scope.showProjectEditModal = function() {
-        $uibModal.open({
-            keyboard: false,
-            backdrop: 'static',
-            templateUrl: $scope.serverUrl + "/project/edit",
-            size: 'lg',
-            scope: $scope.$new(),
-            controller: 'editProjectModalCtrl'
-        });
-    };
     $scope.showProjectListModal = function(listType) {
         $uibModal.open({
             keyboard: false,

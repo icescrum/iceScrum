@@ -51,12 +51,13 @@
                         class="btn btn-danger"
                         ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
             </p>
-            <p>
-                <a href
-                   ng-if="appDefinition.hasProjectSettings && appDefinition.enabledForProject"
-                   class="btn btn-default">
+            <p ng-if="appDefinition.hasProjectSettings && appDefinition.enabledForProject"
+               ng-controller="projectCtrl">
+                <button type="button"
+                        ng-click="openAppProjectSettings(appDefinition)"
+                        class="btn btn-default">
                     ${message(code: 'is.ui.apps.configure')}
-                </a>
+                </button>
             </p>
         </div>
         <div class="text-center actions">

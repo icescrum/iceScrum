@@ -51,6 +51,10 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', function($scope, App
             return true;
         }
     };
+    $scope.openAppProjectSettings = function(appDefinition) {
+        $scope.$close();
+        $scope.showProjectEditModal(appDefinition.id);
+    };
     // Init
     $scope.holder = {};
     $scope.appDefinitions = [];

@@ -987,6 +987,21 @@ angular.module('isApp', [
             });
         };
 
+        $rootScope.showProjectEditModal = function(panelName) {
+            var scope = $rootScope.$new();
+            if (panelName) {
+                scope.panel = {current: panelName};
+            }
+            $uibModal.open({
+                keyboard: false,
+                backdrop: 'static',
+                templateUrl: $rootScope.serverUrl + "/project/edit",
+                size: 'lg',
+                scope: scope,
+                controller: 'editProjectModalCtrl'
+            });
+        };
+
         $rootScope.showAuthModal = function(username, loginSuccess, loginFailure) {
             var childScope = $rootScope.$new();
             if (username) {
