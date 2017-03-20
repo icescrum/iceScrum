@@ -43,7 +43,13 @@
                 <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('administration') }">
                     <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm">${ message(code: 'todo.is.ui.project.administration')}</span></a>
                 </li>
-                <entry:point id="project-edit-left"/>
+                <li ng-if="authorizedProject('update', currentProject)"
+                    ng-repeat="appWithSettings in appsWithSettings"
+                    ng-class="{ current: isCurrentPanel(appWithSettings.id) }">
+                    <a ng-click="setCurrentPanel(appWithSettings.id)">
+                        <i class="fa" ng-class="appWithSettings.projectSettings.icon"></i> <span class="hidden-xs hidden-sm">{{ appWithSettings.name }}</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="right-panel steps col-xs-12 col-sm-9" ng-switch="getCurrentPanel()">
@@ -77,7 +83,12 @@
                      title="${ message(code: 'todo.is.ui.project.administration')}">
                 <div ng-include="'edit.administration.project.html'"></div>
             </section>
-            <entry:point id="project-edit-right"/>
+            <section ng-if="isCurrentPanel(appWithSettings.id)"
+                     class="step current"
+                     ng-repeat="appWithSettings in appsWithSettings"
+                     ng-include="appWithSettings.projectSettings.template"
+                     title="{{ appWithSettings.name }}">
+            </section>
         </div>
     </div>
 </is:modal>

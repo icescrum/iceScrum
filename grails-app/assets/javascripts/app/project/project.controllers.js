@@ -459,7 +459,7 @@ controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService'
     $scope.computePlanning();
 }]);
 
-controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', 'ReleaseService', function($scope, Session, ProjectService, ReleaseService) {
+controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', 'ReleaseService', 'AppService', function($scope, Session, ProjectService, ReleaseService, AppService) {
     $scope.type = 'editProject';
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
@@ -492,6 +492,10 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
         var defaultView = $scope.authorizedProject('update', $scope.currentProject) ? 'general' : 'actors';
         $scope.panel = {current: defaultView};
     }
+    $scope.appsWithSettings = [];
+    AppService.getAppDefinitionsWithProjectSettings().then(function(appsWithSettings) {
+        $scope.appsWithSettings = appsWithSettings;
+    });
 }]);
 
 controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Session', 'ProjectService', 'TeamService', function($scope, $controller, Session, ProjectService, TeamService) {

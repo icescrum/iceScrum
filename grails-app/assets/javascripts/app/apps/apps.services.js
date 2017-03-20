@@ -23,10 +23,16 @@
  */
 
 services.service("AppService", ['FormService', function(FormService) {
+    var self = this;
     this.updateEnabledForProject = function(appDefinition, enabledForProject) {
         return FormService.httpPost('app/updateEnabledForProject', {appDefinitionId: appDefinition.id, enabledForProject: enabledForProject}, null, false);
     };
     this.getAppDefinitions = function() {
         return FormService.httpGet('app/definitions', null, false);
     };
+    this.getAppDefinitionsWithProjectSettings = function() {
+        return self.getAppDefinitions().then(function(appDefinitions) {
+            return _.filter(appDefinitions, {hasProjectSettings: true, enabledForProject: true});
+        });
+    }
 }]);

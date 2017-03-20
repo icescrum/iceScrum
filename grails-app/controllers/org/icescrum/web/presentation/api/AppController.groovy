@@ -39,19 +39,16 @@ class AppController implements ControllerErrorHandler {
     @Secured('stakeHolder() or inProject()')
     def definitions(long project) {
         Project _project = Project.withProject(project)
-        def appDefinitions = appDefinitionService.getAppDefinitions().sort { it.name }.collect { AppDefinition appDefinition ->
-            def properties = appDefinition.properties
-            ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForProject'].each { k ->
-                properties.remove(k)
-            }
+        List<String> enabledAppIds = SimpleProjectApp.getEnabledAppIdsForProject(_project)
+        def appDefinitions = appDefinitionService.getAppDefinitions().sort {
+            it.name
+        }.collect { AppDefinition appDefinition ->
+            def attributes = AppDefinition.getAttributes(appDefinition)
             if (appDefinition.isProject) {
-                if (appDefinition.isSimple) {
-                    properties.enabledForProject = SimpleProjectApp.findByParentProjectAndAppDefinitionId(_project, appDefinition.id)?.enabled ?: false
-                } else {
-                    properties.enabledForProject = appDefinition.isEnabledForProject ? appDefinition.isEnabledForProject() : false
-                }
+                attributes.hasProjectSettings = appDefinition.projectSettings != null
+                attributes.enabledForProject = enabledAppIds.contains(appDefinition.id)
             }
-            return properties
+            return attributes
         }
         render(status: 200, contentType: 'application/json', text: appDefinitions as JSON)
     }
