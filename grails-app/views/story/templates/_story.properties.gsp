@@ -241,7 +241,7 @@
             </div>
             <div class="form-half">
                 <label for="creator">${message(code: 'is.story.creator')}</label>
-                <ui-select ng-click="editForm(true)"
+                <ui-select ng-click="editForm(true);searchCreator($select.search)"
                            ng-change="editForm(true)"
                            ng-disabled="!formEditable() || !authorizedStory('updateCreator', editableStory)"
                            class="form-control"
