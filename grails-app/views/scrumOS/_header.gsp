@@ -104,11 +104,11 @@
                                         </a>
                                     </li>
                                 </g:if>
-                                <li ng-if="authorizedProject('showApps')">
-                                    <a href ng-click="showAppsModal(currentProject)">
-                                        ${message(code: 'is.ui.app.apps')}
-                                    </a>
-                                </li>
+                                %{--<li ng-if="authorizedProject('showApps')">--}%
+                                    %{--<a href ng-click="showAppsModal(currentProject)">--}%
+                                        %{--${message(code: 'is.ui.app.apps')}--}%
+                                    %{--</a>--}%
+                                %{--</li>--}%
                             </g:if>
                             <g:if test="${projectFilteredsList}">
                                 <li role="presentation" class="divider" style='display:${projectFilteredsList ?'block':'none'}'></li>
