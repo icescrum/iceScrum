@@ -87,17 +87,17 @@ grails.project.dependency.resolution = {
         runtime 'mysql:mysql-connector-java:5.1.40'
     }
     plugins {
-        compile ':cache-headers:1.1.7'          //no support
-        compile ':asset-pipeline:2.11.0'        //:asset-pipeline:3.2.1
-        compile ':less-asset-pipeline:2.11.0'   //:less-asset-pipeline:2.11.6
-        compile ':browser-detection:2.8.0'      //:browser-detection:3.3.0
-        runtime ':hibernate4:4.3.10'            //hibernate5
+        compile ':cache-headers:1.1.7'
+        compile ':asset-pipeline:2.11.0'
+        compile ':less-asset-pipeline:2.11.0'
+        compile ':browser-detection:2.8.0'
+        runtime ':hibernate4:4.3.10'
         runtime 'org.grails.plugins:database-migration:1.4.1'
-        build   ':tomcat:7.0.70'                //tomcat...
-        compile 'org.icescrum:entry-points:1.2' //to do
+        build   ':tomcat:7.0.70'
+        compile 'org.icescrum:entry-points:1.3'
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'
-            compile 'org.icescrum:standalone:8.0.38.2'        //remove
+            compile 'org.icescrum:standalone:8.0.38.2'
         }
     }
 }
