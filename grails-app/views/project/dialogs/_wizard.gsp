@@ -61,6 +61,7 @@
                                    alert('${ message(code:'is.ui.sh.removed')}')
                                }"/>
         </is:fieldRadio>
+        <entry:point id="${controllerName}-${actionName}-after-hidden"/>
         <is:fieldSelect for="product.preferences.timezone" label="is.product.preferences.timezone">
           <is:localeTimeZone width="250" name="product.preferences.timezone" value="UTC"/>
         </is:fieldSelect>

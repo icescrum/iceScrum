@@ -241,7 +241,9 @@ class ProjectController {
         if (SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
             privateOption = false
         }
-        def dialog = g.render(template: "dialogs/wizard", model: [product: product, estimationSuitSelect: estimationSuitSelect, privateOption: privateOption])
+        def model = [product: product, estimationSuitSelect: estimationSuitSelect, privateOption: privateOption]
+        entry.hook(id:"${controllerName}-${actionName}Action", model: model)
+        def dialog = g.render(template: "dialogs/wizard", model: model)
         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
     }
 
