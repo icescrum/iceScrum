@@ -1059,12 +1059,17 @@ angular.module('isApp', [
             });
         };
 
-        $rootScope.showAppsModal = function() {
+        $rootScope.showAppsModal = function(appDefinitionId) {
+            var scope = $rootScope.$new();
+            if (appDefinitionId) {
+                scope.defaultAppDefinitionId = appDefinitionId;
+            }
             $uibModal.open({
                 keyboard: false,
                 templateUrl: 'apps.modal.html',
                 controller: 'appsCtrl',
-                size: 'lg'
+                size: 'lg',
+                scope: scope
             });
         };
 

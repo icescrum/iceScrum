@@ -55,7 +55,7 @@
                ng-controller="projectCtrl">
                 <button type="button"
                         ng-click="openAppProjectSettings(appDefinition)"
-                        class="btn btn-default">
+                        class="btn btn-primary">
                     ${message(code: 'is.ui.apps.configure')}
                 </button>
             </p>

@@ -61,6 +61,9 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', function($scope, App
     AppService.getAppDefinitions().then(function(appDefinitions) {
         if (appDefinitions.length > 0) {
             $scope.appDefinitions = appDefinitions;
+            if ($scope.defaultAppDefinitionId) {
+                $scope.appDefinition = _.find($scope.appDefinitions, {id: $scope.defaultAppDefinitionId});
+            }
         }
     });
 }]);
