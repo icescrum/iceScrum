@@ -120,7 +120,7 @@ controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService'
         {
             name: 'is.ui.releasePlan.menu.sprint.activate',
             visible: function(sprint) { return $scope.authorizedSprint('activate', sprint); },
-            priority: function(sprint, defaultPriority) { return sprint.state === 1 && (sprint.stories.length > 0 || sprint.startDate.getTime() < (new Date()).getTime()) ? 100 : defaultPriority; },
+            priority: function(sprint, defaultPriority) { return sprint.state === 1 && (sprint.stories_ids.length > 0 || sprint.startDate.getTime() < (new Date()).getTime()) ? 100 : defaultPriority; },
             action: function(sprint) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'), callback: $scope.activate, args: [sprint]}); }
         },
         {
