@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="apps.modal.html">
-<is:modal title="${message(code: 'is.ui.apps.title')}"
+<is:modal title="${message(code: 'is.ui.apps')}"
           class="apps-modal split-modal">
     <div class="row" ng-class="{'hide-left-panel': !appDefinition}">
         <div class="left-panel">
