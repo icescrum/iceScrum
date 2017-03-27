@@ -667,9 +667,7 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
 services.service("DateService", [function() {
     var self = this;
     this.immutableAddDaysToDate = function(date, days) {
-        var newDate = new Date(date);
-        newDate.setDate(date.getDate() + days);
-        return newDate;
+        return moment(date).utc().add(days, 'days').toDate(); // POC using moment instead of custom management
     };
     this.immutableAddMonthsToDate = function(date, months) {
         var newDate = new Date(date);
