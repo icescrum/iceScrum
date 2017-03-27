@@ -40,9 +40,7 @@ class AppController implements ControllerErrorHandler {
     def definitions(long project) {
         Project _project = Project.withProject(project)
         List<String> enabledAppIds = SimpleProjectApp.getEnabledAppIdsForProject(_project)
-        def appDefinitions = appDefinitionService.getAppDefinitions().sort {
-            it.name
-        }.collect { AppDefinition appDefinition ->
+        def appDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
             def attributes = AppDefinition.getAttributes(appDefinition)
             if (appDefinition.isProject) {
                 attributes.hasProjectSettings = appDefinition.projectSettings != null
