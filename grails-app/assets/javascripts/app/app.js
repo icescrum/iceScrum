@@ -1002,6 +1002,20 @@ angular.module('isApp', [
             });
         };
 
+        $rootScope.showManageTeamsModal = function(team) { // Needs to be next to showProjectEditModal
+            $uibModal.open({
+                keyboard: false,
+                templateUrl: $rootScope.serverUrl + "/team/manage",
+                size: 'lg',
+                controller: ['$scope', '$controller', function($scope, $controller) {
+                    if (team) {
+                        $scope.team = team;
+                    }
+                    $controller('manageTeamsModalCtrl', {$scope: $scope});
+                }]
+            });
+        };
+
         $rootScope.showAuthModal = function(username, loginSuccess, loginFailure) {
             var childScope = $rootScope.$new();
             if (username) {
