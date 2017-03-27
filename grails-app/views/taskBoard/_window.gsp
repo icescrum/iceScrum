@@ -94,29 +94,6 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="btn-group hidden" uib-dropdown>
-                            <button type="button"
-                                    class="btn btn-default"
-                                    uib-tooltip="${message(code:'is.ui.window.print')} (P)"
-                                    ng-click="print($event)"
-                                    ng-href="taskBoard/{{::sprint.id}}/print"
-                                    hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
-                            </button>
-                            <button class="btn btn-default"
-                                    uib-tooltip="${message(code:'todo.is.ui.export')}"
-                                    uib-dropdown-toggle type="button">
-                                <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
-                            </button>
-                            <ul uib-dropdown-menu
-                                role="menu">
-                                <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
-                                    <li role="menuitem">
-                                        <a href="${format.controller?:'taskBoard'}/{{ ::sprint.id }}/${format.action?:'print'}/${format.params.format}"
-                                           ng-click="print($event)">${format.name}</a>
-                                    </li>
-                                </g:each>
-                            </ul>
-                        </div>
                         <entry:point id="taskBoard-window-toolbar-right"/>
                         <div class="btn-group" role="group" ng-controller="sprintCtrl">
                             <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>

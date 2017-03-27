@@ -422,7 +422,7 @@ log4j = {
         debug 'org.icescrum.atmosphere'
         debug 'grails.app.org.icescrum'
         debug 'org.icescrum.plugins'
-        debug 'net.sf.jasperreports'
+//        debug 'net.sf.jasperreports'
         debug 'org.icescrum.core'
         debug 'org.atmosphere'
         debug 'com.kagilum'

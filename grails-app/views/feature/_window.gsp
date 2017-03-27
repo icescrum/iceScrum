@@ -61,11 +61,13 @@
                             class="btn btn-default"
                             uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                             ng-click="print($event)"
+                            ng-disabled="!features.length"
                             ng-href="feature/print"
                             hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                     </button>
                     <button class="btn btn-default"
                             uib-dropdown-toggle
+                            ng-disabled="!features.length"
                             type="button">
                         <i class="fa fa-download"></i> <i class="fa fa-caret-down"></i>
                     </button>

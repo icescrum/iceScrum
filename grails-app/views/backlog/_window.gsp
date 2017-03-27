@@ -124,11 +124,13 @@
                                     class="btn btn-default"
                                     uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                                     ng-click="print($event)"
+                                    ng-disabled="!backlogContainer.backlog.stories.length"
                                     ng-href="backlog/{{ ::backlogContainer.backlog.id }}/print"
                                     hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                             </button>
                             <button class="btn btn-default"
                                     uib-tooltip="${message(code:'todo.is.ui.export')}"
+                                    ng-disabled="!backlogContainer.backlog.stories.length"
                                     uib-dropdown-toggle type="button">
                                 <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
                             </button>
