@@ -207,22 +207,22 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Dat
         $scope.resetFormValidation($scope.formHolder.sprintForm);
     };
     $scope.save = function(sprint, andContinue) {
-        SprintService.save(sprint, $scope.release)
-            .then(function(sprint) {
-                if (andContinue) {
-                    $scope.resetSprintForm();
-                } else {
-                    $scope.setInEditingMode(true);
-                    $state.go('^.withId.details', {releaseId: $scope.release.id, sprintId: sprint.id});
-                }
-                $scope.notifySuccess('todo.is.ui.sprint.saved');
-            });
+        SprintService.save(sprint, $scope.release).then(function(sprint) {
+            if (andContinue) {
+                $scope.resetSprintForm();
+                initSprintDates();
+            } else {
+                $scope.setInEditingMode(true);
+                $state.go('^.withId.details', {releaseId: $scope.release.id, sprintId: sprint.id});
+            }
+            $scope.notifySuccess('todo.is.ui.sprint.saved');
+        });
     };
     $scope.selectRelease = function(release) {
         $scope.release = _.find($scope.editableReleases, {id: release.id});
     };
     // Init
-    var sprintWatcher = function() {
+    var initSprintDates = function() {
         var sprints = $scope.release.sprints;
         if (!_.isUndefined(sprints)) {
             if (_.isEmpty(sprints)) {
@@ -236,8 +236,8 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Dat
             $scope.sprint.endDate = _.min([hypotheticalEndDate, $scope.release.endDate]);
         }
     };
-    $scope.$watchCollection('release.sprints', sprintWatcher);
-    $scope.$watch('release', sprintWatcher);
+    $scope.$watchCollection('release.sprints', initSprintDates);
+    $scope.$watch('release', initSprintDates);
     $scope.$watchCollection('[sprint.startDate, sprint.endDate]', function(newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];

@@ -123,19 +123,18 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Da
         $scope.resetFormValidation($scope.formHolder.releaseForm);
     };
     $scope.save = function(release, andContinue) {
-        ReleaseService.save(release, $scope.project)
-            .then(function(release) {
-                if (andContinue) {
-                    $scope.resetReleaseForm();
-                } else {
-                    $scope.setInEditingMode(true);
-                    $state.go('^.release.details', {releaseId: release.id});
-                }
-                $scope.notifySuccess('todo.is.ui.release.saved');
-            });
+        ReleaseService.save(release, $scope.project).then(function(release) {
+            if (andContinue) {
+                $scope.resetReleaseForm();
+                initReleaseDates($scope.project.releases);
+            } else {
+                $scope.setInEditingMode(true);
+                $state.go('^.release.details', {releaseId: release.id});
+            }
+            $scope.notifySuccess('todo.is.ui.release.saved');
+        });
     };
-    // Init
-    $scope.$watchCollection('project.releases', function(releases) {
+    var initReleaseDates = function(releases) {
         if (!_.isUndefined(releases)) {
             if (_.isEmpty(releases)) {
                 $scope.startDateOptions.minDate = $scope.project.startDate;
@@ -145,7 +144,9 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Da
             $scope.release.startDate = $scope.startDateOptions.minDate;
             $scope.release.endDate = DateService.immutableAddMonthsToDate($scope.release.startDate, 3);
         }
-    });
+    };
+    // Init
+    $scope.$watchCollection('project.releases', initReleaseDates);
     $scope.$watchCollection('[release.startDate, release.endDate]', function(newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
