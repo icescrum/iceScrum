@@ -40,7 +40,7 @@
     </div>
     <div class="col-md-4">
         <div class="text-center actions"
-             ng-if="appDefinition.isProject">
+             ng-if="appDefinition.isProject && authorizedApp('update')">
             <p>
                 <button ng-if="!appDefinition.enabledForProject"
                         type="button"

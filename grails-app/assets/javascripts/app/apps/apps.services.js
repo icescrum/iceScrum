@@ -22,7 +22,7 @@
  *
  */
 
-services.service("AppService", ['FormService', function(FormService) {
+services.service("AppService", ['Session', 'FormService', function(Session, FormService) {
     var self = this;
     this.updateEnabledForProject = function(appDefinition, enabledForProject) {
         return FormService.httpPost('app/updateEnabledForProject', {appDefinitionId: appDefinition.id, enabledForProject: enabledForProject}, null, false);
@@ -34,5 +34,15 @@ services.service("AppService", ['FormService', function(FormService) {
         return self.getAppDefinitions().then(function(appDefinitions) {
             return _.filter(appDefinitions, {hasProjectSettings: true, enabledForProject: true});
         });
-    }
+    };
+    this.authorizedApp = function(action) {
+        switch(action) {
+            case 'show':
+                return Session.authenticated();
+            case 'update':
+                return Session.sm();
+            default:
+                return false;
+        }
+    };
 }]);

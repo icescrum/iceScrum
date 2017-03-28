@@ -55,6 +55,7 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', function($scope, App
         $scope.$close();
         $scope.showProjectEditModal(appDefinition.id);
     };
+    $scope.authorizedApp = AppService.authorizedApp;
     // Init
     $scope.holder = {};
     $scope.appDefinitions = [];

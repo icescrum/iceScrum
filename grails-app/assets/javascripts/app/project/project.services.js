@@ -89,7 +89,6 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
             case 'delete':
                 return Session.owner(project);
             case 'edit':
-            case 'showApps':
                 return Session.authenticated();
             default:
                 return false;
