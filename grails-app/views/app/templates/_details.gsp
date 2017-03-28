@@ -31,6 +31,12 @@
         </button>
     </div>
 </h3>
+<div ng-if="appDefinition.isServer && !appDefinition.enabledForServer">
+    <div class="alert alert-warning" role="alert">
+        ${message(code: 'is.ui.apps.server.disabled')}
+    </div>
+    <hr/>
+</div>
 <div class="row">
     <div class="col-md-8">
         <div class="col-md-6 thumbnail"
@@ -40,7 +46,7 @@
     </div>
     <div class="col-md-4">
         <div class="text-center actions"
-             ng-if="appDefinition.isProject && authorizedApp('update')">
+             ng-if="appDefinition.isProject && authorizedApp('update') && (!appDefinition.isServer || appDefinition.enabledForServer)">
             <p>
                 <button ng-if="!appDefinition.enabledForProject"
                         type="button"

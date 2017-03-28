@@ -35,20 +35,33 @@ class AppController implements ControllerErrorHandler {
 
     def appService
     def appDefinitionService
+    def grailsApplication
 
     @Secured('stakeHolder() or inProject()')
     def definitions(long project) {
         Project _project = Project.withProject(project)
         List<String> enabledAppIds = SimpleProjectApp.getEnabledAppIdsForProject(_project)
-        def appDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
-            def attributes = AppDefinition.getAttributes(appDefinition)
-            if (appDefinition.isProject) {
-                attributes.hasProjectSettings = appDefinition.projectSettings != null
-                attributes.enabledForProject = enabledAppIds.contains(appDefinition.id)
+        def marshalledDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
+            Map marshalledAppDefinition = appDefinition.properties.clone()
+            ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForServer'].each { k ->
+                marshalledAppDefinition.remove(k)
             }
-            return attributes
+            ['name', 'baseline', 'description'].each { k ->
+                marshalledAppDefinition[k] = message(code: 'is.ui.apps.' + appDefinition.id + '.'+ k)
+            }
+            marshalledAppDefinition.tags = marshalledAppDefinition.tags?.collect {
+                message(code: it)
+            }
+            if (appDefinition.isServer) {
+                marshalledAppDefinition.enabledForServer = appDefinition.isEnabledForServer ? appDefinition.isEnabledForServer(grailsApplication) : true
+            }
+            if (appDefinition.isProject) {
+                marshalledAppDefinition.hasProjectSettings = appDefinition.projectSettings != null
+                marshalledAppDefinition.enabledForProject = enabledAppIds.contains(appDefinition.id)
+            }
+            return marshalledAppDefinition
         }
-        render(status: 200, contentType: 'application/json', text: appDefinitions as JSON)
+        render(status: 200, contentType: 'application/json', text: marshalledDefinitions as JSON)
     }
 
     @Secured('scrumMaster()')
