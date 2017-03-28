@@ -43,6 +43,7 @@
 <div class="row list">
     <div class="col-xs-6 col-md-3" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy:'name')">
         <a ng-click="openAppDefinition(currentAppDefinition)"
+           uib-tooltip="{{ currentAppDefinition.baseline }}"
            class="text-center thumbnail">
             <img ng-src="currentAppDefinition.logo"
                  ng-if="currentAppDefinition.logo"
