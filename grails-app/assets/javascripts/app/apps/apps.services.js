@@ -35,12 +35,14 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
             return _.filter(appDefinitions, {hasProjectSettings: true, enabledForProject: true});
         });
     };
-    this.authorizedApp = function(action) {
+    this.authorizedApp = function(action, appDefinitionId, project) {
         switch(action) {
             case 'show':
                 return Session.authenticated();
             case 'update':
                 return Session.sm();
+            case 'use':
+                return project && _.find(project.simpleProjectApps, {appDefinitionId: appDefinitionId, enabled: true});
             default:
                 return false;
         }

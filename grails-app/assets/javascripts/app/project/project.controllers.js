@@ -21,11 +21,10 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", 'AppService', 'ProjectService', 'FormService', 'PushService', 'Session', '$uibModal', '$state', function($scope, AppService, ProjectService, FormService, PushService, Session, $uibModal, $state) {
+controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService', 'PushService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, PushService, Session, $uibModal, $state) {
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
-    $scope.authorizedApp = AppService.authorizedApp;
     $scope.showProjectListModal = function(listType) {
         $uibModal.open({
             keyboard: false,

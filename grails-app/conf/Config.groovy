@@ -171,7 +171,7 @@ icescrum.marshaller = [
                 textile: ['notes'],
                 asShort: ['state', 'effort', 'uid', 'name', 'rank']],
         comment: [textile: ['body'], include: ['poster']],
-        project: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners'],
+        project: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps'],
                   exclude: ['cliches'],
                   textile: ['description']],
         team: [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
@@ -206,7 +206,8 @@ icescrum.marshaller = [
                                        'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment: [include: ['filename']],
         acceptancetest: [textile: ['description'], asShort: ['state']],
-        template: [asShort: ['name']]
+        template: [asShort: ['name']],
+        simpleprojectapp: [exclude: ['parentProject']]
 ]
 
 icescrum.activities.important = [Activity.CODE_SAVE, 'acceptAs', 'estimate', 'plan', 'unPlan', 'done', 'unDone', 'returnToSandbox']
