@@ -38,7 +38,6 @@ import sun.misc.BASE64Decoder
 
 class ScrumOSController implements ControllerErrorHandler {
 
-    def appDefinitionService
     def messageSource
     def servletContext
     def projectService
