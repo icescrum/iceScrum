@@ -45,7 +45,7 @@
         <a ng-click="openAppDefinition(currentAppDefinition)"
            uib-tooltip="{{ currentAppDefinition.baseline }}"
            class="text-center thumbnail">
-            <img ng-src="currentAppDefinition.logo"
+            <img ng-src="{{ currentAppDefinition.logo }}"
                  ng-if="currentAppDefinition.logo"
                  alt="{{ currentAppDefinition.name }}">
             <span >
