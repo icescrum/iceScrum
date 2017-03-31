@@ -43,7 +43,7 @@ class AppController implements ControllerErrorHandler {
         List<String> enabledAppIds = SimpleProjectApp.getEnabledAppIdsForProject(_project)
         def marshalledDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
             Map marshalledAppDefinition = appDefinition.properties.clone()
-            ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForServer'].each { k ->
+            ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForServer', 'isAvailableForServer'].each { k ->
                 marshalledAppDefinition.remove(k)
             }
             ['name', 'baseline', 'description'].each { k ->
@@ -52,11 +52,9 @@ class AppController implements ControllerErrorHandler {
             marshalledAppDefinition.tags = marshalledAppDefinition.tags?.collect {
                 message(code: it)
             }
-            if (appDefinition.isServer) {
-                marshalledAppDefinition.enabledForServer = appDefinition.isEnabledForServer ? appDefinition.isEnabledForServer(grailsApplication) : true
-            }
+            marshalledAppDefinition.availableForServer = appDefinition.isAvailableForServer ? appDefinition.isAvailableForServer() : true
+            marshalledAppDefinition.enabledForServer = appDefinition.isEnabledForServer ? appDefinition.isEnabledForServer(grailsApplication) : true
             if (appDefinition.isProject) {
-                marshalledAppDefinition.hasProjectSettings = appDefinition.projectSettings != null
                 marshalledAppDefinition.enabledForProject = enabledAppIds.contains(appDefinition.id)
             }
             return marshalledAppDefinition

@@ -31,7 +31,7 @@
         </button>
     </div>
 </h3>
-<div ng-if="appDefinition.isServer && !appDefinition.enabledForServer">
+<div ng-if="appDefinition.availableForServer && !appDefinition.enabledForServer">
     <div class="alert alert-warning" role="alert">
         ${message(code: 'is.ui.apps.server.disabled')}
     </div>
@@ -46,7 +46,7 @@
     </div>
     <div class="col-md-4">
         <div class="text-center actions"
-             ng-if="appDefinition.isProject && authorizedApp('update') && (!appDefinition.isServer || appDefinition.enabledForServer)">
+             ng-if="authorizedApp('enableForProject', appDefinition)">
             <p>
                 <button ng-if="!appDefinition.enabledForProject"
                         type="button"
@@ -57,8 +57,10 @@
                         class="btn btn-danger"
                         ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
             </p>
-            <p ng-if="appDefinition.hasProjectSettings && appDefinition.enabledForProject"
-               ng-controller="projectCtrl">
+        </div>
+        <div class="text-center actions"
+             ng-if="authorizedApp('updateProjectSettings', appDefinition)">
+            <p ng-controller="projectCtrl">
                 <button type="button"
                         ng-click="openAppProjectSettings(appDefinition)"
                         class="btn btn-primary">

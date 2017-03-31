@@ -32,17 +32,21 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
     };
     this.getAppDefinitionsWithProjectSettings = function() {
         return self.getAppDefinitions().then(function(appDefinitions) {
-            return _.filter(appDefinitions, {hasProjectSettings: true, enabledForProject: true});
+            return _.filter(appDefinitions, function(appDefinition) {
+                return self.authorizedApp('updateProjectSettings', appDefinition)
+            });
         });
     };
-    this.authorizedApp = function(action, appDefinitionId, project) {
+    this.authorizedApp = function(action, appDefinition, project) {
         switch(action) {
             case 'show':
                 return Session.authenticated();
-            case 'update':
-                return Session.sm();
+            case 'enableForProject':
+                return Session.sm() && appDefinition && appDefinition.availableForServer && appDefinition.enabledForServer && appDefinition.isProject;
+            case 'updateProjectSettings':
+                return self.authorizedApp('enableForProject', appDefinition) && appDefinition.enabledForProject && appDefinition.projectSettings;
             case 'use':
-                return project && _.find(project.simpleProjectApps, {appDefinitionId: appDefinitionId, enabled: true});
+                return project && _.find(project.simpleProjectApps, {appDefinitionId: appDefinition, enabled: true}); // Hack to avoid the need to pass an object, here appDefinition is only the ID
             default:
                 return false;
         }
