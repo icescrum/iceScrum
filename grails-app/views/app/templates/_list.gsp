@@ -42,16 +42,12 @@
 </div>
 <div class="row list">
     <div class="col-xs-6 col-md-3" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy:'name')">
-        <a ng-click="openAppDefinition(currentAppDefinition)"
+        <div ng-click="openAppDefinition(currentAppDefinition)"
            uib-tooltip="{{ currentAppDefinition.baseline }}"
-           class="text-center thumbnail">
-            <img ng-src="{{ currentAppDefinition.logo }}"
-                 ng-if="currentAppDefinition.logo"
-                 alt="{{ currentAppDefinition.name }}">
-            <span >
+           style="height: 50px; cursor:pointer; vertical-align: middle"
+           class="text-center">
                 {{ currentAppDefinition.name }}
-            </span>
-        </a>
+        </div>
     </div>
     <div class="text-center more-results" ng-hide="filteredApps.length">
         <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code:'is.ui.apps.store.search')}</a>
