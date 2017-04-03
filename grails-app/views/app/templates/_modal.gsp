@@ -50,9 +50,9 @@
                 <li ng-class="{'current': currentAppDefinition == appDefinition}"
                     ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy:'name')">
                     <a ng-click="openAppDefinition(currentAppDefinition)" href>
-                        <i class="fa fa-{{ currentAppDefinition.icon }}"></i>
                         {{ currentAppDefinition.name }}
-                        <i ng-if="currentAppDefinition.installed" class="fa fa-check text-success"></i>
+                        <i ng-if="currentAppDefinition.isNew" class="fa fa-fire icon-right"></i>
+                        <i ng-if="currentAppDefinition.enabledForProject" class="fa fa-check text-success"></i>
                     </a>
                 </li>
             </ul>

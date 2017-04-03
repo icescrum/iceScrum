@@ -23,13 +23,11 @@
 
 <script type="text/ng-template" id="app.details.html">
 <h3>
-    <i class="fa fa-{{ appDefinition.icon }}"></i> {{ appDefinition.name }}
-    <div class="pull-right">
-        <button ng-click="openAppDefinition()"
-                class="btn btn-default">
-            <i class="fa fa-times"></i>
-        </button>
-    </div>
+    <button ng-click="openAppDefinition()"
+            class="btn btn-default">
+        <i class="fa fa-arrow-left"></i>
+    </button>
+    {{ appDefinition.name }}
 </h3>
 <div ng-if="appDefinition.availableForServer && !appDefinition.enabledForServer">
     <div class="alert alert-warning" role="alert">
@@ -81,7 +79,7 @@
 </div>
 <div class="row">
     <div class="col-md-8">
-        <em>{{appDefinition.baseline}}</em>
+        <em>{{ appDefinition.baseline }}</em>
         <p class="description" ng-bind-html="appDefinition.description"></p>
     </div>
     <div class="col-md-4">

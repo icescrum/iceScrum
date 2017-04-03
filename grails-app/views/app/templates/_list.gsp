@@ -43,9 +43,9 @@
 <div class="row list">
     <div class="col-xs-6 col-md-3" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy:'name')">
         <div ng-click="openAppDefinition(currentAppDefinition)"
-           uib-tooltip="{{ currentAppDefinition.baseline }}"
-           style="height: 50px; cursor:pointer; vertical-align: middle"
-           class="text-center">
+             uib-tooltip="{{ currentAppDefinition.baseline }}"
+             style="height: 50px; cursor:pointer; vertical-align: middle"
+             class="text-center">
                 {{ currentAppDefinition.name }}
         </div>
     </div>
