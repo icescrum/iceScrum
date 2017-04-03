@@ -52,6 +52,9 @@ class AppController implements ControllerErrorHandler {
             marshalledAppDefinition.tags = marshalledAppDefinition.tags?.collect {
                 message(code: it)
             }
+
+            marshalledAppDefinition['logo'] = grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src:AppDefinition.getAssetPath(appDefinition,appDefinition.logo)])
+
             marshalledAppDefinition.availableForServer = appDefinition.isAvailableForServer ? appDefinition.isAvailableForServer() : true
             marshalledAppDefinition.enabledForServer = appDefinition.isEnabledForServer ? appDefinition.isEnabledForServer(grailsApplication) : true
             if (appDefinition.isProject) {
