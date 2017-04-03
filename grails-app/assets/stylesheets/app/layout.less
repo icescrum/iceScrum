@@ -1044,13 +1044,34 @@ table {
       overflow-y: auto;
     }
     .thumbnail{
+      padding: 5px;
       margin-bottom: 0;
       > img {
-        height: 128px;
+        border: 1px solid #ccc;
       }
+      &.col-md-12 > img {
+        width:406px;
+        height:255px;
+      }
+      &.col-md-6 > img {
+        width:406px/2;
+        height:255px/2;
+      }
+      &.col-md-4 > img {
+        width:406px/3;
+        height:255px/3;
+      }
+
     }
-    .actions .btn {
-      width:100%;
+    .actions {
+      > img {
+        width:100px;
+        height:100px;
+        padding:10px;
+      }
+      .btn {
+        width: 100%;
+      }
     }
     .table.information {
       margin-bottom:0;
@@ -1058,6 +1079,12 @@ table {
   }
   .list {
     margin-top: 15px;
+    .app-icon {
+      > img {
+        width:75px;
+        height:75px;
+      }
+    }
   }
   .more-results {
     margin:10px;

@@ -37,20 +37,16 @@
 </div>
 <div class="row">
     <div class="col-md-8">
-        <div class="col-md-6 thumbnail"
-             ng-repeat="screenshot in holder.app.screenshots">
+        <div class="col-md-{{ 12 / appDefinition.screenshots.length }} thumbnail"
+             ng-repeat="screenshot in appDefinition.screenshots">
             <img ng-src="{{ screenshot }}">
         </div>
     </div>
     <div class="col-md-4">
         <div class="text-center actions"
              ng-if="authorizedApp('enableForProject', appDefinition)">
-            <p>
                 <img ng-src="{{ appDefinition.logo }}"
-                     width="100"
-                     height="100"
                      alt="{{ appDefinition.name }}">
-            </p>
             <p>
                 <button ng-if="!appDefinition.enabledForProject"
                         type="button"

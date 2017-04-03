@@ -53,8 +53,13 @@ class AppController implements ControllerErrorHandler {
                 message(code: it)
             }
 
-            marshalledAppDefinition['logo'] = grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src:AppDefinition.getAssetPath(appDefinition,appDefinition.logo)])
+            marshalledAppDefinition.screenshots = []
+            def screenshots = appDefinition.screenshots.size() > 3 ? appDefinition.screenshots[0..2] : appDefinition.screenshots
+            screenshots.each{ String screenshot ->
+                marshalledAppDefinition.screenshots << grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src:AppDefinition.getAssetPath(appDefinition,screenshot)])
+            }
 
+            marshalledAppDefinition.logo = grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src:AppDefinition.getAssetPath(appDefinition,appDefinition.logo)])
             marshalledAppDefinition.availableForServer = appDefinition.isAvailableForServer ? appDefinition.isAvailableForServer() : true
             marshalledAppDefinition.enabledForServer = appDefinition.isEnabledForServer ? appDefinition.isEnabledForServer(grailsApplication) : true
             if (appDefinition.isProject) {
