@@ -46,6 +46,12 @@
         <div class="text-center actions"
              ng-if="authorizedApp('enableForProject', appDefinition)">
             <p>
+                <img ng-src="{{ appDefinition.logo }}"
+                     width="100"
+                     height="100"
+                     alt="{{ appDefinition.name }}">
+            </p>
+            <p>
                 <button ng-if="!appDefinition.enabledForProject"
                         type="button"
                         class="btn btn-success"
