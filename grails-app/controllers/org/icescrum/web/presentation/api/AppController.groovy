@@ -52,13 +52,11 @@ class AppController implements ControllerErrorHandler {
             marshalledAppDefinition.tags = marshalledAppDefinition.tags?.collect {
                 message(code: it)
             }
-            marshalledAppDefinition.screenshots = []
-            def screenshots = appDefinition.screenshots.size() > 3 ? appDefinition.screenshots[0..2] : appDefinition.screenshots
-            screenshots.each { String screenshot ->
-                marshalledAppDefinition.screenshots << grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src: AppDefinition.getAssetPath(appDefinition, screenshot)])
+            marshalledAppDefinition.screenshots = appDefinition.screenshots.take(3).collect { String screenshot ->
+                return asset.assetPath([src: appDefinition.getAssetPath(screenshot)])
             }
-            marshalledAppDefinition.logo = grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src: AppDefinition.getAssetPath(appDefinition, appDefinition.logo)])
-            marshalledAppDefinition.availableForServer = appDefinition.isAvailableForServer ? appDefinition.isAvailableForServer() : true
+            marshalledAppDefinition.logo = asset.assetPath([src: appDefinition.getAssetPath(appDefinition.logo)])
+            marshalledAppDefinition.availableForServer = appDefinition.isAvailableForServer ? appDefinition.isAvailableForServer(grailsApplication) : true
             marshalledAppDefinition.enabledForServer = appDefinition.isEnabledForServer ? appDefinition.isEnabledForServer(grailsApplication) : true
             if (appDefinition.isProject) {
                 marshalledAppDefinition.enabledForProject = enabledAppIds.contains(appDefinition.id)

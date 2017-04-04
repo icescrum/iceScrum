@@ -52,7 +52,8 @@
                     <a ng-click="openAppDefinition(currentAppDefinition)" href>
                         {{ currentAppDefinition.name }}
                         <i ng-if="currentAppDefinition.isNew" class="fa fa-fire icon-right"></i>
-                        <i ng-if="currentAppDefinition.enabledForProject" class="fa fa-check text-success"></i>
+                        <i ng-if="isEnabledApp(currentAppDefinition)"
+                           class="fa fa-check text-success"></i>
                     </a>
                 </li>
             </ul>

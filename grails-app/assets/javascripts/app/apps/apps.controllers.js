@@ -55,6 +55,9 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', function($scope, App
         $scope.$close();
         $scope.showProjectEditModal(appDefinition.id);
     };
+    $scope.isEnabledApp = function(appDefinition) {
+        return appDefinition.availableForServer && appDefinition.enabledForServer && (!appDefinition.isProject || appDefinition.enabledForProject);
+    };
     // Init
     $scope.holder = {};
     $scope.appDefinitions = [];

@@ -35,6 +35,7 @@
     </div>
     <hr/>
 </div>
+<entry:point id="app-details-before"/>
 <div class="row">
     <div class="col-md-8">
         <div class="col-md-{{ 12 / appDefinition.screenshots.length }} thumbnail"
@@ -43,10 +44,12 @@
         </div>
     </div>
     <div class="col-md-4">
+        <div class="text-center actions">
+            <img ng-src="{{ appDefinition.logo }}"
+                 alt="{{ appDefinition.name }}">
+        </div>
         <div class="text-center actions"
              ng-if="authorizedApp('enableForProject', appDefinition)">
-                <img ng-src="{{ appDefinition.logo }}"
-                     alt="{{ appDefinition.name }}">
             <p>
                 <button ng-if="!appDefinition.enabledForProject"
                         type="button"
