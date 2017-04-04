@@ -40,9 +40,9 @@
         </div>
     </div>
 </div>
-<div class="row list">
+<div class="row app-list">
     <div class="col-xs-6 col-md-3 text-center" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy:'name')">
-        <div class="app-icon" uib-tooltip="{{ currentAppDefinition.baseline }}">
+        <div class="app-logo" uib-tooltip="{{ currentAppDefinition.baseline }}">
             <img ng-click="openAppDefinition(currentAppDefinition)"
                  ng-src="{{ currentAppDefinition.logo }}"
                  alt="{{ currentAppDefinition.name }}">

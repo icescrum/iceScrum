@@ -47,19 +47,17 @@ class AppController implements ControllerErrorHandler {
                 marshalledAppDefinition.remove(k)
             }
             ['name', 'baseline', 'description'].each { k ->
-                marshalledAppDefinition[k] = message(code: 'is.ui.apps.' + appDefinition.id + '.'+ k)
+                marshalledAppDefinition[k] = message(code: 'is.ui.apps.' + appDefinition.id + '.' + k)
             }
             marshalledAppDefinition.tags = marshalledAppDefinition.tags?.collect {
                 message(code: it)
             }
-
             marshalledAppDefinition.screenshots = []
             def screenshots = appDefinition.screenshots.size() > 3 ? appDefinition.screenshots[0..2] : appDefinition.screenshots
-            screenshots.each{ String screenshot ->
-                marshalledAppDefinition.screenshots << grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src:AppDefinition.getAssetPath(appDefinition,screenshot)])
+            screenshots.each { String screenshot ->
+                marshalledAppDefinition.screenshots << grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src: AppDefinition.getAssetPath(appDefinition, screenshot)])
             }
-
-            marshalledAppDefinition.logo = grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src:AppDefinition.getAssetPath(appDefinition,appDefinition.logo)])
+            marshalledAppDefinition.logo = grailsApplication.mainContext.getBean('asset.pipeline.grails.AssetsTagLib').assetPath([src: AppDefinition.getAssetPath(appDefinition, appDefinition.logo)])
             marshalledAppDefinition.availableForServer = appDefinition.isAvailableForServer ? appDefinition.isAvailableForServer() : true
             marshalledAppDefinition.enabledForServer = appDefinition.isEnabledForServer ? appDefinition.isEnabledForServer(grailsApplication) : true
             if (appDefinition.isProject) {
