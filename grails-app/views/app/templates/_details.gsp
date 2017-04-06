@@ -28,6 +28,8 @@
         <i class="fa fa-arrow-left"></i>
     </button>
     {{ appDefinition.name }}
+    <i ng-if="isEnabledApp(appDefinition)"
+       class="fa fa-check text-success pull-right"></i>
 </h3>
 <div ng-if="appDefinition.availableForServer && !appDefinition.enabledForServer">
     <div class="alert alert-warning" role="alert">
@@ -53,11 +55,11 @@
             <p>
                 <button ng-if="!appDefinition.enabledForProject"
                         type="button"
-                        class="btn btn-success"
+                        class="btn btn-primary"
                         ng-click="updateEnabledForProject(appDefinition, true)">${message(code: 'is.ui.apps.enable')}</button>
                 <button ng-if="appDefinition.enabledForProject"
                         type="button"
-                        class="btn btn-danger"
+                        class="btn btn-primary"
                         ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
             </p>
         </div>
