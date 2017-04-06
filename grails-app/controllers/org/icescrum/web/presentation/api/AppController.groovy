@@ -54,7 +54,7 @@ class AppController implements ControllerErrorHandler {
             marshalledAppDefinition.screenshots = appDefinition.screenshots.take(3).collect { String screenshot ->
                 return asset.assetPath([src: appDefinition.getAssetPath(screenshot)])
             }
-            marshalledAppDefinition.logo = asset.assetPath([src: appDefinition.getAssetPath(appDefinition.logo)])
+            marshalledAppDefinition.logo = asset.assetPath([src: 'logo-bg.png']) // TODO renable : asset.assetPath([src: appDefinition.getAssetPath(appDefinition.logo)])
             if (appDefinition.isProject) {
                 marshalledAppDefinition.enabledForProject = enabledAppIds.contains(appDefinition.id)
             }
