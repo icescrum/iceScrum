@@ -22,7 +22,7 @@
  *
  */
 
-registerAppController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService) {
+extensibleController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService) {
     $scope.defaultOptions = {
         chart: {
             height: 350

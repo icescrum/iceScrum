@@ -23,7 +23,7 @@
  */
 
 // Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We shoulw think of a better way to systematically register the listeners
-registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'ProjectService', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, ProjectService, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
+extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'ProjectService', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, ProjectService, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -455,7 +455,7 @@ registerAppController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumE
     $scope.tags = [];
 }]);
 
-registerAppController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
     function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, Session, StoryService, FormService, ActorService, FeatureService, ProjectService, UserService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
@@ -651,7 +651,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     refreshStories();
 }]);
 
-registerAppController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName) {
+extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.resetStoryForm = function() {

@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-registerAppController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', function($scope, $uibModal, AttachmentService, attachmentable, clazz) {
+extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', function($scope, $uibModal, AttachmentService, attachmentable, clazz) {
     // Functions
     $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
         AttachmentService.delete(attachment, attachmentable);
@@ -103,7 +103,7 @@ registerAppController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServi
 
 // Flow events are triggered by "$scope.$broadcast so they can be received only on controllers that are at the same level or below
 // Thus, this controller must be added at the lowest level where the event can be broadcasted from, i.e. the buttons
-registerAppController('attachmentNestedCtrl', ['$scope', 'AttachmentService', function($scope, AttachmentService) {
+extensibleController('attachmentNestedCtrl', ['$scope', 'AttachmentService', function($scope, AttachmentService) {
     $scope.$on('flow::fileSuccess', function(event, $flow, flowFile, message) {
         var attachment = JSON.parse(message);
         AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
