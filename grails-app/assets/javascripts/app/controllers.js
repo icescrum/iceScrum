@@ -51,7 +51,7 @@ var registerAppController = function(appControllerName, controllerArray) {
     controllers.controller(appControllerName, newControllerArray);
 };
 
-registerAppController('appCtrl', ['$controller', '$scope', '$localStorage', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $localStorage, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
+registerAppController('applicationCtrl', ['$controller', '$scope', '$localStorage', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $localStorage, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
     $controller('headerCtrl', {$scope: $scope});
     // Functions
     $scope.displayDetailsView = function() {
@@ -128,7 +128,7 @@ registerAppController('appCtrl', ['$controller', '$scope', '$localStorage', '$st
         });
     };
     $scope.fullScreen = function() {
-        $scope.app.isFullScreen = !$scope.app.isFullScreen;
+        $scope.application.isFullScreen = !$scope.application.isFullScreen;
     };
     // Postit size
     $scope.currentPostitSize = function(viewName, defaultSize) {
@@ -212,9 +212,9 @@ registerAppController('appCtrl', ['$controller', '$scope', '$localStorage', '$st
     };
     // Init loading
     $scope.$on('$viewContentLoading', function() {
-        $scope.app.loading = true;
-        if ($scope.app.loadingPercent < 90) {
-            $scope.app.loadingPercent += 5;
+        $scope.application.loading = true;
+        if ($scope.application.loadingPercent < 90) {
+            $scope.application.loadingPercent += 5;
         }
     });
     // Init loading
@@ -222,10 +222,10 @@ registerAppController('appCtrl', ['$controller', '$scope', '$localStorage', '$st
     var resizeTimeout = null;
     $scope.$on('$viewContentLoaded', function(event) {
         if (!event.defaultPrevented) {
-            if ($scope.app.loadingPercent < 90) {
-                $scope.app.loadingPercent += 5;
+            if ($scope.application.loadingPercent < 90) {
+                $scope.application.loadingPercent += 5;
             } else {
-                $scope.app.loading = false;
+                $scope.application.loading = false;
             }
             $timeout.cancel(resizeTimeout);
             resizeTimeout = $timeout(function() {
@@ -235,35 +235,35 @@ registerAppController('appCtrl', ['$controller', '$scope', '$localStorage', '$st
     });
     $scope.$on('$stateChangeStart', function(event) {
         if (!event.defaultPrevented) {
-            $scope.app.loading = true;
-            if ($scope.app.loadingPercent != 100) {
-                $scope.app.loadingPercent += 10;
+            $scope.application.loading = true;
+            if ($scope.application.loadingPercent != 100) {
+                $scope.application.loadingPercent += 10;
             }
         }
     });
     $scope.$on('$stateChangeSuccess', function(event) {
         if (!event.defaultPrevented) {
-            $scope.app.loading = false;
-            if ($scope.app.loadingPercent != 100) {
-                $scope.app.loadingPercent = 100;
+            $scope.application.loading = false;
+            if ($scope.application.loadingPercent != 100) {
+                $scope.application.loadingPercent = 100;
             }
         }
     });
     $scope.$watch(function() {
         return $http.pendingRequests.length;
     }, function(newVal) {
-        $scope.app.loading = newVal > 0 || $scope.app.loadingPercent < 100;
-        if ($scope.app.loadingPercent < 100) {
+        $scope.application.loading = newVal > 0 || $scope.application.loadingPercent < 100;
+        if ($scope.application.loadingPercent < 100) {
             if (newVal == 0) {
-                $scope.app.loadingPercent = 100;
+                $scope.application.loadingPercent = 100;
             } else {
-                $scope.app.loadingPercent = 100 - ((100 - $scope.app.loadingPercent) / newVal);
+                $scope.application.loadingPercent = 100 - ((100 - $scope.application.loadingPercent) / newVal);
             }
         }
     });
     // Init error managmeent
     $scope.$on(SERVER_ERRORS.notAuthenticated, function() {
-        if (!$scope.app.visibleAuthModal) {
+        if (!$scope.application.visibleAuthModal) {
             $scope.showAuthModal();
         }
     });
@@ -343,7 +343,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
         UserService.updateMenuPreferences({
             menuId: event.source.itemScope.modelValue.id,
             position: event.dest.index + 1,
-            hidden: event.dest.sortableScope.modelValue === $scope.app.menus.hidden
+            hidden: event.dest.sortableScope.modelValue === $scope.application.menus.hidden
         }).catch(function() {
             $scope.revertSortable(event);
         });
@@ -380,7 +380,7 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
             var filteredContexts = _.filter(contexts, function(context) {
                 return _.deburr(context.term.toLowerCase()).indexOf(_.deburr(term.toLowerCase())) != -1;
             });
-            var context = $scope.app.context;
+            var context = $scope.application.context;
             if (context) {
                 _.remove(filteredContexts, {type: context.type, id: context.id});
             }
@@ -397,32 +397,32 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
         return $state.href($state.current.name, $state.params) + '?context=tag' + ContextService.contextSeparator + tag;
     };
     $scope.hasContextOrSearch = function() {
-        return $scope.app.context || $scope.app.search;
+        return $scope.application.context || $scope.application.search;
     };
     $scope.clearContextAndSearch = function() {
         $scope.setContext(null);
     };
     $scope.setContextTermAndColorIfNeeded = function() {
-        if ($scope.app.context) {
+        if ($scope.application.context) {
             var setContextTermAndColor = function(context) {
-                $scope.app.context.term = context.term;
-                $scope.app.context.color = context.color;
+                $scope.application.context.term = context.term;
+                $scope.application.context.color = context.color;
             };
-            var cachedContext = _.find(ContextService.contexts, $scope.app.context);
+            var cachedContext = _.find(ContextService.contexts, $scope.application.context);
             if (cachedContext) {
                 setContextTermAndColor(cachedContext);
             } else {
                 // Hack around the context loading if the context is a feature in the cache, othwervise setting feature context from feature backlog doesn't work properly
                 var cachedFeature;
-                if ($scope.app.context.type == 'feature') {
-                    cachedFeature = CacheService.get('feature', $scope.app.context.id);
+                if ($scope.application.context.type == 'feature') {
+                    cachedFeature = CacheService.get('feature', $scope.application.context.id);
                     if (cachedFeature) {
                         setContextTermAndColor({id: cachedFeature.id.toString(), term: cachedFeature.name, color: cachedFeature.color});
                     }
                 }
                 if (!cachedFeature) {
                     ContextService.loadContexts().then(function(contexts) {
-                        var fetchedContext = _.find(contexts, $scope.app.context);
+                        var fetchedContext = _.find(contexts, $scope.application.context);
                         if (fetchedContext) {
                             setContextTermAndColor(fetchedContext);
                         }
@@ -432,37 +432,37 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
         }
     };
     // Init
-    $scope.app.context = ContextService.getContextFromUrl();
+    $scope.application.context = ContextService.getContextFromUrl();
     $scope.setContextTermAndColorIfNeeded();
     $scope.$on('$locationChangeSuccess', function() {
-        if ($scope.app.ignoreUrlContextChange) {
-            $scope.app.ignoreUrlContextChange = false;
+        if ($scope.application.ignoreUrlContextChange) {
+            $scope.application.ignoreUrlContextChange = false;
         } else {
             var urlContext = ContextService.getContextFromUrl();
-            if (!ContextService.equalContexts($scope.app.context, urlContext)) {
-                $scope.app.context = urlContext;
+            if (!ContextService.equalContexts($scope.application.context, urlContext)) {
+                $scope.application.context = urlContext;
                 $scope.setContextTermAndColorIfNeeded();
-                $scope.app.search = null;
+                $scope.application.search = null;
                 CacheService.emptyCaches();
                 $state.reload();
             }
         }
     });
     $scope.$on('$stateChangeStart', function() {
-        $scope.app.ignoreUrlContextChange = true;
+        $scope.application.ignoreUrlContextChange = true;
     });
     $scope.$on('$stateChangeError', function() {
-        $scope.app.ignoreUrlContextChange = false;
+        $scope.application.ignoreUrlContextChange = false;
     });
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
         if (!event.defaultPrevented) {
             if (fromState.name && toState.name) {
                 if (fromState.name.split('.')[0] !== toState.name.split('.')[0]) {
-                    $scope.app.search = null;
+                    $scope.application.search = null;
                 }
             }
             // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
-            var appContext = $scope.app.context;
+            var appContext = $scope.application.context;
             var urlContext = ContextService.getContextFromUrl();
             if (appContext && !ContextService.equalContexts(appContext, urlContext)) {
                 $timeout(function() {
@@ -470,10 +470,10 @@ controllers.controller('searchCtrl', ['$scope', '$location', '$state', '$timeout
                     $scope.setContext(appContext);
                 });
             } else {
-                $scope.app.ignoreUrlContextChange = false;
+                $scope.application.ignoreUrlContextChange = false;
             }
         } else {
-            $scope.app.ignoreUrlContextChange = false;
+            $scope.application.ignoreUrlContextChange = false;
         }
     });
 }]);

@@ -80,8 +80,8 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                     var data = !angular.isObject($message) ? JSON.parse($message) : $message;
                     if (data && data.class == 'Project') {
                         $scope.$close(true);
-                        $rootScope.app.loading = true;
-                        $rootScope.app.loadingText = " ";
+                        $rootScope.application.loading = true;
+                        $rootScope.application.loadingText = " ";
                         $timeout(function() {
                             document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
                         }, 2000);
@@ -113,8 +113,8 @@ controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService'
                             var data = response.data;
                             if (data && data.class == 'Project') {
                                 $scope.$close(true);
-                                $rootScope.app.loading = true;
-                                $rootScope.app.loadingText = " ";
+                                $rootScope.application.loading = true;
+                                $rootScope.application.loadingText = " ";
                                 $timeout(function() {
                                     document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
                                 }, 2000);

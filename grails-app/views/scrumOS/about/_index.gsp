@@ -19,7 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:modal title="${message(code: 'is.ui.app.about')}">
+<is:modal title="${message(code: 'is.ui.about')}">
     <uib-tabset type="pills" justified="true">
         <uib-tab heading="${message(code: 'is.dialog.about.warnings')}">
             <g:render template="/${controllerName}/about/warnings"/>

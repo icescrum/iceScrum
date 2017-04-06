@@ -176,7 +176,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName'
     };
     // Init
     $scope.viewName = 'planning';
-    $scope.visibleSprintMax = $scope.app.mobilexs ? 1 : ($scope.app.mobile ? 2 : 3);
+    $scope.visibleSprintMax = $scope.application.mobilexs ? 1 : ($scope.application.mobile ? 2 : 3);
     $scope.visibleSprintOffset = 0;
     $scope.visibleSprints = [];
     $scope.project = project;
@@ -262,9 +262,9 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName'
         $scope.release = release;
         $scope.computeVisibleSprints();
     });
-    $scope.$watchGroup(['app.mobile', 'app.mobilexs'], function(n, o) {
+    $scope.$watchGroup(['application.mobile', 'application.mobilexs'], function(n, o) {
         var oldVisible = $scope.visibleSprintMax;
-        $scope.visibleSprintMax = $scope.app.mobilexs ? 1 : ($scope.app.mobile ? 2 : 3);
+        $scope.visibleSprintMax = $scope.application.mobilexs ? 1 : ($scope.application.mobile ? 2 : 3);
         if (oldVisible != $scope.visibleSprintMax) {
             $state.reload();
         }

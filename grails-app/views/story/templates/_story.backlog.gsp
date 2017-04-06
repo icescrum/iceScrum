@@ -30,11 +30,11 @@
     <div ng-include="'story.html'"
          ng-init="sortableStory = (sortableStory !== false) && authorizedStory('rank', story)"></div>
 </div>
-<div ng-if="app.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0"
+<div ng-if="application.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0"
      class="empty-view">
-    <p class="help-block">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ app.search }}</strong></p>
+    <p class="help-block">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ application.search }}</strong></p>
     <button class="btn btn-default"
-            ng-click="app.search = null">
+            ng-click="application.search = null">
         ${message(code: 'todo.is.ui.search.clear')}
     </button>
 </div>

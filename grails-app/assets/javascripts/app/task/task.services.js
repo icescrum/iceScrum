@@ -85,8 +85,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
     this.list = function(taskContext) {
         if (_.isEmpty(taskContext.tasks)) {
             var params = {typeId: taskContext.id, type: taskContext.class.toLowerCase()};
-            if ($rootScope.app.context) {
-                _.merge(params, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
+            if ($rootScope.application.context) {
+                _.merge(params, {'context.type': $rootScope.application.context.type, 'context.id': $rootScope.application.context.id});
             }
             return Task.query(params, function(tasks) {
                 if (angular.isArray(taskContext.tasks)) {

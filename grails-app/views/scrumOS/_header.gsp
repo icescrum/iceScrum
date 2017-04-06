@@ -29,7 +29,7 @@
         <span class="icon-bar"></span>
     </button>
     <entry:point id="header-before-menu"/>
-    <nav id="menu-header" ng-style="app.context | contextStyle" class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ app.context.color | contrastColor:true }}" role="navigation">
+    <nav id="menu-header" ng-style="application.context | contextStyle" class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ application.context.color | contrastColor:true }}" role="navigation">
         <div class="container-fluid">
             <div class="nav-header">
                 <div class="hidden-xs pull-left">
@@ -46,7 +46,7 @@
                     ng-class="{'sortable-disabled': !currentUser.id || context != 'project'}"
                     is-disabled="!currentUser.id || context != 'project'"
                     as-sortable="menuSortableOptions"
-                    ng-model="app.menus.visible">
+                    ng-model="application.menus.visible">
                     <li class="contextual-menu" uib-dropdown>
                         <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
@@ -138,27 +138,27 @@
                                 <li><a href ng-click="showManageTeamsModal()">${message(code: 'is.ui.team.manage')}</a></li>
                             </g:if>
                             <li role="presentation" class="divider"></li>
-                            <li role="presentation" class="dropdown-header">${message(code: 'is.ui.app')}</li>
+                            <li role="presentation" class="dropdown-header">iceScrum</li>
                             <entry:point id="header-menu-icescrum-first"/>
-                            <li><a href hotkey="{'I': showAbout}" hotkey-description="${message(code: 'is.ui.app.about')}" ng-click="showAbout()">${message(code: 'is.ui.app.about')}</a></li>
+                            <li><a href hotkey="{'I': showAbout}" hotkey-description="${message(code: 'is.ui.about')}" ng-click="showAbout()">${message(code: 'is.ui.about')}</a></li>
                             <entry:point id="header-menu-icescrum"/>
                         </ul>
                     </li>
                     <li id="{{ menu.id }}"
                         as-sortable-item
-                        ng-repeat="menu in app.menus.visible"
+                        ng-repeat="menu in application.menus.visible"
                         ng-include="'menuitem.item.html'"
                         ng-class="{'active':$state.includes(menu.id)}"
                         class="menuitem">
                     </li>
-                    <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && app.menus.hidden.length == 0 }">
+                    <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && application.menus.hidden.length == 0 }">
                         <a uib-dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                         <ul uib-dropdown-menu class="menubar"
                             ng-class="{'sortable-disabled': !currentUser.id || context != 'project'}"
                             is-disabled="!currentUser.id || context != 'project'"
                             as-sortable="menuSortableOptions"
-                            ng-model="app.menus.hidden">
-                            <li ng-repeat="menu in app.menus.hidden"
+                            ng-model="application.menus.hidden">
+                            <li ng-repeat="menu in application.menus.hidden"
                                 ng-include="'menuitem.item.html'"
                                 as-sortable-item
                                 ng-class="{'active':$state.includes(menu.id)}" class="menuitem"></li>
@@ -169,28 +169,28 @@
                         <g:if test="${project}">
                             <form class="navbar-form pull-left" role="search">
                                 <div class="input-group search">
-                                    <span class="input-group-btn" ng-if="app.context">
+                                    <span class="input-group-btn" ng-if="application.context">
                                         <button class="btn btn-default"
                                                 type="button"
                                                 ng-click="setContext(null)">
-                                            <i class="fa" ng-class="app.context.type | contextIcon"></i>
-                                            <span class="context">{{ app.context.term }}</span>
+                                            <i class="fa" ng-class="application.context.type | contextIcon"></i>
+                                            <span class="context">{{ application.context.term }}</span>
                                             <i class="fa fa-times"></i>
                                         </button>
                                     </span>
                                     <input autocomplete="off"
                                            type="text"
-                                           name="app.search"
+                                           name="application.search"
                                            class="form-control"
-                                           ng-model="app.search"
+                                           ng-model="application.search"
                                            placeholder="${message(code:'todo.is.ui.search.action')}"
                                            ng-model-options="{ debounce: 300 }"
                                            uib-typeahead="context.term for context in searchContext($viewValue)"
                                            typeahead-on-select="setContext($item)"
                                            typeahead-template-url="search.context.html">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="app.search = null">
-                                            <i class="fa search-status" ng-class="app.search ? 'fa-times' : 'fa-search'"></i>
+                                        <button class="btn btn-default" type="button" ng-click="application.search = null">
+                                            <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
                                         </button>
                                     </span>
                                 </div>
@@ -201,14 +201,14 @@
                                 <div class="input-group search">
                                     <input autocomplete="off"
                                            type="text"
-                                           name="app.search"
+                                           name="application.search"
                                            class="form-control"
-                                           ng-model="app.search"
+                                           ng-model="application.search"
                                            placeholder="${message(code:'todo.is.ui.search.action')}"
                                            ng-model-options="{ debounce: 300 }">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="app.search = null">
-                                            <i class="fa search-status" ng-class="app.search ? 'fa-times' : 'fa-search'"></i>
+                                        <button class="btn btn-default" type="button" ng-click="application.search = null">
+                                            <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
                                         </button>
                                     </span>
                                 </div>

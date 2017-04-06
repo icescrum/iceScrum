@@ -47,7 +47,7 @@ angular.module('isPlugins', [])
                 if (_.has(isSettings.controllerHooks, appControllerName)) {
                     isSettings.controllerHooks[appControllerName].push(pluginControllerName);
                 } else {
-                    console.error("App controller " + appControllerName + " is not registered so plugin controller " + pluginControllerName + " cannot be hooked");
+                    console.error("Application controller " + appControllerName + " is not registered so plugin controller " + pluginControllerName + " cannot be hooked");
                 }
             });
         }
@@ -57,7 +57,7 @@ angular.module('isPlugins', [])
         this.pluginTabs = {};
     });
 
-angular.module('isApp', [
+angular.module('isApplication', [
         'isPlugins', // To be able to use pluginTabsProvider
         'ngRoute',
         'ngAnimate',
@@ -1022,12 +1022,12 @@ angular.module('isApp', [
                 childScope.username = username;
             }
             var loginCallback = function() {
-                $rootScope.app.visibleAuthModal = false;
+                $rootScope.application.visibleAuthModal = false;
             };
             if (loginSuccess) {
                 childScope.loginCallback = true;
                 loginCallback = function(loggedIn) {
-                    $rootScope.app.visibleAuthModal = false;
+                    $rootScope.application.visibleAuthModal = false;
                     if (loggedIn) {
                         loginSuccess();
                     } else {
@@ -1035,7 +1035,7 @@ angular.module('isApp', [
                     }
                 };
             }
-            $rootScope.app.visibleAuthModal = true;
+            $rootScope.application.visibleAuthModal = true;
             $uibModal.open({
                 keyboard: false,
                 templateUrl: $rootScope.serverUrl + '/login/auth',
@@ -1110,7 +1110,7 @@ angular.module('isApp', [
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
         $rootScope.fibonacciSuiteNullable = ['?'].concat($rootScope.fibonacciSuite);
 
-        $rootScope.app = {
+        $rootScope.application = {
             loading: true,
             loadingText: '',
             loadingPercent: 0,
@@ -1142,7 +1142,7 @@ angular.module('isApp', [
             };
             return {
                 dragMove: function(itemPosition, containment, eventObj) {
-                    $rootScope.app.sortableMoving = true;
+                    $rootScope.application.sortableMoving = true;
                     if (eventObj) {
                         // This HORRIBLE SOUP isolated in a private function gets the dest panel body and stores it in a captured variable.
                         // There may be a better way but it is the way ng-sortable does it
@@ -1196,7 +1196,7 @@ angular.module('isApp', [
                     }
                 },
                 dragEnd: function() {
-                    $rootScope.app.sortableMoving = false;
+                    $rootScope.application.sortableMoving = false;
                     cancelScheduledScroll(); // Prevent persistent scroll in case of release out of sortable container
                 }
             }
@@ -1259,10 +1259,10 @@ angular.module('isApp', [
         });
 
         screenSize.onChange($rootScope, 'xs, sm', function(isMatch) {
-            $rootScope.app.mobile = isMatch;
+            $rootScope.application.mobile = isMatch;
         });
         screenSize.onChange($rootScope, 'xs', function(isMatch) {
-            $rootScope.app.mobilexs = isMatch;
+            $rootScope.application.mobilexs = isMatch;
         });
     }])
     .constant('SERVER_ERRORS', {

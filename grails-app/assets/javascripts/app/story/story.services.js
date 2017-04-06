@@ -32,8 +32,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         if (!parameters) {
             parameters = {};
         }
-        if ($rootScope.app.context) {
-            _.merge(parameters, {'context.type': $rootScope.app.context.type, 'context.id': $rootScope.app.context.id});
+        if ($rootScope.application.context) {
+            _.merge(parameters, {'context.type': $rootScope.application.context.type, 'context.id': $rootScope.application.context.id});
         }
         var args = [parameters];
         if (success) {

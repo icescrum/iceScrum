@@ -106,7 +106,7 @@
             </div>
             <div class="panel-body">
                 <div class="postits"
-                     ng-class="{'sortable-moving':app.sortableMoving, 'has-selected' : hasSelected(), 'sortable-disabled':!isSortingSprint(sprint)}"
+                     ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected(), 'sortable-disabled':!isSortingSprint(sprint)}"
                      postits-screen-size
                      ng-controller="storyCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"

@@ -365,7 +365,7 @@ filters
         }
     }]).filter('search', ['$rootScope', function($rootScope) {
         return function(items) {
-            var term = $rootScope.app.search;
+            var term = $rootScope.application.search;
             var fields = ['name', 'description', 'notes', 'uid']; // Hardcoded for the moment because it is always the same
             if (!_.isEmpty(items) && !_.isEmpty(term) && !_.isEmpty(fields)) {
                 var searchTerm = _.deburr(_.trim(term.toString().toLowerCase()));

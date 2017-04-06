@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <!DOCTYPE html>
-<html lang="en" ng-app="isApp" ng-strict-di>
+<html lang="en" ng-app="isApplication" ng-strict-di>
 <head>
     <title>iceScrum - <g:layoutTitle/></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -40,19 +40,19 @@
     <asset:stylesheet href="application.css"/>
     <g:layoutHead/>
 </head>
-<body ng-controller="appCtrl"
+<body ng-controller="applicationCtrl"
       flow-prevent-drop=""
-      fullscreen="app.isFullScreen"
-      ng-class="{ 'mobile':app.mobile, 'mobile-xs':app.mobilexs, 'app-ready':app != null, 'loading': (app.loading || app.loadingText), 'splash-screen': (app.loadingPercent != 100 || app.loadingText)  }"
+      fullscreen="application.isFullScreen"
+      ng-class="{ 'mobile':application.mobile, 'mobile-xs':application.mobilexs, 'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)  }"
       class="splash-screen loading">
-    <div id="app-loading">
+    <div id="application-loading">
         <svg class="logo" viewBox="0 0 150 150">
             <g:render template="/scrumOS/logo"/>
             <circle fill="none" cx="80px" cy="80px" r="63" style="stroke: #eee; stroke-width: 10px;"></circle>
-            <path fill="none" transform="" circle-coords="80,80,63,0" circle="app.loadingPercent"
+            <path fill="none" transform="" circle-coords="80,80,63,0" circle="application.loadingPercent"
                   class="loading-circle"></path>
         </svg>
-        <div class="loading-text text-center">{{ app.loadingText }}</div>
+        <div class="loading-text text-center">{{ application.loadingText }}</div>
     </div>
     <is:header/>
     <div class="container-fluid main" ui-view>

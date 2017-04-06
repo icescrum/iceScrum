@@ -121,11 +121,11 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div ng-if="app.search && features.length != 0 && (features | search).length == 0"
+            <div ng-if="application.search && features.length != 0 && (features | search).length == 0"
                  class="empty-view">
-                <p class="help-block">${message(code: 'is.ui.feature.search.empty')} <strong>{{ app.search }}</strong><p>
+                <p class="help-block">${message(code: 'is.ui.feature.search.empty')} <strong>{{ application.search }}</strong><p>
                 <button class="btn btn-default"
-                        ng-click="app.search = null">
+                        ng-click="application.search = null">
                     ${message(code: 'todo.is.ui.search.clear')}
                 </button>
                 <a class="btn btn-primary"

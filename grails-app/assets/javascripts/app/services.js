@@ -291,7 +291,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
                         dontSaveChangesCallback();
                     },
                     cancelChangesCallback: function() {
-                        $scope.app.loading = false;
+                        $scope.application.loading = false;
                         $scope.mustConfirmStateChange = true;
                     }
                 });
@@ -698,13 +698,13 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
     var options = {
         story: {
             allowable: function(item) {
-                if ($rootScope.app.context) {
-                    if ($rootScope.app.context.type == 'feature') {
-                        return item.feature && item.feature.id == $rootScope.app.context.id;
-                    } else if ($rootScope.app.context.type == 'actor') {
-                        return item.actor && item.actor.id == $rootScope.app.context.id;
-                    } else if ($rootScope.app.context.type == 'tag') {
-                        return _.includes(item.tags, $rootScope.app.context.term);
+                if ($rootScope.application.context) {
+                    if ($rootScope.application.context.type == 'feature') {
+                        return item.feature && item.feature.id == $rootScope.application.context.id;
+                    } else if ($rootScope.application.context.type == 'actor') {
+                        return item.actor && item.actor.id == $rootScope.application.context.id;
+                    } else if ($rootScope.application.context.type == 'tag') {
+                        return _.includes(item.tags, $rootScope.application.context.term);
                     } else {
                         return false;
                     }
@@ -718,12 +718,12 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
         },
         task: {
             allowable: function(item) {
-                if ($rootScope.app.context && item.parentStory) {
+                if ($rootScope.application.context && item.parentStory) {
                     var cachedStory = CacheService.get('story', item.parentStory.id);
-                    if ($rootScope.app.context.type == 'feature') {
-                        return cachedStory && cachedStory.feature.id == $rootScope.app.context.id;
-                    } else if ($rootScope.app.context.type == 'actor') {
-                        return cachedStory && cachedStory.actor.id == $rootScope.app.context.id;
+                    if ($rootScope.application.context.type == 'feature') {
+                        return cachedStory && cachedStory.feature.id == $rootScope.application.context.id;
+                    } else if ($rootScope.application.context.type == 'actor') {
+                        return cachedStory && cachedStory.actor.id == $rootScope.application.context.id;
                     }
                 }
                 return true;
