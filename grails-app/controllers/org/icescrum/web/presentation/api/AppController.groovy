@@ -35,7 +35,6 @@ class AppController implements ControllerErrorHandler {
 
     def appService
     def appDefinitionService
-    def grailsApplication
 
     @Secured('stakeHolder() or inProject()')
     def definitions(long project) {
@@ -56,8 +55,6 @@ class AppController implements ControllerErrorHandler {
                 return asset.assetPath([src: appDefinition.getAssetPath(screenshot)])
             }
             marshalledAppDefinition.logo = asset.assetPath([src: appDefinition.getAssetPath(appDefinition.logo)])
-            marshalledAppDefinition.availableForServer = appDefinition.isAvailableForServer ? appDefinition.isAvailableForServer(grailsApplication) : true
-            marshalledAppDefinition.enabledForServer = appDefinition.isEnabledForServer ? appDefinition.isEnabledForServer(grailsApplication) : true
             if (appDefinition.isProject) {
                 marshalledAppDefinition.enabledForProject = enabledAppIds.contains(appDefinition.id)
             }
