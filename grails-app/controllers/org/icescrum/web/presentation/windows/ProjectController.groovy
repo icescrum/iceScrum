@@ -408,14 +408,20 @@ class ProjectController implements ControllerErrorHandler {
                     return
                 }
                 def project = projectService.importXML(session.import.file, session.import)
+                if (project) {
+                    session.import.file.delete()
+                }
                 render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
             }
             UtilsWebComponents.handleUpload.delegate = this
-            UtilsWebComponents.handleUpload(request, params, endOfUpload)
+            UtilsWebComponents.handleUpload(request, params, endOfUpload, false)
         } else if (params.changes) {
             session.progress = new ProgressSupport()
             session.import.changes = params.changes
             def project = projectService.importXML(session.import.file, session.import)
+            if (project) {
+                session.import.file.delete()
+            }
             render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
         }
     }
