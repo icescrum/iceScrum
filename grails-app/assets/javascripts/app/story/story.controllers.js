@@ -705,3 +705,14 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
         callback: $scope.resetStoryForm
     });
 }]);
+
+controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', function($controller, $scope, $filter) {
+    $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
+    // Don't use orderBy filter on ng-repeat because it triggers sort on every single digest on the page, which happens all the time...
+    // We are only interested in story updates
+    var updateOrder = function() {
+        $scope.backlogStories = $scope.orderBy ? $filter('orderBy')($scope.backlog.stories, $scope.orderBy.current.value, $scope.orderBy.reverse) : $scope.backlog.stories;
+    };
+    $scope.$watch('backlog.stories', updateOrder, true);
+    $scope.$watch('orderBy', updateOrder, true);
+}]);

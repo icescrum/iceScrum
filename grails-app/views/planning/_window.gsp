@@ -108,7 +108,7 @@
                 <div class="postits"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected(), 'sortable-disabled':!isSortingSprint(sprint)}"
                      postits-screen-size
-                     ng-controller="storyCtrl"
+                     ng-controller="storyBacklogCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!isSortingSprint(sprint)"
                      ng-model="backlog.stories"

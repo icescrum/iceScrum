@@ -50,7 +50,7 @@
     <div selectable="selectableOptions" class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
         <div class="loading-logo" ng-include="'loading.html'"></div>
         <div class="postits list-group has-selected sortable-disabled postits-disabled"
-             ng-controller="storyCtrl"
+             ng-controller="storyBacklogCtrl"
              ng-model="backlog.stories"
              as-sortable
              is-disabled="true"
