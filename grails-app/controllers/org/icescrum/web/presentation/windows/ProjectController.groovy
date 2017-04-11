@@ -30,6 +30,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
 import org.apache.commons.io.FilenameUtils
+import org.icescrum.components.FileUploadInfoStorage
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.*
 import org.icescrum.core.domain.preferences.ProjectPreferences
@@ -390,6 +391,7 @@ class ProjectController implements ControllerErrorHandler {
                     changesNeeded: null
             ]
             def endOfUpload = { uploadInfo ->
+                session.import.uploadInfo = uploadInfo
                 File uploadedProject = new File(uploadInfo.filePath)
                 if (FilenameUtils.getExtension(uploadedProject.name) == 'xml') {
                     log.debug 'Export is an xml file, processing now'
@@ -408,10 +410,11 @@ class ProjectController implements ControllerErrorHandler {
                     return
                 }
                 def project = projectService.importXML(session.import.file, session.import)
-                if (project) {
-                    session.import.file.delete()
-                }
                 render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
+                //after render to be more smoothy
+                if (project) {
+                    FileUploadInfoStorage.instance.remove(session.import.uploadInfo)
+                }
             }
             UtilsWebComponents.handleUpload.delegate = this
             UtilsWebComponents.handleUpload(request, params, endOfUpload, false)
@@ -419,10 +422,12 @@ class ProjectController implements ControllerErrorHandler {
             session.progress = new ProgressSupport()
             session.import.changes = params.changes
             def project = projectService.importXML(session.import.file, session.import)
-            if (project) {
-                session.import.file.delete()
-            }
             render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
+            //after render to be more smoothy
+            if (project) {
+                FileUploadInfoStorage.instance.remove(session.import.uploadInfo)
+            }
+            session.import = null
         }
     }
 
