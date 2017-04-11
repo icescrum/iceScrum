@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state', 'Session', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'backlogs', function($scope, $filter, $timeout, $state, Session, StoryService, BacklogService, BacklogCodes, StoryStatesByName, backlogs) {
+extensibleController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'project', 'backlogs', function($scope, $filter, $timeout, $state, StoryService, BacklogService, BacklogCodes, StoryStatesByName, project, backlogs) {
     // Functions
     $scope.authorizedStory = StoryService.authorizedStory;
     $scope.isSelected = function(selectable) {
@@ -46,7 +46,7 @@ extensibleController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state', 
     };
     $scope.refreshSingleBacklog = function(backlogContainer) {
         var backlog = backlogContainer.backlog;
-        var filteredStories = BacklogService.filterStories(backlog, Session.getProject().stories);
+        var filteredStories = BacklogService.filterStories(backlog, $scope.project.stories);
         backlog.stories = $filter('orderBy')(filteredStories, 'rank'); // This will be the model for the sortable directive so it must be in sort order, regardless of current display order
         if (backlog.stories && backlog.stories.length > 0) {
             backlogContainer.storiesLoaded = true; // To render stories already there in the client
@@ -193,6 +193,7 @@ extensibleController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state', 
     };
     // Init
     $scope.viewName = 'backlog';
+    $scope.project = project;
     $scope.sortOptions = [
         {id: 'effort', value: 'effort', name: $scope.message('todo.is.ui.sort.effort')},
         {id: 'rank', value: 'rank', name: $scope.message('todo.is.ui.sort.rank')},

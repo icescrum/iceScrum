@@ -39,7 +39,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', 'Session', '
             return ReleaseService.openChart(item, chartName);
         },
         sprint: function(chartName, item) {
-            return SprintService.openChart(item, $scope.currentProject ? $scope.currentProject : Session.getProject(), chartName);
+            return SprintService.openChart(item, $scope.project ? $scope.project : Session.getProject(), chartName);
         }
     };
     $scope.chartOptions = {
@@ -210,24 +210,24 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
 
 controllers.controller('chartWidgetChartCtrl', ['$scope', '$element', '$controller', 'ReleaseService', 'SprintService', function($scope, $element, $controller, ReleaseService, SprintService) {
     $controller('chartCtrl', {$scope: $scope, $element: $element});
-    $scope.currentProject = $scope.widget.settings.project; // Required to provide a contexte to chart
+    $scope.project = $scope.widget.settings.project;
     switch ($scope.widget.settings.chart.type) {
         case 'release':
-            ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
+            ReleaseService.getCurrentOrNextRelease($scope.project).then(function(release) {
                 if (release && release.id) {
                     $scope.openChart('release', $scope.widget.settings.chart.id, release);
                 }
             });
             break;
         case 'sprint':
-            SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
+            SprintService.getCurrentOrLastSprint($scope.project).then(function(sprint) {
                 if (sprint && sprint.id) {
                     $scope.openChart('sprint', $scope.widget.settings.chart.id, sprint);
                 }
             });
             break;
         default:
-            $scope.openChart('project', $scope.widget.settings.chart.id, $scope.currentProject);
+            $scope.openChart('project', $scope.widget.settings.chart.id, $scope.project);
             break;
     }
 }]);

@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'features', function($scope, $state, $controller, FeatureService, features) {
+controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'project', 'features', function($scope, $state, $controller, FeatureService, project, features) {
     // Functions
     $scope.isSelected = function(selectable) {
         if ($state.params.featureId) {
@@ -59,6 +59,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'Feat
     };
     // Init
     $scope.viewName = 'feature';
+    $scope.project = project;
     $scope.features = features;
     var updateRank = function(event) {
         var feature = event.source.itemScope.modelValue;
@@ -285,7 +286,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName'
     };
 }]);
 
-controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'sprint', 'releases', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, sprint, releases) {
+controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'project', 'sprint', 'releases', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, project, sprint, releases) {
     $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
@@ -433,6 +434,7 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
         return _.sumBy(sprint.tasks, 'estimation');
     };
     // Init
+    $scope.project = project;
     $scope.taskSortableOptions = {
         itemMoved: function(event) {
             var destScope = event.dest.sortableScope;

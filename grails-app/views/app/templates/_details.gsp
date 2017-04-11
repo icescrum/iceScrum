@@ -65,7 +65,7 @@
         </div>
         <div class="text-center actions"
              ng-if="authorizedApp('updateProjectSettings', appDefinition)">
-            <p ng-controller="projectCtrl">
+            <p>
                 <button type="button"
                         ng-click="openAppProjectSettings(appDefinition)"
                         class="btn btn-primary">

@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div class="row" ng-controller="dashboardCtrl">
+    <div class="row">
         <div class="widget-column">
             <div class="panel-container">
                 <div class="panel panel-light">

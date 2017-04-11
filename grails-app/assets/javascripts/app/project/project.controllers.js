@@ -21,146 +21,10 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('projectCtrl', ["$scope", 'ProjectService', 'FormService', 'PushService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, PushService, Session, $uibModal, $state) {
+controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'project', function($scope, $state, ProjectService, ReleaseService, SprintService, project) {
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
-    $scope.showProjectListModal = function(listType) {
-        $uibModal.open({
-            keyboard: false,
-            templateUrl: $scope.serverUrl + "/project/listModal",
-            size: 'lg',
-            controller: ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
-                $controller('abstractProjectListCtrl', {$scope: $scope});
-                // Functions
-                $scope.searchProjects = function() {
-                    var listFunction = {
-                        public: ProjectService.listPublic,
-                        user: ProjectService.listByUser,
-                        all: ProjectService.list
-                    }[listType];
-                    var params = {term: $scope.projectSearch, paginate: true, page: $scope.currentPage, count: $scope.projectsPerPage};
-                    listFunction(params).then(function(projectsAndCount) {
-                        $scope.projectCount = projectsAndCount.count;
-                        $scope.projects = projectsAndCount.projects;
-                        if (!_.isEmpty($scope.projects) && _.isEmpty($scope.project)) {
-                            $scope.selectProject(_.head($scope.projects));
-                        }
-                    });
-                };
-                // Init
-                $scope.projectCount = 0;
-                $scope.currentPage = 1;
-                $scope.projectsPerPage = 9; // Constant
-                $scope.projectSearch = '';
-                $scope.projects = [];
-                $scope.searchProjects();
-            }]
-        });
-    };
-    $scope['import'] = function(project) {
-        var url = $scope.serverUrl + "/project/import";
-        $uibModal.open({
-            keyboard: false,
-            templateUrl: url + "Dialog",
-            controller: ['$scope', '$http', '$rootScope', '$timeout', function($scope, $http, $rootScope, $timeout) {
-                $scope.flowConfig = {target: url, singleFile: true};
-                $scope.changes = false;
-                $scope._changes = {
-                    showTeam: false,
-                    showProject: false
-                };
-                $scope.progress = false;
-                $scope.handleImportError = function($file, $message) {
-                    var data = JSON.parse($message);
-                    $scope.notifyError(angular.isArray(data) ? data[0].text : data.text, {duration: 8000});
-                    $scope.$close(true);
-                };
-                $scope.checkValidation = function($message) {
-                    var data = !angular.isObject($message) ? JSON.parse($message) : $message;
-                    if (data && data.class == 'Project') {
-                        $scope.$close(true);
-                        $rootScope.application.loading = true;
-                        $rootScope.application.loadingText = " ";
-                        $timeout(function() {
-                            document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
-                        }, 2000);
-                    } else {
-                        $scope.progress = false;
-                        $scope.changes = data;
-                        $scope._changes = angular.copy($scope.changes);
-                        $scope._changes = angular.extend($scope._changes, {
-                            showTeam: $scope.changes.team ? true : false,
-                            showUsers: $scope.changes.users ? true : false,
-                            showProjectName: $scope.changes.project ? ($scope.changes.project.name ? true : false) : false,
-                            showProjectPkey: $scope.changes.project ? ($scope.changes.project.pkey ? true : false) : false
-                        });
-                    }
-                };
-                $scope.applyChanges = function() {
-                    if ($scope.changes.erase) { // Don't display delete message if erasing project
-                        PushService.enabled = false;
-                    }
-                    $http({
-                        url: url,
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                        transformRequest: function(data) {
-                            return FormService.formObjectData(data, 'changes.');
-                        },
-                        data: $scope.changes
-                    }).then(function(response) {
-                            var data = response.data;
-                            if (data && data.class == 'Project') {
-                                $scope.$close(true);
-                                $rootScope.application.loading = true;
-                                $rootScope.application.loadingText = " ";
-                                $timeout(function() {
-                                    document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
-                                }, 2000);
-                            } else {
-                                $scope.checkValidation(data);
-                            }
-                        }, function() {
-                            $scope.progress = false;
-                        }
-                    );
-                    $scope.progress = true;
-                };
-            }]
-        }).result.then(function() {}, function() {
-            PushService.enabled = true;
-        });
-    };
-    $scope['export'] = function(project) {
-        var modal = $uibModal.open({
-            keyboard: false,
-            templateUrl: "project/exportDialog",
-            controller: ['$scope', function($scope) {
-                $scope.zip = true;
-                $scope.progress = false;
-                $scope.start = function() {
-                    $scope.downloadFile("project/export?zip=true");
-                    $scope.progress = true;
-                };
-                $scope.start();
-            }]
-        });
-        modal.result.then(
-            function() {
-                $scope.downloadFile("");
-            },
-            function() {
-                $scope.downloadFile("");
-            }
-        );
-    };
-    // Init
-    $scope.sortableId = 'menu';
-    $scope.currentProject = Session.getProject();
-}]);
-
-controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', function($scope, $state, ProjectService, ReleaseService, SprintService) {
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
     };
@@ -181,11 +45,11 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
     $scope.currentOrLastSprint = {};
     $scope.currentOrNextSprint = {};
     $scope.projectMembersCount = 0;
-    $scope.project = $scope.currentProject;
-    ProjectService.getActivities($scope.currentProject).then(function(activities) {
+    $scope.project = project;
+    ProjectService.getActivities($scope.project).then(function(activities) {
         $scope.activities = activities;
     });
-    ReleaseService.getCurrentOrNextRelease($scope.currentProject).then(function(release) {
+    ReleaseService.getCurrentOrNextRelease($scope.project).then(function(release) {
         $scope.release = release;
         if (release && release.id) {
             SprintService.list(release);
@@ -193,13 +57,13 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
     });
     $scope.allMembers = _.unionBy($scope.project.team.members, $scope.project.productOwners, 'id');
     // Needs a separate call because it may not be in the currentOrNextRelease
-    SprintService.getCurrentOrLastSprint($scope.currentProject).then(function(sprint) {
+    SprintService.getCurrentOrLastSprint($scope.project).then(function(sprint) {
         $scope.currentOrLastSprint = sprint;
     });
-    SprintService.getLastSprint($scope.currentProject).then(function(sprint) {
+    SprintService.getLastSprint($scope.project).then(function(sprint) {
         $scope.lastSprint = sprint;
     });
-    SprintService.getCurrentOrNextSprint($scope.currentProject).then(function(sprint) {
+    SprintService.getCurrentOrNextSprint($scope.project).then(function(sprint) {
         $scope.currentOrNextSprint = sprint;
     });
 }]);

@@ -447,7 +447,12 @@ angular.module('isApplication', [
                 name: 'project',
                 url: '/project',
                 templateUrl: 'ui/window/project',
-                controller: 'projectCtrl'
+                resolve: {
+                    project: ['Session', function(Session) {
+                        return Session.getProjectPromise();
+                    }]
+                },
+                controller: 'dashboardCtrl'
             })
             .state({
                 name: 'newProject',
@@ -472,6 +477,9 @@ angular.module('isApplication', [
                 templateUrl: 'ui/window/backlog',
                 controller: 'backlogCtrl',
                 resolve: {
+                    project: ['Session', function(Session) {
+                        return Session.getProjectPromise();
+                    }],
                     backlogs: ['BacklogService', function(BacklogService) {
                         return BacklogService.list();
                     }]
@@ -502,6 +510,9 @@ angular.module('isApplication', [
                 templateUrl: 'ui/window/feature',
                 controller: 'featuresCtrl',
                 resolve: {
+                    project: ['Session', function(Session) {
+                        return Session.getProjectPromise();
+                    }],
                     features: ['FeatureService', function(FeatureService) {
                         return FeatureService.list();
                     }]

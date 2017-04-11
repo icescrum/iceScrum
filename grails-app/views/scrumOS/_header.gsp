@@ -41,7 +41,7 @@
                    tooltip-placement="right"
                    uib-tooltip="{{ warning.title }}"><i class="fa fa-{{ warning.icon }}"></i>
                 </a>
-                <ul ng-controller="projectCtrl"
+                <ul ng-controller="mainMenuCtrl"
                     class="nav navbar-nav menubar"
                     ng-class="{'sortable-disabled': !currentUser.id || context != 'project'}"
                     is-disabled="!currentUser.id || context != 'project'"
@@ -99,13 +99,13 @@
                                 </li>
                                 <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
                                     <li ng-if="authorizedProject('edit')">
-                                        <a hotkey="{ 'shift+d': export}" href ng-click="export(currentProject)">
+                                        <a hotkey="{ 'shift+d': export}" href ng-click="export(project)">
                                             <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
                                         </a>
                                     </li>
                                 </g:if>
                                 <li ng-if="authorizedApp('show')">
-                                    <a href ng-click="showAppsModal(currentProject)">
+                                    <a href ng-click="showAppsModal(project)">
                                         ${message(code: 'is.ui.apps')}
                                     </a>
                                 </li>
