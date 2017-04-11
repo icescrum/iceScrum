@@ -414,6 +414,7 @@ class ProjectController implements ControllerErrorHandler {
                 //after render to be more smoothy
                 if (project) {
                     FileUploadInfoStorage.instance.remove(session.import.uploadInfo)
+                    session.import = null
                 }
             }
             UtilsWebComponents.handleUpload.delegate = this
@@ -426,8 +427,8 @@ class ProjectController implements ControllerErrorHandler {
             //after render to be more smoothy
             if (project) {
                 FileUploadInfoStorage.instance.remove(session.import.uploadInfo)
+                session.import = null
             }
-            session.import = null
         }
     }
 
