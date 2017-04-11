@@ -87,7 +87,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             }
         };
         options.onMessage = function(response) {
-            $rootScope.app.loading = true;
+            $rootScope.application.loading = true;
             var textBody = response.responseBody;
             try {
                 var jsonBody = atmosphere.util.parseJSON(textBody);
@@ -99,7 +99,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                     atmosphere.util.debug("Error parsing JSON: " + textBody);
                 }
             } finally {
-                $rootScope.app.loading = false;
+                $rootScope.application.loading = false;
             }
         };
         options.onClose = function(response) {
