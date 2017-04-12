@@ -347,7 +347,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
         $scope.panel = {current: defaultView};
     }
     $scope.appsWithSettings = [];
-    AppService.getAppDefinitionsWithProjectSettings().then(function(appsWithSettings) {
+    AppService.getAppDefinitionsWithProjectSettings($scope.currentProject).then(function(appsWithSettings) {
         $scope.appsWithSettings = appsWithSettings;
     });
 }]);

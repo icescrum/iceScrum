@@ -37,9 +37,7 @@ class AppController implements ControllerErrorHandler {
     def appDefinitionService
 
     @Secured('stakeHolder() or inProject()')
-    def definitions(long project) {
-        Project _project = Project.withProject(project)
-        List<String> enabledAppIds = SimpleProjectApp.getEnabledAppIdsForProject(_project)
+    def definitions() {
         def marshalledDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
             Map marshalledAppDefinition = appDefinition.properties.clone()
             ['class', 'onDisableForProject', 'onEnableForProject', 'isEnabledForServer', 'isAvailableForServer'].each { k ->
@@ -56,9 +54,6 @@ class AppController implements ControllerErrorHandler {
             }
             def assetLogoAppPath = appDefinition.getAssetPath(appDefinition.logo)
             marshalledAppDefinition.logo = asset.assetPathExists([src:assetLogoAppPath]) ? asset.assetPath([src:assetLogoAppPath]) : asset.assetPath([src: 'logo-bg.png'])
-            if (appDefinition.isProject) {
-                marshalledAppDefinition.enabledForProject = enabledAppIds.contains(appDefinition.id)
-            }
             return marshalledAppDefinition
         }
         render(status: 200, contentType: 'application/json', text: marshalledDefinitions as JSON)

@@ -52,19 +52,19 @@
         </div>
         <div class="text-center actions"
              ng-if="authorizedApp('enableForProject', appDefinition)">
-            <p>
-                <button ng-if="!appDefinition.enabledForProject"
+            <p ng-switch="isEnabledForProject(appDefinition)">
+                <button ng-switch-when="false"
                         type="button"
                         class="btn btn-primary"
                         ng-click="updateEnabledForProject(appDefinition, true)">${message(code: 'is.ui.apps.enable')}</button>
-                <button ng-if="appDefinition.enabledForProject"
+                <button ng-switch-default
                         type="button"
                         class="btn btn-primary"
                         ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
             </p>
         </div>
         <div class="text-center actions"
-             ng-if="authorizedApp('updateProjectSettings', appDefinition)">
+             ng-if="authorizedApp('updateProjectSettings', appDefinition, project)">
             <p>
                 <button type="button"
                         ng-click="openAppProjectSettings(appDefinition)"

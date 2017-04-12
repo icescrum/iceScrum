@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('appsCtrl', ['$scope', 'AppService', function($scope, AppService) {
+controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', function($scope, AppService, Session) {
     // Functions
     $scope.openAppDefinition = function(appDefinition) {
         $scope.appDefinition = appDefinition;
@@ -30,7 +30,7 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', function($scope, App
         $scope.holder.appSearch = appSearch;
     };
     $scope.updateEnabledForProject = function(appDefinition, enabledForProject) {
-        AppService.updateEnabledForProject(appDefinition, enabledForProject).then(function() {
+        AppService.updateEnabledForProject(appDefinition, $scope.project, enabledForProject).then(function() {
             appDefinition.enabledForProject = enabledForProject;
         });
     };
@@ -56,9 +56,13 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', function($scope, App
         $scope.showProjectEditModal(appDefinition.id);
     };
     $scope.isEnabledApp = function(appDefinition) {
-        return appDefinition.availableForServer && appDefinition.enabledForServer && (!appDefinition.isProject || appDefinition.enabledForProject);
+        return appDefinition.availableForServer && appDefinition.enabledForServer && (!appDefinition.isProject || $scope.isEnabledForProject(appDefinition));
+    };
+    $scope.isEnabledForProject = function(appDefinition, project) {
+        return AppService.authorizedApp('use', appDefinition.id, $scope.project);
     };
     // Init
+    $scope.project = Session.getProject();
     $scope.holder = {};
     $scope.appDefinitions = [];
     AppService.getAppDefinitions().then(function(appDefinitions) {

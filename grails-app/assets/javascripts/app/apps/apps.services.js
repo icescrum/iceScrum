@@ -24,29 +24,39 @@
 
 services.service("AppService", ['Session', 'FormService', function(Session, FormService) {
     var self = this;
-    this.updateEnabledForProject = function(appDefinition, enabledForProject) {
-        return FormService.httpPost('app/updateEnabledForProject', {appDefinitionId: appDefinition.id, enabledForProject: enabledForProject}, null, false);
+    this.updateEnabledForProject = function(appDefinition, project, enabledForProject) {
+        return FormService.httpPost('app/updateEnabledForProject', {appDefinitionId: appDefinition.id, enabledForProject: enabledForProject}, null, false).then(function() {
+            var updatedAppDefinition = _.find(project.simpleProjectApps, {appDefinitionId: appDefinition.id});
+            if (!updatedAppDefinition) {
+                updatedAppDefinition = {appDefinitionId: appDefinition.id};
+                project.simpleProjectApps.push(updatedAppDefinition);
+            }
+            updatedAppDefinition.enabled = enabledForProject;
+        });
     };
     this.getAppDefinitions = function() {
         return FormService.httpGet('app/definitions', null, false);
     };
-    this.getAppDefinitionsWithProjectSettings = function() {
+    this.getAppDefinitionsWithProjectSettings = function(project) {
         return self.getAppDefinitions().then(function(appDefinitions) {
             return _.filter(appDefinitions, function(appDefinition) {
-                return self.authorizedApp('updateProjectSettings', appDefinition)
+                return self.authorizedApp('updateProjectSettings', appDefinition, project)
             });
         });
     };
-    this.authorizedApp = function(action, appDefinition, project) {
+    this.authorizedApp = function(action, appDefinitionOrId, project) {
         switch(action) {
             case 'show':
                 return Session.authenticated();
             case 'enableForProject':
+                var appDefinition = appDefinitionOrId;
                 return Session.sm() && appDefinition && appDefinition.availableForServer && appDefinition.enabledForServer && appDefinition.isProject;
             case 'updateProjectSettings':
-                return self.authorizedApp('enableForProject', appDefinition) && appDefinition.enabledForProject && appDefinition.projectSettings;
+                var appDefinition = appDefinitionOrId;
+                return self.authorizedApp('enableForProject', appDefinition) && self.authorizedApp('use', appDefinition.id, project) && appDefinition.projectSettings;
             case 'use':
-                return project && _.find(project.simpleProjectApps, {appDefinitionId: appDefinition, enabled: true}); // Hack to avoid the need to pass an object, here appDefinition is only the ID
+                var appDefinitionId = appDefinitionOrId;
+                return !!(project && _.find(project.simpleProjectApps, {appDefinitionId: appDefinitionId, enabled: true}));
             default:
                 return false;
         }
