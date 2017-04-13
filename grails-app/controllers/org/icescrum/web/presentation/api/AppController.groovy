@@ -28,7 +28,6 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.app.AppDefinition
 import org.icescrum.core.domain.Project
-import org.icescrum.core.domain.SimpleProjectApp
 import org.icescrum.core.error.ControllerErrorHandler
 
 class AppController implements ControllerErrorHandler {
@@ -47,7 +46,7 @@ class AppController implements ControllerErrorHandler {
                 marshalledAppDefinition[k] = message(code: 'is.ui.apps.' + appDefinition.id + '.' + k)
             }
             marshalledAppDefinition.tags = marshalledAppDefinition.tags?.collect {
-                message(code: it)
+                message(code: 'is.ui.apps.tag.' + it)
             }
             marshalledAppDefinition.screenshots = appDefinition.screenshots.take(3).collect { String screenshot ->
                 return asset.assetPath([src: appDefinition.getAssetPath(screenshot)])
