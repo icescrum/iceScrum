@@ -69,7 +69,7 @@
                             uib-dropdown-toggle
                             ng-disabled="!features.length"
                             type="button">
-                        <i class="fa fa-download"></i> <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-upload"></i> <i class="fa fa-caret-down"></i>
                     </button>
                     <ul uib-dropdown-menu
                         role="menu">
