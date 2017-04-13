@@ -136,7 +136,7 @@ class SprintController implements ControllerErrorHandler {
         def computedValues = [[key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
                                values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime]},
                                color: '#1F77B4']]
-        if (values.first()?.idealTime) {
+        if (values && values.first().idealTime) {
             computedValues << [key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal"),
                                values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime]},
                                color: '#009900']
