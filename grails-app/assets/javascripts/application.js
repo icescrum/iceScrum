@@ -43,11 +43,11 @@
 
 //= require_full_tree vendors
 
-//= require_full_tree app/plugins
-//= require           app/app
-//= require           app/controllers
-//= require           app/directives
-//= require           app/filters
-//= require           app/services
-//= require_full_tree app
+//= require_full_tree application/plugins
+//= require           application/app
+//= require           application/controllers
+//= require           application/directives
+//= require           application/filters
+//= require           application/services
+//= require_full_tree application
 

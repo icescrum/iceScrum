@@ -32,9 +32,9 @@
 *= require_full_tree vendors/jquery
 *= require_full_tree vendors/angular
 *= require_full_tree vendors/vanilla
-*= require_full_tree app
+*= require_full_tree application
 
 Plugins probably need to come after all to override standard style
-(by default plugins are scanned AFTER the app)
+(by default plugins are scanned AFTER the application)
 *= require_full_tree plugins
 */
