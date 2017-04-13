@@ -243,15 +243,6 @@ class ScrumOSController implements ControllerErrorHandler {
         render(timezones as JSON)
     }
 
-    @Secured(['isAuthenticated()'])
-    def charts(String context) {
-        def _charts = []
-        grailsApplication.config.icescrum.contexts."$context".contextScope.charts?.each { type, charts ->
-            _charts.addAll(charts.collect { chart -> [group: message(code: 'is.' + type), type: type, id: chart.id, name: message(code: chart.name)] })
-        }
-        render(status: 200, contentType: 'application/json', text: _charts as JSON)
-    }
-
     @Secured(['permitAll()'])
     def warnings() {
         def warnings = grailsApplication.config.icescrum.warnings.collect { it ->

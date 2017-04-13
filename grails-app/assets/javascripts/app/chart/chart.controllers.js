@@ -171,13 +171,6 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
             }
         });
     };
-    $scope.refreshCharts = function() {
-        if (!$scope.charts.length) {
-            FormService.httpGet('charts/project').then(function(charts) {
-                $scope.charts = charts;
-            });
-        }
-    };
     $scope.widgetReady = function(widget) {
         return widget.settings && widget.settings.project && widget.settings.chart ? true : false;
     };
@@ -189,6 +182,7 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
             widget.settings = {};
         }
         widget.settings.project = _.pick($scope.holder.project, ['id', 'name']);
+        $scope.project = $scope.holder.project;
         widget.type = 'project';
         widget.typeId = $scope.holder.project.id;
     };
@@ -197,7 +191,6 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
     };
     // Init
     $scope.holder = {};
-    $scope.charts = [];
     $scope.projects = [];
     $scope.$watch('widget.settings.project', function(newProject) {
         $scope.holder.project = newProject;
@@ -206,7 +199,6 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
         $scope.holder.chart = newChart;
     })
 }]);
-
 
 controllers.controller('chartWidgetChartCtrl', ['$scope', '$element', '$controller', 'ReleaseService', 'SprintService', function($scope, $element, $controller, ReleaseService, SprintService) {
     $controller('chartCtrl', {$scope: $scope, $element: $element});
@@ -230,4 +222,29 @@ controllers.controller('chartWidgetChartCtrl', ['$scope', '$element', '$controll
             $scope.openChart('project', $scope.widget.settings.chart.id, $scope.project);
             break;
     }
+}]);
+
+controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope, charts) {
+    $scope.projectCharts = _.transform(charts.project, function(projectCharts, charts, type) {
+        projectCharts[type] = _.filter(charts, function(chart) {
+            return !chart.visible || chart.visible($scope.project);
+        });
+    }, {});
+    $scope.projectChartEntries = _.transform(charts.project, function(projectChartEntries, charts, type) {
+        _.chain(charts)
+            .filter(function(chart) {
+                return !chart.visible || chart.visible($scope.project);
+            }).map(function(chart) {
+                console.log(2, chart);
+                return {
+                    group: $scope.message('is.' + type),
+                    type: type,
+                    id: chart.id,
+                    name: $scope.message(chart.name)
+                };
+            }).each(function(chart) {
+                console.log(3, chart.id, projectChartEntries);
+                projectChartEntries.push(chart);
+            }).value();
+    }, []);
 }]);

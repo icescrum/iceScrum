@@ -153,6 +153,7 @@
                      ng-controller="chartCtrl"
                      ng-init="openChart('release', 'burndown', release)">
                     <div uib-dropdown
+                         ng-controller="projectChartCtrl"
                          class="pull-right">
                         <button class="btn btn-default btn-sm"
                                 uib-tooltip="${message(code:'todo.is.ui.charts')}"
@@ -161,9 +162,7 @@
                             <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu>
-                            <li><a href ng-click="openChart('release', 'burndown', release)">${message(code: 'is.chart.releaseBurndown')}</a></li>
-                            <li><a href ng-click="openChart('release', 'parkingLot', release)">${message(code: 'is.chart.releaseParkingLot')}</a></li>
-                            <entry:point id="release-details-charts"/>
+                            <li ng-repeat="chart in projectCharts.release"><a href ng-click="openChart('release', chart.id, release)">{{ message(chart.name) }}</a></li>
                         </ul>
                     </div>
                     <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>

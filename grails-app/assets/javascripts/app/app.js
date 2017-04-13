@@ -55,6 +55,33 @@ angular.module('isPlugins', [])
     .provider('pluginTabs', function() {
         this.$get = angular.noop;
         this.pluginTabs = {};
+    })
+    .provider('charts', function() {
+        this.$get = function() {
+            return this.charts;
+        };
+        this.charts = {
+            project: {
+                project: [
+                    {id: 'burnup', name: 'is.ui.project.charts.projectBurnup'},
+                    {id: 'burndown', name: 'is.ui.project.charts.projectBurndown'},
+                    {id: 'velocity', name: 'is.ui.project.charts.projectVelocity'},
+                    {id: 'velocityCapacity', name: 'is.ui.project.charts.projectVelocityCapacity'},
+                    {id: 'parkingLot', name: 'is.ui.project.charts.projectParkingLot'},
+                    {id: 'flowCumulative', name: 'is.ui.project.charts.projectCumulativeFlow'}
+                ],
+                release: [
+                    {id: 'burndown', name: 'is.chart.releaseBurndown'},
+                    {id: 'parkingLot', name: 'is.chart.releaseParkingLot'}
+                ],
+                sprint: [
+                    {id: 'burndownRemaining', name: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart'},
+                    {id: 'burnupTasks', name: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart'},
+                    {id: 'burnupPoints', name: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart'},
+                    {id: 'burnupStories', name: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart'}
+                ]
+            }
+        };
     });
 
 angular.module('isApplication', [

@@ -113,7 +113,7 @@
         <div class="widget-column">
             <div class="panel-container">
                 <div class="panel panel-light" ng-controller="chartCtrl" ng-init="openChart('project', 'burnup')">
-                    <div class="panel-heading">
+                    <div class="panel-heading" ng-controller="projectChartCtrl">
                         <h3 class="panel-title">
                             <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
                             <div class="btn-toolbar pull-right visible-on-hover"
@@ -131,19 +131,13 @@
                                 </button>
                                 <ul uib-dropdown-menu>
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>
-                                    <g:each var="chart" in="${contextScope.charts.project}">
-                                        <li><a href ng-click="openChart('project', '${chart.id}')">${message(code: chart.name)}</a></li>
-                                    </g:each>
+                                    <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChart('project', chart.id)">{{ message(chart.name) }}</a></li>
                                     <li ng-if="release.id" class="divider"></li>
                                     <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
-                                    <g:each var="chart" in="${contextScope.charts.release}">
-                                        <li ng-if="release.id"><a href ng-click="openChart('release', '${chart.id}', release)">${message(code: chart.name)}</a></li>
-                                    </g:each>
+                                    <li ng-if="release.id" ng-repeat="chart in projectCharts.release"><a href ng-click="openChart('release', chart.id, release)">{{ message(chart.name) }}</a></li>
                                     <li ng-if="currentOrLastSprint.id" class="divider"></li>
                                     <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                                    <g:each var="chart" in="${contextScope.charts.sprint}">
-                                        <li ng-if="currentOrLastSprint.id"><a href ng-click="openChart('sprint', '${chart.id}', currentOrLastSprint)">${message(code: chart.name)}</a></li>
-                                    </g:each>
+                                    <li ng-if="currentOrLastSprint.id" ng-repeat="chart in projectCharts.sprint"><a href ng-click="openChart('sprint', chart.id, currentOrLastSprint)">{{ message(chart.name) }}</a></li>
                                 </ul>
                             </div>
                         </h3>

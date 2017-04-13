@@ -34,7 +34,9 @@
         </ui-select>
     </div>
 </div>
-<div class="form-group" ng-if="widget.settings.project">
+<div ng-if="widget.settings.project"
+     ng-controller="projectChartCtrl"
+     class="form-group" >
     <label class="col-sm-2">${message(code: 'is.ui.widget.chart.chart')}</label>
     <div class="col-sm-6">
         <ui-select class="form-control"
@@ -43,9 +45,7 @@
                    ng-model="holder.chart">
             <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.chart')}">{{ $select.selected.name }}</ui-select-match>
             <ui-select-choices group-by="'group'"
-                               repeat="chart in charts"
-                               refresh="refreshCharts()"
-                               refresh-delay="150">{{chart.name}}</ui-select-choices>
+                               repeat="chart in projectChartEntries">{{chart.name}}</ui-select-choices>
         </ui-select>
     </div>
 </div>

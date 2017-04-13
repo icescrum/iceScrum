@@ -259,28 +259,7 @@ icescrum {
                     user.save()
                 }
             }
-            contextScope = [
-                charts: [
-                    project: [
-                        [id:'burnup', name:'is.ui.project.charts.projectBurnup'],
-                        [id:'burndown', name:'is.ui.project.charts.projectBurndown'],
-                        [id:'velocity', name:'is.ui.project.charts.projectVelocity'],
-                        [id:'velocityCapacity', name:'is.ui.project.charts.projectVelocityCapacity'],
-                        [id:'parkingLot', name:'is.ui.project.charts.projectParkingLot'],
-                        [id:'flowCumulative', name:'is.ui.project.charts.projectCumulativeFlow'],
-                    ],
-                    release: [
-                        [id:'burndown', name:'is.chart.releaseBurndown'],
-                        [id:'parkingLot', name:'is.chart.releaseParkingLot']
-                    ],
-                    sprint: [
-                        [id:'burndownRemaining', name:'is.ui.sprintPlan.charts.sprintBurndownRemainingChart'],
-                        [id:'burnupTasks', name:'is.ui.sprintPlan.charts.sprintBurnupTasksChart'],
-                        [id:'burnupPoints', name:'is.ui.sprintPlan.charts.sprintBurnupPointsChart'],
-                        [id:'burnupStories', name:'is.ui.sprintPlan.charts.sprintBurnupStoriesChart'],
-                    ]
-                ]
-            ]
+            contextScope = [] // Not used for the moment
         }
     }
 }
