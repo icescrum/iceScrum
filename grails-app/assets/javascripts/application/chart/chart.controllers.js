@@ -235,7 +235,6 @@ controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope,
             .filter(function(chart) {
                 return !chart.visible || chart.visible($scope.project);
             }).map(function(chart) {
-                console.log(2, chart);
                 return {
                     group: $scope.message('is.' + type),
                     type: type,
@@ -243,7 +242,6 @@ controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope,
                     name: $scope.message(chart.name)
                 };
             }).each(function(chart) {
-                console.log(3, chart.id, projectChartEntries);
                 projectChartEntries.push(chart);
             }).value();
     }, []);
