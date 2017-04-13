@@ -44,7 +44,7 @@
 //= require_full_tree vendors
 
 //= require_full_tree application/plugins
-//= require           application/app
+//= require           application/isApplication
 //= require           application/controllers
 //= require           application/directives
 //= require           application/filters
