@@ -38,7 +38,6 @@
                  flow-init="{target:'${createLink(controller: 'user', action: 'update', id: user.id)}', singleFile:true, simultaneousUploads:1}"
                  flow-single-file="true"
                  flow-drop>
-                <entry:point id="user-dialog-profile-tab-general-before-form"/>
                 <div class="row">
                     <div class="form-half">
                         <label for="username">${message(code: 'is.user.username')}</label>
