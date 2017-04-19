@@ -18,6 +18,8 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
+ *
  */
 
 package org.icescrum.codecs
@@ -26,22 +28,18 @@ import org.icescrum.core.domain.Project
 
 class ProjectKeyCodec {
 
-  static final numeric = /[0-9]*/
+    static final numeric = /[0-9]*/
 
-  static decode = { theTarget ->
-
-    if (!theTarget || theTarget ==~ numeric ) {
-      return theTarget
+    static decode = { theTarget ->
+        if (!theTarget || theTarget instanceof Project || theTarget ==~ numeric) {
+            return theTarget
+        }
+        Project.createCriteria().get {
+            eq 'pkey', theTarget
+            projections {
+                property 'id'
+            }
+            cache true
+        }
     }
-
-    Project.createCriteria().get {
-      eq 'pkey', theTarget
-      projections {
-        property 'id'
-      }
-      cache true
-    }
-
-  }
-
 }
