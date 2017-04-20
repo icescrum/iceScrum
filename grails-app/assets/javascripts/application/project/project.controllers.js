@@ -289,7 +289,7 @@ controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService'
             estimatedSprintsDuration: 14,
             displayRecurrentTasks: true,
             displayUrgentTasks: true,
-            hidden: true
+            hidden: isSettings.projectPrivateDefault
         },
         productOwners: [Session.user],
         stakeHolders: []

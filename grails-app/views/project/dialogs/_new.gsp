@@ -25,7 +25,6 @@
 
 <is:modal title="{{ (project.name ? project.name : '${message(code:/is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="wizard" footer="${false}">
     <form name="formHolder.projectForm"
-          ng-init="project.preferences.hidden = ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.default)};"
           show-validation
           novalidate>
         <wizard class="row wizard-row">
