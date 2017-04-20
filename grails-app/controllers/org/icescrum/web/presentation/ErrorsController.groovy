@@ -106,6 +106,8 @@ class ErrorsController implements ControllerErrorHandler {
             } else {
                 returnError(text: "DEV ERROR: " + exception.message, exception: exception)
             }
-        } catch(Throwable t) {}
+        } catch(Throwable t) {
+            returnError(status: 400)
+        }
     }
 }
