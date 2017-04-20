@@ -31,7 +31,7 @@ class ProjectKeyCodec {
     static final numeric = /[0-9]*/
 
     static decode = { theTarget ->
-        if (!theTarget || theTarget instanceof Project || theTarget ==~ numeric) {
+        if (!theTarget || theTarget instanceof Project || theTarget instanceof Map || theTarget ==~ numeric) {
             return theTarget
         }
         Project.createCriteria().get {

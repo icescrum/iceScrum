@@ -55,7 +55,7 @@ class IceScrumFilters {
                     redirect(controller: 'errors', action: 'browserNotSupported')
                     return false
                 }
-                if (params.project && !(actionName == 'save' && controllerName == 'project')) {
+                if (params.project) {
                     params.project = params.project.decodeProjectKey()
                     if (!params.project) {
                         forward(controller: "errors", action: "error404")
