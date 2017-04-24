@@ -33,6 +33,7 @@
         pushContext: ${project?.id ?: "''"},
         pushLogLevel: "${Holders.config.icescrum.debug.enable ? 'debug' : 'info'}",
         projectPrivateDefault: ${grailsApplication.config.icescrum.project.private.default},
+        projectPrivateEnabled: ${grailsApplication.config.icescrum.project.private.enable},
         messages: ${i18nMessages as JSON},
         bundles: ${is.i18nBundle() as JSON},
         projectMenus: ${projectMenus as JSON},

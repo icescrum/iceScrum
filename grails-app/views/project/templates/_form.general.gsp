@@ -24,6 +24,7 @@
 <script type="text/ng-template" id="form.general.project.html">
     <h4>${message(code:"is.dialog.wizard.section.project")}</h4>
     <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
+    <entry:point id="project-form-general-before"/>
     <div class="row">
         <div class="col-sm-7 col-xs-7 form-group">
             <label for="name">${message(code:'is.project.name')}</label>
@@ -36,17 +37,17 @@
                        ng-model="project.name"
                        ng-change="nameChanged()"
                        ng-required="isCurrentStep(1)">
-                <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
-                    <span class="input-group-btn">
-                        <a class="btn btn-model"
-                           uib-tooltip="{{project.preferences.hidden ? '${message(code: /is.project.preferences.project.hidden/)}' : '${message(code: /todo.is.ui.project.preferences.project.public/)}' }}"
-                           ng-model="project.preferences.hidden"
-                           ng-click="project.preferences.hidden = !project.preferences.hidden;"
-                           ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
-                            <i class="fa fa-lock" ng-class="{ 'fa-lock': project.preferences.hidden, 'fa-unlock': !project.preferences.hidden }"></i>
-                        </a>
-                    </span>
-                </g:if>
+                <span class="input-group-btn">
+                    <button class="btn btn-model"
+                            type="button"
+                            ng-disabled="!enableVisibilityChange()"
+                            uib-tooltip="{{project.preferences.hidden ? '${message(code: /is.project.preferences.project.hidden/)}' : '${message(code: /todo.is.ui.project.preferences.project.public/)}' }}"
+                            ng-model="project.preferences.hidden"
+                            ng-click="project.preferences.hidden = !project.preferences.hidden;"
+                            ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
+                        <i class="fa fa-lock" ng-class="{ 'fa-lock': project.preferences.hidden, 'fa-unlock': !project.preferences.hidden }"></i>
+                    </button>
+                </span>
             </div>
         </div>
         <div class="col-sm-5 col-xs-5 form-group">

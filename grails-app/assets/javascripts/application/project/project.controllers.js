@@ -220,11 +220,14 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     });
 }]);
 
-controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
+extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
     $controller('abstractProjectCtrl', {$scope: $scope});
-    // Functions
     $scope.type = 'newProject';
     $scope.checkProjectPropertyUrl = '/project/available';
+    // Functions
+    $scope.enableVisibilityChange = function() {
+        return isSettings.projectPrivateEnabled || Session.admin();
+    };
     $scope.isCurrentStep = function(index) {
         return WizardHandler.wizard().currentStepNumber() == index;
     };
@@ -289,7 +292,7 @@ controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService'
             estimatedSprintsDuration: 14,
             displayRecurrentTasks: true,
             displayUrgentTasks: true,
-            hidden: isSettings.projectPrivateDefault
+            hidden: isSettings.projectPrivateDefault && isSettings.projectPrivateEnabled
         },
         productOwners: [Session.user],
         stakeHolders: []
@@ -315,6 +318,9 @@ controllers.controller('newProjectCtrl', ['$scope', '$controller', 'DateService'
 
 controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', 'ReleaseService', 'AppService', function($scope, Session, ProjectService, ReleaseService, AppService) {
     $scope.type = 'editProject';
+    $scope.enableVisibilityChange = function() {
+        return true;
+    };
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
