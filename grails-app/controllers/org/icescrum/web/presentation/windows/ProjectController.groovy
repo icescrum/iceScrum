@@ -117,6 +117,7 @@ class ProjectController implements ControllerErrorHandler {
                     returnError(code: 'is.project.error.noMember')
                     return
                 }
+                entry.hook(id: 'project-team-save-before')
                 teamService.save(team, members, scrumMasters)
                 projectService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
             } else {

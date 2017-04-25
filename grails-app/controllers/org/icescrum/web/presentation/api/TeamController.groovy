@@ -36,6 +36,7 @@ class TeamController implements ControllerErrorHandler {
     def save() {
         def team = new Team(name: params.team.name)
         Team.withTransaction {
+            entry.hook(id: 'team-save-before')
             teamService.save(team, null, [springSecurityService.currentUser.id])
             render(status: 201, text: team as JSON, contentType: 'application/json')
         }
