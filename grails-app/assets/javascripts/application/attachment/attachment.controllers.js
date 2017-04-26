@@ -108,5 +108,9 @@ extensibleController('attachmentNestedCtrl', ['$scope', 'AttachmentService', fun
         var attachment = JSON.parse(message);
         AttachmentService.addToAttachmentable(attachment, $scope.attachmentable);
     });
+    $scope.$on('flow::fileError', function(event, $flow, flowFile, message) {
+        var data = JSON.parse(message);
+        $scope.notifyError(angular.isArray(data) ? data[0].text : data.text, {duration: 8000});
+    });
 }]);
 
