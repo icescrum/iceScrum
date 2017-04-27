@@ -286,7 +286,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName'
     };
 }]);
 
-controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'project', 'sprint', 'releases', function($scope, $state, $filter, UserService, StoryService, TaskService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, project, sprint, releases) {
+controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'SprintService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'project', 'sprint', 'releases', function($scope, $state, $filter, UserService, StoryService, TaskService, SprintService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, project, sprint, releases) {
     $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
@@ -320,6 +320,9 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
     };
     $scope.openNewTaskByType = function(type) {
         $state.go('taskBoard.task.new', {taskCategory: {id: type, name: $filter('i18n')(type, 'TaskTypes')}});
+    };
+    $scope.copyRecurrentTasks = function(sprint) {
+        SprintService.copyRecurrentTasks(sprint, project);
     };
     $scope.refreshTasks = function() {
         var tasks;

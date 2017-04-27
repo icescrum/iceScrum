@@ -129,6 +129,13 @@ class SprintController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: sprint as JSON)
     }
 
+    @Secured('inProject() and !archivedProject()')
+    def copyRecurrentTasks(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
+        sprintService.copyRecurrentTasks(sprint)
+        render(status: 200, contentType: 'application/json', text: sprint as JSON)
+    }
+
     @Secured(['stakeHolder() or inProject()'])
     def burndownRemaining(long project, long id) {
         Sprint sprint = Sprint.withSprint(project, id)

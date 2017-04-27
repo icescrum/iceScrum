@@ -158,7 +158,8 @@
                                 <div class="add-task postit">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByType(taskTypesByName.URGENT)"
-                                       href><g:message code="todo.is.ui.task.new"/>
+                                       href>
+                                        ${message(code: 'todo.is.ui.task.new')}
                                     </a>
                                 </div>
                             </div>
@@ -197,10 +198,28 @@
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
                                 <div class="add-task postit">
-                                    <a class="btn btn-primary"
-                                       ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
-                                       href><g:message code="todo.is.ui.task.new"/>
-                                    </a>
+                                    <div class="btn-group">
+                                        <a class="btn btn-primary"
+                                           ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
+                                           href>
+                                            ${message(code: 'todo.is.ui.task.new')}
+                                        </a>
+                                        <div class="btn-group"
+                                             uib-dropdown
+                                             dropdown-append-to-body="true">
+                                            <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                                <i class="fa fa-ellipsis-h"></i></i>
+                                            </button>
+                                            <ul uib-dropdown-menu>
+                                                <li>
+                                                    <a ng-click="copyRecurrentTasks(sprint)"
+                                                       href>
+                                                        ${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -238,7 +257,8 @@
                                 <div class="add-task postit">
                                     <a class="btn btn-primary"
                                        ng-click="openNewTaskByStory(story)"
-                                       href><g:message code="todo.is.ui.task.new"/>
+                                       href>
+                                        ${message(code: 'todo.is.ui.task.new')}
                                     </a>
                                 </div>
                             </div>

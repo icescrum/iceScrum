@@ -147,6 +147,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.openChart = function(sprint, project, chart) {
         return Sprint.get({id: sprint.id, projectId: project.id, action: chart}).$promise;
     };
+    this.copyRecurrentTasks = function(sprint, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'copyRecurrentTasks'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
     this.authorizedSprint = function(action, sprint) {
         switch (action) {
             case 'create':

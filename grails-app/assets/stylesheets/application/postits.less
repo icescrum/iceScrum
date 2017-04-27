@@ -359,10 +359,11 @@
         &:hover {
           opacity: 1;
         }
-        .btn {
+        > .btn, > .btn-group {
           margin-top:-15px;
           .vertical-align;
           .horizontal-align;
+          position: relative; // Override position: absolute from .horizontal-align
         }
       }
     }
@@ -467,6 +468,9 @@
   &.size-xs {
     .postit-container .postit {
       width: 65px;
+      &.add-task {
+        width: 160px;
+      }
       height: 45px;
       .content, .tags, .actions, .footer, .follow {
         display:none;
@@ -701,7 +705,7 @@
         &:last-child {
           border:none;
         }
-        .btn {
+        > .btn, > .btn-group {
           .horizontal-align;
         }
       }
