@@ -306,10 +306,10 @@ class ProjectController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         def values = projectService.projectVelocityCapacityValues(_project)
         def computedValues = [[key   : message(code: "is.chart.projectVelocityCapacity.serie.velocity.name"),
-                               values: values.collect { return [it.capacity] },
+                               values: values.collect { return [it.velocity] },
                                color : '#009900'],
                               [key   : message(code: "is.chart.projectVelocityCapacity.serie.capacity.name"),
-                               values: values.collect { return [it.velocity] },
+                               values: values.collect { return [it.capacity] },
                                color : '#1C3660']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectVelocityCapacity.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.projectVelocityCapacity.xaxis.label')]],
