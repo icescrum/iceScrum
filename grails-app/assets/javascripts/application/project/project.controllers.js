@@ -104,7 +104,7 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
     });
 }]);
 
-controllers.controller('quickProjectsListCtrl', ['$scope', '$timeout', 'FormService', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, $timeout, FormService, PushService, ProjectService, IceScrumEventType) {
+extensibleController('quickProjectsListCtrl', ['$scope', '$timeout', 'FormService', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, $timeout, FormService, PushService, ProjectService, IceScrumEventType) {
     $scope.getProjectUrl = function(project, viewName) {
         return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
     };

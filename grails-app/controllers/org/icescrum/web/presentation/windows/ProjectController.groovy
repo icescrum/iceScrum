@@ -524,8 +524,14 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def createSample() {
-        dummyService.createSampleProject(springSecurityService.currentUser);
+    def createSample(Boolean hidden) {
+        if (hidden == null) {
+            hidden = true
+        }
+        if (!grailsApplication.config.icescrum.project.private.enable && hidden) {
+            hidden = false
+        }
+        dummyService.createSampleProject(springSecurityService.currentUser, hidden);
         render(status: 200);
     }
 }
