@@ -5,7 +5,11 @@
         <a href="{{:: getProjectUrl(project, 'taskBoard') }}" class="btn btn-default" uib-tooltip="${message(code: 'todo.is.ui.taskBoard')}" role="button"><i class="fa fa-tasks"></i></a>
     </div>
     <div ng-if="!projects.length && projectsLoaded">
-        <button class="btn btn-primary"
+        <a class="btn btn-primary"
+           ui-sref="newProject">
+            ${message(code: 'todo.is.ui.project.createNew')}
+        </a>
+        <button class="btn btn-default"
                 type="button"
                 click-async="createSampleProject()">
             ${message(code: 'todo.is.ui.project.createSample')}
