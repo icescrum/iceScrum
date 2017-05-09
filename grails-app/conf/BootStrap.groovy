@@ -81,8 +81,6 @@ t    tttttt    ttttt   EEEEEE    EEEEEE  EE      EEEEE    E      E     ,,,,,,,""
         println "Try for free or buy your iceScrum Pro license and start using its nice features: https://www.icescrum.com/pricing"
         println " "
         println " "
-        println " "
-        println " "
     }
 
     static private boolean isValidType(String type) {
