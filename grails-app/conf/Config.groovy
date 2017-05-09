@@ -66,7 +66,7 @@ try {
 } catch (Exception e) {
     icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
 }
-println "Server Timezone : ${icescrum.timezone.default}"
+println "Server Timezone: ${icescrum.timezone.default}"
 
 /* Project administration */
 icescrum.project.import.enable = true
@@ -363,7 +363,7 @@ try {
 } catch (Exception e) {
     icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
 }
-println "log dir : ${icescrum.log.dir}"
+println "Log directory: ${icescrum.log.dir}"
 
 log4j = {
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
