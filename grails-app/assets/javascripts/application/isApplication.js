@@ -886,6 +886,16 @@ angular.module('isApplication', [
     })
     .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications, screenSize) {
 
+        $rootScope.uiWorking = function(message){
+            $rootScope.application.loading = true;
+            $rootScope.application.loadingText = $rootScope.message( (message === true || message === undefined) ? 'todo.is.ui.loading.working' : message);
+        };
+
+        $rootScope.uiReady = function(){
+            $rootScope.application.loading = false;
+            $rootScope.application.loadingText = null;
+        };
+
         $rootScope.hotkeyClick = function(event, hotkey) {
             if (hotkey.el && (hotkey.el.is("a") || hotkey.el.is("button"))) {
                 event.preventDefault();

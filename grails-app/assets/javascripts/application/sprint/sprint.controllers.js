@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', function($scope, $q, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName) {
+controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', function($rootScope, $scope, $q, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -31,22 +31,30 @@ controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService'
         return SprintService.authorizedSprint(action, sprint);
     };
     $scope.activate = function(sprint) {
+        $rootScope.uiWorking();
         SprintService.activate(sprint, $scope.project).then(function() {
+            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.sprint.activated');
         });
     };
     $scope.autoPlan = function(sprint, capacity) {
+        $rootScope.uiWorking();
         SprintService.autoPlan(sprint, capacity, $scope.project).then(function() {
+            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
         });
     };
     $scope.unPlan = function(sprint) {
+        $rootScope.uiWorking();
         SprintService.unPlan(sprint, $scope.project).then(function() {
+            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.sprint.unPlanned');
         });
     };
     $scope['delete'] = function(sprint) {
+        $rootScope.uiWorking();
         SprintService.delete(sprint, $scope.release).then(function() {
+            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
@@ -62,6 +70,7 @@ controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService'
                 return _.chain(stories).filter({state: StoryStatesByName.DONE}).map('id').value();
             },
             submit: function(wannaBeDone, stories) {
+                $rootScope.uiWorking();
                 var storyIdsByDone = _.chain(stories).groupBy(function(story) {
                     return story.state == StoryStatesByName.DONE;
                 }).mapValues(function(stories) {
@@ -84,7 +93,8 @@ controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService'
                     });
                 }
                 return promise.then(function() {
-                    SprintService.close(sprint, project).then(function() {
+                    return SprintService.close(sprint, project).then(function() {
+                        $rootScope.uiReady();
                         $scope.notifySuccess('todo.is.ui.sprint.closed');
                     });
                 });
@@ -101,8 +111,10 @@ controllers.controller('sprintCtrl', ['$scope', '$q', 'Session', 'SprintService'
             },
             submit: function(selectedIds) {
                 if (selectedIds.length > 0) {
+                    $rootScope.uiWorking();
                     // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch
                     return StoryService.updateMultiple(selectedIds, {parentSprint: sprint}).then(function() {
+                        $rootScope.uiReady();
                         $scope.notifySuccess('todo.is.ui.story.multiple.updated');
                     });
                 } else {

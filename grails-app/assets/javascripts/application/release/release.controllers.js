@@ -49,12 +49,16 @@ controllers.controller('releaseCtrl', ['$scope', '$state', 'Session', 'ReleaseSe
         });
     };
     $scope.autoPlan = function(release, capacity) {
+        $rootScope.uiWorking();
         ReleaseService.autoPlan(release, capacity).then(function() {
+            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.release.autoPlanned');
         });
     };
     $scope.unPlan = function(release) {
+        $rootScope.uiWorking();
         ReleaseService.unPlan(release).then(function() {
+            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.release.unPlanned');
         });
     };
