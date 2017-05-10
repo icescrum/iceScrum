@@ -98,7 +98,7 @@
                           </a>
                       </li>
                   </g:if>
-                  <g:if test="${exportEnable && product != null && request.admin}">
+                  <g:if test="${exportEnable && product != null && (request.scrumMaster || request.productOwner)}">
                       <li>
                           <a href="${createLink(controller:'project', action:'exportV7',params:[product:product.id])}" data-ajax="true">
                               <g:message code="is.projectmenu.submenu.project.exportV7"/>
