@@ -94,7 +94,7 @@
         <table class="table information">
             <tr>
                 <td class="text-right">${message(code:'is.app.author')}</td>
-                <td><a href="mailto:{{ appDefinition.email }}">{{ appDefinition.author }}</a></td>
+                <td><a href="mailto:support@kagilum.com">{{ appDefinition.author }}</a></td>
             </tr>
             <tr>
                 <td class="text-right">${message(code:'is.app.version')}</td>
