@@ -640,9 +640,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
                 effort: _.every(stories, {value: $scope.topStory.effort}) ? $scope.topStory.effort : null,
                 feature: _.every(stories, {feature: $scope.topStory.feature}) ? $scope.topStory.feature : null,
                 type: _.every(stories, {type: $scope.topStory.type}) ? $scope.topStory.type : null,
-                tags: _.every(stories, function(story) {
-                    return _.isEqual($scope.topStory.tags, story.tags);
-                }) ? $scope.topStory.tags : []
+                tags: _.intersection.apply(null, _.map(stories, 'tags'))
             };
             $scope.stories = stories;
         });

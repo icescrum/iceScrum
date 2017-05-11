@@ -75,11 +75,29 @@ class FeatureController implements ControllerErrorHandler {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
+        def tagParams = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
+        tagParams = tagParams?.findAll { it } // remove empty tags
+        def commonTags
+        if (features.size() > 1) {
+            features.each { Feature feature ->
+                commonTags = commonTags == null ? feature.tags : commonTags.intersect(feature.tags)
+            }
+        }
         features.each { Feature feature ->
             Feature.withTransaction {
                 bindData(feature, featureParams, [include: ['name', 'description', 'notes', 'color', 'type', 'value', 'rank']])
-                if (featureParams.tags != null) {
-                    feature.tags = featureParams.tags instanceof String ? featureParams.tags.split(',') : (featureParams.tags instanceof String[] || featureParams.tags instanceof List) ? featureParams.tags : null
+                def oldTags = feature.tags
+                if (features.size() > 1) {
+                    (tagParams - oldTags).each { tag ->
+                        feature.addTag(tag)
+                    }
+                    (commonTags - tagParams).each { tag ->
+                        if (oldTags.contains(tag)) {
+                            feature.removeTag(tag)
+                        }
+                    }
+                } else {
+                    feature.tags = tagParams
                 }
                 featureService.update(feature)
             }

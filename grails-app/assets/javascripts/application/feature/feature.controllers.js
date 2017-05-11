@@ -157,9 +157,7 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'feature
         $scope.topFeature = _.head(features);
         $scope.featurePreview = {
             type: _.every(features, {type: $scope.topFeature.type}) ? $scope.topFeature.type : null,
-            tags: _.every(features, function(feature) {
-                return _.isEqual($scope.topFeature.tags, feature.tags);
-            }) ? $scope.topFeature.tags : []
+            tags: _.intersection.apply(null, _.map(features, 'tags'))
         };
     });
 }]);

@@ -129,6 +129,14 @@ class StoryController implements ControllerErrorHandler {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
+        def tagParams = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
+        tagParams = tagParams?.findAll { it } // remove empty tags
+        def commonTags
+        if (stories.size() > 1) {
+            stories.each { Story story ->
+                commonTags = commonTags == null ? story.tags : commonTags.intersect(story.tags)
+            }
+        }
         stories.each { Story story ->
             def user = springSecurityService.currentUser
             if (!story.canUpdate(request.productOwner, user)) {
@@ -154,7 +162,18 @@ class StoryController implements ControllerErrorHandler {
             Story.withTransaction {
                 if (storyParams.tags != null) {
                     def oldTags = story.tags
-                    story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
+                    if (stories.size() > 1) {
+                        (tagParams - oldTags).each { tag ->
+                            story.addTag(tag)
+                        }
+                        (commonTags - tagParams).each { tag ->
+                            if (oldTags.contains(tag)) {
+                                story.removeTag(tag)
+                            }
+                        }
+                    } else {
+                        story.tags = tagParams
+                    }
                     if (oldTags != story.tags) {
                         activityService.addActivity(story, user, Activity.CODE_UPDATE, story.name, 'tags', oldTags?.sort()?.join(','), story.tags?.sort()?.join(','))
                     }
