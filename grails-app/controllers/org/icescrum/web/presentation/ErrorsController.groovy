@@ -73,7 +73,10 @@ class ErrorsController implements ControllerErrorHandler {
     def error500() {
         try {
             Exception exception = request.exception
-            if (Environment.current == Environment.PRODUCTION) {
+            if(exception.message.contains("This indicates a configuration error because the rejectPublicInvocations property is set to")){
+                redirect(url:'/notFound/')
+            }
+            else if (Environment.current == Environment.PRODUCTION) {
                 try {
                     if (grailsApplication.config.icescrum.alerts.enable) {
                         User user = (User) springSecurityService.currentUser

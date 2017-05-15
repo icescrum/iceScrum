@@ -362,9 +362,12 @@ class UrlMappings {
             controller = 'feed'
             action = [POST: "index"]
         }
-        // Errors
-        "404"(controller: "errors", action: "error404")
-        "403"(controller: "errors", action: "error403")
+        // Errors mapping
+        "/notFound"(controller: "errors", action: "error404")
+        "404"(redirect: '/notFound')
+        "/forbidden"(controller: "errors", action: "error403")
+        "403"(redirect: '/forbidden')
+        "/generalError/"(controller: "errors", action: "error500")
         "500"(controller: "errors", action: "error403", exception: AccessDeniedException)
         "500"(controller: "errors", action: "error403", exception: NotFoundException)
         "500"(controller: 'errors', action: 'memory', exception: OutOfMemoryError)

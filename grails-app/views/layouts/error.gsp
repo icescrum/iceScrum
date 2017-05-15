@@ -51,6 +51,7 @@
             </div>
         </div>
     </div>
+    <g:include controller="scrumOS" action="isSettings" params="[project: params.project]"/>
     <asset:javascript src="application.js"/>
 </body>
 </html>
