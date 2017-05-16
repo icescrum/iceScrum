@@ -374,7 +374,9 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
     $scope.showStorySplitModal = function(story) {
         $uibModal.open({
             templateUrl: 'story.split.html',
-            controller: ['$scope', '$q', function($scope, $q) {
+            controller: ['$scope', '$controller', '$q', function($scope, $controller, $q) {
+                $controller('storyAtWhoCtrl', {$scope: $scope});
+                // Functions
                 $scope.onChangeSplitNumber = function() {
                     if ($scope.stories.length < $scope.splitCount) {
                         while ($scope.stories.length < $scope.splitCount) {
@@ -441,7 +443,8 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                     });
                     $q.serial(tasks);
                 };
-                //init values
+                // Init
+                $scope.loadAtWhoActors();
                 $scope.stories = [];
                 $scope.stories.push(angular.copy(story));
                 $scope.splitCount = 2;
@@ -455,9 +458,38 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
     $scope.tags = [];
 }]);
 
-extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", 'Session', 'StoryService', 'FormService', 'ActorService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, Session, StoryService, FormService, ActorService, FeatureService, ProjectService, UserService, detailsStory) {
-        $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
+controllers.controller('storyAtWhoCtrl', ['$scope', 'ActorService', function($scope, ActorService) {
+    // Functions
+    $scope.loadAtWhoActors = function() {
+        return ActorService.list().then(function(actors) {
+            _.each($scope.atOptions, function(options) {
+                options.data = _.map(actors, function(actor) {
+                    return {uid: actor.uid, name: actor.name};
+                });
+            });
+        });
+    };
+    // Init
+    var actorTag = 'A[${uid}-${name}]';
+    var atWhoLimit = 100;
+    $scope.atOptions = [
+        {
+            insertTpl: '${atwho-at}' + actorTag,
+            at: $scope.message('is.story.template.as') + ' ',
+            limit: atWhoLimit
+        },
+        {
+            insertTpl: actorTag,
+            at: '@',
+            limit: atWhoLimit
+        }
+    ];
+}]);
+
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, detailsStory) {
+        $controller('storyCtrl', {$scope: $scope});
+        $controller('storyAtWhoCtrl', {$scope: $scope});
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
         // Functions
         $scope.searchCreator = function(val) {
@@ -479,13 +511,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         };
         $scope.clickDescriptionPreview = function($event, template) {
             if ($event.target.nodeName != 'A' && $scope.formEditable()) {
-                ActorService.list().then(function(actors) {
-                    _.each($scope.atOptions, function(options) {
-                        options.data = _.map(actors, function(actor) {
-                            return {uid: actor.uid, name: actor.name};
-                        });
-                    });
-                });
+                $scope.loadAtWhoActors();
                 $scope.showDescriptionTextarea = true;
                 var $el = angular.element($event.currentTarget);
                 $el.prev().css('height', $el.outerHeight());
@@ -547,20 +573,6 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.parentSprintEntries = [];
         $scope.versions = [];
         $scope.creators = [];
-        var actorTag = 'A[${uid}-${name}]';
-        var atWhoLimit = 100;
-        $scope.atOptions = [
-            {
-                insertTpl: '${atwho-at}' + actorTag,
-                at: $scope.message('is.story.template.as') + ' ',
-                limit: atWhoLimit
-            },
-            {
-                insertTpl: actorTag,
-                at: '@',
-                limit: atWhoLimit
-            }
-        ];
         $scope.features = Session.getProject().features;
         FeatureService.list();
         $scope.project = Session.getProject();
