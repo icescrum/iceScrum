@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('releaseCtrl', ['$scope', '$state', 'Session', 'ReleaseService', 'SprintService', function($scope, $state, Session, ReleaseService, SprintService) {
+controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Session', 'ReleaseService', 'SprintService', function($scope, $state, $rootScope, Session, ReleaseService, SprintService) {
     // Functions
     $scope.authorizedRelease = function(action, release) {
         return ReleaseService.authorizedRelease(action, release);
