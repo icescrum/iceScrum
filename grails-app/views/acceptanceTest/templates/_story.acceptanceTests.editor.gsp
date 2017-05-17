@@ -63,12 +63,12 @@
                   ng-model="editableAcceptanceTest.description"
                   is-model-html="editableAcceptanceTest.description_html"
                   ng-show="showAcceptanceTestDescriptionTextarea"
-                  ng-blur="showAcceptanceTestDescriptionTextarea = false; (editableAcceptanceTest.description.trim() != '${is.generateAcceptanceTestTemplate()}'.trim()) || (editableAcceptanceTest.description = '')"
+                  ng-blur="blurAcceptanceTestDescription()"
                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
         <div class="markitup-preview"
              ng-show="!showAcceptanceTestDescriptionTextarea"
              ng-click="showAcceptanceTestDescriptionTextarea = true"
-             ng-focus="showAcceptanceTestDescriptionTextarea = true; editableAcceptanceTest.description || (editableAcceptanceTest.description = '${is.generateAcceptanceTestTemplate()}')"
+             ng-focus="focusAcceptanceTestDescription()"
              ng-class="{'placeholder': !editableAcceptanceTest.description_html}"
              tabindex="0"
              ng-bind-html="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>'"></div>

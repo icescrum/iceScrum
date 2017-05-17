@@ -73,12 +73,25 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
                         $scope.resetAcceptanceTestForm();
                         $scope.notifySuccess('todo.is.ui.acceptanceTest.updated');
                     });
-            } else {
-                $scope.resetAcceptanceTestForm();
             }
         }
     };
+    $scope.blurAcceptanceTestDescription = function() {
+        $scope.showAcceptanceTestDescriptionTextarea = false;
+        if ($scope.editableAcceptanceTest.description.trim() == $scope.acceptanceTestTemplate.trim())  {
+            $scope.editableAcceptanceTest.description = '';
+        }
+    };
+    $scope.focusAcceptanceTestDescription = function() {
+        $scope.showAcceptanceTestDescriptionTextarea = true;
+        if (!$scope.editableAcceptanceTest.description) {
+            $scope.editableAcceptanceTest.description = $scope.acceptanceTestTemplate;
+        }
+    };
     // Init
+    $scope.acceptanceTestTemplate = _.map(['given', 'when', 'then'], function(step) {
+        return '_*' + $scope.message('is.acceptanceTest.template.' + step) + '*_ ';
+    }).join('\n');
     $scope.formHolder = {};
     $scope.resetAcceptanceTestForm();
 }]);
