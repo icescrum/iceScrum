@@ -77,7 +77,10 @@ extensibleController('backlogCtrl', ['$scope', '$filter', '$timeout', '$state', 
     };
     $scope.changeBacklogOrder = function(backlogContainer, order) {
         var newOrder = _.clone(order);
-        newOrder.value = [order.value, 'id']; // Order by id is crucial to ensure stable order regardless of storyService.list order which itself depends on navigation order
+        newOrder.value = [order.value];
+        if (order.id != 'rank') {
+            newOrder.value.push('id'); // Order by id is crucial to ensure stable order when duplicate value (e.g. same effort) regardless of storyService.list order which itself depends on navigation order
+        }
         if (BacklogService.isAll(backlogContainer.backlog) && order.id == 'rank') { // Hack to ensure that rank sort in "All" backlog is consistent with individual backlog ranking
             var sortByStateGroupingByBacklogState = function(story) {
                 var orderCriteria = story.state == StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state; // Ignore the differences betweed accepted and estimated
