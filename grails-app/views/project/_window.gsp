@@ -109,6 +109,41 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-container">
+                <div class="panel panel-light"
+                     flow-init
+                     flow-drop
+                     flow-files-submitted="attachmentQuery($flow, project)"
+                     flow-drop-enabled="authorizedProject('upload', project)"
+                     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
+                     flow-drag-leave="dropClass='panel panel-light'"
+                     ng-class="authorizedProject('upload', project) && dropClass">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-file"></i> <g:message code="is.ui.project.attachment.title"/>
+                        </h3>
+                    </div>
+                    <div class="panel-body" style="padding-bottom:0">
+                        <div class="project-file-upload">
+                            <div ng-if="authorizedProject('upload', project)"
+                                 ng-controller="attachmentNestedCtrl"
+                                 flow-init
+                                 flow-files-submitted="attachmentQuery($flow, project)">
+                                <button type="button"
+                                        class="btn btn-default"
+                                        flow-btn>
+                                    <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
+                                </button>
+                                <entry:point id="attachment-add-buttons"/>
+                            </div>
+                        </div>
+                        <div class="row project-file-list" style="max-height: 175px; margin-top:10px;">
+                            <div ng-include="'attachment.list.html'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="widget-column">
             <div class="panel-container">

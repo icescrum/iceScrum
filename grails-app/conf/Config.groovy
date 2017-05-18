@@ -171,7 +171,7 @@ icescrum.marshaller = [
                 textile: ['notes'],
                 asShort: ['state', 'effort', 'uid', 'name', 'rank']],
         comment: [textile: ['body'], include: ['poster']],
-        project: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps'],
+        project: [include: ['owner', 'attachments', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps'],
                   exclude: ['cliches'],
                   textile: ['description']],
         team: [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],

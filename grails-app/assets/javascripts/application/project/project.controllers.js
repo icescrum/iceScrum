@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'project', function($scope, $state, ProjectService, ReleaseService, SprintService, project) {
+controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'project', '$controller', function($scope, $state, ProjectService, ReleaseService, SprintService, project, $controller) {
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
@@ -46,6 +46,8 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
     $scope.currentOrNextSprint = {};
     $scope.projectMembersCount = 0;
     $scope.project = project;
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: project, clazz: 'project'});
+
     ProjectService.getActivities($scope.project).then(function(activities) {
         $scope.activities = activities;
     });

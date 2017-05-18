@@ -83,6 +83,8 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
     };
     this.authorizedProject = function(action, project) {
         switch (action) {
+            case 'upload':
+                return Session.poOrSm();
             case 'update':
             case 'updateProjectMembers':
                 return Session.sm();

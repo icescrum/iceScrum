@@ -25,6 +25,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.Feature
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.Story
@@ -137,6 +138,9 @@ class AttachmentController implements ControllerErrorHandler {
                 break
             case 'sprint':
                 attachmentable = Sprint.getInProject(project, attachmentableId).list()
+                break
+            case 'project':
+                attachmentable = Project.get(attachmentableId)
                 break
             default:
                 attachmentable = null
