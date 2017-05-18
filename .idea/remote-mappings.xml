@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteMappingsManager">
+    <list>
+      <list>
+        <remote-mappings server-id="php@852c8b79-86ff-4c35-8e5d-cb8b2e667c6a">
+          <settings>
+            <list>
+              <mapping local-root="$PROJECT_DIR$/../simplesamlphp" remote-root="/home/web/icescrum.com/simplesamlphp" />
+            </list>
+          </settings>
+        </remote-mappings>
+      </list>
+    </list>
+  </component>
+</project>
