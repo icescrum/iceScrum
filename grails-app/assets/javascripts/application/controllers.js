@@ -360,7 +360,8 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
                         $scope._changes = angular.copy($scope.changes);
                         $scope._changes = angular.extend($scope._changes, {
                             showTeam: $scope.changes.team ? true : false,
-                            showUsers: $scope.changes.users ? true : false,
+                            showUsernames: $scope.changes.usernames ? true : false,
+                            showEmails: $scope.changes.emails ? true : false,
                             showProjectName: $scope.changes.project ? ($scope.changes.project.name ? true : false) : false,
                             showProjectPkey: $scope.changes.project ? ($scope.changes.project.pkey ? true : false) : false
                         });

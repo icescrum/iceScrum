@@ -156,7 +156,7 @@
                            ng-model="changes.team.name">
                 </div>
             </div>
-            <div class="changes row" ng-if="_changes.showUsers" ng-repeat="(key, value) in changes.users">
+            <div class="changes row" ng-if="_changes.showUsernames" ng-repeat="(key, value) in changes.usernames">
                 <div class="changes-col-1">
                     <label for="_username{{ key }}">${message(code:'todo.is.ui.import.username')}</label>
                     <input required
@@ -165,7 +165,7 @@
                            name="_username{{ key }}"
                            class="form-control"
                            disabled="disabled"
-                           ng-model="_changes.users[key]">
+                           ng-model="_changes.usernames[key]">
                 </div>
                 <div class="changes-arrow">
                     <i class="fa fa-arrow-right"></i>
@@ -173,12 +173,37 @@
                 <div class="changes-col-2">
                     <label for="username{{ key }}">${message(code:'todo.is.ui.import.changes.username')}</label>
                     <input required
-                           not-match="_changes.users[key]"
+                           not-match="_changes.usernames[key]"
                            type="text"
                            id="username{{ key }}"
                            name="username{{ key }}"
                            class="form-control"
-                           ng-model="changes.users[key]">
+                           ng-model="changes.usernames[key]">
+                </div>
+            </div>
+            <div class="changes row" ng-if="_changes.showEmails" ng-repeat="(key, value) in changes.emails">
+                <div class="changes-col-1">
+                    <label for="_email{{ key }}">${message(code: 'is.user.email')}</label>
+                    <input required
+                           type="text"
+                           id="_email{{ key }}"
+                           name="_email{{ key }}"
+                           class="form-control"
+                           disabled="disabled"
+                           ng-model="_changes.emails[key]">
+                </div>
+                <div class="changes-arrow">
+                    <i class="fa fa-arrow-right"></i>
+                </div>
+                <div class="changes-col-2">
+                    <label for="email{{ key }}">${message(code:'todo.is.ui.import.changes.email')}</label>
+                    <input required
+                           not-match="_changes.emails[key]"
+                           type="text"
+                           id="email{{ key }}"
+                           name="email{{ key }}"
+                           class="form-control"
+                           ng-model="changes.emails[key]">
                 </div>
             </div>
             <div class="text-right">
