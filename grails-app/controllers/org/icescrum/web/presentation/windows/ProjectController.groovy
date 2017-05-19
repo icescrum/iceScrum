@@ -29,6 +29,7 @@ import feedsplugin.FeedBuilder
 import grails.converters.JSON
 import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
+import grails.validation.ValidationException
 import org.apache.commons.io.FilenameUtils
 import org.icescrum.components.FileUploadInfoStorage
 import org.icescrum.components.UtilsWebComponents
@@ -382,34 +383,48 @@ class ProjectController implements ControllerErrorHandler {
 
     @Secured('isAuthenticated()')
     def "import"() {
-        if (params.flowFilename) {
-            session.progress = new ProgressSupport()
-            session.import = [
-                    save         : true,
-                    path         : null,
-                    changes      : null,
-                    validate     : true,
-                    changesNeeded: null
-            ]
-            def endOfUpload = { uploadInfo ->
-                session.import.uploadInfo = uploadInfo
-                File uploadedProject = new File(uploadInfo.filePath)
-                if (FilenameUtils.getExtension(uploadedProject.name) == 'xml') {
-                    log.debug 'Export is an xml file, processing now'
-                    session.import.file = uploadedProject
-                    session.import.path = uploadedProject.absolutePath
-                } else if (FilenameUtils.getExtension(uploadedProject.name) == 'zip') {
-                    log.debug 'Export is a zipped file, unzipping now'
-                    def tmpDir = ApplicationSupport.createTempDir(FilenameUtils.getBaseName(uploadedProject.name))
-                    ApplicationSupport.unzip(uploadedProject, tmpDir)
-                    session.import.file = tmpDir.listFiles().find {
-                        !it.isDirectory() && FilenameUtils.getExtension(it.name) == 'xml'
+        try{
+            if (params.flowFilename) {
+                session.progress = new ProgressSupport()
+                session.import = [
+                        save         : true,
+                        path         : null,
+                        changes      : null,
+                        validate     : true,
+                        changesNeeded: null
+                ]
+                def endOfUpload = { uploadInfo ->
+                    session.import.uploadInfo = uploadInfo
+                    File uploadedProject = new File(uploadInfo.filePath)
+                    if (FilenameUtils.getExtension(uploadedProject.name) == 'xml') {
+                        log.debug 'Export is an xml file, processing now'
+                        session.import.file = uploadedProject
+                        session.import.path = uploadedProject.absolutePath
+                    } else if (FilenameUtils.getExtension(uploadedProject.name) == 'zip') {
+                        log.debug 'Export is a zipped file, unzipping now'
+                        def tmpDir = ApplicationSupport.createTempDir(FilenameUtils.getBaseName(uploadedProject.name))
+                        ApplicationSupport.unzip(uploadedProject, tmpDir)
+                        session.import.file = tmpDir.listFiles().find {
+                            !it.isDirectory() && FilenameUtils.getExtension(it.name) == 'xml'
+                        }
+                        session.import.path = tmpDir.absolutePath
+                    } else {
+                        render(status: 400)
+                        return
                     }
-                    session.import.path = tmpDir.absolutePath
-                } else {
-                    render(status: 400)
-                    return
+                    def project = projectService.importXML(session.import.file, session.import)
+                    render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
+                    //after render to be more smoothy
+                    if (project) {
+                        FileUploadInfoStorage.instance.remove(session.import.uploadInfo)
+                        session.import = null
+                    }
                 }
+                UtilsWebComponents.handleUpload.delegate = this
+                UtilsWebComponents.handleUpload(request, params, endOfUpload, false)
+            } else if (params.changes) {
+                session.progress = new ProgressSupport()
+                session.import.changes = params.changes
                 def project = projectService.importXML(session.import.file, session.import)
                 render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
                 //after render to be more smoothy
@@ -418,18 +433,9 @@ class ProjectController implements ControllerErrorHandler {
                     session.import = null
                 }
             }
-            UtilsWebComponents.handleUpload.delegate = this
-            UtilsWebComponents.handleUpload(request, params, endOfUpload, false)
-        } else if (params.changes) {
-            session.progress = new ProgressSupport()
-            session.import.changes = params.changes
-            def project = projectService.importXML(session.import.file, session.import)
-            render(status: 200, contentType: 'application/json', text: (project ?: session.import.changesNeeded) as JSON)
-            //after render to be more smoothy
-            if (project) {
-                FileUploadInfoStorage.instance.remove(session.import.uploadInfo)
-                session.import = null
-            }
+        }catch (ValidationException e){
+            e.printStackTrace()
+            throw e
         }
     }
 
