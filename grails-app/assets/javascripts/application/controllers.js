@@ -334,13 +334,10 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
             keyboard: false,
             templateUrl: url + "Dialog",
             controller: ['$scope', '$http', '$rootScope', '$timeout', function($scope, $http, $rootScope, $timeout) {
-                $scope.flowConfig = {target: url, singleFile: true};
-                $scope.changes = false;
-                $scope._changes = {
-                    showTeam: false,
-                    showProject: false
+                // Functions
+                $scope.showProgress = function() {
+                    $scope.progress = true;
                 };
-                $scope.progress = false;
                 $scope.handleImportError = function($file, $message) {
                     var data = JSON.parse($message);
                     $scope.notifyError(angular.isArray(data) ? data[0].text : data.text, {duration: 8000});
@@ -397,10 +394,18 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
                     );
                     $scope.progress = true;
                 };
+                // Init
+                $scope.flowConfig = {target: url, singleFile: true};
+                $scope.changes = false;
+                $scope._changes = {
+                    showTeam: false,
+                    showProject: false
+                };
+                $scope.progress = false
             }]
         }).result.then(function() {}, function() {
-                PushService.enabled = true;
-            });
+            PushService.enabled = true;
+        });
     };
     $scope['export'] = function(project) {
         var modal = $uibModal.open({

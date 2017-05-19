@@ -49,7 +49,7 @@
          flow-drop-enabled="!$flow.files.length"
          flow-file-success="checkValidation($message)"
          flow-error="handleImportError($file, $message, $flow)"
-         flow-files-submitted="$flow.upload(); progressStatus();">
+         flow-files-submitted="$flow.upload(); showProgress()">
         <div ng-hide="$flow.files.length" class="help-block text-center">
             <g:message code="is.dialog.importProject.choose.description"/>
         </div>

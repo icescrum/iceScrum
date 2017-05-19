@@ -271,20 +271,17 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         templateUrl: 'is.progress.html',
         link: function(scope, element, attrs) {
             var status;
-
             scope.progress = {
                 value: -1,
                 label: "",
                 type: 'primary'
             };
-
             scope.$watch('start', function(value) {
                 stopProgress();
                 if (value === true) {
                     $timeout(progress, 500);
                 }
             });
-
             var progress = function() {
                 $http({
                     method: "get",
@@ -306,14 +303,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     scope.progress.value = 100;
                 });
             };
-
             var stopProgress = function() {
                 if (angular.isDefined(status)) {
                     $timeout.cancel(status);
                     status = undefined;
                 }
             };
-
             element.on('$destroy', function() {
                 stopProgress();
             });
