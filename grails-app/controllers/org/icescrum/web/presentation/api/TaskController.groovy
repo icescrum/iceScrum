@@ -85,6 +85,7 @@ class TaskController implements ControllerErrorHandler {
         }
         Task task = new Task()
         Task.withTransaction {
+            cleanBeforeBindData(taskParams, ['parentStory', 'backlog'])
             def propertiesToBind = ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']
             if (request.scrumMaster) {
                 propertiesToBind << 'responsible'
@@ -126,6 +127,7 @@ class TaskController implements ControllerErrorHandler {
             props.state = state
         }
         Task.withTransaction {
+            cleanBeforeBindData(taskParams, ['parentStory', 'backlog'])
             def propertiesToBind = ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']
             if (request.scrumMaster) {
                 propertiesToBind << 'responsible'

@@ -98,6 +98,7 @@ class StoryController implements ControllerErrorHandler {
         def acceptanceTests = storyParams.remove('acceptanceTests')
         Story story = new Story()
         Story.withTransaction {
+            cleanBeforeBindData(storyParams, ['feature', 'dependsOn'])
             bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
             User user = (User) springSecurityService.currentUser
             storyService.save(story, _project, user)
@@ -178,6 +179,7 @@ class StoryController implements ControllerErrorHandler {
                         activityService.addActivity(story, user, Activity.CODE_UPDATE, story.name, 'tags', oldTags?.sort()?.join(','), story.tags?.sort()?.join(','))
                     }
                 }
+                cleanBeforeBindData(storyParams, ['feature', 'dependsOn', 'creator'])
                 bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value', 'creator']])
                 storyService.update(story, props)
                 // Independently manage the sprint change, manage the "null" value manually
