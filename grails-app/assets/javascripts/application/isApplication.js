@@ -445,6 +445,7 @@ angular.module('isApplication', [
                 onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
                     $uibModal.open({
                         keyboard: false,
+                        backdrop: 'static',
                         templateUrl: $rootScope.serverUrl + '/user/register',
                         controller: 'registerCtrl'
                     }).result.then(function(username) {
@@ -1053,6 +1054,7 @@ angular.module('isApplication', [
         $rootScope.showManageTeamsModal = function(team) { // Needs to be next to showProjectEditModal
             $uibModal.open({
                 keyboard: false,
+                backdrop: 'static',
                 templateUrl: $rootScope.serverUrl + "/team/manage",
                 size: 'lg',
                 controller: ['$scope', '$controller', function($scope, $controller) {

@@ -194,6 +194,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
         }
         var modal = $uibModal.open({
             keyboard: false,
+            backdrop: 'static',
             templateUrl: "report.progress.html",
             size: 'sm',
             controller: ['$scope', function($scope) {
@@ -332,6 +333,7 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
         var url = $scope.serverUrl + "/project/import";
         $uibModal.open({
             keyboard: false,
+            backdrop: 'static',
             templateUrl: url + "Dialog",
             controller: ['$scope', '$http', '$rootScope', '$timeout', function($scope, $http, $rootScope, $timeout) {
                 // Functions
@@ -410,6 +412,7 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
     $scope['export'] = function(project) {
         var modal = $uibModal.open({
             keyboard: false,
+            backdrop: 'static',
             templateUrl: "project/exportDialog",
             controller: ['$scope', function($scope) {
                 $scope.zip = true;
@@ -496,6 +499,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     $scope.showProfile = function() {
         $uibModal.open({
             keyboard: false,
+            backdrop: 'static',
             templateUrl: $scope.serverUrl + '/user/openProfile',
             controller: 'userCtrl'
         });
