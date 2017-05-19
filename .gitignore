@@ -1,6 +1,9 @@
 *.iml
 *.project
 target/
+.slcache/
+.idea/
+logs/
 
 ompiled source #
 ###################
