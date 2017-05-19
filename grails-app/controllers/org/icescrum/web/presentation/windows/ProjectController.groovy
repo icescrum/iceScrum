@@ -383,7 +383,7 @@ class ProjectController implements ControllerErrorHandler {
 
     @Secured('isAuthenticated()')
     def "import"() {
-        try{
+        try {
             if (params.flowFilename) {
                 session.progress = new ProgressSupport()
                 session.import = [
@@ -433,7 +433,7 @@ class ProjectController implements ControllerErrorHandler {
                     session.import = null
                 }
             }
-        }catch (ValidationException e){
+        } catch (ValidationException e) {
             e.printStackTrace()
             throw e
         }
