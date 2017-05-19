@@ -47,7 +47,6 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
     $scope.projectMembersCount = 0;
     $scope.project = project;
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: project, clazz: 'project'});
-
     ProjectService.getActivities($scope.project).then(function(activities) {
         $scope.activities = activities;
     });
