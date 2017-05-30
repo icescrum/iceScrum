@@ -712,7 +712,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                                 var index2 = elements.index(el2);
                                 var slice = [];
                                 if (index1 != -1 && index2 != -1 && index1 != index2) {
-                                    var sortedIndexes = [index1, index2].sort();
+                                    var sortedIndexes = _.sortBy([index1, index2]);
                                     slice = elements.slice(sortedIndexes[0], sortedIndexes[1] + 1);
                                 }
                                 return slice;
