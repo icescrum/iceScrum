@@ -190,9 +190,7 @@
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ release.attachments.length > 0 ? '(' + release.attachments.length + ')' : '' }}</label>
                     <div ng-if="authorizedRelease('upload', release)"
-                         ng-controller="attachmentNestedCtrl"
-                         flow-init
-                         flow-files-submitted="attachmentQuery($flow, release)">
+                         ng-controller="attachmentNestedCtrl">
                         <button type="button"
                                 class="btn btn-default"
                                 flow-btn>

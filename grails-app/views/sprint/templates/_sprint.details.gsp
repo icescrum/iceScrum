@@ -205,9 +205,7 @@
                 <div class="form-group">
                     <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments.length > 0 ? '(' + sprint.attachments.length + ')' : '' }}</label>
                     <div ng-if="authorizedSprint('upload', sprint)"
-                         ng-controller="attachmentNestedCtrl"
-                         flow-init
-                         flow-files-submitted="attachmentQuery($flow, sprint)">
+                         ng-controller="attachmentNestedCtrl">
                         <button type="button"
                                 class="btn btn-default"
                                 flow-btn>

@@ -126,9 +126,7 @@
                     <div class="panel-body" style="padding-bottom:0">
                         <div class="project-file-upload">
                             <div ng-if="authorizedProject('upload', project)"
-                                 ng-controller="attachmentNestedCtrl"
-                                 flow-init
-                                 flow-files-submitted="attachmentQuery($flow, project)">
+                                 ng-controller="attachmentNestedCtrl">
                                 <button type="button"
                                         class="btn btn-default"
                                         flow-btn>
