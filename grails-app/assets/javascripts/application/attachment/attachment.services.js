@@ -35,10 +35,7 @@ services.service("AttachmentService", ['Attachment', 'Session', function(Attachm
         }
     };
     this['delete'] = function(attachment, attachmentable) {
-        attachment.type = attachmentable.class.toLowerCase();
-        attachment.typeId = attachmentable.id;
-        attachment.attachmentable = {id: attachmentable.id};
-        return Attachment.delete(attachment, function() {
+        return Attachment.delete({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id}, function() {
             _.remove(attachmentable.attachments, {id: attachment.id});
         });
     };
