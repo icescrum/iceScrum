@@ -374,20 +374,19 @@ services.service('CacheService', ['$injector', function($injector) {
             self.emptyCache(cacheName);
         }
     };
-    this.addOrUpdate = function(cacheName, item) {
-        var cachedItem = self.get(cacheName, item.id);
+    this.addOrUpdate = function(cacheName, itemFromServer) {
+        var cachedItem = self.get(cacheName, itemFromServer.id);
         var oldItem = _.cloneDeep(cachedItem);
         var newItem;
         if (cachedItem) {
-            _.merge(cachedItem, item);
+            _.assign(cachedItem, itemFromServer); // Not recursive
             newItem = cachedItem;
-            $injector.get('OptionsCacheService').update(cacheName, item, newItem);
         } else {
-            newItem = item;
+            newItem = itemFromServer;
         }
         $injector.get('SyncService').sync(cacheName, oldItem, newItem);
-        if (!$injector.get('OptionsCacheService').allowable(cacheName, newItem)) {
-            self.remove(cacheName, item.id);
+        if (!$injector.get('OptionsCacheService').isAllowed(cacheName, newItem)) {
+            self.remove(cacheName, itemFromServer.id);
         } else if (!oldItem) {
             self.getCache(cacheName).push(newItem);
         }
@@ -690,14 +689,9 @@ services.service("DateService", [function() {
 }]);
 
 services.service("OptionsCacheService", ['$rootScope', 'CacheService', function($rootScope, CacheService) {
-    var updateTags = function(item, newItem) {
-        if (item.tags !== undefined) {
-            newItem.tags = item.tags;
-        }
-    };
     var options = {
         story: {
-            allowable: function(item) {
+            isAllowed: function(item) {
                 if ($rootScope.application.context) {
                     if ($rootScope.application.context.type == 'feature') {
                         return item.feature && item.feature.id == $rootScope.application.context.id;
@@ -710,14 +704,10 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                     }
                 }
                 return true;
-            },
-            update: updateTags
-        },
-        feature: {
-            update: updateTags
+            }
         },
         task: {
-            allowable: function(item) {
+            isAllowed: function(item) {
                 if ($rootScope.application.context && item.parentStory) {
                     var cachedStory = CacheService.get('story', item.parentStory.id);
                     if ($rootScope.application.context.type == 'feature') {
@@ -727,20 +717,14 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                     }
                 }
                 return true;
-            },
-            update: updateTags
+            }
         }
     };
     this.getOptions = function() {
         return options;
     };
-    this.allowable = function(cacheName, item) {
-        return options[cacheName] && options[cacheName].hasOwnProperty('allowable') ? options[cacheName].allowable(item) : true;
-    };
-    this.update = function(cacheName, item, newItem) {
-        if (options[cacheName] && options[cacheName].hasOwnProperty('update')) {
-            options[cacheName].update(item, newItem);
-        }
+    this.isAllowed = function(cacheName, item) {
+        return options[cacheName] && options[cacheName].hasOwnProperty('isAllowed') ? options[cacheName].isAllowed(item) : true;
     };
 }]);
 
