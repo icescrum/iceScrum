@@ -827,12 +827,8 @@ angular.module('isApplication', [
     .config(['flowFactoryProvider', function(flowFactoryProvider) {
         flowFactoryProvider.defaults = {
             target: 'attachment/save',
-            //only one at the time => prevent staleObjectException
-            simultaneousUploads: 1
+            simultaneousUploads: 1 // Only one at the time => prevent staleObjectException
         };
-        flowFactoryProvider.on('catchAll', function(event) {
-            console.log('catchAll', arguments);
-        });
     }])
     .config(['notificationsProvider', function(notificationsProvider) {
         notificationsProvider.setDefaults({

@@ -37,7 +37,7 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
         });
     };
     $scope.delete = function(actor) {
-        ActorService.delete(actor).then(function(   ) {
+        ActorService.delete(actor).then(function() {
             _.remove($scope.actors, {id: actor.id});
         });
     };
