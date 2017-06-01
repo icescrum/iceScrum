@@ -353,8 +353,10 @@ grails.cache.config = {
 }
 
 icescrum.securitydebug.enable = false
-
+//fix ilog dir due to lazy object initialization - init object
+icescrum.log.dir = null
 log4j = {
+    def config = Holders.config
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
     error 'org.codehaus.groovy.grails.plugins',
@@ -375,11 +377,11 @@ log4j = {
     warn  'org.mortbay.log'
     warn  'org.atmosphere.cpr'
 
-    if (Holders.config.grails.entryPoints.debug) {
+    if (config.grails.entryPoints.debug) {
         debug 'org.icescrum.plugins.entryPoints'
     }
 
-    if (ApplicationSupport.booleanValue(Holders.config.icescrum.debug.enable)) {
+    if (ApplicationSupport.booleanValue(config.icescrum.debug.enable)) {
         debug "org.grails.plugins.atmosphere_meteor"
         debug 'grails.app.controllers.org.icescrum'
         debug 'grails.app.controllers.com.kagilum'
@@ -397,7 +399,7 @@ log4j = {
         debug 'com.kagilum'
     }
 
-    if (ApplicationSupport.booleanValue(Holders.config.icescrum.securitydebug.enable)) {
+    if (ApplicationSupport.booleanValue(config.icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
     }
 
@@ -407,25 +409,26 @@ log4j = {
         try {
             String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.log.dir")
             if (extConfFile) {
-                Holders.config.icescrum.log.dir = extConfFile;
+                config.icescrum.log.dir = extConfFile;
             }
         } catch (Exception e) {
-            Holders.config.icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: Holders.config.icescrum.log.dir ?: new File('logs').absolutePath;
+            config.icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: config.icescrum.log.dir ?: new File('logs').absolutePath;
         }
-
-        println "\n| Log directory: ${Holders.config.icescrum.log.dir}"
+        //fix log dir due to lazy object initialization - save object to get it in bootStrapService
+        System.setProperty('save.icescrum.log.dir', config.icescrum.log.dir)
+        println "\n| Log directory: ${config.icescrum.log.dir}"
 
         appender new DailyRollingFileAppender(name: "icescrumFileLog",
-                fileName: "${Holders.config.icescrum.log.dir}/${Metadata.current.'app.name'}.log",
+                fileName: "${config.icescrum.log.dir}/${Metadata.current.'app.name'}.log",
                 datePattern: "'.'yyyy-MM-dd",
                 layout: logLayoutPattern
         )
 
-        rollingFile name: "stacktrace", maxFileSize: 1024, file: "${Holders.config.icescrum.log.dir}/stacktrace.log"
+        rollingFile name: "stacktrace", maxFileSize: 1024, file: "${config.icescrum.log.dir}/stacktrace.log"
     }
 
     root {
-        if (ApplicationSupport.booleanValue(Holders.config.icescrum.debug.enable)) {
+        if (ApplicationSupport.booleanValue(config.icescrum.debug.enable)) {
             debug 'stdout', 'icescrumFileLog'
             error 'stdout', 'icescrumFileLog'
             info 'stdout', 'icescrumFileLog'
