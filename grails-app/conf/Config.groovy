@@ -66,7 +66,7 @@ try {
 } catch (Exception e) {
     icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
 }
-println "Server Timezone: ${icescrum.timezone.default}"
+println "| Server Timezone: ${icescrum.timezone.default}"
 
 /* Project administration */
 icescrum.project.import.enable = true
@@ -354,17 +354,6 @@ grails.cache.config = {
 
 icescrum.securitydebug.enable = false
 
-/* log4j configuration */
-try {
-    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.log.dir")
-    if (extConfFile) {
-        icescrum.log.dir = extConfFile;
-    }
-} catch (Exception e) {
-    icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: 'logs';
-}
-println "Log directory: ${icescrum.log.dir}"
-
 log4j = {
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
@@ -415,6 +404,17 @@ log4j = {
     error 'grails.plugin.springsecurity.web.access.intercept.AnnotationFilterInvocationDefinition' // Useless warning because are registered twice since it's based on controllerClazz.getMethods() which return the same method twice (1 with & 1 without params)
 
     appenders {
+        try {
+            String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.log.dir")
+            if (extConfFile) {
+                Holders.config.icescrum.log.dir = extConfFile;
+            }
+        } catch (Exception e) {
+            Holders.config.icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: Holders.config.icescrum.log.dir ?: new File('logs').absolutePath;
+        }
+
+        println "\n| Log directory: ${Holders.config.icescrum.log.dir}"
+
         appender new DailyRollingFileAppender(name: "icescrumFileLog",
                 fileName: "${Holders.config.icescrum.log.dir}/${Metadata.current.'app.name'}.log",
                 datePattern: "'.'yyyy-MM-dd",
