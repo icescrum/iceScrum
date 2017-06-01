@@ -177,17 +177,22 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
     $scope.getTitle = function() {
         return $scope.widgetReady(widget) ? widget.settings.project.name + ' - ' + (widget.settings.chart.group ? widget.settings.chart.group + ' ' : '') + widget.settings.chart.name : '';
     };
+    $scope.getUrl = function() {
+        widget.settings.chart.type
+        return $scope.widgetReady(widget) ? 'p/'+widget.settings.project.pkey + '/#/' + widget.settings.chart.view  : '';
+    };
+
     $scope.projectChanged = function() {
         if (!widget.settings) {
             widget.settings = {};
         }
-        widget.settings.project = _.pick($scope.holder.project, ['id', 'name']);
+        widget.settings.project = _.pick($scope.holder.project, ['id', 'name', 'pkey']);
         $scope.project = $scope.holder.project;
         widget.type = 'project';
         widget.typeId = $scope.holder.project.id;
     };
     $scope.chartChanged = function() {
-        widget.settings.chart = _.pick($scope.holder.chart, ['id', 'name', 'type', 'group']);
+        widget.settings.chart = _.pick($scope.holder.chart, ['id', 'name', 'type', 'group', 'view']);
     };
     // Init
     $scope.holder = {};
@@ -239,6 +244,7 @@ controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope,
                     group: $scope.message('is.' + type),
                     type: type,
                     id: chart.id,
+                    view: chart.view,
                     name: $scope.message(chart.name)
                 };
             }).each(function(chart) {

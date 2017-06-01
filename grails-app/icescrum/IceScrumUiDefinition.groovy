@@ -251,7 +251,7 @@ widgets = {
     }
     'chart' {
         icon 'bar-chart'
-        title '{{ getTitle() }}'
+        title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
         secured 'isAuthenticated()'
         ngController 'chartWidgetCtrl'
         defaultSettings = [:]

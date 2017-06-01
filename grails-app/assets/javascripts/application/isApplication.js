@@ -63,22 +63,22 @@ angular.module('isPlugins', [])
         this.charts = {
             project: {
                 project: [
-                    {id: 'burnup', name: 'is.ui.project.charts.projectBurnup'},
-                    {id: 'burndown', name: 'is.ui.project.charts.projectBurndown'},
-                    {id: 'velocity', name: 'is.ui.project.charts.projectVelocity'},
-                    {id: 'velocityCapacity', name: 'is.ui.project.charts.projectVelocityCapacity'},
-                    {id: 'parkingLot', name: 'is.ui.project.charts.projectParkingLot'},
-                    {id: 'flowCumulative', name: 'is.ui.project.charts.projectCumulativeFlow'}
+                    {id: 'burnup', name: 'is.ui.project.charts.projectBurnup', 'view': 'project'},
+                    {id: 'burndown', name: 'is.ui.project.charts.projectBurndown', 'view': 'project'},
+                    {id: 'velocity', name: 'is.ui.project.charts.projectVelocity', 'view': 'project'},
+                    {id: 'velocityCapacity', name: 'is.ui.project.charts.projectVelocityCapacity', 'view': 'project'},
+                    {id: 'parkingLot', name: 'is.ui.project.charts.projectParkingLot', 'view': 'project'},
+                    {id: 'flowCumulative', name: 'is.ui.project.charts.projectCumulativeFlow', 'view': 'project'}
                 ],
                 release: [
-                    {id: 'burndown', name: 'is.chart.releaseBurndown'},
-                    {id: 'parkingLot', name: 'is.chart.releaseParkingLot'}
+                    {id: 'burndown', name: 'is.chart.releaseBurndown', 'view': 'planning'},
+                    {id: 'parkingLot', name: 'is.chart.releaseParkingLot', 'view': 'planning'}
                 ],
                 sprint: [
-                    {id: 'burndownRemaining', name: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart'},
-                    {id: 'burnupTasks', name: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart'},
-                    {id: 'burnupPoints', name: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart'},
-                    {id: 'burnupStories', name: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart'}
+                    {id: 'burndownRemaining', name: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart', 'view': 'taskBoard'},
+                    {id: 'burnupTasks', name: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart', 'view': 'taskBoard'},
+                    {id: 'burnupPoints', name: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart', 'view': 'taskBoard'},
+                    {id: 'burnupStories', name: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart', 'view': 'taskBoard'}
                 ]
             }
         };
