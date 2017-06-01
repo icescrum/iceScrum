@@ -64,22 +64,31 @@ class FeedController implements ControllerErrorHandler {
             } else {
                 render(status: 204)
             }
-        } catch (Exception e) {
+        }
+        catch(UnknownHostException e){
+            def text = message(code: 'todo.is.ui.panel.feed.error', args: [url])
+            returnError(text: text, silent:true)
+        }
+        catch (Exception e) {
             def text = message(code: 'todo.is.ui.panel.feed.error', args: [url])
             returnError(text: text, exception: e, silent: true)
         }
     }
 
     private static getFeedContent(def url) {
-        def channel = new XmlSlurper().parse(url).channel
-        def contentFeed = [title: channel.title.text()]
-        contentFeed.items = channel.item.collect { xmlItem ->
-            return [feed       : channel.title.text(),
-                    link       : xmlItem.link.text(),
-                    title      : xmlItem.title.text(),
-                    description: xmlItem.description.text(),
-                    pubDate    : Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]
+        try{
+            def channel = new XmlSlurper().parse(url).channel
+            def contentFeed = [title: channel.title.text()]
+            contentFeed.items = channel.item.collect { xmlItem ->
+                return [feed       : channel.title.text(),
+                        link       : xmlItem.link.text(),
+                        title      : xmlItem.title.text(),
+                        description: xmlItem.description.text(),
+                        pubDate    : Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]
+            }
+            return contentFeed
+        }catch(Exception e){
+            throw e
         }
-        return contentFeed
     }
 }
