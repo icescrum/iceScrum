@@ -24,19 +24,36 @@
                                ng-model="stories[$index].name"
                                class="form-control">
                     </div>
-                    <div class="form-group col-sm-2">
+                    <div class="form-group col-sm-2" ng-show="authorizedStory('updateEstimate', stories[$index])">
                         <label>${message(code:'is.story.effort')}</label>
-                        <input ng-model="stories[$index].effort"
-                               type="number"
+                        <ui-select ng-if="!isEffortCustom()"
+                                   class="form-control"
+                                   name="effort"
+                                   search-enabled="true"
+                                   ng-model="stories[$index].effort">
+                            <ui-select-match>{{ $select.selected }}</ui-select-match>
+                            <ui-select-choices repeat="i in effortSuite(isEffortNullable(stories[$index])) | filter: $select.search">
+                                <span ng-bind-html="'' + i | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <input type="number"
+                               ng-if="isEffortCustom()"
+                               class="form-control"
+                               name="effort"
                                min="0"
-                               class="form-control text-right">
+                               ng-model="stories[$index].effort"/>
                     </div>
                     <div class="form-group col-sm-2">
                         <label>${message(code:'is.story.value')}</label>
-                        <input ng-model="stories[$index].value"
-                               type="number"
-                               min="0"
-                               class="form-control text-right">
+                        <ui-select class="form-control"
+                                   name="value"
+                                   search-enabled="true"
+                                   ng-model="stories[$index].value">
+                            <ui-select-match>{{ $select.selected }}</ui-select-match>
+                            <ui-select-choices repeat="i in integerSuite | filter: $select.search">
+                                <span ng-bind-html="'' + i | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                     <div class="form-group col-sm-12">
                         <label>${message(code:'is.backlogelement.description')}</label>

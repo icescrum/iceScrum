@@ -372,6 +372,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
         }
     };
     $scope.showStorySplitModal = function(story) {
+        var parentScope = $scope;
         $uibModal.open({
             templateUrl: 'story.split.html',
             controller: ['$scope', '$controller', '$q', function($scope, $controller, $q) {
@@ -443,6 +444,12 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                     });
                     $q.serial(tasks);
                 };
+
+                $scope.isEffortCustom = parentScope.isEffortCustom;
+                $scope.effortSuite = parentScope.effortSuite;
+                $scope.isEffortNullable = parentScope.isEffortNullable;
+                $scope.authorizedStory = parentScope.authorizedStory;
+
                 // Init
                 $scope.loadAtWhoActors();
                 $scope.stories = [];
