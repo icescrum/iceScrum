@@ -65,9 +65,7 @@ environments {
             driverClassName = "org.h2.Driver"
             url = "jdbc:h2:prodDb"
             dbCreate = "update"
-            jmxExport = true
             properties {
-                jmxEnabled = true
                 initialSize = 5
                 maxActive = 50
                 minIdle = 5
@@ -81,7 +79,7 @@ environments {
                 validationInterval = 15000
                 testOnBorrow = true
                 testWhileIdle = true
-                testOnReturn = false
+                testOnReturn = true
                 jdbcInterceptors = "ConnectionState"
                 defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
             }
