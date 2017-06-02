@@ -444,12 +444,10 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                     });
                     $q.serial(tasks);
                 };
-
                 $scope.isEffortCustom = parentScope.isEffortCustom;
                 $scope.effortSuite = parentScope.effortSuite;
                 $scope.isEffortNullable = parentScope.isEffortNullable;
                 $scope.authorizedStory = parentScope.authorizedStory;
-
                 // Init
                 $scope.loadAtWhoActors();
                 $scope.stories = [];
