@@ -179,9 +179,8 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
     };
     $scope.getUrl = function() {
         widget.settings.chart.type
-        return $scope.widgetReady(widget) ? 'p/'+widget.settings.project.pkey + '/#/' + widget.settings.chart.view  : '';
+        return $scope.widgetReady(widget) ? 'p/' + widget.settings.project.pkey + '/#/' + widget.settings.chart.view : '';
     };
-
     $scope.projectChanged = function() {
         if (!widget.settings) {
             widget.settings = {};

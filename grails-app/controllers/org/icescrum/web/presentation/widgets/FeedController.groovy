@@ -36,7 +36,6 @@ class FeedController implements ControllerErrorHandler {
 
     @Secured(['isAuthenticated()'])
     def index() {
-
         def content
         def url
         User user = springSecurityService.currentUser
@@ -64,19 +63,17 @@ class FeedController implements ControllerErrorHandler {
             } else {
                 render(status: 204)
             }
-        }
-        catch(UnknownHostException e){
+        } catch (UnknownHostException e) {
             def text = message(code: 'todo.is.ui.panel.feed.error', args: [url])
-            returnError(text: text, silent:true)
-        }
-        catch (Exception e) {
+            returnError(text: text, silent: true)
+        } catch (Exception e) {
             def text = message(code: 'todo.is.ui.panel.feed.error', args: [url])
             returnError(text: text, exception: e, silent: true)
         }
     }
 
     private static getFeedContent(def url) {
-        try{
+        try {
             def channel = new XmlSlurper().parse(url).channel
             def contentFeed = [title: channel.title.text()]
             contentFeed.items = channel.item.collect { xmlItem ->
@@ -87,7 +84,7 @@ class FeedController implements ControllerErrorHandler {
                         pubDate    : Date.parse("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", xmlItem.pubDate.text()).time]
             }
             return contentFeed
-        }catch(Exception e){
+        } catch (Exception e) {
             throw e
         }
     }
