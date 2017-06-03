@@ -21,6 +21,12 @@
  *
  */
 hibernate {
+
+    jdbc.batch_size = 30
+    order_inserts = true
+    order_updates = true
+    batch_versioned_data = true
+
     cache.use_second_level_cache = true
     cache.use_query_cache = true
     cache.region.factory_class = 'grails.plugin.cache.ehcache.hibernate.BeanEhcacheRegionFactory4'
@@ -32,21 +38,20 @@ dataSource {
 
 environments {
     development {
-        dataSource {
+        /*dataSource {
             dbCreate = "create-drop"
             url = "jdbc:h2:mem:devDb"
             driverClassName = "org.h2.Driver"
             username = "sa"
             password = ""
+        }*/
+        dataSource {
+            dbCreate = "update"
+            username = "root"
+            password = "root"
+            driverClassName = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://localhost/icescrum?useUnicode=true&characterEncoding=utf8"
         }
-//        dataSource {
-////            logSql = true
-//            dbCreate = "update"
-//            username = "root"
-//            password = "root"
-//            driverClassName = "com.mysql.jdbc.Driver"
-//            url = "jdbc:mysql://localhost/icescrum"
-//        }
     }
     test {
         dataSource {

@@ -553,6 +553,11 @@ grails {
             }
         }
     }
+
+    //to improve perf
+    gorm.default.mapping = {
+        dynamicUpdate true
+    }
 }
 beans {
     cacheManager {
