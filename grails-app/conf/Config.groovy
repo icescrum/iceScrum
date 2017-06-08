@@ -56,6 +56,7 @@ icescrum.alerts.emailPerAccount = false
 icescrum.attachments.enable = true
 icescrum.alerts.errors.to = "dev@icescrum.org"
 icescrum.gravatar.enable = true
+icescrum.sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default
 
 /* Server TimeZone */
 try {

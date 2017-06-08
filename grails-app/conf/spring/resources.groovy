@@ -22,6 +22,7 @@
 
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.WebScrumExpressionHandler
+import org.icescrum.core.utils.TimeoutHttpSessionListener
 import org.icescrum.i18n.IceScrumMessageSource
 
 beans = {
@@ -42,5 +43,9 @@ beans = {
 
     messageSource(IceScrumMessageSource)  {
         basenames = "WEB-INF/grails-app/i18n/messages"
+    }
+
+    timeoutHttpSessionListener(TimeoutHttpSessionListener) {
+        config = grailsApplication.config
     }
 }

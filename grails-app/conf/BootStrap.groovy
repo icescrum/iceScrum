@@ -32,10 +32,12 @@ import javax.servlet.http.HttpServletRequest
 class BootStrap {
 
     def localeResolver
+    def timeoutHttpSessionListener
     DefaultGrailsApplication grailsApplication
 
     def init = { servletContext ->
 
+        servletContext.addListener(timeoutHttpSessionListener)
         localeResolver.defaultLocale = Locale.ENGLISH
         java.util.Locale.setDefault(Locale.ENGLISH)
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
