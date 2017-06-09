@@ -204,8 +204,7 @@ widgets = {
         ngController 'feedWidgetCtrl'
         defaultSettings = [
                 feeds: [
-                        [url: 'https://www.icescrum.com/blog/feed/', title: 'iceScrum', selected: true],
-                        [url: 'http://www.universfreebox.com/backend.php', title: 'Univers Freebox', selected: false]
+                        [url: 'https://www.icescrum.com/blog/feed/', title: 'iceScrum', selected: true]
                 ]
         ]
         onUpdate { widget, settings ->
