@@ -21,28 +21,29 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:set var="releaseNotesURL" value="${message(code:'is.ui.whatsnew.releaseNotesURL', args:[ApplicationSupport.getNormalisedVersion()])}"/>
+<g:set var="releaseNotesURL" value="${message(code: 'is.ui.whatsnew.releaseNotesURL', args: [ApplicationSupport.getNormalisedVersion()])}"/>
 <is:dialog
         resizable="false"
         withTitlebar="false"
-        width="650"
+        width="700"
+        height="550"
         id="dialog-whatsnew"
-        buttons="'${message(code:'is.button.close')}': function() { ${remoteFunction(controller:'scrumOS',action:'whatsNew',params:[hide:true])}; jQuery(this).dialog('close'); }"
+        buttons="'${message(code: 'is.button.close')}': function() { ${remoteFunction(controller: 'scrumOS', action: 'whatsNew', params: [hide: true])}; jQuery(this).dialog('close'); }"
         draggable="false">
-        <div class='box-form box-form-250 box-form-200-legend'>
-            <is:fieldset title="Get on board for a new Agile experience with iceScrum v7!" id="member-autocomplete">               
-                <div class="features-list" style="
-text-align: center;
-    font-size: 12px;"><a href="https://www.icescrum.com/your-new-icescrum/" target="_blank"><img src="https://www.icescrum.com/wp-content/uploads/2017/01/dashboard-1024x564.png" alt="" width="600px" style="margin:10px;">
-</a><p style="
-margin:15px;">With the new version of iceScrum our objective is to develop a performing tool, always responding to our user’s needs. Thus, we are really glad to officially announce you the migration to the new version of iceScrum: <strong>the v7</strong>.</p><p style="
-margin:15px;"><strong>On Monday 19th of June</strong>, all the projects hosted on the iceScrum Cloud platform will be only accessible via the new version.</p><p style="
-margin:15px;">In order to get used to it, we invite you to test the new features of iceScrum on <a href="https://demo.icescrum.com" target="_blank">demo.icescrum.com</a>. This address is accessible from today and until the 16th of June with your normal iceScrum.com credentials.</p><p style="
-margin:15px;"><strong>Then, we will migrate ALL the projects next week-end, 17 and 18 of June.</strong></p>
-<p>If you have any question feel free to answer this email, and discover what's new in iceScrum, you can go to this page: <a href="https://www.icescrum.com/documentation/migration-cloud/">Cloud migration</a></p>
-<p style="
-margin: 15px;
-    font-weight: bold;">Don't worry, be Agile !</p></div>
-            </is:fieldset>
-        </div>
+    <div class='box-form box-form-250 box-form-200-legend'>
+        <is:fieldset title="Get on board for a new Agile experience with iceScrum v7!" id="member-autocomplete">
+            <div style="background: white; text-align: center;font-size: 12px;">
+                <a href="https://www.icescrum.com/your-new-icescrum/" target="_blank"><img width="654" src="https://www.icescrum.com/wp-content/uploads/2017/01/dashboard-1024x564.png"/></a>
+                <p style="margin:15px;">With the new version of iceScrum our objective is to develop a performing tool, always responding to our user’s needs. Thus, we are really glad to officially announce you the migration to the new version of iceScrum: <strong>the v7</strong>.
+                </p>
+                <p style="margin:15px;"><strong>On Monday 19th of June</strong>, all the projects hosted on the iceScrum Cloud platform will be only accessible via the new version.</p>
+                <p style="margin:15px;">In order to get used to it, we invite you to test the new features of iceScrum on <a href="https://demo.icescrum.com"
+                </p>
+                <p style="margin:15px;"><strong>Then, we will migrate ALL the projects next week-end, 17 and 18 of June.</strong></p>
+                <p>If you have any question feel free to answer this email, and discover what's new in iceScrum, you can go to this page:
+                    <a href="https://www.icescrum.com/documentation/migration-cloud/">Cloud migration</a>
+                </p>
+                <p style="margin-top: 15px;font-weight: bold;">Don't worry, be Agile !</p></div>
+        </is:fieldset>
+    </div>
 </is:dialog>
