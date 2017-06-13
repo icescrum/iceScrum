@@ -110,7 +110,6 @@
                 </div>
                 <div class="col-md-6">
                     <div class="btn-toolbar buttons-margin-bottom">
-                        <entry:point id="story.multiple.toolbar.first"/>
                         <div ng-if="authorizedStories('accept', stories)"
                              class="btn-group"
                              uib-dropdown>
@@ -157,6 +156,7 @@
                                 ${message(code:'is.ui.backlog.menu.delete')}
                             </button>
                         </div>
+                        <entry:point id="story-multiple-toolbar"/>
                         <div ng-if="authorizedStories('follow', stories)"
                              class="btn-group">
                             <button type="button"
@@ -171,7 +171,6 @@
                                    uib-tooltip="${message(code: 'is.followable.stop')}"></i>
                             </button>
                         </div>
-                        <entry:point id="story.multiple.toolbar.last"/>
                     </div>
                     <br>
                     <div class="table-responsive">

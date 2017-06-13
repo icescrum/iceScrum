@@ -588,7 +588,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.storyStatesByName = StoryStatesByName;
     }]);
 
-controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', function($scope, $controller, StoryService, storyListId, Session, FeatureService) {
+extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', function($scope, $controller, StoryService, storyListId, Session, FeatureService) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.sumPoints = function(stories) {
@@ -641,6 +641,7 @@ controllers.controller('storyMultipleCtrl', ['$scope', '$controller', 'StoryServ
     $scope.topStory = {};
     $scope.storyPreview = {};
     $scope.stories = [];
+    $scope.storyListId = storyListId; // For child controllers
     $scope.features = Session.getProject().features;
     FeatureService.list();
     $scope.allFollowed = function(stories) {
