@@ -33,7 +33,7 @@
     <div class='box-form box-form-250 box-form-200-legend'>
         <is:fieldset title="Get on board for a new Agile experience with iceScrum v7!" id="member-autocomplete">
             <div style="background: white; text-align: center;font-size: 12px;">
-                <a href="https://www.icescrum.com/your-new-icescrum/" target="_blank"><img style="width:639px;" src="https://www.icescrum.com/wp-content/uploads/2017/01/v7-planning-1024x532.png"/></a>
+                <a href="https://www.icescrum.com/your-new-icescrum/" target="_blank"><img style="width:639px;" src="https://www.icescrum.com/wp-content/uploads/2017/06/planning-small.png"/></a>
                 <p style="margin:15px;">With the new version of iceScrum our objective is to develop a performing tool, always responding to our user’s needs. Thus, we are really glad to officially announce you the migration to the new version of iceScrum: <strong>the v7</strong>.
                 </p>
                 <p style="margin:15px;"><strong>On Monday, 19 June</strong>, all the projects hosted on the iceScrum Cloud platform will be only accessible via the new version.</p>
