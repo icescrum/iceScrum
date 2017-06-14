@@ -169,7 +169,7 @@
                     </ui-select>
                 </div>
                 <div class="clearfix no-padding">
-                    <div class="form-1-tier">
+                    <div class="form-half">
                         <label for="estimation">${message(code: 'is.task.estimation')}</label>
                         <input type="number"
                                min="0"
@@ -179,10 +179,17 @@
                                name="estimation"
                                ng-model="editableTask.estimation"/>
                     </div>
-                    <div ng-if="task.sprint" class="form-2-tiers">
-                        <label for="backlog">${message(code: 'is.sprint')}</label>
-                        <input class="form-control" disabled="disabled" type="text" value="{{ task.sprint.parentRelease.name + ' - ' + (task.sprint | sprintName) }}"/>
+                    <div ng-if="editableTask.initial != null" class="form-half">
+                        <label for="initial">${message(code: 'is.task.initial.long')}</label>
+                        <input class="form-control"
+                               ng-disabled="true"
+                               name="initial"
+                               ng-model="editableTask.initial"/>
                     </div>
+                </div>
+                <div ng-if="task.sprint" class="form-group">
+                    <label for="backlog">${message(code: 'is.sprint')}</label>
+                    <input class="form-control" disabled="disabled" type="text" value="{{ task.sprint.parentRelease.name + ' - ' + (task.sprint | sprintName) }}"/>
                 </div>
                 <div class="form-group">
                     <label for="notes">${message(code: 'is.backlogelement.notes')}</label>
