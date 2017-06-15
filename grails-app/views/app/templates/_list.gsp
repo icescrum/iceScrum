@@ -50,10 +50,9 @@
             <img ng-src="{{ currentAppDefinition.logo }}"
                  alt="{{ currentAppDefinition.name }}">
         </div>
-        <h5  ng-click="openAppDefinition(currentAppDefinition)">
+        <h5 ng-click="openAppDefinition(currentAppDefinition)">
             {{ currentAppDefinition.name }}
         </h5>
-
     </div>
     <div class="text-center more-results" ng-hide="filteredApps.length">
         <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code:'is.ui.apps.store.search')}</a>
