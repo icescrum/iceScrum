@@ -62,6 +62,7 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', function(
         return AppService.authorizedApp('use', appDefinition.id, $scope.project);
     };
     // Init
+    $scope.appsOrder = ['-isNew', 'name'];
     $scope.project = Session.getProject();
     $scope.holder = {};
     $scope.appDefinitions = [];

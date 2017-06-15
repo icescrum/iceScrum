@@ -41,7 +41,7 @@
     </div>
 </div>
 <div class="row app-list">
-    <div class="col-xs-6 col-md-3 text-center" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy:'name')">
+    <div class="col-xs-6 col-md-3 text-center" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
         <div ng-click="openAppDefinition(currentAppDefinition)" class="app-logo" uib-tooltip="{{ currentAppDefinition.baseline }}">
             <div class="ribbon">
                 <div class="new-app" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
