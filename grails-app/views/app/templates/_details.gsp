@@ -37,6 +37,12 @@
     </div>
     <hr/>
 </div>
+<div ng-if="appDefinition.id == holder.displaySettingsWarning">
+    <div class="alert alert-warning" role="alert">
+        ${message(code: 'is.ui.apps.settings.warning')}
+    </div>
+    <hr/>
+</div>
 <entry:point id="app-details-before"/>
 <div class="row">
     <div class="col-md-8">

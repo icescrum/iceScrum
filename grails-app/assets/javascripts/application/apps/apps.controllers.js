@@ -32,6 +32,9 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', function(
     $scope.updateEnabledForProject = function(appDefinition, enabledForProject) {
         AppService.updateEnabledForProject(appDefinition, $scope.project, enabledForProject).then(function() {
             appDefinition.enabledForProject = enabledForProject;
+            if (enabledForProject && appDefinition.projectSettings) {
+                $scope.holder.displaySettingsWarning = appDefinition.id;
+            }
         });
     };
     $scope.appDefinitionFilter = function(appDefinition) {
