@@ -21,10 +21,10 @@
  *
  */
 hibernate {
-//    jdbc.batch_size = 30
-//    order_inserts = true
-//    order_updates = true
-//    batch_versioned_data = true
+    jdbc.batch_size = 30
+    order_inserts = true
+    order_updates = true
+    batch_versioned_data = true
     cache.use_second_level_cache = true
     cache.use_query_cache = true
     cache.region.factory_class = 'grails.plugin.cache.ehcache.hibernate.BeanEhcacheRegionFactory4'
