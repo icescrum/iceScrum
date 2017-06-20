@@ -31,6 +31,7 @@
                         <span class="name form-control-static">
                             <strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
                         </span>
+                        <visual-states ng-model="story" model-states="storyStatesByName"/>
                     </div>
                     <div class="form-group col-sm-4" ng-controller="storyCtrl">
                         <div class="btn-group pull-right">

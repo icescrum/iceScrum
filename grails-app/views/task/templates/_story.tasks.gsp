@@ -30,6 +30,7 @@
                         <span class="name form-control-static">
                             <strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
                         </span>
+                        <visual-states ng-model="task" model-states="taskStatesByName"/>
                     </div>
                     <div class="form-group col-sm-4" ng-controller="taskCtrl">
                         <div class="btn-group pull-right">

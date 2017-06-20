@@ -511,6 +511,9 @@ tr:hover .on-hover span {
     }
     margin-bottom: 10px;
   }
+}
+
+.stories, .tasks, .panel-heading {
   .states {
     .progress;
     height: 18px;
@@ -535,6 +538,14 @@ tr:hover .on-hover span {
       }
     }
   }
+}
+.stories .states, .tasks .states {
+    .state:not(.state-current) {
+      display: none;
+    }
+    .state {
+      width:100px !important;
+    }
 }
 
 .progress.form-bar {

@@ -70,7 +70,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'F
     $scope.tags = [];
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature'});
     // Functions
@@ -95,6 +95,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.previousFeature = FormService.previous(Session.getProject().features, $scope.feature);
     $scope.nextFeature = FormService.next(Session.getProject().features, $scope.feature);
     $scope.featureStatesByName = FeatureStatesByName;
+    $scope.storyStatesByName = StoryStatesByName;
     $scope.availableColors = [];
 }]);
 

@@ -491,8 +491,8 @@ controllers.controller('storyAtWhoCtrl', ['$scope', 'ActorService', function($sc
     ];
 }]);
 
-extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, detailsStory) {
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", "TaskStatesByName", 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, detailsStory) {
         $controller('storyCtrl', {$scope: $scope});
         $controller('storyAtWhoCtrl', {$scope: $scope});
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
@@ -586,6 +586,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         //$scope.nextStory = FormService.next(list, $scope.story);
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
         $scope.storyStatesByName = StoryStatesByName;
+        $scope.taskStatesByName = TaskStatesByName;
     }]);
 
 extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', function($scope, $controller, StoryService, storyListId, Session, FeatureService) {
