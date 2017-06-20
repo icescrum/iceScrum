@@ -207,9 +207,9 @@ class TaskController implements ControllerErrorHandler {
     def listByUser(Long projectId) {
         def user = springSecurityService.currentUser
         def options = [max: 8]
-        def taskStates = [Task.STATE_WAIT, Task.STATE_BUSY]
-        def userTasks = projectId != null ? Task.findAllByResponsibleAndParentProjectAndStateInList(user, Project.withProject(projectId), taskStates, options)
-                : Task.findAllByResponsibleAndStateInList(user, taskStates, options)
+        def userTasks = Task.where {
+            responsible.id == user.id && (projectId ? parentProject.id == projectId : true) && (state in [Task.STATE_WAIT, Task.STATE_BUSY]) && backlog != null && (((Sprint)backlog).state in [Sprint.STATE_WAIT, Sprint.STATE_INPROGRESS])
+        }.list(options)
         def tasksByProject = userTasks.groupBy {
             it.parentProject
         }.collect { project, tasks ->
