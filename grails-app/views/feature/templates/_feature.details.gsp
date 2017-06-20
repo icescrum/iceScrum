@@ -121,6 +121,8 @@
                                         colorpicker-position="top"
                                         ng-focus="editForm(true)"
                                         value="#bf3d3d"
+                                        ng-click="refreshAvailableColors()"
+                                        colors="availableColors"
                                         name="color"
                                         ng-model="editableFeature.color"><i class="fa fa-pencil"></i></button>
                             </span>

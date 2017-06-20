@@ -25,7 +25,7 @@ services.factory('Feature', ['Resource', function($resource) {
     return $resource('feature/:id/:action');
 }]);
 
-services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'CacheService', 'PushService', 'IceScrumEventType', function($state, $q, Feature, Session, CacheService, PushService, IceScrumEventType) {
+services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'CacheService', 'PushService', 'IceScrumEventType', 'FormService', function($state, $q, Feature, Session, CacheService, PushService, IceScrumEventType, FormService) {
     var self = this;
     Session.getProject().features = CacheService.getCache('feature');
     var crudMethods = {};
@@ -126,5 +126,8 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             default:
                 return false;
         }
+    };
+    this.getAvailableColors = function() {
+        return FormService.httpGet('feature/colors');
     };
 }]);

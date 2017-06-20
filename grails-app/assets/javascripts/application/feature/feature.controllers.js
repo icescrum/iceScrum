@@ -85,11 +85,17 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
         var stateName = $state.params.featureTabId ? (featureTabId ? '.' : '^') : (featureTabId ? '.tab' : '.');
         return $state.href(stateName, {featureTabId: featureTabId});
     };
+    $scope.refreshAvailableColors = function() {
+        FeatureService.getAvailableColors().then(function(colors) {
+            $scope.availableColors = colors;
+        });
+    };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
     $scope.previousFeature = FormService.previous(Session.getProject().features, $scope.feature);
     $scope.nextFeature = FormService.next(Session.getProject().features, $scope.feature);
     $scope.featureStatesByName = FeatureStatesByName;
+    $scope.availableColors = [];
 }]);
 
 controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {

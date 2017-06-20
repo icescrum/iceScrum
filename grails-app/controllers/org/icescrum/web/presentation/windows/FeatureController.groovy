@@ -29,6 +29,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Story
+import org.icescrum.core.domain.Task
 import org.icescrum.core.error.ControllerErrorHandler
 
 @Secured('inProject() or stakeHolder()')
@@ -165,5 +166,18 @@ class FeatureController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         Feature feature = Feature.findByBacklogAndUid(_project, uid)
         redirect(uri: "/p/$_project.pkey/#/feature/$feature.id")
+    }
+
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
+    def colors(long project) {
+        def results =  ['#C6FFA3', '#FFB593', '#F97C81', '#D39661', '#840048', '#FFFFC7', '#548687', '#473335', '#FFB593', '#B0413E', '#E8AE68', '#FFD275', '#A57F60', '#E3A587', '#DB5A42', '#DDFFD9', '#6C4B5E', '#B3679B', '#E3A587', '#DB5A42', '#4281A4', '#9CAFB7', '#88665D', '#E3A587', '#895B1E']
+        def _project = Project.withProject(project)
+        def usedColor = _project.features?.collect{ it ->
+            it.color
+        }
+        def colors = results - usedColor
+        Collections.shuffle(colors)
+        colors = colors.size() > 8 ? colors.subList(0,7) : colors
+        render(status: 200, contentType: 'application/json', text: colors as JSON)
     }
 }
