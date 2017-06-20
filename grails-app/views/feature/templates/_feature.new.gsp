@@ -38,8 +38,8 @@
             <div class="help-block">${message(code:'is.ui.feature.help')}</div>
             <div class="postits standalone">
                 <div class="postit-container solo">
-                    <div ng-style="'#2d8ccc' | createGradientBackground"
-                         class="postit {{ '#2d8ccc' | contrastColor }}">
+                    <div ng-style="feature.color | createGradientBackground"
+                         class="postit {{ feature.color | contrastColor }}">
                         <div class="head">
                             <div class="head-left">
                                 <span class="id">42</span>
@@ -64,16 +64,29 @@
                   name='formHolder.featureForm'
                   novalidate>
                 <div class="clearfix no-padding">
-                    <div class="form-half">
+                    <div class="form-group">
                         <label for="name">${message(code:'is.feature.name')}</label>
-                        <input required
-                               name="name"
-                               autofocus
-                               ng-model="feature.name"
-                               type="text"
-                               class="form-control"
-                               ng-disabled="!authorizedFeature('create')"
-                               placeholder="${message(code: 'is.ui.feature.noname')}"/>
+                        <div class="input-group">
+                            <input required
+                                   name="name"
+                                   autofocus
+                                   ng-model="feature.name"
+                                   type="text"
+                                   class="form-control"
+                                   ng-disabled="!authorizedFeature('create')"
+                                   placeholder="${message(code: 'is.ui.feature.noname')}"/>
+                            <span class="input-group-btn">
+                                <button colorpicker
+                                        class="btn {{ feature.color | contrastColor }}"
+                                        type="button"
+                                        ng-style="{'background-color': feature.color}"
+                                        colorpicker-position="top"
+                                        ng-click="refreshAvailableColors()"
+                                        colors="availableColors"
+                                        name="color"
+                                        ng-model="feature.color"><i class="fa fa-pencil"></i></button>
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
