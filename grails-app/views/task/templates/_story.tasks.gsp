@@ -30,7 +30,6 @@
                         <span class="name form-control-static">
                             <strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
                         </span>
-                        <visual-states ng-model="task" model-states="taskStatesByName"/>
                     </div>
                     <div class="form-group col-sm-4" ng-controller="taskCtrl">
                         <div class="btn-group pull-right">
@@ -41,6 +40,7 @@
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
                             </div>
+                            <visual-states ng-model="task" model-states="taskStatesByName"/>
                         </div>
                     </div>
                 </div>

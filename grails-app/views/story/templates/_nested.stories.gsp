@@ -31,7 +31,6 @@
                         <span class="name form-control-static">
                             <strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
                         </span>
-                        <visual-states ng-model="story" model-states="storyStatesByName"/>
                     </div>
                     <div class="form-group col-sm-4" ng-controller="storyCtrl">
                         <div class="btn-group pull-right">
@@ -42,6 +41,7 @@
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'story'" template-url="item.menu.html"></ul>
                             </div>
+                            <visual-states ng-model="story" model-states="storyStatesByName"/>
                         </div>
                     </div>
                 </div>
