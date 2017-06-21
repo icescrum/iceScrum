@@ -26,9 +26,12 @@ package org.icescrum.web.presentation.widgets
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import groovy.util.slurpersupport.GPathResult
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Widget
 import org.icescrum.core.error.ControllerErrorHandler
+
+import java.util.concurrent.TimeUnit
 
 class FeedController implements ControllerErrorHandler {
 
@@ -74,7 +77,7 @@ class FeedController implements ControllerErrorHandler {
 
     private static getFeedContent(def url) {
         try {
-            def channel = new XmlSlurper().parse(url).channel
+            def channel = new XmlSlurper().parseText(url.toURL().getText(connectTimetout: TimeUnit.SECONDS.toMillis(5), readTimeout: TimeUnit.SECONDS.toMillis(30))).channel
             def contentFeed = [title: channel.title.text()]
             contentFeed.items = channel.item.collect { xmlItem ->
                 return [feed       : channel.title.text(),
