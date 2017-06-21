@@ -28,7 +28,7 @@
         <tbody>
         <tr>
             <td><strong><g:message code="is.dialog.about.version.appVersion"/></strong></td>
-            <td>${versionNumber.contains('Cloud') ? versionNumber : versionNumber + ' Standalone'} <g:if test="${Metadata.current['app.promoteVersion'] == 'true'}">(<a data-ajax="true" href="${g.createLink(controller: "scrumOS", action: "whatsNew")}">${message(code: 'is.ui.whatsnew.title')}</a>)</g:if></td>
+            <td>${versionNumber.contains('Cloud') ? versionNumber : versionNumber + ' Standalone'}</td>
         </tr>
         <g:if test="${request.authenticated}">
             <tr>

@@ -173,18 +173,6 @@ class ScrumOSController implements ControllerErrorHandler {
         response.outputStream << new BASE64Decoder().decodeBuffer(image)
     }
 
-    def whatsNew(boolean hide) {
-        if (hide) {
-            if (springSecurityService.currentUser?.preferences?.displayWhatsNew) {
-                springSecurityService.currentUser.preferences.displayWhatsNew = false
-            }
-            render(status: 200)
-            return
-        }
-        def dialog = g.render(template: "about/whatsNew")
-        render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
-    }
-
     def version() {
         render(status: '200', text: g.meta([name: 'app.version']))
     }
