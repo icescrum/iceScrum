@@ -55,6 +55,9 @@
                             <div class="col-md-6">{{ release.startDate | dayShort }}</div>
                             <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>
                         </div>
+                        <div ng-show="currentOrNextSprint.goal">
+                            <strong>${message(code:'is.sprint.goal')}</strong>: {{ currentOrNextSprint.goal }}
+                        </div>
                     </div>
                 </div>
             </div>

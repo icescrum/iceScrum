@@ -55,7 +55,7 @@ class UtilsTagLib {
             exportFormats.resolveStrategy = Closure.DELEGATE_FIRST
             exportFormats = exportFormats()
         }
-        entry.hook(id:"${controllerName}-getExportFormats", model:[exportFormats:exportFormats])
+        entry.hook(id:"${attrs.windowDefinition.id}-getExportFormats", model:[exportFormats:exportFormats])
         return exportFormats
     }
 

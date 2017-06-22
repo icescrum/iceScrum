@@ -76,7 +76,7 @@
                         <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
                             <li role="menuitem">
                                 <a href="${format.controller?:'feature'}/${format.action?:'print'}/${format.params.format}"
-                                   ng-click="print($event)">${format.name}</a>
+                                   ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                             </li>
                         </g:each>
                     </ul>
