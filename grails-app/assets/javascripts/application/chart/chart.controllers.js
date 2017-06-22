@@ -123,6 +123,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', 'Session', '
                     x: function(entry) { return entry[0]; },
                     y: function(entry) { return entry[1]; },
                     xScale: d3.time.scale.utc(),
+                    showValues: true,
                     xAxis: {
                         tickFormat: $filter('dayShorter')
                     }
