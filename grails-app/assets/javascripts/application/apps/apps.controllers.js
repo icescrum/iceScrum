@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', function($scope, AppService, Session) {
+controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window', '$timeout', function($scope, AppService, Session, $window, $timeout) {
     // Functions
     $scope.openAppDefinition = function(appDefinition) {
         $scope.appDefinition = appDefinition;
@@ -34,6 +34,12 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', function(
             appDefinition.enabledForProject = enabledForProject;
             if (enabledForProject && appDefinition.projectSettings) {
                 $scope.holder.displaySettingsWarning = appDefinition.id;
+            }
+            if(appDefinition.reloadUIOnStateChange){
+                $scope.holder.displayRefresh = appDefinition.id;
+                $timeout(function(){
+                    $window.location.reload();
+                }, 2000);
             }
         });
     };

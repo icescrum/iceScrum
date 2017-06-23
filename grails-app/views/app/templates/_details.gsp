@@ -43,6 +43,12 @@
     </div>
     <hr/>
 </div>
+<div ng-if="appDefinition.id == holder.displayRefresh">
+    <div class="alert alert-info" role="alert">
+        ${message(code: 'is.ui.apps.settings.refresh')}
+    </div>
+    <hr/>
+</div>
 <entry:point id="app-details-before"/>
 <div class="row">
     <div class="col-md-8">
