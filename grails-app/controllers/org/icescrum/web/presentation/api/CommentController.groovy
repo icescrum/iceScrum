@@ -123,7 +123,7 @@ class CommentController implements ControllerErrorHandler {
         grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removeComment':comment])
         commentable.removeComment(comment)
         grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removedComment':comment])
-        render(status: 200)
+        render(status: 204)
     }
 
     private getCommentableObject(){

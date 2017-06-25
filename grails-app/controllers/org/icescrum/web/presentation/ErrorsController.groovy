@@ -36,11 +36,33 @@ class ErrorsController implements ControllerErrorHandler {
     def springSecurityService
     def notificationEmailService
 
+    def error401() {
+        if (springSecurityService.isAjax(request)) {
+            render(status: 401)
+        } else {
+            withFormat {
+                html{
+                    render(status: 401, view: '401.gsp', model: [homeUrl: ApplicationSupport.serverURL()])
+                }
+                json {
+                    render(status: 401)
+                }
+            }
+        }
+    }
+
     def error403() {
         if (springSecurityService.isAjax(request)) {
             render(status: 403, text: [error: message(code: 'is.error.denied')])
         } else {
-            render(status: 403, view: '403.gsp', model: [homeUrl: ApplicationSupport.serverURL(), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
+            withFormat {
+                html{
+                    render(status: 403, view: '403.gsp', model: [homeUrl: ApplicationSupport.serverURL(), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
+                }
+                json {
+                    render(status: 403)
+                }
+            }
         }
     }
 
@@ -48,15 +70,14 @@ class ErrorsController implements ControllerErrorHandler {
         if (springSecurityService.isAjax(request)) {
             render(status: 404)
         } else {
-            render(status: 404, view: '404.gsp', model: [homeUrl: ApplicationSupport.serverURL(), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
-        }
-    }
-
-    def error401() {
-        if (springSecurityService.isAjax(request)) {
-            render(status: 401)
-        } else {
-            render(status: 401, view: '401.gsp', model: [homeUrl: ApplicationSupport.serverURL()])
+            withFormat {
+                html{
+                    render(status: 404, view: '404.gsp', model: [homeUrl: ApplicationSupport.serverURL(), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
+                }
+                json {
+                    render(status: 404)
+                }
+            }
         }
     }
 

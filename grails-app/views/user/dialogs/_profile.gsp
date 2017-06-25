@@ -154,6 +154,52 @@
             </div>
         </uib-tab>
         <entry:point id="user-dialog-profile-tab"/>
+        <uib-tab heading="${message(code: 'is.dialog.profile.tokensSettings')}"
+                 active="tabSelected.tokensSettings"
+                 select="setTabSelected('tokensSettings')">
+        <entry:point id="user-dialog-profile-tab-tokens-before-form"/>
+        <div class="token-tab" ng-controller="UserTokenCtrl">
+            <div class="form-group">
+                <label for="userToken.nane">${message(code: 'is.user.token.name')}</label>
+                <div class="input-group" hotkey="{'return': save }" hotkey-allow-in="INPUT">
+                    <input type="text"
+                           name="userToken.name"
+                           class="form-control"
+                           ng-model="editableUserToken.name">
+                    <span class="input-group-btn">
+                        <button type="button" ng-click="save()" ng-disabled="!editableUserToken.name" class="btn btn-primary">
+                            ${message(code:'is.ui.token.generate')}
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="help-block">
+                ${message(code:'is.dialog.profile.tokensSettings.description')}
+            </div>
+            <table class="table table-bordered table-striped" ng-if="user.tokens_count > 0">
+                <thead>
+                <tr>
+                    <th>${message(code:'is.user.token')}</th>
+                    <th class="text-right">${message(code:'is.ui.token.actions')}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="token in user.tokens">
+                    <td>
+                        {{ token.id }}
+                        <div class="small">{{ token.name }}</div>
+                    </td>
+                    <td class="text-right">
+                        <button type="button" class="btn btn-danger" ng-click="delete(token)"  uib-tooltip="${message(code:'is.ui.token.revoke')}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <entry:point id="user-dialog-profile-tab-tokens-after-form"/>
+    </uib-tab>
         <g:if test="${projects}">
             <uib-tab heading="${message(code: 'is.dialog.profile.emailsSettings')}"
                      active="tabSelected.emailSettings"

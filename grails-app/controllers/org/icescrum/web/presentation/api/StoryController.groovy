@@ -201,7 +201,14 @@ class StoryController implements ControllerErrorHandler {
         def stories = Story.withStories(params)
         storyService.delete(stories, null, params.reason ? params.reason.replaceAll("(\r\n|\n)", "<br/>") : null)
         def returnData = stories.size() > 1 ? stories.collect { [id: it.id] } : (stories ? [id: stories.first().id] : [:])
-        render(status: 200, text: returnData as JSON)
+        withFormat {
+            html {
+                render(status: 200, text: returnData as JSON)
+            }
+            json {
+                render(status: 204)
+            }
+        }
     }
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])

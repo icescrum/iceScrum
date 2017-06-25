@@ -114,7 +114,7 @@ class AttachmentController implements ControllerErrorHandler {
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['removeAttachment': attachment])
                 attachmentable.removeAttachment(attachment)
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['removedAttachment': null])
-                render(status: 200)
+                render(status: 204)
             }
         }
     }

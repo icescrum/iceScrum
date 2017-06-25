@@ -196,6 +196,22 @@ class UrlMappings {
                 property(inList: ['username', 'email'])
             }
         }
+        //User Token
+        "/user/$userId/token" {
+            controller = 'userToken'
+            action = [POST:"save"]
+            constraints {
+                userId(matches: /\d*/)
+            }
+        }
+        "/user/$userId/token/$id" {
+            controller = 'userToken'
+            action = [POST:"update", DELETE:"delete"]
+            constraints {
+                userId(matches: /\d*/)
+                id(matches: /[0-9a-z]*/)
+            }
+        }
         // Feed
         "/feed/$project" {
             controller = 'project'
@@ -276,7 +292,6 @@ class UrlMappings {
                 property(inList: ['name', 'pkey'])
             }
         }
-
         // Update project
         "/project/$project/available/$property" {
             controller = 'project'
@@ -363,11 +378,9 @@ class UrlMappings {
             action = [POST: "index"]
         }
         // Errors mapping
-        "/notFound"(controller: "errors", action: "error404")
-        "404"(redirect: '/notFound')
-        "/forbidden"(controller: "errors", action: "error403")
-        "403"(redirect: '/forbidden')
-        "/generalError/"(controller: "errors", action: "error500")
+        "401"(controller: "errors", action: "error401")
+        "403"(controller: "errors", action: "error403")
+        "404"(controller: "errors", action: "error404")
         "500"(controller: "errors", action: "error403", exception: AccessDeniedException)
         "500"(controller: "errors", action: "error403", exception: NotFoundException)
         "500"(controller: 'errors', action: 'memory', exception: OutOfMemoryError)

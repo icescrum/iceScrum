@@ -130,35 +130,14 @@ class IceScrumFilters {
             }
         }
 
+        //TODO still needed?
         webservices(uri: '/ws/**') {
             before = {
-                def webservices
-                if (params.project) {
-                    webservices = Project.createCriteria().get {
-                        //TODO test if project is really a long
-                        eq 'id', params.project.toLong()
-                        preferences {
-                            projections {
-                                property 'webservices'
-                            }
-                        }
-                        cache true
-                    }
-                    if (!webservices) {
-                        render(status: 503)
-                    }
-                } else {
-                    webservices = true
-                }
-                if (webservices) {
-                    // Replace old parseRequest, warning: the request body (InputStream) cannot be read after that, that a one shot
-                    request.withFormat {
-                        json {
-                            params << request.JSON
-                        }
+                request.withFormat {
+                    json {
+                        params << request.JSON
                     }
                 }
-                return webservices
             }
         }
 

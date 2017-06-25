@@ -41,29 +41,6 @@ class BootStrap {
         localeResolver.defaultLocale = Locale.ENGLISH
         java.util.Locale.setDefault(Locale.ENGLISH)
         TimeZone.setDefault(TimeZone.getTimeZone(grailsApplication.config.icescrum.timezone.default))
-        // TODO Hack grails 1.3.x bug with accept header for request.format should be remove when upgrade to grails 2.x
-        HttpServletRequest.metaClass.getMimeTypes = { ->
-            def result = delegate.getAttribute(GrailsApplicationAttributes.REQUEST_FORMATS)
-            if (!result) {
-
-                def userAgent = delegate.getHeader(HttpHeaders.USER_AGENT)
-                def msie = userAgent && useAgent ==~ /msie(?i)/ ?: false
-
-                def parser = new DefaultAcceptHeaderParser()
-                def header
-                if (delegate.getRequestURI()?.contains('ws/')) {
-                    header = delegate.getHeader(HttpHeaders.ACCEPT)
-                } else {
-                    header = delegate.contentType
-                }
-                if (!isValidType(header)) header = delegate.getHeader(HttpHeaders.CONTENT_TYPE)
-                if (msie) header = "*/*"
-                result = parser.parse(header)
-
-                delegate.setAttribute(GrailsApplicationAttributes.REQUEST_FORMATS, result)
-            }
-            result
-        }
 
         println " "
         println " "

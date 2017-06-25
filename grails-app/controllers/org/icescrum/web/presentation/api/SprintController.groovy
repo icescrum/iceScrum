@@ -89,7 +89,14 @@ class SprintController implements ControllerErrorHandler {
     def delete(long project, long id) {
         Sprint sprint = Sprint.withSprint(project, id)
         sprintService.delete(sprint)
-        render(status: 200, text: [id: id] as JSON)
+        withFormat {
+            html {
+                render(status: 200, contentType: 'application/json', text: [id: id] as JSON)
+            }
+            json {
+                render(status: 204)
+            }
+        }
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProject()')

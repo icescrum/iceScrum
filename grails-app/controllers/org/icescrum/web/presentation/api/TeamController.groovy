@@ -96,7 +96,14 @@ class TeamController implements ControllerErrorHandler {
             return
         }
         teamService.delete(team)
-        render(status: 200, text: [id: id] as JSON)
+        withFormat {
+            html {
+                render(status: 200, text: [id: id] as JSON)
+            }
+            json {
+                render(status: 204)
+            }
+        }
     }
 
     @Secured('isAuthenticated()')

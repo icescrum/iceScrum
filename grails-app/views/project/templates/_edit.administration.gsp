@@ -28,18 +28,6 @@
       novalidate
       ng-submit='update(project)'
       name="formHolder.editProjectForm">
-    %{--<h4>${message(code:"is.project.preferences.project.webservices")}</h4>--}%
-    %{--<div class="row">--}%
-        %{--<div class="form-half">--}%
-            %{--<label for="webservices" class="checkbox-inline">--}%
-                %{--<input type="checkbox"--}%
-                       %{--name="project.preferences.webservices"--}%
-                       %{--id="webservices"--}%
-                       %{--ng-model="project.preferences.webservices"/>--}%
-                %{--${message(code:'is.project.preferences.project.webservices.enable')}--}%
-            %{--</label>--}%
-        %{--</div>--}%
-    %{--</div>--}%
     <h4>${message(code:"is.project.preferences.project.stakeHolderAccess")}</h4>
     <table class="table table-striped table-responsive">
         <tr>

@@ -463,7 +463,7 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
     };
 }]);
 
-controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', function($scope, $uibModal, Session, UserService, hotkeys, PushService) {
+controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', 'UserTokenService', function($scope, $uibModal, Session, UserService, hotkeys, PushService, UserTokenService) {
     // Functions
     $scope.notificationToggle = function(open) {
         if (open) {
@@ -502,7 +502,13 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             keyboard: false,
             backdrop: 'static',
             templateUrl: $scope.serverUrl + '/user/openProfile',
-            controller: 'userCtrl'
+            controller: 'userCtrl',
+            resolve: {
+                //only used to fetch tokens under user object
+                _tokens: function () {
+                    return UserTokenService.list($scope.currentUser);
+                }
+            }
         });
     };
     $scope.getPushState = function() {

@@ -202,8 +202,9 @@ icescrum.marshaller = [
         backlog: [include: ['count', 'isDefault'],
                   textile: ['notes']],
         activity: [include: ['important']],
+        usertoken: [:],
         userpreferences: [asShort: ['activity', 'language', 'emailsSettings', 'filterTask']],
-        projectpreferences: [asShort: ['webservices', 'archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
+        projectpreferences: [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
                                        'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment: [include: ['filename']],
         acceptancetest: [textile: ['description'], asShort: ['state']],
@@ -325,7 +326,7 @@ grails.enable.native2ascii = true
 grails.logging.jul.usebridge = true
 // packages to include in Spring bean scanning
 grails.spring.bean.packages = []
-
+grails.mime.use.accept.header = true
 grails.views.javascript.library = 'jquery'
 
 environments {
@@ -456,15 +457,16 @@ grails {
             fii.rejectPublicInvocations = true
             controllerAnnotations.staticRules = [
                     //app controllers rules
-                    '/stream/app/**' : ['permitAll'],
-                    '/scrumOS/**'    : ['permitAll'],
-                    '/user/**'       : ['permitAll'],
-                    '/errors/**'     : ['permitAll'],
-                    '/assets/**'     : ['permitAll'],
-                    '/**/js/**'      : ['permitAll'],
-                    '/**/css/**'     : ['permitAll'],
-                    '/**/images/**'  : ['permitAll'],
-                    '/**/favicon.ico': ['permitAll']
+                    '/grails-errorhandler'  : ['permitAll'],
+                    '/stream/app/**'        : ['permitAll'],
+                    '/scrumOS/**'           : ['permitAll'],
+                    '/user/**'              : ['permitAll'],
+                    '/errors/**'            : ['permitAll'],
+                    '/assets/**'            : ['permitAll'],
+                    '/**/js/**'             : ['permitAll'],
+                    '/**/css/**'            : ['permitAll'],
+                    '/**/images/**'         : ['permitAll'],
+                    '/**/favicon.ico'       : ['permitAll']
             ]
 
             userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
@@ -473,11 +475,11 @@ grails {
             successHandler.alwaysUseDefault = false
 
             useBasicAuth = true
-            basic.realmName = "iceScrum authentication for REST API"
+            basic.realmName = "Basic authentication for iceScrum"
             filterChain.chainMap = [
-                    '/ws/**':           'JOINED_FILTERS,-exceptionTranslationFilter',
-                    '/**/project/feed': 'JOINED_FILTERS,-exceptionTranslationFilter', // Too specific, should probably be more generic, e.g. /basic/ (not ws because it requires enabling)
-                    '/**'   :           'JOINED_FILTERS,-basicAuthenticationFilter,-basicExceptionTranslationFilter'
+                    '/ws/**':           'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-securityContextHolderAwareRequestFilter,-anonymousAuthenticationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter', //only token auth
+                    '/**/project/feed': 'JOINED_FILTERS,-exceptionTranslationFilter,-tokenAuthenticationFilter,-restExceptionTranslationFilter', //session & basic auth
+                    '/**'   :           'JOINED_FILTERS,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter' //only form auth with session
             ]
 
             auth.loginFormUrl = '/login'

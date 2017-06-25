@@ -154,7 +154,14 @@ class TaskController implements ControllerErrorHandler {
             }
         }
         def returnData = tasks.size() > 1 ? tasks.collect { [id: it.id] } : (tasks ? [id: tasks.first().id] : [:])
-        render(status: 200, text: returnData as JSON)
+        withFormat {
+            html {
+                render(status: 200, text: returnData as JSON)
+            }
+            json {
+                render(status: 204)
+            }
+        }
     }
 
     @Secured('inProject() and !archivedProject()')

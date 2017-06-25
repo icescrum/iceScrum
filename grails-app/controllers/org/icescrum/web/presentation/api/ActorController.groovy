@@ -82,7 +82,7 @@ class ActorController implements ControllerErrorHandler {
             actors.each { actor ->
                 actorService.delete(actor)
             }
-            render(status: 200)
+            render(status: 204)
         }
     }
 }

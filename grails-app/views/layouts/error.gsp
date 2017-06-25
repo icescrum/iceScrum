@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <!DOCTYPE html>
-<html lang="en" ng-app="isApplication" ng-strict-di>
+<html lang="en">
 <head>
     <title>iceScrum - <g:layoutTitle/></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -43,7 +43,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div>
-                    <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
+                    <svg class="logo" viewBox="0 0 150 150">
                         <g:render template="/scrumOS/logo"/>
                     </svg>
                     <g:layoutBody/>
@@ -51,7 +51,5 @@
             </div>
         </div>
     </div>
-    <g:include controller="scrumOS" action="isSettings" params="[project: params.project]"/>
-    <asset:javascript src="application.js"/>
 </body>
 </html>

@@ -128,6 +128,13 @@ class AcceptanceTestController implements ControllerErrorHandler {
         AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(project, id)
         def deleted = [id: acceptanceTest.id, parentStory: [id: acceptanceTest.parentStory.id]]
         acceptanceTestService.delete(acceptanceTest)
-        render(status: 200, contentType: 'application/json', text: deleted as JSON)
+        withFormat {
+            html {
+                render(status: 200, contentType: 'application/json', text: deleted as JSON)
+            }
+            json {
+                render(status: 204)
+            }
+        }
     }
 }
