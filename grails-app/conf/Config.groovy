@@ -180,7 +180,7 @@ icescrum.marshaller = [
                textile: ['notes'],
                includeCount: ['comments'],
                include: ['tags', 'attachments', 'sprint']],
-        user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired'],
+        user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'tokens'],
                asShort: ['firstName', 'lastName'],
                includeCount: ['teams'],
                include: ['admin']],
