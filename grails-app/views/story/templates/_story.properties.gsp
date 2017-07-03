@@ -63,7 +63,6 @@
                       autofocus
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
             <div class="atwho-preview form-control-static important"
-                 ng-disabled="!formEditable()"
                  ng-show="!showDescriptionTextarea"
                  ng-click="clickDescriptionPreview($event, '${is.generateStoryTemplate(newLine: '\\n')}')"
                  ng-focus="focusDescriptionPreview($event)"
