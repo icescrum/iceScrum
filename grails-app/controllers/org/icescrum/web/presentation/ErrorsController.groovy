@@ -41,7 +41,7 @@ class ErrorsController implements ControllerErrorHandler {
             render(status: 401)
         } else {
             withFormat {
-                html{
+                html {
                     render(status: 401, view: '401.gsp', model: [homeUrl: ApplicationSupport.serverURL()])
                 }
                 json {
@@ -56,7 +56,7 @@ class ErrorsController implements ControllerErrorHandler {
             render(status: 403, text: [error: message(code: 'is.error.denied')])
         } else {
             withFormat {
-                html{
+                html {
                     render(status: 403, view: '403.gsp', model: [homeUrl: ApplicationSupport.serverURL(), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
                 }
                 json {
@@ -71,7 +71,7 @@ class ErrorsController implements ControllerErrorHandler {
             render(status: 404)
         } else {
             withFormat {
-                html{
+                html {
                     render(status: 404, view: '404.gsp', model: [homeUrl: ApplicationSupport.serverURL(), supportEmail: grailsApplication.config.icescrum.alerts.errors.to])
                 }
                 json {

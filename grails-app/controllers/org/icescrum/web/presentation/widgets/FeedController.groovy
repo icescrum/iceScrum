@@ -26,7 +26,6 @@ package org.icescrum.web.presentation.widgets
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import groovy.util.slurpersupport.GPathResult
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Widget
 import org.icescrum.core.error.ControllerErrorHandler

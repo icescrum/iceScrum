@@ -914,8 +914,8 @@ angular.module('isApplication', [
                     return uri + separator + key + "=" + value;
                 }
             };
-            if(params){
-                _.each(params, function(val, key){
+            if (params) {
+                _.each(params, function(val, key) {
                     url = updateQueryStringParameter(url, key, val);
                 });
             }

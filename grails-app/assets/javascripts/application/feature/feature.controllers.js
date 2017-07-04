@@ -103,7 +103,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.resetFeatureForm = function() {
-        $scope.feature = {color:"#2d8ccc"};
+        $scope.feature = {color: "#2d8ccc"};
         $scope.resetFormValidation($scope.formHolder.featureForm);
     };
     $scope.save = function(feature, andContinue) {

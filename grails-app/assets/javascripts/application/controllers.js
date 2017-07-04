@@ -504,8 +504,8 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             templateUrl: $scope.serverUrl + '/user/openProfile',
             controller: 'userCtrl',
             resolve: {
-                //only used to fetch tokens under user object
-                _tokens: function () {
+                // Only used to fetch tokens under user object
+                _tokens: function() {
                     return UserTokenService.list($scope.currentUser);
                 }
             }
