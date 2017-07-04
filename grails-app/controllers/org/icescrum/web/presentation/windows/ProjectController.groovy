@@ -70,7 +70,7 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
-    @Secured(["hasRole('ROLE_ADMIN')"])
+    @Secured(['inProject()'])
     def show(long project) {
         Project _project = Project.withProject(project)
         render(status: 200, contentType: 'application/json', text: _project as JSON)

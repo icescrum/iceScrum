@@ -26,14 +26,15 @@ class TeamController implements ControllerErrorHandler {
         render(status: 200, text: teams as JSON, contentType: 'application/json')
     }
 
-    @Secured(['stakeHolder() or inProject()'])
-    def show(long id, String type) {
+    @Secured('isAuthenticated()')
+    def show(long project, String type) {
         def team
-        if(type == 'project'){
-            Project _project = Project.withProject(id)
+        if(type == 'project' && (request.stakeHolder || request.inProject) ){
+            Project _project = Project.withProject(project)
             team = _project.firstTeam
         } else {
-            team = Team.withTeam(id)
+            //sorry hack but variable must named project
+            team = Team.withTeam(project)
         }
         render(status: 200, text: team as JSON, contentType: 'application/json')
     }

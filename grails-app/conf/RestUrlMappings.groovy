@@ -30,11 +30,12 @@ class RestUrlMappings {
             controller = 'scrumOS'
         }
 
-        // User
+        // User (token must be admin)
         "/ws/user" {
             controller = 'user'
             action = [GET: 'index', POST: 'save']
         }
+        // (token must be admin)
         "/ws/user/$id" {
             controller = 'user'
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
@@ -42,29 +43,36 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
+        "/ws/user/current" {
+            controller = 'user'
+            action = 'current'
+        }
 
-        // Team
+        // Team (if user is admin all teams ELSE teams where user is owner
         "/ws/team" {
             controller = 'team'
             action = [GET: 'index']
         }
-        "/ws/team/$id" {
+        "/ws/team/$project" {
             controller = 'team'
             action = [GET: 'show']
+            type = 'team'
             constraints {
-                id(matches: /d*/)
+                project(matches: /\d*/)
             }
         }
         //team of a project
-        "/ws/team/project/$id" {
+        "/ws/team/project/$project" {
             controller = 'team'
             action = [GET: 'show']
+            type = 'project'
             constraints {
-                id(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
+            method = 'GET'
         }
 
-        // Project
+        // Project (token must be admin for index)
         "/ws/project" {
             controller = 'project'
             action = [GET: 'index', POST: 'save']
@@ -168,12 +176,12 @@ class RestUrlMappings {
         //plan a release with a capacity
         "/ws/project/$project/release/$id/autoPlan/$capacity" {
             controller = 'release'
-            action = 'autoPlan'
+            action = [POST:'autoPlan']
             constraints {
+                id(matches: /\d*/)
                 project(matches: /[0-9A-Z]*/)
                 capacity(matches: /\d*/)
             }
-            method = 'POST'
         }
 
         // sprint nested actions
@@ -189,33 +197,31 @@ class RestUrlMappings {
         //plan a sprint with a capacity
         "/ws/project/$project/sprint/$id/autoPlan/$capacity" {
             controller = 'sprint'
-            action = 'autoPlan'
+            action = [POST:'autoPlan']
             constraints {
                 project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
                 capacity(matches: /\d*/)
             }
-            method = 'POST'
         }
 
         //generate sprint for a release
         "/ws/project/$project/sprint/generateSprints/$releaseId" {
             controller = 'sprint'
-            action = 'generateSprints'
+            action = [POST:'generateSprints']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /\d*/)
             }
-            method = 'POST'
         }
         // sprint filter by release
         "/ws/project/$project/sprint/release/$releaseId" {
             controller = 'sprint'
-            action = 'index'
+            action = [GET:'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /\d*/)
             }
-            method = 'GET'
         }
 
         // tasks nested actions
@@ -243,12 +249,11 @@ class RestUrlMappings {
         // filter acceptanceTests by story
         "/ws/project/$project/acceptanceTest/story/$parentStory" {
             controller = 'acceptanceTest'
-            action = 'index'
+            action = [GET:'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 parentStory(matches: /\d*/)
             }
-            method = 'GET'
         }
     }
 }
