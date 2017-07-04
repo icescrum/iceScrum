@@ -35,9 +35,9 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window'
             if (enabledForProject && appDefinition.projectSettings) {
                 $scope.holder.displaySettingsWarning = appDefinition.id;
             }
-            if(appDefinition.reloadUIOnStateChange){
+            if (appDefinition.reloadUIOnStateChange) {
                 $scope.holder.displayRefresh = appDefinition.id;
-                $timeout(function(){
+                $timeout(function() {
                     $window.location.reload();
                 }, 2000);
             }
