@@ -222,12 +222,6 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, template: 'dialogs/profile', model: [user: user, projects: grailsApplication.config.icescrum.alerts.enable ? Project.findAllByRole(user, [BasePermission.WRITE, BasePermission.READ], [cache: true, max: 11], true, false) : null])
     }
 
-    //fake save method to force authentication when using rest service (with admin
-    @Secured("hasRole('ROLE_ADMIN')")
-    def forceRestSave() {
-        forward(action: 'save', params: params)
-    }
-
     @Secured(['permitAll()'])
     def current() {
         def user = [user : springSecurityService.currentUser?.id ? springSecurityService.currentUser : 'null',

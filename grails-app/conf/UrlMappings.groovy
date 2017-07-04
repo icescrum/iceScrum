@@ -354,22 +354,22 @@ class UrlMappings {
             }
         }
         // Team
-        "/team/" {
+        "/team" {
             controller = 'team'
             action = [GET: "index", POST: "save"]
         }
         "/team/$id" {
             controller = 'team'
-            action = [POST: "update", DELETE: "delete"]
+            action = [GET:"show", POST: "update", DELETE: "delete"]
             constraints {
                 id(matches: /\d*/)
             }
         }
-        "/team/project/$project" {
+        "/team/project/$id" {
             controller = 'team'
             action = 'show'
             constraints {
-                project(matches: /\d*/)
+                id(matches: /[0-9A-Z]*/)
             }
         }
         // Widget

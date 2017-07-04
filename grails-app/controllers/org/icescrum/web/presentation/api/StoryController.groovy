@@ -280,7 +280,7 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['productOwner() and !archivedProject()'])
-    def acceptToBacklog() {
+    def accept() {
         def stories = Story.withStories(params)
         def rank
         if (stories.size() == 1 && params.story?.rank) {
@@ -328,7 +328,7 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['productOwner() and !archivedProject()'])
-    def acceptAsFeature() {
+    def turnIntoFeature() {
         def stories = Story.withStories(params)?.reverse()
         def features = storyService.acceptToFeature(stories)
         def returnData = features.size() > 1 ? features : features.first()
@@ -336,7 +336,7 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['productOwner() and !archivedProject()'])
-    def acceptAsTask() {
+    def turnIntoTask() {
         def stories = Story.withStories(params)?.reverse()
         def tasks = storyService.acceptToUrgentTask(stories)
         def returnData = tasks.size() > 1 ? tasks : tasks.first()

@@ -115,7 +115,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         if (rank) {
             params.story.rank = rank;
         }
-        return Story.update({id: story.id, action: 'acceptToBacklog'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({id: story.id, action: 'accept'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.returnToSandbox = function(story, rank) {
         var params = {story: {}};
@@ -151,7 +151,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }).$promise;
     };
     this.acceptAs = function(story, target) {
-        return Story.update({id: story.id, action: 'acceptAs' + target}, {}, function() {
+        return Story.update({id: story.id, action: 'turnInto' +target}, {}, function() {
             crudMethods[IceScrumEventType.DELETE](story);
         }).$promise;
     };
@@ -206,7 +206,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }).$promise;
     };
     this.acceptToBacklogMultiple = function(ids) {
-        return Story.updateArray({id: ids, action: 'acceptToBacklog'}, {}, function(stories) {
+        return Story.updateArray({id: ids, action: 'accept'}, {}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
@@ -216,7 +216,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }).$promise;
     };
     this.acceptAsMultiple = function(ids, target) {
-        return Story.updateArray({id: ids, action: 'acceptAs' + target}, {}, function() {
+        return Story.updateArray({id: ids, action: 'turnInto' + target}, {}, function() {
             _.each(ids, function(stringId) {
                 crudMethods[IceScrumEventType.DELETE]({id: parseInt(stringId)});
             });
