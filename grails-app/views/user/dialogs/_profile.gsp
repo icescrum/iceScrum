@@ -160,7 +160,7 @@
         <entry:point id="user-dialog-profile-tab-tokens-before-form"/>
         <div class="token-tab" ng-controller="UserTokenCtrl">
             <div class="form-group">
-                <label for="userToken.nane">${message(code: 'is.user.token.name')}</label>
+                <label for="userToken.name">${message(code: 'is.user.token.name')}</label>
                 <div class="input-group" hotkey="{'return': save }" hotkey-allow-in="INPUT">
                     <input type="text"
                            name="userToken.name"

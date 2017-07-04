@@ -56,7 +56,7 @@ services.service("UserTokenService", ['User', 'IceScrumEventType', 'UserToken', 
         return userToken.$save({userId: user.id}, self.getCrudMethods(user)[IceScrumEventType.CREATE]);
     };
     this['delete'] = function(userToken, user) {
-        return userToken.$delete({userId:user.id, id: userToken.id}, self.getCrudMethods(user)[IceScrumEventType.DELETE]);
+        return userToken.$delete({userId: user.id, id: userToken.id}, self.getCrudMethods(user)[IceScrumEventType.DELETE]);
     };
     this.list = function(user) {
         return UserToken.query({userId: user.id}, function(data) {

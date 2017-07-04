@@ -25,33 +25,23 @@ controllers.controller('UserTokenCtrl', ['$scope', 'UserTokenService', 'Session'
     // Functions
     $scope.resetUserTokenForm = function() {
         $scope.editableUserToken = {};
+        // Cannot reset the whole form because it's the user profile form, so reset the fields individually
+        $scope.formHolder.profileForm['userToken.name'].$setPristine();
+        $scope.formHolder.profileForm['userToken.name'].$setUntouched();
     };
     $scope.save = function($event) {
-        if($event){
+        if ($event) {
             $event.preventDefault();
         }
-        UserTokenService.save($scope.editableUserToken, Session.user)
-            .then(function() {
-                $scope.resetUserTokenForm();
-                $scope.formHolder.profileForm['userToken.name'].$setPristine();
-                $scope.formHolder.profileForm['userToken.name'].$setUntouched();
-                $scope.notifySuccess('todo.is.ui.userToken.saved');
-            });
+        UserTokenService.save($scope.editableUserToken, Session.user).then(function() {
+            $scope.resetUserTokenForm();
+            $scope.notifySuccess('todo.is.ui.userToken.saved');
+        });
     };
-    /*$scope.update = function(userToken, user) {
-        if (!$scope.formHolder.userTokenForm.$invalid && $scope.formHolder.userTokenForm.$dirty) {
-            UserTokenService.update(userToken, user)
-                .then(function() {
-                    $scope.resetAcceptanceTestForm();
-                    $scope.notifySuccess('todo.is.ui.userToken.updated');
-                });
-        }
-    };*/
     $scope['delete'] = function(userToken) {
-        UserTokenService.delete(userToken, Session.user)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.deleted');
-            });
+        UserTokenService.delete(userToken, Session.user).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+        });
     };
     // Init
     $scope.editableUserToken = {};

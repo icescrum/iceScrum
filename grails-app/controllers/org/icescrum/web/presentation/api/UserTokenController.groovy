@@ -36,28 +36,20 @@ class UserTokenController implements ControllerErrorHandler {
     def springSecurityService
 
     def index() {
-        User user = (User)springSecurityService.currentUser
+        User user = (User) springSecurityService.currentUser
         render(status: 200, contentType: 'application/json', text: user.tokens as JSON)
     }
 
     def save() {
-        User user = (User)springSecurityService.currentUser
+        User user = (User) springSecurityService.currentUser
         UserToken userToken = new UserToken()
         bindData(userToken, params.userToken, [include: ['name']])
         userTokenService.save(user, userToken)
         render(status: 200, contentType: 'application/json', text: userToken as JSON)
     }
 
-    /*def update(String value) {
-        User user = (User)springSecurityService.currentUser
-        UserToken userToken = UserToken.findByUserAndValue(user, value)
-        bindData(userToken, params.userToken, [include: ['name']])
-        userTokenService.update(userToken)
-        render(status: 200, contentType: 'application/json', text: userToken as JSON)
-    }*/
-
     def delete(String id) {
-        User user = (User)springSecurityService.currentUser
+        User user = (User) springSecurityService.currentUser
         UserToken userToken = UserToken.findByIdAndUser(id, user)
         def deleted = [id: userToken.id, user: [id: userToken.user.id]]
         userTokenService.delete(userToken)
