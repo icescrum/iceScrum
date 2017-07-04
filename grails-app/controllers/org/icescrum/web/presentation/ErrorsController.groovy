@@ -97,7 +97,7 @@ class ErrorsController implements ControllerErrorHandler {
         try {
             Exception exception = request.exception
             if (exception.message.contains("This indicates a configuration error because the rejectPublicInvocations property is set to")) {
-                redirect(url: '/notFound/')
+                redirect(mapping: '404')
             } else if (Environment.current == Environment.PRODUCTION) {
                 try {
                     if (grailsApplication.config.icescrum.alerts.enable) {
