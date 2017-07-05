@@ -365,11 +365,11 @@ class UrlMappings {
                 id(matches: /\d*/)
             }
         }
-        "/team/project/$id" {
+        "/team/project/$project" {
             controller = 'team'
-            action = 'show'
+            action = 'showByProject'
             constraints {
-                id(matches: /[0-9A-Z]*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Widget
