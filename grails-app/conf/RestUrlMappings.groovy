@@ -29,7 +29,6 @@ class RestUrlMappings {
             action = [GET: 'version']
             controller = 'scrumOS'
         }
-
         // User (token must be admin)
         "/ws/user" {
             controller = 'user'
@@ -47,7 +46,6 @@ class RestUrlMappings {
             controller = 'user'
             action = 'current'
         }
-
         // Team (if user is admin all teams ELSE teams where user is owner
         "/ws/team" {
             controller = 'team'
@@ -61,7 +59,7 @@ class RestUrlMappings {
                 project(matches: /\d*/)
             }
         }
-        //team of a project
+        // Team of a project
         "/ws/team/project/$project" {
             controller = 'team'
             action = [GET: 'show']
@@ -71,7 +69,6 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
-
         // Project (token must be admin for index)
         "/ws/project" {
             controller = 'project'
@@ -92,7 +89,6 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
-
         // Resources
         "/ws/project/$project/$controller" {
             action = [GET: 'index', POST: 'save']
@@ -109,8 +105,7 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
-
-        // story nested actions
+        // Story nested actions
         "/ws/project/$project/story/$id/$action" {
             controller = 'story'
             constraints {
@@ -120,7 +115,6 @@ class RestUrlMappings {
             }
             method = 'POST'
         }
-        // story nested actions
         "/ws/project/$project/story/$id/$action" {
             controller = 'story'
             constraints {
@@ -130,19 +124,18 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
-        // story filter by backlog / actor / sprint / feature
+        // Story filter by backlog / actor / sprint / feature
         "/ws/project/$project/story/$type/$typeId" {
             controller = 'story'
             action = 'index'
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                type(inList: ['backlog','actor','sprint', 'feature'])
+                type(inList: ['backlog', 'actor', 'sprint', 'feature'])
                 typeId(matches: /\d*/)
             }
             method = 'GET'
         }
-
-        // feature nested actions
+        // Feature nested actions
         "/ws/project/$project/feature/$id/$action" {
             controller = 'feature'
             constraints {
@@ -152,7 +145,6 @@ class RestUrlMappings {
             }
             method = 'POST'
         }
-        // feature nested actions
         "/ws/project/$project/feature/$id/$action" {
             controller = 'feature'
             constraints {
@@ -162,29 +154,27 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
-
-        // release nested actions
+        // Release nested actions
         "/ws/project/$project/release/$id/$action" {
             controller = 'release'
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
-                action(inList: ['activate', 'close','unPlan'])
+                action(inList: ['activate', 'close', 'unPlan'])
             }
             method = 'POST'
         }
-        //plan a release with a capacity
+        // Plan a release with a capacity
         "/ws/project/$project/release/$id/autoPlan/$capacity" {
             controller = 'release'
-            action = [POST:'autoPlan']
+            action = [POST: 'autoPlan']
             constraints {
                 id(matches: /\d*/)
                 project(matches: /[0-9A-Z]*/)
                 capacity(matches: /\d*/)
             }
         }
-
-        // sprint nested actions
+        // Sprint nested actions
         "/ws/project/$project/sprint/$id/$action" {
             controller = 'sprint'
             constraints {
@@ -194,37 +184,35 @@ class RestUrlMappings {
             }
             method = 'POST'
         }
-        //plan a sprint with a capacity
+        // Plan a sprint with a capacity
         "/ws/project/$project/sprint/$id/autoPlan/$capacity" {
             controller = 'sprint'
-            action = [POST:'autoPlan']
+            action = [POST: 'autoPlan']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
                 capacity(matches: /\d*/)
             }
         }
-
-        //generate sprint for a release
+        // Generate sprint for a release
         "/ws/project/$project/sprint/generateSprints/$releaseId" {
             controller = 'sprint'
-            action = [POST:'generateSprints']
+            action = [POST: 'generateSprints']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /\d*/)
             }
         }
-        // sprint filter by release
+        // Sprint filter by release
         "/ws/project/$project/sprint/release/$releaseId" {
             controller = 'sprint'
-            action = [GET:'index']
+            action = [GET: 'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /\d*/)
             }
         }
-
-        // tasks nested actions
+        // Tasks nested actions
         "/ws/project/$project/task/$id/$action" {
             controller = 'task'
             constraints {
@@ -234,7 +222,7 @@ class RestUrlMappings {
             }
             method = 'POST'
         }
-        // task filter by sprint / story
+        // Task filter by sprint / story
         "/ws/project/$project/task/$type/$id" {
             controller = 'task'
             action = 'index'
@@ -245,11 +233,10 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
-
-        // filter acceptanceTests by story
+        // Filter acceptanceTests by story
         "/ws/project/$project/acceptanceTest/story/$parentStory" {
             controller = 'acceptanceTest'
-            action = [GET:'index']
+            action = [GET: 'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 parentStory(matches: /\d*/)
