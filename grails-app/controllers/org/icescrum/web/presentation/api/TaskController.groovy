@@ -212,12 +212,15 @@ class TaskController implements ControllerErrorHandler {
 
     @Secured('isAuthenticated()')
     def listByUser(Long projectId) {
-        def user = springSecurityService.currentUser
-        def options = [max: 8]
         def userTasks = Task.where {
-            responsible.id == user.id && (projectId ? parentProject.id == projectId : true) && (state in [Task.STATE_WAIT, Task.STATE_BUSY]) && backlog != null && (((Sprint)backlog).state in [Sprint.STATE_WAIT, Sprint.STATE_INPROGRESS])
-        }.list(options)
-        def tasksByProject = userTasks.groupBy {
+            responsible.id == springSecurityService.currentUser.id &&
+            (projectId ? parentProject.id == projectId : true) &&
+            (state in [Task.STATE_WAIT, Task.STATE_BUSY]) &&
+            backlog != null
+        }.list()
+        def tasksByProject = userTasks.findAll {
+            ((Sprint) it.backlog).state in [Sprint.STATE_WAIT, Sprint.STATE_INPROGRESS] // Doesn't work in the criteria because of the cast so it must be done after
+        }.sort { -it.state }.take(8).groupBy {
             it.parentProject
         }.collect { project, tasks ->
             [project: project, tasks: tasks]
