@@ -55,7 +55,7 @@ class RestUrlMappings {
             controller = 'team'
             action = [GET: 'show']
             constraints {
-                project(matches: /\d*/)
+                id(matches: /\d*/)
             }
         }
         // Team of a project
