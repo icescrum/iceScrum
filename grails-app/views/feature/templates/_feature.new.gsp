@@ -80,7 +80,7 @@
                                         class="btn {{ feature.color | contrastColor }}"
                                         type="button"
                                         ng-style="{'background-color': feature.color}"
-                                        colorpicker-position="top"
+                                        colorpicker-position="left"
                                         ng-click="refreshAvailableColors()"
                                         colors="availableColors"
                                         name="color"
