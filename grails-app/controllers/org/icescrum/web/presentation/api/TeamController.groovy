@@ -26,9 +26,15 @@ class TeamController implements ControllerErrorHandler {
         render(status: 200, text: teams as JSON, contentType: 'application/json')
     }
 
-    @Secured(["hasRole('ROLE_ADMIN')"])
+    @Secured('isAuthenticated()')
     def show(long id) {
         Team team = Team.withTeam(id)
+        def auth = springSecurityService.authentication
+        // Cannot check by annotation/request because we are not in a project context (URL)
+        if (!securityService.owner(team, auth) && !securityService.scrumMaster(team, auth)) {
+            render(status: 403)
+            return
+        }
         render(status: 200, text: team as JSON, contentType: 'application/json')
     }
 

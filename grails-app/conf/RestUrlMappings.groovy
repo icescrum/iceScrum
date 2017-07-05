@@ -51,10 +51,9 @@ class RestUrlMappings {
             controller = 'team'
             action = [GET: 'index']
         }
-        "/ws/team/$project" {
+        "/ws/team/$id" {
             controller = 'team'
             action = [GET: 'show']
-            type = 'team'
             constraints {
                 project(matches: /\d*/)
             }
@@ -62,8 +61,7 @@ class RestUrlMappings {
         // Team of a project
         "/ws/team/project/$project" {
             controller = 'team'
-            action = [GET: 'show']
-            type = 'project'
+            action = [GET: 'showByProject']
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
