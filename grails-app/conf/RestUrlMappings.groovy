@@ -92,14 +92,14 @@ class RestUrlMappings {
             action = [GET: 'index', POST: 'save']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                controller(inList: ['story', 'acceptanceTest', 'feature', 'actor', 'task', 'release', 'sprint'])
+                controller(inList: ['story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint'])
             }
         }
         "/ws/project/$project/$controller/$id" {
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                controller(inList: ['story', 'acceptanceTest', 'feature', 'actor', 'task', 'release', 'sprint'])
+                controller(inList: ['story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint'])
                 id(matches: /\d*/)
             }
         }
@@ -133,6 +133,24 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
+        "/ws/project/$project/story/backlog/$id/print/$format" {
+            controller = 'backlog'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                action(inList: ['printByBacklog'])
+                id(matches: /\d*/)
+            }
+            method = 'GET'
+        }
+        "/ws/project/$project/story/backlog/$id/printPostits/$format" {
+            controller = 'backlog'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                action(inList: ['printPostitsByBacklog'])
+                id(matches: /\d*/)
+            }
+            method = 'GET'
+        }
         // Feature nested actions
         "/ws/project/$project/feature/$id/$action" {
             controller = 'feature'
@@ -143,6 +161,14 @@ class RestUrlMappings {
             }
             method = 'POST'
         }
+        "/ws/project/$project/feature/$action" {
+            controller = 'feature'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                action(inList: ['print'])
+            }
+            method = 'GET'
+        }
         "/ws/project/$project/feature/$id/$action" {
             controller = 'feature'
             constraints {
@@ -152,7 +178,7 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
-        // Release nested actions
+        // release nested actions
         "/ws/project/$project/release/$id/$action" {
             controller = 'release'
             constraints {

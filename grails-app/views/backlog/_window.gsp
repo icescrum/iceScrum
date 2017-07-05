@@ -125,7 +125,7 @@
                                     uib-tooltip="${message(code:'is.ui.window.print')} (P)"
                                     ng-click="print($event)"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
-                                    ng-href="backlog/{{ ::backlogContainer.backlog.id }}/print"
+                                    ng-href="story/backlog/{{ ::backlogContainer.backlog.id }}/print"
                                     hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                             </button>
                             <button class="btn btn-default"
@@ -139,7 +139,7 @@
                                 role="menu">
                                 <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
                                     <li role="menuitem">
-                                        <a href="${format.controller?:'backlog'}/{{ ::backlogContainer.backlog.id }}/${format.action?:'print'}/${format.params.format}"
+                                        <a href="story/backlog/{{ ::backlogContainer.backlog.id }}/${format.action?:'print'}/${format.params.format}"
                                            ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                                     </li>
                                 </g:each>

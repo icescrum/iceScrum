@@ -67,7 +67,7 @@ windows = {
         ]
         exportFormats = {
             [
-                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project, format: 'PDF']],
+                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]],
                     [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF']],
                     [code: 'docx', name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX']],
                     [code: 'odt', name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT']]
@@ -134,6 +134,7 @@ windows = {
                     id
                 }
         ]
+        exportFormats = {[]}
     }
     'taskBoard' {
         details true
@@ -157,14 +158,10 @@ windows = {
                     id
                 }
         ]
-        /*exportFormats = {
+        exportFormats = {
             [
-                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project, format: 'PDF', id: params.id]],
-                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF', id: params.id]],
-                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX', id: params.id]],
-                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT', id: params.id]]
-            ]
-        }*/
+                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]]]
+        }
     }
 
 }

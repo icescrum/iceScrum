@@ -54,6 +54,26 @@
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
+                <g:set var="formats" value="${is.exportFormats(windowDefinition:[id:'planning'])}"/>
+                <g:if test="${formats}">
+                    <div class="btn-group hidden-xs" uib-dropdown>
+                        <button class="btn btn-default"
+                                uib-tooltip="${message(code:'todo.is.ui.export')}"
+                                uib-dropdown-toggle type="button">
+                            <i class="fa fa-upload"></i>&nbsp;<i class="fa fa-caret-down"></i>
+                        </button>
+                        <ul uib-dropdown-menu
+                            class="pull-right"
+                            role="menu">
+                            <g:each in="${formats}" var="format">
+                                <li role="menuitem">
+                                    <a href="story/release/{{ ::release.id }}/${format.action?:'print'}/${format.params.format}"
+                                       ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
+                                </li>
+                            </g:each>
+                        </ul>
+                    </div>
+                </g:if>
                 <div class="btn-group" role="group">
                     <shortcut-menu ng-model="release" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>

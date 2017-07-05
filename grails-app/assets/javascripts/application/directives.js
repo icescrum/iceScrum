@@ -299,7 +299,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     }
                 }, function() {
                     scope.progress.type = 'danger';
-                    scope.progress.label = scope.message(attrs.errorMessage ? attrs.errorMessage : 'todo.is.ui.error');
+                    scope.progress.label = $rootScope.message(attrs.errorMessage ? attrs.errorMessage : 'todo.is.ui.error');
                     scope.progress.value = 100;
                 });
             };

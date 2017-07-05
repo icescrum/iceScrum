@@ -67,21 +67,6 @@ class ProjectUrlMappings {
             }
         }
         // new way to handle requests (REST Style)
-        "/p/$project/$controller/$id/print/$format?" {
-            action = 'print'
-            constraints {
-                id(matches: /\d*/)
-                project(matches: /[0-9A-Z]*/)
-                format(matches: /[0-9A-Z]*/)
-            }
-        }
-        "/p/$project/$controller/print/$format?" {
-            action = 'print'
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                format(matches: /[0-9A-Z]*/)
-            }
-        }
         // Task
         "/p/$project/task" {
             controller = 'task'
@@ -158,6 +143,30 @@ class ProjectUrlMappings {
             action = 'listByField'
             constraints {
                 project(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$project/story/backlog/$id/print/$format?" {
+            controller = 'story'
+            action = 'printByBacklog'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+        "/p/$project/story/backlog/$id/printPostits" {
+            controller = 'story'
+            action = 'printPostitsByBacklog'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+        "/p/$project/story/sprint/$id/printPostits" {
+            controller = 'story'
+            action = 'printPostitsBySprint'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
             }
         }
         // Actor
@@ -261,15 +270,6 @@ class ProjectUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
-        "/p/$project/backlog/$id/printPostits/$format?" {
-            controller = 'backlog'
-            action = 'printPostits'
-            constraints {
-                id(matches: /\d*/)
-                project(matches: /[0-9A-Z]*/)
-                format(matches: /[0-9A-Z]*/)
-            }
-        }
         // Release
         "/p/$project/release" {
             controller = 'release'
@@ -330,6 +330,14 @@ class ProjectUrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$project/sprint/$id/printPostits/$format?" {
+            controller = 'sprint'
+            action = 'printPostits'
+            constraints {
+                id(matches: /\d*/)
+                project(matches: /[0-9A-Z]*/)
             }
         }
         // Apps

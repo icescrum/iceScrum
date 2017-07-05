@@ -25,8 +25,12 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.domain.AcceptanceTest
+import org.icescrum.core.domain.Backlog
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.Story
 import org.icescrum.core.utils.ServicesUtils
 import org.icescrum.core.error.ControllerErrorHandler
 
