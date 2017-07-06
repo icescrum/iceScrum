@@ -477,7 +477,7 @@ grails {
             useBasicAuth = true
             basic.realmName = "Basic authentication for iceScrum"
             filterChain.chainMap = [
-                    '/ws/p/**':            'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-securityContextHolderAwareRequestFilter,-anonymousAuthenticationFilter,-tokenAuthenticationFilter,-restExceptionTranslationFilter', // Legacy only basic auth
+                    '/ws/p/**':         'JOINED_FILTERS,-exceptionTranslationFilter,-anonymousAuthenticationFilter,-tokenAuthenticationFilter,-restExceptionTranslationFilter', // Legacy only basic auth
                     '/ws/**':           'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-securityContextHolderAwareRequestFilter,-anonymousAuthenticationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter', // Only token auth
                     '/**/project/feed': 'JOINED_FILTERS,-exceptionTranslationFilter,-tokenAuthenticationFilter,-restExceptionTranslationFilter', // Session & basic auth
                     '/**'   :           'JOINED_FILTERS,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter' // Only form auth with session
