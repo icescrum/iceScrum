@@ -54,7 +54,7 @@
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
-                <g:set var="formats" value="${is.exportFormats(windowDefinition:[id:'taskBoard'])}"/>
+                <g:set var="formats" value="${is.exportFormats(entryPoint:'storiesBySprint')}"/>
                 <g:if test="${formats}">
                     <div class="btn-group hidden-xs" uib-dropdown>
                         <button class="btn btn-default"

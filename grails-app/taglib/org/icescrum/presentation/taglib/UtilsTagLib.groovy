@@ -48,15 +48,19 @@ class UtilsTagLib {
     }
 
     def exportFormats = { attrs, body ->
-        assert attrs.windowDefinition
-        def exportFormats = uiDefinitionService.getWindowDefinitionById(attrs.windowDefinition.id).exportFormats
-        if (exportFormats instanceof Closure){
+        assert attrs.windowDefinition || attrs.entryPoint
+        def exportFormats = attrs.windowDefinition ?: []
+        if(attrs.windowDefinition){
+            exportFormats = uiDefinitionService.getWindowDefinitionById(attrs.windowDefinition.id).exportFormats
             exportFormats.delegate = delegate
             exportFormats.resolveStrategy = Closure.DELEGATE_FIRST
             exportFormats = exportFormats()
+            entry.hook(id:"${attrs.windowDefinition}-exportFormats", model:[exportFormats:exportFormats])
         }
-        entry.hook(id:"${attrs.windowDefinition.id}-getExportFormats", model:[exportFormats:exportFormats])
-        return exportFormats
+        if(attrs.entryPoint){
+            entry.hook(id:"${attrs.entryPoint}-exportFormats", model:[exportFormats:exportFormats])
+        }
+        exportFormats
     }
 
     def i18nBundle = {

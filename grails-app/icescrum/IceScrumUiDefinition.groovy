@@ -40,7 +40,7 @@ import org.icescrum.core.utils.ServicesUtils
         details =                   default: false                | true/false
         printable =                 default: true                 | true/false
         fullScreen =                default: true                 | true/false
-        exportFormats =             default: []                   | Array of Maps: [code:extension,name:'i18n.code',params:[]]
+        exportFormats =             default: {[]}                 | Closure return Array of Maps: [code:extension,name:'i18n.code',params:[]]
         before        =             default:null                  | Closure
     }
  */
@@ -134,7 +134,6 @@ windows = {
                     id
                 }
         ]
-        exportFormats = {[]}
     }
     'taskBoard' {
         details true
@@ -159,8 +158,7 @@ windows = {
                 }
         ]
         exportFormats = {
-            [
-                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]]]
+            [[code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]]]
         }
     }
 
