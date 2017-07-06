@@ -137,7 +137,7 @@
                             <ul uib-dropdown-menu
                                 class="pull-right"
                                 role="menu">
-                                <g:each in="${is.exportFormats(windowDefinition:windowDefinition, entryPoint:'storiesByBacklog')}" var="format">
+                                <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
                                     <li role="menuitem">
                                         <a href="${format.resource?:'story'}/backlog/{{ ::backlogContainer.backlog.id }}/${format.action?:'print'}/${format.params.format}"
                                            ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>

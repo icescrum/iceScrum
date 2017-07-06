@@ -54,7 +54,7 @@
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
-                <g:set var="formats" value="${is.exportFormats(entryPoint:'storiesByRelease')}"/>
+                <g:set var="formats" value="${is.exportFormats(entryPoint:'releaseDetails')}"/>
                 <g:if test="${formats}">
                     <div class="btn-group hidden-xs" uib-dropdown>
                         <button class="btn btn-default"
@@ -67,7 +67,7 @@
                             role="menu">
                             <g:each in="${formats}" var="format">
                                 <li role="menuitem">
-                                    <a href="story/release/{{ ::release.id }}/${format.action?:'print'}/${format.params.format}"
+                                    <a href="${format.resource?:'story'}/release/{{ ::release.id }}/${format.action?:'print'}/${format.params.format}"
                                        ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                                 </li>
                             </g:each>
