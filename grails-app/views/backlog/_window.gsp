@@ -132,7 +132,7 @@
                                     uib-tooltip="${message(code:'todo.is.ui.export')}"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     uib-dropdown-toggle type="button">
-                                <i class="fa fa-upload"></i>&nbsp;<i class="fa fa-caret-down"></i>
+                                <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
                             </button>
                             <ul uib-dropdown-menu
                                 class="pull-right"

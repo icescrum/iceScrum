@@ -60,7 +60,7 @@
                         <button class="btn btn-default"
                                 uib-tooltip="${message(code:'todo.is.ui.export')}"
                                 uib-dropdown-toggle type="button">
-                            <i class="fa fa-upload"></i>&nbsp;<i class="fa fa-caret-down"></i>
+                            <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu
                             class="pull-right"
