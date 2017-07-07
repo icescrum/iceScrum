@@ -25,14 +25,10 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.icescrum.core.domain.AcceptanceTest
-import org.icescrum.core.domain.Backlog
-import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.Story
-import org.icescrum.core.utils.ServicesUtils
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.utils.ServicesUtils
 
 class SprintController implements ControllerErrorHandler {
 
@@ -151,17 +147,17 @@ class SprintController implements ControllerErrorHandler {
     def burndownRemaining(long project, long id) {
         Sprint sprint = Sprint.withSprint(project, id)
         def values = sprintService.sprintBurndownRemainingValues(sprint)
-        def computedValues = [[key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
-                               values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime]},
-                               color: '#1F77B4']]
+        def computedValues = [[key   : message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
+                               values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime] },
+                               color : '#1F77B4']]
         if (values && values.first().idealTime) {
-            computedValues << [key: message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal"),
-                               values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime]},
-                               color: '#009900']
+            computedValues << [key   : message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal"),
+                               values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime] },
+                               color : '#009900']
         }
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
-                               yAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.xaxis.label')]],
+                               yAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintBurndownRemainingChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
@@ -171,16 +167,16 @@ class SprintController implements ControllerErrorHandler {
         Sprint sprint = Sprint.withSprint(project, id)
         def values = sprintService.sprintBurnupTasksValues(sprint)
         def computedValues = [
-                [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasksDone.name"),
-                 values: values.findAll { it.tasksDone != null }.collect { return [it.label, it.tasksDone]},
-                 color: '#009900'],
-                [key: message(code: "is.chart.sprintBurnupTasksChart.serie.tasks.name"),
-                 values: values.findAll { it.tasks != null }.collect { return [it.label, it.tasks]},
-                 color: '#1C3660']
+                [key   : message(code: "is.chart.sprintBurnupTasksChart.serie.tasksDone.name"),
+                 values: values.findAll { it.tasksDone != null }.collect { return [it.label, it.tasksDone] },
+                 color : '#009900'],
+                [key   : message(code: "is.chart.sprintBurnupTasksChart.serie.tasks.name"),
+                 values: values.findAll { it.tasks != null }.collect { return [it.label, it.tasks] },
+                 color : '#1C3660']
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
-                               yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.xaxis.label')]],
+                               yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintBurnupTasksChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
@@ -190,16 +186,16 @@ class SprintController implements ControllerErrorHandler {
         Sprint sprint = Sprint.withSprint(project, id)
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
-                [key: message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
-                 values: values.findAll { it.totalPoints != null }.collect { return [it.label, it.totalPoints]},
-                 color: '#1C3660'],
-                [key: message(code: "is.chart.sprintBurnupPointsChart.serie.pointsDone.name"),
-                 values: values.findAll { it.pointsDone != null }.collect { return [it.label, it.pointsDone]},
-                 color: '#009900']
+                [key   : message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
+                 values: values.findAll { it.totalPoints != null }.collect { return [it.label, it.totalPoints] },
+                 color : '#1C3660'],
+                [key   : message(code: "is.chart.sprintBurnupPointsChart.serie.pointsDone.name"),
+                 values: values.findAll { it.pointsDone != null }.collect { return [it.label, it.pointsDone] },
+                 color : '#009900']
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
-                               yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.xaxis.label')]],
+                               yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintBurnupPointsChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
@@ -209,16 +205,16 @@ class SprintController implements ControllerErrorHandler {
         Sprint sprint = Sprint.withSprint(project, id)
         def values = sprintService.sprintBurnupStoriesValues(sprint)
         def computedValues = [
-                [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),
-                 values: values.findAll { it.stories != null }.collect { return [it.label, it.stories]},
-                 color: '#1C3660'],
-                [key: message(code: "is.chart.sprintBurnupStoriesChart.serie.storiesDone.name"),
-                 values: values.findAll { it.storiesDone != null }.collect { return [it.label, it.storiesDone]},
-                 color: '#009900']
+                [key   : message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),
+                 values: values.findAll { it.stories != null }.collect { return [it.label, it.stories] },
+                 color : '#1C3660'],
+                [key   : message(code: "is.chart.sprintBurnupStoriesChart.serie.storiesDone.name"),
+                 values: values.findAll { it.storiesDone != null }.collect { return [it.label, it.storiesDone] },
+                 color : '#009900']
         ]
         def options = [chart: [xDomain: [values.label.min(), values.label.max()],
-                               yAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.xaxis.label')]],
+                               yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.xaxis.label')]],
                        title: [text: message(code: "is.chart.sprintBurnupStoriesChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }

@@ -40,8 +40,8 @@ class UtilsTagLib {
     def header = { attrs, body ->
         out << g.render(template: '/scrumOS/header',
                 model: [
-                        importEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
-                        exportEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
+                        importEnable         : (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
+                        exportEnable         : (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                         creationProjectEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
                 ]
         )
@@ -50,22 +50,22 @@ class UtilsTagLib {
     def exportFormats = { attrs, body ->
         assert attrs.windowDefinition || attrs.entryPoint
         def exportFormats = attrs.windowDefinition ?: []
-        if(attrs.windowDefinition){
+        if (attrs.windowDefinition) {
             exportFormats = uiDefinitionService.getWindowDefinitionById(attrs.windowDefinition.id).exportFormats
             exportFormats.delegate = delegate
             exportFormats.resolveStrategy = Closure.DELEGATE_FIRST
             exportFormats = exportFormats()
-            entry.hook(id:"${attrs.windowDefinition.id}-exportFormats", model:[exportFormats:exportFormats])
+            entry.hook(id: "${attrs.windowDefinition.id}-exportFormats", model: [exportFormats: exportFormats])
         }
-        if(attrs.entryPoint){
-            entry.hook(id:"${attrs.entryPoint}-exportFormats", model:[exportFormats:exportFormats])
+        if (attrs.entryPoint) {
+            entry.hook(id: "${attrs.entryPoint}-exportFormats", model: [exportFormats: exportFormats])
         }
         exportFormats
     }
 
     def i18nBundle = {
         return grailsApplication.config.icescrum.resourceBundles.collectEntries { bundleName, values -> [
-            (bundleName.capitalize()): values.collectEntries { k, v -> [(k): message(code: v)]}
+            (bundleName.capitalize()): values.collectEntries { k, v -> [(k): message(code: v)] }
         ]}
     }
 
