@@ -59,7 +59,7 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
         return AcceptanceTest.delete({id: acceptanceTest.id}, self.getCrudMethods(story)[IceScrumEventType.DELETE]).$promise;
     };
     this.update = function(acceptanceTest, story) {
-        return acceptanceTest.$update(self.getCrudMethods(story)[IceScrumEventType.UPDATE]);
+        return AcceptanceTest.update(acceptanceTest, self.getCrudMethods(story)[IceScrumEventType.UPDATE]).$promise;
     };
     this.list = function(story) {
         // TODO use a global cache instead (don't forget to set appropriate sync to push count to story)
