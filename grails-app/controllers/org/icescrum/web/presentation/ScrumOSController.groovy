@@ -190,28 +190,26 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     def languages() {
-        List locales = []
-        def i18n
-        if (grailsApplication.warDeployed) {
-            i18n = grailsAttributes.getApplicationContext().getResource("WEB-INF/grails-app/i18n/").getFile().toString()
-        } else {
-            i18n = "$BuildSettingsHolder.settings.baseDir/grails-app/i18n"
-        }
-        //Default language
-        locales << new Locale("en")
         // TODO re-enable real locale management
+        //def i18n
+        //if (grailsApplication.warDeployed) {
+        //    i18n = grailsAttributes.getApplicationContext().getResource("WEB-INF/grails-app/i18n/").getFile().toString()
+        //} else {
+        //    i18n = "$BuildSettingsHolder.settings.baseDir/grails-app/i18n"
+        //}
         //new File(i18n).eachFile {
         //    def arr = it.name.split("[_.]")
         //    if (arr[1] != 'svn' && arr[1] != 'properties' && arr[0].startsWith('messages')) {
         //        locales << (arr.length > 3 ? new Locale(arr[1], arr[2]) : arr.length > 2 ? new Locale(arr[1]) : new Locale(""))
         //    }
         //}
-        locales.addAll(new Locale('en', 'US'), new Locale('fr'), new Locale('es'))
         // End TODO
-        def returnLocales = locales.collectEntries { locale ->
+        Map locales = [['en'], ['en', 'US'], ['fr'], ['es'], ['zh']].collect { list ->
+            return list.size() == 2 ? new Locale(list[0], list[1]) : new Locale(list[0])
+        }.collectEntries { locale ->
             [(locale.toString()): locale.getDisplayName(locale).capitalize()]
         }
-        render(returnLocales as JSON)
+        render(status: 200, contentType: 'application/json', text: locales as JSON)
     }
 
     def timezones() {
@@ -228,7 +226,7 @@ class ScrumOSController implements ControllerErrorHandler {
             calendar.set(Calendar.MINUTE, min)
             return [(it): "$timeZone.ID (UTC$offsetSign${String.format('%tR', calendar)})"]
         }
-        render(timezones as JSON)
+        render(status: 200, contentType: 'application/json', text: timezones as JSON)
     }
 
     @Secured(['permitAll()'])
