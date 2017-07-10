@@ -231,6 +231,7 @@ class RestUrlMappings {
         "/ws/project/$project/sprint/release/$releaseId" {
             controller = 'sprint'
             action = [GET: 'index']
+            type = 'release'
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /\d*/)

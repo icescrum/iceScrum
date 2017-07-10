@@ -296,7 +296,7 @@ class ProjectUrlMappings {
         // Sprint
         "/p/$project/sprint" {
             controller = 'sprint'
-            action = [POST: "save"]
+            action = [GET: "index", POST: "save"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
@@ -319,9 +319,10 @@ class ProjectUrlMappings {
         "/p/$project/sprint/release/$releaseId" {
             controller = 'sprint'
             action = 'index'
+            type = 'release'
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                releaseId(matches: /[0-9A-Z]*/)
+                releaseId(matches: /\d*/)
             }
         }
         "/p/$project/sprint/release/$releaseId/generateSprints" {
@@ -329,7 +330,7 @@ class ProjectUrlMappings {
             action = 'generateSprints'
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                releaseId(matches: /[0-9A-Z]*/)
+                releaseId(matches: /\d*/)
             }
         }
         "/p/$project/sprint/$id/printPostits/$format?" {

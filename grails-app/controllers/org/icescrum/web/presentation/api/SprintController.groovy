@@ -25,6 +25,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.error.ControllerErrorHandler
@@ -37,9 +38,15 @@ class SprintController implements ControllerErrorHandler {
     def springSecurityService
 
     @Secured(['stakeHolder() or inProject()'])
-    def index(long project, Long releaseId) {
-        Release release = releaseId ? Release.withRelease(project, releaseId) : Release.findCurrentOrNextRelease(project).list()[0]
-        def sprints = release?.sprints ?: []
+    def index(long project, Long releaseId, String type) {
+        def sprints
+        if (type == 'release') {
+            Release release = releaseId ? Release.withRelease(project, releaseId) : Release.findCurrentOrNextRelease(project).list()[0]
+            sprints = release?.sprints ?: []
+        } else {
+            Project _project = Project.withProject(project)
+            sprints = _project.sprints
+        }
         render(status: 200, contentType: 'application/json', text: sprints as JSON)
     }
 
