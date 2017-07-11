@@ -204,7 +204,7 @@ class ScrumOSController implements ControllerErrorHandler {
         //    }
         //}
         // End TODO
-        Map locales = [['en'], ['en', 'US'], ['fr'], ['es'], ['zh']].collect { list ->
+        Map locales = [['en'], ['en', 'US'], ['fr'], ['es'], ['zh'], ['pt'], ['pt', 'BR']].collect { list ->
             return list.size() == 2 ? new Locale(list[0], list[1]) : new Locale(list[0])
         }.collectEntries { locale ->
             [(locale.toString()): locale.getDisplayName(locale).capitalize()]
