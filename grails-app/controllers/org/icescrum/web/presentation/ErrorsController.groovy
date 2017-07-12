@@ -99,36 +99,40 @@ class ErrorsController implements ControllerErrorHandler {
             if (exception.message.contains("This indicates a configuration error because the rejectPublicInvocations property is set to")) {
                 redirect(mapping: '404')
             } else if (Environment.current == Environment.PRODUCTION) {
-                try {
-                    if (grailsApplication.config.icescrum.alerts.enable) {
-                        User user = (User) springSecurityService.currentUser
-                        def from = user?.email ?: grailsApplication.config.icescrum.alerts.default.from
-                        def admins = UserAuthority.findAllByAuthority(Authority.findByAuthority(Authority.ROLE_ADMIN)).collect { it.user }
-                        log.debug("Error 500 report")
-                        notificationEmailService.send([
-                                from   : from,
-                                to     : grailsApplication.config.icescrum.alerts.errors.to,
-                                bcc    : admins*.email.toArray(),
-                                subject: "[iceScrum][report] Error report v7",
-                                view   : '/emails-templates/reportError',
-                                model  : [params    : params,
-                                          version   : g.meta(name: 'app.version'),
-                                          stackTrace: ExceptionUtils.getStackTrace(exception),
-                                          message   : exception.message,
-                                          appID     : grailsApplication.config.icescrum.appID,
-                                          ip        : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
-                                          user      : user ? user.username + ' - ' + user.firstName + ' ' + user.lastName + ' - ' + user.email : 'Not logged in'],
-                                async  : false
-                        ]);
-                        returnError(code: 'is.error.and.message.sent', exception: exception)
-                    } else {
-                        log.debug("Error 500 - no report")
+                if (exception.message.contains('Row was updated or deleted by another transaction')) {
+                    returnError(code: 'is.error.row.updated.another.transaction', exception: exception)
+                } else {
+                    try {
+                        if (grailsApplication.config.icescrum.alerts.enable) {
+                            User user = (User) springSecurityService.currentUser
+                            def from = user?.email ?: grailsApplication.config.icescrum.alerts.default.from
+                            def admins = UserAuthority.findAllByAuthority(Authority.findByAuthority(Authority.ROLE_ADMIN)).collect { it.user }
+                            log.debug("Error 500 report")
+                            notificationEmailService.send([
+                                    from   : from,
+                                    to     : grailsApplication.config.icescrum.alerts.errors.to,
+                                    bcc    : admins*.email.toArray(),
+                                    subject: "[iceScrum][report] Error report v7",
+                                    view   : '/emails-templates/reportError',
+                                    model  : [params    : params,
+                                              version   : g.meta(name: 'app.version'),
+                                              stackTrace: ExceptionUtils.getStackTrace(exception),
+                                              message   : exception.message,
+                                              appID     : grailsApplication.config.icescrum.appID,
+                                              ip        : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
+                                              user      : user ? user.username + ' - ' + user.firstName + ' ' + user.lastName + ' - ' + user.email : 'Not logged in'],
+                                    async  : false
+                            ]);
+                            returnError(code: 'is.error.and.message.sent', exception: exception)
+                        } else {
+                            log.debug("Error 500 - no report")
+                            returnError(code: 'is.error.and.message.not.sent', exception: exception)
+                        }
+                    } catch (Exception e) {
+                        log.debug("Error 500 - report failed")
+                        log.debug(e.message)
                         returnError(code: 'is.error.and.message.not.sent', exception: exception)
                     }
-                } catch (Exception e) {
-                    log.debug("Error 500 - report failed")
-                    log.debug(e.message)
-                    returnError(code: 'is.error.and.message.not.sent', exception: exception)
                 }
             } else {
                 returnError(text: "DEV ERROR: " + exception.message, exception: exception)
