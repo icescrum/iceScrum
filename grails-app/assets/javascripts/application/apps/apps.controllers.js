@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window', '$timeout', function($scope, AppService, Session, $window, $timeout) {
+controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window', '$timeout', '$uibModal', function($scope, AppService, Session, $window, $timeout, $uibModal) {
     // Functions
     $scope.openAppDefinition = function(appDefinition) {
         $scope.appDefinition = appDefinition;
@@ -69,6 +69,16 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window'
     };
     $scope.isEnabledForProject = function(appDefinition, project) {
         return AppService.authorizedApp('use', appDefinition.id, $scope.project);
+    };
+    $scope.showScreenshot = function(appDefinition, screenshot) {
+        $uibModal.open({
+            templateUrl: "app.details.screenshot.html",
+            size: 'lg',
+            controller: ['$scope', function($scope) {
+                $scope.title = appDefinition.name;
+                $scope.srcURL = screenshot;
+            }]
+        });
     };
     // Init
     $scope.appsOrder = ['-isNew', 'name'];

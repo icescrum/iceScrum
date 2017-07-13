@@ -54,7 +54,10 @@
     <div class="col-md-8">
         <div class="col-md-{{ 12 / appDefinition.screenshots.length }} thumbnail"
              ng-repeat="screenshot in appDefinition.screenshots">
-            <img ng-src="{{ screenshot }}">
+            <a href
+               ng-click="showScreenshot(appDefinition, screenshot)">
+                <img ng-src="{{ screenshot }}">
+            </a>
         </div>
     </div>
     <div class="col-md-4">
@@ -139,4 +142,14 @@
         </span>
     </div>
 </div>
+</script>
+
+<script type="text/ng-template" id="app.details.screenshot.html">
+<is:modal title="{{ title }}">
+    <div class="text-center">
+        <img ng-src="{{ srcURL }}"
+             style="width: 752px; border: 1px solid #ccc;"
+             title="{{ title }}"/>
+    </div>
+</is:modal>
 </script>
