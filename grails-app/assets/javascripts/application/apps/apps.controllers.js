@@ -36,7 +36,7 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window'
                 $scope.holder.displaySettingsWarning = appDefinition.id;
             }
             if (appDefinition.reloadUIOnStateChange) {
-                $scope.holder.displayRefresh = appDefinition.id;
+                $scope.notifySuccess('is.ui.apps.settings.refresh');
                 $timeout(function() {
                     $window.location.reload();
                 }, 2000);
