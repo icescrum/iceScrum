@@ -37,8 +37,7 @@
             </span>
         </div>
     </div>
-    <div class="content"
-         as-sortable-item-handle-if="authorizedTask('rank', task)">
+    <div class="content">
         <h3 class="title">{{ task.name }}</h3>
     </div>
     <div class="footer">
