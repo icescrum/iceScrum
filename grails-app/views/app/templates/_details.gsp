@@ -142,7 +142,8 @@
 <is:modal title="{{ title }}">
     <div class="text-center">
         <img ng-src="{{ srcURL }}"
-             style="width: 752px; border: 1px solid #ccc;"
+             ng-click="$close()"
+             style="width: 752px; border: 1px solid #ccc; cursor:pointer;"
              title="{{ title }}"/>
     </div>
 </is:modal>
