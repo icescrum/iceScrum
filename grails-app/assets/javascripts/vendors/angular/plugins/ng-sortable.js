@@ -644,10 +644,15 @@
           scope.itemScope = itemController.scope;
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
-          scope.$watchGroup(['sortableScope.isDisabled', 'sortableScope.options.longTouch'],
-              function (newValues) {
-            if (isDisabled !== newValues[0]) {
-              isDisabled = newValues[0];
+          scope.$watchGroup(['sortableScope.isDisabled', 'sortableScope.options.longTouch', function() { return !attrs.asSortableItemHandle || scope.$eval(attrs.asSortableItemHandle); }], function (newValues) {
+            // CUSTOM
+            var globalDisabled = newValues[0];
+            var localDisabled = !newValues[2];
+            var newDisabled = globalDisabled || localDisabled;
+            if (isDisabled !== newDisabled) {
+              isDisabled = newDisabled;
+              element.toggleClass('as-sortable-item-handle-disabled', isDisabled);
+              // END CUSTOM
               if (isDisabled) {
                 unbindDrag();
               } else {

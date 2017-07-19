@@ -27,7 +27,7 @@
      class="postit {{ application.postitSize.task + ' ' + (task.color | contrastColor) }}">
     <div class="head">
         <div class="head-left">
-            <span class="id" as-sortable-item-handle-if="authorizedTask('rank', task)">{{ ::task.uid }}</span>
+            <span class="id" as-sortable-item-handle="authorizedTask('rank', task)">{{ ::task.uid }}</span>
             <img ng-src="{{ task.responsible | userAvatar }}"
                  ng-if="task.responsible"
                  class="responsible {{ task.responsible | userColorRoles }}"
@@ -43,7 +43,7 @@
         </div>
     </div>
     <div class="content"
-         as-sortable-item-handle-if="authorizedTask('rank', task)" ng-class="{'without-description':!task.description}">
+         as-sortable-item-handle="authorizedTask('rank', task)" ng-class="{'without-description':!task.description}">
         <h3 class="title">{{ task.name }}</h3>
         <div class="description"
              ng-bind-html="task.description | lineReturns"></div>
