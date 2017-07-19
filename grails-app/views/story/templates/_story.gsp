@@ -48,7 +48,7 @@
             </span>
         </div>
     </div>
-    <div class="content" as-sortable-item-handle-if="sortableStory" ng-class="{'without-description':!story.description}">
+    <div class="content" as-sortable-item-handle ng-class="{'without-description':!story.description}">
         <h3 class="title">{{ story.name }}</h3>
         <div class="description"
              ng-bind-html="story.description | lineReturns | actorTag"></div>

@@ -597,11 +597,17 @@
   mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document', '$timeout',
     function (sortableConfig, $helper, $window, $document, $timeout) {
       return {
-        require: '^asSortableItem',
+        // require: '^asSortableItem', CUSTOM: disabled to use soft return instead of throwing error
         scope: true,
         restrict: 'A',
         controller: 'as.sortable.sortableItemHandleController',
         link: function (scope, element, attrs, itemController) {
+
+          // CUSTOM
+          if (!element.closest('[as-sortable-item]').length) {
+            element.addClass('as-sortable-item-handle-disabled');
+            return;
+          }
 
           var dragElement, //drag item element.
             placeHolder, //place holder class element.

@@ -407,18 +407,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 postitsClass();
             }
         };
-}]).directive('asSortableItemHandleIf', ['$compile', function($compile) {
-    return {
-        restrict: 'A',
-        priority: 1000,
-        link: function(scope, element, attrs) {
-            if (scope.$eval(attrs.asSortableItemHandleIf)) {
-                element.attr('as-sortable-item-handle', '');
-            }
-            element.removeAttr("as-sortable-item-handle-if"); // avoid infinite loop
-            $compile(element)(scope);
-        }
-    };
 }]).directive('timeline', ['ReleaseService', 'SprintStatesByName', '$timeout', function(ReleaseService, SprintStatesByName, $timeout) {
     return {
         restrict: 'A',
