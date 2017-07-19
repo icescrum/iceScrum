@@ -24,7 +24,6 @@
             <div class="widget-column">
                 <div as-sortable="widgetSortableOptionsLeft | merge: sortableScrollOptions('#view-home')"
                      is-disabled="!authenticated()"
-                     ng-class="{'sortable-disabled': !authenticated()}"
                      ng-model='widgetsOnLeft'>
                     <div ng-include src="templateWidgetUrl(widget)"
                          as-sortable-item
@@ -41,7 +40,6 @@
             <div class="widget-column">
                 <div as-sortable="widgetSortableOptionsRight | merge: sortableScrollOptions('#view-home')"
                      is-disabled="!authenticated()"
-                     ng-class="{'sortable-disabled': !authenticated()}"
                      ng-model='widgetsOnRight'>
                     <div ng-include src="templateWidgetUrl(widget)"
                          as-sortable-item

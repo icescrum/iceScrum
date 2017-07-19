@@ -23,7 +23,7 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="panel panel-light"
          ng-if="sprint"
-         ng-class="{'sortable-disabled': !isSortingTaskBoard(sprint), 'sprint-not-done': sprint.state != sprintStatesByName.DONE}">
+         ng-class="{'sprint-not-done': sprint.state != sprintStatesByName.DONE}">
         <div class="panel-heading">
             <h3 class="panel-title small-title">
                 <div ng-controller="taskCtrl">
@@ -231,7 +231,7 @@
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr ng-class="{'sortable-disabled': !isSortingStory(story), 'is-selected': isSelected(story)}" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                    <tr ng-class="{'is-selected': isSelected(story)}" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
                         <td class="postits"
                             ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                             postits-screen-size
@@ -271,7 +271,7 @@
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr class="sortable-disabled" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                    <tr ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
                         <td class="postits"
                             ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                             postits-screen-size

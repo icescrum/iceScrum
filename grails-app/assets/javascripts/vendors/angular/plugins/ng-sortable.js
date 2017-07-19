@@ -23,6 +23,8 @@
  SOFTWARE.
  */
 
+// CUSTOMIIIIZED
+
 /*jshint indent: 2 */
 /*global angular: false */
 
@@ -544,6 +546,7 @@
           if (angular.isDefined(attrs.isDisabled)) {
             scope.$watch(attrs.isDisabled, function (newVal, oldVal) {
               if (!angular.isUndefined(newVal)) {
+                element.toggleClass('as-sortable-disabled', newVal); // CUSTOM
                 scope.isDisabled = newVal;
               }
             }, true);
