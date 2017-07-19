@@ -91,12 +91,7 @@ table {
 
 // Sortable
 .sortable-moving:not(.as-sortable-disabled) .empty-view {
-  display: none;
-}
-ul:not(.as-sortable-disabled) {
-  li.as-sortable-placeholder, li.menuitem.as-sortable-item i {
-    cursor: move;
-  }
+  display: none; // Hide text placeholder in empty view when dragging item into it
 }
 .as-sortable-disabled .as-sortable-item-handle {
   cursor: default;

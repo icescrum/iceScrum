@@ -105,7 +105,7 @@
    uib-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
    tooltip-placement="bottom"
    href="#/{{ menu.id }}">
-    <i class="fa fa-{{ menu.icon }}" as-sortable-item-handle></i> <span class="title hidden-sm">{{ menu.title }}</span>
+    <i class="fa" ng-class="'fa-' + menu.icon" as-sortable-item-handle></i> <span class="title hidden-sm">{{ menu.title }}</span>
 </a>
 </script>
 
