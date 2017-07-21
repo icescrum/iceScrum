@@ -464,13 +464,17 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def listByUser(String term, Boolean paginate, Integer page, Integer count) {
+    def listByUser(String term, Boolean paginate, Integer page, Integer count, Boolean light) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def projects = projectService.getAllActiveProjectsByUser(springSecurityService.currentUser, searchTerm)
         if (paginate && !count) {
             count = 10
         }
-        def returnData = paginate ? [projects: projects.drop(page ? (page - 1) * count : 0).take(count), count: projects.size()] : projects
+        def returnedProjects = projects.drop(page ? (page - 1) * count : 0).take(count)
+        if (light) {
+            returnedProjects = returnedProjects.collect { [id: it.id, pkey: it.pkey, name: it.name] }
+        }
+        def returnData = paginate ? [projects: returnedProjects, count: projects.size()] : projects
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 

@@ -115,7 +115,7 @@ extensibleController('quickProjectsListCtrl', ['$scope', '$timeout', 'FormServic
     // Init
     $scope.projectsLoaded = false;
     $scope.projects = [];
-    ProjectService.listByUser({paginate: true, count: 9}).then(function(projectsAndCount) {
+    ProjectService.listByUser({paginate: true, count: 9, light: true}).then(function(projectsAndCount) {
         $scope.projectsLoaded = true;
         $scope.projects = projectsAndCount.projects;
     });
