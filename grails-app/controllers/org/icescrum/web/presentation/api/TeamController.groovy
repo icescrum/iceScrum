@@ -41,7 +41,7 @@ class TeamController implements ControllerErrorHandler {
     @Secured(['stakeHolder() or inProject()'])
     def showByProject(long project) {
         Project _project = Project.withProject(project)
-        render(status: 200, text: _project.firstTeam as JSON, contentType: 'application/json')
+        render(status: 200, text: _project.team as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')

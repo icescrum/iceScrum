@@ -187,7 +187,7 @@ class ProjectController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         _project.withTransaction {
             def teamId = teamParams.id
-            if (teamId != _project.firstTeam.id && securityService.owner(null, springSecurityService.authentication)) {
+            if (teamId != _project.team.id && securityService.owner(null, springSecurityService.authentication)) {
                 projectService.changeTeam(_project, Team.get(teamId))
             }
             projectService.updateProjectMembers(_project, newMembers)
@@ -479,10 +479,10 @@ class ProjectController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         _project.withTransaction {
             def oldMembersByProject = [:]
-            _project.firstTeam.projects.each { Project teamProject ->
+            _project.team.projects.each { Project teamProject ->
                 oldMembersByProject[teamProject.id] = projectService.getAllMembersProjectByRole(teamProject)
             }
-            projectService.removeAllRoles(_project.firstTeam, springSecurityService.currentUser)
+            projectService.removeAllRoles(_project.team, springSecurityService.currentUser)
             oldMembersByProject.each { Long projectId, Map oldMembers ->
                 projectService.manageProjectEvents(Project.get(projectId), oldMembers)
             }
