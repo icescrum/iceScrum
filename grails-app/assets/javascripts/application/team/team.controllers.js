@@ -135,7 +135,7 @@ controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session
     };
     // Init
     $scope.warning = {on: false};
-    if ($scope.project) {
+    if ($scope.project && $scope.project.team) {
         $scope.selectTeam(null, $scope.project.team);
     }
 }]);
