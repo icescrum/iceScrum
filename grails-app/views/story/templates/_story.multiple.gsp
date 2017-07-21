@@ -205,7 +205,6 @@
                         </ui-select>
                         <span class="input-group-btn" ng-if="storyPreview.feature.id">
                             <a ui-sref=".feature.details({featureId: storyPreview.feature.id})"
-                               title="{{ storyPreview.feature.name }}"
                                class="btn btn-default">
                                 <i class="fa fa-info-circle"></i>
                             </a>

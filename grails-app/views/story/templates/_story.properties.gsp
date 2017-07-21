@@ -93,7 +93,6 @@
                     </ui-select>
                     <span class="input-group-btn" ng-if="editableStory.feature.id && !isModal">
                         <a ui-sref=".feature.details({featureId: editableStory.feature.id})"
-                           title="{{ editableStory.feature.name }}"
                            class="btn btn-default">
                             <i class="fa fa-info-circle"></i>
                         </a>
@@ -119,8 +118,7 @@
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-show="editableStory.dependsOn.id">
-                        <a href="#story/{{ editableStory.dependsOn.id }}"
-                           title="{{ editableStory.dependsOn.name }}"
+                        <a ui-sref="backlog.backlog.story.details({backlogCode: 'all', storyId: editableStory.dependsOn.id})"
                            class="btn btn-default">
                             <i class="fa fa-info-circle"></i>
                         </a>
