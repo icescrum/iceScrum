@@ -72,9 +72,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
 controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, TeamService) {
     $scope.selectProject = function(project) {
         $scope.project = project;
-        TeamService.get(project).then(function() {
-            $scope.projectMembersCount = ProjectService.countMembers(project);
-        });
+        $scope.projectMembersCount = ProjectService.countMembers(project);
         ReleaseService.getCurrentOrNextRelease(project).then(function(release) {
             if (release && release.id != undefined) {
                 SprintService.list(release);
@@ -384,7 +382,6 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         $scope.project = angular.copy($scope.currentProject);
         $scope.project.stakeHolders = $scope.project.stakeHolders.concat(_.map($scope.project.invitedStakeHolders, $scope.invitationToUserMock));
         $scope.project.productOwners = $scope.project.productOwners.concat(_.map($scope.project.invitedProductOwners, $scope.invitationToUserMock));
-        $scope.teamPromise = TeamService.get($scope.project);
     };
     $scope.updateProjectTeam = function(project) {
         var p = $scope.prepareProject(project);

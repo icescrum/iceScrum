@@ -1278,7 +1278,6 @@ angular.module('isApplication', [
                 isSettings.project.startDate = new Date(isSettings.project.startDate);
                 isSettings.project.endDate = new Date(isSettings.project.endDate);
                 Session.initProject(isSettings.project);
-                Session.updateProject({team: isSettings.projectTeam});
             }
             PushService.initPush(isSettings.pushContext);
             I18nService.initMessages(isSettings.messages);

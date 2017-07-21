@@ -181,10 +181,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
     };
     this.getProjectPromise = function() {
         return self.isProjectResolved.promise.then(function() {
-            //return TeamService.get(self.project).then(function(team) {
-            //    self.project.team = team;
             return self.project;
-            //});
         });
     };
     this.getLanguages = function() {

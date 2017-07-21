@@ -135,10 +135,8 @@ controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session
     };
     // Init
     $scope.warning = {on: false};
-    if ($scope.teamPromise) {
-        $scope.teamPromise.then(function(team) {
-            $scope.selectTeam(null, team);
-        });
+    if ($scope.project) {
+        $scope.selectTeam(null, $scope.project.team);
     }
 }]);
 

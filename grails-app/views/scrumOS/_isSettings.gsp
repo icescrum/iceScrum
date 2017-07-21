@@ -28,7 +28,6 @@
         roles: ${roles as JSON},
         defaultView: "${defaultView}",
         project: ${project ? project as JSON : 'null'},
-        projectTeam: ${project ? project.team as JSON : 'null'},
         context: '${context}',
         pushContext: ${project?.id ?: "''"},
         pushLogLevel: "${Holders.config.icescrum.debug.enable ? 'debug' : 'info'}",
