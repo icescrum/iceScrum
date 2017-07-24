@@ -53,7 +53,6 @@ icescrum.alerts.enable = false
 icescrum.alerts.default.from = "webmaster@icescrum.org"
 icescrum.alerts.emailPerAccount = false
 icescrum.alerts.errors.to = "dev@icescrum.org"
-icescrum.attachments.enable = true
 icescrum.sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default
 
 /* Server TimeZone */
