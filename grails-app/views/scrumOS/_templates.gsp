@@ -28,7 +28,8 @@
 
 <script type="text/ng-template" id="confirm.modal.html">
 <is:modal form="submit()"
-          submitButton="${message(code: 'todo.is.ui.confirm')}"
+          submitButton="{{ buttonTitle }}"
+          submitButtonColor="{{ buttonColor }}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.confirm.title')}">
     <span ng-bind-html="message"></span>

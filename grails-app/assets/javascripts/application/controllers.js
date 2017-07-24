@@ -107,6 +107,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
                     });
                 };
                 // Init
+                $scope.buttonColor = options.buttonColor ? options.buttonColor : 'primary';
                 $scope.disabledGradient = true;
                 $scope.selectedIds = [];
                 $scope.backlog = {

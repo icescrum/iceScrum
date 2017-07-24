@@ -72,7 +72,15 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
         {
             name: 'is.ui.timeline.menu.activate',
             visible: function(release) { return $scope.authorizedRelease('activate', release); },
-            action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.activate.confirm'), callback: $scope.activate, args: [release]}); }
+            action: function(release) {
+                $scope.confirm({
+                    buttonColor: 'danger',
+                    buttonTitle: 'is.ui.timeline.menu.activate',
+                    message: $scope.message('is.ui.timeline.menu.activate.confirm'),
+                    callback: $scope.activate,
+                    args: [release]
+                });
+            }
         },
         {
             name: 'todo.is.ui.sprint.new',

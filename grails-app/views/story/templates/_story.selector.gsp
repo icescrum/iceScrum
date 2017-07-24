@@ -24,6 +24,7 @@
 <script type="text/ng-template" id="story.selector.html">
 <is:modal form="submit(selectedIds)"
           submitButton="{{ message('todo.is.ui.story.selector.' + backlog.code + '.button') }}"
+          submitButtonColor="{{ buttonColor }}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="{{ message('todo.is.ui.story.selector.' + backlog.code + '.title') }}">
     <p class="help-block"

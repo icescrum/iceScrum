@@ -61,6 +61,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', 'Session', '
     $scope.openCloseModal = function(sprint) {
         var project = $scope.project;
         $scope.openStorySelectorModal({
+            buttonColor: 'danger',
             code: 'close',
             order: 'rank',
             filter: {
@@ -133,7 +134,15 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', 'Session', '
             name: 'is.ui.releasePlan.menu.sprint.activate',
             visible: function(sprint) { return $scope.authorizedSprint('activate', sprint); },
             priority: function(sprint, defaultPriority) { return sprint.state === 1 && (sprint.stories_ids && sprint.stories_ids.length > 0 || sprint.startDate.getTime() < (new Date()).getTime()) ? 100 : defaultPriority; },
-            action: function(sprint) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'), callback: $scope.activate, args: [sprint]}); }
+            action: function(sprint) {
+                $scope.confirm({
+                    buttonColor: 'danger',
+                    buttonTitle: 'is.ui.releasePlan.menu.sprint.activate',
+                    message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'),
+                    callback: $scope.activate,
+                    args: [sprint]
+                });
+            }
         },
         {
             name: 'is.ui.releasePlan.menu.sprint.close',
