@@ -44,8 +44,6 @@ import org.icescrum.web.JQueryProvider
 import javax.naming.InitialContext
 
 /* Administration */
-icescrum.feed.default.url = "https://www.icescrum.com/blog/feed/"
-icescrum.feed.default.title = "iceScrum Blog"
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = false
 icescrum.invitation.enable = false
