@@ -49,13 +49,13 @@ icescrum.feed.default.title = "iceScrum Blog"
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = false
 icescrum.invitation.enable = false
+icescrum.gravatar.enable = true
 icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = false
 icescrum.alerts.default.from = "webmaster@icescrum.org"
 icescrum.alerts.emailPerAccount = false
-icescrum.attachments.enable = true
 icescrum.alerts.errors.to = "dev@icescrum.org"
-icescrum.gravatar.enable = true
+icescrum.attachments.enable = true
 icescrum.sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default
 
 /* Server TimeZone */
