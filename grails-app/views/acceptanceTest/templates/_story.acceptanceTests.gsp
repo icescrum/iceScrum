@@ -71,7 +71,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [acceptanceTest, selected] })">
+                                        <a href ng-click="confirmDelete({ callback: delete, args: [acceptanceTest, selected] })">
                                             ${message(code:'default.button.delete.label')}
                                         </a>
                                     </li>

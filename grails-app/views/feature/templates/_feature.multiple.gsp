@@ -98,7 +98,7 @@
                              class="btn-group">
                             <button type="button"
                                     class="btn btn-default"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
+                                    ng-click="confirmDelete({ callback: deleteMultiple })">
                                 <g:message code='is.ui.feature.menu.delete'/>
                             </button>
                         </div>

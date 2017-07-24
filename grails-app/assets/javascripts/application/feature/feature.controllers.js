@@ -63,7 +63,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'F
         {
             name: 'is.ui.feature.menu.delete',
             visible: function(feature) { return $scope.authorizedFeature('delete'); },
-            action: function(feature) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [feature]}); }
+            action: function(feature) { $scope.confirmDelete({callback: $scope.delete, args: [feature]}); }
         }
     ];
     // Init

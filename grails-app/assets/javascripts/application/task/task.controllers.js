@@ -115,7 +115,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
         {
             name: 'is.ui.sprintPlan.menu.task.delete',
             visible: function(task) { return $scope.authorizedTask('delete', task); },
-            action: function(task) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [task]}); }
+            action: function(task) { $scope.confirmDelete({callback: $scope.delete, args: [task]}); }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.block',

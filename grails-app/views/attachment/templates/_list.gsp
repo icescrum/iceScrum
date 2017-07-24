@@ -43,7 +43,7 @@
                             <i class="fa fa-search"></i>
                         </button>
                         <button ng-if="authorizedAttachment('delete', attachment)"
-                                ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteAttachment, args: [attachment, attachmentable] })"
+                                ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
                                 uib-tooltip="${message(code: 'default.button.delete.label')}"
                                 type="button" class="btn btn-danger btn-xs">
                             <i class="fa fa-close"></i>

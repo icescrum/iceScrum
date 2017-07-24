@@ -92,7 +92,7 @@
                     </a>
                     <a class="btn btn-danger btn-xs pull-right"
                        ng-if="authorizedActor('delete', actor)"
-                       ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: delete, args: [actor] })">
+                       ng-click="confirmDelete({ callback: delete, args: [actor] })">
                         <i class="fa fa-close"></i>
                     </a>
                 </td>

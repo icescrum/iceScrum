@@ -991,6 +991,14 @@ angular.module('isApplication', [
             modal.result.then(callCloseCallback, callCloseCallback);
         };
 
+        $rootScope.confirmDelete = function(options) {
+            $rootScope.confirm(_.merge({
+                buttonColor: 'danger',
+                buttonTitle: 'default.button.delete.label',
+                message: $rootScope.message('is.confirm.delete')
+            }, options));
+        };
+
         $rootScope.dirtyChangesConfirm = function(options) {
             var modal = $uibModal.open({
                 templateUrl: 'confirm.dirty.modal.html',

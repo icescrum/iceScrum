@@ -169,7 +169,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', 'Session', '
         {
             name: 'is.ui.releasePlan.menu.sprint.delete',
             visible: function(sprint) { return $scope.authorizedSprint('delete', sprint); },
-            action: function(sprint) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [sprint]}); }
+            action: function(sprint) { $scope.confirmDelete({callback: $scope.delete, args: [sprint]}); }
         }
     ];
     // Init

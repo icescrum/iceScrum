@@ -152,7 +152,7 @@
                             <button type="button"
                                     ng-if="authorizedStories('delete', stories)"
                                     class="btn btn-default"
-                                    ng-click="confirm({ message: '${message(code: 'is.confirm.delete')}', callback: deleteMultiple })">
+                                    ng-click="confirmDelete({ callback: deleteMultiple })">
                                 ${message(code:'is.ui.backlog.menu.delete')}
                             </button>
                         </div>

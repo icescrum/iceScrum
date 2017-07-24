@@ -111,7 +111,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
         {
             name: 'is.ui.timeline.menu.delete',
             visible: function(release) { return $scope.authorizedRelease('delete', release); },
-            action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.delete.confirm'), callback: $scope.delete, args: [release]}); }
+            action: function(release) { $scope.confirmDelete({callback: $scope.delete, args: [release]}); }
         },
         {
             name: 'is.ui.timeline.menu.close',
