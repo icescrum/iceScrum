@@ -165,6 +165,7 @@
                     <input type="text"
                            name="userToken.name"
                            class="form-control"
+                           placeholder="${message(code: 'is.user.token.name.placeholder')}"
                            ng-model="editableUserToken.name">
                     <span class="input-group-btn">
                         <button type="button" ng-click="save()" ng-disabled="!editableUserToken.name" class="btn btn-primary">
