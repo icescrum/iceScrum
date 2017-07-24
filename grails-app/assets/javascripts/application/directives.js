@@ -899,9 +899,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         replace: true,
         templateUrl: 'button.shortcutMenu.html',
         link: function(scope) {
-            scope.getMenuColor = function(menu) {
-                return (menu && menu.color) ? menu.color : 'primary';
-            };
             scope.message = $rootScope.message;
             scope.$watch(function() { return scope.ngModel.lastUpdated; }, function() {
                 var i = scope.modelMenus.length;

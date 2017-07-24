@@ -72,8 +72,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
         {
             name: 'is.ui.timeline.menu.activate',
             visible: function(release) { return $scope.authorizedRelease('activate', release); },
-            action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.activate.confirm'), callback: $scope.activate, args: [release]}); },
-            color: 'danger'
+            action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.activate.confirm'), callback: $scope.activate, args: [release]}); }
         },
         {
             name: 'todo.is.ui.sprint.new',
@@ -104,14 +103,12 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
         {
             name: 'is.ui.timeline.menu.delete',
             visible: function(release) { return $scope.authorizedRelease('delete', release); },
-            action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.delete.confirm'), callback: $scope.delete, args: [release]}); },
-            color: 'danger'
+            action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.delete.confirm'), callback: $scope.delete, args: [release]}); }
         },
         {
             name: 'is.ui.timeline.menu.close',
             visible: function(release) { return $scope.authorizedRelease('close', release); },
-            action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.close.confirm'), callback: $scope.close, args: [release]}); },
-            color: 'danger'
+            action: function(release) { $scope.confirm({message: $scope.message('is.ui.timeline.menu.close.confirm'), callback: $scope.close, args: [release]}); }
         }
     ];
     // Init

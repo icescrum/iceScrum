@@ -133,15 +133,13 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', 'Session', '
             name: 'is.ui.releasePlan.menu.sprint.activate',
             visible: function(sprint) { return $scope.authorizedSprint('activate', sprint); },
             priority: function(sprint, defaultPriority) { return sprint.state === 1 && (sprint.stories_ids && sprint.stories_ids.length > 0 || sprint.startDate.getTime() < (new Date()).getTime()) ? 100 : defaultPriority; },
-            action: function(sprint) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'), callback: $scope.activate, args: [sprint]}); },
-            color: 'danger'
+            action: function(sprint) { $scope.confirm({message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'), callback: $scope.activate, args: [sprint]}); }
         },
         {
             name: 'is.ui.releasePlan.menu.sprint.close',
             priority: function(sprint, defaultPriority, viewType) { return sprint.state === 2 && viewType === 'details' ? 120 : (sprint.state === 2 ? 100 : defaultPriority); },
             visible: function(sprint) { return $scope.authorizedSprint('close', sprint); },
-            action: function(sprint) { $scope.openCloseModal(sprint); },
-            color: 'danger'
+            action: function(sprint) { $scope.openCloseModal(sprint); }
         },
         {
             name: 'todo.is.ui.taskBoard',
@@ -162,8 +160,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', 'Session', '
         {
             name: 'is.ui.releasePlan.menu.sprint.delete',
             visible: function(sprint) { return $scope.authorizedSprint('delete', sprint); },
-            action: function(sprint) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [sprint]}); },
-            color: 'danger'
+            action: function(sprint) { $scope.confirm({message: $scope.message('is.confirm.delete'), callback: $scope.delete, args: [sprint]}); }
         }
     ];
     // Init
