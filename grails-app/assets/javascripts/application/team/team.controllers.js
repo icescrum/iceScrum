@@ -186,7 +186,7 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
         });
         TeamService.update(team).then(function(returnedTeam) {
             $scope.resetFormValidation($scope.formHolder.updateTeamForm);
-            $scope.teams.splice(_.indexOf($scope.teams, {id: team.id}), 1, returnedTeam);
+            $scope.teams.splice(_.findIndex($scope.teams, {id: team.id}), 1, returnedTeam);
             $scope.selectTeam(returnedTeam);
             $scope.notifySuccess('todo.is.ui.team.updated');
         });
