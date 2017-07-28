@@ -186,7 +186,10 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
         });
         TeamService.update(team).then(function(returnedTeam) {
             $scope.resetFormValidation($scope.formHolder.updateTeamForm);
-            $scope.teams.splice(_.findIndex($scope.teams, {id: team.id}), 1, returnedTeam);
+            var teamIndex = _.findIndex($scope.teams, {id: team.id});
+            if (teamIndex != -1) {
+                $scope.teams.splice(teamIndex, 1, returnedTeam);
+            }
             $scope.selectTeam(returnedTeam);
             $scope.notifySuccess('todo.is.ui.team.updated');
         });
@@ -225,6 +228,9 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
         $scope.member = {};
     };
     // Init
+    if ($scope.selectedTeam) {
+        $scope.selectTeam($scope.selectedTeam);
+    }
     $scope.totalTeams = 0;
     $scope.currentPage = 1;
     $scope.teamsPerPage = 9; // Constant

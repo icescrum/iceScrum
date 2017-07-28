@@ -1080,7 +1080,7 @@ angular.module('isApplication', [
                 size: 'lg',
                 controller: ['$scope', '$controller', function($scope, $controller) {
                     if (team) {
-                        $scope.team = team;
+                        $scope.selectedTeam = team;
                     }
                     $controller('manageTeamsModalCtrl', {$scope: $scope});
                 }]
