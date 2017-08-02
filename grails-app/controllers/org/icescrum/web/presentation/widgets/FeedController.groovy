@@ -65,7 +65,7 @@ class FeedController implements ControllerErrorHandler {
             } else {
                 render(status: 204)
             }
-        } catch (UnknownHostException e) {
+        } catch (UnknownHostException | ConnectException e) {
             def text = message(code: 'todo.is.ui.panel.feed.error', args: [url])
             returnError(text: text, silent: true)
         } catch (Exception e) {
