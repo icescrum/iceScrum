@@ -352,6 +352,7 @@ grails.cache.config = {
 }
 
 icescrum.securitydebug.enable = false
+icescrum.pushdebug.enable = false
 //fix ilog dir due to lazy object initialization - init object
 icescrum.log.dir = null
 log4j = {
@@ -381,7 +382,6 @@ log4j = {
     }
 
     if (ApplicationSupport.booleanValue(config.icescrum.debug.enable)) {
-        debug "org.grails.plugins.atmosphere_meteor"
         debug 'grails.app.controllers.org.icescrum'
         debug 'grails.app.controllers.com.kagilum'
         debug 'grails.app.services.org.icescrum'
@@ -389,13 +389,21 @@ log4j = {
         debug 'grails.app.domain.org.icescrum'
         debug 'grails.app.domain.com.kagilum'
         debug 'org.icescrum.plugins.chat'
-        debug 'org.icescrum.atmosphere'
         debug 'grails.app.org.icescrum'
         debug 'org.icescrum.plugins'
 //        debug 'net.sf.jasperreports'
         debug 'org.icescrum.core'
-        debug 'org.atmosphere'
         debug 'com.kagilum'
+    }
+
+    if (ApplicationSupport.booleanValue(config.icescrum.pushdebug.enable)) {
+        debug 'org.icescrum.atmosphere'
+        debug "org.grails.plugins.atmosphere_meteor"
+        debug 'org.atmosphere'
+    } else {
+        warn 'org.icescrum.atmosphere'
+        warn "org.grails.plugins.atmosphere_meteor"
+        warn 'org.atmosphere'
     }
 
     if (ApplicationSupport.booleanValue(config.icescrum.securitydebug.enable)) {
