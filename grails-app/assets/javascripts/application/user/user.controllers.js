@@ -53,10 +53,6 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
         }
         avatarImg.attr('src', url);
     };
-    $scope.setTabSelected = function(tab) {
-        $scope.tabSelected = {};
-        $scope.tabSelected[tab] = true;
-    };
     // Init
     $scope.editableUser = {};
     $scope.formHolder = {};

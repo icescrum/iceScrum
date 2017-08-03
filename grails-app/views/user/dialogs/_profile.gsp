@@ -28,9 +28,7 @@
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.profile')}">
     <uib-tabset type="pills" justified="true">
-        <uib-tab heading="${message(code: 'todo.is.ui.profile.general.title')}"
-                 active="tabSelected.general"
-                 select="setTabSelected('general')">
+        <uib-tab heading="${message(code: 'todo.is.ui.profile.general.title')}">
             <div flow-files-added="editableUser.avatar = 'custom';"
                  flow-files-submitted="$flow.upload()"
                  flow-files-success="editableUser.avatar = 'custom'"
@@ -154,9 +152,7 @@
             </div>
         </uib-tab>
         <entry:point id="user-dialog-profile-tab"/>
-        <uib-tab heading="${message(code: 'is.dialog.profile.tokensSettings')}"
-                 active="tabSelected.tokensSettings"
-                 select="setTabSelected('tokensSettings')">
+        <uib-tab heading="${message(code: 'is.dialog.profile.tokensSettings')}">
         <entry:point id="user-dialog-profile-tab-tokens-before-form"/>
         <div class="token-tab" ng-controller="UserTokenCtrl">
             <div class="form-group">
@@ -202,9 +198,7 @@
         <entry:point id="user-dialog-profile-tab-tokens-after-form"/>
     </uib-tab>
         <g:if test="${projects}">
-            <uib-tab heading="${message(code: 'is.dialog.profile.emailsSettings')}"
-                     active="tabSelected.emailSettings"
-                     select="setTabSelected('emailSettings')">
+            <uib-tab heading="${message(code: 'is.dialog.profile.emailsSettings')}">
                 <entry:point id="user-dialog-profile-tab-emails-before-form"/>
                 <div class="row">
                     <div class="col-md-12 form-group">
