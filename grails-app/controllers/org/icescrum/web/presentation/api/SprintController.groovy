@@ -35,7 +35,6 @@ class SprintController implements ControllerErrorHandler {
 
     def sprintService
     def storyService
-    def springSecurityService
 
     @Secured(['stakeHolder() or inProject()'])
     def index(long project, Long releaseId, String type) {
