@@ -186,7 +186,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
         var p = angular.copy(project);
         var mapId = function(members) {
             return _.map(members, function(member) {
-                return {id: member.id};
+                return member.id ? {id: member.id} : {};
             });
         };
         p.team.scrumMasters = mapId(project.team.scrumMasters);
