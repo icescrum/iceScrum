@@ -464,6 +464,8 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
     };
 }]);
 
+extensibleController('aboutCtrl', ['$scope', function($scope) {}]); // Used to extend about in plugins
+
 controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', 'UserTokenService', function($scope, $uibModal, Session, UserService, hotkeys, PushService, UserTokenService) {
     // Functions
     $scope.notificationToggle = function(open) {
@@ -495,6 +497,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     };
     $scope.showAbout = function() {
         $uibModal.open({
+            controller: 'aboutCtrl',
             templateUrl: 'scrumOS/about'
         });
     };
