@@ -182,9 +182,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="token in user.tokens">
-                    <td>
-                        {{ token.id }}
-                        <div class="small">{{ token.name }}</div>
+                    <td>{{ token.id }}<div class="small">{{ token.name }}</div>
                     </td>
                     <td class="text-right">
                         <button type="button" class="btn btn-danger" ng-click="delete(token)"  uib-tooltip="${message(code:'is.ui.token.revoke')}">

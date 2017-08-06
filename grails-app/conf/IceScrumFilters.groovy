@@ -57,6 +57,8 @@ class IceScrumFilters {
                 }
                 if (params.project) {
                     params.project = params.project.decodeProjectKey()
+                    //with parseRequest
+                    params.holder_project = params.project.decodeProjectKey()
                     if (!params.project) {
                         forward(controller: "errors", action: "error404")
                         return false
@@ -135,11 +137,15 @@ class IceScrumFilters {
             before = {
                 request.withFormat {
                     json {
+                        //remove collision params... and we need to remove this filter ASAP
+                        def data = request.JSON
+                        data.remove("project")
                         params << request.JSON
                     }
                 }
             }
         }
+
 
         locale(uri: '/ws/**', invert: true) {
             before = {
