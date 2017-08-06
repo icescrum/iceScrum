@@ -59,7 +59,7 @@
                     <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-ellipsis-h"></i></i>
+                            <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" template-url="item.menu.html" ng-init="itemType = 'feature'"></ul>
                     </div>
@@ -70,15 +70,13 @@
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.featureTabId}">
-            <a href="{{ tabUrl() }}"
-               uib-tooltip="${message(code:'todo.is.ui.details')}">
-                <i class="fa fa-lg fa-edit"></i>
+            <a href="{{ tabUrl() }}">
+                <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'stories'}">
-            <a href="{{ tabUrl('stories') }}"
-               uib-tooltip="${message(code:'todo.is.ui.stories')}">
-                <i class="fa fa-lg fa-sticky-note"></i>
+            <a href="{{ tabUrl('stories') }}">
+                <i class="fa fa-lg fa-sticky-note"></i> ${message(code:'todo.is.ui.stories')}
                 <span class="badge">{{ feature.stories_ids.length || '' }}</span>
             </a>
         </li>

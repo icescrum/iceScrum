@@ -204,7 +204,7 @@ class ProjectController implements ControllerErrorHandler {
         activities.addAll(Activity.recentStoryActivity(_project))
         activities = activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
         def builder = new FeedBuilder()
-        builder.feed(description: "${_project.description ?: ''}", title: "$_project.name ${message(code: 'is.ui.project.activity.title')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [project: _project.pkey])}") {
+        builder.feed(description: "${_project.description ?: ''}", title: "$_project.name ${message(code: 'todo.is.ui.activities')}", link: "${createLink(absolute: true, controller: 'scrumOS', action: 'index', params: [project: _project.pkey])}") {
             activities.each() { a ->
                 entry("${a.poster.firstName} ${a.poster.lastName} ${message(code: "is.fluxiable.${a.code}")} ${message(code: "is." + (a.code == 'taskDelete' ? 'task' : a.code == 'acceptanceTestDelete' ? 'acceptanceTest' : 'story'))} ${a.label.encodeAsHTML()}") { e ->
                     if (a.code == Activity.CODE_DELETE) {

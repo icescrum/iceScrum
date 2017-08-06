@@ -410,11 +410,7 @@ header {
           > .panel-heading {
             padding: 0;
             > .panel-title {
-              padding: 15px;
-            }
-            > .states-container {
-              padding-left: 15px;
-              padding-right: 15px;
+              padding: 15px 15px 0;
             }
           }
         }
@@ -506,6 +502,25 @@ header {
   }
 }
 
+.panel-heading {
+  .states-container {
+    &:after {
+      clear: both;
+      content: "";
+      display: block;
+    }
+    padding:15px;
+  }
+}
+.modal-dialog [ui-view="details"]{
+  .panel-heading {
+    padding: 0;
+    .panel-title {
+      padding:15px 15px 0;
+    }
+  }
+}
+
 .panel.panel-light {
   .panel-default;
   border-radius: 0;
@@ -530,13 +545,19 @@ header {
     .badge {
       display: inline-block;
       position: absolute;
-      left: 50%;
-      top: 20px;
+      left: 0;
+      top: 26px;
       margin-left: 10px;
       background: none;
       text-align: right;
       font-weight: bold;
       color: @gray-dark;
+    }
+    .dropdown-more {
+      .badge {
+        left: -10px;
+        top: 28px;
+      }
     }
   }
   .right-title {

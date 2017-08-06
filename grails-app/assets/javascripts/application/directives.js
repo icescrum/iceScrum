@@ -894,12 +894,14 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             btnSm: '=',
             ngModel: '=',
             viewType: '=',
-            modelMenus: '='
+            modelMenus: '=',
+            btnPrimary: '=?'
         },
         replace: true,
         templateUrl: 'button.shortcutMenu.html',
         link: function(scope) {
             scope.message = $rootScope.message;
+            scope.btnPrimary = angular.isDefined(scope.btnPrimary)? scope.btnPrimary : (angular.isDefined(scope.btnSm) ? !scope.btnSm : true);
             scope.$watch(function() { return scope.ngModel.lastUpdated; }, function() {
                 var i = scope.modelMenus.length;
                 scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menuElement) {

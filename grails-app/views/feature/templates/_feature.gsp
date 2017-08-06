@@ -64,7 +64,7 @@
                     <span class="badge">{{ feature.stories_ids.length || '' }}</span>
                 </a>
             </span>
-            <span postit-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-cog"></i><i class="fa fa-caret-down"></i></a></span>
+            <span postit-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i></a></span>
         </div>
         <div class="state-progress">
             <div class="progress">

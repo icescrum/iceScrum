@@ -59,7 +59,7 @@
                 <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
                 <div class="btn-group" uib-dropdown>
                     <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                        <i class="fa fa-ellipsis-h"></i>
+                        <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
                     </button>
                     <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
                 </div>
@@ -93,10 +93,10 @@
                     </div>
                     <div class="pull-right">
                         <div class="btn-group" role="group">
-                            <shortcut-menu ng-model="sprint" model-menus="menus"></shortcut-menu>
+                            <shortcut-menu ng-model="sprint" model-menus="menus" btn-primary="false"></shortcut-menu>
                             <div class="btn-group" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-h"></i></i>
+                                    <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                             </div>

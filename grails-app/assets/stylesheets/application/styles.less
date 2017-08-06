@@ -231,6 +231,14 @@ button.elemid {
   margin-left: 1.5em;
 }
 
+li.dropdown.display-on-hover:hover > ul.dropdown-menu {
+  display: block;
+}
+
+ul.dropdown-more > li > a {
+  padding:11px;
+}
+
 /** Alerts **/
 form .alert.alert-danger {
   display: none;
@@ -500,14 +508,6 @@ tr:hover .on-hover span {
         margin-bottom: 5px;
       }
     }
-  }
-  .states-container {
-    &:after {
-      clear: both;
-      content: "";
-      display: block;
-    }
-    margin-bottom: 10px;
   }
 }
 

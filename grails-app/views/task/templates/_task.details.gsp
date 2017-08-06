@@ -66,7 +66,7 @@
                     <shortcut-menu ng-model="task" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-ellipsis-h"></i></i>
+                            <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
                     </div>
@@ -77,21 +77,18 @@
     </div>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.taskTabId}">
-            <a href="{{ tabUrl() }}"
-               uib-tooltip="${message(code: 'todo.is.ui.details')}">
-                <i class="fa fa-lg fa-edit"></i>
+            <a href="{{ tabUrl() }}">
+                <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'activities'}">
-            <a href="{{ tabUrl('activities') }}"
-               uib-tooltip="{{ task.activities && task.activities.length ? message('is.fluxiable.' + task.activities[0].code) : '' }}">
-                <i class="fa fa-lg fa-clock-o"></i>
+            <a href="{{ tabUrl('activities') }}">
+                <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.activities')}
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'comments'}">
-            <a href="{{ tabUrl('comments') }}"
-               uib-tooltip="${message(code: 'todo.is.ui.comments')}">
-                <i class="fa fa-lg" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+            <a href="{{ tabUrl('comments') }}">
+                <i class="fa fa-lg" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code: 'todo.is.ui.comments')}
                 <span class="badge">{{ task.comments_count || '' }}</span>
             </a>
         </li>

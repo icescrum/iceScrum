@@ -62,7 +62,7 @@
                         <div class="col-sm-1 text-right">
                             <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-h"></i></i>
+                                    <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right">
                                     <li>

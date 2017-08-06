@@ -188,7 +188,7 @@
                 <div class="panel panel-light">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <i class="fa fa-bolt"></i> <g:message code="is.ui.project.activity.title"/>
+                            <i class="fa fa-bolt"></i> <g:message code="todo.is.ui.activities"/>
                             <small class="pull-right">
                                 <a class="rss"
                                    uib-tooltip="${message(code: 'todo.is.ui.feed')}"

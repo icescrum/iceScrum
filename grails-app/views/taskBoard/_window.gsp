@@ -99,7 +99,7 @@
                             <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                             <div class="btn-group" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-h"></i></i>
+                                    <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                             </div>
@@ -208,7 +208,7 @@
                                              uib-dropdown
                                              dropdown-append-to-body="true">
                                             <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                                <i class="fa fa-ellipsis-h"></i></i>
+                                                <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
                                             </button>
                                             <ul uib-dropdown-menu>
                                                 <li>

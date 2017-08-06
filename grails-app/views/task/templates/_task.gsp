@@ -84,7 +84,7 @@
                     <i class="fa fa-user-times"></i>
                 </a>
             </span>
-            <span postit-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a><i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i></a></span>
+            <span postit-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a><i class="fa fa-ellipsis-h"></i></i></a></span>
         </div>
     </div>
 </div>
