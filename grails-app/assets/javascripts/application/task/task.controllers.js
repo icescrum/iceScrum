@@ -272,6 +272,10 @@ controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', function($sco
         }
     };
 
+    $scope.taskUrl = function(task, project){
+        return "p/" + project.pkey + "/#/taskBoard/" + task.sprint.id + "/task/" + task.id;
+;    };
+
     //init
     var widget = $scope.widget;
     $scope.tasksByProject = [];

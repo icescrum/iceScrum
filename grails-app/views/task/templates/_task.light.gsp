@@ -30,7 +30,7 @@
             <span class="id">{{ ::task.uid }}</span>
         </div>
         <div class="head-right">
-            <span class="remaining-time editable"
+            <span class="remaining-time"
                   ng-if="task.estimation != 0"
                   uib-tooltip="${message(code: 'is.task.estimation')}">
                 {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
@@ -38,7 +38,8 @@
         </div>
     </div>
     <div class="content">
-        <h3 class="title">{{ task.name }}</h3>
+        <h3 class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;" ng-if="link">{{ task.name }}</a></h3>
+        <h3 class="title" ng-if="!link">{{ task.name }}</h3>
     </div>
     <div class="footer">
         <div class="tags">
@@ -47,14 +48,18 @@
         <div class="actions">
             <span class="action" ng-class="{'active':task.attachments.length}">
                 <span uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
-                    <i class="fa fa-paperclip"></i>
-                    <span class="badge">{{ task.attachments.length || '' }}</span>
+                    <a href="{{ link ? link : openTaskUrl(task.id) }}">
+                        <i class="fa fa-paperclip"></i>
+                        <span class="badge">{{ task.attachments.length || '' }}</span>
+                    </a>
                 </span>
             </span>
             <span class="action" ng-class="{'active':task.comments_count}">
                 <span uib-tooltip="${message(code:'todo.is.ui.comments')}">
-                    <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
-                    <span class="badge">{{ task.comments_count || '' }}</span>
+                    <a href="{{ link ? link : openTaskUrl(task.id) }}/comments">
+                        <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                        <span class="badge">{{ task.comments_count || '' }}</span>
+                    </a>
                 </span>
             </span>
         </div>
