@@ -849,8 +849,11 @@ table {
       .make-flex-container(row);
       > .panel {
         .make-flex-panel();
-        border-width: 0;
-        border-color: #EEE;
+        > .panel-body {
+          padding-top:0;
+          padding-bottom: 0;
+        }
+        border: 0 #EEE;
         border-right-width: 1px;
         &:last-of-type {
           border-right-width: 0;
@@ -1159,8 +1162,6 @@ li {
 }
 
 .postits {
-  margin-left: -6px;
-  margin-top: -6px;
   clear: both;
   overflow: hidden;
   &.postits-disabled .postit-container {
