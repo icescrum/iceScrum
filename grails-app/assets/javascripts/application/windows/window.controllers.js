@@ -156,7 +156,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName'
     };
     $scope.openStoryUrl = function(storyId) {
         var newStoryState = getNewStoryState(storyId, $state.current.name);
-        return $state.href(newStoryState.name, newStoryState.params);
+        return $state.href(newStoryState.name, newStoryState.params, {absolute: true});
     };
     $scope.openSprintUrl = function(sprint) {
         var stateName = 'planning.release.sprint.withId';

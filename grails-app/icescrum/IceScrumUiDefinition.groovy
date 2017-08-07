@@ -234,7 +234,10 @@ widgets = {
         icon 'tasks'
         allowDuplicate false
         secured 'isAuthenticated()'
-        templatePath '/widgets/tasks'
+        ngController 'taskWidgetCtrl'
+        defaultSettings = [
+                postitSize: 'list-group'
+        ]
     }
     'quickProjects' {
         icon 'folder'

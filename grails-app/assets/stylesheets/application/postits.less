@@ -495,9 +495,6 @@
 }
 
 .list-group {
-  margin-bottom: 0;
-  margin-left: -15px;
-  margin-right: -15px;
   .postit-container {
     &:nth-child(even) .postit > div {
       background: #fff;
@@ -709,6 +706,9 @@
           .horizontal-align;
         }
       }
+      &.task {
+        flex: 0 0 120px;
+      }
     }
     &:last-child .postit {
       .head, .content, .footer {
@@ -743,6 +743,12 @@
       }
     }
   }
+}
+
+.panel-body > .list-group {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: 0;
 }
 
 .badge {

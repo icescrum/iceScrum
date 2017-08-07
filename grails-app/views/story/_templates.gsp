@@ -21,6 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:render template="/story/templates/story"/>
+<g:render template="/story/templates/story.light"/>
 <g:render template="/story/templates/story.backlog"/>
 <g:render template="/story/templates/story.details"/>
 <g:render template="/story/templates/story.multiple"/>

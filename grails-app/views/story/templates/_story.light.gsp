@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<script type="text/ng-template" id="story.html">
+<script type="text/ng-template" id="story.light.html">
 <div fast-tooltip
      ng-style="(story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
      class="postit story {{ application.postitSize.story + ' ' + ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
@@ -48,7 +48,7 @@
             </span>
         </div>
     </div>
-    <div class="content" as-sortable-item-handle ng-class="{'without-description':!story.description}">
+    <div class="content" ng-class="{'without-description':!story.description}">
         <h3 class="title">{{ story.name }}</h3>
         <div class="description"
              ng-bind-html="story.description | lineReturns | actorTag"></div>
@@ -85,7 +85,6 @@
                     <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
                 </a>
             </span>
-            <span postit-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
         </div>
         <div class="state-progress">
             <div ng-if="tasksProgress(story)" class="progress">

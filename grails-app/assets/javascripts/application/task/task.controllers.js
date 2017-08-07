@@ -252,9 +252,15 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
     $scope.mostUsedColors = [];
 }]);
 
-controllers.controller('userTaskCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+    var widget = $scope.widget;
     $scope.tasksByProject = [];
     TaskService.listByUser().then(function(tasksByProject) {
         $scope.tasksByProject = tasksByProject;
     });
+    $scope.holder = {
+        postitSize: widget.settings.postitSize
+    };
+    $scope.viewName = 'taskWidget';
+    $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
 }]);
