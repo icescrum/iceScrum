@@ -3,14 +3,14 @@
         <input name="postitSize"
                value="list-group"
                type="radio"
-               ng-model="holder.postitSize"/>List
+               ng-model="widget.settings.postitSize"/>List
     </label>
 </div>
 <div class="radio">
     <label>
         <input name="postitSize"
-               value="size-sm"
+               value="grid-group size-sm"
                type="radio"
-               ng-model="holder.postitSize"/>Postit
+               ng-model="widget.settings.postitSize"/>Postit
     </label>
 </div>

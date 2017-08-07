@@ -139,8 +139,12 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
         }
         return $localStorage[contextSizeName];
     };
+    $scope.cleanPostitSize = function(viewName) {
+        var contextSizeName = viewName + 'PostitSize';
+        delete $localStorage[contextSizeName];
+    };
     $scope.isAsListPostit = function(viewName) {
-        return $scope.currentPostitSize(viewName) == "list-group"
+        return $scope.currentPostitSize(viewName) == "list-group";
     };
     $scope.iconCurrentPostitSize = function(viewName) {
         var icon;

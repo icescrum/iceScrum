@@ -253,15 +253,29 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
 }]);
 
 controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
-    var widget = $scope.widget;
-    $scope.tasksByProject = [];
     TaskService.listByUser().then(function(tasksByProject) {
         $scope.tasksByProject = tasksByProject;
     });
-    widget.settings = widget.settings ? widget.settings : { postitSize:'list-group' };
-    $scope.holder = {
-        postitSize: widget.settings
+
+    $scope.display = function(){
+        var current = $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
+        if(current != widget.settings.postitSize){
+            $scope.cleanPostitSize($scope.viewName);
+            $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
+        }
     };
+
+    $scope.toggleSettings = function(widget){
+        $scope.$parent.toggleSettings(widget);
+        if(!$scope.showSettings){
+            $scope.display();
+        }
+    };
+
+    //init
+    var widget = $scope.widget;
+    $scope.tasksByProject = [];
+    widget.settings = widget.settings ? widget.settings : { postitSize:'list-group' };
     $scope.viewName = 'taskWidget';
-    $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
+    $scope.display();
 }]);
