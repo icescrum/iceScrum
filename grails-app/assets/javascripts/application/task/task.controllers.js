@@ -258,8 +258,9 @@ controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', function($sco
     TaskService.listByUser().then(function(tasksByProject) {
         $scope.tasksByProject = tasksByProject;
     });
+    widget.settings = widget.settings ? widget.settings : { postitSize:'list-group' };
     $scope.holder = {
-        postitSize: widget.settings.postitSize
+        postitSize: widget.settings
     };
     $scope.viewName = 'taskWidget';
     $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
