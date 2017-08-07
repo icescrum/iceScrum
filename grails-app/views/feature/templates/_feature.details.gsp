@@ -33,9 +33,11 @@
         <h3 class="panel-title row">
             <div class="left-title">
                 <span><strong>{{ ::feature.uid }}</strong>&nbsp;<span class="item-name">{{ feature.name }}</span></span>
+                <entry:point id="feature-details-left-title"/>
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
+                    <entry:point id="feature-details-right-title"/>
                     <div class="btn-group">
                         <a ng-if="previousFeature && !isModal"
                            class="btn btn-default"

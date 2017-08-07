@@ -33,9 +33,13 @@
         <h3 class="panel-title row">
             <div class="left-title">
                 <span><strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name">{{ task.name }}</span></span>
+                <div style="margin-top:10px">
+                    <entry:point id="task-details-left-title"/>
+                </div>
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
+                    <entry:point id="task-details-right-title"/>
                     <span ng-if="task.responsible"
                           uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
                         <img ng-src="{{ task.responsible | userAvatar }}"
