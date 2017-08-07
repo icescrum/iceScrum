@@ -156,7 +156,7 @@
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
                                 <div class="add-task postit">
-                                    <a class="btn btn-primary"
+                                    <a class="btn btn-default"
                                        ng-click="openNewTaskByType(taskTypesByName.URGENT)"
                                        href>
                                         ${message(code: 'todo.is.ui.task.new')}
@@ -199,7 +199,7 @@
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
                                 <div class="add-task postit">
                                     <div class="btn-group">
-                                        <a class="btn btn-primary"
+                                        <a class="btn btn-default"
                                            ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
                                            href>
                                             ${message(code: 'todo.is.ui.task.new')}
@@ -255,7 +255,7 @@
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="postit-container">
                                 <div class="add-task postit">
-                                    <a class="btn btn-primary"
+                                    <a class="btn btn-default"
                                        ng-click="openNewTaskByStory(story)"
                                        href>
                                         ${message(code: 'todo.is.ui.task.new')}
@@ -268,7 +268,7 @@
                 <tbody ng-repeat="story in ghostStories | filter: storyFilter | search | orderBy: 'id'" class="story-ghost">
                     <tr class="sticky-header list-group">
                         <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)">
-                            <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
+                            <div ng-include="'story.light.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
                     <tr ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
@@ -285,7 +285,7 @@
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
-                                <div ng-include="'task.html'"></div>
+                                <div ng-include="'task.light.html'"></div>
                             </div>
                             <button type="button" class="btn btn-default" ng-if="!tasksShown(taskState, story)" ng-click="showTasks(story, true)"><g:message code="todo.is.ui.task.showDoneTasks"/> ({{ tasksByStoryByState[story.id][taskState].length }})</button>
                             <div ng-if="tasksHidden(taskState, story)" class="postit-container">
@@ -300,7 +300,7 @@
                     <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                         <div class="empty-view">
                             <p class="help-block">${message(code: 'todo.is.ui.story.empty.taskBoard')}</p>
-                            <a class="btn btn-primary"
+                            <a class="btn btn-default"
                                href="#/planning/{{ sprint.parentRelease.id }}/sprint/{{ sprint.id }}">
                                 <i class="fa fa-inbox"></i> ${message(code: 'todo.is.ui.planning')}
                             </a>

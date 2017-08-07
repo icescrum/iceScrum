@@ -141,7 +141,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             case 'showRecurrent':
                 return Session.getProject().preferences.displayRecurrentTasks;
             case 'makeStory':
-                return self.authorizedTask('delete', task) && StoryService.authorizedStory('create');
+                return self.authorizedTask('delete', task) && task.state != TaskStatesByName.DONE && StoryService.authorizedStory('create');
             default:
                 return false;
         }

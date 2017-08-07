@@ -94,8 +94,10 @@
                      ng-style="{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
                 </div>
             </div>
-            <div class="state"
-                 ng-class="{'hover-progress':tasksProgress(story)}">{{ story.state | i18n:'StoryStates' }}
+            <div class="state" ng-class="{'hover-progress':tasksProgress(story)}">
+                <!-- special case hide state if shifted and ghost story -->
+                <span ng-if="!sprint || sprint.id == story.parentSprint.id">{{ story.state | i18n:'StoryStates' }}</span>
+                <span ng-if="sprint && sprint.id != story.parentSprint.id">{{ message('todo.is.ui.story.shifted') }}</span>
             </div>
         </div>
     </div>
