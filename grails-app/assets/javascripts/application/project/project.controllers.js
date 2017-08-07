@@ -38,7 +38,14 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
         }
         return $state.href(stateName, {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
     };
+    $scope.showMore = function(){
+        $scope.pref.showMore = true;
+    };
     // Init
+
+    $scope.pref = {
+        showMore:false
+    };
     $scope.release = {};
     $scope.allMembers = [];
     $scope.activities = [];
