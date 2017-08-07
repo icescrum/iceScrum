@@ -22,9 +22,9 @@
 --}%
 
 <script type="text/ng-template" id="task.light.html">
-<div ng-style="task.color | createGradientBackground"
+<div ng-style="task.color | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
      ng-class="{'task-blocked': task.blocked}"
-     class="postit {{ application.postitSize.task + ' ' + (task.color | contrastColor) }}">
+     class="postit task {{ application.postitSize.task + ' ' + (task.color | contrastColor) }}">
     <div class="head">
         <div class="head-left">
             <span class="id">{{ ::task.uid }}</span>
