@@ -137,9 +137,9 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
                     $scope.editableTask = angular.copy(task);
                     $scope.initialValue = $scope.editableTask.value;
                     $scope.submit = function(task) {
-                        TaskService.update(task).then(function() {
+                        TaskService.update(task, false, true).then(function(taskUpdated) {
                             $scope.$close();
-                            $scope.notifySuccess('todo.is.ui.task.remainingTime.updated');
+                            $scope.notifySuccess('todo.is.ui.task.updated');
                         });
                     };
                     $timeout(function() {
@@ -274,7 +274,7 @@ controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', function($sco
 
     $scope.taskUrl = function(task, project){
         return "p/" + project.pkey + "/#/taskBoard/" + task.sprint.id + "/task/" + task.id;
-;    };
+    };
 
     //init
     var widget = $scope.widget;

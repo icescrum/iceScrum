@@ -22,8 +22,22 @@
  *
  */
 services.factory('Task', ['Resource', function($resource) {
-    return $resource('task/:type/:typeId/:id/:action');
-}]);
+        return $resource('task/:type/:typeId/:id/:action',
+            {id: '@id'},
+            {
+                listByUser: {
+                    url: '/task/listByUser',
+                    isArray: true,
+                    params: {},
+                    method: 'get'
+                },
+                updateOutsideProjectContext: {
+                    url: '/p/:pid/task/:type/:typeId/:id/:action',
+                    method: 'post'
+                }
+            })
+    }]
+);
 
 services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session', 'IceScrumEventType', 'CacheService', 'PushService', 'StoryService', 'FormService', 'TaskStatesByName', 'SprintStatesByName', 'StoryStatesByName', function($q, $state, $rootScope, Task, Session, IceScrumEventType, CacheService, PushService, StoryService, FormService, TaskStatesByName, SprintStatesByName, StoryStatesByName) {
     var self = this;
@@ -53,9 +67,13 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         task.class = 'task';
         return Task.save(task, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.update = function(task, removeRank) {
+    this.update = function(task, removeRank, outsideProjectContext) {
         var taskData = removeRank ? _.omit(task, 'rank') : task; // Don't send the rank when we want the server to pick the right rank (e.g. update estimate to 0 => task will get a new rank in done state)
-        return Task.update(taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        if(outsideProjectContext){
+            return Task.updateOutsideProjectContext({ pid: taskData.parentProject.id }, taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        } else {
+            return Task.update(taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        }
     };
     this.block = function(task) {
         task.blocked = true;
@@ -147,7 +165,11 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         }
     };
     this.listByUser = function() {
-        return Task.query({action: 'listByUser'}).$promise;
+        return Task.listByUser(function(data){
+            _.each(data, function(dataByProject){
+                self.mergeTasks(dataByProject.tasks);
+            });
+        }).$promise;
     };
     this.getMostUsedColors = function() {
         return FormService.httpGet('task/colors');

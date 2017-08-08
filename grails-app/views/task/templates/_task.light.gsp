@@ -24,14 +24,15 @@
 <script type="text/ng-template" id="task.light.html">
 <div ng-style="task.color | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
      ng-class="{'task-blocked': task.blocked}"
-     class="postit task {{ application.postitSize.task + ' ' + (task.color | contrastColor) }}">
+     class="postit task {{ application.postitSize.task + ' ' + (task.color | contrastColor) }}" ng-controller="taskCtrl">
     <div class="head">
         <div class="head-left">
             <span class="id">{{ ::task.uid }}</span>
         </div>
         <div class="head-right">
-            <span class="remaining-time"
+            <span class="remaining-time editable"
                   ng-if="task.estimation != 0"
+                  ng-click="showEditEstimationModal(task, $event)"
                   uib-tooltip="${message(code: 'is.task.estimation')}">
                 {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
             </span>

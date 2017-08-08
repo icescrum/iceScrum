@@ -656,6 +656,16 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
         if (url.indexOf('/') == 0) {
             url = isSettings.serverUrl + url;
         }
+        _.each(methods, function(method){
+            method.transformRequest = transformRequest;
+            method.then = transformQueryParams;
+            if(method.method == 'post'){
+                method.headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'};
+            }
+            if (method.url && method.url.indexOf('/') == 0) {
+                method.url = isSettings.serverUrl + method.url;
+            }
+        });
         return $resource(url, angular.extend(defaultParams, params), angular.extend(defaultMethods, methods));
     };
 }]);

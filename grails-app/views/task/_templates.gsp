@@ -24,5 +24,4 @@
 <g:render template="/task/templates/task.new" />
 <g:render template="/task/templates/task.details" />
 <g:render template="/task/templates/story.tasks" />
-<g:render template="/task/templates/task.estimation"/>
 <g:render template="/task/templates/story.task.editor" />
