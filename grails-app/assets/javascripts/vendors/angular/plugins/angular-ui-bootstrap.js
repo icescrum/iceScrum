@@ -3785,7 +3785,7 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap', 'ui.bootstrap.p
 
 
           $q.when(animationPromise).then(function() {
-            // Notify {@link $modalStack} that modal is rendered.
+              // Notify {@link $modalStack} that modal is rendered.
             var modal = $modalStack.getTop();
             if (modal) {
               $modalStack.modalRendered(modal.key);
@@ -4251,6 +4251,7 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap', 'ui.bootstrap.p
 
       $modalStack.focusFirstFocusableElement = function(list) {
         if (list.length > 0) {
+
           list[0].focus();
           return true;
         }

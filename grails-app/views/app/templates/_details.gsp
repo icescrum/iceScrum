@@ -53,6 +53,10 @@
                 <img ng-src="{{ screenshot }}">
             </a>
         </div>
+        <div>
+            <em>{{ appDefinition.baseline }}</em>
+            <p class="description" ng-bind-html="appDefinition.description"></p>
+        </div>
     </div>
     <div class="col-md-4">
         <div class="text-center actions">
@@ -91,42 +95,36 @@
                 </a>
             </p>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-8">
-        <em>{{ appDefinition.baseline }}</em>
-        <p class="description" ng-bind-html="appDefinition.description"></p>
-    </div>
-    <div class="col-md-4">
-        <h4>${message(code: 'is.ui.apps.information')}</h4>
-        <table class="table information">
-            <tr>
-                <td class="text-right">${message(code:'is.app.author')}</td>
-                <td><a href="mailto:support@kagilum.com">{{ appDefinition.author }}</a></td>
-            </tr>
-            <tr>
-                <td class="text-right">${message(code:'is.app.version')}</td>
-                <td>{{ appDefinition.version }}</td>
-            </tr>
-            <tr>
-                <td class="text-right">${message(code:'is.app.widgets')}</td>
-                <td>{{ appDefinition.hasWidgets ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
-            </tr>
-            <tr>
-                <td class="text-right">${message(code:'is.app.windows')}</td>
-                <td>{{ appDefinition.hasWindows ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
-            </tr>
-            <tr ng-if="appDefinition.websiteUrl">
-                <td class="text-right"></td>
-                <td>
-                    <a href="{{ appDefinition.websiteUrl }}"
-                       target="_blank">
-                        ${message(code:'is.app.website')}
-                    </a>
-                </td>
-            </tr>
-        </table>
+        <div class="col-md-12">
+            <h4>${message(code: 'is.ui.apps.information')}</h4>
+            <table class="table information">
+                <tr>
+                    <td class="text-right">${message(code:'is.app.author')}</td>
+                    <td><a href="mailto:support@kagilum.com">{{ appDefinition.author }}</a></td>
+                </tr>
+                <tr>
+                    <td class="text-right">${message(code:'is.app.version')}</td>
+                    <td>{{ appDefinition.version }}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">${message(code:'is.app.widgets')}</td>
+                    <td>{{ appDefinition.hasWidgets ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">${message(code:'is.app.windows')}</td>
+                    <td>{{ appDefinition.hasWindows ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
+                </tr>
+                <tr ng-if="appDefinition.websiteUrl">
+                    <td class="text-right"></td>
+                    <td>
+                        <a href="{{ appDefinition.websiteUrl }}"
+                           target="_blank">
+                            ${message(code:'is.app.website')}
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 <div class="row">

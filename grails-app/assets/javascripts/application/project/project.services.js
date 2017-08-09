@@ -21,7 +21,21 @@
  *
  */
 services.factory('Project', ['Resource', function($resource) {
-    return $resource('/project/:id/:action');
+    return $resource('/project/:id/:action',
+        {id: '@id'},
+        {
+            listByUser: {
+                url: '/project/user',
+                isArray: true,
+                params: {},
+                method: 'get'
+            },
+            listByUserAndRole: {
+                url: '/project/user/:userId/:role',
+                isArray: true,
+                method: 'get'
+            }
+        });
 }]);
 
 services.service("ProjectService", ['Project', 'Session', 'FormService', function(Project, Session, FormService) {
@@ -72,7 +86,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
         if (!params) {
             params = {};
         }
-        params.action = 'listByUser';
+        params.action = 'user';
         return Project.get(params).$promise;
     };
     this.getActivities = function(project) {
