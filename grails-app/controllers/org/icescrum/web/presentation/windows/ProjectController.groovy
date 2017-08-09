@@ -37,6 +37,7 @@ import org.icescrum.core.domain.*
 import org.icescrum.core.domain.preferences.ProjectPreferences
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.ServicesUtils
@@ -464,18 +465,47 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def listByUser(String term, Boolean paginate, Integer page, Integer count, Boolean light) {
+    def listByUser(long id, String term, Boolean paginate, Integer page, Integer count, Boolean light) {
+        if(id && id != springSecurityService.principal.id && !request.admin){
+            render(status:403)
+            return
+        }
+        User user = id ? User.get(id) : springSecurityService.currentUser
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def projects = projectService.getAllActiveProjectsByUser(springSecurityService.currentUser, searchTerm)
+        def projects = projectService.getAllActiveProjectsByUser(user, searchTerm)
         if (paginate && !count) {
             count = 10
         }
-        def returnedProjects = projects.drop(page ? (page - 1) * count : 0).take(count)
+        def returnedProjects = !count ? projects : projects.drop(page ? (page - 1) * count : 0).take(count)
         if (light) {
             returnedProjects = returnedProjects.collect { [id: it.id, pkey: it.pkey, name: it.name] }
         }
-        def returnData = paginate ? [projects: returnedProjects, count: projects.size()] : projects
+        def returnData = paginate ? [projects: returnedProjects, count: projects.size()] : returnedProjects
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
+    @Secured(['isAuthenticated()'])
+    def listByUserAndRole(long id, String term, Boolean paginate, Integer page, Integer count, Boolean light, String role) {
+        if(id && id != springSecurityService.principal.id && !request.admin){
+            render(status:403)
+            return
+        }
+        id = id ?: springSecurityService.currentUser.id
+        light = light != null ? light : true
+        switch(role){
+            case 'productOwner':
+                listByRole(id, term, paginate, page, count, light, SecurityService.productOwnerPermissions)
+                break;
+            case 'scrumMaster':
+                listByRole(id, term, paginate, page, count, light, SecurityService.scrumMasterPermissions)
+                break;
+            case 'teamMember':
+                listByRole(id, term, paginate, page, count, light, SecurityService.teamMemberPermissions)
+                break;
+            case 'stakeHolder':
+                listByRole(id, term, paginate, page, count, light, SecurityService.stakeHolderPermissions)
+                break;
+        }
     }
 
     @Secured(['stakeHolder() or inProject()', 'RUN_AS_PERMISSIONS_MANAGER'])
@@ -543,5 +573,19 @@ class ProjectController implements ControllerErrorHandler {
         }
         dummyService.createSampleProject(springSecurityService.currentUser, hidden);
         render(status: 200);
+    }
+
+    private listByRole(long id, String term, Boolean paginate, Integer page, Integer count, Boolean light, def role) {
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def projects = Project.findAllByRole(User.get(id), role, [cache: true], false, false, searchTerm).toList()
+        if (paginate && !count) {
+            count = 10
+        }
+        def returnedProjects = !count ? projects : projects.drop(page ? (page - 1) * count : 0).take(count)
+        if (light) {
+            returnedProjects = returnedProjects.collect { [id: it.id, pkey: it.pkey, name: it.name] }
+        }
+        def returnData = paginate ? [projects: returnedProjects, count: projects.size()] : returnedProjects
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 }

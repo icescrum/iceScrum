@@ -72,6 +72,25 @@ class RestUrlMappings {
             controller = 'project'
             action = [GET: 'index', POST: 'save']
         }
+        // (token must be admin is $id != currentUser.id
+        "/ws/project/user/$id?" {
+            controller = 'project'
+            action = 'listByUser'
+            constraints {
+                id(matches: /\d*/)
+            }
+            method = 'GET'
+        }
+        // (token must be admin is $id != currentUser.id
+        "/ws/project/user/$id/$role" {
+            controller = 'project'
+            action = 'listByUserAndRole'
+            constraints {
+                id(matches: /\d*/)
+                role(inList: ['scrumMaster', 'productOwner', 'stakeHolder', 'teamMember'])
+            }
+            method = 'GET'
+        }
         "/ws/project/$project" {
             controller = 'project'
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']

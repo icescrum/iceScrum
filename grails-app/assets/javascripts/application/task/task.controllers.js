@@ -142,9 +142,6 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
                             $scope.notifySuccess('todo.is.ui.task.updated');
                         });
                     };
-                    $timeout(function() {
-                        angular.element('.modal-dialog .modal-body input:visible:first[autofocus]').focus(); // Hack because UibModal loses focus
-                    }, 500);
                 }]
             });
             if ($event) {

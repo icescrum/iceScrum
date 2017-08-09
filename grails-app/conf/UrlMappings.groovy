@@ -225,17 +225,28 @@ class UrlMappings {
             controller = 'project'
             action = [POST: "save"]
         }
-        "/project/import" {
+        "/project/$action" {
             controller = 'project'
-            action = 'import'
+            constraints {
+                action(inList: ['import', 'importDialog'])
+            }
         }
-        "/project/importDialog" {
+        "/project/user/$id?" {
             controller = 'project'
-            action = 'importDialog'
+            action = 'listByUser'
+            constraints {
+                id(matches: /\d*/)
+            }
         }
-        "/project/edit" {
+        "/project/user/$id/$role" {
             controller = 'project'
-            action = 'edit'
+            action = 'listByUserAndRole'
+            constraints {
+                id(matches: /\d*/)
+                constraints {
+                    role(inList: ['scrumMaster', 'productOwner', 'stakeHolder', 'teamMember'])
+                }
+            }
         }
         "/project/$project/leaveTeam" {
             controller = 'project'

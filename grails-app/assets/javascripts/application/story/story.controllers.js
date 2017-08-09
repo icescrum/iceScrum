@@ -71,7 +71,9 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
         StoryService.follow(story);
     };
     $scope.copy = function(story) {
-        StoryService.copy(story)
+        StoryService.copy(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.copied');
+        });
     };
     $scope['delete'] = function(story) {
         //fake delete
@@ -607,7 +609,9 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
         });
     };
     $scope.copyMultiple = function() {
-        StoryService.copyMultiple(storyListId);
+        StoryService.copyMultiple(storyListId).then(function() {
+            $scope.notifySuccess('todo.is.ui.story.multiple.copied');
+        });
     };
     $scope.updateMultiple = function(updatedFields) {
         StoryService.updateMultiple(storyListId, updatedFields).then(function() {
