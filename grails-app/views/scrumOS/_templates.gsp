@@ -37,6 +37,12 @@
     </is:modal>
     </script>
 
+    <script type="text/ng-template" id="message.modal.html">
+    <is:modal title="${message(code: 'todo.is.ui.message.title')}">
+        <span ng-bind-html="message"></span>
+    </is:modal>
+    </script>
+
     <script type="text/ng-template" id="confirm.dirty.modal.html">
     <is:modal form="saveChanges()"
               button="[[text:message(code: 'todo.is.ui.dirty.confirm.dontsave'), color:'danger', action:'dontSave()']]"
