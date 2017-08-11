@@ -428,15 +428,16 @@ angular.module('isApplication', [
         stateHelperProvider
             .state({
                 name: 'root',
-                url: '/',
+                url: '/?redirectTo',
                 controller: ['$state', 'Session', function($state, Session) {
                     $state.go(Session.defaultView, $state.params, {location: 'replace'});
                 }]
             })
             .state({
                 name: 'home', // should not be acceded directly, called by 'root'
-                templateUrl: 'ui/window/home',
-                controller: 'homeCtrl'
+                controller: 'homeCtrl',
+                params:{ redirectTo:null },
+                templateUrl: 'ui/window/home'
             })
             .state({
                 name: 'userregister',
