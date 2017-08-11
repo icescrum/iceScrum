@@ -430,6 +430,10 @@ angular.module('isApplication', [
                 name: 'root',
                 url: '/?redirectTo',
                 controller: ['$state', 'Session', function($state, Session) {
+                    //restore _HASH_ => #
+                    if($state.params.redirectTo){
+                        $state.params.redirectTo = $state.params.redirectTo.replace('_HASH_','#');
+                    }
                     $state.go(Session.defaultView, $state.params, {location: 'replace'});
                 }]
             })

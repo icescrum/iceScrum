@@ -32,8 +32,8 @@
 <script type="text/javascript">
     function redirectToLogin(){
         setTimeout(function(){
-            //replace # => % to preserve it in the redirect
-            var redirectTo = document.location.href.replace('#', '%');
+            //replace # => _HASH_ to preserve it in the redirect
+            var redirectTo = document.location.href.replace('#', '_HASH_');
             document.location = '${homeUrl}/#/?redirectTo=' + encodeURI(redirectTo);
         }, 3000);
     }
