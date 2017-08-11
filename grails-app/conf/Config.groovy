@@ -163,9 +163,8 @@ icescrum.resourceBundles = [
 ]
 
 icescrum.marshaller = [
-        story: [include: ['testState', 'tags', 'dependences', 'attachments', 'followed', 'countDoneTasks'],
+        story: [include: ['testState', 'tags', 'dependences', 'attachments', 'followed', 'countDoneTasks', 'comments_count'],
                 exclude: ['voters'],
-                includeCount: ['comments'],
                 textile: ['notes'],
                 asShort: ['state', 'effort', 'uid', 'name', 'rank']],
         comment: [textile: ['body'], include: ['poster']],
@@ -175,11 +174,9 @@ icescrum.marshaller = [
         team: [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
         task: [exclude: ['participants'],
                textile: ['notes'],
-               includeCount: ['comments'],
-               include: ['tags', 'attachments', 'sprint']],
+               include: ['tags', 'attachments', 'sprint', 'comments_count']],
         user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'tokens'],
                asShort: ['firstName', 'lastName'],
-               includeCount: ['teams'],
                include: ['admin']],
         actor: [asShort: ['name']],
         feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'attachments', 'inProgressDate', 'doneDate'],
