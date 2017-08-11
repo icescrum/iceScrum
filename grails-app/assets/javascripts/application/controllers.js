@@ -659,8 +659,8 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
         AuthService.login(credentials).then(function(data) {
             if (!$scope.loginCallback) {
                 var lastOpenedUrl = data.url;
-                var normalizedCurrentLocation = window.location.href.charAt(window.location.href.length - 1) == '/' ? window.location.href.substring(0, window.location.href.length - 1) : window.location.href;
-                if (normalizedCurrentLocation == $rootScope.serverUrl && lastOpenedUrl) {
+                var currentLocation = window.location.href.replace($rootScope.serverUrl, "");
+                if (['/', '/#', '/#/', '#/'].indexOf(currentLocation) && lastOpenedUrl) {
                     document.location = lastOpenedUrl;
                 } else {
                     document.location.reload(true);
