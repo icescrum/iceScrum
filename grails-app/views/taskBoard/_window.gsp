@@ -89,8 +89,9 @@
                                 <i class="fa fa-caret-down"></i>
                             </button>
                             <ul uib-dropdown-menu role="menu">
-                                <li role="menuitem" ng-repeat="sprintFilter in sprintFilters">
-                                    <a ng-click="changeSprintFilter(sprintFilter)" href>{{ sprintFilter.name }}</a>
+                                <li role="menuitem" ng-repeat="sprintFilter in sprintFilters" ng-class="{'dropdown-header':sprintFilter.id == 'header', 'divider':sprintFilter.id == 'divider'}">
+                                    <a ng-if="sprintFilter.id != 'header' && sprintFilter.id != 'divider'" ng-click="changeSprintFilter(sprintFilter)" href>{{ ::sprintFilter.name }}</a>
+                                    <span ng-if="sprintFilter.id == 'header'">{{ ::sprintFilter.name }}</span>
                                 </li>
                             </ul>
                         </div>

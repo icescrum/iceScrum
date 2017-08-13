@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'project', 'features', function($scope, $state, $controller, FeatureService, project, features) {
+extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'project', 'features', function($scope, $state, $controller, FeatureService, project, features) {
     // Functions
     $scope.isSelected = function(selectable) {
         if ($state.params.featureId) {
@@ -107,7 +107,7 @@ controllers.controller('featuresCtrl', ['$scope', '$state', '$controller', 'Feat
     $scope.orderByRank();
 }]);
 
-controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, SprintStatesByName, ReleaseStatesByName, project, releases) {
+extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, SprintStatesByName, ReleaseStatesByName, project, releases) {
     $scope.isSelected = function(selectable) {
         if ($state.params.storyId) {
             return $state.params.storyId == selectable.id;
@@ -286,7 +286,7 @@ controllers.controller('planningCtrl', ['$scope', '$state', 'SprintStatesByName'
     };
 }]);
 
-controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'SprintService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'project', 'sprint', 'releases', function($scope, $state, $filter, UserService, StoryService, TaskService, SprintService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, project, sprint, releases) {
+extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserService', 'StoryService', 'TaskService', 'SprintService', 'Session', 'SprintStatesByName', 'StoryStatesByName', 'TaskStatesByName', 'TaskTypesByName', 'project', 'sprint', 'releases', function($scope, $state, $filter, UserService, StoryService, TaskService, SprintService, Session, SprintStatesByName, StoryStatesByName, TaskStatesByName, TaskTypesByName, project, sprint, releases) {
     $scope.viewName = 'taskBoard';
     // Functions
     $scope.isSelected = function(selectable) {
@@ -482,14 +482,19 @@ controllers.controller('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserSer
             }
         }
     };
-    $scope.sprintFilters = [
+    //give capabilities to plugin to register theirs filters;
+    $scope.sprintFilters = $scope.sprintFilters ? $scope.sprintFilters : [];
+    $scope.sprintFilters = $scope.sprintFilters.concat([
         {id: 'allTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.allTasks'), filter: {}},
         {id: 'myTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.myTasks'), filter: {responsible: {id: Session.user.id}}},
         {id: 'freeTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.freeTasks'), filter: {responsible: null}},
         {id: 'blockedTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.blockedTasks'), filter: {blocked: true}}
-    ];
+    ]);
     var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
+    //if saved filter is not available anymore
+    $scope.currentSprintFilter = $scope.currentSprintFilter ? $scope.currentSprintFilter  : 'allTasks';
+
     $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;
     $scope.tasksByTypeByState = {};
