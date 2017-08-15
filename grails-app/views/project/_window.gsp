@@ -56,7 +56,7 @@
                             <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>
                         </div>
                         <div ng-show="currentOrNextSprint.goal">
-                            <strong>${message(code:'todo.is.ui.sprint.goal.label')}</strong> {{ currentOrNextSprint.goal }}
+                            <p><strong>${message(code:'todo.is.ui.sprint.goal.label')}</strong> {{ currentOrNextSprint.goal }}</p>
                         </div>
                     </div>
                 </div>
@@ -154,11 +154,18 @@
                             <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
                             <div class="btn-toolbar pull-right visible-on-hover"
                                  uib-dropdown>
-                                <button class="btn btn-default btn-sm"
-                                        ng-click="saveChart()"
-                                        type="button">
-                                    <i class="fa fa-floppy-o"></i>
-                                </button>
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-sm"
+                                            ng-click="openChartInModal(chartParams)"
+                                            type="button">
+                                        <i class="fa fa-search-plus"></i>
+                                    </button>
+                                    <button class="btn btn-default btn-sm"
+                                            ng-click="saveChart(chartParams)"
+                                            type="button">
+                                        <i class="fa fa-floppy-o"></i>
+                                    </button>
+                                </div>
                                 <button class="btn btn-default btn-sm"
                                         uib-tooltip="${message(code: 'todo.is.ui.charts')}"
                                         type="button"

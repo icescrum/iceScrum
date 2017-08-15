@@ -27,11 +27,11 @@
         <div class="panel-heading">
             <h3 class="panel-title small-title">
                 <div ng-controller="taskCtrl">
-                    <div class="sprints-dropdown pull-left" uib-dropdown>
-                        <div>
-                            <a class="link" href="{{ openSprintUrl(sprint) }}">{{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }} <i class="fa fa-info-circle visible-on-hover"></i></a> <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down" uib-dropdown-toggle></i>
+                    <div class="sprints-dropdown pull-left" uib-dropdown on-toggle="scrollToActiveSprint(open)">
+                        <div class="active">
+                            <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a> <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down" uib-dropdown-toggle></i>
                             <div class="sub-title text-muted" uib-dropdown-toggle>
-                                <i class="fa fa-calendar"></i> <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                                 <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                                  <span class="sprint-numbers">
                                     <span ng-if="sprint.state > sprintStatesByName.TODO"
                                           uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
@@ -48,10 +48,11 @@
                                 ng-switch="sprintEntry.type"
                                 ng-class="{'divider': 'divider', 'release': 'dropdown-header'}[sprintEntry.type]">
                                 <a ng-switch-when="sprint"
+                                    ng-class="{'active': sprintEntry.item.id == sprint.id}"
                                     href="{{ openSprintUrl(sprintEntry.item, true) }}">
-                                    <span ng-class="{'strong': sprintEntry.item.id == sprint.id}">{{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}</span>
+                                    <i class="fa fa-tasks"></i> {{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}
                                     <div class="sub-title text-muted">
-                                        <i class="fa fa-calendar"></i> {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-angle-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
+                                        {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-angle-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
                                     </div>
                                 </a>
                                 <span ng-switch-when="release">
@@ -100,11 +101,15 @@
                             <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                             <div class="btn-group" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                                    <i class="fa fa-caret-down"></i>
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                             </div>
                         </div>
+                        <a class="btn btn-default" href="{{ openSprintUrl(sprint) }}"
+                           uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                            <i class="fa fa-pencil"></i>
+                        </a>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -209,7 +214,7 @@
                                              uib-dropdown
                                              dropdown-append-to-body="true">
                                             <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                                <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                                                <i class="fa fa-caret-down"></i>
                                             </button>
                                             <ul uib-dropdown-menu>
                                                 <li>

@@ -39,10 +39,19 @@ class ProjectUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
-        // Scrum OS & generic
+        // Window in project context
         "/p/$project/ui/window/$windowDefinitionId" {
-            controller = 'scrumOS'
-            action = 'window'
+            controller = 'window'
+            action = 'show'
+            constraints {
+                windowDefinitionId(matches: /[a-zA-Z]*/)
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
+        // Window settings in project context
+        "/p/$project/ui/window/$windowDefinitionId/settings" {
+            controller = 'window'
+            action = [GET:"settings", POST:"updateSettings"]
             constraints {
                 windowDefinitionId(matches: /[a-zA-Z]*/)
                 project(matches: /[0-9A-Z]*/)

@@ -37,7 +37,7 @@
                             <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true"></shortcut-menu>
                             <div class="btn-group btn-group-sm" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                                    <i class="fa fa-caret-down"></i>
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'story'" template-url="item.menu.html"></ul>
                             </div>

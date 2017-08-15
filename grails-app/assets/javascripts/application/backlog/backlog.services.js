@@ -21,13 +21,13 @@
  *
  */
 services.factory('Backlog', ['Resource', function($resource) {
-    return $resource('backlog/:id');
+    return $resource('/p/:projectId/backlog/:id/:action');
 }]);
 
-services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryService', 'BacklogCodes', function(Backlog, $q, CacheService, StoryService, BacklogCodes) {
-    this.list = function() {
+services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryService', 'BacklogCodes', 'FormService', function(Backlog, $q, CacheService, StoryService, BacklogCodes, FormService) {
+    this.list = function(project) {
         var cachedBacklogs = CacheService.getCache('backlog');
-        return _.isEmpty(cachedBacklogs) ? Backlog.query({}, function(backlogs) {
+        return _.isEmpty(cachedBacklogs) ? Backlog.query({projectId:project.id}, function(backlogs) {
             _.each(backlogs, function(backlog) {
                 CacheService.addOrUpdate('backlog', backlog);
             });
@@ -47,5 +47,8 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryServi
     this.filterStories = function(backlog, stories) {
         var storyFilter = JSON.parse(backlog.filter).story;
         return StoryService.filterStories(stories, storyFilter);
+    };
+    this.openChart = function(backlog, project, chart) {
+        return FormService.httpGet(isSettings.serverUrl + '/p/'+project.id+'/backlog/'+backlog.id+'/'+'chartByProperty?property='+ chart);
     };
 }]);

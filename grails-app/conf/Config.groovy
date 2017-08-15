@@ -119,10 +119,23 @@ icescrum.resourceBundles = [
                 (Story.STATE_INPROGRESS): 'is.story.state.inprogress',
                 (Story.STATE_DONE): 'is.story.state.done'
         ],
+        storyStatesColor: [
+                (Story.STATE_SUGGESTED):    '#AAAAAA',
+                (Story.STATE_ACCEPTED):     '#FFCC04',
+                (Story.STATE_ESTIMATED):    '#FF9933',
+                (Story.STATE_PLANNED):      '#CC3300',
+                (Story.STATE_INPROGRESS):   '#42A9E0',
+                (Story.STATE_DONE):         '#009900'
+        ],
         storyTypes: [
                 (Story.TYPE_USER_STORY): 'is.story.type.story',
                 (Story.TYPE_DEFECT): 'is.story.type.defect',
                 (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
+        ],
+        storyTypesColor: [
+                (Story.TYPE_USER_STORY):        '#35aa47',
+                (Story.TYPE_DEFECT):            '#d84a38',
+                (Story.TYPE_TECHNICAL_STORY):   '#5bc0de'
         ],
         releaseStates: [
                 (Release.STATE_WAIT): 'is.release.state.wait',

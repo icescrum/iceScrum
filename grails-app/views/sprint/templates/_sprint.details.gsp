@@ -32,7 +32,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                {{ release.name + ' - ' + (sprint | sprintName) }}
+                <i class="fa fa-tasks"></i> {{ release.name + ' - ' + (sprint | sprintName) }}
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
@@ -78,7 +78,7 @@
                     <shortcut-menu ng-model="sprint" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                            <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                     </div>
@@ -152,6 +152,18 @@
                     <div uib-dropdown
                          ng-controller="projectChartCtrl"
                          class="pull-right">
+                        <div class="btn-group visible-on-hover">
+                            <button class="btn btn-default btn-sm"
+                                    ng-click="openChartInModal(chartParams)"
+                                    type="button">
+                                <i class="fa fa-search-plus"></i>
+                            </button>
+                            <button class="btn btn-default btn-sm"
+                                    ng-click="saveChart(chartParams)"
+                                    type="button">
+                                <i class="fa fa-floppy-o"></i>
+                            </button>
+                        </div>
                         <button class="btn btn-default btn-sm"
                                 uib-tooltip="${message(code:'todo.is.ui.charts')}"
                                 type="button"

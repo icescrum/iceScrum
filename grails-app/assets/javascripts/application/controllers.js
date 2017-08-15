@@ -455,7 +455,7 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
     $scope.menuSortableOptions = {
         itemMoved: menuSortableChange,
         orderChanged: menuSortableChange,
-        containment: '#header',
+        containment: 'header',
         accept: function(sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         },

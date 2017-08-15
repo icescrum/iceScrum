@@ -72,49 +72,6 @@ class ScrumOSController implements ControllerErrorHandler {
         attrs
     }
 
-    def window(String windowDefinitionId) {
-        if (!windowDefinitionId) {
-            returnError(code: 'is.error.no.window')
-            return
-        }
-        def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
-        if (windowDefinition) {
-            if (!ApplicationSupport.isAllowed(windowDefinition, params)) {
-                if (springSecurityService.isLoggedIn()) {
-                    render(status: 403)
-                } else {
-                    render(status: 401, contentType: 'application/json', text: [] as JSON)
-                }
-                return
-            }
-
-            def context = windowDefinition.context ? ApplicationSupport.getCurrentContext(params, windowDefinition.context) : null
-            def _continue = true
-            if (windowDefinition.before) {
-                windowDefinition.before.delegate = delegate
-                windowDefinition.before.resolveStrategy = Closure.DELEGATE_FIRST
-                _continue = windowDefinition.before(context?.object)
-            }
-
-            if (!_continue) {
-                render(status: 404)
-            } else {
-                def model = [windowDefinition: windowDefinition]
-                if (context) {
-                    model[context.name] = context.object
-                    model['contextScope'] = context.contextScope
-                }
-                if (ApplicationSupport.controllerExist(windowDefinition.id, "window")) {
-                    forward(action: 'window', controller: windowDefinition.id, model: model)
-                } else {
-                    render(plugin: windowDefinition.pluginName, template: "/${windowDefinition.id}/window", model: model)
-                }
-            }
-        } else {
-            render(status: 404)
-        }
-    }
-
     def about() {
         def aboutFile = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about.xml")
         render(status: 200, template: "about/index", model: [server        : servletContext.getServerInfo(),

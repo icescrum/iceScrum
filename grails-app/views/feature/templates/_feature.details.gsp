@@ -32,7 +32,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span><strong>{{ ::feature.uid }}</strong>&nbsp;<span class="item-name">{{ feature.name }}</span></span>
+                <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <strong>{{ ::feature.uid }}</strong>&nbsp;<span class="item-name">{{ feature.name }}</span>
                 <entry:point id="feature-details-left-title"/>
             </div>
             <div class="right-title">
@@ -61,7 +61,7 @@
                     <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                            <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" template-url="item.menu.html" ng-init="itemType = 'feature'"></ul>
                     </div>

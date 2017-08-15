@@ -32,7 +32,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <strong>{{ ::story.uid }}</strong><span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                <i class="fa fa-sticky-note" ng-style="{color: story.feature ? story.feature.color : '#f9f157'}"></i> <strong>{{ ::story.uid }}</strong><span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                       ng-click="follow(story)">
                     <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
                 </span>
@@ -69,7 +69,7 @@
                     <shortcut-menu ng-model="story" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                            <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'story'" template-url="item.menu.html"></ul>
                     </div>
@@ -79,7 +79,7 @@
         <visual-states ng-model="story" model-states="storyStatesByName"/>
         <entry:point id="story-details-before-tabs"/>
     </div>
-    <ul class="nav nav-tabs nav-justified visible-lg-block">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified visible-lg-block">
         <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
@@ -91,16 +91,10 @@
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'comments'}">
-            <a href="{{ tabUrl('comments') }}">
-                <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code:'todo.is.ui.comments')}
-                <span class="badge">{{ story.comments_count || '' }}</span>
-            </a>
+            <a href="{{ tabUrl('comments') }}"><i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> {{ story.comments_count || '' }} ${message(code:'todo.is.ui.comments')}</a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tasks'}">
-            <a href="{{ tabUrl('tasks') }}">
-                <i class="fa fa-lg fa-tasks"></i> ${message(code:'todo.is.ui.tasks')}
-                <span class="badge">{{ story.tasks_count || '' }}</span>
-            </a>
+            <a href="{{ tabUrl('tasks') }}"><i class="fa fa-lg fa-tasks"></i> {{ story.tasks_count || '' }} ${message(code:'todo.is.ui.tasks')}</a>
         </li>
         <li role="presentation" class="dropdown display-on-hover">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -109,15 +103,14 @@
             <ul class="dropdown-menu dropdown-more dropdown-menu-right">
                 <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tests'}">
                     <a href="{{ tabUrl('tests') }}">
-                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code:'todo.is.ui.acceptanceTests')}
-                        <span class="badge">{{ story.acceptanceTests_count || '' }}</span>
+                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> {{ story.acceptanceTests_count || '' }} ${message(code:'todo.is.ui.acceptanceTests')}
                     </a>
                 </li>
                 <entry:point id="story-details-tab-button"/>
             </ul>
         </li>
     </ul>
-    <ul class="nav nav-tabs nav-justified visible-md-block">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified visible-md-block">
         <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
@@ -130,8 +123,7 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'comments'}">
             <a href="{{ tabUrl('comments') }}">
-                <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code:'todo.is.ui.comments')}
-                <span class="badge">{{ story.comments_count || '' }}</span>
+                <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> {{ story.comments_count || '' }} ${message(code:'todo.is.ui.comments')}
             </a>
         </li>
         <li role="presentation" class="dropdown display-on-hover">
@@ -141,21 +133,19 @@
             <ul class="dropdown-menu dropdown-more dropdown-menu-right">
                 <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tasks'}">
                     <a href="{{ tabUrl('tasks') }}">
-                        <i class="fa fa-lg fa-tasks"></i> ${message(code:'todo.is.ui.tasks')}
-                        <span class="badge">{{ story.tasks_count || '' }}</span>
+                        <i class="fa fa-lg fa-tasks"></i> {{ story.tasks_count || '' }} ${message(code:'todo.is.ui.tasks')}
                     </a>
                 </li>
                 <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tests'}">
                     <a href="{{ tabUrl('tests') }}">
-                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code:'todo.is.ui.acceptanceTests')}
-                        <span class="badge">{{ story.acceptanceTests_count || '' }}</span>
+                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> {{ story.acceptanceTests_count || '' }} ${message(code:'todo.is.ui.acceptanceTests')}
                     </a>
                 </li>
                 <entry:point id="story-details-tab-button"/>
             </ul>
         </li>
     </ul>
-    <ul class="nav nav-tabs nav-justified visible-sm-block">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified visible-sm-block">
         <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
@@ -173,27 +163,24 @@
             <ul class="dropdown-menu dropdown-more dropdown-menu-right">
                 <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'comments'}">
                     <a href="{{ tabUrl('comments') }}">
-                        <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code:'todo.is.ui.comments')}
-                        <span class="badge">{{ story.comments_count || '' }}</span>
+                        <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>{{ story.comments_count || '' }} ${message(code:'todo.is.ui.comments')}
                     </a>
                 </li>
                 <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tasks'}">
                     <a href="{{ tabUrl('tasks') }}">
-                        <i class="fa fa-lg fa-tasks"></i> ${message(code:'todo.is.ui.tasks')}
-                        <span class="badge">{{ story.tasks_count || '' }}</span>
+                        <i class="fa fa-lg fa-tasks"></i>{{ story.tasks_count || '' }} ${message(code:'todo.is.ui.tasks')}
                     </a>
                 </li>
                 <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tests'}">
                     <a href="{{ tabUrl('tests') }}">
-                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code:'todo.is.ui.acceptanceTests')}
-                        <span class="badge">{{ story.acceptanceTests_count || '' }}</span>
+                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>{{ story.acceptanceTests_count || '' }} ${message(code:'todo.is.ui.acceptanceTests')}
                     </a>
                 </li>
                 <entry:point id="story-details-tab-button"/>
             </ul>
         </li>
     </ul>
-    <ul class="nav nav-tabs nav-justified visible-xs-block">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified visible-xs-block">
         <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
@@ -206,14 +193,12 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'comments'}">
             <a href="{{ tabUrl('comments') }}">
-                <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code:'todo.is.ui.comments')}
-                <span class="badge">{{ story.comments_count || '' }}</span>
+                <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>{{ story.comments_count || '' }} ${message(code:'todo.is.ui.comments')}
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tasks'}">
             <a href="{{ tabUrl('tasks') }}">
-                <i class="fa fa-lg fa-tasks"></i> ${message(code:'todo.is.ui.tasks')}
-                <span class="badge">{{ story.tasks_count || '' }}</span>
+                <i class="fa fa-lg fa-tasks"></i>{{ story.tasks_count || '' }} ${message(code:'todo.is.ui.tasks')}
             </a>
         </li>
         <li role="presentation" class="dropdown display-on-hover">
@@ -224,7 +209,6 @@
                 <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tests'}">
                     <a href="{{ tabUrl('tests') }}">
                         <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code:'todo.is.ui.acceptanceTests')}
-                        <span class="badge">{{ story.acceptanceTests_count || '' }}</span>
                     </a>
                 </li>
                 <entry:point id="story-details-tab-button"/>

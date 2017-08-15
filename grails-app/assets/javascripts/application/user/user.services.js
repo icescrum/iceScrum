@@ -45,7 +45,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     };
     this.update = function(user) {
         user.class = 'user';
-        return user.$update(user);
+        return user.$update();
     };
     this.save = function(user) {
         user.class = 'user';

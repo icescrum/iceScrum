@@ -24,6 +24,7 @@
 <form ng-submit="save(editableComment, selected)"
       name="formHolder.commentForm"
       class="form-editable form-editing"
+      ng-class="{'form-not-expanded': !formHolder.formExpanded}"
       show-validation
       novalidate>
     <div class="form-group">
@@ -31,7 +32,8 @@
                   ng-maxlength="5000"
                   name="body"
                   is-markitup
-                  ng-blur="showCommentBodyTextarea = false"
+                  ng-focus="formHolder.formExpanded = true;"
+                  ng-blur="showCommentBodyTextarea = false; formHolder.formExpanded = editableComment.body;"
                   ng-model="editableComment.body"
                   class="form-control"
                   is-model-html="editableComment.body_html"

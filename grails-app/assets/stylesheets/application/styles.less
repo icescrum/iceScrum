@@ -145,8 +145,10 @@ table {
   }
   + .markitup-preview {
     overflow: auto;
-    min-height: @min-height-textarea;
-    max-height: @max-height-textarea;
+    &:not(.no-fixed-height){
+      min-height: @min-height-textarea;
+      max-height: @max-height-textarea;
+    }
     background: @body-bg;
     color: #555;
     border: 1px solid rgb(217, 217, 217);
@@ -303,19 +305,21 @@ i.small-icon {
     }
   }
   .add-widget {
-    opacity: 0.2;
-    padding: 10px;
+    position: fixed;
+    bottom:30px;
+    right:30px;
+    opacity: 0.5;
     text-align: center;
-    border: 1px solid @view-bg;
     &:hover {
       opacity: 1;
-      background: @body-bg;
-      border-color: @panel-default-border;
+    }
+    .btn {
+      padding:10px 15px;
     }
   }
 }
 
-.content {
+.content, [ui-view="details"] {
   .visible-on-hover {
     opacity: 0;
     transition: opacity 0.3s ease 0s;
@@ -325,13 +329,13 @@ i.small-icon {
       opacity: 1;
     }
     .panel-light {
-      > .panel-heading {
+      > .panel-heading, > div > .panel-heading {
         .visible-on-hover {
           opacity: 0;
         }
       }
       &:hover {
-        > .panel-heading {
+        > .panel-heading, > div > .panel-heading {
           .visible-on-hover {
             opacity: 1;
           }
@@ -982,11 +986,6 @@ nvd3 .title {
   margin: 0;
 }
 
-// That's ugly & I like it (or not...)
-.strong {
-  font-weight: bold;
-}
-
 .sprint-not-done tbody.story-done {
   tr.postits {
     opacity: 0.6;
@@ -1033,19 +1032,25 @@ tbody.story-ghost {
   position: sticky;
 }
 
-.btn.pin {
-  &:hover {
-    i:before {
-      content: "\f192";
+i.fa-pinned, i.fa-pin {
+  &.fa-border {
+    padding: .2em .25em .25em;
+    border:solid 0.15em transparent;
+  }
+}
+
+i.fa-pin {
+  &.fa-border {
+    border:solid 0.15em transparent;
+    &:hover {
+      border-color:#666;
     }
   }
-  i {
-    &:before {
-      content: "\f10c";
-    }
-    &.pinned:before {
-      content: "\f192";
-    }
+}
+
+i.fa-pinned {
+  &.fa-border {
+    border-color:@brand-primary;
   }
 }
 
@@ -1198,6 +1203,9 @@ a.link {
   &:hover {
     color:@brand-primary;
     text-decoration: none;
+    .fa-border {
+      border-color:@brand-primary;
+    }
   }
 }
 
@@ -1212,9 +1220,6 @@ a.link {
 .bulk-selection-enabled {
   text-align: center;
   padding: 3px;
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-top: 4px;
   &.no-margin {
     margin-left:0;
     margin-right:0;
@@ -1247,6 +1252,12 @@ a.link {
   }
 }
 
+.sprints-menu {
+  .active, .active > .text-muted  {
+    color:@brand-primary;
+  }
+}
+
 .rich-content {
   > img, p > img {
     .img-responsive();
@@ -1261,4 +1272,9 @@ a.link {
   .featured.enabled::after {
     border-color: @brand-primary @brand-primary transparent transparent;
   }
+}
+
+.backlogCharts .nvd3.nv-pie .nv-pie-title {
+  font-size: 60px;
+  fill: #333;
 }

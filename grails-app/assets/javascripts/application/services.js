@@ -372,6 +372,7 @@ services.service('CacheService', ['$injector', function($injector) {
         }
     };
     this.addOrUpdate = function(cacheName, itemFromServer) {
+        //important
         var cachedItem = self.get(cacheName, itemFromServer.id);
         var oldItem = _.cloneDeep(cachedItem);
         var newItem;
@@ -389,13 +390,13 @@ services.service('CacheService', ['$injector', function($injector) {
         }
     };
     this.get = function(cacheName, id) {
-        return _.find(self.getCache(cacheName), {id: parseInt(id)});
+        return _.find(self.getCache(cacheName), {id: angular.isNumber(id) ? parseInt(id) : id});
     };
     this.remove = function(cacheName, id) {
         var cachedItem = self.get(cacheName, id);
         if (cachedItem) {
             $injector.get('SyncService').sync(cacheName, cachedItem, null);
-            _.remove(self.getCache(cacheName), {id: parseInt(id)});
+            _.remove(self.getCache(cacheName), {id: angular.isNumber(id) ? parseInt(id) : id});
         }
     };
 }]);

@@ -24,11 +24,12 @@
 <script type="text/ng-template" id="story.acceptanceTest.editor.html">
 <form ng-submit="save(editableAcceptanceTest, selected)"
       name="formHolder.acceptanceTestForm"
-        class="form-editable form-editing"
+      class="form-editable form-editing"
+      ng-class="{'form-not-expanded': !formHolder.formExpanded}"
       show-validation
       novalidate>
     <div class="clearfix no-padding">
-        <div class="col-sm-8 form-group">
+        <div class="form-group" ng-class="{'col-sm-12': !formHolder.formExpanded, 'col-sm-8': formHolder.formExpanded}">
             <div class="input-group">
                 <span class="input-group-addon no-style"><strong>42</strong></span>
                 <input required
@@ -36,12 +37,12 @@
                        ng-maxlength="255"
                        name="name"
                        ng-model="editableAcceptanceTest.name"
-                       autofocus
+                       ng-focus="formHolder.formExpanded = true;"
                        class="form-control"
-                       placeholder="${message(code: 'is.ui.backlogelement.noname')}">
+                       placeholder="${message(code: 'is.acceptanceTest')}">
             </div>
         </div>
-        <div class="col-sm-4 form-group">
+        <div class="col-sm-4 form-group hidden-not-expanded">
             <ui-select class="form-control"
                        name="state"
                        ng-model="editableAcceptanceTest.state"
@@ -55,7 +56,7 @@
             </ui-select>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group hidden-not-expanded">
         <textarea is-markitup
                   class="form-control"
                   ng-maxlength="1000"
@@ -63,7 +64,6 @@
                   ng-model="editableAcceptanceTest.description"
                   is-model-html="editableAcceptanceTest.description_html"
                   ng-show="showAcceptanceTestDescriptionTextarea"
-                  ng-blur="blurAcceptanceTestDescription()"
                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
         <div class="markitup-preview"
              ng-show="!showAcceptanceTestDescriptionTextarea"
@@ -71,9 +71,14 @@
              ng-focus="focusAcceptanceTestDescription()"
              ng-class="{'placeholder': !editableAcceptanceTest.description_html}"
              tabindex="0"
-             ng-bind-html="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>'"></div>
+             ng-bind-html="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.backlogelement.description')}</p>'"></div>
     </div>
     <div class="btn-toolbar">
+        <button class="btn btn-default pull-right"
+                ng-click="formHolder.formExpanded = false;"
+                type="button">
+            ${message(code:'is.button.cancel')}
+        </button>
         <button class="btn btn-primary pull-right"
                 ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid"
                 type="submit">

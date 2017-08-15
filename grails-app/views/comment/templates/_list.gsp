@@ -74,7 +74,7 @@
                                   is-model-html="editableComment.body_html"
                                   ng-show="showCommentBodyTextarea"
                                   class="form-control"></textarea>
-                        <div class="markitup-preview important"
+                        <div class="markitup-preview no-fixed-height"
                              ng-show="!showCommentBodyTextarea"
                              ng-click="editForm(true); showCommentBodyTextarea = true"
                              ng-focus="editForm(true); showCommentBodyTextarea = true"

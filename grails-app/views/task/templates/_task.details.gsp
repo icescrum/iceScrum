@@ -32,7 +32,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <span><strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name">{{ task.name }}</span></span>
+                <i class="fa fa-file" ng-style="{color: task.color }"></i> <strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name">{{ task.name }}</span>
                 <div style="margin-top:10px">
                     <entry:point id="task-details-left-title"/>
                 </div>
@@ -70,7 +70,7 @@
                     <shortcut-menu ng-model="task" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                            <i class="fa fa-caret-down"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
                     </div>
@@ -79,7 +79,7 @@
         </h3>
         <visual-states ng-model="task" model-states="taskStatesByName"/>
     </div>
-    <ul class="nav nav-tabs nav-justified">
+    <ul class="nav nav-tabs nav-justified  nav-tabs-is">
         <li role="presentation" ng-class="{'active':!$state.params.taskTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
@@ -92,8 +92,7 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'comments'}">
             <a href="{{ tabUrl('comments') }}">
-                <i class="fa fa-lg" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code: 'todo.is.ui.comments')}
-                <span class="badge">{{ task.comments_count || '' }}</span>
+                <i class="fa fa-lg" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> {{ task.comments_count || '' }} ${message(code: 'todo.is.ui.comments')}
             </a>
         </li>
         <entry:point id="task-details-tab-button"/>

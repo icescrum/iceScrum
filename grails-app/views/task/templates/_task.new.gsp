@@ -24,8 +24,7 @@
 <div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <i class="fa fa-sticky-note" style="color: #f9f157"></i>
-            ${message(code: 'todo.is.ui.task.new')}
+            <i class="fa fa-file" ng-style="{color: task.color ? task.color : '#f9f157' }"></i> ${message(code: 'todo.is.ui.task.new')}
             <a class="pull-right btn btn-default"
                href="{{:: $state.href('^.^') }}"
                uib-tooltip="${message(code: 'is.ui.window.closeable')}">

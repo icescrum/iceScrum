@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('chartCtrl', ['$scope', '$element', '$filter', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', function($scope, $element, $filter, Session, ProjectService, SprintService, ReleaseService) {
+extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($scope, $element, $filter, $uibModal, Session, ProjectService, SprintService, ReleaseService, BacklogService) {
     $scope.defaultOptions = {
         chart: {
             height: 350
@@ -40,6 +40,9 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', 'Session', '
         },
         sprint: function(chartName, item) {
             return SprintService.openChart(item, $scope.project ? $scope.project : Session.getProject(), chartName);
+        },
+        backlog: function(chartName, item) {
+            return BacklogService.openChart(item, $scope.project ? $scope.project : Session.getProject(), chartName);
         }
     };
     $scope.chartOptions = {
@@ -129,10 +132,35 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', 'Session', '
                     }
                 }
             }
+        },
+        backlog: {
+            default: {
+                chart: {
+                    type: 'pieChart',
+                    donut: true,
+                    height: 250,
+                    x: function(entry) { return entry[0]; },
+                    y: function(entry) { return entry[1]; },
+                    showLabels: true,
+                    duration: 500,
+                    showLegend: false,
+                    margin : {
+                        top: 0,
+                        right: 0,
+                        bottom: 0,
+                        left: 0
+                    }
+                }
+            }
         }
     };
     $scope.openChart = function(itemType, chartName, item) {
         $scope.cleanData();
+        $scope.chartParams = {
+            item:item,
+            itemType:itemType,
+            chartName:chartName
+        };
         $scope.options = _.merge({}, $scope.defaultOptions, $scope.chartOptions[itemType]['default'], $scope.chartOptions[itemType][chartName] ? $scope.chartOptions[itemType][chartName] : {});
         $scope.chartLoaders[itemType](chartName, item).then(function(chart) {
             $scope.data = chart.data;
@@ -145,11 +173,52 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', 'Session', '
             }
         });
     };
-    $scope.saveChart = function() {
+    $scope.processSaveChart = function() {
         var title = $element.find('.title.h4');
-        saveChartAsPng($element.find('svg')[0], {}, title[0], function(imageBase64) {
+        saveChartAsPng($element.find('svg')[0], {}, title[0], function (imageBase64) {
             // Server side "attachment" content type is needed because the a.download HTML5 feature is not supported in crappy browsers (safari & co).
             jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': title.text()});
+        });
+    };
+
+    $scope.openChartInModal = function(chartParams) {
+        $uibModal.open({
+            templateUrl: 'chart.modal.html',
+            size: 'wide',
+            controller: ["$scope", "$controller", "hotkeys", "$window", function($scope, $controller, hotkeys, $window) {
+                $element = angular.element('.modal-wide');
+                $controller('chartCtrl', {$scope: $scope, $element: $element});
+                $scope.defaultOptions.chart.height = ($window.innerHeight * 75 / 100);
+                $scope.openChart(chartParams.itemType, chartParams.chartName, chartParams.item);
+                $scope.submit = function() {
+                    $scope.$close(true);
+                };
+                // Required because there is not input so the form cannot be submitted by "return"
+                hotkeys.bindTo($scope).add({
+                    combo: 'return',
+                    callback: function(event) {
+                        event.preventDefault(); // Prevents propagation of click to unwanted places
+                        $scope.submit();
+                    }
+                });
+            }]
+        });
+    };
+    $scope.saveChart = function(chartParams) {
+        $uibModal.open({
+            templateUrl: 'chart.modal.html',
+            size: 'chart invisible',
+            controller: ["$scope", "$controller", "$window", "$timeout", function($scope, $controller, $window, $timeout) {
+                $timeout(function(){
+                    angular.element('body').addClass('process-chart');
+                    $element = angular.element('.modal-chart');
+                    $controller('chartCtrl', {$scope: $scope, $element: $element});
+                    $scope.defaultOptions.chart.width = 1600;
+                    $scope.defaultOptions.chart.height = 800;
+                    $scope.openChart(chartParams.itemType, chartParams.chartName, chartParams.item);
+                    $timeout(function() { $scope.processSaveChart(); $scope.$close(true); }, 500);
+                }, 500);
+            }]
         });
     };
     $scope.cleanData = function() {

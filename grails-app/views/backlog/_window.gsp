@@ -22,76 +22,59 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div class="backlogs-list">
-        <div class="btn-toolbar pull-left">
-            <div class="btn-group hidden-xs hidden-sm" ng-repeat="availableBacklog in availableBacklogs">
-                <a class="btn btn-default btn-backlog pin"
-                   href="{{ togglePinBacklogUrl(availableBacklog) }}"
-                   ng-class="{'shown': isShown(availableBacklog)}"
-                   tooltip-placement="right"
-                   uib-tooltip="{{ isPinned(availableBacklog) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}">
-                    <i class="fa" ng-class="{'pinned': isPinned(availableBacklog)}"></i>
+    <div class="backlogs-list" ng-controller="backlogsListMenuCtrl" ng-init="initialize(availableBacklogs)">
+        <ul class="nav nav-tabs nav-tabs-is clearfix" as-sortable="backlogsListSortableOptions" ng-model="backlogsList">
+            <li as-sortable-item role="presentation" ng-repeat="backlog in backlogsList" ng-class="{'active': isShown(backlog)}">
+                <a href="{{ toggleBacklogUrl(backlog) }}" ng-click="clickOnBacklogHref($event)">
+                    <i as-sortable-item-handle
+                       class="fa fa-lg fa-border fa-inbox"
+                       tooltip-placement="right"
+                       uib-tooltip="{{ isPinned(backlog) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
+                       style="margin-right:3px;" href="{{ togglePinBacklogUrl(backlog) }}"
+                       ng-class="{'fa-pinned':isPinned(backlog), 'fa-pin':!isPinned(backlog)}"></i>
+                    <span as-sortable-item-handle>{{ backlog | backlogName }} ({{ backlog.count }})</span>
                 </a>
-                <a class="btn btn-default btn-backlog"
-                   href="{{ toggleBacklogUrl(availableBacklog) }}"
-                   ng-class="{'shown': isShown(availableBacklog)}">
-                    {{ availableBacklog | backlogName }}
-                    <span class="badge">{{ availableBacklog.count }}</span>
-                </a>
-            </div>
-            <div class="btn-group hidden-md hidden-lg">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 {{ backlogContainers[0].backlog | backlogName }} <span class="badge">{{ backlogContainers[0].backlog.count }} </span><span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li ng-repeat="availableBacklog in availableBacklogs">
-                        <a  href="{{ toggleBacklogUrl(availableBacklog) }}">
-                            {{ availableBacklog | backlogName }}
-                            <span class="badge">{{ availableBacklog.count }}</span>
-                        </a>
-                </ul>
-            </div>
+            </li>
             <entry:point id="backlog-window-toolbar"/>
-        </div>
-        <div class="btn-toolbar pull-right">
-            <div class="btn-group">
-                <button type="button"
-                        class="btn btn-default hidden-xs hidden-sm"
-                        uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group size-l') }}"></i>
-                </button>
-                <button type="button"
-                        class="btn btn-default hidden-xs"
-                        uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
-                        ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
-                </button>
+            <div class="btn-toolbar pull-right">
+                <div class="btn-group">
+                    <button type="button"
+                            class="btn btn-default hidden-xs hidden-sm"
+                            uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group size-l') }}"></i>
+                    </button>
+                    <button type="button"
+                            class="btn btn-default hidden-xs"
+                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                            ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
+                    </button>
+                </div>
+                <div class="btn-group hidden-xs">
+                    <button type="button"
+                            class="btn btn-default"
+                            ng-click="toggleSelectableMultiple()"
+                            uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
+                        <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
+                    </button>
+                </div>
+                <a ng-if="authorizedStory('create')"
+                   href="#/{{ ::viewName }}/sandbox/story/new"
+                   ng-class="{ 'pull-right': backlogContainers.length == 1 }"
+                   class="btn btn-primary"><i class="visible-xs fa fa-plus"></i><span class="hidden-xs">${message(code: "todo.is.ui.story.new")}</span></a>
+                <entry:point id="backlog-window-toolbar-right"/>
             </div>
-            <div class="btn-group hidden-xs">
-                <button type="button"
-                        class="btn btn-default"
-                        ng-click="toggleSelectableMultiple()"
-                        uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
-                    <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
-                </button>
-            </div>
-            <entry:point id="backlog-window-toolbar-right"/>
-            <a ng-if="authorizedStory('create')"
-               href="#/{{ ::viewName }}/sandbox/story/new"
-               class="btn btn-primary"><i class="visible-xs fa fa-plus"></i><span class="hidden-xs">${message(code: "todo.is.ui.story.new")}</span></a>
-        </div>
-        <div class="clearfix"></div>
-        <hr>
-        <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
+        </ul>
     </div>
+    <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
     <div class="backlogs-list-details" selectable="selectableOptions">
         <div class="panel panel-light" ng-repeat="backlogContainer in backlogContainers">
             <div class="panel-heading">
-                <h3 class="panel-title small-title">
-                    <span class="title">{{ backlogContainer.backlog | backlogName }}</span>
-                    <entry:point id="backlog-list-details-heading"/>
-                    <div class="btn-toolbar pull-right">
-                        <entry:point id="backlog-list-details-heading-right"/>
+                <h3 class="panel-title small-title clearfix">
+                    <span class="title pull-left"><a href="{{ openBacklogUrl(backlogContainer.backlog) }}" class="link"><i class="fa fa-inbox"></i> {{ backlogContainer.backlog | backlogName }}</a></span>
+                    <div class="btn-toolbar pull-left">
+                        <entry:point id="backlog-list-toolbar-left"/>
                         <div class="btn-group">
+                        <entry:point id="backlog-list-toolbar-group-left"/>
                             <button type="button"
                                     ng-if="backlogContainer.sortable"
                                     class="btn btn-default hidden-xs"
@@ -118,6 +101,7 @@
                                     uib-tooltip="${message(code:'todo.is.ui.order')}">
                                 <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                             </button>
+                            <entry:point id="backlog-list-toolbar-group-right"/>
                         </div>
                         <div class="btn-group hidden-xs" uib-dropdown>
                             <button type="button"
@@ -144,7 +128,15 @@
                                     </li>
                                 </g:each>
                             </ul>
+                            <entry:point id="backlog-list-toolbar-right-hidden-xs"/>
                         </div>
+                    </div>
+                    <div class="btn-toolbar pull-right">
+                        <a class="btn btn-default" href="{{ openBacklogUrl(backlogContainer.backlog) }}"
+                           uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                        <entry:point id="backlog-list-toolbar-right"/>
                         <a href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
                            class="btn btn-default"
                            ng-if="backlogContainers.length > 1"

@@ -30,11 +30,6 @@
                          id="{{ widget.id }}"
                          class="panel-container widget-{{ widget.id }}"
                          ng-repeat="widget in widgetsOnLeft"></div>
-                    <div class="add-widget" ng-if="authenticated()">
-                        <button class="btn btn-default" ng-click="showAddWidgetModal()">
-                            <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="is.ui.widget.new"/>
-                        </button>
-                    </div>
                 </div>
             </div>
             <div class="widget-column">
@@ -46,13 +41,13 @@
                          id="{{ widget.id }}"
                          class="panel-container widget-{{ widget.id }}"
                          ng-repeat="widget in widgetsOnRight"></div>
-                    <div class="add-widget" ng-if="authenticated()">
-                        <button class="btn btn-default" ng-click="showAddWidgetModal(true)">
-                            <i class="fa fa-plus" aria-hidden="true"></i> <g:message code="is.ui.widget.new"/>
-                        </button>
-                    </div>
                 </div>
             </div>
+        </div>
+        <div class="add-widget" ng-if="authenticated()">
+            <button class="btn btn-primary" ng-click="showAddWidgetModal(true)">
+                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
 </div>

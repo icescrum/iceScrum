@@ -108,14 +108,6 @@ class UrlMappings {
                 uid(matches: /[0-9]*/)
             }
         }
-        // Window
-        "/ui/window/$windowDefinitionId" {
-            controller = 'scrumOS'
-            action = 'window'
-            constraints {
-                windowDefinitionId(matches: /[a-zA-Z]*/)
-            }
-        }
         // Widget
         "/ui/widget" {
             controller = 'widget'
@@ -132,6 +124,22 @@ class UrlMappings {
         "/ui/widget/definitions" {
             controller = 'widget'
             action = 'definitions'
+        }
+        // Window in null context
+        "/ui/window/$windowDefinitionId" {
+            controller = 'window'
+            action = [GET: "show", POST: "update"]
+            constraints {
+                windowDefinitionId(matches: /[a-zA-Z]*/)
+            }
+        }
+        //Window settings in null context
+        "/ui/window/$windowDefinitionId/settings" {
+            controller = 'window'
+            action = [GET:"settings", POST:"updateSettings"]
+            constraints {
+                windowDefinitionId(matches: /[a-zA-Z]*/)
+            }
         }
         // Progress
         "/progress" {

@@ -27,6 +27,12 @@
     </svg>
     </script>
 
+    <script type="text/ng-template" id="chart.modal.html">
+    <is:modal title="${message(code: 'todo.is.ui.confirm.title')}">
+        <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+    </is:modal>
+    </script>
+
     <script type="text/ng-template" id="confirm.modal.html">
     <is:modal form="submit()"
               submitButton="{{ buttonTitle }}"
@@ -113,7 +119,7 @@
        uib-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
        tooltip-placement="bottom"
        href="#/{{ menu.id }}">
-        <i class="fa" ng-class="'fa-' + menu.icon" as-sortable-item-handle></i> <span class="title hidden-sm">{{ menu.title }}</span>
+        <i class="fa fa-lg" ng-class="'fa-' + menu.icon" as-sortable-item-handle></i> <span class="title hidden-sm">{{ menu.title }}</span>
     </a>
     </script>
 
@@ -283,6 +289,7 @@
         <g:render template="/feature/templates"/>
         <g:render template="/acceptanceTest/templates"/>
         <g:render template="/release/templates"/>
+        <g:render template="/backlog/templates"/>
         <entry:point id="templates-project"/>
     </g:if>
 </div>

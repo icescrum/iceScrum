@@ -21,61 +21,6 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'project', '$controller', function($scope, $state, ProjectService, ReleaseService, SprintService, project, $controller) {
-    $scope.authorizedProject = function(action, project) {
-        return ProjectService.authorizedProject(action, project);
-    };
-    $scope.authorizedRelease = function(action, release) {
-        return ReleaseService.authorizedRelease(action, release);
-    };
-    $scope.authorizedSprint = function(action, sprint) {
-        return SprintService.authorizedSprint(action, sprint);
-    };
-    $scope.openSprintUrl = function(sprint) {
-        var stateName = 'planning.release.sprint.withId';
-        if ($state.current.name != 'planning.release.sprint.withId.details') {
-            stateName += '.details';
-        }
-        return $state.href(stateName, {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
-    };
-    $scope.showMore = function(){
-        $scope.pref.showMore = true;
-    };
-    // Init
-
-    $scope.pref = {
-        showMore:false
-    };
-    $scope.release = {};
-    $scope.allMembers = [];
-    $scope.activities = [];
-    $scope.currentOrLastSprint = {};
-    $scope.currentOrNextSprint = {};
-    $scope.projectMembersCount = 0;
-    $scope.project = project;
-    $controller('attachmentCtrl', {$scope: $scope, attachmentable: project, clazz: 'project'});
-    ProjectService.getActivities($scope.project).then(function(activities) {
-        $scope.activities = activities;
-    });
-    ReleaseService.getCurrentOrNextRelease($scope.project).then(function(release) {
-        $scope.release = release;
-        if (release && release.id) {
-            SprintService.list(release);
-        }
-    });
-    $scope.allMembers = _.unionBy($scope.project.team.members, $scope.project.productOwners, 'id');
-    // Needs a separate call because it may not be in the currentOrNextRelease
-    SprintService.getCurrentOrLastSprint($scope.project).then(function(sprint) {
-        $scope.currentOrLastSprint = sprint;
-    });
-    SprintService.getLastSprint($scope.project).then(function(sprint) {
-        $scope.lastSprint = sprint;
-    });
-    SprintService.getCurrentOrNextSprint($scope.project).then(function(sprint) {
-        $scope.currentOrNextSprint = sprint;
-    });
-}]);
-
 controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, TeamService) {
     $scope.selectProject = function(project) {
         $scope.project = project;
@@ -108,33 +53,6 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
     ProjectService.listPublic({paginate: true, count: 9}).then(function(projectsAndCount) {
         $scope.projects = projectsAndCount.projects;
     });
-}]);
-
-extensibleController('quickProjectsListCtrl', ['$scope', '$timeout', 'FormService', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, $timeout, FormService, PushService, ProjectService, IceScrumEventType) {
-    $scope.getProjectUrl = function(project, viewName) {
-        return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
-    };
-    $scope.createSampleProject = function() {
-        return FormService.httpGet('project/createSample');
-    };
-    // Init
-    $scope.projectsLoaded = false;
-    $scope.projects = [];
-    ProjectService.listByUser({paginate: true, count: 9, light: true}).then(function(projectsAndCount) {
-        $scope.projectsLoaded = true;
-        $scope.projects = projectsAndCount.projects;
-    });
-    PushService.registerScopedListener('user', IceScrumEventType.UPDATE, function(user) {
-        if (user.updatedRole) {
-            var updatedRole = user.updatedRole;
-            var project = updatedRole.project;
-            if (updatedRole.role == undefined) {
-                _.remove($scope.projects, {id: project.id});
-            } else if (updatedRole.oldRole == undefined && !_.includes($scope.projects, {id: project.id})) {
-                $scope.projects.push(project);
-            }
-        }
-    }, $scope);
 }]);
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', 'UserService', function($scope, $filter, Session, UserService) {

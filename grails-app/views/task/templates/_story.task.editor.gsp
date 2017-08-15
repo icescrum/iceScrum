@@ -25,30 +25,32 @@
     <form ng-submit="save(task, selected)"
           class="form-editable form-editing"
           name="formHolder.taskForm"
+          ng-class="{'form-not-expanded': !formHolder.formExpanded}"
           show-validation
           novalidate>
         <div class="clearfix no-padding">
-            <div class="form-group col-sm-8">
+            <div class="form-group" ng-class="{'col-sm-12':!formHolder.formExpanded, 'col-sm-8':formHolder.formExpanded}">
                 <input required
                        ng-maxlength="100"
                        type="text"
                        name="name"
                        ng-model="task.name"
-                       autofocus
+                       ng-focus="formHolder.formExpanded = true;"
                        placeholder="${message(code: 'is.ui.task.noname')}"
                        class="form-control">
             </div>
-            <div class="form-group col-sm-4">
+            <div class="form-group col-sm-4 hidden-not-expanded">
                 <input name="estimation"
                        ng-model="task.estimation"
                        type="number"
                        min="0"
                        step="any"
+                       ng-blur="formHolder.formExpanded = task.name || task.description || task.estimation;"
                        placeholder="${message(code: 'is.task.estimation')}"
                        class="form-control text-right">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group hidden-not-expanded">
             <textarea name="description"
                       ng-model="task.description"
                       ng-maxlength="3000"
@@ -56,6 +58,11 @@
                       class="form-control"></textarea>
         </div>
         <div class="btn-toolbar">
+            <button class="btn btn-default pull-right"
+                    ng-click="formHolder.formExpanded = false;"
+                    type="button">
+                ${message(code:'is.button.cancel')}
+            </button>
             <button class="btn btn-primary pull-right"
                     ng-disabled="!formHolder.taskForm.$dirty || formHolder.taskForm.$invalid"
                     type="submit">

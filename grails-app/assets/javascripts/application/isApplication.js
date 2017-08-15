@@ -513,8 +513,11 @@ angular.module('isApplication', [
                     project: ['Session', function(Session) {
                         return Session.getProjectPromise();
                     }],
-                    backlogs: ['BacklogService', function(BacklogService) {
-                        return BacklogService.list();
+                    backlogs: ['BacklogService', 'project', function(BacklogService, project) {
+                        return BacklogService.list(project);
+                    }],
+                    window: ['WindowService', 'project', function(WindowService, project) {
+                        return WindowService.get('backlog', project);
                     }]
                 },
                 children: [
@@ -532,6 +535,16 @@ angular.module('isApplication', [
                             }]
                         },
                         children: [
+                            {
+                                name: 'details',
+                                url: "/details",
+                                views: {
+                                    "details@backlog": {
+                                        templateUrl: 'backlog.details.html',
+                                        controller: 'backlogDetailsCtrl'
+                                    }
+                                }
+                            },
                             getBacklogStoryState()
                         ]
                     }

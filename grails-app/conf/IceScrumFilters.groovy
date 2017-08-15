@@ -23,7 +23,6 @@
 
 import grails.plugin.springsecurity.SpringSecurityUtils
 import org.geeks.browserdetection.ComparisonType
-import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport

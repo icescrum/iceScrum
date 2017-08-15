@@ -24,7 +24,7 @@
 <div class="panel panel-light">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <i class="fa fa-sticky-note" style="color: #2d8ccc"></i>
+            <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i>
             ${message(code: 'todo.is.ui.feature.new')}
             <a class="pull-right visible-on-hover btn btn-default"
                href="#/{{ ::viewName }}"

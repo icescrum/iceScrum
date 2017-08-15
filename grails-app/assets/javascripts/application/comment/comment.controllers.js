@@ -26,6 +26,7 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
     $scope.resetCommentForm = function() {
         $scope.editableComment = $scope.comment ? angular.copy($scope.comment) : {};
         $scope.formHolder.editing = false;
+        $scope.formHolder.expandedForm = false;
         $scope.resetFormValidation($scope.formHolder.commentForm);
     };
     $scope.formEditable = function() {
