@@ -353,6 +353,8 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
     $scope['delete'] = function(project) {
         $scope.confirm({
             message: $scope.message('todo.is.ui.projectmenu.submenu.project.delete.confirm'),
+            buttonColor: 'danger',
+            buttonTitle: 'is.projectmenu.submenu.project.delete',
             callback: function() {
                 ProjectService.delete(project).then(function() {
                     document.location = $scope.serverUrl;
@@ -363,6 +365,8 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
     $scope.archive = function(project) {
         $scope.confirm({
             message: $scope.message('is.dialog.project.archive.confirm'),
+            buttonColor: 'danger',
+            buttonTitle: 'is.dialog.project.archive.button',
             callback: function() {
                 ProjectService.archive(project).then(function() {
                     document.location = $scope.serverUrl;
