@@ -19,13 +19,13 @@
         <div class="col-md-12">
             <div ng-if="backlog.isDefault" ng-bind-html="backlog.notes_html"></div>
         </div>
-        <div class="col-md-6 backlogCharts chart" ng-controller="chartCtrl" ng-init="openChart('backlog', 'type', backlog)">
-            <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
-        </div>
-        <div class="col-md-6 backlogCharts chart" ng-controller="chartCtrl" ng-init="openChart('backlog', 'affectVersion', backlog)">
+        <div class="col-md-12 backlogCharts chart" ng-controller="chartCtrl" ng-init="openChart('backlog', 'type', backlog)">
             <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
     </div>
-    <div ui-view="details-tab">ss</div>
+    <ul class="nav nav-tabs nav-tabs-is nav-justified">
+        <entry:point id="backlog-details-tab-button"/>
+    </ul>
+    <div ui-view="details-tab"></div>
 </div>
 </script>

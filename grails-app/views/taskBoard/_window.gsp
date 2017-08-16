@@ -120,13 +120,13 @@
                 <thead>
                 <tr class="table-header sticky-header sticky-stack">
                     <th ng-if="sprint.state != sprintStatesByName.DONE">
-                        <span>${message(code: 'is.task.state.wait')} <span class="badge">{{ taskCountByState[taskStatesByName.TODO] }}</span></span>
+                        <span>${message(code: 'is.task.state.wait')} ({{ taskCountByState[taskStatesByName.TODO] }})</span>
                     </th>
                     <th ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
-                        <span>${message(code: 'is.task.state.inprogress')} <span class="badge">{{ taskCountByState[taskStatesByName.IN_PROGRESS] }}</span></span>
+                        <span>${message(code: 'is.task.state.inprogress')} ({{ taskCountByState[taskStatesByName.IN_PROGRESS] }})</span>
                     </th>
                     <th ng-if="sprint.state != sprintStatesByName.TODO">
-                        <span>${message(code: 'is.task.state.done')} <span class="badge">{{ taskCountByState[taskStatesByName.DONE] }}</span></span>
+                        <span>${message(code: 'is.task.state.done')} ({{ taskCountByState[taskStatesByName.DONE] }})</span>
                     </th>
                 </tr>
                 </thead>
