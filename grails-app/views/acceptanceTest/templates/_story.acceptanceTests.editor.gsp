@@ -74,15 +74,15 @@
              ng-bind-html="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.backlogelement.description')}</p>'"></div>
     </div>
     <div class="btn-toolbar">
-        <button class="btn btn-default pull-right"
-                ng-click="formHolder.formExpanded = false;"
-                type="button">
-            ${message(code:'is.button.cancel')}
-        </button>
         <button class="btn btn-primary pull-right"
                 ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid"
                 type="submit">
             ${message(code:'default.button.create.label')}
+        </button>
+        <button class="btn btn-default pull-right"
+                ng-click="formHolder.formExpanded = false;"
+                type="button">
+            ${message(code:'is.button.cancel')}
         </button>
     </div>
 </form>
