@@ -239,6 +239,10 @@ angular.module('isApplication', [
             }
         }, pluginTabsProvider.pluginTabs['sprint']);
 
+        var backlogTabs = _.merge({
+            details: {}
+        }, pluginTabsProvider.pluginTabs['backlog']);
+
         var getDetailsModalState = function(detailsType, options) {
             return _.merge({
                 name: detailsType,
@@ -266,6 +270,52 @@ angular.module('isApplication', [
                     modalHolder.modal.dismiss(true)
                 }]
             }, options);
+        };
+
+        var getBacklogDetailsState = function(viewContext){
+            var tabNames = _.keys(backlogTabs);
+            var backlogState = {
+                name: 'details',
+                url: "/details",
+                views: {},
+                resolve: {},
+                data: {
+                    displayTabs:tabNames.length > 1
+                },
+                children: [
+                    {
+                        name: 'tab',
+                        url: '/{backlogTabId:(?:' + _.join(tabNames, '|') + ')}',
+                        resolve: {},
+                        views: {
+                            "details-tab": {
+                                templateUrl: function($stateParams) {
+                                    if ($stateParams.backlogTabId) {
+                                        return sprintTabs[$stateParams.backlogTabId].templateUrl;
+                                    }
+                                },
+                                controller: ['$scope', 'detailsBacklog', function($scope, detailsBacklog) {
+                                    $scope.selected = detailsBacklog;
+                                }]
+                            }
+                        }
+                    }
+                ]
+            };
+            //default tab (without backlogTabId)
+            if( backlogTabs["details"].resolve){
+                backlogState.resolve['details'] = backlogTabs["details"].resolve;
+            }
+
+            var backlogTabState = backlogState.children[0];
+            _.each(backlogTabs, function(value, key) {
+                backlogTabState.resolve['data' + key] = value.resolve;
+            });
+            backlogState.views['details' + (viewContext ? viewContext : '')] = {
+                templateUrl: 'backlog.details.html',
+                controller: 'backlogDetailsCtrl'
+            };
+            return backlogState;
         };
         var getTaskDetailsState = function(viewContext) {
             var tabNames = _.keys(taskTabs);
@@ -492,6 +542,9 @@ angular.module('isApplication', [
                     }]
                 },
                 views: {},
+                data: {
+                    displayTabs:tabNames.length > 1
+                },
                 children: [
                     {
                         name: 'tab',
@@ -525,6 +578,7 @@ angular.module('isApplication', [
             };
             return sprintState;
         };
+
         var getBacklogStoryState = function() {
             return {
                 name: 'story',
@@ -684,16 +738,7 @@ angular.module('isApplication', [
                             }]
                         },
                         children: [
-                            {
-                                name: 'details',
-                                url: "/details",
-                                views: {
-                                    "details@backlog": {
-                                        templateUrl: 'backlog.details.html',
-                                        controller: 'backlogDetailsCtrl'
-                                    }
-                                }
-                            },
+                            getBacklogDetailsState("@backlog"),
                             getBacklogStoryState()
                         ]
                     }

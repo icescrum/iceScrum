@@ -165,6 +165,9 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
         $scope.chartLoaders[itemType](chartName, item).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
+            if(_.isEmpty($scope.data)){
+                $scope.options.title.enable = false;
+            }
             if (chart.labelsX) {
                 $scope.labelsX = chart.labelsX;
             }

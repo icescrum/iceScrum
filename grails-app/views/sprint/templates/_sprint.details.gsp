@@ -33,9 +33,11 @@
         <h3 class="panel-title row">
             <div class="left-title">
                 <i class="fa fa-tasks"></i> {{ release.name + ' - ' + (sprint | sprintName) }}
+                <entry:point id="sprint-details-left-title"/>
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
+                    <entry:point id="sprint-details-right-title"/>
                     <div class="btn-group">
                         <a ng-if="previousSprint"
                            class="btn btn-default"

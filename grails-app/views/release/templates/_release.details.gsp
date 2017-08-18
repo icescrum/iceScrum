@@ -33,9 +33,11 @@
         <h3 class="panel-title row">
             <div class="left-title">
                 <i class="fa fa-calendar"></i> {{ release.name }}
+                <entry:point id="release-details-left-title"/>
             </div>
             <div class="right-title">
                 <div style="margin-bottom:10px">
+                    <entry:point id="release-details-right-title"/>
                     <div class="btn-group">
                         <a ng-if="previousRelease"
                            class="btn btn-default"

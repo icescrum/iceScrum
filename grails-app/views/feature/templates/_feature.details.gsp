@@ -82,6 +82,7 @@
                 <span class="badge">{{ feature.stories_ids.length || '' }}</span>
             </a>
         </li>
+        <entry:point id="feature-details-tab-button"/>
     </ul>
     <div ui-view="details-tab">
         <g:include view="feature/templates/_feature.properties.gsp"/>
