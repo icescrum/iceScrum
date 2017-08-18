@@ -141,10 +141,6 @@ class StoryController implements ControllerErrorHandler {
         }
         stories.each { Story story ->
             def user = springSecurityService.currentUser
-            if (!story.canUpdate(request.productOwner, user)) {
-                render(status: 403)
-                return
-            }
             Map props = [:]
             if (storyParams.rank != null) {
                 props.rank = storyParams.rank instanceof Number ? storyParams.rank : storyParams.rank.toInteger()
@@ -162,26 +158,28 @@ class StoryController implements ControllerErrorHandler {
                 }
             }
             Story.withTransaction {
-                if (storyParams.tags != null) {
-                    def oldTags = story.tags
-                    if (stories.size() > 1) {
-                        (tagParams - oldTags).each { tag ->
-                            story.addTag(tag)
-                        }
-                        (commonTags - tagParams).each { tag ->
-                            if (oldTags.contains(tag)) {
-                                story.removeTag(tag)
+                if (request.productOwner || (story.state == Story.STATE_SUGGESTED && user == story.creator)) {
+                    if (storyParams.tags != null) {
+                        def oldTags = story.tags
+                        if (stories.size() > 1) {
+                            (tagParams - oldTags).each { tag ->
+                                story.addTag(tag)
                             }
+                            (commonTags - tagParams).each { tag ->
+                                if (oldTags.contains(tag)) {
+                                    story.removeTag(tag)
+                                }
+                            }
+                        } else {
+                            story.tags = tagParams
                         }
-                    } else {
-                        story.tags = tagParams
+                        if (oldTags != story.tags) {
+                            activityService.addActivity(story, user, Activity.CODE_UPDATE, story.name, 'tags', oldTags?.sort()?.join(','), story.tags?.sort()?.join(','))
+                        }
                     }
-                    if (oldTags != story.tags) {
-                        activityService.addActivity(story, user, Activity.CODE_UPDATE, story.name, 'tags', oldTags?.sort()?.join(','), story.tags?.sort()?.join(','))
-                    }
+                    cleanBeforeBindData(storyParams, ['feature', 'dependsOn', 'creator'])
+                    bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value', 'creator']])
                 }
-                cleanBeforeBindData(storyParams, ['feature', 'dependsOn', 'creator'])
-                bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value', 'creator']])
                 storyService.update(story, props)
                 // Independently manage the sprint change, manage the "null" value manually
                 def sprintId = storyParams.parentSprint == 'null' ? storyParams.parentSprint : storyParams.parentSprint?.id?.toLong()
@@ -242,7 +240,7 @@ class StoryController implements ControllerErrorHandler {
         redirect(uri: uri)
     }
 
-    @Secured(['productOwner() and !archivedProject()'])
+    @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def plan(long id, long project) {
         // Separate method to manage changing the rank and the state at the same time (too complicated to manage them properly in the update method)
         def story = Story.withStory(project, id)
@@ -261,14 +259,14 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProject()'])
+    @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def unPlan(long id, long project) {
         def story = Story.withStory(project, id)
         storyService.unPlan(story)
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProject()'])
+    @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def shiftToNextSprint(long id, long project) {
         def story = Story.withStory(project, id)
         def nextSprint = story.parentSprint.nextSprint
