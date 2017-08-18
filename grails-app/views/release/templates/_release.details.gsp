@@ -87,6 +87,14 @@
         </h3>
         <visual-states ng-model="release" model-states="releaseStatesByName"/>
     </div>
+    <ul class="nav nav-tabs nav-tabs-is nav-justified" ng-if="$state.current.data.displayTabs">
+        <li role="presentation" ng-class="{'active':!$state.params.releaseTabId}">
+            <a href="{{ tabUrl() }}">
+                <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
+            </a>
+        </li>
+        <entry:point id="release-details-tab-button"/>
+    </ul>
     <div ui-view="details-tab">
         <g:include view="release/templates/_release.properties.gsp"/>
     </div>

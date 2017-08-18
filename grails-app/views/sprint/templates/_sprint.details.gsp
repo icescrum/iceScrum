@@ -87,6 +87,14 @@
         </h3>
         <visual-states ng-model="sprint" model-states="sprintStatesByName"/>
     </div>
+    <ul class="nav nav-tabs nav-tabs-is nav-justified" ng-if="$state.current.data.displayTabs">
+        <li role="presentation" ng-class="{'active':!$state.params.sprintTabId}">
+            <a href="{{ tabUrl() }}">
+                <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
+            </a>
+        </li>
+        <entry:point id="sprint-details-tab-button"/>
+    </ul>
     <div ui-view="details-tab">
         <g:include view="sprint/templates/_sprint.properties.gsp"/>
     </div>

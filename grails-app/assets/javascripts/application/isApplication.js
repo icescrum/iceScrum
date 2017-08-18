@@ -135,14 +135,14 @@ angular.module('isApplication', [
 
         var taskTabs = _.merge({
             details: {
-                data: ['$stateParams', 'AttachmentService', 'detailsTask', function($stateParams, AttachmentService, detailsTask) {
+                resolve: ['$stateParams', 'AttachmentService', 'detailsTask', function($stateParams, AttachmentService, detailsTask) {
                     if (!$stateParams.taskTabId) {
                         return AttachmentService.list(detailsTask);
                     }
                 }]
             },
             comments: {
-                data: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
+                resolve: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
                     if ($stateParams.taskTabId == 'comments') {
                         return CommentService.list(detailsTask);
                     }
@@ -150,7 +150,7 @@ angular.module('isApplication', [
                 templateUrl: 'comment.list.html'
             },
             activities: {
-                data: ['$stateParams', 'ActivityService', 'detailsTask', function($stateParams, ActivityService, detailsTask) {
+                resolve: ['$stateParams', 'ActivityService', 'detailsTask', function($stateParams, ActivityService, detailsTask) {
                     if ($stateParams.taskTabId == 'activities') {
                         return ActivityService.activities(detailsTask, false);
                     }
@@ -161,14 +161,14 @@ angular.module('isApplication', [
 
         var storyTabs = _.merge({
             details: {
-                data: ['$stateParams', 'AttachmentService', 'detailsStory', function($stateParams, AttachmentService, detailsStory) {
+                resolve: ['$stateParams', 'AttachmentService', 'detailsStory', function($stateParams, AttachmentService, detailsStory) {
                     if (!$stateParams.storyTabId) {
                         return AttachmentService.list(detailsStory);
                     }
                 }]
             },
             tests: {
-                data: ['$stateParams', 'AcceptanceTestService', 'detailsStory', function($stateParams, AcceptanceTestService, detailsStory) {
+                resolve: ['$stateParams', 'AcceptanceTestService', 'detailsStory', function($stateParams, AcceptanceTestService, detailsStory) {
                     if ($stateParams.storyTabId == 'tests') {
                         return AcceptanceTestService.list(detailsStory);
                     }
@@ -176,7 +176,7 @@ angular.module('isApplication', [
                 templateUrl: 'story.acceptanceTests.html'
             },
             tasks: {
-                data: ['$stateParams', 'TaskService', 'detailsStory', function($stateParams, TaskService, detailsStory) {
+                resolve: ['$stateParams', 'TaskService', 'detailsStory', function($stateParams, TaskService, detailsStory) {
                     if ($stateParams.storyTabId == 'tasks') {
                         return TaskService.list(detailsStory);
                     }
@@ -184,7 +184,7 @@ angular.module('isApplication', [
                 templateUrl: 'story.tasks.html'
             },
             comments: {
-                data: ['$stateParams', 'CommentService', 'detailsStory', function($stateParams, CommentService, detailsStory) {
+                resolve: ['$stateParams', 'CommentService', 'detailsStory', function($stateParams, CommentService, detailsStory) {
                     if ($stateParams.storyTabId == 'comments') {
                         return CommentService.list(detailsStory);
                     }
@@ -192,7 +192,7 @@ angular.module('isApplication', [
                 templateUrl: 'comment.list.html'
             },
             activities: {
-                data: ['$stateParams', 'ActivityService', 'detailsStory', function($stateParams, ActivityService, detailsStory) {
+                resolve: ['$stateParams', 'ActivityService', 'detailsStory', function($stateParams, ActivityService, detailsStory) {
                     if ($stateParams.storyTabId == 'activities') {
                         return ActivityService.activities(detailsStory, false);
                     }
@@ -203,14 +203,14 @@ angular.module('isApplication', [
 
         var featureTabs = _.merge({
             details: {
-                data: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsFeature) {
+                resolve: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsFeature) {
                     if (!$stateParams.storyTabId) {
                         return AttachmentService.list(detailsFeature);
                     }
                 }]
             },
             stories: {
-                data: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
+                resolve: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
                     if ($stateParams.featureTabId == 'stories') {
                         StoryService.listByType(detailsFeature);
                     }
@@ -218,6 +218,26 @@ angular.module('isApplication', [
                 templateUrl: 'nested.stories.html'
             }
         }, pluginTabsProvider.pluginTabs['feature']);
+
+        var releaseTabs = _.merge({
+            details: {
+                resolve: ['$stateParams', 'AttachmentService', 'detailsRelease', function($stateParams, AttachmentService, detailsRelease) {
+                    if (!$stateParams.releaseTabId) {
+                        return AttachmentService.list(detailsRelease);
+                    }
+                }]
+            }
+        }, pluginTabsProvider.pluginTabs['release']);
+
+        var sprintTabs = _.merge({
+            details: {
+                resolve: ['$stateParams', 'AttachmentService', 'detailsSprint', function($stateParams, AttachmentService, detailsSprint) {
+                    if (!$stateParams.sprintTabId) {
+                        return AttachmentService.list(detailsSprint);
+                    }
+                }]
+            }
+        }, pluginTabsProvider.pluginTabs['sprint']);
 
         var getDetailsModalState = function(detailsType, options) {
             return _.merge({
@@ -280,11 +300,11 @@ angular.module('isApplication', [
             };
 
             //default tab (without taskTabId)
-            taskState.resolve['details'] = taskTabs["details"].data;
+            taskState.resolve['details'] = taskTabs["details"].resolve;
 
             var taskTabState = taskState.children[0];
             _.each(taskTabs, function(value, key) {
-                taskTabState.resolve['data' + key] = value.data;
+                taskTabState.resolve['data' + key] = value.resolve;
             });
             taskState.views['details' + (viewContext ? viewContext : '')] = {
                 templateUrl: 'task.details.html',
@@ -325,11 +345,11 @@ angular.module('isApplication', [
                 ]
             };
             //default tab (without featureTabId)
-            featureState.resolve['details'] = featureTabs["details"].data;
+            featureState.resolve['details'] = featureTabs["details"].resolve;
 
             var featureTabState = featureState.children[0];
             _.each(featureTabs, function(value, key) {
-                featureTabState.resolve['data' + key] = value.data;
+                featureTabState.resolve['data' + key] = value.resolve;
             });
             featureState.views['details' + (viewContext ? viewContext : '')] = {
                 templateUrl: 'feature.details.html',
@@ -376,11 +396,11 @@ angular.module('isApplication', [
                 ]
             };
             //default tab (without storyTabId)
-            storyState.resolve['details'] = storyTabs["details"].data;
+            storyState.resolve['details'] = storyTabs["details"].resolve;
 
             var storyTabState = storyState.children[0];
             _.each(storyTabs, function(value, key) {
-                storyTabState.resolve['data' + key] = value.data;
+                storyTabState.resolve['data' + key] = value.resolve;
             });
             storyState.views['details' + (viewContext ? viewContext : '')] = {
                 templateUrl: 'story.details.html',
@@ -407,6 +427,103 @@ angular.module('isApplication', [
                 }));
             }
             return storyState;
+        };
+        var getReleaseDetailsState = function(viewContext){
+            var tabNames = _.keys(releaseTabs);
+            var releaseState = {
+                name: 'details',
+                url: "/details",
+                views: {},
+                resolve:{
+                    detailsRelease: ['$stateParams', 'releases', function($stateParams, releases) {
+                        return _.find(releases, {id: $stateParams.releaseId})
+                    }],
+                    sprints: ['detailsRelease', function(detailsRelease) {
+                        return detailsRelease.sprints;
+                    }]
+                },
+                data: {
+                    displayTabs:tabNames.length > 1
+                },
+                children: [
+                    {
+                        name: 'tab',
+                        url: '/{releaseTabId:(?:' + _.join(tabNames, '|') + ')}',
+                        resolve: {},
+                        views: {
+                            "details-tab": {
+                                templateUrl: function($stateParams) {
+                                    if ($stateParams.releaseTabId) {
+                                        return releaseTabs[$stateParams.releaseTabId].templateUrl;
+                                    }
+                                },
+                                controller: ['$scope', 'detailsRelease', function($scope, detailsRelease) {
+                                    $scope.selected = detailsRelease;
+                                }]
+                            }
+                        }
+                    }
+                ]
+            };
+            //default tab (without releaseTabId)
+            releaseState.resolve['details'] = releaseTabs["details"].resolve;
+
+            var releaseTabState = releaseState.children[0];
+            _.each(releaseTabs, function(value, key) {
+                releaseTabState.resolve['data' + key] = value.resolve;
+            });
+            releaseState.views['details' + (viewContext ? viewContext : '')] = {
+                templateUrl: 'release.details.html',
+                controller: 'releaseDetailsCtrl'
+            };
+            return releaseState;
+        };
+        var getSprintDetailsState = function(viewContext){
+            var tabNames = _.keys(sprintTabs);
+            var sprintState = {
+                name: 'details',
+                url: "/details",
+                resolve: {
+                    detailsSprint: ['sprint', function(sprint) {
+                        return sprint;
+                    }],
+                    detailsRelease: ['releases', 'sprint', function(releases, sprint) {
+                        return _.find(releases, {id: sprint.parentRelease.id});
+                    }]
+                },
+                views: {},
+                children: [
+                    {
+                        name: 'tab',
+                        url: '/{sprintTabId:(?:' + _.join(tabNames, '|') + ')}',
+                        resolve: {},
+                        views: {
+                            "details-tab": {
+                                templateUrl: function($stateParams) {
+                                    if ($stateParams.sprintTabId) {
+                                        return sprintTabs[$stateParams.sprintTabId].templateUrl;
+                                    }
+                                },
+                                controller: ['$scope', 'detailsSprint', function($scope, detailsSprint) {
+                                    $scope.selected = detailsSprint;
+                                }]
+                            }
+                        }
+                    }
+                ]
+            };
+            //default tab (without sprintTabId)
+            sprintState.resolve['details'] = sprintTabs["details"].resolve;
+
+            var sprintTabState = sprintState.children[0];
+            _.each(sprintTabs, function(value, key) {
+                sprintTabState.resolve['data' + key] = value.resolve;
+            });
+            sprintState.views['details' + (viewContext ? viewContext : '')] = {
+                templateUrl: 'sprint.details.html',
+                controller: 'sprintDetailsCtrl'
+            };
+            return sprintState;
         };
         var getBacklogStoryState = function() {
             return {
@@ -665,30 +782,8 @@ angular.module('isApplication', [
                     {
                         name: 'release',
                         url: "/{releaseId:int}",
-                        resolve: {
-                            detailsRelease: ['$stateParams', 'releases', function($stateParams, releases) {
-                                return _.find(releases, {id: $stateParams.releaseId})
-                            }],
-                            sprints: ['detailsRelease', function(detailsRelease) {
-                                return detailsRelease.sprints;
-                            }]
-                        },
                         children: [
-                            {
-                                name: 'details',
-                                url: "/details",
-                                views: {
-                                    "details@planning": {
-                                        templateUrl: 'release.details.html',
-                                        controller: 'releaseDetailsCtrl',
-                                        resolve: {
-                                            detailsTab: ['$stateParams', 'AttachmentService', 'detailsRelease', function ($stateParams, AttachmentService, detailsRelease) {
-                                                    return AttachmentService.list(detailsRelease);
-                                            }]
-                                        }
-                                    }
-                                }
-                            },
+                            getReleaseDetailsState('@planning'),
                             {
                                 name: 'story',
                                 url: "/story",
@@ -818,24 +913,7 @@ angular.module('isApplication', [
                     }]
                 },
                 children: [
-                    {
-                        name: 'details',
-                        url: "/details",
-                        resolve: {
-                            detailsSprint: ['sprint', function(sprint) {
-                                return sprint;
-                            }],
-                            detailsRelease: ['releases', 'sprint', function(releases, sprint) {
-                                return _.find(releases, {id: sprint.parentRelease.id});
-                            }]
-                        },
-                        views: {
-                            "details": {
-                                templateUrl: 'sprint.details.html',
-                                controller: 'sprintDetailsCtrl'
-                            }
-                        }
-                    },
+                    getSprintDetailsState(),
                     {
                         name: 'task',
                         url: "/task",
