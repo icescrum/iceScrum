@@ -39,9 +39,6 @@ class StoryController implements ControllerErrorHandler {
 
     @Secured('stakeHolder() or inProject()')
     def index(long project, long typeId, String type) {
-        request.withFormat {
-
-        }
         def options
         if (params.filter) {
             options = params.filter
