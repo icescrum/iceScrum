@@ -484,14 +484,7 @@ angular.module('isApplication', [
                 name: 'details',
                 url: "/details",
                 views: {},
-                resolve:{
-                    detailsRelease: ['$stateParams', 'releases', function($stateParams, releases) {
-                        return _.find(releases, {id: $stateParams.releaseId})
-                    }],
-                    sprints: ['detailsRelease', function(detailsRelease) {
-                        return detailsRelease.sprints;
-                    }]
-                },
+                resolve: {},
                 data: {
                     displayTabs:tabNames.length > 1
                 },
@@ -827,6 +820,14 @@ angular.module('isApplication', [
                     {
                         name: 'release',
                         url: "/{releaseId:int}",
+                        resolve:{
+                            detailsRelease: ['$stateParams', 'releases', function($stateParams, releases) {
+                                return _.find(releases, {id: $stateParams.releaseId})
+                            }],
+                            sprints: ['detailsRelease', function(detailsRelease) {
+                                return detailsRelease.sprints;
+                            }]
+                        },
                         children: [
                             getReleaseDetailsState('@planning'),
                             {
@@ -862,16 +863,7 @@ angular.module('isApplication', [
                                             }]
                                         },
                                         children: [
-                                            {
-                                                name: 'details',
-                                                url: "/details",
-                                                views: {
-                                                    "details@planning": {
-                                                        templateUrl: 'sprint.details.html',
-                                                        controller: 'sprintDetailsCtrl'
-                                                    }
-                                                }
-                                            },
+                                            getSprintDetailsState('@planning'),
                                             {
                                                 name: 'story',
                                                 url: "/story",
