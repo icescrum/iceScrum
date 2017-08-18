@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'project', '$controller', function($scope, $state, ProjectService, ReleaseService, SprintService, project, $controller) {
+controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'project', '$controller', function($scope, $state, ProjectService, ReleaseService, SprintService, AttachmentService, project, $controller) {
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
@@ -75,4 +75,6 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
     SprintService.getCurrentOrNextSprint($scope.project).then(function(sprint) {
         $scope.currentOrNextSprint = sprint;
     });
+    //load attachments
+    AttachmentService.list($scope.project);
 }]);
