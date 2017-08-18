@@ -266,7 +266,7 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: story as JSON)
     }
 
-    @Secured(['productOwner() and !archivedProject()'])
+    @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def shiftToNextSprint(long id, long project) {
         def story = Story.withStory(project, id)
         def nextSprint = story.parentSprint.nextSprint
