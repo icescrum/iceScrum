@@ -248,45 +248,45 @@ angular.module('isApplication', [
             }, options);
         };
         var getTaskDetailsState = function(viewContext) {
+            var tabNames = _.keys(taskTabs);
             var taskState = {
                 name: 'details',
                 url: "/{taskId:int}",
                 resolve: {
-                    detailsTask: ['$stateParams', 'taskContext', 'TaskService', function($stateParams, taskContext, TaskService) {
+                    detailsTask: ['$stateParams', 'taskContext', 'TaskService', function ($stateParams, taskContext, TaskService) {
                         return TaskService.get($stateParams.taskId, taskContext);
                     }]
                 },
-                views: {}
-            };
-            var tabNames = _.keys(taskTabs);
-            taskState.children = [
-                {
-                    name: 'tab',
-                    url: '/{taskTabId:(?:' + _.join(tabNames, '|') + ')}',
-                    resolve: {},
-                    views: {
-                        "details-tab": {
-                            templateUrl: function($stateParams) {
-                                if ($stateParams.taskTabId) {
-                                    return taskTabs[$stateParams.taskTabId].templateUrl;
-                                }
-                            },
-                            controller: ['$scope', 'detailsTask', function($scope, detailsTask) {
-                                $scope.selected = detailsTask;
-                            }]
+                views: {},
+                children: [
+                    {
+                        name: 'tab',
+                        url: '/{taskTabId:(?:' + _.join(tabNames, '|') + ')}',
+                        resolve: {},
+                        views: {
+                            "details-tab": {
+                                templateUrl: function ($stateParams) {
+                                    if ($stateParams.taskTabId) {
+                                        return taskTabs[$stateParams.taskTabId].templateUrl;
+                                    }
+                                },
+                                controller: ['$scope', 'detailsTask', function ($scope, detailsTask) {
+                                    $scope.selected = detailsTask;
+                                }]
+                            }
                         }
                     }
-                }
-            ];
+                ]
+            };
 
-            //default tab (without featureTabId)
+            //default tab (without taskTabId)
             taskState.resolve['details'] = taskTabs["details"].data;
 
             var taskTabState = taskState.children[0];
             _.each(taskTabs, function(value, key) {
                 taskTabState.resolve['data' + key] = value.data;
             });
-            taskTabState.views['details' + (viewContext ? viewContext : '')] = {
+            taskState.views['details' + (viewContext ? viewContext : '')] = {
                 templateUrl: 'task.details.html',
                 controller: 'taskDetailsCtrl'
             };
