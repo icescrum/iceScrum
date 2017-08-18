@@ -136,23 +136,32 @@ class UserController implements ControllerErrorHandler {
             return
         }
         User.withTransaction {
+            if (request.admin && params.user.username != user.username) {
+                user.username = params.user.username
+            }
+            bindData(user, params, [include: ['firstName', 'lastName', 'email', 'notes']], "user")
+            if (params.user.preferences) {
+                bindData(user.preferences, params.user.preferences as Map, [include: ['language', 'filterTask', 'activity']], "") // Preferences using as Map for REST & HTTP support
+            }
             if (params.user.password?.trim() != '') {
                 props.pwd = params.user.password
             }
-            if (params.user.avatar && !(params.user.avatar in ['gravatar', 'custom'])) {
+            if (params.user.avatar && !(params.user.avatar in ['gravatar', 'custom', 'initials'])) {
                 if (params.user.avatar instanceof String) {
                     params.user.avatar = params.user.avatar.split("/")?.last()
                     props.avatar = getAssetAvatarFile(params.user.avatar)
                     props.scale = false
                 } else if (params.user.avatar) {
                     def uploadedAvatar = request.getFile('user.avatar')
-                    props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${FilenameUtils.getExtension(uploadedAvatar.originalFilename)}")
+                      props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${FilenameUtils.getExtension(uploadedAvatar.originalFilename)}")
                     props.scale = true
                     uploadedAvatar.transferTo(props.avatar)
                 }
                 if (props.avatar) {
                     props.avatar = props.avatar.canonicalPath
                 }
+            } else if (params.user.avatar == 'initials') {
+                props.avatar = "initials"
             } else if (params.user.avatar == 'gravatar') {
                 props.avatar = null
             }
@@ -160,13 +169,6 @@ class UserController implements ControllerErrorHandler {
                 props.emailsSettings = [onStory     : params.remove('user.preferences.emailsSettings.onStory'),
                                         autoFollow  : params.remove('user.preferences.emailsSettings.autoFollow'),
                                         onUrgentTask: params.remove('user.preferences.emailsSettings.onUrgentTask')]
-            }
-            if (request.admin && params.user.username != user.username) {
-                user.username = params.user.username
-            }
-            bindData(user, params, [include: ['firstName', 'lastName', 'email', 'notes']], "user")
-            if (params.user.preferences) {
-                bindData(user.preferences, params.user.preferences as Map, [include: ['language', 'filterTask', 'activity']], "") // Preferences using as Map for REST & HTTP support
             }
             userService.update(user, props)
         }
@@ -193,8 +195,13 @@ class UserController implements ControllerErrorHandler {
             }
             avatar = getAssetAvatarFile("avatar.png")
         }
+        render(file:avatar, contentType: 'image/png')
+    }
+
+    @Secured(['isAuthenticated()'])
+    def initialsAvatar(String firstName, String lastName) {
         OutputStream out = response.getOutputStream()
-        out.write(avatar.bytes)
+        ApplicationSupport.generateInitialsAvatar(firstName, lastName, out)
         out.close()
     }
 

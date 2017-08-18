@@ -50,6 +50,24 @@
                                          ng-class="{'selected': editableUser.avatar == 'gravatar' }"
                                          src="${"https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5()}"/>
                                 </g:if>
+                                    <img ng-click="editableUser.avatar = 'initials'"
+                                         ng-class="{'selected': editableUser.avatar == 'initials' }"
+                                         ng-src="{{ editableUser | userInitialsAvatar }}"/>
+                                    <img ng-click="editableUser.avatar = 'dev-ico.png'"
+                                         ng-class="{'selected': editableUser.avatar == 'dev-ico.png' }"
+                                         src="${asset.assetPath(src: 'avatars/dev-ico.png')}"/>
+                                    <img ng-click="editableUser.avatar = 'po-ico.png'"
+                                         ng-class="{'selected': editableUser.avatar == 'po-ico.png' }"
+                                         src="${asset.assetPath(src: 'avatars/po-ico.png')}"/>
+                                    <img ng-click="editableUser.avatar = 'sh-ico.png'"
+                                         ng-class="{'selected': editableUser.avatar == 'sh-ico.png' }"
+                                         src="${asset.assetPath(src: 'avatars/sh-ico.png')}"/>
+                                    <img ng-click="editableUser.avatar = 'sm-ico.png'"
+                                         ng-class="{'selected': editableUser.avatar == 'sm-ico.png' }"
+                                         src="${asset.assetPath(src: 'avatars/sm-ico.png')}"/>
+                                    <img ng-click="editableUser.avatar = 'admin-ico.png'"
+                                         ng-class="{'selected': editableUser.avatar == 'admin-ico.png' }"
+                                         src="${asset.assetPath(src: 'avatars/admin-ico.png')}"/>
                                 <div class="choose-file">
                                     <span ng-class="{'hide': editableUser.avatar == 'custom' }"
                                           flow-btn class="btn btn-default"><i class="fa fa-photo"></i></span>
@@ -57,23 +75,6 @@
                                          ng-class="{'selected': editableUser.avatar == 'custom', 'hide': editableUser.avatar != 'custom' }"
                                          flow-img="$flow.files[0] ? $flow.files[0] : null"/>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <img ng-click="editableUser.avatar = 'dev-ico.png'"
-                                     ng-class="{'selected': editableUser.avatar == 'dev-ico.png' }"
-                                     src="${asset.assetPath(src: 'avatars/dev-ico.png')}"/>
-                                <img ng-click="editableUser.avatar = 'po-ico.png'"
-                                     ng-class="{'selected': editableUser.avatar == 'po-ico.png' }"
-                                     src="${asset.assetPath(src: 'avatars/po-ico.png')}"/>
-                                <img ng-click="editableUser.avatar = 'sh-ico.png'"
-                                     ng-class="{'selected': editableUser.avatar == 'sh-ico.png' }"
-                                     src="${asset.assetPath(src: 'avatars/sh-ico.png')}"/>
-                                <img ng-click="editableUser.avatar = 'sm-ico.png'"
-                                     ng-class="{'selected': editableUser.avatar == 'sm-ico.png' }"
-                                     src="${asset.assetPath(src: 'avatars/sm-ico.png')}"/>
-                                <img ng-click="editableUser.avatar = 'admin-ico.png'"
-                                     ng-class="{'selected': editableUser.avatar == 'admin-ico.png' }"
-                                     src="${asset.assetPath(src: 'avatars/admin-ico.png')}"/>
                             </div>
                             <input type="hidden"
                                    name="user.avatar"
