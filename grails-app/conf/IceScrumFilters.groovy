@@ -131,12 +131,11 @@ class IceScrumFilters {
             }
         }
 
-        //TODO still needed?
         webservices(uri: '/ws/**') {
             before = {
                 request.withFormat {
                     json {
-                        //remove collision params... and we need to remove this filter ASAP
+                        // Project cannot be provided in body, it must be provided in URL
                         def data = request.JSON
                         data.remove("project")
                         params << request.JSON

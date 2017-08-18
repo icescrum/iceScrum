@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="actions">
                                         <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
-                                        <span class="action" ng-class="{'active':topStory.attachments.length}">
+                                        <span class="action" ng-class="{'active':topStory.attachments_count}">
                                             <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                                 <i class="fa fa-paperclip"></i>
                                             </a>
@@ -173,13 +173,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <tr><td>${message(code: 'is.story.effort')}</td><td>{{ sumPoints(stories) }}</td></tr>
-                            <tr><td>${message(code: 'todo.is.ui.tasks')}</td><td>{{ sumTasks(stories) }}</td></tr>
-                            <tr><td>${message(code: 'todo.is.ui.acceptanceTests')}</td><td>{{ sumAcceptanceTests(stories) }}</td></tr>
-                        </table>
-                    </div>
+                    <div ng-include="'story.table.multiple.sum.html'"></div>
                 </div>
             </div>
             <form ng-submit="updateMultiple(storyPreview)"

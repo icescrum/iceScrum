@@ -61,10 +61,10 @@
             </a>
         </div>
         <div class="actions">
-            <span class="action" ng-class="{'active':story.attachments.length}">
+            <span class="action" ng-class="{'active':story.attachments_count}">
                 <a href="{{ openStoryUrl(story.id) }}">
                     <i class="fa fa-paperclip" fast-tooltip-el="${message(code:'todo.is.ui.backlogelement.attachments')}"></i>
-                    <span class="badge">{{ story.attachments.length || '' }}</span>
+                    <span class="badge">{{ story.attachments_count || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':story.comments_count}">

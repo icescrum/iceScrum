@@ -31,3 +31,4 @@
 <g:render template="/story/templates/nested.stories"/>
 <g:render template="/story/templates/story.selector"/>
 <g:render template="/story/templates/story.split"/>
+<g:render template="/story/templates/story.table.multiple.sum"/>

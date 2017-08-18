@@ -277,7 +277,7 @@
                  ng-bind-html="editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
         </div>
         <div class="form-group">
-            <label>${message(code: 'is.backlogelement.attachment')} {{ story.attachments.length > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
+            <label>${message(code: 'is.backlogelement.attachment')} {{ story.attachments_count > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
             <div ng-if="authorizedStory('upload', story)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"

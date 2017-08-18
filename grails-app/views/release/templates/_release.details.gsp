@@ -220,7 +220,7 @@
                          ng-bind-html="editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'"></div>
                 </div>
                 <div class="form-group">
-                    <label>${message(code:'is.backlogelement.attachment')} {{ release.attachments.length > 0 ? '(' + release.attachments.length + ')' : '' }}</label>
+                    <label>${message(code:'is.backlogelement.attachment')} {{ release.attachments_count > 0 ? '(' + release.attachments_count + ')' : '' }}</label>
                     <div ng-if="authorizedRelease('upload', release)"
                          ng-controller="attachmentNestedCtrl">
                         <button type="button"

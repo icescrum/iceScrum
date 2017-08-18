@@ -157,6 +157,10 @@ class UrlMappings {
             controller = 'user'
             action = [GET: "retrieve", POST: "retrieve"]
         }
+        "/user/initialsAvatar" {
+            controller = 'user'
+            action = 'initialsAvatar'
+        }
         "/user/$id" {
             controller = 'user'
             action = [GET: "show", PUT: "update", POST: "update"]

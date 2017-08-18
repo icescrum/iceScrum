@@ -235,7 +235,7 @@
                          ng-bind-html="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
                 </div>
                 <div class="form-group">
-                    <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments.length > 0 ? '(' + sprint.attachments.length + ')' : '' }}</label>
+                    <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments_count > 0 ? '(' + sprint.attachments_count + ')' : '' }}</label>
                     <div ng-if="authorizedSprint('upload', sprint)"
                          ng-controller="attachmentNestedCtrl">
                         <button type="button"

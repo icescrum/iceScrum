@@ -32,12 +32,15 @@ services.service("AttachmentService", ['Attachment', 'Session', function(Attachm
             attachment.typeId = attachmentable.id;
             attachment.attachmentable = {id: attachmentable.id};
             attachmentable.attachments.unshift(attachment);
+            attachmentable.attachments_count++;
         }
     };
     this['delete'] = function(attachment, attachmentable) {
         return Attachment.delete({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id}, function() {
             _.remove(attachmentable.attachments, {id: attachment.id});
-        });
+            debugger;
+            attachmentable.attachments_count = attachmentable.attachments.length;
+        }).$promise;
     };
     this.authorizedAttachment = function(action, attachment) {
         switch (action) {
@@ -46,5 +49,15 @@ services.service("AttachmentService", ['Attachment', 'Session', function(Attachm
             default:
                 return false;
         }
-    }
+    };
+    this.list = function(attachmentable) {
+        if (_.isEmpty(attachmentable.attachments)) {
+            return Attachment.query({typeId: attachmentable.id, type: attachmentable.class.toLowerCase()}, function(data) {
+                attachmentable.attachments = data;
+                attachmentable.attachments_count = attachmentable.attachments.length;
+            }).$promise;
+        } else {
+            return $q.when(attachmentable.comments);
+        }
+    };
 }]);

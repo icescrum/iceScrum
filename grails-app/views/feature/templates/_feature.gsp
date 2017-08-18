@@ -50,11 +50,11 @@
             </a>
         </div>
         <div class="actions">
-            <span class="action" ng-class="{'active':feature.attachments.length}">
+            <span class="action" ng-class="{'active':feature.attachments_count}">
                 <a href="#/{{ ::viewName }}/{{ ::feature.id }}"
                    uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                     <i class="fa fa-paperclip"></i>
-                    <span class="badge">{{ feature.attachments.length || '' }}</span>
+                    <span class="badge">{{ feature.attachments_count || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':feature.stories_ids.length}">

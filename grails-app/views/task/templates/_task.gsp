@@ -56,11 +56,11 @@
             </a>
         </div>
         <div class="actions">
-            <span class="action" ng-class="{'active':task.attachments.length}">
+            <span class="action" ng-class="{'active':task.attachments_count}">
                 <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}"
                    uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
                     <i class="fa fa-paperclip"></i>
-                    <span class="badge">{{ task.attachments.length || '' }}</span>
+                    <span class="badge">{{ task.attachments_count || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':task.comments_count}">

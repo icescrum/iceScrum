@@ -190,7 +190,7 @@
                          ng-bind-html="editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
                 </div>
                 <div class="form-group">
-                    <label>${message(code:'is.backlogelement.attachment')} {{ feature.attachments.length > 0 ? '(' + feature.attachments.length + ')' : '' }}</label>
+                    <label>${message(code:'is.backlogelement.attachment')} {{ feature.attachments_count > 0 ? '(' + feature.attachments_count + ')' : '' }}</label>
                     <div ng-if="authorizedFeature('upload', feature)"
                          ng-controller="attachmentNestedCtrl">
                         <button type="button"

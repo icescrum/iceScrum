@@ -78,9 +78,22 @@ controllers.controller("backlogsListMenuCtrl", ['$scope', 'WindowService', '$sta
     };
 }]);
 
-extensibleController('backlogDetailsCtrl', ['$scope', '$controller', 'FormService', 'StoryService', 'backlog', function($scope, $controller, FormService, StoryService, backlog) {
+extensibleController('backlogDetailsCtrl', ['$scope', 'StoryService', 'BacklogService', 'backlog', function($scope, StoryService, BacklogService, backlog) {
     // Init
     $scope.backlog = backlog;
+    StoryService.listByBacklog(backlog).then(function(stories){
+        $scope.stories = stories;
+    });
+    // Ensures that the stories list of displayed backlogs are up to date
+    $scope.$on('is:backlogsUpdated', function(event, backlogCodes) {
+        _.each(backlogCodes, function(backlogCode) {
+            if (backlog.code === backlogCode) {
+                StoryService.listByBacklog(backlog).then(function(stories){
+                    $scope.stories = stories;
+                });
+            }
+        });
+    });
 }]);
 
 
@@ -334,7 +347,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
     $scope.availableBacklogs = backlogs;
     $scope.backlogCodes = BacklogCodes;
 
-    // Ensures that the stories of displayed backlogs are up to date
+    // Ensures that the stories list of displayed backlogs are up to date
     $scope.$on('is:backlogsUpdated', function(event, backlogCodes) {
         _.each(backlogCodes, function(backlogCode) {
             var backlogContainer = $scope.getBacklogContainer(backlogCode);

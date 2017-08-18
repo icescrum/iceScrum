@@ -134,6 +134,11 @@ angular.module('isApplication', [
         $urlRouterProvider.when('', '/');
 
         var taskTabs = _.merge({
+            details: {
+                data: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsTask) {
+                    return AttachmentService.list(detailsTask);
+                }]
+            },
             comments: {
                 data: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
                     if ($stateParams.taskTabId == 'comments') {
@@ -153,6 +158,11 @@ angular.module('isApplication', [
         }, pluginTabsProvider.pluginTabs['task']);
 
         var storyTabs = _.merge({
+            details: {
+                data: ['$stateParams', 'AttachmentService', 'detailsStory', function($stateParams, AttachmentService, detailsStory) {
+                    return AttachmentService.list(detailsStory);
+                }]
+            },
             tests: {
                 data: ['$stateParams', 'AcceptanceTestService', 'detailsStory', function($stateParams, AcceptanceTestService, detailsStory) {
                     if ($stateParams.storyTabId == 'tests') {
@@ -188,6 +198,11 @@ angular.module('isApplication', [
         }, pluginTabsProvider.pluginTabs['story']);
 
         var featureTabs = _.merge({
+            details: {
+                data: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsFeature) {
+                    return AttachmentService.list(detailsFeature);
+                }]
+            },
             stories: {
                 data: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
                     if ($stateParams.featureTabId == 'stories') {
@@ -227,7 +242,7 @@ angular.module('isApplication', [
             }, options);
         };
         var getTaskDetailsState = function(viewContext) {
-            var options = {
+            var taskState = {
                 name: 'details',
                 url: "/{taskId:int}",
                 resolve: {
@@ -238,7 +253,7 @@ angular.module('isApplication', [
                 views: {}
             };
             var tabNames = _.keys(taskTabs);
-            options.children = [
+            taskState.children = [
                 {
                     name: 'tab',
                     url: '/{taskTabId:(?:' + _.join(tabNames, '|') + ')}',
@@ -257,14 +272,19 @@ angular.module('isApplication', [
                     }
                 }
             ];
+
+            //default tab (without featureTabId)
+            taskState.resolve['details'] = taskTabs["details"].data;
+
+            var taskTabState = taskState.children[0];
             _.each(taskTabs, function(value, key) {
-                options.children[0].resolve['data' + key] = value.data;
+                taskTabState.resolve['data' + key] = value.data;
             });
-            options.views['details' + (viewContext ? viewContext : '')] = {
+            taskTabState.views['details' + (viewContext ? viewContext : '')] = {
                 templateUrl: 'task.details.html',
                 controller: 'taskDetailsCtrl'
             };
-            return options;
+            return taskState;
         };
         var getFeatureDetailsState = function(viewContext, isModal) {
             var tabNames = _.keys(featureTabs);
@@ -298,6 +318,9 @@ angular.module('isApplication', [
                     }
                 ]
             };
+            //default tab (without featureTabId)
+            featureState.resolve['details'] = featureTabs["details"].data;
+
             var featureTabState = featureState.children[0];
             _.each(featureTabs, function(value, key) {
                 featureTabState.resolve['data' + key] = value.data;
@@ -346,6 +369,9 @@ angular.module('isApplication', [
                     }
                 ]
             };
+            //default tab (without storyTabId)
+            storyState.resolve['details'] = storyTabs["details"].data;
+
             var storyTabState = storyState.children[0];
             _.each(storyTabs, function(value, key) {
                 storyTabState.resolve['data' + key] = value.data;
@@ -648,7 +674,12 @@ angular.module('isApplication', [
                                 views: {
                                     "details@planning": {
                                         templateUrl: 'release.details.html',
-                                        controller: 'releaseDetailsCtrl'
+                                        controller: 'releaseDetailsCtrl',
+                                        resolve: {
+                                            detailsTab: ['$stateParams', 'AttachmentService', 'detailsRelease', function ($stateParams, AttachmentService, detailsRelease) {
+                                                    return AttachmentService.list(detailsRelease);
+                                            }]
+                                        }
                                     }
                                 }
                             },

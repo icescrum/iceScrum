@@ -47,11 +47,11 @@
             <a ng-repeat="tag in task.tags" href><span class="tag">{{ tag }}</span></a>
         </div>
         <div class="actions">
-            <span class="action" ng-class="{'active':task.attachments.length}">
+            <span class="action" ng-class="{'active':task.attachments_count}">
                 <span uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
                     <a href="{{ link ? link : openTaskUrl(task.id) }}">
                         <i class="fa fa-paperclip"></i>
-                        <span class="badge">{{ task.attachments.length || '' }}</span>
+                        <span class="badge">{{ task.attachments_count || '' }}</span>
                     </a>
                 </span>
             </span>

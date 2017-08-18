@@ -594,15 +594,6 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
 extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', function($scope, $controller, StoryService, storyListId, Session, FeatureService) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
-    $scope.sumPoints = function(stories) {
-        return _.sumBy(stories, 'effort');
-    };
-    $scope.sumTasks = function(stories) {
-        return _.sumBy(stories, 'tasks_count');
-    };
-    $scope.sumAcceptanceTests = function(stories) {
-        return _.sumBy(stories, 'acceptanceTests_count');
-    };
     $scope.deleteMultiple = function() {
         StoryService.deleteMultiple(storyListId).then(function() {
             $scope.notifySuccess('todo.is.ui.multiple.deleted');
