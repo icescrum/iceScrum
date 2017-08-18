@@ -88,7 +88,7 @@
 
     <script type="text/ng-template" id="select.member.html">
     <a>
-        <span>{{ match.model | userFullName }}</span> <span ng-show="!match.model.id" class="small">${message(code: 'todo.is.ui.user.will.be.invited')}</span>
+        <span>{{ match.model | userFullName }}</span> <span ng-show="!match.model.id" class="small">${message(code: 'todo.is.ui.user.will.be.invited.click')}</span>
     </a>
     </script>
 
