@@ -201,9 +201,16 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
             $scope.searchTeams();
         });
     };
-    $scope.cancel = function() {
+    $scope.cancelConfirmed = function() {
         $scope.team = {};
         $scope.resetFormValidation($scope.formHolder.updateTeamForm);
+    };
+    $scope.cancel = function() {
+        if ($scope.formHolder.updateTeamForm.$dirty) {
+            $scope.confirm({message: $scope.message('todo.is.ui.project.members.cancel.confirm'), callback: $scope.cancelConfirmed});
+        } else {
+            $scope.cancelConfirmed();
+        }
     };
     $scope.teamSelected = function() {
         return !_.isEmpty($scope.team);

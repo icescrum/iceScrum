@@ -326,6 +326,13 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         $scope.$close(true);
         $scope.showManageTeamsModal(team);
     };
+    $scope.cancelMembers = function() {
+        if ($scope.formHolder.editMembersForm.$dirty) {
+            $scope.confirm({message: $scope.message('todo.is.ui.project.members.cancel.confirm'), callback: $scope.$close});
+        } else {
+            $scope.$close();
+        }
+    };
     // Init
     $scope.formHolder = {};
     $scope.resetTeamForm();
