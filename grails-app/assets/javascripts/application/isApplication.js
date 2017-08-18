@@ -135,8 +135,10 @@ angular.module('isApplication', [
 
         var taskTabs = _.merge({
             details: {
-                data: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsTask) {
-                    return AttachmentService.list(detailsTask);
+                data: ['$stateParams', 'AttachmentService', 'detailsTask', function($stateParams, AttachmentService, detailsTask) {
+                    if (!$stateParams.taskTabId) {
+                        return AttachmentService.list(detailsTask);
+                    }
                 }]
             },
             comments: {
@@ -160,7 +162,9 @@ angular.module('isApplication', [
         var storyTabs = _.merge({
             details: {
                 data: ['$stateParams', 'AttachmentService', 'detailsStory', function($stateParams, AttachmentService, detailsStory) {
-                    return AttachmentService.list(detailsStory);
+                    if (!$stateParams.storyTabId) {
+                        return AttachmentService.list(detailsStory);
+                    }
                 }]
             },
             tests: {
@@ -200,7 +204,9 @@ angular.module('isApplication', [
         var featureTabs = _.merge({
             details: {
                 data: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsFeature) {
-                    return AttachmentService.list(detailsFeature);
+                    if (!$stateParams.storyTabId) {
+                        return AttachmentService.list(detailsFeature);
+                    }
                 }]
             },
             stories: {

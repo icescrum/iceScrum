@@ -25,20 +25,19 @@ services.factory('Attachment', ['Resource', function($resource) {
     return $resource('attachment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
 }]);
 
-services.service("AttachmentService", ['Attachment', 'Session', function(Attachment, Session) {
+services.service("AttachmentService", ['Attachment', 'Session', '$q', function(Attachment, Session, $q) {
     this.addToAttachmentable = function(attachment, attachmentable) {
         if (!_.find(attachmentable.attachments, {id: attachment.id})) {
             attachment.type = attachmentable.class.toLowerCase();
             attachment.typeId = attachmentable.id;
             attachment.attachmentable = {id: attachmentable.id};
             attachmentable.attachments.unshift(attachment);
-            attachmentable.attachments_count++;
+            attachmentable.attachments_count = attachmentable.attachments.length;
         }
     };
     this['delete'] = function(attachment, attachmentable) {
         return Attachment.delete({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id}, function() {
             _.remove(attachmentable.attachments, {id: attachment.id});
-            debugger;
             attachmentable.attachments_count = attachmentable.attachments.length;
         }).$promise;
     };
