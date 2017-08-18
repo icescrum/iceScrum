@@ -1081,7 +1081,7 @@ angular.module('isApplication', [
         };
 
         $rootScope.confirmDelete = function(options) {
-            $rootScope.confirm(_.merge({
+            $rootScope.confirm(_.assign({ // Don't use merge, we want to keep the original references and avoid object copy
                 buttonColor: 'danger',
                 buttonTitle: 'default.button.delete.label',
                 message: $rootScope.message('is.confirm.delete')
