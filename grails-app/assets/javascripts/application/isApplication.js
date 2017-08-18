@@ -530,8 +530,8 @@ angular.module('isApplication', [
                     detailsSprint: ['sprint', function(sprint) {
                         return sprint;
                     }],
-                    detailsRelease: ['releases', 'sprint', function(releases, sprint) {
-                        return _.find(releases, {id: sprint.parentRelease.id});
+                    detailsRelease: ['releases', 'detailsSprint', function(releases, detailsSprint) {
+                        return _.find(releases, {id: detailsSprint.parentRelease.id});
                     }]
                 },
                 views: {},
@@ -860,6 +860,9 @@ angular.module('isApplication', [
                                         resolve: {
                                             detailsSprint: ['$stateParams', 'detailsRelease', function($stateParams, detailsRelease) {
                                                 return _.find(detailsRelease.sprints, {id: $stateParams.sprintId});
+                                            }],
+                                            sprint: ['detailsSprint', function(detailsSprint) {
+                                                return detailsSprint;
                                             }]
                                         },
                                         children: [
