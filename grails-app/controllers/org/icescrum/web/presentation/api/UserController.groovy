@@ -175,6 +175,14 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: user as JSON)
     }
 
+    @Secured(["hasRole('ROLE_ADMIN')"])
+    def delete(long id, long substitutedBy) {
+        User user = User.withUser(id)
+        User substitute = User.withUser(substitutedBy)
+        userService.delete(user, substitute, params.boolean('deleteDataOwned'))
+        render(status: 204)
+    }
+
     @Secured(['!isAuthenticated()'])
     def register() {
         render(status: 200, template: 'dialogs/register')

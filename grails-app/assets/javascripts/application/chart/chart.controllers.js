@@ -138,7 +138,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                 chart: {
                     type: 'pieChart',
                     donut: true,
-                    height: 250,
+                    height: 200,
                     x: function(entry) { return entry[0]; },
                     y: function(entry) { return entry[1]; },
                     showLabels: true,

@@ -83,8 +83,12 @@ class BacklogController implements ControllerErrorHandler {
                     chart:[
                             title:total
                     ],
-                    title:[
-                            text:"${message(code:"is.chart.backlogByProperty.title", args: [message(code:backlog.name), message(code:'is.story.'+property)])}"
+                    title: [
+                      enable:false,
+                    ],
+                    caption:[
+                            enable:true,
+                            html:"<h4>${message(code:"is.chart.backlogByProperty.title", args: [message(code:backlog.name), message(code:'is.story.'+property)])}</h4>"
                     ]
             ]
 

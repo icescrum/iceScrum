@@ -163,7 +163,7 @@ class UrlMappings {
         }
         "/user/$id" {
             controller = 'user'
-            action = [GET: "show", PUT: "update", POST: "update"]
+            action = [GET: "show", PUT: "update", POST: "update", DELETE: "delete"]
             constraints {
                 id(matches: /\d*/)
             }

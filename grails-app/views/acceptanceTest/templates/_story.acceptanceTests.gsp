@@ -89,7 +89,7 @@
                                   ng-show="showAcceptanceTestDescriptionTextarea"
                                   ng-blur="update(editableAcceptanceTest, selected); blurAcceptanceTestDescription()"
                                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-                        <div class="markitup-preview important no-fixed-height"
+                        <div class="markitup-preview no-fixed-height"
                              ng-show="!showAcceptanceTestDescriptionTextarea"
                              ng-click="editForm(true); showAcceptanceTestDescriptionTextarea = true"
                              ng-focus="editForm(true); focusAcceptanceTestDescription()"
