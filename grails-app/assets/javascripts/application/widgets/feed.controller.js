@@ -19,13 +19,15 @@
  *
  * Marwah Soltani (msoltani@kagilum.com)
  */
-controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', function($scope, $filter, FormService, WidgetService) {
+controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', '$controller', function($scope, $filter, FormService, WidgetService, $controller) {
+    $controller('widgetCtrl', {$scope: $scope});
+
     //$scope.widget inherited
     var widget = $scope.widget;
 
-    $scope.display = function(widgetId) {
+    $scope.display = function(widget) {
         $scope.holder.feed = {};
-        return FormService.httpPost('widget/feed', {widgetId: widgetId}, null, true).then(function(feedWithContent) {
+        return FormService.httpPost('widget/feed', {widgetId: widget.id}, null, true).then(function(feedWithContent) {
             //what do we do!
             $scope.holder.errorMessage = null;
             $scope.holder.feed = feedWithContent;
@@ -69,5 +71,5 @@ controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
         feeds: widget.settings.feeds,
         selected: _.find(widget.settings.feeds, {selected: true})
     };
-    $scope.display(widget.id);
+    $scope.display(widget);
 }]);

@@ -343,7 +343,6 @@ header {
     //col-md etc..
     > div {
       .panel  {
-        margin-bottom: 0;
         position: relative;
         > div.panel-heading {
           padding: 10px;
@@ -1003,23 +1002,15 @@ table {
 #view-home {
   .widget-tasks {
     .panel-body > div {
-      max-height: 300px;
-      overflow: auto;
       .list-group-header {
         background: #fff;
       }
     }
   }
-  .widget-feed .panel-body.widget-content  {
-    max-height: 350px;
-    overflow-y: auto;
-  }
 
   .widget-quickProjects {
-    border: none;
-    background: none;
     .panel-body {
-      padding-bottom: 0;
+      text-align: center;
       hr {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -1029,9 +1020,94 @@ table {
       }
     }
   }
+
+  .widget-backlogChart {
+      .panel-heading {
+        margin-top:0;
+      }
+      .panel-body {
+        svg {
+          margin-top: -18px
+        }
+        .caption {
+          left:0;
+          right: 0;
+          bottom: 10px;
+          position: absolute;
+          text-align: center;
+        }
+      }
+  }
+
+}
+
+@panel-height: 250px;
+@panel-head-height:43px;
+@panel-margin-bottom:20px;
+@panel-border-height:0px;
+
+.widgets {
   .widget {
-    .panel-body {
-      padding-top: 0;
+    .btn-settings {
+      top:10px;
+      right:10px;
+      position: absolute;
+    }
+    .panel-heading {
+      h3 {
+        .text-overflow();
+        > a {
+          display: inline-block;
+          .text-overflow();
+        }
+      }
+    }
+    &.widget-height-1 {
+      .panel-body {
+        height:@panel-height - (@panel-head-height + @panel-margin-bottom + @panel-border-height * 2);
+      }
+    }
+
+    &.widget-height-2 {
+      .panel-body {
+        height:(@panel-height*2) - (@panel-head-height + @panel-margin-bottom + @panel-border-height * 2);
+      }
+    }
+
+    &.widget-height-3 {
+      .panel-body {
+        height:(@panel-height*3) - (@panel-head-height + @panel-margin-bottom + @panel-border-height * 2);
+      }
+    }
+    &.widget-width-1 {
+      .make-md-column(2);
+    }
+    &.widget-width-2 {
+      .make-md-column(4);
+    }
+    &.widget-width-3 {
+      .make-md-column(6);
+    }
+    > div.panel {
+      .panel-body {
+        padding-top: 0;
+        overflow-y: auto;
+      }
+    }
+  }
+  .as-sortable-placeholder {
+    float:left;
+    margin-left: 15px;
+    margin-right: 15px;
+    box-sizing: border-box;
+    margin-bottom:20px;
+  }
+  &.as-sortable-drag {
+    .widget {
+      width:100% !important;
+      .panel-heading {
+        padding: 10px;
+      }
     }
   }
 }

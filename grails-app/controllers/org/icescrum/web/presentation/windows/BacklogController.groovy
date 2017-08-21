@@ -49,29 +49,51 @@ class BacklogController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
+    def show(long project, long id) {
+        Project _project = Project.load(project)
+        Backlog backlog = Backlog.findByProjectAndId(_project, id)
+        if(!backlog.isDefault && backlog.owner != springSecurityService.currentUser && !backlog.shared && !request.admin){
+            render(status:403)
+            return
+        }
+        render(status: 200, contentType: 'application/json', text: backlog as JSON)
+    }
+
+    @Secured(['stakeHolder() or inProject()'])
     def chartByProperty(long id, long project, String property){
-        if (property in ["effort", "feature", "state", "type", "state", "affectVersion"]){
+        if (property in grailsApplication.config.icescrum.resourceBundles.backlogChartTypes.keySet()){
             def backlog = Backlog.findByProjectAndId(Project.load(project), id)
+
+            if(backlog.owner != springSecurityService.currentUser && !backlog.shared){
+                render(status:403)
+                return
+            }
+
             def stories = Story.search(project, JSON.parse(backlog.filter))
             def storiesByProperty = stories.groupBy({ story -> story."$property" })
             def data = [], colors = [], total = 0
+            def bundle
             storiesByProperty.each{
                 def color, name
                 switch (property){
                     case "feature":
                         name = it.key?.name?:""
                         color = it.key?.color?:"#f9f157"
-                        break
-                    case "state":
-                        name = message(code:grailsApplication.config.icescrum.resourceBundles.storyStates[it.key])
-                        color = grailsApplication.config.icescrum.resourceBundles.storyStatesColor[it.key]
+                        bundle = 'is.feature'
                         break
                     case "type":
                         name = message(code:grailsApplication.config.icescrum.resourceBundles.storyTypes[it.key])
                         color = grailsApplication.config.icescrum.resourceBundles.storyTypesColor[it.key]
+                        bundle = 'is.story.'+property
+                        break
+                    case "state":
+                        name = message(code:grailsApplication.config.icescrum.resourceBundles.storyStates[it.key])
+                        color = grailsApplication.config.icescrum.resourceBundles.storyStatesColor[it.key]
+                        bundle = 'is.story.'+property
                         break
                     default:
                         name = it.key
+                        bundle = 'is.story.'+property
                         break
                 }
                 data << [name, it.value.size()]
@@ -84,11 +106,11 @@ class BacklogController implements ControllerErrorHandler {
                             title:total
                     ],
                     title: [
-                      enable:false,
+                            text:"${message(code:"is.chart.backlogByProperty.title", args: [backlog.project.pkey, message(code:backlog.name)])}"
                     ],
                     caption:[
-                            enable:true,
-                            html:"<h4>${message(code:"is.chart.backlogByProperty.title", args: [message(code:backlog.name), message(code:'is.story.'+property)])}</h4>"
+                            text:"${message(code:"is.chart.backlogByProperty.caption", args: [message(code:bundle)])}",
+                            html:"<h4>${message(code:"is.chart.backlogByProperty.caption", args: [message(code:bundle)])}</h4>"
                     ]
             ]
 

@@ -22,17 +22,24 @@
  *
  */
 
-controllers.controller("widgetCtrl", ['$scope', 'WidgetService', function($scope, WidgetService) {
+controllers.controller("widgetCtrl", ['$scope', 'WidgetService', '$q', function($scope, WidgetService, $q) {
+    //used to be overrided by plugin if necessary
+    $scope.display = function(widget){};
+
     $scope.toggleSettings = function(widget) {
         if ($scope.showSettings) {
-            $scope.update(widget);
+            return $scope.update(widget).then(function(widget){
+                $scope.showSettings = !$scope.showSettings;
+                $scope.display(widget);
+            });
         }
         $scope.showSettings = !$scope.showSettings;
+        return $q.when(widget);
     };
     $scope.update = function(widget) {
-        WidgetService.update(widget);
+        return WidgetService.update(widget);
     };
     $scope.delete = function(widget) {
-        WidgetService.delete(widget);
+        return WidgetService.delete(widget);
     };
 }]);

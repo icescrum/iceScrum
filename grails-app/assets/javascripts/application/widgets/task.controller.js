@@ -21,23 +21,18 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller', function($scope, TaskService, $controller) {
+    $controller('widgetCtrl', {$scope: $scope});
+
     TaskService.listByUser().then(function(tasksByProject) {
         $scope.tasksByProject = tasksByProject;
     });
 
-    $scope.display = function(){
+    $scope.display = function(widget){
         var current = $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
         if(current != widget.settings.postitSize){
             $scope.cleanPostitSize($scope.viewName);
             $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
-        }
-    };
-
-    $scope.toggleSettings = function(widget){
-        $scope.$parent.toggleSettings(widget);
-        if(!$scope.showSettings){
-            $scope.display();
         }
     };
 
@@ -50,5 +45,5 @@ controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', function($sco
     $scope.tasksByProject = [];
     widget.settings = widget.settings ? widget.settings : { postitSize:'list-group' };
     $scope.viewName = 'taskWidget';
-    $scope.display();
+    $scope.display(widget);
 }]);

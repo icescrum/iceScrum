@@ -27,26 +27,28 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'CacheService', 'Widget
     var position = function(event) {
         var widget = event.source.itemScope.modelValue;
         widget.position = event.dest.index + 1;
-        widget.onRight = event.dest.sortableScope.options.sortableId === 'sortableRight';
         WidgetService.update(widget).catch(function() {
             $scope.revertSortable(event);
         });
     };
-    $scope.widgetSortableOptionsLeft = {
+    $scope.widgetSortableOptions = {
         itemMoved: position,
         orderChanged: position,
-        sortableId: 'sortableLeft',
-        accept: function(sourceItemHandleScope, destSortableScope) {
-            return _.includes(['sortableLeft', 'sortableRight'], destSortableScope.options.sortableId);
-        }
+        placeholderDisableComputeBounds:true,
+        placeholder:function($scopeItem){
+            var widget = $scopeItem.element.find('.panel')[0];
+            var width = widget.getBoundingClientRect().width;
+            var height = widget.getBoundingClientRect().height;
+            return "<div style='height:"+height+"px;width:"+width+"px;'/>";
+        },
+        sortableId: 'sortable',
+        containment:'#view-home > .row',
+        containerPositioning:'relative'
     };
-    $scope.widgetSortableOptionsRight = _.defaults({sortableId: 'sortableRight'}, $scope.widgetSortableOptionsLeft);
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
     $scope.widgets = CacheService.getCache('widget');
     $scope.$watchCollection('widgets', function(newWidgets) {
-        var widgetsByRight = _.partition(newWidgets, 'onRight');
-        $scope.widgetsOnRight = widgetsByRight[0];
-        $scope.widgetsOnLeft = widgetsByRight[1];
+        $scope.widgets = newWidgets;
     });
     WidgetService.list();
 }]);

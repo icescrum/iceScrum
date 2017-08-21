@@ -40,6 +40,7 @@
             task:${resourceBundles.taskTypes.keySet() as JSON},
             story:${resourceBundles.storyTypes.keySet() as JSON},
             feature:${resourceBundles.featureTypes.keySet() as JSON},
+            backlogChart:${resourceBundles.backlogChartTypes.keySet() as JSON},
             planningPoker:${resourceBundles.planningPokerGameSuites.keySet() as JSON}
         },
         states: {

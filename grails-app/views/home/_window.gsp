@@ -20,29 +20,13 @@
 --}%
 <div id="view-home" class="view">
     <div class="content">
-        <div class="row">
-            <div class="widget-column">
-                <div as-sortable="widgetSortableOptionsLeft | merge: sortableScrollOptions('#view-home')"
-                     is-disabled="!authenticated()"
-                     ng-model='widgetsOnLeft'>
-                    <div ng-include src="templateWidgetUrl(widget)"
-                         as-sortable-item
-                         id="{{ widget.id }}"
-                         class="panel-container widget-{{ widget.id }}"
-                         ng-repeat="widget in widgetsOnLeft"></div>
-                </div>
-            </div>
-            <div class="widget-column">
-                <div as-sortable="widgetSortableOptionsRight | merge: sortableScrollOptions('#view-home')"
-                     is-disabled="!authenticated()"
-                     ng-model='widgetsOnRight'>
-                    <div ng-include src="templateWidgetUrl(widget)"
-                         as-sortable-item
-                         id="{{ widget.id }}"
-                         class="panel-container widget-{{ widget.id }}"
-                         ng-repeat="widget in widgetsOnRight"></div>
-                </div>
-            </div>
+        <div class="row widgets" as-sortable="widgetSortableOptions" ng-model="widgets">
+            <div as-sortable-item
+                 ng-include src="templateWidgetUrl(widget)"
+                 id="{{ widget.id }}"
+                 ng-controller="widgetCtrl"
+                 class="widget widget-{{ widget.widgetDefinitionId }} widget-height-{{ widget.height }} widget-width-{{ widget.width }}"
+                 ng-repeat="widget in widgets"></div>
         </div>
         <div class="add-widget" ng-if="authenticated()">
             <button class="btn btn-primary" ng-click="showAddWidgetModal(true)">

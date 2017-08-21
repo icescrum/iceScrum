@@ -26,9 +26,6 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
     $scope.defaultOptions = {
         chart: {
             height: 350
-        },
-        title: {
-            enable: true
         }
     };
     $scope.chartLoaders = {
@@ -39,10 +36,10 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             return ReleaseService.openChart(item, chartName);
         },
         sprint: function(chartName, item) {
-            return SprintService.openChart(item, $scope.project ? $scope.project : Session.getProject(), chartName);
+            return SprintService.openChart(item, item.parentRelease.parentProject ? item.parentRelease.parentProject : ($scope.project ? $scope.project : Session.project()), chartName);
         },
         backlog: function(chartName, item) {
-            return BacklogService.openChart(item, $scope.project ? $scope.project : Session.getProject(), chartName);
+            return BacklogService.openChart(item, item.project, chartName);
         }
     };
     $scope.chartOptions = {
@@ -61,13 +58,19 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             },
             flowCumulative: {
                 chart: {
-                    type: 'stackedAreaChart'
+                    type: 'stackedAreaChart',
+                    margin:{right:45}
                 }
             },
             burndown: {
                 chart: {
                     type: 'multiBarChart',
                     stacked: true
+                }
+            },
+            burnup: {
+                chart: {
+                    margin:{right:45}
                 }
             },
             velocity: {
@@ -91,7 +94,6 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             }
         },
         release: {
-            default: {},
             parkingLot: {
                 chart: {
                     type: 'multiBarHorizontalChart',
@@ -150,30 +152,42 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         bottom: 0,
                         left: 0
                     }
+                },
+                title:{
+                    enable:false
+                },
+                caption:{
+                    enable:true
                 }
             }
         }
     };
-    $scope.openChart = function(itemType, chartName, item) {
+    $scope.openChart = function(itemType, chartName, item, options) {
         $scope.cleanData();
         $scope.chartParams = {
             item:item,
             itemType:itemType,
             chartName:chartName
         };
-        $scope.options = _.merge({}, $scope.defaultOptions, $scope.chartOptions[itemType]['default'], $scope.chartOptions[itemType][chartName] ? $scope.chartOptions[itemType][chartName] : {});
-        $scope.chartLoaders[itemType](chartName, item).then(function(chart) {
+        $scope.options = _.merge({}, $scope.defaultOptions);
+        $scope.options = _.merge($scope.options, $scope.chartOptions[itemType]['default']);
+        $scope.options = _.merge($scope.options, $scope.chartOptions[itemType][chartName] ? $scope.chartOptions[itemType][chartName] : {});
+        $scope.options = _.merge($scope.options, options ? options : {});
+        return $scope.chartLoaders[itemType](chartName, item).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
-            if(_.isEmpty($scope.data)){
-                $scope.options.title.enable = false;
-            }
+            $scope.options = _.merge($scope.options, options)   ;
+            $scope.options.title.enable = !_.isEmpty($scope.options.title) && $scope.options.title.enable !== false;
             if (chart.labelsX) {
                 $scope.labelsX = chart.labelsX;
             }
             if (chart.labelsY) {
                 $scope.labelsY = chart.labelsY;
             }
+            if(angular.isFunction($scope.options.chart.height)){
+                $scope.options.chart.height = $scope.options.chart.height($element);
+            }
+            return chart;
         });
     };
     $scope.processSaveChart = function() {
@@ -234,93 +248,34 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
     $scope.cleanData();
 }]);
 
-controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormService', 'ProjectService', function($scope, WidgetService, FormService, ProjectService) {
-    var widget = $scope.widget; // $scope.widget is inherited
-    $scope.refreshProjects = function(term) {
-        ProjectService.listByUser({term: term, paginate: true}).then(function(projectsAndCount) {
-            $scope.projects = projectsAndCount.projects;
-            if (!term && widget.settings && widget.settings.project && !_.find($scope.projects, {id: widget.settings.project.id})) {
-                $scope.projects.unshift(widget.settings.project);
-            }
-        });
-    };
-    $scope.widgetReady = function(widget) {
-        return widget.settings && widget.settings.project && widget.settings.chart ? true : false;
-    };
-    $scope.getTitle = function() {
-        return $scope.widgetReady(widget) ? widget.settings.project.name + ' - ' + (widget.settings.chart.group ? widget.settings.chart.group + ' ' : '') + widget.settings.chart.name : '';
-    };
-    $scope.getUrl = function() {
-        widget.settings.chart.type
-        return $scope.widgetReady(widget) ? 'p/' + widget.settings.project.pkey + '/#/' + widget.settings.chart.view : '';
-    };
-    $scope.projectChanged = function() {
-        if (!widget.settings) {
-            widget.settings = {};
-        }
-        widget.settings.project = _.pick($scope.holder.project, ['id', 'name', 'pkey']);
-        $scope.project = $scope.holder.project;
-        widget.type = 'project';
-        widget.typeId = $scope.holder.project.id;
-    };
-    $scope.chartChanged = function() {
-        widget.settings.chart = _.pick($scope.holder.chart, ['id', 'name', 'type', 'group', 'view']);
-    };
-    // Init
-    $scope.holder = {};
-    $scope.projects = [];
-    $scope.$watch('widget.settings.project', function(newProject) {
-        $scope.holder.project = newProject;
-    });
-    $scope.$watch('widget.settings.chart', function(newChart) {
-        $scope.holder.chart = newChart;
-    })
-}]);
-
-controllers.controller('chartWidgetChartCtrl', ['$scope', '$element', '$controller', 'ReleaseService', 'SprintService', function($scope, $element, $controller, ReleaseService, SprintService) {
+controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormService', 'ProjectService' , '$controller', '$element', function($scope, WidgetService, FormService, ProjectService, $controller, $element) {
+    $controller('widgetCtrl', {$scope: $scope});
     $controller('chartCtrl', {$scope: $scope, $element: $element});
-    $scope.project = $scope.widget.settings.project;
-    switch ($scope.widget.settings.chart.type) {
-        case 'release':
-            ReleaseService.getCurrentOrNextRelease($scope.project).then(function(release) {
-                if (release && release.id) {
-                    $scope.openChart('release', $scope.widget.settings.chart.id, release);
-                }
-            });
-            break;
-        case 'sprint':
-            SprintService.getCurrentOrLastSprint($scope.project).then(function(sprint) {
-                if (sprint && sprint.id) {
-                    $scope.openChart('sprint', $scope.widget.settings.chart.id, sprint);
-                }
-            });
-            break;
-        default:
-            $scope.openChart('project', $scope.widget.settings.chart.id, $scope.project);
-            break;
-    }
-}]);
 
-controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope, charts) {
-    $scope.projectCharts = _.transform(charts.project, function(projectCharts, charts, type) {
-        projectCharts[type] = _.filter(charts, function(chart) {
-            return !chart.visible || chart.visible($scope.project);
-        });
-    }, {});
-    $scope.projectChartEntries = _.transform(charts.project, function(projectChartEntries, charts, type) {
-        _.chain(charts)
-            .filter(function(chart) {
-                return !chart.visible || chart.visible($scope.project);
-            }).map(function(chart) {
-                return {
-                    group: $scope.message('is.' + type),
-                    type: type,
-                    id: chart.id,
-                    view: chart.view,
-                    name: $scope.message(chart.name)
-                };
-            }).each(function(chart) {
-                projectChartEntries.push(chart);
-            }).value();
-    }, []);
+    $scope.getChartWidgetOptions = function(widget){
+        var chartWidgetOptions = {
+            chart:{
+                height:function($element){
+                    return $element ? $element.parents('.panel-body')[0].getBoundingClientRect().height : 0;
+                }
+            },
+            title:{
+                enable:false
+            }
+        };
+        if( widget.width === 1 || widget.height === 1){
+            chartWidgetOptions = _.merge(chartWidgetOptions, {
+                chart:{
+                    showXAxis: false,
+                    showYAxis: false,
+                    showLegend: false,
+                    margin:{top:30, right:0, bottom:15, left:0}
+                },
+                title:{
+                    enable:false
+                }
+            });
+        }
+        return chartWidgetOptions;
+    }
 }]);

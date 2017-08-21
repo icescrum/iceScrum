@@ -172,7 +172,7 @@ windows = {
         context                     default: null                 | String (project or ...)
         context                     default: null                 | String (project or ...)
         ngController                default: null                 | String
-        templatePath                default: " widgetName /window"| String (full path to template)
+        templatePath                default: "/widgets/widgetName/widget"| String (full path to template)
 
         allowDuplicate              default: true                 | true/false
         allowRemove                 default: true                 | true/false
@@ -193,8 +193,10 @@ windows = {
 
 widgets = {
     'feed' {
+        height 1
+        width 2
         icon 'rss'
-        title '{{ getTitle() }}'
+        title '{{ holder.feed.title }}'
         secured 'isAuthenticated()'
         ngController 'feedWidgetCtrl'
         defaultSettings = [
@@ -212,25 +214,30 @@ widgets = {
         }
     }
     'login' {
+        height 1
+        width 2
         icon 'user'
         secured '!isAuthenticated()'
-        templatePath '/widgets/login'
     }
     'notes' {
+        height 1
+        width 2
         icon 'pencil-square-o'
         secured 'isAuthenticated()'
-        templatePath '/widgets/notes'
         defaultSettings = [text: '']
         onUpdate { widget, settings ->
             settings.text_html = ServicesUtils.textileToHtml(settings.text)
         }
     }
     'publicProjects' {
+        height 2
+        width 3
         icon 'folder-open'
         allowDuplicate false
-        templatePath '/widgets/publicProjects'
     }
     'tasks' {
+        height 2
+        width 2
         icon 'tasks'
         allowDuplicate false
         secured 'isAuthenticated()'
@@ -240,17 +247,29 @@ widgets = {
         ]
     }
     'quickProjects' {
+        height 2
+        width 1
         icon 'folder'
         allowDuplicate false
         secured 'isAuthenticated()'
         ngController 'quickProjectsListCtrl'
-        templatePath '/widgets/quickProjects'
     }
     'chart' {
+        height 2
+        width 2
         icon 'bar-chart'
         title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
         secured 'isAuthenticated()'
-        ngController 'chartWidgetCtrl'
+        ngController 'projectChartWidgetCtrl'
+        defaultSettings = [:]
+    }
+    'backlogChart' {
+        height 1
+        width 1
+        icon 'pie-chart'
+        title '<a href="{{ getUrl() }}">{{ getTitle() }}</a>'
+        secured 'isAuthenticated()'
+        ngController = "backlogChartWidgetCtrl"
         defaultSettings = [:]
     }
 }

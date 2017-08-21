@@ -156,10 +156,12 @@ class ReleaseController implements ControllerErrorHandler {
     def parkingLot(long project, long id) {
         Release release = Release.withRelease(project, id)
         def values = featureService.releaseParkingLotValues(release)
+        def colors = values.collect { return it.color }
         def computedValues = [[key: message(code:"is.chart.releaseParkingLot.serie.name"),
                                values: values.collect { return [it.label, it.value]}]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseParkingLot.xaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.releaseParkingLot.yaxis.label')]],
+                               xAxis: [axisLabel: message(code: 'is.chart.releaseParkingLot.yaxis.label')],
+                               barColor: colors],
                        title: [text: message(code: "is.chart.releaseParkingLot.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }

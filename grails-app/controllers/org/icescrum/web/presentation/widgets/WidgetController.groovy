@@ -46,13 +46,11 @@ class WidgetController implements ControllerErrorHandler {
         if (user) {
             widgets = Widget.createCriteria().list {
                 eq('userPreferences', user.preferences)
-                order('onRight', 'desc')
                 order('position', 'asc')
             }
         } else {
             widgets = uiDefinitionService.widgetDefinitions.findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
-                            .collect { ['widgetDefinitionId': it.key] }
-                            .eachWithIndex { def entry, def i -> entry.onRight = i % 2 ? true : false }
+                            .collect { ['widgetDefinitionId': it.key, 'height':it.value.height, 'width':it.value.width] }
         }
         render(status: 200, contentType: 'application/json', text: widgets as JSON)
     }
@@ -82,14 +80,14 @@ class WidgetController implements ControllerErrorHandler {
     }
 
     @Secured('isAuthenticated()')
-    def save(String widgetDefinitionId, boolean onRight) {
+    def save(String widgetDefinitionId) {
         User user = springSecurityService.currentUser
         WidgetDefinition widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
         if (!widgetDefinition || !user || !ApplicationSupport.isAllowed(widgetDefinition, [], true)) {
             returnError(code: 'is.user.preferences.error.widget')
             return
         }
-        Widget widget = widgetService.save(user, widgetDefinition, onRight)
+        Widget widget = widgetService.save(user, widgetDefinition)
         render(status: 201, contentType: 'application/json', text: widget as JSON)
     }
 
@@ -108,9 +106,6 @@ class WidgetController implements ControllerErrorHandler {
             Map props = [:]
             if (widgetParams.position) {
                 props.position = widgetParams.int('position')
-            }
-            if (widgetParams.onRight) {
-                props.onRight = widgetParams.boolean('onRight')
             }
             if (widgetParams.settingsData) {
                 props.settings = JSON.parse(widgetParams.settingsData)
@@ -145,7 +140,6 @@ class WidgetController implements ControllerErrorHandler {
         User user = springSecurityService.currentUser
         def userWidgets = Widget.createCriteria().list {
             eq('userPreferences', user.preferences)
-            order('onRight', 'desc')
             order('position', 'asc')
         }.collect{ it.widgetDefinitionId }
         def widgetDefinitions = uiDefinitionService.widgetDefinitions

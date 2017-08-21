@@ -23,11 +23,13 @@
 
 <is:widget widgetDefinition="${widgetDefinition}">
     <div ng-switch="widgetReady(widget)">
-        <div ng-switch-when="true" ng-controller="chartWidgetChartCtrl">
-            <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+        <div ng-switch-when="true">
+            <div ng-init="display(widget)">
+                <nvd3 options="options" ng-if="options.chart.type" data="data" config="{refreshDataOnly: false}"></nvd3>
+            </div>
         </div>
         <div ng-switch-default>
-            <h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4>
+            <a href ng-click="toggleSettings(widget)"><h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4></a>
         </div>
     </div>
 </is:widget>

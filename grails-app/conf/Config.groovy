@@ -172,6 +172,13 @@ icescrum.resourceBundles = [
                 (AcceptanceTest.AcceptanceTestState.TOCHECK.id): 'is.acceptanceTest.state.tocheck',
                 (AcceptanceTest.AcceptanceTestState.FAILED.id): 'is.acceptanceTest.state.failed',
                 (AcceptanceTest.AcceptanceTestState.SUCCESS.id): 'is.acceptanceTest.state.success'
+        ],
+        backlogChartTypes: [
+                'feature': 'is.feature',
+                'type': 'is.story.type',
+                'value': 'is.story.value',
+                'state': 'is.story.state',
+                'effort': 'is.story.effort'
         ]
 ]
 
@@ -209,6 +216,8 @@ icescrum.marshaller = [
         backlog: [include: ['count', 'isDefault'],
                   textile: ['notes']],
         activity: [include: ['important']],
+        widget: [include: ['width', 'height'],
+                 exclude: ['userPreferences']],
         usertoken: [:],
         userpreferences: [asShort: ['activity', 'language', 'emailsSettings', 'filterTask']],
         projectpreferences: [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',

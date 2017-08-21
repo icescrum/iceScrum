@@ -1323,7 +1323,7 @@ angular.module('isApplication', [
             }).result.then(loginCallback);
         };
 
-        $rootScope.showAddWidgetModal = function(onRight) {
+        $rootScope.showAddWidgetModal = function() {
             $uibModal.open({
                 keyboard: false,
                 templateUrl: 'addWidget.modal.html',
@@ -1333,7 +1333,7 @@ angular.module('isApplication', [
                         $scope.addWidgetForm.$invalid = !widgetDefinition.available;
                     };
                     $scope.addWidget = function(widgetDefinition) {
-                        WidgetService.save(widgetDefinition.id, onRight).then(function() {
+                        WidgetService.save(widgetDefinition.id).then(function() {
                             $scope.$close();
                         });
                     };
@@ -1485,6 +1485,7 @@ angular.module('isApplication', [
             $rootScope.taskTypes = isSettings.types.task;
             $rootScope.storyTypes = isSettings.types.story;
             $rootScope.featureTypes = isSettings.types.feature;
+            $rootScope.backlogChartTypes = isSettings.types.backlogChart;
             $rootScope.planningPokerTypes = isSettings.types.planningPoker;
             $rootScope.taskStates = isSettings.states.task;
             $rootScope.storyStates = isSettings.states.story;
