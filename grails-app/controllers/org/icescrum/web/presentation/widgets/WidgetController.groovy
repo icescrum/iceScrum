@@ -44,13 +44,13 @@ class WidgetController implements ControllerErrorHandler {
         User user = springSecurityService.currentUser
         def widgets
         if (user) {
-            widgets = Widget.createCriteria().list {
-                eq('userPreferences', user.preferences)
-                order('position', 'asc')
-            }
+            widgets = user.preferences.widgets
         } else {
-            widgets = uiDefinitionService.widgetDefinitions.findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
-                            .collect { ['widgetDefinitionId': it.key, 'height':it.value.height, 'width':it.value.width] }
+            widgets = uiDefinitionService.widgetDefinitions.findResults {
+                ApplicationSupport.isAllowed(it.value, [], true) ? it : null
+            }.collect {
+                ['widgetDefinitionId': it.key, 'height':it.value.height, 'width':it.value.width]
+            }
         }
         render(status: 200, contentType: 'application/json', text: widgets as JSON)
     }
@@ -138,10 +138,7 @@ class WidgetController implements ControllerErrorHandler {
     @Secured('isAuthenticated()')
     def definitions() {
         User user = springSecurityService.currentUser
-        def userWidgets = Widget.createCriteria().list {
-            eq('userPreferences', user.preferences)
-            order('position', 'asc')
-        }.collect{ it.widgetDefinitionId }
+        def userWidgets = user.preferences.widgets.collect{ it.widgetDefinitionId }
         def widgetDefinitions = uiDefinitionService.widgetDefinitions
                 .findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
                 .collect {

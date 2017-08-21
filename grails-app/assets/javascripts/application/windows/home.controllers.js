@@ -41,14 +41,11 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'CacheService', 'Widget
             var height = widget.getBoundingClientRect().height;
             return "<div style='height:"+height+"px;width:"+width+"px;'/>";
         },
-        sortableId: 'sortable',
+        sortableId: 'widgets',
         containment:'#view-home > .row',
         containerPositioning:'relative'
     };
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
     $scope.widgets = CacheService.getCache('widget');
-    $scope.$watchCollection('widgets', function(newWidgets) {
-        $scope.widgets = newWidgets;
-    });
     WidgetService.list();
 }]);

@@ -20,7 +20,9 @@
 --}%
 <div id="view-home" class="view">
     <div class="content">
-        <div class="row widgets" as-sortable="widgetSortableOptions" ng-model="widgets">
+        <div class="row widgets"
+             as-sortable="widgetSortableOptions"
+             ng-model="widgets">
             <div as-sortable-item
                  ng-include src="templateWidgetUrl(widget)"
                  id="{{ widget.id }}"
@@ -29,7 +31,7 @@
                  ng-repeat="widget in widgets"></div>
         </div>
         <div class="add-widget" ng-if="authenticated()">
-            <button class="btn btn-primary" ng-click="showAddWidgetModal(true)">
+            <button class="btn btn-primary" ng-click="showAddWidgetModal()">
                 <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
             </button>
         </div>
