@@ -10,7 +10,7 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
     };
 
     $scope.getTitle = function() {
-        return $scope.holder.title;
+        return $scope.widgetReady(widget) ? widget.settings.project.pkey + ' - ' + $scope.holder.title : '';
     };
 
     $scope.getUrl = function() {
