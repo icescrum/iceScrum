@@ -106,7 +106,7 @@ class BacklogController implements ControllerErrorHandler {
                             title:total
                     ],
                     title: [
-                            text:"${message(code:"is.chart.backlogByProperty.title", args: [backlog.project.pkey, message(code:backlog.name)])}"
+                            text: backlog.project.pkey + " - " + message(code:backlog.name)
                     ],
                     caption:[
                             text:"${message(code:"is.chart.backlogByProperty.caption", args: [message(code:bundle)])}",

@@ -52,7 +52,7 @@
                    append-to-body="true"
                    ng-change="settingsChanged()"
                    ng-model="holder.backlog">
-            <ui-select-match placeholder="${message(code: 'is.ui.widget.backlog.no.backlog')}">{{ message($select.selected.name) }}</ui-select-match>
+            <ui-select-match placeholder="${message(code: 'is.ui.widget.backlogChart.no.backlog')}">{{ message($select.selected.name) }}</ui-select-match>
             <ui-select-choices refresh="refreshBacklogs()"
                                repeat="backlog in holder.backlogs">{{ message(backlog.name) }}</ui-select-choices>
         </ui-select>
