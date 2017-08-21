@@ -21,7 +21,7 @@
                    value="">
         </div>
         <div class="checkbox">
-            <label for="credentials.remember_me">
+            <label for="credentials.remember_me" class="checkbox-inline">
                 <input type="checkbox"
                        ng-model="credentials.${SpringSecurityUtils.securityConfig.rememberMe.parameter}"
                        name="${SpringSecurityUtils.securityConfig.rememberMe.parameter}"
@@ -29,7 +29,7 @@
                     ${message(code: 'is.dialog.login.rememberme')}
             </label>
         </div>
-        <div class="btn-toolbar pull-right">
+        <div class="btn-toolbar pull-right" style="margin-top: -5px;">
             <button class="btn btn-default"
                     type="button"
                     ng-click="showRetrieveModal()">
