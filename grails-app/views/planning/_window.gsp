@@ -24,7 +24,7 @@
     <div ng-if="releases.length > 0">
         <div class="clearfix backlogs-list">
             <h4 class="pull-left">
-                <a class="link" href="#/planning/{{ release.id }}/details">
+                <a class="link" ng-href="{{ openReleaseUrl(release) }}">
                     <i class="fa fa-calendar"></i> {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }}</i>
                 </a>
             </h4>
@@ -63,7 +63,7 @@
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
                     </div>
                 </div>
-                <a class="btn btn-default" href="#/planning/{{ release.id }}/details"
+                <a class="btn btn-default" ng-href="{{ openReleaseUrl(release) }}"
                    uib-tooltip="${message(code: 'todo.is.ui.details')}">
                     <i class="fa fa-pencil"></i>
                 </a>
