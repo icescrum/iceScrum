@@ -87,7 +87,7 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'activities'}">
             <a href="{{ tabUrl('activities') }}">
-                <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.activities')}
+                <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.history')}
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'comments'}">
