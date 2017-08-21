@@ -3,6 +3,9 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
     var widget = $scope.widget; // $scope.widget is inherited
 
     $scope.widgetReady = function(widget) {
+        //hack to force to keep sync values after drag & drop
+        widget.width = widget.settings.width;
+        widget.height = widget.settings.height;
         return !!(widget.settings && widget.settings.project && widget.settings.chart);
     };
 
@@ -58,8 +61,6 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
 
     $scope.display = function(widget){
         if($scope.widgetReady(widget)){
-            widget.width = widget.settings.width;
-            widget.height = widget.settings.height;
             var chartWidgetOptions = _.merge($scope.getChartWidgetOptions(widget), {
                 chart:{
                     height:function($element){
