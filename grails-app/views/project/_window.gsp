@@ -195,7 +195,7 @@
                 <div class="panel panel-light">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <i class="fa fa-bolt"></i> <g:message code="todo.is.ui.history"/>
+                            <i class="fa fa-clock-o"></i> <g:message code="todo.is.ui.history"/>
                             <small class="pull-right">
                                 <a class="rss"
                                    uib-tooltip="${message(code: 'todo.is.ui.feed')}"

@@ -50,6 +50,7 @@
         },
         plugins: [],
         controllerHooks: {},
+        showAppStore: ${flash.showAppStore?:false},
         version: "${g.meta(name: 'app.version')}",
         serverUrl: "${serverURL}",
         warning: ${ApplicationSupport.getLastWarning() as JSON}

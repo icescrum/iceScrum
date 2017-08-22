@@ -138,6 +138,7 @@ class ProjectController implements ControllerErrorHandler {
                 sprintService.generateSprints(release, projectParams.firstSprint)
             }
         }
+        flash.showAppStore = true
         render(status: 201, contentType: 'application/json', text: project as JSON)
     }
 
