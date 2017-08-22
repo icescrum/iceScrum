@@ -77,6 +77,6 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
     AttachmentService.list($scope.project);
     //showAppStore on first project display
     if(isSettings.showAppStore){
-        $scope.showAppsModal($scope.project);
+        $scope.showAppsModal();
     }
 }]);

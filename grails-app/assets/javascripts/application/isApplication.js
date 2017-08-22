@@ -1351,10 +1351,14 @@ angular.module('isApplication', [
             });
         };
 
-        $rootScope.showAppsModal = function(appDefinitionId) {
+        $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();
             if (appDefinitionId) {
-                scope.defaultAppDefinitionId = appDefinitionId;
+                if(isTerm){
+                    scope.defaultSearchTerm = appDefinitionId;
+                } else {
+                    scope.defaultAppDefinitionId = appDefinitionId;
+                }
             }
             $uibModal.open({
                 keyboard: false,

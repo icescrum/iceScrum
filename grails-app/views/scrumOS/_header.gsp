@@ -104,7 +104,7 @@
                                     </li>
                                 </g:if>
                                 <li ng-if="authorizedApp('show')">
-                                    <a href ng-click="showAppsModal(project)">
+                                    <a href ng-click="showAppsModal()">
                                         <b class="text-important">${message(code: 'is.ui.apps')}</b>
                                     </a>
                                 </li>

@@ -88,7 +88,9 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window'
     AppService.getAppDefinitions().then(function(appDefinitions) {
         if (appDefinitions.length > 0) {
             $scope.appDefinitions = appDefinitions;
-            if ($scope.defaultAppDefinitionId) {
+            if ($scope.defaultSearchTerm) {
+                $scope.searchApp($scope.defaultSearchTerm);
+            } else if ($scope.defaultAppDefinitionId) {
                 $scope.appDefinition = _.find($scope.appDefinitions, {id: $scope.defaultAppDefinitionId});
             }
         }
