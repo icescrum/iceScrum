@@ -39,13 +39,12 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
         }
         return $state.href(stateName, {sprintId: sprint.id, releaseId: sprint.parentRelease.id});
     };
-    $scope.showMore = function(){
+    $scope.showMore = function() {
         $scope.pref.showMore = true;
     };
     // Init
-
     $scope.pref = {
-        showMore:false
+        showMore: false
     };
     $scope.release = {};
     $scope.allMembers = [];
@@ -75,6 +74,5 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
     SprintService.getCurrentOrNextSprint($scope.project).then(function(sprint) {
         $scope.currentOrNextSprint = sprint;
     });
-    //load attachments
     AttachmentService.list($scope.project);
 }]);

@@ -40,7 +40,7 @@ class AttachmentController implements ControllerErrorHandler {
     def springSecurityService
     def attachmentableService
 
-    @Secured('(isAuthenticated() and stakeHolder()) or inProject()')
+    @Secured('stakeHolder() or inProject()')
     def index() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
@@ -50,7 +50,7 @@ class AttachmentController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('(isAuthenticated() and stakeHolder()) or inProject()')
+    @Secured('stakeHolder() or inProject()')
     def show() {
         def attachmentable = getAttachmentableObject(params)
         if (attachmentable) {
