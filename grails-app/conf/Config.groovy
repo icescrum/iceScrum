@@ -43,6 +43,9 @@ import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
 
+/* Headless mode */
+System.setProperty("java.awt.headless", "true");
+
 /* Administration */
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = false
