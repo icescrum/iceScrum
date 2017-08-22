@@ -74,7 +74,7 @@ extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 
         if ($state.current.name != 'planning.release.details') {
             stateName += '.details';
         }
-        return $state.href(stateName, {releaseId: release.id});
+        return $state.href(stateName, {releaseId: release ? release.id : ''});
     };
     $scope.openStoryUrl = function(storyId) {
         var newStoryState = getNewStoryState(storyId, $state.current.name);
