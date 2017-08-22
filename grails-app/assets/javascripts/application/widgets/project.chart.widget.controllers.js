@@ -4,8 +4,8 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
 
     $scope.widgetReady = function(widget) {
         //hack to force to keep sync values after drag & drop
-        widget.width = widget.settings.width;
-        widget.height = widget.settings.height;
+        widget.width = widget.settings.width ? widget.settings.width : 2;
+        widget.height = widget.settings.height ? widget.settings.height : 2;
         return !!(widget.settings && widget.settings.project && widget.settings.chart);
     };
 
