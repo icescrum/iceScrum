@@ -291,7 +291,7 @@
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
-                                <div ng-include="'task.light.html'"></div>
+                                <div ng-include="'task.html'"></div>
                             </div>
                             <button type="button" class="btn btn-default" ng-if="!tasksShown(taskState, story)" ng-click="showTasks(story, true)"><g:message code="todo.is.ui.task.showDoneTasks"/> ({{ tasksByStoryByState[story.id][taskState].length }})</button>
                             <div ng-if="tasksHidden(taskState, story)" class="postit-container">
