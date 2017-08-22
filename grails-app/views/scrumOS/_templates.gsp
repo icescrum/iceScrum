@@ -51,7 +51,7 @@
 
     <script type="text/ng-template" id="confirm.dirty.modal.html">
     <is:modal form="saveChanges()"
-              button="[[text:message(code: 'todo.is.ui.dirty.confirm.dontsave'), color:'danger', action:'dontSave()']]"
+              button="[[text: message(code: 'todo.is.ui.dirty.confirm.dontsave'), color: 'danger', action: 'dontSave()']]"
               submitButton="${message(code: 'todo.is.ui.dirty.confirm.save')}"
               closeButton="${message(code: 'is.button.cancel')}"
               title="${message(code: 'todo.is.ui.dirty.confirm.title')}">
@@ -88,7 +88,7 @@
 
     <script type="text/ng-template" id="select.member.html">
         <a>
-            <button class="btn btn-default btn-sm" type="button">${message(code:'default.add.label').trim()}</button> <span style="margin-top: 5px;margin-left:5px;">{{ match.model | userFullName }}</span> <span ng-show="!match.model.id" class="small">${message(code: 'todo.is.ui.user.will.be.invited.click')}</span>
+            <button class="btn btn-default btn-sm" type="button">${message(code: 'default.add.label', args: ['']).trim()}</button> <span style="margin-top: 5px;margin-left:5px;">{{ match.model | userFullName }}</span> <span ng-show="!match.model.id" class="small">${message(code: 'todo.is.ui.user.will.be.invited.click')}</span>
         </a>
     </script>
 
