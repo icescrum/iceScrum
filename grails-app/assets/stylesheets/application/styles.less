@@ -38,7 +38,7 @@ label:not(.btn):not(.checkbox-inline):not(.radio-inline):not(.control-label) {
 }
 
 *[ng-click] {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 //custom css
@@ -145,7 +145,7 @@ table {
   }
   + .markitup-preview {
     overflow: auto;
-    &:not(.no-fixed-height){
+    &:not(.no-fixed-height) {
       min-height: @min-height-textarea;
       max-height: @max-height-textarea;
     }
@@ -191,12 +191,14 @@ table {
     border-color: transparent;
   }
 }
+
 .form-control[readonly] {
   background: none;
   cursor: text;
   box-shadow: none;
   resize: none;
 }
+
 .select2-container.select2-container-disabled {
   box-shadow: none;
   .select2-choice, .select2-choices {
@@ -242,7 +244,7 @@ li.dropdown.display-on-hover:hover > ul.dropdown-menu {
 }
 
 ul.dropdown-more > li > a {
-  padding:11px;
+  padding: 11px;
 }
 
 /** Alerts **/
@@ -296,15 +298,15 @@ i.small-icon {
 #view-home {
   .add-widget {
     position: fixed;
-    bottom:30px;
-    right:30px;
+    bottom: 30px;
+    right: 30px;
     opacity: 0.5;
     text-align: center;
     &:hover {
       opacity: 1;
     }
     .btn {
-      padding:10px 15px;
+      padding: 10px 15px;
     }
   }
 }
@@ -319,13 +321,13 @@ i.small-icon {
       opacity: 1;
     }
     .panel-light {
-      > .panel-heading, > div > .panel-heading {
+      > .panel-heading, > div > .panel-heading  {
         .visible-on-hover {
           opacity: 0;
         }
       }
       &:hover {
-        > .panel-heading, > div > .panel-heading {
+        > .panel-heading, > div > .panel-heading  {
           .visible-on-hover {
             opacity: 1;
           }
@@ -487,8 +489,8 @@ tr:hover .on-hover span {
 .panel-heading {
   .panel-title {
     .left-title {
-      float:left;
-      padding-left:  (@grid-gutter-width / 2);
+      float: left;
+      padding-left: (@grid-gutter-width / 2);
       padding-right: (@grid-gutter-width / 2);
       max-width: 63%;
       .item-name {
@@ -496,8 +498,8 @@ tr:hover .on-hover span {
       }
     }
     .right-title {
-      float:right;
-      padding-left:  (@grid-gutter-width / 2);
+      float: right;
+      padding-left: (@grid-gutter-width / 2);
       padding-right: (@grid-gutter-width / 2);
       text-align: right;
       max-width: 37%;
@@ -534,14 +536,15 @@ tr:hover .on-hover span {
     }
   }
 }
+
 .stories .states, .tasks .states {
-    .state:not(.state-current) {
-      display: none;
-    }
-    .state {
-      margin-top:2px;
-      width:100% !important;
-    }
+  .state:not(.state-current)   {
+    display: none;
+  }
+  .state {
+    margin-top: 2px;
+    width: 100% !important;
+  }
 }
 
 .progress.form-bar {
@@ -614,30 +617,30 @@ a[data-toggle="tab"] button {
 }
 
 .split-modal {
+  .left-panel {
+    .make-sm-column(3);
+    .left-panel-bottom, .left-panel-header {
+      margin: 15px;
+    }
+    .left-panel-body {
+      height: 400px;
+      overflow: auto;
+    }
+    .left-panel-bottom {
+      text-align: center;
+    }
+  }
+  .right-panel {
+    .make-sm-column(9);
+  }
+  .hide-left-panel {
     .left-panel {
-      .make-sm-column(3);
-      .left-panel-bottom, .left-panel-header {
-        margin: 15px;
-      }
-      .left-panel-body {
-        height: 400px;
-        overflow: auto;
-      }
-      .left-panel-bottom {
-        text-align: center;
-      }
+      display: none;
     }
     .right-panel {
-      .make-sm-column(9);
+      .make-sm-column(12);
     }
-    .hide-left-panel {
-      .left-panel {
-        display: none;
-      }
-      .right-panel {
-        .make-sm-column(12);
-      }
-    }
+  }
 }
 
 .wizard, .split-modal {
@@ -652,7 +655,7 @@ a[data-toggle="tab"] button {
     .background-logo();
   }
   .step {
-    padding-bottom:50px;
+    padding-bottom: 50px;
     height: 100%;
   }
   .steps-indicator, .left-panel {
@@ -832,7 +835,7 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
     }
     &.no-style {
       background: none;
-      border:none !important;
+      border: none !important;
     }
   }
 }
@@ -900,18 +903,18 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
 }
 
 .dropdown-toggle:not(.navbar-notif) {
-    cursor: pointer;
-    .badge {
-        background: none !important;
-        display: inline-block;
-        text-align: right;
-        font-weight: bold;
-        left: -2px;
-        top: 5px;
-        color: #000 !important;
-        padding: 0;
-        margin: 0;
-    }
+  cursor: pointer;
+  .badge {
+    background: none !important;
+    display: inline-block;
+    text-align: right;
+    font-weight: bold;
+    left: -2px;
+    top: 5px;
+    color: #000 !important;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .notification {
@@ -1025,22 +1028,22 @@ tbody.story-ghost {
 i.fa-pinned, i.fa-pin {
   &.fa-border {
     padding: .2em .25em .25em;
-    border:solid 0.15em transparent;
+    border: solid 0.15em transparent;
   }
 }
 
 i.fa-pin {
   &.fa-border {
-    border:solid 0.15em transparent;
+    border: solid 0.15em transparent;
     &:hover {
-      border-color:#666;
+      border-color: #666;
     }
   }
 }
 
 i.fa-pinned {
   &.fa-border {
-    border-color:@brand-primary;
+    border-color: @brand-primary;
   }
 }
 
@@ -1075,7 +1078,8 @@ i.fa-pinned {
           border-top: none;
         }
       }
-      &:not(.cloned) .postit-container {     //ng-click doesn't work
+      &:not(.cloned) .postit-container {
+        //ng-click doesn't work
         cursor: pointer;
       }
       &.table-header {
@@ -1126,7 +1130,7 @@ i.fa-pinned {
               border: none;
             }
             > div {
-              background:#F8F8F8;
+              background: #F8F8F8;
             }
             .description {
               display: none;
@@ -1178,23 +1182,23 @@ i.fa-pinned {
 .colorpicker-colors {
   height: 15px;
   margin: 0 0 3px 0;
-  clear:both;
+  clear: both;
   .color {
     width: 15px;
     height: 15px;
     margin-right: 2px;
     float: left;
-    cursor:pointer;
+    cursor: pointer;
   }
 }
 
 a.link {
-  color:#000;
+  color: #000;
   &:hover {
-    color:@brand-primary;
+    color: @brand-primary;
     text-decoration: none;
     .fa-border {
-      border-color:@brand-primary;
+      border-color: @brand-primary;
     }
   }
 }
@@ -1203,7 +1207,7 @@ a.link {
   background: #AAAAAA;
   padding-left: 3px;
   padding-right: 3px;
-  margin-right:3px;
+  margin-right: 3px;
   color: #FFF;
 }
 
@@ -1211,8 +1215,8 @@ a.link {
   text-align: center;
   padding: 3px;
   &.no-margin {
-    margin-left:0;
-    margin-right:0;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -1236,15 +1240,15 @@ a.link {
 }
 
 .table .clickable {
-  cursor:pointer;
+  cursor: pointer;
   &:hover {
-    color:@brand-primary;
+    color: @brand-primary;
   }
 }
 
 .sprints-menu {
-  .active, .active > .text-muted  {
-    color:@brand-primary;
+  .active, .active > .text-muted {
+    color: @brand-primary;
   }
 }
 
@@ -1270,5 +1274,5 @@ a.link {
 }
 
 .text-important {
-    color:@brand-primary;
+  color: @brand-primary;
 }
