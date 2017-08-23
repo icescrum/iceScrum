@@ -25,7 +25,6 @@ services.factory('Backlog', ['Resource', function($resource) {
 }]);
 
 services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryService', 'BacklogCodes', 'FormService', function(Backlog, $q, CacheService, StoryService, BacklogCodes, FormService) {
-    var self = this;
     this.get = function(id, project) {
         return Backlog.get({id: id, projectId: project.id}).$promise;
     };

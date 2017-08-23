@@ -85,7 +85,6 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
             templateUrl: 'story.selector.html',
             size: 'md',
             controller: ["$scope", "$filter", "StoryService", function($scope, $filter, StoryService) {
-                var liveFilter;
                 // Functions
                 $scope.isSelected = function(story) {
                     return _.includes($scope.selectedIds, story.id);
