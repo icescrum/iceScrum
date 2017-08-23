@@ -20,8 +20,8 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 
-<g:render template="/task/templates/task" />
-<g:render template="/task/templates/task.new" />
-<g:render template="/task/templates/task.details" />
-<g:render template="/task/templates/story.tasks" />
-<g:render template="/task/templates/story.task.editor" />
+<g:render template="/task/templates/task"/>
+<g:render template="/task/templates/task.new"/>
+<g:render template="/task/templates/task.details"/>
+<g:render template="/task/templates/story.tasks"/>
+<g:render template="/task/templates/story.task.editor"/>

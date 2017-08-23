@@ -19,5 +19,5 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<g:render template="/comment/templates/editor" />
-<g:render template="/comment/templates/list" />
+<g:render template="/comment/templates/editor"/>
+<g:render template="/comment/templates/list"/>

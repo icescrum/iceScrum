@@ -21,5 +21,5 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<g:render template="/acceptanceTest/templates/story.acceptanceTests" />
-<g:render template="/acceptanceTest/templates/story.acceptanceTests.editor" />
+<g:render template="/acceptanceTest/templates/story.acceptanceTests"/>
+<g:render template="/acceptanceTest/templates/story.acceptanceTests.editor"/>

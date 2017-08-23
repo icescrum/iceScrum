@@ -20,5 +20,5 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:render template="/team/templates/form" />
-<g:render template="/team/templates/list" />
+<g:render template="/team/templates/form"/>
+<g:render template="/team/templates/list"/>

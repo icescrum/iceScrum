@@ -20,15 +20,15 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:render template="/project/templates/form.general" />
-<g:render template="/project/templates/form.members" />
-<g:render template="/project/templates/form.practices" />
-<g:render template="/project/templates/form.planning" />
-<g:render template="/project/templates/edit.general" />
-<g:render template="/project/templates/edit.members" />
-<g:render template="/project/templates/edit.practices" />
-<g:render template="/project/templates/edit.actors" />
-<g:render template="/project/templates/edit.planning" />
-<g:render template="/project/templates/edit.administration" />
-<g:render template="/project/templates/user.item" />
-<g:render template="/project/templates/project.summary" />
+<g:render template="/project/templates/form.general"/>
+<g:render template="/project/templates/form.members"/>
+<g:render template="/project/templates/form.practices"/>
+<g:render template="/project/templates/form.planning"/>
+<g:render template="/project/templates/edit.general"/>
+<g:render template="/project/templates/edit.members"/>
+<g:render template="/project/templates/edit.practices"/>
+<g:render template="/project/templates/edit.actors"/>
+<g:render template="/project/templates/edit.planning"/>
+<g:render template="/project/templates/edit.administration"/>
+<g:render template="/project/templates/user.item"/>
+<g:render template="/project/templates/project.summary"/>

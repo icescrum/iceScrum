@@ -20,4 +20,4 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 
-<g:render template="/backlog/templates/backlog.details" />
+<g:render template="/backlog/templates/backlog.details"/>
