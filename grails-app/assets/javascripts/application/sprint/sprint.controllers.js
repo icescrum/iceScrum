@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', function($rootScope, $scope, $q, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName) {
+controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', '$uibModal', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', function($rootScope, $scope, $q, $uibModal, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -60,46 +60,65 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', 'Session', '
     };
     $scope.openCloseModal = function(sprint) {
         var project = $scope.project;
-        $scope.openStorySelectorModal({
-            buttonColor: 'danger',
-            code: 'close',
-            order: 'rank',
-            filter: {
-                parentSprint: sprint.id
-            },
-            initSelectedIds: function(stories) {
-                return _.chain(stories).filter({state: StoryStatesByName.DONE}).map('id').value();
-            },
-            submit: function(wannaBeDone, stories) {
-                $rootScope.uiWorking();
-                var storyIdsByDone = _.chain(stories).groupBy(function(story) {
-                    return story.state == StoryStatesByName.DONE;
-                }).mapValues(function(stories) {
-                    return _.map(stories, 'id');
-                }).value();
-                var alreadyDone = storyIdsByDone[true];
-                var toBeDone = _.difference(wannaBeDone, alreadyDone);
-                var alreadyUndone = storyIdsByDone[false];
-                var wannabeUndone = _.difference(_.map(stories, 'id'), wannaBeDone);
-                var toBeUndone = _.difference(wannabeUndone, alreadyUndone);
-                var promise = $q.when();
-                if (toBeUndone.length) {
-                    promise = promise.then(function() {
-                        return toBeUndone.length > 1 ? StoryService.unDoneMultiple(toBeUndone) : StoryService.unDone({id: toBeUndone[0]});
+        $uibModal.open({
+            templateUrl: 'story.close.html',
+            size: 'md',
+            controller: ['$scope', '$filter', 'StoryService', 'StoryStatesByName', function($scope, $filter, StoryService, StoryStatesByName) {
+                // Functions
+                $scope.loadStories = function() {
+                    $scope.backlog.storiesLoaded = false;
+                    StoryService.filter({parentSprint: sprint.id}).then(function(stories) {
+                        $scope.newDone = _.transform(stories, function(newDone, story) {
+                            newDone[story.id] = story.state == StoryStatesByName.DONE;
+                        }, {});
+                        $scope.backlog.stories = $filter('orderBy')(stories, 'rank');
+                        $scope.backlog.storiesLoaded = true;
                     });
-                }
-                if (toBeDone.length) {
-                    promise = promise.then(function() {
-                        return toBeDone.length > 1 ? StoryService.doneMultiple(toBeDone) : StoryService.done({id: toBeDone[0]});
+                };
+                $scope.closeSprint = function() {
+                    $rootScope.uiWorking();
+                    var newDone = _.transform($scope.newDone, function(newDone, isDone, storyId) {
+                        if (isDone) {
+                            newDone.push(storyId);
+                        }
+                    }, []);
+                    var storyIdsByDone = _.chain($scope.backlog.stories).groupBy(function(story) {
+                        return story.state == StoryStatesByName.DONE;
+                    }).mapValues(function(stories) {
+                        return _.map(stories, 'id');
+                    }).value();
+                    var oldDone = storyIdsByDone[true];
+                    var toBeDone = _.difference(newDone, oldDone);
+                    var oldUndone = storyIdsByDone[false];
+                    var newUndone = _.difference(_.map($scope.backlog.stories, 'id'), newDone);
+                    var toBeUndone = _.difference(newUndone, oldUndone);
+                    var promise = $q.when();
+                    if (toBeUndone.length) {
+                        promise = promise.then(function() {
+                            return toBeUndone.length > 1 ? StoryService.unDoneMultiple(toBeUndone) : StoryService.unDone({id: toBeUndone[0]});
+                        });
+                    }
+                    if (toBeDone.length) {
+                        promise = promise.then(function() {
+                            return toBeDone.length > 1 ? StoryService.doneMultiple(toBeDone) : StoryService.done({id: toBeDone[0]});
+                        });
+                    }
+                    promise.then(function() {
+                        return SprintService.close(sprint, project).then(function() {
+                            $rootScope.uiReady();
+                            $scope.notifySuccess('todo.is.ui.sprint.closed');
+                            $scope.$close(true);
+                        });
                     });
-                }
-                return promise.then(function() {
-                    return SprintService.close(sprint, project).then(function() {
-                        $rootScope.uiReady();
-                        $scope.notifySuccess('todo.is.ui.sprint.closed');
-                    });
-                });
-            }
+                };
+                // Init
+                $scope.disabledGradient = true;
+                $scope.backlog = {
+                    stories: [],
+                    storiesLoaded: false
+                };
+                $scope.loadStories();
+            }]
         });
     };
     $scope.openPlanModal = function(sprint) {
