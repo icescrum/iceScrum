@@ -45,7 +45,7 @@
                     </button>
                     <button type="button"
                             class="btn btn-default hidden-xs"
-                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                            uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"
                             ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
@@ -65,7 +65,9 @@
             </div>
         </ul>
     </div>
-    <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
+    <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">
+        ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code: 'todo.is.ui.disable')}</a></strong>)
+    </div>
     <div class="backlogs-list-details" selectable="selectableOptions">
         <div class="panel panel-light" ng-repeat="backlogContainer in backlogContainers">
             <div class="panel-heading">
@@ -74,7 +76,7 @@
                     <div class="btn-toolbar pull-left">
                         <entry:point id="backlog-list-toolbar-left"/>
                         <div class="btn-group">
-                        <entry:point id="backlog-list-toolbar-group-left"/>
+                            <entry:point id="backlog-list-toolbar-group-left"/>
                             <button type="button"
                                     ng-if="backlogContainer.sortable"
                                     class="btn btn-default hidden-xs"
@@ -85,7 +87,7 @@
                             </button>
                             <div class="btn-group"
                                  uib-dropdown
-                                 uib-tooltip="${message(code:'todo.is.ui.sort')}">
+                                 uib-tooltip="${message(code: 'todo.is.ui.sort')}">
                                 <button class="btn btn-default" uib-dropdown-toggle type="button">
                                     <span>{{ backlogContainer.orderBy.current.name }}</span>
                                     <i class="fa fa-caret-down"></i>
@@ -98,7 +100,7 @@
                             </div>
                             <button type="button" class="btn btn-default"
                                     ng-click="reverseBacklogOrder(backlogContainer)"
-                                    uib-tooltip="${message(code:'todo.is.ui.order')}">
+                                    uib-tooltip="${message(code: 'todo.is.ui.order')}">
                                 <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                             </button>
                             <entry:point id="backlog-list-toolbar-group-right"/>
@@ -106,14 +108,14 @@
                         <div class="btn-group hidden-xs" uib-dropdown>
                             <button type="button"
                                     class="btn btn-default"
-                                    uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                                    uib-tooltip="${message(code: 'is.ui.window.print')} (P)"
                                     ng-click="print($event)"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     ng-href="story/backlog/{{ ::backlogContainer.backlog.id }}/print"
                                     hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
                             </button>
                             <button class="btn btn-default"
-                                    uib-tooltip="${message(code:'todo.is.ui.export')}"
+                                    uib-tooltip="${message(code: 'todo.is.ui.export')}"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     uib-dropdown-toggle type="button">
                                 <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
@@ -121,9 +123,9 @@
                             <ul uib-dropdown-menu
                                 class="pull-right"
                                 role="menu">
-                                <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
+                                <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                                     <li role="menuitem">
-                                        <a href="${format.resource?:'story'}/backlog/{{ ::backlogContainer.backlog.id }}/${format.action?:'print'}/${format.params.format}"
+                                        <a href="${format.resource ?: 'story'}/backlog/{{ ::backlogContainer.backlog.id }}/${format.action ?: 'print'}/${format.params.format}"
                                            ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                                     </li>
                                 </g:each>
@@ -140,7 +142,7 @@
                         <a href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
                            class="btn btn-default"
                            ng-if="backlogContainers.length > 1"
-                           uib-tooltip="${message(code:'is.ui.window.closeable')}">
+                           uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                             <i class="fa fa-times"></i>
                         </a>
                     </div>

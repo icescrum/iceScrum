@@ -302,18 +302,18 @@
                     ng-if="!isLatest() && !formHolder.submitting"
                     ng-disabled="!isDirty() || formHolder.storyForm.$invalid"
                     type="submit">
-                ${message(code:'default.button.override.label')}
+                ${message(code: 'default.button.override.label')}
             </button>
             <button class="btn btn-default"
                     type="button"
                     ng-click="editForm(false)">
-                ${message(code:'is.button.cancel')}
+                ${message(code: 'is.button.cancel')}
             </button>
             <button class="btn btn-warning"
                     type="button"
                     ng-if="!isLatest() && !formHolder.submitting"
                     ng-click="resetStoryForm()">
-                <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
+                <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
         </div>
     </div>

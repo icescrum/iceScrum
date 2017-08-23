@@ -23,24 +23,24 @@
 --}%
 
 
-<is:modal title="{{ (project.name ? project.name : '${message(code:/is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="wizard" footer="${false}">
+<is:modal title="{{ (project.name ? project.name : '${message(code: /is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="wizard" footer="${false}">
     <form name="formHolder.projectForm"
           show-validation
           novalidate>
         <wizard class="row wizard-row">
-            <wz-step wz-title="${message(code:"is.dialog.wizard.section.project")}" icon="fa fa-pencil">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.project")}" icon="fa fa-pencil">
                 <ng-include src="'form.general.project.html'"></ng-include>
                 <div class="btn-toolbar wizard-next">
                     <button type="button"
                             role="button"
                             class="btn btn-default"
                             ng-click="$close()">
-                        ${ message(code:'is.button.cancel')}
+                        ${message(code: 'is.button.cancel')}
                     </button>
-                    <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
+                    <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
                 </div>
             </wz-step>
-            <wz-step wz-title="${message(code:"is.dialog.wizard.section.team")}" icon="fa fa-users">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.team")}" icon="fa fa-users">
                 <div ng-controller="teamCtrl">
                     <ng-include src="'form.team.html'"></ng-include>
                     <ng-include src="'form.members.project.html'"></ng-include>
@@ -49,38 +49,38 @@
                                 role="button"
                                 class="btn btn-default"
                                 ng-click="$close()">
-                            ${ message(code:'is.button.cancel')}
+                            ${message(code: 'is.button.cancel')}
                         </button>
-                        <input type="submit" class="btn btn-default" ng-disabled="!team.members.length > 0" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
+                        <input type="submit" class="btn btn-default" ng-disabled="!team.members.length > 0" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
                     </div>
                 </div>
             </wz-step>
-            <wz-step wz-title="${message(code:"is.dialog.wizard.section.options")}" icon="fa fa-sliders">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.options")}" icon="fa fa-sliders">
                 <ng-include src="'form.practices.project.html'"></ng-include>
                 <div class="btn-toolbar wizard-next">
                     <button type="button"
                             role="button"
                             class="btn btn-default"
                             ng-click="$close()">
-                        ${ message(code:'is.button.cancel')}
+                        ${message(code: 'is.button.cancel')}
                     </button>
-                    <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code:'todo.is.ui.wizard.next')}" />
+                    <input type="submit" class="btn btn-default" ng-disabled="formHolder.projectForm.$invalid" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
                 </div>
             </wz-step>
-            <wz-step wz-title="${message(code:"todo.is.ui.project.planning")}" icon="fa fa-calendar">
+            <wz-step wz-title="${message(code: "todo.is.ui.project.planning")}" icon="fa fa-calendar">
                 <ng-include src="'form.planning.project.html'"></ng-include>
                 <div class="btn-toolbar wizard-next">
                     <button type="button"
                             role="button"
                             class="btn btn-default"
                             ng-click="$close()">
-                        ${ message(code:'is.button.cancel')}
+                        ${message(code: 'is.button.cancel')}
                     </button>
                     <input type="submit"
                            class="btn btn-default"
                            ng-disabled="formHolder.projectForm.$invalid || formHolder.creating"
                            wz-finish="createProject(project)"
-                           value="${message(code:'todo.is.ui.wizard.finish')}" />
+                           value="${message(code: 'todo.is.ui.wizard.finish')}"/>
                 </div>
             </wz-step>
         </wizard>

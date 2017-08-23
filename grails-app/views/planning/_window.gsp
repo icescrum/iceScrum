@@ -51,7 +51,7 @@
                     <button type="button"
                             class="btn btn-default hidden-xs"
                             ng-click="fullScreen()"
-                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                            uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
                 <div class="btn-group" role="group" ng-controller="releaseCtrl">
@@ -82,7 +82,9 @@
                         <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
                         <br/>
                         <span class="sub-title text-muted">
-                            <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                            <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span>
+                            <i class="fa fa-angle-right"></i>
+                            <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                             <span class="sprint-numbers">
                                 <span ng-if="sprint.state > sprintStatesByName.TODO"
                                       uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
@@ -129,7 +131,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="releases.length == 0"class="panel panel-light">
+    <div ng-if="releases.length == 0" class="panel panel-light">
         <div class="panel-body">
             <div class="empty-view" ng-controller="releaseCtrl">
                 <p class="help-block">${message(code: 'is.ui.release.help')}<p>

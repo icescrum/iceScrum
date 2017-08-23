@@ -38,7 +38,7 @@
                   class="form-control"
                   is-model-html="editableComment.body_html"
                   ng-show="showCommentBodyTextarea"
-                  placeholder="${message(code:'todo.is.ui.comment')}"></textarea>
+                  placeholder="${message(code: 'todo.is.ui.comment')}"></textarea>
         <div class="markitup-preview"
              ng-show="!showCommentBodyTextarea"
              tabindex="0"
@@ -51,7 +51,7 @@
         <button class="btn btn-primary pull-right"
                 ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid"
                 type="submit">
-            ${message(code:'default.button.create.label')}
+            ${message(code: 'default.button.create.label')}
         </button>
     </div>
 </form>

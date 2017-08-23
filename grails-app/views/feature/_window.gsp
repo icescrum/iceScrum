@@ -35,7 +35,7 @@
                     </button>
                     <div class="btn-group"
                          uib-dropdown
-                         uib-tooltip="${message(code:'todo.is.ui.sort')}">
+                         uib-tooltip="${message(code: 'todo.is.ui.sort')}">
                         <button class="btn btn-default"
                                 uib-dropdown-toggle type="button">
                             <span>{{ orderBy.current.name }}</span>
@@ -50,16 +50,16 @@
                     <button type="button"
                             class="btn btn-default"
                             ng-click="orderBy.reverse = !orderBy.reverse"
-                            uib-tooltip="${message(code:'todo.is.ui.order')}">
+                            uib-tooltip="${message(code: 'todo.is.ui.order')}">
                         <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
                     </button>
                 </div>
                 <div class="btn-group hidden-sm hidden-xs"
                      uib-dropdown
-                     uib-tooltip="${message(code:'todo.is.ui.export')}">
+                     uib-tooltip="${message(code: 'todo.is.ui.export')}">
                     <button type="button"
                             class="btn btn-default"
-                            uib-tooltip="${message(code:'is.ui.window.print')} (P)"
+                            uib-tooltip="${message(code: 'is.ui.window.print')} (P)"
                             ng-click="print($event)"
                             ng-disabled="!features.length"
                             ng-href="feature/print"
@@ -73,9 +73,9 @@
                     </button>
                     <ul uib-dropdown-menu
                         role="menu">
-                        <g:each in="${is.exportFormats(windowDefinition:windowDefinition)}" var="format">
+                        <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                             <li role="menuitem">
-                                <a href="${format.controller?:'feature'}/${format.action?:'print'}/${format.params.format}"
+                                <a href="${format.controller ?: 'feature'}/${format.action ?: 'print'}/${format.params.format}"
                                    ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                             </li>
                         </g:each>
@@ -85,14 +85,14 @@
             <div class="btn-toolbar pull-right">
                 <div class="btn-group">
                     <button type="button"
-                        class="btn btn-default hidden-xs hidden-sm"
-                        uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group size-l') }}"></i>
+                            class="btn btn-default hidden-xs hidden-sm"
+                            uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group size-l') }}"></i>
                     </button>
                     <button type="button"
                             class="btn btn-default hidden-xs"
                             ng-click="fullScreen()"
-                            uib-tooltip="${message(code:'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                            uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
                 <div class="btn-group hidden-xs">
@@ -108,7 +108,10 @@
                    class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
             </div>
             <div class="clearfix"></div>
-            <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">${message(code:'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)</div>
+            <div class="bulk-selection-enabled bg-warning"
+                 ng-if="selectableOptions.selectingMultiple">
+                ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code:'todo.is.ui.disable')}</a></strong>)
+            </div>
         </div>
         <div class="panel-body"
              selectable="selectableOptions">

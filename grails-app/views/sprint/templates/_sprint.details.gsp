@@ -43,12 +43,14 @@
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + previousSprint.id }}/details"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                           href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + previousSprint.id }}/details"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i>
+                        </a>
                         <a ng-if="nextSprint"
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                           href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i>
+                        </a>
                     </div>
                     <a class="btn btn-default"
                        href="{{:: $state.href('^') }}"
@@ -56,11 +58,11 @@
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
-                <g:set var="formats" value="${is.exportFormats(entryPoint:'sprintDetails')}"/>
+                <g:set var="formats" value="${is.exportFormats(entryPoint: 'sprintDetails')}"/>
                 <g:if test="${formats}">
                     <div class="btn-group hidden-xs" uib-dropdown>
                         <button class="btn btn-default"
-                                uib-tooltip="${message(code:'todo.is.ui.export')}"
+                                uib-tooltip="${message(code: 'todo.is.ui.export')}"
                                 uib-dropdown-toggle type="button">
                             <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
                         </button>
@@ -69,7 +71,7 @@
                             role="menu">
                             <g:each in="${formats}" var="format">
                                 <li role="menuitem">
-                                    <a href="${format.resource?:'story'}/sprint/{{ ::sprint.id }}/${format.action?:'print'}/${format.params.format}"
+                                    <a href="${format.resource ?: 'story'}/sprint/{{ ::sprint.id }}/${format.action ?: 'print'}/${format.params.format}"
                                        ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                                 </li>
                             </g:each>
@@ -92,7 +94,7 @@
     <ul class="nav nav-tabs nav-tabs-is nav-justified" ng-if="$state.current.data.displayTabs">
         <li role="presentation" ng-class="{'active':!$state.params.sprintTabId}">
             <a href="{{ tabUrl() }}">
-                <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
+                <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
         <entry:point id="sprint-details-tab-button"/>

@@ -35,7 +35,7 @@
     </div>
     <div class="details-no-tab">
         <div class="panel-body">
-            <div class="help-block">${message(code:'is.ui.feature.help')}</div>
+            <div class="help-block">${message(code: 'is.ui.feature.help')}</div>
             <div class="postits standalone">
                 <div class="postit-container solo">
                     <div ng-style="feature.color | createGradientBackground"
@@ -65,7 +65,7 @@
                   novalidate>
                 <div class="clearfix no-padding">
                     <div class="form-group">
-                        <label for="name">${message(code:'is.feature.name')}</label>
+                        <label for="name">${message(code: 'is.feature.name')}</label>
                         <div class="input-group">
                             <input required
                                    name="name"
@@ -92,17 +92,17 @@
                 <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.featureForm.$invalid"
-                            uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                            uib-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                             hotkey="{'shift+return': hotkeyClick }"
                             hotkey-allow-in="INPUT"
                             type='button'
                             ng-click="save(feature, true)">
-                        ${message(code:'todo.is.ui.create.and.continue')}
+                        ${message(code: 'todo.is.ui.create.and.continue')}
                     </button>
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.featureForm.$invalid"
                             type="submit">
-                        ${message(code:'default.button.create.label')}
+                        ${message(code: 'default.button.create.label')}
                     </button>
                 </div>
             </form>

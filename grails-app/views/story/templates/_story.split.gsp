@@ -17,7 +17,7 @@
             <td>
                 <div class="clearfix">
                     <div class="form-group col-sm-8">
-                        <label>${message(code:'is.story.name')}</label>
+                        <label>${message(code: 'is.story.name')}</label>
                         <input required
                                ng-maxlength="100"
                                type="text"
@@ -25,7 +25,7 @@
                                class="form-control">
                     </div>
                     <div class="form-group col-sm-2" ng-show="authorizedStory('updateEstimate', stories[$index])">
-                        <label>${message(code:'is.story.effort')}</label>
+                        <label>${message(code: 'is.story.effort')}</label>
                         <ui-select ng-if="!isEffortCustom()"
                                    class="form-control"
                                    name="effort"
@@ -44,7 +44,7 @@
                                ng-model="stories[$index].effort"/>
                     </div>
                     <div class="form-group col-sm-2">
-                        <label>${message(code:'is.story.value')}</label>
+                        <label>${message(code: 'is.story.value')}</label>
                         <ui-select class="form-control"
                                    name="value"
                                    search-enabled="true"
@@ -56,7 +56,7 @@
                         </ui-select>
                     </div>
                     <div class="form-group col-sm-12">
-                        <label>${message(code:'is.backlogelement.description')}</label>
+                        <label>${message(code: 'is.backlogelement.description')}</label>
                         <textarea required
                                   at="atOptions"
                                   ng-maxlength="3000"

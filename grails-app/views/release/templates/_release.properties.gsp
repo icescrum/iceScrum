@@ -6,7 +6,7 @@
     <div class="panel-body">
         <div class="clearfix no-padding">
             <div class="form-3-quarters">
-                <label for="name">${message(code:'is.release.name')}</label>
+                <label for="name">${message(code: 'is.release.name')}</label>
                 <input required
                        name="name"
                        ng-focus="editForm(true)"
@@ -17,7 +17,7 @@
                        placeholder="${message(code: 'is.ui.release.noname')}"/>
             </div>
             <div class="form-1-quarter">
-                <label for="firstSprintIndex">${message(code:'is.release.firstSprintIndex')}</label>
+                <label for="firstSprintIndex">${message(code: 'is.release.firstSprintIndex')}</label>
                 <input required
                        name="firstSprintIndex"
                        ng-focus="editForm(true)"
@@ -29,7 +29,7 @@
         </div>
         <div class="clearfix no-padding">
             <div class="form-half">
-                <label for="release.startDate">${message(code:'is.release.startDate')}</label>
+                <label for="release.startDate">${message(code: 'is.release.startDate')}</label>
                 <div ng-class="{'input-group': authorizedRelease('updateDates', release)}">
                     <input type="text"
                            class="form-control"
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="form-half">
-                <label for="release.endDate">${message(code:'is.release.endDate')}</label>
+                <label for="release.endDate">${message(code: 'is.release.endDate')}</label>
                 <div ng-class="{'input-group': authorizedRelease('updateDates', release)}">
                     <input type="text"
                            class="form-control"
@@ -98,7 +98,7 @@
                     </button>
                 </div>
                 <button class="btn btn-default btn-sm"
-                        uib-tooltip="${message(code:'todo.is.ui.charts')}"
+                        uib-tooltip="${message(code: 'todo.is.ui.charts')}"
                         type="button"
                         uib-dropdown-toggle>
                     <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
@@ -110,7 +110,7 @@
             <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
         </div>
         <div class="form-group">
-            <label for="vision">${message(code:'is.ui.releasePlan.toolbar.vision')}</label>
+            <label for="vision">${message(code: 'is.ui.releasePlan.toolbar.vision')}</label>
             <textarea is-markitup
                       ng-maxlength="5000"
                       class="form-control"
@@ -130,7 +130,7 @@
                  ng-bind-html="editableRelease.vision_html ? editableRelease.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'"></div>
         </div>
         <div class="form-group">
-            <label>${message(code:'is.backlogelement.attachment')} {{ release.attachments_count > 0 ? '(' + release.attachments_count + ')' : '' }}</label>
+            <label>${message(code: 'is.backlogelement.attachment')} {{ release.attachments_count > 0 ? '(' + release.attachments_count + ')' : '' }}</label>
             <div ng-if="authorizedRelease('upload', release)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"
@@ -150,24 +150,24 @@
                     ng-if="isLatest() || formHolder.submitting"
                     ng-disabled="!isDirty() || formHolder.releaseForm.$invalid || formHolder.submitting"
                     type="submit">
-                ${message(code:'default.button.update.label')}
+                ${message(code: 'default.button.update.label')}
             </button>
             <button class="btn btn-danger"
                     ng-if="!isLatest() && !formHolder.submitting"
                     ng-disabled="!isDirty() || formHolder.releaseForm.$invalid"
                     type="submit">
-                ${message(code:'default.button.override.label')}
+                ${message(code: 'default.button.override.label')}
             </button>
             <button class="btn btn-default"
                     type="button"
                     ng-click="editForm(false)">
-                ${message(code:'is.button.cancel')}
+                ${message(code: 'is.button.cancel')}
             </button>
             <button class="btn btn-warning"
                     type="button"
                     ng-if="!isLatest() && !formHolder.submitting"
                     ng-click="resetReleaseForm()">
-                <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
+                <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
         </div>
     </div>

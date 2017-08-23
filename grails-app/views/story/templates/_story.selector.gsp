@@ -38,7 +38,7 @@
                    ng-model="selectorOptions.filter.term"
                    ng-model-options="{debounce: 400}"
                    ng-change="filterStories()"
-                   placeholder="${message(code:'todo.is.ui.story.selector.filter.action')}">
+                   placeholder="${message(code: 'todo.is.ui.story.selector.filter.action')}">
             <span class="input-group-btn">
                 <button type="button"
                         class="btn btn-default"

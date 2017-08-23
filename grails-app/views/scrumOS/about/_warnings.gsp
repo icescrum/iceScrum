@@ -25,8 +25,8 @@
     <table class="table table-bordered table-striped" ng-controller="warningsCtrl">
         <thead ng-if="warnings.length">
             <tr>
-                <th width="50%">${message(code:'is.dialog.about.warnings.name')}</th>
-                <th width="50%">${message(code:'is.dialog.about.warnings.message')}</th>
+                <th width="50%">${message(code: 'is.dialog.about.warnings.name')}</th>
+                <th width="50%">${message(code: 'is.dialog.about.warnings.message')}</th>
                 <g:if test="${SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)}">
                     <th></th>
                 </g:if>

@@ -28,10 +28,10 @@
       novalidate
       ng-submit='update(project)'
       name="formHolder.editProjectForm">
-    <h4>${message(code:"is.project.preferences.project.stakeHolderAccess")}</h4>
+    <h4>${message(code: "is.project.preferences.project.stakeHolderAccess")}</h4>
     <table class="table table-striped table-responsive">
         <tr>
-            <th>${message(code:'is.project.preferences.project.stakeHolderRestrictedViews')}</th>
+            <th>${message(code: 'is.project.preferences.project.stakeHolderRestrictedViews')}</th>
             <th></th>
         </tr>
         <tr ng-repeat="view in stakeHolderViews">
@@ -40,7 +40,7 @@
         </tr>
     </table>
     <entry:point id="project-edit-administration"/>
-    <h4>${message(code:"todo.is.ui.project.administration.danger")}</h4>
+    <h4>${message(code: "todo.is.ui.project.administration.danger")}</h4>
     <div class="btn-toolbar">
         <button ng-if="authorizedProject('delete', project)"
                 type="button"
@@ -61,7 +61,7 @@
                 role="button"
                 class="btn btn-default"
                 ng-click="$close()">
-            ${message(code:'is.button.cancel')}
+            ${message(code: 'is.button.cancel')}
         </button>
         <button type='submit'
                 role="button"

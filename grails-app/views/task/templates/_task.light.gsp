@@ -48,7 +48,7 @@
         </div>
         <div class="actions">
             <span class="action" ng-class="{'active':task.attachments_count}">
-                <span uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                <span uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                     <a href="{{ link ? link : openTaskUrl(task.id) }}">
                         <i class="fa fa-paperclip"></i>
                         <span class="badge">{{ task.attachments_count || '' }}</span>
@@ -56,7 +56,7 @@
                 </span>
             </span>
             <span class="action" ng-class="{'active':task.comments_count}">
-                <span uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                <span uib-tooltip="${message(code: 'todo.is.ui.comments')}">
                     <a href="{{ link ? link : openTaskUrl(task.id) }}/comments">
                         <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                         <span class="badge">{{ task.comments_count || '' }}</span>

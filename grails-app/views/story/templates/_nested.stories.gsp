@@ -53,7 +53,7 @@
         </tr>
         <tr ng-show="selected.stories !== undefined && !selected.stories.length">
             <td class="empty-content">
-                <small>${message(code:'todo.is.ui.story.empty')}</small>
+                <small>${message(code: 'todo.is.ui.story.empty')}</small>
             </td>
         </tr>
     </table>

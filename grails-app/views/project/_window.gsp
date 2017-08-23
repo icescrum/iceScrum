@@ -42,13 +42,17 @@
                                 <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
                             </div>
                             <div class="col-md-4 text-right">
-                                <img ng-src="{{ user | userAvatar }}" ng-repeat="user in allMembers" height="36" width="36" style="margin-left:5px;" class="{{ user | userColorRoles }}" uib-tooltip="{{ user | userFullName }}"/>
+                                <img ng-src="{{ user | userAvatar }}"
+                                     ng-repeat="user in allMembers"
+                                     height="36" width="36" style="margin-left:5px;"
+                                     class="{{ user | userColorRoles }}"
+                                     uib-tooltip="{{ user | userFullName }}"/>
                                 <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
                             </div>
                         </div>
                         <div class="row project-info">
-                            <div class="col-md-6" style="text-align: left;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${ message(code: 'todo.is.ui.stories') }</div>
-                            <div class="col-md-6" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${ message(code: 'todo.is.ui.releases') }</div>
+                            <div class="col-md-6" style="text-align: left;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${message(code: 'todo.is.ui.stories')}</div>
+                            <div class="col-md-6" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${message(code: 'todo.is.ui.releases')}</div>
                         </div>
                         <ng-include src="'release.timeline.href.html'" ng-controller="releaseTimelineCtrl"></ng-include>
                         <div class="row project-rel-dates">
@@ -56,7 +60,7 @@
                             <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>
                         </div>
                         <div ng-show="currentOrNextSprint.goal">
-                            <p><strong>${message(code:'todo.is.ui.sprint.goal.label')}</strong> {{ currentOrNextSprint.goal }}</p>
+                            <p><strong>${message(code: 'todo.is.ui.sprint.goal.label')}</strong> {{ currentOrNextSprint.goal }}</p>
                         </div>
                     </div>
                 </div>
@@ -235,11 +239,14 @@
                             <hr ng-if="!$last">
                         </div>
                         <div ng-if="activities.length > 5 && !pref.showMore" class="text-center">
-                            <a href ng-click="showMore()"><i class="fa fa-ellipsis-h" ></i></a>
+                            <a href ng-click="showMore()"><i class="fa fa-ellipsis-h"></i></a>
                         </div>
                         <div ng-if="activities != undefined && activities.length == 0">
                             <div style="text-align: center; padding:5px; font-size:14px;">
-                                <a target="_blank" href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">${message(code:'is.ui.getting.started')}</a>
+                                <a target="_blank"
+                                   href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">
+                                    ${message(code: 'is.ui.getting.started')}
+                                </a>
                             </div>
                         </div>
                     </div>

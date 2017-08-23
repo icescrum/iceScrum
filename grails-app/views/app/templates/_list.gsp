@@ -55,7 +55,7 @@
         </h5>
     </div>
     <div class="text-center more-results" ng-hide="filteredApps.length">
-        <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code:'is.ui.apps.store.search')}</a>
+        <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code: 'is.ui.apps.store.search')}</a>
     </div>
 </div>
 </script>

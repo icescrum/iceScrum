@@ -20,19 +20,19 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <head>
-    <title>${message(code:'todo.is.ui.403')}</title>
+    <title>${message(code: 'todo.is.ui.403')}</title>
     <meta name='layout' content='error'/>
 </head>
 <body>
 <h1>Oops!</h1>
-<h2>${message(code:'todo.is.ui.403')}</h2>
+<h2>${message(code: 'todo.is.ui.403')}</h2>
 <div class="error-details">
-    ${message(code:'todo.is.ui.403.details')}
+    ${message(code: 'todo.is.ui.403.details')}
 </div>
 <div class="error-actions">
     <a href="${homeUrl}" class="btn btn-primary btn-lg">
-        <i class="fa fa-home"></i> ${message(code:'todo.is.ui.40x.home')}</a>
+        <i class="fa fa-home"></i> ${message(code: 'todo.is.ui.40x.home')}</a>
     <a href="mailto:${emailSupport}" class="btn btn-default btn-lg">
-        <i class="fa fa-envelope"></i> ${message(code:'todo.is.ui.40x.support')}</a>
+        <i class="fa fa-envelope"></i> ${message(code: 'todo.is.ui.40x.support')}</a>
 </div>
 </body>

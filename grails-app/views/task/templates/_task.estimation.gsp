@@ -23,11 +23,11 @@
 
 <script type="text/ng-template" id="task.estimation.html">
 <is:modal form="submit(editableTask)"
-          submitButton="${message(code:'default.button.update.label')}"
-          closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'is.task.estimation')}">
+          submitButton="${message(code: 'default.button.update.label')}"
+          closeButton="${message(code: 'is.button.cancel')}"
+          title="${message(code: 'is.task.estimation')}">
     <div>
-        <label for="estimation">${message(code:'is.task.estimation')}</label>
+        <label for="estimation">${message(code: 'is.task.estimation')}</label>
         <input type="number"
                class="form-control"
                autofocus

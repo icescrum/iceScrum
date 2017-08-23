@@ -34,12 +34,12 @@
     </div>
     <div class="details-no-tab">
         <div class="panel-body">
-            <div class="help-block">${message(code:'is.ui.release.help')}</div>
+            <div class="help-block">${message(code: 'is.ui.release.help')}</div>
             <form ng-submit="save(release, false)"
                   name='formHolder.releaseForm'
                   novalidate>
                 <div class="form-group">
-                    <label for="name">${message(code:'is.release.name')}</label>
+                    <label for="name">${message(code: 'is.release.name')}</label>
                     <input required
                            name="name"
                            autofocus
@@ -50,7 +50,7 @@
                 </div>
                 <div class="clearfix no-padding">
                     <div class="form-half">
-                        <label for="release.startDate">${message(code:'is.release.startDate')}</label>
+                        <label for="release.startDate">${message(code: 'is.release.startDate')}</label>
                         <div class="input-group">
                             <span class="input-group-btn">
                                 <button type="button"
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                     <div class="form-half">
-                        <label for="release.endDate" class="text-right">${message(code:'is.release.endDate')}</label>
+                        <label for="release.endDate" class="text-right">${message(code: 'is.release.endDate')}</label>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control text-right"
@@ -95,17 +95,17 @@
                 <div class="btn-toolbar pull-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.releaseForm.$invalid"
-                            uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                            uib-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                             hotkey="{'shift+return': hotkeyClick }"
                             hotkey-allow-in="INPUT"
                             type='button'
                             ng-click="save(release, true)">
-                        ${message(code:'todo.is.ui.create.and.continue')}
+                        ${message(code: 'todo.is.ui.create.and.continue')}
                     </button>
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.releaseForm.$invalid"
                             type="submit">
-                        ${message(code:'default.button.create.label')}
+                        ${message(code: 'default.button.create.label')}
                     </button>
                 </div>
             </form>

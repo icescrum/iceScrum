@@ -23,13 +23,16 @@
 --}%
 <header>
     <button type="button" class="navbar-toggle offcanvas-toggle navbar-inverse" data-target="#menu-header" data-toggle="offcanvas">
-        <span class="sr-only">${message(code:'todo.is.ui.main.menu')}</span>
+        <span class="sr-only">${message(code: 'todo.is.ui.main.menu')}</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
     <entry:point id="header-before-menu"/>
-    <nav id="menu-header" ng-style="application.context | contextStyle" class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ application.context.color | contrastColor:true }}" role="navigation">
+    <nav id="menu-header"
+         ng-style="application.context | contextStyle"
+         class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ application.context.color | contrastColor:true }}"
+         role="navigation">
         <div class="container-fluid">
             <div class="nav-header">
                 <div class="hidden-xs pull-left">
@@ -110,14 +113,14 @@
                                 </li>
                             </g:if>
                             <g:if test="${projectFilteredsList}">
-                                <li role="presentation" class="divider" style='display:${projectFilteredsList ?'block':'none'}'></li>
-                                <li role="presentation" class="dropdown-header" id="my-projects" style='display:${projectFilteredsList ?'block':'none'}'>
+                                <li role="presentation" class="divider" style='display:${projectFilteredsList ? 'block' : 'none'}'></li>
+                                <li role="presentation" class="dropdown-header" id="my-projects" style='display:${projectFilteredsList ? 'block' : 'none'}'>
                                     ${message(code: 'is.projectmenu.submenu.project.my.title')}
                                 </li>
                                 <g:each var="curProject" in="${projectFilteredsList}">
                                     <li class="project">
                                         <a class="${project?.id == curProject.id ? 'active' : ''}"
-                                           href="${project?.id == curProject.id ? '' : createLink(controller: "scrumOS", params: [project:curProject.pkey])+'/'}"
+                                           href="${project?.id == curProject.id ? '' : createLink(controller: "scrumOS", params: [project: curProject.pkey]) + '/'}"
                                            title="${curProject.name.encodeAsHTML()}">
                                             ${curProject.name.encodeAsHTML()}
                                         </a>
@@ -151,7 +154,7 @@
                         class="menuitem">
                     </li>
                     <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && application.menus.hidden.length == 0 }">
-                        <a uib-dropdown-toggle href>${message(code:'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
+                        <a uib-dropdown-toggle href>${message(code: 'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                         <ul uib-dropdown-menu class="menubar"
                             is-disabled="!currentUser.id || context != 'project'"
                             as-sortable="menuSortableOptions"
@@ -164,83 +167,83 @@
                     </li>
                 </ul>
                 <div class="navbar-right">
-                        <g:if test="${project}">
-                            <form class="navbar-form pull-left" role="search">
-                                <div class="input-group search">
-                                    <span class="input-group-btn" ng-if="application.context">
-                                        <button class="btn btn-default"
-                                                type="button"
-                                                ng-click="setContext(null)">
-                                            <i class="fa" ng-class="application.context.type | contextIcon"></i>
-                                            <span class="context">{{ application.context.term }}</span>
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </span>
-                                    <input autocomplete="off"
-                                           type="text"
-                                           name="application.search"
-                                           class="form-control"
-                                           ng-model="application.search"
-                                           placeholder="${message(code:'todo.is.ui.search.action')}"
-                                           ng-model-options="{ debounce: 300 }"
-                                           uib-typeahead="context.term for context in searchContext($viewValue)"
-                                           typeahead-on-select="setContext($item)"
-                                           typeahead-template-url="search.context.html">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="application.search = null">
-                                            <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
-                        </g:if>
-                        <g:else>
-                            <form class="navbar-form pull-left" role="search">
-                                <div class="input-group search">
-                                    <input autocomplete="off"
-                                           type="text"
-                                           name="application.search"
-                                           class="form-control"
-                                           ng-model="application.search"
-                                           placeholder="${message(code:'todo.is.ui.search.action')}"
-                                           ng-model-options="{ debounce: 300 }">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="application.search = null">
-                                            <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </form>
-                        </g:else>
-                        <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
-                            <div class="navbar-notif"
-                                 uib-dropdown-toggle>
-                                <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
-                                <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
+                    <g:if test="${project}">
+                        <form class="navbar-form pull-left" role="search">
+                            <div class="input-group search">
+                                <span class="input-group-btn" ng-if="application.context">
+                                    <button class="btn btn-default"
+                                            type="button"
+                                            ng-click="setContext(null)">
+                                        <i class="fa" ng-class="application.context.type | contextIcon"></i>
+                                        <span class="context">{{ application.context.term }}</span>
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </span>
+                                <input autocomplete="off"
+                                       type="text"
+                                       name="application.search"
+                                       class="form-control"
+                                       ng-model="application.search"
+                                       placeholder="${message(code: 'todo.is.ui.search.action')}"
+                                       ng-model-options="{ debounce: 300 }"
+                                       uib-typeahead="context.term for context in searchContext($viewValue)"
+                                       typeahead-on-select="setContext($item)"
+                                       typeahead-template-url="search.context.html">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="application.search = null">
+                                        <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
+                                    </button>
+                                </span>
                             </div>
-                            <div uib-dropdown-menu class="notifications selection-disable" ng-include="'notifications.panel.html'"></div>
-                        </div>
-                        <div class="navbar-home pull-left">
-                            <a hotkey="{ 'shift+h': goToHome}"
-                               hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
-                               uib-tooltip="${message(code:'is.ui.home')} (shift+h)"
-                               tooltip-placement="bottom" href ng-click="goToHome()">
-                                <i class="fa fa-home"></i>
-                            </a>
-                        </div>
-                        <div ng-if="currentUser.username" uib-dropdown class="pull-left">
-                            <div class="navbar-user pull-left" uib-dropdown-toggle>
-                                <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="32px" width="32px"/>
+                        </form>
+                    </g:if>
+                    <g:else>
+                        <form class="navbar-form pull-left" role="search">
+                            <div class="input-group search">
+                                <input autocomplete="off"
+                                       type="text"
+                                       name="application.search"
+                                       class="form-control"
+                                       ng-model="application.search"
+                                       placeholder="${message(code: 'todo.is.ui.search.action')}"
+                                       ng-model-options="{ debounce: 300 }">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="application.search = null">
+                                        <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
+                                    </button>
+                                </span>
                             </div>
-                            <div uib-dropdown-menu class="profile-panel" ng-include="'profile.panel.html'"></div>
+                        </form>
+                    </g:else>
+                    <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
+                        <div class="navbar-notif"
+                             uib-dropdown-toggle>
+                            <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
+                            <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                         </div>
-                        <button id="login"
-                                ng-show="!(currentUser.username)"
-                                class="btn btn-default"
-                                ng-click="showAuthModal()"
-                                uib-tooltip="${message(code:'is.button.connect')} (SHIFT+L)"
-                                tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
+                        <div uib-dropdown-menu class="notifications selection-disable" ng-include="'notifications.panel.html'"></div>
                     </div>
+                    <div class="navbar-home pull-left">
+                        <a hotkey="{ 'shift+h': goToHome}"
+                           hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
+                           uib-tooltip="${message(code: 'is.ui.home')} (shift+h)"
+                           tooltip-placement="bottom" href ng-click="goToHome()">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </div>
+                    <div ng-if="currentUser.username" uib-dropdown class="pull-left">
+                        <div class="navbar-user pull-left" uib-dropdown-toggle>
+                            <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="32px" width="32px"/>
+                        </div>
+                        <div uib-dropdown-menu class="profile-panel" ng-include="'profile.panel.html'"></div>
+                    </div>
+                    <button id="login"
+                            ng-show="!(currentUser.username)"
+                            class="btn btn-default"
+                            ng-click="showAuthModal()"
+                            uib-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
+                            tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
+                </div>
             </div>
         </div>
     </nav>

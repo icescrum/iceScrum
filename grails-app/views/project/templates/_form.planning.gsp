@@ -21,10 +21,10 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.planning.project.html">
-    <h4>${message(code:"todo.is.ui.project.planning")}</h4>
+    <h4>${message(code: "todo.is.ui.project.planning")}</h4>
     <div class="row">
         <div class="form-half">
-            <label for="project.startDate">${message(code:'is.dialog.wizard.project.startDate')}</label>
+            <label for="project.startDate">${message(code: 'is.dialog.wizard.project.startDate')}</label>
             <div class="input-group">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, startDateOptions)"><i class="fa fa-calendar"></i></button>
@@ -41,14 +41,14 @@
             </div>
         </div>
         <div class="form-half">
-            <label for="project.preferences.timezone">${message(code:'is.project.preferences.timezone')}</label>
+            <label for="project.preferences.timezone">${message(code: 'is.project.preferences.timezone')}</label>
             <ui-select required="required"
                        class="form-control"
                        ng-required="isCurrentStep(4)"
                        name="project.preferences.timezone"
                        search-enabled="true"
                        ng-model="project.preferences.timezone">
-                <ui-select-match placeholder="${message(code:'todo.is.ui.project.notimezone')}">{{ timezones[$select.selected] }}</ui-select-match>
+                <ui-select-match placeholder="${message(code: 'todo.is.ui.project.notimezone')}">{{ timezones[$select.selected] }}</ui-select-match>
                 <ui-select-choices repeat="timezoneKey in timezoneKeys | filter: $select.search">
                     <span ng-bind-html="timezones[timezoneKey] | highlight: $select.search"></span>
                 </ui-select-choices>
@@ -57,7 +57,7 @@
     </div>
     <div class="row">
         <div class="form-half">
-            <label for="estimatedSprintsDuration">${message(code:'is.project.preferences.planification.estimatedSprintsDuration')}</label>
+            <label for="estimatedSprintsDuration">${message(code: 'is.project.preferences.planification.estimatedSprintsDuration')}</label>
             <div class="input-group">
                 <input class="form-control"
                        type="number"
@@ -68,7 +68,7 @@
                        ng-required="isCurrentStep(4)"
                        ng-change="computePlanning()"
                        ng-model="project.preferences.estimatedSprintsDuration">
-                <div class="input-group-addon">${message(code:'is.dialog.wizard.project.days')}</div>
+                <div class="input-group-addon">${message(code: 'is.dialog.wizard.project.days')}</div>
             </div>
         </div>
     </div>
@@ -81,7 +81,7 @@
                        name="project.initialize"
                        id="initializeProject"
                        ng-model="project.initialize">
-                ${message(code:'todo.is.ui.project.planning.initialize')}
+                ${message(code: 'todo.is.ui.project.planning.initialize')}
             </label>
             <label ng-if="type != 'newProject'"
                    for="hideWeekend"
@@ -90,13 +90,13 @@
                        name="project.preferences.hideWeekend"
                        id="hideWeekend"
                        ng-model="project.preferences.hideWeekend">
-                ${message(code:'is.project.preferences.project.hideWeekend')}
+                ${message(code: 'is.project.preferences.project.hideWeekend')}
             </label>
         </div>
     </div>
     <div class="row" ng-if="project.initialize">
         <div class="form-half">
-            <label for="project.firstSprint">${message(code:'is.dialog.wizard.firstSprint')}</label>
+            <label for="project.firstSprint">${message(code: 'is.dialog.wizard.firstSprint')}</label>
             <div class="input-group">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="openDatepicker($event, firstSprintOptions)"><i class="fa fa-calendar"></i></button>
@@ -115,7 +115,7 @@
             </div>
         </div>
         <div class="form-half">
-            <label for="project.endDate" class="text-right">${message(code:'is.dialog.wizard.project.endDate')}</label>
+            <label for="project.endDate" class="text-right">${message(code: 'is.dialog.wizard.project.endDate')}</label>
             <div class="input-group">
                 <input type="text"
                        class="form-control text-right"
@@ -136,16 +136,16 @@
         <div class="col-sm-12 form-group">
             <uib-progress class="form-control-static form-bar" max="totalDuration">
                 <uib-bar ng-repeat="sprint in sprints"
-                     class="{{ $last ? 'last-bar' : '' }}"
-                     uib-tooltip-template="'sprint.tooltip.html'"
-                     type="default"
-                     value="project.preferences.estimatedSprintsDuration">
+                         class="{{ $last ? 'last-bar' : '' }}"
+                         uib-tooltip-template="'sprint.tooltip.html'"
+                         type="default"
+                         value="project.preferences.estimatedSprintsDuration">
                     {{ sprint.index }}
                 </uib-bar>
             </uib-progress>
         </div>
         <div class="col-sm-12 form-group">
-            <label for="vision">${message(code:'is.release.vision')}</label>
+            <label for="vision">${message(code: 'is.release.vision')}</label>
             <textarea is-markitup
                       name="project.vision"
                       class="form-control"

@@ -112,9 +112,9 @@
                     </div>
                     <entry:point id="story-new-form"/>
                 </div>
-                <div class="clearfix no-padding" >
+                <div class="clearfix no-padding">
                     <div ng-if="authorizedStory('createAccepted')"
-                         class="form-half" >
+                         class="form-half">
                         <label for="state">${message(code: 'is.story.state')}</label>
                         <ui-select name="story.state"
                                    required

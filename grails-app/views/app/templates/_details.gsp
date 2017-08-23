@@ -99,27 +99,27 @@
             <h4>${message(code: 'is.ui.apps.information')}</h4>
             <table class="table information">
                 <tr>
-                    <td class="text-right">${message(code:'is.app.author')}</td>
+                    <td class="text-right">${message(code: 'is.app.author')}</td>
                     <td><a href="mailto:support@kagilum.com">{{ appDefinition.author }}</a></td>
                 </tr>
                 <tr>
-                    <td class="text-right">${message(code:'is.app.version')}</td>
+                    <td class="text-right">${message(code: 'is.app.version')}</td>
                     <td>{{ appDefinition.version }}</td>
                 </tr>
                 <tr>
-                    <td class="text-right">${message(code:'is.app.widgets')}</td>
-                    <td>{{ appDefinition.hasWidgets ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
+                    <td class="text-right">${message(code: 'is.app.widgets')}</td>
+                    <td>{{ appDefinition.hasWidgets ? '${message(code: 'is.yes')}' : '${message(code: 'is.no')}' }}</td>
                 </tr>
                 <tr>
-                    <td class="text-right">${message(code:'is.app.windows')}</td>
-                    <td>{{ appDefinition.hasWindows ? '${message(code:'is.yes')}' : '${message(code:'is.no')}' }}</td>
+                    <td class="text-right">${message(code: 'is.app.windows')}</td>
+                    <td>{{ appDefinition.hasWindows ? '${message(code: 'is.yes')}' : '${message(code: 'is.no')}' }}</td>
                 </tr>
                 <tr ng-if="appDefinition.websiteUrl">
                     <td class="text-right"></td>
                     <td>
                         <a href="{{ appDefinition.websiteUrl }}"
                            target="_blank">
-                            ${message(code:'is.app.website')}
+                            ${message(code: 'is.app.website')}
                         </a>
                     </td>
                 </tr>

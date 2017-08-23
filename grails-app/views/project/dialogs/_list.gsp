@@ -23,13 +23,18 @@
 
 <is:modal title="${message(code: 'todo.is.ui.projects')}"
           form="openProject(project)"
-          submitButton="${message(code:'todo.is.ui.open')}"
+          submitButton="${message(code: 'todo.is.ui.open')}"
           class="split-modal">
     <div class="row">
         <div class="left-panel col-sm-3">
             <div class="left-panel-header">
                 <div class="input-group">
-                    <input type="text" ng-model="projectSearch" ng-change="searchProjects()" ng-model-options="{debounce: 300}" class="form-control" placeholder="${message(code:'todo.is.ui.search.action')}">
+                    <input type="text"
+                           ng-model="projectSearch"
+                           ng-change="searchProjects()"
+                           ng-model-options="{debounce: 300}"
+                           class="form-control"
+                           placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
                         <button class="btn btn-default"
                                 type="button"
@@ -59,7 +64,7 @@
         </div>
         <div class="right-panel col-sm-9" ng-switch="projects != undefined && projects.length == 0">
             <div ng-switch-when="true">
-                ${ message(code: 'todo.is.ui.project.noproject') }
+                ${message(code: 'todo.is.ui.project.noproject')}
             </div>
             <div class="col-md-12" ng-switch-default>
                 <div ng-include="'project.summary.html'"></div>

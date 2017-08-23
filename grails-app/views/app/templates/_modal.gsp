@@ -45,7 +45,7 @@
             </div>
             <ul class="left-panel-body nav nav-list">
                 <div class="text-center more-results" ng-hide="filteredApps.length">
-                    <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code:'is.ui.apps.store.search')}</a>
+                    <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code: 'is.ui.apps.store.search')}</a>
                 </div>
                 <li ng-class="{'current': currentAppDefinition == appDefinition}"
                     ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">

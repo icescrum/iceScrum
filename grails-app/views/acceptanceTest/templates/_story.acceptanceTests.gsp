@@ -67,12 +67,12 @@
                                 <ul uib-dropdown-menu class="pull-right">
                                     <li>
                                         <a href ng-click="showAcceptanceTestDescriptionTextarea = true;">
-                                            ${message(code:'is.ui.backlogelement.comment.edit')}
+                                            ${message(code: 'is.ui.backlogelement.comment.edit')}
                                         </a>
                                     </li>
                                     <li>
                                         <a href ng-click="confirmDelete({ callback: delete, args: [acceptanceTest, selected] })">
-                                            ${message(code:'default.button.delete.label')}
+                                            ${message(code: 'default.button.delete.label')}
                                         </a>
                                     </li>
                                 </ul>
@@ -103,7 +103,7 @@
         </tr>
         <tr ng-show="selected.acceptanceTests !== undefined && !selected.acceptanceTests.length">
             <td class="empty-content">
-                <small>${message(code:'todo.is.ui.acceptanceTest.empty')}</small>
+                <small>${message(code: 'todo.is.ui.acceptanceTest.empty')}</small>
             </td>
         </tr>
     </table>

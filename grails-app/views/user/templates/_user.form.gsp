@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="user.form.html">
 <div class="row">
     <div class="form-half">
-        <label for="username">${message(code:'is.user.username')}</label>
+        <label for="username">${message(code: 'is.user.username')}</label>
         <input required
                type="text"
                class="form-control"
@@ -37,7 +37,7 @@
 </div>
 <div class="row">
     <div class="form-half">
-        <label for="user.firstName">${message(code:'is.user.firstname')}</label>
+        <label for="user.firstName">${message(code: 'is.user.firstname')}</label>
         <input required
                type="text"
                class="form-control"
@@ -45,7 +45,7 @@
                ng-model="user.firstName"/>
     </div>
     <div class="form-half">
-        <label for="user.lastName">${message(code:'is.user.lastname')}</label>
+        <label for="user.lastName">${message(code: 'is.user.lastname')}</label>
         <input required
                type="text"
                class="form-control"
@@ -55,7 +55,7 @@
 </div>
 <div class="row">
     <div class="form-half">
-        <label for="user.email">${message(code:'is.user.email')}</label>
+        <label for="user.email">${message(code: 'is.user.email')}</label>
         <input required
                type="email"
                name="user.email"
@@ -65,7 +65,7 @@
                ng-remote-validate="/user/available/email"/>
     </div>
     <div class="form-half">
-        <label for="user.preferences.language">${message(code:'is.user.preferences.language')}</label>
+        <label for="user.preferences.language">${message(code: 'is.user.preferences.language')}</label>
         <ui-select required
                    name="user.preferences.language"
                    class="form-control"
@@ -77,7 +77,7 @@
 </div>
 <div class="row" ng-show="!editableUser.accountExternal">
     <div class="form-half">
-        <label for="user.password">${message(code:'is.user.password')}</label>
+        <label for="user.password">${message(code: 'is.user.password')}</label>
         <input ng-required="!user.id"
                name="user.password"
                type="password"
@@ -86,7 +86,7 @@
                ng-password-strength>
     </div>
     <div class="form-half">
-        <label for="confirmPassword">${message(code:'is.dialog.register.confirmPassword')}</label>
+        <label for="confirmPassword">${message(code: 'is.dialog.register.confirmPassword')}</label>
         <input name="confirmPassword"
                type="password"
                class="form-control"
@@ -96,7 +96,7 @@
 </div>
 <div class="row">
     <div class="col-md-12 form-group">
-        <label for="user.preferences.activity">${message(code:'is.user.preferences.activity')}</label>
+        <label for="user.preferences.activity">${message(code: 'is.user.preferences.activity')}</label>
         <input name="user.preferences.activity"
                type="text"
                class="form-control"

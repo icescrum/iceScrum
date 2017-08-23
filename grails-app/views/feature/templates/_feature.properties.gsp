@@ -5,7 +5,7 @@
       novalidate>
     <div class="panel-body">
         <div class="form-group">
-            <label for="name">${message(code:'is.feature.name')}</label>
+            <label for="name">${message(code: 'is.feature.name')}</label>
             <input required
                    ng-maxlength="100"
                    ng-focus="editForm(true)"
@@ -17,7 +17,7 @@
         </div>
         <div class="clearfix no-padding">
             <div class="form-half">
-                <label for="type">${message(code:'is.feature.type')}</label>
+                <label for="type">${message(code: 'is.feature.type')}</label>
                 <div class="input-group">
                     <ui-select class="form-control"
                                ng-click="editForm(true)"
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <div class="form-half">
-                <label for="value">${message(code:'is.feature.value')}</label>
+                <label for="value">${message(code: 'is.feature.value')}</label>
                 <ui-select class="form-control"
                            ng-click="editForm(true)"
                            ng-disabled="!formEditable()"
@@ -58,17 +58,17 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="description">${message(code:'is.backlogelement.description')}</label>
+            <label for="description">${message(code: 'is.backlogelement.description')}</label>
             <textarea class="form-control"
                       ng-maxlength="3000"
                       ng-focus="editForm(true)"
                       ng-disabled="!formEditable()"
-                      placeholder="${message(code:'is.ui.backlogelement.nodescription')}"
+                      placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"
                       name="description"
                       ng-model="editableFeature.description"></textarea>
         </div>
         <div class="form-group">
-            <label for="tags">${message(code:'is.backlogelement.tags')}</label>
+            <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
             <ui-select class="form-control"
                        ng-click="retrieveTags(); editForm(true)"
                        ng-disabled="!formEditable()"
@@ -84,7 +84,7 @@
             </ui-select>
         </div>
         <div class="form-group">
-            <label for="notes">${message(code:'is.backlogelement.notes')}</label>
+            <label for="notes">${message(code: 'is.backlogelement.notes')}</label>
             <textarea is-markitup
                       class="form-control"
                       ng-maxlength="5000"
@@ -104,7 +104,7 @@
                  ng-bind-html="editableFeature.notes_html ? editableFeature.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
         </div>
         <div class="form-group">
-            <label>${message(code:'is.backlogelement.attachment')} {{ feature.attachments_count > 0 ? '(' + feature.attachments_count + ')' : '' }}</label>
+            <label>${message(code: 'is.backlogelement.attachment')} {{ feature.attachments_count > 0 ? '(' + feature.attachments_count + ')' : '' }}</label>
             <div ng-if="authorizedFeature('upload', feature)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"
@@ -124,24 +124,24 @@
                     ng-if="isLatest() || formHolder.submitting"
                     ng-disabled="!isDirty() || formHolder.featureForm.$invalid || formHolder.submitting"
                     type="submit">
-                ${message(code:'default.button.update.label')}
+                ${message(code: 'default.button.update.label')}
             </button>
             <button class="btn btn-danger"
                     ng-if="!isLatest() && !formHolder.submitting"
                     ng-disabled="!isDirty() || formHolder.featureForm.$invalid"
                     type="submit">
-                ${message(code:'default.button.override.label')}
+                ${message(code: 'default.button.override.label')}
             </button>
             <button class="btn btn-default"
                     type="button"
                     ng-click="editForm(false)">
-                ${message(code:'is.button.cancel')}
+                ${message(code: 'is.button.cancel')}
             </button>
             <button class="btn btn-warning"
                     type="button"
                     ng-if="!isLatest() && !formHolder.submitting"
                     ng-click="resetFeatureForm()">
-                <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
+                <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
         </div>
     </div>

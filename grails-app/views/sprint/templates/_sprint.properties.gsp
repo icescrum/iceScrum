@@ -6,7 +6,7 @@
     <div class="panel-body">
         <div class="clearfix no-padding">
             <div class="form-half">
-                <label for="sprint.startDate">${message(code:'is.sprint.startDate')}</label>
+                <label for="sprint.startDate">${message(code: 'is.sprint.startDate')}</label>
                 <div ng-class="{'input-group': authorizedSprint('updateStartDate', sprint)}">
                     <input type="text"
                            class="form-control"
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="form-half">
-                <label for="sprint.endDate">${message(code:'is.sprint.endDate')}</label>
+                <label for="sprint.endDate">${message(code: 'is.sprint.endDate')}</label>
                 <div ng-class="{'input-group': authorizedSprint('updateEndDate', sprint)}">
                     <input type="text"
                            class="form-control"
@@ -75,7 +75,7 @@
                     </button>
                 </div>
                 <button class="btn btn-default btn-sm"
-                        uib-tooltip="${message(code:'todo.is.ui.charts')}"
+                        uib-tooltip="${message(code: 'todo.is.ui.charts')}"
                         type="button"
                         uib-dropdown-toggle>
                     <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
@@ -87,7 +87,7 @@
             <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
         </div>
         <div class="form-group">
-            <label for="deliveredVersion">${message(code:'is.sprint.deliveredVersion')}</label>
+            <label for="deliveredVersion">${message(code: 'is.sprint.deliveredVersion')}</label>
             <input name="deliveredVersion"
                    ng-focus="editForm(true)"
                    ng-model="editableSprint.deliveredVersion"
@@ -116,7 +116,7 @@
                  ng-bind-html="editableSprint.retrospective_html ? editableSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'"></div>
         </div>
         <div class="form-group">
-            <label for="goal">${message(code:'is.sprint.goal')}</label>
+            <label for="goal">${message(code: 'is.sprint.goal')}</label>
             <textarea name="goal"
                       class="form-control important"
                       ng-focus="editForm(true)"
@@ -145,7 +145,7 @@
                  ng-bind-html="editableSprint.doneDefinition_html ? editableSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'"></div>
         </div>
         <div class="form-group">
-            <label>${message(code:'is.backlogelement.attachment')} {{ sprint.attachments_count > 0 ? '(' + sprint.attachments_count + ')' : '' }}</label>
+            <label>${message(code: 'is.backlogelement.attachment')} {{ sprint.attachments_count > 0 ? '(' + sprint.attachments_count + ')' : '' }}</label>
             <div ng-if="authorizedSprint('upload', sprint)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"
@@ -165,24 +165,24 @@
                     ng-if="isLatest() || formHolder.submitting"
                     ng-disabled="!isDirty() || formHolder.sprintForm.$invalid || formHolder.submitting"
                     type="submit">
-                ${message(code:'default.button.update.label')}
+                ${message(code: 'default.button.update.label')}
             </button>
             <button class="btn btn-danger"
                     ng-if="!isLatest() && !formHolder.submitting"
                     ng-disabled="!isDirty() || formHolder.sprintForm.$invalid"
                     type="submit">
-                ${message(code:'default.button.override.label')}
+                ${message(code: 'default.button.override.label')}
             </button>
             <button class="btn btn-default"
                     type="button"
                     ng-click="editForm(false)">
-                ${message(code:'is.button.cancel')}
+                ${message(code: 'is.button.cancel')}
             </button>
             <button class="btn btn-warning"
                     type="button"
                     ng-if="!isLatest() && !formHolder.submitting"
                     ng-click="resetSprintForm()">
-                <i class="fa fa-warning"></i> ${message(code:'default.button.refresh.label')}
+                <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
         </div>
     </div>

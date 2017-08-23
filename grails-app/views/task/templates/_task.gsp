@@ -58,14 +58,14 @@
         <div class="actions">
             <span class="action" ng-class="{'active':task.attachments_count}">
                 <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}"
-                   uib-tooltip="${message(code:'todo.is.ui.backlogelement.attachments')}">
+                   uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                     <i class="fa fa-paperclip"></i>
                     <span class="badge">{{ task.attachments_count || '' }}</span>
                 </a>
             </span>
             <span class="action" ng-class="{'active':task.comments_count}">
                 <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}/comments"
-                   uib-tooltip="${message(code:'todo.is.ui.comments')}">
+                   uib-tooltip="${message(code: 'todo.is.ui.comments')}">
                     <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                     <span class="badge">{{ task.comments_count || '' }}</span>
                 </a>
@@ -73,14 +73,14 @@
             <span class="action" ng-if="authorizedTask('take', task)">
                 <a href
                    ng-click="take(task)"
-                   uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.take')}">
+                   uib-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.take')}">
                     <i class="fa fa-user-plus"></i>
                 </a>
             </span>
             <span class="action" ng-if="authorizedTask('release', task)">
                 <a href
                    ng-click="release(task)"
-                   uib-tooltip="${message(code:'is.ui.sprintPlan.menu.task.unassign')}">
+                   uib-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.unassign')}">
                     <i class="fa fa-user-times"></i>
                 </a>
             </span>

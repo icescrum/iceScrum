@@ -21,14 +21,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="feature.details.html">
-<div  class="panel panel-light"
-      flow-init
-      flow-drop
-      flow-files-submitted="attachmentQuery($flow, feature)"
-      flow-drop-enabled="authorizedFeature('upload', feature)"
-      flow-drag-enter="dropClass='panel panel-light drop-enabled'"
-      flow-drag-leave="dropClass='panel panel-light'"
-      ng-class="authorizedFeature('upload', feature) && dropClass">
+<div class="panel panel-light"
+     flow-init
+     flow-drop
+     flow-files-submitted="attachmentQuery($flow, feature)"
+     flow-drop-enabled="authorizedFeature('upload', feature)"
+     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
+     flow-drag-leave="dropClass='panel panel-light'"
+     ng-class="authorizedFeature('upload', feature) && dropClass">
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
@@ -43,12 +43,12 @@
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code:'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                           href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i></a>
                         <a ng-if="nextFeature && !isModal"
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code:'is.ui.backlogelement.toolbar.next')}"></i></a>
+                           href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
                     <a ng-if="!isModal"
                        class="btn btn-default"
@@ -73,12 +73,12 @@
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.featureTabId}">
             <a href="{{ tabUrl() }}">
-                <i class="fa fa-lg fa-edit"></i> ${message(code:'todo.is.ui.details')}
+                <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
         <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'stories'}">
             <a href="{{ tabUrl('stories') }}">
-                <i class="fa fa-lg fa-sticky-note"></i> ${message(code:'todo.is.ui.stories')}
+                <i class="fa fa-lg fa-sticky-note"></i> ${message(code: 'todo.is.ui.stories')}
                 <span class="badge">{{ feature.stories_ids.length || '' }}</span>
             </a>
         </li>

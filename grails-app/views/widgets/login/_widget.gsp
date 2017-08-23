@@ -26,7 +26,7 @@
                        ng-model="credentials.${SpringSecurityUtils.securityConfig.rememberMe.parameter}"
                        name="${SpringSecurityUtils.securityConfig.rememberMe.parameter}"
                        id="credentials.remember_me"/>
-                    ${message(code: 'is.dialog.login.rememberme')}
+                ${message(code: 'is.dialog.login.rememberme')}
             </label>
         </div>
         <div class="btn-toolbar pull-right" style="margin-top: -5px;">

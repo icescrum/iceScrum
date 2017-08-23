@@ -23,18 +23,18 @@
 
 <script type="text/ng-template" id="story.value.html">
 <is:modal form="submit(editableStory)"
-          submitButton="${message(code:'default.button.update.label')}"
-          closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'todo.is.ui.story.estimate.value.by.comparison')}">
+          submitButton="${message(code: 'default.button.update.label')}"
+          closeButton="${message(code: 'is.button.cancel')}"
+          title="${message(code: 'todo.is.ui.story.estimate.value.by.comparison')}">
     <div>
-        <label for="value">${message(code:'is.story.value')}</label>
+        <label for="value">${message(code: 'is.story.value')}</label>
         <slider ng-model="editableStory.value" min="0" step="1" max="99" value="editableStory.value" on-stop-slide="updateTable()"></slider>
     </div>
     <h5><strong><g:message code="todo.is.ui.story.by.comparison"/></strong></h5>
     <div class="table-scrollable">
         <table class="table">
             <tr>
-                <th class="title">${g.message(code:'is.story.value')}</th>
+                <th class="title">${g.message(code: 'is.story.value')}</th>
                 <th ng-repeat="value in values" ng-click="setValue(value)" class="clickable">
                     <span class="badge">{{ count[$index] }} <g:message code="is.ui.backlog.title.details.stories"/></span>
                     {{ value }}
@@ -47,7 +47,7 @@
                         <tr ng-repeat="story in stories" title="{{ story.description | actorTag }}" ng-class="{ 'text-primary' : story.id == editableStory.id }">
                             <td>
                                 <strong>{{ story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
-                                <div class="text-right"> <span class="badge">{{ story.state | i18n:'StoryStates' }}</span></div>
+                                <div class="text-right"><span class="badge">{{ story.state | i18n:'StoryStates' }}</span></div>
                             </td>
                         </tr>
                         <tr ng-if="count[$index] > 3">

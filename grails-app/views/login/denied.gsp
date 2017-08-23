@@ -20,14 +20,11 @@
  * Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <head>
-  <meta name='layout' content='main'/>
-  <title>
-
-<g:message code="is_denied_title"/></title>
+    <meta name='layout' content='main'/>
+    <title><g:message code="is_denied_title"/></title>
 </head>
-
 <body>
 <div class='body'>
-	<div class='errors'><g:message code="is_denied_text"/></div>
+    <div class='errors'><g:message code="is_denied_text"/></div>
 </div>
 </body>

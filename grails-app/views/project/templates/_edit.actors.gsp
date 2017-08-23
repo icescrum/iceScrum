@@ -27,10 +27,10 @@
       novalidate
       ng-controller="actorCtrl"
       name="formHolder.actorForm">
-    <h4>${message(code:"is.ui.actor.actors")}</h4>
-    <p class="help-block">${message(code:'is.ui.actor.help')}</p>
+    <h4>${message(code: "is.ui.actor.actors")}</h4>
+    <p class="help-block">${message(code: 'is.ui.actor.help')}</p>
     <div ng-if="authorizedActor('create') || authorizedActor('update')">
-        <label for="actor.name">${message(code:'is.actor.name')}</label>
+        <label for="actor.name">${message(code: 'is.actor.name')}</label>
         <div class="input-group">
             <input autofocus
                    name="actor.name"
@@ -45,21 +45,21 @@
                         ng-if="!actor.id"
                         type="submit"
                         ng-click="save(actor)">
-                    ${message(code:'default.button.create.label')}
+                    ${message(code: 'default.button.create.label')}
                 </button>
                 <button class="btn btn-primary"
                         ng-if="actor.id"
                         ng-disabled="!formHolder.actorForm.$dirty || formHolder.actorForm.$invalid"
                         type="submit"
                         ng-click="update(actor)">
-                    ${message(code:'default.button.update.label')}
+                    ${message(code: 'default.button.update.label')}
                 </button>
                 <button class="btn btn-default"
                         ng-if="actor.id"
                         ng-disabled="!formHolder.actorForm.$dirty"
                         type="submit"
                         ng-click="resetActorForm()">
-                    ${message(code:'is.button.cancel')}
+                    ${message(code: 'is.button.cancel')}
                 </button>
             </span>
         </div>

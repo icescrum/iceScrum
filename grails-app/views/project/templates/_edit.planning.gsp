@@ -34,13 +34,13 @@
                 role="button"
                 class="btn btn-default"
                 ng-click="$close()">
-            ${ message(code:'is.button.cancel')}
+            ${message(code: 'is.button.cancel')}
         </button>
         <button type='submit'
                 role="button"
                 class='btn btn-primary'
                 ng-disabled="!formHolder.editProjectForm.$dirty || formHolder.editProjectForm.$invalid">
-            ${message(code:'is.button.update')}
+            ${message(code: 'is.button.update')}
         </button>
     </div>
 </form>

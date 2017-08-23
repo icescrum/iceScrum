@@ -34,7 +34,7 @@
         <button type="button"
                 class="btn btn-danger"
                 ng-click="confirm({ message: '${message(code: 'is.dialog.members.leave.team.confirm')}', callback: leaveTeam, args: [project] })">
-            <i class="fa fa-times"></i> ${ message(code: 'is.dialog.members.leave.team')}
+            <i class="fa fa-times"></i> ${message(code: 'is.dialog.members.leave.team')}
         </button>
     </div>
     <br/>
@@ -44,13 +44,13 @@
                 role="button"
                 class="btn btn-default"
                 ng-click="cancelMembers()">
-            ${ message(code:'is.button.cancel')}
+            ${message(code: 'is.button.cancel')}
         </button>
         <button type='submit'
                 role="button"
                 class='btn btn-primary'
                 ng-disabled="!formHolder.editMembersForm.$dirty || formHolder.editMembersForm.$invalid">
-            ${message(code:'is.button.update')}
+            ${message(code: 'is.button.update')}
         </button>
     </div>
 </form>

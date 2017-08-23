@@ -33,7 +33,7 @@
                            ng-change="searchTeams()"
                            ng-model-options="{debounce: 300}"
                            class="form-control"
-                           placeholder="${message(code:'todo.is.ui.search.action')}">
+                           placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
                         <button class="btn btn-default"
                                 type="button"
@@ -68,7 +68,7 @@
                       show-validation
                       novalidate>
                     <div class="form-group">
-                        <label for="team.name">${message(code:'is.ui.team.create.name')}</label>
+                        <label for="team.name">${message(code: 'is.ui.team.create.name')}</label>
                         <input required
                                ng-maxlength="100"
                                name="team.name"
@@ -80,12 +80,12 @@
                         <button class="btn btn-primary pull-right"
                                 ng-disabled="!formHolder.newTeamForm.$dirty || formHolder.newTeamForm.$invalid"
                                 type="submit">
-                            ${message(code:'default.button.create.label')}
+                            ${message(code: 'default.button.create.label')}
                         </button>
                     </div>
                 </form>
                 <div>
-                    ${ message(code: 'is.ui.team.explanation') }
+                    ${message(code: 'is.ui.team.explanation')}
                 </div>
             </div>
             <div ng-switch-when="true">
@@ -94,19 +94,19 @@
                       show-validation
                       novalidate>
                     <div class="col-sm-12 form-group">
-                        <label for="team.owner">${message(code:'todo.is.ui.owner')}</label>
+                        <label for="team.owner">${message(code: 'todo.is.ui.owner')}</label>
                         <span class="form-control-static"
                               ng-if="!authorizedTeam('changeOwner', team)">{{ team.owner | userFullName }}</span>
                         <ui-select class="form-control"
                                    name="owner"
                                    ng-if="authorizedTeam('changeOwner', team)"
                                    ng-model="team.owner">
-                                <ui-select-match>{{ $select.selected | userFullName }}</ui-select-match>
-                                <ui-select-choices repeat="ownerCandidate in ownerCandidates">{{ ownerCandidate | userFullName }}</ui-select-choices>
+                            <ui-select-match>{{ $select.selected | userFullName }}</ui-select-match>
+                            <ui-select-choices repeat="ownerCandidate in ownerCandidates">{{ ownerCandidate | userFullName }}</ui-select-choices>
                         </ui-select>
                     </div>
                     <div class="form-half">
-                        <label for="team.name">${message(code:'todo.is.ui.name')}</label>
+                        <label for="team.name">${message(code: 'todo.is.ui.name')}</label>
                         <input required
                                ng-maxlength="100"
                                name="team.name"
@@ -115,7 +115,7 @@
                                class="form-control">
                     </div>
                     <div class="form-half">
-                        <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
+                        <label for="member.search">${message(code: 'todo.is.ui.select.member')}</label>
                         <p class="input-group">
                             <input autocomplete="off"
                                    type="text"
@@ -141,7 +141,7 @@
                         <tr>
                             <th></th>
                             <th></th>
-                            <th class="text-right">${message(code:'is.role.scrumMaster')}</th>
+                            <th class="text-right">${message(code: 'is.role.scrumMaster')}</th>
                         </tr>
                         </thead>
                         <tbody ng-repeat="member in team.members"
@@ -155,18 +155,18 @@
                         <button class="btn btn-default"
                                 type="button"
                                 ng-click="cancel()">
-                            ${message(code:'is.button.cancel')}
+                            ${message(code: 'is.button.cancel')}
                         </button>
                         <button ng-if="authorizedTeam('delete', team) && team.projects_count == 0"
                                 class="btn btn-danger"
                                 type="button"
                                 ng-click="confirmDelete({ callback: delete, args: [team] })">
-                            ${message(code:'default.button.delete.label')}
+                            ${message(code: 'default.button.delete.label')}
                         </button>
                         <button class="btn btn-primary"
                                 ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid"
                                 type="submit">
-                            ${message(code:'default.button.update.label')}
+                            ${message(code: 'default.button.update.label')}
                         </button>
                     </div>
                 </form>

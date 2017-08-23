@@ -3,7 +3,10 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <i class="fa fa-inbox"></i> {{ backlog | backlogName }} <i class="fa fa-share-alt" ng-if="backlog.shared && !backlog.isDefault" uib-tooltip="${message(code: 'is.ui.backlog.share')}"></i>
+                <i class="fa fa-inbox"></i> {{ backlog | backlogName }}
+                <i class="fa fa-share-alt"
+                   ng-if="backlog.shared && !backlog.isDefault"
+                   uib-tooltip="${message(code: 'is.ui.backlog.share')}"></i>
                 <entry:point id="backlog-details-left-title"/>
             </div>
             <div class="right-title">

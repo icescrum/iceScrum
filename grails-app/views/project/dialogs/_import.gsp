@@ -42,7 +42,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal title="${message(code:'is.dialog.importProject.choose.title')}" footer="${false}" class="import">
+<is:modal title="${message(code: 'is.dialog.importProject.choose.title')}" footer="${false}" class="import">
     <div flow-drop
          flow-init="flowConfig"
          flow-file-added="!! {xml:1,zip:1}[$file.getExtension()]"
@@ -75,13 +75,13 @@
                     <label>
                         <input type="checkbox"
                                name="erase"
-                               ng-model="changes.erase"> ${message(code:'todo.is.ui.import.erase')}
+                               ng-model="changes.erase"> ${message(code: 'todo.is.ui.import.erase')}
                     </label>
                 </div>
             </div>
             <div class="changes row" ng-if="_changes.showProjectName && !changes.erase">
                 <div class="changes-col-1">
-                    <label for="project.name_">${message(code:'todo.is.ui.import.project.name')}</label>
+                    <label for="project.name_">${message(code: 'todo.is.ui.import.project.name')}</label>
                     <input required
                            type="text"
                            id="project.name_"
@@ -94,7 +94,7 @@
                     <i class="fa fa-arrow-right"></i>
                 </div>
                 <div class="changes-col-2">
-                    <label for="project.name">${message(code:'todo.is.ui.import.changes.project.name')}</label>
+                    <label for="project.name">${message(code: 'todo.is.ui.import.changes.project.name')}</label>
                     <input required
                            not-match="_changes.project.name"
                            type="text"
@@ -106,7 +106,7 @@
             </div>
             <div class="changes row" ng-if="_changes.showProjectPkey && !changes.erase">
                 <div class="changes-col-1">
-                    <label for="project.pkey_">${message(code:'todo.is.ui.import.project.pkey')}</label>
+                    <label for="project.pkey_">${message(code: 'todo.is.ui.import.project.pkey')}</label>
                     <input required
                            type="text"
                            id="project.pkey_"
@@ -119,7 +119,7 @@
                     <i class="fa fa-arrow-right"></i>
                 </div>
                 <div class="changes-col-2">
-                    <label for="project.pkey">${message(code:'todo.is.ui.import.changes.project.pkey')}</label>
+                    <label for="project.pkey">${message(code: 'todo.is.ui.import.changes.project.pkey')}</label>
                     <input required
                            not-match="_changes.project.pkey"
                            type="text"
@@ -133,7 +133,7 @@
             </div>
             <div class="changes row" ng-if="_changes.showTeam">
                 <div class="changes-col-1">
-                    <label for="team.name_">${message(code:'todo.is.ui.import.changes.team.name')}</label>
+                    <label for="team.name_">${message(code: 'todo.is.ui.import.changes.team.name')}</label>
                     <input required
                            type="text"
                            id="team.name_"
@@ -146,7 +146,7 @@
                     <i class="fa fa-arrow-right"></i>
                 </div>
                 <div class="changes-col-2">
-                    <label for="team.name_">${message(code:'todo.is.ui.import.changes.team.name')}</label>
+                    <label for="team.name_">${message(code: 'todo.is.ui.import.changes.team.name')}</label>
                     <input required
                            not-match="_changes.team.name"
                            type="text"
@@ -158,7 +158,7 @@
             </div>
             <div class="changes row" ng-if="_changes.showUsernames" ng-repeat="(key, value) in changes.usernames">
                 <div class="changes-col-1">
-                    <label for="_username{{ key }}">${message(code:'todo.is.ui.import.username')}</label>
+                    <label for="_username{{ key }}">${message(code: 'todo.is.ui.import.username')}</label>
                     <input required
                            type="text"
                            id="_username{{ key }}"
@@ -171,7 +171,7 @@
                     <i class="fa fa-arrow-right"></i>
                 </div>
                 <div class="changes-col-2">
-                    <label for="username{{ key }}">${message(code:'todo.is.ui.import.changes.username')}</label>
+                    <label for="username{{ key }}">${message(code: 'todo.is.ui.import.changes.username')}</label>
                     <input required
                            not-match="_changes.usernames[key]"
                            type="text"
@@ -196,7 +196,7 @@
                     <i class="fa fa-arrow-right"></i>
                 </div>
                 <div class="changes-col-2">
-                    <label for="email{{ key }}">${message(code:'todo.is.ui.import.changes.email')}</label>
+                    <label for="email{{ key }}">${message(code: 'todo.is.ui.import.changes.email')}</label>
                     <input required
                            not-match="_changes.emails[key]"
                            type="text"
@@ -207,7 +207,7 @@
                 </div>
             </div>
             <div class="text-right">
-                <input type="submit" ng-disabled="importProjectForm.$invalid" class="btn btn-primary" value="${message(code:'todo.is.ui.import.changes.submit')}">
+                <input type="submit" ng-disabled="importProjectForm.$invalid" class="btn btn-primary" value="${message(code: 'todo.is.ui.import.changes.submit')}">
             </div>
         </form>
         <div ng-show="project.name">

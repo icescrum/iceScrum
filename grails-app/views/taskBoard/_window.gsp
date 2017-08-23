@@ -29,18 +29,20 @@
                 <div ng-controller="taskCtrl">
                     <div class="sprints-dropdown pull-left" uib-dropdown on-toggle="scrollToActiveSprint(open)">
                         <div class="active">
-                            <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a> <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down" uib-dropdown-toggle></i>
+                            <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
+                            <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down" uib-dropdown-toggle></i>
                             <div class="sub-title text-muted" uib-dropdown-toggle>
-                                 <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i> <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
-                                 <span class="sprint-numbers">
+                                <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i>
+                                <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                                <span class="sprint-numbers">
                                     <span ng-if="sprint.state > sprintStatesByName.TODO"
                                           uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
                                     <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
                                     <i class="small-icon fa fa-dollar"></i>
                                 </span>
-                                 <span class="sprint-remaining" uib-tooltip="${message(code: 'is.task.estimation')}">
-                                        {{ sprintRemainingTime(sprint) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
-                                 </span>
+                                <span class="sprint-remaining" uib-tooltip="${message(code: 'is.task.estimation')}">
+                                    {{ sprintRemainingTime(sprint) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
+                                </span>
                             </div>
                         </div>
                         <ul uib-dropdown-menu role="menu" class="sprints-menu">
@@ -48,8 +50,8 @@
                                 ng-switch="sprintEntry.type"
                                 ng-class="{'divider': 'divider', 'release': 'dropdown-header'}[sprintEntry.type]">
                                 <a ng-switch-when="sprint"
-                                    ng-class="{'active': sprintEntry.item.id == sprint.id}"
-                                    href="{{ openSprintUrl(sprintEntry.item, true) }}">
+                                   ng-class="{'active': sprintEntry.item.id == sprint.id}"
+                                   href="{{ openSprintUrl(sprintEntry.item, true) }}">
                                     <i class="fa fa-tasks"></i> {{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}
                                     <div class="sub-title text-muted">
                                         {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-angle-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
@@ -70,7 +72,7 @@
                             </button>
                             <button type="button"
                                     class="btn btn-default hidden-xs"
-                                    uib-tooltip="${message(code:'is.ui.window.fullscreen')}"
+                                    uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"
                                     ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </div>
@@ -84,7 +86,7 @@
                             </button>
                             <button class="btn btn-default"
                                     uib-dropdown-toggle
-                                    uib-tooltip="${message(code:'todo.is.ui.filters')}"
+                                    uib-tooltip="${message(code: 'todo.is.ui.filters')}"
                                     type="button">
                                 <span>{{ currentSprintFilter.name }}</span>
                                 <i class="fa fa-caret-down"></i>
@@ -154,10 +156,19 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <button type="button" ng-if="!tasksShown(taskState, taskTypesByName.URGENT)" class="btn btn-default"  ng-click="showTasks(taskTypesByName.URGENT, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}</button>
+                            <button type="button"
+                                    ng-if="!tasksShown(taskState, taskTypesByName.URGENT)"
+                                    class="btn btn-default"
+                                    ng-click="showTasks(taskTypesByName.URGENT, true)">
+                                {{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}
+                            </button>
                             <div ng-if="tasksHidden(taskState, taskTypesByName.URGENT)" class="postit-container">
                                 <div class="hide-tasks postit">
-                                    <button type="button" class="btn btn-default" ng-click="showTasks(taskTypesByName.URGENT, false)">{{ message('todo.is.ui.task.hideDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}</button>
+                                    <button type="button"
+                                            class="btn btn-default"
+                                            ng-click="showTasks(taskTypesByName.URGENT, false)">
+                                        {{ message('todo.is.ui.task.hideDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}
+                                    </button>
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
@@ -196,10 +207,19 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <button type="button" ng-if="!tasksShown(taskState, taskTypesByName.RECURRENT)" class="btn btn-default" ng-click="showTasks(taskTypesByName.RECURRENT, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}</button>
+                            <button type="button"
+                                    ng-if="!tasksShown(taskState, taskTypesByName.RECURRENT)"
+                                    class="btn btn-default"
+                                    ng-click="showTasks(taskTypesByName.RECURRENT, true)">
+                                {{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}
+                            </button>
                             <div ng-if="tasksHidden(taskState, taskTypesByName.RECURRENT)" class="postit-container">
                                 <div class="hide-tasks postit">
-                                    <button type="button" class="btn btn-default" ng-click="showTasks(taskTypesByName.RECURRENT, false)">{{ message('todo.is.ui.task.hideDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}</button>
+                                    <button type="button"
+                                            class="btn btn-default"
+                                            ng-click="showTasks(taskTypesByName.RECURRENT, false)">
+                                        {{ message('todo.is.ui.task.hideDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}
+                                    </button>
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="postit-container">
@@ -253,10 +273,18 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <button type="button" ng-if="!tasksShown(taskState, story)" class="btn btn-default" ng-click="showTasks(story, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}</button>
+                            <button type="button"
+                                    ng-if="!tasksShown(taskState, story)"
+                                    class="btn btn-default"
+                                    ng-click="showTasks(story, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
+                            </button>
                             <div ng-if="tasksHidden(taskState, story)" class="postit-container">
                                 <div class="hide-tasks postit">
-                                    <button type="button" class="btn btn-default" ng-click="showTasks(story, false)">{{ message('todo.is.ui.task.hideDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}</button>
+                                    <button type="button"
+                                            class="btn btn-default"
+                                            ng-click="showTasks(story, false)">
+                                        {{ message('todo.is.ui.task.hideDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
+                                    </button>
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="postit-container">
@@ -293,10 +321,19 @@
                                  class="postit-container">
                                 <div ng-include="'task.html'"></div>
                             </div>
-                            <button type="button" class="btn btn-default" ng-if="!tasksShown(taskState, story)" ng-click="showTasks(story, true)"><g:message code="todo.is.ui.task.showDoneTasks"/> ({{ tasksByStoryByState[story.id][taskState].length }})</button>
+                            <button type="button"
+                                    class="btn btn-default"
+                                    ng-if="!tasksShown(taskState, story)"
+                                    ng-click="showTasks(story, true)">
+                                <g:message code="todo.is.ui.task.showDoneTasks"/> ({{ tasksByStoryByState[story.id][taskState].length }})
+                            </button>
                             <div ng-if="tasksHidden(taskState, story)" class="postit-container">
                                 <div class="hide-tasks postit">
-                                    <button type="button" class="btn btn-default" ng-click="showTasks(story, false)">{{ message('todo.is.ui.task.hideDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}</button>
+                                    <button type="button"
+                                            class="btn btn-default"
+                                            ng-click="showTasks(story, false)">
+                                        {{ message('todo.is.ui.task.hideDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
+                                    </button>
                                 </div>
                             </div>
                         </td>

@@ -43,7 +43,7 @@
                             <span class="dateCreated text-muted">
                                 <time timeago datetime="{{ comment.dateCreated }}">
                                     {{ comment.dateCreated | dateTime }}
-                                </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code:'todo.is.ui.comment.edited')})</span>&nbsp;
+                                </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
                             </span>
                             <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
@@ -52,12 +52,12 @@
                                 <ul uib-dropdown-menu class="pull-right">
                                     <li>
                                         <a href ng-click="editForm(true); showCommentBodyTextarea = true;">
-                                            ${message(code:'is.ui.backlogelement.comment.edit')}
+                                            ${message(code: 'is.ui.backlogelement.comment.edit')}
                                         </a>
                                     </li>
                                     <li>
                                         <a href ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
-                                            ${message(code:'default.button.delete.label')}
+                                            ${message(code: 'default.button.delete.label')}
                                         </a>
                                     </li>
                                 </ul>
@@ -87,7 +87,7 @@
         </tr>
         <tr ng-show="selected.comments !== undefined && selected.comments.length == 0">
             <td class="empty-content">
-                <small>${message(code:'todo.is.ui.comment.empty')}</small>
+                <small>${message(code: 'todo.is.ui.comment.empty')}</small>
             </td>
         </tr>
     </table>

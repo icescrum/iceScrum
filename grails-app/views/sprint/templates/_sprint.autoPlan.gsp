@@ -23,14 +23,14 @@
 
 <script type="text/ng-template" id="sprint.autoPlan.html">
 <is:modal form="submit(modelHolder.capacity)"
-          submitButton="${message(code:'is.dialog.promptCapacityAutoPlan.button')}"
-          closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'is.dialog.promptCapacityAutoPlan.title')}">
+          submitButton="${message(code: 'is.dialog.promptCapacityAutoPlan.button')}"
+          closeButton="${message(code: 'is.button.cancel')}"
+          title="${message(code: 'is.dialog.promptCapacityAutoPlan.title')}">
     <p class="help-block">
         ${message(code: 'is.dialog.promptCapacityAutoPlan.description')}
     </p>
     <div class="form-group">
-        <label for="capacity">${message(code:'is.dialog.promptCapacityAutoPlan.capacity')}</label>
+        <label for="capacity">${message(code: 'is.dialog.promptCapacityAutoPlan.capacity')}</label>
         <input autofocus
                name="capacity"
                type="number"

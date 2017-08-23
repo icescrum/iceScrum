@@ -28,7 +28,15 @@
         <tr ng-repeat="attachment in attachmentable.attachments">
             <td>
                 <div class="col-sm-8 col-xs-8">
-                    <div class="filename" title="{{ attachment.filename }}"><i class="fa fa-{{ attachment.ext | fileicon }}"></i> <a target="{{ attachment.provider ? '_blank' : '' }}" ng-show="!isPreviewable(attachment)" href="{{ getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a><a ng-show="isPreviewable(attachment)" href ng-click="showPreview(attachment, attachmentable, clazz)">{{ attachment.filename }}</a></div>
+                    <div class="filename" title="{{ attachment.filename }}">
+                        <i class="fa fa-{{ attachment.ext | fileicon }}"></i>
+                        <a target="{{ attachment.provider ? '_blank' : '' }}"
+                           ng-show="!isPreviewable(attachment)"
+                           href="{{ getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a>
+                        <a ng-show="isPreviewable(attachment)"
+                           href
+                           ng-click="showPreview(attachment, attachmentable, clazz)">{{ attachment.filename }}</a>
+                    </div>
                     <div><small ng-if="attachment.length > 0">{{ attachment.length | filesize }}</small> <small>{{ attachment.provider ? '('+attachment.provider+')' : '' }}</small></div>
                 </div>
                 <div class="col-sm-4 col-xs-4 text-right">
@@ -85,7 +93,7 @@
         </tr>
         <tr ng-show="attachmentable.attachments !== undefined && attachmentable.attachments.length == 0">
             <td class="empty-content">
-                <small>${message(code:'todo.is.ui.attachment.empty')}</small>
+                <small>${message(code: 'todo.is.ui.attachment.empty')}</small>
             </td>
         </tr>
     </tbody>

@@ -52,7 +52,7 @@
         </tr>
         <tr ng-show="selected.tasks !== undefined && !selected.tasks.length">
             <td class="empty-content">
-                <small>${message(code:'todo.is.ui.task.empty')}</small>
+                <small>${message(code: 'todo.is.ui.task.empty')}</small>
             </td>
         </tr>
     </table>

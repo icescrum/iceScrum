@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="form.team.html">
     <div class="row">
         <div class="col-sm-12">
-            <h4>${message(code:"is.team")}</h4>
+            <h4>${message(code: "is.team")}</h4>
             <p class="help-block">{{ message(teamCreatable() ? 'is.dialog.wizard.section.team.description' : 'todo.is.ui.projet.team.description') }}</p>
         </div>
         <div class="col-sm-4">
@@ -43,9 +43,14 @@
                        ng-readonly="team.selected"
                        ng-model="team.name"
                        ng-required="isCurrentStep(2)">
-                <span class="input-group-addon" ng-if="teamRemovable()"><i class="fa" ng-click="unSelectTeam()" ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }"></i></span>
+                <span class="input-group-addon" ng-if="teamRemovable()">
+                    <i class="fa"
+                       ng-click="unSelectTeam()"
+                       ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }">
+                    </i>
+                </span>
             </p>
-            <div ng-if="warning.on" class="help-block bg-danger">${ message(code: 'todo.is.ui.team.warning.project.members') }</div>
+            <div ng-if="warning.on" class="help-block bg-danger">${message(code: 'todo.is.ui.team.warning.project.members')}</div>
             <button ng-if="teamManageable(team)"
                     type="button"
                     class="btn btn-primary"
@@ -55,7 +60,7 @@
         </div>
         <div class="col-sm-8" ng-show="team.selected">
             <div ng-show="teamMembersEditable(team)">
-                <label for="member.search">${message(code:'todo.is.ui.select.member')}</label>
+                <label for="member.search">${message(code: 'todo.is.ui.select.member')}</label>
                 <p class="input-group">
                     <input autocomplete="off"
                            type="text"
@@ -81,7 +86,7 @@
                 <tr>
                     <th></th>
                     <th></th>
-                    <th class="text-right">${message(code:'is.role.scrumMaster')}</th>
+                    <th class="text-right">${message(code: 'is.role.scrumMaster')}</th>
                 </tr>
                 </thead>
                 <tbody ng-repeat="member in team.members"

@@ -2,7 +2,7 @@
     <div class="table-responsive">
         <table class="table">
             <thead>
-                <th>${message(code:'todo.is.ui.story.multiple.table.title')}</th>
+                <th>${message(code: 'todo.is.ui.story.multiple.table.title')}</th>
             </thead>
             <tbody>
                 <tr><td>${message(code: 'is.story.effort')}</td><td>{{ stories | sumBy:'effort' }}</td></tr>

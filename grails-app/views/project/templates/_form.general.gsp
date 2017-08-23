@@ -22,12 +22,12 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.general.project.html">
-    <h4>${message(code:"is.dialog.wizard.section.project")}</h4>
-    <p class="help-block">${message(code:'is.dialog.wizard.section.project.description')}</p>
+    <h4>${message(code: "is.dialog.wizard.section.project")}</h4>
+    <p class="help-block">${message(code: 'is.dialog.wizard.section.project.description')}</p>
     <entry:point id="project-form-general-before"/>
     <div class="row">
         <div class="col-sm-7 col-xs-7 form-group">
-            <label for="name">${message(code:'is.project.name')}</label>
+            <label for="name">${message(code: 'is.project.name')}</label>
             <div class="input-group">
                 <input autofocus
                        name="name"
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="col-sm-5 col-xs-5 form-group">
-            <label for="pkey">${message(code:'is.project.pkey')}</label>
+            <label for="pkey">${message(code: 'is.project.pkey')}</label>
             <input name="pkey"
                    type="text"
                    capitalize
@@ -67,7 +67,7 @@
     </div>
     <div class="row">
         <div class="col-sm-12 form-group">
-            <label for="description">${message(code:'is.project.description')}</label>
+            <label for="description">${message(code: 'is.project.description')}</label>
             <textarea is-markitup
                       name="project.description"
                       class="form-control"

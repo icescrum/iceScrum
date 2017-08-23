@@ -34,7 +34,7 @@
     </div>
     <div class="details-no-tab">
         <div class="panel-body">
-            <div class="help-block">${message(code:'is.ui.task.help')}</div>
+            <div class="help-block">${message(code: 'is.ui.task.help')}</div>
             <div class="postits standalone">
                 <div class="postit-container solo">
                     <div ng-style="'#f9f157' | createGradientBackground"
@@ -61,7 +61,7 @@
                   novalidate>
                 <div class="clearfix no-padding">
                     <div class="form-half">
-                        <label for="name">${message(code:'is.task.name')}</label>
+                        <label for="name">${message(code: 'is.task.name')}</label>
                         <input required
                                name="name"
                                autofocus
@@ -72,7 +72,7 @@
                                placeholder="${message(code: 'is.ui.task.noname')}"/>
                     </div>
                     <div class="form-half">
-                        <label for="category">${message(code:'todo.is.ui.task.category')}</label>
+                        <label for="category">${message(code: 'todo.is.ui.task.category')}</label>
                         <ui-select class="form-control"
                                    required
                                    name="category"
@@ -89,17 +89,17 @@
                 <div ng-if="authorizedTask('create')" class="btn-toolbar pull-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.taskForm.$invalid"
-                            uib-tooltip="${message(code:'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                            uib-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                             hotkey="{'shift+return': hotkeyClick }"
                             hotkey-allow-in="INPUT"
                             type='button'
                             ng-click="save(task, true)">
-                        ${message(code:'todo.is.ui.create.and.continue')}
+                        ${message(code: 'todo.is.ui.create.and.continue')}
                     </button>
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.taskForm.$invalid"
                             type="submit">
-                        ${message(code:'default.button.create.label')}
+                        ${message(code: 'default.button.create.label')}
                     </button>
                 </div>
             </form>

@@ -147,7 +147,7 @@
                 <div class="btn-toolbar">
                     <button class="btn btn-primary pull-right"
                             type="submit">
-                        ${message(code:'default.button.update.label')}
+                        ${message(code: 'default.button.update.label')}
                     </button>
                     <a class="btn btn-default pull-right"
                        href="#/{{ ::viewName }}">

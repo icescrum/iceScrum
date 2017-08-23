@@ -25,7 +25,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                ${ message(code: 'todo.is.ui.sprints') } ({{ sprints.length }})
+                ${message(code: 'todo.is.ui.sprints')} ({{ sprints.length }})
             </div>
             <div class="right-title">
                 <a class="btn btn-default"

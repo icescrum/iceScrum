@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:modal title="${message(code:'is.dialog.exportProject.title')}">
+<is:modal title="${message(code: 'is.dialog.exportProject.title')}">
     <div class="help-block">
         <g:message code="is.dialog.exportProject.description"/>
     </div>

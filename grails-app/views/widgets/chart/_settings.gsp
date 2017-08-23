@@ -36,7 +36,7 @@
     </div>
     <div ng-if="holder.project"
          ng-controller="projectChartCtrl"
-         class="form-group" >
+         class="form-group">
         <label>${message(code: 'is.ui.widget.chart.chart')}</label>
         <ui-select class="form-control"
                    search-enabled="true"

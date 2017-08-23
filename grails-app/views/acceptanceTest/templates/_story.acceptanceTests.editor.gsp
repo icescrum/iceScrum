@@ -77,12 +77,12 @@
         <button class="btn btn-primary pull-right"
                 ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid"
                 type="submit">
-            ${message(code:'default.button.create.label')}
+            ${message(code: 'default.button.create.label')}
         </button>
         <button class="btn btn-default pull-right"
                 ng-click="formHolder.formExpanded = false;"
                 type="button">
-            ${message(code:'is.button.cancel')}
+            ${message(code: 'is.button.cancel')}
         </button>
     </div>
 </form>

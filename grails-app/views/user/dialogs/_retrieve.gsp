@@ -23,21 +23,21 @@
 <is:modal name="formHolder.retrieveForm"
           form="retrieve()"
           validate="true"
-          submitButton="${message(code:'is.dialog.retrieve')}"
-          closeButton="${message(code:'is.button.cancel')}"
-          title="${message(code:'is.dialog.retrieve')}"
+          submitButton="${message(code: 'is.dialog.retrieve')}"
+          closeButton="${message(code: 'is.button.cancel')}"
+          title="${message(code: 'is.dialog.retrieve')}"
           size="sm">
-        <p>
-            <g:message code="is.dialog.retrieve.description"/>
-        </p>
-        <div class="form-group">
-            <label for="user.username">${message(code:'is.dialog.retrieve.input')}</label>
-            <input  required
-                    autofocus
-                    type="text"
-                    name="username"
-                    id="user.username"
-                    class="form-control"
-                    ng-model="user.username">
-        </div>
+    <p>
+        <g:message code="is.dialog.retrieve.description"/>
+    </p>
+    <div class="form-group">
+        <label for="user.username">${message(code: 'is.dialog.retrieve.input')}</label>
+        <input required
+               autofocus
+               type="text"
+               name="username"
+               id="user.username"
+               class="form-control"
+               ng-model="user.username">
+    </div>
 </is:modal>
