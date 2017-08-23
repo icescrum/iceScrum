@@ -45,7 +45,7 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
         });
     };
     this.authorizedApp = function(action, appDefinitionOrId, project) {
-        switch(action) {
+        switch (action) {
             case 'show':
                 return Session.authenticated();
             case 'enableForProject':

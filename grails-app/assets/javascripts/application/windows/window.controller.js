@@ -21,17 +21,15 @@
  *
  */
 controllers.controller("windowCtrl", ['$scope', 'WindowService', 'window', '$q', function($scope, WindowService, window, $q) {
-    $scope.getWindowSetting = function(name, defaultValue){
+    $scope.getWindowSetting = function(name, defaultValue) {
         var value = window.settings[name];
         return angular.isUndefined(value) ? defaultValue : value
     };
-
-    $scope.saveOrUpdateWindowSetting = function(name, value){
+    $scope.saveOrUpdateWindowSetting = function(name, value) {
         window.settings[name] = value;
         return WindowService.update(window).$promise;
     };
-
-    $scope.deleteWindowSetting = function(name){
+    $scope.deleteWindowSetting = function(name) {
         delete window.settings[name];
         return WindowService.update(window).$promise;
     };

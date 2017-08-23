@@ -23,12 +23,11 @@
  */
 
 controllers.controller("widgetCtrl", ['$scope', 'WidgetService', '$q', function($scope, WidgetService, $q) {
-    //used to be overrided by plugin if necessary
-    $scope.display = function(widget){};
-
+    // Used to be overrided by plugin if necessary
+    $scope.display = function(widget) {};
     $scope.toggleSettings = function(widget) {
         if ($scope.showSettings) {
-            return $scope.update(widget).then(function(widget){
+            return $scope.update(widget).then(function(widget) {
                 $scope.showSettings = !$scope.showSettings;
                 $scope.display(widget);
             });

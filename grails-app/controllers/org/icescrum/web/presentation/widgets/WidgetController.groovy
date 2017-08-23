@@ -49,7 +49,7 @@ class WidgetController implements ControllerErrorHandler {
             widgets = uiDefinitionService.widgetDefinitions.findResults {
                 ApplicationSupport.isAllowed(it.value, [], true) ? it : null
             }.collect {
-                ['widgetDefinitionId': it.key, 'height':it.value.height, 'width':it.value.width]
+                ['widgetDefinitionId': it.key, 'height': it.value.height, 'width': it.value.width]
             }
         }
         render(status: 200, contentType: 'application/json', text: widgets as JSON)
@@ -138,15 +138,15 @@ class WidgetController implements ControllerErrorHandler {
     @Secured('isAuthenticated()')
     def definitions() {
         User user = springSecurityService.currentUser
-        def userWidgets = user.preferences.widgets.collect{ it.widgetDefinitionId }
+        def userWidgets = user.preferences.widgets.collect { it.widgetDefinitionId }
         def widgetDefinitions = uiDefinitionService.widgetDefinitions
                 .findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
                 .collect {
-                    [id: it.value.id,
-                     icon: it.value.icon,
-                     name: message(code:it.value.name),
-                     description: message(code:it.value.description),
-                     available:!(!it.value.allowDuplicate && userWidgets.contains(it.value.id))]
+                    [id         : it.value.id,
+                     icon       : it.value.icon,
+                     name       : message(code: it.value.name),
+                     description: message(code: it.value.description),
+                     available  : !(!it.value.allowDuplicate && userWidgets.contains(it.value.id))]
                 }
         render(status: 200, contentType: 'application/json', text: widgetDefinitions as JSON)
     }

@@ -660,10 +660,9 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
             if (!$scope.loginCallback) {
                 var lastOpenedUrl = data.url;
                 var currentLocation = window.location.href.replace($rootScope.serverUrl, "");
-                if($state.params.redirectTo){
+                if ($state.params.redirectTo) {
                     document.location = $state.params.redirectTo;
-                }
-                else if (['/', '/#', '/#/', '#/'].indexOf(currentLocation) && lastOpenedUrl) {
+                } else if (['/', '/#', '/#/', '#/'].indexOf(currentLocation) && lastOpenedUrl) {
                     document.location = lastOpenedUrl;
                 } else {
                     document.location.reload(true);

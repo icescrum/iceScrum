@@ -36,7 +36,7 @@ services.service("WindowService", ['CacheService', '$q', 'Window', function(Cach
     this.update = function(window) {
         window.class = 'window';
         window.settingsData = JSON.stringify(window.settings);
-        return Window.update({windowDefinitionId: window.windowDefinitionId }, window, function(window) {
+        return Window.update({windowDefinitionId: window.windowDefinitionId}, window, function(window) {
             window.id = self.computeId(window);
             window.settings = window.settingsData ? JSON.parse(window.settingsData) : {};
             delete window.settingsData;
@@ -44,23 +44,22 @@ services.service("WindowService", ['CacheService', '$q', 'Window', function(Cach
         }).$promise;
     };
     this.refresh = function(windowDefinitionId) {
-        return Window.get({windowDefinitionId: windowDefinitionId}, function(window){
+        return Window.get({windowDefinitionId: windowDefinitionId}, function(window) {
             window.id = self.computeId(window);
             window.settings = window.settingsData ? JSON.parse(window.settingsData) : {};
             delete window.settingsData;
             CacheService.addOrUpdate('window', window);
         }).$promise;
     };
-    this.computeId = function(object, context, contextId){
-        if(object.windowDefinitionId){
-            return object.windowDefinitionId+'-'+object.context+'-'+object.contextId;
+    this.computeId = function(object, context, contextId) {
+        if (object.windowDefinitionId) {
+            return object.windowDefinitionId + '-' + object.context + '-' + object.contextId;
         } else {
             var id = object;
-            if(context && contextId){
-                id = id+'-'+context+'-'+contextId;
+            if (context && contextId) {
+                id = id + '-' + context + '-' + contextId;
             }
             return id;
         }
-
     }
 }]);

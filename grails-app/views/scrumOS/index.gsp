@@ -22,7 +22,7 @@
 <head>
     <meta name='layout' content='main'/>
     <g:if test="${params.project}">
-        <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[project:pageScope.variables.context.object.pkey,lang:lang]"/>
+        <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[project: pageScope.variables.context.object.pkey, lang: lang]"/>
         <title>${project?.name ?: ''}</title>
     </g:if>
 </head>

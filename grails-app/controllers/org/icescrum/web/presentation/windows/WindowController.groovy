@@ -79,14 +79,14 @@ class WindowController implements ControllerErrorHandler {
     }
 
     @Secured(['permitAll()'])
-    def settings(String windowDefinitionId){
+    def settings(String windowDefinitionId) {
         User user = springSecurityService.currentUser
         def context = ApplicationSupport.getCurrentContext(params)
         //defaultValues
-        def defaultWindow = context ? [windowDefinitionId:windowDefinitionId, context:context.name, contextId:context.object.id] : [windowDefinitionId:windowDefinitionId]
+        def defaultWindow = context ? [windowDefinitionId: windowDefinitionId, context: context.name, contextId: context.object.id] : [windowDefinitionId: windowDefinitionId]
         def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
-        if(!user){
-            render(status:200, contentType: 'application/json', text: defaultWindow as JSON)
+        if (!user) {
+            render(status: 200, contentType: 'application/json', text: defaultWindow as JSON)
             return
         }
         def window = windowService.retrieve(windowDefinition, user, context)
@@ -94,23 +94,21 @@ class WindowController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def updateSettings(String windowDefinitionId){
+    def updateSettings(String windowDefinitionId) {
         def windowParams = params.window
         User user = springSecurityService.currentUser
         def context = ApplicationSupport.getCurrentContext(params)
         def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
-
-        if(!user){
-            render(status:200, contentType:'text/javascript', text: [windowDefinitionId:windowDefinitionId, context:context.name, contextId:context.object.id] as JSON)
+        if (!user) {
+            render(status: 200, contentType: 'text/javascript', text: [windowDefinitionId: windowDefinitionId, context: context.name, contextId: context.object.id] as JSON)
             return
         }
         Map props = [:]
         if (windowParams.settingsData) {
             props.settings = JSON.parse(windowParams.settingsData)
         }
-
         def window = windowService.retrieve(windowDefinition, user, context)
-        if(!window){
+        if (!window) {
             window = windowService.save(windowDefinition, user, context)
         }
         window = windowService.update(window, props)

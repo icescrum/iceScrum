@@ -52,7 +52,7 @@ class AppController implements ControllerErrorHandler {
                 return asset.assetPath([src: appDefinition.getAssetPath(screenshot)])
             }
             def assetLogoAppPath = appDefinition.getAssetPath(appDefinition.logo)
-            marshalledAppDefinition.logo = asset.assetPathExists([src:assetLogoAppPath]) ? asset.assetPath([src:assetLogoAppPath]) : asset.assetPath([src: 'logo-bg.png'])
+            marshalledAppDefinition.logo = asset.assetPathExists([src: assetLogoAppPath]) ? asset.assetPath([src: assetLogoAppPath]) : asset.assetPath([src: 'logo-bg.png'])
             return marshalledAppDefinition
         }
         render(status: 200, contentType: 'application/json', text: marshalledDefinitions as JSON)
@@ -66,7 +66,7 @@ class AppController implements ControllerErrorHandler {
                 marshalledAppDefinition[k] = message(code: 'is.ui.apps.' + appDefinition.id + '.' + k)
             }
             def assetLogoAppPath = appDefinition.getAssetPath(appDefinition.logo)
-            marshalledAppDefinition.logo = asset.assetPathExists([src:assetLogoAppPath]) ? asset.assetPath([src:assetLogoAppPath]) : asset.assetPath([src: 'logo-bg.png'])
+            marshalledAppDefinition.logo = asset.assetPathExists([src: assetLogoAppPath]) ? asset.assetPath([src: assetLogoAppPath]) : asset.assetPath([src: 'logo-bg.png'])
             return marshalledAppDefinition
         }
         render(status: 200, contentType: 'application/json', text: marshalledDefinitions as JSON)

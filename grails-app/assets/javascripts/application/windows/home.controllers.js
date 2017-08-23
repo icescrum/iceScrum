@@ -34,16 +34,16 @@ controllers.controller('homeCtrl', ['$scope', 'Session', 'CacheService', 'Widget
     $scope.widgetSortableOptions = {
         itemMoved: position,
         orderChanged: position,
-        placeholderDisableComputeBounds:true,
-        placeholder:function($scopeItem){
+        placeholderDisableComputeBounds: true,
+        placeholder: function($scopeItem) {
             var widget = $scopeItem.element.find('.panel')[0];
             var width = widget.getBoundingClientRect().width;
             var height = widget.getBoundingClientRect().height;
-            return "<div style='height:"+height+"px;width:"+width+"px;'/>";
+            return "<div style='height:" + height + "px;width:" + width + "px;'/>";
         },
         sortableId: 'widgets',
-        containment:'#view-home > .row',
-        containerPositioning:'relative'
+        containment: '#view-home > .row',
+        containerPositioning: 'relative'
     };
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
     $scope.widgets = CacheService.getCache('widget');

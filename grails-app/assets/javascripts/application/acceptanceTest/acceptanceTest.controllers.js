@@ -78,7 +78,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     };
     $scope.blurAcceptanceTestDescription = function() {
         $scope.showAcceptanceTestDescriptionTextarea = false;
-        if ($scope.editableAcceptanceTest.description.trim() == $scope.acceptanceTestTemplate.trim())  {
+        if ($scope.editableAcceptanceTest.description.trim() == $scope.acceptanceTestTemplate.trim()) {
             $scope.editableAcceptanceTest.description = '';
         }
     };

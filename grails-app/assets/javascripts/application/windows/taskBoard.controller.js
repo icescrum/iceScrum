@@ -172,12 +172,12 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     $scope.sprintRemainingTime = function(sprint) {
         return _.sumBy(sprint.tasks, 'estimation');
     };
-    $scope.scrollToActiveSprint = function(open){
-        if(open){
+    $scope.scrollToActiveSprint = function(open) {
+        if (open) {
             var dropdown = angular.element('.sprints-dropdown');
             var ele = dropdown.find("li>a.active");
             var list = dropdown.find('.sprints-menu');
-            var posi = list.scrollTop() + ele.offset().top-ele.innerHeight();
+            var posi = list.scrollTop() + ele.offset().top - ele.innerHeight();
             list.animate({
                 scrollTop: posi - 60
             }, 200);
@@ -240,7 +240,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
     //if saved filter is not available anymore
-    $scope.currentSprintFilter = $scope.currentSprintFilter ? $scope.currentSprintFilter  : 'allTasks';
+    $scope.currentSprintFilter = $scope.currentSprintFilter ? $scope.currentSprintFilter : 'allTasks';
 
     $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;

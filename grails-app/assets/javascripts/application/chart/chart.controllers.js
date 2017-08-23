@@ -59,7 +59,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             flowCumulative: {
                 chart: {
                     type: 'stackedAreaChart',
-                    margin:{right:45}
+                    margin: {right: 45}
                 }
             },
             burndown: {
@@ -70,7 +70,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             },
             burnup: {
                 chart: {
-                    margin:{right:45}
+                    margin: {right: 45}
                 }
             },
             velocity: {
@@ -146,18 +146,18 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     showLabels: true,
                     duration: 500,
                     showLegend: false,
-                    margin : {
+                    margin: {
                         top: 0,
                         right: 0,
                         bottom: 0,
                         left: 0
                     }
                 },
-                title:{
-                    enable:false
+                title: {
+                    enable: false
                 },
-                caption:{
-                    enable:true
+                caption: {
+                    enable: true
                 }
             }
         }
@@ -165,9 +165,9 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
     $scope.openChart = function(itemType, chartName, item, options) {
         $scope.cleanData();
         $scope.chartParams = {
-            item:item,
-            itemType:itemType,
-            chartName:chartName
+            item: item,
+            itemType: itemType,
+            chartName: chartName
         };
         $scope.options = _.merge({}, $scope.defaultOptions);
         $scope.options = _.merge($scope.options, $scope.chartOptions[itemType]['default']);
@@ -176,7 +176,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
         return $scope.chartLoaders[itemType](chartName, item).then(function(chart) {
             $scope.data = chart.data;
             $scope.options = _.merge($scope.options, chart.options);
-            $scope.options = _.merge($scope.options, options)   ;
+            $scope.options = _.merge($scope.options, options);
             $scope.options.title.enable = !_.isEmpty($scope.options.title) && $scope.options.title.enable !== false;
             if (chart.labelsX) {
                 $scope.labelsX = chart.labelsX;
@@ -184,7 +184,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             if (chart.labelsY) {
                 $scope.labelsY = chart.labelsY;
             }
-            if(angular.isFunction($scope.options.chart.height)){
+            if (angular.isFunction($scope.options.chart.height)) {
                 $scope.options.chart.height = $scope.options.chart.height($element);
             }
             return chart;
@@ -192,7 +192,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
     };
     $scope.processSaveChart = function() {
         var title = $element.find('.title.h4');
-        saveChartAsPng($element.find('svg')[0], {}, title[0], function (imageBase64) {
+        saveChartAsPng($element.find('svg')[0], {}, title[0], function(imageBase64) {
             // Server side "attachment" content type is needed because the a.download HTML5 feature is not supported in crappy browsers (safari & co).
             jQuery.download($scope.serverUrl + '/saveImage', {'image': imageBase64, 'title': title.text()});
         });
@@ -226,14 +226,17 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             templateUrl: 'chart.modal.html',
             size: 'chart invisible',
             controller: ["$scope", "$controller", "$window", "$timeout", function($scope, $controller, $window, $timeout) {
-                $timeout(function(){
+                $timeout(function() {
                     angular.element('body').addClass('process-chart');
                     $element = angular.element('.modal-chart');
                     $controller('chartCtrl', {$scope: $scope, $element: $element});
                     $scope.defaultOptions.chart.width = 1600;
                     $scope.defaultOptions.chart.height = 800;
                     $scope.openChart(chartParams.itemType, chartParams.chartName, chartParams.item);
-                    $timeout(function() { $scope.processSaveChart(); $scope.$close(true); }, 500);
+                    $timeout(function() {
+                        $scope.processSaveChart();
+                        $scope.$close(true);
+                    }, 500);
                 }, 500);
             }]
         });
@@ -248,31 +251,30 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
     $scope.cleanData();
 }]);
 
-controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormService', 'ProjectService' , '$controller', '$element', function($scope, WidgetService, FormService, ProjectService, $controller, $element) {
+controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormService', 'ProjectService', '$controller', '$element', function($scope, WidgetService, FormService, ProjectService, $controller, $element) {
     $controller('widgetCtrl', {$scope: $scope});
     $controller('chartCtrl', {$scope: $scope, $element: $element});
-
-    $scope.getChartWidgetOptions = function(widget){
+    $scope.getChartWidgetOptions = function(widget) {
         var chartWidgetOptions = {
-            chart:{
-                height:function($element){
+            chart: {
+                height: function($element) {
                     return $element ? $element.parents('.panel-body')[0].getBoundingClientRect().height : 0;
                 }
             },
-            title:{
-                enable:false
+            title: {
+                enable: false
             }
         };
-        if( widget.width === 1 || widget.height === 1){
+        if (widget.width === 1 || widget.height === 1) {
             chartWidgetOptions = _.merge(chartWidgetOptions, {
-                chart:{
+                chart: {
                     showXAxis: false,
                     showYAxis: false,
                     showLegend: false,
-                    margin:{top:30, right:0, bottom:15, left:0}
+                    margin: {top: 30, right: 0, bottom: 15, left: 0}
                 },
-                title:{
-                    enable:false
+                title: {
+                    enable: false
                 }
             });
         }

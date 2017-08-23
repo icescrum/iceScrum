@@ -22,17 +22,16 @@
  *
  */
 
-controllers.controller("backlogsListMenuCtrl", ['$scope', 'WindowService', '$state', function($scope, WindowService, $state){
-    $scope.initialize = function( backlogsList ) {
+controllers.controller("backlogsListMenuCtrl", ['$scope', 'WindowService', '$state', function($scope, WindowService, $state) {
+    $scope.initialize = function(backlogsList) {
         $scope.backlogsList = backlogsList;
         var savedBacklogsOrder = $scope.getWindowSetting('backlogsListOrder');
-        if(savedBacklogsOrder){
-            backlogsList.sort(function(a, b){
+        if (savedBacklogsOrder) {
+            backlogsList.sort(function(a, b) {
                 return savedBacklogsOrder.indexOf(a.code) - savedBacklogsOrder.indexOf(b.code)
             });
         }
     };
-
     $scope.isShown = function(backlog) {
         return _.includes([$state.params.pinnedBacklogCode, $state.params.backlogCode], backlog.code);
     };
@@ -71,8 +70,8 @@ controllers.controller("backlogsListMenuCtrl", ['$scope', 'WindowService', '$sta
         accept: function(sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         },
-        orderChanged:function(event){
-            var backlogsListOrder = _.map(event.dest.sortableScope.backlogsList, function(backlog){return backlog.code});
+        orderChanged: function(event) {
+            var backlogsListOrder = _.map(event.dest.sortableScope.backlogsList, function(backlog) {return backlog.code});
             event.dest.sortableScope.saveOrUpdateWindowSetting('backlogsListOrder', backlogsListOrder);
         }
     };
@@ -81,14 +80,14 @@ controllers.controller("backlogsListMenuCtrl", ['$scope', 'WindowService', '$sta
 extensibleController('backlogDetailsCtrl', ['$scope', 'StoryService', 'BacklogService', 'backlog', function($scope, StoryService, BacklogService, backlog) {
     // Init
     $scope.backlog = backlog;
-    StoryService.listByBacklog(backlog).then(function(stories){
+    StoryService.listByBacklog(backlog).then(function(stories) {
         $scope.stories = stories;
     });
     // Ensures that the stories list of displayed backlogs are up to date
     $scope.$on('is:backlogsUpdated', function(event, backlogCodes) {
         _.each(backlogCodes, function(backlogCode) {
             if (backlog.code === backlogCode) {
-                StoryService.listByBacklog(backlog).then(function(stories){
+                StoryService.listByBacklog(backlog).then(function(stories) {
                     $scope.stories = stories;
                 });
             }
@@ -97,9 +96,8 @@ extensibleController('backlogDetailsCtrl', ['$scope', 'StoryService', 'BacklogSe
 }]);
 
 
-
 extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter', '$timeout', '$state', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'project', 'backlogs', function($controller, $scope, window, $filter, $timeout, $state, StoryService, BacklogService, BacklogCodes, StoryStatesByName, project, backlogs) {
-    $controller('windowCtrl', {$scope: $scope, window:window}); // inherit from storyCtrl
+    $controller('windowCtrl', {$scope: $scope, window: window}); // inherit from storyCtrl
     // Functions
     $scope.authorizedStory = StoryService.authorizedStory;
     $scope.isSelected = function(selectable) {
@@ -198,7 +196,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
     };
     $scope.clickOnBacklogHref = function($event) {
         var href = angular.element($event.target).attr('href');
-        if(href){
+        if (href) {
             $event.preventDefault();
             $event.stopPropagation();
             document.location = href;
@@ -221,8 +219,8 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             });
             $scope.backlogContainers.push(backlogContainer);
             var savedBacklogsOrder = $scope.getWindowSetting('backlogsListOrder');
-            if(savedBacklogsOrder){
-                $scope.backlogContainers.sort(function(a, b){
+            if (savedBacklogsOrder) {
+                $scope.backlogContainers.sort(function(a, b) {
                     return savedBacklogsOrder.indexOf(a.backlog.code) - savedBacklogsOrder.indexOf(b.backlog.code)
                 });
             } else {
@@ -346,7 +344,6 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
     $scope.backlogContainers = [];
     $scope.availableBacklogs = backlogs;
     $scope.backlogCodes = BacklogCodes;
-
     // Ensures that the stories list of displayed backlogs are up to date
     $scope.$on('is:backlogsUpdated', function(event, backlogCodes) {
         _.each(backlogCodes, function(backlogCode) {

@@ -23,27 +23,24 @@
  */
 controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller', function($scope, TaskService, $controller) {
     $controller('widgetCtrl', {$scope: $scope});
-
+    // Functions
     TaskService.listByUser().then(function(tasksByProject) {
         $scope.tasksByProject = tasksByProject;
     });
-
-    $scope.display = function(widget){
+    $scope.display = function(widget) {
         var current = $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
-        if(current != widget.settings.postitSize){
+        if (current != widget.settings.postitSize) {
             $scope.cleanPostitSize($scope.viewName);
             $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
         }
     };
-
-    $scope.taskUrl = function(task, project){
+    $scope.taskUrl = function(task, project) {
         return "p/" + project.pkey + "/#/taskBoard/" + task.sprint.id + "/task/" + task.id;
     };
-
-    //init
+    // Init
     var widget = $scope.widget;
     $scope.tasksByProject = [];
-    widget.settings = widget.settings ? widget.settings : { postitSize:'list-group' };
+    widget.settings = widget.settings ? widget.settings : {postitSize: 'list-group'};
     $scope.viewName = 'taskWidget';
     $scope.display(widget);
 }]);

@@ -298,7 +298,7 @@ class StoryController implements ControllerErrorHandler {
     def returnToSandbox() {
         def stories = Story.withStories(params)
         def rank
-        if (stories.size() == 1  && params.story?.rank) {
+        if (stories.size() == 1 && params.story?.rank) {
             rank = params.story.rank instanceof Number ? params.story.rank : params.story.rank.toInteger()
         }
         Story.withTransaction {

@@ -386,27 +386,27 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         }
     };
 }]).directive('postitsScreenSizeStandalone', ['$window', '$timeout', '$localStorage', 'screenSize', function($window, $timeout, $localStorage, screenSize) {
-        return {
-            restrict: 'A',
-            link: function(scope, element, attrs) {
-                // On default
-                var postitsClass = function() {
-                    element.removeClass('size-l size-sm size-xs').addClass(screenSize.is('xs, sm') ? 'size-xs' : scope.currentPostitSize(scope.viewName, 'grid-group size-sm'));
-                    element.removeClass('list-group');
-                };
-                // On resize change
-                screenSize.on('xs, sm', function(isMatch) {
-                    postitsClass();
-                });
-                // On manual change
-                scope.$watch(function() { return $localStorage[scope.viewName + 'PostitSize']; }, function(newVal, oldVal) {
-                    if (oldVal !== newVal) {
-                        postitsClass();
-                    }
-                });
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            // On default
+            var postitsClass = function() {
+                element.removeClass('size-l size-sm size-xs').addClass(screenSize.is('xs, sm') ? 'size-xs' : scope.currentPostitSize(scope.viewName, 'grid-group size-sm'));
+                element.removeClass('list-group');
+            };
+            // On resize change
+            screenSize.on('xs, sm', function(isMatch) {
                 postitsClass();
-            }
-        };
+            });
+            // On manual change
+            scope.$watch(function() { return $localStorage[scope.viewName + 'PostitSize']; }, function(newVal, oldVal) {
+                if (oldVal !== newVal) {
+                    postitsClass();
+                }
+            });
+            postitsClass();
+        }
+    };
 }]).directive('timeline', ['ReleaseService', 'SprintStatesByName', '$timeout', function(ReleaseService, SprintStatesByName, $timeout) {
     return {
         restrict: 'A',
@@ -901,7 +901,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         templateUrl: 'button.shortcutMenu.html',
         link: function(scope) {
             scope.message = $rootScope.message;
-            scope.btnPrimary = angular.isDefined(scope.btnPrimary)? scope.btnPrimary : (angular.isDefined(scope.btnSm) ? !scope.btnSm : true);
+            scope.btnPrimary = angular.isDefined(scope.btnPrimary) ? scope.btnPrimary : (angular.isDefined(scope.btnSm) ? !scope.btnSm : true);
             scope.$watch(function() { return scope.ngModel.lastUpdated; }, function() {
                 var i = scope.modelMenus.length;
                 scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menuElement) {

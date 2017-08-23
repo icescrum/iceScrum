@@ -27,7 +27,7 @@ import org.icescrum.i18n.IceScrumMessageSource
 
 beans = {
 
-    xmlns task:"http://www.springframework.org/schema/task"
+    xmlns task: "http://www.springframework.org/schema/task"
     task.'annotation-driven'()
 
     webExpressionHandler(WebScrumExpressionHandler) {
@@ -41,7 +41,7 @@ beans = {
         trustResolver = ref('authenticationTrustResolver')
     }
 
-    messageSource(IceScrumMessageSource)  {
+    messageSource(IceScrumMessageSource) {
         basenames = "WEB-INF/grails-app/i18n/messages"
     }
 

@@ -272,7 +272,7 @@ angular.module('isApplication', [
             }, options);
         };
 
-        var getBacklogDetailsState = function(viewContext){
+        var getBacklogDetailsState = function(viewContext) {
             var tabNames = _.keys(backlogTabs);
             var backlogState = {
                 name: 'details',
@@ -280,7 +280,7 @@ angular.module('isApplication', [
                 views: {},
                 resolve: {},
                 data: {
-                    displayTabs:tabNames.length > 1
+                    displayTabs: tabNames.length > 1
                 },
                 children: [
                     {
@@ -302,11 +302,10 @@ angular.module('isApplication', [
                     }
                 ]
             };
-            //default tab (without backlogTabId)
-            if( backlogTabs["details"].resolve){
+            // Default tab (without tabId)
+            if (backlogTabs["details"].resolve) {
                 backlogState.resolve['details'] = backlogTabs["details"].resolve;
             }
-
             var backlogTabState = backlogState.children[0];
             _.each(backlogTabs, function(value, key) {
                 backlogTabState.resolve['data' + key] = value.resolve;
@@ -323,7 +322,7 @@ angular.module('isApplication', [
                 name: 'details',
                 url: "/{taskId:int}",
                 resolve: {
-                    detailsTask: ['$stateParams', 'taskContext', 'TaskService', function ($stateParams, taskContext, TaskService) {
+                    detailsTask: ['$stateParams', 'taskContext', 'TaskService', function($stateParams, taskContext, TaskService) {
                         return TaskService.get($stateParams.taskId, taskContext);
                     }]
                 },
@@ -335,12 +334,12 @@ angular.module('isApplication', [
                         resolve: {},
                         views: {
                             "details-tab": {
-                                templateUrl: function ($stateParams) {
+                                templateUrl: function($stateParams) {
                                     if ($stateParams.taskTabId) {
                                         return taskTabs[$stateParams.taskTabId].templateUrl;
                                     }
                                 },
-                                controller: ['$scope', 'detailsTask', function ($scope, detailsTask) {
+                                controller: ['$scope', 'detailsTask', function($scope, detailsTask) {
                                     $scope.selected = detailsTask;
                                 }]
                             }
@@ -348,10 +347,8 @@ angular.module('isApplication', [
                     }
                 ]
             };
-
-            //default tab (without taskTabId)
+            // Default tab (without tabId)
             taskState.resolve['details'] = taskTabs["details"].resolve;
-
             var taskTabState = taskState.children[0];
             _.each(taskTabs, function(value, key) {
                 taskTabState.resolve['data' + key] = value.resolve;
@@ -394,9 +391,8 @@ angular.module('isApplication', [
                     }
                 ]
             };
-            //default tab (without featureTabId)
+            // Default tab (without tabId)
             featureState.resolve['details'] = featureTabs["details"].resolve;
-
             var featureTabState = featureState.children[0];
             _.each(featureTabs, function(value, key) {
                 featureTabState.resolve['data' + key] = value.resolve;
@@ -445,9 +441,8 @@ angular.module('isApplication', [
                     }
                 ]
             };
-            //default tab (without storyTabId)
+            // Default tab (without tabId)
             storyState.resolve['details'] = storyTabs["details"].resolve;
-
             var storyTabState = storyState.children[0];
             _.each(storyTabs, function(value, key) {
                 storyTabState.resolve['data' + key] = value.resolve;
@@ -478,7 +473,7 @@ angular.module('isApplication', [
             }
             return storyState;
         };
-        var getReleaseDetailsState = function(viewContext){
+        var getReleaseDetailsState = function(viewContext) {
             var tabNames = _.keys(releaseTabs);
             var releaseState = {
                 name: 'details',
@@ -486,7 +481,7 @@ angular.module('isApplication', [
                 views: {},
                 resolve: {},
                 data: {
-                    displayTabs:tabNames.length > 1
+                    displayTabs: tabNames.length > 1
                 },
                 children: [
                     {
@@ -508,9 +503,8 @@ angular.module('isApplication', [
                     }
                 ]
             };
-            //default tab (without releaseTabId)
+            // Default tab (without tabId)
             releaseState.resolve['details'] = releaseTabs["details"].resolve;
-
             var releaseTabState = releaseState.children[0];
             _.each(releaseTabs, function(value, key) {
                 releaseTabState.resolve['data' + key] = value.resolve;
@@ -521,7 +515,7 @@ angular.module('isApplication', [
             };
             return releaseState;
         };
-        var getSprintDetailsState = function(viewContext){
+        var getSprintDetailsState = function(viewContext) {
             var tabNames = _.keys(sprintTabs);
             var sprintState = {
                 name: 'details',
@@ -536,7 +530,7 @@ angular.module('isApplication', [
                 },
                 views: {},
                 data: {
-                    displayTabs:tabNames.length > 1
+                    displayTabs: tabNames.length > 1
                 },
                 children: [
                     {
@@ -558,9 +552,8 @@ angular.module('isApplication', [
                     }
                 ]
             };
-            //default tab (without sprintTabId)
+            // Default tab (without tabId)
             sprintState.resolve['details'] = sprintTabs["details"].resolve;
-
             var sprintTabState = sprintState.children[0];
             _.each(sprintTabs, function(value, key) {
                 sprintTabState.resolve['data' + key] = value.resolve;
@@ -627,8 +620,8 @@ angular.module('isApplication', [
                 url: '/?redirectTo',
                 controller: ['$state', 'Session', function($state, Session) {
                     //restore _HASH_ => #
-                    if($state.params.redirectTo){
-                        $state.params.redirectTo = $state.params.redirectTo.replace('_HASH_','#');
+                    if ($state.params.redirectTo) {
+                        $state.params.redirectTo = $state.params.redirectTo.replace('_HASH_', '#');
                     }
                     $state.go(Session.defaultView, $state.params, {location: 'replace'});
                 }]
@@ -636,7 +629,7 @@ angular.module('isApplication', [
             .state({
                 name: 'home', // should not be acceded directly, called by 'root'
                 controller: 'homeCtrl',
-                params:{ redirectTo:null },
+                params: {redirectTo: null},
                 templateUrl: 'ui/window/home'
             })
             .state({
@@ -820,7 +813,7 @@ angular.module('isApplication', [
                     {
                         name: 'release',
                         url: "/{releaseId:int}",
-                        resolve:{
+                        resolve: {
                             detailsRelease: ['$stateParams', 'releases', function($stateParams, releases) {
                                 return _.find(releases, {id: $stateParams.releaseId})
                             }],
@@ -1171,7 +1164,7 @@ angular.module('isApplication', [
                 controller: ["$scope", "hotkeys", function($scope, hotkeys) {
                     $scope.message = options.message;
                     $scope.submit = function() {
-                        if(options.callback){
+                        if (options.callback) {
                             if (options.args) {
                                 options.callback.apply(options.callback, options.args);
                             } else {
@@ -1354,7 +1347,7 @@ angular.module('isApplication', [
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();
             if (appDefinitionId) {
-                if(isTerm){
+                if (isTerm) {
                     scope.defaultSearchTerm = appDefinitionId;
                 } else {
                     scope.defaultAppDefinitionId = appDefinitionId;

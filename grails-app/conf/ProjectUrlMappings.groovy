@@ -51,7 +51,7 @@ class ProjectUrlMappings {
         // Window settings in project context
         "/p/$project/ui/window/$windowDefinitionId/settings" {
             controller = 'window'
-            action = [GET:"settings", POST:"updateSettings"]
+            action = [GET: "settings", POST: "updateSettings"]
             constraints {
                 windowDefinitionId(matches: /[a-zA-Z]*/)
                 project(matches: /[0-9A-Z]*/)
@@ -79,14 +79,14 @@ class ProjectUrlMappings {
         // Task
         "/p/$project/task" {
             controller = 'task'
-            action = [POST:"save"]
+            action = [POST: "save"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
         }
         "/p/$project/task/$id" {
             controller = 'task'
-            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            action = [GET: "show", PUT: "update", DELETE: 'delete', POST: 'update']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
@@ -118,7 +118,7 @@ class ProjectUrlMappings {
         // Story
         "/p/$project/story" {
             controller = 'story'
-            action = [GET: "index", POST:"save"]
+            action = [GET: "index", POST: "save"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
@@ -134,7 +134,7 @@ class ProjectUrlMappings {
         }
         "/p/$project/story/$id" {
             controller = 'story'
-            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            action = [GET: "show", PUT: "update", DELETE: 'delete', POST: 'update']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
@@ -188,7 +188,7 @@ class ProjectUrlMappings {
         }
         "/p/$project/actor/$id" {
             controller = 'actor'
-            action = [GET: 'show', PUT: 'update',  POST: 'update', DELETE: 'delete']
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
@@ -197,14 +197,14 @@ class ProjectUrlMappings {
         // Feature
         "/p/$project/feature" {
             controller = 'feature'
-            action = [GET: "index", POST:"save"]
+            action = [GET: "index", POST: "save"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
         }
         "/p/$project/feature/$id" {
             controller = 'feature'
-            action = [GET: "show", PUT:"update", DELETE:'delete', POST:'update']
+            action = [GET: "show", PUT: "update", DELETE: 'delete', POST: 'update']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d+(,\d+)*/)
@@ -230,7 +230,7 @@ class ProjectUrlMappings {
         // Comment
         "/p/$project/comment/$type/$commentable" {
             controller = 'comment'
-            action = [GET: "index", POST:"save"]
+            action = [GET: "index", POST: "save"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task'])
@@ -239,7 +239,7 @@ class ProjectUrlMappings {
         }
         "/p/$project/comment/$type/$commentable/$id" {
             controller = 'comment'
-            action = [GET: "show", PUT:"update", DELETE:"delete", POST:'update']
+            action = [GET: "show", PUT: "update", DELETE: "delete", POST: 'update']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 type(inList: ['story', 'task'])
@@ -258,14 +258,14 @@ class ProjectUrlMappings {
         }
         "/p/$project/acceptanceTest" {
             controller = 'acceptanceTest'
-            action = [POST:"save"]
+            action = [POST: "save"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }
         }
         "/p/$project/acceptanceTest/$id" {
             controller = 'acceptanceTest'
-            action = [POST:"update", DELETE:"delete"]
+            action = [POST: "update", DELETE: "delete"]
             constraints {
                 id(matches: /\d*/)
                 project(matches: /[0-9A-Z]*/)

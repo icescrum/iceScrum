@@ -27,11 +27,11 @@ services.factory('Backlog', ['Resource', function($resource) {
 services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryService', 'BacklogCodes', 'FormService', function(Backlog, $q, CacheService, StoryService, BacklogCodes, FormService) {
     var self = this;
     this.get = function(id, project) {
-        return Backlog.get({id:id, projectId:project.id}).$promise;
+        return Backlog.get({id: id, projectId: project.id}).$promise;
     };
     this.list = function(project) {
         var cachedBacklogs = CacheService.getCache('backlog');
-        return _.isEmpty(cachedBacklogs) ? Backlog.query({projectId:project.id}, function(backlogs) {
+        return _.isEmpty(cachedBacklogs) ? Backlog.query({projectId: project.id}, function(backlogs) {
             _.each(backlogs, function(backlog) {
                 CacheService.addOrUpdate('backlog', backlog);
             });
@@ -53,6 +53,6 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryServi
         return StoryService.filterStories(stories, storyFilter);
     };
     this.openChart = function(backlog, project, chart) {
-        return FormService.httpGet(isSettings.serverUrl + '/p/'+project.id+'/backlog/'+backlog.id+'/'+'chartByProperty?property='+ chart);
+        return FormService.httpGet(isSettings.serverUrl + '/p/' + project.id + '/backlog/' + backlog.id + '/' + 'chartByProperty?property=' + chart);
     };
 }]);

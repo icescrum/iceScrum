@@ -151,7 +151,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }).$promise;
     };
     this.acceptAs = function(story, target) {
-        return Story.update({id: story.id, action: 'turnInto' +target}, {}, function() {
+        return Story.update({id: story.id, action: 'turnInto' + target}, {}, function() {
             crudMethods[IceScrumEventType.DELETE](story);
         }).$promise;
     };

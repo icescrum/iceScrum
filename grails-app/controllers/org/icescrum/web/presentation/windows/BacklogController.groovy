@@ -52,74 +52,72 @@ class BacklogController implements ControllerErrorHandler {
     def show(long project, long id) {
         Project _project = Project.load(project)
         Backlog backlog = Backlog.findByProjectAndId(_project, id)
-        if(!backlog.isDefault && backlog.owner != springSecurityService.currentUser && !backlog.shared && !request.admin){
-            render(status:403)
+        if (!backlog.isDefault && backlog.owner != springSecurityService.currentUser && !backlog.shared && !request.admin) {
+            render(status: 403)
             return
         }
         render(status: 200, contentType: 'application/json', text: backlog as JSON)
     }
 
     @Secured(['stakeHolder() or inProject()'])
-    def chartByProperty(long id, long project, String property){
-        if (property in grailsApplication.config.icescrum.resourceBundles.backlogChartTypes.keySet()){
+    def chartByProperty(long id, long project, String property) {
+        if (property in grailsApplication.config.icescrum.resourceBundles.backlogChartTypes.keySet()) {
             def backlog = Backlog.findByProjectAndId(Project.load(project), id)
-
-            if(backlog.owner != springSecurityService.currentUser && !backlog.shared){
-                render(status:403)
+            if (backlog.owner != springSecurityService.currentUser && !backlog.shared) {
+                render(status: 403)
                 return
             }
-
             def stories = Story.search(project, JSON.parse(backlog.filter))
             def storiesByProperty = stories.groupBy({ story -> story."$property" })
             def data = [], colors = [], total = 0
             def bundle
-            storiesByProperty.each{
+            storiesByProperty.each {
                 def color, name
-                switch (property){
+                switch (property) {
                     case "feature":
-                        name = it.key?.name?:""
-                        color = it.key?.color?:"#f9f157"
+                        name = it.key?.name ?: ""
+                        color = it.key?.color ?: "#f9f157"
                         bundle = 'is.feature'
                         break
                     case "type":
-                        name = message(code:grailsApplication.config.icescrum.resourceBundles.storyTypes[it.key])
+                        name = message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.key])
                         color = grailsApplication.config.icescrum.resourceBundles.storyTypesColor[it.key]
-                        bundle = 'is.story.'+property
+                        bundle = 'is.story.' + property
                         break
                     case "state":
-                        name = message(code:grailsApplication.config.icescrum.resourceBundles.storyStates[it.key])
+                        name = message(code: grailsApplication.config.icescrum.resourceBundles.storyStates[it.key])
                         color = grailsApplication.config.icescrum.resourceBundles.storyStatesColor[it.key]
-                        bundle = 'is.story.'+property
+                        bundle = 'is.story.' + property
                         break
                     default:
                         name = it.key
-                        bundle = 'is.story.'+property
+                        bundle = 'is.story.' + property
                         break
                 }
                 data << [name, it.value.size()]
-                if(color)
+                if (color) {
                     colors << color
+                }
                 total += it.value.size()
             }
             def options = [
-                    chart:[
-                            title:total
+                    chart  : [
+                            title: total
                     ],
-                    title: [
-                            text: backlog.project.pkey + " - " + message(code:backlog.name)
+                    title  : [
+                            text: backlog.project.pkey + " - " + message(code: backlog.name)
                     ],
-                    caption:[
-                            text:"${message(code:"is.chart.backlogByProperty.caption", args: [message(code:bundle)])}",
-                            html:"<h4>${message(code:"is.chart.backlogByProperty.caption", args: [message(code:bundle)])}</h4>"
+                    caption: [
+                            text: "${message(code: "is.chart.backlogByProperty.caption", args: [message(code: bundle)])}",
+                            html: "<h4>${message(code: "is.chart.backlogByProperty.caption", args: [message(code: bundle)])}</h4>"
                     ]
             ]
-
-            if(colors){
+            if (colors) {
                 options.chart.color = colors
             }
-            render(status:200, contentType:"application/json", text:[data:data, options:options] as JSON)
+            render(status: 200, contentType: "application/json", text: [data: data, options: options] as JSON)
         } else {
-            render(status:400)
+            render(status: 400)
         }
     }
 }

@@ -55,7 +55,7 @@ tt  tt   ttt ttt   tt EEE   EE  EE   EEE EE     EE   EEE  E      E      ,,,,,,,
 t    tttttt    ttttt   EEEEEE    EEEEEE  EE      EEEEE    E      E     ,,,,,,,"""
         println " "
         println " "
-        println "Version: ${Metadata.current['app.version']} - Build date: ${ Metadata.current['build.date'] ?: 'dev' }"
+        println "Version: ${Metadata.current['app.version']} - Build date: ${Metadata.current['build.date'] ?: 'dev'}"
         println "Check our website for training, coaching or custom development: https://www.icescrum.com"
         println "Try for free or buy your iceScrum Pro license and start using its nice features: https://www.icescrum.com/pricing"
         println " "

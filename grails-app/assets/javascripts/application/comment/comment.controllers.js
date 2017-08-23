@@ -29,10 +29,10 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
         $scope.formHolder.expandedForm = false;
         $scope.resetFormValidation($scope.formHolder.commentForm);
     };
-    $scope.formEditable = function() {
+    $scope.formEditable = function() {
         return $scope.comment ? $scope.authorizedComment('update', $scope.editableComment) : false
     };
-    $scope.formDeletable = function() { 
+    $scope.formDeletable = function() {
         return $scope.comment ? $scope.authorizedComment('delete', $scope.editableComment) : false
     };
     $scope.save = function(comment, commentable) {

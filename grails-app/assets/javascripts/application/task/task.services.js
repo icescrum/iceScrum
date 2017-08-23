@@ -69,8 +69,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
     };
     this.update = function(task, removeRank, outsideProjectContext) {
         var taskData = removeRank ? _.omit(task, 'rank') : task; // Don't send the rank when we want the server to pick the right rank (e.g. update estimate to 0 => task will get a new rank in done state)
-        if(outsideProjectContext){
-            return Task.updateOutsideProjectContext({ pid: taskData.parentProject.id }, taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        if (outsideProjectContext) {
+            return Task.updateOutsideProjectContext({pid: taskData.parentProject.id}, taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
         } else {
             return Task.update(taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
         }
@@ -165,8 +165,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         }
     };
     this.listByUser = function() {
-        return Task.listByUser(function(data){
-            _.each(data, function(dataByProject){
+        return Task.listByUser(function(data) {
+            _.each(data, function(dataByProject) {
                 self.mergeTasks(dataByProject.tasks);
             });
         }).$promise;

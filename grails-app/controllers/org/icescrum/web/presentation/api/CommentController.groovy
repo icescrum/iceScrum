@@ -66,11 +66,11 @@ class CommentController implements ControllerErrorHandler {
         Comment comment
         if (params['comment'] instanceof Map) {
             Comment.withTransaction {
-                grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['addComment':null])
+                grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['addComment': null])
                 commentable.addComment(poster, params.comment.body)
                 activityService.addActivity(commentable, poster, 'comment', commentable.name);
-                comment = commentable.comments.sort{ it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
-                grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment':comment])
+                comment = commentable.comments.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
+                grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment': comment])
                 if (params.type == 'story') {
                     commentable.addToFollowers(poster)
                 }
@@ -86,19 +86,19 @@ class CommentController implements ControllerErrorHandler {
             return
         }
         def comment = Comment.get(params.long('id'))
-        if (!comment){
-            render(status:404)
+        if (!comment) {
+            render(status: 404)
             return
-        } else if (comment.posterId != springSecurityService.currentUser.id){
-            render(status:403)
+        } else if (comment.posterId != springSecurityService.currentUser.id) {
+            render(status: 403)
             return
         }
         def commentable = commentableObject
         comment.body = params.comment.body
-        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment':comment])
+        grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment': comment])
         comment.save()
-        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment':comment])
-        render(status: 200, contentType: 'application/json', text:comment as JSON)
+        grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment': comment])
+        render(status: 200, contentType: 'application/json', text: comment as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProject()')
@@ -112,25 +112,25 @@ class CommentController implements ControllerErrorHandler {
             return
         }
         def comment = Comment.get(params.long('id'))
-        if (!comment){
-            render(status:404)
+        if (!comment) {
+            render(status: 404)
             return
-        } else if (!request.productOwner && !request.scrumMaster &&  comment.posterId != springSecurityService.currentUser.id){
-            render(status:403)
+        } else if (!request.productOwner && !request.scrumMaster && comment.posterId != springSecurityService.currentUser.id) {
+            render(status: 403)
             return
         }
         def commentable = commentableObject
-        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removeComment':comment])
+        grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removeComment': comment])
         commentable.removeComment(comment)
-        grailsApplication.mainContext[params.type+'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removedComment':comment])
+        grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removedComment': comment])
         render(status: 204)
     }
 
-    private getCommentableObject(){
+    private getCommentableObject() {
         def commentable
         long project = params.long('project')
         long commentableId = params.long('commentable')
-        switch (params.type){
+        switch (params.type) {
             case 'story':
                 commentable = Story.getInProject(project, commentableId).list()
                 break

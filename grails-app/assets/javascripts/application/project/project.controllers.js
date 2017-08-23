@@ -403,15 +403,15 @@ controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope,
             .filter(function(chart) {
                 return !chart.visible || chart.visible($scope.project);
             }).map(function(chart) {
-            return {
-                group: $scope.message('is.' + type),
-                type: type,
-                id: chart.id,
-                view: chart.view,
-                name: $scope.message(chart.name)
-            };
-        }).each(function(chart) {
-            projectChartEntries.push(chart);
-        }).value();
+                return {
+                    group: $scope.message('is.' + type),
+                    type: type,
+                    id: chart.id,
+                    view: chart.view,
+                    name: $scope.message(chart.name)
+                };
+            }).each(function(chart) {
+                projectChartEntries.push(chart);
+            }).value();
     }, []);
 }]);

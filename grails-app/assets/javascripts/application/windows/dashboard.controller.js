@@ -75,8 +75,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
         $scope.currentOrNextSprint = sprint;
     });
     AttachmentService.list($scope.project);
-    //showAppStore on first project display
-    if(isSettings.showAppStore){
+    if (isSettings.showAppStore) {
         $scope.showAppsModal();
     }
 }]);

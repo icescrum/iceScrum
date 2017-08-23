@@ -102,7 +102,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
             name: 'is.ui.releasePlan.toolbar.autoPlan',
             visible: function(release) { return $scope.authorizedRelease('autoPlan', release); },
             action: function(release) {
-                if(release.sprints.length > 0) {
+                if (release.sprints.length > 0) {
                     $scope.showAutoPlanModal({callback: $scope.autoPlan, args: [release]});
                 }
                 else {
@@ -114,7 +114,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
             name: 'is.ui.releasePlan.toolbar.dissociateAll',
             visible: function(release) { return $scope.authorizedRelease('unPlan', release); },
             action: function(release) {
-                if(release.sprints.length > 0) {
+                if (release.sprints.length > 0) {
                     $scope.confirm({message: $scope.message('is.ui.releasePlan.toolbar.warning.dissociateAll'), callback: $scope.unPlan, args: [release]});
                 }
                 else {

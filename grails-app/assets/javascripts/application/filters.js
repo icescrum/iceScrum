@@ -61,12 +61,12 @@ filters
             if (Session.current(user)) {
                 user = Session.user; // Bind to current user to see avatar change immediately
             }
-            return user && user.id ? ($rootScope.serverUrl + '/user/'+(initials ? 'initialsAvatar' : 'avatar')+'/' + user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
+            return user && user.id ? ($rootScope.serverUrl + '/user/' + (initials ? 'initialsAvatar' : 'avatar') + '/' + user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
         };
     }])
     .filter('userInitialsAvatar', ['$rootScope', 'FormService', function($rootScope, FormService) {
         return function(user) {
-            return $rootScope.serverUrl + '/user/initialsAvatar/?firstName='+user.firstName+'&lastName='+user.lastName;
+            return $rootScope.serverUrl + '/user/initialsAvatar/?firstName=' + user.firstName + '&lastName=' + user.lastName;
         };
     }])
     .filter('userColorRoles', ['$rootScope', 'Session', function($rootScope, Session) {
@@ -487,7 +487,7 @@ filters
             } : '';
         }
     }).filter('randomValueInArray', function() {
-    return function(array) {
-        return array[_.random(0, array.length - 1)];
-    }
-});
+        return function(array) {
+            return array[_.random(0, array.length - 1)];
+        }
+    });

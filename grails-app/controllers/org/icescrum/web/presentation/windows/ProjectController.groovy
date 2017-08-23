@@ -378,8 +378,8 @@ class ProjectController implements ControllerErrorHandler {
         def colors = values.collect { return it.color }
         def computedValues = [[key   : message(code: "is.chart.projectParkinglot.serie.name"),
                                values: values.collect { return [it.label, it.value] }]]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectParkinglot.xaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.projectParkinglot.yaxis.label')],
+        def options = [chart: [yAxis   : [axisLabel: message(code: 'is.chart.projectParkinglot.xaxis.label')],
+                               xAxis   : [axisLabel: message(code: 'is.chart.projectParkinglot.yaxis.label')],
                                barColor: colors],
                        title: [text: message(code: "is.chart.projectParkinglot.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
@@ -469,8 +469,8 @@ class ProjectController implements ControllerErrorHandler {
 
     @Secured(['isAuthenticated()'])
     def listByUser(long id, String term, Boolean paginate, Integer page, Integer count, Boolean light) {
-        if(id && id != springSecurityService.principal.id && !request.admin){
-            render(status:403)
+        if (id && id != springSecurityService.principal.id && !request.admin) {
+            render(status: 403)
             return
         }
         User user = id ? User.get(id) : springSecurityService.currentUser
@@ -489,13 +489,13 @@ class ProjectController implements ControllerErrorHandler {
 
     @Secured(['isAuthenticated()'])
     def listByUserAndRole(long id, String term, Boolean paginate, Integer page, Integer count, Boolean light, String role) {
-        if(id && id != springSecurityService.principal.id && !request.admin){
-            render(status:403)
+        if (id && id != springSecurityService.principal.id && !request.admin) {
+            render(status: 403)
             return
         }
         id = id ?: springSecurityService.currentUser.id
         light = light != null ? light : true
-        switch(role){
+        switch (role) {
             case 'productOwner':
                 listByRole(id, term, paginate, page, count, light, SecurityService.productOwnerPermissions)
                 break;

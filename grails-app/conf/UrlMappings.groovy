@@ -136,7 +136,7 @@ class UrlMappings {
         //Window settings in null context
         "/ui/window/$windowDefinitionId/settings" {
             controller = 'window'
-            action = [GET:"settings", POST:"updateSettings"]
+            action = [GET: "settings", POST: "updateSettings"]
             constraints {
                 windowDefinitionId(matches: /[a-zA-Z]*/)
             }
@@ -211,14 +211,14 @@ class UrlMappings {
         //User Token
         "/user/$userId/token" {
             controller = 'userToken'
-            action = [POST:"save"]
+            action = [POST: "save"]
             constraints {
                 userId(matches: /\d*/)
             }
         }
         "/user/$userId/token/$id" {
             controller = 'userToken'
-            action = [POST:"update", DELETE:"delete"]
+            action = [POST: "update", DELETE: "delete"]
             constraints {
                 userId(matches: /\d*/)
                 id(matches: /[0-9a-z]*/)
@@ -383,7 +383,7 @@ class UrlMappings {
         }
         "/team/$id" {
             controller = 'team'
-            action = [GET:"show", POST: "update", DELETE: "delete"]
+            action = [GET: "show", POST: "update", DELETE: "delete"]
             constraints {
                 id(matches: /\d*/)
             }

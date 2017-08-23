@@ -36,16 +36,16 @@ grails.project.war.osgi.headers = false
 grails.tomcat.nio = true
 
 def jvmArgs = ['-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005',
-               '-Dicescrum.plugins.dir='+System.getProperty("icescrum.plugins.dir"),
+               '-Dicescrum.plugins.dir=' + System.getProperty("icescrum.plugins.dir"),
 //               '-Dicescrum.noDummyze=toto',
                '-Dicescrum.clean=true',
                '-Dfile.encoding=UTF-8',
                '-Duser.timezone=UTC']
 
 grails.project.fork = [
-        test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
-        run: [maxMemory: 1024, minMemory: 512, debug: false, maxPerm: 256, forkReserve:false, jvmArgs: jvmArgs],
-        war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false]
+        test: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, daemon: true],
+        run : [maxMemory: 1024, minMemory: 512, debug: false, maxPerm: 256, forkReserve: false, jvmArgs: jvmArgs],
+        war : [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve: false]
 ]
 
 if (Environment.current != Environment.PRODUCTION) {

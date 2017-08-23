@@ -112,7 +112,7 @@ class ReleaseController implements ControllerErrorHandler {
     @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
     def autoPlan(long project, long id, Double capacity) {
         Release release = Release.withRelease(project, id)
-        if(release.sprints){
+        if (release.sprints) {
             def plannedStories = storyService.autoPlan(release.sprints.asList(), capacity)
             render(status: 200, contentType: 'application/json', text: plannedStories as JSON)
         } else {
@@ -128,7 +128,7 @@ class ReleaseController implements ControllerErrorHandler {
         if (sprints) {
             unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
             render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON)
-        }else {
+        } else {
             returnError(code: 'todo.is.ui.nosprint')
         }
     }
@@ -137,15 +137,15 @@ class ReleaseController implements ControllerErrorHandler {
     def burndown(long project, long id) {
         Release release = Release.withRelease(project, id)
         def values = releaseService.releaseBurndownValues(release)
-        def computedValues = [[key: message(code:'is.chart.releaseBurnDown.series.userstories.name'),
-                               values: values.collect { return [it.userstories]},
-                               color:'#009900'],
-                              [key: message(code:'is.chart.releaseBurnDown.series.technicalstories.name'),
-                               values: values.collect { return [it.technicalstories]},
-                               color:'#1F77B4'],
-                              [key: message(code:'is.chart.releaseBurnDown.series.defectstories.name'),
-                               values: values.collect { return [it.defectstories]},
-                               color:'#CC3300']]
+        def computedValues = [[key   : message(code: 'is.chart.releaseBurnDown.series.userstories.name'),
+                               values: values.collect { return [it.userstories] },
+                               color : '#009900'],
+                              [key   : message(code: 'is.chart.releaseBurnDown.series.technicalstories.name'),
+                               values: values.collect { return [it.technicalstories] },
+                               color : '#1F77B4'],
+                              [key   : message(code: 'is.chart.releaseBurnDown.series.defectstories.name'),
+                               values: values.collect { return [it.defectstories] },
+                               color : '#CC3300']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.releaseBurnDown.title")]]
@@ -157,10 +157,10 @@ class ReleaseController implements ControllerErrorHandler {
         Release release = Release.withRelease(project, id)
         def values = featureService.releaseParkingLotValues(release)
         def colors = values.collect { return it.color }
-        def computedValues = [[key: message(code:"is.chart.releaseParkingLot.serie.name"),
-                               values: values.collect { return [it.label, it.value]}]]
-        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseParkingLot.xaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.releaseParkingLot.yaxis.label')],
+        def computedValues = [[key   : message(code: "is.chart.releaseParkingLot.serie.name"),
+                               values: values.collect { return [it.label, it.value] }]]
+        def options = [chart: [yAxis   : [axisLabel: message(code: 'is.chart.releaseParkingLot.xaxis.label')],
+                               xAxis   : [axisLabel: message(code: 'is.chart.releaseParkingLot.yaxis.label')],
                                barColor: colors],
                        title: [text: message(code: "is.chart.releaseParkingLot.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)

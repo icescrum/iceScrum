@@ -153,7 +153,7 @@ class UserController implements ControllerErrorHandler {
                     props.scale = false
                 } else if (params.user.avatar) {
                     def uploadedAvatar = request.getFile('user.avatar')
-                      props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${FilenameUtils.getExtension(uploadedAvatar.originalFilename)}")
+                    props.avatar = new File(grailsApplication.config.icescrum.images.users.dir, "${user.id}.${FilenameUtils.getExtension(uploadedAvatar.originalFilename)}")
                     props.scale = true
                     uploadedAvatar.transferTo(props.avatar)
                 }
@@ -203,7 +203,7 @@ class UserController implements ControllerErrorHandler {
             }
             avatar = getAssetAvatarFile("avatar.png")
         }
-        render(file:avatar, contentType: 'image/png')
+        render(file: avatar, contentType: 'image/png')
     }
 
     @Secured(['isAuthenticated()'])

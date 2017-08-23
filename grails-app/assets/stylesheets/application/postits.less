@@ -14,8 +14,8 @@
       background: white;
     }
     &.solo {
-      width:100%;
-      margin:10px;
+      width: 100%;
+      margin: 10px;
       .postit {
         margin: 0 auto;
       }
@@ -89,7 +89,7 @@
       }
     }
   }
-  .postit-container{
+  .postit-container {
     &.is-selected {
       .postit {
         border: 1px solid @brand-primary;
@@ -133,7 +133,7 @@
     float: left;
     padding: 0;
     margin: 6px;
-    cursor:pointer;
+    cursor: pointer;
 
     .postit {
       width: @postit-width;
@@ -191,7 +191,7 @@
             text-decoration: none;
             visibility: hidden;
             &.active {
-                visibility: visible;
+              visibility: visible;
             }
           }
           .id, .estimation, .value {
@@ -242,7 +242,7 @@
           margin: 0 auto;
           font-size: @font-size-postit;
           line-height: @line-height-postit;
-          -webkit-line-clamp:@lines-to-show-postit;
+          -webkit-line-clamp: @lines-to-show-postit;
           -webkit-box-orient: vertical;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -359,7 +359,7 @@
           opacity: 1;
         }
         > .btn, > .btn-group {
-          margin-top:-15px;
+          margin-top: -15px;
           .vertical-align;
           .horizontal-align;
           position: relative; // Override position: absolute from .horizontal-align
@@ -457,7 +457,7 @@
         padding-right: 5px;
       }
       .description, .state-progress {
-        display:none;
+        display: none;
       }
       .actions > .action {
         width: 28px;
@@ -472,22 +472,22 @@
       }
       height: 45px;
       .content, .tags, .actions, .footer, .follow {
-        display:none;
+        display: none;
       }
       .head {
         .head-left {
-          float:none;
+          float: none;
           text-align: center;
         }
         .head-right {
-          float:none;
+          float: none;
           margin-right: 0;
           text-align: center;
           vertical-align: middle;
         }
       }
       &.add-task, &.hide-tasks {
-        border:none;
+        border: none;
       }
     }
   }
@@ -504,8 +504,8 @@
     .postit {
       display: flex;
       position: relative;
-      border-left:none;
-      border-right:none;
+      border-left: none;
+      border-right: none;
       > .state {
         display: none;
       }
@@ -695,11 +695,11 @@
         }
       }
       &.add-task, &.hide-tasks {
-        margin-top:10px;
-        margin-bottom:10px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         height: 30px;
         &:last-child {
-          border:none;
+          border: none;
         }
         > .btn, > .btn-group {
           .horizontal-align;
@@ -794,7 +794,7 @@
 td.postits {
   min-width: @postit-width + 10*2;
   &.size-sm {
-      min-width: @postit-width-sm + 10*2;
+    min-width: @postit-width-sm + 10*2;
   }
   &.size-xs {
     min-width: @postit-width-xs + 10*2;
