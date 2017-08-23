@@ -22,9 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="story.close.html">
-<is:modal form="closeSprint()"
-          submitButton="{{ message('todo.is.ui.story.selector.close.button') }}"
-          submitButtonColor="danger"
+<is:modal button="[[action: 'closeSprint()', text: message(code: 'todo.is.ui.story.selector.close.button'), color: 'danger']]"
           closeButton="${message(code: 'is.button.cancel')}"
           title="{{ message('todo.is.ui.story.selector.close.title') }}">
     <p class="help-block"
