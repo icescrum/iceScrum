@@ -26,7 +26,6 @@ package org.icescrum.web.presentation
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import grails.util.BuildSettingsHolder
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.ProjectPreferences

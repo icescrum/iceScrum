@@ -23,11 +23,6 @@
 
 import grails.util.Metadata
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
-import org.codehaus.groovy.grails.web.mime.DefaultAcceptHeaderParser
-import org.codehaus.groovy.grails.web.servlet.GrailsApplicationAttributes
-import org.codehaus.groovy.grails.web.servlet.HttpHeaders
-
-import javax.servlet.http.HttpServletRequest
 
 class BootStrap {
 

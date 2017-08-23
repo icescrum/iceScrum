@@ -27,8 +27,8 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.grails.comments.Comment
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
-import org.icescrum.core.event.IceScrumEventType
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.event.IceScrumEventType
 
 class CommentController implements ControllerErrorHandler {
 

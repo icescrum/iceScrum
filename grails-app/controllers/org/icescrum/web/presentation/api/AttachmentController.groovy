@@ -24,12 +24,7 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.components.UtilsWebComponents
-import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.Project
-import org.icescrum.core.domain.Release
-import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.event.IceScrumEventType
 

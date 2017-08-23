@@ -1,5 +1,3 @@
-import grails.util.Environment
-
 /*
 * Copyright (c) 2015 Kagilum SAS
 *

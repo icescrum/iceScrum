@@ -27,16 +27,7 @@ import grails.util.Metadata
 import org.apache.log4j.DailyRollingFileAppender
 import org.apache.log4j.PatternLayout
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
-import org.icescrum.core.domain.AcceptanceTest
-import org.icescrum.core.domain.Activity
-import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.PlanningPokerGame
-import org.icescrum.core.domain.Project
-import org.icescrum.core.domain.Release
-import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Task
-import org.icescrum.core.domain.User
+import org.icescrum.core.domain.*
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.web.JQueryProvider

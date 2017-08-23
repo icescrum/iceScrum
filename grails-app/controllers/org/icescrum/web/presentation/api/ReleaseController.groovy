@@ -27,8 +27,8 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
-import org.icescrum.core.utils.ServicesUtils
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.utils.ServicesUtils
 
 class ReleaseController implements ControllerErrorHandler {
 

@@ -21,10 +21,10 @@
  */
 
 
+import com.mysql.jdbc.CommunicationsException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.acls.model.NotFoundException
 import org.springframework.transaction.CannotCreateTransactionException
-import com.mysql.jdbc.CommunicationsException
 
 class UrlMappings {
 

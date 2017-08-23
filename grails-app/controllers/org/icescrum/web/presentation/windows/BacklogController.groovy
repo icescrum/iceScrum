@@ -26,15 +26,10 @@ package org.icescrum.web.presentation.windows
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import org.codehaus.groovy.grails.commons.DefaultGrailsDomainClass
-import org.codehaus.groovy.grails.commons.GrailsDomainClass
-import org.icescrum.core.domain.AcceptanceTest
 import org.icescrum.core.domain.Backlog
-import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
-import org.icescrum.core.utils.ServicesUtils
 
 @Secured(['stakeHolder() or inProject()'])
 class BacklogController implements ControllerErrorHandler {

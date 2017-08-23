@@ -21,8 +21,9 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  */
 
-import grails.util.GrailsNameUtils
+
 import grails.util.Environment
+import grails.util.GrailsNameUtils
 
 grails.servlet.version = "3.0"
 grails.project.class.dir = "target/classes"
