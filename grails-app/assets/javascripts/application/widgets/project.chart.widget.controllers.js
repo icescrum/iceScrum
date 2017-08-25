@@ -22,18 +22,18 @@
  *
  */
 
-controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', '$controller', '$element', '$filter', function($scope, ProjectService, ReleaseService, SprintService, $controller, $element, $filter) {
+controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', '$controller', '$element', function($scope, ProjectService, ReleaseService, SprintService, $controller, $element) {
     $controller('chartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
     // Functions
     $scope.widgetReady = function(widget) {
-        //hack to force to keep sync values after drag & drop
-        widget.width = widget.settings.width ? widget.settings.width : 2;
-        widget.height = widget.settings.height ? widget.settings.height : 2;
+        // Hack to force to keep sync values after drag & drop
+        widget.width = widget.settings.width;
+        widget.height = widget.settings.height;
         return !!(widget.settings && widget.settings.project && widget.settings.chart);
     };
     $scope.getTitle = function() {
-        return $scope.widgetReady(widget) ? widget.settings.project.pkey + ' - ' + $scope.holder.title : '';
+        return $scope.widgetReady(widget) && $scope.holder.title ? widget.settings.project.pkey + ' - ' + $scope.holder.title : '';
     };
     $scope.getUrl = function() {
         return $scope.widgetReady(widget) ? 'p/' + widget.settings.project.pkey + '/#/' + widget.settings.chart.view : '';
@@ -52,26 +52,21 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
             }
         });
     };
-    $scope.initChartTypeSelected = function(chartsTypes) {
+    $scope.initChartTypeSelected = function(projectChartEntries) {
         if (!$scope.holder.chartResolved) {
             $scope.holder.chartResolved = true;
-            $scope.holder.chart = $filter('filter')(chartsTypes, widget.settings && widget.settings.chart ? widget.settings.chart : $scope.holder.chart)[0];
+            if (widget.settings && widget.settings.chart) {
+                $scope.holder.chart = _.find(projectChartEntries, widget.settings.chart);
+            }
         }
     };
-    $scope.settingsChanged = function() {
+    $scope.projectChanged = function() { // Use callback instead of direct model linking to filter data before sending it
+        widget.settings.project = _.pick($scope.holder.project, ['id', 'pkey']);
         widget.type = 'project';
-        widget.settings = {
-            chart: _.pick($scope.holder.chart, ['id', 'type', 'group', 'view']),
-            width: $scope.holder.width,
-            height: $scope.holder.height
-        };
-        if ($scope.holder.project) {
-            widget.typeId = $scope.holder.project.id;
-            widget.settings.project = {
-                id: $scope.holder.project.id,
-                pkey: $scope.holder.project.pkey
-            };
-        }
+        widget.typeId = $scope.holder.project.id;
+    };
+    $scope.chartChanged = function() { // Use callback instead of direct model linking to filter data before sending it
+        widget.settings.chart = _.pick($scope.holder.chart, ['id', 'type', 'group', 'view']);
     };
     var addTitleAndCaption = function(data) {
         $scope.holder.title = data.options.title.text;
@@ -114,15 +109,16 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
         }
     };
     // Init
-    $scope.holder = _.merge({
-        width: widget.width,
-        height: widget.height,
-        chart: {
-            id: 'burnup',
-            type: 'project',
-            group: 'project'
-        }
-    }, widget.settings);
+    if (!widget.settings) {
+        widget.settings = {};
+    }
+    if (!widget.settings.height) {
+        widget.settings.height = 2;
+    }
+    if (!widget.settings.width) {
+        widget.settings.width = 2;
+    }
+    $scope.holder = {};
     $scope.projects = [];
     $scope.widths = [1, 2, 3];
     $scope.heights = [1, 2, 3];

@@ -41,7 +41,7 @@
         <ui-select class="form-control"
                    search-enabled="true"
                    append-to-body="true"
-                   ng-change="settingsChanged()"
+                   ng-change="chartChanged()"
                    ng-model="holder.chart">
             <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.chart')}">{{ $select.selected.name }}</ui-select-match>
             <ui-select-choices group-by="'group'"
@@ -53,8 +53,7 @@
         <label>${message(code: 'is.ui.widget.height')}</label>
         <ui-select class="form-control"
                    append-to-body="true"
-                   ng-change="settingsChanged()"
-                   ng-model="holder.height">
+                   ng-model="widget.settings.height">
             <ui-select-match>{{ $select.selected }}</ui-select-match>
             <ui-select-choices repeat="height in heights">{{ height }}</ui-select-choices>
         </ui-select>
@@ -63,8 +62,7 @@
         <label>${message(code: 'is.ui.widget.width')}</label>
         <ui-select class="form-control"
                    append-to-body="true"
-                   ng-change="settingsChanged()"
-                   ng-model="holder.width">
+                   ng-model="widget.settings.width">
             <ui-select-match>{{ $select.selected }}</ui-select-match>
             <ui-select-choices repeat="width in widths">{{ width }}</ui-select-choices>
         </ui-select>
