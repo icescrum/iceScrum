@@ -35,7 +35,7 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
         });
     };
     this.getAppDefinitions = function() {
-        return FormService.httpGet('app/definitions', null, false);
+        return FormService.httpGet('app/definitions', null, true);
     };
     this.getAppDefinitionsWithProjectSettings = function(project) {
         return self.getAppDefinitions().then(function(appDefinitions) {

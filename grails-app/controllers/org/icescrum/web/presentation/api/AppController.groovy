@@ -35,7 +35,7 @@ class AppController implements ControllerErrorHandler {
     def appService
     def appDefinitionService
 
-    @Secured('stakeHolder() or inProject()')
+    @Secured('permitAll()')
     def definitions() {
         def marshalledDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
             Map marshalledAppDefinition = appDefinition.properties.clone()
@@ -50,20 +50,6 @@ class AppController implements ControllerErrorHandler {
             }
             marshalledAppDefinition.screenshots = appDefinition.screenshots.take(3).collect { String screenshot ->
                 return asset.assetPath([src: appDefinition.getAssetPath(screenshot)])
-            }
-            def assetLogoAppPath = appDefinition.getAssetPath(appDefinition.logo)
-            marshalledAppDefinition.logo = asset.assetPathExists([src: assetLogoAppPath]) ? asset.assetPath([src: assetLogoAppPath]) : asset.assetPath([src: 'logo-bg.png'])
-            return marshalledAppDefinition
-        }
-        render(status: 200, contentType: 'application/json', text: marshalledDefinitions as JSON)
-    }
-
-    @Secured('permitAll()')
-    def definitionsOnSetup() {
-        def marshalledDefinitions = appDefinitionService.getAppDefinitions().collect { AppDefinition appDefinition ->
-            Map marshalledAppDefinition = appDefinition.properties.clone()
-            ['name'].each { k ->
-                marshalledAppDefinition[k] = message(code: 'is.ui.apps.' + appDefinition.id + '.' + k)
             }
             def assetLogoAppPath = appDefinition.getAssetPath(appDefinition.logo)
             marshalledAppDefinition.logo = asset.assetPathExists([src: assetLogoAppPath]) ? asset.assetPath([src: assetLogoAppPath]) : asset.assetPath([src: 'logo-bg.png'])
