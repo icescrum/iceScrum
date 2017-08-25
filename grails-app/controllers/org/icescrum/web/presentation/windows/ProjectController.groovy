@@ -574,7 +574,12 @@ class ProjectController implements ControllerErrorHandler {
         if (!grailsApplication.config.icescrum.project.private.enable && hidden) {
             hidden = false
         }
-        dummyService.createSampleProject(springSecurityService.currentUser, hidden);
+        try {
+            dummyService.createSampleProject(springSecurityService.currentUser, hidden);
+        } catch (ValidationException e) {
+            e.printStackTrace()
+            throw e
+        }
         render(status: 200);
     }
 
