@@ -26,7 +26,7 @@
     <p class="help-block">${message(code: 'is.dialog.wizard.section.project.description')}</p>
     <entry:point id="project-form-general-before"/>
     <div class="row">
-        <div class="col-sm-7 col-xs-7 form-group">
+        <div class="col-sm-8 col-xs-8 form-group">
             <label for="name">${message(code: 'is.project.name')}</label>
             <div class="input-group">
                 <input autofocus
@@ -41,16 +41,16 @@
                     <button class="btn btn-model"
                             type="button"
                             ng-disabled="!enableVisibilityChange()"
-                            uib-tooltip="{{project.preferences.hidden ? '${message(code: /is.project.preferences.project.hidden/)}' : '${message(code: /todo.is.ui.project.preferences.project.public/)}' }}"
                             ng-model="project.preferences.hidden"
                             ng-click="project.preferences.hidden = !project.preferences.hidden;"
                             ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
                         <i class="fa fa-lock" ng-class="{ 'fa-lock': project.preferences.hidden, 'fa-unlock': !project.preferences.hidden }"></i>
+                        {{ message(project.preferences.hidden  ? 'is.project.preferences.project.hidden' : 'todo.is.ui.project.preferences.project.public') }}
                     </button>
                 </span>
             </div>
         </div>
-        <div class="col-sm-5 col-xs-5 form-group">
+        <div class="col-sm-4 col-xs-4 form-group">
             <label for="pkey">${message(code: 'is.project.pkey')}</label>
             <input name="pkey"
                    type="text"
