@@ -41,7 +41,6 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
 controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
     $controller('abstractProjectListCtrl', {$scope: $scope});
     // Init
-    $scope.projects = [];
     $scope.openedProjects = {};
     $scope.$watch('openedProjects', function(newVal) { // Really ugly hack, only way to watch which accordion group is opened...
         var selectedProjectId = _.invert(newVal)[true];

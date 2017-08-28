@@ -1,6 +1,6 @@
 <is:widget widgetDefinition="${widgetDefinition}">
     <div ng-controller="publicProjectListCtrl">
-        <div>
+        <div ng-if="projects && !projects.length">
             <h4 class="text-center">${message(code: 'todo.is.ui.project.nopublicproject')}</h4>
         </div>
         <uib-accordion>
