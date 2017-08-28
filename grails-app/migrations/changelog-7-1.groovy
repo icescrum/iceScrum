@@ -25,11 +25,18 @@ databaseChangeLog = {
     changeSet(author: "vbarrier", id: "add_notnull_constraint_backlog_chart_type") {
         grailsChange {
             change {
-                sql.execute("UPDATE is_backlog SET chart_type = 'type' where code = 'sandbox' OR code = 'done'")
-                sql.execute("UPDATE is_backlog SET chart_type = 'state' where code = 'backlog' OR code = 'all'")
+                sql.execute("UPDATE is_backlog SET chart_type = 'type' WHERE code = 'sandbox' OR code = 'done'")
+                sql.execute("UPDATE is_backlog SET chart_type = 'state' WHERE code = 'backlog' OR code = 'all'")
             }
         }
         addNotNullConstraint(tableName: "is_backlog", columnName: "chart_type", columnDataType: "varchar(255)")
+    }
+    changeSet(author: "vbarrier", id: "add_default_chart_type") {
+        grailsChange {
+            change {
+                sql.execute("UPDATE is_backlog SET chart_type = 'type' WHERE chart_type IS NULL")
+            }
+        }
     }
     changeSet(author: "vbarrier", id: "drop_on_right_columnn") {
         preConditions(onFail: 'MARK_RAN') {
