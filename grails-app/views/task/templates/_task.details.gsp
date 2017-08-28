@@ -92,7 +92,7 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'comments'}">
             <a href="{{ tabUrl('comments') }}">
-                <i class="fa fa-lg" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> {{ task.comments_count || '' }} ${message(code: 'todo.is.ui.comments')}
+                <i class="fa fa-lg" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code: 'todo.is.ui.comments')} {{ task.comments_count | parens }}
             </a>
         </li>
         <entry:point id="task-details-tab-button"/>

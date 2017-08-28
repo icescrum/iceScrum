@@ -490,4 +490,8 @@ filters
         return function(array) {
             return array[_.random(0, array.length - 1)];
         }
+    }).filter('parens', function() {
+        return function(inside) {
+            return inside ? '(' + inside + ')' : '';
+        }
     });

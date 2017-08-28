@@ -95,12 +95,16 @@
         <li role="presentation"
             class="hidden-sm"
             ng-class="{'active':$state.params.storyTabId == 'comments'}">
-            <a href="{{ tabUrl('comments') }}"><i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> {{ story.comments_count || '' }} ${message(code: 'todo.is.ui.comments')}</a>
+            <a href="{{ tabUrl('comments') }}">
+                <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code: 'todo.is.ui.comments')} {{ story.comments_count | parens }}
+            </a>
         </li>
         <li role="presentation"
             class="hidden-sm hidden-md"
             ng-class="{'active':$state.params.storyTabId == 'tasks'}">
-            <a href="{{ tabUrl('tasks') }}"><i class="fa fa-lg fa-tasks"></i> {{ story.tasks_count || '' }} ${message(code: 'todo.is.ui.tasks')}</a>
+            <a href="{{ tabUrl('tasks') }}">
+                <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+            </a>
         </li>
         <li role="presentation" class="dropdown display-on-hover">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -111,19 +115,19 @@
                     class="visible-sm-block"
                     ng-class="{'active':$state.params.storyTabId == 'comments'}">
                     <a href="{{ tabUrl('comments') }}">
-                        <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> {{ story.comments_count || '' }} ${message(code: 'todo.is.ui.comments')}
+                        <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code: 'todo.is.ui.comments')} {{ story.comments_count | parens }}
                     </a>
                 </li>
                 <li role="presentation"
                     class="visible-sm-block visible-md-block"
                     ng-class="{'active':$state.params.storyTabId == 'tasks'}">
                     <a href="{{ tabUrl('tasks') }}">
-                        <i class="fa fa-lg fa-tasks"></i> {{ story.tasks_count || '' }} ${message(code: 'todo.is.ui.tasks')}
+                        <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
                     </a>
                 </li>
                 <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'tests'}">
                     <a href="{{ tabUrl('tests') }}">
-                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> {{ story.acceptanceTests_count || '' }} ${message(code: 'todo.is.ui.acceptanceTests')}
+                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
                     </a>
                 </li>
                 <entry:point id="story-details-tab-button"/>
