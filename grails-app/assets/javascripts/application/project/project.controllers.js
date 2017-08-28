@@ -379,7 +379,10 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
                     document.location = $scope.serverUrl;
                 });
             }
-        })
+        });
+    };
+    $scope.unArchive = function(project) {
+        ProjectService.unArchive(project)
     };
     // Init
     $scope.formHolder = {};

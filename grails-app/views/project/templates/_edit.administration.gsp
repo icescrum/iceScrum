@@ -49,11 +49,18 @@
                 ng-click="delete(project)">
             ${message(code: 'is.projectmenu.submenu.project.delete')}
         </button>
-        <button type="button"
+        <button ng-if="!project.preferences.archived"
+                type="button"
                 role="button"
                 class="btn btn-danger"
                 ng-click="archive(project)">
             ${message(code: 'is.dialog.project.archive.button')}
+        </button>
+        <button ng-if="project.preferences.archived && authorizedProject('unArchive', project)"
+                type="button"
+                class="btn btn-danger"
+                ng-click="unArchive(project)">
+            ${message(code: 'is.dialog.project.unArchive.button')}
         </button>
     </div>
     <div class="btn-toolbar pull-right">

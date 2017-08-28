@@ -97,6 +97,8 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
     };
     this.authorizedProject = function(action, project) {
         switch (action) {
+            case 'unArchive':
+                return Session.admin();
             case 'upload':
                 return Session.poOrSm();
             case 'update':
