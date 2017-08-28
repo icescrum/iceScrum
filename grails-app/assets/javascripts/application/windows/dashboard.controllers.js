@@ -47,12 +47,16 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
         showMore: false
     };
     $scope.release = {};
-    $scope.allMembers = [];
     $scope.activities = [];
     $scope.currentOrLastSprint = {};
     $scope.currentOrNextSprint = {};
     $scope.projectMembersCount = 0;
     $scope.project = project;
+    $scope.$watch(function() {
+        return _.unionBy($scope.project.team.members, $scope.project.productOwners, 'id');
+    }, function(newAllMembers) {
+        $scope.allMembers = newAllMembers;
+    }, true);
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: project, clazz: 'project'});
     ProjectService.getActivities($scope.project).then(function(activities) {
         $scope.activities = activities;
@@ -63,7 +67,6 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
             SprintService.list(release);
         }
     });
-    $scope.allMembers = _.unionBy($scope.project.team.members, $scope.project.productOwners, 'id');
     // Needs a separate call because it may not be in the currentOrNextRelease
     SprintService.getCurrentOrLastSprint($scope.project).then(function(sprint) {
         $scope.currentOrLastSprint = sprint;
