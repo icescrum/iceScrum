@@ -1,5 +1,8 @@
 <is:widget widgetDefinition="${widgetDefinition}">
     <div ng-controller="publicProjectListCtrl">
+        <div>
+            <h4 class="text-center">${message(code: 'todo.is.ui.project.nopublicproject')}</h4>
+        </div>
         <uib-accordion>
             <div uib-accordion-group
                  is-open="openedProjects[currentProject.id]"
