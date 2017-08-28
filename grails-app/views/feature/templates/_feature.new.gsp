@@ -84,7 +84,7 @@
                                         ng-click="refreshAvailableColors()"
                                         colors="availableColors"
                                         name="color"
-                                        ng-model="feature.color"><i class="fa fa-pencil"></i></button>
+                                        ng-model="feature.color"><i class="fa fa-pencil"></i> ${message(code: 'todo.is.ui.color')}</button>
                             </span>
                         </div>
                     </div>

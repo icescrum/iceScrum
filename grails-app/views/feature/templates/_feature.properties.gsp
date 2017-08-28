@@ -28,41 +28,41 @@
     <div class="panel-body">
         <div class="form-group">
             <label for="name">${message(code: 'is.feature.name')}</label>
-            <input required
-                   ng-maxlength="100"
-                   ng-focus="editForm(true)"
-                   ng-disabled="!formEditable()"
-                   name="name"
-                   ng-model="editableFeature.name"
-                   type="text"
-                   class="form-control">
+            <div class="input-group">
+                <input required
+                       ng-maxlength="100"
+                       ng-focus="editForm(true)"
+                       ng-disabled="!formEditable()"
+                       name="name"
+                       ng-model="editableFeature.name"
+                       type="text"
+                       class="form-control">
+                <span class="input-group-btn" ng-if="formEditable()">
+                    <button colorpicker
+                            class="btn {{ editableFeature.color | contrastColor }}"
+                            type="button"
+                            ng-style="{'background-color': editableFeature.color}"
+                            colorpicker-position="left"
+                            ng-focus="editForm(true)"
+                            value="#bf3d3d"
+                            ng-click="refreshAvailableColors()"
+                            colors="availableColors"
+                            name="color"
+                            ng-model="editableFeature.color"><i class="fa fa-pencil"></i> ${message(code: 'todo.is.ui.color')}</button>
+                </span>
+            </div>
         </div>
         <div class="clearfix no-padding">
             <div class="form-half">
                 <label for="type">${message(code: 'is.feature.type')}</label>
-                <div class="input-group">
-                    <ui-select class="form-control"
-                               ng-click="editForm(true)"
-                               ng-disabled="!formEditable()"
-                               name="type"
-                               ng-model="editableFeature.type">
-                        <ui-select-match><i class="fa fa-{{ $select.selected | featureTypeIcon }}"></i> {{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
-                        <ui-select-choices repeat="featureType in featureTypes"><i class="fa fa-{{ ::featureType | featureTypeIcon }}"></i> {{ ::featureType | i18n:'FeatureTypes' }}</ui-select-choices>
-                    </ui-select>
-                    <span class="input-group-btn" ng-if="formEditable()">
-                        <button colorpicker
-                                class="btn {{ editableFeature.color | contrastColor }}"
-                                type="button"
-                                ng-style="{'background-color': editableFeature.color}"
-                                colorpicker-position="top"
-                                ng-focus="editForm(true)"
-                                value="#bf3d3d"
-                                ng-click="refreshAvailableColors()"
-                                colors="availableColors"
-                                name="color"
-                                ng-model="editableFeature.color"><i class="fa fa-pencil"></i></button>
-                    </span>
-                </div>
+                <ui-select class="form-control"
+                           ng-click="editForm(true)"
+                           ng-disabled="!formEditable()"
+                           name="type"
+                           ng-model="editableFeature.type">
+                    <ui-select-match><i class="fa fa-{{ $select.selected | featureTypeIcon }}"></i> {{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
+                    <ui-select-choices repeat="featureType in featureTypes"><i class="fa fa-{{ ::featureType | featureTypeIcon }}"></i> {{ ::featureType | i18n:'FeatureTypes' }}</ui-select-choices>
+                </ui-select>
             </div>
             <div class="form-half">
                 <label for="value">${message(code: 'is.feature.value')}</label>
