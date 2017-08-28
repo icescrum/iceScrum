@@ -34,7 +34,7 @@ databaseChangeLog = {
     changeSet(author: "vbarrier", id: "add_default_chart_type") {
         grailsChange {
             change {
-                sql.execute("UPDATE is_backlog SET chart_type = 'type' WHERE chart_type IS NULL")
+                sql.execute("UPDATE is_backlog SET chart_type = 'type' WHERE chart_type IS NULL OR chart_type = ''")
             }
         }
     }
