@@ -26,8 +26,7 @@
         <ui-select class="form-control"
                    name="chartType"
                    append-to-body="true"
-                   ng-change="settingsChanged()"
-                   ng-model="holder.chartType">
+                   ng-model="widget.settings.chartType">
             <ui-select-match>{{ $select.selected | i18n:'BacklogChartTypes' }}</ui-select-match>
             <ui-select-choices repeat="chartType in backlogChartTypes">{{ ::chartType | i18n:'BacklogChartTypes' }}</ui-select-choices>
         </ui-select>
@@ -36,6 +35,7 @@
         <label>${message(code: 'is.ui.widget.chart.project')}</label>
         <ui-select class="form-control"
                    search-enabled="true"
+                   ng-change="projectChanged()"
                    append-to-body="true"
                    ng-model="holder.project">
             <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.project')}">{{ $select.selected.name }}</ui-select-match>
@@ -50,7 +50,7 @@
         <ui-select class="form-control"
                    search-enabled="true"
                    append-to-body="true"
-                   ng-change="settingsChanged()"
+                   ng-change="backlogChanged()"
                    ng-model="holder.backlog">
             <ui-select-match placeholder="${message(code: 'is.ui.widget.backlogChart.no.backlog')}">{{ message($select.selected.name) }}</ui-select-match>
             <ui-select-choices refresh="refreshBacklogs()"

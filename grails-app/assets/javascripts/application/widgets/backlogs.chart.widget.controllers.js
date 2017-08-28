@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'ProjectService', '$controller', '$element', function($scope, BacklogService, ProjectService, $controller, $element) {
+controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'ProjectService', 'CacheService', '$controller', '$element', function($scope, BacklogService, ProjectService, CacheService, $controller, $element) {
     $controller('chartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
     $scope.widgetReady = function(widget) {
@@ -55,23 +55,27 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
                 $scope.holder.backlog = backlog;
             });
         }
+        CacheService.emptyCache('backlog'); // TODO REMOVE THIS REALLY BAD HACK NEEDED BECAUSE CACHE IS PROJECT DEPENDENT
         BacklogService.list($scope.holder.project).then(function(backlogs) {
             $scope.holder.backlogs = backlogs;
         });
     };
-    $scope.settingsChanged = function() {
+    $scope.projectChanged = function() {
+        $scope.holder.backlog = null;
+        widget.settings.backlog = null;
+        $scope.holder.backlogs = null;
+        $scope.refreshBacklogs();
+    };
+    $scope.backlogChanged = function() { // Use callback instead of direct model linking to filter data before sending it
         widget.type = 'backlog';
         widget.typeId = $scope.holder.backlog.id;
-        widget.settings = {
-            backlog: {
-                id: $scope.holder.backlog.id,
-                code: $scope.holder.backlog.code,
-                project: {
-                    id: $scope.holder.project.id,
-                    pkey: $scope.holder.project.pkey
-                }
-            },
-            chartType: $scope.holder.chartType
+        widget.settings.backlog = {
+            id: $scope.holder.backlog.id,
+            code: $scope.holder.backlog.code,
+            project: {
+                id: $scope.holder.project.id,
+                pkey: $scope.holder.project.pkey
+            }
         };
     };
     $scope.display = function(widget) {
@@ -97,8 +101,12 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
         }
     };
     // Init
+    if (!widget.settings) {
+        widget.settings = {
+            chartType: 'type'
+        };
+    }
     $scope.holder = {
-        title: "",
-        chartType: widget.settings ? widget.settings.chartType : 'type'
+        title: ''
     };
 }]);
