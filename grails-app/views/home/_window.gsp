@@ -21,7 +21,7 @@
 <div id="view-home" class="view">
     <div class="content">
         <div class="row widgets"
-             as-sortable="widgetSortableOptions"
+             as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
              ng-model="widgets">
             <div as-sortable-item
                  ng-include src="templateWidgetUrl(widget)"
