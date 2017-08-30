@@ -475,7 +475,7 @@ class StoryController implements ControllerErrorHandler {
                         inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.inProgressDate]) : null,
                         doneDate      : it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.doneDate ?: null]) : null,
                         rank          : it.rank ?: null,
-                        sprint        : it.parentSprint?.index ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.index : null,
+                        sprint        : it.parentSprint?.index ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.name + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.index : null,
                         creator       : it.creator.firstName + ' ' + it.creator.lastName,
                         feature       : it.feature?.name ?: null,
                         dependsOn     : it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
@@ -502,7 +502,7 @@ class StoryController implements ControllerErrorHandler {
     def printPostitsBySprint(long project, long id) {
         Project _project = Project.withProject(project)
         Sprint sprint = Sprint.withSprint(project, id)
-        def outputFileName = "${_project.name} ${message(code: 'is.release')} ${sprint.parentRelease.orderNumber} - ${message(code: 'is.sprint')} ${sprint.orderNumber}"
+        def outputFileName = "${_project.name} ${message(code: 'is.release')} ${sprint.parentRelease.name} - ${message(code: 'is.sprint')} ${sprint.index}"
         def stories1 = []
         def stories2 = []
         def first = 0
@@ -527,7 +527,7 @@ class StoryController implements ControllerErrorHandler {
                         inProgressDate: it.inProgressDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.inProgressDate]) : null,
                         doneDate      : it.doneDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.doneDate ?: null]) : null,
                         rank          : it.rank ?: null,
-                        sprint        : it.parentSprint?.index ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.orderNumber + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.index : null,
+                        sprint        : it.parentSprint?.index ? g.message(code: 'is.release') + " " + it.parentSprint.parentRelease.name + " - " + g.message(code: 'is.sprint') + " " + it.parentSprint.index : null,
                         creator       : it.creator.firstName + ' ' + it.creator.lastName,
                         feature       : it.feature?.name ?: null,
                         dependsOn     : it.dependsOn?.name ? it.dependsOn.uid + " " + it.dependsOn.name : null,
