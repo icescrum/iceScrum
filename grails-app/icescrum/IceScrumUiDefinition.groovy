@@ -157,9 +157,6 @@ windows = {
                     id
                 }
         ]
-        exportFormats = {
-            [[code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]]]
-        }
     }
 
 }

@@ -170,14 +170,6 @@ class ProjectUrlMappings {
                 id(matches: /\d*/)
             }
         }
-        "/p/$project/story/sprint/$id/printPostits" {
-            controller = 'story'
-            action = 'printPostitsBySprint'
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                id(matches: /\d*/)
-            }
-        }
         // Actor
         "/p/$project/actor" {
             controller = 'actor'
@@ -348,14 +340,6 @@ class ProjectUrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 releaseId(matches: /\d*/)
-            }
-        }
-        "/p/$project/sprint/$id/printPostits/$format?" {
-            controller = 'sprint'
-            action = 'printPostits'
-            constraints {
-                id(matches: /\d*/)
-                project(matches: /[0-9A-Z]*/)
             }
         }
         // Apps
