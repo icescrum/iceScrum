@@ -92,7 +92,8 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     },
                     margin: {
                         left: 100
-                    }
+                    },
+                    showControls: false
                 }
             }
         },
@@ -110,7 +111,8 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     },
                     margin: {
                         left: 100
-                    }
+                    },
+                    showControls: false
                 }
             },
             burndown: {
