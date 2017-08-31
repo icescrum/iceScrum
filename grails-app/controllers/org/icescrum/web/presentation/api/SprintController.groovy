@@ -163,7 +163,8 @@ class SprintController implements ControllerErrorHandler {
                                color : '#009900']
         }
         def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
-        def options = [chart: [xDomain: xDomain,
+        def options = [chart: [yDomain: [0, values.collect { [it.idealTime, it.remainingTime].max() }.max()],
+                               xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
                                xAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
                        title: [text: message(code: "is.chart.sprintBurndownRemainingChart.title")]]
@@ -183,7 +184,8 @@ class SprintController implements ControllerErrorHandler {
                  color : '#1C3660']
         ]
         def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
-        def options = [chart: [xDomain: xDomain,
+        def options = [chart: [yDomain: [0, values.collect { [it.tasksDone, it.tasks].max() }.max()],
+                               xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
                                xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
                        title: [text: message(code: "is.chart.sprintBurnupTasksChart.title")]]
@@ -203,7 +205,8 @@ class SprintController implements ControllerErrorHandler {
                  color : '#009900']
         ]
         def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
-        def options = [chart: [xDomain: xDomain,
+        def options = [chart: [yDomain: [0, values.collect { [it.totalPoints, it.pointsDone].max() }.max()],
+                               xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
                                xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
                        title: [text: message(code: "is.chart.sprintBurnupPointsChart.title")]]
@@ -223,7 +226,8 @@ class SprintController implements ControllerErrorHandler {
                  color : '#009900']
         ]
         def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
-        def options = [chart: [xDomain: xDomain,
+        def options = [chart: [yDomain: [0, values.collect { [it.stories, it.storiesDone].max() }.max()],
+                               xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],
                                xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
                        title: [text: message(code: "is.chart.sprintBurnupStoriesChart.title")]]
