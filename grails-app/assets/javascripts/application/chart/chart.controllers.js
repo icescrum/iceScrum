@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($scope, $element, $filter, $uibModal, Session, ProjectService, SprintService, ReleaseService, BacklogService) {
+extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal', '$timeout', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($scope, $element, $filter, $uibModal, $timeout, Session, ProjectService, SprintService, ReleaseService, BacklogService) {
     $scope.defaultOptions = {
         chart: {
             height: 350
@@ -182,20 +182,23 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
         $scope.options = _.merge($scope.options, $scope.chartOptions[itemType][chartName] ? $scope.chartOptions[itemType][chartName] : {});
         $scope.options = _.merge($scope.options, options ? options : {});
         return $scope.chartLoaders[itemType](chartName, item).then(function(chart) {
-            $scope.data = chart.data;
-            $scope.options = _.merge($scope.options, chart.options);
-            $scope.options = _.merge($scope.options, options);
-            $scope.options.title.enable = !_.isEmpty($scope.options.title) && $scope.options.title.enable !== false;
-            if (chart.labelsX) {
-                $scope.labelsX = chart.labelsX;
-            }
-            if (chart.labelsY) {
-                $scope.labelsY = chart.labelsY;
-            }
-            if (angular.isFunction($scope.options.chart.height)) {
-                $scope.options.chart.height = $scope.options.chart.height($element);
-            }
-            return chart;
+            // Timeout is required for new options to be taken into account correctly when chartLoader is too fast
+            return $timeout(function() {
+                $scope.data = chart.data;
+                $scope.options = _.merge($scope.options, chart.options);
+                $scope.options = _.merge($scope.options, options);
+                $scope.options.title.enable = !_.isEmpty($scope.options.title) && $scope.options.title.enable !== false;
+                if (chart.labelsX) {
+                    $scope.labelsX = chart.labelsX;
+                }
+                if (chart.labelsY) {
+                    $scope.labelsY = chart.labelsY;
+                }
+                if (angular.isFunction($scope.options.chart.height)) {
+                    $scope.options.chart.height = $scope.options.chart.height($element);
+                }
+                return chart;
+            });
         });
     };
     $scope.processSaveChart = function() {
