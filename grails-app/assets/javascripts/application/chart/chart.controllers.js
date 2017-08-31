@@ -89,6 +89,9 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         tickFormat: function(entry) {
                             return entry;
                         }
+                    },
+                    margin: {
+                        left: 100
                     }
                 }
             }
@@ -104,6 +107,9 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         tickFormat: function(entry) {
                             return entry;
                         }
+                    },
+                    margin: {
+                        left: 100
                     }
                 }
             },
