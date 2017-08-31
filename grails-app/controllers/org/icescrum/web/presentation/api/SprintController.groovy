@@ -29,6 +29,7 @@ import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.utils.ServicesUtils
 
 class SprintController implements ControllerErrorHandler {
@@ -161,9 +162,10 @@ class SprintController implements ControllerErrorHandler {
                                values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime] },
                                color : '#009900']
         }
-        def options = [chart: [xDomain: [values.label.min(), values.label.max()],
+        def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
+        def options = [chart: [xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
-                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.xaxis.label')]],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
                        title: [text: message(code: "is.chart.sprintBurndownRemainingChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
@@ -180,9 +182,10 @@ class SprintController implements ControllerErrorHandler {
                  values: values.findAll { it.tasks != null }.collect { return [it.label, it.tasks] },
                  color : '#1C3660']
         ]
-        def options = [chart: [xDomain: [values.label.min(), values.label.max()],
+        def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
+        def options = [chart: [xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
-                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.xaxis.label')]],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
                        title: [text: message(code: "is.chart.sprintBurnupTasksChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
@@ -199,9 +202,10 @@ class SprintController implements ControllerErrorHandler {
                  values: values.findAll { it.pointsDone != null }.collect { return [it.label, it.pointsDone] },
                  color : '#009900']
         ]
-        def options = [chart: [xDomain: [values.label.min(), values.label.max()],
+        def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
+        def options = [chart: [xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
-                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.xaxis.label')]],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
                        title: [text: message(code: "is.chart.sprintBurnupPointsChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }
@@ -218,9 +222,10 @@ class SprintController implements ControllerErrorHandler {
                  values: values.findAll { it.storiesDone != null }.collect { return [it.label, it.storiesDone] },
                  color : '#009900']
         ]
-        def options = [chart: [xDomain: [values.label.min(), values.label.max()],
+        def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
+        def options = [chart: [xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],
-                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.xaxis.label')]],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
                        title: [text: message(code: "is.chart.sprintBurnupStoriesChart.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
     }

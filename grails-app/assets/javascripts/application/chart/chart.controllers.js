@@ -128,9 +128,9 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     x: function(entry) { return entry[0]; },
                     y: function(entry) { return entry[1]; },
                     xScale: d3.time.scale.utc(),
-                    showValues: true,
                     xAxis: {
-                        tickFormat: $filter('dayShorter')
+                        tickFormat: $filter('dayShorter'),
+                        showMaxMin: false
                     }
                 }
             }
