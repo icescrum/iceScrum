@@ -87,7 +87,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     showValues: true,
                     xAxis: {
                         tickFormat: function(entry) {
-                            return entry;
+                            return _.truncate(entry, {length: 16});
                         }
                     },
                     margin: {
@@ -106,7 +106,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     showValues: true,
                     xAxis: {
                         tickFormat: function(entry) {
-                            return entry;
+                            return _.truncate(entry, {length: 16});
                         }
                     },
                     margin: {
