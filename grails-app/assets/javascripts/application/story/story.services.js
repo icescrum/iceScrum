@@ -315,6 +315,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.findDuplicates = function(term) {
         return FormService.httpGet('story/findDuplicates', {params: {term: term}});
     };
+    this.getURL = function(id) {
+        return FormService.httpGet('story/' + id + '/url');
+    };
     this.filterStories = function(stories, storyFilter) {
         var getMatcher = function(key) {
             if (key == 'term') {

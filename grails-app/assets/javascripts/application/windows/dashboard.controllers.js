@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'project', '$controller', function($scope, $state, ProjectService, ReleaseService, SprintService, AttachmentService, project, $controller) {
+controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'StoryService', 'project', '$controller', function($scope, $location, $state, ProjectService, ReleaseService, SprintService, AttachmentService, StoryService, project, $controller) {
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
@@ -41,6 +41,13 @@ controllers.controller('dashboardCtrl', ['$scope', '$state', 'ProjectService', '
     };
     $scope.showMore = function() {
         $scope.pref.showMore = true;
+    };
+    $scope.openFromId = function(activity) {
+        if (activity.parentType == 'story') {
+            StoryService.getURL(activity.parentRef).then(function(data) {
+                $location.url(data.relativeUrl);
+            });
+        }
     };
     // Init
     $scope.pref = {

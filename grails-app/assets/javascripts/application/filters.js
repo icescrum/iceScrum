@@ -305,13 +305,6 @@ filters
             return filtered;
         };
     })
-    .filter('activityLink', ['$state', function($state) {
-        return function(activity) {
-            if (activity.parentType == 'story') {
-                return $state.href('backlog.backlog.story.details', {backlogCode: 'all', storyId: activity.parentRef});
-            }
-        };
-    }])
     .filter('activityName', ['$rootScope', function($rootScope) {
         return function(activity, hideType) {
             if (hideType) {

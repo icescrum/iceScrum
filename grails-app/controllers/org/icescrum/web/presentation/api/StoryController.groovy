@@ -218,26 +218,39 @@ class StoryController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
+    private String getStoryHash(Story story) {
+        String url
+        switch (story.state) {
+            case Story.STATE_SUGGESTED:
+                url = "backlog/sandbox/story/$story.id"
+                break
+            case [Story.STATE_ACCEPTED, Story.STATE_ESTIMATED]:
+                url = "backlog/backlog/story/$story.id"
+                break
+            case [Story.STATE_PLANNED, Story.STATE_DONE]:
+                url = "planning/$story.parentSprint.parentRelease.id/sprint/$story.parentSprint.id/story/$story.id"
+                break
+            case Story.STATE_INPROGRESS:
+                url = "taskBoard/$story.parentSprint.id/story/$story.id"
+                break
+            default:
+                url = "backlog/all/story/$story.id"
+        }
+        return url
+    }
+
     @Secured(['permitAll()'])
     def permalink(int uid, long project) {
         Project _project = Project.withProject(project)
         Story story = Story.findByBacklogAndUid(_project, uid)
-        String uri = "/p/$_project.pkey/#/"
-        switch (story.state) {
-            case Story.STATE_SUGGESTED:
-                uri += "backlog/sandbox/story/$story.id"
-                break
-            case [Story.STATE_ACCEPTED, Story.STATE_ESTIMATED]:
-                uri += "backlog/backlog/story/$story.id"
-                break
-            case [Story.STATE_PLANNED, Story.STATE_DONE]:
-                uri += "planning/$story.parentSprint.parentRelease.id/sprint/$story.parentSprint.id/story/$story.id"
-                break
-            case Story.STATE_INPROGRESS:
-                uri += "taskBoard/$story.parentSprint.id/story/$story.id"
-                break
-        }
-        redirect(uri: uri)
+        redirect(uri: "/p/$_project.pkey/#/" + getStoryHash(story))
+    }
+
+    @Secured(['permitAll()'])
+    def url(long id, long project) {
+        Project _project = Project.withProject(project)
+        Story story = Story.withStory(_project.id, id)
+        render(status: 200, contentType: 'application/json', text: [relativeUrl: getStoryHash(story)] as JSON)
     }
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])

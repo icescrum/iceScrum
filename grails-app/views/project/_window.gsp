@@ -230,7 +230,7 @@
                                     <div>
                                         {{ activity | activityName }}
                                         <strong ng-if="activity.code != 'delete'">
-                                            <a ng-href="{{ activity | activityLink }}">{{ activity.label }}</a>
+                                            <a href ng-click="openFromId(activity)">{{ activity.label }}</a>
                                         </strong>
                                         <strong ng-if="activity.code == 'delete'">{{ activity.label }}</strong>
                                     </div>
