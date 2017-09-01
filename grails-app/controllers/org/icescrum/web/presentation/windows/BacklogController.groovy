@@ -45,8 +45,7 @@ class BacklogController implements ControllerErrorHandler {
 
     @Secured(['stakeHolder() or inProject()'])
     def show(long project, long id) {
-        Project _project = Project.load(project)
-        Backlog backlog = Backlog.findByProjectAndId(_project, id)
+        Backlog backlog = Backlog.withBacklog(project, id)
         if (!backlog.isDefault && backlog.owner != springSecurityService.currentUser && !backlog.shared && !request.admin) {
             render(status: 403)
             return
@@ -57,8 +56,8 @@ class BacklogController implements ControllerErrorHandler {
     @Secured(['stakeHolder() or inProject()'])
     def chartByProperty(long id, long project, String property) {
         if (property in grailsApplication.config.icescrum.resourceBundles.backlogChartTypes.keySet()) {
-            def backlog = Backlog.findByProjectAndId(Project.load(project), id)
-            if (backlog.owner != springSecurityService.currentUser && !backlog.shared) {
+            Backlog backlog = Backlog.withBacklog(project, id)
+            if (!backlog.isDefault && backlog.owner != springSecurityService.currentUser && !backlog.shared && !request.admin) {
                 render(status: 403)
                 return
             }
