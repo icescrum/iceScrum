@@ -124,9 +124,8 @@ class ReleaseController implements ControllerErrorHandler {
     def unPlan(long project, long id) {
         Release release = Release.withRelease(project, id)
         def sprints = Sprint.findAllByParentRelease(release)
-        def unPlanAllStories = []
         if (sprints) {
-            unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
+            def unPlanAllStories = storyService.unPlanAll(sprints, Sprint.STATE_WAIT)
             render(status: 200, contentType: 'application/json', text: [stories: unPlanAllStories, sprints: sprints] as JSON)
         } else {
             returnError(code: 'todo.is.ui.nosprint')
