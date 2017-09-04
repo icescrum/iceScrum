@@ -189,7 +189,8 @@ class ProjectController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         _project.withTransaction {
             def teamId = teamParams.id
-            if (teamId != _project.team.id && securityService.owner(null, springSecurityService.authentication)) {
+            //workaround but TODO fix UI => teamID can't be null
+            if (teamId != null && teamId != _project.team.id && securityService.owner(null, springSecurityService.authentication)) {
                 projectService.changeTeam(_project, Team.get(teamId))
             }
             projectService.updateProjectMembers(_project, newMembers)
