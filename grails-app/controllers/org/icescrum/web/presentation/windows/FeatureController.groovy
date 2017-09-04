@@ -134,27 +134,24 @@ class FeatureController implements ControllerErrorHandler {
     def print(long project, String format) {
         def _project = Project.withProject(project)
         def values = featureService.projectParkingLotValues(_project)
-        def features = _project.features
-        if (!features) {
+        if (!values) {
             returnError(code: 'is.report.error.no.data')
         } else {
-            def data = []
-            Feature.withNewSession {
-                features.eachWithIndex { feature, index ->
-                    data << [
-                            uid                  : feature.uid,
-                            name                 : feature.name,
-                            description          : feature.description,
-                            notes                : feature.notes?.replaceAll(/<.*?>/, ''),
-                            rank                 : feature.rank,
-                            type                 : message(code: grailsApplication.config.icescrum.resourceBundles.featureTypes[feature.type]),
-                            value                : feature.value,
-                            effort               : feature.effort,
-                            associatedStories    : Story.countByFeature(feature),
-                            associatedStoriesDone: feature.countDoneStories,
-                            parkingLotValue      : values[index].value
-                    ]
-                }
+            def data = values.collect { valueEntry ->
+                Feature feature = valueEntry.feature
+                return [
+                        uid                  : feature.uid,
+                        name                 : feature.name,
+                        description          : feature.description,
+                        notes                : feature.notes?.replaceAll(/<.*?>/, ''),
+                        rank                 : feature.rank,
+                        type                 : message(code: grailsApplication.config.icescrum.resourceBundles.featureTypes[feature.type]),
+                        value                : feature.value,
+                        effort               : feature.effort,
+                        associatedStories    : Story.countByFeature(feature),
+                        associatedStoriesDone: feature.countDoneStories,
+                        parkingLotValue      : valueEntry.value
+                ]
             }
             renderReport('features', format ? format.toUpperCase() : 'PDF', [[project: _project.name, features: data ?: null]], _project.name)
         }
