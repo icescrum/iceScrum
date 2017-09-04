@@ -54,6 +54,8 @@ class TaskController implements ControllerErrorHandler {
                     return true
                 }
             }
+        } else {
+            tasks = Task.getAllInProject(project)
         }
         render(status: 200, contentType: 'application/json', text: tasks as JSON)
     }
