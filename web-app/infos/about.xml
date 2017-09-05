@@ -38,7 +38,7 @@
             <li><b>New</b> ability to delete users (Standalone only)</li>
             <li>WebServices REST API with Token based authentication (<a href="https://www.icescrum.com/documentation/rest-api/" target="_blank">Documentation</a>)</li>
             <li>Cleaner way to select done stories when closing sprint</li>
-            <li>v7 Docker image</li>
+            <li>v7 <a href="https://github.com/icescrum/iceScrum-docker/tree/master/icescrum" target="_blank">Docker image</a></li>
             <li>Ability to choose the order in which backlogs are displayed (the first is opened by default)</li>
             <li>Ability to switch view type in "My Tasks" widget</li>
             <li>Ability to change size of chart widgets</li>
@@ -52,7 +52,7 @@
             <li><b>New</b> Travis-CI App, integrate iceScrum with your Travis-CI distributed continuous integration service (<a href="https://www.icescrum.com/apps/travis/" target="_blank">Travis-CI</a>)</li>
             <li><b>New</b> Toolbox App, with small features like : Filter by user, Copy between projects.. (<a href="https://www.icescrum.com/apps/toolbox/" target="_blank">Toolbox</a>)</li>
             <li>Ability to choose the pie chart associated to a backlog (<a href="https://www.icescrum.com/apps/custom-backlogs/" target="_blank">Custom backlogs</a>)</li>
-            <li>Token based authentication for Jenkins, Travis, Github, Git/SVN etc</li>
+            <li>Token based authentication for Jenkins, Travis, Github, Git/SVN, etc.</li>
         </ul>
         <h4>Bug fixes</h4>
         <p>Lots of bugs have been fixed and we will not list them all here, but your experience should be smoother than ever with this version!</p>
