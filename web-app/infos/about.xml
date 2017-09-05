@@ -32,29 +32,30 @@
     <releaseNotes><![CDATA[
         <h4>Core features</h4>
         <ul>
-            <li><b>New</b> pie chart on backlogs</li>
-            <li><b>New</b> languages: portuguese, chinese, spanish</li>
+            <li><b>New</b> pie chart and aggregated data on backlogs details</li>
+            <li><b>New</b> backlog pie chart widget on user home</li>
+            <li><b>New</b> languages: portuguese (PT and BR), spanish, partial chinese</li>
             <li><b>New</b> ability to delete users (Standalone only)</li>
-            <li>WebServices REST API is back (<a href="https://www.icescrum.com/documentation/rest-api/" target="_blank">Documentation</a>)</li>
-            <li>Better error management</li>
-            <li>UI improvements: cleaner + more consistent + more mobile friendly</li>
-            <li>v7 is now available on Docker</li>
-            <li>Ability to choose the order in which backlogs are displayed</li>
-            <li>Docker support</li>
-            <li>Many improvements on performances</li>
+            <li>WebServices REST API with Token based authentication (<a href="https://www.icescrum.com/documentation/rest-api/" target="_blank">Documentation</a>)</li>
+            <li>Cleaner way to select done stories when closing sprint</li>
+            <li>v7 Docker image</li>
+            <li>Ability to choose the order in which backlogs are displayed (the first is opened by default)</li>
             <li>Ability to switch view type in "My Tasks" widget</li>
-            <li>Better "close sprint" view</li>
+            <li>Ability to change size of chart widgets</li>
+            <li>UI improvements: cleaner, more consistent and more mobile-friendly</li>
+            <li>Performance improvements</li>
+            <li>Better error management</li>
         </ul>
         <h4>Apps</h4>
         <ul>
+            <li><b>New</b> Data Export App, export iceScrum data in CSV / XLS formats (<a href="https://www.icescrum.com/apps/export/" target="_blank">Data Export</a>)</li>
             <li><b>New</b> Travis-CI App, integrate iceScrum with your Travis-CI distributed continuous integration service (<a href="https://www.icescrum.com/apps/travis/" target="_blank">Travis-CI</a>)</li>
             <li><b>New</b> Toolbox App, with small features like : Filter by user, Copy between projects.. (<a href="https://www.icescrum.com/apps/toolbox/" target="_blank">Toolbox</a>)</li>
-            <li><b>New</b> Data Export App, export iceScrum data in CSV / XLS formats (<a href="https://www.icescrum.com/apps/export/" target="_blank">Data Export</a>)</li>
-            <li><b>New</b> Backlog pie chart widget (<a href="https://www.icescrum.com/apps/custom-backlogs/" target="_blank">Custom backlogs</a>)</li>
-            <li>Access-Token based authentication for Jenkins, Travis, Github, Git/SVN etc</li>
+            <li>Ability to choose the pie chart associated to a backlog (<a href="https://www.icescrum.com/apps/custom-backlogs/" target="_blank">Custom backlogs</a>)</li>
+            <li>Token based authentication for Jenkins, Travis, Github, Git/SVN etc</li>
         </ul>
         <h4>Bug fixes</h4>
-        <p>Lots of bugs have been fixed and we will not list them all here, your experience should be smooth with this version!</p>
+        <p>Lots of bugs have been fixed and we will not list them all here, but your experience should be smoother than ever with this version!</p>
     ]]>
     </releaseNotes>
     <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE
