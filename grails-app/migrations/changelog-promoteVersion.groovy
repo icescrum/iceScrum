@@ -33,21 +33,33 @@ databaseChangeLog = {
                     }
                 }
             }
-            sql('UPDATE is_user_preferences set display_whats_new = true WHERE display_whats_new = false')
+            grailsChange {
+                change {
+                    sql.execute('UPDATE is_user_preferences set display_whats_new = true WHERE display_whats_new = false')
+                }
+            }
             addNotNullConstraint(tableName: "is_user_preferences", columnName: 'display_whats_new', columnDataType: 'BOOLEAN')
         }
         changeSet(id: 'user_preferences_reset_displayWhatsNew_mssql_' + version, author: 'vbarrier', filePath: filePath) {
             preConditions(onFail: "MARK_RAN") {
                 dbms(type: 'mssql')
             }
-            sql('UPDATE is_user_preferences set display_whats_new = 1 WHERE display_whats_new = 0')
+            grailsChange {
+                change {
+                    sql.execute('UPDATE is_user_preferences set display_whats_new = 1 WHERE display_whats_new = 0')
+                }
+            }
             addNotNullConstraint(tableName: "is_user_preferences", columnName: 'display_whats_new', columnDataType: 'BIT')
         }
         changeSet(id: 'user_preferences_reset_displayWhatsNew_oracle_' + version, author: 'vbarrier', filePath: filePath) {
             preConditions(onFail: "MARK_RAN") {
                 dbms(type: 'oracle')
             }
-            sql('UPDATE is_u_pref set display_whats_new = 1 WHERE display_whats_new = 0')
+            grailsChange {
+                change {
+                    sql.execute('UPDATE is_u_pref set display_whats_new = 1 WHERE display_whats_new = 0')
+                }
+            }
         }
     }
 }
