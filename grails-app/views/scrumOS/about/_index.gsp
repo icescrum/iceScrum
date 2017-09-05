@@ -19,19 +19,19 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
-<is:modal title="${message(code: 'is.ui.about')}">
-    <uib-tabset type="pills" justified="true">
-        <uib-tab heading="${message(code: 'is.dialog.about.warnings')}">
+<is:modal name="about" title="${message(code: 'is.ui.about', args:[versionNumber])}">
+    <uib-tabset active="active" type="pills" justified="true">
+        <uib-tab index="0" heading="${message(code: 'is.dialog.about.warnings')}">
             <g:render template="/${controllerName}/about/warnings"/>
         </uib-tab>
         <entry:point id="about-first-tab"/>
-        <uib-tab heading="${message(code: 'is.dialog.about.help')}">
-            <g:render template="/${controllerName}/about/help" model="[version: about.version]"/>
+        <uib-tab index="10" heading="${message(code: 'is.dialog.about.whatsNew.title')}">
+            <g:render template="/${controllerName}/about/whatsNew" model="[releaseNotes: about.releaseNotes]"/>
         </uib-tab>
-        <uib-tab heading="${message(code: 'is.dialog.about.version')}">
-            <g:render template="/${controllerName}/about/version" model="[version: about.version, versionNumber: versionNumber, server: server, configLocation: configLocation]"/>
+        <uib-tab index="11" heading="${message(code: 'is.dialog.about.help')}">
+            <g:render template="/${controllerName}/about/help" model="[version: about.version, versionNumber: versionNumber, server: server, configLocation: configLocation]"/>
         </uib-tab>
-        <uib-tab heading="${message(code: 'is.dialog.about.legal')}">
+        <uib-tab index="12" heading="${message(code: 'is.dialog.about.legal')}">
             ${about.license.text().encodeAsNL2BR()}
         </uib-tab>
         <entry:point id="about-last-tab"/>

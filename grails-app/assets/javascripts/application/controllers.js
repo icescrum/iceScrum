@@ -51,7 +51,7 @@ var extensibleController = function(appControllerName, controllerArray) {
     controllers.controller(appControllerName, newControllerArray);
 };
 
-extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', function($controller, $scope, $localStorage, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout) {
+extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', 'Session', 'UserService', function($controller, $scope, $localStorage, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout, Session, UserService) {
     $controller('headerCtrl', {$scope: $scope});
     // Functions
     $scope.displayDetailsView = function() {
@@ -79,6 +79,13 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
                 };
             }]
         });
+    };
+    $scope.showWhatsNewModal = function() {
+        if(Session.user.preferences){
+            Session.user.preferences.displayWhatsNew = false;
+            UserService.update(Session.user);
+        }
+        $scope.showAbout(10);
     };
     $scope.openStorySelectorModal = function(options) {
         $uibModal.open({
@@ -467,7 +474,11 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
     };
 }]);
 
-extensibleController('aboutCtrl', ['$scope', function($scope) {}]); // Used to extend about in plugins
+extensibleController('aboutCtrl', ['$scope', 'active', function($scope, active){
+    if(active){
+        $scope.active = active;
+    }
+}]); // Used to extend about in plugins
 
 controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', 'UserTokenService', function($scope, $uibModal, Session, UserService, hotkeys, PushService, UserTokenService) {
     // Functions
@@ -498,10 +509,16 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     $scope.getUnreadActivities = function() {
         return Session.unreadActivitiesCount;
     };
-    $scope.showAbout = function() {
+    $scope.showAbout = function(activeTabIndex) {
         $uibModal.open({
             controller: 'aboutCtrl',
-            templateUrl: 'scrumOS/about'
+            templateUrl: 'scrumOS/about',
+            resolve: {
+                active: function() {
+                    //set active tab unsing index
+                    return activeTabIndex;
+                }
+            }
         });
     };
     $scope.showProfile = function() {

@@ -94,25 +94,29 @@ header {
     margin-bottom: -15px;
     margin-top: -15px;
   }
-  .navbar-notif, .navbar-home {
-    margin: 9px 9px 0 0;
+  .navbar-fa {
+    margin: 9px 5px 0 5px;
     height: 28px;
-    width: 28px;
     position: relative;
     cursor: pointer;
     .fa {
       font-size: 28px;
+      color: #fff;
     }
   }
-  .navbar-home .fa {
-    color: #fff;
-  }
-  .navbar-notif {
+  .navbar-whatsNew {
     .fa {
       color: @logo-color-top;
-      &.empty {
-        color: #ccc;
+    }
+  }
+
+  .navbar-notif {
+    .fa {
+      &:not(.empty) {
+        color: @logo-color-top;
       }
+      font-size: 25px;
+      line-height: 25px;
     }
     .badge {
       color: @logo-color-top;
@@ -122,6 +126,7 @@ header {
       font-size: 0.8em;
       background: none;
     }
+    height: 25px;
   }
   .navbar-masthead {
     margin-bottom: 0;
@@ -242,6 +247,9 @@ header {
         }
       }
     }
+  }
+  .navbar-home {
+    margin-right:10px;
   }
   .navbar-user {
     margin-top: 6px;
@@ -1559,4 +1567,9 @@ ul.dropdown-menu > li > a {
   margin-bottom: -6px;
   padding-top: 6px;
   padding-bottom: 6px;
+}
+
+#modalabout .version {
+  margin-top:4px;
+  margin-right:15px;
 }

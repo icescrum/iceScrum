@@ -213,7 +213,7 @@ icescrum.marshaller = [
         widget: [include: ['width', 'height'],
                  exclude: ['userPreferences']],
         usertoken: [:],
-        userpreferences: [asShort: ['activity', 'language', 'emailsSettings', 'filterTask']],
+        userpreferences: [asShort: ['activity', 'language', 'emailsSettings', 'filterTask', 'displayWhatsNew']],
         projectpreferences: [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
                                        'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
         attachment: [include: ['filename']],

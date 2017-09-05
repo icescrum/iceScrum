@@ -215,15 +215,22 @@
                             </div>
                         </form>
                     </g:else>
+                    <g:if test="${g.meta(name: 'app.promoteVersion')}">
+                        <div class="navbar-fa navbar-whatsNew pull-left" ng-if="currentUser.preferences ? currentUser.preferences.displayWhatsNew : true">
+                            <a href ng-click="showWhatsNewModal()">
+                                <i class="fa fa-gift fa-2x" id="ga-show-whats-new-event"></i>
+                            </a>
+                        </div>
+                    </g:if>
                     <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
-                        <div class="navbar-notif"
+                        <div class="navbar-fa navbar-notif"
                              uib-dropdown-toggle>
                             <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
                             <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
                         </div>
                         <div uib-dropdown-menu class="notifications selection-disable" ng-include="'notifications.panel.html'"></div>
                     </div>
-                    <div class="navbar-home pull-left">
+                    <div class="navbar-fa navbar-home pull-left">
                         <a hotkey="{ 'shift+h': goToHome}"
                            hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
                            uib-tooltip="${message(code: 'is.ui.home')} (shift+h)"

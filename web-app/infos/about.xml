@@ -28,40 +28,38 @@
         <documentation>https://www.icescrum.com/documentation</documentation>
         <gettingStarted>https://www.icescrum.com/documentation/getting-started-with-icescrum</gettingStarted>
         <forum>https://www.icescrum.com/forums/</forum>
-        <library><name>AngularJS</name></library>
-        <library><name>angular-atmosphere</name></library>
-        <library><name>angular-extended-notifications</name></library>
-        <library><name>angular-fullscreen</name></library>
-        <library><name>angular-hotkeys</name></library>
-        <library><name>angular-wizard</name></library>
-        <library><name>angular-nvd3</name></library>
-        <library><name>angular-ui-bootstrap</name></library>
-        <library><name>angular-bootstrap-colorpicker</name></library>
-        <library><name>angular-ui-router</name></library>
-        <library><name>angular-ui-router-statehelper</name></library>
-        <library><name>angular-ui-select</name></library>
-        <library><name>ng-flow</name></library>
-        <library><name>ng-remote-validate</name></library>
-        <library><name>ng-password-strength</name></library>
-        <library><name>ng-pdfviewer</name></library>
-        <library><name>ng-sortable</name></library>
-        <library><name>ngStorage</name></library>
-        <library><name>Bootstrap</name></library>
-        <library><name>Bootstrap-Offcanvas</name></library>
-        <library><name>TODC Bootstrap</name></library>
-        <library><name>D3.js</name></library>
-        <library><name>nvd3</name></library>
-        <library><name>jQuery</name></library>
-        <library><name>jQuery atwho</name></library>
-        <library><name>jQuery caret</name></library>
-        <library><name>jQuery markitup</name></library>
-        <library><name>jQuery timeago</name></library>
-        <library><name>jstz</name></library>
-        <library><name>lodash</name></library>
-        <library><name>pdfjs</name></library>
-        <library><name>saveSvgAsPng</name></library>
-        <library><name>Font Awesome</name></library>
     </version>
+    <releaseNotes><![CDATA[
+        <h4>Core features / improvements</h4>
+        <ul>
+            <li><b>New</b> pie chart on backlogs</li>
+            <li><b>New</b> languages: portuguese, chinese, spanish</li>
+            <li>Webservices API is back</li>
+            <li>Better error management</li>
+            <li>UI improvements: cleaner + more consistent + more mobile friendly</li>
+            <li>Docker support for v7</li>
+            <li>Added ability to sort backlogs</li>
+            <li>Docker support</li>
+            <li>Many improvements on performances</li>
+            <li>Widget My Tasks: added ability to switch view type</li>
+            <li>Better "close sprint" view</li>
+        </ul>
+        <h4>Apps / improvements</h4>
+        <ul>
+            <li><b>New</b> App Travis-CI, integrate iceScrum with your Travis-CI distributed continuous integration service (<a href="https://www.icescrum.com/apps/travis-ci/">Travis-CI</a>)</li>
+            <li><b>New</b> App Toolbox, with small features like : Filter by user, Copy between projects.. (<a href="https://www.icescrum.com/apps/toolbox/">Toolbox</a>)</li>
+            <li><b>New</b> App Data Export, add capability to export in CSV / XLS format (<a href="https://www.icescrum.com/apps/data-export/">Data Export</a>)</li>
+            <li><b>New</b> widget Backlog pie chart (<a href="https://www.icescrum.com/apps/custom-backlogs/">Custom backlogs</a>)</li>
+            <li>Access-Token based authentication for Jenkins, Travis, Github, Git/SVN etc</li>
+        </ul>
+        <h4>Bug fixes</h4>
+        <ul>
+            <li>Encoding issues</li>
+            <li>Permission issues</li>
+            <li>Chart range issue</li>
+        </ul>
+    ]]>
+    </releaseNotes>
     <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
