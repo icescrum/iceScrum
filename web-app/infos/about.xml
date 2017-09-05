@@ -46,9 +46,9 @@
         </ul>
         <h4>Apps / improvements</h4>
         <ul>
-            <li><b>New</b> App Travis-CI, integrate iceScrum with your Travis-CI distributed continuous integration service (<a href="https://www.icescrum.com/apps/travis-ci/">Travis-CI</a>)</li>
+            <li><b>New</b> App Travis-CI, integrate iceScrum with your Travis-CI distributed continuous integration service (<a href="https://www.icescrum.com/apps/travis/">Travis-CI</a>)</li>
             <li><b>New</b> App Toolbox, with small features like : Filter by user, Copy between projects.. (<a href="https://www.icescrum.com/apps/toolbox/">Toolbox</a>)</li>
-            <li><b>New</b> App Data Export, add capability to export in CSV / XLS format (<a href="https://www.icescrum.com/apps/data-export/">Data Export</a>)</li>
+            <li><b>New</b> App Data Export, add capability to export in CSV / XLS format (<a href="https://www.icescrum.com/apps/export/">Data Export</a>)</li>
             <li><b>New</b> widget Backlog pie chart (<a href="https://www.icescrum.com/apps/custom-backlogs/">Custom backlogs</a>)</li>
             <li>Access-Token based authentication for Jenkins, Travis, Github, Git/SVN etc</li>
         </ul>
