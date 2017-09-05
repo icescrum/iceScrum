@@ -22,6 +22,7 @@
 *
 */
 databaseChangeLog = {
+    include file: "changelog-promoteVersion.groovy"
     include file: "changelog-7-0-2.groovy"
     include file: "changelog-7-0-6.groovy"
     include file: "changelog-7-1.groovy"

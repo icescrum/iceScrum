@@ -1,3 +1,4 @@
+import grails.util.Metadata
 /*
 * Copyright (c) 2017 Kagilum SAS
 *
@@ -24,7 +25,7 @@
 databaseChangeLog = {
     if (Metadata.current['app.promoteVersion'] == 'true') {
         def version = Metadata.current['app.version'].replaceAll(' ', '')
-        changeSet(id: 'user_preferences_reset_displayWhatsNew_' + version, author: 'vbarrier', filePath: filePath) {
+        changeSet(id: 'user_preferences_reset_displayWhatsNew_' + version, author: 'vbarrier') {
             preConditions(onFail: "MARK_RAN") {
                 not {
                     or {
@@ -40,7 +41,7 @@ databaseChangeLog = {
             }
             addNotNullConstraint(tableName: "is_user_preferences", columnName: 'display_whats_new', columnDataType: 'BOOLEAN')
         }
-        changeSet(id: 'user_preferences_reset_displayWhatsNew_mssql_' + version, author: 'vbarrier', filePath: filePath) {
+        changeSet(id: 'user_preferences_reset_displayWhatsNew_mssql_' + version, author: 'vbarrier') {
             preConditions(onFail: "MARK_RAN") {
                 dbms(type: 'mssql')
             }
@@ -51,7 +52,7 @@ databaseChangeLog = {
             }
             addNotNullConstraint(tableName: "is_user_preferences", columnName: 'display_whats_new', columnDataType: 'BIT')
         }
-        changeSet(id: 'user_preferences_reset_displayWhatsNew_oracle_' + version, author: 'vbarrier', filePath: filePath) {
+        changeSet(id: 'user_preferences_reset_displayWhatsNew_oracle_' + version, author: 'vbarrier') {
             preConditions(onFail: "MARK_RAN") {
                 dbms(type: 'oracle')
             }
