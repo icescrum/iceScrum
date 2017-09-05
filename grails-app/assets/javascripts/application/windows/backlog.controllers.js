@@ -212,9 +212,17 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             };
             $scope.orderBacklogByRank(backlogContainer);
             $scope.refreshSingleBacklog(backlogContainer); // Init the backlog from client data (storyService.list) + init sortable variable
-            StoryService.listByBacklog(backlogContainer.backlog).then(function() { // Retrieve server data, stories that were missing will be automatically added
+            var setStoriesLoaded = function() {
                 backlogContainer.storiesLoaded = true;
-            });
+            };
+            var retrieveServerStories = function() {
+                StoryService.listByBacklog(backlogContainer.backlog).then(setStoriesLoaded);  // Retrieve server data, stories that were missing will be automatically added
+            };
+            if (backlogContainer.backlog.count > 250) {
+                $scope.confirm({message: $scope.message('todo.is.ui.backlog.load.confirm'), callback: retrieveServerStories, closeCallback: setStoriesLoaded});
+            } else {
+                retrieveServerStories();
+            }
             $scope.backlogContainers.push(backlogContainer);
             var savedBacklogsOrder = $scope.getWindowSetting('backlogsListOrder');
             if (savedBacklogsOrder) {
