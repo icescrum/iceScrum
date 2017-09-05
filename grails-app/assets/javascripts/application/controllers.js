@@ -81,7 +81,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
         });
     };
     $scope.showWhatsNewModal = function() {
-        if(Session.user.preferences){
+        if (Session.user.preferences) {
             Session.user.preferences.displayWhatsNew = false;
             UserService.update(Session.user);
         }
@@ -474,8 +474,8 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
     };
 }]);
 
-extensibleController('aboutCtrl', ['$scope', 'active', function($scope, active){
-    if(active){
+extensibleController('aboutCtrl', ['$scope', 'active', function($scope, active) {
+    if (active) {
         $scope.active = active;
     }
 }]); // Used to extend about in plugins
@@ -515,8 +515,7 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
             templateUrl: 'scrumOS/about',
             resolve: {
                 active: function() {
-                    //set active tab unsing index
-                    return activeTabIndex;
+                    return activeTabIndex; // Set active tab unsing index
                 }
             }
         });
