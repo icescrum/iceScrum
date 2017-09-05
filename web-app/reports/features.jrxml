@@ -270,13 +270,13 @@
 				</jr:table>
 			</componentElement>
 		</band>
-		<band height="298" splitType="Stretch">
+		<band height="498" splitType="Stretch">
 			<break>
 				<reportElement x="0" y="1" width="100" height="1"/>
 			</break>
 			<barChart>
 				<chart>
-					<reportElement x="137" y="52" width="535" height="209"/>
+					<reportElement x="137" y="52" width="535" height="409"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
