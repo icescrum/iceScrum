@@ -114,13 +114,14 @@ class ErrorsController implements ControllerErrorHandler {
                                     bcc    : admins*.email.toArray(),
                                     subject: "[iceScrum][report] Error report v7",
                                     view   : '/emails-templates/reportError',
-                                    model  : [params    : params,
-                                              version   : g.meta(name: 'app.version'),
-                                              stackTrace: ExceptionUtils.getStackTrace(exception),
-                                              message   : exception.message,
-                                              appID     : grailsApplication.config.icescrum.appID,
-                                              ip        : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
-                                              user      : user ? user.username + ' - ' + user.firstName + ' ' + user.lastName + ' - ' + user.email : 'Not logged in'],
+                                    model  : [uriParams     : params,
+                                              uri           : request.forwardURI,
+                                              version       : g.meta(name: 'app.version'),
+                                              stackTrace    : ExceptionUtils.getStackTrace(exception),
+                                              message       : exception.message,
+                                              appID         : grailsApplication.config.icescrum.appID,
+                                              ip            : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
+                                              user          : user ? user.username + ' - ' + user.firstName + ' ' + user.lastName + ' - ' + user.email : 'Not logged in'],
                                     async  : false
                             ]);
                             returnError(code: 'is.error.and.message.sent', exception: exception)
