@@ -27,7 +27,7 @@
      class="postit story {{ application.postitSize.story + ' ' + ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div class="head">
         <div class="head-left">
-            <span class="id" as-sortable-item-handle>{{ ::story.uid }}</span>
+            <span class="id">{{ ::story.uid }}</span>
             <a href
                class="follow {{ story.followed ? 'active' : '' }}"
                uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
