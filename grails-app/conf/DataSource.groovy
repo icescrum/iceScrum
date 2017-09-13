@@ -36,22 +36,22 @@ dataSource {
 
 environments {
     development {
-//        dataSource {
-//            dbCreate = "create-drop"
-//            url = "jdbc:h2:mem:devDb"
-//            driverClassName = "org.h2.Driver"
-//            username = "sa"
-//            password = ""
-//        }
         dataSource {
-//            logSql = true
-            dbCreate = "update"
-            username = "root"
-            password = "root"
-            driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/icescrum"
+            dbCreate = "create-drop"
+            url = "jdbc:h2:mem:devDb"
+            driverClassName = "org.h2.Driver"
+            username = "sa"
+            password = ""
         }
-    }
+//        dataSource {
+////            logSql = true
+//            dbCreate = "update"
+//            username = "root"
+//            password = "root"
+//            driverClassName = "com.mysql.jdbc.Driver"
+//            url = "jdbc:mysql://localhost/icescrum"
+//        }
+//    }
     test {
         dataSource {
             dbCreate = "create-drop"
