@@ -37,6 +37,7 @@
             <li>Backlogs are very slow / unresponsive when they contain hundreds of stories</li>
             <li>Error when displaying sprint availability burndown on user home</li>
         </ul>
+        <a href="https://www.icescrum.com/blog/icescrum-v7-1-0/">Previous release notes: 7.1 with new features / apps / improvements</a>
     ]]>
     </releaseNotes>
     <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE

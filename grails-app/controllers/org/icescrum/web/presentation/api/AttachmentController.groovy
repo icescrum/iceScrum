@@ -74,21 +74,24 @@ class AttachmentController implements ControllerErrorHandler {
 
     @Secured('(isAuthenticated() and stakeHolder()) or inProject()')
     def save() {
-        def _attachmentable = getAttachmentableObject(params)
+        def attachmentable = getAttachmentableObject(params)
         def endOfUpload = { uploadInfo ->
             def service = grailsApplication.mainContext[params.type + 'Service']
-            service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, _attachmentable, ['addAttachment': null])
+            service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment': null])
             if (uploadInfo.filePath) {
-                _attachmentable.addAttachment(springSecurityService.currentUser, new File(uploadInfo.filePath), uploadInfo.filename)
+                attachmentable.addAttachment(springSecurityService.currentUser, new File(uploadInfo.filePath), uploadInfo.filename)
             } else {
-                _attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
+                attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
             }
-            def attachment = _attachmentable.attachments.first()
-            service.publishSynchronousEvent(IceScrumEventType.UPDATE, _attachmentable, ['addedAttachment': attachment])
-            def res = ['filename': attachment.filename, 'length': attachment.length, 'ext': attachment.ext, 'id': attachment.id, attachmentable: [id: _attachmentable.id, 'class': params.type]]
+            def attachment = attachmentable.attachments.first()
+            if (attachmentable.hasProperty('attachments_count')) {
+                attachmentable.attachments_count = attachmentable.getTotalAttachments()
+            }
+            service.publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment': attachment])
+            def res = ['filename': attachment.filename, 'length': attachment.length, 'ext': attachment.ext, 'id': attachment.id, attachmentable: [id: attachmentable.id, 'class': params.type]]
             render(status: 201, contentType: 'application/json', text: res as JSON)
         }
-        if (_attachmentable) {
+        if (attachmentable) {
             if (!params.url) {
                 UtilsWebComponents.handleUpload.delegate = this
                 UtilsWebComponents.handleUpload(request, params, endOfUpload)
@@ -108,6 +111,9 @@ class AttachmentController implements ControllerErrorHandler {
             if (attachment) {
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['removeAttachment': attachment])
                 attachmentable.removeAttachment(attachment)
+                if (attachmentable.hasProperty('attachments_count')) {
+                    attachmentable.attachments_count = attachmentable.getTotalAttachments()
+                }
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['removedAttachment': null])
                 render(status: 204)
             }

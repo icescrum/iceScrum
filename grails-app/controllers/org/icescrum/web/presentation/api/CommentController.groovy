@@ -74,6 +74,9 @@ class CommentController implements ControllerErrorHandler {
                 if (params.type == 'story') {
                     commentable.addToFollowers(poster)
                 }
+                if (commentable.hasProperty('comments_count')) {
+                    commentable.comments_count = commentable.getTotalComments()
+                }
             }
         }
         render(status: 201, contentType: 'application/json', text: comment as JSON)
@@ -122,6 +125,9 @@ class CommentController implements ControllerErrorHandler {
         def commentable = commentableObject
         grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removeComment': comment])
         commentable.removeComment(comment)
+        if (commentable.hasProperty('comments_count')) {
+            commentable.comments_count = commentable.getTotalComments()
+        }
         grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['removedComment': comment])
         render(status: 204)
     }

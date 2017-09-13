@@ -218,7 +218,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             var retrieveServerStories = function() {
                 StoryService.listByBacklog(backlogContainer.backlog).then(setStoriesLoaded);  // Retrieve server data, stories that were missing will be automatically added
             };
-            if (backlogContainer.backlog.count > 250) {
+            if (backlogContainer.backlog.count > 500) {
                 $scope.confirm({message: $scope.message('todo.is.ui.backlog.load.confirm'), callback: retrieveServerStories, closeCallback: setStoriesLoaded});
             } else {
                 retrieveServerStories();
