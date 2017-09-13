@@ -145,10 +145,8 @@
       border-radius: 2px;
       &.invert {
         color: @invert-color;
-        .with-progress-bar {
-          .hover-progress {
-            color: @gray;
-          }
+        .hover-progress {
+          color: @gray;
         }
         .head {
           a.follow {
@@ -307,7 +305,6 @@
           position: absolute;
         }
         .progress {
-          display: none;
           width: 100%;
           padding: 0;
           height: 13px;
@@ -333,14 +330,6 @@
             line-height: 10px;
             display: none;
             font-weight: bold;
-          }
-        }
-        &.with-progress-bar {
-          .progress {
-            display: inline-block;
-          }
-          .state {
-
           }
         }
       }
