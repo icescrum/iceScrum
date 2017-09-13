@@ -51,7 +51,7 @@ environments {
 //            driverClassName = "com.mysql.jdbc.Driver"
 //            url = "jdbc:mysql://localhost/icescrum"
 //        }
-//    }
+    }
     test {
         dataSource {
             dbCreate = "create-drop"
