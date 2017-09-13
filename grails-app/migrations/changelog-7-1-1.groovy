@@ -38,39 +38,39 @@ databaseChangeLog = {
                 features.each {
                     it.attachments_count = it.getTotalAttachments()
                     it.comments_count = it.getTotalComments()
-                    it.save(flush:it == features.last(), failOnError:true)
+                    it.save(failOnError:true)
                 }
                 println "stories..."
                 def stories = Story.getAll()
                 stories.each {
                     it.attachments_count = it.getTotalAttachments()
                     it.comments_count = it.getTotalComments()
-                    it.save(flush:it == stories.last(), failOnError:true)
+                    it.save(failOnError:true)
                 }
                 println "tasks..."
                 def tasks = Task.getAll()
                 tasks.each {
                     it.attachments_count = it.getTotalAttachments()
                     it.comments_count = it.getTotalComments()
-                    it.save(flush:it == tasks.last(), failOnError:true)
+                    it.save(failOnError:true)
+                }
+                println "releases..."
+                def releases = Release.getAll()
+                releases.each {
+                    it.attachments_count = it.getTotalAttachments()
+                    it.save(failOnError:true)
+                }
+                println "sprints..."
+                def sprints = Sprint.getAll()
+                sprints.each {
+                    it.attachments_count = it.getTotalAttachments()
+                    it.save(failOnError:true)
                 }
                 println "projects..."
                 def projects = Project.getAll()
                 projects.each {
                     it.attachments_count = it.getTotalAttachments()
                     it.save(flush:it == projects.last(), failOnError:true)
-                }
-                println "releases..."
-                def releases = Release.getAll()
-                releases.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.save(flush:it == releases.last(), failOnError:true)
-                }
-                println "sprints..."
-                def sprints = Sprint.getAll()
-                sprints.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.save(flush:it == sprints.last(), failOnError:true)
                 }
                 println "migration finished!"
             }
