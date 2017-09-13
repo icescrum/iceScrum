@@ -43,7 +43,7 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
             ProjectService.get(widget.settings.project.id).then(function(project) {
                 $scope.holder.projectResolved = true;
                 $scope.holder.project = project;
-                //$scope.project = project; // Required for projectChartCtrl
+                $scope.project = project; // Required for projectChartCtrl
             });
         }
         ProjectService.listByUser({term: term, paginate: true}).then(function(projectsAndCount) {
@@ -63,7 +63,7 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
     };
     $scope.projectChanged = function() { // Use callback instead of direct model linking to filter data before sending it
         widget.settings.project = _.pick($scope.holder.project, ['id', 'pkey']);
-        //$scope.project = $scope.holder.project; // Required for projectChartCtrl
+        $scope.project = $scope.holder.project; // Required for projectChartCtrl
         widget.type = 'project';
         widget.typeId = $scope.holder.project.id;
     };
