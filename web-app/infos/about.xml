@@ -30,32 +30,13 @@
         <forum>https://www.icescrum.com/forums/</forum>
     </version>
     <releaseNotes><![CDATA[
-        <h4>Core features</h4>
-        <ul>
-            <li><b>New</b> pie chart and aggregated data on backlogs details</li>
-            <li><b>New</b> backlog pie chart widget on user home</li>
-            <li><b>New</b> languages: portuguese (PT and BR), spanish, partial chinese</li>
-            <li><b>New</b> ability to delete users (Standalone only)</li>
-            <li>WebServices REST API with Token based authentication (<a href="https://www.icescrum.com/documentation/rest-api/" target="_blank">Documentation</a>)</li>
-            <li>Cleaner way to select done stories when closing sprint</li>
-            <li>v7 <a href="https://github.com/icescrum/iceScrum-docker/tree/master/icescrum" target="_blank">Docker image</a></li>
-            <li>Ability to choose the order in which backlogs are displayed (the first is opened by default)</li>
-            <li>Ability to switch view type in "My Tasks" widget</li>
-            <li>Ability to change size of chart widgets</li>
-            <li>UI improvements: cleaner, more consistent and more mobile-friendly</li>
-            <li>Performance improvements</li>
-            <li>Better error management</li>
-        </ul>
-        <h4>Apps</h4>
-        <ul>
-            <li><b>New</b> Data Export App, export iceScrum data in CSV / XLS formats (<a href="https://www.icescrum.com/apps/export/" target="_blank">Data Export</a>)</li>
-            <li><b>New</b> Travis-CI App, integrate iceScrum with your Travis-CI distributed continuous integration service (<a href="https://www.icescrum.com/apps/travis/" target="_blank">Travis-CI</a>)</li>
-            <li><b>New</b> Toolbox App, with small features like : Filter by user, Copy between projects.. (<a href="https://www.icescrum.com/apps/toolbox/" target="_blank">Toolbox</a>)</li>
-            <li>Ability to choose the pie chart associated to a backlog (<a href="https://www.icescrum.com/apps/custom-backlogs/" target="_blank">Custom backlogs</a>)</li>
-            <li>Token based authentication for Jenkins, Travis, Github, Git/SVN, etc.</li>
-        </ul>
         <h4>Bug fixes</h4>
-        <p>Lots of bugs have been fixed and we will not list them all here, but your experience should be smoother than ever with this version!</p>
+        <ul>
+            <li>Excel App: error when reading an empty row from an XLS file</li>
+            <li>GitHub / Git / SVN / Jenkins...: error when deleting a story with tasks that have build / commits</li>
+            <li>Backlogs are very slow / unresponsive when they contain hundreds of stories</li>
+            <li>Error when displaying sprint availability burndown on user home</li>
+        </ul>
     ]]>
     </releaseNotes>
     <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE
