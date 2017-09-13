@@ -350,18 +350,18 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
     $scope.backlogContainers = [];
     $scope.availableBacklogs = backlogs;
     $scope.backlogCodes = BacklogCodes;
-    var backlogsUpdatedTimeout= null;
+    var backlogsUpdatedTimeout = null;
     // Ensures that the stories list of displayed backlogs are up to date
     $scope.$on('is:backlogsUpdated', function(event, backlogCodes) {
         _.each(backlogCodes, function(backlogCode) {
             var backlogContainer = $scope.getBacklogContainer(backlogCode);
             if (backlogContainer) {
-                if(backlogsUpdatedTimeout){
+                if (backlogsUpdatedTimeout) {
                     $timeout.cancel(backlogsUpdatedTimeout);
                 }
                 backlogsUpdatedTimeout = $timeout(function() {
                     $scope.refreshSingleBacklog(backlogContainer);
-                },  500);
+                }, 500);
             }
         });
     });
