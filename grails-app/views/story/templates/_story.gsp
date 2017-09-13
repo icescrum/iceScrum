@@ -60,7 +60,7 @@
         <div class="tags">
             <a ng-repeat="tag in story.tags"
                href="{{ tagContextUrl(tag) }}">
-                <span class="tag">{{ tag }}</span>
+                <span class="tag">{{:: tag }}</span>
             </a>
         </div>
         <div class="actions">
