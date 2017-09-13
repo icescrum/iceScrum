@@ -41,7 +41,7 @@ databaseChangeLog = {
                 sql.execute("UPDATE is_release SET attachments_count = 0  WHERE attachments_count IS NULL")
 
 
-                println "Startinng attachments / comments count migration (can take time!)"
+                println "Starting attachments / comments count migration (It will take some time!)"
                 println "features..."
                 def features = Feature.getAll()
                 features.each {
