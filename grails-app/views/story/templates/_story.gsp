@@ -31,7 +31,10 @@
             <a href
                class="follow {{ story.followed ? 'active' : '' }}"
                uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-               ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
+               ng-click="follow(story)">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </a>
             <entry:point id="story-head-left"/>
         </div>
         <div class="head-right">
@@ -67,9 +70,10 @@
                     <span class="badge">{{ story.attachments_count || '' }}</span>
                 </a>
             </span>
-            <span class="action" ng-class="{'active':story.comments_count}">
+            <span class="action comments" ng-class="{'active':story.comments_count}">
                 <a href="{{ openStoryUrl(story.id) }}/comments">
-                    <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'" fast-tooltip-el="${message(code: 'todo.is.ui.comments')}"></i>
+                    <i class="fa fa-comment" fast-tooltip-el="${message(code: 'todo.is.ui.comments')}"></i>
+                    <i class="fa fa-comment-o" fast-tooltip-el="${message(code: 'todo.is.ui.comments')}"></i>
                     <span class="badge">{{ story.comments_count  || '' }}</span>
                 </a>
             </span>
@@ -79,9 +83,10 @@
                     <span class="badge">{{ story.tasks_count || '' }}</span>
                 </a>
             </span>
-            <span class="action" ng-class="{'active':story.acceptanceTests_count}">
+            <span class="action acceptances-tests" ng-class="{'active':story.acceptanceTests_count}">
                 <a href="{{ openStoryUrl(story.id) }}/tests">
-                    <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'" fast-tooltip-el="${message(code: 'todo.is.ui.acceptanceTests')}"></i>
+                    <i class="fa fa-check-square" fast-tooltip-el="${message(code: 'todo.is.ui.acceptanceTests')}"></i>
+                    <i class="fa fa-check-square-o" fast-tooltip-el="${message(code: 'todo.is.ui.acceptanceTests')}"></i>
                     <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
                 </a>
             </span>
