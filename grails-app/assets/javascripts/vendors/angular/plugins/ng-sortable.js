@@ -650,10 +650,12 @@
           scope.itemScope = itemController.scope;
           element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
-          scope.$watchGroup(['sortableScope.isDisabled', 'sortableScope.options.longTouch', function() { return !attrs.asSortableItemHandle || scope.$eval(attrs.asSortableItemHandle); }], function (newValues) {
-            // CUSTOM
+          scope.$watchGroup(['sortableScope.isDisabled', function() { return !attrs.asSortableItemHandle || scope.$eval(attrs.asSortableItemHandle); }], function (newValues) {
+            // CUSTOM:
+            // - conditional handle
+            // - remove the isLongTouch watcher for better perfs, so this option cannot be enabled through the option param anymore (could be forced generally at true by setting isLongTouch = false above)
             var globalDisabled = newValues[0];
-            var localDisabled = !newValues[2];
+            var localDisabled = !newValues[1];
             var newDisabled = globalDisabled || localDisabled;
             if (isDisabled !== newDisabled) {
               isDisabled = newDisabled;
@@ -664,10 +666,6 @@
               } else {
                 bindDrag();
               }
-            } else if (isLongTouch !== newValues[1]) {
-              isLongTouch = newValues[1];
-              unbindDrag();
-              bindDrag();
             } else {
               bindDrag();
             }
