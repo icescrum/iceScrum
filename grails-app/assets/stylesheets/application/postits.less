@@ -145,8 +145,10 @@
       border-radius: 2px;
       &.invert {
         color: @invert-color;
-        .hover-progress {
-          color: @gray;
+        .with-progress-bar {
+          .hover-progress {
+            color: @gray;
+          }
         }
         .head {
           a.follow {
@@ -305,6 +307,7 @@
           position: absolute;
         }
         .progress {
+          display:none;
           width: 100%;
           padding: 0;
           height: 13px;
@@ -330,6 +333,14 @@
             line-height: 10px;
             display: none;
             font-weight: bold;
+          }
+        }
+        &.with-progress-bar {
+          .progress {
+            display: inline-block;
+          }
+          .state {
+
           }
         }
       }
@@ -766,15 +777,39 @@
     }
     i {
       color: @gray;
-      &.fa-comment-o {
-        vertical-align: text-top;
-      }
     }
     font-family: @font-family-base;
+    .action{
+      &.comments {
+        .fa-comment-o, &.active .fa-comment {
+          display:inline-block;
+        }
+        .fa-comment, &.active .fa-comment-o {
+          display:none;
+        }
+        .fa-comment-o {
+          vertical-align: text-top;
+        }
+      }
+      &.acceptances-tests {
+        .fa-check-square-o, &.active .fa-check-square {
+          display:inline-block;
+        }
+        .fa-check-square, &.active .fa-check-square-o {
+          display:none;
+        }
+      }
+    }
   }
   .follow {
     color: @gray;
     text-decoration: none;
+    .fa-star-o, &.active .fa-star {
+      display:inline-block;
+    }
+    .fa-star, &.active .fa-star-o {
+      display:none;
+    }
   }
 }
 
