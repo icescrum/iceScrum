@@ -1,9 +1,4 @@
-import org.icescrum.core.domain.Feature
-import org.icescrum.core.domain.Project
-import org.icescrum.core.domain.Release
-import org.icescrum.core.domain.Sprint
-import org.icescrum.core.domain.Story
-import org.icescrum.core.domain.Task
+import org.icescrum.core.domain.*
 
 /*
 * Copyright (c) 2017 Kagilum SAS
@@ -38,7 +33,7 @@ databaseChangeLog = {
                 def sprints = Sprint.getAll()
                 sprints.each {
                     it.attachments_count = it.getTotalAttachments()
-                    it.save(flush:it == sprints.last(), failOnError:true)
+                    it.save(flush: it == sprints.last(), failOnError: true)
                 }
             }
         }
@@ -53,7 +48,7 @@ databaseChangeLog = {
                 def releases = Release.getAll()
                 releases.each {
                     it.attachments_count = it.getTotalAttachments()
-                    it.save(flush:it == releases.last(), failOnError:true)
+                    it.save(flush: it == releases.last(), failOnError: true)
                 }
             }
         }
@@ -68,7 +63,7 @@ databaseChangeLog = {
                 def projects = Project.getAll()
                 projects.each {
                     it.attachments_count = it.getTotalAttachments()
-                    it.save(flush:it == projects.last(), failOnError:true)
+                    it.save(flush: it == projects.last(), failOnError: true)
                 }
             }
         }
@@ -84,7 +79,7 @@ databaseChangeLog = {
                 features.each {
                     it.attachments_count = it.getTotalAttachments()
                     it.comments_count = it.getTotalComments()
-                    it.save(flush:it == features.last(), failOnError:true)
+                    it.save(flush: it == features.last(), failOnError: true)
                 }
             }
         }
@@ -101,7 +96,7 @@ databaseChangeLog = {
                 stories.each {
                     it.attachments_count = it.getTotalAttachments()
                     it.comments_count = it.getTotalComments()
-                    it.save(flush:it == stories.last(), failOnError:true)
+                    it.save(flush: it == stories.last(), failOnError: true)
                 }
             }
         }
@@ -118,7 +113,7 @@ databaseChangeLog = {
                 tasks.each {
                     it.attachments_count = it.getTotalAttachments()
                     it.comments_count = it.getTotalComments()
-                    it.save(flush:it == tasks.last(), failOnError:true)
+                    it.save(flush: it == tasks.last(), failOnError: true)
                 }
                 println "migration finished!"
             }
