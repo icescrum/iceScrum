@@ -32,6 +32,7 @@ databaseChangeLog = {
     changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_sprint") {
         grailsChange {
             change {
+                println "Starting attachments / comments count migration (It will take some time!)"
                 sql.execute("UPDATE is_sprint SET attachments_count = 0  WHERE attachments_count IS NULL")
                 println "sprints..."
                 def sprints = Sprint.getAll()
@@ -69,7 +70,6 @@ databaseChangeLog = {
                     it.attachments_count = it.getTotalAttachments()
                     it.save(flush:it == projects.last(), failOnError:true)
                 }
-                println "migration finished!"
             }
         }
         addNotNullConstraint(tableName: "is_project", columnName: "attachments_count", columnDataType: "integer")
@@ -78,7 +78,6 @@ databaseChangeLog = {
     changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_feature") {
         grailsChange {
             change {
-                println "Starting attachments / comments count migration (It will take some time!)"
                 sql.execute("UPDATE is_feature SET comments_count = 0, attachments_count = 0  WHERE comments_count IS NULL OR attachments_count IS NULL")
                 println "features..."
                 def features = Feature.getAll()
@@ -121,6 +120,7 @@ databaseChangeLog = {
                     it.comments_count = it.getTotalComments()
                     it.save(flush:it == tasks.last(), failOnError:true)
                 }
+                println "migration finished!"
             }
         }
         addNotNullConstraint(tableName: "is_task", columnName: "comments_count", columnDataType: "integer")
