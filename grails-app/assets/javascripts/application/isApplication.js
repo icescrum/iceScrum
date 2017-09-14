@@ -204,7 +204,7 @@ angular.module('isApplication', [
         var featureTabs = _.merge({
             details: {
                 resolve: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsFeature) {
-                    if (!$stateParams.storyTabId) {
+                    if (!$stateParams.featureTabId) {
                         return AttachmentService.list(detailsFeature);
                     }
                 }]
