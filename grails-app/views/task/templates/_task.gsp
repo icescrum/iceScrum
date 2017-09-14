@@ -63,10 +63,11 @@
                     <span class="badge">{{ task.attachments_count || '' }}</span>
                 </a>
             </span>
-            <span class="action" ng-class="{'active':task.comments_count}">
+            <span class="action comments" ng-class="{'active':task.comments_count}">
                 <a href="#/{{ ::viewName }}/{{ ::sprint.id }}/task/{{ ::task.id }}/comments"
                    uib-tooltip="${message(code: 'todo.is.ui.comments')}">
-                    <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                    <i class="fa fa-comment" fast-tooltip-el="${message(code: 'todo.is.ui.comments')}"></i>
+                    <i class="fa fa-comment-o" fast-tooltip-el="${message(code: 'todo.is.ui.comments')}"></i>
                     <span class="badge">{{ task.comments_count || '' }}</span>
                 </a>
             </span>
