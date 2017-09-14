@@ -29,6 +29,52 @@ import org.icescrum.core.domain.Task
 *
 */
 databaseChangeLog = {
+    changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_sprint") {
+        grailsChange {
+            change {
+                sql.execute("UPDATE is_sprint SET attachments_count = 0  WHERE attachments_count IS NULL")
+                println "sprints..."
+                def sprints = Sprint.getAll()
+                sprints.each {
+                    it.attachments_count = it.getTotalAttachments()
+                    it.save(flush:it == sprints.last(), failOnError:true)
+                }
+            }
+        }
+        addNotNullConstraint(tableName: "is_sprint", columnName: "attachments_count", columnDataType: "integer")
+    }
+
+    changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_release") {
+        grailsChange {
+            change {
+                sql.execute("UPDATE is_release SET attachments_count = 0  WHERE attachments_count IS NULL")
+                println "releases..."
+                def releases = Release.getAll()
+                releases.each {
+                    it.attachments_count = it.getTotalAttachments()
+                    it.save(flush:it == releases.last(), failOnError:true)
+                }
+            }
+        }
+        addNotNullConstraint(tableName: "is_release", columnName: "attachments_count", columnDataType: "integer")
+    }
+
+    changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_project") {
+        grailsChange {
+            change {
+                sql.execute("UPDATE is_project SET attachments_count = 0  WHERE attachments_count IS NULL")
+                println "projects..."
+                def projects = Project.getAll()
+                projects.each {
+                    it.attachments_count = it.getTotalAttachments()
+                    it.save(flush:it == projects.last(), failOnError:true)
+                }
+                println "migration finished!"
+            }
+        }
+        addNotNullConstraint(tableName: "is_project", columnName: "attachments_count", columnDataType: "integer")
+    }
+
     changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_feature") {
         grailsChange {
             change {
@@ -79,50 +125,5 @@ databaseChangeLog = {
         }
         addNotNullConstraint(tableName: "is_task", columnName: "comments_count", columnDataType: "integer")
         addNotNullConstraint(tableName: "is_task", columnName: "attachments_count", columnDataType: "integer")
-    }
-
-    changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_sprint") {
-        grailsChange {
-            change {
-                sql.execute("UPDATE is_sprint SET attachments_count = 0  WHERE attachments_count IS NULL")
-                println "sprints..."
-                def sprints = Sprint.getAll()
-                sprints.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.save(flush:it == sprints.last(), failOnError:true)
-                }
-            }
-        }
-        addNotNullConstraint(tableName: "is_sprint", columnName: "attachments_count", columnDataType: "integer")
-    }
-
-    changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_release") {
-        grailsChange {
-            change {
-               sql.execute("UPDATE is_release SET attachments_count = 0  WHERE attachments_count IS NULL")
-                println "releases..."
-                def releases = Release.getAll()
-                releases.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.save(flush:it == releases.last(), failOnError:true)
-                }
-            }
-        }
-        addNotNullConstraint(tableName: "is_release", columnName: "attachments_count", columnDataType: "integer")
-    }
-    changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_project") {
-        grailsChange {
-            change {
-                sql.execute("UPDATE is_project SET attachments_count = 0  WHERE attachments_count IS NULL")
-                println "projects..."
-                def projects = Project.getAll()
-                projects.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.save(flush:it == projects.last(), failOnError:true)
-                }
-                println "migration finished!"
-            }
-        }
-        addNotNullConstraint(tableName: "is_project", columnName: "attachments_count", columnDataType: "integer")
     }
 }
