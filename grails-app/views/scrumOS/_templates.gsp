@@ -289,6 +289,7 @@
         <g:render template="/feature/templates"/>
         <g:render template="/acceptanceTest/templates"/>
         <g:render template="/release/templates"/>
+        <g:render template="/timeBoxNotesTemplate/templates"/>
         <g:render template="/backlog/templates"/>
         <entry:point id="templates-project"/>
     </g:if>

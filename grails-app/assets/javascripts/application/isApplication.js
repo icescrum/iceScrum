@@ -19,10 +19,11 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
-// Try to dectect as early as possible that the root misses as slash
+// Try to detect as early as possible that the root misses as slash
 // to trigger a redirect and lose as little time as possible
 (function() {
     if (window.location.hash == '') {
@@ -226,6 +227,14 @@ angular.module('isApplication', [
                         return AttachmentService.list(detailsRelease);
                     }
                 }]
+            },
+            notes: {
+                resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'Session', function($stateParams, TimeBoxNotesTemplateService, Session) {
+                    if ($stateParams.releaseTabId == 'notes') {
+                        return TimeBoxNotesTemplateService.list(Session.getProject());
+                    }
+                }],
+                templateUrl: 'timeBoxNotesTemplates.release.notes.html'
             }
         }, pluginTabsProvider.pluginTabs['release']);
 

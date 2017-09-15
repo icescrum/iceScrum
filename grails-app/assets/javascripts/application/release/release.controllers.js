@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
@@ -67,6 +68,10 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
             .then(function() {
                 $scope.notifySuccess('todo.is.ui.deleted');
             });
+    };
+    $scope.tabUrl = function(releaseTabId) {
+        var stateName = $state.params.releaseTabId ? (releaseTabId ? '.' : '^') : (releaseTabId ? '.tab' : '.');
+        return $state.href(stateName, {releaseTabId: releaseTabId});
     };
     $scope.menus = [
         {

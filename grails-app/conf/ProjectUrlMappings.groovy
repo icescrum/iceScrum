@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  */
 
 class ProjectUrlMappings {
@@ -302,6 +303,16 @@ class ProjectUrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
+
+        "/p/$project/release/$releaseId/releaseNotes/$templateId" {
+            controller = 'timeBoxNotesTemplate'
+            action = [GET: 'releaseNotes']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                releaseId(matches: /\d+/)
+                templateId(matches: /\d+/)
+            }
+        }
         // Sprint
         "/p/$project/sprint" {
             controller = 'sprint'
@@ -355,6 +366,22 @@ class ProjectUrlMappings {
             action = [POST: 'updateEnabledForProject']
             constraints {
                 project(matches: /[0-9A-Z]*/)
+            }
+        }
+        // TimeBoxNotesTemplates
+        "/p/$project/timeBoxNotesTemplate" {
+            controller = 'timeBoxNotesTemplate'
+            action = [GET: "index", POST: "save"]
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/p/$project/timeBoxNotesTemplate/$id" {
+            controller = 'timeBoxNotesTemplate'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d+/)
             }
         }
     }

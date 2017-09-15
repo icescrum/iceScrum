@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  */
 
 
@@ -219,7 +220,9 @@ icescrum.marshaller = [
         attachment: [include: ['filename']],
         acceptancetest: [textile: ['description'], asShort: ['state']],
         template: [asShort: ['name']],
-        simpleprojectapp: [exclude: ['parentProject']]
+        simpleprojectapp: [exclude: ['parentProject']],
+        timeboxnotestemplate:   [include: ['configs'],
+                                 exclude: ['configsData']]
 ]
 
 icescrum.activities.important = [Activity.CODE_SAVE, 'acceptAs', 'estimate', 'plan', 'unPlan', 'done', 'unDone', 'returnToSandbox']
