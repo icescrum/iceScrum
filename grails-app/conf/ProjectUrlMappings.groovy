@@ -303,7 +303,6 @@ class ProjectUrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
-
         "/p/$project/release/$releaseId/releaseNotes/$templateId" {
             controller = 'timeBoxNotesTemplate'
             action = [GET: 'releaseNotes']

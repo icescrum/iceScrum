@@ -23,10 +23,8 @@
 <script type="text/ng-template" id="timeBoxNotesTemplates.release.notes.html">
 <div ng-controller="releaseNotesCtrl">
     <div class="panel-body">
-
         <div class="form-group">
             <label for="template">${message(code: 'todo.is.ui.release.notes.template')}</label>
-
             <div class="input-group">
                 <ui-select class="form-control"
                            input-group-fix-width="38"
@@ -53,7 +51,7 @@
             <textarea class="form-control fixedRow"
                       name="content"
                       ng-model="releaseNotes"
-                        rows="15"
+                      rows="15"
                       placeholder="${message(code: 'todo.is.ui.release.notes.noContent')}"
                       readonly>
             </textarea>

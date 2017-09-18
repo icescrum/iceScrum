@@ -21,44 +21,43 @@
  *
  */
 
-services.factory('TimeBoxNotesTemplate', ['Resource', function ($resource) {
+services.factory('TimeBoxNotesTemplate', ['Resource', function($resource) {
     return $resource('timeBoxNotesTemplate/:id');
     //TODO: :action needed ?
     //TODO: projectId needed ?
 }]);
 
-services.service("TimeBoxNotesTemplateService", ['FormService', '$timeout', '$q', '$http', '$rootScope', '$state', 'TimeBoxNotesTemplate', function (FormService, $timeout, $q, $http, $rootScope, $state, TimeBoxNotesTemplate) {
-
-    this.save = function (timeBoxNoteTemplate) {
+services.service("TimeBoxNotesTemplateService", ['FormService', '$timeout', '$q', '$http', '$rootScope', '$state', 'TimeBoxNotesTemplate', function(FormService, $timeout, $q, $http, $rootScope, $state, TimeBoxNotesTemplate) {
+    this.save = function(timeBoxNoteTemplate) {
         timeBoxNoteTemplate.class = 'timeBoxNoteTemplate';
         timeBoxNoteTemplate.configsData = JSON.stringify(timeBoxNoteTemplate.configs);
-        return TimeBoxNotesTemplate.save(timeBoxNoteTemplate, function(timeBoxNoteTemplate){
+        return TimeBoxNotesTemplate.save(timeBoxNoteTemplate, function(timeBoxNoteTemplate) {
             timeBoxNoteTemplate.configs = timeBoxNoteTemplate.configsData ? JSON.parse(timeBoxNoteTemplate.configsData) : undefined;
             delete timeBoxNoteTemplate.configsData;
         }).$promise;
     };
-    this.get = function (id) {
+    this.get = function(id) {
         return TimeBoxNotesTemplate.get({id: id}).$promise;
     };
-    this.update = function (timeBoxNoteTemplate) {
+    this.update = function(timeBoxNoteTemplate) {
         timeBoxNoteTemplate.configsData = JSON.stringify(timeBoxNoteTemplate.configs);
         return TimeBoxNotesTemplate.update({}, timeBoxNoteTemplate, function(timeBoxNoteTemplate) {
             timeBoxNoteTemplate.configs = timeBoxNoteTemplate.configsData ? JSON.parse(timeBoxNoteTemplate.configsData) : undefined;
             delete timeBoxNoteTemplate.configsData;
         }).$promise;
     };
-    this['delete'] = function (timeBoxNoteTemplate) {
+    this['delete'] = function(timeBoxNoteTemplate) {
         return TimeBoxNotesTemplate.delete({id: timeBoxNoteTemplate.id}).$promise;
     };
-    this.list = function (project) {
+    this.list = function(project) {
         return _.isEmpty(project.timeBoxNotesTemplates) ?
-            TimeBoxNotesTemplate.query({}, function (timeBoxNotesTemplates) {
+            TimeBoxNotesTemplate.query({}, function(timeBoxNotesTemplates) {
                 project.timeBoxNotesTemplates = timeBoxNotesTemplates;
                 project.timeBoxNotesTemplates_count = project.timeBoxNotesTemplates.length;
             }).$promise : $q.when(project.timeBoxNotesTemplates);
     };
 
-    this.getReleaseNotes = function (release, template) {
+    this.getReleaseNotes = function(release, template) {
         return FormService.httpGet('release/' + release.id + '/releaseNotes/' + template.id);
     }
 }]);

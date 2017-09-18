@@ -25,7 +25,7 @@ controllers.controller('releaseNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
     // Functions
     $scope.computeReleaseNotes = function() {
         $scope.template = this.template;
-        TimeBoxNotesTemplateService.getReleaseNotes($scope.release, $scope.template).then(function(releaseNotes){
+        TimeBoxNotesTemplateService.getReleaseNotes($scope.release, $scope.template).then(function(releaseNotes) {
             $scope.releaseNotes = releaseNotes.releaseNotes
         });
     };
@@ -40,7 +40,6 @@ controllers.controller('releaseNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
             }
         );
     };
-
     // Init
     $scope.project = Session.getProject();
     $scope.templates = $scope.project.timeBoxNotesTemplates;
@@ -67,16 +66,14 @@ controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'Session', 'TimeBo
             $scope.$close(true);
         });
     };
-
     // Init
     $scope.project = Session.getProject();
     $scope.editableTimeBoxNotesTemplate = angular.copy(template);
-    _.forEach($scope.editableTimeBoxNotesTemplate.configs, function(config){
-        if (typeof config.storyTags == 'undefined'){
+    _.forEach($scope.editableTimeBoxNotesTemplate.configs, function(config) {
+        if (typeof config.storyTags == 'undefined') {
             config.storyTags = [];
         }
     });
-
 }]);
 
 controllers.controller('timeBoxNotesTemplateNewCtrl', ['$scope', '$controller', 'TimeBoxNotesTemplateStatesByName', 'DateService', 'TimeBoxNotesTemplateService', 'FormService', 'detailsTimeBoxNotesTemplate', function($scope, $controller, TimeBoxNotesTemplateStatesByName, DateService, TimeBoxNotesTemplateService, FormService, detailsTimeBoxNotesTemplate) {

@@ -33,7 +33,6 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
 
     def timeBoxNotesTemplateService
 
-
     @Secured('inProject()')
     def index(long project) {
         Project _project = Project.withProject(project)
@@ -51,7 +50,6 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
     def save(long project) {
         Project _project = Project.withProject(project)
         def templateParams = params.timeBoxNotesTemplate
-
         def template = new TimeBoxNotesTemplate()
         TimeBoxNotesTemplate.withTransaction {
             bindData(template, templateParams, [include: ['header', 'footer', 'name']])
@@ -65,13 +63,12 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
 
     @Secured('inProject()')
     def update(long project, long id) {
-        def templateParams =  params.timeBoxNotesTemplate
+        def templateParams = params.timeBoxNotesTemplate
         TimeBoxNotesTemplate template = TimeBoxNotesTemplate.withTimeBoxNotesTemplate(project, id)
         if (templateParams.configsData) {
             templateParams.configs = JSON.parse(templateParams.configsData)
             templateParams.remove('configsData')
         }
-
         TimeBoxNotesTemplate.withTransaction {
             bindData(template, templateParams, [include: ['header', 'footer', 'name']])
             if (templateParams.configs) {
@@ -100,7 +97,6 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
     def releaseNotes(long project, long releaseId, long templateId) {
         Release release = Release.withRelease(project, releaseId)
         TimeBoxNotesTemplate template = TimeBoxNotesTemplate.withTimeBoxNotesTemplate(project, templateId)
-
         def computedRN = timeBoxNotesTemplateService.computeReleaseNotes(release, template)
         render(status: 200, contentType: 'application/json', text: [releaseNotes: computedRN] as JSON)
     }

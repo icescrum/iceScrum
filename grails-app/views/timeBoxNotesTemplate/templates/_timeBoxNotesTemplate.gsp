@@ -36,7 +36,6 @@
                    type="text"
                    class="form-control"/>
         </div>
-
         <div class="form-group">
             <label for="header">${message(code: 'todo.is.ui.timeBoxNoteTemplate.header')}</label>
             <textarea
@@ -47,10 +46,8 @@
                     class="form-control fixedRow"></textarea>
         </div>
         <hr>
-
         <div>
-            <h5>${message(code: 'todo.is.ui.timeBoxNoteTemplate.section', args: ["1"] )}</h5>
-
+            <h5>${message(code: 'todo.is.ui.timeBoxNoteTemplate.section', args: ["1"])}</h5>
             <div class="form-group">
                 <label for="configs-0-header">${message(code: 'todo.is.ui.timeBoxNoteTemplate.section.header')}</label>
                 <textarea name="configs[0].header"
@@ -59,7 +56,6 @@
                           ng-model="editableTimeBoxNotesTemplate.configs[0].header"
                           class="form-control fixedRow"></textarea>
             </div>
-
             <div class="clearfix no-padding">
                 <div class="form-2-tiers">
                     <label for="configs-0-storyTags">${message(code: 'todo.is.ui.timeBoxNoteTemplate.storyTags')}</label>
@@ -76,7 +72,6 @@
                         </ui-select-choices>
                     </ui-select>
                 </div>
-
                 <div class="form-1-tier">
                     <label for="configs-0-storyType">${message(code: 'todo.is.ui.timeBoxNoteTemplate.storyType')}</label>
                     <ui-select class="form-control"
@@ -92,8 +87,6 @@
                     </ui-select>
                 </div>
             </div>
-
-
             <div class="form-group">
                 <label for="configs-0-lineTemplate">${message(code: 'todo.is.ui.timeBoxNoteTemplate.lineTemplate')}</label>
                 <textarea required
@@ -103,7 +96,6 @@
                           ng-model="editableTimeBoxNotesTemplate.configs[0].lineTemplate"
                           class="form-control fixedRow"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="configs-0-footer">${message(code: 'todo.is.ui.timeBoxNoteTemplate.section.footer')}</label>
                 <textarea name="configs-0-footer"
@@ -114,10 +106,8 @@
             </div>
         </div>
         <hr>
-
         <div>
-            <h5>${message(code: 'todo.is.ui.timeBoxNoteTemplate.section', args: ["2"] )}</h5>
-
+            <h5>${message(code: 'todo.is.ui.timeBoxNoteTemplate.section', args: ["2"])}</h5>
             <div class="form-group">
                 <label for="configs-1-header">${message(code: 'todo.is.ui.timeBoxNoteTemplate.section.header')}</label>
                 <textarea name="configs-1-header"
@@ -126,7 +116,6 @@
                           ng-model="editableTimeBoxNotesTemplate.configs[1].header"
                           class="form-control fixedRow"></textarea>
             </div>
-
             <div class="clearfix no-padding">
                 <div class="form-2-tiers">
                     <label for="configs-1-storyTags">${message(code: 'todo.is.ui.timeBoxNoteTemplate.storyTags')}</label>
@@ -159,8 +148,6 @@
                     </ui-select>
                 </div>
             </div>
-
-
             <div class="form-group">
                 <label for="configs-1-lineTemplate">${message(code: 'todo.is.ui.timeBoxNoteTemplate.lineTemplate')}</label>
                 <textarea required
@@ -170,7 +157,6 @@
                           ng-model="editableTimeBoxNotesTemplate.configs[1].lineTemplate"
                           class="form-control fixedRow"></textarea>
             </div>
-
             <div class="form-group">
                 <label for="configs-1-footer">${message(code: 'todo.is.ui.timeBoxNoteTemplate.section.footer')}</label>
                 <textarea name="configs-1-footer"
@@ -181,7 +167,6 @@
             </div>
         </div>
         <hr>
-
         <div class="form-group">
             <label for="footer">${message(code: 'todo.is.ui.timeBoxNoteTemplate.footer')}</label>
             <textarea name="footer"
@@ -191,7 +176,6 @@
                       class="form-control fixedRow"></textarea>
         </div>
     </div>
-
 </is:modal>
 </script>
 
