@@ -98,11 +98,12 @@ class RestUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
-        "/ws/project/$project/$action" {
+        "/ws/project/$project/export/$format?" {
             controller = 'project'
+            action = 'export'
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                action(inList: ['export'])
+                format(inList: ['zip', 'xml'])
             }
             method = 'GET'
         }

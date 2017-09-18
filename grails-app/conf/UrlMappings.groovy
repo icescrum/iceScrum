@@ -333,11 +333,12 @@ class UrlMappings {
             }
         }
         // Export
-        "/p/$project/export" {
+        "/p/$project/export/$format?" {
             controller = 'project'
             action = 'export'
             constraints {
                 project(matches: /[0-9A-Z]*/)
+                format(inList: ['zip', 'xml'])
             }
         }
         "/p/$project/exportDialog" {

@@ -430,7 +430,7 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
                 $scope.zip = true;
                 $scope.progress = false;
                 $scope.start = function() {
-                    $scope.downloadFile("project/export?zip=true");
+                    $scope.downloadFile("project/export/zip");
                     $scope.progress = true;
                 };
                 $scope.start();

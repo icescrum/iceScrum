@@ -234,10 +234,10 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['scrumMaster() or productOwner()'])
-    def export(long project) {
+    def export(long project, String format) {
         Project _project = Project.withProject(project)
         session.progress = new ProgressSupport()
-        if (params.zip) {
+        if (format == 'zip') {
             def projectName = "${_project.name.replaceAll("[^a-zA-Z\\s]", "").replaceAll(" ", "")}-${new Date().format('yyyy-MM-dd')}"
             ['Content-disposition': "attachment;filename=\"${projectName + '.zip'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
                 response.setHeader(k, v)
