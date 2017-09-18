@@ -62,6 +62,7 @@ class IceScrumFilters {
                         }
                         cache true
                     }
+                    webservices = webservices || actionName?.contains('V7')
                     if (!webservices) {
                         render(status: 503)
                     } else {

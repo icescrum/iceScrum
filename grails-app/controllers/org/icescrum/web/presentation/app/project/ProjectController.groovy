@@ -577,6 +577,9 @@ class ProjectController {
                         render(status: 200, contentType: 'application/json', text: [dialog: dialog] as JSON)
                     }
                 }
+                xml {
+                    ApplicationSupport.exportProjectZIPV7(product, response.outputStream)
+                }
             }
         }
     }

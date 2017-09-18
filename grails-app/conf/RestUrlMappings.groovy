@@ -93,6 +93,14 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
+
+        "/ws/p/$product/exportV7"(parseRequest: true) {
+            controller = 'project'
+            action = 'exportV7'
+            constraints {
+                product(matches: /[0-9A-Z]*/)
+            }
+        }
     }
 
 }
