@@ -37,7 +37,7 @@ class RestUrlMappings {
         // (token must be admin)
         "/ws/user/$id" {
             controller = 'user'
-            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            action = [GET: 'show', PUT: 'update', POST: 'update']
             constraints {
                 id(matches: /\d*/)
             }
