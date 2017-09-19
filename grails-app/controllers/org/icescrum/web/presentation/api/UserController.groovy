@@ -87,20 +87,26 @@ class UserController implements ControllerErrorHandler {
 
     @Secured(["!isAuthenticated() or hasRole('ROLE_ADMIN')"])
     def save() {
-        if (!params.user) {
+        def userParams = params.user
+        if (!userParams) {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        if ((params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
+        if (request.format == 'form' && userParams.confirmPassword != userParams.password) {
+            // Cannot be executed inside withFormat closure because return will return only from closure and code below will still be executed
             returnError(code: 'is.user.error.password.check')
             return
         }
-        def user = new User()
+        User user = new User()
         User.withTransaction {
+            def propertiesToBind = ['username', 'firstName', 'lastName', 'email', 'password']
+            if (request.admin) {
+                propertiesToBind << 'accountExternal'
+            }
+            bindData(user, userParams, [include: propertiesToBind])
             user.preferences = new UserPreferences()
-            bindData(user, this.params, [include: ['username', 'firstName', 'lastName', 'email', 'password']], "user")
-            bindData(user.preferences, (Map) this.params.user, [include: ['language', 'filterTask', 'activity']], "preferences")
-            userService.save(user, params.user.token)
+            bindData(user.preferences, userParams.preferences, [include: ['language', 'activity']])
+            userService.save(user, userParams.token)
         }
         render(status: 201, contentType: 'application/json', text: user as JSON)
     }
@@ -139,9 +145,9 @@ class UserController implements ControllerErrorHandler {
             if (request.admin && params.user.username != user.username) {
                 user.username = params.user.username
             }
-            bindData(user, params, [include: ['firstName', 'lastName', 'email', 'notes']], "user")
+            bindData(user, params.user, [include: ['firstName', 'lastName', 'email', 'notes']])
             if (params.user.preferences) {
-                bindData(user.preferences, params.user.preferences as Map, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew']], "") // Preferences using as Map for REST & HTTP support
+                bindData(user.preferences, params.user.preferences, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew']])
             }
             if (params.user.password?.trim() != '') {
                 props.pwd = params.user.password
