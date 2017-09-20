@@ -3,40 +3,6 @@
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<style name="featureColor">
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{featureColor}.equals("red")]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#FF0033"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{featureColor}.equals("blue")]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#0000FF"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{featureColor}.equals("green")]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#00CC33"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{featureColor}.equals("violet")]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#FF33FF"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{featureColor}.equals("gray")]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#CCCCCC"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{featureColor}.equals("pink")]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#FFCCCC"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{featureColor}.equals("bluelight")]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#CCFFFF"/>
-		</conditionalStyle>
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{featureColor}.equals("orange")]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#FFCC33"/>
-		</conditionalStyle>
-	</style>
 	<field name="name" class="java.lang.String"/>
 	<field name="effort" class="java.lang.String"/>
 	<field name="state" class="java.lang.String"/>
@@ -97,7 +63,8 @@
 				<reportElement x="259" y="53" width="1" height="225"/>
 			</line>
 			<rectangle>
-				<reportElement style="featureColor" x="378" y="258" width="22" height="19" isRemoveLineWhenBlank="true">
+				<reportElement mode="Opaque" x="378" y="258" width="22" height="19" isRemoveLineWhenBlank="true" forecolor="#000000">
+					<propertyExpression name="net.sf.jasperreports.style.backcolor"><![CDATA[$F{featureColor}]]></propertyExpression>
 					<printWhenExpression><![CDATA[$F{featureColor}!=null]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
