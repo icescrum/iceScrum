@@ -22,7 +22,7 @@
 
 <script type="text/ng-template" id="timeBoxNotesTemplates.timeBox.notes.html">
 <div ng-controller="timeBoxNotesCtrl as ctrl">
-    <div class="panel-body">
+    <div class="panel-body timeBoxNotes">
         <div class="form-group">
             <label for="select-template">{{message('todo.is.ui.'+timeBoxClass+'.notes.template')}}</label>
             <div class="input-group">
@@ -50,7 +50,7 @@
         </div>
         <hr>
         <div class="form-group">
-            <div class="clearfix no-padding">
+            <div class="clearfix">
                 <div class="pull-left">
                     <label for="content">{{message('todo.is.ui.'+timeBoxClass+'.notes.content')}}</label>
                 </div>

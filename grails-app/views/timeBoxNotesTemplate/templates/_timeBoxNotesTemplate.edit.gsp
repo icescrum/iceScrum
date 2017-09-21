@@ -35,6 +35,7 @@
             <div class="right-title">
                 <span class="input-group-btn">
                     <button class="btn btn-danger"
+                            tabindex="-1"
                             type="button"
                             name="delete"
                             ng-click="confirmDelete({callback: delete, args: [editableTimeBoxNotesTemplate]})">
@@ -67,9 +68,9 @@
         <div as-sortable="sectionSortOptions" ng-model="editableTimeBoxNotesTemplate.configs">
             <div class="panel panel-light"
                  ng-repeat="config in editableTimeBoxNotesTemplate.configs"
-                 is-open="accordionStatus[$index]"
+                 is-open="collapseSectionStatus[$index]"
                  as-sortable-item>
-                <div class="panel-heading" as-sortable-item-handle>
+                <div class="panel-heading" as-sortable-item-handle ng-class="{'open': !collapseSectionStatus[$index]}">
                     <span as-sortable-item-handle
                           class="text-ellipsis"
                           style="display: inline-block; width: 200px">

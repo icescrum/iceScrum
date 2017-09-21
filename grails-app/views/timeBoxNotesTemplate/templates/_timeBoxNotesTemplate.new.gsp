@@ -49,9 +49,9 @@
         <div as-sortable="sectionSortOptions" ng-model="timeBoxNotesTemplate.configs">
             <div class="panel panel-light"
                  ng-repeat="config in timeBoxNotesTemplate.configs"
-                 is-open="accordionStatus[$index]"
+                 is-open="collapseSectionStatus[$index]"
                  as-sortable-item>
-                <div class="panel-heading" as-sortable-item-handle>
+                <div class="panel-heading" as-sortable-item-handle ng-class="{'open': !collapseSectionStatus[$index]}">
                     <div as-sortable-item-handle
                          class="text-ellipsis"
                          style="display: inline-block; width: 200px">
