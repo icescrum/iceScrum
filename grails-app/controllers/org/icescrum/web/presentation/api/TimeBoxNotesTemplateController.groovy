@@ -26,6 +26,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.TimeBoxNotesTemplate
 import org.icescrum.core.error.ControllerErrorHandler
 
@@ -50,6 +51,10 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
     def save(long project) {
         Project _project = Project.withProject(project)
         def templateParams = params.timeBoxNotesTemplate
+        if (templateParams.configsData) {
+            templateParams.configs = JSON.parse(templateParams.configsData)
+            templateParams.remove('configsData')
+        }
         def template = new TimeBoxNotesTemplate()
         TimeBoxNotesTemplate.withTransaction {
             bindData(template, templateParams, [include: ['header', 'footer', 'name']])
@@ -94,14 +99,18 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
     }
 
     @Secured('inProject()')
-    def releaseNotes(long project, long releaseId, long templateId) {
-        Release release = Release.withRelease(project, releaseId)
+    def releaseNotes(long project, long id, long templateId) {
+        Release release = Release.withRelease(project, id)
         TimeBoxNotesTemplate template = TimeBoxNotesTemplate.withTimeBoxNotesTemplate(project, templateId)
-        def computedRN = timeBoxNotesTemplateService.computeReleaseNotes(release, template)
-        render(status: 200, contentType: 'application/json', text: [releaseNotes: computedRN] as JSON)
+        def computedNotes = timeBoxNotesTemplateService.computeReleaseNotes(release, template)
+      render(status: 200, contentType: 'application/json', text: [timeBoxNotes: computedNotes] as JSON)
     }
 
     @Secured('inProject()')
-    def sprintNotes(long project, long sprintId, long templateId) {
+    def sprintNotes(long project, long id, long templateId) {
+        Sprint sprint = Sprint.withSprint(project, id)
+        TimeBoxNotesTemplate template = TimeBoxNotesTemplate.withTimeBoxNotesTemplate(project, templateId)
+        def computedNotes = timeBoxNotesTemplateService.computeSprintNotes(sprint, template)
+        render(status: 200, contentType: 'application/json', text: [timeBoxNotes: computedNotes] as JSON)
     }
 }

@@ -20,5 +20,6 @@
 - Colin Bontemps (cbontemps@kagilum.com)
 --}%
 
-<g:render template="/timeBoxNotesTemplate/templates/release.notes"/>
-<g:render template="/timeBoxNotesTemplate/templates/timeBoxNotesTemplate"/>
+<g:render template="/timeBoxNotesTemplate/templates/timeBox.notes"/>
+<g:render template="/timeBoxNotesTemplate/templates/timeBoxNotesTemplate.new"/>
+<g:render template="/timeBoxNotesTemplate/templates/timeBoxNotesTemplate.edit"/>

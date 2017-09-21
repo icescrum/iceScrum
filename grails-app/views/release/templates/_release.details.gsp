@@ -98,7 +98,7 @@
         </li>
         <li role="presentation" ng-class="{'active':$state.params.releaseTabId == 'notes'}">
             <a href="{{ tabUrl('notes') }}">
-                <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.release.notes')}
+                <i class="fa fa-lg fa-newspaper-o"></i> ${message(code: 'todo.is.ui.release.notes')}
             </a>
         </li>
         <entry:point id="release-details-tab-button"/>

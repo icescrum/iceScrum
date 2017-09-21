@@ -18,6 +18,7 @@
  * Authors:
  *
  * Vincent Barrier (vbarrier@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
@@ -112,14 +113,14 @@ class RestUrlMappings {
             action = [GET: 'index', POST: 'save']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                controller(inList: ['story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint'])
+                controller(inList: ['story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint', 'timeBoxNotesTemplate'])
             }
         }
         "/ws/project/$project/$controller/$id" {
             action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                controller(inList: ['story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint'])
+                controller(inList: ['story', 'acceptanceTest', 'feature', 'backlog', 'actor', 'task', 'release', 'sprint', 'timeBoxNotesTemplate'])
                 id(matches: /\d*/)
             }
         }
@@ -218,6 +219,17 @@ class RestUrlMappings {
                 capacity(matches: /\d*/)
             }
         }
+        // Generate release notes
+        "/ws/project/$project/release/$id/releaseNotes/$templateId" {
+            controller = 'timeBoxNotesTemplate'
+            action = [GET: 'releaseNotes']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d+/)
+                templateId(matches: /\d+/)
+            }
+            method = 'GET'
+        }
         // Sprint nested actions
         "/ws/project/$project/sprint/$id/$action" {
             controller = 'sprint'
@@ -257,6 +269,16 @@ class RestUrlMappings {
                 releaseId(matches: /\d*/)
             }
         }
+        // Generate sprint notes
+        "/ws/project/$project/sprint/$id/sprintNotes/$templateId" {
+            controller = 'timeBoxNotesTemplate'
+            action = [GET: 'sprintNotes']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d+/)
+                templateId(matches: /\d+/)
+            }
+        }
         // Tasks nested actions
         "/ws/project/$project/task/$id/$action" {
             controller = 'task'
@@ -276,7 +298,6 @@ class RestUrlMappings {
                 type(inList: ['sprint', 'story'])
                 id(matches: /\d*/)
             }
-            method = 'GET'
         }
         // Filter acceptanceTests by story
         "/ws/project/$project/acceptanceTest/story/$parentStory" {
@@ -287,5 +308,6 @@ class RestUrlMappings {
                 parentStory(matches: /\d*/)
             }
         }
+        //
     }
 }

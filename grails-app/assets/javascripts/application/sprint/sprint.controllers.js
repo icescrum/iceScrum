@@ -19,10 +19,11 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
-controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', '$uibModal', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', function($rootScope, $scope, $q, $uibModal, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName) {
+controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$uibModal', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', function($rootScope, $scope, $state, $q, $uibModal, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -57,6 +58,10 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$q', '$uibModal',
             $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.deleted');
         });
+    };
+    $scope.tabUrl = function(sprintTabId) {
+        var stateName = $state.params.sprintTabId ? (sprintTabId ? '.' : '^') : (sprintTabId ? '.tab' : '.');
+        return $state.href(stateName, {sprintTabId: sprintTabId});
     };
     $scope.openCloseModal = function(sprint) {
         var project = $scope.project;

@@ -21,35 +21,64 @@
  *
  */
 
-controllers.controller('releaseNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotesTemplateService', 'Session', function($scope, $uibModal, TimeBoxNotesTemplateService, Session) {
+controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotesTemplateService', 'Session', function($scope, $uibModal, TimeBoxNotesTemplateService, Session) {
+    var ctrl = this;
     // Functions
-    $scope.computeReleaseNotes = function() {
-        $scope.template = this.template;
-        TimeBoxNotesTemplateService.getReleaseNotes($scope.release, $scope.template).then(function(releaseNotes) {
-            $scope.releaseNotes = releaseNotes.releaseNotes
-        });
+    $scope.computeTimeBoxNotes = function() {
+        if ($scope.timeBoxClass == 'release') {
+            TimeBoxNotesTemplateService.getReleaseNotes($scope.release, ctrl.template).then(function(timeBoxNotes) {
+                $scope.timeBoxNotes = timeBoxNotes.timeBoxNotes;
+            });
+        } else if ($scope.timeBoxClass == 'sprint') {
+            TimeBoxNotesTemplateService.getSprintNotes($scope.sprint, ctrl.template).then(function(timeBoxNotes) {
+                $scope.timeBoxNotes = timeBoxNotes.timeBoxNotes;
+            });
+        }
     };
     $scope.showEditTemplateModal = function(template) {
         $uibModal.open({
-            templateUrl: 'timeBoxNotesTemplate.html',
-            controller: 'timeBoxNotesTemplateCtrl',
+            templateUrl: 'timeBoxNotesTemplate.edit.html',
+            controller: 'timeBoxNotesTemplateEditCtrl',
             resolve: {template: template}
         }).result.then(
             function() {
-                $scope.computeReleaseNotes();
+                $scope.refreshTimeBoxNotesTemplates();
             }
         );
     };
+    $scope.showNewTemplateModal = function() {
+        $uibModal.open({
+            templateUrl: 'timeBoxNotesTemplate.new.html',
+            controller: 'timeBoxNotesTemplateNewCtrl',
+        }).result.then(
+            function(newTemplate) {
+                if (typeof newTemplate != 'undefined') {
+                    ctrl.template = _.find($scope.templates, ['id', newTemplate.id]);
+                    $scope.computeTimeBoxNotes();
+                }
+            }
+        );
+    };
+    $scope.refreshTimeBoxNotesTemplates = function() {
+        $scope.templates = Session.getProject().timeBoxNotesTemplates;
+        // auto-select first in list
+        if ($scope.templates.length > 0) {
+            if ((typeof ctrl.template == 'undefined') || (ctrl.template == {}) || (typeof _.find($scope.templates, ['id', ctrl.template.id]) == 'undefined')) {
+                // template undefined or not in template list -> auto-select first in list
+                ctrl.template = $scope.templates[0];
+            }
+            $scope.computeTimeBoxNotes();
+        } else {
+            delete ctrl.template;
+            $scope.timeBoxNotes = "";
+        }
+    };
     // Init
-    $scope.project = Session.getProject();
-    $scope.templates = $scope.project.timeBoxNotesTemplates;
-    if ($scope.templates.length > 0) {
-        $scope.template = $scope.templates[0];
-        $scope.computeReleaseNotes();
-    }
+    $scope.timeBoxClass = $scope.selected.class.toLowerCase();
+    $scope.refreshTimeBoxNotesTemplates();
 }]);
 
-controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'Session', 'TimeBoxNotesTemplateService', 'ProjectService', 'template', function($scope, Session, TimeBoxNotesTemplateService, ProjectService, template) {
+controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'Session', 'ProjectService', 'TimeBoxNotesTemplateService', function($scope, Session, ProjectService, TimeBoxNotesTemplateService, template) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -58,28 +87,77 @@ controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'Session', 'TimeBo
             });
         }
     };
+    $scope.deleteSection = function(timeBoxNotesTemplate, config) {
+        _.pull(timeBoxNotesTemplate.configs, config);
+    };
+    $scope.addSection = function(timeBoxNotesTemplate) {
+        if (typeof timeBoxNotesTemplate.configs == 'undefined') {
+            timeBoxNotesTemplate.configs = [];
+            $scope.collapseSectionStatus = [];
+        }
+        //collapse other sections
+        for (var i = 0; i < $scope.collapseSectionStatus.length; i++) {
+            $scope.collapseSectionStatus[i] = true;
+        }
+        //expand new section
+        $scope.collapseSectionStatus[timeBoxNotesTemplate.configs.length] = false
+        timeBoxNotesTemplate.configs.push({storyTags: []});
+    };
+    $scope.expandSection = function(index) {
+        for (var i = 0; i < $scope.collapseSectionStatus.length; i++) {
+            if (i == index) {
+                $scope.collapseSectionStatus[i] = !$scope.collapseSectionStatus[i];
+            } else {
+                $scope.collapseSectionStatus[i] = true;
+            }
+        }
+    };
+}]);
+
+controllers.controller('timeBoxNotesTemplateEditCtrl', ['$scope', '$controller', 'TimeBoxNotesTemplateService', 'template', function($scope, $controller, TimeBoxNotesTemplateService, template) {
+    $controller('timeBoxNotesTemplateCtrl', {$scope: $scope}); // inherit from timeBoxNotesTemplateCtrl
+    // Functions
     $scope.update = function(timeBoxNotesTemplate) {
         $scope.formHolder.submitting = true;
-        TimeBoxNotesTemplateService.update(timeBoxNotesTemplate).then(function() {
+        TimeBoxNotesTemplateService.update(timeBoxNotesTemplate).then(function(timeBoxNotesTemplate) {
             _.merge(template, timeBoxNotesTemplate);
-            $scope.notifySuccess('todo.is.ui.timeBoxNoteTemplate.updated');
-            $scope.$close(true);
+            $scope.notifySuccess('todo.is.ui.timeBoxNotesTemplate.updated');
+            $scope.$close();
+        });
+    };
+    $scope['delete'] = function(timeBoxNotesTemplate) {
+        TimeBoxNotesTemplateService.delete(timeBoxNotesTemplate).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+            $scope.$close();
         });
     };
     // Init
-    $scope.project = Session.getProject();
     $scope.editableTimeBoxNotesTemplate = angular.copy(template);
-    _.forEach($scope.editableTimeBoxNotesTemplate.configs, function(config) {
+    $scope.collapseSectionStatus = [];
+    _.each($scope.editableTimeBoxNotesTemplate.configs, function(config, index) {
         if (typeof config.storyTags == 'undefined') {
             config.storyTags = [];
         }
+        //collapse existing sections by default
+        $scope.collapseSectionStatus[index] = true;
     });
+    $scope.sectionSortOptions = {};
 }]);
 
-controllers.controller('timeBoxNotesTemplateNewCtrl', ['$scope', '$controller', 'TimeBoxNotesTemplateStatesByName', 'DateService', 'TimeBoxNotesTemplateService', 'FormService', 'detailsTimeBoxNotesTemplate', function($scope, $controller, TimeBoxNotesTemplateStatesByName, DateService, TimeBoxNotesTemplateService, FormService, detailsTimeBoxNotesTemplate) {
+controllers.controller('timeBoxNotesTemplateNewCtrl', ['$scope', '$controller', 'TimeBoxNotesTemplateService', function($scope, $controller, TimeBoxNotesTemplateService) {
     $controller('timeBoxNotesTemplateCtrl', {$scope: $scope}); // inherit from timeBoxNotesTemplateCtrl
-    // Functions
-
     // Init
+    $scope.timeBoxNotesTemplate = {};
+    $scope.addSection($scope.timeBoxNotesTemplate);
+    $scope.sectionSortOptions = {};
+    // Functions
+    $scope.save = function(timeBoxNotesTemplate) {
+        $scope.formHolder.submitting = true;
+        TimeBoxNotesTemplateService.save(timeBoxNotesTemplate).then(function(returnTemplate) {
+            _.merge(timeBoxNotesTemplate, returnTemplate);
+            $scope.notifySuccess('todo.is.ui.timeBoxNotesTemplate.saved');
+            $scope.$close(timeBoxNotesTemplate);
+        });
+    };
 }]);
 

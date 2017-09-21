@@ -19,6 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
+- Colin Bontemps (cbontemps@kagilum.com)
 --}%
 <script type="text/ng-template" id="sprint.details.html">
 <div class="panel panel-light"
@@ -95,6 +96,11 @@
         <li role="presentation" ng-class="{'active':!$state.params.sprintTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
+            </a>
+        </li>
+        <li role="presentation" ng-class="{'active':$state.params.sprintTabId == 'notes'}">
+            <a href="{{ tabUrl('notes') }}">
+                <i class="fa fa-lg fa-newspaper-o"></i> ${message(code: 'todo.is.ui.sprint.notes')}
             </a>
         </li>
         <entry:point id="sprint-details-tab-button"/>

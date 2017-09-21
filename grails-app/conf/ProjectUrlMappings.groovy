@@ -303,12 +303,12 @@ class ProjectUrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
-        "/p/$project/release/$releaseId/releaseNotes/$templateId" {
+        "/p/$project/release/$id/releaseNotes/$templateId" {
             controller = 'timeBoxNotesTemplate'
             action = [GET: 'releaseNotes']
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                releaseId(matches: /\d+/)
+                id(matches: /\d+/)
                 templateId(matches: /\d+/)
             }
         }
@@ -352,6 +352,15 @@ class ProjectUrlMappings {
                 releaseId(matches: /\d*/)
             }
         }
+        "/p/$project/sprint/$id/sprintNotes/$templateId" {
+            controller = 'timeBoxNotesTemplate'
+            action = [GET: 'sprintNotes']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d+/)
+                templateId(matches: /\d+/)
+            }
+        }
         // Apps
         "/p/$project/app/definitions" {
             controller = 'app'
@@ -370,7 +379,7 @@ class ProjectUrlMappings {
         // TimeBoxNotesTemplates
         "/p/$project/timeBoxNotesTemplate" {
             controller = 'timeBoxNotesTemplate'
-            action = [GET: "index", POST: "save"]
+            action = [GET: 'index', POST: 'save']
             constraints {
                 project(matches: /[0-9A-Z]*/)
             }

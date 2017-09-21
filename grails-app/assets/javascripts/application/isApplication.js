@@ -234,7 +234,7 @@ angular.module('isApplication', [
                         return TimeBoxNotesTemplateService.list(Session.getProject());
                     }
                 }],
-                templateUrl: 'timeBoxNotesTemplates.release.notes.html'
+                templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
             }
         }, pluginTabsProvider.pluginTabs['release']);
 
@@ -245,6 +245,14 @@ angular.module('isApplication', [
                         return AttachmentService.list(detailsSprint);
                     }
                 }]
+            },
+            notes: {
+                resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'Session', function($stateParams, TimeBoxNotesTemplateService, Session) {
+                    if ($stateParams.sprintTabId == 'notes') {
+                        return TimeBoxNotesTemplateService.list(Session.getProject());
+                    }
+                }],
+                templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
             }
         }, pluginTabsProvider.pluginTabs['sprint']);
 
