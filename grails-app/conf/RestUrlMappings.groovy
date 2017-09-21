@@ -292,7 +292,7 @@ class RestUrlMappings {
         // Task filter by sprint / story
         "/ws/project/$project/task/$type/$id" {
             controller = 'task'
-            action = 'index'
+            action = [GET: 'index']
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 type(inList: ['sprint', 'story'])
@@ -308,6 +308,5 @@ class RestUrlMappings {
                 parentStory(matches: /\d*/)
             }
         }
-        //
     }
 }

@@ -56,12 +56,11 @@
         </div>
         <div class="form-group">
             <label for="header">${message(code: 'todo.is.ui.timeBoxNotesTemplate.header')}</label>
-            <textarea
-                    name="header"
-                    ng-maxlength="5000"
-                    rows="2"
-                    ng-model="editableTimeBoxNotesTemplate.header"
-                    class="form-control fixedRow"></textarea>
+            <textarea name="header"
+                      ng-maxlength="5000"
+                      rows="2"
+                      ng-model="editableTimeBoxNotesTemplate.header"
+                      class="form-control fixedRow"></textarea>
         </div>
         <hr/>
         <label for="header">${message(code: 'todo.is.ui.timeBoxNotesTemplate.sections')}</label>

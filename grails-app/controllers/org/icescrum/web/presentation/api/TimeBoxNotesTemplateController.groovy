@@ -103,7 +103,7 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
         Release release = Release.withRelease(project, id)
         TimeBoxNotesTemplate template = TimeBoxNotesTemplate.withTimeBoxNotesTemplate(project, templateId)
         def computedNotes = timeBoxNotesTemplateService.computeReleaseNotes(release, template)
-      render(status: 200, contentType: 'application/json', text: [timeBoxNotes: computedNotes] as JSON)
+        render(status: 200, contentType: 'application/json', text: [timeBoxNotes: computedNotes] as JSON)
     }
 
     @Secured('inProject()')

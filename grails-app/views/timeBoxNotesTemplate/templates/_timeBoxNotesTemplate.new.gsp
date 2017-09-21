@@ -38,12 +38,11 @@
         </div>
         <div class="form-group">
             <label for="header">${message(code: 'todo.is.ui.timeBoxNotesTemplate.header')}</label>
-            <textarea
-                    name="header"
-                    ng-maxlength="5000"
-                    rows="2"
-                    ng-model="timeBoxNotesTemplate.header"
-                    class="form-control fixedRow"></textarea>
+            <textarea name="header"
+                      ng-maxlength="5000"
+                      rows="2"
+                      ng-model="timeBoxNotesTemplate.header"
+                      class="form-control fixedRow"></textarea>
         </div>
         <hr/>
         <label for="header">${message(code: 'todo.is.ui.timeBoxNotesTemplate.sections')}</label>
@@ -54,8 +53,8 @@
                  as-sortable-item>
                 <div class="panel-heading" as-sortable-item-handle>
                     <div as-sortable-item-handle
-                          class="text-ellipsis"
-                          style="display: inline-block; width: 200px">
+                         class="text-ellipsis"
+                         style="display: inline-block; width: 200px">
                         ${message(code: 'todo.is.ui.timeBoxNotesTemplate.section')} {{($index+1) + (config.header ? " - "+config.header : "")}}
                     </div>
                     <button type="button"
