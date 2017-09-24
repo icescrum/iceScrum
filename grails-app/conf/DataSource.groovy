@@ -45,11 +45,11 @@ environments {
         }
         dataSource {
 //            logSql = true
-            dbCreate = "update"
-            username = "root"
-            password = "root"
-            driverClassName = "com.mysql.jdbc.Driver"
-            url = "jdbc:mysql://localhost/icescrum"
+//            dbCreate = "update"
+//            username = "root"
+//            password = "root"
+//            driverClassName = "com.mysql.jdbc.Driver"
+//            url = "jdbc:mysql://localhost/icescrum"
         }
     }
     test {
