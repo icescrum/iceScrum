@@ -70,7 +70,7 @@ databaseChangeLog = {
                     count++
                     if(percent < (count*100/total).round()){
                         percent = (count*100/total).round()
-                        log.info "$percent% done"
+                        log.info "Generate default timebox note templates for projects - $percent% done"
                     }
                 }
                 sqlStatement(new RawSqlStatement(query))

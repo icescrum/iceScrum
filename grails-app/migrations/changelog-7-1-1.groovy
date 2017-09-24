@@ -43,7 +43,7 @@ databaseChangeLog = {
                     count++
                     if(percent < (count*100/total).round()){
                         percent = (count*100/total).round()
-                        log.info "$percent% done"
+                        log.info "Migrate sprints attachments count - $percent% done"
                     }
                 }
             }
@@ -59,7 +59,7 @@ databaseChangeLog = {
                 log.info "Migrate releases attachments count (please wait, can take a while..) ${releases.size()} left"
                 def count = 0d
                 def percent = 0d
-                def total = projects.size().toDouble()
+                def total = releases.size().toDouble()
                 releases.each {
                     def attachments = it.getTotalAttachments()
                     if(attachments){
@@ -68,7 +68,7 @@ databaseChangeLog = {
                     count++
                     if(percent < (count*100/total).round()){
                         percent = (count*100/total).round()
-                        log.info "$percent% done"
+                        log.info "Migrate releases attachments count - $percent% done"
                     }
                 }
             }
@@ -93,7 +93,7 @@ databaseChangeLog = {
                     count++
                     if(percent < (count*100/total).round()){
                         percent = (count*100/total).round()
-                        log.info "$percent% done"
+                        log.info "Migrate projects attachments count - $percent% done"
                     }
                 }
             }
@@ -119,7 +119,7 @@ databaseChangeLog = {
                     count++
                     if(percent < (count*100/total).round()){
                         percent = (count*100/total).round()
-                        log.info "$percent% done"
+                        log.info "Migrate features attachments / comments count - $percent% done"
                     }
                 }
             }
@@ -146,7 +146,7 @@ databaseChangeLog = {
                     count++
                     if(percent < (count*100/total).round()){
                         percent = (count*100/total).round()
-                        log.info "$percent% done"
+                        log.info "Migrate stories attachments / comments count - $percent% done"
                     }
                 }
             }
@@ -173,7 +173,7 @@ databaseChangeLog = {
                     count++
                     if(percent < (count*100/total).round()){
                         percent = (count*100/total).round()
-                        log.info "$percent% done"
+                        log.info "Migrate tasks attachments / comments count - $percent% done"
                     }
                 }
             }
