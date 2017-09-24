@@ -1,3 +1,5 @@
+import org.slf4j.LoggerFactory
+import liquibase.statement.core.RawSqlStatement
 import org.icescrum.core.domain.*
 
 /*
@@ -27,13 +29,22 @@ databaseChangeLog = {
     changeSet(author: "vbarrier", id: "add_notnull_constraint_attachments_comments_count_is_sprint") {
         grailsChange {
             change {
-                println "Starting attachments / comments count migration (It will take some time!)"
                 sql.execute("UPDATE is_sprint SET attachments_count = 0  WHERE attachments_count IS NULL")
-                println "sprints..."
                 def sprints = Sprint.getAll()
+                log.info "Migrate sprints attachments count (please wait, can take a while..) ${sprints.size()} left"
+                def count = 0d
+                def percent = 0d
+                def total = sprints.size().toDouble()
                 sprints.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.save(flush: it == sprints.last(), failOnError: true)
+                    def attachments = it.getTotalAttachments()
+                    if(attachments){
+                        sqlStatement(new RawSqlStatement("UPDATE is_sprint SET attachments_count = ${attachments} WHERE id = ${it.id}"))
+                    }
+                    count++
+                    if(percent < (count*100/total).round()){
+                        percent = (count*100/total).round()
+                        log.info "$percent% done"
+                    }
                 }
             }
         }
@@ -44,11 +55,21 @@ databaseChangeLog = {
         grailsChange {
             change {
                 sql.execute("UPDATE is_release SET attachments_count = 0  WHERE attachments_count IS NULL")
-                println "releases..."
                 def releases = Release.getAll()
+                log.info "Migrate releases attachments count (please wait, can take a while..) ${releases.size()} left"
+                def count = 0d
+                def percent = 0d
+                def total = projects.size().toDouble()
                 releases.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.save(flush: it == releases.last(), failOnError: true)
+                    def attachments = it.getTotalAttachments()
+                    if(attachments){
+                        sqlStatement(new RawSqlStatement("UPDATE is_release SET attachments_count = ${attachments} WHERE id = ${it.id}"))
+                    }
+                    count++
+                    if(percent < (count*100/total).round()){
+                        percent = (count*100/total).round()
+                        log.info "$percent% done"
+                    }
                 }
             }
         }
@@ -59,11 +80,21 @@ databaseChangeLog = {
         grailsChange {
             change {
                 sql.execute("UPDATE is_project SET attachments_count = 0  WHERE attachments_count IS NULL")
-                println "projects..."
                 def projects = Project.getAll()
+                log.info "Migrate projects attachments count (please wait, can take a while..) ${projects.size()} left"
+                def count = 0d
+                def percent = 0d
+                def total = projects.size().toDouble()
                 projects.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.save(flush: it == projects.last(), failOnError: true)
+                    def attachments = it.getTotalAttachments()
+                    if(attachments){
+                        sqlStatement(new RawSqlStatement("UPDATE is_project SET attachments_count = ${attachments} WHERE id = ${it.id}"))
+                    }
+                    count++
+                    if(percent < (count*100/total).round()){
+                        percent = (count*100/total).round()
+                        log.info "$percent% done"
+                    }
                 }
             }
         }
@@ -74,12 +105,22 @@ databaseChangeLog = {
         grailsChange {
             change {
                 sql.execute("UPDATE is_feature SET comments_count = 0, attachments_count = 0  WHERE comments_count IS NULL OR attachments_count IS NULL")
-                println "features..."
                 def features = Feature.getAll()
+                log.info "Migrate features attachments / comments count (please wait, can take a while..) ${features.size()} left"
+                def count = 0d
+                def percent = 0d
+                def total = features.size().toDouble()
                 features.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.comments_count = it.getTotalComments()
-                    it.save(flush: it == features.last(), failOnError: true)
+                    def attachments = it.getTotalAttachments()
+                    def comments = it.getTotalComments()
+                    if(attachments || comments){
+                        sqlStatement(new RawSqlStatement("UPDATE is_feature SET comments_count = ${comments}, attachments_count = ${attachments} WHERE id = ${it.id}"))
+                    }
+                    count++
+                    if(percent < (count*100/total).round()){
+                        percent = (count*100/total).round()
+                        log.info "$percent% done"
+                    }
                 }
             }
         }
@@ -91,12 +132,22 @@ databaseChangeLog = {
         grailsChange {
             change {
                 sql.execute("UPDATE is_story SET comments_count = 0, attachments_count = 0  WHERE comments_count IS NULL OR attachments_count IS NULL")
-                println "stories..."
                 def stories = Story.getAll()
+                log.info "Migrate stories attachments / comments count (please wait, can take a while..) ${stories.size()} left"
+                def count = 0d
+                def percent = 0d
+                def total = stories.size().toDouble()
                 stories.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.comments_count = it.getTotalComments()
-                    it.save(flush: it == stories.last(), failOnError: true)
+                    def attachments = it.getTotalAttachments()
+                    def comments = it.getTotalComments()
+                    if(attachments || comments){
+                        sqlStatement(new RawSqlStatement("UPDATE is_story SET comments_count = ${comments}, attachments_count = ${attachments} WHERE id = ${it.id}"))
+                    }
+                    count++
+                    if(percent < (count*100/total).round()){
+                        percent = (count*100/total).round()
+                        log.info "$percent% done"
+                    }
                 }
             }
         }
@@ -108,14 +159,23 @@ databaseChangeLog = {
         grailsChange {
             change {
                 sql.execute("UPDATE is_task SET comments_count = 0, attachments_count = 0  WHERE comments_count IS NULL OR attachments_count IS NULL")
-                println "tasks..."
                 def tasks = Task.getAll()
+                log.info "Migrate tasks attachments / comments count (please wait, can take a while..) ${tasks.size()} left"
+                def count = 0d
+                def percent = 0d
+                def total = tasks.size().toDouble()
                 tasks.each {
-                    it.attachments_count = it.getTotalAttachments()
-                    it.comments_count = it.getTotalComments()
-                    it.save(flush: it == tasks.last(), failOnError: true)
+                    def attachments = it.getTotalAttachments()
+                    def comments = it.getTotalComments()
+                    if(attachments || comments){
+                        sqlStatement(new RawSqlStatement("UPDATE is_task SET comments_count = ${comments}, attachments_count = ${attachments} WHERE id = ${it.id}"))
+                    }
+                    count++
+                    if(percent < (count*100/total).round()){
+                        percent = (count*100/total).round()
+                        log.info "$percent% done"
+                    }
                 }
-                println "migration finished!"
             }
         }
         addNotNullConstraint(tableName: "is_task", columnName: "comments_count", columnDataType: "integer")
