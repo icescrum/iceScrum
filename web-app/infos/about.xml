@@ -30,7 +30,7 @@
         <forum>https://www.icescrum.com/forums/</forum>
     </version>
     <releaseNotes><![CDATA[
-        Since 7.1:
+        Since 7.1.0:
         <h4>Features</h4>
         <ul>
             <li><b>New</b> Sprint notes: Ability to generate a sprint notes from a custom template with done stories & tasks <a href="https://www.icescrum.com/documentation/indicators-and-reporting/#release_notes_and_sprint_notes">(Documentation)</a></li>
