@@ -30,8 +30,17 @@
         <forum>https://www.icescrum.com/forums/</forum>
     </version>
     <releaseNotes><![CDATA[
+        Since 7.1:
+        <h4>Features</h4>
+        <ul>
+            <li><b>New</b> Sprint notes: Ability to generate a sprint notes from a custom template with done stories & tasks <a href="https://www.icescrum.com/documentation/indicators-and-reporting/#release_notes_and_sprint_notes">(Documentation)</a></li>
+            <li><b>New</b> Release notes: Ability to generate a release notes from a custom template with done stories & tasks <a href="https://www.icescrum.com/documentation/indicators-and-reporting/#release_notes_and_sprint_notes">(Documentation)</a></li>
+            <li><b>New</b> REST User API: Ability to manage users from the REST API (not from Cloud plateform)<a href="https://www.icescrum.com/documentation/rest-api/#user">(Documentation)</a></li>
+        </ul>
         <h4>Bug fixes</h4>
         <ul>
+            <li>Wrong task responsible in task history when the Scrum Master move it</li>
+            <li>Feature color is not displayed on post-it exports (pdf)</li>
             <li>Excel App: error when reading an empty row from an XLS file</li>
             <li>GitHub / Git / SVN / Jenkins...: error when deleting a story with tasks that have build / commits</li>
             <li>Backlogs are very slow / unresponsive when they contain hundreds of stories</li>
