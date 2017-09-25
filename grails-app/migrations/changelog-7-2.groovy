@@ -28,6 +28,14 @@ import org.icescrum.core.domain.Story
 databaseChangeLog = {
     changeSet(author: "vbarrier", id: "add_default_timeboxNote_template") {
         grailsChange {
+            preConditions(onFail:"MARK_RAN"){
+                not {
+                    or {
+                        dbms(type:'postgresql')
+                        dbms(type:'oracle')
+                    }
+                }
+            }
             change {
                 def projects = Project.getAll()
                 def configsDataHtml = ([
@@ -38,29 +46,82 @@ databaseChangeLog = {
                         ],
                         [header      : "<h2>Bug Fixes</h2><ul>",
                          footer      : "</ul>",
-                         storyType   : Story.TYPE_DEFECT, //defect
+                         storyType   : Story.TYPE_DEFECT,
                          lineTemplate: '<li><a href=\'\'${baseUrl}-${story.id}\'\'>${story.name}</a></li>'
                         ]
                 ] as JSON).toString().replaceAll(/u002f/, '/')
                 def configsDataMarkdown = ([
                         [header      : "## New Features",
                          footer      : "",
-                         storyType   : Story.TYPE_USER_STORY, //user
+                         storyType   : Story.TYPE_USER_STORY,
                          lineTemplate: '* [${story.name}](${baseUrl}-${story.id})'
                         ],
                         [header      : "## Bug Fixes",
                          footer      : "",
-                         storyType   : Story.TYPE_DEFECT, //defect
+                         storyType   : Story.TYPE_DEFECT,
                          lineTemplate: '* [${story.name}](${baseUrl}-${story.id})'
                         ]
                 ] as JSON).toString()
-                def query = "INSERT INTO is_tbn_tpls (`name`,`header`,`configs_data`,`parent_project_id`,`version`)  VALUES "
+                def query = "INSERT INTO is_tbn_tpls (name,header,configs_data,parent_project_id,version)  VALUES "
                 log.info "Generate default timebox note templates for projects (please wait, can take a while..) ${projects.size()} left"
                 def count = 0d
                 def percent = 0d
                 def total = projects.size().toDouble()
                 projects.each {
                     query += "('HTML Release Note Template', '<h1> My HTML release Note </h1>', '$configsDataHtml', $it.id, 1),('Markdown Release Note Template', '# My Markdown release Note', '$configsDataMarkdown', $it.id, 1)"
+                    if (it != projects.last()) {
+                        query += ","
+                    }
+                    count++
+                    if (percent < (count * 100 / total).round()) {
+                        percent = (count * 100 / total).round()
+                        log.info "Generate default timebox note templates for projects - $percent% done"
+                    }
+                }
+                if (total > 0) {
+                    sqlStatement(new RawSqlStatement(query))
+                }
+            }
+        }
+    }
+    changeSet(author: "vbarrier", id: "add_default_timeboxNote_template_postgres") {
+        grailsChange {
+            preConditions(onFail:"MARK_RAN"){
+                dbms(type:'postgresql')
+            }
+            change {
+                def projects = Project.getAll()
+                def configsDataHtml = ([
+                        [header      : "<h2>New Features</h2><ul>",
+                         footer      : "</ul>",
+                         storyType   : Story.TYPE_USER_STORY,
+                         lineTemplate: '<li><a href=\'\'${baseUrl}-${story.id}\'\'>${story.name}</a></li>'
+                        ],
+                        [header      : "<h2>Bug Fixes</h2><ul>",
+                         footer      : "</ul>",
+                         storyType   : Story.TYPE_DEFECT,
+                         lineTemplate: '<li><a href=\'\'${baseUrl}-${story.id}\'\'>${story.name}</a></li>'
+                        ]
+                ] as JSON).toString().replaceAll(/u002f/, '/')
+                def configsDataMarkdown = ([
+                        [header      : "## New Features",
+                         footer      : "",
+                         storyType   : Story.TYPE_USER_STORY,
+                         lineTemplate: '* [${story.name}](${baseUrl}-${story.id})'
+                        ],
+                        [header      : "## Bug Fixes",
+                         footer      : "",
+                         storyType   : Story.TYPE_DEFECT,
+                         lineTemplate: '* [${story.name}](${baseUrl}-${story.id})'
+                        ]
+                ] as JSON).toString()
+                def query = "INSERT INTO is_tbn_tpls (id,name,header,configs_data,parent_project_id,version)  VALUES "
+                log.info "Generate default timebox note templates for projects (please wait, can take a while..) ${projects.size()} left"
+                def count = 0d
+                def percent = 0d
+                def total = projects.size().toDouble()
+                projects.each {
+                    query += "(nextval('hibernate_sequence'), 'HTML Release Note Template', '<h1> My HTML release Note </h1>', '$configsDataHtml', $it.id, 1),(nextval('hibernate_sequence'), 'Markdown Release Note Template', '# My Markdown release Note', '$configsDataMarkdown', $it.id, 1)"
                     if (it != projects.last()) {
                         query += ","
                     }
