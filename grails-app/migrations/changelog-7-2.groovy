@@ -63,7 +63,7 @@ databaseChangeLog = {
                 def percent = 0d
                 def total = projects.size().toDouble()
                 projects.each{
-                    query += "('HTML Release Note Template', '<h1> My HTML release Note </h1>', \"$configsDataHtml\", $it.id, 1),('Markdown Release Note Template', '# My Markdown release Note', '$configsDataMarkdown', $it.id, 1)"
+                    query += "('HTML Release Note Template', '<h1> My HTML release Note </h1>', '$configsDataHtml', $it.id, 1),('Markdown Release Note Template', '# My Markdown release Note', '$configsDataMarkdown', $it.id, 1)"
                     if(it != projects.last()){
                         query += ","
                     }
