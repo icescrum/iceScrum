@@ -37,12 +37,12 @@ databaseChangeLog = {
                 def total = sprints.size().toDouble()
                 sprints.each {
                     def attachments = it.getTotalAttachments()
-                    if(attachments){
+                    if (attachments) {
                         sqlStatement(new RawSqlStatement("UPDATE is_sprint SET attachments_count = ${attachments} WHERE id = ${it.id}"))
                     }
                     count++
-                    if(percent < (count*100/total).round()){
-                        percent = (count*100/total).round()
+                    if (percent < (count * 100 / total).round()) {
+                        percent = (count * 100 / total).round()
                         log.info "Migrate sprints attachments count - $percent% done"
                     }
                 }
@@ -62,12 +62,12 @@ databaseChangeLog = {
                 def total = releases.size().toDouble()
                 releases.each {
                     def attachments = it.getTotalAttachments()
-                    if(attachments){
+                    if (attachments) {
                         sqlStatement(new RawSqlStatement("UPDATE is_release SET attachments_count = ${attachments} WHERE id = ${it.id}"))
                     }
                     count++
-                    if(percent < (count*100/total).round()){
-                        percent = (count*100/total).round()
+                    if (percent < (count * 100 / total).round()) {
+                        percent = (count * 100 / total).round()
                         log.info "Migrate releases attachments count - $percent% done"
                     }
                 }
@@ -87,12 +87,12 @@ databaseChangeLog = {
                 def total = projects.size().toDouble()
                 projects.each {
                     def attachments = it.getTotalAttachments()
-                    if(attachments){
+                    if (attachments) {
                         sqlStatement(new RawSqlStatement("UPDATE is_project SET attachments_count = ${attachments} WHERE id = ${it.id}"))
                     }
                     count++
-                    if(percent < (count*100/total).round()){
-                        percent = (count*100/total).round()
+                    if (percent < (count * 100 / total).round()) {
+                        percent = (count * 100 / total).round()
                         log.info "Migrate projects attachments count - $percent% done"
                     }
                 }
@@ -113,12 +113,12 @@ databaseChangeLog = {
                 features.each {
                     def attachments = it.getTotalAttachments()
                     def comments = it.getTotalComments()
-                    if(attachments || comments){
+                    if (attachments || comments) {
                         sqlStatement(new RawSqlStatement("UPDATE is_feature SET comments_count = ${comments}, attachments_count = ${attachments} WHERE id = ${it.id}"))
                     }
                     count++
-                    if(percent < (count*100/total).round()){
-                        percent = (count*100/total).round()
+                    if (percent < (count * 100 / total).round()) {
+                        percent = (count * 100 / total).round()
                         log.info "Migrate features attachments / comments count - $percent% done"
                     }
                 }
@@ -140,12 +140,12 @@ databaseChangeLog = {
                 stories.each {
                     def attachments = it.getTotalAttachments()
                     def comments = it.getTotalComments()
-                    if(attachments || comments){
+                    if (attachments || comments) {
                         sqlStatement(new RawSqlStatement("UPDATE is_story SET comments_count = ${comments}, attachments_count = ${attachments} WHERE id = ${it.id}"))
                     }
                     count++
-                    if(percent < (count*100/total).round()){
-                        percent = (count*100/total).round()
+                    if (percent < (count * 100 / total).round()) {
+                        percent = (count * 100 / total).round()
                         log.info "Migrate stories attachments / comments count - $percent% done"
                     }
                 }
@@ -167,12 +167,12 @@ databaseChangeLog = {
                 tasks.each {
                     def attachments = it.getTotalAttachments()
                     def comments = it.getTotalComments()
-                    if(attachments || comments){
+                    if (attachments || comments) {
                         sqlStatement(new RawSqlStatement("UPDATE is_task SET comments_count = ${comments}, attachments_count = ${attachments} WHERE id = ${it.id}"))
                     }
                     count++
-                    if(percent < (count*100/total).round()){
-                        percent = (count*100/total).round()
+                    if (percent < (count * 100 / total).round()) {
+                        percent = (count * 100 / total).round()
                         log.info "Migrate tasks attachments / comments count - $percent% done"
                     }
                 }

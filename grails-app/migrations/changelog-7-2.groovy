@@ -1,6 +1,5 @@
 import grails.converters.JSON
 import liquibase.statement.core.RawSqlStatement
-import org.apache.commons.lang.StringEscapeUtils
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Story
 
@@ -31,7 +30,6 @@ databaseChangeLog = {
         grailsChange {
             change {
                 def projects = Project.getAll()
-
                 def configsDataHtml = ([
                         [header      : "<h2>New Features</h2><ul>",
                          footer      : "</ul>",
@@ -44,8 +42,7 @@ databaseChangeLog = {
                          lineTemplate: '<li><a href=\'\'${baseUrl}-${story.id}\'\'>${story.name}</a></li>'
                         ]
                 ] as JSON).toString().replaceAll(/u002f/, '/')
-
-                def configsDataMarkdown =  ([
+                def configsDataMarkdown = ([
                         [header      : "## New Features",
                          footer      : "",
                          storyType   : Story.TYPE_USER_STORY, //user
@@ -57,25 +54,25 @@ databaseChangeLog = {
                          lineTemplate: '* [${story.name}](${baseUrl}-${story.id})'
                         ]
                 ] as JSON).toString()
-
                 def query = "INSERT INTO is_tbn_tpls (`name`,`header`,`configs_data`,`parent_project_id`,`version`)  VALUES "
                 log.info "Generate default timebox note templates for projects (please wait, can take a while..) ${projects.size()} left"
                 def count = 0d
                 def percent = 0d
                 def total = projects.size().toDouble()
-                projects.each{
+                projects.each {
                     query += "('HTML Release Note Template', '<h1> My HTML release Note </h1>', '$configsDataHtml', $it.id, 1),('Markdown Release Note Template', '# My Markdown release Note', '$configsDataMarkdown', $it.id, 1)"
-                    if(it != projects.last()){
+                    if (it != projects.last()) {
                         query += ","
                     }
                     count++
-                    if(percent < (count*100/total).round()){
-                        percent = (count*100/total).round()
+                    if (percent < (count * 100 / total).round()) {
+                        percent = (count * 100 / total).round()
                         log.info "Generate default timebox note templates for projects - $percent% done"
                     }
                 }
-                if(total > 0)
+                if (total > 0) {
                     sqlStatement(new RawSqlStatement(query))
+                }
             }
         }
     }
