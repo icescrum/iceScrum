@@ -43,7 +43,7 @@ databaseChangeLog = {
                          storyType   : Story.TYPE_DEFECT, //defect
                          lineTemplate: '<li><a href=\'\'${baseUrl}-${story.id}\'\'>${story.name}</a></li>'
                         ]
-                ] as JSON).toString()
+                ] as JSON).toString().replaceAll(/u002f/, '/')
 
                 def configsDataMarkdown =  ([
                         [header      : "## New Features",
