@@ -1,5 +1,6 @@
 import grails.converters.JSON
 import liquibase.statement.core.RawSqlStatement
+import org.apache.commons.lang.StringEscapeUtils
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Story
 
@@ -35,12 +36,12 @@ databaseChangeLog = {
                         [header      : "<h2>New Features</h2><ul>",
                          footer      : "</ul>",
                          storyType   : Story.TYPE_USER_STORY,
-                         lineTemplate: '<li><a href="${baseUrl}-${story.id}">${story.name}</a></li>'
+                         lineTemplate: '<li><a href=\'\'${baseUrl}-${story.id}\'\'>${story.name}</a></li>'
                         ],
                         [header      : "<h2>Bug Fixes</h2><ul>",
                          footer      : "</ul>",
                          storyType   : Story.TYPE_DEFECT, //defect
-                         lineTemplate: '<li><a href="${baseUrl}-${story.id}">${story.name}</a></li>'
+                         lineTemplate: '<li><a href=\'\'${baseUrl}-${story.id}\'\'>${story.name}</a></li>'
                         ]
                 ] as JSON).toString()
 
@@ -73,7 +74,8 @@ databaseChangeLog = {
                         log.info "Generate default timebox note templates for projects - $percent% done"
                     }
                 }
-                sqlStatement(new RawSqlStatement(query))
+                if(total > 0)
+                    sqlStatement(new RawSqlStatement(query))
             }
         }
     }
