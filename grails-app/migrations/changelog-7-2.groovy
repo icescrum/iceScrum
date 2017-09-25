@@ -35,12 +35,12 @@ databaseChangeLog = {
                         [header      : "<h2>New Features</h2><ul>",
                          footer      : "</ul>",
                          storyType   : Story.TYPE_USER_STORY,
-                         lineTemplate: "<li><a href=\'\${baseUrl}-\${story.id}\'>\${story.name}</a></li>"
+                         lineTemplate: '<li><a href="${baseUrl}-${story.id}">${story.name}</a></li>'
                         ],
                         [header      : "<h2>Bug Fixes</h2><ul>",
                          footer      : "</ul>",
                          storyType   : Story.TYPE_DEFECT, //defect
-                         lineTemplate: "<li><a href=\'\${baseUrl}-\${story.id}\'>\${story.name}</a></li>"
+                         lineTemplate: '<li><a href="${baseUrl}-${story.id}">${story.name}</a></li>'
                         ]
                 ] as JSON).toString()
 
@@ -63,7 +63,7 @@ databaseChangeLog = {
                 def percent = 0d
                 def total = projects.size().toDouble()
                 projects.each{
-                    query += "('HTML Release Note Template', '<h1> My HTML release Note </h1>', '$configsDataHtml', $it.id, 1),('Markdown Release Note Template', '# My Markdown release Note', '$configsDataMarkdown', $it.id, 1)"
+                    query += "('HTML Release Note Template', '<h1> My HTML release Note </h1>', \"$configsDataHtml\", $it.id, 1),('Markdown Release Note Template', '# My Markdown release Note', '$configsDataMarkdown', $it.id, 1)"
                     if(it != projects.last()){
                         query += ","
                     }
