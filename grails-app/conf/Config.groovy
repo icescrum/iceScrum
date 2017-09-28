@@ -424,6 +424,10 @@ log4j = {
 
     if (ApplicationSupport.booleanValue(config.icescrum.securitydebug.enable)) {
         debug 'org.springframework.security'
+        debug 'org.icescrum.core.security'
+        debug 'com.kagilum.plugin.saml'
+        debug 'com.kagilum.plugin.ldap'
+        debug 'com.kagilum.plugin.preauth'
     }
 
     error 'grails.plugin.springsecurity.web.access.intercept.AnnotationFilterInvocationDefinition' // Useless warning because are registered twice since it's based on controllerClazz.getMethods() which return the same method twice (1 with & 1 without params)
