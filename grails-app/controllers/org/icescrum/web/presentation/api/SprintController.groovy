@@ -162,7 +162,7 @@ class SprintController implements ControllerErrorHandler {
                                values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime] },
                                color : '#009900']
         }
-        def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
+        def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.collect { [it.idealTime, it.remainingTime].max() }.max()],
                                xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownRemainingChart.yaxis.label')],
@@ -183,7 +183,7 @@ class SprintController implements ControllerErrorHandler {
                  values: values.findAll { it.tasks != null }.collect { return [it.label, it.tasks] },
                  color : '#1C3660']
         ]
-        def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
+        def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.collect { [it.tasksDone, it.tasks].max() }.max()],
                                xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupTasksChart.yaxis.label')],
@@ -204,7 +204,7 @@ class SprintController implements ControllerErrorHandler {
                  values: values.findAll { it.pointsDone != null }.collect { return [it.label, it.pointsDone] },
                  color : '#009900']
         ]
-        def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
+        def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.collect { [it.totalPoints, it.pointsDone].max() }.max()],
                                xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupPointsChart.yaxis.label')],
@@ -225,7 +225,7 @@ class SprintController implements ControllerErrorHandler {
                  values: values.findAll { it.storiesDone != null }.collect { return [it.label, it.storiesDone] },
                  color : '#009900']
         ]
-        def xDomain = values ? [values.label.min(), sprint.state == Sprint.STATE_INPROGRESS ? sprint.endDate.clone().clearTime().time : values.label.max()] : []
+        def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.collect { [it.stories, it.storiesDone].max() }.max()],
                                xDomain: xDomain,
                                yAxis  : [axisLabel: message(code: 'is.chart.sprintBurnupStoriesChart.yaxis.label')],
