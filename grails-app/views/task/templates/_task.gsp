@@ -42,11 +42,12 @@
             </span>
         </div>
     </div>
-    <div class="content"
-         as-sortable-item-handle="authorizedTask('rank', task)" ng-class="{'without-description':!task.description}">
-        <h3 class="title">{{ task.name }}</h3>
-        <div class="description"
-             ng-bind-html="task.description | lineReturns"></div>
+    <div class="content" ng-class="{'without-description':!task.description}">
+        <div as-sortable-item-handle="authorizedTask('rank', task)">
+            <h3 class="title">{{ task.name }}</h3>
+            <div class="description"
+                 ng-bind-html="task.description | lineReturns"></div>
+        </div>
     </div>
     <div class="footer">
         <div class="tags">

@@ -51,10 +51,12 @@
             </span>
         </div>
     </div>
-    <div class="content" as-sortable-item-handle ng-class="{'without-description':!story.description}">
-        <h3 class="title">{{ story.name }}</h3>
-        <div class="description"
-             ng-bind-html="story.description | lineReturns | actorTag"></div>
+    <div class="content" ng-class="{'without-description':!story.description}">
+        <div as-sortable-item-handle>
+            <h3 class="title">{{ story.name }}</h3>
+            <div class="description"
+                 ng-bind-html="story.description | lineReturns | actorTag"></div>
+        </div>
     </div>
     <div class="footer">
         <div class="tags">
