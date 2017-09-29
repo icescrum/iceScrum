@@ -1105,7 +1105,7 @@ angular.module('isApplication', [
             if ($download) {
                 $download.attr('src', url);
             } else {
-                $download = $('<iframe>', {id: 'idown', src: url}).hide().appendTo('body');
+                $download = $('<iframe>', {id: 'idown', src: encodeURI(url)}).hide().appendTo('body');
             }
         };
 
