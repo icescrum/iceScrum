@@ -42,16 +42,16 @@
 </div>
 <div class="row app-list">
     <div class="col-xs-6 col-md-3 text-center" ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
-        <div ng-click="openAppDefinition(currentAppDefinition)" class="app-logo" uib-tooltip="{{ currentAppDefinition.baseline }}">
+        <div ng-click="openAppDefinition(currentAppDefinition)" class="app-logo" uib-tooltip="{{:: currentAppDefinition.baseline }}">
             <div class="ribbon">
                 <div class="new-app" ng-if="currentAppDefinition.isNew && !isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.new')}</div>
                 <div class="enabled-app" ng-if="isEnabledApp(currentAppDefinition)">${message(code: 'is.ui.apps.enabled')}</div>
             </div>
-            <img ng-src="{{ currentAppDefinition.logo }}"
-                 alt="{{ currentAppDefinition.name }}">
+            <img ng-src="{{:: currentAppDefinition.logo }}"
+                 alt="{{:: currentAppDefinition.name }}">
         </div>
-        <h5 ng-click="openAppDefinition(currentAppDefinition)">
-            {{ currentAppDefinition.name }}
+        <h5 ng-click="openAppDefinition(currentAppDefinition)" class="text-ellipsis">
+            {{:: currentAppDefinition.name }}
         </h5>
     </div>
     <div class="text-center more-results" ng-hide="filteredApps.length">

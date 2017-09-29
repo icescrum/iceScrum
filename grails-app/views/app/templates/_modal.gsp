@@ -49,8 +49,8 @@
                 </div>
                 <li ng-class="{'current': currentAppDefinition == appDefinition}"
                     ng-repeat="currentAppDefinition in filteredApps = (appDefinitions | filter:appDefinitionFilter | orderBy: appsOrder)">
-                    <a ng-click="openAppDefinition(currentAppDefinition)" href>
-                        {{ currentAppDefinition.name }}
+                    <a ng-click="openAppDefinition(currentAppDefinition)" href class="text-ellipsis">
+                        {{:: currentAppDefinition.name }}
                         <i ng-if="isEnabledApp(currentAppDefinition)" class="fa fa-check text-success"></i>
                     </a>
                     <div class="ribbon">
