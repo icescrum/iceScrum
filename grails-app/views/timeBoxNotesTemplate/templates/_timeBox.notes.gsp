@@ -32,10 +32,10 @@
                            ng-model="ctrl.template">
                     <ui-select-match
                             placeholder="${message(code: 'todo.is.ui.timeBox.notes.noTemplate')}">
-                        {{ $select.selected.name }}
+                        {{ $select.selected.id }} - {{ $select.selected.name }}
                     </ui-select-match>
                     <ui-select-choices repeat="item in templates track by item.id">
-                        {{ item.name }}
+                        {{:: item.id }} - {{ item.name }}
                     </ui-select-choices>
                 </ui-select>
                 <span class="input-group-btn">
