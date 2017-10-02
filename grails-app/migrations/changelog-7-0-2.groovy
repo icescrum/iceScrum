@@ -26,6 +26,9 @@ databaseChangeLog = {
     changeSet(author: 'noullet', id: 'is_task-name-dropUniqueConstraint') {
         preConditions(onFail: 'MARK_RAN') {
             // There is no uniqueConstraintExists so we use indexExists
+            not {
+                dbms(type: 'oracle')
+            }
             or {
                 indexExists(indexName: 'unique_nameistask') // Index name is the same as unique key constraint on MySQL
                 indexExists(indexName: 'unique_nameistask_index_a') // Index name is different on H2

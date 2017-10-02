@@ -34,6 +34,9 @@ databaseChangeLog = {
     changeSet(author: "vbarrier", id: "drop_on_right_columnn") {
         preConditions(onFail: 'MARK_RAN') {
             columnExists(columnName: "on_right", tableName: "is_up_widgets")
+            not {
+                dbms(type: 'oracle')
+            }
         }
         dropColumn(columnName: "on_right", tableName: "is_up_widgets")
     }

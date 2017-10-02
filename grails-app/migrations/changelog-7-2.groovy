@@ -28,11 +28,11 @@ import org.icescrum.core.domain.Story
 databaseChangeLog = {
     changeSet(author: "vbarrier", id: "add_default_timeboxNote_template") {
         grailsChange {
-            preConditions(onFail:"MARK_RAN"){
+            preConditions(onFail: "MARK_RAN") {
                 not {
                     or {
-                        dbms(type:'postgresql')
-                        dbms(type:'oracle')
+                        dbms(type: 'postgresql')
+                        dbms(type: 'oracle')
                     }
                 }
             }
@@ -86,8 +86,8 @@ databaseChangeLog = {
     }
     changeSet(author: "vbarrier", id: "add_default_timeboxNote_template_postgres") {
         grailsChange {
-            preConditions(onFail:"MARK_RAN"){
-                dbms(type:'postgresql')
+            preConditions(onFail: "MARK_RAN") {
+                dbms(type: 'postgresql')
             }
             change {
                 def projects = Project.getAll()
