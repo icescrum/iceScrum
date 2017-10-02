@@ -55,10 +55,10 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         }
                     }
                 },
-                computeMaxY:function(data){
+                computeMaxY: function(data) {
                     var max = 0;
-                    _.each(data, function(line){
-                        var values = _.map(line["values"],function(o){ return o[0]; });
+                    _.each(data, function(line) {
+                        var values = _.map(line["values"], function(o) { return o[0]; });
                         var tmpMax = _.max(values);
                         max = tmpMax > max ? tmpMax : max;
                     });
@@ -70,14 +70,14 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     type: 'stackedAreaChart',
                     margin: {right: 45}
                 },
-                computeMaxY:null
+                computeMaxY: null
             },
             burndown: {
                 chart: {
                     type: 'multiBarChart',
                     stacked: true
                 },
-                computeMaxY:null
+                computeMaxY: null
             },
             burnup: {
                 chart: {
@@ -89,7 +89,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     type: 'multiBarChart',
                     stacked: true
                 },
-                computeMaxY:null
+                computeMaxY: null
             },
             parkingLot: {
                 chart: {
@@ -107,7 +107,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     },
                     showControls: false
                 },
-                computeMaxY:null
+                computeMaxY: null
             }
         },
         release: {
@@ -126,8 +126,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         left: 125
                     },
                     showControls: false
-                },
-                computeMaxY:null
+                }
             },
             burndown: {
                 chart: {
@@ -155,10 +154,10 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         showMaxMin: false
                     }
                 },
-                computeMaxY:function(data){
+                computeMaxY: function(data) {
                     var max = 0;
-                    _.each(data, function(line){
-                        var values = _.map(line["values"],function(o){ return o[1]; });
+                    _.each(data, function(line) {
+                        var values = _.map(line["values"], function(o) { return o[1]; });
                         var tmpMax = _.max(values);
                         max = tmpMax > max ? tmpMax : max;
                     });
@@ -210,7 +209,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                 $scope.data = chart.data;
                 $scope.options = _.merge($scope.options, chart.options);
                 $scope.options = _.merge($scope.options, options);
-                if($scope.options.computeMaxY){
+                if ($scope.options.computeMaxY) {
                     var max = $scope.options.computeMaxY(chart.data);
                     $scope.options.chart.yDomain = [0, max];
                 }
