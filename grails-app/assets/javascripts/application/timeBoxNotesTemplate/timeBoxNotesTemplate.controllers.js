@@ -27,11 +27,11 @@ controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
     $scope.computeTimeBoxNotes = function() {
         if ($scope.timeBoxClass == 'release') {
             TimeBoxNotesTemplateService.getReleaseNotes($scope.release, ctrl.template).then(function(timeBoxNotes) {
-                $scope.timeBoxNotes = timeBoxNotes.timeBoxNotes;
+                $scope.timeBoxNotes = timeBoxNotes;
             });
         } else if ($scope.timeBoxClass == 'sprint') {
             TimeBoxNotesTemplateService.getSprintNotes($scope.sprint, ctrl.template).then(function(timeBoxNotes) {
-                $scope.timeBoxNotes = timeBoxNotes.timeBoxNotes;
+                $scope.timeBoxNotes = timeBoxNotes;
             });
         }
     };

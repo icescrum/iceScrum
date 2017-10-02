@@ -103,7 +103,7 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
         Release release = Release.withRelease(project, id)
         TimeBoxNotesTemplate template = TimeBoxNotesTemplate.withTimeBoxNotesTemplate(project, templateId)
         def computedNotes = timeBoxNotesTemplateService.computeReleaseNotes(release, template)
-        render(status: 200, contentType: 'application/json', text: [timeBoxNotes: computedNotes] as JSON)
+        render(status: 200, contentType: 'text/plain', text: computedNotes)
     }
 
     @Secured('inProject()')
@@ -111,6 +111,6 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
         Sprint sprint = Sprint.withSprint(project, id)
         TimeBoxNotesTemplate template = TimeBoxNotesTemplate.withTimeBoxNotesTemplate(project, templateId)
         def computedNotes = timeBoxNotesTemplateService.computeSprintNotes(sprint, template)
-        render(status: 200, contentType: 'application/json', text: [timeBoxNotes: computedNotes] as JSON)
+        render(status: 200, contentType: 'text/plain', text: computedNotes)
     }
 }
