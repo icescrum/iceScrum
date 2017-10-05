@@ -105,11 +105,11 @@ class ErrorsController implements ControllerErrorHandler {
                     try {
                         if (grailsApplication.config.icescrum.alerts.enable) {
                             User user = (User) springSecurityService.currentUser
-                            def from = user?.email ?: grailsApplication.config.icescrum.alerts.default.from
                             def admins = UserAuthority.findAllByAuthority(Authority.findByAuthority(Authority.ROLE_ADMIN)).collect { it.user }
                             log.debug("Error 500 report")
                             notificationEmailService.send([
-                                    from   : from,
+                                    from   : grailsApplication.config.icescrum.alerts.default.from,
+                                    replyTo : user?.email?:null,
                                     to     : grailsApplication.config.icescrum.alerts.errors.to,
                                     bcc    : admins*.email.toArray(),
                                     subject: "[iceScrum][report] Error report v7",
