@@ -19,6 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
+- Colin Bontemps (cbontemps@kagilum.com)
 --}%
 
 <script type="text/ng-template" id="app.details.html">
@@ -114,6 +115,7 @@
                     <td class="text-right">${message(code: 'is.app.windows')}</td>
                     <td>{{ appDefinition.hasWindows ? '${message(code: 'is.yes')}' : '${message(code: 'is.no')}' }}</td>
                 </tr>
+                <entry:point id="app-infos-after"/>
                 <tr ng-if="appDefinition.websiteUrl">
                     <td class="text-right"></td>
                     <td>
