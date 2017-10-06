@@ -42,6 +42,9 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             return BacklogService.openChart(item, item.project, chartName);
         }
     };
+    var addMargin = function(number) {
+        return Math.ceil(number * 0.05) + number;
+    };
     $scope.chartOptions = {
         project: {
             default: {
@@ -62,7 +65,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         var tmpMax = _.max(values);
                         max = tmpMax > max ? tmpMax : max;
                     });
-                    return Math.round(max * 0.2) + max;
+                    return addMargin(max);
                 }
             },
             flowCumulative: {
@@ -161,7 +164,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         var tmpMax = _.max(values);
                         max = tmpMax > max ? tmpMax : max;
                     });
-                    return Math.round(max * 0.2) + max;
+                    return addMargin(max);
                 }
             }
         },
