@@ -22,7 +22,7 @@
  *
  */
 
-controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'StoryService', 'project', '$controller', function($scope, $location, $state, ProjectService, ReleaseService, SprintService, AttachmentService, StoryService, project, $controller) {
+controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'StoryService', 'project', '$controller', function($scope, $location, $state, $q, ProjectService, ReleaseService, SprintService, AttachmentService, StoryService, project, $controller) {
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
     };
@@ -68,21 +68,22 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', 'Proje
     ProjectService.getActivities($scope.project).then(function(activities) {
         $scope.activities = activities;
     });
+    // Promises are chained like so to wait for request completion and avoid redundant queries to the server
     ReleaseService.getCurrentOrNextRelease($scope.project).then(function(release) {
         $scope.release = release;
-        if (release && release.id) {
-            SprintService.list(release);
-        }
-    });
-    // Needs a separate call because it may not be in the currentOrNextRelease
-    SprintService.getCurrentOrLastSprint($scope.project).then(function(sprint) {
-        $scope.currentOrLastSprint = sprint;
-    });
-    SprintService.getLastSprint($scope.project).then(function(sprint) {
-        $scope.lastSprint = sprint;
-    });
-    SprintService.getCurrentOrNextSprint($scope.project).then(function(sprint) {
-        $scope.currentOrNextSprint = sprint;
+        return (release && release.id) ? SprintService.list(release) : $q.when();
+    }).then(function() {
+        // Needs a separate call because it may not be in the currentOrNextRelease
+        return SprintService.getCurrentOrLastSprint($scope.project).then(function(sprint) {
+            $scope.currentOrLastSprint = sprint;
+        });
+    }).then(function() {
+        SprintService.getLastSprint($scope.project).then(function(sprint) {
+            $scope.lastSprint = sprint;
+        });
+        SprintService.getCurrentOrNextSprint($scope.project).then(function(sprint) {
+            $scope.currentOrNextSprint = sprint;
+        });
     });
     AttachmentService.list($scope.project);
     if (isSettings.showAppStore) {
