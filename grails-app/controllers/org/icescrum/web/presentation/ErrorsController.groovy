@@ -25,8 +25,6 @@ import grails.converters.JSON
 import grails.util.Environment
 import org.apache.commons.lang.exception.ExceptionUtils
 import org.icescrum.core.domain.User
-import org.icescrum.core.domain.security.Authority
-import org.icescrum.core.domain.security.UserAuthority
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 
@@ -105,7 +103,7 @@ class ErrorsController implements ControllerErrorHandler {
                     try {
                         if (grailsApplication.config.icescrum.alerts.enable) {
                             User user = (User) springSecurityService.currentUser
-                            def admins = UserAuthority.findAllByAuthority(Authority.findByAuthority(Authority.ROLE_ADMIN)).collect { it.user }
+                            def admins = ApplicationSupport.getAllAdministrators()
                             log.debug("Error 500 report")
                             notificationEmailService.send([
                                     from   : grailsApplication.config.icescrum.alerts.default.from,
