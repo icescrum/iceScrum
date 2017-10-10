@@ -1,4 +1,5 @@
 /**
+ * CUSTOMIIIIZED
  * @license MIT
  * @flow.js/ng-flow 2.7.4
  */
@@ -1736,7 +1737,7 @@ angular.module('flow.btn', ['flow.init'])
   return {
     'restrict': 'EA',
     'scope': false,
-    'require': '^flowInit',
+    //'require': '^flowInit', // CUSTOMIIIZED
     'link': function(scope, element, attrs) {
       var isDirectory = attrs.hasOwnProperty('flowDirectory');
       var isSingleFile = attrs.hasOwnProperty('flowSingleFile');
