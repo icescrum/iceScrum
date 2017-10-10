@@ -84,7 +84,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     $rootScope.uiWorking();
                     var newDone = _.transform($scope.newDone, function(newDone, isDone, storyId) {
                         if (isDone) {
-                            newDone.push(storyId);
+                            newDone.push(parseInt(storyId));
                         }
                     }, []);
                     var storyIdsByDone = _.chain($scope.backlog.stories).groupBy(function(story) {
