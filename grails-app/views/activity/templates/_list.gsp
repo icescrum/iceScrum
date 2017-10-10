@@ -51,7 +51,7 @@
         </div>
     </div>
     <hr/>
-    <div ng-if="selected.activities.length >= 10"
+    <div ng-if="(selected.activities.length < selected.activities_total) || allActivities"
          ng-switch="allActivities"
          class="text-center">
         <button ng-switch-default

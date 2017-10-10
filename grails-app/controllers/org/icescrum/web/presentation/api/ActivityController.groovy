@@ -35,7 +35,7 @@ class ActivityController implements ControllerErrorHandler {
     def springSecurityService
 
     @Secured('stakeHolder() or inProject()')
-    def index(long fluxiableId, boolean all, long project, String type) {
+    def index(long fluxiableId, boolean all, boolean paginate, long project, String type) {
         def fluxiable
         if (type == 'feature') {
             fluxiable = Feature.withFeature(project, fluxiableId)
@@ -45,12 +45,19 @@ class ActivityController implements ControllerErrorHandler {
             fluxiable = Story.withStory(project, fluxiableId)
         }
         def activities = fluxiable.activity
-        if (!all) {
-            def selectedActivities = activities.findAll { it.important }
-            def remainingActivities = activities - selectedActivities
-            activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
-            activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
+        def returnData
+        if (paginate) {
+            def activitiesCount = activities.size()
+            if (!all) {
+                def selectedActivities = activities.findAll { it.important }
+                def remainingActivities = activities - selectedActivities
+                activities = selectedActivities + remainingActivities.take(10 - selectedActivities.size())
+                activities.sort { a, b -> b.dateCreated <=> a.dateCreated }
+            }
+            returnData = [activities: activities, activitiesCount: activitiesCount]
+        } else {
+            returnData = activities
         }
-        render(status: 200, contentType: 'application/json', text: activities as JSON)
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 }

@@ -24,11 +24,15 @@
 
 services.service("ActivityService", ['FormService', function(FormService) {
     this.activities = function(fluxiable, all) {
-        var params = all ? {params: {all: true}} : {};
+        var params = {paginate: true};
+        if (all) {
+            params.all = true;
+        }
         var url = 'activity/' + _.lowerFirst(fluxiable.class) + '/' + fluxiable.id;
-        return FormService.httpGet(url, params).then(function(activities) {
-            fluxiable.activities = activities;
-            return activities;
+        return FormService.httpGet(url, {params: params}).then(function(activitiesAndCount) {
+            fluxiable.activities = activitiesAndCount.activities;
+            fluxiable.activities_total = activitiesAndCount.activitiesCount; // Don't use activities_count which already exists but does not represent the same activities (aggregated versus owned)
+            return fluxiable.activities;
         });
     };
 }]);
