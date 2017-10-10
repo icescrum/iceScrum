@@ -25,6 +25,7 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.error.ControllerErrorHandler
@@ -35,7 +36,14 @@ class ActivityController implements ControllerErrorHandler {
 
     @Secured('stakeHolder() or inProject()')
     def index(long fluxiableId, boolean all, long project, String type) {
-        def fluxiable = type == 'story' ? Story.withStory(project, fluxiableId) : Task.withTask(project, fluxiableId)
+        def fluxiable
+        if (type == 'feature') {
+            fluxiable = Feature.withFeature(project, fluxiableId)
+        } else if (type == 'task') {
+            fluxiable = Task.withTask(project, fluxiableId)
+        } else {
+            fluxiable = Story.withStory(project, fluxiableId)
+        }
         def activities = fluxiable.activity
         if (!all) {
             def selectedActivities = activities.findAll { it.important }

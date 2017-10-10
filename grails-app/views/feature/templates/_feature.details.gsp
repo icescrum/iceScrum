@@ -81,6 +81,11 @@
                 <i class="fa fa-lg fa-sticky-note"></i> ${message(code: 'todo.is.ui.stories')} {{ feature.stories_ids.length | parens }}
             </a>
         </li>
+        <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'activities'}">
+            <a href="{{ tabUrl('activities') }}">
+                <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.history')}
+            </a>
+        </li>
         <entry:point id="feature-details-tab-button"/>
     </ul>
     <div ui-view="details-tab">

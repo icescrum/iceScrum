@@ -217,6 +217,14 @@ angular.module('isApplication', [
                     }
                 }],
                 templateUrl: 'nested.stories.html'
+            },
+            activities: {
+                resolve: ['$stateParams', 'ActivityService', 'detailsFeature', function($stateParams, ActivityService, detailsFeature) {
+                    if ($stateParams.featureTabId == 'activities') {
+                        return ActivityService.activities(detailsFeature, false);
+                    }
+                }],
+                templateUrl: 'activity.list.html'
             }
         }, pluginTabsProvider.pluginTabs['feature']);
 

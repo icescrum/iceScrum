@@ -46,6 +46,10 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
                     newStateParams[tabIdParamName] = tabId;
                     $state.go($state.params[tabIdParamName] ? '.' : '.tab', newStateParams);
                 }
+            } else if (selectedType == 'feature' && activity.parentType == 'story') {
+                activity.onClick = function() {
+                    $state.go('.story.details', {storyId: activity.parentRef});
+                }
             }
             activity.count = 1;
             if (_.isEmpty(groupedActivities) ||

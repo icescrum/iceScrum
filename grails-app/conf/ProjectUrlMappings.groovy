@@ -216,7 +216,7 @@ class ProjectUrlMappings {
             action = [GET: "index"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                type(inList: ['story', 'task'])
+                type(inList: ['story', 'task', 'feature'])
                 fluxiableId(matches: /\d*/)
             }
         }
