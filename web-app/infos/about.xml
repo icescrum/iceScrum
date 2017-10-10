@@ -29,25 +29,7 @@
         <gettingStarted>https://www.icescrum.com/documentation/getting-started-with-icescrum</gettingStarted>
         <forum>https://www.icescrum.com/forums/</forum>
     </version>
-    <releaseNotes><![CDATA[
-        <h4>Features</h4>
-        <ul>
-            <li><b>New</b> Sprint notes: Generate a sprint notes from a custom template with done stories & tasks <a href="https://www.icescrum.com/documentation/indicators-and-reporting/#release_notes_and_sprint_notes">(Documentation)</a></li>
-            <li><b>New</b> Release notes: Generate a release notes from a custom template with done stories & tasks <a href="https://www.icescrum.com/documentation/indicators-and-reporting/#release_notes_and_sprint_notes">(Documentation)</a></li>
-            <li><b>New</b> REST User API: Manage users from the REST API<a href="https://www.icescrum.com/documentation/rest-api/#user">(Documentation)</a></li>
-        </ul>
-        <h4>Bug fixes</h4>
-        <ul>
-            <li>Wrong task responsible in task history when the Scrum Master moves it</li>
-            <li>Feature color is not displayed on post-it exports (pdf)</li>
-            <li>Excel App: error when reading an empty row from an XLS file</li>
-            <li>GitHub / Git / SVN / Jenkins...: error when deleting a story with tasks that have build / commits</li>
-            <li>Backlogs are very slow / unresponsive when they contain hundreds of stories</li>
-            <li>Error when displaying sprint availability burndown on user home</li>
-        </ul>
-        <a href="https://www.icescrum.com/blog/icescrum-v7-1-0/">Previous release notes: 7.1 with new features / apps / improvements</a>
-    ]]>
-    </releaseNotes>
+    <releaseNotes></releaseNotes>
     <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
