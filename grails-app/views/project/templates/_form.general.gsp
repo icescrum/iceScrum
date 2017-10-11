@@ -22,67 +22,67 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.general.project.html">
-    <h4>${message(code: "is.dialog.wizard.section.project")}</h4>
-    <p class="help-block">${message(code: 'is.dialog.wizard.section.project.description')}</p>
-    <entry:point id="project-form-general-before"/>
-    <div class="row">
-        <div class="col-sm-8 col-xs-8 form-group">
-            <label for="name">${message(code: 'is.project.name')}</label>
-            <div class="input-group">
-                <input autofocus
-                       name="name"
-                       type="text"
-                       class="form-control"
-                       placeholder="${message(code: 'todo.is.ui.project.noname')}"
-                       ng-model="project.name"
-                       ng-change="nameChanged()"
-                       ng-required="isCurrentStep(1)">
-                <span class="input-group-btn">
-                    <button class="btn btn-model"
-                            type="button"
-                            ng-disabled="!enableVisibilityChange()"
-                            ng-model="project.preferences.hidden"
-                            ng-click="project.preferences.hidden = !project.preferences.hidden;"
-                            ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
-                        <i class="fa fa-lock" ng-class="{ 'fa-lock': project.preferences.hidden, 'fa-unlock': !project.preferences.hidden }"></i>
-                        {{ message(project.preferences.hidden  ? 'is.project.preferences.project.hidden' : 'todo.is.ui.project.preferences.project.public') }}
-                    </button>
-                </span>
-            </div>
-        </div>
-        <div class="col-sm-4 col-xs-4 form-group">
-            <label for="pkey">${message(code: 'is.project.pkey')}</label>
-            <input name="pkey"
+<h4>${message(code: "is.dialog.wizard.section.project")}</h4>
+<p class="help-block">${message(code: 'is.dialog.wizard.section.project.description')}</p>
+<entry:point id="project-form-general-before"/>
+<div class="row">
+    <div class="col-sm-8 col-xs-8 form-group">
+        <label for="name">${message(code: 'is.project.name')}</label>
+        <div class="input-group">
+            <input autofocus
+                   name="name"
                    type="text"
-                   capitalize
                    class="form-control"
-                   placeholder="${message(code: 'todo.is.ui.project.nokey')}"
-                   ng-model="project.pkey"
-                   ng-pattern="/^[A-Z0-9]*$/"
-                   ng-required="isCurrentStep(1)"
-                   ng-maxlength="10"
-                   ng-remote-validate-code="project.pkey.unique"
-                   ng-remote-validate="{{ checkProjectPropertyUrl }}/pkey">
+                   placeholder="${message(code: 'todo.is.ui.project.noname')}"
+                   ng-model="project.name"
+                   ng-change="nameChanged()"
+                   ng-required="isCurrentStep(1)">
+            <span class="input-group-btn">
+                <button class="btn btn-model"
+                        type="button"
+                        ng-disabled="!enableVisibilityChange()"
+                        ng-model="project.preferences.hidden"
+                        ng-click="project.preferences.hidden = !project.preferences.hidden;"
+                        ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
+                    <i class="fa fa-lock" ng-class="{ 'fa-lock': project.preferences.hidden, 'fa-unlock': !project.preferences.hidden }"></i>
+                    {{ message(project.preferences.hidden  ? 'is.project.preferences.project.hidden' : 'todo.is.ui.project.preferences.project.public') }}
+                </button>
+            </span>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12 form-group">
-            <label for="description">${message(code: 'is.project.description')}</label>
-            <textarea is-markitup
-                      name="project.description"
-                      class="form-control"
-                      placeholder="${message(code: 'todo.is.ui.project.description.placeholder')}"
-                      ng-model="project.description"
-                      ng-show="showDescriptionTextarea"
-                      ng-blur="showDescriptionTextarea = false"
-                      is-model-html="project.description_html"></textarea>
-            <div class="markitup-preview"
-                 tabindex="0"
-                 ng-show="!showDescriptionTextarea"
-                 ng-click="showDescriptionTextarea = true"
-                 ng-focus="showDescriptionTextarea = true"
-                 ng-class="{'placeholder': !project.description_html}"
-                 ng-bind-html="project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.description.placeholder')}</p>'"></div>
-        </div>
+    <div class="col-sm-4 col-xs-4 form-group">
+        <label for="pkey">${message(code: 'is.project.pkey')}</label>
+        <input name="pkey"
+               type="text"
+               capitalize
+               class="form-control"
+               placeholder="${message(code: 'todo.is.ui.project.nokey')}"
+               ng-model="project.pkey"
+               ng-pattern="/^[A-Z0-9]*$/"
+               ng-required="isCurrentStep(1)"
+               ng-maxlength="10"
+               ng-remote-validate-code="project.pkey.unique"
+               ng-remote-validate="{{ checkProjectPropertyUrl }}/pkey">
     </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 form-group">
+        <label for="description">${message(code: 'is.project.description')}</label>
+        <textarea is-markitup
+                  name="project.description"
+                  class="form-control"
+                  placeholder="${message(code: 'todo.is.ui.project.description.placeholder')}"
+                  ng-model="project.description"
+                  ng-show="showDescriptionTextarea"
+                  ng-blur="showDescriptionTextarea = false"
+                  is-model-html="project.description_html"></textarea>
+        <div class="markitup-preview"
+             tabindex="0"
+             ng-show="!showDescriptionTextarea"
+             ng-click="showDescriptionTextarea = true"
+             ng-focus="showDescriptionTextarea = true"
+             ng-class="{'placeholder': !project.description_html}"
+             ng-bind-html="project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.description.placeholder')}</p>'"></div>
+    </div>
+</div>
 </script>

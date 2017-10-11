@@ -22,39 +22,39 @@
 --}%
 <!DOCTYPE html>
 <html lang="en" ng-app="isApplication" ng-strict-di>
-<head>
-    <title>iceScrum - <g:layoutTitle/></title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
-    <!-- iOS web app-->
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
-    <asset:link rel="apple-touch-icon" href="iOS/icon-iphone.png"/>
-    <asset:link rel="apple-touch-icon" href="iOS/icon-ipad.png" sizes="76x76"/>
-    <asset:link rel="apple-touch-icon" href="iOS/icon-iphone-retina.png" sizes="120x120"/>
-    <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
-    <!-- end iOS web app-->
-    <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-    <asset:stylesheet href="application.css"/>
-    <g:layoutHead/>
-</head>
-<body ng-controller="applicationCtrl"
-      ng-class="{ 'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)  }"
-      class="simple-template splash-screen loading">
-    <div id="application-loading">
-        <svg class="logo" viewBox="0 0 150 150">
-            <g:render template="/scrumOS/logo"/>
-            <circle fill="none" cx="80px" cy="80px" r="63" style="stroke: #eee; stroke-width: 10px;"></circle>
-            <path fill="none" transform="" circle-coords="80,80,63,0" circle="application.loadingPercent"
-                  class="loading-circle"></path>
-        </svg>
-        <div class="loading-text text-center">{{ application.loadingText }}</div>
-    </div>
-    <div class="container-fluid">
-        <g:layoutBody/>
-    </div>
-    <g:include controller="scrumOS" action="isSettings" params="[project: params.project]"/>
-    <g:render template="/scrumOS/templates" model="[project: params.project]"/>
-    <asset:javascript src="application.js"/>
-</body>
+    <head>
+        <title>iceScrum - <g:layoutTitle/></title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+        <!-- iOS web app-->
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <asset:link rel="apple-touch-icon" href="iOS/icon-iphone.png"/>
+        <asset:link rel="apple-touch-icon" href="iOS/icon-ipad.png" sizes="76x76"/>
+        <asset:link rel="apple-touch-icon" href="iOS/icon-iphone-retina.png" sizes="120x120"/>
+        <asset:link rel="apple-touch-icon" href="iOS/icon-ipad-retina.png" sizes="152x152"/>
+        <!-- end iOS web app-->
+        <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+        <asset:stylesheet href="application.css"/>
+        <g:layoutHead/>
+    </head>
+    <body ng-controller="applicationCtrl"
+          ng-class="{ 'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)  }"
+          class="simple-template splash-screen loading">
+        <div id="application-loading">
+            <svg class="logo" viewBox="0 0 150 150">
+                <g:render template="/scrumOS/logo"/>
+                <circle fill="none" cx="80px" cy="80px" r="63" style="stroke: #eee; stroke-width: 10px;"></circle>
+                <path fill="none" transform="" circle-coords="80,80,63,0" circle="application.loadingPercent"
+                      class="loading-circle"></path>
+            </svg>
+            <div class="loading-text text-center">{{ application.loadingText }}</div>
+        </div>
+        <div class="container-fluid">
+            <g:layoutBody/>
+        </div>
+        <g:include controller="scrumOS" action="isSettings" params="[project: params.project]"/>
+        <g:render template="/scrumOS/templates" model="[project: params.project]"/>
+        <asset:javascript src="application.js"/>
+    </body>
 </html>

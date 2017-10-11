@@ -176,21 +176,21 @@
                 </div>
                 <table class="table table-bordered table-striped" ng-if="user.tokens_count > 0">
                     <thead>
-                    <tr>
-                        <th>${message(code: 'is.user.token')}</th>
-                        <th class="text-right">${message(code: 'is.ui.token.actions')}</th>
-                    </tr>
+                        <tr>
+                            <th>${message(code: 'is.user.token')}</th>
+                            <th class="text-right">${message(code: 'is.ui.token.actions')}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="token in user.tokens">
-                        <td>{{ token.id }}<div class="small">{{ token.name }}</div>
-                        </td>
-                        <td class="text-right">
-                            <button type="button" class="btn btn-danger" ng-click="delete(token)" uib-tooltip="${message(code: 'is.ui.token.revoke')}">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                        <tr ng-repeat="token in user.tokens">
+                            <td>{{ token.id }}<div class="small">{{ token.name }}</div>
+                            </td>
+                            <td class="text-right">
+                                <button type="button" class="btn btn-danger" ng-click="delete(token)" uib-tooltip="${message(code: 'is.ui.token.revoke')}">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

@@ -1638,7 +1638,7 @@ angular.module('isApplication', [
         ORDER_BY: [function(task) { return -task.type }, 'parentStory.rank', 'state', 'rank']
     })
     .constant('ActivityCodeByName', {
-        SAVE:   'save',
+        SAVE: 'save',
         UPDATE: 'update',
         DELETE: 'delete'
     });

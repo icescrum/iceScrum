@@ -1,4 +1,5 @@
 import grails.util.Metadata
+
 /*
 * Copyright (c) 2017 Kagilum SAS
 *

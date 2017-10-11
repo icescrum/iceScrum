@@ -262,7 +262,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             case 'upload':
             case 'update':
                 return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
-                    (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
+                       (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             case 'updateCreator':
                 return Session.po() && story.state < StoryStatesByName.DONE;
             case 'updateEstimate':
@@ -277,7 +277,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                 return Session.po() && (!story || story.state < StoryStatesByName.DONE);
             case 'delete':
                 return (Session.po() && story.state < StoryStatesByName.PLANNED) ||
-                    (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
+                       (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             case 'returnToSandbox':
                 return Session.po() && _.includes([StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED], story.state);
             case 'unPlan':

@@ -24,7 +24,7 @@
     <title><g:message code="is_denied_title"/></title>
 </head>
 <body>
-<div class='body'>
-    <div class='errors'><g:message code="is_denied_text"/></div>
-</div>
+    <div class='body'>
+        <div class='errors'><g:message code="is_denied_text"/></div>
+    </div>
 </body>

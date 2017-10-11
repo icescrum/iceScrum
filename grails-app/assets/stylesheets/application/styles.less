@@ -97,9 +97,11 @@ table {
 .sortable-moving:not(.as-sortable-disabled) .empty-view {
   display: none; // Hide text placeholder in empty view when dragging item into it
 }
+
 .as-sortable-disabled .as-sortable-item-handle, .as-sortable-item-handle-disabled {
   cursor: default;
 }
+
 .as-sortable-placeholder {
   border: 2px dashed @brand-primary;
 }
@@ -929,13 +931,11 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
     position: relative;
     display: inline-block;
     margin: 0 auto;
-
     border: 1px solid rgb(240, 195, 109);
     background-color: rgb(249, 237, 190);
     font-size: 13px;
     font-weight: bold;
     padding: 2px 8px 2px 8px;
-
     -webkit-transition: opacity 0.5s ease-out 4s;
     -moz-transition: opacity 0.5s ease-out 4s;
     -o-transition: opacity 0.5s ease-out 4s;
@@ -1151,18 +1151,23 @@ i.fa-pinned {
 .color-state-suggested, .color-state-todo {
   background-color: @state-suggested;
 }
+
 .color-state-accepted {
   background-color: @state-accepted;
 }
+
 .color-state-estimated {
   background-color: @state-estimated;
 }
+
 .color-state-planned {
   background-color: @state-planned;
 }
+
 .color-state-inProgress {
   background-color: @state-inProgress;
 }
+
 .color-state-done {
   background-color: @state-done;
 }

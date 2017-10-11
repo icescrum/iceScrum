@@ -29,6 +29,7 @@
     margin-top: 20px;
     width: 700px;
 }
+
 #browser-detection {
     color: #333333;
     position: fixed;
@@ -36,10 +37,12 @@
     font-size: 13px;
     font-family: "Trebuchet MS", Arial, sans-serif;
 }
+
 #browser-detection p {
     width: auto;
     border: none;
 }
+
 #browser-detection h1 {
     padding-top: 0;
     margin-top: 0;
@@ -52,6 +55,7 @@
     float: left;
     list-style: none;
 }
+
 #browser-detection ul.browser-list {
     clear: both;
     margin-top: 3px;
@@ -60,7 +64,9 @@
     border-bottom: 2px solid #5bc0de;
     width: 100%;
 }
+
 #browser-detection ul.browser-list li { text-align: left; }
+
 #browser-detection ul.browser-list li a {
     width: 55px;
     height: 55px;
@@ -69,11 +75,17 @@
     padding: 10px 10px 0 65px;
     text-decoration: none;
 }
-#browser-detection ul.browser-list li a:hover {	text-decoration: underline; }
+
+#browser-detection ul.browser-list li a:hover { text-decoration: underline; }
+
 #browser-detection ul.browser-list li.firefox a { background: url(../images/firefox.jpg) no-repeat left top; }
+
 #browser-detection ul.browser-list li.chrome a { background: url(../images/chrome.jpg) no-repeat left top; }
+
 #browser-detection ul.browser-list li.safari a { background: url(../images/safari.jpg) no-repeat left top; }
+
 #browser-detection ul.browser-list li.opera a { background: url(../images/opera.jpg) no-repeat left top; }
+
 #browser-detection ul.browser-list li.msie a { background: url(../images/msie.jpg) no-repeat left top; }
 </style>
 

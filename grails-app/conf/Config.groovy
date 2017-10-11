@@ -80,8 +80,8 @@ try {
 
 /* Autofollowing */
 icescrum.auto_follow_productowner = true
-icescrum.auto_follow_stakeholder  = true
-icescrum.auto_follow_scrummaster  = true
+icescrum.auto_follow_stakeholder = true
+icescrum.auto_follow_scrummaster = true
 
 /*  Mail */
 /*grails.mail.host = "smtp.gmail.com"
@@ -97,132 +97,132 @@ grails.mail.props = ["mail.smtp.auth":"true",
 icescrum.push.enable = true
 
 icescrum.resourceBundles = [
-        featureTypes: [
-                (Feature.TYPE_FUNCTIONAL): 'is.feature.type.functional',
+        featureTypes           : [
+                (Feature.TYPE_FUNCTIONAL)   : 'is.feature.type.functional',
                 (Feature.TYPE_ARCHITECTURAL): 'is.feature.type.architectural'
         ],
-        featureStates: [
+        featureStates          : [
                 (Feature.STATE_WAIT): 'is.feature.state.wait',
                 (Feature.STATE_BUSY): 'is.feature.state.inprogress',
                 (Feature.STATE_DONE): 'is.feature.state.done'
         ],
-        storyStates: [
-                (Story.STATE_SUGGESTED): 'is.story.state.suggested',
-                (Story.STATE_ACCEPTED): 'is.story.state.accepted',
-                (Story.STATE_ESTIMATED): 'is.story.state.estimated',
-                (Story.STATE_PLANNED): 'is.story.state.planned',
+        storyStates            : [
+                (Story.STATE_SUGGESTED) : 'is.story.state.suggested',
+                (Story.STATE_ACCEPTED)  : 'is.story.state.accepted',
+                (Story.STATE_ESTIMATED) : 'is.story.state.estimated',
+                (Story.STATE_PLANNED)   : 'is.story.state.planned',
                 (Story.STATE_INPROGRESS): 'is.story.state.inprogress',
-                (Story.STATE_DONE): 'is.story.state.done'
+                (Story.STATE_DONE)      : 'is.story.state.done'
         ],
-        storyStatesColor: [
-                (Story.STATE_SUGGESTED):    '#AAAAAA',
-                (Story.STATE_ACCEPTED):     '#FFCC04',
-                (Story.STATE_ESTIMATED):    '#FF9933',
-                (Story.STATE_PLANNED):      '#CC3300',
-                (Story.STATE_INPROGRESS):   '#42A9E0',
-                (Story.STATE_DONE):         '#009900'
+        storyStatesColor       : [
+                (Story.STATE_SUGGESTED) : '#AAAAAA',
+                (Story.STATE_ACCEPTED)  : '#FFCC04',
+                (Story.STATE_ESTIMATED) : '#FF9933',
+                (Story.STATE_PLANNED)   : '#CC3300',
+                (Story.STATE_INPROGRESS): '#42A9E0',
+                (Story.STATE_DONE)      : '#009900'
         ],
-        storyTypes: [
-                (Story.TYPE_USER_STORY): 'is.story.type.story',
-                (Story.TYPE_DEFECT): 'is.story.type.defect',
+        storyTypes             : [
+                (Story.TYPE_USER_STORY)     : 'is.story.type.story',
+                (Story.TYPE_DEFECT)         : 'is.story.type.defect',
                 (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
         ],
-        storyTypesColor: [
-                (Story.TYPE_USER_STORY):        '#35aa47',
-                (Story.TYPE_DEFECT):            '#d84a38',
-                (Story.TYPE_TECHNICAL_STORY):   '#5bc0de'
+        storyTypesColor        : [
+                (Story.TYPE_USER_STORY)     : '#35aa47',
+                (Story.TYPE_DEFECT)         : '#d84a38',
+                (Story.TYPE_TECHNICAL_STORY): '#5bc0de'
         ],
-        releaseStates: [
-                (Release.STATE_WAIT): 'is.release.state.wait',
+        releaseStates          : [
+                (Release.STATE_WAIT)      : 'is.release.state.wait',
                 (Release.STATE_INPROGRESS): 'is.release.state.inprogress',
-                (Release.STATE_DONE): 'is.release.state.done'
+                (Release.STATE_DONE)      : 'is.release.state.done'
         ],
-        sprintStates: [
-                (Sprint.STATE_WAIT): 'is.sprint.state.wait',
+        sprintStates           : [
+                (Sprint.STATE_WAIT)      : 'is.sprint.state.wait',
                 (Sprint.STATE_INPROGRESS): 'is.sprint.state.inprogress',
-                (Sprint.STATE_DONE): 'is.sprint.state.done'
+                (Sprint.STATE_DONE)      : 'is.sprint.state.done'
         ],
-        taskStates: [
+        taskStates             : [
                 (Task.STATE_WAIT): 'is.task.state.wait',
                 (Task.STATE_BUSY): 'is.task.state.inprogress',
                 (Task.STATE_DONE): 'is.task.state.done'
         ],
-        taskTypes: [
-                (Task.TYPE_RECURRENT) : 'is.task.type.recurrent',
-                (Task.TYPE_URGENT) : 'is.task.type.urgent'
+        taskTypes              : [
+                (Task.TYPE_RECURRENT): 'is.task.type.recurrent',
+                (Task.TYPE_URGENT)   : 'is.task.type.urgent'
         ],
-        roles: [
-                (Authority.MEMBER): 'is.role.teamMember',
-                (Authority.SCRUMMASTER): 'is.role.scrumMaster',
+        roles                  : [
+                (Authority.MEMBER)      : 'is.role.teamMember',
+                (Authority.SCRUMMASTER) : 'is.role.scrumMaster',
                 (Authority.PRODUCTOWNER): 'is.role.productOwner',
-                (Authority.STAKEHOLDER): 'is.role.stakeHolder',
-                (Authority.PO_AND_SM): 'is.role.poAndSm'
+                (Authority.STAKEHOLDER) : 'is.role.stakeHolder',
+                (Authority.PO_AND_SM)   : 'is.role.poAndSm'
         ],
         planningPokerGameSuites: [
-                (PlanningPokerGame.FIBO_SUITE): 'is.estimationSuite.fibonacci',
+                (PlanningPokerGame.FIBO_SUITE)   : 'is.estimationSuite.fibonacci',
                 (PlanningPokerGame.INTEGER_SUITE): 'is.estimationSuite.integer',
-                (PlanningPokerGame.CUSTOM_SUITE): 'is.estimationSuite.custom',
+                (PlanningPokerGame.CUSTOM_SUITE) : 'is.estimationSuite.custom',
         ],
-        acceptanceTestStates: [
+        acceptanceTestStates   : [
                 (AcceptanceTest.AcceptanceTestState.TOCHECK.id): 'is.acceptanceTest.state.tocheck',
-                (AcceptanceTest.AcceptanceTestState.FAILED.id): 'is.acceptanceTest.state.failed',
+                (AcceptanceTest.AcceptanceTestState.FAILED.id) : 'is.acceptanceTest.state.failed',
                 (AcceptanceTest.AcceptanceTestState.SUCCESS.id): 'is.acceptanceTest.state.success'
         ],
-        backlogChartTypes: [
+        backlogChartTypes      : [
                 'feature': 'is.feature',
-                'type': 'is.story.type',
-                'value': 'is.story.value',
-                'state': 'is.story.state',
-                'effort': 'is.story.effort'
+                'type'   : 'is.story.type',
+                'value'  : 'is.story.value',
+                'state'  : 'is.story.state',
+                'effort' : 'is.story.effort'
         ]
 ]
 
 icescrum.marshaller = [
-        story: [include: ['testState', 'tags', 'dependences', 'followed', 'countDoneTasks'],
-                exclude: ['voters'],
-                textile: ['notes'],
-                asShort: ['state', 'effort', 'uid', 'name', 'rank']],
-        comment: [textile: ['body'], include: ['poster']],
-        project: [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps', 'team'],
-                  exclude: ['cliches', 'teams'],
-                  textile: ['description']],
-        team: [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
-        task: [exclude: ['participants'],
-               textile: ['notes'],
-               include: ['tags', 'sprint']],
-        user: [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'tokens'],
-               asShort: ['firstName', 'lastName'],
-               include: ['admin']],
-        actor: [asShort: ['name']],
-        feature: [include: ['countDoneStories', 'state', 'effort', 'tags', 'inProgressDate', 'doneDate'],
-                  withIds: ['stories'],
-                  textile: ['notes'],
-                  asShort: ['color', 'name']],
-        sprint: [include: ['activable', 'totalRemaining', 'duration', 'index'],
-                 exclude: ['cliches'],
-                 withIds: ['stories'],
-                 textile: ['retrospective', 'doneDefinition'],
-                 asShort: ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName', 'deliveredVersion', 'index']],
-        release: [include: ['duration', 'closable', 'activable'],
-                  textile: ['vision'],
-                  asShort: ['name', 'state', 'endDate', 'startDate', 'orderNumber'],
-                  exclude: ['cliches']
+        story               : [include: ['testState', 'tags', 'dependences', 'followed', 'countDoneTasks'],
+                               exclude: ['voters'],
+                               textile: ['notes'],
+                               asShort: ['state', 'effort', 'uid', 'name', 'rank']],
+        comment             : [textile: ['body'], include: ['poster']],
+        project             : [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps', 'team'],
+                               exclude: ['cliches', 'teams'],
+                               textile: ['description']],
+        team                : [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
+        task                : [exclude: ['participants'],
+                               textile: ['notes'],
+                               include: ['tags', 'sprint']],
+        user                : [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'tokens'],
+                               asShort: ['firstName', 'lastName'],
+                               include: ['admin']],
+        actor               : [asShort: ['name']],
+        feature             : [include: ['countDoneStories', 'state', 'effort', 'tags', 'inProgressDate', 'doneDate'],
+                               withIds: ['stories'],
+                               textile: ['notes'],
+                               asShort: ['color', 'name']],
+        sprint              : [include: ['activable', 'totalRemaining', 'duration', 'index'],
+                               exclude: ['cliches'],
+                               withIds: ['stories'],
+                               textile: ['retrospective', 'doneDefinition'],
+                               asShort: ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName', 'deliveredVersion', 'index']],
+        release             : [include: ['duration', 'closable', 'activable'],
+                               textile: ['vision'],
+                               asShort: ['name', 'state', 'endDate', 'startDate', 'orderNumber'],
+                               exclude: ['cliches']
         ],
-        backlog: [include: ['count', 'isDefault'],
-                  textile: ['notes']],
-        activity: [include: ['important']],
-        widget: [include: ['width', 'height'],
-                 exclude: ['userPreferences']],
-        usertoken: [:],
-        userpreferences: [asShort: ['activity', 'language', 'emailsSettings', 'filterTask', 'displayWhatsNew']],
-        projectpreferences: [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
-                                       'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
-        attachment: [include: ['filename']],
-        acceptancetest: [textile: ['description'], asShort: ['state']],
-        template: [asShort: ['name']],
-        simpleprojectapp: [exclude: ['parentProject']],
-        timeboxnotestemplate:   [include: ['configs'],
-                                 exclude: ['configsData']]
+        backlog             : [include: ['count', 'isDefault'],
+                               textile: ['notes']],
+        activity            : [include: ['important']],
+        widget              : [include: ['width', 'height'],
+                               exclude: ['userPreferences']],
+        usertoken           : [:],
+        userpreferences     : [asShort: ['activity', 'language', 'emailsSettings', 'filterTask', 'displayWhatsNew']],
+        projectpreferences  : [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
+                                         'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
+        attachment          : [include: ['filename']],
+        acceptancetest      : [textile: ['description'], asShort: ['state']],
+        template            : [asShort: ['name']],
+        simpleprojectapp    : [exclude: ['parentProject']],
+        timeboxnotestemplate: [include: ['configs'],
+                               exclude: ['configsData']]
 ]
 
 icescrum.activities.important = [Activity.CODE_SAVE, 'acceptAs', 'estimate', 'plan', 'unPlan', 'done', 'unDone', 'returnToSandbox']
@@ -239,18 +239,18 @@ icescrum.cors.enable = true
 icescrum.cors.url.pattern = '/ws/*'
 
 /* Check for update */
-icescrum.check.enable   = true
-icescrum.check.url      = 'https://www.icescrum.com'
-icescrum.check.path     = 'wp-json/kagilum/v1/version'
+icescrum.check.enable = true
+icescrum.check.url = 'https://www.icescrum.com'
+icescrum.check.path = 'wp-json/kagilum/v1/version'
 icescrum.check.interval = 1440 // in minutes (24h)
-icescrum.check.timeout  = 5000
+icescrum.check.timeout = 5000
 
 /* Report data to improve IS */
-icescrum.reportUsage.enable   = true
-icescrum.reportUsage.url      = 'https://www.icescrum.com'
-icescrum.reportUsage.path     = 'wp-json/kagilum/v1/report'
+icescrum.reportUsage.enable = true
+icescrum.reportUsage.url = 'https://www.icescrum.com'
+icescrum.reportUsage.path = 'wp-json/kagilum/v1/report'
 icescrum.reportUsage.interval = 1440
-icescrum.reportUsage.timeout  = 5000
+icescrum.reportUsage.timeout = 5000
 
 /* Server warnings to display to users */
 icescrum.warnings = []
@@ -282,16 +282,17 @@ icescrum {
 /*
  Attachmentable section
  */
-grails.attachmentable.storyDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}stories${File.separator + it.id + File.separator}"}
-grails.attachmentable.featureDir = {"${File.separator + it.backlog.id + File.separator}attachments${File.separator}features${File.separator + it.id + File.separator}"}
-grails.attachmentable.releaseDir = {"${File.separator + it.parentProject.id + File.separator}attachments${File.separator}releases${File.separator + it.id + File.separator}"}
-grails.attachmentable.sprintDir = {"${File.separator + it.parentRelease.parentProject.id + File.separator}attachments${File.separator}sprints${File.separator + it.id + File.separator}"}
-grails.attachmentable.projectDir = {"${File.separator + it.id + File.separator}attachments${File.separator}project${File.separator + it.id + File.separator}"}
+grails.attachmentable.storyDir = { "${File.separator + it.backlog.id + File.separator}attachments${File.separator}stories${File.separator + it.id + File.separator}" }
+grails.attachmentable.featureDir = { "${File.separator + it.backlog.id + File.separator}attachments${File.separator}features${File.separator + it.id + File.separator}" }
+grails.attachmentable.releaseDir = { "${File.separator + it.parentProject.id + File.separator}attachments${File.separator}releases${File.separator + it.id + File.separator}" }
+grails.attachmentable.sprintDir = { "${File.separator + it.parentRelease.parentProject.id + File.separator}attachments${File.separator}sprints${File.separator + it.id + File.separator}" }
+grails.attachmentable.projectDir = { "${File.separator + it.id + File.separator}attachments${File.separator}project${File.separator + it.id + File.separator}" }
 grails.attachmentable.taskDir = {
-    if (it.parentStory)
+    if (it.parentStory) {
         return "${File.separator + it.parentStory?.backlog?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
-    else
+    } else {
         return "${File.separator + it.backlog?.parentRelease?.parentProject?.id + File.separator}attachments${File.separator}tasks${File.separator + it.id + File.separator}"
+    }
 }
 
 grails.taggable.preserve.case = true
@@ -304,17 +305,17 @@ grails.project.groupId = appName // change this to alter the default package nam
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident'] // experiment
 grails.mime.types = [
-        html: ['text/html', 'application/xhtml+xml'],
-        xml: ['text/xml', 'application/xml'],
-        text: 'text/plain',
-        js: 'text/javascript',
-        rss: 'application/rss+xml',
-        atom: 'application/atom+xml',
-        css: 'text/css',
-        csv: 'text/csv',
-        all: '*/*',
-        json: ['application/json', 'text/json'],
-        form: 'application/x-www-form-urlencoded',
+        html         : ['text/html', 'application/xhtml+xml'],
+        xml          : ['text/xml', 'application/xml'],
+        text         : 'text/plain',
+        js           : 'text/javascript',
+        rss          : 'application/rss+xml',
+        atom         : 'application/atom+xml',
+        css          : 'text/css',
+        csv          : 'text/csv',
+        all          : '*/*',
+        json         : ['application/json', 'text/json'],
+        form         : 'application/x-www-form-urlencoded',
         multipartForm: 'multipart/form-data'
 ]
 
@@ -376,22 +377,22 @@ log4j = {
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
 
     error 'org.codehaus.groovy.grails.plugins',
-          'org.grails.plugin',
-          'grails.app'
+            'org.grails.plugin',
+            'grails.app'
 
     error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-          'org.codehaus.groovy.grails.web.pages', //  GSP
-          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-          'org.codehaus.groovy.grails.web.mapping', // URL mapping
-          'org.codehaus.groovy.grails.commons', // core / classloading
-          'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-          'org.springframework',
-          'org.hibernate',
-          'net.sf.ehcache.hibernate'
+            'org.codehaus.groovy.grails.web.pages', //  GSP
+            'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping', // URL mapping
+            'org.codehaus.groovy.grails.commons', // core / classloading
+            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+            'org.springframework',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate'
 
-    warn  'org.mortbay.log'
-    warn  'org.atmosphere.cpr'
+    warn 'org.mortbay.log'
+    warn 'org.atmosphere.cpr'
 
     if (config.grails.entryPoints.debug) {
         debug 'org.icescrum.plugins.entryPoints'
@@ -430,7 +431,8 @@ log4j = {
         debug 'com.kagilum.plugin.preauth'
     }
 
-    error 'grails.plugin.springsecurity.web.access.intercept.AnnotationFilterInvocationDefinition' // Useless warning because are registered twice since it's based on controllerClazz.getMethods() which return the same method twice (1 with & 1 without params)
+    // Useless warning because are registered twice since it's based on controllerClazz.getMethods() which return the same method twice (1 with & 1 without params)
+    error 'grails.plugin.springsecurity.web.access.intercept.AnnotationFilterInvocationDefinition'
 
     appenders {
         try {
@@ -482,16 +484,16 @@ grails {
             fii.rejectPublicInvocations = true
             controllerAnnotations.staticRules = [
                     //app controllers rules
-                    '/grails-errorhandler'  : ['permitAll'],
-                    '/stream/app/**'        : ['permitAll'],
-                    '/scrumOS/**'           : ['permitAll'],
-                    '/user/**'              : ['permitAll'],
-                    '/errors/**'            : ['permitAll'],
-                    '/assets/**'            : ['permitAll'],
-                    '/**/js/**'             : ['permitAll'],
-                    '/**/css/**'            : ['permitAll'],
-                    '/**/images/**'         : ['permitAll'],
-                    '/**/favicon.ico'       : ['permitAll']
+                    '/grails-errorhandler': ['permitAll'],
+                    '/stream/app/**'      : ['permitAll'],
+                    '/scrumOS/**'         : ['permitAll'],
+                    '/user/**'            : ['permitAll'],
+                    '/errors/**'          : ['permitAll'],
+                    '/assets/**'          : ['permitAll'],
+                    '/**/js/**'           : ['permitAll'],
+                    '/**/css/**'          : ['permitAll'],
+                    '/**/images/**'       : ['permitAll'],
+                    '/**/favicon.ico'     : ['permitAll']
             ]
 
             userLookup.userDomainClassName = 'org.icescrum.core.domain.User'
@@ -502,9 +504,9 @@ grails {
             useBasicAuth = true
             basic.realmName = "Basic authentication for iceScrum"
             filterChain.chainMap = [
-                    '/ws/**':           'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-securityContextHolderAwareRequestFilter,-anonymousAuthenticationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter', // Only token auth
+                    '/ws/**'          : 'JOINED_FILTERS,-exceptionTranslationFilter,-authenticationProcessingFilter,-securityContextPersistenceFilter,-securityContextHolderAwareRequestFilter,-anonymousAuthenticationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter', // Only token auth
                     '/**/project/feed': 'JOINED_FILTERS,-exceptionTranslationFilter,-tokenAuthenticationFilter,-restExceptionTranslationFilter', // Session & basic auth
-                    '/**'   :           'JOINED_FILTERS,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter' // Only form auth with session
+                    '/**'             : 'JOINED_FILTERS,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter' // Only form auth with session
             ]
 
             auth.loginFormUrl = '/'

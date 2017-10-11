@@ -36,31 +36,31 @@ databaseChangeLog = {
         }
         // Drop foreign keys on task backlog_id, required to drop unique constraint
         dropForeignKeyConstraint(
-                baseTableName:  'is_task',
+                baseTableName: 'is_task',
                 constraintName: 'FK_qv2vf1ba7ouh3s81i95u2b7f1issprint'
         )
         dropForeignKeyConstraint(
-                baseTableName:  'is_task',
+                baseTableName: 'is_task',
                 constraintName: 'FK_qv2vf1ba7ouh3s81i95u2b7f1istimebox'
         )
         // Drop unique constraint on task name
         dropUniqueConstraint(
-                tableName:      'is_task',
+                tableName: 'is_task',
                 constraintName: 'unique_nameistask'
         )
         // Add back the foreign key constraints on backlog_id
         addForeignKeyConstraint(
-                baseTableName:         'is_task',
-                baseColumnNames:       'backlog_id',
-                constraintName:        'FK_qv2vf1ba7ouh3s81i95u2b7f1istimebox',
-                referencedTableName:   'is_timebox',
+                baseTableName: 'is_task',
+                baseColumnNames: 'backlog_id',
+                constraintName: 'FK_qv2vf1ba7ouh3s81i95u2b7f1istimebox',
+                referencedTableName: 'is_timebox',
                 referencedColumnNames: 'id'
         )
         addForeignKeyConstraint(
-                baseTableName:         'is_task',
-                baseColumnNames:       'backlog_id',
-                constraintName:        'FK_qv2vf1ba7ouh3s81i95u2b7f1issprint',
-                referencedTableName:   'is_sprint',
+                baseTableName: 'is_task',
+                baseColumnNames: 'backlog_id',
+                constraintName: 'FK_qv2vf1ba7ouh3s81i95u2b7f1issprint',
+                referencedTableName: 'is_sprint',
                 referencedColumnNames: 'id'
         )
     }

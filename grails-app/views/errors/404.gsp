@@ -24,15 +24,15 @@
     <meta name='layout' content='error'/>
 </head>
 <body>
-<h1>Oops!</h1>
-<h2>${message(code: 'todo.is.ui.404')}</h2>
-<div class="error-details">
-    ${message(code: 'todo.is.ui.404.details')}
-</div>
-<div class="error-actions">
-    <a href="${homeUrl}" class="btn btn-primary btn-lg">
-        <i class="fa fa-home"></i> ${message(code: 'todo.is.ui.40x.home')}</a>
-    <a href="mailto:${emailSupport}" class="btn btn-default btn-lg">
-        <i class="fa fa-envelope"></i> ${message(code: 'todo.is.ui.40x.support')}</a>
-</div>
+    <h1>Oops!</h1>
+    <h2>${message(code: 'todo.is.ui.404')}</h2>
+    <div class="error-details">
+        ${message(code: 'todo.is.ui.404.details')}
+    </div>
+    <div class="error-actions">
+        <a href="${homeUrl}" class="btn btn-primary btn-lg">
+            <i class="fa fa-home"></i> ${message(code: 'todo.is.ui.40x.home')}</a>
+        <a href="mailto:${emailSupport}" class="btn btn-default btn-lg">
+            <i class="fa fa-envelope"></i> ${message(code: 'todo.is.ui.40x.support')}</a>
+    </div>
 </body>

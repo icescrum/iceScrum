@@ -24,22 +24,22 @@
     <meta name='layout' content='error'/>
 </head>
 <body>
-<h1>Oops!</h1>
-<h2>${message(code: 'todo.is.ui.401')}</h2>
-<div class="error-details">
-    ${message(code: 'todo.is.ui.401.details')}
-</div>
-<script type="text/javascript">
-    var redirectToLogin = function() {
-        setTimeout(function() {
-            //replace # => _HASH_ to preserve it in the redirect
-            var redirectTo = document.location.href.replace('#', '_HASH_');
-            document.location = '${homeUrl}/#/?redirectTo=' + encodeURI(redirectTo);
-        }, 3000);
-    }
-</script>
-<entry:point id="icescrum-401-footer" model="[homeUrl: homeUrl]"/>
-<script type="text/javascript">
-    redirectToLogin();
-</script>
+    <h1>Oops!</h1>
+    <h2>${message(code: 'todo.is.ui.401')}</h2>
+    <div class="error-details">
+        ${message(code: 'todo.is.ui.401.details')}
+    </div>
+    <script type="text/javascript">
+        var redirectToLogin = function() {
+            setTimeout(function() {
+                //replace # => _HASH_ to preserve it in the redirect
+                var redirectTo = document.location.href.replace('#', '_HASH_');
+                document.location = '${homeUrl}/#/?redirectTo=' + encodeURI(redirectTo);
+            }, 3000);
+        }
+    </script>
+    <entry:point id="icescrum-401-footer" model="[homeUrl: homeUrl]"/>
+    <script type="text/javascript">
+        redirectToLogin();
+    </script>
 </body>

@@ -138,11 +138,11 @@
                     </div>
                     <table ng-if="team.members.length" class="table table-striped table-responsive">
                         <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th class="text-right">${message(code: 'is.role.scrumMaster')}</th>
-                        </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th class="text-right">${message(code: 'is.role.scrumMaster')}</th>
+                            </tr>
                         </thead>
                         <tbody ng-repeat="member in team.members"
                                ng-include="'wizard.members.list.html'">

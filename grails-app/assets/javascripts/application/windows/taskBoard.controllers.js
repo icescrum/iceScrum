@@ -122,9 +122,10 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         $scope.changeSprintFilter(_.find($scope.sprintFilters, {id: 'allTasks'}));
     };
     $scope.storyFilter = function(story) {
-        return $scope.currentSprintFilter.id == 'allTasks' || _.some($scope.tasksByStoryByState[story.id], function(tasks) {
-            return tasks.length > 0;
-        });
+        return $scope.currentSprintFilter.id == 'allTasks' ||
+               _.some($scope.tasksByStoryByState[story.id], function(tasks) {
+                   return tasks.length > 0;
+               });
     };
     $scope.openStoryUrl = function(storyId) {
         return '#/' + $scope.viewName + ($state.params.sprintId ? '/' + $state.params.sprintId : '') + '/story/' + storyId;

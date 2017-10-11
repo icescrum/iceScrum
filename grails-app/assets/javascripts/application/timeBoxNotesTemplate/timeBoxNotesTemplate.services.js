@@ -57,15 +57,15 @@ services.service("TimeBoxNotesTemplateService", ['Session', 'FormService', '$q',
     };
     this.list = function(project) {
         return _.isEmpty(project.timeBoxNotesTemplates) ?
-            TimeBoxNotesTemplate.query({}, function(timeBoxNotesTemplates) {
-                project.timeBoxNotesTemplates = timeBoxNotesTemplates;
-                project.timeBoxNotesTemplates_count = project.timeBoxNotesTemplates.length;
-            }).$promise : $q.when(project.timeBoxNotesTemplates);
+               TimeBoxNotesTemplate.query({}, function(timeBoxNotesTemplates) {
+                   project.timeBoxNotesTemplates = timeBoxNotesTemplates;
+                   project.timeBoxNotesTemplates_count = project.timeBoxNotesTemplates.length;
+               }).$promise : $q.when(project.timeBoxNotesTemplates);
     };
     this.getReleaseNotes = function(release, template) {
         return FormService.httpGet('release/' + release.id + '/releaseNotes/' + template.id);
-    }
+    };
     this.getSprintNotes = function(sprint, template) {
         return FormService.httpGet('sprint/' + sprint.id + '/sprintNotes/' + template.id);
-    }
+    };
 }]);

@@ -81,7 +81,8 @@
                                             <g:message code="todo.is.ui.project.list.all"/>
                                             <small class="text-muted">(SHIFT+A)</small>
                                         </a>
-                                    </g:if><g:else>
+                                    </g:if>
+                                    <g:else>
                                         <a hotkey="{ 'shift+a': hotkeyClick}" href ng-click="showProjectListModal('public')">
                                             <g:message code="todo.is.ui.project.list.public"/>
                                             <small class="text-muted">(SHIFT+A)</small>

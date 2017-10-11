@@ -83,10 +83,18 @@
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-xs btn-warning ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.pause')}" type="button" ng-click="file.pause()"  ng-show="!file.paused && file.isUploading()"><i class="fa fa-pause"></i></button>
-                        <button class="btn btn-xs btn-warning ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.resume')}" type="button" ng-click="file.resume()" ng-show="file.paused"><i class="fa fa-play"></i></button>
-                        <button class="btn btn-xs btn-danger ng-hide"  uib-tooltip="${message(code: 'is.button.cancel')}" type="button" ng-click="file.cancel()" ng-show="file.isComplete()"><i class="fa fa-close"></i></button>
-                        <button class="btn btn-xs btn-info ng-hide"    uib-tooltip="${message(code: 'todo.is.ui.attachment.retry')}" type="button" ng-click="file.retry()"  ng-show="file.error"><i class="fa fa-refresh"></i></button>
+                        <button class="btn btn-xs btn-warning ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.pause')}" type="button" ng-click="file.pause()" ng-show="!file.paused && file.isUploading()">
+                            <i class="fa fa-pause"></i>
+                        </button>
+                        <button class="btn btn-xs btn-warning ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.resume')}" type="button" ng-click="file.resume()" ng-show="file.paused">
+                            <i class="fa fa-play"></i>
+                        </button>
+                        <button class="btn btn-xs btn-danger ng-hide" uib-tooltip="${message(code: 'is.button.cancel')}" type="button" ng-click="file.cancel()" ng-show="file.isComplete()">
+                            <i class="fa fa-close"></i>
+                        </button>
+                        <button class="btn btn-xs btn-info ng-hide" uib-tooltip="${message(code: 'todo.is.ui.attachment.retry')}" type="button" ng-click="file.retry()" ng-show="file.error">
+                            <i class="fa fa-refresh"></i>
+                        </button>
                     </div>
                 </div>
             </td>

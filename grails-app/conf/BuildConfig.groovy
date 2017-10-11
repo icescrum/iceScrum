@@ -96,7 +96,7 @@ grails.project.dependency.resolution = {
         compile ':browser-detection:2.8.0'
         runtime ':hibernate4:4.3.10'
         runtime 'org.grails.plugins:database-migration:1.4.1'
-        build   ':tomcat:7.0.70'
+        build ':tomcat:7.0.70'
         compile 'org.icescrum:entry-points:1.4'
         if (Environment.current == Environment.PRODUCTION) {
             compile 'org.icescrum:icescrum-core:1.7-SNAPSHOT'

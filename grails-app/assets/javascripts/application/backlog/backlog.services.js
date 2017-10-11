@@ -30,13 +30,14 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryServi
     };
     this.list = function(project) {
         var cachedBacklogs = CacheService.getCache('backlog');
-        return _.isEmpty(cachedBacklogs) ? Backlog.query({projectId: project.id}, function(backlogs) {
-            _.each(backlogs, function(backlog) {
-                CacheService.addOrUpdate('backlog', backlog);
-            });
-        }).$promise.then(function() {
-            return cachedBacklogs;
-        }) : $q.when(cachedBacklogs);
+        return _.isEmpty(cachedBacklogs) ?
+               Backlog.query({projectId: project.id}, function(backlogs) {
+                   _.each(backlogs, function(backlog) {
+                       CacheService.addOrUpdate('backlog', backlog);
+                   });
+               }).$promise.then(function() {
+                       return cachedBacklogs;
+                   }) : $q.when(cachedBacklogs);
     };
     this.isAll = function(backlog) {
         return backlog.code == BacklogCodes.ALL;

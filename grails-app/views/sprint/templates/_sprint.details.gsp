@@ -33,7 +33,8 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <i class="fa fa-tasks"></i> {{ release.name + ' - ' + (sprint | sprintName) }}
+                <i class="fa fa-tasks"></i>
+                {{ release.name + ' - ' + (sprint | sprintName) }}
                 <entry:point id="sprint-details-left-title"/>
             </div>
             <div class="right-title">
@@ -44,7 +45,8 @@
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + previousSprint.id }}/details"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i>
+                           href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + previousSprint.id }}/details">
+                            <i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i>
                         </a>
                         <a ng-if="nextSprint"
                            class="btn btn-default"

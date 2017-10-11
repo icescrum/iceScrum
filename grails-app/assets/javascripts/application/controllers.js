@@ -418,8 +418,8 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
                 $scope.progress = false
             }]
         }).result.then(function() {}, function() {
-            PushService.enabled = true;
-        });
+                PushService.enabled = true;
+            });
     };
     $scope['export'] = function(project) {
         var modal = $uibModal.open({

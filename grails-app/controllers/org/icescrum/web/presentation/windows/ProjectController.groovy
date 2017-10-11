@@ -316,8 +316,8 @@ class ProjectController implements ControllerErrorHandler {
                                values: values.collect { return [it.capacity] },
                                color : '#1C3660']]
         def options = [chart: [yDomain: [0, values.collect { [it.velocity, it.capacity].max() }.max()],
-                               yAxis: [axisLabel: message(code: 'is.chart.projectVelocityCapacity.yaxis.label')],
-                               xAxis: [axisLabel: message(code: 'is.chart.projectVelocityCapacity.xaxis.label')]],
+                               yAxis  : [axisLabel: message(code: 'is.chart.projectVelocityCapacity.yaxis.label')],
+                               xAxis  : [axisLabel: message(code: 'is.chart.projectVelocityCapacity.xaxis.label')]],
                        title: [text: message(code: "is.chart.projectVelocityCapacity.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
@@ -380,7 +380,7 @@ class ProjectController implements ControllerErrorHandler {
         def colors = values.collect { return it.color }
         def computedValues = [[key   : message(code: "is.chart.projectParkinglot.serie.name"),
                                values: values.collect { return [it.label, it.value] }]]
-        def options = [chart: [yDomain: [0, 100],
+        def options = [chart: [yDomain : [0, 100],
                                yAxis   : [axisLabel: message(code: 'is.chart.projectParkinglot.xaxis.label')],
                                barColor: colors],
                        title: [text: message(code: "is.chart.projectParkinglot.title")]]

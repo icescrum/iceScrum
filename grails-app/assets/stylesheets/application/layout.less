@@ -418,6 +418,7 @@ header {
           &:last-child div.panel-container:first-child {
             margin-top: @grid-gutter-width / 2;
           }
+
           div.panel-container {
             margin-bottom: @grid-gutter-width / 2;
           }
@@ -608,7 +609,6 @@ header {
   &.nav-justified {
     li:first-of-type a {
       border-left-color: transparent;
-
     }
     li:last-of-type a {
       border-right-color: transparent;
@@ -1307,7 +1307,6 @@ table {
     right: 0;
     top: 0;
     line-height: 15px;
-
   }
   .new-app {
     background: @brand-warning;
@@ -1316,6 +1315,7 @@ table {
     background: @brand-primary;
   }
 }
+
 li {
   .ribbon {
     top: 14px;
@@ -1409,9 +1409,11 @@ body {
 .toggle-visible {
   .responsive-invisibility();
 }
+
 .toggle-hidden {
   .responsive-visibility();
 }
+
 .toggle-container:hover {
   .toggle-visible {
     .responsive-visibility();
@@ -1585,10 +1587,10 @@ form[name="formHolder.timeBoxNotesTemplateForm"] {
   .panel-light {
     border-bottom-width: 0;
     .panel-heading {
-        opacity: 0.3;
-        &.open, &:hover {
-          opacity: 1.0;
-        }
+      opacity: 0.3;
+      &.open, &:hover {
+        opacity: 1.0;
+      }
     }
   }
 }

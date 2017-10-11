@@ -33,7 +33,8 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <i class="fa fa-calendar"></i> {{ release.name }}
+                <i class="fa fa-calendar"></i>
+                {{ release.name }}
                 <entry:point id="release-details-left-title"/>
             </div>
             <div class="right-title">

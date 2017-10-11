@@ -66,30 +66,30 @@
     </script>
 
     <script type="text/ng-template" id="button.shortcutMenu.html">
-        <a ng-show="menuElement.name"
-           class="btn"
-           ng-class="{'btn-sm': btnSm, 'btn-primary': btnPrimary, 'btn-default': !btnPrimary}"
-           ng-href="{{ menuElement.url(ngModel) }}"
-           ng-click="menuElement.action(ngModel)">
-            {{ message(menuElement.name) }}
-        </a>
+    <a ng-show="menuElement.name"
+       class="btn"
+       ng-class="{'btn-sm': btnSm, 'btn-primary': btnPrimary, 'btn-default': !btnPrimary}"
+       ng-href="{{ menuElement.url(ngModel) }}"
+       ng-click="menuElement.action(ngModel)">
+        {{ message(menuElement.name) }}
+    </a>
     </script>
 
     <script type="text/ng-template" id="item.menu.html">
-        <ul ng-controller="menuItemCtrl" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
-            <li ng-repeat="menuElement in menus | visibleMenuElement: getItem()">
-                <a ng-href="{{ menuElement.url(getItem()) }}"
-                   ng-click="menuElement.action(getItem())">
-                    {{ message(menuElement.name) }}
-                </a>
-            </li>
-        </ul>
+    <ul ng-controller="menuItemCtrl" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
+        <li ng-repeat="menuElement in menus | visibleMenuElement: getItem()">
+            <a ng-href="{{ menuElement.url(getItem()) }}"
+               ng-click="menuElement.action(getItem())">
+                {{ message(menuElement.name) }}
+            </a>
+        </li>
+    </ul>
     </script>
 
     <script type="text/ng-template" id="select.member.html">
-        <a>
-            <span style="margin-top: 5px;margin-left:5px;">{{ match.model | userFullName }}</span> <button class="btn btn-default btn-sm" type="button" ng-show="!match.model.id">${message(code: 'todo.is.ui.user.will.be.invited.click')}</button>
-        </a>
+    <a>
+        <span style="margin-top: 5px;margin-left:5px;">{{ match.model | userFullName }}</span> <button class="btn btn-default btn-sm" type="button" ng-show="!match.model.id">${message(code: 'todo.is.ui.user.will.be.invited.click')}</button>
+    </a>
     </script>
 
     <script type="text/ng-template" id="copy.html">

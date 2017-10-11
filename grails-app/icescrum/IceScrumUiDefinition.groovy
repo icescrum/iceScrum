@@ -53,16 +53,16 @@ windows = {
     'backlog' {
         details true
         context 'project'
-        icon    'inbox'
-        help    'is.ui.backlog.help'
-        title   'is.ui.backlogs'
+        icon 'inbox'
+        help 'is.ui.backlog.help'
+        title 'is.ui.backlogs'
         secured 'stakeHolder() or inProject()'
         menu {
             defaultPosition 2
             defaultVisibility true
         }
         embedded = [
-                view: 'list',
+                view     : 'list',
                 viewTypes: ['postits', 'table']
         ]
         exportFormats = {
@@ -77,16 +77,16 @@ windows = {
     'feature' {
         details true
         context 'project'
-        icon    'puzzle-piece'
-        help    'is.ui.feature.help'
-        title   'is.ui.feature'
+        icon 'puzzle-piece'
+        help 'is.ui.feature.help'
+        title 'is.ui.feature'
         secured 'isAuthenticated()'
         menu {
             defaultPosition 5
             defaultVisibility true
         }
         embedded = [
-                view: 'list',
+                view     : 'list',
                 viewTypes: ['postits', 'table', 'projectParkingLotChart']
         ]
         exportFormats = {
@@ -99,34 +99,34 @@ windows = {
     }
     'project' {
         context 'project'
-        flex    false
-        icon    'dashboard'
-        help    'is.ui.project.help'
-        title   'is.ui.project'
+        flex false
+        icon 'dashboard'
+        help 'is.ui.project.help'
+        title 'is.ui.project'
         menu {
             defaultPosition 1
             defaultVisibility true
         }
         embedded = [
-                view: 'projectCumulativeFlowChart',
+                view     : 'projectCumulativeFlowChart',
                 viewTypes: ['projectCumulativeFlowChart', 'projectVelocityCapacityChart', 'projectBurnupChart', 'projectBurndownChart', 'projectVelocityChart', 'projectParkingLotChart'],
         ]
     }
     'planning' {
         details true
         context 'project'
-        icon    'calendar'
-        help    'todo.is.ui.planning.help'
-        title   'todo.is.ui.planning'
+        icon 'calendar'
+        help 'todo.is.ui.planning.help'
+        title 'todo.is.ui.planning'
         secured 'inProject() or (isAuthenticated() and stakeHolder())'
         menu {
             defaultPosition 3
             defaultVisibility true
         }
         embedded = [
-                view: 'index',
+                view     : 'index',
                 viewTypes: ['postits', 'notes', 'releaseBurndownChart', 'releaseParkingLotChart'],
-                id: { project ->
+                id       : { project ->
                     def id = [label: message(code: 'is.release'), select: [[key: '', value: message(code: 'is.ui.releasePlan.id.empty')]]]
                     project.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
                         id.select << [key: it.id, value: "${it.name}"]
@@ -138,18 +138,18 @@ windows = {
     'taskBoard' {
         details true
         context 'project'
-        icon    'tasks'
-        help    'todo.is.ui.taskBoard.help'
-        title   'todo.is.ui.taskBoard'
+        icon 'tasks'
+        help 'todo.is.ui.taskBoard.help'
+        title 'todo.is.ui.taskBoard'
         secured 'inProject() or (isAuthenticated() and stakeHolder())'
         menu {
             defaultPosition 4
             defaultVisibility true
         }
         embedded = [
-                view : 'index',
+                view     : 'index',
                 viewTypes: ['postits', 'table', 'notes', 'sprintBurndownRemainingChart', 'sprintBurnupTasksChart', 'sprintBurnupStoriesChart', 'sprintBurnupPointsChart'],
-                id: { project ->
+                id       : { project ->
                     def id = [label: message(code: 'is.sprint'), select: [[key: '', value: message(code: 'is.ui.sprintPlan.id.empty')]]]
                     project.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
                         it.sprints?.collect { v -> id.select << [key: v.id, value: "${it.name} - Sprint ${v.index}"] }

@@ -20,64 +20,64 @@
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <tbody>
-            <tr>
-                <td><strong><g:message code="is.dialog.about.version.appVersion"/></strong></td>
-                <td>${versionNumber.contains('Cloud') ? versionNumber : versionNumber + ' Standalone'}</td>
-            </tr>
-            <g:if test="${request.authenticated}">
                 <tr>
-                    <td><strong><g:message code="is.dialog.about.appID"/></strong></td>
-                    <td><is:appId/></td>
+                    <td><strong><g:message code="is.dialog.about.version.appVersion"/></strong></td>
+                    <td>${versionNumber.contains('Cloud') ? versionNumber : versionNumber + ' Standalone'}</td>
                 </tr>
-            </g:if>
-            <g:if test="${request.admin}">
-                <tr>
-                    <td><g:message code="is.dialog.about.version.configLocation"/></td>
-                    <td>${configLocation}</td>
-                </tr>
-                <g:if test="${g.meta(name: 'build.date')}">
+                <g:if test="${request.authenticated}">
                     <tr>
-                        <td><g:message code="is.dialog.about.version.buildDate"/></td>
-                        <td><g:meta name="build.date"/></td>
+                        <td><strong><g:message code="is.dialog.about.appID"/></strong></td>
+                        <td><is:appId/></td>
                     </tr>
                 </g:if>
-                <g:if test="${g.meta(name: 'environment.BUILD_NUMBER')}">
+                <g:if test="${request.admin}">
                     <tr>
-                        <td><g:message code="is.dialog.about.version.buildNumber"/></td>
-                        <td>#<g:meta name="environment.BUILD_NUMBER"/></td>
+                        <td><g:message code="is.dialog.about.version.configLocation"/></td>
+                        <td>${configLocation}</td>
+                    </tr>
+                    <g:if test="${g.meta(name: 'build.date')}">
+                        <tr>
+                            <td><g:message code="is.dialog.about.version.buildDate"/></td>
+                            <td><g:meta name="build.date"/></td>
+                        </tr>
+                    </g:if>
+                    <g:if test="${g.meta(name: 'environment.BUILD_NUMBER')}">
+                        <tr>
+                            <td><g:message code="is.dialog.about.version.buildNumber"/></td>
+                            <td>#<g:meta name="environment.BUILD_NUMBER"/></td>
+                        </tr>
+                    </g:if>
+                    <g:if test="${g.meta(name: 'environment.BUILD_ID')}">
+                        <tr>
+                            <td><g:message code="is.dialog.about.version.buildID"/></td>
+                            <td><g:meta name="environment.BUILD_ID"/></td>
+                        </tr>
+                    </g:if>
+                    <g:if test="${g.meta(name: 'environment.BUILD_TAG')}">
+                        <tr>
+                            <td><g:message code="is.dialog.about.version.buildTag"/></td>
+                            <td><g:meta name="environment.BUILD_TAG"/></td>
+                        </tr>
+                    </g:if>
+                    <g:if test="${System.getProperty('grails.env')}">
+                        <tr>
+                            <td><g:message code="is.dialog.about.version.env"/></td>
+                            <td>${System.getProperty('grails.env')}</td>
+                        </tr>
+                    </g:if>
+                    <tr>
+                        <td><g:message code="is.dialog.about.version.grailsVersion"/></td>
+                        <td><g:meta name="app.grails.version"/></td>
+                    </tr>
+                    <tr>
+                        <td><g:message code="is.dialog.about.version.javaVersion"/></td>
+                        <td>${System.getProperty('java.version')}</td>
+                    </tr>
+                    <tr>
+                        <td><g:message code="is.dialog.about.version.serverVersion"/></td>
+                        <td>${server}</td>
                     </tr>
                 </g:if>
-                <g:if test="${g.meta(name: 'environment.BUILD_ID')}">
-                    <tr>
-                        <td><g:message code="is.dialog.about.version.buildID"/></td>
-                        <td><g:meta name="environment.BUILD_ID"/></td>
-                    </tr>
-                </g:if>
-                <g:if test="${g.meta(name: 'environment.BUILD_TAG')}">
-                    <tr>
-                        <td><g:message code="is.dialog.about.version.buildTag"/></td>
-                        <td><g:meta name="environment.BUILD_TAG"/></td>
-                    </tr>
-                </g:if>
-                <g:if test="${System.getProperty('grails.env')}">
-                    <tr>
-                        <td><g:message code="is.dialog.about.version.env"/></td>
-                        <td>${System.getProperty('grails.env')}</td>
-                    </tr>
-                </g:if>
-                <tr>
-                    <td><g:message code="is.dialog.about.version.grailsVersion"/></td>
-                    <td><g:meta name="app.grails.version"/></td>
-                </tr>
-                <tr>
-                    <td><g:message code="is.dialog.about.version.javaVersion"/></td>
-                    <td>${System.getProperty('java.version')}</td>
-                </tr>
-                <tr>
-                    <td><g:message code="is.dialog.about.version.serverVersion"/></td>
-                    <td>${server}</td>
-                </tr>
-            </g:if>
             </tbody>
         </table>
     </div>

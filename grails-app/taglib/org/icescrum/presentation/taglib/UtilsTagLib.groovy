@@ -64,9 +64,11 @@ class UtilsTagLib {
     }
 
     def i18nBundle = {
-        return grailsApplication.config.icescrum.resourceBundles.collectEntries { bundleName, values -> [
-            (bundleName.capitalize()): values.collectEntries { k, v -> [(k): message(code: v)] }
-        ]}
+        return grailsApplication.config.icescrum.resourceBundles.collectEntries { bundleName, values ->
+            [
+                    (bundleName.capitalize()): values.collectEntries { k, v -> [(k): message(code: v)] }
+            ]
+        }
     }
 
     def appId = {

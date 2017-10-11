@@ -139,15 +139,15 @@ class WidgetController implements ControllerErrorHandler {
     def definitions() {
         User user = springSecurityService.currentUser
         def userWidgets = user.preferences.widgets.collect { it.widgetDefinitionId }
-        def widgetDefinitions = uiDefinitionService.widgetDefinitions
-                .findResults { ApplicationSupport.isAllowed(it.value, [], true) ? it : null }
-                .collect {
-                    [id         : it.value.id,
-                     icon       : it.value.icon,
-                     name       : message(code: it.value.name),
-                     description: message(code: it.value.description),
-                     available  : !(!it.value.allowDuplicate && userWidgets.contains(it.value.id))]
-                }
+        def widgetDefinitions = uiDefinitionService.widgetDefinitions.findResults {
+            ApplicationSupport.isAllowed(it.value, [], true) ? it : null
+        }.collect {
+            [id         : it.value.id,
+             icon       : it.value.icon,
+             name       : message(code: it.value.name),
+             description: message(code: it.value.description),
+             available  : !(!it.value.allowDuplicate && userWidgets.contains(it.value.id))]
+        }
         render(status: 200, contentType: 'application/json', text: widgetDefinitions as JSON)
     }
 }

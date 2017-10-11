@@ -240,12 +240,12 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
             } else if (value === undefined) {
                 query += encodeURIComponent(_prefix + name) + '=null&'; // HACK: an undefined property (e.g. select cleared makes the model undefined) set the null value in Grails data binding
             } else if (value !== null
-                    //no class info needed
-                && !_.includes(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
-                    //no angular object
-                && !_.startsWith(name, '$')
-                    //no custom count / html values
-                && !_.endsWith(name, '_count') && !_.endsWith(name, '_html')) {
+                       // No class info needed
+                       && !_.includes(['class', 'uid', 'lastUpdated', 'dateCreated'], name)
+                       // No angular object
+                       && !_.startsWith(name, '$')
+                       // No custom count / html values
+                       && !_.endsWith(name, '_count') && !_.endsWith(name, '_html')) {
                 query += encodeURIComponent(_prefix + name) + '=' + encodeURIComponent(value) + '&';
             }
         }
@@ -759,7 +759,6 @@ services.service("DomainConfigService", [function() {
     };
     this.config.projectd = this.config.project;
 }]);
-
 
 services.service('ContextService', ['$location', '$q', '$injector', 'Session', 'ProjectService', 'ActorService', function($location, $q, $injector, Session, ProjectService, ActorService) {
     var self = this;

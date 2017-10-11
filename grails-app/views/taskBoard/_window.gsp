@@ -120,17 +120,17 @@
         <div class="panel-body" id="tasks-board" ng-controller="taskCtrl">
             <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
                 <thead>
-                <tr class="table-header sticky-header sticky-stack">
-                    <th ng-if="sprint.state != sprintStatesByName.DONE">
-                        <span>${message(code: 'is.task.state.wait')} ({{ taskCountByState[taskStatesByName.TODO] | orElse:0 }})</span>
-                    </th>
-                    <th ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
-                        <span>${message(code: 'is.task.state.inprogress')} ({{ taskCountByState[taskStatesByName.IN_PROGRESS] | orElse:0 }})</span>
-                    </th>
-                    <th ng-if="sprint.state != sprintStatesByName.TODO">
-                        <span>${message(code: 'is.task.state.done')} ({{ taskCountByState[taskStatesByName.DONE] | orElse:0 }})</span>
-                    </th>
-                </tr>
+                    <tr class="table-header sticky-header sticky-stack">
+                        <th ng-if="sprint.state != sprintStatesByName.DONE">
+                            <span>${message(code: 'is.task.state.wait')} ({{ taskCountByState[taskStatesByName.TODO] | orElse:0 }})</span>
+                        </th>
+                        <th ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
+                            <span>${message(code: 'is.task.state.inprogress')} ({{ taskCountByState[taskStatesByName.IN_PROGRESS] | orElse:0 }})</span>
+                        </th>
+                        <th ng-if="sprint.state != sprintStatesByName.TODO">
+                            <span>${message(code: 'is.task.state.done')} ({{ taskCountByState[taskStatesByName.DONE] | orElse:0 }})</span>
+                        </th>
+                    </tr>
                 </thead>
                 <tbody class="task-type"
                        ng-if="authorizedTask('showUrgent')">

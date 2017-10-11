@@ -158,7 +158,7 @@ class ReleaseController implements ControllerErrorHandler {
         def colors = values.collect { return it.color }
         def computedValues = [[key   : message(code: "is.chart.releaseParkingLot.serie.name"),
                                values: values.collect { return [it.label, it.value] }]]
-        def options = [chart: [yDomain: [0, 100],
+        def options = [chart: [yDomain : [0, 100],
                                yAxis   : [axisLabel: message(code: 'is.chart.releaseParkingLot.xaxis.label')],
                                barColor: colors],
                        title: [text: message(code: "is.chart.releaseParkingLot.title")]]
