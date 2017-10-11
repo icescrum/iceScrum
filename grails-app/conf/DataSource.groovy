@@ -51,6 +51,21 @@ environments {
             driverClassName = "com.mysql.jdbc.Driver"
             url = "jdbc:mysql://localhost/cloud_icescrum_com"
         }
+//        dataSource {
+//            dbCreate = "update"
+//            username = "root"
+//            password = "root"
+//            driverClassName = "org.postgresql.Driver"
+//            url = "jdbc:postgresql://localhost:5432/icescrum"
+//        }
+//        dataSource {
+//            dbCreate = "update"
+//            username = "system"
+//            password = "oracle"
+//            driverClassName = "oracle.jdbc.driver.OracleDriver"
+//            dialect = "com.kagilum.hibernate.OracleCustomDialect"
+//            url = "jdbc:oracle:thin:@localhost:1521:XE"
+//        }
     }
     test {
         dataSource {
