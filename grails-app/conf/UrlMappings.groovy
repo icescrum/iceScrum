@@ -146,8 +146,6 @@ class UrlMappings {
             controller = 'scrumOS'
             action = 'progress'
         }
-        // Login
-        "/login"(controller: 'login', action: 'auth')
         // User
         "/user" {
             controller = 'user'

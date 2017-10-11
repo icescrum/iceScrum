@@ -507,7 +507,7 @@ grails {
                     '/**'   :           'JOINED_FILTERS,-tokenAuthenticationFilter,-restExceptionTranslationFilter,-basicAuthenticationFilter,-basicExceptionTranslationFilter' // Only form auth with session
             ]
 
-            auth.loginFormUrl = '/login'
+            auth.loginFormUrl = '/'
 
             rememberMe {
                 cookieName = 'iceScrum'
