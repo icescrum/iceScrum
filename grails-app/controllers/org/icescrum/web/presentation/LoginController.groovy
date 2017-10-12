@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 package org.icescrum.web.presentation
@@ -36,6 +37,7 @@ import org.springframework.security.web.WebAttributes
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import javax.security.auth.login.AccountExpiredException
+import javax.servlet.http.HttpServletResponse
 
 class LoginController implements ControllerErrorHandler {
 
@@ -69,7 +71,12 @@ class LoginController implements ControllerErrorHandler {
     }
 
     def authAjax() {
-        render(status: 401, text: [error: message(code: 'is.denied')] as JSON)
+        if (request.xhr) {
+            // Fix S194, see https://stackoverflow.com/questions/32777614/grails-spring-security-plugin-login-form-redirected-to-ajaxauth
+            session["SPRING_SECURITY_SAVED_REQUEST"] = null
+        }
+        response.setHeader 'Location', SpringSecurityUtils.securityConfig.auth.ajaxLoginFormUrl
+        response.sendError HttpServletResponse.SC_UNAUTHORIZED
     }
 
     /**
