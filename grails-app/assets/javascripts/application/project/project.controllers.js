@@ -401,8 +401,7 @@ controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope,
         });
     }, {});
     $scope.projectChartEntries = _.transform(charts.project, function(projectChartEntries, charts, type) {
-        _.chain(charts)
-            .filter(function(chart) {
+        _.chain(charts).filter(function(chart) {
                 return !chart.visible || chart.visible($scope.project);
             }).map(function(chart) {
                 return {
