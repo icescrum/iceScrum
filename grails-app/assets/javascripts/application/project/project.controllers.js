@@ -402,17 +402,17 @@ controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope,
     }, {});
     $scope.projectChartEntries = _.transform(charts.project, function(projectChartEntries, charts, type) {
         _.chain(charts).filter(function(chart) {
-                return !chart.visible || chart.visible($scope.project);
-            }).map(function(chart) {
-                return {
-                    group: $scope.message('is.' + type),
-                    type: type,
-                    id: chart.id,
-                    view: chart.view,
-                    name: $scope.message(chart.name)
-                };
-            }).each(function(chart) {
-                projectChartEntries.push(chart);
-            }).value();
+            return !chart.visible || chart.visible($scope.project);
+        }).map(function(chart) {
+            return {
+                group: $scope.message('is.' + type),
+                type: type,
+                id: chart.id,
+                view: chart.view,
+                name: $scope.message(chart.name)
+            };
+        }).each(function(chart) {
+            projectChartEntries.push(chart);
+        }).value();
     }, []);
 }]);
