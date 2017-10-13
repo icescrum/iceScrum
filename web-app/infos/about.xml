@@ -29,23 +29,7 @@
         <gettingStarted>https://www.icescrum.com/documentation/getting-started-with-icescrum</gettingStarted>
         <forum>https://www.icescrum.com/forums/</forum>
     </version>
-    <releaseNotes><![CDATA[
-        <h4>Apps</h4><ul>
-<li><strong>New</strong> External header authentication (<a href="https://www.icescrum.com/apps/external-header-authentication/">App</a>, <a href="https://www.icescrum.com/documentation/external-header-authentication/">Documentation</a>)</li>
-</ul>
-<h4>Bug fixes</h4><ul>
-<li>Sortable doesn't work on list view</li>
-<li>Oracle connection fails</li>
-<li>CSV export doesn't work on IE</li>
-<li>On sprint in progress, chart data points for dates after the end of the sprint are not displayed</li>
-</ul>
-<h4>Documentation</h4>
-<ul>
-<li>Update <a href="https://www.icescrum.com/documentation/license-activation/">Enter your license to activate Apps</a> to v7</li>
-<li>Update <a href="https://www.icescrum.com/documentation/roles-teams-projects/">Roles, teams & projects</a> to v7</li>
-<li>Update <a href="https://www.icescrum.com/documentation/continuous-integration-2/">Jenkins</a> to v7</li>
-<li>Update <a href="https://www.icescrum.com/documentation/git-svn/">Git & SVN</a> with token authentication</li>
-</ul>]]></releaseNotes>
+    <releaseNotes></releaseNotes>
     <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
