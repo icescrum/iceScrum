@@ -76,14 +76,15 @@
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'stories'}">
-            <a href="{{ tabUrl('stories') }}">
-                <i class="fa fa-lg fa-sticky-note"></i> ${message(code: 'todo.is.ui.stories')} {{ feature.stories_ids.length | parens }}
-            </a>
-        </li>
+
         <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'activities'}">
             <a href="{{ tabUrl('activities') }}">
                 <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.history')}
+            </a>
+        </li>
+        <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'stories'}">
+            <a href="{{ tabUrl('stories') }}">
+                <i class="fa fa-lg fa-sticky-note"></i> ${message(code: 'todo.is.ui.stories')} {{ feature.stories_ids.length | parens }}
             </a>
         </li>
         <entry:point id="feature-details-tab-button"/>
