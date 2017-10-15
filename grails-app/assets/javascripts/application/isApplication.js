@@ -1185,7 +1185,7 @@ angular.module('isApplication', [
         $rootScope.alert = function(options) {
             var modal = $uibModal.open({
                 templateUrl: 'message.modal.html',
-                size: 'sm',
+                size: options.size ? options.size : 'sm',
                 controller: ["$scope", "hotkeys", function($scope, hotkeys) {
                     $scope.message = options.message;
                     $scope.submit = function() {
@@ -1461,6 +1461,7 @@ angular.module('isApplication', [
                                 }
                                 return scope;
                             }
+
                             var destScope = fetchScope(destElement); // Retrieve the closest scope from the DOM element
                             if (destScope) {
                                 destScrollableContainer = angular.element(destScope.element).closest(scrollableContainerSelector)[0]; // Store the dest scrollable container for later use
