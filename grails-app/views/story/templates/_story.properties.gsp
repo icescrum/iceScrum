@@ -85,10 +85,10 @@
                                search-enabled="true"
                                ng-model="editableStory.feature">
                         <ui-select-match allow-clear="true" placeholder="${message(code: 'is.ui.story.nofeature')}">
-                            <i class="fa fa-sticky-note" ng-style="{color: $select.selected.color}"></i> {{ $select.selected.name }}
+                            <i class="fa fa-puzzle-piece" ng-style="{color: $select.selected.color}"></i> {{ $select.selected.name }}
                         </ui-select-match>
                         <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
-                            <i class="fa fa-sticky-note" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
+                            <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-if="editableStory.feature.id && !isModal">
