@@ -105,7 +105,6 @@ class ErrorsController implements ControllerErrorHandler {
                             User user = (User) springSecurityService.currentUser
                             def admins = ApplicationSupport.getAllAdministrators()
                             log.debug("Error 500 report")
-                            //Don't include password in report error /!\
                             params.remove("j_password")
                             notificationEmailService.send([
                                     from   : grailsApplication.config.icescrum.alerts.default.from,
