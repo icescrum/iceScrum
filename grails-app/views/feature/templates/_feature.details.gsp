@@ -76,7 +76,6 @@
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
-
         <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'activities'}">
             <a href="{{ tabUrl('activities') }}">
                 <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.history')}

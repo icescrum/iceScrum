@@ -197,7 +197,7 @@ class TaskController implements ControllerErrorHandler {
             return
         }
         Task.withTransaction {
-            def props = [state: Task.STATE_WAIT, responsible:task.responsible]
+            def props = [state: Task.STATE_WAIT, responsible: task.responsible]
             task.responsible = null
             taskService.update(task, user, false, props)
         }
