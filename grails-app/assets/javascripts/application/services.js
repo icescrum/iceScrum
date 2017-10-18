@@ -586,24 +586,35 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
 }]);
 
 var restResource = angular.module('restResource', ['ngResource']);
-restResource.factory('Resource', ['$resource', 'FormService', function($resource, FormService) {
+restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService', function($resource, $rootScope, $q, FormService) {
     return function(url, params, methods) {
         var defaultParams = {
             id: '@id'
         };
-        var arrayInterceptor = {
-            response: function(response) {
-                _.each(response.resource, FormService.transformStringToDate);
-                return response.resource;
+        var getInterceptor = function(isArray, isSubmitting) {
+            var interceptor = {
+                response: function(response) {
+                    if (isSubmitting) {
+                        $rootScope.application.submitting = false;
+                    }
+                    if (isArray) {
+                        _.each(response.resource, FormService.transformStringToDate);
+                    } else {
+                        FormService.transformStringToDate(response.resource);
+                    }
+                    return response.resource; // Required to mimic default interceptor
+                }
+            };
+            if (isSubmitting) {
+                interceptor.responseError = function(response) {
+                    $rootScope.application.submitting = false;
+                    return $q.reject(response); // Required to mimic default interceptor
+                };
             }
-        };
-        var singleInterceptor = {
-            response: function(response) {
-                FormService.transformStringToDate(response.resource);
-                return response.resource;
-            }
+            return interceptor;
         };
         var transformRequest = function(data) {
+            $rootScope.application.submitting = true;
             return angular.isObject(data) && String(data) !== '[object File]' ? FormService.formObjectData(data) : data;
         };
         var transformQueryParams = function(resolve) { // Magical hack found here: http://stackoverflow.com/questions/24082468/how-to-intercept-resource-requests
@@ -621,31 +632,24 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
                 isArray: false,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: transformRequest,
-                interceptor: singleInterceptor
+                interceptor: getInterceptor(false, true)
             },
             saveArray: {
                 method: 'post',
                 isArray: true,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: transformRequest,
-                interceptor: arrayInterceptor
-            },
-            updateArray: {
-                method: 'post',
-                isArray: true,
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: transformRequest,
-                interceptor: arrayInterceptor
+                interceptor: getInterceptor(true, true)
             },
             get: {
                 method: 'get',
-                interceptor: singleInterceptor,
+                interceptor: getInterceptor(false),
                 then: transformQueryParams
             },
             query: {
                 method: 'get',
                 isArray: true,
-                interceptor: arrayInterceptor,
+                interceptor: getInterceptor(true),
                 then: transformQueryParams
             },
             deleteArray: {
@@ -654,6 +658,7 @@ restResource.factory('Resource', ['$resource', 'FormService', function($resource
             }
         };
         defaultMethods.update = angular.copy(defaultMethods.save); // for the moment there is no difference between save & update
+        defaultMethods.updateArray = angular.copy(defaultMethods.saveArray); // for the moment there is no difference between save & update
         if (url.indexOf('/') == 0) {
             url = isSettings.serverUrl + url;
         }

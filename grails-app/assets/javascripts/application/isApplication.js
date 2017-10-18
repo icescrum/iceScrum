@@ -1414,6 +1414,7 @@ angular.module('isApplication', [
             loading: true,
             loadingText: '',
             loadingPercent: 0,
+            submitting: false,
             isFullScreen: false,
             menus: Session.menus,
             mobile: screenSize.is('xs, sm'),
