@@ -25,6 +25,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.*
+import org.icescrum.core.error.BusinessException
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.event.IceScrumEventType
 
@@ -79,7 +80,11 @@ class AttachmentController implements ControllerErrorHandler {
             def service = grailsApplication.mainContext[params.type + 'Service']
             service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment': null])
             if (uploadInfo.filePath) {
-                attachmentable.addAttachment(springSecurityService.currentUser, new File(uploadInfo.filePath), uploadInfo.filename)
+                File attachmentFile = new File(uploadInfo.filePath)
+                if (!attachmentFile.length()) {
+                    throw new BusinessException(code: 'todo.is.ui.backlogelement.attachments.error.empty')
+                }
+                attachmentable.addAttachment(springSecurityService.currentUser, attachmentFile, uploadInfo.filename)
             } else {
                 attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
             }
