@@ -343,6 +343,9 @@ grails.spring.bean.packages = []
 grails.mime.use.accept.header = true
 grails.views.javascript.library = 'jquery'
 
+// Parameters are only logged in dev, but we are never too safe
+grails.exceptionresolver.params.exclude = ['password', 'user.password', 'user.confirmPassword', 'j_password', 'dataSource.password', 'grails.mail.password', 'grails.plugin.springsecurity.ldap.context.managerPassword', 'icescrum.migration.adminPassword']
+
 environments {
     development {
         icescrum.serverURL = "http://localhost:8080/icescrum"

@@ -105,7 +105,21 @@ class ErrorsController implements ControllerErrorHandler {
                             User user = (User) springSecurityService.currentUser
                             def admins = ApplicationSupport.getAllAdministrators()
                             log.debug("Error 500 report")
-                            params.remove("j_password")
+                            def keysToRemove = []
+                            def keysToObfuscate = []
+                            params.each { String k, v ->
+                                if (v instanceof Map) {
+                                    keysToRemove << k
+                                } else if (k?.toLowerCase().contains('password')) {
+                                    keysToObfuscate << k
+                                }
+                            }
+                            keysToObfuscate.each {
+                                params[it] = '***'
+                            }
+                            keysToRemove.each {
+                                params.remove(it)
+                            }
                             notificationEmailService.send([
                                     from   : grailsApplication.config.icescrum.alerts.default.from,
                                     replyTo: user?.email ?: null,
