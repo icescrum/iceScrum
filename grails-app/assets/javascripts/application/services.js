@@ -27,14 +27,7 @@ var services = angular.module('services', ['restResource']);
 services.factory('AuthService', ['$http', '$rootScope', 'FormService', function($http, $rootScope, FormService) {
     return {
         login: function(credentials) {
-            return $http.post($rootScope.serverUrl + '/j_spring_security_check', credentials, {
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: function(data) {
-                    return angular.isObject(data) && String(data) !== '[object File]' ? FormService.formObjectData(data) : data;
-                }
-            }).then(function(response) {
-                return response.data;
-            });
+            return FormService.httpPost('j_spring_security_check', credentials, true);
         }
     };
 }]);
@@ -258,7 +251,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
             return response.data;
         });
     };
-    this.httpPost = function(path, data, params, isAbsolute) {
+    this.httpPost = function(path, data, isAbsolute, params) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},

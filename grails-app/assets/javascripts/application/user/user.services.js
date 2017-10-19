@@ -52,7 +52,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         return user.$save();
     };
     this.retrievePassword = function(user) {
-        return FormService.httpPost('user/retrieve', {user: {username: user.username}}, null, true);
+        return FormService.httpPost('user/retrieve', {user: {username: user.username}}, true);
     };
     this.invitationEmail = function(token) {
         return FormService.httpGet('user/invitationEmail', {params: {token: token}}, true);

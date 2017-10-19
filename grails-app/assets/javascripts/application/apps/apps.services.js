@@ -25,7 +25,7 @@
 services.service("AppService", ['Session', 'FormService', function(Session, FormService) {
     var self = this;
     this.updateEnabledForProject = function(appDefinition, project, enabledForProject) {
-        return FormService.httpPost('app/updateEnabledForProject', {appDefinitionId: appDefinition.id, enabledForProject: enabledForProject}, null, false).then(function() {
+        return FormService.httpPost('app/updateEnabledForProject', {appDefinitionId: appDefinition.id, enabledForProject: enabledForProject}).then(function() {
             var updatedAppDefinition = _.find(project.simpleProjectApps, {appDefinitionId: appDefinition.id});
             if (!updatedAppDefinition) {
                 updatedAppDefinition = {appDefinitionId: appDefinition.id};

@@ -27,7 +27,7 @@ controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
 
     $scope.display = function(widget) {
         $scope.holder.feed = {};
-        return FormService.httpPost('widget/feed', {widgetId: widget.id}, null, true).then(function(feedWithContent) {
+        return FormService.httpPost('widget/feed', {widgetId: widget.id}, true).then(function(feedWithContent) {
             //what do we do!
             $scope.holder.errorMessage = null;
             $scope.holder.feed = feedWithContent;

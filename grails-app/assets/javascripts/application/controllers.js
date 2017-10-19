@@ -738,7 +738,7 @@ extensibleController('retrieveCtrl', ['$scope', '$timeout', 'User', 'UserService
 controllers.controller('warningsCtrl', ['$scope', 'FormService', function($scope, FormService) {
     // Functions
     $scope.hideWarning = function(warning) {
-        FormService.httpPost('scrumOS/hideWarning', {warningId: warning.id}, null, true).then(function(data) {
+        FormService.httpPost('scrumOS/hideWarning', {warningId: warning.id}, true).then(function(data) {
             warning.silent = data.silent;
         });
     };
