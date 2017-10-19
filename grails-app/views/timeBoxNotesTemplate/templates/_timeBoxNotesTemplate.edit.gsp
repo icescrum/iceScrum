@@ -22,7 +22,8 @@
 
 <script type="text/ng-template" id="timeBoxNotesTemplate.edit.html">
 <is:modal form="update(editableTimeBoxNotesTemplate)"
-          name='formHolder.timeBoxNotesTemplateForm'
+          name="formHolder.timeBoxNotesTemplateForm"
+          validate="true"
           submitButton="${message(code: 'default.button.update.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.timeBoxNotesTemplate.edit')}">

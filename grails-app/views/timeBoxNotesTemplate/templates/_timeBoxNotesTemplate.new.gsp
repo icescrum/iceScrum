@@ -22,7 +22,8 @@
 
 <script type="text/ng-template" id="timeBoxNotesTemplate.new.html">
 <is:modal form="save(timeBoxNotesTemplate)"
-          name='formHolder.timeBoxNotesTemplateForm'
+          name="formHolder.timeBoxNotesTemplateForm"
+          validate="true"
           submitButton="${message(code: 'default.button.create.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.timeBoxNotesTemplate.new')}">
