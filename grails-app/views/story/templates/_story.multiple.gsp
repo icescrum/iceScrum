@@ -285,7 +285,8 @@
                 </div>
                 <div class="btn-toolbar">
                     <button class="btn btn-primary pull-right"
-                            type="submit">
+                            type="submit"
+                            ng-disabled="storyForm.$invalid || application.submitting">
                         ${message(code: 'default.button.update.label')}
                     </button>
                     <a class="btn btn-default pull-right"

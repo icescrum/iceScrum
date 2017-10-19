@@ -75,7 +75,7 @@
     </div>
     <div class="btn-toolbar">
         <button class="btn btn-primary pull-right"
-                ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid"
+                ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid || application.submitting"
                 type="submit">
             ${message(code: 'default.button.create.label')}
         </button>

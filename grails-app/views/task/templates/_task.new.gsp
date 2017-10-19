@@ -90,7 +90,7 @@
                 </div>
                 <div ng-if="authorizedTask('create')" class="btn-toolbar pull-right">
                     <button class="btn btn-primary"
-                            ng-disabled="formHolder.taskForm.$invalid"
+                            ng-disabled="formHolder.taskForm.$invalid || application.submitting"
                             uib-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                             hotkey="{'shift+return': hotkeyClick }"
                             hotkey-allow-in="INPUT"
@@ -99,7 +99,7 @@
                         ${message(code: 'todo.is.ui.create.and.continue')}
                     </button>
                     <button class="btn btn-primary"
-                            ng-disabled="formHolder.taskForm.$invalid"
+                            ng-disabled="formHolder.taskForm.$invalid || application.submitting"
                             type="submit">
                         ${message(code: 'default.button.create.label')}
                     </button>

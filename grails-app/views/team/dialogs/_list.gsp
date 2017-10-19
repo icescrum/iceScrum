@@ -78,7 +78,7 @@
                     </div>
                     <div class="btn-toolbar pull-right">
                         <button class="btn btn-primary pull-right"
-                                ng-disabled="!formHolder.newTeamForm.$dirty || formHolder.newTeamForm.$invalid"
+                                ng-disabled="!formHolder.newTeamForm.$dirty || formHolder.newTeamForm.$invalid || application.submitting"
                                 type="submit">
                             ${message(code: 'default.button.create.label')}
                         </button>
@@ -164,7 +164,7 @@
                             ${message(code: 'default.button.delete.label')}
                         </button>
                         <button class="btn btn-primary"
-                                ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid"
+                                ng-disabled="!formHolder.updateTeamForm.$dirty || formHolder.updateTeamForm.$invalid || application.submitting"
                                 type="submit">
                             ${message(code: 'default.button.update.label')}
                         </button>

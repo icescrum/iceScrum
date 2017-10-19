@@ -43,13 +43,14 @@
             <span class="input-group-btn">
                 <button class="btn btn-default"
                         ng-if="!actor.id"
+                        ng-disabled="formHolder.actorForm.$invalid || application.submitting"
                         type="submit"
                         ng-click="save(actor)">
                     ${message(code: 'default.button.create.label')}
                 </button>
                 <button class="btn btn-primary"
                         ng-if="actor.id"
-                        ng-disabled="!formHolder.actorForm.$dirty || formHolder.actorForm.$invalid"
+                        ng-disabled="!formHolder.actorForm.$dirty || formHolder.actorForm.$invalid || application.submitting"
                         type="submit"
                         ng-click="update(actor)">
                     ${message(code: 'default.button.update.label')}

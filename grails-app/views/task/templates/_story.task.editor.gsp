@@ -59,7 +59,7 @@
     </div>
     <div class="btn-toolbar">
         <button class="btn btn-primary pull-right"
-                ng-disabled="!formHolder.taskForm.$dirty || formHolder.taskForm.$invalid"
+                ng-disabled="!formHolder.taskForm.$dirty || formHolder.taskForm.$invalid || application.submitting"
                 type="submit">
             ${message(code: 'default.button.create.label')}
         </button>
