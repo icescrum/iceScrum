@@ -584,12 +584,9 @@ restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService'
         var defaultParams = {
             id: '@id'
         };
-        var getInterceptor = function(isArray, isSubmitting) {
-            var interceptor = {
+        var getInterceptor = function(isArray) {
+            return {
                 response: function(response) {
-                    if (isSubmitting) {
-                        $rootScope.application.submitting = false;
-                    }
                     if (isArray) {
                         _.each(response.resource, FormService.transformStringToDate);
                     } else {
@@ -598,16 +595,8 @@ restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService'
                     return response.resource; // Required to mimic default interceptor
                 }
             };
-            if (isSubmitting) {
-                interceptor.responseError = function(response) {
-                    $rootScope.application.submitting = false;
-                    return $q.reject(response); // Required to mimic default interceptor
-                };
-            }
-            return interceptor;
         };
         var transformRequest = function(data) {
-            $rootScope.application.submitting = true;
             return angular.isObject(data) && String(data) !== '[object File]' ? FormService.formObjectData(data) : data;
         };
         var transformQueryParams = function(resolve) { // Magical hack found here: http://stackoverflow.com/questions/24082468/how-to-intercept-resource-requests
@@ -625,14 +614,14 @@ restResource.factory('Resource', ['$resource', '$rootScope', '$q', 'FormService'
                 isArray: false,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: transformRequest,
-                interceptor: getInterceptor(false, true)
+                interceptor: getInterceptor(false)
             },
             saveArray: {
                 method: 'post',
                 isArray: true,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                 transformRequest: transformRequest,
-                interceptor: getInterceptor(true, true)
+                interceptor: getInterceptor(true)
             },
             get: {
                 method: 'get',

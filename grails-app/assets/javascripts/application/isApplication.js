@@ -118,7 +118,8 @@ angular.module('isApplication', [
     ].concat(isSettings.plugins)
 )
     .config(['$httpProvider', function($httpProvider) {
-        $httpProvider.interceptors.push(['$injector', function($injector) { return $injector.get('AuthInterceptor'); }]);
+        $httpProvider.interceptors.push('ErrorInterceptor');
+        $httpProvider.interceptors.push('SubmittingInterceptor');
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }])
     .config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', 'pluginTabsProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider, pluginTabsProvider) {
@@ -1051,7 +1052,7 @@ angular.module('isApplication', [
     .config(['$animateProvider', function($animateProvider) {
         $animateProvider.classNameFilter(/ng-animate-enabled/);
     }])
-    .factory('AuthInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function($rootScope, $q, SERVER_ERRORS) {
+    .factory('ErrorInterceptor', ['$rootScope', '$q', 'SERVER_ERRORS', function($rootScope, $q, SERVER_ERRORS) {
         return {
             responseError: function(response) {
                 if (response.status === 401) {
@@ -1065,7 +1066,30 @@ angular.module('isApplication', [
                 } else if (response.status > 499) {
                     $rootScope.$broadcast(SERVER_ERRORS.serverError, response);
                 }
-                return $q.reject(response);
+                return $q.reject(response); // Required to mimic default interceptor
+            }
+        };
+    }])
+    .factory('SubmittingInterceptor', ['$rootScope', '$q', function($rootScope, $q) {
+        var isSubmitting = function(config) {
+            return _.includes(['POST', 'DELETE'], config.method);
+        };
+        return {
+            request: function(config) {
+                if (isSubmitting(config)) {
+                    $rootScope.application.submitting = true;
+                }
+                return config; // Required to mimic default interceptor
+            },
+            response: function(response) {
+                if (isSubmitting(response.config)) {
+                    $rootScope.application.submitting = false;
+                }
+                return response; // Required to mimic default interceptor
+            },
+            responseError: function(response) {
+                $rootScope.application.submitting = false; // In case of any error, always give back the control to the user
+                return $q.reject(response); // Required to mimic default interceptor
             }
         };
     }])
