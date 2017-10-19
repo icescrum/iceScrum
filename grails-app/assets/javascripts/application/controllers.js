@@ -673,6 +673,7 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
     $scope.login = function(credentials) {
         AuthService.login(credentials).then(function(data) {
             if (!$scope.loginCallback) {
+                $scope.application.submitting = true; // Avoid duplicated login, the page reloading will set that back to false
                 var lastOpenedUrl = data.url;
                 var currentLocation = window.location.href.replace($rootScope.serverUrl, "");
                 if ($state.params.redirectTo) {

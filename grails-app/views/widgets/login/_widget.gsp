@@ -41,6 +41,7 @@
                 <i class="fa fa-user-plus"></i> ${message(code: 'is.button.register')}
             </button>
             <button class="btn btn-primary pull-right"
+                    ng-disabled="application.submitting"
                     type="submit">
                 ${message(code: 'is.button.connect')}
             </button>
