@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
@@ -39,7 +40,8 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
     };
     $scope.isSortingTaskBoard = function(sprint) {
-        return $scope.isSortableTaskBoard(sprint) && $scope.currentSprintFilter.id == 'allTasks' && !$scope.hasContextOrSearch();
+        //TODO: remove
+        return $scope.isSortableTaskBoard(sprint);
     };
     $scope.isSortingStory = function(story) {
         return story.state < StoryStatesByName.DONE;
@@ -59,6 +61,14 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     };
     $scope.copyRecurrentTasks = function(sprint) {
         SprintService.copyRecurrentTasks(sprint, project);
+    };
+    $scope.applySearchFilterToTasksByTypeByState = function() {
+        // Search filter must be applied to model because of https://github.com/a5hik/ng-sortable/issues/184
+        $scope.tasksByTypeByStateAndSearchFiltered = _.mapValues($scope.tasksByTypeByState, function(tasksByState) {
+            return _.mapValues(tasksByState, function(tasks) {
+                return $filter('search')(tasks);
+            })
+        });
     };
     $scope.refreshTasks = function() {
         var tasks;
@@ -109,6 +119,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         };
         fillGapsInDictionnary($scope.tasksByTypeByState, $scope.taskTypes, $scope.sprintTaskStates);
         fillGapsInDictionnary($scope.tasksByStoryByState, allStoriesIds, $scope.sprintTaskStates);
+        $scope.applySearchFilterToTasksByTypeByState();
     };
     $scope.changeSprintFilter = function(sprintFilter) {
         $scope.currentSprintFilter = sprintFilter;
@@ -190,7 +201,12 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         itemMoved: function(event) {
             var destScope = event.dest.sortableScope;
             var task = event.source.itemScope.modelValue;
-            task.rank = event.dest.index + 1;
+            if (event.dest.index == 0) {
+                task.rank = 1;
+            } else {
+                var previousTask = destScope.modelValue[event.dest.index - 1];
+                task.rank = previousTask.rank + 1;
+            }
             task.state = destScope.taskState;
             if (destScope.story) {
                 task.parentStory = {id: destScope.story.id};
@@ -205,7 +221,17 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         },
         orderChanged: function(event) {
             var task = event.source.itemScope.modelValue;
-            task.rank = event.dest.index + 1;
+            var destScope = event.dest.sortableScope;
+            if (event.dest.index == 0) {
+                task.rank = 1;
+            } else {
+                var previousTask = destScope.modelValue[event.dest.index - 1];
+                if (event.dest.index > event.source.index) {
+                    task.rank = previousTask.rank;
+                } else {
+                    task.rank = previousTask.rank + 1;
+                }
+            }
             TaskService.update(task).catch(function() {
                 $scope.revertSortable(event);
             });
@@ -246,6 +272,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;
     $scope.tasksByTypeByState = {};
+    $scope.tasksByTypeByStateAndSearchFiltered = {};
     $scope.tasksByStoryByState = {};
     $scope.taskCountByState = {};
     $scope.taskStatesByName = TaskStatesByName;
@@ -262,6 +289,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             $scope.refreshTasks();
         }
     });
+    $scope.$watch('application.search', $scope.applySearchFilterToTasksByTypeByState);
     $scope.sprintEntries = [];
     _.each(_.sortBy(releases, 'orderNumber'), function(release) {
         if (release.sprints && release.sprints.length > 0) {
@@ -274,6 +302,5 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             });
         }
     });
-
     $scope.tasksShownByTypeOrStory = {'stories': {}};
 }]);

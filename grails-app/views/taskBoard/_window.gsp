@@ -19,6 +19,7 @@
 -
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
+- Colin Bontemps (cbontemps@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="panel panel-light"
@@ -143,12 +144,12 @@
                         <td class="postits"
                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
                             postits-screen-size
-                            ng-model="tasksByTypeByState[taskTypesByName.URGENT][taskState]"
+                            ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                             ng-init="taskType = taskTypesByName.URGENT"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                             is-disabled="!isSortingTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
-                            <div ng-repeat="task in tasksByTypeByState[taskTypesByName.URGENT][taskState] | search"
+                            <div ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                                  ng-if="tasksShown(taskState, taskTypesByName.URGENT)"
                                  ng-class="{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
@@ -194,12 +195,12 @@
                         <td class="postits"
                             postits-screen-size
                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
-                            ng-model="tasksByTypeByState[taskTypesByName.RECURRENT][taskState]"
+                            ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                             ng-init="taskType = taskTypesByName.RECURRENT"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                             is-disabled="!isSortingTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
-                            <div ng-repeat="task in tasksByTypeByState[taskTypesByName.RECURRENT][taskState] | search"
+                            <div ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                                  ng-if="tasksShown(taskState, taskTypesByName.RECURRENT)"
                                  ng-class="{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
