@@ -78,7 +78,7 @@
                     </button>
                     <input type="submit"
                            class="btn btn-default"
-                           ng-disabled="formHolder.projectForm.$invalid || formHolder.creating"
+                           ng-disabled="formHolder.projectForm.$invalid || application.submitting"
                            wz-finish="createProject(project)"
                            value="${message(code: 'todo.is.ui.wizard.finish')}"/>
                 </div>
