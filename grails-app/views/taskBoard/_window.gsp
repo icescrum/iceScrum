@@ -78,13 +78,6 @@
                             </button>
                         </div>
                         <div class="btn-group" uib-dropdown>
-                            <button type="button"
-                                    ng-if="isSortableTaskBoard(sprint)"
-                                    class="btn btn-default hidden-xs hidden-sm"
-                                    ng-click="enableSortable()"
-                                    uib-tooltip="{{ isSortingTaskBoard(sprint) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
-                                <span ng-class="isSortingTaskBoard(sprint) ? 'text-success' : 'forbidden-stack text-danger'" class="fa fa-hand-pointer-o"></span>
-                            </button>
                             <button class="btn btn-default"
                                     uib-dropdown-toggle
                                     uib-tooltip="${message(code: 'todo.is.ui.filters')}"
@@ -147,7 +140,7 @@
                             ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                             ng-init="taskType = taskTypesByName.URGENT"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                            is-disabled="!isSortingTaskBoard(sprint)"
+                            is-disabled="!isSortableTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                                  ng-if="tasksShown(taskState, taskTypesByName.URGENT)"
@@ -198,7 +191,7 @@
                             ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                             ng-init="taskType = taskTypesByName.RECURRENT"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                            is-disabled="!isSortingTaskBoard(sprint)"
+                            is-disabled="!isSortableTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                                  ng-if="tasksShown(taskState, taskTypesByName.RECURRENT)"
@@ -264,7 +257,7 @@
                             postits-screen-size
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
-                            is-disabled="!isSortingTaskBoard(sprint) || !isSortingStory(story)"
+                            is-disabled="!isSortableTaskBoard(sprint) || !isSortableStory(story)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                                  ng-if="tasksShown(taskState, story)"

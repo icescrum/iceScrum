@@ -39,11 +39,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     $scope.isSortableTaskBoard = function(sprint) {
         return Session.authenticated() && sprint.state < SprintStatesByName.DONE;
     };
-    $scope.isSortingTaskBoard = function(sprint) {
-        //TODO: remove
-        return $scope.isSortableTaskBoard(sprint);
-    };
-    $scope.isSortingStory = function(story) {
+    $scope.isSortableStory = function(story) {
         return story.state < StoryStatesByName.DONE;
     };
     $scope.openSprintUrl = function(sprint, keepDetails) {
@@ -127,10 +123,6 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         var editableUser = angular.copy(Session.user);
         editableUser.preferences.filterTask = sprintFilter.id;
         UserService.update(editableUser);
-    };
-    $scope.enableSortable = function() {
-        $scope.clearContextAndSearch();
-        $scope.changeSprintFilter(_.find($scope.sprintFilters, {id: 'allTasks'}));
     };
     $scope.storyFilter = function(story) {
         return $scope.currentSprintFilter.id == 'allTasks' ||
@@ -238,7 +230,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
             var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
-            var isSortableDest = destSortableScope.story ? $scope.isSortingStory(destSortableScope.story) : true;
+            var isSortableDest = destSortableScope.story ? $scope.isSortableStory(destSortableScope.story) : true;
             return sameSortable && isSortableDest;
         }
     };
