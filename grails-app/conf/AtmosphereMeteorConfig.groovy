@@ -1,3 +1,4 @@
+import grails.util.Holders
 import org.icescrum.atmosphere.IceScrumMeteorHandler
 
 defaultMapping = "/stream/app/*"
@@ -18,9 +19,10 @@ servlets = [
                                 org.atmosphere.interceptor.OnDisconnectInterceptor
                         """,
                         "org.atmosphere.cpr.broadcasterLifeCyclePolicy"                              : "EMPTY_DESTROY",
-                        "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 30,
+                        "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 15,
                         "org.atmosphere.cpr.broadcaster.maxProcessingThreads"                        : -1,
-                        "org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads"                        : -1
+                        "org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads"                        : -1,
+                        "org.atmosphere.useWebSocketAndServlet3"                                     : System.getProperty("icescrum.useWebSocketAndServlet3") != null ? System.getProperty("icescrum.useWebSocketAndServlet3") : true
                 ]
         ]
 ]
