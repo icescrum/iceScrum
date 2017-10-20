@@ -1,4 +1,3 @@
-import grails.util.Holders
 import org.icescrum.atmosphere.IceScrumMeteorHandler
 
 defaultMapping = "/stream/app/*"
