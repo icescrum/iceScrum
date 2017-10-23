@@ -268,8 +268,7 @@ icescrum {
                     forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
                     return
                 }
-
-                if (project && user && !securityService.hasRoleAdmin(user) && user.preferences.lastProjectOpened != project.pkey) {
+                if (project && user && !user.admin && user.preferences.lastProjectOpened != project.pkey) {
                     user.preferences.lastProjectOpened = project.pkey
                     user.save()
                 }
