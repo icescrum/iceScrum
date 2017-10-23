@@ -80,10 +80,12 @@
                                    on-select="selectCategory()"
                                    ng-model="formHolder.category">
                             <ui-select-match placeholder="${message(code: 'todo.is.ui.task.nocategory')}">
-                                <i class="fa" ng-class="{'fa-sticky-note' : $select.selected.class == 'Story', 'fa-file':$select.selected.class != 'Story'}" ng-style="{color: $select.selected.class == 'Story' && $select.selected.feature ? $select.selected.feature.color : '#f9f157'}"></i> {{ $select.selected.name }}
+                                <i class="fa" ng-class="{'fa-sticky-note': $select.selected.class == 'Story', 'fa-file': $select.selected.class != 'Story'}"
+                                   ng-style="{color: $select.selected.class == 'Story' && $select.selected.feature ? $select.selected.feature.color : '#f9f157'}"></i> {{ $select.selected.name }}
                             </ui-select-match>
                             <ui-select-choices group-by="groupCategory" repeat="category in categories | filter: $select.search">
-                                <i class="fa" ng-class="{'fa-sticky-note' : category.class == 'Story', 'fa-file':category.class != 'Story'}" ng-style="{color: category.class == 'Story' && category.feature ? category.feature.color : '#f9f157'}"></i> <span ng-bind-html="category.name | highlight: $select.search"></span>
+                                <i class="fa" ng-class="{'fa-sticky-note': category.class == 'Story', 'fa-file': category.class != 'Story'}"
+                                   ng-style="{color: category.class == 'Story' && category.feature ? category.feature.color : '#f9f157'}"></i> <span ng-bind-html="category.name | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
                     </div>

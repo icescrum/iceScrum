@@ -67,7 +67,6 @@ controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$sta
         }
         return $state.href(self.parentView + stateName, stateParams);
     };
-
     $scope.clickOnElementHref = function($event) {
         var href = angular.element($event.target).attr('href');
         if (href) {
@@ -76,7 +75,6 @@ controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$sta
             document.location = href;
         }
     };
-
     $scope.sortableId = 'elements-list-menu';
     $scope.elementsListSortableOptions = {
         containment: '.elements-list',
@@ -89,8 +87,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$sta
             event.dest.sortableScope.saveOrUpdateWindowSetting('elementsListOrder', elementsListOrder);
         }
     };
-
-    $scope.closeElementUrl = function(element){
+    $scope.closeElementUrl = function(element) {
         var stateParams;
         if (element[self.propId] === $state.params.pinnedElementId) {
             stateParams = {pinnedElementId: $state.params.elementId, elementId: null};
