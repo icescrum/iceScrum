@@ -22,59 +22,83 @@
  *
  */
 
-controllers.controller("backlogsListMenuCtrl", ['$scope', 'WindowService', '$state', function($scope, WindowService, $state) {
-    $scope.initialize = function(backlogsList) {
-        $scope.backlogsList = backlogsList;
-        var savedBacklogsOrder = $scope.getWindowSetting('backlogsListOrder');
-        if (savedBacklogsOrder) {
-            backlogsList.sort(function(a, b) {
-                return savedBacklogsOrder.indexOf(a.code) - savedBacklogsOrder.indexOf(b.code)
+controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$state', function($scope, WindowService, $state) {
+    var self = this;
+    $scope.initialize = function(elementsList, parentView, propId) {
+        self.type = parentView;
+        self.parentView = parentView;
+        self.propId = propId ? propId : 'id';
+        $scope.elementsList = elementsList;
+        var savedElementsOrder = $scope.getWindowSetting('elementsListOrder');
+        if (savedElementsOrder) {
+            elementsList.sort(function(a, b) {
+                return savedElementsOrder.indexOf(a[self.propId]) - savedElementsOrder.indexOf(b[self.propId])
             });
         }
     };
-    $scope.isShown = function(backlog) {
-        return _.includes([$state.params.pinnedBacklogCode, $state.params.backlogCode], backlog.code);
+    $scope.isShown = function(element) {
+        return _.includes([$state.params.pinnedElementId, $state.params.elementId], element[self.propId]);
     };
-    $scope.isPinned = function(backlog) {
-        return $state.params.pinnedBacklogCode === backlog.code;
+    $scope.isPinned = function(element) {
+        return $state.params.pinnedElementId === element[self.propId];
     };
-    $scope.toggleBacklogUrl = function(backlog) {
-        if ($scope.isShown(backlog)) {
-            if ($scope.backlogContainers.length > 1) {
-                return $scope.closeBacklogUrl(backlog);
+    $scope.toggleElementUrl = function(element) {
+        if ($scope.isShown(element)) {
+            if ($scope.elementsList.length > 1) {
+                return $scope.closeElementUrl(element);
             } else {
                 return $state.href('.');
             }
         } else {
-            var stateName = _.startsWith($state.current.name, 'backlog.backlog') || _.startsWith($state.current.name, 'backlog.multiple') ? '.' : 'backlog.backlog';
-            return $state.href(stateName, {backlogCode: backlog.code});
+            var stateName = _.startsWith($state.current.name, self.parentView + '.' + self.type) || _.startsWith($state.current.name, self.parentView + '.multiple') ? '.' : self.parentView + '.' + self.type;
+            return $state.href(stateName, {elementId: element[self.propId]});
         }
     };
-    $scope.togglePinBacklogUrl = function(backlog) {
+    $scope.togglePinElementUrl = function(element) {
         var stateName;
         var stateParams;
-        if ($scope.isPinned(backlog)) {
-            stateName = 'backlog.backlog';
-            stateParams = {backlogCode: backlog.code};
+        if ($scope.isPinned(element)) {
+            stateName = '.element';
+            stateParams = {elementId: element[self.propId]};
         } else {
-            stateName = 'backlog.multiple';
-            stateParams = {pinnedBacklogCode: backlog.code};
-            stateParams.backlogCode = $state.params.pinnedBacklogCode ? $state.params.pinnedBacklogCode : ($state.params.backlogCode !== backlog.code ? $state.params.backlogCode : null);
+            stateName = '.multiple';
+            stateParams = {pinnedElementId: element[self.propId]};
+            stateParams.elementId = $state.params.pinnedElementId ? $state.params.pinnedElementId : ($state.params.elementId !== element[self.propId] ? $state.params.elementId : null);
         }
-        return $state.href(stateName, stateParams);
+        return $state.href(self.parentView + stateName, stateParams);
     };
-    $scope.sortableId = 'backlogs-list-menu';
-    $scope.backlogsListSortableOptions = {
-        containment: '.backlogs-list',
+
+    $scope.clickOnElementHref = function($event) {
+        var href = angular.element($event.target).attr('href');
+        if (href) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            document.location = href;
+        }
+    };
+
+    $scope.sortableId = 'elements-list-menu';
+    $scope.elementsListSortableOptions = {
+        containment: '.elements-list',
         containerPositioning: 'relative',
         accept: function(sourceItemHandleScope, destSortableScope) {
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         },
         orderChanged: function(event) {
-            var backlogsListOrder = _.map(event.dest.sortableScope.backlogsList, function(backlog) {return backlog.code});
-            event.dest.sortableScope.saveOrUpdateWindowSetting('backlogsListOrder', backlogsListOrder);
+            var elementsListOrder = _.map(event.dest.sortableScope.elementsList, function(element) {return element[self.propId]});
+            event.dest.sortableScope.saveOrUpdateWindowSetting('elementsListOrder', elementsListOrder);
         }
     };
+
+    $scope.closeElementUrl = function(element){
+        var stateParams;
+        if (element[self.propId] === $state.params.pinnedElementId) {
+            stateParams = {pinnedElementId: $state.params.elementId, elementId: null};
+        } else {
+            stateParams = {elementId: null};
+        }
+        return $state.href('.', stateParams);
+    }
 }]);
 
 extensibleController('backlogDetailsCtrl', ['$scope', 'StoryService', 'BacklogService', 'backlog', function($scope, StoryService, BacklogService, backlog) {
@@ -95,7 +119,7 @@ extensibleController('backlogDetailsCtrl', ['$scope', 'StoryService', 'BacklogSe
 
 
 extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter', '$timeout', '$state', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'project', 'backlogs', function($controller, $scope, window, $filter, $timeout, $state, StoryService, BacklogService, BacklogCodes, StoryStatesByName, project, backlogs) {
-    $controller('windowCtrl', {$scope: $scope, window: window}); // inherit from storyCtrl
+    $controller('windowCtrl', {$scope: $scope, window: window}); // inherit from windowCtrl
     // Functions
     $scope.authorizedStory = StoryService.authorizedStory;
     $scope.isSelected = function(selectable) {
@@ -175,15 +199,15 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         $scope.orderBacklogByRank(backlogContainer)
     };
     $scope.openStoryUrl = function(storyId) {
-        return '#/' + $scope.viewName + '/' + $state.params.backlogCode + '/story/' + storyId;
+        return '#/' + $scope.viewName + '/' + $state.params.elementId + '/story/' + storyId;
     };
 
     $scope.closeBacklogUrl = function(backlog) {
         var stateParams;
-        if (backlog.code === $state.params.pinnedBacklogCode) {
-            stateParams = {pinnedBacklogCode: $state.params.backlogCode, backlogCode: null};
+        if (backlog.code === $state.params.pinnedElementId) {
+            stateParams = {pinnedElementId: $state.params.elementId, elementId: null};
         } else {
-            stateParams = {backlogCode: null};
+            stateParams = {elementId: null};
         }
         return $state.href('.', stateParams);
     };
@@ -191,14 +215,6 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         return _.find($scope.backlogContainers, function(backlogContainer) {
             return backlogContainer.backlog.code === backlogCode;
         });
-    };
-    $scope.clickOnBacklogHref = function($event) {
-        var href = angular.element($event.target).attr('href');
-        if (href) {
-            $event.preventDefault();
-            $event.stopPropagation();
-            document.location = href;
-        }
     };
     $scope.showBacklog = function(backlogCode) {
         var backlogContainer = $scope.getBacklogContainer(backlogCode);
@@ -224,7 +240,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
                 retrieveServerStories();
             }
             $scope.backlogContainers.push(backlogContainer);
-            var savedBacklogsOrder = $scope.getWindowSetting('backlogsListOrder');
+            var savedBacklogsOrder = $scope.getWindowSetting('elementsListOrder');
             if (savedBacklogsOrder) {
                 $scope.backlogContainers.sort(function(a, b) {
                     return savedBacklogsOrder.indexOf(a.backlog.code) - savedBacklogsOrder.indexOf(b.backlog.code)
@@ -237,25 +253,25 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             }
         }
     };
-    $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.pinnedBacklogCode; }, function() { return $state.params.backlogCode; }], function(newValues) {
+    $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.pinnedElementId; }, function() { return $state.params.elementId; }], function(newValues) {
         var stateName = newValues[0];
-        var pinnedBacklogCode = newValues[1];
-        var backlogCode = newValues[2];
+        var pinnedElementId = newValues[1];
+        var elementId = newValues[2];
         if (stateName === 'backlog') {
-            $state.go('backlog.backlog', {backlogCode: _.head($scope.availableBacklogs).code}, {location: 'replace'});
+            $state.go('backlog.backlog', {elementId: _.head($scope.availableBacklogs).code}, {location: 'replace'});
         } else if (_.startsWith(stateName, 'backlog')) {
-            if (pinnedBacklogCode) {
+            if (pinnedElementId) {
                 if ($scope.application.mobile) {
-                    $scope.enforceOneBacklog({code: pinnedBacklogCode});
+                    $scope.enforceOneBacklog({code: pinnedElementId});
                     return;
                 }
-                $scope.showBacklog(pinnedBacklogCode);
+                $scope.showBacklog(pinnedElementId);
             }
-            if (backlogCode) {
-                $scope.showBacklog(backlogCode);
+            if (elementId) {
+                $scope.showBacklog(elementId);
             }
             _.remove($scope.backlogContainers, function(backlogContainer) {
-                return !_.includes([pinnedBacklogCode, backlogCode], backlogContainer.backlog.code);
+                return !_.includes([pinnedElementId, elementId], backlogContainer.backlog.code);
             });
         }
     });
@@ -267,7 +283,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         if ($state.current.name != 'backlog.backlog.details') {
             stateName += '.details';
         }
-        return $state.href(stateName, {backlogCode: backlog.code});
+        return $state.href(stateName, {elementId: backlog.code});
     };
     // Init
     $scope.viewName = 'backlog';

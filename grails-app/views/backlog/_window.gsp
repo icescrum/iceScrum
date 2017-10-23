@@ -22,17 +22,17 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div class="backlogs-list" ng-controller="backlogsListMenuCtrl" ng-init="initialize(availableBacklogs)">
-        <ul class="nav nav-tabs nav-tabs-is clearfix" as-sortable="backlogsListSortableOptions" ng-model="backlogsList">
-            <li as-sortable-item role="presentation" ng-repeat="backlog in backlogsList" ng-class="{'active': isShown(backlog)}">
-                <a href="{{ toggleBacklogUrl(backlog) }}" ng-click="clickOnBacklogHref($event)">
+    <div class="backlogs-list elements-list" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
+        <ul class="nav nav-tabs nav-tabs-is clearfix" as-sortable="elementsListSortableOptions" ng-model="elementsList">
+            <li as-sortable-item role="presentation" ng-repeat="elem in elementsList" ng-class="{'active': isShown(elem)}">
+                <a href="{{ toggleElementUrl(elem) }}" ng-click="clickOnElementHref($event)">
                     <i as-sortable-item-handle
                        class="fa fa-lg fa-border fa-inbox"
                        tooltip-placement="right"
-                       uib-tooltip="{{ isPinned(backlog) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
-                       style="margin-right:3px;" href="{{ togglePinBacklogUrl(backlog) }}"
-                       ng-class="{'fa-pinned':isPinned(backlog), 'fa-pin':!isPinned(backlog)}"></i>
-                    <span as-sortable-item-handle>{{ backlog | backlogName }} ({{ backlog.count }})</span>
+                       uib-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
+                       style="margin-right:3px;" href="{{ togglePinElementUrl(elem) }}"
+                       ng-class="{'fa-pinned':isPinned(elem), 'fa-pin':!isPinned(elem)}"></i>
+                    <span as-sortable-item-handle>{{ elem | backlogName }} ({{ elem.count }})</span>
                 </a>
             </li>
             <entry:point id="backlog-window-toolbar"/>
