@@ -111,7 +111,7 @@ class WindowController implements ControllerErrorHandler {
         if (!window) {
             window = windowService.save(windowDefinition, user, context)
         }
-        window = windowService.update(window, props)
+        windowService.update(window, props)
         render(status: 200, contentType: 'application/json', text: window as JSON)
     }
 }
