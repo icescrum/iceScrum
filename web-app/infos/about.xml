@@ -30,32 +30,7 @@
         <forum>https://www.icescrum.com/forums/</forum>
     </version>
     <releaseNotes>
-    <![CDATA[
-    <h4>Core features</h4>
-        <ul>
-            <li>Feature history tab with aggregated stories history</li>
-            <li>Automatic migration of projects from R6 to v7</li>
-            <li>Task drag and drop when the task board is filtered</li>
-        </ul>
-        <h4>Bug fixes</h4>
-        <ul>
-            <li>File URL attachment doesn't work if the URL ends with a slash</li>
-            <li>Some submit buttons can be clicked again when form are being submitted</li>
-            <li>Error when releasing a task that is in progress</li>
-            <li>When closing a sprint, done stories go through the undone state before being done again</li>
-            <li>Uploading an empty attachment throws an unfriendly error</li>
-            <li>JSON content is sometimes displayed after redirect on login</li>
-            <li>Returning a story to sandbox when other stories depends on it throws an unfriendly error</li>
-        </ul>
-        <h4>Documentation</h4>
-        <ul>
-            <li>Features, stories, tasks and acceptance tests</li>
-            <li>Story workflow diagram</li>
-            <li>Toolbox App</li>
-            <li>Install as a .war on Tomcat</li>
-            <li>Travis App</li>
-        </ul>
-    ]]>
+    <![CDATA[]]>
     </releaseNotes>
     <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
