@@ -213,7 +213,7 @@ class StoryController implements ControllerErrorHandler {
     @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
     def copy() {
         def stories = Story.withStories(params)
-        def copiedStories = storyService.copy(stories)
+        def copiedStories = storyService.copy(stories, stories.first().backlog)
         def returnData = copiedStories.size() > 1 ? copiedStories : copiedStories.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
