@@ -83,57 +83,86 @@ angular.module('isPlugins', [])
                 ]
             }
         };
-    });
+    })
+    .provider('isStateHelper', ['pluginTabsProvider', function(pluginTabsProvider) {
+        this.$get = angular.noop;
+        this.getDetailsModalState = function(detailsType, options) {
+            return _.merge({
+                name: detailsType,
+                url: '/' + detailsType,
+                abstract: true,
+                resolve: {
+                    modalHolder: [function() { return {}; }]
+                },
+                onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
+                    var goToCaller = function(reason) {
+                        if (reason !== true) {
+                            $state.go(($state.params[detailsType + 'TabId'] ? '^.' : '') + '^.^');
+                        }
+                    };
+                    modalHolder.modal = $uibModal.open({
+                        templateUrl: 'details.modal.html',
+                        controller: ['$scope', function($scope) {
+                            $scope.detailsType = detailsType;
+                            $scope.isModal = true;
+                        }]
+                    });
+                    modalHolder.modal.result.then(goToCaller, goToCaller);
+                }],
+                onExit: ['modalHolder', function(modalHolder) {
+                    modalHolder.modal.dismiss(true)
+                }]
+            }, options);
+        };
 
-angular.module('isApplication', [
-        'isPlugins', // To be able to use pluginTabsProvider
-        'ngRoute',
-        'ngAnimate',
-        'ngSanitize',
-        'controllers',
-        'services',
-        'filters',
-        'directives',
-        'ui.router',
-        'ui.router.stateHelper',
-        'ui.bootstrap',
-        'ui.select',
-        'cfp.hotkeys',
-        'colorpicker.module',
-        'mgo-angular-wizard',
-        'ngPasswordStrength',
-        'flow',
-        'ngPDFViewer',
-        'remoteValidation',
-        'FBAngular',
-        'angular-extended-notifications',
-        'as.sortable',
-        'angular.atmosphere',
-        'nvd3',
-        'ngStorage',
-        'ui.bootstrap-slider',
-        'matchMedia',
-        'satellizer',
-        'angular.qserial'
-    ].concat(isSettings.plugins)
-)
-    .config(['$httpProvider', function($httpProvider) {
-        $httpProvider.interceptors.push('ErrorInterceptor');
-        $httpProvider.interceptors.push('SubmittingInterceptor');
-        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-    }])
-    .config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', 'pluginTabsProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider, pluginTabsProvider) {
-        $stateProvider.decorator('parent', function(state, parentFn) {
-            state.self.$$state = function() {
-                return state;
-            };
-            state.self.isSecured = function() {
-                return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
-            };
-            return parentFn(state);
-        });
+        var backlogTabs = _.merge({
+            details: {}
+        }, pluginTabsProvider.pluginTabs['backlog']);
 
-        $urlRouterProvider.when('', '/');
+        this.getBacklogDetailsState = function(viewContext) {
+            var tabNames = _.keys(backlogTabs);
+            var backlogState = {
+                name: 'details',
+                url: "/details",
+                views: {},
+                resolve: {},
+                data: {
+                    displayTabs: tabNames.length > 1
+                },
+                children: [
+                    {
+                        name: 'tab',
+                        url: '/{backlogTabId:(?:' + _.join(tabNames, '|') + ')}',
+                        resolve: {},
+                        views: {
+                            "details-tab": {
+                                templateUrl: function($stateParams) {
+                                    if ($stateParams.backlogTabId) {
+                                        return sprintTabs[$stateParams.backlogTabId].templateUrl;
+                                    }
+                                },
+                                controller: ['$scope', 'detailsBacklog', function($scope, detailsBacklog) {
+                                    $scope.selected = detailsBacklog;
+                                }]
+                            }
+                        }
+                    }
+                ]
+            };
+            // Default tab (without tabId)
+            if (backlogTabs["details"].resolve) {
+                backlogState.resolve['details'] = backlogTabs["details"].resolve;
+            }
+            var backlogTabState = backlogState.children[0];
+            _.each(backlogTabs, function(value, key) {
+                backlogTabState.resolve['data' + key] = value.resolve;
+            });
+            backlogState.views['details' + (viewContext ? viewContext : '')] = {
+                templateUrl: 'backlog.details.html',
+                controller: 'backlogDetailsCtrl'
+            };
+            return backlogState;
+        };
 
         var taskTabs = _.merge({
             details: {
@@ -160,7 +189,6 @@ angular.module('isApplication', [
                 templateUrl: 'activity.list.html'
             }
         }, pluginTabsProvider.pluginTabs['task']);
-
         var storyTabs = _.merge({
             details: {
                 resolve: ['$stateParams', 'AttachmentService', 'detailsStory', function($stateParams, AttachmentService, detailsStory) {
@@ -264,85 +292,7 @@ angular.module('isApplication', [
                 templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
             }
         }, pluginTabsProvider.pluginTabs['sprint']);
-
-        var backlogTabs = _.merge({
-            details: {}
-        }, pluginTabsProvider.pluginTabs['backlog']);
-
-        var getDetailsModalState = function(detailsType, options) {
-            return _.merge({
-                name: detailsType,
-                url: '/' + detailsType,
-                abstract: true,
-                resolve: {
-                    modalHolder: [function() { return {}; }]
-                },
-                onEnter: ['$state', '$uibModal', 'modalHolder', function($state, $uibModal, modalHolder) {
-                    var goToCaller = function(reason) {
-                        if (reason !== true) {
-                            $state.go(($state.params[detailsType + 'TabId'] ? '^.' : '') + '^.^');
-                        }
-                    };
-                    modalHolder.modal = $uibModal.open({
-                        templateUrl: 'details.modal.html',
-                        controller: ['$scope', function($scope) {
-                            $scope.detailsType = detailsType;
-                            $scope.isModal = true;
-                        }]
-                    });
-                    modalHolder.modal.result.then(goToCaller, goToCaller);
-                }],
-                onExit: ['modalHolder', function(modalHolder) {
-                    modalHolder.modal.dismiss(true)
-                }]
-            }, options);
-        };
-
-        var getBacklogDetailsState = function(viewContext) {
-            var tabNames = _.keys(backlogTabs);
-            var backlogState = {
-                name: 'details',
-                url: "/details",
-                views: {},
-                resolve: {},
-                data: {
-                    displayTabs: tabNames.length > 1
-                },
-                children: [
-                    {
-                        name: 'tab',
-                        url: '/{backlogTabId:(?:' + _.join(tabNames, '|') + ')}',
-                        resolve: {},
-                        views: {
-                            "details-tab": {
-                                templateUrl: function($stateParams) {
-                                    if ($stateParams.backlogTabId) {
-                                        return sprintTabs[$stateParams.backlogTabId].templateUrl;
-                                    }
-                                },
-                                controller: ['$scope', 'detailsBacklog', function($scope, detailsBacklog) {
-                                    $scope.selected = detailsBacklog;
-                                }]
-                            }
-                        }
-                    }
-                ]
-            };
-            // Default tab (without tabId)
-            if (backlogTabs["details"].resolve) {
-                backlogState.resolve['details'] = backlogTabs["details"].resolve;
-            }
-            var backlogTabState = backlogState.children[0];
-            _.each(backlogTabs, function(value, key) {
-                backlogTabState.resolve['data' + key] = value.resolve;
-            });
-            backlogState.views['details' + (viewContext ? viewContext : '')] = {
-                templateUrl: 'backlog.details.html',
-                controller: 'backlogDetailsCtrl'
-            };
-            return backlogState;
-        };
-        var getTaskDetailsState = function(viewContext) {
+        this.getTaskDetailsState = function(viewContext) {
             var tabNames = _.keys(taskTabs);
             var taskState = {
                 name: 'details',
@@ -385,7 +335,7 @@ angular.module('isApplication', [
             };
             return taskState;
         };
-        var getFeatureDetailsState = function(viewContext, isModal) {
+        this.getFeatureDetailsState = function(viewContext, isModal) {
             var tabNames = _.keys(featureTabs);
             var featureState = {
                 name: 'details',
@@ -429,14 +379,14 @@ angular.module('isApplication', [
             };
             if (!isModal) {
                 featureTabState.children = [
-                    getDetailsModalState('story', {
-                        children: [getStoryDetailsState('@', true)]
+                    this.getDetailsModalState('story', {
+                        children: [this.getStoryDetailsState('@', true)]
                     })
                 ];
             }
             return featureState;
         };
-        var getStoryDetailsState = function(viewContext, isModal) {
+        this.getStoryDetailsState = function(viewContext, isModal) {
             var tabNames = _.keys(storyTabs);
             var storyState = {
                 name: 'details',
@@ -479,27 +429,27 @@ angular.module('isApplication', [
             };
             if (!isModal) {
                 storyTabState.children = [
-                    getDetailsModalState('task', {
+                    this.getDetailsModalState('task', {
                         resolve: {
                             taskContext: ['detailsStory', function(detailsStory) {
                                 return detailsStory;
                             }]
                         },
-                        children: [getTaskDetailsState('@')]
+                        children: [this.getTaskDetailsState('@')]
                     })
                 ];
-                storyState.children.push(getDetailsModalState('feature', {
+                storyState.children.push(this.getDetailsModalState('feature', {
                     resolve: {
                         features: ['FeatureService', function(FeatureService) {
                             return FeatureService.list();
                         }]
                     },
-                    children: [getFeatureDetailsState('@', true)]
+                    children: [this.getFeatureDetailsState('@', true)]
                 }));
             }
             return storyState;
         };
-        var getReleaseDetailsState = function(viewContext) {
+        this.getReleaseDetailsState = function(viewContext) {
             var tabNames = _.keys(releaseTabs);
             var releaseState = {
                 name: 'details',
@@ -541,7 +491,7 @@ angular.module('isApplication', [
             };
             return releaseState;
         };
-        var getSprintDetailsState = function(viewContext) {
+        this.getSprintDetailsState = function(viewContext) {
             var tabNames = _.keys(sprintTabs);
             var sprintState = {
                 name: 'details',
@@ -590,8 +540,7 @@ angular.module('isApplication', [
             };
             return sprintState;
         };
-
-        var getBacklogStoryState = function() {
+        this.getBacklogStoryState = function() {
             return {
                 name: 'story',
                 url: "/story",
@@ -626,20 +575,71 @@ angular.module('isApplication', [
                             }
                         },
                         children: [
-                            getDetailsModalState('feature', {
+                            this.getDetailsModalState('feature', {
                                 resolve: {
                                     features: ['FeatureService', function(FeatureService) {
                                         return FeatureService.list();
                                     }]
                                 },
-                                children: [getFeatureDetailsState('@', true)]
+                                children: [this.getFeatureDetailsState('@', true)]
                             })
                         ]
                     },
-                    getStoryDetailsState('@backlog')
+                    this.getStoryDetailsState('@backlog')
                 ]
             }
         };
+    }]);
+
+angular.module('isApplication', [
+        'isPlugins', // To be able to use pluginTabsProvider
+        'ngRoute',
+        'ngAnimate',
+        'ngSanitize',
+        'controllers',
+        'services',
+        'filters',
+        'directives',
+        'ui.router',
+        'ui.router.stateHelper',
+        'ui.bootstrap',
+        'ui.select',
+        'cfp.hotkeys',
+        'colorpicker.module',
+        'mgo-angular-wizard',
+        'ngPasswordStrength',
+        'flow',
+        'ngPDFViewer',
+        'remoteValidation',
+        'FBAngular',
+        'angular-extended-notifications',
+        'as.sortable',
+        'angular.atmosphere',
+        'nvd3',
+        'ngStorage',
+        'ui.bootstrap-slider',
+        'matchMedia',
+        'satellizer',
+        'angular.qserial'
+    ].concat(isSettings.plugins)
+)
+    .config(['$httpProvider', function($httpProvider) {
+        $httpProvider.interceptors.push('ErrorInterceptor');
+        $httpProvider.interceptors.push('SubmittingInterceptor');
+        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+    }])
+    .config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', 'pluginTabsProvider', 'isStateHelperProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider, pluginTabsProvider, isStateHelperProvider) {
+        $stateProvider.decorator('parent', function(state, parentFn) {
+            state.self.$$state = function() {
+                return state;
+            };
+            state.self.isSecured = function() {
+                return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
+            };
+            return parentFn(state);
+        });
+
+        $urlRouterProvider.when('', '/');
         stateHelperProvider
             .state({
                 name: 'root',
@@ -739,7 +739,7 @@ angular.module('isApplication', [
                     {
                         name: 'multiple',
                         url: "/:pinnedElementId,:elementId",
-                        children: [getBacklogStoryState()]
+                        children: [isStateHelperProvider.getBacklogStoryState()]
                     },
                     {
                         name: 'backlog',
@@ -750,8 +750,8 @@ angular.module('isApplication', [
                             }]
                         },
                         children: [
-                            getBacklogDetailsState("@backlog"),
-                            getBacklogStoryState()
+                            isStateHelperProvider.getBacklogDetailsState("@backlog"),
+                            isStateHelperProvider.getBacklogStoryState()
                         ]
                     }
                 ]
@@ -800,7 +800,7 @@ angular.module('isApplication', [
                             }
                         }
                     },
-                    getFeatureDetailsState()
+                    isStateHelperProvider.getFeatureDetailsState()
                 ]
             })
             .state({
@@ -848,11 +848,11 @@ angular.module('isApplication', [
                             }]
                         },
                         children: [
-                            getReleaseDetailsState('@planning'),
+                            isStateHelperProvider.getReleaseDetailsState('@planning'),
                             {
                                 name: 'story',
                                 url: "/story",
-                                children: [getStoryDetailsState('@planning')]
+                                children: [isStateHelperProvider.getStoryDetailsState('@planning')]
                             },
                             {
                                 name: 'sprint',
@@ -885,11 +885,11 @@ angular.module('isApplication', [
                                             }]
                                         },
                                         children: [
-                                            getSprintDetailsState('@planning'),
+                                            isStateHelperProvider.getSprintDetailsState('@planning'),
                                             {
                                                 name: 'story',
                                                 url: "/story",
-                                                children: [getStoryDetailsState('@planning')]
+                                                children: [isStateHelperProvider.getStoryDetailsState('@planning')]
                                             }
                                         ]
                                     },
@@ -910,7 +910,7 @@ angular.module('isApplication', [
                                             {
                                                 name: 'story',
                                                 url: "/story",
-                                                children: [getStoryDetailsState('@planning')]
+                                                children: [isStateHelperProvider.getStoryDetailsState('@planning')]
                                             }
                                         ]
                                     }
@@ -972,7 +972,7 @@ angular.module('isApplication', [
                     }]
                 },
                 children: [
-                    getSprintDetailsState(),
+                    isStateHelperProvider.getSprintDetailsState(),
                     {
                         name: 'task',
                         url: "/task",
@@ -1000,13 +1000,13 @@ angular.module('isApplication', [
                                     }
                                 }
                             },
-                            getTaskDetailsState('@taskBoard')
+                            isStateHelperProvider.getTaskDetailsState('@taskBoard')
                         ]
                     },
                     {
                         name: 'story',
                         url: "/story",
-                        children: [getStoryDetailsState('@taskBoard')]
+                        children: [isStateHelperProvider.getStoryDetailsState('@taskBoard')]
                     }
                 ]
             });
