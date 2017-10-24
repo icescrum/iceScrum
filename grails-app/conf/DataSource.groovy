@@ -66,6 +66,13 @@ environments {
 //            dialect = "com.kagilum.hibernate.OracleCustomDialect"
 //            url = "jdbc:oracle:thin:@localhost:1521:XE"
 //        }
+//        dataSource {
+//            dbCreate = "update"
+//            username = "sa"
+//            password = "root"
+//            driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+//            url = "jdbc:sqlserver://localhost:1433;databaseName=icescrum"
+//        }
     }
     test {
         dataSource {
