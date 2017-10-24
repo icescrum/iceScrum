@@ -315,7 +315,7 @@ class UserController implements ControllerErrorHandler {
             render(status: 403)
             return
         }
-        def activitiesAndStories = Activity.storyActivities(user).take(15).collect {
+        def activitiesAndStories = Activity.importantStoryActivities(user).collect {
             def activity = it[0]
             def story = it[1]
             def project = story.backlog
@@ -338,11 +338,7 @@ class UserController implements ControllerErrorHandler {
             return
 
         }
-        def unreadActivities = Activity.storyActivities(user).findAll {
-            def activity = it[0]
-            activity.dateCreated > user.preferences.lastReadActivities
-        }
-        render(status: 200, text: [unreadActivitiesCount: unreadActivities.size()] as JSON, contentType: 'application/json')
+        render(status: 200, text: [unreadActivitiesCount: Activity.countNewImportantStoryActivities(user)] as JSON, contentType: 'application/json')
     }
 
     def invitationEmail(String token) {
