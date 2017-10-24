@@ -21,12 +21,13 @@
 * Vincent BARRIER (vbarrier@kagilum.com)
 *
 */
+
 databaseChangeLog = {
-    include file: "changelog-promoteVersion.groovy"
-    include file: "changelog-7-0-2.groovy"
-    include file: "changelog-7-0-6.groovy"
-    include file: "changelog-7-1.groovy"
-    include file: "changelog-7-1-1.groovy"
-    include file: "changelog-7-2.groovy"
-    include file: "changelog-7-5.groovy"
+    changeSet(author: "vbarrier", id: "update_is_story_effort_estimated_date") {
+        grailsChange {
+            change {
+                sql.execute("UPDATE is_story SET effort = NULL, estimated_date = NULL WHERE state < 3 AND effort IS NOT NULL")
+            }
+        }
+    }
 }
