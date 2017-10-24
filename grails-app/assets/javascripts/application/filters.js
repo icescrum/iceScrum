@@ -328,163 +328,163 @@ filters
             return Math.floor((current * 100) / count);
         }
     }]).filter('dateToIso', ['dateFilter', function(dateFilter) {
-        return function(date) {
-            return dateFilter(date, 'yyyy-MM-ddTHH:mm:ssZ');
-        };
-    }]).filter('dateTime', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
-        return function(date) {
-            return dateFilter(date, $rootScope.message('is.date.format.short.time'));
-        };
-    }]).filter('dayShort', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
-        return function(date) {
-            return dateFilter(date, $rootScope.message('is.date.format.short'), 'utc');
-        };
-    }]).filter('dayShorter', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
-        return function(date) {
-            return dateFilter(date, $rootScope.message('is.date.format.shorter'), 'utc');
-        };
-    }]).filter('orElse', [function() {
-        return function(value, defaultValue) {
-            return (!_.isUndefined(value) && !_.isNull(value)) ? value : defaultValue;
-        };
-    }]).filter('orFilter', [function() {
-        return function(items, patternObject) {
-            if (angular.isArray(items)) {
-                return _.filter(items, function(item) {
-                    return _.some(_.toPairs(patternObject), function(objectProperty) {
-                        var key = objectProperty[0];
-                        var value = objectProperty[1].toString().toLowerCase();
-                        return item[key].toString().toLowerCase().indexOf(value) !== -1;
-                    });
+    return function(date) {
+        return dateFilter(date, 'yyyy-MM-ddTHH:mm:ssZ');
+    };
+}]).filter('dateTime', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
+    return function(date) {
+        return dateFilter(date, $rootScope.message('is.date.format.short.time'));
+    };
+}]).filter('dayShort', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
+    return function(date) {
+        return dateFilter(date, $rootScope.message('is.date.format.short'), 'utc');
+    };
+}]).filter('dayShorter', ['$rootScope', 'dateFilter', function($rootScope, dateFilter) {
+    return function(date) {
+        return dateFilter(date, $rootScope.message('is.date.format.shorter'), 'utc');
+    };
+}]).filter('orElse', [function() {
+    return function(value, defaultValue) {
+        return (!_.isUndefined(value) && !_.isNull(value)) ? value : defaultValue;
+    };
+}]).filter('orFilter', [function() {
+    return function(items, patternObject) {
+        if (angular.isArray(items)) {
+            return _.filter(items, function(item) {
+                return _.some(_.toPairs(patternObject), function(objectProperty) {
+                    var key = objectProperty[0];
+                    var value = objectProperty[1].toString().toLowerCase();
+                    return item[key].toString().toLowerCase().indexOf(value) !== -1;
                 });
-            } else {
-                return items;
-            }
+            });
+        } else {
+            return items;
         }
-    }]).filter('search', ['$rootScope', function($rootScope) {
-        return function(items) {
-            var term = $rootScope.application.search;
-            var fields = ['name', 'description', 'notes', 'uid']; // Hardcoded for the moment because it is always the same
-            if (!_.isEmpty(items) && !_.isEmpty(term) && !_.isEmpty(fields)) {
-                var searchTerm = _.deburr(_.trim(term.toString().toLowerCase()));
-                return _.filter(items, function(item) {
-                    return _.some(fields, function(field) {
-                        var value = _.get(item, field);
-                        if (!_.isUndefined(value) && !_.isNull(value)) {
-                            return _.deburr(value.toString().toLowerCase()).indexOf(searchTerm) != -1;
-                        } else {
-                            return false;
-                        }
-                    });
+    }
+}]).filter('search', ['$rootScope', function($rootScope) {
+    return function(items) {
+        var term = $rootScope.application.search;
+        var fields = ['name', 'description', 'notes', 'uid']; // Hardcoded for the moment because it is always the same
+        if (!_.isEmpty(items) && !_.isEmpty(term) && !_.isEmpty(fields)) {
+            var searchTerm = _.deburr(_.trim(term.toString().toLowerCase()));
+            return _.filter(items, function(item) {
+                return _.some(fields, function(field) {
+                    var value = _.get(item, field);
+                    if (!_.isUndefined(value) && !_.isNull(value)) {
+                        return _.deburr(value.toString().toLowerCase()).indexOf(searchTerm) != -1;
+                    } else {
+                        return false;
+                    }
                 });
-            } else {
-                return items;
-            }
+            });
+        } else {
+            return items;
         }
-    }]).filter('dependsOnLabel', [function() {
-        return function(dependsOn) {
-            if (dependsOn) {
-                return dependsOn.name + ' (' + dependsOn.uid + ')';
-            }
+    }
+}]).filter('dependsOnLabel', [function() {
+    return function(dependsOn) {
+        if (dependsOn) {
+            return dependsOn.name + ' (' + dependsOn.uid + ')';
         }
-    }]).filter('sprintName', ['$rootScope', function($rootScope) {
-        return function(sprint) {
-            if (sprint) {
-                return $rootScope.message('is.sprint') + ' ' + sprint.index;
-            }
+    }
+}]).filter('sprintName', ['$rootScope', function($rootScope) {
+    return function(sprint) {
+        if (sprint) {
+            return $rootScope.message('is.sprint') + ' ' + sprint.index;
         }
-    }]).filter('acceptanceTestColor', ['AcceptanceTestStatesByName', function(AcceptanceTestStatesByName) {
-        return function(state) {
-            var colorClass;
-            switch (state) {
-                case AcceptanceTestStatesByName.TOCHECK:
-                    colorClass = 'default';
-                    break;
-                case AcceptanceTestStatesByName.FAILED:
-                    colorClass = 'danger';
-                    break;
-                case AcceptanceTestStatesByName.SUCCESS:
-                    colorClass = 'success';
-                    break;
-            }
-            return colorClass;
+    }
+}]).filter('acceptanceTestColor', ['AcceptanceTestStatesByName', function(AcceptanceTestStatesByName) {
+    return function(state) {
+        var colorClass;
+        switch (state) {
+            case AcceptanceTestStatesByName.TOCHECK:
+                colorClass = 'default';
+                break;
+            case AcceptanceTestStatesByName.FAILED:
+                colorClass = 'danger';
+                break;
+            case AcceptanceTestStatesByName.SUCCESS:
+                colorClass = 'success';
+                break;
         }
-    }]).filter('merge', [function() {
-        return function(object, defaultObject) {
-            return _.merge(object, defaultObject);
+        return colorClass;
+    }
+}]).filter('merge', [function() {
+    return function(object, defaultObject) {
+        return _.merge(object, defaultObject);
+    }
+}]).filter('taskStateIcon', ['TaskStatesByName', function(TaskStatesByName) {
+    return function(state) {
+        var iconByState = 'fa-hourglass-';
+        switch (state) {
+            case TaskStatesByName.TODO:
+                iconByState += 'start';
+                break;
+            case TaskStatesByName.IN_PROGRESS:
+                iconByState += 'half';
+                break;
+            case TaskStatesByName.DONE:
+                iconByState += 'end';
+                break;
         }
-    }]).filter('taskStateIcon', ['TaskStatesByName', function(TaskStatesByName) {
-        return function(state) {
-            var iconByState = 'fa-hourglass-';
-            switch (state) {
-                case TaskStatesByName.TODO:
-                    iconByState += 'start';
-                    break;
-                case TaskStatesByName.IN_PROGRESS:
-                    iconByState += 'half';
-                    break;
-                case TaskStatesByName.DONE:
-                    iconByState += 'end';
-                    break;
-            }
-            return iconByState;
+        return iconByState;
+    }
+}]).filter('i18nName', ['$rootScope', function($rootScope) {
+    return function(object) {
+        if (object) {
+            return object.name.indexOf('is.ui') === 0 || object.name.indexOf('todo.is.ui') === 0 ? $rootScope.message(object.name) : object.name;
         }
-    }]).filter('backlogName', ['$rootScope', function($rootScope) {
-        return function(backlog) {
-            if (backlog) {
-                return backlog.isDefault ? $rootScope.message(backlog.name) : backlog.name;
-            }
-        }
-    }]).filter('sumBy', [function() {
-        return function(objs, property) {
-            return _.sumBy(objs, property);
-        }
-    }]).filter('roundNumber', [function() {
-        return function(number, nbDecimals) {
-            var multiplicator = Math.pow(10, nbDecimals);
-            return Math.round(number * multiplicator) / multiplicator;
-        }
-    }]).filter('preciseFloatSum', [function() {
-        return function(numbers) {
-            var multiplicator = Math.pow(10, _.max(_.map(numbers, function(number) {
-                var parts = number.toString().split('.');
-                return parts.length > 1 ? parts[1].length : 0;
-            })));
-            return _.sumBy(numbers, function(number) {
-                    return number * multiplicator;
-                }) / multiplicator;
-        }
-    }]).filter('yesNo', ['$rootScope', function($rootScope) {
-        return function(boolean) {
-            return $rootScope.message(boolean ? 'is.yes' : 'is.no');
-        }
-    }]).filter('visibleMenuElement', function() {
-        return function(menus, item) {
-            return _.filter(menus, function(menuElement) {
-                return menuElement.visible(item);
-            })
-        };
-    }).filter('contextIcon', function() {
-        return function(contextType) {
-            return {
-                feature: 'fa-sticky-note',
-                tag: 'fa-tag',
-                actor: 'fa-child'
-            }[contextType];
-        }
-    }).filter('contextStyle', function() {
-        return function(context) {
-            return context && context.color ? {
-                "background-color": context.color,
-                "border-color": context.color
-            } : '';
-        }
-    }).filter('randomValueInArray', function() {
-        return function(array) {
-            return array[_.random(0, array.length - 1)];
-        }
-    }).filter('parens', function() {
-        return function(inside) {
-            return inside ? '(' + inside + ')' : '';
-        }
-    });
+    }
+}]).filter('sumBy', [function() {
+    return function(objs, property) {
+        return _.sumBy(objs, property);
+    }
+}]).filter('roundNumber', [function() {
+    return function(number, nbDecimals) {
+        var multiplicator = Math.pow(10, nbDecimals);
+        return Math.round(number * multiplicator) / multiplicator;
+    }
+}]).filter('preciseFloatSum', [function() {
+    return function(numbers) {
+        var multiplicator = Math.pow(10, _.max(_.map(numbers, function(number) {
+            var parts = number.toString().split('.');
+            return parts.length > 1 ? parts[1].length : 0;
+        })));
+        return _.sumBy(numbers, function(number) {
+            return number * multiplicator;
+        }) / multiplicator;
+    }
+}]).filter('yesNo', ['$rootScope', function($rootScope) {
+    return function(boolean) {
+        return $rootScope.message(boolean ? 'is.yes' : 'is.no');
+    }
+}]).filter('visibleMenuElement', function() {
+    return function(menus, item) {
+        return _.filter(menus, function(menuElement) {
+            return menuElement.visible(item);
+        })
+    };
+}).filter('contextIcon', function() {
+    return function(contextType) {
+        return {
+            feature: 'fa-sticky-note',
+            tag: 'fa-tag',
+            actor: 'fa-child'
+        }[contextType];
+    }
+}).filter('contextStyle', function() {
+    return function(context) {
+        return context && context.color ? {
+            "background-color": context.color,
+            "border-color": context.color
+        } : '';
+    }
+}).filter('randomValueInArray', function() {
+    return function(array) {
+        return array[_.random(0, array.length - 1)];
+    }
+}).filter('parens', function() {
+    return function(inside) {
+        return inside ? '(' + inside + ')' : '';
+    }
+});
