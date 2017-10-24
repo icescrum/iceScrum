@@ -121,7 +121,6 @@
                     <div class="form-half">
                         <label for="type">${message(code: 'is.feature.type')}</label>
                         <ui-select class="form-control"
-                                   required
                                    name="type"
                                    ng-model="featurePreview.type">
                             <ui-select-match placeholder="${message(code: 'todo.is.ui.feature.type.placeholder')}">{{ $select.selected | i18n:'FeatureTypes' }}</ui-select-match>
@@ -133,6 +132,7 @@
                     <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
                     <ui-select ng-click="retrieveTags()"
                                class="form-control"
+                               name="tags"
                                multiple
                                tagging
                                tagging-tokens="SPACE|,"
@@ -147,7 +147,7 @@
                 <div class="btn-toolbar">
                     <button class="btn btn-primary pull-right"
                             type="submit"
-                            ng-disabled="featureForm.$invalid || application.submitting">
+                            ng-disabled="!featureForm.$dirty || featureForm.$invalid || application.submitting">
                         ${message(code: 'default.button.update.label')}
                     </button>
                     <a class="btn btn-default pull-right"
