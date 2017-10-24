@@ -208,7 +208,6 @@
                 <div class="form-group">
                     <label for="type">${message(code: 'is.story.type')}</label>
                     <ui-select class="form-control"
-                               required
                                name="type"
                                ng-model="storyPreview.type">
                         <ui-select-match placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
@@ -219,6 +218,7 @@
                     <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
                     <ui-select ng-click="retrieveTags()"
                                class="form-control"
+                               name="tags"
                                multiple
                                tagging
                                tagging-tokens="SPACE|,"
@@ -286,7 +286,7 @@
                 <div class="btn-toolbar">
                     <button class="btn btn-primary pull-right"
                             type="submit"
-                            ng-disabled="storyForm.$invalid || application.submitting">
+                            ng-disabled="!storyForm.$dirty || storyForm.$invalid || application.submitting">
                         ${message(code: 'default.button.update.label')}
                     </button>
                     <a class="btn btn-default pull-right"

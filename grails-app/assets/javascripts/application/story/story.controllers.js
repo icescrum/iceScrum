@@ -659,7 +659,6 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
             $scope.stories = stories;
         });
     }
-
     refreshStories();
 }]);
 
