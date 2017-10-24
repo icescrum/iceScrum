@@ -58,7 +58,7 @@
                     </button>
                 </div>
                 <a ng-if="authorizedStory('create')"
-                   href="#/{{ ::viewName }}/sandbox/story/new"
+                   ui-sref="backlog.backlog.story.new"
                    ng-class="{ 'pull-right': backlogContainers.length == 1 }"
                    class="btn btn-primary"><i class="visible-xs fa fa-plus"></i><span class="hidden-xs">${message(code: "todo.is.ui.story.new")}</span></a>
                 <entry:point id="backlog-window-toolbar-right"/>
