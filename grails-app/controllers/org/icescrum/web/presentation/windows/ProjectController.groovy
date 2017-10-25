@@ -456,7 +456,7 @@ class ProjectController implements ControllerErrorHandler {
         return writer.toString()
     }
 
-    @Secured(['permitAll()'])
+    @Secured(['isAuthenticated()'])
     def listPublic(String term, Boolean paginate, Integer page, Integer count) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def publicProjects = Project.where { preferences.hidden == false && name =~ searchTerm }.list(sort: "name")
@@ -467,6 +467,12 @@ class ProjectController implements ControllerErrorHandler {
         }
         def returnData = paginate ? [projects: projects.drop(page ? (page - 1) * count : 0).take(count), count: projects.size()] : projects
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
+    @Secured(['permitAll()'])
+    def listPublicWidget() {
+        def publicProjects = Project.where { preferences.hidden == false }.list(sort: 'lastUpdated', order: 'desc', max: 9)
+        render(status: 200, contentType: 'application/json', text: publicProjects as JSON)
     }
 
     @Secured(['isAuthenticated()'])

@@ -49,8 +49,8 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
             $scope.selectProject(selectedProject);
         }
     }, true); // Be careful of circular objects, it will blow up the stack when comparing equality by value
-    ProjectService.listPublic({paginate: true, count: 9}).then(function(projectsAndCount) {
-        $scope.projects = projectsAndCount.projects;
+    ProjectService.listPublicWidget().then(function(projects) {
+        $scope.projects = projects;
     });
 }]);
 

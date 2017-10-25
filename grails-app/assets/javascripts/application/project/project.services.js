@@ -82,6 +82,9 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
         params.action = 'listPublic';
         return Project.get(params).$promise;
     };
+    this.listPublicWidget = function() {
+        return Project.query({action: 'listPublicWidget'}).$promise;
+    };
     this.listByUser = function(params) {
         if (!params) {
             params = {};
