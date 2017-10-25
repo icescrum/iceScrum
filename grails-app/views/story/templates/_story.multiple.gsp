@@ -26,7 +26,7 @@
         <h3 class="panel-title">
             ${message(code: "todo.is.ui.stories")} ({{ stories.length }})
             <a class="pull-right btn btn-default"
-               href="#/{{ ::viewName }}"
+               ui-sref="^.^"
                uib-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
             </a>
@@ -290,7 +290,7 @@
                         ${message(code: 'default.button.update.label')}
                     </button>
                     <a class="btn btn-default pull-right"
-                       href="#/{{ ::viewName }}">
+                       ui-sref="^.^">
                         ${message(code: 'is.button.cancel')}
                     </a>
                 </div>
