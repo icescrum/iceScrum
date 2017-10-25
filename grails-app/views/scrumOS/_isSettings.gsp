@@ -24,6 +24,7 @@
 <script type="text/javascript">
     var isSettings = {
         user: ${user as JSON},
+        userPreferences: ${user ? user.preferences as JSON : 'null'},
         menus: ${menus as JSON},
         roles: ${roles as JSON},
         defaultView: "${defaultView}",

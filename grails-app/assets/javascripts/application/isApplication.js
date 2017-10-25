@@ -1551,6 +1551,9 @@ angular.module('isApplication', [
             PushService.initPush(isSettings.pushContext);
             I18nService.initMessages(isSettings.messages);
             I18nService.initBundles(isSettings.bundles);
+            if (isSettings.userPreferences) {
+                isSettings.user.preferences = isSettings.userPreferences;
+            }
             Session.create(isSettings.user, isSettings.roles, isSettings.menus, isSettings.defaultView);
         }
 
