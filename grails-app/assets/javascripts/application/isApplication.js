@@ -40,7 +40,7 @@
     }
 })();
 
-angular.module('isPlugins', [])
+angular.module('isCore', [])
     .provider('controllerHooks', function() {
         this.$get = angular.noop;
         this.register = function(entryPoints) {
@@ -52,10 +52,6 @@ angular.module('isPlugins', [])
                 }
             });
         }
-    })
-    .provider('pluginTabs', function() {
-        this.$get = angular.noop;
-        this.pluginTabs = {};
     })
     .provider('charts', function() {
         this.$get = function() {
@@ -84,7 +80,142 @@ angular.module('isPlugins', [])
             }
         };
     })
-    .provider('isStateHelper', ['pluginTabsProvider', function(pluginTabsProvider) {
+    .provider('itemTabs', function() {
+        this.$get = function() {
+            return this.itemTabs;
+        };
+        this.itemTabs = {
+            backlog: {
+                details: {}
+            },
+            task: {
+                details: {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsTask', function($stateParams, AttachmentService, detailsTask) {
+                        if (!$stateParams.taskTabId) {
+                            return AttachmentService.list(detailsTask);
+                        }
+                    }]
+                },
+                comments: {
+                    resolve: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
+                        if ($stateParams.taskTabId == 'comments') {
+                            return CommentService.list(detailsTask);
+                        }
+                    }],
+                    templateUrl: 'comment.list.html'
+                },
+                activities: {
+                    resolve: ['$stateParams', 'ActivityService', 'detailsTask', function($stateParams, ActivityService, detailsTask) {
+                        if ($stateParams.taskTabId == 'activities') {
+                            return ActivityService.activities(detailsTask, false);
+                        }
+                    }],
+                    templateUrl: 'activity.list.html'
+                }
+            },
+            story: {
+                details: {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsStory', function($stateParams, AttachmentService, detailsStory) {
+                        if (!$stateParams.storyTabId) {
+                            return AttachmentService.list(detailsStory);
+                        }
+                    }]
+                },
+                tests: {
+                    resolve: ['$stateParams', 'AcceptanceTestService', 'detailsStory', function($stateParams, AcceptanceTestService, detailsStory) {
+                        if ($stateParams.storyTabId == 'tests') {
+                            return AcceptanceTestService.list(detailsStory);
+                        }
+                    }],
+                    templateUrl: 'story.acceptanceTests.html'
+                },
+                tasks: {
+                    resolve: ['$stateParams', 'TaskService', 'detailsStory', function($stateParams, TaskService, detailsStory) {
+                        if ($stateParams.storyTabId == 'tasks') {
+                            return TaskService.list(detailsStory);
+                        }
+                    }],
+                    templateUrl: 'story.tasks.html'
+                },
+                comments: {
+                    resolve: ['$stateParams', 'CommentService', 'detailsStory', function($stateParams, CommentService, detailsStory) {
+                        if ($stateParams.storyTabId == 'comments') {
+                            return CommentService.list(detailsStory);
+                        }
+                    }],
+                    templateUrl: 'comment.list.html'
+                },
+                activities: {
+                    resolve: ['$stateParams', 'ActivityService', 'detailsStory', function($stateParams, ActivityService, detailsStory) {
+                        if ($stateParams.storyTabId == 'activities') {
+                            return ActivityService.activities(detailsStory, false);
+                        }
+                    }],
+                    templateUrl: 'activity.list.html'
+                }
+            },
+            feature: {
+                details: {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsFeature) {
+                        if (!$stateParams.featureTabId) {
+                            return AttachmentService.list(detailsFeature);
+                        }
+                    }]
+                },
+                stories: {
+                    resolve: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
+                        if ($stateParams.featureTabId == 'stories') {
+                            StoryService.listByType(detailsFeature);
+                        }
+                    }],
+                    templateUrl: 'nested.stories.html'
+                },
+                activities: {
+                    resolve: ['$stateParams', 'ActivityService', 'detailsFeature', function($stateParams, ActivityService, detailsFeature) {
+                        if ($stateParams.featureTabId == 'activities') {
+                            return ActivityService.activities(detailsFeature, false);
+                        }
+                    }],
+                    templateUrl: 'activity.list.html'
+                }
+            },
+            release: {
+                details: {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsRelease', function($stateParams, AttachmentService, detailsRelease) {
+                        if (!$stateParams.releaseTabId) {
+                            return AttachmentService.list(detailsRelease);
+                        }
+                    }]
+                },
+                notes: {
+                    resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'Session', function($stateParams, TimeBoxNotesTemplateService, Session) {
+                        if ($stateParams.releaseTabId == 'notes') {
+                            return TimeBoxNotesTemplateService.list(Session.getProject());
+                        }
+                    }],
+                    templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
+                }
+            },
+            sprint: {
+                details: {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsSprint', function($stateParams, AttachmentService, detailsSprint) {
+                        if (!$stateParams.sprintTabId) {
+                            return AttachmentService.list(detailsSprint);
+                        }
+                    }]
+                },
+                notes: {
+                    resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'Session', function($stateParams, TimeBoxNotesTemplateService, Session) {
+                        if ($stateParams.sprintTabId == 'notes') {
+                            return TimeBoxNotesTemplateService.list(Session.getProject());
+                        }
+                    }],
+                    templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
+                }
+            }
+        };
+    })
+    .provider('isState', ['itemTabsProvider', function(itemTabsProvider) {
         this.$get = angular.noop;
         this.getDetailsModalState = function(detailsType, options) {
             return _.merge({
@@ -114,12 +245,8 @@ angular.module('isPlugins', [])
                 }]
             }, options);
         };
-
-        var backlogTabs = _.merge({
-            details: {}
-        }, pluginTabsProvider.pluginTabs['backlog']);
-
         this.getBacklogDetailsState = function(viewContext) {
+            var backlogTabs = itemTabsProvider.itemTabs.backlog;
             var tabNames = _.keys(backlogTabs);
             var backlogState = {
                 name: 'details',
@@ -138,7 +265,7 @@ angular.module('isPlugins', [])
                             "details-tab": {
                                 templateUrl: function($stateParams) {
                                     if ($stateParams.backlogTabId) {
-                                        return sprintTabs[$stateParams.backlogTabId].templateUrl;
+                                        return backlogTabs[$stateParams.backlogTabId].templateUrl;
                                     }
                                 },
                                 controller: ['$scope', 'detailsBacklog', function($scope, detailsBacklog) {
@@ -150,8 +277,8 @@ angular.module('isPlugins', [])
                 ]
             };
             // Default tab (without tabId)
-            if (backlogTabs["details"].resolve) {
-                backlogState.resolve['details'] = backlogTabs["details"].resolve;
+            if (backlogTabs.details.resolve) {
+                backlogState.resolve['details'] = backlogTabs.details.resolve;
             }
             var backlogTabState = backlogState.children[0];
             _.each(backlogTabs, function(value, key) {
@@ -163,136 +290,8 @@ angular.module('isPlugins', [])
             };
             return backlogState;
         };
-
-        var taskTabs = _.merge({
-            details: {
-                resolve: ['$stateParams', 'AttachmentService', 'detailsTask', function($stateParams, AttachmentService, detailsTask) {
-                    if (!$stateParams.taskTabId) {
-                        return AttachmentService.list(detailsTask);
-                    }
-                }]
-            },
-            comments: {
-                resolve: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
-                    if ($stateParams.taskTabId == 'comments') {
-                        return CommentService.list(detailsTask);
-                    }
-                }],
-                templateUrl: 'comment.list.html'
-            },
-            activities: {
-                resolve: ['$stateParams', 'ActivityService', 'detailsTask', function($stateParams, ActivityService, detailsTask) {
-                    if ($stateParams.taskTabId == 'activities') {
-                        return ActivityService.activities(detailsTask, false);
-                    }
-                }],
-                templateUrl: 'activity.list.html'
-            }
-        }, pluginTabsProvider.pluginTabs['task']);
-        var storyTabs = _.merge({
-            details: {
-                resolve: ['$stateParams', 'AttachmentService', 'detailsStory', function($stateParams, AttachmentService, detailsStory) {
-                    if (!$stateParams.storyTabId) {
-                        return AttachmentService.list(detailsStory);
-                    }
-                }]
-            },
-            tests: {
-                resolve: ['$stateParams', 'AcceptanceTestService', 'detailsStory', function($stateParams, AcceptanceTestService, detailsStory) {
-                    if ($stateParams.storyTabId == 'tests') {
-                        return AcceptanceTestService.list(detailsStory);
-                    }
-                }],
-                templateUrl: 'story.acceptanceTests.html'
-            },
-            tasks: {
-                resolve: ['$stateParams', 'TaskService', 'detailsStory', function($stateParams, TaskService, detailsStory) {
-                    if ($stateParams.storyTabId == 'tasks') {
-                        return TaskService.list(detailsStory);
-                    }
-                }],
-                templateUrl: 'story.tasks.html'
-            },
-            comments: {
-                resolve: ['$stateParams', 'CommentService', 'detailsStory', function($stateParams, CommentService, detailsStory) {
-                    if ($stateParams.storyTabId == 'comments') {
-                        return CommentService.list(detailsStory);
-                    }
-                }],
-                templateUrl: 'comment.list.html'
-            },
-            activities: {
-                resolve: ['$stateParams', 'ActivityService', 'detailsStory', function($stateParams, ActivityService, detailsStory) {
-                    if ($stateParams.storyTabId == 'activities') {
-                        return ActivityService.activities(detailsStory, false);
-                    }
-                }],
-                templateUrl: 'activity.list.html'
-            }
-        }, pluginTabsProvider.pluginTabs['story']);
-
-        var featureTabs = _.merge({
-            details: {
-                resolve: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsFeature) {
-                    if (!$stateParams.featureTabId) {
-                        return AttachmentService.list(detailsFeature);
-                    }
-                }]
-            },
-            stories: {
-                resolve: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
-                    if ($stateParams.featureTabId == 'stories') {
-                        StoryService.listByType(detailsFeature);
-                    }
-                }],
-                templateUrl: 'nested.stories.html'
-            },
-            activities: {
-                resolve: ['$stateParams', 'ActivityService', 'detailsFeature', function($stateParams, ActivityService, detailsFeature) {
-                    if ($stateParams.featureTabId == 'activities') {
-                        return ActivityService.activities(detailsFeature, false);
-                    }
-                }],
-                templateUrl: 'activity.list.html'
-            }
-        }, pluginTabsProvider.pluginTabs['feature']);
-
-        var releaseTabs = _.merge({
-            details: {
-                resolve: ['$stateParams', 'AttachmentService', 'detailsRelease', function($stateParams, AttachmentService, detailsRelease) {
-                    if (!$stateParams.releaseTabId) {
-                        return AttachmentService.list(detailsRelease);
-                    }
-                }]
-            },
-            notes: {
-                resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'Session', function($stateParams, TimeBoxNotesTemplateService, Session) {
-                    if ($stateParams.releaseTabId == 'notes') {
-                        return TimeBoxNotesTemplateService.list(Session.getProject());
-                    }
-                }],
-                templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
-            }
-        }, pluginTabsProvider.pluginTabs['release']);
-
-        var sprintTabs = _.merge({
-            details: {
-                resolve: ['$stateParams', 'AttachmentService', 'detailsSprint', function($stateParams, AttachmentService, detailsSprint) {
-                    if (!$stateParams.sprintTabId) {
-                        return AttachmentService.list(detailsSprint);
-                    }
-                }]
-            },
-            notes: {
-                resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'Session', function($stateParams, TimeBoxNotesTemplateService, Session) {
-                    if ($stateParams.sprintTabId == 'notes') {
-                        return TimeBoxNotesTemplateService.list(Session.getProject());
-                    }
-                }],
-                templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
-            }
-        }, pluginTabsProvider.pluginTabs['sprint']);
         this.getTaskDetailsState = function(viewContext) {
+            var taskTabs = itemTabsProvider.itemTabs.task;
             var tabNames = _.keys(taskTabs);
             var taskState = {
                 name: 'details',
@@ -324,7 +323,7 @@ angular.module('isPlugins', [])
                 ]
             };
             // Default tab (without tabId)
-            taskState.resolve['details'] = taskTabs["details"].resolve;
+            taskState.resolve.details = taskTabs.details.resolve;
             var taskTabState = taskState.children[0];
             _.each(taskTabs, function(value, key) {
                 taskTabState.resolve['data' + key] = value.resolve;
@@ -336,6 +335,7 @@ angular.module('isPlugins', [])
             return taskState;
         };
         this.getFeatureDetailsState = function(viewContext, isModal) {
+            var featureTabs = itemTabsProvider.itemTabs.feature;
             var tabNames = _.keys(featureTabs);
             var featureState = {
                 name: 'details',
@@ -368,7 +368,7 @@ angular.module('isPlugins', [])
                 ]
             };
             // Default tab (without tabId)
-            featureState.resolve['details'] = featureTabs["details"].resolve;
+            featureState.resolve.details = featureTabs.details.resolve;
             var featureTabState = featureState.children[0];
             _.each(featureTabs, function(value, key) {
                 featureTabState.resolve['data' + key] = value.resolve;
@@ -387,6 +387,7 @@ angular.module('isPlugins', [])
             return featureState;
         };
         this.getStoryDetailsState = function(viewContext, isModal) {
+            var storyTabs = itemTabsProvider.itemTabs.story;
             var tabNames = _.keys(storyTabs);
             var storyState = {
                 name: 'details',
@@ -418,7 +419,7 @@ angular.module('isPlugins', [])
                 ]
             };
             // Default tab (without tabId)
-            storyState.resolve['details'] = storyTabs["details"].resolve;
+            storyState.resolve.details = storyTabs.details.resolve;
             var storyTabState = storyState.children[0];
             _.each(storyTabs, function(value, key) {
                 storyTabState.resolve['data' + key] = value.resolve;
@@ -450,6 +451,7 @@ angular.module('isPlugins', [])
             return storyState;
         };
         this.getReleaseDetailsState = function(viewContext) {
+            var releaseTabs = itemTabsProvider.itemTabs.release;
             var tabNames = _.keys(releaseTabs);
             var releaseState = {
                 name: 'details',
@@ -480,7 +482,7 @@ angular.module('isPlugins', [])
                 ]
             };
             // Default tab (without tabId)
-            releaseState.resolve['details'] = releaseTabs["details"].resolve;
+            releaseState.resolve.details = releaseTabs.details.resolve;
             var releaseTabState = releaseState.children[0];
             _.each(releaseTabs, function(value, key) {
                 releaseTabState.resolve['data' + key] = value.resolve;
@@ -492,6 +494,7 @@ angular.module('isPlugins', [])
             return releaseState;
         };
         this.getSprintDetailsState = function(viewContext) {
+            var sprintTabs = itemTabsProvider.itemTabs.sprint;
             var tabNames = _.keys(sprintTabs);
             var sprintState = {
                 name: 'details',
@@ -529,7 +532,7 @@ angular.module('isPlugins', [])
                 ]
             };
             // Default tab (without tabId)
-            sprintState.resolve['details'] = sprintTabs["details"].resolve;
+            sprintState.resolve.details = sprintTabs.details.resolve;
             var sprintTabState = sprintState.children[0];
             _.each(sprintTabs, function(value, key) {
                 sprintTabState.resolve['data' + key] = value.resolve;
@@ -592,7 +595,7 @@ angular.module('isPlugins', [])
     }]);
 
 angular.module('isApplication', [
-        'isPlugins', // To be able to use pluginTabsProvider
+        'isCore',
         'ngRoute',
         'ngAnimate',
         'ngSanitize',
@@ -628,7 +631,7 @@ angular.module('isApplication', [
         $httpProvider.interceptors.push('SubmittingInterceptor');
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }])
-    .config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', 'pluginTabsProvider', 'isStateHelperProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider, pluginTabsProvider, isStateHelperProvider) {
+    .config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', 'isStateProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider, isStateProvider) {
         $stateProvider.decorator('parent', function(state, parentFn) {
             state.self.$$state = function() {
                 return state;
@@ -739,7 +742,7 @@ angular.module('isApplication', [
                     {
                         name: 'multiple',
                         url: "/:pinnedElementId,:elementId",
-                        children: [isStateHelperProvider.getBacklogStoryState()]
+                        children: [isStateProvider.getBacklogStoryState()]
                     },
                     {
                         name: 'backlog',
@@ -750,8 +753,8 @@ angular.module('isApplication', [
                             }]
                         },
                         children: [
-                            isStateHelperProvider.getBacklogDetailsState("@backlog"),
-                            isStateHelperProvider.getBacklogStoryState()
+                            isStateProvider.getBacklogDetailsState("@backlog"),
+                            isStateProvider.getBacklogStoryState()
                         ]
                     }
                 ]
@@ -800,7 +803,7 @@ angular.module('isApplication', [
                             }
                         }
                     },
-                    isStateHelperProvider.getFeatureDetailsState()
+                    isStateProvider.getFeatureDetailsState()
                 ]
             })
             .state({
@@ -848,11 +851,11 @@ angular.module('isApplication', [
                             }]
                         },
                         children: [
-                            isStateHelperProvider.getReleaseDetailsState('@planning'),
+                            isStateProvider.getReleaseDetailsState('@planning'),
                             {
                                 name: 'story',
                                 url: "/story",
-                                children: [isStateHelperProvider.getStoryDetailsState('@planning')]
+                                children: [isStateProvider.getStoryDetailsState('@planning')]
                             },
                             {
                                 name: 'sprint',
@@ -885,11 +888,11 @@ angular.module('isApplication', [
                                             }]
                                         },
                                         children: [
-                                            isStateHelperProvider.getSprintDetailsState('@planning'),
+                                            isStateProvider.getSprintDetailsState('@planning'),
                                             {
                                                 name: 'story',
                                                 url: "/story",
-                                                children: [isStateHelperProvider.getStoryDetailsState('@planning')]
+                                                children: [isStateProvider.getStoryDetailsState('@planning')]
                                             }
                                         ]
                                     },
@@ -910,7 +913,7 @@ angular.module('isApplication', [
                                             {
                                                 name: 'story',
                                                 url: "/story",
-                                                children: [isStateHelperProvider.getStoryDetailsState('@planning')]
+                                                children: [isStateProvider.getStoryDetailsState('@planning')]
                                             }
                                         ]
                                     }
@@ -972,7 +975,7 @@ angular.module('isApplication', [
                     }]
                 },
                 children: [
-                    isStateHelperProvider.getSprintDetailsState(),
+                    isStateProvider.getSprintDetailsState(),
                     {
                         name: 'task',
                         url: "/task",
@@ -1000,13 +1003,13 @@ angular.module('isApplication', [
                                     }
                                 }
                             },
-                            isStateHelperProvider.getTaskDetailsState('@taskBoard')
+                            isStateProvider.getTaskDetailsState('@taskBoard')
                         ]
                     },
                     {
                         name: 'story',
                         url: "/story",
-                        children: [isStateHelperProvider.getStoryDetailsState('@taskBoard')]
+                        children: [isStateProvider.getStoryDetailsState('@taskBoard')]
                     }
                 ]
             });
