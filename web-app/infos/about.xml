@@ -29,9 +29,7 @@
         <gettingStarted>https://www.icescrum.com/documentation/getting-started-with-icescrum</gettingStarted>
         <forum>https://www.icescrum.com/forums/</forum>
     </version>
-    <releaseNotes>
-    <![CDATA[]]>
-    </releaseNotes>
+    <releaseNotes></releaseNotes>
     <license><![CDATA[                    GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
