@@ -829,7 +829,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$sta
     };
     $scope.toggleElementUrl = function(element) {
         if ($scope.isShown(element)) {
-            if ($scope.elementsList.length > 1) {
+            if (!$state.params.pinnedElementId == !$state.params.elementId) { // Dirty hack to do a XOR
                 return $scope.closeElementUrl(element);
             } else {
                 return $state.href('.');
