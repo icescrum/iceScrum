@@ -84,7 +84,7 @@
                                name="feature"
                                search-enabled="true"
                                ng-model="editableStory.feature">
-                        <ui-select-match allow-clear="{{formHolder.editing}}" placeholder="${message(code: 'is.ui.story.nofeature')}">
+                        <ui-select-match allow-clear="{{ formHolder.editing }}" placeholder="${message(code: 'is.ui.story.nofeature')}">
                             <i class="fa fa-puzzle-piece" ng-style="{color: $select.selected.color}"></i> {{ $select.selected.name }}
                         </ui-select-match>
                         <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
@@ -110,7 +110,7 @@
                                name="dependsOn"
                                search-enabled="true"
                                ng-model="editableStory.dependsOn">
-                        <ui-select-match allow-clear="{{formHolder.editing}}" placeholder="${message(code: 'is.ui.story.nodependence')}">
+                        <ui-select-match allow-clear="{{ formHolder.editing }}" placeholder="${message(code: 'is.ui.story.nodependence')}">
                             {{ $select.selected | dependsOnLabel }}
                         </ui-select-match>
                         <ui-select-choices repeat="dependenceEntry in dependenceEntries | orFilter: { name: $select.search, uid: $select.search }">
@@ -188,7 +188,7 @@
                            name="parentSprint"
                            search-enabled="true"
                            ng-model="editableStory.parentSprint">
-                    <ui-select-match allow-clear="{{formHolder.editing}}" placeholder="${message(code: 'is.ui.story.noparentsprint')}">
+                    <ui-select-match allow-clear="{{ formHolder.editing }}" placeholder="${message(code: 'is.ui.story.noparentsprint')}">
                         {{ $select.selected.parentRelease.name + ' - ' + ($select.selected | sprintName) }}
                     </ui-select-match>
                     <ui-select-choices group-by="groupSprintByParentRelease" repeat="parentSprintEntry in parentSprintEntries | filter: { index: $select.search }">
@@ -232,7 +232,7 @@
                            tagging-tokens="SPACE|,"
                            tagging-label="${message(code: 'todo.is.ui.story.affectedVersion.new')}"
                            ng-model="editableStory.affectVersion">
-                    <ui-select-match allow-clear="{{formHolder.editing}}" placeholder="${message(code: 'is.ui.story.noaffectversion')}">{{ $select.selected }}</ui-select-match>
+                    <ui-select-match allow-clear="{{ formHolder.editing }}" placeholder="${message(code: 'is.ui.story.noaffectversion')}">{{ $select.selected }}</ui-select-match>
                     <ui-select-choices repeat="version in versions | filter: $select.search">
                         <span ng-bind-html="version | highlight: $select.search"></span>
                     </ui-select-choices>
