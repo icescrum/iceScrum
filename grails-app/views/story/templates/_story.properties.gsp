@@ -118,7 +118,7 @@
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-show="editableStory.dependsOn.id">
-                        <a ui-sref="backlog.backlog.story.details({backlogCode: 'all', storyId: editableStory.dependsOn.id})"
+                        <a ui-sref="backlog.backlog.story.details({elementId: 'all', storyId: editableStory.dependsOn.id})"
                            class="btn btn-default">
                             <i class="fa fa-info-circle"></i>
                         </a>
