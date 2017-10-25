@@ -79,6 +79,7 @@
             <ui-select class="form-control"
                        ng-click="retrieveTags(); editForm(true)"
                        ng-disabled="!formEditable()"
+                       name="tags"
                        multiple
                        tagging
                        tagging-tokens="SPACE|,"

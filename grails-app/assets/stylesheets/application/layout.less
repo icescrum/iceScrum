@@ -515,6 +515,15 @@ header {
           border-color: transparent;
         }
       }
+      form.form-editable:not(.form-editing) {
+        .select2-container {
+          .select2-search-choice {
+            .select2-search-choice-close {
+              display: none;
+            }
+          }
+        }
+      }
       form.form-editable {
         .panel-footer {
           .responsive-invisibility();
