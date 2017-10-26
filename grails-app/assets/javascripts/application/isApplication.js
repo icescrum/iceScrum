@@ -66,7 +66,7 @@ var isApplication = angular.module('isApplication', [
                 name: 'root',
                 url: '/?redirectTo',
                 controller: ['$state', 'Session', function($state, Session) {
-                    //restore _HASH_ => #
+                    // Restore _HASH_ => #
                     if ($state.params.redirectTo) {
                         $state.params.redirectTo = $state.params.redirectTo.replace('_HASH_', '#');
                     }
@@ -74,7 +74,7 @@ var isApplication = angular.module('isApplication', [
                 }]
             })
             .state({
-                name: 'home', // should not be acceded directly, called by 'root'
+                name: 'home', // Should not be acceded directly, called by 'root'
                 controller: 'homeCtrl',
                 params: {redirectTo: null},
                 templateUrl: 'ui/window/home'
@@ -82,7 +82,7 @@ var isApplication = angular.module('isApplication', [
             .state({
                 name: 'userregister',
                 url: "/user/register/:token",
-                params: {token: {value: null}}, // doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
+                params: {token: {value: null}}, // Doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
                 onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
                     $uibModal.open({
                         keyboard: false,
@@ -711,7 +711,6 @@ var isApplication = angular.module('isApplication', [
                 }]
             });
         };
-
         $rootScope.showProjectEditModal = function(panelName) {
             var scope = $rootScope.$new();
             if (panelName) {
@@ -767,33 +766,6 @@ var isApplication = angular.module('isApplication', [
                 scope: childScope,
                 size: 'sm'
             }).result.then(loginCallback);
-        };
-        $rootScope.showAddWidgetModal = function() {
-            $uibModal.open({
-                keyboard: false,
-                templateUrl: 'addWidget.modal.html',
-                controller: ['$scope', function($scope) {
-                    $scope.detailsWidgetDefinition = function(widgetDefinition) {
-                        $scope.widgetDefinition = widgetDefinition;
-                        $scope.addWidgetForm.$invalid = !widgetDefinition.available;
-                    };
-                    $scope.addWidget = function(widgetDefinition) {
-                        WidgetService.save(widgetDefinition.id).then(function() {
-                            $scope.$close();
-                        });
-                    };
-                    // Init
-                    $scope.widgetDefinition = {};
-                    $scope.widgetDefinitions = [];
-                    WidgetService.getWidgetDefinitions().then(function(widgetDefinitions) {
-                        if (widgetDefinitions.length > 0) {
-                            $scope.widgetDefinitions = widgetDefinitions;
-                            $scope.widgetDefinition = widgetDefinitions[0];
-                        }
-                    });
-                }],
-                size: 'lg'
-            });
         };
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();

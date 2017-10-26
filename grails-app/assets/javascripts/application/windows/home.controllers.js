@@ -19,7 +19,35 @@
  *
  *
  */
-controllers.controller('homeCtrl', ['$scope', 'Session', 'CacheService', 'WidgetService', function($scope, Session, CacheService, WidgetService) {
+controllers.controller('homeCtrl', ['$scope', '$uibModal', 'Session', 'CacheService', 'WidgetService', function($scope, $uibModal, Session, CacheService, WidgetService) {
+    // Functions
+    $scope.showAddWidgetModal = function() {
+        $uibModal.open({
+            keyboard: false,
+            templateUrl: 'addWidget.modal.html',
+            controller: ['$scope', function($scope) {
+                $scope.detailsWidgetDefinition = function(widgetDefinition) {
+                    $scope.widgetDefinition = widgetDefinition;
+                    $scope.addWidgetForm.$invalid = !widgetDefinition.available;
+                };
+                $scope.addWidget = function(widgetDefinition) {
+                    WidgetService.save(widgetDefinition.id).then(function() {
+                        $scope.$close();
+                    });
+                };
+                // Init
+                $scope.widgetDefinition = {};
+                $scope.widgetDefinitions = [];
+                WidgetService.getWidgetDefinitions().then(function(widgetDefinitions) {
+                    if (widgetDefinitions.length > 0) {
+                        $scope.widgetDefinitions = widgetDefinitions;
+                        $scope.widgetDefinition = widgetDefinitions[0];
+                    }
+                });
+            }],
+            size: 'lg'
+        });
+    };
     $scope.templateWidgetUrl = function(widget) {
         return 'ui/widget/' + widget.widgetDefinitionId + (widget.id ? '/' + widget.id : '');
     };
