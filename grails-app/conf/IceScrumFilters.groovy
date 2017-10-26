@@ -147,29 +147,23 @@ class IceScrumFilters {
 
         locale(uri: '/ws/**', invert: true) {
             before = {
-                // Manually set
-                def locale = params.lang ?: null
-                if (locale) {
-                    RequestContextUtils.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
-                    return
-                }
-                // Determine from browser to user set...
                 try {
-                    def localeAccept = request.getHeader("accept-language")?.split(",")
-                    if (localeAccept) {
-                        localeAccept = localeAccept[0]?.split("-")
+                    Locale locale
+                    if (params.lang) {
+                        locale = new Locale(params.lang)
+                    } else if (springSecurityService.isLoggedIn()) {
+                        locale = User.getLocale(springSecurityService.principal.id) // May be executed for every incoming request, so it is optimized and cached
+                    } else {
+                        def acceptLanguage = request.getHeader("accept-language")?.split(",")
+                        if (acceptLanguage) {
+                            locale = new Locale(*acceptLanguage[0].split('-', 3))
+                        }
                     }
-                    if (localeAccept?.size() > 0) {
-                        locale = params.lang ?: localeAccept[0].toString()
+                    if (locale) {
+                        RequestContextUtils.getLocaleResolver(request).setLocale(request, response, locale) // Stored in Session because LocaleResolver is a SessionLocaleResolver
                     }
-                } catch (Exception e) {}
-                if (springSecurityService.isLoggedIn()) {
-                    def currentUserInstance = User.get(springSecurityService.principal.id)
-                    if (currentUserInstance && (locale != currentUserInstance.preferences?.language || RequestContextUtils.getLocale(request).toString() != currentUserInstance.preferences?.language)) {
-                        RequestContextUtils.getLocaleResolver(request).setLocale(request, response, currentUserInstance.locale)
-                    }
-                } else if (locale) {
-                    RequestContextUtils.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
+                } catch (Exception e) {
+                    e.printStackTrace()
                 }
             }
         }
