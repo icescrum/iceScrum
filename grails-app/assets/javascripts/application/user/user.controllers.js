@@ -24,11 +24,12 @@
 controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User', 'Session', function($scope, $timeout, UserService, User, Session) {
     // Functions
     $scope.update = function(user) {
+        var languageChanged = Session.user.preferences.language != user.preferences.language;
         UserService.update(user).then(function(userUpdated) {
             if ($scope.$close) {
                 $scope.$close(); // Close auth modal if present
             }
-            if (Session.user.preferences.language != userUpdated.preferences.language) {
+            if (languageChanged) {
                 $scope.notifySuccess('todo.is.ui.profile.updated.refreshing');
                 $timeout(function() {
                     document.location.reload(true);
