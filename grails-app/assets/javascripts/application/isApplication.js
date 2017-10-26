@@ -32,7 +32,6 @@ angular.module('isApplication', [
         'services',
         'filters',
         'directives',
-        'ui.router',
         'ui.router.stateHelper',
         'ui.bootstrap',
         'ui.select',
@@ -61,16 +60,6 @@ angular.module('isApplication', [
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }])
     .config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', 'isStateProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider, isStateProvider) {
-        $stateProvider.decorator('parent', function(state, parentFn) {
-            state.self.$$state = function() {
-                return state;
-            };
-            state.self.isSecured = function() {
-                return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
-            };
-            return parentFn(state);
-        });
-
         $urlRouterProvider.when('', '/');
         stateHelperProvider
             .state({
@@ -442,7 +431,6 @@ angular.module('isApplication', [
                     }
                 ]
             });
-
         $stateProvider.state('404', {
             url: '*path',
             template: ''
@@ -874,11 +862,9 @@ angular.module('isApplication', [
             mobilexs: screenSize.is('xs')
         };
 
-        // Mostly context stuff
-        $controller('searchCtrl', {$scope: $rootScope});
+        $controller('searchCtrl', {$scope: $rootScope}); // Mostly context stuff
 
-        // To be able to track state in views
-        $rootScope.$state = $state;
+        $rootScope.$state = $state; // To be able to track state in views
 
         $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
             if (!scrollableContainerSelector) {

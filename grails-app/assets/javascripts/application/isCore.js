@@ -40,7 +40,7 @@
     }
 })();
 
-angular.module('isCore', [])
+angular.module('isCore', ['ui.router'])
     .provider('controllerHooks', function() {
         this.$get = angular.noop;
         this.register = function(entryPoints) {
@@ -592,4 +592,15 @@ angular.module('isCore', [])
                 ]
             }
         };
+    }]).config(['$stateProvider', function($stateProvider) {
+        // Must be done in isCore to avoid doing it in isApplication + each plugin defining new states
+        $stateProvider.decorator('parent', function(state, parentFn) {
+            state.self.$$state = function() {
+                return state;
+            };
+            state.self.isSecured = function() {
+                return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
+            };
+            return parentFn(state);
+        });
     }]);
