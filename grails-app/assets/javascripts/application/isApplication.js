@@ -23,7 +23,7 @@
  *
  */
 
-angular.module('isApplication', [
+var isApplication = angular.module('isApplication', [
         'isCore',
         'ngRoute',
         'ngAnimate',
@@ -517,17 +517,14 @@ angular.module('isApplication', [
         return jstz.determine();
     })
     .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications, screenSize) {
-
         $rootScope.uiWorking = function(message) {
             $rootScope.application.loading = true;
             $rootScope.application.loadingText = $rootScope.message((message === true || message === undefined) ? 'todo.is.ui.loading.working' : message);
         };
-
         $rootScope.uiReady = function() {
             $rootScope.application.loading = false;
             $rootScope.application.loadingText = null;
         };
-
         $rootScope.hotkeyClick = function(event, hotkey) {
             if (hotkey.el && (hotkey.el.is("a") || hotkey.el.is("button"))) {
                 event.preventDefault();
@@ -536,7 +533,6 @@ angular.module('isApplication', [
                 });
             }
         };
-
         var $download;
         $rootScope.downloadFile = function(url, params) {
             var updateQueryStringParameter = function(uri, key, value) {
@@ -560,9 +556,7 @@ angular.module('isApplication', [
                 $download = $('<iframe>', {id: 'idown', src: encodeURI(url)}).hide().appendTo('body');
             }
         };
-
         $rootScope.message = I18nService.message;
-
         $rootScope.notifySuccess = function(code, options) {
             return notifications.success('', $rootScope.message(code), options);
         };
@@ -572,7 +566,6 @@ angular.module('isApplication', [
         $rootScope.notifyWarning = function(code, options) {
             return notifications.warning('', $rootScope.message(code), options);
         };
-
         $rootScope.inEditingMode = false;
         $rootScope.setInEditingMode = function(inEditingMode) {
             $rootScope.inEditingMode = inEditingMode;
@@ -580,7 +573,6 @@ angular.module('isApplication', [
         $rootScope.isInEditingMode = function() {
             return $rootScope.inEditingMode;
         };
-
         $rootScope.resetFormValidation = function(form) {
             if (form) {
                 form.$setPristine();
@@ -591,7 +583,6 @@ angular.module('isApplication', [
                 }
             }
         };
-
         $rootScope.confirm = function(options) {
             var modal = $uibModal.open({
                 templateUrl: 'confirm.modal.html',
@@ -625,7 +616,6 @@ angular.module('isApplication', [
             };
             modal.result.then(callCloseCallback, callCloseCallback);
         };
-
         $rootScope.alert = function(options) {
             var modal = $uibModal.open({
                 templateUrl: 'message.modal.html',
@@ -659,7 +649,6 @@ angular.module('isApplication', [
             };
             modal.result.then(callCloseCallback, callCloseCallback);
         };
-
         $rootScope.confirmDelete = function(options) {
             $rootScope.confirm(_.assign({ // Don't use merge, we want to keep the original references and avoid object copy
                 buttonColor: 'danger',
@@ -667,7 +656,6 @@ angular.module('isApplication', [
                 message: $rootScope.message('is.confirm.delete')
             }, options));
         };
-
         $rootScope.dirtyChangesConfirm = function(options) {
             var modal = $uibModal.open({
                 templateUrl: 'confirm.dirty.modal.html',
@@ -709,12 +697,10 @@ angular.module('isApplication', [
             };
             modal.result.then(callCloseCallback, callCloseCallback);
         };
-
         $rootScope.revertSortable = function(event) {
             event.dest.sortableScope.removeItem(event.dest.index);
             event.source.itemScope.sortableScope.insertItem(event.source.index, event.source.itemScope.modelValue);
         };
-
         $rootScope.showCopyModal = function(title, value) {
             $uibModal.open({
                 templateUrl: 'copy.html',
@@ -740,7 +726,6 @@ angular.module('isApplication', [
                 controller: 'editProjectModalCtrl'
             });
         };
-
         $rootScope.showManageTeamsModal = function(team) { // Needs to be next to showProjectEditModal
             $uibModal.open({
                 keyboard: false,
@@ -755,7 +740,6 @@ angular.module('isApplication', [
                 }]
             });
         };
-
         $rootScope.showAuthModal = function(username, loginSuccess, loginFailure) {
             var childScope = $rootScope.$new();
             if (username) {
@@ -784,7 +768,6 @@ angular.module('isApplication', [
                 size: 'sm'
             }).result.then(loginCallback);
         };
-
         $rootScope.showAddWidgetModal = function() {
             $uibModal.open({
                 keyboard: false,
@@ -812,7 +795,6 @@ angular.module('isApplication', [
                 size: 'lg'
             });
         };
-
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();
             if (appDefinitionId) {
@@ -830,14 +812,12 @@ angular.module('isApplication', [
                 scope: scope
             });
         };
-
         $rootScope.openProjectUrl = function(project) {
             return $rootScope.serverUrl + '/p/' + project.pkey + '/';
         };
         $rootScope.openProject = function(project) {
             document.location = $rootScope.openProjectUrl(project);
         };
-
         $rootScope.openDatepicker = function($event, holder) {
             $event.preventDefault();
             $event.stopPropagation();
@@ -845,12 +825,10 @@ angular.module('isApplication', [
                 holder.opened = true;
             }
         };
-
         $rootScope.integerSuite = _.range(100);
         $rootScope.integerSuiteNullable = ['?'].concat($rootScope.integerSuite);
         $rootScope.fibonacciSuite = [0, 1, 2, 3, 5, 8, 13, 21, 34];
         $rootScope.fibonacciSuiteNullable = ['?'].concat($rootScope.fibonacciSuite);
-
         $rootScope.application = {
             loading: true,
             loadingText: '',
@@ -861,11 +839,8 @@ angular.module('isApplication', [
             mobile: screenSize.is('xs, sm'),
             mobilexs: screenSize.is('xs')
         };
-
         $controller('searchCtrl', {$scope: $rootScope}); // Mostly context stuff
-
         $rootScope.$state = $state; // To be able to track state in views
-
         $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
             if (!scrollableContainerSelector) {
                 scrollableContainerSelector = '.panel-body';
@@ -942,7 +917,6 @@ angular.module('isApplication', [
                 }
             }
         };
-
         if (isSettings) {
             $rootScope.serverUrl = isSettings.serverUrl;
             $rootScope.taskTypes = isSettings.types.task;
@@ -968,11 +942,8 @@ angular.module('isApplication', [
             }
             Session.create(isSettings.user, isSettings.roles, isSettings.menus, isSettings.defaultView);
         }
-
         $rootScope.authenticated = Session.authenticated;
-
         $rootScope.authorizedApp = AppService.authorizedApp;
-
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
             if (toState.name == "404") {
                 event.preventDefault();
@@ -1001,88 +972,10 @@ angular.module('isApplication', [
                 }
             }
         });
-
         screenSize.onChange($rootScope, 'xs, sm', function(isMatch) {
             $rootScope.application.mobile = isMatch;
         });
         screenSize.onChange($rootScope, 'xs', function(isMatch) {
             $rootScope.application.mobilexs = isMatch;
         });
-    }])
-    .constant('SERVER_ERRORS', {
-        loginFailed: 'is:auth-login-failed',
-        sessionTimeout: 'is:auth-session-timeout',
-        notAuthenticated: 'is:auth-not-authenticated',
-        notAuthorized: 'is:auth-not-authorized',
-        clientError: 'is:client-error',
-        serverError: 'is:server-error'
-    })
-    .constant('BacklogCodes', {
-        SANDBOX: 'sandbox',
-        BACKLOG: 'backlog',
-        DONE: 'done',
-        ALL: 'all'
-    })
-    .constant('StoryStatesByName', {
-        "SUGGESTED": 1,
-        "ACCEPTED": 2,
-        "ESTIMATED": 3,
-        "PLANNED": 4,
-        "IN_PROGRESS": 5,
-        "DONE": 7,
-        "ICEBOX": -1
-    })
-    .constant('StoryTypesByName', {
-        "USER_STORY": 0,
-        "DEFECT": 2,
-        "TECHNICAL_STORY": 3
-    })
-    .constant('TaskStatesByName', {
-        "TODO": 0,
-        "IN_PROGRESS": 1,
-        "DONE": 2
-    })
-    .constant('TaskTypesByName', {
-        "RECURRENT": 10,
-        "URGENT": 11
-    })
-    .constant('AcceptanceTestStatesByName', {
-        "TOCHECK": 1,
-        "FAILED": 5,
-        "SUCCESS": 10
-    })
-    .constant('SprintStatesByName', {
-        "TODO": 1,
-        "IN_PROGRESS": 2,
-        "DONE": 3
-    })
-    .constant('FeatureStatesByName', {
-        "TODO": 0,
-        "IN_PROGRESS": 1,
-        "DONE": 2
-    })
-    .constant('ReleaseStatesByName', {
-        "TODO": 1,
-        "IN_PROGRESS": 2,
-        "DONE": 3
-    })
-    .constant('USER_ROLES', { // TODO consider deleting (used only for dev user role switch)
-        PO_SM: 'PO_SM',
-        PO: 'PO',
-        SM: 'SM',
-        TM: 'TM',
-        SH: 'SH'
-    })
-    .constant('IceScrumEventType', {
-        CREATE: 'CREATE',
-        UPDATE: 'UPDATE',
-        DELETE: 'DELETE'
-    })
-    .constant('TaskConstants', {
-        ORDER_BY: [function(task) { return -task.type }, 'parentStory.rank', 'state', 'rank']
-    })
-    .constant('ActivityCodeByName', {
-        SAVE: 'save',
-        UPDATE: 'update',
-        DELETE: 'delete'
-    });
+    }]);

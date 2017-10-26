@@ -32,7 +32,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
 }]);
 
-services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'USER_ROLES', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, USER_ROLES, User, Project, PushService, IceScrumEventType, FormService) {
+services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, User, Project, PushService, IceScrumEventType, FormService) {
     var self = this;
     self.defaultView = '';
     self.menus = {visible: [], hidden: []};
