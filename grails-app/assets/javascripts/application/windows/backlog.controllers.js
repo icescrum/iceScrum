@@ -153,7 +153,12 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
                 backlogContainer.storiesLoaded = true;
             };
             var retrieveServerStories = function() {
-                StoryService.listByBacklog(backlogContainer.backlog).then(setStoriesLoaded);  // Retrieve server data, stories that were missing will be automatically added
+                StoryService.listByBacklog(backlogContainer.backlog).then(function(stories) {
+                    //mask loading on empty backlog
+                    if (stories.length === 0) {
+                        setStoriesLoaded();
+                    }
+                });  // Retrieve server data, stories that were missing will be automatically added
             };
             if (backlogContainer.backlog.count > 500) {
                 $scope.confirm({message: $scope.message('todo.is.ui.backlog.load.confirm'), callback: retrieveServerStories, closeCallback: setStoriesLoaded});
