@@ -79,7 +79,7 @@
         </h3>
         <visual-states ng-model="task" model-states="taskStatesByName"/>
     </div>
-    <ul class="nav nav-tabs nav-justified  nav-tabs-is">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.taskTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}

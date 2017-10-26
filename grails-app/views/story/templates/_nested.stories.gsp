@@ -32,8 +32,8 @@
                             <strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
                         </span>
                     </div>
-                    <div class="col-sm-4" ng-controller="storyCtrl">
-                        <div class="btn-group pull-right">
+                    <div class="col-sm-4 text-right" ng-controller="storyCtrl">
+                        <div class="btn-group">
                             <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true"></shortcut-menu>
                             <div class="btn-group btn-group-sm" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>

@@ -70,7 +70,7 @@
         </h3>
         <visual-states ng-model="feature" model-states="featureStatesByName"/>
     </div>
-    <ul class="nav nav-tabs nav-justified">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified">
         <li role="presentation" ng-class="{'active':!$state.params.featureTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}

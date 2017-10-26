@@ -26,13 +26,13 @@
         <tr ng-repeat="task in selected.tasks | orderBy: tasksOrderBy">
             <td class="content">
                 <div class="clearfix no-padding">
-                    <div class="form-group col-sm-8">
-                        <span class="name form-control-static">
+                    <div class="col-sm-8">
+                        <span class="name">
                             <strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
                         </span>
                     </div>
-                    <div class="form-group col-sm-4" ng-controller="taskCtrl">
-                        <div class="btn-group pull-right">
+                    <div class="col-sm-4 text-right" ng-controller="taskCtrl">
+                        <div class="btn-group">
                             <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true"></shortcut-menu>
                             <div class="btn-group btn-group-sm" uib-dropdown>
                                 <button type="button" class="btn btn-default" uib-dropdown-toggle>
