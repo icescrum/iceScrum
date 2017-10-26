@@ -27,12 +27,12 @@
         <tr ng-repeat="story in selected.stories">
             <td class="content">
                 <div class="clearfix no-padding">
-                    <div class="form-group col-sm-8">
-                        <span class="name form-control-static">
+                    <div class="col-sm-8">
+                        <span class="name">
                             <strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
                         </span>
                     </div>
-                    <div class="form-group col-sm-4" ng-controller="storyCtrl">
+                    <div class="col-sm-4" ng-controller="storyCtrl">
                         <div class="btn-group pull-right">
                             <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true"></shortcut-menu>
                             <div class="btn-group btn-group-sm" uib-dropdown>
