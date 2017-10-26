@@ -843,7 +843,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$sta
         var stateName;
         var stateParams;
         if ($scope.isPinned(element)) {
-            stateName = '.element';
+            stateName = '.' + self.parentView;
             stateParams = {elementId: element[self.propId]};
         } else {
             stateName = '.multiple';
