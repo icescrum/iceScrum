@@ -202,7 +202,7 @@ icescrum.marshaller = [
                                exclude: ['cliches'],
                                withIds: ['stories'],
                                textile: ['retrospective', 'doneDefinition'],
-                               asShort: ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName', 'deliveredVersion', 'index']],
+                               asShort: ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'activable', 'parentReleaseName', 'parentReleaseOrderNumber', 'deliveredVersion', 'index']],
         release             : [include: ['duration', 'closable', 'activable'],
                                textile: ['vision'],
                                asShort: ['name', 'state', 'endDate', 'startDate', 'orderNumber'],

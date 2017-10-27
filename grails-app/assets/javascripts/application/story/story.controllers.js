@@ -659,6 +659,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
             $scope.stories = stories;
         });
     }
+
     refreshStories();
 }]);
 
@@ -726,4 +727,45 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     };
     $scope.$watch('backlog.stories', updateOrder, true);
     $scope.$watch('orderBy', updateOrder, true);
+}]);
+
+controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter', 'StoryStatesByName', function($controller, $scope, $filter, StoryStatesByName) {
+    $scope.storyEntries = [];
+    $scope.$watch(function() {
+        return $scope.selected.stories;
+    }, function(newStories) {
+        $scope.storyEntries = _.chain(newStories)
+            .groupBy(function(story) {
+                if (story.parentSprint) {
+                    return 'sprint' + story.parentSprint.id;
+                } else if (_.includes([StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED], story.state)) {
+                    return 'backlog';
+                } else {
+                    return story.state;
+                }
+            })
+            .map(function(stories) {
+                var label;
+                var state = stories[0].state;
+                var sprint = stories[0].parentSprint;
+                if (sprint) {
+                    label = sprint.parentReleaseName + ' - ' + $filter('sprintName')(sprint)
+                } else if (state == StoryStatesByName.SUGGESTED) {
+                    label = $scope.message('is.ui.sandbox');
+                } else if (_.includes([StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED], state)) {
+                    label = $scope.message('is.ui.backlog');
+                } else {
+                    label = $filter('i18n')(state, 'StoryStates');
+                }
+                label += ' (' + stories.length + ')';
+                return {
+                    label: label,
+                    stories: _.sortBy(stories, [function(story) {
+                        return story.state === StoryStatesByName.ESTIMATED ? StoryStatesByName.ACCEPTED : story.state;
+                    }, 'rank'])
+                };
+            })
+            .orderBy(['stories[0].parentSprint.parentReleaseOrderNumber', 'stories[0].parentSprint.orderNumber', 'stories[0].state'], ['asc', 'asc', 'desc'])
+            .value();
+    }, true);
 }]);
