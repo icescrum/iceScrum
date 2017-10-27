@@ -29,6 +29,10 @@ controllers.controller("windowCtrl", ['$scope', 'WindowService', 'window', '$q',
         window.settings[name] = value;
         return WindowService.update(window).$promise;
     };
+    $scope.saveOrUpdateWindowSettings = function(map) {
+        _.assign(window.settings, map);
+        return WindowService.update(window).$promise;
+    };
     $scope.deleteWindowSetting = function(name) {
         delete window.settings[name];
         return WindowService.update(window).$promise;

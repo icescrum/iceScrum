@@ -807,19 +807,72 @@ controllers.controller('menuItemCtrl', ['$scope', function($scope) {
     };
 }]);
 
-controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$state', function($scope, WindowService, $state) {
+controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout', 'WindowService', '$state', function($scope, $element, $timeout, WindowService, $state) {
     var self = this;
+    // Functions
+    $scope.hideAndOrderElementsFromSettings = function(elementsList) {
+        if ($scope.savedHiddenElementsOrder) {
+            // We use the same list to split element list in visible/hidden part, to make sure that we do not forget any element.
+            $scope.visibleElementsList = _.filter(elementsList, function(elem) {
+                return !_.includes($scope.savedHiddenElementsOrder, elem[self.propId])
+            });
+            $scope.hiddenElementsList = _.filter(elementsList, function(elem) {
+                return _.includes($scope.savedHiddenElementsOrder, elem[self.propId])
+            });
+        } else {
+            $scope.visibleElementsList = elementsList;
+            $scope.hiddenElementsList = [];
+        }
+        if ($scope.savedHiddenElementsOrder) {
+            $scope.hiddenElementsList.sort(function(a, b) {
+                return $scope.savedHiddenElementsOrder.indexOf(a[self.propId]) - $scope.savedHiddenElementsOrder.indexOf(b[self.propId])
+            });
+        }
+        if ($scope.savedVisibleElementsOrder) {
+            // visibleElementsOrder is only used to order visible elements.
+            $scope.visibleElementsList.sort(function(a, b) {
+                return $scope.savedVisibleElementsOrder.indexOf(a[self.propId]) - $scope.savedVisibleElementsOrder.indexOf(b[self.propId])
+            });
+        }
+    };
+    $scope.hideElementsToFitAvailableSpace = function() {
+        var navTabsSize = $element.children().first().outerWidth();
+        var btnToolbarSize = $element.children().last().outerWidth();
+        var totalSpace = $element.width();
+        var leftSpace = totalSpace - navTabsSize - btnToolbarSize;
+        if (leftSpace <= 5) {
+            $scope.hiddenElementsList.unshift($scope.visibleElementsList.pop());
+        }
+        if ((leftSpace >= 210 && $scope.hiddenElementsList.length >= 2) || (leftSpace >= 110 && $scope.hiddenElementsList.length == 1)) {
+            if (!_.includes($scope.savedHiddenElementsOrder, _.head($scope.hiddenElementsList).code)) {
+                $scope.visibleElementsList.push($scope.hiddenElementsList.shift());
+            }
+        }
+    };
+    $scope.saveElementsListOrder = function(destScope) {
+        var allElements = _.concat(
+            _.map(destScope.visibleElementsList, self.propId),
+            _.map(destScope.hiddenElementsList, self.propId)
+        );
+        $scope.savedVisibleElementsOrder = _.difference(allElements, $scope.savedHiddenElementsOrder);
+        $scope.savedHiddenElementsOrder = _.intersection(allElements, $scope.savedHiddenElementsOrder);
+        var newWindowSettings = {
+            elementsListOrder: $scope.savedVisibleElementsOrder,
+            hiddenElementsListOrder: $scope.savedHiddenElementsOrder
+        };
+        destScope.saveOrUpdateWindowSettings(newWindowSettings);
+    };
     $scope.initialize = function(elementsList, parentView, propId) {
         self.type = parentView;
         self.parentView = parentView;
         self.propId = propId ? propId : 'id';
         $scope.elementsList = elementsList;
-        var savedElementsOrder = $scope.getWindowSetting('elementsListOrder');
-        if (savedElementsOrder) {
-            elementsList.sort(function(a, b) {
-                return savedElementsOrder.indexOf(a[self.propId]) - savedElementsOrder.indexOf(b[self.propId])
-            });
-        }
+        $scope.visibleElementsList = [];
+        $scope.hiddenElementsList = [];
+        $scope.savedHiddenElementsOrder = $scope.getWindowSetting('hiddenElementsListOrder');
+        $scope.savedVisibleElementsOrder = $scope.getWindowSetting('elementsListOrder');
+        $scope.hideAndOrderElementsFromSettings(elementsList);
+        $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
     };
     $scope.isShown = function(element) {
         return _.includes([$state.params.pinnedElementId, $state.params.elementId], element[self.propId].toString());
@@ -868,8 +921,39 @@ controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$sta
             return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         },
         orderChanged: function(event) {
-            var elementsListOrder = _.map(event.dest.sortableScope.elementsList, function(element) {return element[self.propId]});
-            event.dest.sortableScope.saveOrUpdateWindowSetting('elementsListOrder', elementsListOrder);
+            $scope.saveElementsListOrder(event.dest.sortableScope);
+        },
+        itemMoved: function(event) {
+            if (event.dest.sortableScope.modelValue === $scope.visibleElementsList) {
+                _.pull($scope.savedHiddenElementsOrder, event.source.itemScope.modelValue[self.propId]);
+            }
+            if (event.dest.sortableScope.modelValue === $scope.hiddenElementsList) {
+                // Save the elements below this element in hidden list as well,
+                // so that elements order never changes even if this element was dragged
+                // while other elements where hidden only because of the available space.
+                var hiddenElemIndex = _.indexOf($scope.hiddenElementsList, event.source.itemScope.modelValue);
+                if ($scope.hiddenElementsList.length > hiddenElemIndex) {
+                    $scope.savedHiddenElementsOrder = _.concat($scope.savedHiddenElementsOrder,
+                        _.filter(
+                            _.map(
+                                _.takeRight($scope.hiddenElementsList, $scope.hiddenElementsList.length - hiddenElemIndex)
+                                , 'code')
+                            , function(elemCode) {
+                                return !_.includes($scope.savedHiddenElementsOrder, elemCode)
+
+                            }
+                        )
+                    );
+                }
+            }
+            $scope.saveElementsListOrder(event.dest.sortableScope);
+        },
+        dragStart: function() {
+            $scope.menuDragging = true;
+        },
+        dragEnd: function() {
+            $scope.menuDragging = false;
+            $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
         }
     };
     $scope.closeElementUrl = function(element) {
@@ -880,5 +964,18 @@ controllers.controller("elementsListMenuCtrl", ['$scope', 'WindowService', '$sta
             stateParams = {elementId: null};
         }
         return $state.href('.', stateParams);
-    }
+    };
+    $scope.menuDragging = false;
+    // Watchers
+    $scope.$watch('elementsList', function() {
+        $scope.hideAndOrderElementsFromSettings($scope.elementsList);
+        $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
+    }, true);
+    $scope.$watch('hiddenElementsList', function() {
+        $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
+    }, true);
+    $(window).on("resize.doResize", _.throttle($scope.hideElementsToFitAvailableSpace, 100));
+    $scope.$on("$destroy", function() {
+        $(window).off("resize.doResize"); //remove the handler added earlier
+    });
 }]);

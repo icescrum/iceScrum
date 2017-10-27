@@ -603,7 +603,7 @@ header {
 
 .nav-tabs-is {
   &.nav-tabs {
-    & > li > a {
+    li > a {
       margin-right: 0;
       border-radius: 0;
       &:hover .fa-border {
@@ -611,8 +611,9 @@ header {
       }
       .text-overflow();
     }
-    & > li.active > a {
+    li.active > a {
       color: @brand-primary;
+      font-weight: bold;
       &:hover .fa-border {
         border-color: @brand-primary;
       }
@@ -639,13 +640,14 @@ header {
 
 .view > .content .nav-tabs-is {
   &.nav-tabs {
-    > li.active + li.active {
+    li.active + li.active {
       > a {
         border-left-color: transparent;
       }
     }
-    > li > a {
+    li > a {
       min-width: 100px;
+      max-width: 200px;
       padding: 12px 15px;
       border-top-color: transparent;
       border-bottom-color: transparent;
