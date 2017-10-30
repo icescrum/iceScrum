@@ -187,10 +187,6 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             $state.go('backlog.backlog', {elementId: _.head($scope.availableBacklogs).code}, {location: 'replace'});
         } else if (_.startsWith(stateName, 'backlog')) {
             if (pinnedElementId) {
-                if ($scope.application.mobile) {
-                    $scope.enforceOneBacklog({code: pinnedElementId});
-                    return;
-                }
                 $scope.showBacklog(pinnedElementId);
             }
             if (elementId) {
@@ -201,9 +197,6 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             });
         }
     });
-    $scope.enforceOneBacklog = function(backlog) {
-        window.location.hash = $scope.togglePinBacklogUrl(backlog);
-    };
     $scope.openBacklogUrl = function(backlog) {
         var stateName = 'backlog.backlog';
         if ($state.current.name != 'backlog.backlog.details') {
@@ -306,10 +299,5 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
                 }, 500);
             }
         });
-    });
-    $scope.$watch('application.mobile', function(newValue, oldValue) {
-        if ($scope.backlogContainers.length > 1 && newValue) {
-            $scope.enforceOneBacklog($scope.isPinned($scope.backlogContainers[0].backlog) ? $scope.backlogContainers[0].backlog : $scope.backlogContainers[1].backlog);
-        }
     });
 }]);
