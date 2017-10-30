@@ -68,7 +68,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         var filteredStories = BacklogService.filterStories(backlog, $scope.project.stories);
         backlog.stories = $filter('orderBy')(filteredStories, 'rank'); // This will be the model for the sortable directive so it must be in sort order, regardless of current display order
         if (backlog.stories && backlog.stories.length > 0) {
-            backlogContainer.storiesLoaded = true; // To render stories already there in the client
+            backlogContainer.storiesLoaded = true; // Render stories already there in the client cache
         }
         backlogContainer.sortable = StoryService.authorizedStory('rank') && (BacklogService.isBacklog(backlog) || BacklogService.isSandbox(backlog));
         $timeout(function() { // Timeout to wait for story rendering
@@ -152,13 +152,12 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             var setStoriesLoaded = function() {
                 backlogContainer.storiesLoaded = true;
             };
-            var retrieveServerStories = function() {
+            var retrieveServerStories = function() { // Retrieve server data, stories that were missing will be automatically added
                 StoryService.listByBacklog(backlogContainer.backlog).then(function(stories) {
-                    //mask loading on empty backlog
                     if (stories.length === 0) {
                         setStoriesLoaded();
                     }
-                });  // Retrieve server data, stories that were missing will be automatically added
+                });
             };
             if (backlogContainer.backlog.count > 500) {
                 $scope.confirm({message: $scope.message('todo.is.ui.backlog.load.confirm'), callback: retrieveServerStories, closeCallback: setStoriesLoaded});
@@ -285,18 +284,17 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
     $scope.backlogContainers = [];
     $scope.availableBacklogs = backlogs;
     $scope.backlogCodes = BacklogCodes;
-    var backlogsUpdatedTimeout;
+    var backlogsPendingUpdate = [];
     // Ensures that the stories list of displayed backlogs are up to date
     $scope.$on('is:backlogsUpdated', function(event, backlogCodes) {
         _.each(backlogCodes, function(backlogCode) {
             var backlogContainer = $scope.getBacklogContainer(backlogCode);
-            if (backlogContainer) {
-                if (backlogsUpdatedTimeout) {
-                    $timeout.cancel(backlogsUpdatedTimeout);
-                }
-                backlogsUpdatedTimeout = $timeout(function() {
+            if (backlogContainer && !_.includes(backlogsPendingUpdate, backlogCode)) {
+                backlogsPendingUpdate.push(backlogCode);
+                $timeout(function() {
+                    _.pull(backlogsPendingUpdate, backlogCode);
                     $scope.refreshSingleBacklog(backlogContainer);
-                }, 500);
+                }, 25);
             }
         });
     });
