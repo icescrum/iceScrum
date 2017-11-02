@@ -23,7 +23,7 @@
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="backlogs-list elements-list" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
-        <ul class="nav nav-tabs nav-tabs-is clearfix pull-left" as-sortable="elementsListSortableOptions" ng-model="visibleElementsList">
+        <ul id="elementslist-list" class="nav nav-tabs nav-tabs-is clearfix pull-left" as-sortable="elementsListSortableOptions" ng-model="visibleElementsList">
             <li as-sortable-item role="presentation" ng-repeat="elem in visibleElementsList" ng-class="{'active': isShown(elem)}">
                 <a href="{{ toggleElementUrl(elem) }}" ng-click="clickOnElementHref($event)">
                     <i as-sortable-item-handle
@@ -35,11 +35,12 @@
                     <span as-sortable-item-handle>{{ elem | i18nName }} ({{ elem.count }})</span>
                 </a>
             </li>
-            <li class="nav-more" uib-dropdown is-open="menuDragging" ng-show="menuDragging || hiddenElementsList.length > 0">
+            <li id="elementslist-more" class="nav-more" uib-dropdown is-open="more.isopen || menuDragging" ng-show="menuDragging || hiddenElementsList.length > 0" ng-class="{'active': isShownInMore()}">
                 <a uib-dropdown-toggle href style="padding: 15px">${message(code: 'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                 <ul uib-dropdown-menu
                     as-sortable="elementsListSortableOptions"
-                    ng-model="hiddenElementsList">
+                    ng-model="hiddenElementsList"
+                    class="nav-tabs nav-tabs-is">
                     <li as-sortable-item role="presentation" ng-repeat="elem in hiddenElementsList" ng-class="{'active': isShown(elem)}">
                         <a href="{{ toggleElementUrl(elem) }}" ng-click="clickOnElementHref($event)">
                             <i as-sortable-item-handle
@@ -48,14 +49,14 @@
                                uib-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
                                style="margin-right:3px;" href="{{ togglePinElementUrl(elem) }}"
                                ng-class="{'fa-pinned':isPinned(elem), 'fa-pin':!isPinned(elem)}"></i>
-                            <span as-sortable-item-handle>{{ elem | i18nName }} ({{ elem.count }})</span>
+                            <span as-sortable-item-handle title="{{ elem | i18nName }} ({{ elem.count }})">{{ elem | i18nName }} ({{ elem.count }})</span>
                         </a>
                     </li>
                 </ul>
             </li>
             <entry:point id="backlog-window-toolbar"/>
         </ul>
-        <div class="btn-toolbar pull-right">
+        <div id="elementslist-toolbar" class="btn-toolbar pull-right">
             <div class="btn-group">
                 <button type="button"
                         class="btn btn-default hidden-xs hidden-sm"
@@ -79,7 +80,7 @@
             <a ng-if="authorizedStory('create')"
                ui-sref="backlog.backlog.story.new"
                ng-class="{ 'pull-right': backlogContainers.length == 1 }"
-               class="btn btn-primary"><i class="visible-xs fa fa-plus"></i><span class="hidden-xs">${message(code: "todo.is.ui.story.new")}</span></a>
+               class="btn btn-primary"><span>${message(code: "todo.is.ui.story.new")}</span></a>
             <entry:point id="backlog-window-toolbar-right"/>
         </div>
     </div>

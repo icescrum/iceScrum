@@ -836,8 +836,8 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
         }
     };
     $scope.hideElementsToFitAvailableSpace = function() {
-        var navTabsSize = $element.children().first().outerWidth();
-        var btnToolbarSize = $element.children().last().outerWidth();
+        var navTabsSize = $element.children('#elementslist-list').outerWidth();
+        var btnToolbarSize = $element.children('#elementslist-toolbar').outerWidth();
         var totalSpace = $element.width();
         var leftSpace = totalSpace - navTabsSize - btnToolbarSize;
         if (leftSpace <= 5) {
@@ -876,6 +876,13 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
     };
     $scope.isShown = function(element) {
         return _.includes([$state.params.pinnedElementId, $state.params.elementId], element[self.propId].toString());
+    };
+    $scope.isShownInMore = function() {
+        var isShownMore = false;
+        _.each($scope.hiddenElementsList, function(element) {
+            isShownMore = isShownMore || $scope.isShown(element)
+        });
+        return isShownMore;
     };
     $scope.isPinned = function(element) {
         return $state.params.pinnedElementId === element[self.propId];
@@ -967,13 +974,13 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
     };
     $scope.menuDragging = false;
     // Watchers
-    $scope.$watch('elementsList', function() {
+    $scope.$watchCollection('elementsList', function() {
         $scope.hideAndOrderElementsFromSettings($scope.elementsList);
         $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
-    }, true);
-    $scope.$watch('hiddenElementsList', function() {
+    });
+    $scope.$watchCollection('hiddenElementsList', function() {
         $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
-    }, true);
+    });
     $(window).on("resize.doResize", _.throttle($scope.hideElementsToFitAvailableSpace, 100));
     $scope.$on("$destroy", function() {
         $(window).off("resize.doResize"); //remove the handler added earlier
