@@ -349,17 +349,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var resizer = function() {
                 element.css('width', element.parent().parent().width() - attrs.inputGroupFixWidth + 'px');
             };
-            var promiseWindowResize;
-            var resize = function() {
-                if (promiseWindowResize) {
-                    $timeout.cancel(promiseWindowResize);
-                }
-                promiseWindowResize = $timeout(resizer, 150, false);
-            };
             var windowElement = angular.element($window);
-            windowElement.on('resize', resize);
+            windowElement.on('resize.inputGroupFixWidth', _.throttle(resizer, 200));
             scope.$on('$destroy', function() {
-                windowElement.off("resize", resize);
+                windowElement.off("resize.inputGroupFixWidth");
             });
             $timeout(resizer);
         }
@@ -569,7 +562,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 render(); // To update selected items
             }, true);
             // Register render on width change (either by resize or opening / closing of details view)
-            d3.select(window).on('resize', render);
+            d3.select(window).on('resize', _.throttle(render, 200));
             var unregisterRenderOnDetailsChanged = scope.$root.$on('$viewContentLoaded', function(event, viewConfig) {
                 if (viewConfig.indexOf('@planning') != -1) {
                     $timeout(render, 100);
@@ -842,10 +835,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 container.on("scroll", render); // Destroyed automatically
                 var windowElement = angular.element($window);
                 var viewElement = angular.element('.main > .view');
-                windowElement.on("resize", position);
+                windowElement.on("resize.stickyList", _.throttle(position, 200));
                 viewElement.on("scroll", position);
                 scope.$on('$destroy', function() {
-                    windowElement.off("resize", position);
+                    windowElement.off("resize.stickyList");
                     viewElement.off("scroll", position);
                 });
             });

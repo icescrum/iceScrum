@@ -983,8 +983,8 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
     $scope.$watchCollection('hiddenElementsList', function() {
         $timeout($scope.hideElementsToFitAvailableSpace, 0, true);
     });
-    $(window).on("resize.doResize", _.throttle($scope.hideElementsToFitAvailableSpace, 100));
+    $(window).on("resize.elementsList", _.throttle($scope.hideElementsToFitAvailableSpace, 200));
     $scope.$on("$destroy", function() {
-        $(window).off("resize.doResize"); //remove the handler added earlier
+        $(window).off("resize.elementsList");
     });
 }]);
