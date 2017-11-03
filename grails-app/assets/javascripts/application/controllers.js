@@ -820,7 +820,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
                 return _.includes($scope.savedHiddenElementsOrder, elem[self.propId])
             });
         } else {
-            $scope.visibleElementsList = elementsList;
+            $scope.visibleElementsList = elementsList.slice();
             $scope.hiddenElementsList = [];
         }
         if ($scope.savedHiddenElementsOrder) {
@@ -841,7 +841,9 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
         var totalSpace = $element.width();
         var leftSpace = totalSpace - navTabsSize - btnToolbarSize;
         if (leftSpace <= 5) {
-            $scope.hiddenElementsList.unshift($scope.visibleElementsList.pop());
+            if ($scope.visibleElementsList.length > 0) {
+                $scope.hiddenElementsList.unshift($scope.visibleElementsList.pop());
+            }
         }
         if ((leftSpace >= 210 && $scope.hiddenElementsList.length >= 2) || (leftSpace >= 110 && $scope.hiddenElementsList.length == 1)) {
             if (!_.includes($scope.savedHiddenElementsOrder, _.head($scope.hiddenElementsList).code)) {
