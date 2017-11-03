@@ -19,16 +19,17 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
-controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller', function($scope, TaskService, $controller) {
+controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller', 'postitSize', 'screenSize', function($scope, TaskService, $controller, postitSize, screenSize) {
     $controller('widgetCtrl', {$scope: $scope});
     // Functions
     $scope.display = function(widget) {
-        var current = $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
-        if (current != widget.settings.postitSize) {
-            $scope.cleanPostitSize($scope.viewName);
-            $scope.currentPostitSize($scope.viewName, widget.settings.postitSize);
+        $scope.postitClass = postitSize.postitClass($scope.viewName, widget.settings.postitSize);
+        if ($scope.postitClass != widget.settings.postitSize) {
+            postitSize.cleanPostitSize($scope.viewName);
+            $scope.postitClass = postitSize.postitClass($scope.viewName, widget.settings.postitSize);
         }
     };
     $scope.taskUrl = function(task, project) {
@@ -43,4 +44,6 @@ controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller'
     widget.settings = widget.settings ? widget.settings : {postitSize: 'list-group'};
     $scope.viewName = 'taskWidget';
     $scope.display(widget);
+    screenSize.on('xs, sm', function() {$scope.display(widget)});
+    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, function() {$scope.display(widget)});
 }]);

@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
@@ -781,5 +782,71 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
     };
     this.equalContexts = function(context1, context2) {
         return context1 == context2 || context1 && context2 && context1.type == context2.type && context1.id == context2.id;
+    };
+}]);
+
+services.service('postitSize', ['screenSize', '$localStorage', function(screenSize, $localStorage) {
+    this.postitClass = function(viewName, defaultSize) {
+        return screenSize.is('xs, sm') ? 'list-group' : this.currentPostitSize(viewName, defaultSize);
+    };
+    this.standalonePostitClass = function(viewName, defaultSize) {
+        if (screenSize.is('xs, sm')) {
+            return 'grid-group size-xs';
+        } else {
+            var selectedSize = this.currentPostitSize(viewName, defaultSize);
+            return (selectedSize == 'list-group') ? 'grid-group size-l' : selectedSize;
+        }
+    };
+    this.currentPostitSize = function(viewName, defaultSize) {
+        var contextSizeName = viewName + 'PostitSize';
+        if (defaultSize && !$localStorage[contextSizeName]) {
+            $localStorage[contextSizeName] = defaultSize;
+        }
+        return screenSize.is('xs, sm') ? 'list-group' : $localStorage[contextSizeName];
+    };
+    this.cleanPostitSize = function(viewName) {
+        var contextSizeName = viewName + 'PostitSize';
+        delete $localStorage[contextSizeName];
+    };
+    this.iconCurrentPostitSize = function(viewName) {
+        var icon;
+        switch (this.currentPostitSize(viewName)) {
+            case 'grid-group size-l':
+                icon = 'fa-sticky-note fa-xl';
+                break;
+            case 'grid-group size-sm':
+                icon = 'fa-sticky-note fa-lg';
+                break;
+            case 'grid-group size-xs':
+                icon = 'fa-sticky-note';
+                break;
+            case 'list-group':
+                icon = 'fa-list';
+                break;
+            default:
+                icon = 'fa-sticky-note';
+                break;
+        }
+        return icon;
+    };
+    this.setPostitSize = function(viewName) {
+        var next;
+        switch (this.currentPostitSize(viewName)) {
+            case 'grid-group size-l':
+                next = 'grid-group size-sm';
+                break;
+            case 'grid-group size-sm':
+                next = 'grid-group size-xs';
+                break;
+            case 'grid-group size-xs':
+                next = 'list-group';
+                break;
+            default:
+            case 'list-group':
+                next = 'grid-group size-l';
+                break;
+        }
+        var contextSizeName = viewName + 'PostitSize';
+        $localStorage[contextSizeName] = next;
     };
 }]);

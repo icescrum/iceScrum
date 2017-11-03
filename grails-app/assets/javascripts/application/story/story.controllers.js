@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
@@ -663,7 +664,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
     refreshStories();
 }]);
 
-extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName) {
+extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', 'postitSize', 'screenSize', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName, postitSize, screenSize) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.resetStoryForm = function() {
@@ -716,9 +717,15 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
         allowIn: ['INPUT'],
         callback: $scope.resetStoryForm
     });
+    var getStandalonePostitClass = function() {
+        $scope.postitClass = postitSize.standalonePostitClass($scope.viewName, 'grid-group size-sm');
+    };
+    getStandalonePostitClass();
+    screenSize.on('xs, sm', getStandalonePostitClass);
+    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getStandalonePostitClass);
 }]);
 
-controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', function($controller, $scope, $filter) {
+controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 'postitSize', 'screenSize', function($controller, $scope, $filter, postitSize, screenSize) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Don't use orderBy filter on ng-repeat because it triggers sort on every single digest on the page, which happens all the time...
     // We are only interested in story updates
@@ -727,6 +734,12 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     };
     $scope.$watch('backlog.stories', updateOrder, true);
     $scope.$watch('orderBy', updateOrder, true);
+    var getPostitClass = function() {
+        $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
+    };
+    getPostitClass();
+    screenSize.on('xs, sm', getPostitClass);
+    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
 controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter', 'StoryStatesByName', function($controller, $scope, $filter, StoryStatesByName) {

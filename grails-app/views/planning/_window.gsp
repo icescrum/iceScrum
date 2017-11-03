@@ -46,7 +46,7 @@
                     <button type="button"
                             class="btn btn-default hidden-xs hidden-sm"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group size-l') }}"></i>
+                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
                     </button>
                     <button type="button"
                             class="btn btn-default hidden-xs"
@@ -110,9 +110,8 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="postits"
+                <div class="postits {{ postitClass }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
-                     postits-screen-size
                      ng-controller="storyBacklogCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!isSortingSprint(sprint)"

@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
@@ -68,6 +69,12 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'F
     ];
     // Init
     $scope.tags = [];
+    var getPostitClass = function() {
+        $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
+    };
+    getPostitClass();
+    screenSize.on('xs, sm', getPostitClass);
+    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName) {

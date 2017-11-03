@@ -61,7 +61,7 @@
                 <button type="button"
                         class="btn btn-default hidden-xs hidden-sm"
                         uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group size-l') }}"></i>
+                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
                 </button>
                 <button type="button"
                         class="btn btn-default hidden-xs"
@@ -169,10 +169,9 @@
             </div>
             <div class="panel-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="loading-logo" ng-include="'loading.html'"></div>
-                <div class="postits"
+                <div class="postits {{ postitClass }}"
                      ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"
                      ng-controller="storyBacklogCtrl"
-                     postits-screen-size
                      as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"
                      is-disabled="!isSortingBacklog(backlogContainer)"
                      ng-model="backlogContainer.backlog.stories"

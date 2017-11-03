@@ -19,6 +19,7 @@
  *
  * Vincent Barrier (vbarrier@kagilum.com)
  * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
 
@@ -48,7 +49,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
     $scope.resetTaskForm();
 }]);
 
-controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', function($scope, $timeout, $uibModal, $filter, $state, TaskService) {
+controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, postitSize, screenSize) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -149,6 +150,12 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
             }
         }
     };
+    var getPostitClass = function() {
+        $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
+    };
+    getPostitClass();
+    screenSize.on('xs, sm', getPostitClass);
+    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
 controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint) {

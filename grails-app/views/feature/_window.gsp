@@ -87,7 +87,7 @@
                     <button type="button"
                             class="btn btn-default hidden-xs hidden-sm"
                             uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName, 'grid-group size-l') }}"></i>
+                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
                     </button>
                     <button type="button"
                             class="btn btn-default hidden-xs"
@@ -137,9 +137,8 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div class="postits"
+            <div class="postits {{ postitClass }}"
                  ng-class="{'has-selected': hasSelected() }"
-                 postits-screen-size
                  ng-controller="featureCtrl"
                  as-sortable="featureSortableOptions | merge: sortableScrollOptions()"
                  is-disabled="!isSortingFeature()"

@@ -36,7 +36,7 @@
     <div class="details-no-tab">
         <div class="panel-body">
             <div class="help-block">${message(code: 'is.ui.sandbox.help')}</div>
-            <div class="postits standalone" postits-screen-size-standalone>
+            <div class="postits standalone {{ postitClass }}">
                 <div class="postit-container solo">
                     <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                          class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
