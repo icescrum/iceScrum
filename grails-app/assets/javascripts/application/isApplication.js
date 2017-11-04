@@ -814,78 +814,13 @@ var isApplication = angular.module('isApplication', [
         $controller('searchCtrl', {$scope: $rootScope}); // Mostly context stuff
         $rootScope.$state = $state; // To be able to track state in views
         $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
-            if (!scrollableContainerSelector) {
-                scrollableContainerSelector = '.panel-body';
-            }
-            var scrollSpeed = 0;
-            var destScrollableContainer; // Store the dest container because it cannot be retrieved (mouse must be on panel to get the element) and used (mouse is out of panel when we must scroll) in the same move
-            var scheduledScroll = null;
-            var cancelScheduledScroll = function() {
-                scrollSpeed = 0;
-                if (scheduledScroll) {
-                    $interval.cancel(scheduledScroll);
-                    scheduledScroll = null;
-                }
-            };
             return {
-                dragMove: function(itemPosition, containment, eventObj) {
+                scrollableContainerSelector: scrollableContainerSelector ? scrollableContainerSelector : '.panel-body',
+                dragStart: function() {
                     $rootScope.application.sortableMoving = true;
-                    if (eventObj) {
-                        // This HORRIBLE SOUP isolated in a private function gets the dest panel body and stores it in a captured variable.
-                        // There may be a better way but it is the way ng-sortable does it
-                        (function(eventObj) {
-                            var destX = eventObj.pageX - $document[0].documentElement.scrollLeft;
-                            var destY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
-                            $document[0].elementFromPoint(destX, destY); // This is done twice on purpose, ng-sortable does it like that (don't know why though...)
-                            var destElement = angular.element($document[0].elementFromPoint(destX, destY)); // Gets the DOM element under the cursor
-                            function fetchScope(element) {
-                                var scope;
-                                while (!scope && element.length) {
-                                    scope = element.data('_scope');
-                                    if (!scope) {
-                                        element = element.parent();
-                                    }
-                                }
-                                return scope;
-                            }
-
-                            var destScope = fetchScope(destElement); // Retrieve the closest scope from the DOM element
-                            if (destScope) {
-                                destScrollableContainer = angular.element(destScope.element).closest(scrollableContainerSelector)[0]; // Store the dest scrollable container for later use
-                            }
-                        })(eventObj);
-                        // Retrieve scrollable container, very likely stored during a previous move, and scroll if needed (for the moment scroll occurs only when moving)
-                        if (destScrollableContainer) {
-                            var marginAroundCursor = 30;
-                            var targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
-                            var containerRect = destScrollableContainer.getBoundingClientRect();
-                            var topDifference = containerRect.top - targetY + marginAroundCursor;
-                            var bottomDifference = containerRect.bottom - targetY - marginAroundCursor;
-                            var cursorUpperThanPanel = topDifference > 0;
-                            var cursorLowerThanPanel = bottomDifference < 0;
-                            if (cursorUpperThanPanel || cursorLowerThanPanel) {
-                                var computeSpeed = function(difference) {
-                                    return Math.floor(difference / 4); // Magic formula
-                                };
-                                scrollSpeed = cursorUpperThanPanel ? computeSpeed(topDifference) : computeSpeed(bottomDifference);
-                                var moveScroll = function() {
-                                    destScrollableContainer.scrollTop = destScrollableContainer.scrollTop - scrollSpeed;
-                                };
-                                moveScroll();
-                                // With the solution above, scroll occurs only when moving the cursor so we define a recurring callback to sustain the scroll when not moving
-                                if (!scheduledScroll) {
-                                    var timeInterval = 4; // 4 ms scheduledScroll between each automatic scroll
-                                    scheduledScroll = $interval(moveScroll, timeInterval);
-                                }
-                            } else if (scheduledScroll != null) {
-                                cancelScheduledScroll();
-                            }
-                        }
-                    }
                 },
                 dragEnd: function() {
                     $rootScope.application.sortableMoving = false;
-                    cancelScheduledScroll(); // Prevent persistent scroll in case of release out of sortable container
                 }
             }
         };
