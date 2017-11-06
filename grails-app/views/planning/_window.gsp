@@ -110,7 +110,7 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="postits {{ postitClass }}"
+                <div class="{{ 'postits' | postitClass: viewName }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"

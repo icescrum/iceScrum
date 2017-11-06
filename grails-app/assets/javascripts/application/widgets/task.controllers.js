@@ -44,6 +44,6 @@ controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller'
     widget.settings = widget.settings ? widget.settings : {postitSize: 'list-group'};
     $scope.viewName = 'taskWidget';
     $scope.display(widget);
-    screenSize.on('xs, sm', function() {$scope.display(widget)});
+    screenSize.on('xs, sm', function() {$scope.display(widget)}, $scope);
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, function() {$scope.display(widget)});
 }]);

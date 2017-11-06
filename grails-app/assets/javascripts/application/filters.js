@@ -487,4 +487,12 @@ filters
     return function(inside) {
         return inside ? '(' + inside + ')' : '';
     }
-});
+}).filter('postitClass', ['postitSize', function(postitSize) {
+    return function(defaultClass, viewName) {
+        return defaultClass + " " + postitSize.postitClass(viewName, 'grid-group size-sm');
+    }
+}]).filter('standalonePostitClass', ['postitSize', function(postitSize) {
+    return function(defaultClass, viewName) {
+        return defaultClass + " " + postitSize.standalonePostitClass(viewName, 'grid-group size-sm');
+    }
+}]);
