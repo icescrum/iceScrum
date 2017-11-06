@@ -769,26 +769,24 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
     // Functions
     $scope.hideAndOrderElementsFromSettings = function(elementsList) {
         if ($scope.savedHiddenElementsOrder) {
-            // We use the same list to split element list in visible/hidden part, to make sure that we do not forget any element.
-            $scope.visibleElementsList = _.filter(elementsList, function(elem) {
-                return !_.includes($scope.savedHiddenElementsOrder, elem[self.propId])
-            });
-            $scope.hiddenElementsList = _.filter(elementsList, function(elem) {
+            var partitionedElementsList = _.partition(elementsList, function(elem) {
                 return _.includes($scope.savedHiddenElementsOrder, elem[self.propId])
             });
+            $scope.hiddenElementsList = partitionedElementsList[0];
+            $scope.visibleElementsList = partitionedElementsList[1];
         } else {
             $scope.visibleElementsList = elementsList.slice();
             $scope.hiddenElementsList = [];
         }
         if ($scope.savedHiddenElementsOrder) {
-            $scope.hiddenElementsList.sort(function(a, b) {
-                return $scope.savedHiddenElementsOrder.indexOf(a[self.propId]) - $scope.savedHiddenElementsOrder.indexOf(b[self.propId])
+            $scope.hiddenElementsList = _.sortBy($scope.hiddenElementsList, function(element) {
+                return $scope.savedHiddenElementsOrder.indexOf(element[self.propId]);
             });
         }
         if ($scope.savedVisibleElementsOrder) {
             // visibleElementsOrder is only used to order visible elements.
-            $scope.visibleElementsList.sort(function(a, b) {
-                return $scope.savedVisibleElementsOrder.indexOf(a[self.propId]) - $scope.savedVisibleElementsOrder.indexOf(b[self.propId])
+            $scope.visibleElementsList = _.sortBy($scope.visibleElementsList, function(element) {
+                return $scope.savedVisibleElementsOrder.indexOf(element[self.propId]);
             });
         }
     };
