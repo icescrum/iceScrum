@@ -639,6 +639,7 @@
                         isPlaceHolderPresent,//is placeholder present.
                         isDisabled = false, // drag enabled
                         escapeListen, // escape listen event
+                    // CUSTOM
                         // checking if dragMove callback exists, to prevent application
                         // rerenderings on each mouse move event
                         scrollSpeed = 0,
@@ -651,6 +652,7 @@
                                 scheduledScroll = null;
                             }
                         },
+                    // END CUSTOM
                         isLongTouch = false; //long touch disabled.
 
                     hasTouch = 'ontouchstart' in $window;
@@ -916,6 +918,7 @@
 
                             eventObj = $helper.eventObj(event);
 
+                            // CUSTOM
                             if (eventObj) {
                                 // This HORRIBLE SOUP isolated in a private function gets the dest panel body and stores it in a captured variable.
                                 // There may be a better way but it is the way ng-sortable does it
@@ -970,6 +973,8 @@
                                     }
                                 }
                             }
+                            // END CUSTOM
+
                             if (scope.callbacks.dragMove !== angular.noop) {
                                 scope.sortableScope.$apply(function() {
                                     scope.callbacks.dragMove(itemPosition, containment, eventObj);
