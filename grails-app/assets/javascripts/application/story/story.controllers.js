@@ -721,7 +721,7 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
         $scope.postitClass = postitSize.standalonePostitClass($scope.viewName, 'grid-group size-sm');
     };
     getStandalonePostitClass();
-    screenSize.on('xs, sm', getStandalonePostitClass);
+    screenSize.on('xs, sm', getStandalonePostitClass, $scope);
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getStandalonePostitClass);
 }]);
 
@@ -738,7 +738,7 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
         $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
     };
     getPostitClass();
-    screenSize.on('xs, sm', getPostitClass);
+    screenSize.on('xs, sm', getPostitClass, $scope);
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 

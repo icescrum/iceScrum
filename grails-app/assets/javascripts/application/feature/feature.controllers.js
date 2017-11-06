@@ -23,7 +23,7 @@
  *
  */
 
-controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'FeatureService', function($scope, $filter, ProjectService, FeatureService) {
+controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'FeatureService', 'postitSize', function($scope, $filter, ProjectService, FeatureService, postitSize) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -73,7 +73,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'F
         $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
     };
     getPostitClass();
-    screenSize.on('xs, sm', getPostitClass);
+    screenSize.on('xs, sm', getPostitClass, $scope);
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 

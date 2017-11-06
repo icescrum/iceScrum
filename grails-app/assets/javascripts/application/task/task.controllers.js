@@ -154,7 +154,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
         $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
     };
     getPostitClass();
-    screenSize.on('xs, sm', getPostitClass);
+    screenSize.on('xs, sm', getPostitClass, $scope);
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
