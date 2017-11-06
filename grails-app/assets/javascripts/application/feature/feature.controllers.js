@@ -23,7 +23,7 @@
  *
  */
 
-controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'FeatureService', 'postitSize', function($scope, $filter, ProjectService, FeatureService, postitSize) {
+controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $filter, ProjectService, FeatureService, postitSize, screenSize) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
