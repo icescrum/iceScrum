@@ -169,7 +169,7 @@
             </div>
             <div class="panel-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="loading-logo" ng-include="'loading.html'"></div>
-                <div class="{{ 'postits' | postitClass: viewName }}"
+                <div class="postits {{ postitClass }}"
                      ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"
                      ng-controller="storyBacklogCtrl"
                      as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"

@@ -137,7 +137,7 @@
                     ${message(code: 'todo.is.ui.feature.new')}
                 </a>
             </div>
-            <div class="{{ 'postits' | postitClass: viewName }}"
+            <div class="postits {{ postitClass }}"
                  ng-class="{'has-selected': hasSelected() }"
                  ng-controller="featureCtrl"
                  as-sortable="featureSortableOptions | merge: sortableScrollOptions()"

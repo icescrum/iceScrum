@@ -647,7 +647,6 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
     $scope.noneFollowed = function(stories) {
         return !_.some(stories, 'followed');
     };
-
     function refreshStories() {
         StoryService.getMultiple(storyListId).then(function(stories) {
             $scope.topStory = _.head(stories);
@@ -718,6 +717,12 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
         allowIn: ['INPUT'],
         callback: $scope.resetStoryForm
     });
+    var getStandalonePostitClass = function() {
+        $scope.postitClass = postitSize.standalonePostitClass($scope.viewName, 'grid-group size-sm');
+    };
+    getStandalonePostitClass();
+    screenSize.on('xs, sm', getStandalonePostitClass);
+    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getStandalonePostitClass);
 }]);
 
 controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 'postitSize', 'screenSize', function($controller, $scope, $filter, postitSize, screenSize) {
@@ -729,6 +734,12 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     };
     $scope.$watch('backlog.stories', updateOrder, true);
     $scope.$watch('orderBy', updateOrder, true);
+    var getPostitClass = function() {
+        $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
+    };
+    getPostitClass();
+    screenSize.on('xs, sm', getPostitClass);
+    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
 controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter', 'StoryStatesByName', function($controller, $scope, $filter, StoryStatesByName) {

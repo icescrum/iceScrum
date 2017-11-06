@@ -150,6 +150,12 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
             }
         }
     };
+    var getPostitClass = function() {
+        $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
+    };
+    getPostitClass();
+    screenSize.on('xs, sm', getPostitClass);
+    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
 controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint) {
