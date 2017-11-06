@@ -798,7 +798,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
         if (leftSpace <= 5 && $scope.visibleElementsList.length > 0) {
             $scope.hiddenElementsList.unshift($scope.visibleElementsList.pop());
         }
-        if ((leftSpace >= 210 && $scope.hiddenElementsList.length >= 2) || (leftSpace >= 110 && $scope.hiddenElementsList.length == 1)) {
+        if ((leftSpace >= 210 && $scope.hiddenElementsList.length >= 2) || (leftSpace >= 160 && $scope.hiddenElementsList.length == 1)) {
             if (!_.includes($scope.savedHiddenElementsOrder, _.head($scope.hiddenElementsList).code)) {
                 $scope.visibleElementsList.push($scope.hiddenElementsList.shift());
             }
