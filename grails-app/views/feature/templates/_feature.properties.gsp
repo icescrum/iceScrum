@@ -64,7 +64,7 @@
                 </ui-select>
             </div>
             <div class="form-half">
-                <label for="value">${message(code: 'is.feature.value')}</label>
+                <label for="value"><i class="fa fa-line-chart"></i> ${message(code: 'is.feature.value')}</label>
                 <ui-select class="form-control"
                            ng-click="editForm(true)"
                            ng-disabled="!formEditable()"

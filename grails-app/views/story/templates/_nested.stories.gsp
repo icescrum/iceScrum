@@ -26,9 +26,13 @@
     <table class="table" ng-controller="featureStoriesCtrl">
         <tbody ng-repeat="storyEntry in storyEntries" style="border-top: 0;">
             <tr ng-if="storyEntry.label">
-                <th class="text-center" style="border-top: 0;">
-                    <div style="margin-top: 20px;">
-                        {{ storyEntry.label }}
+                <th style="border-top: 0; padding:0">
+                    <div class="clearfix no-padding">
+                        <div class="col-sm-12">
+                            <div class="text-center" style="margin-top:30px;margin-bottom:10px;font-size:15px;">
+                                {{ storyEntry.label }}
+                            </div>
+                        </div>
                     </div>
                 </th>
             </tr>
@@ -58,6 +62,15 @@
                     </div>
                     <hr ng-if="!$last"/>
                 </td>
+            </tr>
+            <tr ng-if="storyEntry.label">
+                <th style="border-top: 0; padding:0">
+                    <div class="clearfix no-padding">
+                        <div class="col-sm-12">
+                            <div class="clearfix no-padding" style="margin-top:10px;border-bottom:1px solid #eeeeee;margin-bottom:10px;"></div>
+                        </div>
+                    </div>
+                </th>
             </tr>
         </tbody>
         <tbody>

@@ -111,10 +111,10 @@
                                search-enabled="true"
                                ng-model="editableStory.dependsOn">
                         <ui-select-match allow-clear="{{ formHolder.editing }}" placeholder="${message(code: 'is.ui.story.nodependence')}">
-                            {{ $select.selected | dependsOnLabel }}
+                            <i class="fa fa-sticky-note" ng-style="{color: $select.selected.feature ? $select.selected.feature.color : '#f9f157'}"></i> {{ $select.selected | dependsOnLabel }}
                         </ui-select-match>
                         <ui-select-choices repeat="dependenceEntry in dependenceEntries | orFilter: { name: $select.search, uid: $select.search }">
-                            <span ng-bind-html="dependenceEntry | dependsOnLabel | highlight: $select.search"></span>
+                            <i class="fa fa-sticky-note" ng-style="{color: dependenceEntry.feature ? dependenceEntry.feature.color : '#f9f157'}"></i> <span ng-bind-html="dependenceEntry | dependsOnLabel | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-show="editableStory.dependsOn.id">
@@ -149,7 +149,7 @@
         </div>
         <div class="clearfix no-padding">
             <div class="form-1-quarter" ng-show="authorizedStory('updateEstimate', editableStory)">
-                <label for="effort">${message(code: 'is.story.effort')}</label>
+                <label for="effort"><i class="fa fa-dollar"></i> ${message(code: 'is.story.effort')}</label>
                 <div class="input-group">
                     <ui-select ng-if="!isEffortCustom()"
                                class="form-control"
@@ -180,7 +180,7 @@
                 </div>
             </div>
             <div class="form-3-quarters" ng-show="authorizedStory('updateParentSprint', editableStory)">
-                <label for="parentSprint">${message(code: 'is.sprint')}</label>
+                <label for="parentSprint"><i class="fa fa-tasks"></i> ${message(code: 'is.sprint')}</label>
                 <ui-select ng-click="retrieveParentSprintEntries(); editForm(true)"
                            ng-change="editForm(true)"
                            ng-disabled="!formEditable()"
@@ -199,7 +199,7 @@
         </div>
         <div class="clearfix no-padding">
             <div class="form-1-quarter">
-                <label for="value">${message(code: 'is.story.value')}</label>
+                <label for="value"><i class="fa fa-line-chart"></i> ${message(code: 'is.story.value')}</label>
                 <div class="input-group">
                     <ui-select class="form-control"
                                ng-click="editForm(true)"
@@ -279,7 +279,7 @@
                  ng-bind-html="editableStory.notes_html ? editableStory.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
         </div>
         <div class="form-group">
-            <label>${message(code: 'is.backlogelement.attachment')} {{ story.attachments_count > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
+            <label><i class="fa fa-paperclip"></i> ${message(code: 'is.backlogelement.attachment')} {{ story.attachments_count > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
             <div ng-if="authorizedStory('upload', story)" ng-controller="attachmentNestedCtrl">
                 <button type="button"
                         class="btn btn-default"
