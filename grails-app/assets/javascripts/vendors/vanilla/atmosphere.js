@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Async-IO.org
+ * Copyright 2017 Async-IO.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@
         hasOwn = Object.prototype.hasOwnProperty;
 
     atmosphere = {
-        version: "2.3.3-javascript",
+        version: "2.3.5-javascript",
         onError: function (response) {
         },
         onClose: function (response) {
@@ -196,6 +196,8 @@
                 closeAsync: false,
                 reconnectOnServerError: true,
                 handleOnlineOffline: true,
+                maxWebsocketErrorRetries: 1,
+                curWebsocketErrorRetries: 0,
                 onError: function (response) {
                 },
                 onClose: function (response) {
@@ -485,6 +487,7 @@
                 _response.responseBody = "";
                 _response.status = 408;
                 _response.partialMessage = "";
+                _request.curWebsocketErrorRetries = 0;
                 _invokeCallback();
                 _disconnect();
                 _clearState();
@@ -645,14 +648,14 @@
                 } else if (_request.transport === 'websocket') {
                     if (!_supportWebsocket()) {
                         _reconnectWithFallbackTransport("Websocket is not supported, using request.fallbackTransport (" + _request.fallbackTransport
-                            + ")");
+                                                        + ")");
                     } else {
                         _executeWebSocket(false);
                     }
                 } else if (_request.transport === 'sse') {
                     if (!_supportSSE()) {
                         _reconnectWithFallbackTransport("Server Side Events(SSE) is not supported, using request.fallbackTransport ("
-                            + _request.fallbackTransport + ")");
+                                                        + _request.fallbackTransport + ")");
                     } else {
                         _executeSSE(false);
                     }
@@ -980,12 +983,12 @@
 
                 function leaveTrace() {
                     document.cookie = _sharingKey + "=" +
-                        // Opera's JSON implementation ignores a number whose a last digit of 0 strangely
-                        // but has no problem with a number whose a last digit of 9 + 1
-                        encodeURIComponent(atmosphere.util.stringifyJSON({
-                            ts: atmosphere.util.now() + 1,
-                            heir: (storageService.get("children") || [])[0]
-                        })) + "; path=/";
+                                      // Opera's JSON implementation ignores a number whose a last digit of 0 strangely
+                                      // but has no problem with a number whose a last digit of 9 + 1
+                                      encodeURIComponent(atmosphere.util.stringifyJSON({
+                                          ts: atmosphere.util.now() + 1,
+                                          heir: (storageService.get("children") || [])[0]
+                                      })) + "; path=/";
                 }
 
                 // Chooses a storageService
@@ -1475,6 +1478,10 @@
                     if (_request.heartbeatTimer) {
                         clearTimeout(_request.heartbeatTimer);
                     }
+
+                    if (++_request.curWebsocketErrorRetries < _request.maxWebsocketErrorRetries && _request.fallbackTransport !== 'websocket') {
+                        _reconnectWithFallbackTransport("Failed to connect via Websocket. Downgrading to " + _request.fallbackTransport + " and resending");
+                    }
                 };
 
                 _websocket.onclose = function (message) {
@@ -1491,14 +1498,14 @@
                                 break;
                             case 1001:
                                 reason = "The endpoint is going away, either because of a server failure or because the "
-                                    + "browser is navigating away from the page that opened the connection.";
+                                         + "browser is navigating away from the page that opened the connection.";
                                 break;
                             case 1002:
                                 reason = "The endpoint is terminating the connection due to a protocol error.";
                                 break;
                             case 1003:
                                 reason = "The connection is being terminated because the endpoint received data of a type it "
-                                    + "cannot accept (for example, a text-only endpoint received binary data).";
+                                         + "cannot accept (for example, a text-only endpoint received binary data).";
                                 break;
                             case 1004:
                                 reason = "The endpoint is terminating the connection because a data frame was received that is too large.";
@@ -1536,7 +1543,7 @@
 
                     if (_abortingConnection) {
                         atmosphere.util.log(_request.logLevel, ["Websocket closed normally"]);
-                    } else if (!webSocketOpened) {
+                    } else if (!webSocketOpened && _request.fallbackTransport !== 'websocket') {
                         _reconnectWithFallbackTransport("Websocket failed on first connection attempt. Downgrading to " + _request.fallbackTransport + " and resending");
 
                     } else if (_request.reconnect && _response.transport === 'websocket' ) {
@@ -1595,8 +1602,8 @@
 
                     if (messages.length <= pos + 2) {
                         atmosphere.util.log('error', ["Protocol data not sent by the server. " +
-                        "If you enable protocol on client side, be sure to install JavascriptProtocol interceptor on server side." +
-                        "Also note that atmosphere-runtime 2.2+ should be used."]);
+                                                      "If you enable protocol on client side, be sure to install JavascriptProtocol interceptor on server side." +
+                                                      "Also note that atmosphere-runtime 2.2+ should be used."]);
                     }
 
                     _heartbeatInterval = parseInt(atmosphere.util.trim(messages[pos + 1]), 10);
@@ -1740,11 +1747,12 @@
                     atmosphere.util.onTransportFailure(errorMessage, _request);
                 }
 
-                _request.transport = _request.fallbackTransport;
                 var reconnectInterval = _request.connectTimeout === -1 ? 0 : _request.connectTimeout;
                 if (_request.reconnect && _request.transport !== 'none' || _request.transport == null) {
+                    _request.transport = _request.fallbackTransport;
                     _request.method = _request.fallbackMethod;
                     _response.transport = _request.fallbackTransport;
+                    _response.state = '';
                     _request.fallbackTransport = 'none';
                     if (reconnectInterval > 0) {
                         _request.reconnectId = setTimeout(function () {
@@ -2274,18 +2282,18 @@
                 };
 
                 var rewriteURL = rq.rewriteURL || function (url) {
-                        // Maintaining session by rewriting URL
-                        // http://stackoverflow.com/questions/6453779/maintaining-session-by-rewriting-url
-                        var match = /(?:^|;\s*)(JSESSIONID|PHPSESSID)=([^;]*)/.exec(document.cookie);
+                    // Maintaining session by rewriting URL
+                    // http://stackoverflow.com/questions/6453779/maintaining-session-by-rewriting-url
+                    var match = /(?:^|;\s*)(JSESSIONID|PHPSESSID)=([^;]*)/.exec(document.cookie);
 
-                        switch (match && match[1]) {
-                            case "JSESSIONID":
-                                return url.replace(/;jsessionid=[^\?]*|(\?)|$/, ";jsessionid=" + match[2] + "$1");
-                            case "PHPSESSID":
-                                return url.replace(/\?PHPSESSID=[^&]*&?|\?|$/, "?PHPSESSID=" + match[2] + "&").replace(/&$/, "");
-                        }
-                        return url;
-                    };
+                    switch (match && match[1]) {
+                        case "JSESSIONID":
+                            return url.replace(/;jsessionid=[^\?]*|(\?)|$/, ";jsessionid=" + match[2] + "$1");
+                        case "PHPSESSID":
+                            return url.replace(/\?PHPSESSID=[^&]*&?|\?|$/, "?PHPSESSID=" + match[2] + "&").replace(/&$/, "");
+                    }
+                    return url;
+                };
 
                 // Handles open and message event
                 xdr.onprogress = function () {
@@ -2882,7 +2890,7 @@
                     }
 
                     if ((_response.responseBody.length === 0 ||
-                        (isString && _heartbeatPadding === _response.responseBody)) && _response.state === "messageReceived") {
+                         (isString && _heartbeatPadding === _response.responseBody)) && _response.state === "messageReceived") {
                         continue;
                     }
 
@@ -3308,9 +3316,9 @@
 
             function quote(string) {
                 return '"' + string.replace(escapable, function (a) {
-                        var c = meta[a];
-                        return typeof c === "string" ? c : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
-                    }) + '"';
+                    var c = meta[a];
+                    return typeof c === "string" ? c : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+                }) + '"';
             }
 
             function f(n) {
@@ -3340,8 +3348,8 @@
                         switch (Object.prototype.toString.call(value)) {
                             case "[object Date]":
                                 return isFinite(value.valueOf()) ? '"' + value.getUTCFullYear() + "-" + f(value.getUTCMonth() + 1) + "-"
-                                    + f(value.getUTCDate()) + "T" + f(value.getUTCHours()) + ":" + f(value.getUTCMinutes()) + ":" + f(value.getUTCSeconds())
-                                    + "Z" + '"' : "null";
+                                                                   + f(value.getUTCDate()) + "T" + f(value.getUTCHours()) + ":" + f(value.getUTCMinutes()) + ":" + f(value.getUTCSeconds())
+                                                                   + "Z" + '"' : "null";
                             case "[object Array]":
                                 len = value.length;
                                 partial = [];
@@ -3402,11 +3410,11 @@
     (function () {
         var ua = navigator.userAgent.toLowerCase(),
             match = /(chrome)[ \/]([\w.]+)/.exec(ua) ||
-                /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
-                /(msie) ([\w.]+)/.exec(ua) ||
-                /(trident)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
-                ua.indexOf("android") < 0 && /version\/(.+) (safari)/.exec(ua) ||
-                ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+                    /(opera)(?:.*version|)[ \/]([\w.]+)/.exec(ua) ||
+                    /(msie) ([\w.]+)/.exec(ua) ||
+                    /(trident)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+                    ua.indexOf("android") < 0 && /version\/(.+) (safari)/.exec(ua) ||
+                    ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
                 [];
 
         // Swaps variables
