@@ -390,7 +390,13 @@ class StoryController implements ControllerErrorHandler {
     def dependenceEntries(long id, long project) {
         def story = Story.withStory(project, id)
         def stories = Story.findPossiblesDependences(story).list()?.sort { a -> a.feature == story.feature ? 0 : 1 }
-        def storyEntries = stories.collect { [id: it.id, name: it.name, uid: it.uid] }
+        def storyEntries = stories.collect { Story dependencyStory ->
+            def entry = [id: dependencyStory.id, name: dependencyStory.name, uid: dependencyStory.uid]
+            if (dependencyStory.feature) {
+                entry.feature = [color: dependencyStory.feature.color]
+            }
+            return entry
+        }
         render(status: 200, contentType: 'application/json', text: storyEntries as JSON)
     }
 

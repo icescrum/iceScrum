@@ -382,9 +382,9 @@ filters
         }
     }
 }]).filter('dependsOnLabel', [function() {
-    return function(dependsOn) {
+        return function(dependsOn, before) {
         if (dependsOn) {
-            return dependsOn.name + ' (' + dependsOn.uid + ')';
+            return before ? dependsOn.uid + ' - ' + dependsOn.name : dependsOn.name + ' - ' + dependsOn.uid;
         }
     }
 }]).filter('sprintName', ['$rootScope', function($rootScope) {

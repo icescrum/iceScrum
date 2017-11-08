@@ -110,11 +110,14 @@
                                name="dependsOn"
                                search-enabled="true"
                                ng-model="editableStory.dependsOn">
-                        <ui-select-match allow-clear="{{ formHolder.editing }}" placeholder="${message(code: 'is.ui.story.nodependence')}">
-                            <i class="fa fa-sticky-note" ng-style="{color: $select.selected.feature ? $select.selected.feature.color : '#f9f157'}"></i> {{ $select.selected | dependsOnLabel }}
+                        <ui-select-match allow-clear="{{ formHolder.editing }}"
+                                         title="{{ $select.selected | dependsOnLabel }}"
+                                         placeholder="${message(code: 'is.ui.story.nodependence')}">
+                            {{ $select.selected | dependsOnLabel }}
                         </ui-select-match>
                         <ui-select-choices repeat="dependenceEntry in dependenceEntries | orFilter: { name: $select.search, uid: $select.search }">
-                            <i class="fa fa-sticky-note" ng-style="{color: dependenceEntry.feature ? dependenceEntry.feature.color : '#f9f157'}"></i> <span ng-bind-html="dependenceEntry | dependsOnLabel | highlight: $select.search"></span>
+                            <i class="fa fa-sticky-note" ng-style="{color: dependenceEntry.feature ? dependenceEntry.feature.color : '#f9f157'}"></i>
+                            <span ng-bind-html="dependenceEntry | dependsOnLabel: true | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-show="editableStory.dependsOn.id">
