@@ -154,7 +154,6 @@
         </uib-tab>
         <entry:point id="user-dialog-profile-tab"/>
         <uib-tab heading="${message(code: 'is.dialog.profile.tokensSettings')}">
-            <entry:point id="user-dialog-profile-tab-tokens-before-form"/>
             <div class="token-tab" ng-controller="UserTokenCtrl">
                 <div class="form-group">
                     <label for="userToken.name">${message(code: 'is.user.token.name')}</label>
@@ -194,51 +193,40 @@
                     </tbody>
                 </table>
             </div>
-            <entry:point id="user-dialog-profile-tab-tokens-after-form"/>
         </uib-tab>
         <g:if test="${projects}">
             <uib-tab heading="${message(code: 'is.dialog.profile.emailsSettings')}">
-                <entry:point id="user-dialog-profile-tab-emails-before-form"/>
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <label for="user.preferences.emailsSettings.autoFollow">${message(code: 'is.dialog.profile.emailsSettings.autoFollow')}</label>
-                        <select name="user.preferences.emailsSettings.autoFollow"
-                                class="form-control"
-                                multiple
-                                ng-model="editableUser.preferences.emailsSettings.autoFollow">
-                            <g:each in="${projects}" var="project">
-                                <option value="${project.pkey}">${project.name}</option>
-                            </g:each>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <label for="user.preferences.emailsSettings.onStory">${message(code: 'is.dialog.profile.emailsSettings.onStory')}</label>
-                        <select name="user.preferences.emailsSettings.onStory"
-                                multiple="multiple"
-                                class="form-control"
-                                ng-model="editableUser.preferences.emailsSettings.onStory">
-                            <g:each in="${projects}" var="project">
-                                <option value="${project.pkey}">${project.name}</option>
-                            </g:each>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <label for="user.preferences.emailsSettings.onUrgentTask">${message(code: 'is.dialog.profile.emailsSettings.onUrgentTask')}</label>
-                        <select name="user.preferences.emailsSettings.onUrgentTask"
-                                multiple="multiple"
-                                class="form-control"
-                                ng-model="editableUser.preferences.emailsSettings.onUrgentTask">
-                            <g:each in="${projects}" var="project">
-                                <option value="${project.pkey}">${project.name}</option>
-                            </g:each>
-                        </select>
-                    </div>
-                </div>
-                <entry:point id="user-dialog-profile-tab-emails-after-form"/>
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th class="text-center" style="width: 25%; vertical-align: middle;">${message(code: 'is.project')}</th>
+                        <th class="text-center" style="width: 25%; vertical-align: middle;">${message(code: 'is.dialog.profile.emailsSettings.autoFollow')}</th>
+                        <th class="text-center" style="width: 25%; vertical-align: middle;">${message(code: 'is.dialog.profile.emailsSettings.onStory')}</th>
+                        <th class="text-center" style="width: 25%; vertical-align: middle;">${message(code: 'is.dialog.profile.emailsSettings.onUrgentTask')}</th>
+                    </tr>
+                    <g:each var="project" in="${projects}">
+                        <tr class="text-center">
+                            <td>${project.name}</td>
+                            <td style="vertical-align: middle;">
+                                <input type="checkbox"
+                                       name="${project.id}-autoFollow"
+                                       id="${project.id}-autoFollow"
+                                       ng-model="emailsSettings.autoFollow['${project.pkey}']">
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <input type="checkbox"
+                                       name="${project.id}-onStory"
+                                       id="${project.id}-onStory"
+                                       ng-model="emailsSettings.onStory['${project.pkey}']">
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <input type="checkbox"
+                                       name="${project.id}-onUrgentTask"
+                                       id="${project.id}-onUrgentTask"
+                                       ng-model="emailsSettings.onUrgentTask['${project.pkey}']">
+                            </td>
+                        </tr>
+                    </g:each>
+                </table>
             </uib-tab>
         </g:if>
     </uib-tabset>

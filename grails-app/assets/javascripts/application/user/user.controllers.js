@@ -24,8 +24,12 @@
 controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User', 'Session', function($scope, $timeout, UserService, User, Session) {
     // Functions
     $scope.update = function(user) {
+        var newEmailsSettings = _.mapValues($scope.emailsSettings, function(emailsSetting) {
+            return _.keys(_.pickBy(emailsSetting, _.id));
+        });
+        user.preferences.emailsSettings = newEmailsSettings;
         var languageChanged = Session.user.preferences.language != user.preferences.language;
-        UserService.update(user).then(function(userUpdated) {
+        UserService.update(user).then(function(updatedUser) {
             if ($scope.$close) {
                 $scope.$close(); // Close auth modal if present
             }
@@ -37,7 +41,8 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
             } else {
                 $scope.notifySuccess('todo.is.ui.profile.updated');
             }
-            angular.extend(Session.user, userUpdated);
+            angular.extend(Session.user, updatedUser);
+            Session.user.preferences.emailsSettings = newEmailsSettings; // Need manual setting because it is not returned by the JSON marshaller for performance and security reasons
         });
     };
     $scope.refreshAvatar = function(user) {
@@ -55,9 +60,12 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
         avatarImg.attr('src', url);
     };
     // Init
-    $scope.editableUser = {};
     $scope.formHolder = {};
     $scope.editableUser = angular.copy(Session.user);
+    $scope.emailsSettings = _.transform(['autoFollow', 'onStory', 'onUrgentTask'], function(emailsSettings, settingName) {
+        var projectKeys = $scope.editableUser.preferences.emailsSettings[settingName];
+        emailsSettings[settingName] = _.zipObject(projectKeys, _.map(projectKeys, _.constant(true)));
+    }, {});
     $scope.languages = {};
     $scope.languageKeys = [];
     Session.getLanguages().then(function(languages) {

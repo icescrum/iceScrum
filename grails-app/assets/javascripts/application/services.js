@@ -743,6 +743,9 @@ services.service("DomainConfigService", [function() {
         },
         team: {
             array: ['members', 'scrumMasters', 'invitedMembers', 'invitedScrumMasters']
+        },
+        emailsSettings: {
+            array: ['autoFollow', 'onUrgentTask', 'onStory']
         }
     };
     this.config.projectd = this.config.project;
