@@ -240,7 +240,9 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         selectionUpdated: function(selectedIds) {
             switch (selectedIds.length) {
                 case 0:
-                    $state.go($scope.viewName);
+                    if (!_.isUndefined($state.params.taskId)) {
+                        $state.go($scope.viewName);
+                    }
                     break;
                 case 1:
                     $state.go($scope.viewName + '.task.details' + ($state.params.taskTabId ? '.tab' : ''), {taskId: selectedIds});
