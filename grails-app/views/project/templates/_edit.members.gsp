@@ -33,7 +33,7 @@
     <div class="btn-toolbar pull-right">
         <button type="button"
                 class="btn btn-danger"
-                ng-click="confirm({ message: '${message(code: 'is.dialog.members.leave.team.confirm')}', callback: leaveTeam, args: [project] })">
+                ng-click="confirm({ message: message('is.dialog.members.leave.team.confirm'), callback: leaveTeam, args: [project] })">
             <i class="fa fa-times"></i> ${message(code: 'is.dialog.members.leave.team')}
         </button>
     </div>
