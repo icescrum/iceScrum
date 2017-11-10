@@ -30,8 +30,7 @@
     </button>
     <entry:point id="header-before-menu"/>
     <nav id="menu-header"
-         ng-style="application.context | contextStyle"
-         class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ application.context.color | contrastColor:true }}"
+         class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse"
          role="navigation">
         <div class="container-fluid">
             <div class="nav-header">
