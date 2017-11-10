@@ -381,10 +381,10 @@ filters
             return items;
         }
     }
-}]).filter('dependsOnLabel', [function() {
-        return function(dependsOn, before) {
-        if (dependsOn) {
-            return before ? dependsOn.uid + ' - ' + dependsOn.name : dependsOn.name + ' - ' + dependsOn.uid;
+    }]).filter('storyLabel', [function() {
+        return function(story, after) {
+            if (story) {
+                return after ? story.name + ' - ' + story.uid : story.uid + ' - ' + story.name;
         }
     }
 }]).filter('sprintName', ['$rootScope', function($rootScope) {
@@ -487,4 +487,8 @@ filters
     return function(inside) {
         return inside ? '(' + inside + ')' : '';
     }
-});
+    }).filter('ellipsis', ['limitToFilter', function(limitToFilter) {
+        return function(text, limit) {
+            return text ? limitToFilter(text, limit) + (text.length > limit ? '...' : '') : text;
+        }
+    }]);

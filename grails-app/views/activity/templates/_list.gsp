@@ -40,7 +40,7 @@
                         <a ng-if="activity.onClick !== undefined"
                            ng-click="activity.onClick()"
                            href>
-                            {{ (activity.label | limitTo: 50) + (activity.label.length > 50 ? '...' : '') }}
+                            {{ activity.label | ellipsis: 50 }}
                         </a>
                         <span ng-if="(activity.beforeValue != null || activity.afterValue != null) && activity.code == 'update'">
                             ${message(code: 'is.fluxiable.updateField.newValue')} <em>{{:: activity.afterValue != null && activity.afterValue != '' ? activity.afterValue : '_' }}</em>

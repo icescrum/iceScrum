@@ -111,26 +111,30 @@
                                search-enabled="true"
                                ng-model="editableStory.dependsOn">
                         <ui-select-match allow-clear="{{ formHolder.editing }}"
-                                         title="{{ $select.selected | dependsOnLabel }}"
+                                         title="{{ $select.selected | storyLabel }}"
                                          placeholder="${message(code: 'is.ui.story.nodependence')}">
-                            {{ $select.selected | dependsOnLabel }}
+                            {{ $select.selected | storyLabel: true }}
                         </ui-select-match>
                         <ui-select-choices repeat="dependenceEntry in dependenceEntries | orFilter: { name: $select.search, uid: $select.search }">
                             <i class="fa fa-sticky-note" ng-style="{color: dependenceEntry.feature ? dependenceEntry.feature.color : '#f9f157'}"></i>
-                            <span ng-bind-html="dependenceEntry | dependsOnLabel: true | highlight: $select.search"></span>
+                            <span ng-bind-html="dependenceEntry | storyLabel | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <span class="input-group-btn" ng-show="editableStory.dependsOn.id">
-                        <a ui-sref="backlog.backlog.story.details({elementId: 'all', storyId: editableStory.dependsOn.id})"
+                    <span class="input-group-btn" ng-if="editableStory.dependsOn.id">
+                        <a ui-sref=".({storyId: editableStory.dependsOn.id})"
                            class="btn btn-default">
                             <i class="fa fa-info-circle"></i>
                         </a>
                     </span>
                 </div>
-                <div class="clearfix" style="margin-top: 15px;" ng-if="editableStory.dependences.length">
-                    <strong>${message(code: 'is.story.dependences')} :</strong>
-                    <span ng-repeat="dependence in editableStory.dependences track by dependence.id">{{ dependence.name }}</span>
-                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-if="editableStory.dependences.length">
+            <label>${message(code: 'is.story.dependences')}</label>
+            <div class="form-control-static">
+                <span ng-repeat="dependence in editableStory.dependences track by dependence.id">
+                    <a ui-sref=".({storyId: dependence.id})" title="{{ dependence | storyLabel }}">{{ dependence.name | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
+                </span>
             </div>
         </div>
         <div class="form-group">
@@ -192,7 +196,7 @@
                            search-enabled="true"
                            ng-model="editableStory.parentSprint">
                     <ui-select-match allow-clear="{{ formHolder.editing }}" placeholder="${message(code: 'is.ui.story.noparentsprint')}">
-                        {{ $select.selected.parentRelease.name + ' - ' + ($select.selected | sprintName) }}
+                        {{ $select.selected.parentReleaseName + ' - ' + ($select.selected | sprintName) }}
                     </ui-select-match>
                     <ui-select-choices group-by="groupSprintByParentRelease" repeat="parentSprintEntry in parentSprintEntries | filter: { index: $select.search }">
                         <span ng-bind-html="parentSprintEntry | sprintName | highlight: $select.search"></span>
