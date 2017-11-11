@@ -309,7 +309,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
         }
     };
     this.transformStringToDate = function(item) {
-        _.each(['startDate', 'endDate', 'inProgressDate', 'doneDate'], function(dateName) {
+        _.each(['startDate', 'endDate', 'inProgressDate', 'doneDate', 'date'], function(dateName) {
             if (item.hasOwnProperty(dateName) && item[dateName] != null) {
                 item[dateName] = new Date(item[dateName]);
             }
