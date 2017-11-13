@@ -23,21 +23,25 @@
 
 <script type="text/ng-template" id="story.task.new.html">
 <form ng-submit="save(task, selected)"
-      class="form-editable form-editing"
       name="formHolder.taskForm"
-      ng-class="{'form-not-expanded': !formHolder.formExpanded}"
+      ng-class="['form-editable form-editing', {'form-not-expanded': !formHolder.formExpanded, 'form-expanded': formHolder.formExpanded}]"
       show-validation
       novalidate>
     <div class="clearfix no-padding">
-        <div class="form-group" ng-class="{'col-sm-12':!formHolder.formExpanded, 'col-sm-8':formHolder.formExpanded}">
-            <input required
-                   ng-maxlength="100"
-                   type="text"
-                   name="name"
-                   ng-model="task.name"
-                   ng-focus="formHolder.formExpanded = true;"
-                   placeholder="${message(code: 'is.ui.task.noname')}"
-                   class="form-control">
+        <div class="form-group" ng-class="{'col-sm-12':!formHolder.formExpanded, 'col-sm-8':formHolder.formExpanded}" ng-click="formHolder.formExpanded = true;">
+            <div ng-class="{'input-group': !formHolder.formExpanded}">
+                <input required
+                       ng-maxlength="100"
+                       type="text"
+                       name="name"
+                       ng-model="task.name"
+                       ng-focus="formHolder.formExpanded = true;"
+                       placeholder="${message(code: 'is.ui.task.noname')}"
+                       class="form-control">
+                <span class="input-group-btn visible-hidden">
+                    <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
+                </span>
+            </div>
         </div>
         <div class="form-group col-sm-4 hidden-not-expanded">
             <input name="estimation"

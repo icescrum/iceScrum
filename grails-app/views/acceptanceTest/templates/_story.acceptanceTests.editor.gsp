@@ -24,8 +24,7 @@
 <script type="text/ng-template" id="story.acceptanceTest.editor.html">
 <form ng-submit="save(editableAcceptanceTest, selected)"
       name="formHolder.acceptanceTestForm"
-      class="form-editable form-editing"
-      ng-class="{'form-not-expanded': !formHolder.formExpanded}"
+      ng-class="['form-editable form-editing', {'form-not-expanded': !formHolder.formExpanded, 'form-expanded': formHolder.formExpanded}]"
       show-validation
       novalidate>
     <div class="clearfix no-padding">
@@ -40,6 +39,9 @@
                        ng-focus="formHolder.formExpanded = true;"
                        class="form-control"
                        placeholder="${message(code: 'is.acceptanceTest')}">
+                <span class="input-group-btn visible-hidden">
+                    <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
+                </span>
             </div>
         </div>
         <div class="col-sm-4 form-group hidden-not-expanded">

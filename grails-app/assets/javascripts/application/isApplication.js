@@ -847,6 +847,7 @@ var isApplication = angular.module('isApplication', [
             if (isSettings.userPreferences) {
                 isSettings.user.preferences = isSettings.userPreferences;
             }
+            PDFJS.workerSrc = isSettings.workerSrc;
             Session.create(isSettings.user, isSettings.roles, isSettings.menus, isSettings.defaultView);
         }
         $rootScope.authenticated = Session.authenticated;

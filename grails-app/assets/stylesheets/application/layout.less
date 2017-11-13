@@ -573,13 +573,19 @@ header {
     border: 1px solid #d9d9d9;
     color: #555555;
   }
-  .btn, .spaced-help-block, .hidden-not-expanded, .input-group-addon strong {
+  .btn-toolbar .btn, .spaced-help-block, .hidden-not-expanded, .input-group-addon strong {
     display: none;
   }
   textarea, .form-group-markItUp + .markitup-preview:not(.no-fixed-height) {
     min-height: 30px;
     height: 30px !important;
     overflow: hidden !important;
+  }
+}
+
+.form-expanded {
+  .visible-hidden {
+    display: none;
   }
 }
 

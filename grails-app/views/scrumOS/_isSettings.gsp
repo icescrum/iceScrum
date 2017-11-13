@@ -54,7 +54,8 @@
         showAppStore: ${flash.showAppStore?:false},
         version: "${g.meta(name: 'app.version')}",
         serverUrl: "${serverURL}",
-        warning: ${ApplicationSupport.getLastWarning() as JSON}
+        warning: ${ApplicationSupport.getLastWarning() as JSON},
+        workerSrc: "${asset.assetPath(src:"vendors/vanilla/pdfjs/pdf.worker.js")}"
         <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, project:project]"/>
     };
 </script>

@@ -381,10 +381,10 @@ filters
             return items;
         }
     }
-    }]).filter('storyLabel', [function() {
-        return function(story, after) {
-            if (story) {
-                return after ? story.name + ' - ' + story.uid : story.uid + ' - ' + story.name;
+}]).filter('storyLabel', [function() {
+    return function(story, after) {
+        if (story) {
+            return after ? story.name + ' - ' + story.uid : story.uid + ' - ' + story.name;
         }
     }
 }]).filter('sprintName', ['$rootScope', function($rootScope) {
@@ -467,7 +467,7 @@ filters
 }).filter('contextIcon', function() {
     return function(contextType) {
         return {
-            feature: 'fa-sticky-note',
+            feature: 'fa-puzzle-piece',
             tag: 'fa-tag',
             actor: 'fa-child'
         }[contextType];
@@ -487,8 +487,8 @@ filters
     return function(inside) {
         return inside ? '(' + inside + ')' : '';
     }
-    }).filter('ellipsis', ['limitToFilter', function(limitToFilter) {
-        return function(text, limit) {
-            return text ? limitToFilter(text, limit) + (text.length > limit ? '...' : '') : text;
-        }
-    }]);
+}).filter('ellipsis', ['limitToFilter', function(limitToFilter) {
+    return function(text, limit) {
+        return text ? limitToFilter(text, limit) + (text.length > limit ? '...' : '') : text;
+    }
+}]);

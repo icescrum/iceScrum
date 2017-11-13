@@ -23,11 +23,14 @@
 <script type="text/ng-template" id="comment.editor.html">
 <form ng-submit="save(editableComment, selected)"
       name="formHolder.commentForm"
-      class="form-editable form-editing"
+      ng-class="['form-editable form-editing', {'form-not-expanded': !formHolder.formExpanded, 'form-expanded': formHolder.formExpanded}]"
       ng-class="{'form-not-expanded': !formHolder.formExpanded}"
       show-validation
       novalidate>
     <div class="form-group">
+        <div class="visible-hidden" style="right: 10px;position: absolute;">
+            <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
+        </div>
         <textarea required
                   ng-maxlength="5000"
                   name="body"
