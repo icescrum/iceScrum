@@ -96,11 +96,9 @@ if ((typeof PDFJSDev === 'undefined' ||
             this.length = length;
             ensureUint32ArrayViewProps(this.length);
         }
-
         Uint32ArrayView.prototype = Object.create(null);
 
         var uint32ArrayViewSetters = 0;
-
         function createUint32ArrayProp(index) {
             return {
                 get() {
@@ -164,7 +162,7 @@ if ((typeof PDFJSDev === 'undefined' ||
         globalScope.Float32Array = TypedArray;
         globalScope.Float64Array = TypedArray;
 
-        globalScope.Uint32Array = function() {
+        globalScope.Uint32Array = function () {
             if (arguments.length === 3) {
                 // Building view for buffer, offset, and length
                 if (arguments[1] !== 0) {
@@ -220,13 +218,13 @@ if ((typeof PDFJSDev === 'undefined' ||
                 if (hasDOM) {
                     // some browsers (e.g. safari) cannot use defineProperty() on DOM
                     // objects and thus the native version is not sufficient
-                    Object.defineProperty(new Image(), 'id', {value: 'test',});
+                    Object.defineProperty(new Image(), 'id', { value: 'test', });
                 }
                 // ... another test for android gb browser for non-DOM objects
                 var Test = function Test() {};
-                Test.prototype = {get id() { },};
+                Test.prototype = { get id() { }, };
                 Object.defineProperty(new Test(), 'id',
-                    {value: '', configurable: true, enumerable: true, writable: false,});
+                    { value: '', configurable: true, enumerable: true, writable: false, });
             } catch (e) {
                 definePropertyPossible = false;
             }
@@ -329,7 +327,7 @@ if ((typeof PDFJSDev === 'undefined' ||
         var digits =
             'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
-        globalScope.btoa = function(chars) {
+        globalScope.btoa = function (chars) {
             var buffer = '';
             var i, n;
             for (i = 0, n = chars.length; i < n; i += 3) {
@@ -356,7 +354,7 @@ if ((typeof PDFJSDev === 'undefined' ||
         // https://github.com/davidchambers/Base64.js
         var digits =
             'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-        globalScope.atob = function(input) {
+        globalScope.atob = function (input) {
             input = input.replace(/=+$/, '');
             if (input.length % 4 === 1) {
                 throw new Error('bad atob input');
@@ -597,11 +595,9 @@ if ((typeof PDFJSDev === 'undefined' ||
                 event.stopPropagation();
             }
         }
-
         function isDisabled(node) {
             return node.disabled || (node.parentNode && isDisabled(node.parentNode));
         }
-
         if (isOpera) {
             // use browser detection since we cannot feature-check this bug
             document.addEventListener('click', ignoreIfTargetDisabled, true);
@@ -689,7 +685,8 @@ if ((typeof PDFJSDev === 'undefined' ||
                 // thus pass the Chrome check above and not reach this block.
                 polyfill = isAndroidPre5;
             } else if (isSafari) {
-                versionMatch = userAgent.match(/Version\/([0-9]+)\.([0-9]+)\.([0-9]+) Safari\//);
+                versionMatch = userAgent.
+                match(/Version\/([0-9]+)\.([0-9]+)\.([0-9]+) Safari\//);
                 // Safari < 6 lacks the set function.
                 polyfill = versionMatch && parseInt(versionMatch[1]) < 6;
             }
@@ -715,10 +712,10 @@ if ((typeof PDFJSDev === 'undefined' ||
 // Support: IE<10, Android<4.0, iOS
     (function checkRequestAnimationFrame() {
         function installFakeAnimationFrameFunctions() {
-            window.requestAnimationFrame = function(callback) {
+            window.requestAnimationFrame = function (callback) {
                 return window.setTimeout(callback, 20);
             };
-            window.cancelAnimationFrame = function(timeoutID) {
+            window.cancelAnimationFrame = function (timeoutID) {
                 window.clearTimeout(timeoutID);
             };
         }
@@ -839,7 +836,7 @@ if ((typeof PDFJSDev === 'undefined' ||
         if (typeof Element.prototype.remove !== 'undefined') {
             return;
         }
-        Element.prototype.remove = function() {
+        Element.prototype.remove = function () {
             if (this.parentNode) {
                 this.parentNode.removeChild(this);
             }
@@ -883,15 +880,15 @@ if ((typeof PDFJSDev === 'undefined' ||
         if (globalScope.Promise) {
             // Promises existing in the DOM/Worker, checking presence of all/resolve
             if (typeof globalScope.Promise.all !== 'function') {
-                globalScope.Promise.all = function(iterable) {
+                globalScope.Promise.all = function (iterable) {
                     var count = 0, results = [], resolve, reject;
-                    var promise = new globalScope.Promise(function(resolve_, reject_) {
+                    var promise = new globalScope.Promise(function (resolve_, reject_) {
                         resolve = resolve_;
                         reject = reject_;
                     });
-                    iterable.forEach(function(p, i) {
+                    iterable.forEach(function (p, i) {
                         count++;
-                        p.then(function(result) {
+                        p.then(function (result) {
                             results[i] = result;
                             count--;
                             if (count === 0) {
@@ -906,21 +903,21 @@ if ((typeof PDFJSDev === 'undefined' ||
                 };
             }
             if (typeof globalScope.Promise.resolve !== 'function') {
-                globalScope.Promise.resolve = function(value) {
-                    return new globalScope.Promise(function(resolve) {
+                globalScope.Promise.resolve = function (value) {
+                    return new globalScope.Promise(function (resolve) {
                         resolve(value);
                     });
                 };
             }
             if (typeof globalScope.Promise.reject !== 'function') {
-                globalScope.Promise.reject = function(reason) {
-                    return new globalScope.Promise(function(resolve, reject) {
+                globalScope.Promise.reject = function (reason) {
+                    return new globalScope.Promise(function (resolve, reject) {
                         reject(reason);
                     });
                 };
             }
             if (typeof globalScope.Promise.prototype.catch !== 'function') {
-                globalScope.Promise.prototype.catch = function(onReject) {
+                globalScope.Promise.prototype.catch = function (onReject) {
                     return globalScope.Promise.prototype.then(undefined, onReject);
                 };
             }
@@ -1022,7 +1019,7 @@ if ((typeof PDFJSDev === 'undefined' ||
                     return;
                 }
                 this.pendingRejectionCheck = true;
-                setTimeout(() = > {
+                setTimeout(() => {
                     this.pendingRejectionCheck = false;
                 var now = Date.now();
                 for (var i = 0; i < this.unhandledRejections.length; i++) {
@@ -1045,10 +1042,7 @@ if ((typeof PDFJSDev === 'undefined' ||
                 if (this.unhandledRejections.length) {
                     this.scheduleRejectionCheck();
                 }
-            },
-                REJECTION_TIMEOUT
-            )
-                ;
+            }, REJECTION_TIMEOUT);
             },
         };
 
@@ -1070,7 +1064,7 @@ if ((typeof PDFJSDev === 'undefined' ||
          */
         Promise.all = function Promise_all(promises) {
             var resolveAll, rejectAll;
-            var deferred = new Promise(function(resolve, reject) {
+            var deferred = new Promise(function (resolve, reject) {
                 resolveAll = resolve;
                 rejectAll = reject;
             });
@@ -1080,7 +1074,6 @@ if ((typeof PDFJSDev === 'undefined' ||
                 resolveAll(results);
                 return deferred;
             }
-
             function reject(reason) {
                 if (deferred._status === STATUS_REJECTED) {
                     return;
@@ -1088,7 +1081,6 @@ if ((typeof PDFJSDev === 'undefined' ||
                 results = [];
                 rejectAll(reason);
             }
-
             for (var i = 0, ii = promises.length; i < ii; ++i) {
                 var promise = promises[i];
                 var resolve = (function(i) {
@@ -1126,7 +1118,7 @@ if ((typeof PDFJSDev === 'undefined' ||
          * @returns {Promise}
          */
         Promise.resolve = function Promise_resolve(value) {
-            return new Promise(function(resolve) {
+            return new Promise(function (resolve) {
                 resolve(value);
             });
         };
@@ -1137,7 +1129,7 @@ if ((typeof PDFJSDev === 'undefined' ||
          * @returns {Promise}
          */
         Promise.reject = function Promise_reject(reason) {
-            return new Promise(function(resolve, reject) {
+            return new Promise(function (resolve, reject) {
                 reject(reason);
             });
         };
@@ -1181,7 +1173,7 @@ if ((typeof PDFJSDev === 'undefined' ||
             },
 
             then: function Promise_then(onResolve, onReject) {
-                var nextPromise = new Promise(function(resolve, reject) {
+                var nextPromise = new Promise(function (resolve, reject) {
                     this.resolve = resolve;
                     this.reject = reject;
                 });
@@ -1209,11 +1201,9 @@ if ((typeof PDFJSDev === 'undefined' ||
         }
 
         var id = 0;
-
         function WeakMap() {
             this.id = '$weakmap' + (id++);
         }
-
         WeakMap.prototype = {
             has(obj) {
                 if ((typeof obj !== 'object' && typeof obj !== 'function') ||
