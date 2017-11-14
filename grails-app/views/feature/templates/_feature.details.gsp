@@ -50,15 +50,15 @@
                            tabindex="0"
                            href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
-                    <details-layout-buttons close-url="'#/' + viewName"
+                    <details-layout-buttons close-url="'#/' + viewName"/>
                 </div>
-                <div class="btn-group shortcut-menu" uib-dropdown>
+                <div class="btn-group shortcut-menu" role="group">
                     <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
                             <i ng-class="['fa', application.minimizedDetailsView ? 'fa-caret-up' : 'fa-caret-down']"></i>
                         </button>
-                        <ul uib-dropdown-menu class="pull-right" template-url="item.menu.html" ng-init="itemType = 'feature'"></ul>
+                        <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'feature'" template-url="item.menu.html"></ul>
                     </div>
                 </div>
             </div>
