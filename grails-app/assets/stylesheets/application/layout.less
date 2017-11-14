@@ -1142,6 +1142,7 @@ table {
       > .panel-body {
         padding-top: 0;
         padding-bottom: 0;
+        padding: 4px;
       }
       > .panel-heading > .panel-title .title {
         line-height: 30px;
@@ -1249,7 +1250,7 @@ table {
         }
       }
     }
-    .sprint-not-done {
+    .sprint-state-1, .sprint-state-2 {
       tbody.story-done {
         > tr > td {
           background: @state-done-light !important;
@@ -1257,6 +1258,11 @@ table {
         .list-group .postit-container .postit > div {
           background: @state-done-light !important;
         }
+      }
+    }
+    .sprint-state-2 {
+      th {
+        width: 33%;
       }
     }
   }

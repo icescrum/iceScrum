@@ -22,9 +22,8 @@
 - Colin Bontemps (cbontemps@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div class="panel panel-light"
-         ng-if="sprint"
-         ng-class="{'sprint-not-done': sprint.state != sprintStatesByName.DONE}">
+    <div class="panel panel-light sprint-state-{{ sprint.state }}"
+         ng-if="sprint">
         <div class="panel-heading">
             <h3 class="panel-title small-title">
                 <div ng-controller="taskCtrl">
