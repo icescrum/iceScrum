@@ -24,11 +24,11 @@
 <script type="text/ng-template" id="story.acceptanceTest.editor.html">
 <form ng-submit="save(editableAcceptanceTest, selected)"
       name="formHolder.acceptanceTestForm"
-      ng-class="['form-editable form-editing', {'form-not-expanded': !formHolder.formExpanded, 'form-expanded': formHolder.formExpanded}]"
+      ng-class="['form-editable form-editing', formHolder.formExpanded ? 'form-expanded' : 'form-not-expanded']"
       show-validation
       novalidate>
     <div class="clearfix no-padding">
-        <div class="form-group" ng-class="{'col-sm-12': !formHolder.formExpanded, 'col-sm-8': formHolder.formExpanded}">
+        <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
             <div class="input-group">
                 <span class="input-group-addon no-style"><strong>42</strong></span>
                 <input required

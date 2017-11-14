@@ -56,7 +56,7 @@
                     <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i ng-class="['fa',{'fa-caret-down': !application.minimizedDetailsView, 'fa-caret-up': application.minimizedDetailsView}]"></i>
+                            <i ng-class="['fa', application.minimizedDetailsView ? 'fa-caret-up' : 'fa-caret-down']"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" template-url="item.menu.html" ng-init="itemType = 'feature'"></ul>
                     </div>

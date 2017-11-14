@@ -24,11 +24,11 @@
 <script type="text/ng-template" id="story.task.new.html">
 <form ng-submit="save(task, selected)"
       name="formHolder.taskForm"
-      ng-class="['form-editable form-editing', {'form-not-expanded': !formHolder.formExpanded, 'form-expanded': formHolder.formExpanded}]"
+      ng-class="['form-editable form-editing', formHolder.formExpanded ? 'form-expanded' : 'form-not-expanded']"
       show-validation
       novalidate>
     <div class="clearfix no-padding">
-        <div class="form-group" ng-class="{'col-sm-12':!formHolder.formExpanded, 'col-sm-8':formHolder.formExpanded}" ng-click="formHolder.formExpanded = true;">
+        <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'" ng-click="formHolder.formExpanded = true;">
             <div ng-class="{'input-group': !formHolder.formExpanded}">
                 <input required
                        ng-maxlength="100"

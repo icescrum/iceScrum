@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="comment.editor.html">
 <form ng-submit="save(editableComment, selected)"
       name="formHolder.commentForm"
-      ng-class="['form-editable form-editing', {'form-not-expanded': !formHolder.formExpanded, 'form-expanded': formHolder.formExpanded}]"
+      ng-class="['form-editable form-editing', formHolder.formExpanded ? 'form-expanded' : 'form-not-expanded']"
       ng-class="{'form-not-expanded': !formHolder.formExpanded}"
       show-validation
       novalidate>
