@@ -23,6 +23,7 @@
 <%@ page import="org.icescrum.core.support.ApplicationSupport; grails.converters.JSON;grails.util.Holders;" %>
 <script type="text/javascript">
     var isSettings = {
+        lang: '${user ? user.preferences.language : lang}',
         user: ${user as JSON},
         userPreferences: ${user ? user.preferences as JSON : 'null'},
         menus: ${menus as JSON},

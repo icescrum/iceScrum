@@ -3,7 +3,7 @@
  * updating fuzzy timestamps (e.g. "4 minutes ago" or "about 1 day ago").
  *
  * @name timeago
- * @version 1.4.3
+ * @version 1.6.1
  * @requires jQuery v1.2.3+
  * @author Ryan McGeary
  * @license MIT License - http://www.opensource.org/licenses/mit-license.php
@@ -11,9 +11,7 @@
  * For usage and examples, visit:
  * http://timeago.yarp.com/
  *
- * CUSTOMIZED
- *
- * Copyright (c) 2008-2015, Ryan McGeary (ryan -[at]- mcgeary [*dot*] org)
+ * Copyright (c) 2008-2017, Ryan McGeary (ryan -[at]- mcgeary [*dot*] org)
  */
 
 (function (factory) {
@@ -41,13 +39,13 @@
     var $t = $.timeago;
 
     $.extend($.timeago, {
-        locales: {}, // <- Customized !!
         settings: {
             refreshMillis: 60000,
             allowPast: true,
             allowFuture: false,
             localeTitle: false,
             cutoff: 0,
+            autoDispose: true,
             strings: {
                 prefixAgo: null,
                 prefixFromNow: null,
@@ -71,7 +69,7 @@
         },
 
         inWords: function(distanceMillis) {
-            if(!this.settings.allowPast && ! this.settings.allowFuture) {
+            if (!this.settings.allowPast && !this.settings.allowFuture) {
                 throw 'timeago allowPast and allowFuture settings can not both be set to false.';
             }
 
@@ -85,7 +83,7 @@
                 }
             }
 
-            if(!this.settings.allowPast && distanceMillis >= 0) {
+            if (!this.settings.allowPast && distanceMillis >= 0) {
                 return this.settings.strings.inPast;
             }
 
@@ -102,16 +100,16 @@
             }
 
             var words = seconds < 45 && substitute($l.seconds, Math.round(seconds)) ||
-                seconds < 90 && substitute($l.minute, 1) ||
-                minutes < 45 && substitute($l.minutes, Math.round(minutes)) ||
-                minutes < 90 && substitute($l.hour, 1) ||
-                hours < 24 && substitute($l.hours, Math.round(hours)) ||
-                hours < 42 && substitute($l.day, 1) ||
-                days < 30 && substitute($l.days, Math.round(days)) ||
-                days < 45 && substitute($l.month, 1) ||
-                days < 365 && substitute($l.months, Math.round(days / 30)) ||
-                years < 1.5 && substitute($l.year, 1) ||
-                substitute($l.years, Math.round(years));
+                        seconds < 90 && substitute($l.minute, 1) ||
+                        minutes < 45 && substitute($l.minutes, Math.round(minutes)) ||
+                        minutes < 90 && substitute($l.hour, 1) ||
+                        hours < 24 && substitute($l.hours, Math.round(hours)) ||
+                        hours < 42 && substitute($l.day, 1) ||
+                        days < 30 && substitute($l.days, Math.round(days)) ||
+                        days < 45 && substitute($l.month, 1) ||
+                        days < 365 && substitute($l.months, Math.round(days / 30)) ||
+                        years < 1.5 && substitute($l.year, 1) ||
+                        substitute($l.years, Math.round(years));
 
             var separator = $l.wordSeparator || "";
             if ($l.wordSeparator === undefined) { separator = " "; }
@@ -141,7 +139,8 @@
     // init is default when no action is given
     // functions are called with context of a single element
     var functions = {
-        init: function(){
+        init: function() {
+            functions.dispose.call(this);
             var refresh_el = $.proxy(refresh, this);
             refresh_el();
             var $s = $t.settings;
@@ -149,13 +148,15 @@
                 this._timeagoInterval = setInterval(refresh_el, $s.refreshMillis);
             }
         },
-        update: function(time){
-            var parsedTime = $t.parse(time);
-            $(this).data('timeago', { datetime: parsedTime });
-            if($t.settings.localeTitle) $(this).attr("title", parsedTime.toLocaleString());
+        update: function(timestamp) {
+            var date = (timestamp instanceof Date) ? timestamp : $t.parse(timestamp);
+            $(this).data('timeago', {datetime: date});
+            if ($t.settings.localeTitle) {
+                $(this).attr("title", date.toLocaleString());
+            }
             refresh.apply(this);
         },
-        updateFromDOM: function(){
+        updateFromDOM: function() {
             $(this).data('timeago', { datetime: $t.parse( $t.isTime(this) ? $(this).attr("datetime") : $(this).attr("title") ) });
             refresh.apply(this);
         },
@@ -169,30 +170,35 @@
 
     $.fn.timeago = function(action, options) {
         var fn = action ? functions[action] : functions.init;
-        if(!fn){
+        if (!fn) {
             throw new Error("Unknown function name '"+ action +"' for timeago");
         }
         // each over objects here and call the requested function
-        this.each(function(){
+        this.each(function() {
             fn.call(this, options);
         });
         return this;
     };
 
     function refresh() {
+        var $s = $t.settings;
+
         //check if it's still visible
-        if(!$.contains(document.documentElement,this)){
+        if ($s.autoDispose && !$.contains(document.documentElement, this)) {
             //stop if it has been removed
             $(this).timeago("dispose");
             return this;
         }
 
         var data = prepareData(this);
-        var $s = $t.settings;
 
         if (!isNaN(data.datetime)) {
-            if ( $s.cutoff == 0 || Math.abs(distance(data.datetime)) < $s.cutoff) {
+            if ($s.cutoff === 0 || Math.abs(distance(data.datetime)) < $s.cutoff) {
                 $(this).text(inWords(data.datetime));
+            } else {
+                if ($(this).attr('title').length > 0) {
+                    $(this).text($(this).attr('title'));
+                }
             }
         }
         return this;
