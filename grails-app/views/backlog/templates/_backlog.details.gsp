@@ -36,23 +36,7 @@
                 <span ng-if="backlog.owner" uib-tooltip="${message(code: 'is.story.creator')} {{ backlog.owner | userFullName }}">
                     <img ng-src="{{ backlog.owner | userAvatar }}" alt="{{ backlog.owner | userFullName }}" class="{{ backlog.owner | userColorRoles }}" height="30px"/>
                 </span>
-                <div class="btn-group">
-                    <button class="btn btn-default minimizable"
-                            ng-click="toggleMinimizedDetailsView()"
-                            uib-tooltip="${message(code: 'is.ui.window.minimize')}">
-                        <i ng-class="['fa', {'fa-window-minimize': !application.minimizedDetailsView, 'fa-window-maximize': application.minimizedDetailsView}]"></i>
-                    </button>
-                    <button class="btn btn-default detachable"
-                            ng-click="toggleDetachedDetailsView()"
-                            uib-tooltip="${message(code: 'is.ui.window.detach')}">
-                        <i class="fa fa-window-restore"></i>
-                    </button>
-                    <a class="btn btn-default"
-                       ui-sref=".^"
-                       uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
+                <details-layout-buttons close-url="$state.href('.^')"/>
             </div>
         </h3>
         <div class="col-md-6">

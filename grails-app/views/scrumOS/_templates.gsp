@@ -222,6 +222,27 @@
     </div>
     </script>
 
+    <script type="text/ng-template" id="details.layout.buttons.html">
+    <div ng-if="!isModal"
+         class="btn-group">
+        <button class="btn btn-default minimizable"
+                ng-click="toggleMinimizedDetailsView()"
+                uib-tooltip="${message(code: 'is.ui.window.minimize')}">
+            <i ng-class="['fa', application.minimizedDetailsView ? 'fa-window-maximize' : 'fa-window-minimize']"></i>
+        </button>
+        <button class="btn btn-default detachable"
+                ng-click="toggleDetachedDetailsView()"
+                uib-tooltip="${message(code: 'is.ui.window.detach')}">
+            <i class="fa fa-window-restore"></i>
+        </button>
+        <a class="btn btn-default"
+           href="{{ closeUrl }}"
+           uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+            <i class="fa fa-times"></i>
+        </a>
+    </div>
+    </script>
+
     <script type="text/ng-template" id="addWidget.modal.html">
     <is:modal title="${message(code: 'is.ui.widget.new')}"
               validate="true"

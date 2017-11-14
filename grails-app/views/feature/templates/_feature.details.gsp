@@ -50,26 +50,7 @@
                            tabindex="0"
                            href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
-                    <div class="btn-group">
-                        <button ng-if="!isModal"
-                                class="btn btn-default minimizable"
-                                ng-click="toggleMinimizedDetailsView()"
-                                uib-tooltip="${message(code: 'is.ui.window.minimize')}">
-                            <i ng-class="['fa', {'fa-window-minimize': !application.minimizedDetailsView, 'fa-window-maximize': application.minimizedDetailsView}]"></i>
-                        </button>
-                        <button ng-if="!isModal"
-                                class="btn btn-default detachable"
-                                ng-click="toggleDetachedDetailsView()"
-                                uib-tooltip="${message(code: 'is.ui.window.detach')}">
-                            <i class="fa fa-window-restore"></i>
-                        </button>
-                        <a ng-if="!isModal"
-                           class="btn btn-default"
-                           href="#{{ ::viewName }}"
-                           uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
+                    <details-layout-buttons close-url="'#/' + viewName"
                 </div>
                 <div class="btn-group shortcut-menu" uib-dropdown>
                     <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'"></shortcut-menu>

@@ -880,4 +880,13 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-});
+}).directive('detailsLayoutButtons', [function() {
+    return {
+        restrict: 'E',
+        scope: {
+            closeUrl: '='
+        },
+        replace: true,
+        templateUrl: 'details.layout.buttons.html'
+    };
+}]);
