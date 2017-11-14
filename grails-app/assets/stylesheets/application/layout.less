@@ -1225,6 +1225,40 @@ table {
       tbody:last-of-type tr:last-of-type td {
         border-bottom: none;
       }
+      tbody:not(.story-done):not(.story-ghost):nth-child(odd) {
+        > tr > td {
+          background: #F8F8F8 !important;
+        }
+        .list-group .postit-container .postit > div {
+          background: #F8F8F8 !important;
+        }
+      }
+      tbody:not(.story-done):not(.story-ghost):nth-child(even) {
+        > tr > td {
+          background: #FFF !important;
+        }
+        .list-group .postit-container .postit > div {
+          background: #FFF !important;
+        }
+      }
+      tbody.story-ghost {
+        > tr > td {
+          background: @state-danger-bg !important;
+        }
+        .list-group .postit-container .postit > div {
+          background: @state-danger-bg !important;
+        }
+      }
+    }
+    .sprint-not-done {
+      tbody.story-done {
+        > tr > td {
+          background: @state-done-light !important;
+        }
+        .list-group .postit-container .postit > div {
+          background: @state-done-light !important;
+        }
+      }
     }
   }
 }

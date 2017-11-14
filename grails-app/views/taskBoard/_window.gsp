@@ -292,19 +292,19 @@
                 </tbody>
                 <tbody ng-repeat="story in ghostStories | filter: storyFilter | search | orderBy: 'id'" class="story-ghost">
                     <tr class="sticky-header list-group">
-                        <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)">
+                        <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
                             <div ng-include="'story.light.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
                     <tr ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
                         <td class="postits {{ postitClass }}"
-                            ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
+                            ng-class="{'show-tasks':!tasksShown(taskState, story, true), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable
                             is-disabled="true"
                             ng-repeat="taskState in sprintTaskStates">
                             <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
-                                 ng-if="tasksShown(taskState, story)"
+                                 ng-if="tasksShown(taskState, story, true)"
                                  ng-class="{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
@@ -312,12 +312,11 @@
                                 <div ng-include="'task.html'"></div>
                             </div>
                             <button type="button"
+                                    ng-if="!tasksShown(taskState, story, true)"
                                     class="btn btn-default"
-                                    ng-if="!tasksShown(taskState, story)"
-                                    ng-click="showTasks(story, true)">
-                                <g:message code="todo.is.ui.task.showDoneTasks"/> ({{ tasksByStoryByState[story.id][taskState].length }})
+                                    ng-click="showTasks(story, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
                             </button>
-                            <div ng-if="tasksHidden(taskState, story)" class="postit-container">
+                            <div ng-if="tasksHidden(taskState, story, true)" class="postit-container">
                                 <div class="hide-tasks postit">
                                     <button type="button"
                                             class="btn btn-default"

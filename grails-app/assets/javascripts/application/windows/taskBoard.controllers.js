@@ -138,12 +138,16 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             $state.go('taskBoard.story.details' + ($state.params.storyTabId ? '.tab' : ''), {storyId: storyId});
         }
     };
-    $scope.tasksShown = function(taskState, typeOrStory) {
+    $scope.tasksShown = function(taskState, typeOrStory, fromStoryGhost) {
         var taskLimit = 5;
         if (taskState == TaskStatesByName.DONE && $scope.sprint.state < SprintStatesByName.DONE) {
             if (_.isObject(typeOrStory)) {
                 var story = typeOrStory;
-                return $scope.tasksByStoryByState[story.id][taskState].length < taskLimit || $scope.tasksShownByTypeOrStory.stories[story.id];
+                if (story.state === StoryStatesByName.DONE || fromStoryGhost) {
+                    return $scope.tasksShownByTypeOrStory.stories[story.id];
+                } else {
+                    return $scope.tasksByStoryByState[story.id][taskState].length < taskLimit || $scope.tasksShownByTypeOrStory.stories[story.id];
+                }
             } else {
                 var type = typeOrStory;
                 return $scope.tasksByTypeByState[type][taskState].length < taskLimit || $scope.tasksShownByTypeOrStory[type];
@@ -152,12 +156,16 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             return true;
         }
     };
-    $scope.tasksHidden = function(taskState, typeOrStory) {
+    $scope.tasksHidden = function(taskState, typeOrStory, fromStoryGhost) {
         var taskLimit = 5;
         if (taskState == TaskStatesByName.DONE && $scope.sprint.state < SprintStatesByName.DONE) {
             if (_.isObject(typeOrStory)) {
                 var story = typeOrStory;
-                return $scope.tasksByStoryByState[story.id][taskState].length >= taskLimit && $scope.tasksShownByTypeOrStory.stories[story.id];
+                if (story.state === StoryStatesByName.DONE || fromStoryGhost) {
+                    return $scope.tasksShownByTypeOrStory.stories[story.id];
+                } else {
+                    return $scope.tasksByStoryByState[story.id][taskState].length >= taskLimit && $scope.tasksShownByTypeOrStory.stories[story.id];
+                }
             } else {
                 var type = typeOrStory;
                 return $scope.tasksByTypeByState[type][taskState].length >= taskLimit && $scope.tasksShownByTypeOrStory[type];
