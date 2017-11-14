@@ -50,7 +50,6 @@ class WindowController implements ControllerErrorHandler {
                 }
                 return
             }
-
             def context = windowDefinition.context ? ApplicationSupport.getCurrentContext(params, windowDefinition.context) : null
             def _continue = true
             if (windowDefinition.before) {
@@ -58,14 +57,12 @@ class WindowController implements ControllerErrorHandler {
                 windowDefinition.before.resolveStrategy = Closure.DELEGATE_FIRST
                 _continue = windowDefinition.before(context?.object)
             }
-
             if (!_continue) {
                 render(status: 404)
             } else {
                 def model = [windowDefinition: windowDefinition]
                 if (context) {
                     model[context.name] = context.object
-                    model['contextScope'] = context.contextScope
                 }
                 if (ApplicationSupport.controllerExist(windowDefinition.id, "window")) {
                     forward(action: 'window', controller: windowDefinition.id, model: model)
@@ -82,7 +79,7 @@ class WindowController implements ControllerErrorHandler {
     def settings(String windowDefinitionId) {
         User user = springSecurityService.currentUser
         def context = ApplicationSupport.getCurrentContext(params)
-        //defaultValues
+        // Default Values
         def defaultWindow = context ? [windowDefinitionId: windowDefinitionId, context: context.name, contextId: context.object.id] : [windowDefinitionId: windowDefinitionId]
         def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
         if (!user) {

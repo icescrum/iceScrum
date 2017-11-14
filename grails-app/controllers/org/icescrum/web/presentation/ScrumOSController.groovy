@@ -46,29 +46,22 @@ class ScrumOSController implements ControllerErrorHandler {
     def springSecurityService
 
     def index() {
-        def user = springSecurityService.isLoggedIn() ? User.get(springSecurityService.principal.id) : null
-
+        def user = springSecurityService.currentUser
+        def userProjects = user ? projectService.getAllActiveProjectsByUser(user) : []
+        def projectsLimit = 9
+        def browsableProjectsCount = request.admin ? Project.count() : ProjectPreferences.countByHidden(false, [cache: true])
+        def model = [user: user,
+                     lang                  : RCU.getLocale(request).toString().substring(0, 2),
+                     browsableProjectsExist: browsableProjectsCount > 0,
+                     moreProjectsExist     : userProjects?.size() > projectsLimit,
+                     projectFilteredsList  : userProjects.take(projectsLimit)]
         def context = ApplicationSupport.getCurrentContext(params)
         if (context) {
             context.indexScrumOS.delegate = this
             context.indexScrumOS(context, user, securityService, springSecurityService)
+            model."$context.name" = context.object
         }
-
-        def userProjects = user ? projectService.getAllActiveProjectsByUser(user) : []
-        def projectsLimit = 9
-        def browsableProjectsCount = request.admin ? Project.count() : ProjectPreferences.countByHidden(false, [cache: true])
-
-        def attrs = [user                  : user,
-                     lang                  : RCU.getLocale(request).toString().substring(0, 2),
-                     context               : context,
-                     browsableProjectsExist: browsableProjectsCount > 0,
-                     moreProjectsExist     : userProjects?.size() > projectsLimit,
-                     projectFilteredsList  : userProjects.take(projectsLimit)]
-        if (context) {
-            attrs."$context.name" = context.object
-        }
-        entry.hook(id: "scrumOS-index", model: [attrs: attrs])
-        attrs
+        render(status: 200, view: 'index', model: model)
     }
 
     def about() {
@@ -84,14 +77,14 @@ class ScrumOSController implements ControllerErrorHandler {
     }
 
     def isSettings(Long project) {
-        def projectMenus = []
-        def _project = project ? Project.get(project) : null
+        List projectMenus = []
+        Project _project = project ? Project.get(project) : null
         uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
             if (windowDefinition.context == 'project') {
                 projectMenus << [id: windowId, title: message(code: windowDefinition.menu?.title)]
             }
         }
-        def menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
+        List menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
         menus?.each {
             if (it.id == 'project') {
                 it.title = _project.name

@@ -274,7 +274,6 @@ icescrum {
                     user.save()
                 }
             }
-            contextScope = [] // Not used for the moment
         }
     }
 }
