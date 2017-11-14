@@ -68,6 +68,7 @@
     <script type="text/ng-template" id="button.shortcutMenu.html">
     <a ng-show="menuElement.name"
        class="btn"
+       title="{{ message(menuElement.name) }}"
        ng-class="{'btn-sm': btnSm, 'btn-primary': btnPrimary, 'btn-default': !btnPrimary}"
        ng-href="{{ menuElement.url(ngModel) }}"
        ng-click="menuElement.action(ngModel)">

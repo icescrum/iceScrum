@@ -66,6 +66,15 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
         }
         return data;
     };
+    $scope.toggleDetachedDetailsView = function() {
+        $scope.application.detachedDetailsView = !$scope.application.detachedDetailsView;
+        if(!$scope.application.detachedDetailsView) {
+            $scope.application.minimizedDetailsView = false;
+        }
+    };
+    $scope.toggleMinimizedDetailsView = function() {
+        $scope.application.minimizedDetailsView = !$scope.application.minimizedDetailsView;
+    };
     $scope.showAutoPlanModal = function(options) {
         $uibModal.open({
             templateUrl: 'sprint.autoPlan.html',

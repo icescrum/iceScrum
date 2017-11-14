@@ -807,6 +807,8 @@ var isApplication = angular.module('isApplication', [
             loadingPercent: 0,
             submitting: false,
             isFullScreen: false,
+            detachedDetailsView:false,
+            minimizedDetailsView:false,
             menus: Session.menus,
             mobile: screenSize.is('xs, sm'),
             mobilexs: screenSize.is('xs')
@@ -878,6 +880,9 @@ var isApplication = angular.module('isApplication', [
                         }
                     }
                 }
+            }
+            if(_.endsWith(fromState.name, 'details') && !_.endsWith(toState.name, 'details')){
+                $rootScope.application.minimizedDetailsView = false;
             }
         });
         screenSize.onChange($rootScope, 'xs, sm', function(isMatch) {

@@ -55,11 +55,23 @@
                            href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i>
                         </a>
                     </div>
-                    <a class="btn btn-default"
-                       href="{{:: $state.href('^') }}"
-                       uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                        <i class="fa fa-times"></i>
-                    </a>
+                    <div class="btn-group">
+                        <button class="btn btn-default minimizable"
+                                ng-click="toggleMinimizedDetailsView()"
+                                uib-tooltip="${message(code: 'is.ui.window.minimize')}">
+                            <i ng-class="['fa', {'fa-window-minimize': !application.minimizedDetailsView, 'fa-window-maximize': application.minimizedDetailsView}]"></i>
+                        </button>
+                        <button class="btn btn-default detachable"
+                                ng-click="toggleDetachedDetailsView()"
+                                uib-tooltip="${message(code: 'is.ui.window.detach')}">
+                            <i class="fa fa-window-restore"></i>
+                        </button>
+                        <a class="btn btn-default"
+                           href="{{:: $state.href('^') }}"
+                           uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
                 </div>
                 <g:set var="formats" value="${is.exportFormats(entryPoint: 'sprintDetails')}"/>
                 <g:if test="${formats}">
@@ -81,11 +93,11 @@
                         </ul>
                     </div>
                 </g:if>
-                <div class="btn-group" role="group">
+                <div class="btn-group shortcut-menu" role="group">
                     <shortcut-menu ng-model="sprint" model-menus="menus" view-type="'details'"></shortcut-menu>
-                    <div class="btn-group" uib-dropdown>
+                    <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
                         <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-caret-down"></i>
+                            <i ng-class="['fa',{'fa-caret-down': !application.minimizedDetailsView, 'fa-caret-up': application.minimizedDetailsView}]"></i>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                     </div>

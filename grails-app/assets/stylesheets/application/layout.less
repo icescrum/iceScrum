@@ -444,18 +444,101 @@ header {
       display: none;
     }
     &.with-details {
+      @media (min-width: @screen-xs-min) and (max-width: @screen-xs-max) {
+        .minimizable, .detachable {
+          display:none;
+        }
+      }
+      @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+        > .content {
+          .make-sm-column(12);
+        }
+        .detachable {
+          display:none;
+        }
+        .detached();
+      }
+      @media (min-width: @screen-md-min){
+        .minimizable {
+          display:none;
+        }
+        &.detached {
+          .detached();
+          .minimizable {
+            display:block;
+          }
+        }
+      }
+      @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+        > .content {
+          .make-md-column(7);
+        }
+
+        > [ui-view='details'] {
+          .make-md-column(5);
+        }
+      }
+      @media (min-width: @screen-lg-min) {
+        > .content {
+          .make-md-column(8);
+        }
+
+        > [ui-view='details'] {
+          .make-md-column(4);
+        }
+      }
       > .content {
-        .make-sm-column(8);
         padding: 0;
       }
+
       > [ui-view='details'] {
-        .make-sm-column(4);
         display: block;
         padding: 0;
       }
     }
     &.flex {
       margin-bottom: 0;
+    }
+  }
+}
+
+.detached() {
+  > .content {
+    .make-md-column(12);
+    padding: 0;
+  }
+
+  > [ui-view='details'] {
+    z-index:3;
+    bottom: 0;
+    top: 145px;
+    right: 30px;
+    width: 666px;
+    position: absolute;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 10px solid #f8f8f8;
+  }
+  &.minimized {
+    > [ui-view='details'] {
+      top: auto;
+      height:55px;
+      width:666px;
+      .item-name {
+        display: inline-block;
+        max-width: 200px;
+        .text-overflow();
+      }
+      .right-title {
+        max-width:none;
+        > div:first-of-type {
+          display:inline;
+        }
+        > div.btn-group {
+          float:left;
+          margin-right:10px;
+        }
+      }
     }
   }
 }
@@ -687,6 +770,11 @@ header {
     text-align: right;
     font-weight: bold;
     color: @gray-dark;
+  }
+  .btn-group.shortcut-menu > a {
+    .text-overflow();
+    display: inline-block;
+    max-width: 130px;
   }
 }
 
