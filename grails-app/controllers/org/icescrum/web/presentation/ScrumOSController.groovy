@@ -27,10 +27,10 @@ package org.icescrum.web.presentation
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Project
-import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.ProjectPreferences
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.ui.WindowDefinition
 import org.icescrum.core.utils.ServicesUtils
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 import sun.misc.BASE64Decoder
@@ -78,31 +78,35 @@ class ScrumOSController implements ControllerErrorHandler {
 
     def isSettings(Long project) {
         List projectMenus = []
-        Project _project = project ? Project.get(project) : null
-        uiDefinitionService.getWindowDefinitions().each { windowId, windowDefinition ->
-            if (windowDefinition.context == 'project') {
-                projectMenus << [id: windowId, title: message(code: windowDefinition.menu?.title)]
+        List menus = []
+        Map context = ApplicationSupport.getCurrentContext(params)
+        uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
+            def menu = windowDefinition.menu
+            if (menu) {
+                if (ApplicationSupport.isAllowed(windowDefinition, params)) {
+                    def menuPositions = ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: menu.defaultVisibility, pos: menu.defaultPosition]
+                    menus << [title   : message(code: menu.title instanceof Closure ? menu.getTitle()(context?.object) : menu.title),
+                              id      : windowDefinitionId,
+                              shortcut: 'ctrl+' + (menus.size() + 1),
+                              icon    : windowDefinition.icon,
+                              position: menuPositions.pos.toInteger(),
+                              visible : menuPositions.visible]
+                }
+                if (windowDefinition.context == 'project') {
+                    projectMenus << [id: windowDefinitionId, title: windowDefinition.id == 'project' ? message(code: 'is.ui.project') : message(code: menu.title)]
+                }
             }
         }
-        List menus = ApplicationSupport.getUserMenusContext(uiDefinitionService.getWindowDefinitions(), params)
-        menus?.each {
-            if (it.id == 'project') {
-                it.title = _project.name
-            } else {
-                it.title = message(code: it.title)
-            }
-        }
-        def defaultView = project ? menus.find { it.position == 1 && it.visible }.id ?: 'project' : 'home'
         render(status: 200,
                 template: 'isSettings',
-                model: [project        : _project,
+                model: [project    : project ? Project.get(project) : null,
                         user           : springSecurityService.currentUser,
                         roles          : securityService.getRolesRequest(false),
                         i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
                         resourceBundles: grailsApplication.config.icescrum.resourceBundles,
                         menus          : menus,
-                        context        : ApplicationSupport.getCurrentContext(params)?.name ?: '',
-                        defaultView    : defaultView,
+                        context    : context?.name ?: '',
+                        defaultView: menus.sort { it.position }[0]?.id ?: 'home',
                         serverURL      : ApplicationSupport.serverURL(),
                         projectMenus   : projectMenus])
     }

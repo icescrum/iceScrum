@@ -27,12 +27,12 @@ import org.icescrum.core.utils.ServicesUtils
 /*
     'windowName' {
         icon                        default: ''                   | String (fontawesome)
-        title                       default: ''                   | String (i18n key)
         help                        default: ''                   | String (i18n key)
         secured                     default: "permitAll()"        | String (spEl expression)
         context                     default: "project"            | String (project or ...)
         templatePath                default: "windowName/window"  | String (full path to template)
         menu { => default: null
+            title                   default: ''                   | String or Closure (i18n key)
             defaultPosition         default:null                  | Integer
             defaultVisibility       default:null                  | true/false
         }
@@ -55,9 +55,9 @@ windows = {
         context 'project'
         icon 'inbox'
         help 'is.ui.backlog.help'
-        title 'is.ui.backlogs'
         secured 'stakeHolder() or inProject()'
         menu {
+            title 'is.ui.backlogs'
             defaultPosition 2
             defaultVisibility true
         }
@@ -79,9 +79,9 @@ windows = {
         context 'project'
         icon 'puzzle-piece'
         help 'is.ui.feature.help'
-        title 'is.ui.feature'
         secured 'isAuthenticated()'
         menu {
+            title 'is.ui.feature'
             defaultPosition 5
             defaultVisibility true
         }
@@ -102,8 +102,10 @@ windows = {
         flex false
         icon 'dashboard'
         help 'is.ui.project.help'
-        title 'is.ui.project'
         menu {
+            title { contextObject ->
+                contextObject instanceof org.icescrum.core.domain.Project ? contextObject.name : 'is.ui.project'
+            }
             defaultPosition 1
             defaultVisibility true
         }
@@ -117,9 +119,9 @@ windows = {
         context 'project'
         icon 'calendar'
         help 'todo.is.ui.planning.help'
-        title 'todo.is.ui.planning'
         secured 'inProject() or (isAuthenticated() and stakeHolder())'
         menu {
+            title 'todo.is.ui.planning'
             defaultPosition 3
             defaultVisibility true
         }
@@ -140,9 +142,9 @@ windows = {
         context 'project'
         icon 'tasks'
         help 'todo.is.ui.taskBoard.help'
-        title 'todo.is.ui.taskBoard'
         secured 'inProject() or (isAuthenticated() and stakeHolder())'
         menu {
+            title 'todo.is.ui.taskBoard'
             defaultPosition 4
             defaultVisibility true
         }
