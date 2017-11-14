@@ -34,7 +34,7 @@
         <h3 class="panel-title row">
             <div class="left-title">
                 <i class="fa fa-tasks"></i>
-                {{ release.name + ' - ' + (sprint | sprintName) }}
+                <span class="item-name" title="{{ release.name + ' - ' + (sprint | sprintName) }}">{{ release.name + ' - ' + (sprint | sprintName) }}</span>
                 <entry:point id="sprint-details-left-title"/>
             </div>
             <div class="right-title">

@@ -453,15 +453,18 @@ header {
         > .content {
           .make-sm-column(12);
         }
+
         .detachable {
           display: none;
         }
+
         .detached();
       }
       @media (min-width: @screen-md-min) {
         .minimizable {
           display: none;
         }
+
         &.detached {
           .detached();
           .minimizable {
@@ -526,7 +529,6 @@ header {
     border-top: 1px solid #ddd;
     border-right: 1px solid #ddd;
     border-left: 1px solid #ddd;
-    border-bottom: 10px solid #f8f8f8;
   }
   &.minimized {
     > [ui-view='details'] {
@@ -540,12 +542,14 @@ header {
         .item-name {
           max-width: 80px;
         }
+
         width: 500px;
       }
       @media (min-width: @screen-md-min) {
         .item-name {
           max-width: 100px;
         }
+
         width: 558px;
       }
       .right-title {
@@ -562,7 +566,8 @@ header {
               top: auto;
               bottom: 100%;
               margin-bottom: 2px;
-            };
+            }
+          ;
           }
         }
       }
@@ -808,14 +813,17 @@ header {
   .left-title {
     max-width: 60%;
   }
+
   .right-title {
     max-width: 40%;
   }
 }
+
 @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
   .left-title {
     max-width: 50%;
   }
+
   .right-title {
     max-width: 50%;
     .btn-group.shortcut-menu > a {
@@ -823,10 +831,12 @@ header {
     }
   }
 }
+
 @media (min-width: @screen-md-min) {
   .left-title {
     max-width: 60%;
   }
+
   .right-title {
     max-width: 40%;
     .btn-group.shortcut-menu > a {
@@ -834,10 +844,12 @@ header {
     }
   }
 }
+
 @media (min-width: @screen-md-max) and (max-width: @screen-lg-min) {
   .left-title {
     max-width: 60%;
   }
+
   .right-title {
     max-width: 40%;
     .btn-group.shortcut-menu > a {
@@ -845,10 +857,12 @@ header {
     }
   }
 }
+
 @media (min-width: @screen-lg-min) {
   .left-title {
     max-width: 60%;
   }
+
   .right-title {
     max-width: 40%;
     .btn-group.shortcut-menu > a {

@@ -32,7 +32,7 @@
     <div class="panel-heading">
         <h3 class="panel-title row">
             <div class="left-title">
-                <i class="fa fa-file" ng-style="{color: task.color }"></i> <strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name">{{ task.name }}</span>
+                <i class="fa fa-file" ng-style="{color: task.color }"></i> <strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name" title="{{ task.name }}">{{ task.name }}</span>
                 <div style="margin-top:10px">
                     <entry:point id="task-details-left-title"/>
                 </div>

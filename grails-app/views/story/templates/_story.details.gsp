@@ -38,7 +38,7 @@
                       ng-click="follow(story)">
                     <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
                 </span>
-                <span class="item-name">{{ story.name }}</span>&nbsp;<small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
+                <span class="item-name" title="{{ story.name }}">{{ story.name }}</span>&nbsp;<small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
                 <div style="margin-top:10px">
                     <entry:point id="story-details-left-title"/>
                 </div>
