@@ -220,7 +220,6 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task'});
     // Functions
     $scope.update = function(task) {
-        $scope.formHolder.submitting = true;
         TaskService.update(task, true).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.updated');

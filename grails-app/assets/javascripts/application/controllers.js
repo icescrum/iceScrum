@@ -740,7 +740,6 @@ controllers.controller('updateFormController', ['$scope', 'FormService', 'type',
     };
     $scope[resetForm] = function() {
         $scope.formHolder.editing = $scope.formEditable() && $scope.isInEditingMode();
-        $scope.formHolder.submitting = false;
         if ($scope.formHolder.editing) {
             $scope[editable] = angular.copy($scope[type]);
             $scope[editableReference] = angular.copy($scope[type]);

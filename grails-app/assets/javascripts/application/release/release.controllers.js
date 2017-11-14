@@ -202,7 +202,6 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsRelease, clazz: 'release'});
     // Functions
     $scope.update = function(release) {
-        $scope.formHolder.submitting = true;
         ReleaseService.update(release).then(function() {
             $scope.resetReleaseForm();
             $scope.notifySuccess('todo.is.ui.release.updated');

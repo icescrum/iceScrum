@@ -511,7 +511,6 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
             }
         };
         $scope.update = function(story) {
-            $scope.formHolder.submitting = true;
             StoryService.update(story).then(function() {
                 $scope.resetStoryForm();
                 $scope.notifySuccess('todo.is.ui.story.updated');

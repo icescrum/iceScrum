@@ -82,7 +82,6 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature'});
     // Functions
     $scope.update = function(feature) {
-        $scope.formHolder.submitting = true;
         FeatureService.update(feature).then(function() {
             $scope.resetFeatureForm();
             $scope.notifySuccess('todo.is.ui.feature.updated');

@@ -118,7 +118,6 @@ controllers.controller('timeBoxNotesTemplateEditCtrl', ['$scope', '$controller',
     $controller('timeBoxNotesTemplateCtrl', {$scope: $scope}); // inherit from timeBoxNotesTemplateCtrl
     // Functions
     $scope.update = function(timeBoxNotesTemplate) {
-        $scope.formHolder.submitting = true;
         TimeBoxNotesTemplateService.update(timeBoxNotesTemplate).then(function(timeBoxNotesTemplate) {
             _.merge(template, timeBoxNotesTemplate);
             $scope.notifySuccess('todo.is.ui.timeBoxNotesTemplate.updated');
@@ -152,7 +151,6 @@ controllers.controller('timeBoxNotesTemplateNewCtrl', ['$scope', '$controller', 
     $scope.sectionSortOptions = {};
     // Functions
     $scope.save = function(timeBoxNotesTemplate) {
-        $scope.formHolder.submitting = true;
         TimeBoxNotesTemplateService.save(timeBoxNotesTemplate).then(function(returnTemplate) {
             _.merge(timeBoxNotesTemplate, returnTemplate);
             $scope.notifySuccess('todo.is.ui.timeBoxNotesTemplate.saved');
