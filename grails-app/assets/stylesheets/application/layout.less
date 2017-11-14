@@ -446,7 +446,7 @@ header {
     &.with-details {
       @media (min-width: @screen-xs-min) and (max-width: @screen-xs-max) {
         .minimizable, .detachable {
-          display:none;
+          display: none;
         }
       }
       @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
@@ -454,18 +454,18 @@ header {
           .make-sm-column(12);
         }
         .detachable {
-          display:none;
+          display: none;
         }
         .detached();
       }
-      @media (min-width: @screen-md-min){
+      @media (min-width: @screen-md-min) {
         .minimizable {
-          display:none;
+          display: none;
         }
         &.detached {
           .detached();
           .minimizable {
-            display:block;
+            display: block;
           }
         }
       }
@@ -509,7 +509,7 @@ header {
   }
 
   > [ui-view='details'] {
-    z-index:3;
+    z-index: 3;
     bottom: 0;
     top: 145px;
     right: 30px;
@@ -522,21 +522,21 @@ header {
   &.minimized {
     > [ui-view='details'] {
       top: auto;
-      height:55px;
-      width:666px;
+      height: 55px;
+      width: 666px;
       .item-name {
         display: inline-block;
         max-width: 200px;
         .text-overflow();
       }
       .right-title {
-        max-width:none;
+        max-width: none;
         > div:first-of-type {
-          display:inline;
+          display: inline;
         }
         > div.btn-group {
-          float:left;
-          margin-right:10px;
+          float: left;
+          margin-right: 10px;
         }
       }
     }
