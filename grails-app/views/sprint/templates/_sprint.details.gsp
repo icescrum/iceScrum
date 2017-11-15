@@ -55,7 +55,7 @@
                            href="#{{:: viewName + '/' + (viewName == 'planning' ? sprint.parentRelease.id +  '/sprint/' : '') + nextSprint.id }}/details"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i>
                         </a>
                     </div>
-                    <details-layout-buttons ng-if="!isModal" close-url="$state.href('^')"/>
+                    <details-layout-buttons ng-if="!isModal" close-url="closeDetailsView()"/>
                 </div>
                 <g:set var="formats" value="${is.exportFormats(entryPoint: 'sprintDetails')}"/>
                 <g:if test="${formats}">

@@ -36,7 +36,7 @@
                 <span ng-if="backlog.owner" uib-tooltip="${message(code: 'is.story.creator')} {{ backlog.owner | userFullName }}">
                     <img ng-src="{{ backlog.owner | userAvatar }}" alt="{{ backlog.owner | userFullName }}" class="{{ backlog.owner | userColorRoles }}" height="30px"/>
                 </span>
-                <details-layout-buttons ng-if="!isModal" close-url="$state.href('.^')"/>
+                <details-layout-buttons ng-if="!isModal" close-url="closeDetailsView()"/>
             </div>
         </h3>
         <div class="col-md-6">

@@ -59,7 +59,7 @@
                            tabindex="0"
                            href="{{:: currentStateUrl(nextTask.id) }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
-                    <details-layout-buttons ng-if="!isModal" close-url="$state.href('^.^')"/>
+                    <details-layout-buttons ng-if="!isModal" close-url="closeDetailsView(true)"/>
                 </div>
                 <div class="btn-group shortcut-menu" role="group">
                     <shortcut-menu ng-model="task" model-menus="menus" view-type="'details'"></shortcut-menu>
