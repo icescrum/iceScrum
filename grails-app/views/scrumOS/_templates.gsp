@@ -223,8 +223,7 @@
     </script>
 
     <script type="text/ng-template" id="details.layout.buttons.html">
-    <div ng-if="!isModal"
-         class="btn-group">
+    <div class="btn-group">
         <button class="btn btn-default minimizable"
                 ng-click="toggleMinimizedDetailsView()"
                 uib-tooltip="${message(code: 'is.ui.window.minimize')}">

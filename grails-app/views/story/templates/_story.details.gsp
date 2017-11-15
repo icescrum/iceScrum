@@ -60,7 +60,7 @@
                        role="button"
                        tabindex="0"
                        href="{{:: currentStateUrl(nextStory.id) }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
-                    <details-layout-buttons close-url="closeUrl()"/>
+                    <details-layout-buttons ng-if="!isModal" close-url="closeUrl()"/>
                 </div>
                 <div class="btn-group shortcut-menu" role="group">
                     <shortcut-menu ng-model="story" model-menus="menus" view-type="'details'"></shortcut-menu>
