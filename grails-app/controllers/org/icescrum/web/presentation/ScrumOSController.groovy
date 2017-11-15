@@ -50,7 +50,7 @@ class ScrumOSController implements ControllerErrorHandler {
         def userProjects = user ? projectService.getAllActiveProjectsByUser(user) : []
         def projectsLimit = 9
         def browsableProjectsCount = request.admin ? Project.count() : ProjectPreferences.countByHidden(false, [cache: true])
-        def model = [user: user,
+        def model = [user                  : user,
                      lang                  : RCU.getLocale(request).toString().substring(0, 2),
                      browsableProjectsExist: browsableProjectsCount > 0,
                      moreProjectsExist     : userProjects?.size() > projectsLimit,
@@ -99,14 +99,14 @@ class ScrumOSController implements ControllerErrorHandler {
         }
         render(status: 200,
                 template: 'isSettings',
-                model: [project    : project ? Project.get(project) : null,
+                model: [project        : project ? Project.get(project) : null,
                         user           : springSecurityService.currentUser,
                         roles          : securityService.getRolesRequest(false),
                         i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
                         resourceBundles: grailsApplication.config.icescrum.resourceBundles,
                         menus          : menus,
-                        context    : context?.name ?: '',
-                        defaultView: menus.sort { it.position }[0]?.id ?: 'home',
+                        context        : context?.name ?: '',
+                        defaultView    : context ? menus.sort { it.position }[0]?.id : 'home',
                         serverURL      : ApplicationSupport.serverURL(),
                         projectMenus   : projectMenus])
     }
