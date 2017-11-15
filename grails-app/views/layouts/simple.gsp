@@ -53,8 +53,8 @@
         <div class="container-fluid">
             <g:layoutBody/>
         </div>
-        <g:include controller="scrumOS" action="isSettings" params="[project: params.project]"/>
-        <g:render template="/scrumOS/templates" model="[project: params.project]"/>
+        <g:include controller="scrumOS" action="isSettings" params="${params}"/>
+        <g:render template="/scrumOS/templates"/>
         <asset:javascript src="application.js"/>
     </body>
 </html>
