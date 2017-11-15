@@ -235,7 +235,7 @@
             <i ng-class="['fa', application.detachedDetailsView ? 'fa-window-maximize' : 'fa-window-restore']"></i>
         </button>
         <a class="btn btn-default"
-           href="{{ closeUrl }}"
+           href="{{ closeDetailsViewUrl() }}"
            uib-tooltip="${message(code: 'is.ui.window.closeable')}">
             <i class="fa fa-times"></i>
         </a>

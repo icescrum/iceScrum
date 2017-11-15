@@ -880,13 +880,37 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}).directive('detailsLayoutButtons', [function() {
+}).directive('detailsLayoutButtons', ['$rootScope', '$state', function($rootScope, $state) {
     return {
         restrict: 'E',
         scope: {
-            closeUrl: '='
+            removeAncestor: '='
         },
         replace: true,
-        templateUrl: 'details.layout.buttons.html'
+        templateUrl: 'details.layout.buttons.html',
+        link: function(scope) {
+            // Functions
+            scope.closeDetailsViewUrl = function() {
+                var stateName = '^';
+                if ($state.includes('**.tab')) {
+                    stateName += '.^'
+                }
+                if (scope.removeAncestor) {
+                    stateName += '.^'
+                }
+                return $state.href(stateName);
+            };
+            scope.toggleDetachedDetailsView = function() {
+                scope.application.detachedDetailsView = !scope.application.detachedDetailsView;
+                if (!scope.application.detachedDetailsView) {
+                    scope.application.minimizedDetailsView = false;
+                }
+            };
+            scope.toggleMinimizedDetailsView = function() {
+                scope.application.minimizedDetailsView = !scope.application.minimizedDetailsView;
+            };
+            // Init
+            scope.application = $rootScope.application;
+        }
     };
 }]);

@@ -50,7 +50,7 @@
                            tabindex="0"
                            href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
-                    <details-layout-buttons ng-if="!isModal" close-url="closeDetailsView(!$state.includes('feature.**'))"/>
+                    <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
                 </div>
                 <div class="btn-group shortcut-menu" role="group">
                     <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'"></shortcut-menu>

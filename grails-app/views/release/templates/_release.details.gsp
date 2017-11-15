@@ -52,7 +52,7 @@
                            tabindex="0"
                            href="#{{ ::viewName }}/{{ ::nextRelease.id }}/details"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
-                    <details-layout-buttons ng-if="!isModal" close-url="closeDetailsView()"/>
+                    <details-layout-buttons ng-if="!isModal"/>
                 </div>
                 <g:set var="formats" value="${is.exportFormats(entryPoint: 'releaseDetails')}"/>
                 <g:if test="${formats}">
