@@ -256,15 +256,15 @@ icescrum.reportUsage.timeout = 5000
 /* Server warnings to display to users */
 icescrum.warnings = []
 
-/* Contexts */
+/* Workspaces */
 icescrum {
-    contexts {
+    workspaces {
         project {
-            contextClass = Project
+            objectClass = Project
             config = { project -> [key: project.pkey, path: 'p'] }
             params = { project -> [project: project.id] }
-            indexScrumOS = { projectContext, user, securityService, springSecurityService ->
-                def project = projectContext.object
+            indexScrumOS = { projectWorkspace, user, securityService, springSecurityService ->
+                def project = projectWorkspace.object
                 if (project?.preferences?.hidden && !securityService.inProject(project, springSecurityService.authentication) && !securityService.stakeHolder(project, springSecurityService.authentication, false)) {
                     forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
                     return

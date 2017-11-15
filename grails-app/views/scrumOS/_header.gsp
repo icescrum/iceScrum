@@ -45,7 +45,7 @@
                 </a>
                 <ul ng-controller="mainMenuCtrl"
                     class="nav navbar-nav menubar"
-                    is-disabled="!currentUser.id || context != 'project'"
+                    is-disabled="!currentUser.id || workspace != 'project'"
                     as-sortable="menuSortableOptions"
                     ng-model="application.menus.visible">
                     <li class="contextual-menu" uib-dropdown>
@@ -156,7 +156,7 @@
                     <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && application.menus.hidden.length == 0 }">
                         <a uib-dropdown-toggle href>${message(code: 'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
                         <ul uib-dropdown-menu class="menubar"
-                            is-disabled="!currentUser.id || context != 'project'"
+                            is-disabled="!currentUser.id || workspace != 'project'"
                             as-sortable="menuSortableOptions"
                             ng-model="application.menus.hidden">
                             <li ng-repeat="menu in application.menus.hidden"

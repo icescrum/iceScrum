@@ -50,19 +50,19 @@ class WindowController implements ControllerErrorHandler {
                 }
                 return
             }
-            def context = windowDefinition.context ? ApplicationSupport.getCurrentContext(params, windowDefinition.context) : null
+            def workspace = windowDefinition.workspace ? ApplicationSupport.getCurrentWorkspace(params, windowDefinition.workspace) : null
             def _continue = true
             if (windowDefinition.before) {
                 windowDefinition.before.delegate = delegate
                 windowDefinition.before.resolveStrategy = Closure.DELEGATE_FIRST
-                _continue = windowDefinition.before(context?.object)
+                _continue = windowDefinition.before(workspace?.object)
             }
             if (!_continue) {
                 render(status: 404)
             } else {
                 def model = [windowDefinition: windowDefinition]
-                if (context) {
-                    model[context.name] = context.object
+                if (workspace) {
+                    model[workspace.name] = workspace.object
                 }
                 if (ApplicationSupport.controllerExist(windowDefinition.id, "window")) {
                     forward(action: 'window', controller: windowDefinition.id, model: model)
@@ -78,15 +78,15 @@ class WindowController implements ControllerErrorHandler {
     @Secured(['permitAll()'])
     def settings(String windowDefinitionId) {
         User user = springSecurityService.currentUser
-        def context = ApplicationSupport.getCurrentContext(params)
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
         // Default Values
-        def defaultWindow = context ? [windowDefinitionId: windowDefinitionId, context: context.name, contextId: context.object.id] : [windowDefinitionId: windowDefinitionId]
+        def defaultWindow = workspace ? [windowDefinitionId: windowDefinitionId, workspace: workspace.name, workspaceId: workspace.object.id] : [windowDefinitionId: windowDefinitionId]
         def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
         if (!user) {
             render(status: 200, contentType: 'application/json', text: defaultWindow as JSON)
             return
         }
-        def window = windowService.retrieve(windowDefinition, user, context)
+        def window = windowService.retrieve(windowDefinition, user, workspace)
         render(status: 200, contentType: 'application/json', text: (window ?: defaultWindow) as JSON)
     }
 
@@ -94,19 +94,19 @@ class WindowController implements ControllerErrorHandler {
     def updateSettings(String windowDefinitionId) {
         def windowParams = params.window
         User user = springSecurityService.currentUser
-        def context = ApplicationSupport.getCurrentContext(params)
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
         def windowDefinition = uiDefinitionService.getWindowDefinitionById(windowDefinitionId)
         if (!user) {
-            render(status: 200, contentType: 'text/javascript', text: [windowDefinitionId: windowDefinitionId, context: context.name, contextId: context.object.id] as JSON)
+            render(status: 200, contentType: 'text/javascript', text: [windowDefinitionId: windowDefinitionId, workspace: workspace.name, workspaceId: workspace.object.id] as JSON)
             return
         }
         Map props = [:]
         if (windowParams.settingsData) {
             props.settings = JSON.parse(windowParams.settingsData)
         }
-        def window = windowService.retrieve(windowDefinition, user, context)
+        def window = windowService.retrieve(windowDefinition, user, workspace)
         if (!window) {
-            window = windowService.save(windowDefinition, user, context)
+            window = windowService.save(windowDefinition, user, workspace)
         }
         windowService.update(window, props)
         render(status: 200, contentType: 'application/json', text: window as JSON)

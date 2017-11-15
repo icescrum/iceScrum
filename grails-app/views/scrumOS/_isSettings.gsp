@@ -30,7 +30,7 @@
         roles: ${roles as JSON},
         defaultView: "${defaultView}",
         project: ${project ? project as JSON : 'null'},
-        context: '${context}',
+        workspace: '${workspace}',
         pushContext: ${project?.id ?: "''"},
         pushLogLevel: "${Holders.config.icescrum.debug.enable ? 'debug' : 'info'}",
         projectPrivateDefault: ${grailsApplication.config.icescrum.project.private.default},

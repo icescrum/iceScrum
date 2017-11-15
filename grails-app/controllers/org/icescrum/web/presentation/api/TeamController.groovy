@@ -30,7 +30,7 @@ class TeamController implements ControllerErrorHandler {
     def show(long id) {
         Team team = Team.withTeam(id)
         def auth = springSecurityService.authentication
-        // Cannot check by annotation/request because we are not in a project context (URL)
+        // Cannot check by annotation/request because we are not in a project workspace (URL)
         if (!securityService.owner(team, auth) && !securityService.scrumMaster(team, auth)) {
             render(status: 403)
             return
@@ -58,7 +58,7 @@ class TeamController implements ControllerErrorHandler {
     def update(long id) {
         Team team = Team.withTeam(id)
         def auth = springSecurityService.authentication
-        // Cannot check by annotation/request because we are not in a project context (URL)
+        // Cannot check by annotation/request because we are not in a project workspace (URL)
         if (!securityService.owner(team, auth) && !securityService.scrumMaster(team, auth)) {
             render(status: 403)
             return
@@ -103,7 +103,7 @@ class TeamController implements ControllerErrorHandler {
     def delete(long id) {
         Team team = Team.withTeam(id)
         def auth = springSecurityService.authentication
-        // Cannot check by annotation/request because we are not in a project context (URL)
+        // Cannot check by annotation/request because we are not in a project workspace (URL)
         if (!securityService.owner(team, auth)) {
             render(status: 403)
             return

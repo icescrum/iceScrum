@@ -836,7 +836,7 @@ var isApplication = angular.module('isApplication', [
             $rootScope.taskStates = isSettings.states.task;
             $rootScope.storyStates = isSettings.states.story;
             $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
-            $rootScope.context = isSettings.context;
+            $rootScope.workspace = isSettings.workspace;
             $rootScope.warning = isSettings.warning;
             if (isSettings.project) {
                 isSettings.project.startDate = new Date(isSettings.project.startDate);

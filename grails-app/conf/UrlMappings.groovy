@@ -125,7 +125,7 @@ class UrlMappings {
             controller = 'widget'
             action = 'definitions'
         }
-        // Window in null context
+        // Window in null workspace
         "/ui/window/$windowDefinitionId" {
             controller = 'window'
             action = [GET: "show", POST: "update"]
@@ -133,7 +133,7 @@ class UrlMappings {
                 windowDefinitionId(matches: /[a-zA-Z]*/)
             }
         }
-        //Window settings in null context
+        // Window settings in null workspace
         "/ui/window/$windowDefinitionId/settings" {
             controller = 'window'
             action = [GET: "settings", POST: "updateSettings"]

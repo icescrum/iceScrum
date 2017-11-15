@@ -55,11 +55,11 @@ class ScrumOSController implements ControllerErrorHandler {
                      browsableProjectsExist: browsableProjectsCount > 0,
                      moreProjectsExist     : userProjects?.size() > projectsLimit,
                      projectFilteredsList  : userProjects.take(projectsLimit)]
-        def context = ApplicationSupport.getCurrentContext(params)
-        if (context) {
-            context.indexScrumOS.delegate = this
-            context.indexScrumOS(context, user, securityService, springSecurityService)
-            model."$context.name" = context.object
+        def workspace = ApplicationSupport.getCurrentWorkspace(params)
+        if (workspace) {
+            workspace.indexScrumOS.delegate = this
+            workspace.indexScrumOS(workspace, user, securityService, springSecurityService)
+            model."$workspace.name" = workspace.object
         }
         render(status: 200, view: 'index', model: model)
     }
@@ -79,36 +79,34 @@ class ScrumOSController implements ControllerErrorHandler {
     def isSettings(Long project) {
         List projectMenus = []
         List menus = []
-        Map context = ApplicationSupport.getCurrentContext(params)
+        Map workspace = ApplicationSupport.getCurrentWorkspace(params)
         uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
             def menu = windowDefinition.menu
             if (menu) {
                 if (ApplicationSupport.isAllowed(windowDefinition, params)) {
                     def menuPositions = ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: menu.defaultVisibility, pos: menu.defaultPosition]
-                    menus << [title   : message(code: menu.title instanceof Closure ? menu.getTitle()(context?.object) : menu.title),
+                    menus << [title   : message(code: menu.title instanceof Closure ? menu.getTitle()(workspace?.object) : menu.title),
                               id      : windowDefinitionId,
                               shortcut: 'ctrl+' + (menus.size() + 1),
                               icon    : windowDefinition.icon,
                               position: menuPositions.pos.toInteger(),
                               visible : menuPositions.visible]
                 }
-                if (windowDefinition.context == 'project') {
+                if (windowDefinition.workspace == 'project') {
                     projectMenus << [id: windowDefinitionId, title: windowDefinition.id == 'project' ? message(code: 'is.ui.project') : message(code: menu.title)]
                 }
             }
         }
-        render(status: 200,
-                template: 'isSettings',
-                model: [project        : project ? Project.get(project) : null,
-                        user           : springSecurityService.currentUser,
-                        roles          : securityService.getRolesRequest(false),
-                        i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
-                        resourceBundles: grailsApplication.config.icescrum.resourceBundles,
-                        menus          : menus,
-                        context        : context?.name ?: '',
-                        defaultView    : context ? menus.sort { it.position }[0]?.id : 'home',
-                        serverURL      : ApplicationSupport.serverURL(),
-                        projectMenus   : projectMenus])
+        render(status: 200, template: 'isSettings', model: [project        : project ? Project.get(project) : null,
+                                                            user           : springSecurityService.currentUser,
+                                                            roles          : securityService.getRolesRequest(false),
+                                                            i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
+                                                            resourceBundles: grailsApplication.config.icescrum.resourceBundles,
+                                                            menus          : menus,
+                                                            workspace      : workspace?.name ?: '',
+                                                            defaultView    : workspace ? menus.sort { it.position }[0]?.id : 'home',
+                                                            serverURL      : ApplicationSupport.serverURL(),
+                                                            projectMenus   : projectMenus])
     }
 
     def saveImage(String image, String title) {

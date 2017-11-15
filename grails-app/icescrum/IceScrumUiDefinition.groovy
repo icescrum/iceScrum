@@ -29,7 +29,7 @@ import org.icescrum.core.utils.ServicesUtils
         icon                        default: ''                   | String (fontawesome)
         help                        default: ''                   | String (i18n key)
         secured                     default: "permitAll()"        | String (spEl expression)
-        context                     default: "project"            | String (project or ...)
+        workspace                   default: "project"            | String (project or ...)
         templatePath                default: "windowName/window"  | String (full path to template)
         menu { => default: null
             title                   default: ''                   | String or Closure (i18n key)
@@ -46,13 +46,12 @@ import org.icescrum.core.utils.ServicesUtils
  */
 
 windows = {
-    //Master window : no menu, no context
     'home' {
-        context null
+        workspace null // Master window : no menu, no workspace
     }
     'backlog' {
         details true
-        context 'project'
+        workspace 'project'
         icon 'inbox'
         help 'is.ui.backlog.help'
         secured 'stakeHolder() or inProject()'
@@ -76,7 +75,7 @@ windows = {
     }
     'feature' {
         details true
-        context 'project'
+        workspace 'project'
         icon 'puzzle-piece'
         help 'is.ui.feature.help'
         secured 'isAuthenticated()'
@@ -98,13 +97,13 @@ windows = {
         }
     }
     'project' {
-        context 'project'
+        workspace 'project'
         flex false
         icon 'dashboard'
         help 'is.ui.project.help'
         menu {
-            title { contextObject ->
-                contextObject instanceof org.icescrum.core.domain.Project ? contextObject.name : 'is.ui.project'
+            title { workspaceObject ->
+                workspaceObject instanceof org.icescrum.core.domain.Project ? workspaceObject.name : 'is.ui.project'
             }
             defaultPosition 1
             defaultVisibility true
@@ -116,7 +115,7 @@ windows = {
     }
     'planning' {
         details true
-        context 'project'
+        workspace 'project'
         icon 'calendar'
         help 'todo.is.ui.planning.help'
         secured 'inProject() or (isAuthenticated() and stakeHolder())'
@@ -139,7 +138,7 @@ windows = {
     }
     'taskBoard' {
         details true
-        context 'project'
+        workspace 'project'
         icon 'tasks'
         help 'todo.is.ui.taskBoard.help'
         secured 'inProject() or (isAuthenticated() and stakeHolder())'
@@ -168,8 +167,7 @@ windows = {
         icon                        default: ''                   | String (fontawesome)
         title                       default: name                 | String (i18n key or ...)
         secured                     default: "permitAll()"        | String (spEl expression)
-        context                     default: null                 | String (project or ...)
-        context                     default: null                 | String (project or ...)
+        workspace                   default: null                 | String (project or ...)
         ngController                default: null                 | String
         templatePath                default: "/widgets/widgetName/widget"| String (full path to template)
 

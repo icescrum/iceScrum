@@ -28,8 +28,8 @@ services.factory('Window', ['Resource', function($resource) {
 
 services.service("WindowService", ['CacheService', '$q', 'Window', function(CacheService, $q, Window) {
     var self = this;
-    this.get = function(windowDefinitionId, context) {
-        var id = self.computeId(windowDefinitionId, context ? context.class.toLowerCase() : null, context ? context.id : null);
+    this.get = function(windowDefinitionId, workspaceObject) {
+        var id = self.computeId(windowDefinitionId, workspaceObject ? workspaceObject.class.toLowerCase() : null, workspaceObject ? workspaceObject.id : null);
         var cachedWindow = CacheService.get('window', id);
         return !angular.isUndefined(cachedWindow) ? $q.when(cachedWindow) : self.refresh(windowDefinitionId);
     };
@@ -51,13 +51,13 @@ services.service("WindowService", ['CacheService', '$q', 'Window', function(Cach
             CacheService.addOrUpdate('window', window);
         }).$promise;
     };
-    this.computeId = function(object, context, contextId) {
+    this.computeId = function(object, workspace, workspaceId) {
         if (object.windowDefinitionId) {
-            return object.windowDefinitionId + '-' + object.context + '-' + object.contextId;
+            return object.windowDefinitionId + '-' + object.workspace + '-' + object.workspaceId;
         } else {
             var id = object;
-            if (context && contextId) {
-                id = id + '-' + context + '-' + contextId;
+            if (workspace && workspaceId) {
+                id = id + '-' + workspace + '-' + workspaceId;
             }
             return id;
         }

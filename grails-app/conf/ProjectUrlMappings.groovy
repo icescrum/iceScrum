@@ -40,7 +40,7 @@ class ProjectUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
-        // Window in project context
+        // Window in project workspace
         "/p/$project/ui/window/$windowDefinitionId" {
             controller = 'window'
             action = 'show'
@@ -49,7 +49,7 @@ class ProjectUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
-        // Window settings in project context
+        // Window settings in project workspace
         "/p/$project/ui/window/$windowDefinitionId/settings" {
             controller = 'window'
             action = [GET: "settings", POST: "updateSettings"]
