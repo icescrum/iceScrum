@@ -227,12 +227,12 @@
         <button class="btn btn-default minimizable"
                 ng-click="toggleMinimizedDetailsView()"
                 uib-tooltip="${message(code: 'is.ui.window.minimize')}">
-            <i ng-class="['fa', application.minimizedDetailsView ? 'fa-window-maximize' : 'fa-window-minimize']"></i>
+            <i ng-class="['fa fa-window-minimize', application.minimizedDetailsView ? 'fa-rotate-180' : '']"></i>
         </button>
         <button class="btn btn-default detachable"
                 ng-click="toggleDetachedDetailsView()"
                 uib-tooltip="${message(code: 'is.ui.window.detach')}">
-            <i class="fa fa-window-restore"></i>
+            <i ng-class="['fa', application.detachedDetailsView ? 'fa-window-maximize' : 'fa-window-restore']"></i>
         </button>
         <a class="btn btn-default"
            href="{{ closeUrl }}"

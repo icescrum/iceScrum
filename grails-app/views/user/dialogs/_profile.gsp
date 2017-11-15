@@ -192,7 +192,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <entry:point id="user-dialog-profile-tab-general-after-form"/>
+                <entry:point id="user-dialog-token-tab-general-after-form"/>
             </div>
         </uib-tab>
         <g:if test="${projects}">

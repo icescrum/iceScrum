@@ -519,16 +519,21 @@ header {
   > [ui-view='details'] {
     z-index: 10;
     bottom: 0;
-    top: 145px;
     right: 30px;
     > .panel-light {
       border-left-width: 0px !important;
     }
     @media (max-width: @screen-sm-max) {
+      top: 145px;
       width: 500px;
     }
-    @media (min-width: @screen-md-min) {
+    @media (min-width: @screen-md-min) and (min-width: @screen-md-max) {
       width: 558px;
+      height: 800px;
+    }
+    @media (min-width: @screen-lg-min) {
+      width: 558px;
+      height: 50%;
     }
     position: absolute;
     border-top: 1px solid #ddd;
@@ -548,12 +553,14 @@ header {
         .item-name {
           max-width: 80px;
         }
+
         width: 500px;
       }
       @media (min-width: @screen-md-min) {
         .item-name {
           max-width: 100px;
         }
+
         width: 558px;
       }
       .right-title {
