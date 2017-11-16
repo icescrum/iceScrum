@@ -78,7 +78,7 @@ windows = {
         workspace 'project'
         icon 'puzzle-piece'
         help 'is.ui.feature.help'
-        secured 'isAuthenticated()'
+        secured 'stakeHolder() or inProject()'
         menu {
             title 'is.ui.feature'
             defaultPosition 5
