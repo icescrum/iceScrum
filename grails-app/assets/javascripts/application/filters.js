@@ -432,7 +432,7 @@ filters
 }]).filter('i18nName', ['$rootScope', function($rootScope) {
     return function(object) {
         if (object) {
-            return object.name.indexOf('is.ui') === 0 || object.name.indexOf('todo.is.ui') === 0 ? $rootScope.message(object.name) : object.name;
+            return _.startsWith(object.name, 'is.') ? $rootScope.message(object.name) : object.name;
         }
     }
 }]).filter('sumBy', [function() {
