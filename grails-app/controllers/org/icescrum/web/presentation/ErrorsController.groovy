@@ -94,10 +94,10 @@ class ErrorsController implements ControllerErrorHandler {
     def error500() {
         try {
             Exception exception = request.exception
-            if (exception.message.contains("This indicates a configuration error because the rejectPublicInvocations property is set to")) {
+            if (exception.message?.contains("This indicates a configuration error because the rejectPublicInvocations property is set to")) {
                 redirect(mapping: '404')
             } else if (Environment.current == Environment.PRODUCTION) {
-                if (exception.message.contains('Row was updated or deleted by another transaction')) {
+                if (exception.message?.contains('Row was updated or deleted by another transaction')) {
                     returnError(code: 'is.error.row.updated.another.transaction', exception: exception)
                 } else {
                     try {
