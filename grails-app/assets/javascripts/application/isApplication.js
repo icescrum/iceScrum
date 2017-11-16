@@ -191,21 +191,7 @@ var isApplication = angular.module('isApplication', [
                     }]
                 },
                 children: [
-                    {
-                        name: 'new',
-                        url: '/new',
-                        data: {
-                            authorize: {
-                                roles: ['po']
-                            }
-                        },
-                        views: {
-                            "details": {
-                                templateUrl: 'feature.new.html',
-                                controller: 'featureNewCtrl'
-                            }
-                        }
-                    },
+                    isStateProvider.getFeatureNewState(),
                     {
                         name: 'multiple',
                         url: "/{featureListId:[0-9]+(?:[\,][0-9]+)+}",

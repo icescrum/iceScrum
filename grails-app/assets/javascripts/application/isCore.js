@@ -217,6 +217,23 @@ angular.module('isCore', ['ui.router'])
     })
     .provider('isState', ['itemTabsProvider', function(itemTabsProvider) {
         this.$get = angular.noop;
+        this.getFeatureNewState = function(viewContext) {
+            var featureNewState = {
+                name: 'new',
+                url: '/new',
+                data: {
+                    authorize: {
+                        roles: ['po']
+                    }
+                },
+                views: {}
+            };
+            featureNewState.views['details' + (viewContext ? viewContext : '')] = {
+                templateUrl: 'feature.new.html',
+                controller: 'featureNewCtrl'
+            };
+            return featureNewState;
+        };
         this.getDetailsModalState = function(detailsType, options) {
             return _.merge({
                 name: detailsType,
