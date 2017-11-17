@@ -1121,6 +1121,18 @@ table {
     h4 {
       padding-left: 10px;
     }
+    .btn-toolbar {
+      padding: 10px;
+      margin-left: 0;
+      div:first-child {
+        margin-left: 0;
+      }
+      .pull-right {
+        > div.btn-group:last-child {
+          margin-right: 0;
+        }
+      }
+    }
   }
   .backlogs-list-details {
     height: 1px;
@@ -1160,15 +1172,6 @@ table {
     }
     .btn-toolbar {
       padding: 10px;
-      margin-left: 0;
-      div:first-child {
-        margin-left: 0;
-      }
-      .pull-right {
-        > div.btn-group:last-child {
-          margin-right: 0;
-        }
-      }
     }
     .as-sortable-dragging {
       display: block;
