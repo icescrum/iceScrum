@@ -524,16 +524,16 @@ header {
       border-left-width: 0px !important;
     }
     @media (max-width: @screen-sm-max) {
-      top: 145px;
       width: 500px;
     }
-    @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
-      width: 558px;
-      height: 800px;
+    @media (min-width: @screen-md-min) {
+      width: 560px;
     }
-    @media (min-width: 2400px) {
-      width: 558px;
-      height: 50%;
+    @media (max-height: 1199px) {
+      top: 145px;
+    }
+    @media (min-height: 1200px) {
+      height: 900px;
     }
     position: absolute;
     border-top: 1px solid #ddd;
@@ -548,21 +548,9 @@ header {
       .item-name {
         display: inline-block;
         .text-overflow();
+        max-width: 100px;
       }
-      @media (max-width: @screen-sm-max) {
-        .item-name {
-          max-width: 80px;
-        }
-
-        width: 500px;
-      }
-      @media (min-width: @screen-md-min) {
-        .item-name {
-          max-width: 100px;
-        }
-
-        width: 558px;
-      }
+      width: 580px;
       .right-title {
         max-width: none;
         > div:first-of-type {
