@@ -204,11 +204,11 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
     $scope.endDateOptions = angular.copy($scope.startDateOptions);
 }]);
 
-controllers.controller('sprintBacklogCtrl', ['$scope', '$q', '$controller', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', function($scope, $q, $controller, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
+controllers.controller('sprintBacklogCtrl', ['$scope', '$rootScope', '$q', '$controller', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', function($scope, $rootScope, $q, $controller, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     // Functions
     $scope.isSortingSprint = function(sprint) {
-        return !$scope.waitSortingTask && StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
+        return !$rootScope.waitSortingTask && StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
     };
     // Init
     $scope.sprintSortableOptions = {
@@ -216,21 +216,21 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$q', '$controller', 'Sto
             var destScope = event.dest.sortableScope;
             var story = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
-            $scope.waitSortingTask = true;
+            $rootScope.waitSortingTask = true;
             StoryService.plan(story, destScope.sprint, newRank).catch(function() {
                 $scope.revertSortable(event);
             }).finally(function() {
-                $scope.waitForUpdate = false;
+                $rootScope.waitSortingTask = false;
             });
         },
         orderChanged: function(event) {
             var story = event.source.itemScope.modelValue;
             story.rank = event.dest.index + 1;
-            $scope.waitSortingTask = true;
+            $rootScope.waitSortingTask = true;
             StoryService.update(story).catch(function() {
                 $scope.revertSortable(event);
             }).finally(function() {
-                $scope.waitSortingTask = false;
+                $rootScope.waitSortingTask = false;
             });
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
