@@ -208,7 +208,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$q', '$controller', 'Sto
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     // Functions
     $scope.isSortingSprint = function(sprint) {
-        return StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
+        return !$scope.waitSortingTask && StoryService.authorizedStory('rank') && sprint.state < SprintStatesByName.DONE;
     };
     // Init
     $scope.sprintSortableOptions = {
@@ -216,15 +216,21 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$q', '$controller', 'Sto
             var destScope = event.dest.sortableScope;
             var story = event.source.itemScope.modelValue;
             var newRank = event.dest.index + 1;
+            $scope.waitSortingTask = true;
             StoryService.plan(story, destScope.sprint, newRank).catch(function() {
                 $scope.revertSortable(event);
+            }).finally(function() {
+                $scope.waitForUpdate = false;
             });
         },
         orderChanged: function(event) {
             var story = event.source.itemScope.modelValue;
             story.rank = event.dest.index + 1;
+            $scope.waitSortingTask = true;
             StoryService.update(story).catch(function() {
                 $scope.revertSortable(event);
+            }).finally(function() {
+                $scope.waitSortingTask = false;
             });
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
