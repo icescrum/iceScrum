@@ -88,19 +88,19 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
         };
         options.onMessage = function(response) {
             $rootScope.application.loading = true;
-            var textBody = response.responseBody;
-            try {
-                var jsonBody = atmosphere.util.parseJSON(textBody);
-                if (jsonBody.eventType) {
-                    self.publishEvent(jsonBody);
+            _.each(response.responseBody.split('#-|-#'), function(text) {
+                try {
+                    var jsonBody = atmosphere.util.parseJSON(text);
+                    if (jsonBody.eventType) {
+                        self.publishEvent(jsonBody);
+                    }
+                } catch (e) {
+                    if (_canLog('debug')) {
+                        atmosphere.util.debug("Error parsing JSON: " + text);
+                    }
                 }
-            } catch (e) {
-                if (_canLog('debug')) {
-                    atmosphere.util.debug("Error parsing JSON: " + textBody);
-                }
-            } finally {
-                $rootScope.application.loading = false;
-            }
+            });
+            $rootScope.application.loading = false;
         };
         options.onClose = function(response) {
             self.push.connected = false;

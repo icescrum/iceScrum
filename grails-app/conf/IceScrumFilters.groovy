@@ -22,6 +22,7 @@
 
 
 import grails.plugin.springsecurity.SpringSecurityUtils
+import grails.util.Holders
 import org.geeks.browserdetection.ComparisonType
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 class IceScrumFilters {
 
+    def pushService
     def securityService
     def springSecurityService
     def userAgentIdentService
@@ -41,6 +43,10 @@ class IceScrumFilters {
         all(controller: '*', action: '*') {
             before = {
                 response.addHeader(HEADER_CACHE_CONTROL, "no-store, no-cache, no-transform, must-revalidate")
+                pushService.bufferPushForThisThread()
+            }
+            after = {
+                pushService.resumePushForThisThread()
             }
         }
 
