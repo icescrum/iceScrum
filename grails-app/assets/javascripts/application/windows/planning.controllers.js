@@ -98,12 +98,6 @@ extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 
         return _.startsWith($state.current.name, 'planning.release.sprint.multiple');
     };
     // Init
-    $scope.orderBy = {
-        current: {
-            value: 'rank',
-            reverse: false
-        }
-    };
     $scope.viewName = 'planning';
     $scope.visibleSprintMax = $scope.application.mobilexs ? 1 : ($scope.application.mobile ? 2 : 3);
     $scope.visibleSprintOffset = 0;
