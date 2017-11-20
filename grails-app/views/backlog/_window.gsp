@@ -131,7 +131,9 @@
                                     ng-click="print($event)"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     ng-href="story/backlog/{{ ::backlogContainer.backlog.id }}/print"
-                                    hotkey="{'P': hotkeyClick }"><i class="fa fa-print"></i>
+                                    hotkey="{'P': hotkeyClick }"
+                                    hotkey-description="${message(code: 'is.ui.window.print')}">
+                                <i class="fa fa-print"></i>
                             </button>
                             <button class="btn btn-default"
                                     uib-tooltip="${message(code: 'todo.is.ui.export')}"

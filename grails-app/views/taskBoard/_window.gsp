@@ -248,7 +248,7 @@
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr ng-class="{'is-selected': isSelected(story)}" ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                    <tr ng-class="{'is-selected': isSelected(story)}" ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
                         <td class="postits {{ postitClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"
@@ -295,7 +295,7 @@
                             <div ng-include="'story.light.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>
-                    <tr ng-style="{'border-left': '15px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                    <tr ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
                         <td class="postits {{ postitClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, story, true), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"

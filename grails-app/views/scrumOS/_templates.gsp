@@ -152,6 +152,7 @@
         <a href
            class="btn btn-default"
            hotkey="{'U':showProfile}"
+           hotkey-description="${message(code: 'todo.is.ui.profile')}"
            uib-tooltip="${message(code: 'is.dialog.profile')} (U)"
            ng-click="showProfile()">${message(code: 'is.dialog.profile')}
         </a>

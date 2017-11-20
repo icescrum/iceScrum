@@ -62,6 +62,7 @@
                             <g:if test="${creationProjectEnable}">
                                 <li>
                                     <a hotkey="{ 'shift+n': hotkeyClick}"
+                                       hotkey-description="${message(code: 'todo.is.ui.project.createNew')}"
                                        ui-sref="newProject">
                                         <g:message code="is.projectmenu.submenu.project.create"/> <small class="text-muted">(SHIFT+N)</small>
                                     </a>
@@ -69,7 +70,10 @@
                             </g:if>
                             <g:if test="${importEnable}">
                                 <li>
-                                    <a hotkey="{ 'shift+m': import}" href="" ng-click="import()">
+                                    <a hotkey="{ 'shift+m': import}"
+                                       hotkey-description="${message(code: 'is.dialog.importProject.choose.title')}"
+                                       href=""
+                                       ng-click="import()">
                                         <g:message code="is.projectmenu.submenu.project.import"/> <small class="text-muted">(SHIFT+M)</small>
                                     </a>
                                 </li>
@@ -77,13 +81,19 @@
                             <g:if test="${browsableProjectsExist}">
                                 <li>
                                     <g:if test="${request.admin}">
-                                        <a hotkey="{ 'shift+a': hotkeyClick}" href ng-click="showProjectListModal('all')">
+                                        <a hotkey="{ 'shift+a': hotkeyClick}"
+                                           href
+                                           ng-click="showProjectListModal('all')"
+                                           hotkey-description="${message(code: 'todo.is.ui.project.list.all')}">
                                             <g:message code="todo.is.ui.project.list.all"/>
                                             <small class="text-muted">(SHIFT+A)</small>
                                         </a>
                                     </g:if>
                                     <g:else>
-                                        <a hotkey="{ 'shift+a': hotkeyClick}" href ng-click="showProjectListModal('public')">
+                                        <a hotkey="{ 'shift+a': hotkeyClick}"
+                                           href
+                                           ng-click="showProjectListModal('public')"
+                                           hotkey-description="${message(code: 'todo.is.ui.project.list.public')}">
                                             <g:message code="todo.is.ui.project.list.public"/>
                                             <small class="text-muted">(SHIFT+A)</small>
                                         </a>
@@ -96,13 +106,19 @@
                                     ${message(code: 'todo.is.ui.projects.current')} <span class="current-project-name"><b>${project.name}</b></span>
                                 </li>
                                 <li ng-if="authorizedProject('edit')">
-                                    <a hotkey="{ 'shift+e': hotkeyClick}" href ng-click="showProjectEditModal()">
+                                    <a hotkey="{ 'shift+e': hotkeyClick}"
+                                       hotkey-description="${message(code: 'is.ui.apps.configure')}"
+                                       href
+                                       ng-click="showProjectEditModal()">
                                         <g:message code="is.projectmenu.submenu.project.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                     </a>
                                 </li>
                                 <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
                                     <li ng-if="authorizedProject('edit')">
-                                        <a hotkey="{ 'shift+d': export}" href ng-click="export(project)">
+                                        <a hotkey="{ 'shift+d': export}"
+                                           hotkey-description="${message(code: 'is.dialog.exportProject.title')}"
+                                           href
+                                           ng-click="export(project)">
                                             <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
                                         </a>
                                     </li>
