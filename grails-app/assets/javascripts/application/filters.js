@@ -159,7 +159,7 @@ filters
     .filter('createGradientBackground', function() {
         return function(color, disabled) {
             if (disabled) {
-                return {'border-left': "8px solid " + color};
+                return {'border-left': "10px solid " + color};
             } else if (color) {
                 if (!gradientBackgroundCache[color]) {
                     var ratio = 18;
