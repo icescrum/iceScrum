@@ -84,6 +84,16 @@ header {
   > nav#menu-header {
     margin-bottom: 0;
     border-radius: 0;
+    background: none;
+    border-color: transparent;
+    &.navbar-offcanvas.offcanvas-transform.in {
+      background-color: @navbar-masthead-default-bg;
+      border-color: @navbar-masthead-default-bg;
+    }
+    .navbar-nav > .open > a {
+      background: none;
+      border-color: transparent;
+    }
     li > a > i.fa {
       margin-right: 3px;
       vertical-align: -10%;
@@ -216,7 +226,7 @@ header {
       }
       margin-right: 0;
     }
-    &.invert {
+    &.invert:not(.in) {
       color: #000;
       a.link {
         color: #000;

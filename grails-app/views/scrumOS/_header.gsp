@@ -30,7 +30,6 @@
     </button>
     <entry:point id="header-before-menu"/>
     <nav id="menu-header"
-         ng-style="application.context | contextStyle"
          class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ application.context.color | contrastColor:true }}"
          role="navigation">
         <div class="container-fluid">
@@ -50,7 +49,7 @@
                     as-sortable="menuSortableOptions"
                     ng-model="application.menus.visible">
                     <li class="contextual-menu" uib-dropdown>
-                        <a uib-dropdown-toggle ng-style="application.context | contextStyle">
+                        <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                                 <g:render template="/scrumOS/logo"/>
                             </svg> <i class="fa fa-caret-down"></i>
