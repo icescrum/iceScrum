@@ -94,6 +94,7 @@
                             uib-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                             hotkey="{'shift+return': hotkeyClick }"
                             hotkey-allow-in="INPUT"
+                            hotkey-description="${message(code: 'todo.is.ui.create.and.continue')}"
                             type='button'
                             ng-click="save(feature, true)">
                         ${message(code: 'todo.is.ui.create.and.continue')}
