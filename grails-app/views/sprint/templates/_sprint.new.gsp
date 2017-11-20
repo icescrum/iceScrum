@@ -23,13 +23,13 @@
 <script type="text/ng-template" id="sprint.new.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">
-            <i class="fa fa-tasks"></i> ${message(code: "todo.is.ui.sprint.new")}
-            <a class="pull-right btn btn-default"
-               href="{{:: $state.href('^.^') }}"
-               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                <i class="fa fa-times"></i>
-            </a>
+        <h3 class="panel-title row">
+            <div class="left-title">
+                <i class="fa fa-tasks"></i> <span class="item-name" title="${message(code: "todo.is.ui.sprint.new")}">${message(code: "todo.is.ui.sprint.new")}</span>
+            </div>
+            <div class="right-title">
+                <details-layout-buttons ng-if="!isModal" remove-ancestor="false"/>
+            </div>
         </h3>
     </div>
     <div class="details-no-tab">

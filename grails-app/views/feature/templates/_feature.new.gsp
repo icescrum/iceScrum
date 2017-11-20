@@ -23,14 +23,13 @@
 <script type="text/ng-template" id="feature.new.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">
-            <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i>
-            ${message(code: 'todo.is.ui.feature.new')}
-            <a class="pull-right visible-on-hover btn btn-default"
-               href="#/{{ ::viewName }}"
-               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                <i class="fa fa-times"></i>
-            </a>
+        <h3 class="panel-title row">
+            <div class="left-title">
+                <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span class="item-name" title="${message(code: 'todo.is.ui.feature.new')}">${message(code: 'todo.is.ui.feature.new')}</span>
+            </div>
+            <div class="right-title">
+                <details-layout-buttons ng-if="!isModal" remove-ancestor="false"/>
+            </div>
         </h3>
     </div>
     <div class="details-no-tab">

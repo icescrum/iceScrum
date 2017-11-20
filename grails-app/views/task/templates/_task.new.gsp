@@ -23,13 +23,14 @@
 <script type="text/ng-template" id="task.new.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">
-            <i class="fa fa-file" ng-style="{color: task.color ? task.color : '#f9f157' }"></i> ${message(code: 'todo.is.ui.task.new')}
-            <a class="pull-right btn btn-default"
-               href="{{:: $state.href('^.^') }}"
-               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                <i class="fa fa-times"></i>
-            </a>
+        <h3 class="panel-title row">
+            <div class="left-title">
+                <i class="fa fa-file" ng-style="{color: task.color ? task.color : '#f9f157' }"></i>
+                <span class="item-name" title="${message(code: 'todo.is.ui.task.new')}">${message(code: 'todo.is.ui.task.new')}</span>
+            </div>
+            <div class="right-title">
+                <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
+            </div>
         </h3>
     </div>
     <div class="details-no-tab">

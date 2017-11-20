@@ -23,14 +23,14 @@
 <script type="text/ng-template" id="story.new.html">
 <div class="panel panel-light">
     <div class="panel-heading">
-        <h3 class="panel-title">
-            <i class="fa fa-sticky-note" ng-style="{color: storyPreview.feature ? storyPreview.feature.color : '#f9f157'}"></i>
-            ${message(code: 'todo.is.ui.story.new')}
-            <a class="pull-right btn btn-default"
-               ui-sref="backlog.backlog"
-               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
-                <i class="fa fa-times"></i>
-            </a>
+        <h3 class="panel-title row">
+            <div class="left-title">
+                <i class="fa fa-sticky-note" ng-style="{color: storyPreview.feature ? storyPreview.feature.color : '#f9f157'}"></i>
+                <span class="item-name" title="${message(code: 'todo.is.ui.story.new')}">${message(code: 'todo.is.ui.story.new')}</span>
+            </div>
+            <div class="right-title">
+                <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
+            </div>
         </h3>
     </div>
     <div class="details-no-tab">
