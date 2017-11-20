@@ -23,7 +23,7 @@
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="backlogs-list elements-list" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
-        <ul id="elementslist-list" class="nav nav-tabs nav-tabs-is clearfix pull-left" as-sortable="elementsListSortableOptions" ng-model="visibleElementsList">
+        <ul id="elementslist-list" ng-class="['nav nav-tabs nav-tabs-is clearfix pull-left', { 'hasElements': visibleElementsList.length > 0 }]" as-sortable="elementsListSortableOptions" ng-model="visibleElementsList">
             <li as-sortable-item role="presentation" ng-repeat="elem in visibleElementsList" ng-class="{'active': isShown(elem)}">
                 <a href="{{ toggleElementUrl(elem) }}" ng-click="clickOnElementHref($event)">
                     <i as-sortable-item-handle
