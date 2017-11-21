@@ -26,6 +26,7 @@ package org.icescrum.web.presentation
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.codehaus.groovy.grails.web.pages.DefaultGroovyPagesUriService
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.preferences.ProjectPreferences
 import org.icescrum.core.error.ControllerErrorHandler
@@ -44,6 +45,7 @@ class ScrumOSController implements ControllerErrorHandler {
     def grailsApplication
     def uiDefinitionService
     def springSecurityService
+    def groovyPagesUriService
 
     def index() {
         def user = springSecurityService.currentUser
@@ -60,6 +62,19 @@ class ScrumOSController implements ControllerErrorHandler {
             workspace.indexScrumOS.delegate = this
             workspace.indexScrumOS(workspace, user, securityService, springSecurityService)
             model."$workspace.name" = workspace.object
+        }
+        try {
+            DefaultGroovyPagesUriService dgpus = (DefaultGroovyPagesUriService) groovyPagesUriService
+            println "----"
+            println dgpus.controllerNameCache.inspect()
+            def controllerName = dgpus.getLogicalControllerName(this)
+            if (controllerName != 'scrumOS') {
+                println "argh"
+            }
+            println controllerName
+            println "----"
+        } catch(Exception e) {
+            e.printStackTrace()
         }
         render(status: 200, view: 'index', model: model)
     }
