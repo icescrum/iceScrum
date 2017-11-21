@@ -778,15 +778,19 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
             $scope.hiddenElementsList = [];
         }
         if ($scope.savedHiddenElementsOrder) {
-            $scope.hiddenElementsList = _.sortBy($scope.hiddenElementsList, function(element) {
-                return $scope.savedHiddenElementsOrder.indexOf(element[self.propId]);
+            $scope.hiddenElementsList = _.sortBy($scope.hiddenElementsList, function(elem) {
+                return $scope.savedHiddenElementsOrder.indexOf(elem[self.propId]);
             });
         }
         if ($scope.savedVisibleElementsOrder) {
             // visibleElementsOrder is only used to order visible elements.
-            $scope.visibleElementsList = _.sortBy($scope.visibleElementsList, function(element) {
-                return $scope.savedVisibleElementsOrder.indexOf(element[self.propId]);
+            // new elements (not in savedVisibleElementsOrder) should appear last in list.
+            var partitionedVisibleElementsList = _.partition(elementsList, function(elem) {
+                return _.includes($scope.savedVisibleElementsOrder, elem[self.propId])
             });
+            $scope.visibleElementsList = _.sortBy(partitionedVisibleElementsList[0], function(element) {
+                return $scope.savedVisibleElementsOrder.indexOf(element[self.propId]);
+            }).concat(partitionedVisibleElementsList[1]);
         }
     };
     $scope.hideElementsToFitAvailableSpace = function() {
