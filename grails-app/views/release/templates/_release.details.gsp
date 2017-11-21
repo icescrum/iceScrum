@@ -45,12 +45,12 @@
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{ ::viewName }}/{{ ::previousRelease.id }}/details"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                           ui-sref=".({releaseId: previousRelease.id})"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i></a>
                         <a ng-if="nextRelease"
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{ ::viewName }}/{{ ::nextRelease.id }}/details"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
+                           ui-sref=".({releaseId: nextRelease.id})"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
                     <details-layout-buttons ng-if="!isModal"/>
                 </div>
