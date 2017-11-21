@@ -22,7 +22,6 @@
 
 
 import grails.plugin.springsecurity.SpringSecurityUtils
-import grails.util.Holders
 import org.geeks.browserdetection.ComparisonType
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.security.Authority

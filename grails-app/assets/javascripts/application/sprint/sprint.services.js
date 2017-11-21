@@ -82,6 +82,10 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.generateSprints = function(release) {
         return Sprint.saveArray({type: 'release', id: release.id, projectId: release.parentProject.id, action: 'generateSprints'}, {}, self.mergeSprints).$promise;
     };
+    this.get = function(id) {
+        var cachedSprint = CacheService.get('sprint', id);
+        return cachedSprint ? $q.when(cachedSprint) : self.refresh(id);
+    };
     this.refresh = function(id, projectId) {
         return Sprint.get({id: id, projectId: projectId}, crudMethods[IceScrumEventType.CREATE]).$promise
     };
