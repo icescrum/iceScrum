@@ -90,13 +90,13 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
         {
             name: 'todo.is.ui.sprint.new',
             visible: function(release) { return $scope.authorizedSprint('create'); },
-            url: function(release) { return '#' + $scope.viewName + '/' + release.id + '/sprint/new'; }
+            url: function(release) { return $state.href('planning.release.sprint.new', {releaseId: release.id}); }
         },
         {
             name: 'todo.is.ui.release.new',
             priority: function(release, defaultPriority, viewType) { return viewType !== 'details' ? 100 : defaultPriority; },
             visible: function(release) { return $scope.authorizedRelease('create'); },
-            url: function(release) { return '#' + $scope.viewName + '/new'; }
+            url: function(release) { return $state.href('planning.new'); }
         },
         {
             name: 'is.ui.releasePlan.toolbar.generateSprints',
