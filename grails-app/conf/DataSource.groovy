@@ -43,14 +43,14 @@ environments {
             username = "sa"
             password = ""
         }
-//        dataSource {
-//            logSql = true
-//            dbCreate = "update"
-//            username = "root"
-//            password = "root"
-//            driverClassName = "com.mysql.jdbc.Driver"
-//            url = "jdbc:mysql://localhost/icescrum"
-//        }
+        dataSource {
+            //logSql = true
+            dbCreate = "update"
+            username = "root"
+            password = "root"
+            driverClassName = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://localhost/icescrum"
+        }
 //        dataSource {
 //            dbCreate = "update"
 //            username = "root"
