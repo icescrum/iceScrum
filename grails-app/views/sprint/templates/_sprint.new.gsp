@@ -28,7 +28,7 @@
                 <i class="fa fa-tasks"></i> <span class="item-name" title="${message(code: "todo.is.ui.sprint.new")}">${message(code: "todo.is.ui.sprint.new")}</span>
             </div>
             <div class="right-title">
-                <details-layout-buttons ng-if="!isModal" remove-ancestor="false"/>
+                <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
             </div>
         </h3>
     </div>
