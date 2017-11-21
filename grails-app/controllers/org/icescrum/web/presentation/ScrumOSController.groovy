@@ -61,7 +61,12 @@ class ScrumOSController implements ControllerErrorHandler {
             workspace.indexScrumOS(workspace, user, securityService, springSecurityService)
             model."$workspace.name" = workspace.object
         }
-        render(status: 200, view: 'index', model: model)
+        try {
+            render(status: 200, view: 'index', model: model)
+        } catch (Exception e) {
+            e.printStackTrace()
+            render(status: 200, text: 'Please restart your iceScrum server', contentType: "text/plain")
+        }
     }
 
     def about() {
