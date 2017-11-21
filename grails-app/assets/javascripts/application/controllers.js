@@ -785,11 +785,11 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
         if ($scope.savedVisibleElementsOrder) {
             // visibleElementsOrder is only used to order visible elements.
             // new elements (not in savedVisibleElementsOrder) should appear last in list.
-            var partitionedVisibleElementsList = _.partition(elementsList, function(elem) {
+            var partitionedVisibleElementsList = _.partition($scope.visibleElementsList, function(elem) {
                 return _.includes($scope.savedVisibleElementsOrder, elem[self.propId])
             });
-            $scope.visibleElementsList = _.sortBy(partitionedVisibleElementsList[0], function(element) {
-                return $scope.savedVisibleElementsOrder.indexOf(element[self.propId]);
+            $scope.visibleElementsList = _.sortBy(partitionedVisibleElementsList[0], function(elem) {
+                return $scope.savedVisibleElementsOrder.indexOf(elem[self.propId]);
             }).concat(partitionedVisibleElementsList[1]);
         }
     };
