@@ -502,7 +502,7 @@ var isApplication = angular.module('isApplication', [
     .factory('UserTimeZone', function() {
         return jstz.determine();
     })
-    .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $interval, notifications, screenSize) {
+    .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$localStorage', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $localStorage, $interval, notifications, screenSize) {
         $rootScope.uiWorking = function(message) {
             $rootScope.application.loading = true;
             $rootScope.application.loadingText = $rootScope.message((message === true || message === undefined) ? 'todo.is.ui.loading.working' : message);
@@ -793,8 +793,8 @@ var isApplication = angular.module('isApplication', [
             loadingPercent: 0,
             submitting: false,
             isFullScreen: false,
-            detachedDetailsView: false,
-            minimizedDetailsView: false,
+            detachedDetailsView: $localStorage['detachedDetailsView'] ? $localStorage['detachedDetailsView'] : false,
+            minimizedDetailsView: $localStorage['minimizedDetailsView'] ? $localStorage['minimizedDetailsView'] : false,
             menus: Session.menus,
             mobile: screenSize.is('xs, sm'),
             mobilexs: screenSize.is('xs')

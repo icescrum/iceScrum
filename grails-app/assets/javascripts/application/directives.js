@@ -887,7 +887,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}).directive('detailsLayoutButtons', ['$rootScope', '$state', function($rootScope, $state) {
+}).directive('detailsLayoutButtons', ['$rootScope', '$state', '$localStorage', function($rootScope, $state, $localStorage) {
     return {
         restrict: 'E',
         scope: {
@@ -912,8 +912,11 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 if (!scope.application.detachedDetailsView) {
                     scope.application.minimizedDetailsView = false;
                 }
+                $localStorage['minimizedDetailsView'] = scope.application.minimizedDetailsView;
+                $localStorage['detachedDetailsView'] = scope.application.detachedDetailsView;
             };
             scope.toggleMinimizedDetailsView = function() {
+                $localStorage['minimizedDetailsView'] = scope.application.minimizedDetailsView;
                 scope.application.minimizedDetailsView = !scope.application.minimizedDetailsView;
             };
             // Init
