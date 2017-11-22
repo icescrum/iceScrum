@@ -52,7 +52,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="description">${message(code: 'is.backlogelement.description')}</label>
+            <label for="description">
+                ${message(code: 'is.backlogelement.description')}
+                <span class="text-muted small pull-right">${message(code: 'is.actor.help.description')}</span>
+            </label>
             <textarea class="form-control"
                       ng-maxlength="3000"
                       name="description"
