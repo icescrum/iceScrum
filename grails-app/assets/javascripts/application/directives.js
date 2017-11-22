@@ -916,8 +916,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 $localStorage['detachedDetailsView'] = scope.application.detachedDetailsView;
             };
             scope.toggleMinimizedDetailsView = function() {
-                $localStorage['minimizedDetailsView'] = scope.application.minimizedDetailsView;
                 scope.application.minimizedDetailsView = !scope.application.minimizedDetailsView;
+                $localStorage['minimizedDetailsView'] = scope.application.minimizedDetailsView;
             };
             // Init
             scope.application = $rootScope.application;
