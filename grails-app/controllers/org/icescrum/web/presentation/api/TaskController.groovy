@@ -140,8 +140,8 @@ class TaskController implements ControllerErrorHandler {
             } else if (taskParams.type && !taskParams.parentStory) {
                 task.parentStory = null
             }
-            taskService.update(task, user, false, props)
             task.tags = taskParams.tags instanceof String ? taskParams.tags.split(',') : (taskParams.tags instanceof String[] || taskParams.tags instanceof List) ? taskParams.tags : null
+            taskService.update(task, user, false, props)
             render(status: 200, contentType: 'application/json', text: task as JSON)
         }
     }
