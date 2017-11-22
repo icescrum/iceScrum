@@ -575,6 +575,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     newTooltipElement.removeAttr(tooltipAttr); // Remove attr to prevent doing it again on next mouseenter for elements already processed
                     newTooltipElement.attr('uib-tooltip', tooltipContent);
                     tooltipElement.replaceWith(angular.element($compile(newTooltipElement)(scope)));
+                    newTooltipElement.on('mouseenter', function() {
+                        newTooltipElement.trigger('tooltipmouseenter');
+                    });
+                    newTooltipElement.on('click', function() {
+                        newTooltipElement.trigger('mouseleave');
+                    });
                 });
             });
         }
