@@ -43,12 +43,12 @@
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{ ::viewName }}/{{ ::previousFeature.id }}"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                           ui-sref=".({featureId: previousFeature.id})"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i></a>
                         <a ng-if="nextFeature && !isModal"
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           href="#{{ ::viewName }}/{{ ::nextFeature.id }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
+                           ui-sref=".({featureId: nextFeature.id})"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
                 </div>
