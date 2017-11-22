@@ -387,6 +387,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var versions = svg.append("g").attr("class", "versions");
             var today = svg.append("rect").attr("class", "today").attr("height", releaseHeight).attr("width", 1.5);
             var getEffectiveEndDate = function(sprint) { return sprint.state == SprintStatesByName.DONE ? sprint.doneDate : sprint.endDate; };
+
             // Main rendering
             function render() {
                 var _releases = scope.timeline;
@@ -469,10 +470,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 todaySelector
                     .attr("transform", function(date) { return 'translate(' + x(date) + ',' + releaseYMargin + ')'; }); // Offset to align border rather than center
             }
+
             // Brush management
             function reinitializeBrush() {
                 brushSelector.call(brush.clear());
             }
+
             function findSprintsOrAReleaseInRange(ranges) {
                 var dates = ranges.x;
                 var y = ranges.y;
@@ -490,15 +493,18 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 }
                 return res;
             }
+
             function getBrushRanges() {
                 var transposedExtend = _.zip.apply(null, (brush.extent()));
                 return {x: _.map(transposedExtend[0], d3.time.day.utc), y: transposedExtend[1]};
             }
+
             function onBrush() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
                 selectedItems = findSprintsOrAReleaseInRange(getBrushRanges());
                 render(); // To update selected items
             }
+
             function onBrushEnd() {
                 if (!d3.event.sourceEvent) return; // Only transition after input
                 selectedItems = findSprintsOrAReleaseInRange(getBrushRanges());
@@ -508,6 +514,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 reinitializeBrush();
                 render(); // To update selected items
             }
+
             // Register render on model change
             var removeTimelineWatcher = scope.$watch('timeline', function() {
                 render();
@@ -813,8 +820,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         templateUrl: 'states.html',
         link: function(scope, element, attrs, modelCtrl) {
             var width = 100 / _.filter(_.keys(scope.modelStates), function(key) {
-                    return scope.modelStates[key] >= 0
-                }).length;
+                return scope.modelStates[key] >= 0
+            }).length;
             scope.$watch(function() { return modelCtrl.$modelValue.state; }, function(newState) {
                 scope.states = [];
                 _.each(scope.modelStates, function(state, code) {
@@ -911,6 +918,66 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             };
             // Init
             scope.application = $rootScope.application;
+        }
+    };
+}]).directive('iconBadge', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            count: '=',
+            postitSize: "="
+        },
+        replace: true,
+        templateUrl: 'icon.with.badge.html',
+        link: function(scope, element, attrs) {
+            scope.icon = attrs.icon;
+            scope.href = attrs.href;
+            scope.tooltip = attrs.tooltip;
+            scope.countString = (scope.count > 9 && scope.postitSize.indexOf('size-sm') > -1) ? '9+' : (scope.count > 0 ? scope.count : '');
+            scope.$watch('count', function() {
+
+            });
+        }
+    };
+}).directive('isWatch', ['$parse', function($parse) {
+    'use strict';
+    return {
+        transclude: true,
+        link: function link(scope, $el, attrs, ctrls, transclude) {
+            var previousElements;
+            var previousScope;
+            compile();
+
+            function compile() {
+                transclude(scope.$new(false, scope), function(clone, clonedScope) {
+                    previousElements = clone;
+                    previousScope = clonedScope;
+                    $el.append(clone);
+                });
+            }
+
+            function recompile() {
+                if (previousElements) {
+                    previousElements.remove();
+                    previousElements = null;
+                    $el.empty();
+                }
+                if (previousScope) {
+                    previousScope.$destroy();
+                }
+                compile();
+            }
+
+            scope.$watch(attrs.isWatch, function(_new, _old) {
+                var useBoolean = attrs.hasOwnProperty('useBoolean');
+                if ((useBoolean && (!_new || _new === 'false')) || (!useBoolean && (!_new || _new === _old))) {
+                    return;
+                }
+                if (useBoolean) {
+                    $parse(attrs.isWatch).assign(scope, false);
+                }
+                recompile();
+            }, typeof $parse(attrs.isWatch)(scope) === 'object');
         }
     };
 }]);

@@ -243,6 +243,16 @@
     </div>
     </script>
 
+    <script type="text/ng-template" id="icon.with.badge.html">
+    <span ng-class="::['action',{'active': count > 0}]">
+        <a href="{{:: href }}"
+           uib-tooltip="{{:: count + ' ' + tooltip }}">
+            <i class="fa {{:: icon }}"></i>
+            <span class="badge">{{:: countString }}</span>
+        </a>
+    </span>
+    </script>
+
     <script type="text/ng-template" id="addWidget.modal.html">
     <is:modal title="${message(code: 'is.ui.widget.new')}"
               validate="true"
