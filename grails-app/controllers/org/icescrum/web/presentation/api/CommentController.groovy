@@ -70,13 +70,13 @@ class CommentController implements ControllerErrorHandler {
                 commentable.addComment(poster, params.comment.body)
                 activityService.addActivity(commentable, poster, 'comment', commentable.name);
                 comment = commentable.comments.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
-                grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment': comment])
                 if (params.type == 'story') {
                     commentable.addToFollowers(poster)
                 }
                 if (commentable.hasProperty('comments_count')) {
                     commentable.comments_count = commentable.getTotalComments()
                 }
+                grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment': comment])
             }
         }
         render(status: 201, contentType: 'application/json', text: comment as JSON)
