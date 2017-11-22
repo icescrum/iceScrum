@@ -936,10 +936,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             scope.icon = attrs.icon;
             scope.href = attrs.href;
             scope.tooltip = attrs.tooltip;
+            scope.iconEmpty = attrs.iconEmpty ? attrs.iconEmpty : attrs.icon;
+            scope.classes = attrs.classes ? attrs.classes : '';
             scope.countString = (scope.count > 9 && scope.postitSize.indexOf('size-sm') > -1) ? '9+' : (scope.count > 0 ? scope.count : '');
-            scope.$watch('count', function() {
-
-            });
         }
     };
 }).directive('isWatch', ['$parse', function($parse) {

@@ -244,10 +244,10 @@
     </script>
 
     <script type="text/ng-template" id="icon.with.badge.html">
-    <span ng-class="::['action',{'active': count > 0}]">
+    <span ng-class="::[classes,'action',{'active': count > 0}]">
         <a href="{{:: href }}"
            uib-tooltip="{{:: count + ' ' + tooltip }}">
-            <i class="fa {{:: icon }}"></i>
+            <i class="fa {{:: count > 0 ? icon : iconEmpty }}"></i>
             <span class="badge">{{:: countString }}</span>
         </a>
     </span>

@@ -24,13 +24,14 @@
 <script type="text/ng-template" id="story.html">
 <div fast-tooltip
      ng-style="(story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
-     class="postit story {{ application.postitSize.story + ' ' + ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
+     class="postit story"
+     ng-class="::[application.postitSize.story,((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]" is-watch="story">
     <div class="head">
         <div class="head-left">
-            <span class="id">{{ ::story.uid }}</span>
+            <span class="id">{{:: story.uid }}</span>
             <a href
-               class="follow {{ story.followed ? 'active' : '' }}"
-               uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+               class="follow {{:: story.followed ? 'active' : '' }}"
+               uib-tooltip="{{:: story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
                ng-click="follow(story)">
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star-o"></i>
@@ -41,69 +42,67 @@
             <entry:point id="story-head-right"/>
             <span class="value editable"
                   ng-click="showEditValueModal(story, $event)"
-                  ng-if="story.value">
-                {{ story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
+                  ng-if=":: story.value">
+                {{:: story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
             </span>
             <span class="estimation editable"
-                  ng-if="story.state > 1"
+                  ng-if=":: story.state > 1"
                   ng-click="showEditEffortModal(story, $event)">
-                {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
+                {{:: story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
             </span>
         </div>
     </div>
-    <div class="content" ng-class="{'without-description':!story.description}">
+    <div class="content" ng-class="::{'without-description':!story.description}">
         <div as-sortable-item-handle>
-            <h3 class="title">{{ story.name }}</h3>
+            <h3 class="title">{{:: story.name }}</h3>
             <div class="description"
-                 ng-bind-html="story.description | lineReturns | actorTag"></div>
+                 ng-bind-html=":: story.description | lineReturns | actorTag"></div>
         </div>
     </div>
     <div class="footer">
         <div class="tags">
-            <a ng-repeat="tag in story.tags"
-               href="{{ tagContextUrl(tag) }}">
+            <a ng-repeat="tag in ::story.tags"
+               href="{{:: tagContextUrl(tag) }}">
                 <span class="tag">{{:: tag }}</span>
             </a>
         </div>
         <div class="actions">
-            <span class="action" ng-class="{'active':story.attachments_count}">
-                <a href="{{ openStoryUrl(story.id) }}">
-                    <i class="fa fa-paperclip" fast-tooltip-el="${message(code: 'todo.is.ui.backlogelement.attachments')}"></i>
-                    <span class="badge">{{ story.attachments_count || '' }}</span>
-                </a>
-            </span>
-            <span class="action comments" ng-class="{'active':story.comments_count}">
-                <a href="{{ openStoryUrl(story.id) }}/comments">
-                    <i class="fa fa-comment" fast-tooltip-el="${message(code: 'todo.is.ui.comments')}"></i>
-                    <i class="fa fa-comment-o" fast-tooltip-el="${message(code: 'todo.is.ui.comments')}"></i>
-                    <span class="badge">{{ story.comments_count  || '' }}</span>
-                </a>
-            </span>
-            <span class="action" ng-class="{'active':story.tasks_count}">
-                <a href="{{ openStoryUrl(story.id) }}/tasks">
-                    <i class="fa fa-tasks" fast-tooltip-el="${message(code: 'todo.is.ui.tasks')}"></i>
-                    <span class="badge">{{ story.tasks_count || '' }}</span>
-                </a>
-            </span>
-            <span class="action acceptances-tests" ng-class="{'active':story.acceptanceTests_count}">
-                <a href="{{ openStoryUrl(story.id) }}/tests">
-                    <i class="fa fa-check-square" fast-tooltip-el="${message(code: 'todo.is.ui.acceptanceTests')}"></i>
-                    <i class="fa fa-check-square-o" fast-tooltip-el="${message(code: 'todo.is.ui.acceptanceTests')}"></i>
-                    <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
-                </a>
-            </span>
+            <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
+                        href="{{:: openStoryUrl(story.id)}}"
+                        icon="fa-paperclip"
+                        postit-size="postitClass"
+                        count="story.attachments_count"/>
+            <icon-badge classes="comments"
+                        tooltip="${message(code: 'todo.is.ui.comments')}"
+                        href="{{:: openStoryUrl(story.id) }}/comments"
+                        icon="fa-comment"
+                        icon-empty="fa-comment-o"
+                        postit-size="postitClass"
+                        count="story.comments_count"/>
+            <icon-badge tooltip="${message(code: 'todo.is.ui.tasks')}"
+                        href="{{:: openStoryUrl(story.id) }}/tasks"
+                        icon="fa-tasks"
+                        postit-size="postitClass"
+                        count="story.tasks_count"/>
+            <icon-badge classes="acceptances-tests"
+                        tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
+                        href="{{:: openStoryUrl(story.id) }}/tests"
+                        icon="fa-check-square"
+                        icon-empty="fa-check-square-o"
+                        postit-size="postitClass"
+                        count="story.acceptanceTests_count"/>
             <span postit-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
         </div>
         <div class="state-progress">
-            <div ng-if="tasksProgress(story)" class="progress">
-                <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
+            <div ng-if="::tasksProgress(story)" class="progress">
+                <span class="status">{{:: story.countDoneTasks + '/' + story.tasks_count }}</span>
                 <div class="progress-bar"
-                     ng-class="'bg-'+(story.testState | acceptanceTestColor)"
-                     ng-style="{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
+                     ng-class="::['bg-'+(story.testState | acceptanceTestColor)]"
+                     ng-style="::{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
                 </div>
             </div>
             <div class="state"
-                 ng-class="{'hover-progress':tasksProgress(story)}">{{ story.state | i18n:'StoryStates' }}
+                 ng-class="::{'hover-progress':tasksProgress(story)}">{{:: story.state | i18n:'StoryStates' }}
             </div>
         </div>
     </div>
