@@ -66,7 +66,9 @@ class ScrumOSController implements ControllerErrorHandler {
         try {
             DefaultGroovyPagesUriService dgpus = (DefaultGroovyPagesUriService) groovyPagesUriService
             println "----"
-            println dgpus.controllerNameCache.inspect()
+            dgpus.controllerNameCache.each { DefaultGroovyPagesUriService.ControllerObjectKey k, v ->
+                println '\t' + k.controllerHashCode + ' ' + k.controllerClassName + ' : ' + v
+            }
             def controllerName = dgpus.getLogicalControllerName(this)
             if (controllerName != 'scrumOS') {
                 println "argh"
