@@ -649,16 +649,6 @@ header {
           }
         }
       }
-      form.form-editable {
-        .panel-footer {
-          .responsive-invisibility();
-        }
-        &.form-editing {
-          .panel-footer {
-            .responsive-visibility();
-          }
-        }
-      }
       form.form-editable:hover {
         .input-group-addon {
           border-right: 0;
@@ -683,7 +673,35 @@ header {
         > div:first-child {
           padding: 15px;
         }
+        .btn + .btn {
+          margin-left: 5px;
+        }
       }
+    }
+  }
+}
+
+.container-fluid.main > .view&.with-details > [ui-view='details'] {
+  form.form-editable {
+    .panel-footer {
+      .responsive-invisibility();
+    }
+    &.form-editing {
+      .panel-footer {
+        .responsive-visibility();
+      }
+    }
+  }
+}
+
+.modal-details > .modal-body > [ui-view='details'] > .panel {
+  .panel-footer {
+    .btn-toolbar {
+      .btn {
+        float: right;
+        margin-left: 5px;
+      }
+      text-align: right;
     }
   }
 }

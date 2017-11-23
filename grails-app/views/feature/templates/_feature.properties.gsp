@@ -139,30 +139,37 @@
             </div>
         </div>
     </div>
-    <div class="panel-footer" ng-if="formHolder.editing">
+    <div class="panel-footer" ng-if="isModal || formHolder.editing">
         <div class="btn-toolbar">
             <button class="btn btn-primary"
-                    ng-if="isLatest() || application.submitting"
+                    ng-if="formHolder.editing && (isLatest() || application.submitting)"
                     ng-disabled="!isDirty() || formHolder.featureForm.$invalid || application.submitting"
                     type="submit">
                 ${message(code: 'default.button.update.label')}
             </button>
             <button class="btn btn-danger"
-                    ng-if="!isLatest() && !application.submitting"
+                    ng-if="formHolder.editing && !isLatest() && !application.submitting"
                     ng-disabled="!isDirty() || formHolder.featureForm.$invalid"
                     type="submit">
                 ${message(code: 'default.button.override.label')}
             </button>
             <button class="btn btn-default"
                     type="button"
+                    ng-if="(!isModal && formHolder.editing) || (isModal && isDirty())"
                     ng-click="editForm(false)">
                 ${message(code: 'is.button.cancel')}
             </button>
             <button class="btn btn-warning"
                     type="button"
-                    ng-if="!isLatest() && !application.submitting"
+                    ng-if="isDirty() && !isLatest() && !application.submitting"
                     ng-click="resetFeatureForm()">
                 <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
+            </button>
+            <button class="btn btn-default"
+                    type="button"
+                    ng-if="isModal && !isDirty()"
+                    ng-click="$close()">
+                ${message(code: 'is.button.close')}
             </button>
         </div>
     </div>
