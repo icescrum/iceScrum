@@ -78,35 +78,37 @@
                 </div>
             </div>
         </div>
-        <div class="chart"
-             ng-controller="chartCtrl"
-             ng-init="openChart('sprint', 'burnupTasks', sprint)">
-            <div uib-dropdown
-                 ng-controller="projectChartCtrl"
-                 class="pull-right">
-                <div class="btn-group visible-on-hover">
+        <div is-watch="sprint" is-watch-property="['doneDate','endDate']">
+            <div class="chart"
+                 ng-controller="chartCtrl"
+                 ng-init="openChart('sprint', 'burnupTasks', sprint)">
+                <div uib-dropdown
+                     ng-controller="projectChartCtrl"
+                     class="pull-right">
+                    <div class="btn-group visible-on-hover">
+                        <button class="btn btn-default btn-sm"
+                                ng-click="openChartInModal(chartParams)"
+                                type="button">
+                            <i class="fa fa-search-plus"></i>
+                        </button>
+                        <button class="btn btn-default btn-sm"
+                                ng-click="saveChart(chartParams)"
+                                type="button">
+                            <i class="fa fa-floppy-o"></i>
+                        </button>
+                    </div>
                     <button class="btn btn-default btn-sm"
-                            ng-click="openChartInModal(chartParams)"
-                            type="button">
-                        <i class="fa fa-search-plus"></i>
+                            uib-tooltip="${message(code: 'todo.is.ui.charts')}"
+                            type="button"
+                            uib-dropdown-toggle>
+                        <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
                     </button>
-                    <button class="btn btn-default btn-sm"
-                            ng-click="saveChart(chartParams)"
-                            type="button">
-                        <i class="fa fa-floppy-o"></i>
-                    </button>
+                    <ul uib-dropdown-menu>
+                        <li ng-repeat="chart in projectCharts.sprint"><a href ng-click="openChart('sprint', chart.id, sprint)">{{ message(chart.name) }}</a></li>
+                    </ul>
                 </div>
-                <button class="btn btn-default btn-sm"
-                        uib-tooltip="${message(code: 'todo.is.ui.charts')}"
-                        type="button"
-                        uib-dropdown-toggle>
-                    <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
-                </button>
-                <ul uib-dropdown-menu>
-                    <li ng-repeat="chart in projectCharts.sprint"><a href ng-click="openChart('sprint', chart.id, sprint)">{{ message(chart.name) }}</a></li>
-                </ul>
+                <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
             </div>
-            <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
         </div>
         <div class="form-group">
             <label for="deliveredVersion">${message(code: 'is.sprint.deliveredVersion')}</label>

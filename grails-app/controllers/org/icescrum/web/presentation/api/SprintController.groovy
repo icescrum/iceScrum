@@ -137,6 +137,13 @@ class SprintController implements ControllerErrorHandler {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def reactivate(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
+        sprintService.reactivate(sprint)
+        render(status: 200, contentType: 'application/json', text: sprint as JSON)
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
     def close(long project, long id) {
         Sprint sprint = Sprint.withSprint(project, id)
         sprintService.close(sprint)

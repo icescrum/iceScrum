@@ -23,8 +23,8 @@
 
 <script type="text/ng-template" id="feature.html">
 <div ng-style="feature.color | createGradientBackground: isAsListPostit(viewName)"
-     class="postit"
-     ng-class="::['feature',(feature.color | contrastColor), (feature.type | featureType)]" is-watch="feature">
+     class="postit feature"
+     ng-class="::[(feature.color | contrastColor), (feature.type | featureType)]" is-watch="feature">
     <div class="head">
         <div class="head-left">
             <span class="id">{{:: feature.uid }}</span>

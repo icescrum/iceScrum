@@ -984,7 +984,25 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 if (useBoolean) {
                     $parse(attrs.isWatch).assign(scope, false);
                 }
-                recompile();
+                var useProperty = attrs.hasOwnProperty('isWatchProperty');
+                if (useProperty) {
+                    var properties = $parse(attrs.isWatchProperty)(scope);
+                    if (!(properties instanceof Array)) {
+                        properties = [properties]
+                    }
+                    _.every(properties, function(property) {
+                        var tmpOld = _old[property] instanceof Date ? _old[property].getTime() : _old[property];
+                        var tmpNew = _new[property] instanceof Date ? _new[property].getTime() : _new[property];
+                        if (tmpOld !== tmpNew) {
+                            recompile();
+                            return false;
+                        }
+                        return true;
+                    });
+                }
+                if (!useProperty) {
+                    recompile();
+                }
             }, typeof $parse(attrs.isWatch)(scope) === 'object');
         }
     };

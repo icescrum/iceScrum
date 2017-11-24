@@ -38,6 +38,13 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             $scope.notifySuccess('todo.is.ui.sprint.activated');
         });
     };
+    $scope.reactivate = function(sprint) {
+        $rootScope.uiWorking();
+        SprintService.reactivate(sprint, $scope.project).then(function() {
+            $rootScope.uiReady();
+            $scope.notifySuccess('todo.is.ui.sprint.reactivated');
+        });
+    };
     $scope.autoPlan = function(sprint, capacity) {
         $rootScope.uiWorking();
         SprintService.autoPlan(sprint, capacity, $scope.project).then(function() {
@@ -164,6 +171,20 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     buttonTitle: 'is.ui.releasePlan.menu.sprint.activate',
                     message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'),
                     callback: $scope.activate,
+                    args: [sprint]
+                });
+            }
+        },
+        {
+            name: 'is.ui.releasePlan.menu.sprint.reactivate',
+            visible: function(sprint) { return $scope.authorizedSprint('reactivate', sprint); },
+            priority: function(sprint, defaultPriority) { return defaultPriority; },
+            action: function(sprint) {
+                $scope.confirm({
+                    buttonColor: 'danger',
+                    buttonTitle: 'is.ui.releasePlan.menu.sprint.reactivate',
+                    message: $scope.message('is.ui.releasePlan.menu.sprint.reactivate.confirm'),
+                    callback: $scope.reactivate,
                     args: [sprint]
                 });
             }

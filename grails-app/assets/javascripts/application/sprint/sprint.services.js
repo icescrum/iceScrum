@@ -130,6 +130,9 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.activate = function(sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'activate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
+    this.reactivate = function(sprint, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'reactivate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
     this.close = function(sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
@@ -162,6 +165,8 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
                 return Session.poOrSm();
             case 'activate':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.TODO && sprint.activable;
+            case 'reactivate':
+                return Session.poOrSm() && sprint.state == SprintStatesByName.DONE && sprint.reactivable;
             case 'delete':
             case 'autoPlan':
                 return Session.poOrSm() && sprint.state == SprintStatesByName.TODO;
