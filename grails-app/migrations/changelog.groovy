@@ -19,6 +19,7 @@
 *
 * Nicolas Noullet (nnoullet@kagilum.com)
 * Vincent BARRIER (vbarrier@kagilum.com)
+* Colin Bontemps (cbontemps@kagilum.com)
 *
 */
 databaseChangeLog = {
@@ -29,4 +30,5 @@ databaseChangeLog = {
     include file: "changelog-7-1-1.groovy"
     include file: "changelog-7-2.groovy"
     include file: "changelog-7-5.groovy"
+    include file: "changelog-7-7.groovy"
 }
