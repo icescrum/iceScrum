@@ -58,8 +58,8 @@ class ScrumOSController implements ControllerErrorHandler {
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         if (workspace) {
             workspace.indexScrumOS.delegate = this
-            def shouldReturn = workspace.indexScrumOS(workspace, user, securityService, springSecurityService)
-            if (shouldReturn) {
+            def carryOn = workspace.indexScrumOS(workspace, user, securityService, springSecurityService)
+            if (!carryOn) {
                 return
             }
             model."$workspace.name" = workspace.object
