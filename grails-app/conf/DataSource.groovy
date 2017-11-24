@@ -32,24 +32,25 @@ hibernate {
 
 dataSource {
     configClass = 'org.icescrum.core.domain.IceScrumGormConfiguration'
+//    logSql = true
 }
 
 environments {
     development {
         dataSource {
             dbCreate = "create-drop"
-            url = "jdbc:h2:mem:devDb"
-            driverClassName = "org.h2.Driver"
             username = "sa"
             password = ""
+            driverClassName = "org.h2.Driver"
+            url = "jdbc:h2:mem:devDb"
         }
 //        dataSource {
-//            //logSql = true
 //            dbCreate = "update"
 //            username = "root"
 //            password = "root"
 //            driverClassName = "com.mysql.jdbc.Driver"
-//            url = "jdbc:mysql://localhost/icescrum"
+//            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
+//            url = "jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
 //        }
 //        dataSource {
 //            dbCreate = "update"
@@ -64,14 +65,16 @@ environments {
 //            password = "oracle"
 //            driverClassName = "oracle.jdbc.driver.OracleDriver"
 //            dialect = "com.kagilum.hibernate.OracleCustomDialect"
-//            url = "jdbc:oracle:thin:@localhost:1521:XE"
+//            url = "jdbc:oracle:thin:@localhost:49161:XE" // docker run -d -p 49160:22 -p 49161:1521 --name oracle -e ORACLE_PASSWORD_VERIFY=true wnameless/oracle-xe-11g
+////            url = "jdbc:oracle:thin:@localhost:1521:xe" // docker run -d -p 8090:8080 -p 1521:1521 --name oracle sath89/oracle-12c
 //        }
 //        dataSource {
 //            dbCreate = "update"
 //            username = "sa"
-//            password = "root"
+//            password = "<YourStrong!Passw0rd>"
 //            driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-//            url = "jdbc:sqlserver://localhost:1433;databaseName=icescrum"
+//            url = "jdbc:sqlserver://localhost:1401;databaseName=icescrum" // docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=<YourStrong!Passw0rd>' -p 1401:1433 --name sql1 -d microsoft/mssql-server-linux:2017-latest
+////            url = "jdbc:sqlserver://localhost:1433;databaseName=icescrum"
 //        }
     }
     test {
