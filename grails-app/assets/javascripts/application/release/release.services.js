@@ -25,7 +25,7 @@ services.factory('Release', ['Resource', function($resource) {
     return $resource('/p/:projectId/release/:id/:action');
 }]);
 
-services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByName', 'IceScrumEventType', 'Session', 'CacheService', 'PushService', function($q, $state, Release, ReleaseStatesByName, IceScrumEventType, Session, CacheService, PushService) {
+services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByName', 'IceScrumEventType', 'Session', 'CacheService', 'PushService', 'FormService', function($q, $state, Release, ReleaseStatesByName, IceScrumEventType, Session, CacheService, PushService, FormService) {
     var self = this;
     Session.getProject().releases = CacheService.getCache('release');
     var crudMethods = {};
@@ -81,10 +81,22 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
         return Release.update({id: release.id, projectId: release.parentProject.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.autoPlan = function(release, capacity) {
-        return Release.updateArray({id: release.id, projectId: release.parentProject.id, action: 'autoPlan'}, {capacity: capacity}).$promise; // TODO release resource returns stories, this is not good
+        return FormService.httpPost('release/' + release.id + '/autoPlan', {capacity: capacity}).then(function(result) {
+            _.each(result.stories, function(story) {
+                CacheService.addOrUpdate('story', story);
+            });
+        });
     };
     this.unPlan = function(release) {
-        return Release.update({id: release.id, projectId: release.parentProject.id, action: 'unPlan'}, {}).$promise; // TODO release resource returns stories, this is not good
+        return FormService.httpGet('release/' + release.id + '/unPlan').then(function(result) {
+            _.each(result.sprints, function(sprint) {
+                FormService.transformStringToDate(sprint);
+                CacheService.addOrUpdate('sprint', sprint);
+            });
+            _.each(result.stories, function(story) {
+                CacheService.addOrUpdate('story', story);
+            });
+        });
     };
     this['delete'] = function(release, project) {
         return Release.delete({id: release.id, projectId: project.id}, {}, crudMethods[IceScrumEventType.DELETE]).$promise;
