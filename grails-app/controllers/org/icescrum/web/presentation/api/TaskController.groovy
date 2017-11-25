@@ -48,7 +48,7 @@ class TaskController implements ControllerErrorHandler {
                         if (params.context.type == 'feature') {
                             return task.parentStory.feature?.id == params.context.id.toLong()
                         } else if (params.context.type == 'actor') {
-                            return task.parentStory.actor?.id == params.context.id.toLong()
+                            return task.parentStory.actors.findAll { it.id == params.context.id.toLong() }
                         }
                     }
                     return true
