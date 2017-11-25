@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="clearfix no-padding" ng-if="story.description">
-                        <p class="description form-control-static" ng-bind-html="story.description | lineReturns | actorTag: story.actor"></p>
+                        <p class="description form-control-static" ng-bind-html="story.description | lineReturns | actorTag"></p>
                     </div>
                     <hr ng-if="!$last"/>
                 </td>
