@@ -169,6 +169,14 @@
             background: rgba(0, 0, 0, 0.2);
             color: @invert-color;
           }
+          > .action {
+            i {
+              color: @invert-color;
+            }
+            a .badge {
+              color: @invert-color;
+            }
+          }
         }
         .actions {
           > .action {
@@ -272,6 +280,7 @@
           padding: 1px 2px;
           border-radius: 2px;
         }
+        overflow: hidden;
       }
       .actions {
         text-align: center;
@@ -279,13 +288,15 @@
           width: 33px;
           text-align: center;
           display: inline-block;
+        }
+      }
+      .action {
+        > * {
+          visibility: hidden;
+        }
+        &.active {
           > * {
-            visibility: hidden;
-          }
-          &.active {
-            > * {
-              visibility: visible;
-            }
+            visibility: visible;
           }
         }
       }
@@ -583,6 +594,9 @@
                 color: @gray;
               }
             }
+          }
+          .action {
+            display: none;
           }
         }
         .state-progress {

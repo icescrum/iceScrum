@@ -61,6 +61,13 @@
     </div>
     <div class="footer">
         <div class="tags">
+            <icon-badge class="pull-right" tooltip="${message(code: 'is.backlogelement.tags')}"
+                        href="{{:: openStoryUrl(story.id)}}"
+                        icon="fa-tags"
+                        max="3"
+                        hide="true"
+                        postit-size="postitClass"
+                        count="story.tags.length"/>
             <a ng-repeat="tag in ::story.tags"
                href="{{:: tagContextUrl(tag) }}">
                 <span class="tag">{{:: tag }}</span>

@@ -51,6 +51,13 @@
     </div>
     <div class="footer">
         <div class="tags">
+            <icon-badge class="pull-right" tooltip="${message(code: 'is.backlogelement.tags')}"
+                        href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
+                        icon="fa-tags"
+                        max="3"
+                        hide="true"
+                        postit-size="postitClass"
+                        count="task.tags.length"/>
             <a ng-repeat="tag in ::task.tags"
                href="{{:: tagContextUrl(tag) }}">
                 <span class="tag">{{:: tag }}</span>

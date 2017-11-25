@@ -933,18 +933,24 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
     return {
         restrict: 'E',
         scope: {
+            max: "=",
+            hide: "=",
             count: '=',
             postitSize: "="
         },
         replace: true,
         templateUrl: 'icon.with.badge.html',
         link: function(scope, element, attrs) {
+            scope.max = scope.max ? scope.max : 9;
+            if (scope.hide && scope.count <= scope.max) {
+                return;
+            }
             scope.icon = attrs.icon;
             scope.href = attrs.href;
             scope.tooltip = attrs.tooltip;
             scope.iconEmpty = attrs.iconEmpty ? attrs.iconEmpty : attrs.icon;
             scope.classes = attrs.classes ? attrs.classes : '';
-            scope.countString = (scope.count > 9 && scope.postitSize.indexOf('size-sm') > -1) ? '9+' : (scope.count > 0 ? scope.count : '');
+            scope.countString = (scope.count > scope.max && scope.postitSize.indexOf('size-sm') > -1) ? scope.max + '+' : (scope.count > 0 ? scope.count : '');
         }
     };
 }).directive('isWatch', ['$parse', function($parse) {
