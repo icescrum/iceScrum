@@ -692,7 +692,8 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                     if ($rootScope.application.context.type == 'feature') {
                         return item.feature && item.feature.id == $rootScope.application.context.id;
                     } else if ($rootScope.application.context.type == 'actor') {
-                        return item.actor && item.actor.id == $rootScope.application.context.id;
+                        var ids = _.map(item.actors_ids, function(actor) { return actor.id });
+                        return _.includes(ids, parseInt($rootScope.application.context.id));
                     } else if ($rootScope.application.context.type == 'tag') {
                         return _.includes(item.tags, $rootScope.application.context.term);
                     } else {
