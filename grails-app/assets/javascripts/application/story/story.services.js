@@ -333,7 +333,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                         return _.matchesProperty('uid', _.toNumber(value));
                     }
                 }
-            } else if (_.includes(['creator', 'feature', 'actor', 'dependsOn', 'parentSprint'], key)) {
+            } else if (_.includes(['creator', 'feature', 'dependsOn', 'parentSprint'], key)) {
                 return function(value) {
                     return _.matchesProperty(key + '.id', value);
                 };
@@ -351,7 +351,15 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                         return _.includes(story.tags, value);
                     }
                 };
-            } else {
+            } else if (key == 'actor') {
+                return function(value) {
+                    return function(story) {
+                        var ids = _.map(story.actors_ids, function(actor) { return actor.id });
+                        return _.includes(ids, value);
+                    }
+                };
+            }
+            else {
                 return function(value) {
                     return _.matchesProperty(key, value);
                 };

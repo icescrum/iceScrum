@@ -180,6 +180,7 @@ icescrum.resourceBundles = [
 icescrum.marshaller = [
         story               : [include: ['testState', 'tags', 'dependences', 'followed', 'countDoneTasks'],
                                exclude: ['voters'],
+                               withIds: ['actors'],
                                textile: ['notes'],
                                asShort: ['state', 'effort', 'uid', 'name', 'rank']],
         comment             : [textile: ['body'], include: ['poster']],
