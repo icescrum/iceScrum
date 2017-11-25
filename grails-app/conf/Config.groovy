@@ -178,6 +178,7 @@ icescrum.resourceBundles = [
 ]
 
 icescrum.marshaller = [
+        portfolio           : [],
         story               : [include: ['testState', 'tags', 'dependences', 'followed', 'countDoneTasks'],
                                exclude: ['voters'],
                                withIds: ['actors'],
@@ -276,6 +277,12 @@ icescrum {
                 }
                 return true
             }
+        }
+        portfolio {
+            objectClass = Portfolio
+            config = { portfolio -> [key: portfolio.fkey, path: 'f'] }
+            params = { portfolio -> [portfolio: portfolio.id] }
+            indexScrumOS = { portfolioWorkspace, user, securityService, springSecurityService -> }
         }
     }
 }

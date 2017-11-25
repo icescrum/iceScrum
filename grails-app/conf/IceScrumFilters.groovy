@@ -66,6 +66,13 @@ class IceScrumFilters {
                         return false
                     }
                 }
+                else if (params.portfolio) {
+                    params.portfolio = params.portfolio.decodePortfolioKey()
+                    if (!params.portfolio) {
+                        forward(controller: "errors", action: "error404")
+                        return false
+                    }
+                }
                 securityService.filterRequest()
                 return
             }
