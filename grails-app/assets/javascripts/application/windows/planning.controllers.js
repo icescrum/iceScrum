@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 'ReleaseStatesByName', 'project', 'releases', function($scope, $state, SprintStatesByName, ReleaseStatesByName, project, releases) {
+extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 'ReleaseStatesByName', 'project', function($scope, $state, SprintStatesByName, ReleaseStatesByName, project) {
     $scope.isSelected = function(selectable) {
         if ($state.params.storyId) {
             return $state.params.storyId == selectable.id;

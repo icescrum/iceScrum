@@ -84,7 +84,7 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
         return Release.updateArray({id: release.id, projectId: release.parentProject.id, action: 'autoPlan'}, {capacity: capacity}).$promise; // TODO release resource returns stories, this is not good
     };
     this.unPlan = function(release) {
-        return Release.update({id: release.id, projectId: release.parentProject.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Release.update({id: release.id, projectId: release.parentProject.id, action: 'unPlan'}, {}).$promise; // TODO release resource returns stories, this is not good
     };
     this['delete'] = function(release, project) {
         return Release.delete({id: release.id, projectId: project.id}, {}, crudMethods[IceScrumEventType.DELETE]).$promise;
