@@ -50,7 +50,7 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
     };
     $scope.authorizedActor = ActorService.authorizedActor;
     $scope.actorSearchUrl = function(actor) {
-        return $state.href('backlog.backlog', {elementId: 'all'}) + '?context=actor_' + actor.id;
+        return $state.href($state.current.name, $state.params) + '?context=actor_' + actor.id;
     };
     // Init
     $scope.actor = {};
