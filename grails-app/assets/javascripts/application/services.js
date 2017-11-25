@@ -255,11 +255,11 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
     this.httpPost = function(path, data, isAbsolute, params) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {
-                headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-                transformRequest: function(data) {
-                    return self.formObjectData(data, '');
-                }
-            };
+            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+            transformRequest: function(data) {
+                return self.formObjectData(data, '');
+            }
+        };
         return $http.post(fullPath, data, paramObj).then(function(response) {
             return response.data;
         });
@@ -710,7 +710,12 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                     if ($rootScope.application.context.type == 'feature') {
                         return cachedStory && cachedStory.feature.id == $rootScope.application.context.id;
                     } else if ($rootScope.application.context.type == 'actor') {
-                        return cachedStory && cachedStory.actor.id == $rootScope.application.context.id;
+                        if (cachedStory) {
+                            var ids = _.map(cachedStory.actors_ids, function(actor) { return actor.id });
+                            return _.includes(ids, parseInt($rootScope.application.context.id));
+                        } else {
+                            return false;
+                        }
                     }
                 }
                 return true;
