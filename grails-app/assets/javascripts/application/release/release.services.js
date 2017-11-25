@@ -77,6 +77,9 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     this.activate = function(release) {
         return Release.update({id: release.id, projectId: release.parentProject.id, action: 'activate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
+    this.reactivate = function(release) {
+        return Release.update({id: release.id, projectId: release.parentProject.id, action: 'reactivate'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    };
     this.close = function(release) {
         return Release.update({id: release.id, projectId: release.parentProject.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
@@ -116,6 +119,8 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
                 return Session.poOrSm() && release.state != ReleaseStatesByName.DONE;
             case 'activate':
                 return Session.poOrSm() && release.state == ReleaseStatesByName.TODO && release.activable;
+            case 'reactivate':
+                return Session.poOrSm() && release.state == ReleaseStatesByName.DONE && release.reactivable;
             case 'close':
                 return Session.poOrSm() && release.state == ReleaseStatesByName.IN_PROGRESS && release.closable;
             case 'delete':

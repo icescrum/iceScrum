@@ -131,6 +131,29 @@ extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 
             $state.go(stateName, stateParams);
         }
     };
+    $scope.$watch("release.sprints_count", function(newValues) {
+        var releaseId = $state.params.releaseId;
+        var release = _.find($scope.releases, {id: releaseId});
+        if ($state.params.sprintListId || $state.params.sprintId) {
+            var missing = false;
+            var ids = _.map(release.sprints, function(sprint) {
+                return sprint.id.toString()
+            });
+            if ($state.params.sprintListId) {
+                var selecteds = $state.params.sprintListId.split(",");
+                missing = _.every(selecteds, function(selected) {
+                    return !_.includes(ids, selected);
+                });
+            } else {
+                missing = !_.includes(ids, $state.params.sprintId.toString());
+            }
+            if (missing) {
+                $scope.timelineSelected([]);
+            }
+        }
+        $scope.releases = project.releases;
+        $scope.computeVisibleSprints();
+    });
     $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.releaseId; }, function() { return $state.params.sprintId; }, function() { return $state.params.sprintListId; }], function(newValues) {
         var stateName = newValues[0];
         var releaseId = newValues[1];

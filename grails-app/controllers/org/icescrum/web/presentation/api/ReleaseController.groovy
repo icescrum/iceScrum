@@ -110,6 +110,13 @@ class ReleaseController implements ControllerErrorHandler {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
+    def reactivate(long project, long id) {
+        Release release = Release.withRelease(project, id)
+        releaseService.reactivate(release)
+        render(status: 200, contentType: 'application/json', text: release as JSON)
+    }
+
+    @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
     def autoPlan(long project, long id, Double capacity) {
         Release release = Release.withRelease(project, id)
         if (release.sprints) {

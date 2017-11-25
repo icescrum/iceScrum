@@ -39,6 +39,11 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
             $scope.notifySuccess('todo.is.ui.release.activated');
         });
     };
+    $scope.reactivate = function(release) {
+        ReleaseService.reactivate(release).then(function() {
+            $scope.notifySuccess('todo.is.ui.release.reactivated');
+        });
+    };
     $scope.close = function(release) {
         ReleaseService.close(release).then(function() {
             $scope.notifySuccess('todo.is.ui.release.closed');
@@ -83,6 +88,19 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
                     buttonTitle: 'is.ui.timeline.menu.activate',
                     message: $scope.message('is.ui.timeline.menu.activate.confirm'),
                     callback: $scope.activate,
+                    args: [release]
+                });
+            }
+        },
+        {
+            name: 'is.ui.timeline.menu.reactivate',
+            visible: function(release) { return $scope.authorizedRelease('reactivate', release); },
+            action: function(release) {
+                $scope.confirm({
+                    buttonColor: 'danger',
+                    buttonTitle: 'is.ui.timeline.menu.reactivate',
+                    message: $scope.message('is.ui.timeline.menu.reactivate.confirm'),
+                    callback: $scope.reactivate,
                     args: [release]
                 });
             }
