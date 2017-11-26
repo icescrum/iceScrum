@@ -92,7 +92,21 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 try {
                     var jsonBody = atmosphere.util.parseJSON(text);
                     if (jsonBody.eventType) {
-                        self.publishEvent(jsonBody);
+                        if (jsonBody.object.ids) { //same update for multiple objects
+                            var event = {
+                                namespace: jsonBody.namespace,
+                                eventType: jsonBody.eventType,
+                                object: jsonBody.object.properties
+                            };
+                            var ids = jsonBody.object.ids;
+                            delete jsonBody.object.ids;
+                            _.each(ids, function(id) {
+                                event.object.id = id;
+                                self.publishEvent(event)
+                            });
+                        } else {
+                            self.publishEvent(jsonBody);
+                        }
                     }
                 } catch (e) {
                     if (_canLog('debug')) {
