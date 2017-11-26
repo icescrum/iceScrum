@@ -186,9 +186,6 @@
             a .badge {
               color: @invert-color;
             }
-            &.dropdown {
-              width: auto;
-            }
           }
         }
       }
@@ -476,6 +473,9 @@
       }
       .actions > .action {
         width: 29px;
+        &.dropdown, &[postit-menu] {
+          width: 10px;
+        }
       }
     }
   }
