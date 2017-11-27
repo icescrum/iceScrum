@@ -799,7 +799,11 @@ var isApplication = angular.module('isApplication', [
             mobile: screenSize.is('xs, sm'),
             mobilexs: screenSize.is('xs')
         };
-        $controller('searchCtrl', {$scope: $rootScope}); // Mostly context stuff
+        Session.getProjectPromise().then(function(project) {
+            if (project.id) {
+                $controller('contextCtrl', {$scope: $rootScope});
+            }
+        });
         $rootScope.$state = $state; // To be able to track state in views
         $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
             return {
