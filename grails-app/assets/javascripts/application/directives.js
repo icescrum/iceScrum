@@ -929,7 +929,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             scope.application = $rootScope.application;
         }
     };
-}]).directive('iconBadge', function() {
+}]).directive('iconBadge', function() { // Be careful, this directive has no watch, it will work only under isWatch
     return {
         restrict: 'E',
         scope: {
@@ -1001,7 +1001,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         var tmpNew = _new[property] instanceof Date ? _new[property].getTime() : _new[property];
                         if (tmpOld !== tmpNew) {
                             recompile();
-                            return false;
+                            return false; // Breaks the every so further properties are not evaluated
                         }
                         return true;
                     });
