@@ -145,7 +145,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                 if (selectedIds.length > 0) {
                     $rootScope.uiWorking();
                     // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch
-                    return StoryService.updateMultiple(selectedIds, {parentSprint: sprint}).then(function() {
+                    return StoryService.planMultiple(selectedIds, sprint).then(function() {
                         $rootScope.uiReady();
                         $scope.notifySuccess('todo.is.ui.story.multiple.updated');
                     });

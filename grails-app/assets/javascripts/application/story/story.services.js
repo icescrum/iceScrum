@@ -131,6 +131,11 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }
         return Story.update({id: story.id, action: 'plan'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
+    this.planMultiple = function(ids, sprint) {
+        return Story.updateArray({id: ids, action: 'planMultiple'}, {parentSprint: {id: sprint.id}}, function(stories) {
+            _.each(stories, crudMethods[IceScrumEventType.CREATE]);
+        }).$promise;
+    };
     this.unPlan = function(story) {
         return Story.update({id: story.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
