@@ -826,14 +826,14 @@ var isApplication = angular.module('isApplication', [
             $rootScope.taskStates = isSettings.states.task;
             $rootScope.storyStates = isSettings.states.story;
             $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
-            $rootScope.workspace = isSettings.workspace;
             $rootScope.warning = isSettings.warning;
-            if (isSettings.project) {
-                isSettings.project.startDate = new Date(isSettings.project.startDate);
-                isSettings.project.endDate = new Date(isSettings.project.endDate);
-                Session.initProject(isSettings.project);
+            $rootScope.workspaceType = isSettings.workspace ? isSettings.workspace.class.toLowerCase() : null;
+            if (isSettings.workspace && $rootScope.workspaceType == 'project') {
+                isSettings.workspace.startDate = new Date(isSettings.workspace.startDate);
+                isSettings.workspace.endDate = new Date(isSettings.workspace.endDate);
+                Session.initProject(isSettings.workspace);
             }
-            PushService.initPush(isSettings.pushContext);
+            PushService.initPush(isSettings.workspace ? isSettings.workspace.id : null, $rootScope.workspaceType);
             I18nService.initMessages(isSettings.messages);
             I18nService.initBundles(isSettings.bundles);
             if (isSettings.userPreferences) {

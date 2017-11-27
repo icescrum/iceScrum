@@ -42,9 +42,9 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
         }
     };
     this.atmosphereRequest = null;
-    this.initPush = function(projectId) {
+    this.initPush = function(workspaceId, workspaceType) {
         var options = {
-            url: $rootScope.serverUrl + '/stream/app' + (projectId ? ('/project-' + projectId) : ''),
+            url: $rootScope.serverUrl + '/stream/app' + (workspaceId ? '/' + workspaceType + '-' + workspaceId : ''),
             contentType: 'application/json',
             logLevel: self.logLevel,
             transport: 'websocket',

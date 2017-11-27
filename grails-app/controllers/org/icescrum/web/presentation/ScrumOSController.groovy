@@ -79,10 +79,10 @@ class ScrumOSController implements ControllerErrorHandler {
         render(text: ServicesUtils.textileToHtml(data))
     }
 
-    def isSettings(Long project) {
+    def isSettings() {
         List projectMenus = []
         List menus = []
-        Map workspace = ApplicationSupport.getCurrentWorkspace(params)
+        Map workspace = ApplicationSupport.getCurrentWorkspace(params) // The workspace id must be in the params
         uiDefinitionService.getWindowDefinitions().each { String windowDefinitionId, WindowDefinition windowDefinition ->
             def menu = windowDefinition.menu
             if (menu) {
@@ -102,13 +102,12 @@ class ScrumOSController implements ControllerErrorHandler {
                 }
             }
         }
-        render(status: 200, template: 'isSettings', model: [project        : project ? Project.get(project) : null,
+        render(status: 200, template: 'isSettings', model: [workspace      : workspace?.object,
                                                             user           : springSecurityService.currentUser,
                                                             roles          : securityService.getRolesRequest(false),
                                                             i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
                                                             resourceBundles: grailsApplication.config.icescrum.resourceBundles,
                                                             menus          : menus,
-                                                            workspace      : workspace?.name ?: '',
                                                             defaultView    : workspace ? menus.sort { it.position }[0]?.id : 'home',
                                                             serverURL      : ApplicationSupport.serverURL(),
                                                             projectMenus   : projectMenus])

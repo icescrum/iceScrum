@@ -29,9 +29,7 @@
         menus: ${menus as JSON},
         roles: ${roles as JSON},
         defaultView: "${defaultView}",
-        project: ${project ? project as JSON : 'null'},
-        workspace: '${workspace}',
-        pushContext: ${project?.id ?: "''"},
+        workspace: ${workspace ? workspace as JSON : 'null'},
         pushLogLevel: "${Holders.config.icescrum.debug.enable ? 'debug' : 'info'}",
         projectPrivateDefault: ${grailsApplication.config.icescrum.project.private.default},
         projectPrivateEnabled: ${grailsApplication.config.icescrum.project.private.enable},
@@ -57,6 +55,6 @@
         serverUrl: "${serverURL}",
         warning: ${ApplicationSupport.getLastWarning() as JSON},
         workerSrc: "${asset.assetPath(src:"vendors/vanilla/pdfjs/pdf.worker.js")}"
-        <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, project:project]"/>
+        <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]"/>
     };
 </script>
