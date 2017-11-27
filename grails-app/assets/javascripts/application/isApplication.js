@@ -186,8 +186,8 @@ var isApplication = angular.module('isApplication', [
                     project: ['Session', function(Session) {
                         return Session.getProjectPromise();
                     }],
-                    features: ['FeatureService', function(FeatureService) {
-                        return FeatureService.list();
+                    features: ['FeatureService', 'project', function(FeatureService, project) {
+                        return FeatureService.list(project.id);
                     }]
                 },
                 children: [

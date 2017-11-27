@@ -105,7 +105,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.availableColors = [];
 }]);
 
-controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', function($scope, $state, $controller, FeatureService, hotkeys) {
+controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', 'project', function($scope, $state, $controller, FeatureService, hotkeys, project) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.resetFeatureForm = function() {
@@ -113,7 +113,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
         $scope.resetFormValidation($scope.formHolder.featureForm);
     };
     $scope.save = function(feature, andContinue) {
-        FeatureService.save(feature).then(function(feature) {
+        FeatureService.save(feature, project.id).then(function(feature) {
             if (andContinue) {
                 $scope.resetFeatureForm();
             } else {
@@ -139,7 +139,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     $scope.availableColors = [];
 }]);
 
-controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', function($scope, $controller, featureListId, FeatureService) {
+controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', 'project', function($scope, $controller, featureListId, FeatureService, project) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.sumValues = function(features) {
@@ -151,17 +151,17 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'feature
         });
     };
     $scope.deleteMultiple = function() {
-        FeatureService.deleteMultiple(featureListId).then(function() {
+        FeatureService.deleteMultiple(featureListId, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.multiple.deleted');
         });
     };
     $scope.updateMultiple = function(updatedFields) {
-        FeatureService.updateMultiple(featureListId, updatedFields).then(function() {
+        FeatureService.updateMultiple(featureListId, updatedFields, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
         });
     };
     $scope.copyToBacklogMultiple = function() {
-        FeatureService.copyToBacklogMultiple(featureListId).then(function() {
+        FeatureService.copyToBacklogMultiple(featureListId, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.feature.multiple.copied.to.backlog');
         });
     };
@@ -171,7 +171,7 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'feature
     $scope.topFeature = {};
     $scope.featurePreview = {};
     $scope.features = [];
-    FeatureService.getMultiple(featureListId).then(function(features) {
+    FeatureService.getMultiple(featureListId, project.id).then(function(features) {
         $scope.features = features;
         $scope.topFeature = _.head(features);
         $scope.featurePreview = {

@@ -494,8 +494,8 @@ controllers.controller('storyAtWhoCtrl', ['$scope', 'ActorService', function($sc
     ];
 }]);
 
-extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", "TaskStatesByName", 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, detailsStory) {
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", "TaskStatesByName", 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory', 'project',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, detailsStory, project) {
         $controller('storyCtrl', {$scope: $scope});
         $controller('storyAtWhoCtrl', {$scope: $scope});
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
@@ -580,9 +580,9 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.parentSprintEntries = [];
         $scope.versions = [];
         $scope.creators = [];
-        $scope.features = Session.getProject().features;
-        FeatureService.list();
-        $scope.project = Session.getProject();
+        $scope.features = project.features;
+        FeatureService.list(project.id);
+        $scope.project = project;
         // For header
         //$scope.previousStory = FormService.previous(list, $scope.story);
         //$scope.nextStory = FormService.next(list, $scope.story);
@@ -591,7 +591,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.taskStatesByName = TaskStatesByName;
     }]);
 
-extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', function($scope, $controller, StoryService, storyListId, Session, FeatureService) {
+extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', 'project', function($scope, $controller, StoryService, storyListId, Session, FeatureService, project) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.deleteMultiple = function() {
@@ -638,8 +638,8 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
     $scope.storyPreview = {};
     $scope.stories = [];
     $scope.storyListId = storyListId; // For child controllers
-    $scope.features = Session.getProject().features;
-    FeatureService.list();
+    $scope.features = project.features;
+    FeatureService.list(project.id);
     $scope.allFollowed = function(stories) {
         return _.every(stories, 'followed');
     };
@@ -663,7 +663,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
     refreshStories();
 }]);
 
-extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', 'postitSize', 'screenSize', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName, postitSize, screenSize) {
+extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', 'postitSize', 'screenSize', 'project', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName, postitSize, screenSize, project) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.resetStoryForm = function() {
@@ -709,8 +709,8 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
     $scope.storyPreview = {};
     $scope.resetStoryForm();
     $scope.newStoryStates = [StoryStatesByName.SUGGESTED, StoryStatesByName.ACCEPTED];
-    $scope.features = Session.getProject().features;
-    FeatureService.list();
+    $scope.features = project.features;
+    FeatureService.list(project.id);
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],

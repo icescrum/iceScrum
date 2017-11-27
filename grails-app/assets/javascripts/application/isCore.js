@@ -359,8 +359,8 @@ angular.module('isCore', ['ui.router'])
                 url: "/{featureId:int}",
                 resolve: {
                     // Inject "features" to wait for resolution from parent state so FeatureService.get is ensured to find the feature in the cache
-                    detailsFeature: ['FeatureService', '$stateParams', 'features', function(FeatureService, $stateParams, features) {
-                        return FeatureService.get($stateParams.featureId);
+                    detailsFeature: ['FeatureService', '$stateParams', 'features', 'project', function(FeatureService, $stateParams, features, project) {
+                        return FeatureService.get($stateParams.featureId, project.id);
                     }]
                 },
                 views: {},
@@ -458,8 +458,8 @@ angular.module('isCore', ['ui.router'])
                 ];
                 storyState.children.push(this.getDetailsModalState('feature', {
                     resolve: {
-                        features: ['FeatureService', function(FeatureService) {
-                            return FeatureService.list();
+                        features: ['FeatureService', 'project', function(FeatureService, project) {
+                            return FeatureService.list(project.id);
                         }]
                     },
                     children: [this.getFeatureDetailsState('@', true)]
@@ -597,8 +597,8 @@ angular.module('isCore', ['ui.router'])
                         children: [
                             this.getDetailsModalState('feature', {
                                 resolve: {
-                                    features: ['FeatureService', function(FeatureService) {
-                                        return FeatureService.list();
+                                    features: ['FeatureService', 'project', function(FeatureService, project) {
+                                        return FeatureService.list(project.id);
                                     }]
                                 },
                                 children: [this.getFeatureDetailsState('@', true)]

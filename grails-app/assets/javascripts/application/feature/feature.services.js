@@ -22,7 +22,7 @@
  *
  */
 services.factory('Feature', ['Resource', function($resource) {
-    return $resource('feature/:id/:action');
+    return $resource('/p/:projectId/feature/:id/:action');
 }]);
 
 services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'CacheService', 'PushService', 'IceScrumEventType', 'FormService', function($state, $q, Feature, Session, CacheService, PushService, IceScrumEventType, FormService) {
@@ -50,34 +50,34 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             crudMethods[IceScrumEventType.CREATE](feature);
         });
     };
-    this.get = function(id) {
+    this.get = function(id, projectId) {
         var cachedFeature = CacheService.get('feature', id);
-        return cachedFeature ? $q.when(cachedFeature) : self.refresh(id);
+        return cachedFeature ? $q.when(cachedFeature) : self.refresh(id, projectId);
     };
-    this.refresh = function(id) {
-        return Feature.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
+    this.refresh = function(id, projectId) {
+        return Feature.get({id: id, projectId: projectId}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.list = function() {
+    this.list = function(projectId) {
         var cachedFeatures = CacheService.getCache('feature');
-        return _.isEmpty(cachedFeatures) ? Feature.query().$promise.then(function(features) {
+        return _.isEmpty(cachedFeatures) ? Feature.query({projectId: projectId}).$promise.then(function(features) {
             self.mergeFeatures(features);
             return CacheService.getCache('feature');
         }) : $q.when(cachedFeatures);
     };
-    this.save = function(feature) {
+    this.save = function(feature, projectId) {
         feature.class = 'feature';
-        return Feature.save(feature, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return Feature.save({projectId: projectId}, feature, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.update = function(feature) {
-        return Feature.update(_.omit(feature, 'stories'), crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Feature.update({projectId: feature.backlog.id}, _.omit(feature, 'stories'), crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.copyToBacklog = function(feature) {
-        return Feature.update({id: feature.id, action: 'copyToBacklog'}, {}).$promise;
+        return Feature.update({id: feature.id, projectId: feature.backlog.id, action: 'copyToBacklog'}, {}).$promise;
     };
     this['delete'] = function(feature) {
-        return Feature.delete({id: feature.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
+        return Feature.delete({id: feature.id, projectId: feature.backlog.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
-    this.getMultiple = function(ids) {
+    this.getMultiple = function(ids, projectId) {
         ids = _.map(ids, function(id) {
             return parseInt(id);
         });
@@ -88,9 +88,9 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
         if (notFoundFeatureIds.length > 0) {
             var promise;
             if (notFoundFeatureIds.length == 1) {
-                promise = self.get(notFoundFeatureIds[0]).then(function(feature) { return [feature]; });
+                promise = self.get(notFoundFeatureIds[0], projectId).then(function(feature) { return [feature]; });
             } else {
-                promise = Feature.query({id: notFoundFeatureIds}, self.mergeFeatures).$promise;
+                promise = Feature.query({id: notFoundFeatureIds, projectId: projectId}, self.mergeFeatures).$promise;
             }
             return promise.then(function(features) {
                 return _.concat(cachedFeatures, features);
@@ -99,16 +99,16 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             return $q.when(cachedFeatures);
         }
     };
-    this.updateMultiple = function(ids, updatedFields) {
-        return Feature.updateArray({id: ids}, {feature: updatedFields}, function(features) {
+    this.updateMultiple = function(ids, updatedFields, projectId) {
+        return Feature.updateArray({id: ids, projectId: projectId}, {feature: updatedFields}, function(features) {
             _.each(features, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.copyToBacklogMultiple = function(ids) {
-        return Feature.updateArray({id: ids, action: 'copyToBacklog'}, {}).$promise;
+    this.copyToBacklogMultiple = function(ids, projectId) {
+        return Feature.updateArray({id: ids, projectId: projectId, action: 'copyToBacklog'}, {}).$promise;
     };
-    this.deleteMultiple = function(ids) {
-        return Feature.deleteArray({id: ids}, function() {
+    this.deleteMultiple = function(ids, projectId) {
+        return Feature.deleteArray({id: ids, projectId: projectId}, function() {
             _.each(ids, function(stringId) {
                 crudMethods[IceScrumEventType.DELETE]({id: parseInt(stringId)});
             });
