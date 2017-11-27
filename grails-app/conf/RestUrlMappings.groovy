@@ -205,7 +205,7 @@ class RestUrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
-                action(inList: ['activate', 'close', 'unPlan'])
+                action(inList: ['activate', 'close', 'unPlan', 'reactivate'])
             }
             method = 'POST'
         }
