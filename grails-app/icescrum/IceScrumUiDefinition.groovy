@@ -46,9 +46,11 @@ import org.icescrum.core.utils.ServicesUtils
  */
 
 windows = {
+    // No workspace
     'home' {
         workspace null // Master window : no menu, no workspace
     }
+    // Project workspace
     'backlog' {
         details true
         workspace 'project'
@@ -159,7 +161,19 @@ windows = {
                 }
         ]
     }
-
+    // Portfolio workspace
+    'projects' {
+        details false
+        workspace 'portfolio'
+        icon 'folder'
+        help 'todo.is.ui.projects'
+        secured 'isAuthenticated()'
+        menu {
+            title 'todo.is.ui.projects'
+            defaultPosition 1
+            defaultVisibility true
+        }
+    }
 }
 
 /*

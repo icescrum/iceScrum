@@ -32,5 +32,23 @@ class PortfolioUrlMappings {
                 portfolio(matches: /[0-9A-Z]*/)
             }
         }
+        // Window in portfolio workspace
+        "/f/$portfolio/ui/window/$windowDefinitionId" {
+            controller = 'window'
+            action = 'show'
+            constraints {
+                windowDefinitionId(matches: /[a-zA-Z]*/)
+                portfolio(matches: /[0-9A-Z]*/)
+            }
+        }
+        // Window settings in portfolio workspace
+        "/f/$portfolio/ui/window/$windowDefinitionId/settings" {
+            controller = 'window'
+            action = [GET: "settings", POST: "updateSettings"]
+            constraints {
+                windowDefinitionId(matches: /[a-zA-Z]*/)
+                portfolio(matches: /[0-9A-Z]*/)
+            }
+        }
     }
 }

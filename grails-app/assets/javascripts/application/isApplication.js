@@ -73,6 +73,7 @@ var isApplication = angular.module('isApplication', [
                     $state.go(Session.defaultView, $state.params, {location: 'replace'});
                 }]
             })
+            // No workspace
             .state({
                 name: 'home', // Should not be acceded directly, called by 'root'
                 controller: 'homeCtrl',
@@ -112,6 +113,7 @@ var isApplication = angular.module('isApplication', [
                     });
                 }]
             })
+            // Project workspace
             .state({
                 name: 'project',
                 url: '/project',
@@ -416,6 +418,18 @@ var isApplication = angular.module('isApplication', [
                         children: [isStateProvider.getStoryDetailsState('@taskBoard')]
                     }
                 ]
+            })
+            // Portfolio workspace
+            .state({
+                name: 'projects',
+                url: "/projects",
+                templateUrl: 'ui/window/projects',
+                controller: 'portfolioProjectsCtrl',
+                resolve: {
+                    portfolio: ['Session', function(Session) {
+                        return Session.getWorkspace();
+                    }]
+                }
             });
         $stateProvider.state('404', {
             url: '*path',
@@ -800,7 +814,7 @@ var isApplication = angular.module('isApplication', [
             mobilexs: screenSize.is('xs')
         };
         Session.getProjectPromise().then(function(project) {
-            if (project.id) {
+            if (project && project.id) {
                 $controller('contextCtrl', {$scope: $rootScope});
             }
         });

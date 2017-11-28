@@ -182,6 +182,11 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
         }
         self.isWorkspaceResolved.resolve();
     };
+    this.getWorkspace = function() {
+        return self.isWorkspaceResolved.promise.then(function() {
+            return self.workspace;
+        });
+    };
     this.getProject = function() {
         return !self.workspace.class || self.workspace.class == 'Project' ? self.workspace : null; // TODO don't return empty workspace if not in project context, but it messes up the home
     };
