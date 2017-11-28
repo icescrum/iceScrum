@@ -22,24 +22,12 @@
  *
  */
 
-services.factory('Portfolio', ['Resource', function($resource) {
-    return $resource('/portfolio/:id/:action');
-}]);
-
-services.service('PortfolioService', ['Portfolio', 'Session', function(Portfolio, Session) {
-    this.save = function(portfolio) {
-        portfolio.class = 'portfolio';
-        return Portfolio.save(portfolio).$promise;
+controllers.controller('newPortfolioCtrl', ['$scope', 'Portfolio', 'PortfolioService', function($scope, Portfolio, PortfolioService) {
+    // Functions
+    $scope.save = function(portfolio) {
+        PortfolioService.save(portfolio);
     };
-    this['delete'] = function(portfolio) {
-        return Portfolio.delete({id: portfolio.id}).$promise;
-    };
-    this.authorizedPortfolio = function(action, portfolio) {
-        switch (action) {
-            case 'delete':
-                return Session.owner(portfolio);
-            default:
-                return false;
-        }
-    };
+    // Init
+    $scope.formHolder = {};
+    $scope.portfolio = new Portfolio();
 }]);

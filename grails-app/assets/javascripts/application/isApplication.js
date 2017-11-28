@@ -430,6 +430,22 @@ var isApplication = angular.module('isApplication', [
                         return Session.getWorkspace();
                     }]
                 }
+            }).state({
+                name: 'newPortfolio',
+                url: "/portfolio/new",
+                onEnter: ['$state', '$uibModal', '$rootScope', function($state, $uibModal, $rootScope) {
+                    $uibModal.open({
+                        keyboard: false,
+                        backdrop: 'static',
+                        templateUrl: $rootScope.serverUrl + "/portfolio/add",
+                        size: 'lg',
+                        controller: 'newPortfolioCtrl'
+                    }).result.then(function() {
+                        $state.transitionTo('root');
+                    }, function() {
+                        $state.transitionTo('root');
+                    });
+                }]
             });
         $stateProvider.state('404', {
             url: '*path',
