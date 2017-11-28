@@ -692,7 +692,7 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                     if ($rootScope.application.context.type == 'feature') {
                         return item.feature && item.feature.id == $rootScope.application.context.id;
                     } else if ($rootScope.application.context.type == 'actor') {
-                        var ids = _.map(item.actors_ids, function(actor) { return actor.id });
+                        var ids = _.map(item.actors_ids, 'id');
                         return _.includes(ids, parseInt($rootScope.application.context.id));
                     } else if ($rootScope.application.context.type == 'tag') {
                         return _.includes(item.tags, $rootScope.application.context.term);
@@ -711,7 +711,7 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                         return cachedStory && cachedStory.feature.id == $rootScope.application.context.id;
                     } else if ($rootScope.application.context.type == 'actor') {
                         if (cachedStory) {
-                            var ids = _.map(cachedStory.actors_ids, function(actor) { return actor.id });
+                            var ids = _.map(cachedStory.actors_ids, 'id');
                             return _.includes(ids, parseInt($rootScope.application.context.id));
                         } else {
                             return false;

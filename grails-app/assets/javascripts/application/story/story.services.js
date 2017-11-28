@@ -359,7 +359,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             } else if (key == 'actor') {
                 return function(value) {
                     return function(story) {
-                        var ids = _.map(story.actors_ids, function(actor) { return actor.id });
+                        var ids = _.map(story.actors_ids, 'id');
                         return _.includes(ids, value);
                     }
                 };
