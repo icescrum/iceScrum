@@ -282,7 +282,7 @@ icescrum {
             objectClass = Portfolio
             config = { portfolio -> [key: portfolio.fkey, path: 'f'] }
             params = { portfolio -> [portfolio: portfolio.id] }
-            indexScrumOS = { portfolioWorkspace, user, securityService, springSecurityService -> }
+            indexScrumOS = { portfolioWorkspace, user, securityService, springSecurityService -> true }
         }
     }
 }
