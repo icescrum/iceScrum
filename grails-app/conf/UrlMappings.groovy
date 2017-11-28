@@ -301,8 +301,7 @@ class UrlMappings {
             controller = 'project'
             action = [GET: "show", DELETE: "delete", POST: "update"]
             constraints {
-                //must be the id
-                project(matches: /\d*/)
+                project(matches: /\d*/) // pkey is not accepted, must be the ID
             }
         }
         // New project
@@ -398,6 +397,18 @@ class UrlMappings {
         "/widget/feed" {
             controller = 'feed'
             action = [POST: "index"]
+        }
+        // Portfolio
+        "/portfolio" {
+            controller = 'portfolio'
+            action = [POST: "save"]
+        }
+        "/portfolio/$portfolio" {
+            controller = 'portfolio'
+            action = [DELETE: 'delete']
+            constraints {
+                project(matches: /\d*/) // fkey is not accepted, must be the ID
+            }
         }
         // Errors mapping
         "401"(controller: "errors", action: "error401")

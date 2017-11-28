@@ -21,6 +21,27 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
+
 services.factory('Portfolio', ['Resource', function($resource) {
     return $resource('/portfolio/:id/:action');
+}]);
+
+services.service('PortfolioService', ['Portfolio', 'Session', function(Portfolio, Session) {
+    this.save = function(portfolio) {
+        portfolio.class = 'portfolio';
+        return Portfolio.save(portfolio).$promise;
+    };
+    this['delete'] = function(portfolio) {
+        return Portfolio.delete({id: portfolio.id}).$promise;
+    };
+    this.authorizedPortfolio = function(action, portfolio) {
+        switch (action) {
+            case 'create':
+                return Session.authenticated();
+            case 'delete':
+                return Session.owner(portfolio);
+            default:
+                return false;
+        }
+    };
 }]);
