@@ -407,7 +407,7 @@ class UrlMappings {
             controller = 'portfolio'
             action = [DELETE: 'delete']
             constraints {
-                project(matches: /\d*/) // fkey is not accepted, must be the ID
+                portfolio(matches: /\d*/) // fkey is not accepted, must be the ID
             }
         }
         // Errors mapping
