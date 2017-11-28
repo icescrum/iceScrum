@@ -828,10 +828,8 @@ var isApplication = angular.module('isApplication', [
             $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
             $rootScope.warning = isSettings.warning;
             $rootScope.workspaceType = isSettings.workspace ? isSettings.workspace.class.toLowerCase() : null;
-            if (isSettings.workspace && $rootScope.workspaceType == 'project') {
-                isSettings.workspace.startDate = new Date(isSettings.workspace.startDate);
-                isSettings.workspace.endDate = new Date(isSettings.workspace.endDate);
-                Session.initProject(isSettings.workspace);
+            if (isSettings.workspace) {
+                Session.initWorkspace(isSettings.workspace);
             }
             PushService.initPush(isSettings.workspace ? isSettings.workspace.id : null, $rootScope.workspaceType);
             I18nService.initMessages(isSettings.messages);

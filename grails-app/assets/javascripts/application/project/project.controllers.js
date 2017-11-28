@@ -311,7 +311,9 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         var p = $scope.prepareProject(project);
         ProjectService.updateTeam(p)
             .then(function(updatedProject) {
-                Session.updateProject(updatedProject);
+                if ($scope.workspaceType == 'project') {
+                    Session.updateWorkspace(updatedProject);
+                }
                 $scope.resetTeamForm();
                 $scope.notifySuccess('todo.is.ui.project.members.updated');
             });
@@ -343,7 +345,9 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
         $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.stakeHolderViews).filter({hidden: true}).map('id').value().join(',');
         ProjectService.update(project)
             .then(function(updatedProject) {
-                Session.updateProject(updatedProject);
+                if ($scope.workspaceType == 'project') {
+                    Session.updateWorkspace(updatedProject);
+                }
                 $scope.notifySuccess('todo.is.ui.project.general.updated');
                 $scope.resetProjectForm();
             });

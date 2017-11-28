@@ -33,13 +33,22 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
 }]);
 
-services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserService', 'User', 'Project', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, UserService, User, Project, PushService, IceScrumEventType, FormService) {
+services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector', 'UserService', 'User', 'PushService', 'IceScrumEventType', 'FormService', function($timeout, $http, $rootScope, $q, $injector, UserService, User, PushService, IceScrumEventType, FormService) {
     var self = this;
     self.defaultView = '';
     self.menus = {visible: [], hidden: []};
     self.user = new User();
-    self.project = new Project();
-    self.isProjectResolved = $q.defer();
+    this.updateWorkspace = function(workspace) {
+        _.extend(self.workspace, workspace);
+    };
+    if (isSettings.workspace) {
+        var workspaceConstructor = $injector.get(isSettings.workspace.class);
+        self.workspace = new workspaceConstructor();
+        self.updateWorkspace(isSettings.workspace);
+    } else {
+        self.workspace = {};
+    }
+    self.isWorkspaceResolved = $q.defer();
     self.unreadActivitiesCount = 0;
     var defaultRoles = {
         productOwner: false,
@@ -50,7 +59,6 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
     };
     self.roles = _.clone(defaultRoles);
     self.listeners = {};
-
     var reload = function() {
         $timeout(function() {
             document.location.reload(true);
@@ -86,19 +94,19 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
                 var updatedProject = updatedRole.project;
                 if (updatedRole.role == undefined) {
                     $rootScope.notifyWarning($rootScope.message('is.user.role.removed.project') + ' ' + updatedProject.name);
-                    if (updatedProject.id == self.project.id) {
+                    if (self.workspace.class == 'Project' && updatedProject.id == self.workspace.id) {
                         $timeout(function() {
                             document.location = $rootScope.serverUrl
                         }, 2000);
                     }
                 } else if (updatedRole.oldRole == undefined) {
                     $rootScope.notifySuccess($rootScope.message('is.user.role.added.project') + ' ' + updatedProject.name);
-                    if (updatedProject.id == self.project.id) {
+                    if (self.workspace.class == 'Project' && updatedProject.id == self.workspace.id) {
                         reload();
                     }
                 } else {
                     $rootScope.notifySuccess($rootScope.message('is.user.role.updated.project') + ' ' + updatedProject.name);
-                    if (updatedProject.id == self.project.id) {
+                    if (self.workspace.class == 'Project' && updatedProject.id == self.workspace.id) {
                         reload();
                     }
                 }
@@ -141,17 +149,18 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
     this.current = function(user) {
         return self.authenticated() && user && self.user.id == user.id;
     };
-    this.initProject = function(project) {
-        _.extend(self.project, project);
-        self.isProjectResolved.resolve();
+    var initProject = function() {
+        var project = self.workspace;
+        project.startDate = new Date(project.startDate);
+        project.endDate = new Date(project.endDate);
         PushService.registerListener('project', IceScrumEventType.UPDATE, function(updatedProject) {
-            if (updatedProject.pkey != self.project.pkey) {
+            if (updatedProject.pkey != project.pkey) {
                 $rootScope.notifyWarning('todo.is.ui.project.updated.pkey');
-                document.location = document.location.href.replace(self.project.pkey, updatedProject.pkey);
-            } else if (updatedProject.preferences.hidden && !self.project.preferences.hidden && !self.inProject()) {
+                document.location = document.location.href.replace(project.pkey, updatedProject.pkey);
+            } else if (updatedProject.preferences.hidden && !project.preferences.hidden && !self.inProject()) {
                 $rootScope.notifyWarning('todo.is.ui.project.updated.visibility');
                 reload();
-            } else if (updatedProject.preferences.archived != self.project.preferences.archived) {
+            } else if (updatedProject.preferences.archived != project.preferences.archived) {
                 if (updatedProject.preferences.archived == true) {
                     $rootScope.notifyWarning('todo.is.ui.project.updated.archived');
                 } else {
@@ -159,7 +168,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
                 }
                 reload();
             } else {
-                self.updateProject(updatedProject);
+                self.updateWorkspace(updatedProject);
             }
         });
         PushService.registerListener('project', IceScrumEventType.DELETE, function() {
@@ -167,15 +176,18 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', 'UserServi
             reload();
         });
     };
-    this.updateProject = function(project) {
-        _.extend(self.project, project);
+    this.initWorkspace = function(workspace) {
+        if (workspace.class == 'Project') {
+            initProject();
+        }
+        self.isWorkspaceResolved.resolve();
     };
     this.getProject = function() {
-        return self.project;
+        return !self.workspace.class || self.workspace.class == 'Project' ? self.workspace : null; // TODO don't return empty workspace if not in project context, but it messes up the home
     };
     this.getProjectPromise = function() {
-        return self.isProjectResolved.promise.then(function() {
-            return self.project;
+        return self.isWorkspaceResolved.promise.then(function() {
+            return self.getProject();
         });
     };
     this.getLanguages = function() {
