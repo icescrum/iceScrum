@@ -36,8 +36,9 @@ services.service("TeamService", ['$q', 'Team', 'Session', 'FormService', functio
     };
     this.update = function(team) {
         return Team.update({id: team.id}, {team: team}, function(team) {
-            if (Session.project && Session.project.team.id == team.id) {
-                Session.project.team = team; // TODO use push of user roles instead so everyone will be updated, not only the one doing the update
+            var project = Session.getProject();
+            if (project && project.team.id == team.id) {
+                project.team = team; // TODO use push of user roles instead so everyone will be updated, not only the one doing the update
             }
         }).$promise;
     };
