@@ -421,16 +421,6 @@ var isApplication = angular.module('isApplication', [
             })
             // Portfolio workspace
             .state({
-                name: 'projects',
-                url: "/projects",
-                templateUrl: 'ui/window/projects',
-                controller: 'portfolioProjectsCtrl',
-                resolve: {
-                    portfolio: ['Session', function(Session) {
-                        return Session.getWorkspace();
-                    }]
-                }
-            }).state({
                 name: 'newPortfolio',
                 url: "/portfolio/new",
                 onEnter: ['$state', '$uibModal', '$rootScope', function($state, $uibModal, $rootScope) {

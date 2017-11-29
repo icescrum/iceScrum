@@ -161,19 +161,6 @@ windows = {
                 }
         ]
     }
-    // Portfolio workspace
-    'projects' {
-        details false
-        workspace 'portfolio'
-        icon 'folder'
-        help 'todo.is.ui.projects'
-        secured 'isAuthenticated()'
-        menu {
-            title 'todo.is.ui.projects'
-            defaultPosition 1
-            defaultVisibility true
-        }
-    }
 }
 
 /*
