@@ -190,11 +190,6 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
     this.getProject = function() {
         return !self.workspace.class || self.workspace.class == 'Project' ? self.workspace : null; // TODO don't return empty workspace if not in project context, but it messes up the home
     };
-    this.getProjectPromise = function() {
-        return self.isWorkspaceResolved.promise.then(function() {
-            return self.getProject();
-        });
-    };
     this.getLanguages = function() {
         return FormService.httpGet('scrumOS/languages', {cache: true});
     };
@@ -791,7 +786,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
         var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the directly because it will init the service systematically and call Feature.query which require authentication
         return $q.all([ProjectService.getTags(), FeatureService.list(Session.getProject().id), ActorService.list()]).then(function(data) {
             var tags = data[0];
-            var features = Session.getProject().features;
+            var features = data[1];
             var actors = data[2];
             var contexts = _.map(tags, function(tag) {
                 return {type: 'tag', id: tag, term: tag, color: 'purple'};

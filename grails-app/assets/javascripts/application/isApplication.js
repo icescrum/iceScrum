@@ -120,7 +120,7 @@ var isApplication = angular.module('isApplication', [
                 templateUrl: 'ui/window/project',
                 resolve: {
                     project: ['Session', function(Session) {
-                        return Session.getProjectPromise();
+                        return Session.getWorkspace();
                     }]
                 },
                 controller: 'dashboardCtrl'
@@ -149,7 +149,7 @@ var isApplication = angular.module('isApplication', [
                 controller: 'backlogCtrl',
                 resolve: {
                     project: ['Session', function(Session) {
-                        return Session.getProjectPromise();
+                        return Session.getWorkspace();
                     }],
                     backlogs: ['BacklogService', 'project', function(BacklogService, project) {
                         return BacklogService.list(project);
@@ -186,7 +186,7 @@ var isApplication = angular.module('isApplication', [
                 controller: 'featuresCtrl',
                 resolve: {
                     project: ['Session', function(Session) {
-                        return Session.getProjectPromise();
+                        return Session.getWorkspace();
                     }],
                     features: ['FeatureService', 'project', function(FeatureService, project) {
                         return FeatureService.list(project.id);
@@ -219,7 +219,7 @@ var isApplication = angular.module('isApplication', [
                 controller: 'planningCtrl',
                 resolve: {
                     project: ['Session', function(Session) {
-                        return Session.getProjectPromise();
+                        return Session.getWorkspace();
                     }],
                     releases: ['$q', 'ReleaseService', 'SprintService', 'project', function($q, ReleaseService, SprintService, project) {
                         return ReleaseService.list(project).then(function() {                            // Wait for releases
@@ -339,7 +339,7 @@ var isApplication = angular.module('isApplication', [
                 controller: 'taskBoardCtrl',
                 resolve: {
                     project: ['Session', function(Session) {
-                        return Session.getProjectPromise();
+                        return Session.getWorkspace();
                     }],
                     releases: ['$q', 'ReleaseService', 'SprintService', 'project', function($q, ReleaseService, SprintService, project) {
                         return ReleaseService.list(project).then(function() {                            // Wait for releases
@@ -829,11 +829,6 @@ var isApplication = angular.module('isApplication', [
             mobile: screenSize.is('xs, sm'),
             mobilexs: screenSize.is('xs')
         };
-        Session.getProjectPromise().then(function(project) {
-            if (project && project.id) {
-                $controller('contextCtrl', {$scope: $rootScope});
-            }
-        });
         $rootScope.$state = $state; // To be able to track state in views
         $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
             return {
@@ -858,6 +853,9 @@ var isApplication = angular.module('isApplication', [
             $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
             $rootScope.warning = isSettings.warning;
             $rootScope.workspaceType = isSettings.workspace ? isSettings.workspace.class.toLowerCase() : null;
+            if ($rootScope.workspaceType == 'project') {
+                $controller('contextCtrl', {$scope: $rootScope});
+            }
             if (isSettings.workspace) {
                 Session.initWorkspace(isSettings.workspace);
             }

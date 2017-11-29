@@ -77,7 +77,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'F
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName, features) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature'});
     // Functions
@@ -98,8 +98,8 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
-    $scope.previousFeature = FormService.previous(Session.getProject().features, $scope.feature);
-    $scope.nextFeature = FormService.next(Session.getProject().features, $scope.feature);
+    $scope.previousFeature = FormService.previous(features, $scope.feature);
+    $scope.nextFeature = FormService.next(features, $scope.feature);
     $scope.featureStatesByName = FeatureStatesByName;
     $scope.storyStatesByName = StoryStatesByName;
     $scope.availableColors = [];
