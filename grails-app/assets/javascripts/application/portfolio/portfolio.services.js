@@ -26,13 +26,20 @@ services.factory('Portfolio', ['Resource', function($resource) {
     return $resource('/portfolio/:id/:action');
 }]);
 
-services.service('PortfolioService', ['Portfolio', 'Session', function(Portfolio, Session) {
+services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Project', function(Portfolio, Session, FormService, Project) {
     this.save = function(portfolio) {
         portfolio.class = 'portfolio';
         return Portfolio.save(portfolio).$promise;
     };
     this['delete'] = function(portfolio) {
         return Portfolio.delete({id: portfolio.id}).$promise;
+    };
+    this.listProjects = function() {
+        return FormService.httpGet('project').then(function(projects) {
+            return _.map(projects, function(project) {
+                return _.extend(new Project(), project);
+            });
+        })
     };
     this.authorizedPortfolio = function(action, portfolio) {
         switch (action) {
