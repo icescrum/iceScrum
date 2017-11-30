@@ -22,7 +22,7 @@
  *
  */
 services.factory('Attachment', ['Resource', function($resource) {
-    return $resource('attachment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
+    return $resource('/p/:projectId/attachment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
 }]);
 
 services.service("AttachmentService", ['Attachment', 'Session', '$q', function(Attachment, Session, $q) {
@@ -35,8 +35,8 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
             attachmentable.attachments_count = attachmentable.attachments.length;
         }
     };
-    this['delete'] = function(attachment, attachmentable) {
-        return Attachment.delete({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id}, function() {
+    this['delete'] = function(attachment, attachmentable, projectId) {
+        return Attachment.delete({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id, projectId: projectId}, function() {
             _.remove(attachmentable.attachments, {id: attachment.id});
             attachmentable.attachments_count = attachmentable.attachments.length;
         }).$promise;
@@ -49,9 +49,9 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
                 return false;
         }
     };
-    this.list = function(attachmentable) {
+    this.list = function(attachmentable, projectId) {
         if (_.isEmpty(attachmentable.attachments)) {
-            return Attachment.query({typeId: attachmentable.id, type: attachmentable.class.toLowerCase()}, function(data) {
+            return Attachment.query({typeId: attachmentable.id, type: attachmentable.class.toLowerCase(), projectId: projectId}, function(data) {
                 attachmentable.attachments = data;
                 attachmentable.attachments_count = attachmentable.attachments.length;
             }).$promise;

@@ -215,9 +215,9 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Da
     });
 }]);
 
-controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'DateService', 'ReleaseService', 'FormService', 'detailsRelease', function($scope, $controller, ReleaseStatesByName, DateService, ReleaseService, FormService, detailsRelease) {
+controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'DateService', 'ReleaseService', 'FormService', 'detailsRelease', 'project', function($scope, $controller, ReleaseStatesByName, DateService, ReleaseService, FormService, detailsRelease, project) {
     $controller('releaseCtrl', {$scope: $scope}); // inherit from releaseCtrl
-    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsRelease, clazz: 'release'});
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsRelease, clazz: 'release', project: project});
     // Functions
     $scope.update = function(release) {
         ReleaseService.update(release).then(function() {

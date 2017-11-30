@@ -21,16 +21,16 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', function($scope, $uibModal, AttachmentService, attachmentable, clazz) {
+extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentService', 'attachmentable', 'clazz', 'project', function($scope, $uibModal, AttachmentService, attachmentable, clazz, project) {
     // Functions
     $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
-        AttachmentService.delete(attachment, attachmentable);
+        AttachmentService.delete(attachment, attachmentable, project.id);
     };
     $scope.authorizedAttachment = function(action, attachment) {
         return AttachmentService.authorizedAttachment(action, attachment);
     };
     $scope.getUrl = function(clazz, attachmentable, attachment) {
-        return attachment.url ? attachment.url : "attachment/" + clazz + "/" + attachmentable.id + "/" + attachment.id;
+        return attachment.url ? attachment.url : $scope.attachmentBaseUrl + clazz + "/" + attachmentable.id + "/" + attachment.id;
     };
     $scope.isPreviewable = function(attachment) {
         if (attachment.provider) {
@@ -56,13 +56,14 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     };
     $scope.showPreview = function(attachment, attachmentable, type) {
         var previewType = $scope.isPreviewable(attachment);
+        var attachmentBaseUrl = $scope.attachmentBaseUrl;
         if (previewType == 'pdf') {
             $uibModal.open({
                 templateUrl: "attachment.preview.pdf.html",
                 size: 'lg',
                 controller: ['$scope', 'PDFViewerService', function($scope, pdf) {
                     $scope.title = attachment.filename;
-                    $scope.pdfURL = "attachment/" + type + "/" + attachmentable.id + "/" + attachment.id;
+                    $scope.pdfURL = attachmentBaseUrl + type + "/" + attachmentable.id + "/" + attachment.id;
                     $scope.scale = 1.5;
                     $scope.viewer = pdf.Instance("viewer");
                     $scope.nextPage = function() {
@@ -83,7 +84,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
                 size: 'lg',
                 controller: ['$scope', function($scope) {
                     $scope.title = attachment.filename;
-                    $scope.srcURL = "attachment/" + type + "/" + attachmentable.id + "/" + attachment.id;
+                    $scope.srcURL = attachmentBaseUrl + type + "/" + attachmentable.id + "/" + attachment.id;
                 }]
             });
         } else {
@@ -93,12 +94,13 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     };
     $scope.attachmentQuery = function($flow, attachmentable) {
         $scope.flow = $flow;
-        $flow.opts.target = 'attachment/' + $scope.clazz + '/' + attachmentable.id + '/flow';
+        $flow.opts.target = $scope.attachmentBaseUrl + $scope.clazz + '/' + attachmentable.id + '/flow';
         $flow.upload();
     };
     // Init
     $scope.attachmentable = attachmentable;
     $scope.clazz = clazz;
+    $scope.attachmentBaseUrl = $scope.serverUrl + '/p/' + project.id + '/attachment/';
 }]);
 
 // Flow events are triggered by "$scope.$broadcast so they can be received only on controllers that are at the same level or below

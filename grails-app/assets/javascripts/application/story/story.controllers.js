@@ -498,7 +498,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
     function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, detailsStory, project) {
         $controller('storyCtrl', {$scope: $scope});
         $controller('storyAtWhoCtrl', {$scope: $scope});
-        $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story'});
+        $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story', project: project});
         // Functions
         $scope.searchCreator = function(val) {
             if ($scope.formHolder.editing) { // Could do better, e.g. check if permission to update creator or even better load only if dropdown opens (same as task responsible)

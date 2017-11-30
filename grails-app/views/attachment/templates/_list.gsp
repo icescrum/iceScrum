@@ -58,14 +58,14 @@
                         </button>
                     </div>
                 </div>
-                <div ng-show="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'picture'">
-                    <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}">
-                        <img ng-src="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}" width="100%"/>
+                <div ng-if="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'picture'">
+                    <a ng-href="{{ getUrl(clazz, attachmentable, attachment) }}">
+                        <img ng-src="{{ getUrl(clazz, attachmentable, attachment) }}" width="100%"/>
                     </a>
                 </div>
-                <div ng-show="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'video'">
-                    <a href="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}">
-                        <img ng-src="attachment/{{ clazz }}/{{ attachmentable.id }}/{{ attachment.id }}" width="100%"/>
+                <div ng-if="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'video'">
+                    <a ng-href="{{ getUrl(clazz, attachmentable, attachment) }}">
+                        <img ng-src="{{ getUrl(clazz, attachmentable, attachment) }}" width="100%"/>
                     </a>
                 </div>
             </td>

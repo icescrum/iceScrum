@@ -90,9 +90,9 @@ angular.module('isCore', ['ui.router'])
             },
             task: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsTask', function($stateParams, AttachmentService, detailsTask) {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsTask', 'project', function($stateParams, AttachmentService, detailsTask, project) {
                         if (!$stateParams.taskTabId) {
-                            return AttachmentService.list(detailsTask);
+                            return AttachmentService.list(detailsTask, project.id);
                         }
                     }]
                 },
@@ -115,9 +115,9 @@ angular.module('isCore', ['ui.router'])
             },
             story: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsStory', function($stateParams, AttachmentService, detailsStory) {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsStory', 'project', function($stateParams, AttachmentService, detailsStory, project) {
                         if (!$stateParams.storyTabId) {
-                            return AttachmentService.list(detailsStory);
+                            return AttachmentService.list(detailsStory, project.id);
                         }
                     }]
                 },
@@ -156,9 +156,9 @@ angular.module('isCore', ['ui.router'])
             },
             feature: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsFeature', function($stateParams, AttachmentService, detailsFeature) {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsFeature', 'project', function($stateParams, AttachmentService, detailsFeature, project) {
                         if (!$stateParams.featureTabId) {
-                            return AttachmentService.list(detailsFeature);
+                            return AttachmentService.list(detailsFeature, project.id);
                         }
                     }]
                 },
@@ -181,9 +181,9 @@ angular.module('isCore', ['ui.router'])
             },
             release: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsRelease', function($stateParams, AttachmentService, detailsRelease) {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsRelease', 'project', function($stateParams, AttachmentService, detailsRelease, project) {
                         if (!$stateParams.releaseTabId) {
-                            return AttachmentService.list(detailsRelease);
+                            return AttachmentService.list(detailsRelease, project.id);
                         }
                     }]
                 },
@@ -198,9 +198,9 @@ angular.module('isCore', ['ui.router'])
             },
             sprint: {
                 details: {
-                    resolve: ['$stateParams', 'AttachmentService', 'detailsSprint', function($stateParams, AttachmentService, detailsSprint) {
+                    resolve: ['$stateParams', 'AttachmentService', 'detailsSprint', 'project', function($stateParams, AttachmentService, detailsSprint, project) {
                         if (!$stateParams.sprintTabId) {
-                            return AttachmentService.list(detailsSprint);
+                            return AttachmentService.list(detailsSprint, project.id);
                         }
                     }]
                 },

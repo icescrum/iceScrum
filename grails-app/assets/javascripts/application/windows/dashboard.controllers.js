@@ -64,7 +64,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
     }, function(newAllMembers) {
         $scope.allMembers = newAllMembers;
     }, true);
-    $controller('attachmentCtrl', {$scope: $scope, attachmentable: project, clazz: 'project'});
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: project, clazz: 'project', project: project});
     ProjectService.getActivities($scope.project).then(function(activities) {
         $scope.activities = activities;
     });
@@ -85,7 +85,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
             $scope.currentOrNextSprint = sprint;
         });
     });
-    AttachmentService.list($scope.project);
+    AttachmentService.list($scope.project, $scope.project.id);
     if (isSettings.showAppStore) {
         $scope.showAppsModal();
     }

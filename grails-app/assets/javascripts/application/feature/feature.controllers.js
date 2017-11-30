@@ -77,9 +77,9 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'F
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName, features) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName, features, project) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
-    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature'});
+    $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature', project: project});
     // Functions
     $scope.update = function(feature) {
         FeatureService.update(feature).then(function() {
