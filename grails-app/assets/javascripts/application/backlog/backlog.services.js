@@ -53,6 +53,6 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryServi
         return StoryService.filterStories(stories, storyFilter);
     };
     this.openChart = function(backlog, project, chart) {
-        return FormService.httpGet(isSettings.serverUrl + '/p/' + project.id + '/backlog/' + backlog.id + '/' + 'chartByProperty?property=' + chart);
+        return FormService.httpGet('p/' + project.id + '/backlog/' + backlog.id + '/' + 'chartByProperty', {params: {property: chart}}, true);
     };
 }]);
