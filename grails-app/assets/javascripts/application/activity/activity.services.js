@@ -22,13 +22,13 @@
  *
  */
 
-services.service("ActivityService", ['FormService', function(FormService) {
-    this.activities = function(fluxiable, all) {
+services.service("ActivityService", ['FormService', '$rootScope', function(FormService, $rootScope) {
+    this.activities = function(fluxiable, all, projectId) {
         var params = {paginate: true};
         if (all) {
             params.all = true;
         }
-        var url = 'activity/' + _.lowerFirst(fluxiable.class) + '/' + fluxiable.id;
+        var url = $rootScope.serverUrl + '/p/' + projectId + '/activity/' + _.lowerFirst(fluxiable.class) + '/' + fluxiable.id;
         return FormService.httpGet(url, {params: params}).then(function(activitiesAndCount) {
             fluxiable.activities = activitiesAndCount.activities;
             fluxiable.activities_total = activitiesAndCount.activitiesCount; // Don't use activities_count which already exists but does not represent the same activities (aggregated versus owned)

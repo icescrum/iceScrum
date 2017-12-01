@@ -105,10 +105,13 @@ angular.module('isCore', ['ui.router'])
                     templateUrl: 'comment.list.html'
                 },
                 activities: {
-                    resolve: ['$stateParams', 'ActivityService', 'detailsTask', function($stateParams, ActivityService, detailsTask) {
+                    resolve: ['$stateParams', 'ActivityService', 'detailsTask', 'project', function($stateParams, ActivityService, detailsTask, project) {
                         if ($stateParams.taskTabId == 'activities') {
-                            return ActivityService.activities(detailsTask, false);
+                            return ActivityService.activities(detailsTask, false, project.id);
                         }
+                    }],
+                    controller: ['$scope', 'project', function($scope, project) {
+                        $scope.project = project;
                     }],
                     templateUrl: 'activity.list.html'
                 }
@@ -146,10 +149,13 @@ angular.module('isCore', ['ui.router'])
                     templateUrl: 'comment.list.html'
                 },
                 activities: {
-                    resolve: ['$stateParams', 'ActivityService', 'detailsStory', function($stateParams, ActivityService, detailsStory) {
+                    resolve: ['$stateParams', 'ActivityService', 'detailsStory', 'project', function($stateParams, ActivityService, detailsStory, project) {
                         if ($stateParams.storyTabId == 'activities') {
-                            return ActivityService.activities(detailsStory, false);
+                            return ActivityService.activities(detailsStory, false, project.id);
                         }
+                    }],
+                    controller: ['$scope', 'project', function($scope, project) {
+                        $scope.project = project;
                     }],
                     templateUrl: 'activity.list.html'
                 }
@@ -171,10 +177,13 @@ angular.module('isCore', ['ui.router'])
                     templateUrl: 'nested.stories.html'
                 },
                 activities: {
-                    resolve: ['$stateParams', 'ActivityService', 'detailsFeature', function($stateParams, ActivityService, detailsFeature) {
+                    resolve: ['$stateParams', 'ActivityService', 'detailsFeature', 'project', function($stateParams, ActivityService, detailsFeature, project) {
                         if ($stateParams.featureTabId == 'activities') {
-                            return ActivityService.activities(detailsFeature, false);
+                            return ActivityService.activities(detailsFeature, false, project.id);
                         }
+                    }],
+                    controller: ['$scope', 'project', function($scope, project) {
+                        $scope.project = project;
                     }],
                     templateUrl: 'activity.list.html'
                 }

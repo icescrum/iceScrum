@@ -56,12 +56,12 @@
          class="text-center">
         <button ng-switch-default
                 class="btn btn-default"
-                ng-click="activities(selected, true)">
+                ng-click="activities(selected, true, project.id)">
             <i class="fa fa-plus-square"></i> ${message(code: 'todo.is.ui.history.more')}
         </button>
         <button ng-switch-when="true"
                 class="btn btn-default"
-                ng-click="activities(selected, false)">
+                ng-click="activities(selected, false, project.id)">
             <i class="fa fa-minus-square"></i> ${message(code: 'todo.is.ui.history.less')}
         </button>
     </div>
