@@ -494,8 +494,8 @@ controllers.controller('storyAtWhoCtrl', ['$scope', 'ActorService', function($sc
     ];
 }]);
 
-extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", "TaskStatesByName", 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'detailsStory', 'project',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, detailsStory, project) {
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", "TaskStatesByName", 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
         $controller('storyCtrl', {$scope: $scope});
         $controller('storyAtWhoCtrl', {$scope: $scope});
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story', project: project});
@@ -589,6 +589,11 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
         $scope.storyStatesByName = StoryStatesByName;
         $scope.taskStatesByName = TaskStatesByName;
+        if (detailsStory.actors_ids && detailsStory.actors_ids.length) {
+            ActorService.list().then(function(actors) {
+                $scope.actors = actors;
+            });
+        }
     }]);
 
 extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', 'project', function($scope, $controller, StoryService, storyListId, Session, FeatureService, project) {
@@ -741,7 +746,8 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
-controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter', 'StoryStatesByName', function($controller, $scope, $filter, StoryStatesByName) {
+controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter', 'StoryStatesByName', 'ActorService', function($controller, $scope, $filter, StoryStatesByName, ActorService) {
+    // Init
     $scope.storyEntries = [];
     $scope.$watch(function() {
         return $scope.selected.stories;
@@ -780,4 +786,7 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
             .orderBy(['stories[0].parentSprint.parentReleaseOrderNumber', 'stories[0].parentSprint.orderNumber', 'stories[0].state'], ['asc', 'asc', 'desc'])
             .value();
     }, true);
+    ActorService.list().then(function(actors) {
+        $scope.actors = actors;
+    });
 }]);

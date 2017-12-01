@@ -176,10 +176,15 @@ filters
         };
     })
     .filter('actorTag', ['$state', 'ContextService', function($state, ContextService) {
-        return function(description) {
+        return function(description, actors) {
             var contextUrl = $state.href($state.current.name, $state.params);
-            return description ? description.replace(/A\[(.+?)-(.+?)\]/g, function(a, b, c) {
-                return '<a href="' + contextUrl + '?context=actor' + ContextService.contextSeparator + b + '">' + c + '</a>';
+            return description ? description.replace(/A\[(.+?)-(.+?)\]/g, function(actorTag, actorUid, actorName) {
+                if (actors) {
+                    var actorId = _.find(actors, {uid: parseInt(actorUid)}).id;
+                    return '<a href="' + contextUrl + '?context=actor' + ContextService.contextSeparator + actorId + '">' + actorName + '</a>';
+                } else {
+                    return actorName;
+                }
             }) : '';
         };
     }])
