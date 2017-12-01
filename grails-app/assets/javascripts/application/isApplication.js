@@ -113,6 +113,19 @@ var isApplication = angular.module('isApplication', [
                     });
                 }]
             })
+            .state({
+                name: 'new',
+                url: "/new",
+                onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
+                    $uibModal.open({
+                        keyboard: false,
+                        backdrop: 'static',
+                        templateUrl: $rootScope.serverUrl + "/add",
+                        size: 'lg',
+                        controller: 'newCtrl'
+                    });
+                }]
+            })
             // Project workspace
             .state({
                 name: 'project',
@@ -134,6 +147,11 @@ var isApplication = angular.module('isApplication', [
                         backdrop: 'static',
                         templateUrl: $rootScope.serverUrl + "/project/add",
                         size: 'lg',
+                        resolve: {
+                            manualSave: function() {
+                                return false;
+                            }
+                        },
                         controller: 'newProjectCtrl'
                     }).result.then(function() {
                         $state.transitionTo('root');
@@ -790,11 +808,15 @@ var isApplication = angular.module('isApplication', [
                 scope: scope
             });
         };
-        $rootScope.openProjectUrl = function(project) {
-            return $rootScope.serverUrl + '/p/' + project.pkey + '/';
+        $rootScope.openWorkspaceUrl = function(object) {
+            if (object.pkey) {
+                return $rootScope.serverUrl + '/p/' + object.pkey + '/';
+            } else {
+                return $rootScope.serverUrl + '/f/' + object.fkey + '/';
+            }
         };
-        $rootScope.openProject = function(project) {
-            document.location = $rootScope.openProjectUrl(project);
+        $rootScope.openWorkspace = function(object) {
+            document.location = $rootScope.openWorkspaceUrl(object);
         };
         $rootScope.openDatepicker = function($event, holder) {
             $event.preventDefault();

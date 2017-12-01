@@ -405,9 +405,16 @@ class UrlMappings {
         }
         "/portfolio/$portfolio" {
             controller = 'portfolio'
-            action = [DELETE: 'delete']
+            action = [GET: "show", DELETE: "delete", POST: "update"]
             constraints {
                 portfolio(matches: /\d*/) // fkey is not accepted, must be the ID
+            }
+        }
+        "/portfolio/available/$property" {
+            controller = 'portfolio'
+            action = [POST: "available"]
+            constraints {
+                property(inList: ['name', 'fkey'])
             }
         }
         // Errors mapping

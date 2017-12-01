@@ -27,7 +27,9 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Portfolio
+import org.icescrum.core.domain.Project
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.web.presentation.windows.ProjectController
 
 @Secured('isAuthenticated()')
 class PortfolioController implements ControllerErrorHandler {
@@ -41,27 +43,55 @@ class PortfolioController implements ControllerErrorHandler {
         def portfolioParams = params.portfolio
         Portfolio portfolio = new Portfolio()
         Portfolio.withTransaction {
-            bindData(portfolio, portfolioParams, [include: ['fkey']])
-            portfolioService.save(portfolio)
+            //create each project using the projectController
+            ProjectController projectController = new ProjectController()
+            def nbProjects = portfolioParams.int('projectsSize')
+            def projects = []
+            (nbProjects).times {
+                def projectParam = portfolioParams.projects."$it"
+                if (projectParam.id) {
+                    projects << Project.get(projectParam.id)
+                } else {
+                    projectController.params.project = projectParam
+                    projectController.params.internalCall = true
+                    projects << projectController.save()
+                }
+            }
+            bindData(portfolio, portfolioParams, [include: ['fkey', 'name', 'description']])
+            portfolioService.save(portfolio, projects)
             render(status: 201, text: portfolio as JSON, contentType: 'application/json')
         }
     }
 
     @Secured('isAuthenticated()')
-    def delete(long id) {
-        Portfolio portfolio = Portfolio.withPortfolio(id)
-        if (!securityService.owner(portfolio, springSecurityService.authentication)) { // Cannot check by annotation/request because we are not in a project workspace (URL)
+    def delete(long portfolio) {
+        Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
+        if (!securityService.owner(_portfolio, springSecurityService.authentication)) { // Cannot check by annotation/request because we are not in a portfolio workspace (URL)
             render(status: 403)
             return
         }
-        portfolioService.delete(portfolio)
+        portfolioService.delete(_portfolio)
         withFormat {
             html {
-                render(status: 200, text: [id: id] as JSON)
+                render(status: 200, text: [id: portfolio] as JSON)
             }
             json {
                 render(status: 204)
             }
         }
+    }
+
+    @Secured(['permitAll()'])
+    def available(long portfolio, String property) {
+        def result = false
+        if (property == 'fkey') {
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && (portfolio ? Portfolio.countByFkeyAndId(request.JSON.value, portfolio) : Portfolio.countByFkey(request.JSON.value)) == 0
+        }
+        render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
+    }
+
+    @Secured(['isAuthenticated()'])
+    def add() {
+        render(status: 200, template: "dialogs/new")
     }
 }

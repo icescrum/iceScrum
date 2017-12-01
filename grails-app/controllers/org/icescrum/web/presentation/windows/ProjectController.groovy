@@ -138,8 +138,12 @@ class ProjectController implements ControllerErrorHandler {
                 sprintService.generateSprints(release, projectParams.firstSprint)
             }
         }
-        flash.showAppStore = true
-        render(status: 201, contentType: 'application/json', text: project as JSON)
+        if (!params.internalCall) {
+            flash.showAppStore = true
+            render(status: 201, contentType: 'application/json', text: project as JSON)
+        } else {
+            return project
+        }
     }
 
     @Secured('scrumMaster() and !archivedProject()')

@@ -22,7 +22,7 @@
 --}%
 
 <is:modal title="${message(code: 'todo.is.ui.projects')}"
-          form="openProject(project)"
+          form="openWorkspace(project)"
           submitButton="${message(code: 'todo.is.ui.open')}"
           class="split-modal">
     <div class="row">

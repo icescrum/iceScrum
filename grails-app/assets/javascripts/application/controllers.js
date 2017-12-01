@@ -437,30 +437,39 @@ extensibleController('aboutCtrl', ['$scope', 'active', function($scope, active) 
     }
 }]); // Used to extend about in plugins
 
+
+extensibleController('newCtrl', ['$scope', '$state', function($scope, $state) {
+    $scope.openWizard = function(type) {
+        $scope.$close(false);
+        $state.go(type);
+    };
+    //INIT
+}]);
+
 controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', 'UserTokenService', function($scope, $uibModal, Session, UserService, hotkeys, PushService, UserTokenService) {
     // Functions
     $scope.notificationToggle = function(open) {
         if (open) {
             UserService.getActivities($scope.currentUser)
                 .then(function(data) {
-                    var groupedActivities = [];
-                    angular.forEach(data, function(notif) {
-                        var augmentedActivity = notif.activity;
-                        augmentedActivity.story = notif.story;
-                        augmentedActivity.notRead = notif.notRead;
-                        if (_.isEmpty(groupedActivities) || _.last(groupedActivities).project.pkey != notif.project.pkey) {
-                            groupedActivities.push({
-                                project: notif.project,
-                                activities: [augmentedActivity]
-                            });
-                        } else {
-                            _.last(groupedActivities).activities.push(augmentedActivity);
-                        }
-                    });
-                    $scope.groupedUserActivities = groupedActivities;
-                    Session.unreadActivitiesCount = 0; // Cannot do that on open == false for the moment because it is called randomly
-                }
-            );
+                        var groupedActivities = [];
+                        angular.forEach(data, function(notif) {
+                            var augmentedActivity = notif.activity;
+                            augmentedActivity.story = notif.story;
+                            augmentedActivity.notRead = notif.notRead;
+                            if (_.isEmpty(groupedActivities) || _.last(groupedActivities).project.pkey != notif.project.pkey) {
+                                groupedActivities.push({
+                                    project: notif.project,
+                                    activities: [augmentedActivity]
+                                });
+                            } else {
+                                _.last(groupedActivities).activities.push(augmentedActivity);
+                            }
+                        });
+                        $scope.groupedUserActivities = groupedActivities;
+                        Session.unreadActivitiesCount = 0; // Cannot do that on open == false for the moment because it is called randomly
+                    }
+                );
         }
     };
     $scope.getUnreadActivities = function() {

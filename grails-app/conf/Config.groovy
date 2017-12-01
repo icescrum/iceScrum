@@ -68,6 +68,11 @@ icescrum.project.creation.enable = true
 icescrum.project.private.enable = true
 icescrum.project.private.default = false
 
+/* Portfolio administration */
+icescrum.portfolio.creation.enable = true
+icescrum.portfolio.private.enable = true
+icescrum.portfolio.private.default = false
+
 /* iceScrum base dir */
 try {
     String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.basedir")

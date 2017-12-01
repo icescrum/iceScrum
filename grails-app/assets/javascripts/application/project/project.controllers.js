@@ -143,7 +143,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     });
 }]);
 
-extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session) {
+extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'manualSave', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session, manualSave) {
     $controller('abstractProjectCtrl', {$scope: $scope});
     $scope.type = 'newProject';
     $scope.checkProjectPropertyUrl = '/project/available';
@@ -156,12 +156,16 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
     };
     $scope.createProject = function(project) {
         var p = $scope.prepareProject(project);
-        $scope.formHolder.creating = true;
-        ProjectService.save(p).then(function(project) {
-            $scope.openProject(project);
-        }).catch(function() {
-            $scope.formHolder.creating = false;
-        });
+        if (manualSave) {
+            $scope.$close(project);
+        } else {
+            $scope.formHolder.creating = true;
+            ProjectService.save(p).then(function(project) {
+                $scope.openWorkspace(project);
+            }).catch(function() {
+                $scope.formHolder.creating = false;
+            });
+        }
     };
     $scope.teamMembersEditable = function(team) {
         return team.id == null;

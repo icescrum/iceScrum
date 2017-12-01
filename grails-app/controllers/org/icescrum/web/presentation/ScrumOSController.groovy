@@ -184,6 +184,11 @@ class ScrumOSController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: timezones as JSON)
     }
 
+    @Secured(['isAuthenticated()'])
+    def add() {
+        render(status: 200, template: "dialogs/new")
+    }
+
     @Secured(['permitAll()'])
     def warnings() {
         def warnings = grailsApplication.config.icescrum.warnings.collect { it ->

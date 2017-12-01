@@ -308,5 +308,12 @@ class RestUrlMappings {
                 parentStory(matches: /\d*/)
             }
         }
+        "/ws/portfolio/$portfolio" {
+            controller = 'portfolio'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                portfolio(matches: /[0-9A-Z]*/)
+            }
+        }
     }
 }

@@ -759,6 +759,9 @@ services.service("DomainConfigService", [function() {
         project: {
             array: ['productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners']
         },
+        portfolio: {
+            array: ['projects', 'stakeHolders', 'invitedStakeHolders']
+        },
         team: {
             array: ['members', 'scrumMasters', 'invitedMembers', 'invitedScrumMasters']
         },

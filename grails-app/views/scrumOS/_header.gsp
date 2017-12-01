@@ -58,7 +58,7 @@
                             <li role="presentation" class="dropdown-header">
                                 ${message(code: 'todo.is.ui.projects')}
                             </li>
-                            <g:if test="${creationProjectEnable}">
+                            <g:if test="${creationProjectEnable || creationPortfolioEnable}">
                                 <li>
                                     <a hotkey="{ 'shift+n': hotkeyClick}"
                                        hotkey-description="${message(code: 'todo.is.ui.project.createNew')}"
@@ -154,9 +154,6 @@
                                 <li role="presentation" class="divider"></li>
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.ui.team.menu')}</li>
                                 <li><a href ng-click="showManageTeamsModal()">${message(code: 'is.ui.team.manage')}</a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li role="presentation" class="dropdown-header">${message(code: 'is.ui.portfolio.menu')}</li>
-                                <li><a ui-sref="newPortfolio">${message(code: 'is.ui.portfolio.create')}</a></li>
                             </g:if>
                             <li role="presentation" class="divider"></li>
                             <li role="presentation" class="dropdown-header">iceScrum</li>

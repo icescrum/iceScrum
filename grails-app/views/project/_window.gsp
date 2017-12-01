@@ -203,7 +203,7 @@
                             <small class="pull-right">
                                 <a class="rss"
                                    uib-tooltip="${message(code: 'todo.is.ui.feed')}"
-                                   href="{{ openProjectUrl(project) + 'project/feed' }}">
+                                   href="{{ openWorkspaceUrl(project) + 'project/feed' }}">
                                     <i class="fa fa-rss fa-lg visible-on-hover"></i>
                                 </a>
                             </small>
