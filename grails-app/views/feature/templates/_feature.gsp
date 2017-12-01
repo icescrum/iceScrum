@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="feature.html">
 <div ng-style="feature.color | createGradientBackground: isAsListPostit(viewName)"
      class="postit feature"
-     ng-class="::[(feature.color | contrastColor), (feature.type | featureType)]" is-watch="feature">
+     ng-class="[(feature.color | contrastColor), (feature.type | featureType)]" is-watch="feature">
     <div class="head">
         <div class="head-left">
             <span class="id">{{:: feature.uid }}</span>
@@ -51,7 +51,6 @@
                         icon="fa-tags"
                         max="3"
                         hide="true"
-                        postit-size="postitClass"
                         count="feature.tags.length"/>
             <a ng-repeat="tag in ::feature.tags"
                href="{{ tagContextUrl(tag) }}">
@@ -62,13 +61,11 @@
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                         href="#/{{:: viewName }}/{{ ::feature.id }}"
                         icon="fa-paperclip"
-                        postit-size="postitClass"
                         count="feature.attachments_count"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
                         ng-if="workspaceType == 'project'"
                         href="#/{{:: viewName }}/{{ ::feature.id }}/stories"
                         icon="fa-sticky-note"
-                        postit-size="postitClass"
                         count="feature.stories_ids.length"/>
             <span postit-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
         </div>

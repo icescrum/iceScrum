@@ -291,6 +291,14 @@
           width: 33px;
           text-align: center;
           display: inline-block;
+          .badge {
+            > .limited {
+              display: none;
+            }
+            > .full {
+              display: inline;
+            }
+          }
         }
       }
       .action {
@@ -478,6 +486,14 @@
         width: 29px;
         &.dropdown, &[postit-menu] {
           width: 10px;
+        }
+        .badge {
+          > .limited {
+            display: inline;
+          }
+          > .full {
+            display: none;
+          }
         }
       }
     }

@@ -248,7 +248,7 @@
         <a href="{{:: href }}"
            uib-tooltip="{{:: count + ' ' + tooltip }}">
             <i class="fa {{:: count > 0 ? icon : iconEmpty }}"></i>
-            <span class="badge">{{:: countString }}</span>
+            <span class="badge"><span class="limited">{{:: countString }}</span><span class="full">{{:: count }}</span></span>
         </a>
     </span>
     </script>

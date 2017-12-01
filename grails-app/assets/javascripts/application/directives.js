@@ -935,8 +935,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         scope: {
             max: "=?",
             hide: "=",
-            count: '=',
-            postitSize: "="
+            count: '='
         },
         replace: true,
         templateUrl: 'icon.with.badge.html',
@@ -950,7 +949,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             scope.tooltip = attrs.tooltip;
             scope.iconEmpty = attrs.iconEmpty ? attrs.iconEmpty : attrs.icon;
             scope.classes = attrs.classes ? attrs.classes : '';
-            scope.countString = (scope.count > scope.max && scope.postitSize.indexOf('size-sm') > -1) ? scope.max + '+' : (scope.count > 0 ? scope.count : '');
+            scope.countString = (scope.count > scope.max) ? scope.max + '+' : (scope.count > 0 ? scope.count : '');
         }
     };
 }).directive('isWatch', ['$parse', function($parse) {

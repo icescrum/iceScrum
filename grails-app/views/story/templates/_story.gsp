@@ -25,7 +25,7 @@
 <div fast-tooltip
      ng-style="(story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
      class="postit story"
-     ng-class="::[application.postitSize.story,((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]" is-watch="story">
+     ng-class="[((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]" is-watch="story">
     <div class="head">
         <div class="head-left">
             <span class="id">{{:: story.uid }}</span>
@@ -66,7 +66,6 @@
                         icon="fa-tags"
                         max="3"
                         hide="true"
-                        postit-size="postitClass"
                         count="story.tags.length"/>
             <a ng-repeat="tag in ::story.tags"
                href="{{:: tagContextUrl(tag) }}">
@@ -77,26 +76,22 @@
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                         href="{{:: openStoryUrl(story.id)}}"
                         icon="fa-paperclip"
-                        postit-size="postitClass"
                         count="story.attachments_count"/>
             <icon-badge classes="comments"
                         tooltip="${message(code: 'todo.is.ui.comments')}"
                         href="{{:: openStoryUrl(story.id) }}/comments"
                         icon="fa-comment"
                         icon-empty="fa-comment-o"
-                        postit-size="postitClass"
                         count="story.comments_count"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.tasks')}"
                         href="{{:: openStoryUrl(story.id) }}/tasks"
                         icon="fa-tasks"
-                        postit-size="postitClass"
                         count="story.tasks_count"/>
             <icon-badge classes="acceptances-tests"
                         tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                         href="{{:: openStoryUrl(story.id) }}/tests"
                         icon="fa-check-square"
                         icon-empty="fa-check-square-o"
-                        postit-size="postitClass"
                         count="story.acceptanceTests_count"/>
             <span postit-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
         </div>
