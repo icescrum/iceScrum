@@ -56,7 +56,7 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
                 attachmentable.attachments_count = attachmentable.attachments.length;
             }).$promise;
         } else {
-            return $q.when(attachmentable.comments);
+            return $q.when(attachmentable.attachments);
         }
     };
 }]);
