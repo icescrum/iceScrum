@@ -76,7 +76,7 @@
                 <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.history')}
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'stories'}">
+        <li role="presentation" ng-if="workspaceType == 'project'" ng-class="{'active':$state.params.featureTabId == 'stories'}">
             <a href="{{ tabUrl('stories') }}">
                 <i class="fa fa-lg fa-sticky-note"></i> ${message(code: 'todo.is.ui.stories')} {{ feature.stories_ids.length | parens }}
             </a>
