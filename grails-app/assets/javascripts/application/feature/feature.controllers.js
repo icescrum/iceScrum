@@ -48,7 +48,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'ProjectService', 'F
     $scope.menus = [
         {
             name: 'todo.is.ui.context.set',
-            visible: function(feature) { return true; },
+            visible: function(feature) { return $scope.workspaceType == 'project' },
             url: $scope.featureContextUrl
         },
         {
