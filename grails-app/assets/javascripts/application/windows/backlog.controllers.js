@@ -183,7 +183,9 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         var pinnedElementId = newValues[1];
         var elementId = newValues[2];
         if (stateName === 'backlog') {
-            $state.go('backlog.backlog', {elementId: _.head($scope.availableBacklogs).code}, {location: 'replace'});
+            var visibleElementsListOrder = $scope.getWindowSetting('elementsListOrder');
+            var defaultBacklog = visibleElementsListOrder && visibleElementsListOrder.length > 0 ? _.head(visibleElementsListOrder) : _.head($scope.availableBacklogs).code;
+            $state.go('backlog.backlog', {elementId: defaultBacklog}, {location: 'replace'});
         } else if (_.startsWith(stateName, 'backlog')) {
             if (pinnedElementId) {
                 $scope.showBacklog(pinnedElementId);
