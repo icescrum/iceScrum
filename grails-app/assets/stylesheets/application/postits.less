@@ -284,14 +284,6 @@
           border-radius: 2px;
         }
         overflow: hidden;
-        .badge {
-          > .limited {
-            display: none;
-          }
-          > .full {
-            display: inline;
-          }
-        }
       }
       .actions {
         text-align: center;
@@ -299,14 +291,6 @@
           width: 33px;
           text-align: center;
           display: inline-block;
-          .badge {
-            > .limited {
-              display: none;
-            }
-            > .full {
-              display: inline;
-            }
-          }
         }
       }
       .action {
@@ -495,23 +479,14 @@
         &.dropdown, &[postit-menu] {
           width: 10px;
         }
-        .badge {
-          > .limited {
-            display: inline;
-          }
-          > .full {
-            display: none;
-          }
-        }
+
       }
-      .tags {
-        .badge {
-          > .limited {
-            display: inline;
-          }
-          > .full {
-            display: none;
-          }
+      .badge {
+        > .limited {
+          display: inline;
+        }
+        > .full {
+          display: none;
         }
       }
     }
@@ -843,6 +818,14 @@
           display: none;
         }
       }
+    }
+  }
+  .badge {
+    > .limited {
+      display: none;
+    }
+    > .full {
+      display: inline;
     }
   }
   .follow {
