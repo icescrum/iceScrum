@@ -22,7 +22,7 @@
  *
  */
 services.factory('AcceptanceTest', ['Resource', function($resource) {
-    return $resource('acceptanceTest/:type/:storyId/:id');
+    return $resource('/p/:projectId/acceptanceTest/:type/:storyId/:id');
 }]);
 
 services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesByName', 'Session', 'IceScrumEventType', 'PushService', function($q, AcceptanceTest, StoryStatesByName, Session, IceScrumEventType, PushService) {
@@ -53,19 +53,19 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
     this.save = function(acceptanceTest, story) {
         acceptanceTest.class = 'acceptanceTest';
         acceptanceTest.parentStory = {id: story.id};
-        return AcceptanceTest.save(acceptanceTest, self.getCrudMethods(story)[IceScrumEventType.CREATE]).$promise;
+        return AcceptanceTest.save({projectId: story.backlog.id}, acceptanceTest, self.getCrudMethods(story)[IceScrumEventType.CREATE]).$promise;
     };
     this['delete'] = function(acceptanceTest, story) {
-        return AcceptanceTest.delete({id: acceptanceTest.id}, self.getCrudMethods(story)[IceScrumEventType.DELETE]).$promise;
+        return AcceptanceTest.delete({projectId: story.backlog.id}, {id: acceptanceTest.id}, self.getCrudMethods(story)[IceScrumEventType.DELETE]).$promise;
     };
     this.update = function(acceptanceTest, story) {
-        return AcceptanceTest.update(acceptanceTest, self.getCrudMethods(story)[IceScrumEventType.UPDATE]).$promise;
+        return AcceptanceTest.update({projectId: story.backlog.id}, acceptanceTest, self.getCrudMethods(story)[IceScrumEventType.UPDATE]).$promise;
     };
     this.list = function(story) {
         // TODO use a global cache instead (don't forget to set appropriate sync to push count to story)
         // The code below registers listeners each time we access a story acceptance tests tab, this is bad !
         if (_.isEmpty(story.acceptanceTests)) {
-            return AcceptanceTest.query({storyId: story.id, type: 'story'}, function(data) {
+            return AcceptanceTest.query({projectId: story.backlog.id, storyId: story.id, type: 'story'}, function(data) {
                 story.acceptanceTests = data;
                 story.acceptanceTests_count = story.acceptanceTests.length;
                 var crudMethods = self.getCrudMethods(story);
