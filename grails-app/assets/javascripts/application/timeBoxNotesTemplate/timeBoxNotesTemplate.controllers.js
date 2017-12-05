@@ -21,7 +21,7 @@
  *
  */
 
-controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotesTemplateService', 'Session', function($scope, $uibModal, TimeBoxNotesTemplateService, Session) {
+controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotesTemplateService', function($scope, $uibModal, TimeBoxNotesTemplateService) {
     var ctrl = this;
     // Functions
     $scope.computeTimeBoxNotes = function() {
@@ -39,7 +39,7 @@ controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
         $uibModal.open({
             templateUrl: 'timeBoxNotesTemplate.edit.html',
             controller: 'timeBoxNotesTemplateEditCtrl',
-            resolve: {template: template}
+            resolve: {project: $scope.project, template: template}
         }).result.then(
             function() {
                 $scope.refreshTimeBoxNotesTemplates();
@@ -50,6 +50,7 @@ controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
         $uibModal.open({
             templateUrl: 'timeBoxNotesTemplate.new.html',
             controller: 'timeBoxNotesTemplateNewCtrl',
+            resolve: {project: $scope.project}
         }).result.then(
             function(newTemplate) {
                 if (typeof newTemplate != 'undefined') {
@@ -60,7 +61,7 @@ controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
         );
     };
     $scope.refreshTimeBoxNotesTemplates = function() {
-        $scope.templates = Session.getProject().timeBoxNotesTemplates;
+        $scope.templates = $scope.project.timeBoxNotesTemplates;
         // auto-select first in list
         if ($scope.templates.length > 0) {
             if ((typeof ctrl.template == 'undefined') || (ctrl.template == {}) || (typeof _.find($scope.templates, ['id', ctrl.template.id]) == 'undefined')) {
@@ -76,9 +77,10 @@ controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
     // Init
     $scope.timeBoxClass = $scope.selected.class.toLowerCase();
     $scope.refreshTimeBoxNotesTemplates();
+    $scope.project = $scope.getResolvedProjectFromState();
 }]);
 
-controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'Session', 'ProjectService', 'TimeBoxNotesTemplateService', function($scope, Session, ProjectService, TimeBoxNotesTemplateService, template) {
+controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -95,12 +97,12 @@ controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'Session', 'Projec
             timeBoxNotesTemplate.configs = [];
             $scope.collapseSectionStatus = [];
         }
-        //collapse other sections
+        // Collapse other sections
         for (var i = 0; i < $scope.collapseSectionStatus.length; i++) {
             $scope.collapseSectionStatus[i] = true;
         }
-        //expand new section
-        $scope.collapseSectionStatus[timeBoxNotesTemplate.configs.length] = false
+        // Expand new section
+        $scope.collapseSectionStatus[timeBoxNotesTemplate.configs.length] = false;
         timeBoxNotesTemplate.configs.push({storyTags: []});
     };
     $scope.expandSection = function(index) {
@@ -114,18 +116,18 @@ controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'Session', 'Projec
     };
 }]);
 
-controllers.controller('timeBoxNotesTemplateEditCtrl', ['$scope', '$controller', 'TimeBoxNotesTemplateService', 'template', function($scope, $controller, TimeBoxNotesTemplateService, template) {
+controllers.controller('timeBoxNotesTemplateEditCtrl', ['$scope', '$controller', 'TimeBoxNotesTemplateService', 'template', 'project', function($scope, $controller, TimeBoxNotesTemplateService, template, project) {
     $controller('timeBoxNotesTemplateCtrl', {$scope: $scope}); // inherit from timeBoxNotesTemplateCtrl
     // Functions
     $scope.update = function(timeBoxNotesTemplate) {
-        TimeBoxNotesTemplateService.update(timeBoxNotesTemplate).then(function(timeBoxNotesTemplate) {
+        TimeBoxNotesTemplateService.update(timeBoxNotesTemplate, project.id).then(function(timeBoxNotesTemplate) {
             _.merge(template, timeBoxNotesTemplate);
             $scope.notifySuccess('todo.is.ui.timeBoxNotesTemplate.updated');
             $scope.$close();
         });
     };
     $scope['delete'] = function(timeBoxNotesTemplate) {
-        TimeBoxNotesTemplateService.delete(timeBoxNotesTemplate).then(function() {
+        TimeBoxNotesTemplateService.delete(timeBoxNotesTemplate, project).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
             $scope.$close();
         });
@@ -143,7 +145,7 @@ controllers.controller('timeBoxNotesTemplateEditCtrl', ['$scope', '$controller',
     $scope.sectionSortOptions = {};
 }]);
 
-controllers.controller('timeBoxNotesTemplateNewCtrl', ['$scope', '$controller', 'TimeBoxNotesTemplateService', function($scope, $controller, TimeBoxNotesTemplateService) {
+controllers.controller('timeBoxNotesTemplateNewCtrl', ['$scope', '$controller', 'TimeBoxNotesTemplateService', 'project', function($scope, $controller, TimeBoxNotesTemplateService, project) {
     $controller('timeBoxNotesTemplateCtrl', {$scope: $scope}); // inherit from timeBoxNotesTemplateCtrl
     // Init
     $scope.timeBoxNotesTemplate = {};
@@ -151,7 +153,7 @@ controllers.controller('timeBoxNotesTemplateNewCtrl', ['$scope', '$controller', 
     $scope.sectionSortOptions = {};
     // Functions
     $scope.save = function(timeBoxNotesTemplate) {
-        TimeBoxNotesTemplateService.save(timeBoxNotesTemplate).then(function(returnTemplate) {
+        TimeBoxNotesTemplateService.save(timeBoxNotesTemplate, project).then(function(returnTemplate) {
             _.merge(timeBoxNotesTemplate, returnTemplate);
             $scope.notifySuccess('todo.is.ui.timeBoxNotesTemplate.saved');
             $scope.$close(timeBoxNotesTemplate);

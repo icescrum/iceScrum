@@ -22,42 +22,39 @@
  */
 
 services.factory('TimeBoxNotesTemplate', ['Resource', function($resource) {
-    return $resource('timeBoxNotesTemplate/:id');
+    return $resource('/p/:projectId/timeBoxNotesTemplate/:id');
 }]);
 
-services.service("TimeBoxNotesTemplateService", ['Session', 'FormService', '$q', 'TimeBoxNotesTemplate', function(Session, FormService, $q, TimeBoxNotesTemplate) {
-    this.save = function(timeBoxNotesTemplate) {
+services.service("TimeBoxNotesTemplateService", ['FormService', '$q', 'TimeBoxNotesTemplate', function(FormService, $q, TimeBoxNotesTemplate) {
+    this.save = function(timeBoxNotesTemplate, project) {
         timeBoxNotesTemplate.class = 'timeBoxNotesTemplate';
         timeBoxNotesTemplate.configsData = JSON.stringify(timeBoxNotesTemplate.configs);
-        return TimeBoxNotesTemplate.save(timeBoxNotesTemplate, function(timeBoxNotesTemplate) {
-            Session.getProject().timeBoxNotesTemplates.push(timeBoxNotesTemplate);
-            Session.getProject().timeBoxNotesTemplates_count = Session.getProject().timeBoxNotesTemplates.length;
+        return TimeBoxNotesTemplate.save({projectId: project.id}, timeBoxNotesTemplate, function(timeBoxNotesTemplate) {
+            project.timeBoxNotesTemplates.push(timeBoxNotesTemplate);
+            project.timeBoxNotesTemplates_count = project.timeBoxNotesTemplates.length;
             return timeBoxNotesTemplate;
         }).$promise;
     };
-    this.get = function(id) {
-        return TimeBoxNotesTemplate.get({id: id}).$promise;
-    };
-    this.update = function(timeBoxNotesTemplate) {
+    this.update = function(timeBoxNotesTemplate, projectId) {
         timeBoxNotesTemplate.configsData = JSON.stringify(timeBoxNotesTemplate.configs);
-        return TimeBoxNotesTemplate.update({}, timeBoxNotesTemplate, function(timeBoxNotesTemplate) {
+        return TimeBoxNotesTemplate.update({projectId: projectId}, timeBoxNotesTemplate, function(timeBoxNotesTemplate) {
             delete timeBoxNotesTemplate.configsData;
             return timeBoxNotesTemplate;
         }).$promise;
     };
-    this['delete'] = function(timeBoxNotesTemplate) {
-        return TimeBoxNotesTemplate.delete({id: timeBoxNotesTemplate.id}, function() {
-            var toDelete = _.find(Session.getProject().timeBoxNotesTemplates, ['id', timeBoxNotesTemplate.id]);
-            var index = Session.getProject().timeBoxNotesTemplates.indexOf(toDelete);
+    this['delete'] = function(timeBoxNotesTemplate, project) {
+        return TimeBoxNotesTemplate.delete({projectId: project.id}, {id: timeBoxNotesTemplate.id}, function() {
+            var toDelete = _.find(project.timeBoxNotesTemplates, ['id', timeBoxNotesTemplate.id]);
+            var index = project.timeBoxNotesTemplates.indexOf(toDelete);
             if (index > -1) {
-                Session.getProject().timeBoxNotesTemplates.splice(index, 1);
-                Session.getProject().timeBoxNotesTemplates_count = Session.getProject().timeBoxNotesTemplates.length;
+                project.timeBoxNotesTemplates.splice(index, 1);
+                project.timeBoxNotesTemplates_count = project.timeBoxNotesTemplates.length;
             }
         }).$promise;
     };
     this.list = function(project) {
         return _.isEmpty(project.timeBoxNotesTemplates) ?
-               TimeBoxNotesTemplate.query({}, function(timeBoxNotesTemplates) {
+               TimeBoxNotesTemplate.query({projectId: project.id}, function(timeBoxNotesTemplates) {
                    project.timeBoxNotesTemplates = timeBoxNotesTemplates;
                    project.timeBoxNotesTemplates_count = project.timeBoxNotesTemplates.length;
                }).$promise : $q.when(project.timeBoxNotesTemplates);

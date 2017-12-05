@@ -197,9 +197,9 @@ angular.module('isCore', ['ui.router'])
                     }]
                 },
                 notes: {
-                    resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'Session', function($stateParams, TimeBoxNotesTemplateService, Session) {
+                    resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'project', function($stateParams, TimeBoxNotesTemplateService, project) {
                         if ($stateParams.releaseTabId == 'notes') {
-                            return TimeBoxNotesTemplateService.list(Session.getProject());
+                            return TimeBoxNotesTemplateService.list(project);
                         }
                     }],
                     templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
@@ -214,9 +214,9 @@ angular.module('isCore', ['ui.router'])
                     }]
                 },
                 notes: {
-                    resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'Session', function($stateParams, TimeBoxNotesTemplateService, Session) {
+                    resolve: ['$stateParams', 'TimeBoxNotesTemplateService', 'project', function($stateParams, TimeBoxNotesTemplateService, project) {
                         if ($stateParams.sprintTabId == 'notes') {
-                            return TimeBoxNotesTemplateService.list(Session.getProject());
+                            return TimeBoxNotesTemplateService.list(project);
                         }
                     }],
                     templateUrl: 'timeBoxNotesTemplates.timeBox.notes.html'
