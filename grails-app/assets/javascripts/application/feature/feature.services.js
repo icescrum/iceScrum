@@ -27,7 +27,9 @@ services.factory('Feature', ['Resource', function($resource) {
 
 services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'CacheService', 'PushService', 'IceScrumEventType', 'FormService', function($state, $q, Feature, Session, CacheService, PushService, IceScrumEventType, FormService) {
     var self = this;
-    Session.getProject().features = CacheService.getCache('feature');
+    if (Session.getProject() && Session.getProject().id) { // TODO remove temporary hack
+        Session.getProject().features = CacheService.getCache('feature');
+    }
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(feature) {
         CacheService.addOrUpdate('feature', feature);
