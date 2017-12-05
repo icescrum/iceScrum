@@ -22,22 +22,22 @@
  *
  */
 services.factory('Actor', ['Resource', function($resource) {
-    return $resource('actor/:id/:action');
+    return $resource('/p/:projectId/actor/:id/:action');
 }]);
 
 services.service("ActorService", ['Actor', 'Session', function(Actor, Session) {
-    this.save = function(actor) {
+    this.save = function(actor, projectId) {
         actor.class = 'actor';
-        return Actor.save(actor).$promise;
+        return Actor.save({projectId: projectId}, actor).$promise;
     };
     this.update = function(actor) {
-        return Actor.update(actor).$promise;
+        return Actor.update({projectId: actor.parentProject.id}, actor).$promise;
     };
-    this.delete = function(actor) {
-        return Actor.delete(actor).$promise;
+    this['delete'] = function(actor) {
+        return Actor.delete({projectId: actor.parentProject.id}, actor).$promise;
     };
-    this.list = function() {
-        return Actor.query().$promise;
+    this.list = function(projectId) {
+        return Actor.query({projectId: projectId}).$promise;
     };
     this.authorizedActor = function(action, actor) {
         switch (action) {

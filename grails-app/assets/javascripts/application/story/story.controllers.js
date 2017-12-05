@@ -469,7 +469,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
 controllers.controller('storyAtWhoCtrl', ['$scope', 'ActorService', function($scope, ActorService) {
     // Functions
     $scope.loadAtWhoActors = function() {
-        return ActorService.list().then(function(actors) {
+        return ActorService.list($scope.getResolvedProjectFromState().id).then(function(actors) {
             _.each($scope.atOptions, function(options) {
                 options.data = _.map(actors, function(actor) {
                     return {uid: actor.uid, name: actor.name};
@@ -590,7 +590,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.storyStatesByName = StoryStatesByName;
         $scope.taskStatesByName = TaskStatesByName;
         if (detailsStory.actors_ids && detailsStory.actors_ids.length) {
-            ActorService.list().then(function(actors) {
+            ActorService.list(project.id).then(function(actors) {
                 $scope.actors = actors;
             });
         }
@@ -750,7 +750,7 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
     // Init
     $scope.storyEntries = [];
     $scope.$watch(function() {
-        return $scope.selected.stories;
+        return $scope.selected.stories; // $scope.selected is inherited
     }, function(newStories) {
         $scope.storyEntries = _.chain(newStories)
             .groupBy(function(story) {
@@ -786,7 +786,7 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
             .orderBy(['stories[0].parentSprint.parentReleaseOrderNumber', 'stories[0].parentSprint.orderNumber', 'stories[0].state'], ['asc', 'asc', 'desc'])
             .value();
     }, true);
-    ActorService.list().then(function(actors) {
+    ActorService.list($scope.getResolvedProjectFromState().id).then(function(actors) {
         $scope.actors = actors;
     });
 }]);

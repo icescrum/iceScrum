@@ -25,7 +25,7 @@
 controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', function($scope, $state, ActorService) {
     // Functions
     $scope.save = function(actor) {
-        ActorService.save(actor).then(function(actor) {
+        ActorService.save(actor, $scope.project.id).then(function(actor) {
             $scope.actors.push(actor);
             $scope.resetActorForm();
         });
@@ -53,9 +53,10 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
         return $state.href($state.current.name, $state.params) + '?context=actor_' + actor.id;
     };
     // Init
+    $scope.project = $scope.getResolvedProjectFromState();
     $scope.actor = {};
     $scope.actors = [];
-    ActorService.list().then(function(actors) {
+    ActorService.list($scope.project.id).then(function(actors) {
         $scope.actors = actors;
     });
     $scope.formHolder = {};
