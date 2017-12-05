@@ -882,6 +882,9 @@ var isApplication = angular.module('isApplication', [
         }
         $rootScope.authenticated = Session.authenticated;
         $rootScope.authorizedApp = AppService.authorizedApp;
+        $rootScope.getResolvedProjectFromState = function() {
+            return $state.$current.locals.globals.project;
+        };
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
             if (toState.name == "404") {
                 event.preventDefault();
