@@ -22,40 +22,40 @@
  *
  */
 services.factory('Comment', ['Resource', function($resource) {
-    return $resource('comment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
+    return $resource('/p/:projectId/comment/:type/:typeId/:id', {typeId: '@typeId', type: '@type'});
 }]);
 
 services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Comment, Session) {
-    this.save = function(comment, commentable) {
+    this.save = function(comment, commentable, projectId) {
         comment.class = 'comment';
         comment.type = commentable.class.toLowerCase();
         comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
-        return Comment.save(comment, function(comment) {
+        return Comment.save({projectId: projectId}, comment, function(comment) {
             commentable.comments.push(comment);
             commentable.comments_count = commentable.comments.length;
         }).$promise;
     };
-    this['delete'] = function(comment, commentable) {
+    this['delete'] = function(comment, commentable, projectId) {
         comment.type = commentable.class.toLowerCase();
         comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
-        return Comment.delete(comment, function() {
+        return Comment.delete({projectId: projectId}, comment, function() {
             _.remove(commentable.comments, {id: comment.id});
             commentable.comments_count = commentable.comments.length;
         }).$promise;
     };
-    this.update = function(comment, commentable) {
+    this.update = function(comment, commentable, projectId) {
         comment.type = commentable.class.toLowerCase();
         comment.typeId = commentable.id;
         comment.commentable = {id: commentable.id};
-        return comment.$update(function(returnedComment) {
+        return Comment.update({projectId: projectId}, comment, function(returnedComment) {
             angular.extend(_.find(commentable.comments, {id: comment.id}), returnedComment);
-        });
+        }).$promise;
     };
-    this.list = function(commentable) {
+    this.list = function(commentable, projectId) {
         if (_.isEmpty(commentable.comments)) {
-            return Comment.query({typeId: commentable.id, type: commentable.class.toLowerCase()}, function(data) {
+            return Comment.query({projectId: projectId, typeId: commentable.id, type: commentable.class.toLowerCase()}, function(data) {
                 commentable.comments = data;
                 commentable.comments_count = commentable.comments.length;
             }).$promise;

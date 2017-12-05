@@ -97,9 +97,9 @@ angular.module('isCore', ['ui.router'])
                     }]
                 },
                 comments: {
-                    resolve: ['$stateParams', 'CommentService', 'detailsTask', function($stateParams, CommentService, detailsTask) {
+                    resolve: ['$stateParams', 'CommentService', 'detailsTask', 'project', function($stateParams, CommentService, detailsTask, project) {
                         if ($stateParams.taskTabId == 'comments') {
-                            return CommentService.list(detailsTask);
+                            return CommentService.list(detailsTask, project.id);
                         }
                     }],
                     templateUrl: 'comment.list.html'
@@ -141,9 +141,9 @@ angular.module('isCore', ['ui.router'])
                     templateUrl: 'story.tasks.html'
                 },
                 comments: {
-                    resolve: ['$stateParams', 'CommentService', 'detailsStory', function($stateParams, CommentService, detailsStory) {
+                    resolve: ['$stateParams', 'CommentService', 'detailsStory', 'project', function($stateParams, CommentService, detailsStory, project) {
                         if ($stateParams.storyTabId == 'comments') {
-                            return CommentService.list(detailsStory);
+                            return CommentService.list(detailsStory, project.id);
                         }
                     }],
                     templateUrl: 'comment.list.html'
