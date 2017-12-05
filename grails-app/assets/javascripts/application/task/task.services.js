@@ -22,7 +22,7 @@
  *
  */
 services.factory('Task', ['Resource', function($resource) {
-        return $resource('task/:type/:typeId/:id/:action',
+        return $resource('/p/:projectId/task/:type/:typeId/:id/:action',
             {id: '@id'},
             {
                 listByUser: {
@@ -30,10 +30,6 @@ services.factory('Task', ['Resource', function($resource) {
                     isArray: true,
                     params: {},
                     method: 'get'
-                },
-                updateOustideProjectWorkspace: {
-                    url: '/p/:pid/task/:type/:typeId/:id/:action',
-                    method: 'post'
                 }
             })
     }]
@@ -63,17 +59,13 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             crudMethods[IceScrumEventType.CREATE](task);
         });
     };
-    this.save = function(task) {
+    this.save = function(task, projectId) {
         task.class = 'task';
-        return Task.save(task, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return Task.save({projectId: projectId}, task, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.update = function(task, removeRank, outsideProjectContext) {
+    this.update = function(task, removeRank) {
         var taskData = removeRank ? _.omit(task, 'rank') : task; // Don't send the rank when we want the server to pick the right rank (e.g. update estimate to 0 => task will get a new rank in done state)
-        if (outsideProjectContext) {
-            return Task.updateOustideProjectWorkspace({pid: taskData.parentProject.id}, taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
-        } else {
-            return Task.update(taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
-        }
+        return Task.update({projectId: task.parentProject.id}, taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.block = function(task) {
         task.blocked = true;
@@ -84,25 +76,25 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         return self.update(task);
     };
     this.take = function(task) {
-        return Task.update({id: task.id, action: 'take'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Task.update({projectId: task.parentProject.id, id: task.id, action: 'take'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.release = function(task) {
-        return Task.update({id: task.id, action: 'unassign'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Task.update({projectId: task.parentProject.id, id: task.id, action: 'unassign'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(task) {
-        return Task.delete({id: task.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
+        return Task.delete({projectId: task.parentProject.id}, {id: task.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.makeStory = function(task) {
-        return Task.update({id: task.id, action: 'makeStory'}, {}, function() {
+        return Task.update({projectId: task.parentProject.id, id: task.id, action: 'makeStory'}, {}, function() {
             crudMethods[IceScrumEventType.DELETE](task);
         }).$promise;
     };
     this.copy = function(task) {
-        return Task.update({id: task.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return Task.update({projectId: task.parentProject.id, id: task.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.list = function(taskContext) {
+    this.list = function(taskContext, projectId) {
         if (_.isEmpty(taskContext.tasks)) {
-            var params = {typeId: taskContext.id, type: taskContext.class.toLowerCase()};
+            var params = {projectId: projectId, typeId: taskContext.id, type: taskContext.class.toLowerCase()};
             if ($rootScope.application.context) {
                 _.merge(params, {'context.type': $rootScope.application.context.type, 'context.id': $rootScope.application.context.id});
             }
@@ -126,8 +118,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             return $q.when(taskContext.tasks);
         }
     };
-    this.get = function(id, taskContext) {
-        return self.list(taskContext).then(function(tasks) {
+    this.get = function(id, taskContext, projectId) {
+        return self.list(taskContext, projectId).then(function(tasks) {
             return _.find(tasks, {id: id});
         });
     };

@@ -133,9 +133,9 @@ angular.module('isCore', ['ui.router'])
                     templateUrl: 'story.acceptanceTests.html'
                 },
                 tasks: {
-                    resolve: ['$stateParams', 'TaskService', 'detailsStory', function($stateParams, TaskService, detailsStory) {
+                    resolve: ['$stateParams', 'TaskService', 'detailsStory', 'project', function($stateParams, TaskService, detailsStory, project) {
                         if ($stateParams.storyTabId == 'tasks') {
-                            return TaskService.list(detailsStory);
+                            return TaskService.list(detailsStory, project.id);
                         }
                     }],
                     templateUrl: 'story.tasks.html'
@@ -323,8 +323,8 @@ angular.module('isCore', ['ui.router'])
                 name: 'details',
                 url: "/{taskId:int}",
                 resolve: {
-                    detailsTask: ['$stateParams', 'taskContext', 'TaskService', function($stateParams, taskContext, TaskService) {
-                        return TaskService.get($stateParams.taskId, taskContext);
+                    detailsTask: ['$stateParams', 'taskContext', 'TaskService', 'project', function($stateParams, taskContext, TaskService, project) {
+                        return TaskService.get($stateParams.taskId, taskContext, project.id);
                     }]
                 },
                 views: {},

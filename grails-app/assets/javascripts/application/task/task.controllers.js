@@ -31,7 +31,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
     };
     $scope.save = function(task, story) {
         task.parentStory = {id: story.id};
-        TaskService.save(task).then(function() {
+        TaskService.save(task, $scope.project.id).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.saved');
         });
@@ -45,6 +45,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
         return TaskService.authorizedTask(action, task);
     };
     // Init
+    $scope.project = $scope.getResolvedProjectFromState();
     $scope.formHolder = {};
     $scope.resetTaskForm();
 }]);
@@ -138,7 +139,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
                     $scope.editableTask = angular.copy(task);
                     $scope.initialValue = $scope.editableTask.value;
                     $scope.submit = function(task) {
-                        TaskService.update(task, false, true).then(function(taskUpdated) {
+                        TaskService.update(task).then(function(taskUpdated) {
                             $scope.$close();
                             $scope.notifySuccess('todo.is.ui.task.updated');
                         });
@@ -158,7 +159,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
-controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint) {
+controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', 'project', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint, project) {
     $controller('taskCtrl', {$scope: $scope});
     // Functions
     $scope.resetTaskForm = function() {
@@ -167,7 +168,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
         $scope.resetFormValidation($scope.formHolder.taskForm);
     };
     $scope.save = function(task, andContinue) {
-        TaskService.save(task).then(function(task) {
+        TaskService.save(task, project.id).then(function(task) {
             if (andContinue) {
                 $scope.resetTaskForm();
             } else {
