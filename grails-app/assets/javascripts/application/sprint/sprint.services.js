@@ -28,6 +28,7 @@ services.factory('Sprint', ['Resource', function($resource) {
 services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'IceScrumEventType', 'Session', 'PushService', 'CacheService', 'ReleaseService', function($q, $state, Sprint, SprintStatesByName, IceScrumEventType, Session, PushService, CacheService, ReleaseService) {
     var self = this;
     var crudMethods = {};
+    this.crudMethods = crudMethods; // Access from outside
     crudMethods[IceScrumEventType.CREATE] = function(sprint) {
         CacheService.addOrUpdate('sprint', sprint);
     };

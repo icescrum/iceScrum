@@ -25,7 +25,7 @@ services.factory('Release', ['Resource', function($resource) {
     return $resource('/p/:projectId/release/:id/:action');
 }]);
 
-services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByName', 'IceScrumEventType', 'Session', 'CacheService', 'PushService', 'FormService', function($q, $state, Release, ReleaseStatesByName, IceScrumEventType, Session, CacheService, PushService, FormService) {
+services.service("ReleaseService", ['$q', '$state', '$injector', 'Release', 'ReleaseStatesByName', 'IceScrumEventType', 'Session', 'CacheService', 'PushService', 'FormService', function($q, $state, $injector, Release, ReleaseStatesByName, IceScrumEventType, Session, CacheService, PushService, FormService) {
     var self = this;
     Session.getProject().releases = CacheService.getCache('release');
     var crudMethods = {};
@@ -85,20 +85,16 @@ services.service("ReleaseService", ['$q', '$state', 'Release', 'ReleaseStatesByN
     };
     this.autoPlan = function(release, capacity) {
         return FormService.httpPost('release/' + release.id + '/autoPlan', {capacity: capacity}).then(function(result) {
-            _.each(result.stories, function(story) {
-                CacheService.addOrUpdate('story', story);
-            });
+            _.each(result.stories, $injector.get('StoryService').crudMethods[IceScrumEventType.UPDATE]);
         });
     };
     this.unPlan = function(release) {
         return FormService.httpGet('release/' + release.id + '/unPlan').then(function(result) {
             _.each(result.sprints, function(sprint) {
                 FormService.transformStringToDate(sprint);
-                CacheService.addOrUpdate('sprint', sprint);
+                $injector.get('SprintService').crudMethods[IceScrumEventType.UPDATE](sprint);
             });
-            _.each(result.stories, function(story) {
-                CacheService.addOrUpdate('story', story);
-            });
+            _.each(result.stories, $injector.get('StoryService').crudMethods[IceScrumEventType.UPDATE]);
         });
     };
     this['delete'] = function(release, project) {

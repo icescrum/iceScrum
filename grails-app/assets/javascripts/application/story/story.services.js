@@ -45,7 +45,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return Story.query.apply(this, args);
     };
     var crudMethods = {};
-    this.crudMethods = crudMethods;
+    this.crudMethods = crudMethods; // Access from outside
     crudMethods[IceScrumEventType.CREATE] = function(story) {
         CacheService.addOrUpdate('story', story);
     };
@@ -133,7 +133,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     };
     this.planMultiple = function(ids, sprint) {
         return Story.updateArray({id: ids, action: 'planMultiple'}, {parentSprint: {id: sprint.id}}, function(stories) {
-            _.each(stories, crudMethods[IceScrumEventType.CREATE]);
+            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
     this.unPlan = function(story) {
