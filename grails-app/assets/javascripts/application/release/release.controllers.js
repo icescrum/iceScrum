@@ -57,22 +57,19 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
     $scope.autoPlan = function(release, capacity) {
         $rootScope.uiWorking();
         ReleaseService.autoPlan(release, capacity).then(function() {
-            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.release.autoPlanned');
-        });
+        }).finally($rootScope.uiReady);
     };
     $scope.unPlan = function(release) {
         $rootScope.uiWorking();
         ReleaseService.unPlan(release).then(function() {
-            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.release.unPlanned');
-        });
+        }).finally($rootScope.uiReady);
     };
     $scope['delete'] = function(release) {
-        ReleaseService.delete(release, $scope.project)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.deleted');
-            });
+        ReleaseService.delete(release, $scope.project).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+        });
     };
     $scope.tabUrl = function(releaseTabId) {
         var stateName = $state.params.releaseTabId ? (releaseTabId ? '.' : '^') : (releaseTabId ? '.tab' : '.');

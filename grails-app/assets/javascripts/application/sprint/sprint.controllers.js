@@ -34,37 +34,32 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
     $scope.activate = function(sprint) {
         $rootScope.uiWorking();
         SprintService.activate(sprint, $scope.project).then(function() {
-            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.sprint.activated');
-        });
+        }).finally($rootScope.uiReady);
     };
     $scope.reactivate = function(sprint) {
         $rootScope.uiWorking();
         SprintService.reactivate(sprint, $scope.project).then(function() {
-            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.sprint.reactivated');
-        });
+        }).finally($rootScope.uiReady);
     };
     $scope.autoPlan = function(sprint, capacity) {
         $rootScope.uiWorking();
         SprintService.autoPlan(sprint, capacity, $scope.project).then(function() {
-            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
-        });
+        }).finally($rootScope.uiReady);
     };
     $scope.unPlan = function(sprint) {
         $rootScope.uiWorking();
         SprintService.unPlan(sprint, $scope.project).then(function() {
-            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.sprint.unPlanned');
-        });
+        }).finally($rootScope.uiReady);
     };
     $scope['delete'] = function(sprint) {
         $rootScope.uiWorking();
         SprintService.delete(sprint, $scope.release).then(function() {
-            $rootScope.uiReady();
             $scope.notifySuccess('todo.is.ui.deleted');
-        });
+        }).finally($rootScope.uiReady);
     };
     $scope.tabUrl = function(sprintTabId) {
         var stateName = $state.params.sprintTabId ? (sprintTabId ? '.' : '^') : (sprintTabId ? '.tab' : '.');
@@ -117,10 +112,9 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     }
                     promise.then(function() {
                         return SprintService.close(sprint, project).then(function() {
-                            $rootScope.uiReady();
                             $scope.notifySuccess('todo.is.ui.sprint.closed');
                             $scope.$close(true);
-                        });
+                        }).finally($rootScope.uiReady);
                     });
                 };
                 // Init
@@ -146,9 +140,8 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     $rootScope.uiWorking();
                     // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch
                     return StoryService.planMultiple(selectedIds, sprint).then(function() {
-                        $rootScope.uiReady();
                         $scope.notifySuccess('todo.is.ui.story.multiple.updated');
-                    });
+                    }).finally($rootScope.uiReady);
                 } else {
                     return $q.when();
                 }
