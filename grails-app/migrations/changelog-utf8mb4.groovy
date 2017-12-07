@@ -230,6 +230,9 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_up_window` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+                sql.execute("ALTER TABLE `is_bugtracker_import` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+                sql.execute("ALTER TABLE `is_bugtracker` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+                sql.execute("ALTER TABLE `is_bugtracker_sync` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences_menu` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences_menu_hidden` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_tokens` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
