@@ -163,9 +163,9 @@ angular.module('isCore', ['ui.router'])
                     }]
                 },
                 stories: {
-                    resolve: ['$stateParams', 'StoryService', 'detailsFeature', function($stateParams, StoryService, detailsFeature) {
+                    resolve: ['$stateParams', 'StoryService', 'detailsFeature', 'project', function($stateParams, StoryService, detailsFeature, project) {
                         if ($stateParams.featureTabId == 'stories') {
-                            StoryService.listByType(detailsFeature);
+                            StoryService.listByType(detailsFeature, project.id);
                         }
                     }],
                     templateUrl: 'nested.stories.html'
@@ -410,8 +410,8 @@ angular.module('isCore', ['ui.router'])
                 name: 'details',
                 url: "/{storyId:int}",
                 resolve: {
-                    detailsStory: ['StoryService', '$stateParams', function(StoryService, $stateParams) {
-                        return StoryService.get($stateParams.storyId);
+                    detailsStory: ['StoryService', '$stateParams', 'project', function(StoryService, $stateParams, project) {
+                        return StoryService.get($stateParams.storyId, project.id);
                     }]
                 },
                 views: {},

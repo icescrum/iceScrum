@@ -74,7 +74,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                 // Functions
                 $scope.loadStories = function() {
                     $scope.backlog.storiesLoaded = false;
-                    StoryService.filter({parentSprint: sprint.id}).then(function(stories) {
+                    StoryService.filter({parentSprint: sprint.id}, $scope.getResolvedProjectFromState().id).then(function(stories) {
                         $scope.newDone = _.transform(stories, function(newDone, story) {
                             newDone[story.id] = story.state == StoryStatesByName.DONE;
                         }, {});
@@ -84,6 +84,9 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                 };
                 $scope.closeSprint = function() {
                     $rootScope.uiWorking();
+                    var getStory = function(id) {
+                        return _.find($scope.backlog.stories, {id: id});
+                    };
                     var newDone = _.transform($scope.newDone, function(newDone, isDone, storyId) {
                         if (isDone) {
                             newDone.push(parseInt(storyId));
@@ -102,12 +105,12 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     var promise = $q.when();
                     if (toBeUndone.length) {
                         promise = promise.then(function() {
-                            return toBeUndone.length > 1 ? StoryService.unDoneMultiple(toBeUndone) : StoryService.unDone({id: toBeUndone[0]});
+                            return toBeUndone.length > 1 ? StoryService.unDoneMultiple(toBeUndone, $scope.getResolvedProjectFromState().id) : StoryService.unDone(getStory(toBeUndone[0]));
                         });
                     }
                     if (toBeDone.length) {
                         promise = promise.then(function() {
-                            return toBeDone.length > 1 ? StoryService.doneMultiple(toBeDone) : StoryService.done({id: toBeDone[0]});
+                            return toBeDone.length > 1 ? StoryService.doneMultiple(toBeDone, $scope.getResolvedProjectFromState().id) : StoryService.done(getStory(toBeDone[0]));
                         });
                     }
                     promise.then(function() {
@@ -139,7 +142,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                 if (selectedIds.length > 0) {
                     $rootScope.uiWorking();
                     // Will refresh sprint.stories which will in turn refresh sprint backlog stories through the watch
-                    return StoryService.planMultiple(selectedIds, sprint).then(function() {
+                    return StoryService.planMultiple(selectedIds, sprint, $scope.project.id).then(function() {
                         $scope.notifySuccess('todo.is.ui.story.multiple.updated');
                     }).finally($rootScope.uiReady);
                 } else {
@@ -211,7 +214,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
         }
     ];
     // Init
-    $scope.project = Session.getProject();
+    $scope.project = $scope.getResolvedProjectFromState();
     $scope.startDateOptions = {
         opened: false
     };
@@ -256,7 +259,7 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$rootScope', '$q', '$con
     $scope.backlogCodes = BacklogCodes;
     $scope.sprintStatesByName = SprintStatesByName;
     $scope.backlog = {stories: [], code: 'sprint'};
-    StoryService.listByType($scope.sprint).then(function() {
+    StoryService.listByType($scope.sprint, $scope.getResolvedProjectFromState().id).then(function() {
         $scope.backlog.stories = $scope.sprint.stories;
     });
 }]);

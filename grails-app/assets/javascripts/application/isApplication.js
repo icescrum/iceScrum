@@ -371,7 +371,7 @@ var isApplication = angular.module('isApplication', [
                         if ($stateParams.sprintId) {
                             var sprint = _.find(ReleaseService.findAllSprints(releases), {id: $stateParams.sprintId});
                             if (sprint) {
-                                promise = StoryService.listByType(sprint).then(function() {
+                                promise = StoryService.listByType(sprint, project.id).then(function() {
                                     return TaskService.list(sprint, project.id).then(function() {
                                         return sprint;
                                     });

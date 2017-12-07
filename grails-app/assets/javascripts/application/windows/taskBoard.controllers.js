@@ -97,7 +97,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         var allStoriesIds = _.union(sprintStoriesIds, _.map(partitionedTasks[1], 'parentStory.id'));
         var ghostStoriesIds = _.difference(allStoriesIds, sprintStoriesIds);
         if (ghostStoriesIds) {
-            StoryService.getMultiple(ghostStoriesIds).then(function(ghostStories) {
+            StoryService.getMultiple(ghostStoriesIds, project.id).then(function(ghostStories) {
                 $scope.ghostStories = ghostStories;
             });
         }

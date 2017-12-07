@@ -104,7 +104,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
                 $scope.filterStories = function() {
                     $scope.selectedIds = [];
                     $scope.backlog.storiesLoaded = false;
-                    StoryService.filter($scope.selectorOptions.filter).then(function(stories) {
+                    StoryService.filter($scope.selectorOptions.filter, $scope.getResolvedProjectFromState().id).then(function(stories) {
                         $scope.backlog.stories = $scope.selectorOptions.order ? $filter('orderBy')(stories, $scope.selectorOptions.order) : stories;
                         $scope.backlog.storiesLoaded = true;
                         if ($scope.selectorOptions.initSelectedIds) {

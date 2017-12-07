@@ -153,7 +153,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
                 backlogContainer.storiesLoaded = true;
             };
             var retrieveServerStories = function() { // Retrieve server data, stories that were missing will be automatically added
-                StoryService.listByBacklog(backlogContainer.backlog).then(function(stories) {
+                StoryService.listByBacklog(backlogContainer.backlog, project.id).then(function(stories) {
                     if (stories.length === 0) {
                         setStoriesLoaded();
                     }

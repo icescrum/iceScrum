@@ -22,7 +22,7 @@
  *
  */
 services.factory('Story', ['Resource', function($resource) {
-    return $resource('story/:type/:typeId/:id/:action');
+    return $resource('/p/:projectId/story/:type/:typeId/:id/:action');
 }]);
 
 services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'CacheService', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, CacheService, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
@@ -67,15 +67,15 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             crudMethods[IceScrumEventType.CREATE](story);
         });
     };
-    this.save = function(story) {
+    this.save = function(story, projectId) {
         story.class = 'story';
-        return Story.save(story, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return Story.save({projectId: projectId}, story, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.listByType = function(obj) {
+    this.listByType = function(obj, projectId) {
         if (!_.isArray(obj.stories)) {
             obj.stories = [];
         }
-        var promise = queryWithContext({typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
+        var promise = queryWithContext({projectId: projectId, typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
             self.mergeStories(stories);
             _.each(stories, function(story) {
                 if (!_.find(obj.stories, {id: story.id})) {
@@ -85,9 +85,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }).$promise;
         return obj.stories.length == 0 ? promise : $q.when(obj.stories);
     };
-    this.filter = function(filter) {
+    this.filter = function(filter, projectId) {
         var existingStories = self.filterStories(CacheService.getCache('story'), filter);
-        var promise = Story.query({filter: {story: filter}}, function(stories) {
+        var promise = Story.query({projectId: projectId, filter: {story: filter}}, function(stories) {
             self.mergeStories(stories);
             _.each(stories, function(story) {
                 if (!_.find(existingStories, {id: story.id})) {
@@ -97,73 +97,73 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }).$promise;
         return existingStories.length > 0 ? $q.when(existingStories) : promise;
     };
-    this.get = function(id) {
+    this.get = function(id, projectId) {
         var cachedStory = CacheService.get('story', id);
-        return cachedStory ? $q.when(cachedStory) : self.refresh(id);
+        return cachedStory ? $q.when(cachedStory) : self.refresh(id, projectId);
     };
-    this.refresh = function(id) {
-        return Story.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
+    this.refresh = function(id, projectId) {
+        return Story.get({projectId: projectId, id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.update = function(story) {
-        return Story.update(story, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({projectId: story.backlog.id}, story, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(story) {
-        return Story.delete({id: story.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
+        return Story.delete({projectId: story.backlog.id, id: story.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.acceptToBacklog = function(story, rank) {
         var params = {story: {}};
         if (rank) {
             params.story.rank = rank;
         }
-        return Story.update({id: story.id, action: 'accept'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'accept'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.returnToSandbox = function(story, rank) {
         var params = {story: {}};
         if (rank) {
             params.story.rank = rank;
         }
-        return Story.update({id: story.id, action: 'returnToSandbox'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'returnToSandbox'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.plan = function(story, sprint, rank) {
         var params = {story: {parentSprint: {id: sprint.id}}};
         if (rank) {
             params.story.rank = rank;
         }
-        return Story.update({id: story.id, action: 'plan'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'plan'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.planMultiple = function(ids, sprint) {
-        return Story.updateArray({id: ids, action: 'planMultiple'}, {parentSprint: {id: sprint.id}}, function(stories) {
+    this.planMultiple = function(ids, sprint, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'planMultiple'}, {parentSprint: {id: sprint.id}}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
     this.unPlan = function(story) {
-        return Story.update({id: story.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.shiftToNext = function(story) {
-        return Story.update({id: story.id, action: 'shiftToNextSprint'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'shiftToNextSprint'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.done = function(story) {
-        return Story.update({id: story.id, action: 'done'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'done'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.unDone = function(story) {
-        return Story.update({id: story.id, action: 'unDone'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'unDone'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.follow = function(story) {
-        return Story.update({id: story.id, action: 'follow'}, {}, function(resultStory) {
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'follow'}, {}, function(resultStory) {
             story.followed = resultStory.followed;
             story.followers_count = resultStory.followers_count;
             crudMethods[IceScrumEventType.UPDATE](story);
         }).$promise;
     };
     this.acceptAs = function(story, target) {
-        return Story.update({id: story.id, action: 'turnInto' + target}, {}, function() {
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'turnInto' + target}, {}, function() {
             crudMethods[IceScrumEventType.DELETE](story);
         }).$promise;
     };
     this.copy = function(story) {
-        return Story.update({id: story.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.getMultiple = function(ids) {
+    this.getMultiple = function(ids, projectId) {
         ids = _.map(ids, function(id) {
             return parseInt(id);
         });
@@ -174,9 +174,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         if (notFoundStoryIds.length > 0) {
             var promise;
             if (notFoundStoryIds.length == 1) {
-                promise = self.get(notFoundStoryIds[0]).then(function(story) { return [story]; });
+                promise = self.get(notFoundStoryIds[0], projectId).then(function(story) { return [story]; });
             } else {
-                promise = Story.query({id: notFoundStoryIds}, self.mergeStories).$promise;
+                promise = Story.query({projectId: projectId, id: notFoundStoryIds}, self.mergeStories).$promise;
             }
             return promise.then(function(stories) {
                 return _.concat(cachedStories, stories);
@@ -185,70 +185,70 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             return $q.when(cachedStories);
         }
     };
-    this.updateMultiple = function(ids, updatedFields) {
+    this.updateMultiple = function(ids, updatedFields, projectId) {
         if (ids.length == 1) {
-            return self.get(parseInt(ids[0])).then(function(story) {
+            return self.get(parseInt(ids[0]), projectId).then(function(story) {
                 return self.update(_.merge({}, story, updatedFields)).then(function(story) {
                     return [story];
                 });
             });
         } else {
-            return Story.updateArray({id: ids}, {story: updatedFields}, function(stories) {
+            return Story.updateArray({projectId: projectId, id: ids}, {story: updatedFields}, function(stories) {
                 _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
             }).$promise;
         }
     };
-    this.deleteMultiple = function(ids) {
-        return Story.deleteArray({id: ids}, function() {
+    this.deleteMultiple = function(ids, projectId) {
+        return Story.deleteArray({projectId: projectId, id: ids}, function() {
             _.each(ids, function(stringId) {
                 crudMethods[IceScrumEventType.DELETE]({id: parseInt(stringId)});
             });
         }).$promise;
     };
-    this.copyMultiple = function(ids) {
-        return Story.updateArray({id: ids, action: 'copy'}, {}, function(stories) {
+    this.copyMultiple = function(ids, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'copy'}, {}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.CREATE]);
         }).$promise;
     };
-    this.acceptToBacklogMultiple = function(ids) {
-        return Story.updateArray({id: ids, action: 'accept'}, {}, function(stories) {
+    this.acceptToBacklogMultiple = function(ids, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'accept'}, {}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.returnToSandboxMultiple = function(ids) {
-        return Story.updateArray({id: ids, action: 'returnToSandbox'}, {}, function(stories) {
+    this.returnToSandboxMultiple = function(ids, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'returnToSandbox'}, {}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.acceptAsMultiple = function(ids, target) {
-        return Story.updateArray({id: ids, action: 'turnInto' + target}, {}, function() {
+    this.acceptAsMultiple = function(ids, target, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'turnInto' + target}, {}, function() {
             _.each(ids, function(stringId) {
                 crudMethods[IceScrumEventType.DELETE]({id: parseInt(stringId)});
             });
         }).$promise;
     };
-    this.followMultiple = function(ids, follow) {
-        return Story.updateArray({id: ids, action: 'follow'}, {follow: follow}, function(stories) {
+    this.followMultiple = function(ids, follow, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'follow'}, {follow: follow}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.doneMultiple = function(ids) {
-        return Story.updateArray({id: ids, action: 'done'}, {}, function(stories) {
+    this.doneMultiple = function(ids, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'done'}, {}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.unDoneMultiple = function(ids) {
-        return Story.updateArray({id: ids, action: 'unDone'}, {}, function(stories) {
+    this.unDoneMultiple = function(ids, projectId) {
+        return Story.updateArray({projectId: projectId, id: ids, action: 'unDone'}, {}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.listByBacklog = function(backlog) {
-        return queryWithContext({type: 'backlog', typeId: backlog.id}, function(stories) {
+    this.listByBacklog = function(backlog, projectId) {
+        return queryWithContext({projectId: projectId, type: 'backlog', typeId: backlog.id}, function(stories) {
             self.mergeStories(stories);
         }).$promise;
     };
     this.activities = function(story, all) {
-        var params = {action: 'activities', id: story.id};
+        var params = {projectId: story.backlog.id, action: 'activities', id: story.id};
         if (all) {
             params.all = true;
         }
@@ -308,8 +308,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                 });
         }
     };
-    this.listByField = function(field) {
-        return Story.get({action: 'listByField', field: field}).$promise
+    this.listByField = function(field, projectId) {
+        return Story.get({projectId: projectId, action: 'listByField', field: field}).$promise
     };
     this.getDependenceEntries = function(story) {
         return FormService.httpGet('story/' + story.id + '/dependenceEntries');

@@ -195,13 +195,13 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
         return story.tasks_count > 0 && story.state < StoryStatesByName.DONE && story.state >= StoryStatesByName.PLANNED;
     };
     $scope.isEffortCustom = function() {
-        return Session.getProject().planningPokerGameType == 2;
+        return $scope.getResolvedProjectFromState().planningPokerGameType == 2;
     };
     $scope.effortSuite = function(isNullable) {
         if (isNullable) {
-            return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuiteNullable : $scope.fibonacciSuiteNullable;
+            return $scope.getResolvedProjectFromState().planningPokerGameType == 0 ? $scope.integerSuiteNullable : $scope.fibonacciSuiteNullable;
         } else {
-            return Session.getProject().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
+            return $scope.getResolvedProjectFromState().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
         }
     };
     $scope.isEffortNullable = function(story) {
@@ -259,7 +259,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                             $scope.editableStory.effort = $scope.effortSuiteValues[newVal];
                         });
                     }
-                    StoryService.listByField('effort').then(function(effortsAndStories) {
+                    StoryService.listByField('effort', $scope.getResolvedProjectFromState().id).then(function(effortsAndStories) {
                         initialEfforts = effortsAndStories.fieldValues;
                         var indexOfNull = initialEfforts.indexOf(null);
                         if (indexOfNull != -1) {
@@ -323,7 +323,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                     $scope.values = [];
                     $scope.storyRows = [];
                     $scope.count = [];
-                    StoryService.listByField('value').then(function(valuesAndStories) {
+                    StoryService.listByField('value', $scope.getResolvedProjectFromState().id).then(function(valuesAndStories) {
                         initialValues = valuesAndStories.fieldValues;
                         initialStoriesByValue = valuesAndStories.stories;
                         initialCount = valuesAndStories.count;
@@ -425,7 +425,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                             var effort = story.effort;
                             tasks.push({
                                 success: function() {
-                                    return StoryService.save(story);
+                                    return StoryService.save(story, $scope.getResolvedProjectFromState().id);
                                 }
                             });
                             if (effort >= 0) {
@@ -600,37 +600,37 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.deleteMultiple = function() {
-        StoryService.deleteMultiple(storyListId).then(function() {
+        StoryService.deleteMultiple(storyListId, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.multiple.deleted');
         });
     };
     $scope.copyMultiple = function() {
-        StoryService.copyMultiple(storyListId).then(function() {
+        StoryService.copyMultiple(storyListId, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.copied');
         });
     };
     $scope.updateMultiple = function(updatedFields) {
-        StoryService.updateMultiple(storyListId, updatedFields).then(function() {
+        StoryService.updateMultiple(storyListId, updatedFields, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.updated');
         });
     };
     $scope.acceptToBacklogMultiple = function() {
-        StoryService.acceptToBacklogMultiple(storyListId).then(function() {
+        StoryService.acceptToBacklogMultiple(storyListId, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.accepted');
         });
     };
     $scope.returnToSandboxMultiple = function() {
-        StoryService.returnToSandboxMultiple(storyListId).then(function() {
+        StoryService.returnToSandboxMultiple(storyListId, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.updated');
         });
     };
     $scope.followMultiple = function(follow) {
-        StoryService.followMultiple(storyListId, follow).then(function() {
+        StoryService.followMultiple(storyListId, follow, project.id).then(function() {
             refreshStories();
         });
     };
     $scope.acceptAsMultiple = function(target) {
-        StoryService.acceptAsMultiple(storyListId, target).then(function() {
+        StoryService.acceptAsMultiple(storyListId, target, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs' + target);
         });
     };
@@ -652,7 +652,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
         return !_.some(stories, 'followed');
     };
     function refreshStories() {
-        StoryService.getMultiple(storyListId).then(function(stories) {
+        StoryService.getMultiple(storyListId, project.id).then(function(stories) {
             $scope.topStory = _.head(stories);
             $scope.storyPreview = {
                 value: _.every(stories, {value: $scope.topStory.value}) ? $scope.topStory.value : null,
@@ -679,7 +679,7 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
         $scope.resetFormValidation($scope.formHolder.storyForm);
     };
     $scope.save = function(story, andContinue) {
-        StoryService.save(story).then(function(story) {
+        StoryService.save(story, project.id).then(function(story) {
             if (andContinue) {
                 $scope.resetStoryForm();
             } else {
