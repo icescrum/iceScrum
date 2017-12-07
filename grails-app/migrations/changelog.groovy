@@ -1,3 +1,7 @@
+import org.icescrum.core.support.ApplicationSupport
+
+import org.icescrum.core.support.ApplicationSupport
+
 /*
 * Copyright (c) 2017 Kagilum SAS
 *
@@ -32,4 +36,7 @@ databaseChangeLog = {
     include file: "changelog-7-5.groovy"
     include file: "changelog-7-7.groovy"
     include file: "changelog-7-7-2.groovy"
+    if(ApplicationSupport.isMySQLUTF8mb4()){
+        include file: "changelog-utf8mb4.groovy"
+    }
 }
