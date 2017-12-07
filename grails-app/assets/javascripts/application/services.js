@@ -194,7 +194,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
         return FormService.httpGet('scrumOS/languages', {cache: true});
     };
     this.getTimezones = function() {
-        return FormService.httpGet('scrumOS/timezones', {cache: true});
+        return FormService.httpGet('scrumOS/timezones', {cache: true}, true);
     };
 }]);
 
