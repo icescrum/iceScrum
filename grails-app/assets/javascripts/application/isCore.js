@@ -110,9 +110,6 @@ angular.module('isCore', ['ui.router'])
                             return ActivityService.activities(detailsTask, false, project.id);
                         }
                     }],
-                    controller: ['$scope', 'project', function($scope, project) {
-                        $scope.project = project;
-                    }],
                     templateUrl: 'activity.list.html'
                 }
             },
@@ -154,9 +151,6 @@ angular.module('isCore', ['ui.router'])
                             return ActivityService.activities(detailsStory, false, project.id);
                         }
                     }],
-                    controller: ['$scope', 'project', function($scope, project) {
-                        $scope.project = project;
-                    }],
                     templateUrl: 'activity.list.html'
                 }
             },
@@ -181,9 +175,6 @@ angular.module('isCore', ['ui.router'])
                         if ($stateParams.featureTabId == 'activities') {
                             return ActivityService.activities(detailsFeature, false, project.id);
                         }
-                    }],
-                    controller: ['$scope', 'project', function($scope, project) {
-                        $scope.project = project;
                     }],
                     templateUrl: 'activity.list.html'
                 }

@@ -25,7 +25,7 @@
 controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateService', 'ActivityService', 'ActivityCodeByName', function($scope, $state, $filter, DateService, ActivityService, ActivityCodeByName) {
     $scope.activities = function(fluxiable, all) {
         $scope.allActivities = all;
-        ActivityService.activities(fluxiable, all).then(manageActivities);
+        ActivityService.activities(fluxiable, all, $scope.project.id).then(manageActivities);
     };
     var manageActivities = function(activities) {
         var groupedActivities = [];
@@ -105,6 +105,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
     };
     // Init
     $scope.allActivities = false;
+    $scope.project = $scope.getResolvedProjectFromState();
     $scope.groupedActivities = {};
     manageActivities($scope.selected.activities);
 }]);
