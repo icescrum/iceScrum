@@ -63,7 +63,6 @@
                         icon="fa-paperclip"
                         count="feature.attachments_count"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
-                        ng-if="workspaceType == 'project'"
                         href="#/{{:: viewName }}/{{ ::feature.id }}/stories"
                         icon="fa-sticky-note"
                         count="feature.stories_ids.length"/>
