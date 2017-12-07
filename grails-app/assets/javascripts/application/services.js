@@ -681,11 +681,14 @@ services.service("DateService", [function() {
         newDate.setMonth(date.getMonth() + months);
         return newDate;
     };
+    this.getMidnightUTC = function(date) {
+        date.setHours(0, 0, 0, 0); // Midnight
+        date.setMinutes(-date.getTimezoneOffset()); // UTC
+        return date
+    };
     this.getMidnightTodayUTC = function() {
         var today = new Date();
-        today.setHours(0, 0, 0, 0); // Midnight
-        today.setMinutes(-today.getTimezoneOffset()); // UTC
-        return today;
+        return self.getMidnightUTC(today);
     };
     this.daysBetweenDates = function(startDate, endDate) {
         var duration = new Date(endDate) - new Date(startDate); // Ensure that we have dates
