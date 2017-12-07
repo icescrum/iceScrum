@@ -32,9 +32,9 @@ databaseChangeLog = {
             dbms(type: 'mysql')
             or {
                 not {
-                    sqlCheck(expectedResult: 'utf8mb4', 'SELECT SCHEMATA.`DEFAULT_COLLATION_NAME` FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = "'+databaseName+'" LIMIT 1');
+                    sqlCheck(expectedResult: 'utf8mb4', 'SELECT SCHEMATA.`DEFAULT_COLLATION_NAME` FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = "' + databaseName + '" LIMIT 1');
                 }
-                sqlCheck(expectedResult: '200', 'SELECT character_maximum_length FROM information_schema.columns WHERE table_name = "DATABASECHANGELOG" AND column_name = "FILENAME" and table_schema = "'+databaseName+'"')
+                sqlCheck(expectedResult: '200', 'SELECT character_maximum_length FROM information_schema.columns WHERE table_name = "DATABASECHANGELOG" AND column_name = "FILENAME" and table_schema = "' + databaseName + '"')
             }
         }
         grailsChange {
@@ -177,7 +177,7 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_up_widgets` CHANGE `settings_data` `settings_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_up_window` CHANGE `settings_data` `settings_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences` CHANGE `emails_settings_data` `emails_settings_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER DATABASE `"+ databaseName +"` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;");
+                sql.execute("ALTER DATABASE `" + databaseName + "` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `acl_class` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `acl_entry` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `acl_object_identity` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
