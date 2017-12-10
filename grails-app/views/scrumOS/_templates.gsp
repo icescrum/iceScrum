@@ -326,4 +326,11 @@
         <g:render template="/backlog/templates"/>
         <entry:point id="templates-project"/>
     </g:if>
+    <g:if test="${g.meta(name: 'app.displayWhatsNew')}">
+        <script type="text/ng-template" id="is.dialog.whatsNew.html">
+        <is:modal title="${message(code: 'is.dialog.about.whatsNew.title')}">
+            <g:render template="/scrumOS/about/whatsNew"/>
+        </is:modal>
+        </script>
+    </g:if>
 </div>

@@ -25,8 +25,8 @@
             <g:render template="/${controllerName}/about/warnings"/>
         </uib-tab>
         <entry:point id="about-first-tab"/>
-        <uib-tab index="10" heading="${message(code: 'is.dialog.about.whatsNew.title')}">
-            <g:render template="/${controllerName}/about/whatsNew" model="[releaseNotes: about.releaseNotes]"/>
+        <uib-tab index="10" heading="${message(code: 'todo.is.ui.release.notes')}">
+            <g:render template="/${controllerName}/about/releaseNotes" model="[releaseNotes: about.releaseNotes]"/>
         </uib-tab>
         <uib-tab index="11" heading="${message(code: 'is.dialog.about.help')}">
             <g:render template="/${controllerName}/about/help" model="[version: about.version, versionNumber: versionNumber, server: server, configLocation: configLocation]"/>

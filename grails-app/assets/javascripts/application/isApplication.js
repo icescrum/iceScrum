@@ -865,6 +865,7 @@ var isApplication = angular.module('isApplication', [
             $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
             $rootScope.warning = isSettings.warning;
             $rootScope.workspaceType = isSettings.workspace ? isSettings.workspace.class.toLowerCase() : null;
+            $rootScope.displayWhatsNew = isSettings.displayWhatsNew;
             if ($rootScope.workspaceType == 'project') {
                 $controller('contextCtrl', {$scope: $rootScope});
             }

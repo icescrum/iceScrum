@@ -147,7 +147,7 @@ class UserController implements ControllerErrorHandler {
             }
             bindData(user, params.user, [include: ['firstName', 'lastName', 'email', 'notes']])
             if (params.user.preferences) {
-                bindData(user.preferences, params.user.preferences, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew']])
+                bindData(user.preferences, params.user.preferences, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew', 'displayReleaseNotes']])
             }
             if (params.user.password?.trim() != '') {
                 props.pwd = params.user.password

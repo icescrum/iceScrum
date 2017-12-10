@@ -53,6 +53,7 @@
         plugins: [],
         controllerHooks: {},
         showAppStore: ${flash.showAppStore?:false},
+        displayWhatsNew: ${g.meta(name: 'app.displayWhatsNew') && user?.preferences?.displayWhatsNew ?: false},
         version: "${g.meta(name: 'app.version')}",
         serverUrl: "${serverURL}",
         warning: ${ApplicationSupport.getLastWarning() as JSON},

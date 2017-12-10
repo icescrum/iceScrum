@@ -80,9 +80,9 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
             }]
         });
     };
-    $scope.showWhatsNewModal = function() {
+    $scope.showReleaseNotesModal = function() {
         if (Session.user.preferences) {
-            Session.user.preferences.displayWhatsNew = false;
+            Session.user.preferences.displayReleaseNotes = false;
             UserService.update(Session.user);
         }
         $scope.showAbout(10);
@@ -258,6 +258,25 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
             notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
         }
     });
+    //if($scope.displayWhatsNew){
+    var modal = $uibModal.open({
+        size: 'lg',
+        controller: function() {
+            $timeout(function() {
+                $('#carousel-whats-new').carousel({
+                    interval: 2000
+                })
+            }, 500);
+        },
+        templateUrl: 'is.dialog.whatsNew.html'
+    });
+    modal.result.then(function() {
+        if (Session.user.preferences) {
+            Session.user.preferences.displayWhatsNew = false;
+            UserService.update(Session.user);
+        }
+    })
+    //}
 }]);
 
 controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, PushService, UserService, Session, $uibModal, $state) {

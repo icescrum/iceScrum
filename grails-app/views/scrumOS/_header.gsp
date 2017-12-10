@@ -231,9 +231,9 @@
                             </div>
                         </form>
                     </g:else>
-                    <g:if test="${g.meta(name: 'app.promoteVersion')}">
-                        <div class="navbar-fa navbar-whatsNew pull-left" ng-if="currentUser.preferences ? currentUser.preferences.displayWhatsNew : true">
-                            <a href ng-click="showWhatsNewModal()">
+                    <g:if test="${g.meta(name: 'app.displayReleaseNotes')}">
+                        <div class="navbar-fa navbar-whatsNew pull-left" ng-if="currentUser.preferences ? currentUser.preferences.displayReleaseNotes : true">
+                            <a href ng-click="showReleaseNotesModal()">
                                 <i class="fa fa-gift fa-2x" id="ga-show-whats-new-event"></i>
                             </a>
                         </div>

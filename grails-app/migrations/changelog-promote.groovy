@@ -24,7 +24,47 @@ import grails.util.Metadata
 *
 */
 databaseChangeLog = {
-    if (Metadata.current['app.promoteVersion'] == 'true') {
+    if (Metadata.current['app.displayReleaseNotes'] == 'true') {
+        def version = Metadata.current['app.version'].replaceAll(' ', '')
+        changeSet(id: 'user_preferences_reset_displayReleaseNotes_' + version, author: 'vbarrier') {
+            preConditions(onFail: "MARK_RAN") {
+                not {
+                    or {
+                        dbms(type: 'mssql')
+                        dbms(type: 'oracle')
+                    }
+                }
+            }
+            grailsChange {
+                change {
+                    sql.execute('UPDATE is_user_preferences set display_release_notes = true')
+                }
+            }
+            addNotNullConstraint(tableName: "is_user_preferences", columnName: 'display_release_notes', columnDataType: 'BOOLEAN')
+        }
+        changeSet(id: 'user_preferences_reset_displayReleaseNotes_mssql_' + version, author: 'vbarrier') {
+            preConditions(onFail: "MARK_RAN") {
+                dbms(type: 'mssql')
+            }
+            grailsChange {
+                change {
+                    sql.execute('UPDATE is_user_preferences set display_release_notes = 1')
+                }
+            }
+            addNotNullConstraint(tableName: "is_user_preferences", columnName: 'display_release_notes', columnDataType: 'BIT')
+        }
+        changeSet(id: 'user_preferences_reset_displayReleaseNotes_oracle_' + version, author: 'vbarrier') {
+            preConditions(onFail: "MARK_RAN") {
+                dbms(type: 'oracle')
+            }
+            grailsChange {
+                change {
+                    sql.execute('UPDATE is_u_pref set display_release_notes = 1')
+                }
+            }
+        }
+    }
+    if (Metadata.current['app.displayWhatsNew'] == 'true') {
         def version = Metadata.current['app.version'].replaceAll(' ', '')
         changeSet(id: 'user_preferences_reset_displayWhatsNew_' + version, author: 'vbarrier') {
             preConditions(onFail: "MARK_RAN") {
