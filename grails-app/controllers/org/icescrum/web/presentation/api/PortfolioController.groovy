@@ -35,7 +35,6 @@ import org.icescrum.web.presentation.windows.ProjectController
 class PortfolioController implements ControllerErrorHandler {
 
     def portfolioService
-    def securityService
     def springSecurityService
 
     @Secured('isAuthenticated()')
@@ -50,7 +49,7 @@ class PortfolioController implements ControllerErrorHandler {
             (nbProjects).times {
                 def projectParam = portfolioParams.projects."$it"
                 if (projectParam.id) {
-                    projects << Project.get(projectParam.id)
+                    projects << Project.get(projectParam.id) // TODO check that user is PO
                 } else {
                     projectController.params.project = projectParam
                     projectController.params.internalCall = true
@@ -58,18 +57,16 @@ class PortfolioController implements ControllerErrorHandler {
                 }
             }
             bindData(portfolio, portfolioParams, [include: ['fkey', 'name', 'description']])
-            portfolioService.save(portfolio, projects)
+            def businessOwners = [springSecurityService.currentUser] // TODO take a real list
+            def portfolioStakeholders = []                           // TODO take a real list
+            portfolioService.save(portfolio, projects, businessOwners, portfolioStakeholders)
             render(status: 201, text: portfolio as JSON, contentType: 'application/json')
         }
     }
 
-    @Secured('isAuthenticated()')
+    @Secured('businessOwner()')
     def delete(long portfolio) {
         Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
-        if (!securityService.owner(_portfolio, springSecurityService.authentication)) { // Cannot check by annotation/request because we are not in a portfolio workspace (URL)
-            render(status: 403)
-            return
-        }
         portfolioService.delete(_portfolio)
         withFormat {
             html {
@@ -81,7 +78,7 @@ class PortfolioController implements ControllerErrorHandler {
         }
     }
 
-    @Secured(['permitAll()'])
+    @Secured('isAuthenticated()')
     def available(long portfolio, String property) {
         def result = false
         if (property == 'fkey') {
@@ -90,7 +87,7 @@ class PortfolioController implements ControllerErrorHandler {
         render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
     }
 
-    @Secured(['isAuthenticated()'])
+    @Secured('isAuthenticated()')
     def add() {
         render(status: 200, template: "dialogs/new")
     }

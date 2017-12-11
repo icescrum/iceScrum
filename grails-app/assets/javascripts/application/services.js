@@ -51,6 +51,8 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
     self.isWorkspaceResolved = $q.defer();
     self.unreadActivitiesCount = 0;
     var defaultRoles = {
+        businessOwner: false,
+        portfolioStakeHolder: false,
         productOwner: false,
         scrumMaster: false,
         teamMember: false,
@@ -112,6 +114,12 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
                 }
             }
         });
+    };
+    this.bo = function() {
+        return self.roles.businessOwner;
+    };
+    this.psh = function() {
+        return self.roles.portfolioStakeHolder;
     };
     this.poOrSm = function() {
         return self.roles.productOwner || self.roles.scrumMaster;

@@ -41,8 +41,11 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
             });
         })
     };
-    this.authorizedPortfolio = function(action, portfolio) {
+    this.authorizedPortfolio = function(action) {
         switch (action) {
+            case 'update':
+            case 'delete':
+                return Session.bo();
             default:
                 return false;
         }
