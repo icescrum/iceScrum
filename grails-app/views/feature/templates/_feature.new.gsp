@@ -58,7 +58,6 @@
                     </div>
                 </div>
             </div>
-
             <form ng-submit="save(feature, false)"
                   name='formHolder.featureForm'
                   novalidate>
@@ -88,6 +87,7 @@
                         </div>
                     </div>
                 </div>
+                <entry:point id="feature-new-form"/>
                 <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.featureForm.$invalid || application.submitting"
