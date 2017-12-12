@@ -23,7 +23,7 @@
 --}%
 
 
-<is:modal title="{{ (project.name ? project.name : '${message(code: /is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="wizard" footer="${false}">
+<is:modal icon="folder" title="{{ (project.name ? project.name : '${message(code: /is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="wizard" footer="${false}">
     <form name="formHolder.projectForm"
           show-validation
           novalidate>

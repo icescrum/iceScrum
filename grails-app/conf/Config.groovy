@@ -268,7 +268,10 @@ icescrum {
     workspaces {
         project {
             objectClass = Project
-            config = { project -> [key: project.pkey, path: 'p', icon:'folder'] }
+            icon = 'folder'
+            name = 'is.workspace.project'
+            description = 'is.workspace.project.description'
+            config = { project -> [key: project.pkey, path: 'p'] }
             params = { project -> [project: project.id] }
             indexScrumOS = { projectWorkspace, user, securityService, springSecurityService ->
                 def project = projectWorkspace.object
@@ -285,7 +288,10 @@ icescrum {
         }
         portfolio {
             objectClass = Portfolio
-            config = { portfolio -> [key: portfolio.fkey, path: 'f', icon:'briefcase'] }
+            icon = 'briefcase'
+            name = 'is.workspace.portfolio'
+            description = 'is.workspace.portfolio.description'
+            config = { portfolio -> [key: portfolio.fkey, path: 'f'] }
             params = { portfolio -> [portfolio: portfolio.id] }
             indexScrumOS = { portfolioWorkspace, user, securityService, springSecurityService -> true }
         }

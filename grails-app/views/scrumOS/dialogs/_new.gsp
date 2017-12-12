@@ -1,4 +1,4 @@
-<%@ page import="org.icescrum.core.support.ApplicationSupport" %>
+<%@ page import="grails.util.Holders" %>
 %{--
 - Copyright (c) 2017 Kagilum.
 -
@@ -23,9 +23,16 @@
 --}%
 
 
-<is:modal title="${message(code: 'todo.is.ui.choose.project.portfolio')}" class="wizard" footer="${false}">
-    <div class="project-wizard">
-        <button type="button" ng-click="openWizard('newProject')">Project</button>
-        <button type="button" ng-click="openWizard('newPortfolio')">Portfolio</button>
+<is:modal title="${message(code: 'todo.is.ui.choose.project.portfolio')}" class="wizard">
+    <div class="workspace-wizard">
+        <div class="row">
+            <g:each var="workspace" in="${Holders.grailsApplication.config.icescrum.workspaces}">
+                <div class="workspace col-md-6 text-center">
+                    <i class="fa fa-${workspace.value.icon} fa-7x"></i>
+                    <div class="">${g.message(code: workspace.value.description)}</div>
+                    <button class="btn btn-primary" ng-click="openWizard('new${workspace.key.capitalize()}')">${g.message(code: 'todo.is.ui.workspace.new', args: [message(code: workspace.value.name)])}</button>
+                </div>
+            </g:each>
+        </div>
     </div>
 </is:modal>

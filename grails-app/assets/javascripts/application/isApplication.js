@@ -121,8 +121,12 @@ var isApplication = angular.module('isApplication', [
                         keyboard: false,
                         backdrop: 'static',
                         templateUrl: $rootScope.serverUrl + "/add",
-                        size: 'lg',
+                        size: 'md2',
                         controller: 'newCtrl'
+                    }).result.then(function(type) {
+                        if (type === undefined || type === false) {
+                            $state.transitionTo('root');
+                        }
                     });
                 }]
             })

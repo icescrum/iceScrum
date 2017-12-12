@@ -23,7 +23,7 @@
 --}%
 
 
-<is:modal title="{{ (portfolio.name ? portfolio.name : '${message(code: /is.dialog.wizard/)}') + (portfolio.fkey ? ' - ' + portfolio.fkey : '') }}" class="wizard" footer="${false}">
+<is:modal icon="briefcase" title="{{ (portfolio.name ? portfolio.name : '${message(code: /is.dialog.wizard.portfolio/)}') + (portfolio.fkey ? ' - ' + portfolio.fkey : '') }}" class="wizard" footer="${false}">
     <form name="formHolder.portfolioForm"
           show-validation
           novalidate>

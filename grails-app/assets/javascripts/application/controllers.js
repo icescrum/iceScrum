@@ -451,7 +451,7 @@ extensibleController('aboutCtrl', ['$scope', 'active', function($scope, active) 
 
 extensibleController('newCtrl', ['$scope', '$state', function($scope, $state) {
     $scope.openWizard = function(type) {
-        $scope.$close(false);
+        $scope.$close(type);
         $state.go(type);
     };
     //INIT
