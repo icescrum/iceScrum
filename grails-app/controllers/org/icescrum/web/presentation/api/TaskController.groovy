@@ -43,7 +43,8 @@ class TaskController implements ControllerErrorHandler {
             if (params.context) {
                 tasks = tasks.findAll { Task task ->
                     if (params.context.type == 'tag') {
-                        return task.tags.contains(params.context.id) || task.parentStory?.tags?.contains(params.context.id)
+                        def tag = params.context.id.toLowerCase()
+                        return task.tags*.toLowerCase().contains(tag) || task.parentStory?.tags*.toLowerCase()?.contains(tag)
                     } else if (task.parentStory) {
                         if (params.context.type == 'feature') {
                             return task.parentStory.feature?.id == params.context.id.toLong()

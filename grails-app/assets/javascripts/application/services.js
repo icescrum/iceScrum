@@ -718,7 +718,9 @@ services.service("OptionsCacheService", ['$rootScope', 'CacheService', function(
                         var ids = _.map(item.actors_ids, 'id');
                         return _.includes(ids, parseInt($rootScope.application.context.id));
                     } else if ($rootScope.application.context.type == 'tag') {
-                        return _.includes(item.tags, $rootScope.application.context.term);
+                        return _.some(item.tags, function(tag) {
+                            return $rootScope.application.context.term.toLowerCase() == tag.toLowerCase();
+                        });
                     } else {
                         return false;
                     }
@@ -800,7 +802,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
         var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the directly because it will init the service systematically and call Feature.query which require authentication
         var projectId = Session.getProject().id;
         return $q.all([ProjectService.getTags(), FeatureService.list(projectId), ActorService.list(projectId)]).then(function(data) {
-            var tags = data[0];
+            var tags = _.uniqBy(data[0], _.lowerCase);
             var features = data[1];
             var actors = data[2];
             var contexts = _.map(tags, function(tag) {

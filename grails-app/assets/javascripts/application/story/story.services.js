@@ -353,7 +353,9 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             } else if (key == 'tag') {
                 return function(value) {
                     return function(story) {
-                        return _.includes(story.tags, value);
+                        return _.some(story.tags, function(tag) {
+                            return tag.toLowerCase() == value.toLowerCase();
+                        });
                     }
                 };
             } else if (key == 'actor') {
