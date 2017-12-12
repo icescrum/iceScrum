@@ -30,13 +30,15 @@ controllers.controller('UserTokenCtrl', ['$scope', 'UserTokenService', 'Session'
         $scope.formHolder.profileForm['userToken.name'].$setUntouched();
     };
     $scope.save = function($event) {
-        if ($event) {
-            $event.preventDefault();
+        if (angular.element('.token-tab:visible').length > 0) { //only apply if form is visible hack due to hotkey
+            if ($event) {
+                $event.preventDefault();
+            }
+            UserTokenService.save($scope.editableUserToken, Session.user).then(function() {
+                $scope.resetUserTokenForm();
+                $scope.notifySuccess('todo.is.ui.userToken.saved');
+            });
         }
-        UserTokenService.save($scope.editableUserToken, Session.user).then(function() {
-            $scope.resetUserTokenForm();
-            $scope.notifySuccess('todo.is.ui.userToken.saved');
-        });
     };
     $scope['delete'] = function(userToken) {
         UserTokenService.delete(userToken, Session.user).then(function() {

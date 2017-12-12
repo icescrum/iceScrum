@@ -85,7 +85,8 @@
                 <div class="row">
                     <div class="form-half">
                         <label for="user.firstName">${message(code: 'is.user.firstname')}</label>
-                        <input type="text"
+                        <input at
+                               type="text"
                                class="form-control"
                                name="user.firstName"
                                ng-model="editableUser.firstName"
@@ -94,7 +95,8 @@
                     </div>
                     <div class="form-half">
                         <label for="user.lastName">${message(code: 'is.user.lastname')}</label>
-                        <input type="text"
+                        <input at
+                               type="text"
                                class="form-control"
                                name="user.lastName"
                                ng-model="editableUser.lastName"
