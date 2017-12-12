@@ -62,7 +62,9 @@ class ScrumOSController implements ControllerErrorHandler {
             if (!carryOn) {
                 return
             }
+            println workspace.config.icon
             model."$workspace.name" = workspace.object
+            model."workspaceIcon" = workspace.config.icon ?: null
         }
         render(status: 200, view: 'index', model: model)
     }

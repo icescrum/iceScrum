@@ -52,7 +52,7 @@
                         <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                                 <g:render template="/scrumOS/logo"/>
-                            </svg> <i class="fa fa-caret-down"></i>
+                            </svg> <g:if test="${workspaceIcon}"><i class="fa fa-${workspaceIcon}"></i></g:if> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li role="presentation" class="dropdown-header">
@@ -62,7 +62,7 @@
                                 <li>
                                     <a hotkey="{ 'shift+n': hotkeyClick}"
                                        hotkey-description="${message(code: 'todo.is.ui.project.createNew')}"
-                                       ui-sref="newProject">
+                                       ui-sref="new">
                                         <g:message code="is.projectmenu.submenu.project.create"/> <small class="text-muted">(SHIFT+N)</small>
                                     </a>
                                 </li>

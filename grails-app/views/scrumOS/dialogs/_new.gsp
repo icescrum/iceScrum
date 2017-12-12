@@ -23,8 +23,8 @@
 --}%
 
 
-<is:modal title="${message(code: 'is.ui.choose.project.portfolio')}" class="wizard" footer="${false}">
-    <div class="project-wizard" ng-if="wizard.type == null">
+<is:modal title="${message(code: 'todo.is.ui.choose.project.portfolio')}" class="wizard" footer="${false}">
+    <div class="project-wizard">
         <button type="button" ng-click="openWizard('newProject')">Project</button>
         <button type="button" ng-click="openWizard('newPortfolio')">Portfolio</button>
     </div>
