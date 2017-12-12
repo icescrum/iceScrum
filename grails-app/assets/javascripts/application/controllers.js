@@ -170,14 +170,10 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
                 $scope.progress = true;
             }]
         });
-        modal.result.then(
-            function() {
-                $scope.downloadFile("");
-            },
-            function() {
-                $scope.downloadFile("");
-            }
-        );
+        var downloadFile = function() {
+            $scope.downloadFile("");
+        };
+        modal.result.then(downloadFile, downloadFile);
     };
     // Init loading
     $scope.$on('$viewContentLoading', function() {
@@ -406,20 +402,16 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService
                 $scope.zip = true;
                 $scope.progress = false;
                 $scope.start = function() {
-                    $scope.downloadFile("project/export/zip");
+                    $scope.downloadFile("export/zip");
                     $scope.progress = true;
                 };
                 $scope.start();
             }]
         });
-        modal.result.then(
-            function() {
-                $scope.downloadFile("");
-            },
-            function() {
-                $scope.downloadFile("");
-            }
-        );
+        var downloadFile = function() {
+            $scope.downloadFile("");
+        };
+        modal.result.then(downloadFile, downloadFile);
     };
     // Init
     $scope.project = Session.getProject();
