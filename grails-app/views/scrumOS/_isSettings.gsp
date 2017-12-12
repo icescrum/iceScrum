@@ -57,7 +57,8 @@
         version: "${g.meta(name: 'app.version')}",
         serverUrl: "${serverURL}",
         warning: ${ApplicationSupport.getLastWarning() as JSON},
-        workerSrc: "${asset.assetPath(src:"vendors/vanilla/pdfjs/pdf.worker.js")}"
+        workerSrc: "${asset.assetPath(src:"vendors/vanilla/pdfjs/pdf.worker.js")}",
+        enableEmojis: ${ApplicationSupport.isUTF8Database()}
         <entry:point id="scrumOS-isSettings" model="[user:user, roles:roles, workspace: workspace]"/>
     };
 </script>

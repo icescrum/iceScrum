@@ -270,7 +270,8 @@
         </div>
         <div class="form-group">
             <label for="notes">${message(code: 'is.backlogelement.notes')}</label>
-            <textarea is-markitup
+            <textarea at
+                      is-markitup
                       ng-maxlength="5000"
                       class="form-control"
                       name="notes"

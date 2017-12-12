@@ -55,7 +55,8 @@
         </div>
     </div>
     <div class="form-group hidden-not-expanded">
-        <textarea name="description"
+        <textarea at
+                  name="description"
                   ng-model="task.description"
                   ng-maxlength="3000"
                   placeholder="${message(code: 'is.backlogelement.description')}"

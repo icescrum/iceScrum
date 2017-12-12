@@ -68,7 +68,8 @@
 <div class="row">
     <div class="col-sm-12 form-group">
         <label for="description">${message(code: 'is.project.description')}</label>
-        <textarea is-markitup
+        <textarea at
+                  is-markitup
                   name="project.description"
                   class="form-control"
                   placeholder="${message(code: 'todo.is.ui.project.description.placeholder')}"

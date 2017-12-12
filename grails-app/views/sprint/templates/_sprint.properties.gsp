@@ -122,7 +122,8 @@
         </div>
         <div class="form-group" ng-if="sprint.state > sprintStatesByName.IN_PROGRESS">
             <label for="retrospective">${message(code: 'is.sprint.retrospective')}</label>
-            <textarea is-markitup
+            <textarea at
+                      is-markitup
                       class="form-control"
                       name="retrospective"
                       ng-model="editableSprint.retrospective"
@@ -141,7 +142,8 @@
         </div>
         <div class="form-group">
             <label for="goal">${message(code: 'is.sprint.goal')}</label>
-            <textarea name="goal"
+            <textarea at
+                      name="goal"
                       class="form-control important"
                       ng-focus="editForm(true)"
                       ng-disabled="!formEditable()"
@@ -151,7 +153,8 @@
         </div>
         <div class="form-group">
             <label for="doneDefinition">${message(code: 'is.sprint.doneDefinition')}</label>
-            <textarea is-markitup
+            <textarea at
+                      is-markitup
                       class="form-control"
                       name="doneDefinition"
                       ng-model="editableSprint.doneDefinition"

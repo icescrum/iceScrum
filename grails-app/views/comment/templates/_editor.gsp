@@ -31,7 +31,8 @@
         <div class="visible-hidden" style="right: 10px;position: absolute;">
             <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
         </div>
-        <textarea required
+        <textarea at
+                  required
                   ng-maxlength="5000"
                   name="body"
                   is-markitup

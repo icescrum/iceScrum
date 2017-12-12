@@ -133,7 +133,8 @@
         </div>
         <div class="form-group">
             <label for="vision">${message(code: 'is.ui.releasePlan.toolbar.vision')}</label>
-            <textarea is-markitup
+            <textarea at
+                      is-markitup
                       ng-maxlength="5000"
                       class="form-control"
                       name="vision"

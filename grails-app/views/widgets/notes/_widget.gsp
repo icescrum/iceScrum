@@ -1,6 +1,7 @@
 <is:widget widgetDefinition="${widgetDefinition}">
     <div class="form-group">
-        <textarea id="note-size" is-markitup
+        <textarea at
+                  id="note-size" is-markitup
                   class="form-control"
                   name="notes"
                   ng-model="widget.settings.text"

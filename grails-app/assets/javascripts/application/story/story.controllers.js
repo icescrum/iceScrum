@@ -466,14 +466,16 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
     $scope.tags = [];
 }]);
 
-controllers.controller('storyAtWhoCtrl', ['$scope', 'ActorService', function($scope, ActorService) {
+controllers.controller('storyAtWhoCtrl', ['$scope', '$controller', 'ActorService', function($scope, $controller, ActorService) {
     // Functions
     $scope.loadAtWhoActors = function() {
         return ActorService.list($scope.getResolvedProjectFromState().id).then(function(actors) {
             _.each($scope.atOptions, function(options) {
-                options.data = _.map(actors, function(actor) {
-                    return {uid: actor.uid, name: actor.name};
-                });
+                if (options.actors) {
+                    options.data = _.map(actors, function(actor) {
+                        return {uid: actor.uid, name: actor.name};
+                    });
+                }
             });
         });
     };
@@ -484,12 +486,14 @@ controllers.controller('storyAtWhoCtrl', ['$scope', 'ActorService', function($sc
         {
             insertTpl: '${atwho-at}' + actorTag,
             at: $scope.message('is.story.template.as') + ' ',
-            limit: atWhoLimit
+            limit: atWhoLimit,
+            actors: true
         },
         {
             insertTpl: actorTag,
             at: '@',
-            limit: atWhoLimit
+            limit: atWhoLimit,
+            actors: true
         }
     ];
 }]);
@@ -651,6 +655,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
     $scope.noneFollowed = function(stories) {
         return !_.some(stories, 'followed');
     };
+
     function refreshStories() {
         StoryService.getMultiple(storyListId, project.id).then(function(stories) {
             $scope.topStory = _.head(stories);

@@ -21,7 +21,6 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-
 var directives = angular.module('directives', []);
 directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $rootScope) {
     return {
@@ -219,6 +218,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 _.each(newOptions, function(options) {
                     element.atwho(options);
                 });
+                if (global_at_emoji_config) {
+                    element.atwho(global_at_emoji_config);
+                }
             }, true);
         }
     };

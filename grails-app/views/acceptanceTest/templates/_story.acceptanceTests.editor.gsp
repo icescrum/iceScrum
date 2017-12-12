@@ -59,7 +59,8 @@
         </div>
     </div>
     <div class="form-group hidden-not-expanded">
-        <textarea is-markitup
+        <textarea at
+                  is-markitup
                   class="form-control"
                   ng-maxlength="1000"
                   name="description"
