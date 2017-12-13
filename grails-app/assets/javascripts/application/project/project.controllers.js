@@ -143,7 +143,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     });
 }]);
 
-extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'manualSave', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session, manualSave) {
+extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'manualSave', 'projectTemplate', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session, manualSave, projectTemplate) {
     $controller('abstractProjectCtrl', {$scope: $scope});
     $scope.type = 'newProject';
     $scope.checkProjectPropertyUrl = '/project/available';
@@ -223,7 +223,7 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
         },
         productOwners: [Session.user],
         stakeHolders: []
-    });
+    }, projectTemplate ? projectTemplate : {});
     $scope.startDateOptions = {
         opened: false
     };
@@ -232,15 +232,18 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
     $scope.$watchCollection('[project.startDate, project.endDate, project.firstSprint]', function(newValues) {
         var startDate = newValues[0];
         var endDate = newValues[1];
-        var firstSprint = newValues[2];
+        var firstSprint = newValues[2].getTime() < startDate.getTime() ? startDate : newValues[2];
+        if (firstSprint.getTime() !== $scope.project.firstSprint.getTime()) {
+            $scope.project.firstSprint = firstSprint;
+        }
         $scope.endDateOptions.minDate = DateService.immutableAddDaysToDate(firstSprint, 1);
         $scope.startDateOptions.maxDate = DateService.immutableAddDaysToDate(endDate, -1);
         $scope.firstSprintOptions.maxDate = $scope.startDateOptions.maxDate;
         $scope.firstSprintOptions.minDate = startDate;
+        $scope.computePlanning();
     });
     $scope.totalDuration = 0;
     $scope.sprints = [];
-    $scope.computePlanning();
 }]);
 
 controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', 'ReleaseService', 'AppService', function($scope, Session, ProjectService, ReleaseService, AppService) {

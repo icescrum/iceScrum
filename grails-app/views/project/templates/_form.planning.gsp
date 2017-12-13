@@ -106,7 +106,6 @@
                    name="project.firstSprint"
                    ng-model="project.firstSprint"
                    ng-model-options="{timezone: 'utc'}"
-                   ng-change="computePlanning()"
                    uib-datepicker-popup
                    is-open="firstSprintOptions.opened"
                    datepicker-options="firstSprintOptions"
@@ -122,7 +121,6 @@
                    name="project.endDate"
                    ng-model="project.endDate"
                    ng-model-options="{timezone: 'utc'}"
-                   ng-change="computePlanning()"
                    uib-datepicker-popup
                    is-open="endDateOptions.opened"
                    datepicker-options="endDateOptions"

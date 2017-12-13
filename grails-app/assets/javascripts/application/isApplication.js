@@ -152,9 +152,8 @@ var isApplication = angular.module('isApplication', [
                         templateUrl: $rootScope.serverUrl + "/project/add",
                         size: 'lg',
                         resolve: {
-                            manualSave: function() {
-                                return false;
-                            }
+                            manualSave: false,
+                            projectTemplate: null
                         },
                         controller: 'newProjectCtrl'
                     }).result.then(function() {
