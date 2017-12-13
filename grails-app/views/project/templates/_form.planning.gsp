@@ -144,7 +144,8 @@
     </div>
     <div class="col-sm-12 form-group">
         <label for="vision">${message(code: 'is.release.vision')}</label>
-        <textarea is-markitup
+        <textarea at
+                  is-markitup
                   name="project.vision"
                   class="form-control"
                   placeholder="${message(code: 'todo.is.ui.release.novision')}"

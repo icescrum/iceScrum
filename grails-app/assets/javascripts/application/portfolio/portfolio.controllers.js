@@ -76,7 +76,23 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
             size: 'lg',
             controller: 'newProjectCtrl',
             resolve: {
-                manualSave: true
+                manualSave: true,
+                projectTemplate: function() {
+                    var template = _.find($scope.portfolio.projects, function(project) { return project.id === undefined; });
+                    if (template) {
+                        return {
+                            initialize: template.initialize,
+                            startDate: template.startDate,
+                            endDate: template.endDate,
+                            firstSprint: template.firstSprint,
+                            vision: template.vision, //good idea?
+                            planningPokerGameType: template.planningPokerGameType,
+                            preferences: template.preferences
+                        }
+                    } else {
+                        return null;
+                    }
+                }
             }
         }).result.then(function(project) {
             project.class = "project";
