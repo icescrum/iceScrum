@@ -248,7 +248,7 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task'});
     $scope.tags = [];
-    $scope.project = Session.getProject();
+    $scope.project = project;
     var sortedTasks = $filter('orderBy')(taskContext.tasks, TaskConstants.ORDER_BY);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
     $scope.nextTask = FormService.next(sortedTasks, $scope.task);

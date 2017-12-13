@@ -294,7 +294,7 @@ filters
                 feature: 'F',
                 task: 'T'
             };
-            return $rootScope.serverUrl + '/' + (projectKey ? projectKey : Session.getProject().pkey) + '-' + prefixByType[type] + uid;
+            return $rootScope.serverUrl + '/' + (projectKey ? projectKey : $rootScope.getResolvedProjectFromState().pkey) + '-' + prefixByType[type] + uid;
         };
     }])
     .filter('flowFilesNotCompleted', function() {

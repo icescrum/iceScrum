@@ -246,7 +246,7 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
     $scope.sprints = [];
 }]);
 
-controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectService', 'ReleaseService', 'AppService', function($scope, Session, ProjectService, ReleaseService, AppService) {
+controllers.controller('editProjectModalCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'AppService', function($scope, ProjectService, ReleaseService, AppService) {
     $scope.type = 'editProject';
     $scope.enableVisibilityChange = function() {
         return true;
@@ -268,7 +268,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'Session', 'ProjectSer
         return true;
     };
     // Init
-    $scope.currentProject = Session.getProject();
+    $scope.currentProject = $scope.getResolvedProjectFromState();
     $scope.checkProjectPropertyUrl = '/project/' + $scope.currentProject.id + '/available';
     ReleaseService.list($scope.currentProject).then(function(releases) {
         if (releases.length > 0) {
