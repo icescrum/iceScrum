@@ -36,7 +36,7 @@
                    placeholder="${message(code: 'todo.is.ui.project.noname')}"
                    ng-model="project.name"
                    ng-change="nameChanged()"
-                   ng-required="isCurrentStep(1)">
+                   ng-required="isCurrentStep(1, 'project')">
             <span class="input-group-btn">
                 <button class="btn btn-model"
                         type="button"
@@ -59,7 +59,7 @@
                placeholder="${message(code: 'todo.is.ui.project.nokey')}"
                ng-model="project.pkey"
                ng-pattern="/^[A-Z0-9]*$/"
-               ng-required="isCurrentStep(1)"
+               ng-required="isCurrentStep(1, 'project')"
                ng-maxlength="10"
                ng-remote-validate-code="project.pkey.unique"
                ng-remote-validate="{{ checkProjectPropertyUrl }}/pkey">

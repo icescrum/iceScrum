@@ -37,14 +37,14 @@
                    uib-datepicker-popup
                    is-open="startDateOptions.opened"
                    datepicker-options="startDateOptions"
-                   ng-required="isCurrentStep(4)"/>
+                   ng-required="isCurrentStep(4, 'project')"/>
         </div>
     </div>
     <div class="form-half">
         <label for="project.preferences.timezone">${message(code: 'is.project.preferences.timezone')}</label>
         <ui-select required="required"
                    class="form-control"
-                   ng-required="isCurrentStep(4)"
+                   ng-required="isCurrentStep(4, 'project')"
                    name="project.preferences.timezone"
                    search-enabled="true"
                    ng-model="project.preferences.timezone">
@@ -65,7 +65,7 @@
                    id="estimatedSprintsDuration"
                    min="2"
                    ng-pattern="/^[0-9]+$/"
-                   ng-required="isCurrentStep(4)"
+                   ng-required="isCurrentStep(4, 'project')"
                    ng-change="computePlanning()"
                    ng-model="project.preferences.estimatedSprintsDuration">
             <div class="input-group-addon">${message(code: 'is.dialog.wizard.project.days')}</div>
@@ -110,7 +110,7 @@
                    is-open="firstSprintOptions.opened"
                    datepicker-options="firstSprintOptions"
                    ng-class="{current:step.selected}"
-                   ng-required="isCurrentStep(4)"/>
+                   ng-required="isCurrentStep(4, 'project')"/>
         </div>
     </div>
     <div class="form-half">
@@ -125,7 +125,7 @@
                    is-open="endDateOptions.opened"
                    datepicker-options="endDateOptions"
                    ng-class="{current:step.selected}"
-                   ng-required="isCurrentStep(4)"/>
+                   ng-required="isCurrentStep(4, 'project')"/>
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="openDatepicker($event, endDateOptions)"><i class="fa fa-calendar"></i></button>
             </span>

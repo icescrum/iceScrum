@@ -42,7 +42,7 @@
                    typeahead-template-url="select.or.create.team.html"
                    ng-readonly="team.selected"
                    ng-model="team.name"
-                   ng-required="isCurrentStep(2)">
+                   ng-required="isCurrentStep(2, 'project')">
             <span class="input-group-addon" ng-if="teamRemovable()">
                 <i class="fa"
                    ng-click="unSelectTeam()"

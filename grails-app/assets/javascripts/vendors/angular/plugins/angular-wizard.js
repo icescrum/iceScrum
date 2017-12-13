@@ -7,13 +7,13 @@
 angular.module('templates-angularwizard', ['step.html', 'wizard.html']);
 
 angular.module("step.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("step.html",
-    "<section ng-show=\"selected\" ng-class=\"{current: selected, done: completed}\" class=\"step\" ng-transclude>\n" +
-    "</section>");
+    $templateCache.put("step.html",
+        "<section ng-show=\"selected\" ng-class=\"{current: selected, done: completed}\" class=\"step\" ng-transclude>\n" +
+        "</section>");
 }]);
 
 angular.module("wizard.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("wizard.html",
+    $templateCache.put("wizard.html",
         "<div>\n" +
         "   <div class=\"left-panel col-xs-12 col-sm-3\">\n" +
         "       <ul class=\"left-panel-body steps-{{getEnabledSteps().length}} nav nav-list\" ng-if=\"!hideIndicators\">\n" +
@@ -24,7 +24,7 @@ angular.module("wizard.html", []).run(["$templateCache", function($templateCache
         "   </div>\n" +
         "   <div class=\"right-panel steps col-xs-12 col-sm-9\" ng-transclude></div>\n" +
         "</div>\n" +
-    "");
+        "");
 }]);
 
 angular.module('mgo-angular-wizard', ['templates-angularwizard']);
@@ -36,8 +36,8 @@ angular.module('mgo-angular-wizard').directive('wzStep', function() {
         transclude: true,
         scope: {
             wzTitle: '@',
-            canenter : '=',
-            canexit : '=',
+            canenter: '=',
+            canexit: '=',
             icon: '@',
             disabled: '@?wzDisabled',
             description: '@',
@@ -45,7 +45,7 @@ angular.module('mgo-angular-wizard').directive('wzStep', function() {
         },
         require: '^wizard',
         templateUrl: function(element, attributes) {
-          return attributes.template || "step.html";
+            return attributes.template || "step.html";
         },
         link: function($scope, $element, $attrs, wizard) {
             $scope.title = $scope.wzTitle;
@@ -83,22 +83,22 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 var idx = 0;
                 var res = -1;
                 angular.forEach($scope.getEnabledSteps(), function(currStep) {
-                  if (currStep === step) {
-                    res = idx;
-                  }
-                  idx++;
+                    if (currStep === step) {
+                        res = idx;
+                    }
+                    idx++;
                 });
                 return res;
             };
 
             var stepByTitle = function(titleToFind) {
-              var foundStep = null;
-              angular.forEach($scope.getEnabledSteps(), function(step) {
-                if (step.wzTitle === titleToFind) {
-                  foundStep = step;
-                }
-              });
-              return foundStep;
+                var foundStep = null;
+                angular.forEach($scope.getEnabledSteps(), function(step) {
+                    if (step.wzTitle === titleToFind) {
+                        foundStep = step;
+                    }
+                });
+                return foundStep;
             };
 
             $scope.context = {};
@@ -123,7 +123,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 } else {
                     var completedStepsIndex = $scope.currentStepNumber() - 1;
                     angular.forEach($scope.getEnabledSteps(), function(step, stepIndex) {
-                        if(stepIndex >= completedStepsIndex) {
+                        if (stepIndex >= completedStepsIndex) {
                             step.completed = false;
                         }
                     });
@@ -144,7 +144,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
             };
 
             $scope.goTo = function(step) {
-                if(firstRun){
+                if (firstRun) {
                     unselectAll();
                     $scope.selectedStep = step;
                     if (!angular.isUndefined($scope.currentStep)) {
@@ -155,17 +155,17 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     firstRun = false;
                 } else {
                     var thisStep;
-                    if($scope.currentStepNumber() > 0){
+                    if ($scope.currentStepNumber() > 0) {
                         thisStep = $scope.currentStepNumber() - 1;
-                    } else if ($scope.currentStepNumber() === 0){
+                    } else if ($scope.currentStepNumber() === 0) {
                         thisStep = 0;
                     }
                     $q.all([canExitStep($scope.getEnabledSteps()[thisStep], step), canEnterStep(step)]).then(function(data) {
-                        if(data[0] && data[1]){
+                        if (data[0] && data[1]) {
                             unselectAll();
 
                             $scope.selectedStep = step;
-                            if(!angular.isUndefined($scope.currentStep)){
+                            if (!angular.isUndefined($scope.currentStep)) {
                                 $scope.currentStep = step.wzTitle;
                             }
                             step.selected = true;
@@ -178,16 +178,16 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
             function canEnterStep(step) {
                 var defer,
                     canEnter;
-                if(step.canenter === undefined){
+                if (step.canenter === undefined) {
                     return true;
                 }
-                if(typeof step.canenter === 'boolean'){
+                if (typeof step.canenter === 'boolean') {
                     return step.canenter;
                 }
                 canEnter = step.canenter($scope.context);
-                if(angular.isFunction(canEnter.then)){
+                if (angular.isFunction(canEnter.then)) {
                     defer = $q.defer();
-                    canEnter.then(function(response){
+                    canEnter.then(function(response) {
                         defer.resolve(response);
                     });
                     return defer.promise;
@@ -199,16 +199,16 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
             function canExitStep(step, stepTo) {
                 var defer,
                     canExit;
-                if(typeof(step.canexit) === 'undefined' || $scope.getStepNumber(stepTo) < $scope.currentStepNumber()){
+                if (typeof(step.canexit) === 'undefined' || $scope.getStepNumber(stepTo) < $scope.currentStepNumber()) {
                     return true;
                 }
-                if(typeof step.canexit === 'boolean'){
+                if (typeof step.canexit === 'boolean') {
                     return step.canexit;
                 }
                 canExit = step.canexit($scope.context);
-                if(angular.isFunction(canExit.then)){
+                if (angular.isFunction(canExit.then)) {
                     defer = $q.defer();
-                    canExit.then(function(response){
+                    canExit.then(function(response) {
                         defer.resolve(response);
                     });
                     return defer.promise;
@@ -222,27 +222,27 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
             };
 
             $scope.getEnabledSteps = function() {
-                return $scope.steps.filter(function(step){
+                return $scope.steps.filter(function(step) {
                     return step.disabled !== 'true';
                 });
             };
 
             function unselectAll() {
-                angular.forEach($scope.getEnabledSteps(), function (step) {
+                angular.forEach($scope.getEnabledSteps(), function(step) {
                     step.selected = false;
                 });
                 $scope.selectedStep = null;
             }
 
-            this.currentStepTitle = function(){
+            this.currentStepTitle = function() {
                 return $scope.selectedStep.wzTitle;
             };
 
-            this.currentStepDescription = function(){
+            this.currentStepDescription = function() {
                 return $scope.selectedStep.description;
             };
 
-            this.currentStep = function(){
+            this.currentStep = function() {
                 return $scope.selectedStep;
             };
 
@@ -250,26 +250,26 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 return $scope.getEnabledSteps().length;
             }
 
-            this.getEnabledSteps = function(){
+            this.getEnabledSteps = function() {
                 return $scope.getEnabledSteps();
             };
 
-            this.currentStepNumber = function(){
+            this.currentStepNumber = function() {
                 return $scope.currentStepNumber();
             };
             this.next = function(callback) {
                 var enabledSteps = $scope.getEnabledSteps();
                 var index = stepIdx($scope.selectedStep);
-                if(angular.isFunction(callback)){
-                   if(callback()){
+                if (angular.isFunction(callback)) {
+                    if (callback()) {
                         if (index === enabledSteps.length - 1) {
                             this.finish();
                         } else {
                             $scope.goTo(enabledSteps[index + 1]);
                         }
-                   } else {
+                    } else {
                         return;
-                   }
+                    }
                 }
                 if (!callback) {
                     $scope.selectedStep.completed = true;
@@ -297,7 +297,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     $scope.onFinish();
                 }
             };
-            
+
             this.previous = function() {
                 var index = stepIdx($scope.selectedStep);
                 if (index === 0) {
@@ -316,8 +316,8 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 }
             };
 
-            this.reset = function(){
-                angular.forEach($scope.getEnabledSteps(), function (step) {
+            this.reset = function() {
+                angular.forEach($scope.getEnabledSteps(), function(step) {
                     step.completed = false;
                 });
                 this.goTo(0);
@@ -325,6 +325,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
         }]
     };
 });
+
 function wizardButtonDirective(action) {
     angular.module('mgo-angular-wizard')
         .directive(action, function() {
@@ -353,28 +354,27 @@ wizardButtonDirective('wzCancel');
 wizardButtonDirective('wzReset');
 
 angular.module('mgo-angular-wizard').factory('WizardHandler', function() {
-   var service = {};
-   
-   var wizards = {};
-   
-   service.defaultName = "defaultWizard";
-   
-   service.addWizard = function(name, wizard) {
-       wizards[name] = wizard;
-   };
-   
-   service.removeWizard = function(name) {
-       delete wizards[name];
-   };
-   
-   service.wizard = function(name) {
-       var nameToUse = name;
-       if (!name) {
-           nameToUse = service.defaultName;
-       }
-       
-       return wizards[nameToUse];
-   };
-   
-   return service;
+    var service = {};
+
+    var wizards = {};
+
+    service.defaultName = "defaultWizard";
+
+    service.addWizard = function(name, wizard) {
+        wizards[name] = wizard;
+    };
+
+    service.removeWizard = function(name) {
+        delete wizards[name];
+    };
+
+    service.wizard = function(name) {
+        var nameToUse = name;
+        if (!name) {
+            nameToUse = service.defaultName;
+        }
+        return wizards[nameToUse];
+    };
+
+    return service;
 });

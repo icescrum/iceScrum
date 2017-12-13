@@ -36,7 +36,7 @@
                    placeholder="${message(code: 'todo.is.ui.portfolio.noname')}"
                    ng-model="portfolio.name"
                    ng-change="nameChanged()"
-                   ng-required="isCurrentStep(1)">
+                   ng-required="isCurrentStep(1, 'portfolio')">
             <span class="input-group-btn">
                 <button class="btn btn-model"
                         type="button"
@@ -59,7 +59,7 @@
                placeholder="${message(code: 'todo.is.ui.portfolio.nokey')}"
                ng-model="portfolio.fkey"
                ng-pattern="/^[A-Z0-9]*$/"
-               ng-required="isCurrentStep(1)"
+               ng-required="isCurrentStep(1, 'portfolio')"
                ng-maxlength="10"
                ng-remote-validate-code="portfolio.fkey.unique"
                ng-remote-validate="{{ checkPortfolioPropertyUrl }}/fkey">

@@ -27,7 +27,7 @@
     <form name="formHolder.projectForm"
           show-validation
           novalidate>
-        <wizard class="row wizard-row">
+        <wizard class="row wizard-row" name="project">
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.project")}" icon="fa fa-pencil">
                 <ng-include src="'form.general.project.html'"></ng-include>
                 <div class="btn-toolbar wizard-next">

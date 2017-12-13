@@ -151,8 +151,8 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
     $scope.enableVisibilityChange = function() {
         return isSettings.projectPrivateEnabled || Session.admin();
     };
-    $scope.isCurrentStep = function(index) {
-        return WizardHandler.wizard().currentStepNumber() == index;
+    $scope.isCurrentStep = function(index, name) {
+        return WizardHandler.wizard(name).currentStepNumber() === index;
     };
     $scope.createProject = function(project) {
         var p = $scope.prepareProject(project);

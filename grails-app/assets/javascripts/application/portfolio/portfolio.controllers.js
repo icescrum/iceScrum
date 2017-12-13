@@ -49,8 +49,8 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
     $scope.enableVisibilityChange = function() {
         return isSettings.portfolioPrivateEnabled || Session.admin();
     };
-    $scope.isCurrentStep = function(index) {
-        return WizardHandler.wizard().currentStepNumber() == index;
+    $scope.isCurrentStep = function(index, name) {
+        return WizardHandler.wizard(name).currentStepNumber() === index;
     };
     $scope.createPortfolio = function(portfolio) {
         var p = $scope.preparePortfolio(portfolio);
