@@ -45,7 +45,7 @@
                         ng-click="portfolio.hidden = !portfolio.hidden;"
                         ng-class="{ 'btn-danger': portfolio.hidden, 'btn-success': !portfolio.hidden }">
                     <i class="fa fa-lock" ng-class="{ 'fa-lock': portfolio.hidden, 'fa-unlock': !portfolio.hidden }"></i>
-                    {{ message(portfolio.hidden  ? 'is.portfolio.portfolio.hidden' : 'todo.is.ui.portfolio.portfolio.public') }}
+                    {{ message(portfolio.hidden  ? 'is.workspace.hidden' : 'is.workspace.public') }}
                 </button>
             </span>
         </div>
@@ -68,7 +68,8 @@
 <div class="row">
     <div class="col-sm-12 form-group">
         <label for="description">${message(code: 'is.portfolio.description')}</label>
-        <textarea is-markitup
+        <textarea at
+                  is-markitup
                   name="portfolio.description"
                   class="form-control"
                   placeholder="${message(code: 'todo.is.ui.portfolio.description.placeholder')}"
