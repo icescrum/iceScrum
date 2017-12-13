@@ -904,12 +904,7 @@ var isApplication = angular.module('isApplication', [
                     if (!authorized) {
                         event.preventDefault();
                         if (!Session.authenticated()) {
-                            $rootScope.showAuthModal('', function() {
-                                UserService.getCurrent().then(function(data) {
-                                    Session.create(data.user, data.roles);
-                                    $state.go(toState.name, toParams);
-                                });
-                            });
+                            $rootScope.showAuthModal();
                         } else {
                             $state.go(angular.isDefined(fromState) && fromState.name ? fromState.name : "404");
                         }

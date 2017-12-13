@@ -26,14 +26,6 @@ services.factory('User', ['Resource', function($resource) {
 }]);
 
 services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'FormService', function(User, $http, $rootScope, $injector, FormService) {
-    this.getCurrent = function() {
-        var Session = $injector.get('Session');
-        var params = {action: 'current'};
-        if (Session.getProject()) {
-            params.project = Session.getProject().pkey;
-        }
-        return User.get(params).$promise;
-    };
     this.getActivities = function(user) {
         return User.query({action: 'activities', id: user.id}).$promise;
     };
