@@ -61,7 +61,7 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
         var cachedFeatures = project.features;
         return _.isEmpty(cachedFeatures) ? Feature.query({projectId: project.id}).$promise.then(function(features) {
             self.mergeFeatures(features);
-            return CacheService.getCache('feature');
+            return cachedFeatures;
         }) : $q.when(cachedFeatures);
     };
     this.save = function(feature, projectId) {
