@@ -423,10 +423,9 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
         story: function(oldStory, newStory) {
             var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
             var newSprintId = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
-            var cachedSprints = CacheService.getCache('sprint');
             if (newSprintId != oldSprintId) {
                 if (oldSprintId) {
-                    var cachedSprint = _.find(cachedSprints, {id: oldSprintId});
+                    var cachedSprint = CacheService.get('sprint', oldSprintId);
                     if (cachedSprint) {
                         _.remove(cachedSprint.stories, {id: oldStory.id});
                         cachedSprint.stories.sort(sortByRank);
@@ -436,7 +435,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                     }
                 }
                 if (newSprintId) {
-                    var cachedSprint = _.find(cachedSprints, {id: newSprintId});
+                    var cachedSprint = CacheService.get('sprint', newSprintId);
                     if (cachedSprint && !_.find(cachedSprint.stories, {id: newStory.id})) {
                         if (!_.isArray(cachedSprint.stories)) {
                             cachedSprint.stories = [];
@@ -446,7 +445,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                     }
                 }
             } else if (newSprintId && oldStory.rank != newStory.rank) {
-                var cachedSprint = _.find(cachedSprints, {id: newSprintId});
+                var cachedSprint = CacheService.get('sprint', newSprintId);
                 if (cachedSprint && cachedSprint.stories) {
                     cachedSprint.stories.sort(sortByRank);
                 }
@@ -454,9 +453,8 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
             var oldFeatureId = (oldStory && oldStory.feature) ? oldStory.feature.id : null;
             var newFeatureId = (newStory && newStory.feature) ? newStory.feature.id : null;
             if (newFeatureId != oldFeatureId) {
-                var cachedFeatures = CacheService.getCache('feature');
                 if (oldFeatureId) {
-                    var cachedFeature = _.find(cachedFeatures, {id: oldFeatureId});
+                    var cachedFeature = CacheService.get('feature', oldFeatureId);
                     if (cachedFeature) {
                         _.remove(cachedFeature.stories, {id: oldStory.id});
                         if (_.isArray(cachedFeature.stories)) {
@@ -465,7 +463,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                     }
                 }
                 if (newFeatureId) {
-                    var cachedFeature = _.find(cachedFeatures, {id: newFeatureId});
+                    var cachedFeature = CacheService.get('feature', newFeatureId);
                     if (cachedFeature && !_.find(cachedFeature.stories, {id: newStory.id})) {
                         if (!_.isArray(cachedFeature.stories)) {
                             cachedFeature.stories = [];
@@ -507,9 +505,8 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
             var oldSprintId = (oldTask && oldTask.backlog) ? oldTask.backlog.id : null;
             var newSprintId = (newTask && newTask.backlog) ? newTask.backlog.id : null;
             if (newSprintId != oldSprintId) {
-                var cachedSprints = CacheService.getCache('sprint');
                 if (oldSprintId) {
-                    var cachedSprint = _.find(cachedSprints, {id: oldSprintId});
+                    var cachedSprint = CacheService.get('sprint', oldSprintId);
                     if (cachedSprint) {
                         _.remove(cachedSprint.tasks, {id: oldTask.id});
                         if (_.isArray(cachedSprint.tasks)) {
@@ -518,7 +515,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                     }
                 }
                 if (newSprintId) {
-                    var cachedSprint = _.find(cachedSprints, {id: newSprintId});
+                    var cachedSprint = CacheService.get('sprint', newSprintId);
                     if (cachedSprint && !_.find(cachedSprint.tasks, {id: newTask.id})) {
                         if (!_.isArray(cachedSprint.tasks)) {
                             cachedSprint.tasks = [];
@@ -530,16 +527,15 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
             var oldStoryId = (oldTask && oldTask.parentStory) ? oldTask.parentStory.id : null;
             var newStoryId = (newTask && newTask.parentStory) ? newTask.parentStory.id : null;
             if (newStoryId != oldStoryId) {
-                var cachedStories = CacheService.getCache('story');
                 if (oldStoryId) {
-                    var cachedStory = _.find(cachedStories, {id: oldStoryId});
+                    var cachedStory = CacheService.get('story', oldStoryId);
                     if (cachedStory) {
                         _.remove(cachedStory.tasks, {id: oldTask.id});
                         cachedStory.tasks_count--;
                     }
                 }
                 if (newStoryId) {
-                    var cachedStory = _.find(cachedStories, {id: newStoryId});
+                    var cachedStory = CacheService.get('story', newStoryId);
                     if (cachedStory && !_.find(cachedStory.tasks, {id: newTask.id})) {
                         if (!_.isArray(cachedStory.tasks)) {
                             cachedStory.tasks = [];
@@ -568,9 +564,8 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
             });
         },
         sprint: function(oldSprint, newSprint) {
-            var cachedReleases = CacheService.getCache('release');
             if (!oldSprint && newSprint) {
-                var cachedRelease = _.find(cachedReleases, {id: newSprint.parentRelease.id});
+                var cachedRelease = CacheService.get('release', newSprint.parentRelease.id);
                 if (cachedRelease && !_.find(cachedRelease.sprints, {id: newSprint.id})) {
                     if (!_.isArray(cachedRelease.sprints)) {
                         cachedRelease.sprints = [];
@@ -578,7 +573,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                     cachedRelease.sprints.push(newSprint);
                 }
             } else if (oldSprint && !newSprint) {
-                var cachedRelease = _.find(cachedReleases, {id: oldSprint.parentRelease.id});
+                var cachedRelease = CacheService.get('release', oldSprint.parentRelease.id);
                 if (cachedRelease) {
                     _.remove(cachedRelease.sprints, {id: oldSprint.id});
                 }
