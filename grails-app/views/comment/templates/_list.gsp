@@ -65,7 +65,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <textarea required
+                        <textarea at
+                                  required
                                   ng-maxlength="5000"
                                   ng-blur="update(editableComment, selected); showCommentBodyTextarea = false;"
                                   is-markitup

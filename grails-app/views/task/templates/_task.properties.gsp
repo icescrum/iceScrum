@@ -64,7 +64,8 @@
         </div>
         <div class="form-group">
             <label for="description">${message(code: 'is.backlogelement.description')}</label>
-            <textarea class="form-control important"
+            <textarea at
+                      class="form-control important"
                       ng-maxlength="3000"
                       ng-focus="editForm(true)"
                       ng-disabled="!formEditable()"

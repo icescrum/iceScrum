@@ -80,7 +80,8 @@
         </div>
         <div class="form-group">
             <label for="description">${message(code: 'is.backlogelement.description')}</label>
-            <textarea class="form-control"
+            <textarea at
+                      class="form-control"
                       ng-maxlength="3000"
                       ng-focus="editForm(true)"
                       ng-disabled="!formEditable()"
@@ -106,7 +107,8 @@
         </div>
         <div class="form-group">
             <label for="notes">${message(code: 'is.backlogelement.notes')}</label>
-            <textarea is-markitup
+            <textarea at
+                      is-markitup
                       class="form-control"
                       ng-maxlength="5000"
                       name="notes"
