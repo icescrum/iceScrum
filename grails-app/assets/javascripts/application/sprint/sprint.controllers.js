@@ -74,7 +74,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                 // Functions
                 $scope.loadStories = function() {
                     $scope.backlog.storiesLoaded = false;
-                    StoryService.filter({parentSprint: sprint.id}, $scope.getResolvedProjectFromState().id).then(function(stories) {
+                    StoryService.filter({parentSprint: sprint.id}, $scope.getResolvedProjectFromState()).then(function(stories) {
                         $scope.newDone = _.transform(stories, function(newDone, story) {
                             newDone[story.id] = story.state == StoryStatesByName.DONE;
                         }, {});
