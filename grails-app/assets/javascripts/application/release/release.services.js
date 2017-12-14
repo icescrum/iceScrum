@@ -45,9 +45,7 @@ services.service("ReleaseService", ['$q', '$state', '$injector', 'Release', 'Rel
         PushService.registerListener('release', eventType, crudMethod);
     });
     this.mergeReleases = function(releases) {
-        _.each(releases, function(release) {
-            crudMethods[IceScrumEventType.CREATE](release);
-        });
+        _.each(releases, crudMethods[IceScrumEventType.CREATE]);
     };
     this.list = function(project) {
         return _.isEmpty(project.releases) ? Release.query({projectId: project.id}, self.mergeReleases).$promise : $q.when(project.releases);

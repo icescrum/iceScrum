@@ -63,9 +63,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         PushService.registerListener('story', eventType, crudMethod);
     });
     this.mergeStories = function(stories) {
-        _.each(stories, function(story) {
-            crudMethods[IceScrumEventType.CREATE](story);
-        });
+        _.each(stories, crudMethods[IceScrumEventType.CREATE]);
     };
     this.save = function(story, projectId) {
         story.class = 'story';

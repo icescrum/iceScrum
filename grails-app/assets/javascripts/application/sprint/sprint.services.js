@@ -47,9 +47,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
         PushService.registerListener('sprint', eventType, crudMethod);
     });
     this.mergeSprints = function(sprints) {
-        _.each(sprints, function(sprint) {
-            crudMethods[IceScrumEventType.CREATE](sprint);
-        });
+        _.each(sprints, crudMethods[IceScrumEventType.CREATE]);
     };
     this.list = function(release) {
         if (_.isEmpty(release.sprints)) {

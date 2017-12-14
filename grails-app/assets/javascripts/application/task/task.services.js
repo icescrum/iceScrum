@@ -55,9 +55,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         PushService.registerListener('task', eventType, crudMethod);
     });
     this.mergeTasks = function(tasks) {
-        _.each(tasks, function(task) {
-            crudMethods[IceScrumEventType.CREATE](task);
-        });
+        _.each(tasks, crudMethods[IceScrumEventType.CREATE]);
     };
     this.save = function(task, projectId) {
         task.class = 'task';
