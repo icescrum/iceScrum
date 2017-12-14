@@ -785,7 +785,7 @@ services.service("DomainConfigService", [function() {
     this.config.projectd = this.config.project;
 }]);
 
-services.service('ContextService', ['$location', '$q', '$injector', 'Session', 'ProjectService', 'ActorService', function($location, $q, $injector, Session, ProjectService, ActorService) {
+services.service('ContextService', ['$location', '$q', '$injector', 'Session', 'ProjectService', 'ActorService', 'FeatureService', function($location, $q, $injector, Session, ProjectService, ActorService, FeatureService) {
     var self = this;
     this.contextSeparator = '_';
     this.getContextFromUrl = function() {
@@ -799,7 +799,6 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
     };
     this.contexts = [];
     this.loadContexts = function() {
-        var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the directly because it will init the service systematically and call Feature.query which require authentication
         var project = Session.getProject();
         return $q.all([ProjectService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
             var tags = _.uniqBy(data[0], _.lowerCase);
