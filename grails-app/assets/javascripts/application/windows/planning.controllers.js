@@ -151,7 +151,6 @@ extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 
                 $scope.timelineSelected([]);
             }
         }
-        $scope.releases = project.releases;
         $scope.computeVisibleSprints();
     });
     $scope.$watchGroup([function() { return $state.$current.self.name; }, function() { return $state.params.releaseId; }, function() { return $state.params.sprintId; }, function() { return $state.params.sprintListId; }], function(newValues) {
