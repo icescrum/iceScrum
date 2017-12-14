@@ -585,7 +585,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.versions = [];
         $scope.creators = [];
         $scope.features = project.features;
-        FeatureService.list(project.id);
+        FeatureService.list(project);
         $scope.project = project;
         // For header
         //$scope.previousStory = FormService.previous(list, $scope.story);
@@ -648,7 +648,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
     $scope.stories = [];
     $scope.storyListId = storyListId; // For child controllers
     $scope.features = project.features;
-    FeatureService.list(project.id);
+    FeatureService.list(project);
     $scope.allFollowed = function(stories) {
         return _.every(stories, 'followed');
     };
@@ -720,7 +720,7 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
     $scope.resetStoryForm();
     $scope.newStoryStates = [StoryStatesByName.SUGGESTED, StoryStatesByName.ACCEPTED];
     $scope.features = project.features;
-    FeatureService.list(project.id);
+    FeatureService.list(project);
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],

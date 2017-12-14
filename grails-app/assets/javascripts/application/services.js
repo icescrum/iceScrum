@@ -800,8 +800,8 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
     this.contexts = [];
     this.loadContexts = function() {
         var FeatureService = $injector.get('FeatureService'); // Warning: cannot be injected in the directly because it will init the service systematically and call Feature.query which require authentication
-        var projectId = Session.getProject().id;
-        return $q.all([ProjectService.getTags(), FeatureService.list(projectId), ActorService.list(projectId)]).then(function(data) {
+        var project = Session.getProject();
+        return $q.all([ProjectService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
             var tags = _.uniqBy(data[0], _.lowerCase);
             var features = data[1];
             var actors = data[2];

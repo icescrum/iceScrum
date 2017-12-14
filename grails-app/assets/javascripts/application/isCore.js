@@ -459,7 +459,7 @@ angular.module('isCore', ['ui.router'])
                 storyState.children.push(this.getDetailsModalState('feature', {
                     resolve: {
                         features: ['FeatureService', 'project', function(FeatureService, project) {
-                            return FeatureService.list(project.id);
+                            return FeatureService.list(project);
                         }]
                     },
                     children: [this.getFeatureDetailsState('@', true)]
@@ -598,7 +598,7 @@ angular.module('isCore', ['ui.router'])
                             this.getDetailsModalState('feature', {
                                 resolve: {
                                     features: ['FeatureService', 'project', function(FeatureService, project) {
-                                        return FeatureService.list(project.id);
+                                        return FeatureService.list(project);
                                     }]
                                 },
                                 children: [this.getFeatureDetailsState('@', true)]

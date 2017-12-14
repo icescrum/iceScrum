@@ -48,9 +48,7 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
         PushService.registerListener('feature', eventType, crudMethod);
     });
     this.mergeFeatures = function(features) {
-        _.each(features, function(feature) {
-            crudMethods[IceScrumEventType.CREATE](feature);
-        });
+        _.each(features, crudMethods[IceScrumEventType.CREATE]);
     };
     this.get = function(id, projectId) {
         var cachedFeature = CacheService.get('feature', id);
@@ -59,9 +57,9 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
     this.refresh = function(id, projectId) {
         return Feature.get({id: id, projectId: projectId}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
-    this.list = function(projectId) {
-        var cachedFeatures = CacheService.getCache('feature');
-        return _.isEmpty(cachedFeatures) ? Feature.query({projectId: projectId}).$promise.then(function(features) {
+    this.list = function(project) {
+        var cachedFeatures = project.features;
+        return _.isEmpty(cachedFeatures) ? Feature.query({projectId: project.id}).$promise.then(function(features) {
             self.mergeFeatures(features);
             return CacheService.getCache('feature');
         }) : $q.when(cachedFeatures);

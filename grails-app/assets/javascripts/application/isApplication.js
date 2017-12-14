@@ -210,7 +210,7 @@ var isApplication = angular.module('isApplication', [
                         return Session.getWorkspace();
                     }],
                     features: ['FeatureService', 'project', function(FeatureService, project) {
-                        return FeatureService.list(project.id);
+                        return FeatureService.list(project);
                     }]
                 },
                 children: [
