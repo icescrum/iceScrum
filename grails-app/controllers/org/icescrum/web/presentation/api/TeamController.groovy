@@ -21,7 +21,9 @@ class TeamController implements ControllerErrorHandler {
         def options = [sort: "name", order: "asc", cache: true]
         def teams = request.admin ? Team.findAllByNameIlike(searchTerm, options) : Team.findAllByOwner(springSecurityService.currentUser.username, options, searchTerm)
         if (!teams.any { it.name == term } && create) {
-            teams.add(0, [name: params.term, members: [], scrumMasters: []])
+            if (!Team.countByName(term)) {
+                teams.add(0, [name: params.term, members: [], scrumMasters: []])
+            }
         }
         render(status: 200, text: teams as JSON, contentType: 'application/json')
     }
