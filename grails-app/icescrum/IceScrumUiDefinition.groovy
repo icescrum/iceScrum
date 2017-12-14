@@ -103,6 +103,7 @@ windows = {
         flex false
         icon 'dashboard'
         help 'is.ui.project.help'
+        secured 'stakeHolder() or inProject()'
         menu {
             title { workspaceObject ->
                 workspaceObject instanceof org.icescrum.core.domain.Project ? workspaceObject.name : 'is.ui.project'
