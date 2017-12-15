@@ -68,6 +68,9 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
     };
     $scope['delete'] = function(release) {
         ReleaseService.delete(release, $scope.project).then(function() {
+            if ($state.includes('roadmap.roadmap.release', {releaseId: release.id})) {
+                $state.go('roadmap.roadmap', {}, {location: 'replace'});
+            }
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };

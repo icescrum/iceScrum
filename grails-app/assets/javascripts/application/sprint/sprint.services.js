@@ -40,6 +40,8 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
             $state.go('planning.release', {}, {location: 'replace'});
         } else if ($state.includes('taskBoard', {sprintId: sprint.id})) {
             $state.go('taskBoard', {sprintId: null}, {location: 'replace'});
+        } else if ($state.includes('roadmap.roadmap.sprint', {sprintId: sprint.id})) {
+            $state.go('roadmap.roadmap', {}, {location: 'replace'});
         }
         CacheService.remove('sprint', sprint.id);
     };
