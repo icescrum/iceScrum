@@ -87,6 +87,7 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         build 'com.lowagie:itext:2.1.7'
+        build 'org.liquibase:liquibase-core:2.0.5'
         runtime 'mysql:mysql-connector-java:5.1.40'
     }
     plugins {
