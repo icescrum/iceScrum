@@ -106,10 +106,16 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
                     if (template) {
                         template = angular.copy(template);
                         var templatePreferences = angular.copy(template.preferences);
+                        var restrictedTeamsNames = _.chain($scope.portfolio.projects).filter(function(project) {
+                            return !angular.isDefined(project.team.id);
+                        }).map(function(project) {
+                            return project.team.name;
+                        }).value();
                         return {
                             name: project ? project.name : '',
                             pkey: project ? project.pkey : '',
                             initialize: template.initialize ? template.initialize : '',
+                            restrictedTeamsNames: restrictedTeamsNames,
                             startDate: template.startDate,
                             endDate: template.endDate,
                             firstSprint: template.firstSprint,

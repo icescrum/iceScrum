@@ -41,7 +41,7 @@
                 </div>
             </wz-step>
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.team")}" icon="fa fa-users">
-                <div ng-controller="teamCtrl">
+                <div ng-controller="teamCtrl" ng-init="restrictedTeamsNames = project.restrictedTeamsNames;">
                     <ng-include src="'form.team.html'"></ng-include>
                     <ng-include src="'form.members.project.html'"></ng-include>
                     <div class="btn-toolbar wizard-next">

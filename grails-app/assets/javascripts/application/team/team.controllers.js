@@ -67,7 +67,15 @@ controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session
     $controller('abstractTeamCtrl', {$scope: $scope});
     // Functions
     $scope.searchTeam = function(val, create) {
-        return TeamService.search(val, create);
+        return TeamService.search(val, create).then(function(teams) {
+            if ($scope.restrictedTeamsNames) {
+                return _.filter(teams, function(team) {
+                    return !_.includes($scope.restrictedTeamsNames, team.name);
+                });
+            } else {
+                return teams;
+            }
+        });
     };
     $scope.selectTeam = function($item, $model) {
         $scope.team = $model;
