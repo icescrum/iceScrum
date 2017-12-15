@@ -127,6 +127,10 @@ var isApplication = angular.module('isApplication', [
                         if (type === undefined || type === false) {
                             $state.transitionTo('root');
                         }
+                    }, function(type) {
+                        if (type === undefined || type === false) {
+                            $state.transitionTo('root');
+                        }
                     });
                 }]
             })
