@@ -28,9 +28,17 @@
         <div class="row">
             <g:each var="workspace" in="${Holders.grailsApplication.config.icescrum.workspaces}">
                 <div class="workspace col-md-6 text-center">
-                    <i class="fa fa-${workspace.value.icon} fa-7x"></i>
-                    <div class="">${g.message(code: workspace.value.description)}</div>
-                    <button class="btn btn-primary" ng-click="openWizard('new${workspace.key.capitalize()}')">${g.message(code: 'todo.is.ui.workspace.new', args: [message(code: workspace.value.name)])}</button>
+                    <g:if test="${workspace.key == 'portfolio'}">
+                        <i class="fa fa-${workspace.value.icon} fa-7x text-muted" style="opacity: 0.4"></i>
+                        <div class="">${g.message(code: workspace.value.description)}</div>
+                        <button class="btn btn-primary disabled" disabled="disabled" style="opacity: 0.4">${g.message(code: 'todo.is.ui.workspace.new', args: [message(code: workspace.value.name)])}*</button>
+                        <div class="text-muted">${g.message(code: 'is.ui.soon')}</div>
+                    </g:if>
+                    <g:else>
+                        <i class="fa fa-${workspace.value.icon} fa-7x"></i>
+                        <div class="">${g.message(code: workspace.value.description)}</div>
+                        <button class="btn btn-primary" ng-click="openWizard('new${workspace.key.capitalize()}')">${g.message(code: 'todo.is.ui.workspace.new', args: [message(code: workspace.value.name)])}</button>
+                    </g:else>
                 </div>
             </g:each>
         </div>
