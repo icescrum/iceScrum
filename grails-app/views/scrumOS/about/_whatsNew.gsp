@@ -23,15 +23,24 @@
 
 <div id="carousel-whats-new" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-        <!--<li data-target="#carousel-whats-new" data-slide-to="0" class="active"></li>-->
+        <li data-target="#carousel-whats-new" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-whats-new" data-slide-to="1"></li>
     </ol>
     <div class="carousel-inner" role="listbox">
-        <!--<div class="item text-center active">
-            <asset:image src="/apps/roadmap/roadmap1.png"/>
+        <div class="item text-center active">
+            <asset:image src="/whatsNew/EditableRoadmap.png" style="max-height:500px; padding: 10px; margin:0 auto;"/>
             <div class="carousel-caption">
-                <h3></h3>
-                <p></p>
+                <h3>New Project roadmap App!</h3>
+                <p><strong>Create roadmaps to plan the evolution of your product's features and share it with your team and stakeholders!</strong></p>
+                <p><button ng-click="$close(); showAppsModal();" class="btn btn-primary">Enable it now!</button></p>
             </div>
-        </div>-->
+        </div>
+        <div class="item text-center">
+            <asset:image src="/whatsNew/emoji.png" style="max-height:500px; padding: 10px;  margin:0 auto;"/>
+            <div class="carousel-caption">
+                <h3>Christmas present! Emojis available in iceScrum</h3>
+                <p><strong>See the <a href="https://www.icescrum.com/documentation/how-to-install-icescrum/emojis-support">documentation</a> to enable it</strong></p>
+            </div>
+        </div>
     </div>
 </div>

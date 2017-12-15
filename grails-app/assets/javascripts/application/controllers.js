@@ -254,13 +254,13 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
             notifications.error($scope.message('todo.is.ui.error.server'), $scope.message('todo.is.ui.error.unknown'));
         }
     });
-    if ($scope.displayWhatsNew) {
+    if ($scope.displayWhatsNew && $scope.workspaceType == 'project') {
         var modal = $uibModal.open({
             size: 'lg',
             controller: function() {
                 $timeout(function() {
                     $('#carousel-whats-new').carousel({
-                        interval: 2000
+                        interval: 5000
                     })
                 }, 500);
             },
