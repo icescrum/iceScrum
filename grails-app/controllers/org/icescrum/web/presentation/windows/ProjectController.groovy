@@ -496,7 +496,8 @@ class ProjectController implements ControllerErrorHandler {
         if (light && light != "false") {
             def properties = light == "true" || light instanceof Boolean ? null : light.tokenize(',')
             returnedProjects = returnedProjects.collect {
-                def p = [id: it.id, pkey: it.pkey, name: it.name, portfolio: it.portfolio ? [id: it.portfolio.id] : null]
+//                def p = [id: it.id, pkey: it.pkey, name: it.name, portfolio: it.portfolio ? [id: it.portfolio.id] : null]  // TODO REINSTALL
+                def p = [id: it.id, pkey: it.pkey, name: it.name]
                 properties?.each { property ->
                     p."$property" = it."$property"
                 }
@@ -620,7 +621,8 @@ class ProjectController implements ControllerErrorHandler {
         if (light && light != "false") {
             def properties = light == "true" || light instanceof Boolean ? null : light.tokenize(',')
             returnedProjects = returnedProjects.collect {
-                def p = [id: it.id, pkey: it.pkey, name: it.name, portfolio: it.portfolio ? [id: it.portfolio.id] : null]
+//                def p = [id: it.id, pkey: it.pkey, name: it.name, portfolio: it.portfolio ? [id: it.portfolio.id] : null]  // TODO REINSTALL
+                def p = [id: it.id, pkey: it.pkey, name: it.name]
                 properties?.each { property ->
                     p."$property" = it."$property"
                 }
