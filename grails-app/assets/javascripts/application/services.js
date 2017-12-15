@@ -226,6 +226,9 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
                 var pair = _.takeRight(_.filter((_prefix + name).split('.'), _.identity), 2);
                 var context = pair[0];
                 var property = pair[1];
+                // By default, arrays are NOT sent to the server
+                // Unless the key is a number, e.g. 1: [1, 2, 4, 5]
+                // Or the key is explicitely added in DomainConfigService
                 if ((DomainConfigService.config[context] && _.includes(DomainConfigService.config[context].array, property)) || _.isFinite(parseInt(context))) {
                     if (value.length == 0) {
                         query += encodeURIComponent(_prefix + name) + '=&';

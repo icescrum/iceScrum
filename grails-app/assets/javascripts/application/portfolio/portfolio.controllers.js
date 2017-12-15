@@ -39,7 +39,6 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', function($scope) {
         p.invitedStakeHolders = invited(portfolio.stakeHolders);
         return p;
     };
-    // Init
 }]);
 
 controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller', '$uibModal', '$filter', 'Session', 'WizardHandler', 'Portfolio', 'Project', 'ProjectService', 'PortfolioService', 'UserService', function($scope, $rootScope, $controller, $uibModal, $filter, Session, WizardHandler, Portfolio, Project, ProjectService, PortfolioService, UserService) {
@@ -68,7 +67,6 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
             fkeyModel.$setDirty(); // To trigger remote validation
         }
     };
-
     $scope.searchProject = function(val) {
         return ProjectService.listByUserAndRole(Session.user.id, 'productOwner', {term: val, create: true, light: "startDate,preferences,team,productOwners"}).then(function(projects) {
             var projectsList = _.map($scope.portfolio.projects, function(project) { return project.name; });
@@ -77,21 +75,19 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
             });
         })
     };
-
     $scope.selectProject = function(project) {
         if (project.portfolio) {
             return;
         }
-        if (!project.id) {
-            project.pkey = _.upperCase(project.name).replace(/\W+/g, "").substring(0, 10);
-            addNewProject(project);
-        } else {
+        if (project.id) {
             $scope.portfolio.projects[$scope.portfolio.projectsSize] = project;
             $scope.portfolio.projectsSize += 1;
+        } else {
+            project.pkey = _.upperCase(project.name).replace(/\W+/g, "").substring(0, 10);
+            addNewProject(project);
         }
         project.name = "";
     };
-
     var addNewProject = function(project) {
         $uibModal.open({
             keyboard: false,
@@ -139,7 +135,6 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
             }
         });
     };
-
     $scope.removeProject = function(projectToRemove) {
         var projects = {};
         var projectsSize = 0;
@@ -152,7 +147,6 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
         $scope.portfolio.projects = projects;
         $scope.portfolio.projectsSize = projectsSize;
     };
-
     $scope.searchUsers = function(val) {
         return UserService.search(val, true).then(function(users) {
             return _.chain(users)
@@ -186,7 +180,6 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
             _.remove($scope.portfolio.stakeHolders, {email: user.email});
         }
     };
-
     // Init
     $scope.formHolder = {};
     $scope.portfolio = new Portfolio();
