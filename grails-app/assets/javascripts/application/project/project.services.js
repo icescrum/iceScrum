@@ -92,6 +92,14 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', functio
         params.action = 'user';
         return Project.get(params).$promise;
     };
+    this.listByUserAndRole = function(userId, role, params) {
+        if (!params) {
+            params = {};
+        }
+        params.userId = userId;
+        params.role = role;
+        return Project.listByUserAndRole(params).$promise;
+    };
     this.getActivities = function(project) {
         return Project.query({action: 'activities', id: project.id}).$promise;
     };

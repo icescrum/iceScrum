@@ -39,6 +39,13 @@ filters
             return namesFromEmail;
         };
     })
+    .filter('displayNames', function() {
+        return function(users) {
+            return _.chain(users).map(function(user) {
+                return _.capitalize(user.firstName) + ' ' + _.upperCase(user.lastName.substring(0, 1)) + '.';
+            }).join(', ').value();
+        };
+    })
     .filter('userFullName', ['$filter', function($filter) {
         return function(user) {
             var firstName = '';

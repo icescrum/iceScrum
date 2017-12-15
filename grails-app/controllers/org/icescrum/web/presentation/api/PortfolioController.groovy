@@ -41,15 +41,15 @@ class PortfolioController implements ControllerErrorHandler {
     def save() {
         def portfolioParams = params.portfolio
         Portfolio portfolio = new Portfolio()
+        ProjectController projectController = new ProjectController()
         Portfolio.withTransaction {
             //create each project using the projectController
-            ProjectController projectController = new ProjectController()
             def nbProjects = portfolioParams.int('projectsSize')
             def projects = []
             (nbProjects).times {
                 def projectParam = portfolioParams.projects."$it"
                 if (projectParam.id) {
-                    projects << Project.get(projectParam.id) // TODO check that user is PO
+                    projects << Project.get(projectParam.id)
                 } else {
                     projectController.params.project = projectParam
                     projectController.params.internalCall = true

@@ -226,7 +226,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
                 var pair = _.takeRight(_.filter((_prefix + name).split('.'), _.identity), 2);
                 var context = pair[0];
                 var property = pair[1];
-                if (DomainConfigService.config[context] && _.includes(DomainConfigService.config[context].array, property)) {
+                if ((DomainConfigService.config[context] && _.includes(DomainConfigService.config[context].array, property)) || _.isFinite(parseInt(context))) {
                     if (value.length == 0) {
                         query += encodeURIComponent(_prefix + name) + '=&';
                     } else {

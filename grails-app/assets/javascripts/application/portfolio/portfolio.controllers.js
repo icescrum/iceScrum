@@ -42,7 +42,7 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', function($scope) {
     // Init
 }]);
 
-controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller', '$uibModal', 'Session', 'WizardHandler', 'Portfolio', 'Project', 'PortfolioService', function($scope, $rootScope, $controller, $uibModal, Session, WizardHandler, Portfolio, Project, PortfolioService) {
+controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller', '$uibModal', '$filter', 'Session', 'WizardHandler', 'Portfolio', 'Project', 'ProjectService', 'PortfolioService', 'UserService', function($scope, $rootScope, $controller, $uibModal, $filter, Session, WizardHandler, Portfolio, Project, ProjectService, PortfolioService, UserService) {
     $controller('abstractPortfolioCtrl', {$scope: $scope});
     $scope.checkPortfolioPropertyUrl = '/portfolio/available';
     // Functions
@@ -68,7 +68,31 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
             fkeyModel.$setDirty(); // To trigger remote validation
         }
     };
-    $scope.addNewProject = function() {
+
+    $scope.searchProject = function(val) {
+        return ProjectService.listByUserAndRole(Session.user.id, 'productOwner', {term: val, create: true, light: "startDate,preferences,team,productOwners"}).then(function(projects) {
+            var projectsList = _.map($scope.portfolio.projects, function(project) { return project.name; });
+            return _.filter(projects, function(project) {
+                return !_.includes(projectsList, project.name);
+            });
+        })
+    };
+
+    $scope.selectProject = function(project) {
+        if (project.portfolio) {
+            return;
+        }
+        if (!project.id) {
+            project.pkey = _.upperCase(project.name).replace(/\W+/g, "").substring(0, 10);
+            addNewProject(project);
+        } else {
+            $scope.portfolio.projects[$scope.portfolio.projectsSize] = project;
+            $scope.portfolio.projectsSize += 1;
+        }
+        project.name = "";
+    };
+
+    var addNewProject = function(project) {
         $uibModal.open({
             keyboard: false,
             backdrop: 'static',
@@ -80,33 +104,91 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
                 projectTemplate: function() {
                     var template = _.find($scope.portfolio.projects, function(project) { return project.id === undefined; });
                     if (template) {
+                        template = angular.copy(template);
+                        var templatePreferences = angular.copy(template.preferences);
                         return {
-                            initialize: template.initialize,
+                            name: project ? project.name : '',
+                            pkey: project ? project.pkey : '',
+                            initialize: template.initialize ? template.initialize : '',
                             startDate: template.startDate,
                             endDate: template.endDate,
                             firstSprint: template.firstSprint,
                             vision: template.vision, //good idea?
                             planningPokerGameType: template.planningPokerGameType,
-                            preferences: template.preferences
+                            preferences: templatePreferences
                         }
                     } else {
-                        return null;
+                        return {
+                            name: project ? project.name : '',
+                            pkey: project ? project.pkey : ''
+                        };
                     }
                 }
             }
         }).result.then(function(project) {
-            project.class = "project";
-            $scope.portfolio.projects[$scope.portfolio.projectsSize] = project;
-            $scope.portfolio.projectsSize += 1;
-        }, function() { });
+            if (project) {
+                project.class = "project";
+                $scope.portfolio.projects[$scope.portfolio.projectsSize] = project;
+                $scope.portfolio.projectsSize += 1;
+            }
+        });
     };
+
+    $scope.removeProject = function(projectToRemove) {
+        var projects = {};
+        var projectsSize = 0;
+        _.filter($scope.portfolio.projects, function(project) {
+            if (projectToRemove !== project) {
+                projects[projectsSize] = project;
+                projectsSize += 1;
+            }
+        });
+        $scope.portfolio.projects = projects;
+        $scope.portfolio.projectsSize = projectsSize;
+    };
+
+    $scope.searchUsers = function(val) {
+        return UserService.search(val, true).then(function(users) {
+            return _.chain(users)
+                .filter(function(u) {
+                    var found = _.find($scope.portfolio.businessOwners, {email: u.email});
+                    if (!found) {
+                        found = _.find($scope.portfolio.stakeHolders, {email: u.email});
+                    }
+                    return !found;
+                })
+                .map(function(member) {
+                    member.name = $filter('userFullName')(member);
+                    return member;
+                })
+                .value();
+        });
+    };
+    $scope.addUser = function(user, role) {
+        if (role == 'bo') {
+            $scope.portfolio.businessOwners.push(user);
+            $scope.po = {};
+        } else if (role == 'sh') {
+            $scope.portfolio.stakeHolders.push(user);
+            $scope.sh = {};
+        }
+    };
+    $scope.removeUser = function(user, role) {
+        if (role == 'bo') {
+            _.remove($scope.portfolio.businessOwners, {email: user.email});
+        } else if (role == 'sh') {
+            _.remove($scope.portfolio.stakeHolders, {email: user.email});
+        }
+    };
+
     // Init
     $scope.formHolder = {};
     $scope.portfolio = new Portfolio();
     angular.extend($scope.portfolio, {
         projects: {},
         projectsSize: 0,
-        hidden: isSettings.portfolioPrivateDefault && isSettings.portfolioPrivateEnabled,
-        stakeHolders: [Session.user, Session.user]
+        businessOwners: [Session.user],
+        stakeHolders: [],
+        hidden: isSettings.portfolioPrivateDefault && isSettings.portfolioPrivateEnabled
     });
 }]);

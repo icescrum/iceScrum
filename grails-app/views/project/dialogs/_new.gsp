@@ -77,10 +77,10 @@
                         ${message(code: 'is.button.cancel')}
                     </button>
                     <input type="submit"
-                           class="btn btn-default"
+                           class="btn btn-primary"
                            ng-disabled="formHolder.projectForm.$invalid || application.submitting"
                            wz-finish="createProject(project)"
-                           value="${message(code: 'todo.is.ui.wizard.finish')}"/>
+                           value="${message(code: 'todo.is.ui.wizard.finish', args: [message(code: 'is.workspace.project').toLowerCase()])}"/>
                 </div>
             </wz-step>
         </wizard>

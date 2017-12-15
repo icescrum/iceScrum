@@ -480,7 +480,7 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def listByUser(long id, String term, Boolean paginate, Integer page, Integer count, Boolean light) {
+    def listByUser(long id, String term, Boolean paginate, Integer page, Integer count) {
         if (id && id != springSecurityService.principal.id && !request.admin) {
             render(status: 403)
             return
@@ -492,35 +492,50 @@ class ProjectController implements ControllerErrorHandler {
             count = 10
         }
         def returnedProjects = !count ? projects : projects.drop(page ? (page - 1) * count : 0).take(count)
-        if (light) {
-            returnedProjects = returnedProjects.collect { [id: it.id, pkey: it.pkey, name: it.name] }
+        def light = params.light != null ? params.remove('light') : false
+        if (light && light != "false") {
+            def properties = light == "true" || light instanceof Boolean ? null : light.tokenize(',')
+            returnedProjects = returnedProjects.collect {
+                def p = [id: it.id, pkey: it.pkey, name: it.name, portfolio: it.portfolio ? [id: it.portfolio.id] : null]
+                properties?.each { property ->
+                    p."$property" = it."$property"
+                }
+                return p
+            }
         }
         def returnData = paginate ? [projects: returnedProjects, count: projects.size()] : returnedProjects
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
     @Secured(['isAuthenticated()'])
-    def listByUserAndRole(long id, String term, Boolean paginate, Integer page, Integer count, Boolean light, String role) {
+    def listByUserAndRole(long id, String term, Boolean paginate, Integer page, Integer count, String role, String create) {
         if (id && id != springSecurityService.principal.id && !request.admin) {
             render(status: 403)
             return
         }
         id = id ?: springSecurityService.currentUser.id
-        light = light != null ? light : true
+        def light = params.light != null ? params.remove('light') : true
+        def projects = []
         switch (role) {
             case 'productOwner':
-                listByRole(id, term, paginate, page, count, light, SecurityService.productOwnerPermissions)
+                projects = listByRole(id, term, paginate, page, count, light, SecurityService.productOwnerPermissions)
                 break;
             case 'scrumMaster':
-                listByRole(id, term, paginate, page, count, light, SecurityService.scrumMasterPermissions)
+                projects = listByRole(id, term, paginate, page, count, light, SecurityService.scrumMasterPermissions)
                 break;
             case 'teamMember':
-                listByRole(id, term, paginate, page, count, light, SecurityService.teamMemberPermissions)
+                projects = listByRole(id, term, paginate, page, count, light, SecurityService.teamMemberPermissions)
                 break;
             case 'stakeHolder':
-                listByRole(id, term, paginate, page, count, light, SecurityService.stakeHolderPermissions)
+                projects = listByRole(id, term, paginate, page, count, light, SecurityService.stakeHolderPermissions)
                 break;
         }
+        if (create && !projects.any { it.name == term }) {
+            if (!Project.countByName(term)) {
+                projects.add(0, [name: params.term, pkey: ''])
+            }
+        }
+        render(status: 200, contentType: 'application/json', text: projects as JSON)
     }
 
     @Secured(['stakeHolder() or inProject()', 'RUN_AS_PERMISSIONS_MANAGER'])
@@ -595,17 +610,23 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200);
     }
 
-    private listByRole(long id, String term, Boolean paginate, Integer page, Integer count, Boolean light, def role) {
+    private listByRole(long id, String term, Boolean paginate, Integer page, Integer count, def light, def role) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def projects = Project.findAllByRole(User.get(id), role, [cache: true], false, false, searchTerm).toList()
         if (paginate && !count) {
             count = 10
         }
         def returnedProjects = !count ? projects : projects.drop(page ? (page - 1) * count : 0).take(count)
-        if (light) {
-            returnedProjects = returnedProjects.collect { [id: it.id, pkey: it.pkey, name: it.name] }
+        if (light && light != "false") {
+            def properties = light == "true" || light instanceof Boolean ? null : light.tokenize(',')
+            returnedProjects = returnedProjects.collect {
+                def p = [id: it.id, pkey: it.pkey, name: it.name, portfolio: it.portfolio ? [id: it.portfolio.id] : null]
+                properties?.each { property ->
+                    p."$property" = it."$property"
+                }
+                return p
+            }
         }
-        def returnData = paginate ? [projects: returnedProjects, count: projects.size()] : returnedProjects
-        render(status: 200, contentType: 'application/json', text: returnData as JSON)
+        return paginate ? [projects: returnedProjects, count: projects.size()] : returnedProjects
     }
 }

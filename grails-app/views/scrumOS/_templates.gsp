@@ -65,6 +65,12 @@
     </a>
     </script>
 
+    <script type="text/ng-template" id="select.or.create.project.html">
+    <a ng-class="{'disabled': match.model.portfolio}">
+        <span ng-show="!match.model.id">${message(code: 'todo.is.ui.project.create')}</span> <strong>{{ match.model.name }}</strong> <span ng-if="match.model.portfolio">(${message(code: 'is.project.already.in.portfolio')})</span>
+    </a>
+    </script>
+
     <script type="text/ng-template" id="button.shortcutMenu.html">
     <a ng-show="menuElement.name"
        class="btn"
