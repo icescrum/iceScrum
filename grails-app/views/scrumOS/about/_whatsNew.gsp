@@ -39,7 +39,7 @@
             <asset:image src="/whatsNew/emoji.png" style="max-height:500px; padding: 10px;  margin:0 auto;"/>
             <div class="carousel-caption">
                 <h3>Christmas present! Emojis available in iceScrum</h3>
-                <p><strong>See the <a href="https://www.icescrum.com/documentation/how-to-install-icescrum/emojis-support">documentation</a> to enable it</strong></p>
+                <p><strong>See the <a href="https://www.icescrum.com/documentation/how-to-install-icescrum/#emojis">documentation</a> to enable them</strong></p>
             </div>
         </div>
     </div>
