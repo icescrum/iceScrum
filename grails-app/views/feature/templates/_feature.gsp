@@ -47,7 +47,7 @@
     <div class="footer">
         <div class="tags">
             <icon-badge class="pull-right" tooltip="${message(code: 'is.backlogelement.tags')}"
-                        href="#/{{:: viewName }}/{{ ::feature.id }}"
+                        href="{{:: openFeatureUrl(feature) }}"
                         icon="fa-tags"
                         max="3"
                         hide="true"
@@ -59,11 +59,11 @@
         </div>
         <div class="actions">
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
-                        href="#/{{:: viewName }}/{{ ::feature.id }}"
+                        href="{{:: openFeatureUrl(feature) }}"
                         icon="fa-paperclip"
                         count="feature.attachments_count"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
-                        href="#/{{:: viewName }}/{{ ::feature.id }}/stories"
+                        href="{{:: openFeatureUrl(feature) }}/stories"
                         icon="fa-sticky-note"
                         count="feature.stories_ids.length"/>
             <span postit-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>

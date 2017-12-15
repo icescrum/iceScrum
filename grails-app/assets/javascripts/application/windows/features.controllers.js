@@ -57,6 +57,9 @@ extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'Featur
         $scope.clearContextAndSearch();
         $scope.orderByRank();
     };
+    $scope.openFeatureUrl = function(feature) {
+        return '#/' + $scope.viewName + '/' + feature.id;
+    };
     // Init
     $scope.viewName = 'feature';
     $scope.project = project;
