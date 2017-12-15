@@ -313,7 +313,8 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
         };
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-            if ($scope.mustConfirmStateChange && fromParams[type + 'Id'] != toParams[type + 'Id']) {
+            var formDirtyType = $scope.stateIdProp ? $scope.stateIdProp : type + 'Id';
+            if ($scope.mustConfirmStateChange && fromParams[formDirtyType] != toParams[formDirtyType]) {
                 var callback = function() {
                     $scope.$state.go(toState, toParams);
                 };
