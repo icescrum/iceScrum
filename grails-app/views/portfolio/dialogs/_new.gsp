@@ -63,7 +63,7 @@
                         <th>${message(code: 'is.project.startDate')}</th>
                         <th>${message(code: 'is.project.preferences.planification.estimatedSprintsDuration')}</th>
                         <th>${message(code: 'todo.is.ui.project.productOwners')}</th>
-                        <th>${message(code: 'team')}</th>
+                        <th>${message(code: 'is.team')}</th>
                         <th></th>
                     </thead>
                     <tbody>
