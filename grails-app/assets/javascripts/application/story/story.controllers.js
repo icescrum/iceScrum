@@ -592,6 +592,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         //$scope.nextStory = FormService.next(list, $scope.story);
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
         $scope.storyStatesByName = StoryStatesByName;
+        $scope.storyTypesByName = StoryTypesByName;
         $scope.taskStatesByName = TaskStatesByName;
         if (detailsStory.actors_ids && detailsStory.actors_ids.length) {
             ActorService.list(project.id).then(function(actors) {

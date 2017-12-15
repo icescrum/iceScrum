@@ -158,7 +158,7 @@
             </ui-select>
         </div>
         <div class="clearfix no-padding">
-            <div class="form-1-quarter" ng-show="authorizedStory('updateEstimate', editableStory)">
+            <div class="form-1-quarter" ng-show="authorizedStory('updateEstimate', editableStory) || editableStory.state == storyStatesByName.DONE">
                 <label for="effort"><i class="fa fa-dollar"></i> ${message(code: 'is.story.effort')}</label>
                 <div class="input-group">
                     <ui-select ng-if="!isEffortCustom()"
@@ -189,7 +189,7 @@
                     </span>
                 </div>
             </div>
-            <div class="form-3-quarters" ng-show="authorizedStory('updateParentSprint', editableStory)">
+            <div class="form-3-quarters" ng-show="authorizedStory('updateParentSprint', editableStory) || editableStory.state == storyStatesByName.DONE">
                 <label for="parentSprint"><i class="fa fa-tasks"></i> ${message(code: 'is.sprint')}</label>
                 <ui-select ng-click="retrieveParentSprintEntries(); editForm(true)"
                            ng-change="editForm(true)"
@@ -230,7 +230,7 @@
                     </span>
                 </div>
             </div>
-            <div class="form-1-quarter" ng-show="editableStory.type == 2">
+            <div class="form-1-quarter" ng-show="editableStory.type == storyTypesByName.DEFECT">
                 <label for="affectVersion">${message(code: 'is.story.affectVersion')}</label>
                 <ui-select class="form-control"
                            ng-click="retrieveVersions(); editForm(true)"
