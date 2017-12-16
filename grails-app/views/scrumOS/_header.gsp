@@ -41,18 +41,18 @@
                    ng-click="showAbout()"
                    href
                    tooltip-placement="right"
-                   uib-tooltip="{{ warning.title }}"><i class="fa fa-{{ warning.icon }}"></i>
+                   uib-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
                 </a>
                 <ul ng-controller="mainMenuCtrl"
                     class="nav navbar-nav menubar"
                     is-disabled="!currentUser.id || workspaceType != 'project'"
                     as-sortable="menuSortableOptions"
                     ng-model="application.menus.visible">
-                    <li class="contextual-menu" uib-dropdown>
+                    <li class="workspace-menu" uib-dropdown ng-class="[workspaceType]">
                         <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                                 <g:render template="/scrumOS/logo"/>
-                            </svg> <g:if test="${workspaceIcon}"><i class="fa fa-${workspaceIcon}"></i></g:if> <i class="fa fa-caret-down"></i>
+                            </svg> <g:if test="${workspaceIcon}"><i class="fa fa-${workspaceIcon}"></i> Peetic a</g:if> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li role="presentation" class="dropdown-header">
