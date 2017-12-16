@@ -54,7 +54,7 @@
                            typeahead-wait-ms="250"
                            typeahead-on-select="selectProject($item, $model); "
                            typeahead-template-url="select.or.create.project.html"
-                           ng-model="project.name">
+                           ng-model="projectSelection">
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                 </div>
                 <table class="table table-striped table-bordered" ng-if="portfolio.projectsSize > 0">

@@ -75,18 +75,18 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$rootScope', '$controller
             });
         })
     };
-    $scope.selectProject = function(project) {
+    $scope.selectProject = function(project, model, label) {
         if (project.portfolio) {
             return;
         }
         if (project.id) {
-            $scope.portfolio.projects[$scope.portfolio.projectsSize] = project;
+            $scope.portfolio.projects[$scope.portfolio.projectsSize] = angular.copy(project);
             $scope.portfolio.projectsSize += 1;
         } else {
             project.pkey = _.upperCase(project.name).replace(/\W+/g, "").substring(0, 10);
             addNewProject(project);
         }
-        project.name = "";
+        this.projectSelection = null;
     };
     var addNewProject = function(project) {
         $uibModal.open({
