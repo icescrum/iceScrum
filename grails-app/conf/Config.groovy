@@ -159,11 +159,13 @@ icescrum.resourceBundles = [
                 (Task.TYPE_URGENT)   : 'is.task.type.urgent'
         ],
         roles                  : [
-                (Authority.MEMBER)      : 'is.role.teamMember',
-                (Authority.SCRUMMASTER) : 'is.role.scrumMaster',
-                (Authority.PRODUCTOWNER): 'is.role.productOwner',
-                (Authority.STAKEHOLDER) : 'is.role.stakeHolder',
-                (Authority.PO_AND_SM)   : 'is.role.poAndSm'
+                (Authority.MEMBER)              : 'is.role.teamMember',
+                (Authority.SCRUMMASTER)         : 'is.role.scrumMaster',
+                (Authority.PRODUCTOWNER)        : 'is.role.productOwner',
+                (Authority.STAKEHOLDER)         : 'is.role.stakeHolder',
+                (Authority.PO_AND_SM)           : 'is.role.poAndSm',
+                (Authority.BUSINESSOWNER)       : 'is.role.businessOwner',
+                (Authority.PORTFOLIOSTAKEHOLDER): 'is.role.portfolioStakeHolder'
         ],
         planningPokerGameSuites: [
                 (PlanningPokerGame.FIBO_SUITE)   : 'is.estimationSuite.fibonacci',
@@ -185,7 +187,8 @@ icescrum.resourceBundles = [
 ]
 
 icescrum.marshaller = [
-        portfolio           : [textile: ['description']],
+        portfolio           : [include: ['invitedBusinessOwners', 'invitedStakeHolders'],
+                               textile: ['description']],
         story               : [include: ['testState', 'tags', 'dependences', 'followed', 'countDoneTasks'],
                                exclude: ['voters'],
                                withIds: ['actors'],
