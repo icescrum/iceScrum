@@ -24,12 +24,6 @@ services.factory('Project', ['Resource', function($resource) {
     return $resource('/project/:id/:action',
         {id: '@id'},
         {
-            listByUser: {
-                url: '/project/user',
-                isArray: true,
-                params: {},
-                method: 'get'
-            },
             listByUserAndRole: {
                 url: '/project/user/:userId/:role',
                 isArray: true,
@@ -43,7 +37,17 @@ services.factory('Project', ['Resource', function($resource) {
         });
 }]);
 
-services.service("ProjectService", ['Project', 'Session', 'FormService', function(Project, Session, FormService) {
+services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheService', 'IceScrumEventType', function(Project, Session, FormService, CacheService, IceScrumEventType) {
+    var crudMethods = {};
+    crudMethods[IceScrumEventType.CREATE] = function(project) {
+        CacheService.addOrUpdate('project', project);
+    };
+    crudMethods[IceScrumEventType.UPDATE] = function(project) {
+        CacheService.addOrUpdate('project', project);
+    };
+    crudMethods[IceScrumEventType.DELETE] = function(project) {
+        CacheService.remove('project', project.id);
+    };
     this.get = function(id) {
         return Project.get({id: id}).$promise;
     };

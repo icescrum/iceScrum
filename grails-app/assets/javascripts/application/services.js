@@ -416,11 +416,18 @@ services.service('CacheService', ['$injector', function($injector) {
     };
 }]);
 
-services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', function($rootScope, CacheService, StoryService, FeatureService, SprintService, BacklogService) {
+services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', 'projectCaches', function($rootScope, CacheService, StoryService, FeatureService, SprintService, BacklogService, projectCaches) {
     var sortByRank = function(obj1, obj2) {
         return obj1.rank - obj2.rank;
     };
     var syncFunctions = {
+        project: function(oldProject, newProject) {
+            if (newProject && !oldProject) {
+                _.each(projectCaches, function(projectCache) {
+                    newProject[projectCache.arrayName] = []; // Init to empty to allow binding to a reference and automatically get the update
+                });
+            }
+        },
         story: function(oldStory, newStory) {
             var oldSprintId = (oldStory && oldStory.parentSprint) ? oldStory.parentSprint.id : null;
             var newSprintId = (newStory && newStory.parentSprint) ? newStory.parentSprint.id : null;
