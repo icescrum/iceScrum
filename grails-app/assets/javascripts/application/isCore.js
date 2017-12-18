@@ -80,6 +80,29 @@ angular.module('isCore', ['ui.router'])
             }
         };
     })
+    .provider('projectCaches', function() {
+        this.$get = function() {
+            return this.projectCaches;
+        };
+        this.projectCaches = {
+            story: {
+                arrayName: 'stories',
+                projectPath: 'backlog'
+            },
+            feature: {
+                arrayName: 'features',
+                projectPath: 'backlog'
+            },
+            release: {
+                arrayName: 'releases',
+                projectPath: 'parentProject'
+            },
+            backlog: {
+                arrayName: 'backlogs',
+                projectPath: 'project'
+            }
+        };
+    })
     .provider('itemTabs', function() {
         this.$get = function() {
             return this.itemTabs;
