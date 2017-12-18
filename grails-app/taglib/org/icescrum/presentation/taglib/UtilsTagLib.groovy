@@ -25,7 +25,6 @@
 package org.icescrum.presentation.taglib
 
 import grails.plugin.springsecurity.SpringSecurityUtils
-import grails.util.GrailsNameUtils
 import grails.util.Holders
 import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil
 import org.icescrum.core.domain.security.Authority
@@ -51,24 +50,16 @@ class UtilsTagLib {
     }
 
     def workspaceListItem = { attrs, body ->
-        def getWorkspaceType = { workspace ->
-            return GrailsHibernateUtil.unwrapIfProxy(workspace).getClass().getSimpleName().toLowerCase()
-        }
-        def getKeyForWorkspace = { workspace ->
-            if (!workspace) {
-                return false
-            } else {
-                def type = getWorkspaceType(workspace)
-                return type == 'project' ? attrs.workspace.pkey : attrs.workspace.fkey
-            }
-        }
-        def linkParams = [:]
-        linkParams."${getWorkspaceType(attrs.workspace)}" = getKeyForWorkspace(attrs.workspace)
-        out << """<li class="workspace ${getWorkspaceType(attrs.workspace)}">
-                        <a class="${attrs.currentWorkspace == attrs.workspace ? 'active' : ''}"
-                        href="${attrs.currentWorkspace == attrs.workspace ? '' : createLink(controller: "scrumOS", params: linkParams) + '/'}"
-                        title="${attrs.workspace.name.encodeAsHTML()}">
-                            <i class="fa fa-${Holders.grailsApplication.config.icescrum.workspaces."${getWorkspaceType(attrs.workspace)}".icon}"></i> ${attrs.workspace.name.encodeAsHTML()}
+        def workspace = attrs.workspace
+        def workspaceType = GrailsHibernateUtil.unwrapIfProxy(workspace).getClass().getSimpleName().toLowerCase()
+        def workspaceConfig = Holders.grailsApplication.config.icescrum.workspaces[workspaceType]
+        def isCurrent = attrs.currentWorkspace == workspace
+        def name = workspace.name.encodeAsHTML()
+        out << """<li class="workspace ${workspaceType}">
+                        <a class="${isCurrent ? 'active' : ''}"
+                           href="${isCurrent ? '' : createLink(controller: "scrumOS", params: [(workspaceType): workspaceConfig.config(workspace).key]) + '/'}"
+                           title="${name}">
+                            <i class="fa fa-${workspaceConfig.icon}"></i> ${name}
                         </a>
                   </li>"""
 
