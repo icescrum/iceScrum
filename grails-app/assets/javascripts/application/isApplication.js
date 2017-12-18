@@ -157,7 +157,8 @@ var isApplication = angular.module('isApplication', [
                         size: 'lg',
                         resolve: {
                             manualSave: false,
-                            projectTemplate: null
+                            projectTemplate: null,
+                            lastStepButtonLabel: false
                         },
                         controller: 'newProjectCtrl'
                     }).result.then(function() {
@@ -455,7 +456,7 @@ var isApplication = angular.module('isApplication', [
                         templateUrl: $rootScope.serverUrl + "/portfolio/add",
                         size: 'lg',
                         controller: 'newPortfolioCtrl'
-                    }).result.then(function() {
+                    }).result.then(function(portfolio) {
                         $state.transitionTo('root');
                     }, function() {
                         $state.transitionTo('root');
@@ -756,6 +757,20 @@ var isApplication = angular.module('isApplication', [
                 controller: 'editProjectModalCtrl'
             });
         };
+        $rootScope.showPortfolioEditModal = function(panelName) {
+            var scope = $rootScope.$new();
+            if (panelName) {
+                scope.panel = {current: panelName};
+            }
+            $uibModal.open({
+                keyboard: false,
+                backdrop: 'static',
+                templateUrl: $rootScope.serverUrl + "/portfolio/edit",
+                size: 'lg',
+                scope: scope,
+                controller: 'editPortfolioModalCtrl'
+            });
+        };
         $rootScope.showManageTeamsModal = function(team) { // Needs to be next to showProjectEditModal
             $uibModal.open({
                 keyboard: false,
@@ -892,6 +907,9 @@ var isApplication = angular.module('isApplication', [
         $rootScope.authorizedApp = AppService.authorizedApp;
         $rootScope.getResolvedProjectFromState = function() {
             return $state.$current.locals.globals.project;
+        };
+        $rootScope.getResolvedPortfolioFromState = function() {
+            return $state.$current.locals.globals.portfolio;
         };
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {
             if (toState.name == "404") {

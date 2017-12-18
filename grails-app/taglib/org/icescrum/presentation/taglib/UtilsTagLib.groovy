@@ -25,6 +25,9 @@
 package org.icescrum.presentation.taglib
 
 import grails.plugin.springsecurity.SpringSecurityUtils
+import grails.util.GrailsNameUtils
+import grails.util.Holders
+import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
 
@@ -40,12 +43,35 @@ class UtilsTagLib {
     def header = { attrs, body ->
         out << g.render(template: '/scrumOS/header',
                 model: [
-                        importEnable           : (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
-                        exportEnable           : (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
-                        creationProjectEnable  : (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
-                        creationPortfolioEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.portfolio.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
+                        importEnable  : (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.portfolio.import.enable) || ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
+                        exportEnable  : (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.portfolio.export.enable) || ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.export.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)),
+                        creationEnable: (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.portfolio.creation.enable) || ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) || SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN))
                 ]
         )
+    }
+
+    def workspaceListItem = { attrs, body ->
+        def getWorkspaceType = { workspace ->
+            return GrailsHibernateUtil.unwrapIfProxy(workspace).getClass().getSimpleName().toLowerCase()
+        }
+        def getKeyForWorkspace = { workspace ->
+            if (!workspace) {
+                return false
+            } else {
+                def type = getWorkspaceType(workspace)
+                return type == 'project' ? attrs.workspace.pkey : attrs.workspace.fkey
+            }
+        }
+        def linkParams = [:]
+        linkParams."${getWorkspaceType(attrs.workspace)}" = getKeyForWorkspace(attrs.workspace)
+        out << """<li class="workspace ${getWorkspaceType(attrs.workspace)}">
+                        <a class="${attrs.currentWorkspace == attrs.workspace ? 'active' : ''}"
+                        href="${attrs.currentWorkspace == attrs.workspace ? '' : createLink(controller: "scrumOS", params: linkParams) + '/'}"
+                        title="${attrs.workspace.name.encodeAsHTML()}">
+                            <i class="fa fa-${Holders.grailsApplication.config.icescrum.workspaces."${getWorkspaceType(attrs.workspace)}".icon}"></i> ${attrs.workspace.name.encodeAsHTML()}
+                        </a>
+                  </li>"""
+
     }
 
     def exportFormats = { attrs, body ->

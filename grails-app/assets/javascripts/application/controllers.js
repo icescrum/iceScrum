@@ -275,9 +275,12 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
     }
 }]);
 
-controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', '$state', function($scope, ProjectService, FormService, PushService, UserService, Session, $uibModal, $state) {
+controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', '$state', function($scope, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal, $state) {
     $scope.authorizedProject = function(action, project) {
         return ProjectService.authorizedProject(action, project);
+    };
+    $scope.authorizedPortfolio = function(action, portfolio) {
+        return PortfolioService.authorizedPortfolio(action, portfolio);
     };
     $scope.showProjectListModal = function(listType) {
         $uibModal.open({

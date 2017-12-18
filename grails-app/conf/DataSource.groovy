@@ -37,21 +37,21 @@ dataSource {
 
 environments {
     development {
-        dataSource {
-            dbCreate = "create-drop"
-            username = "sa"
-            password = ""
-            driverClassName = "org.h2.Driver"
-            url = "jdbc:h2:mem:devDb"
-        }
 //        dataSource {
-//            dbCreate = "update"
-//            username = "root"
-//            password = "root"
-//            driverClassName = "com.mysql.jdbc.Driver"
-//            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
-//            url = "jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
+//            dbCreate = "create-drop"
+//            username = "sa"
+//            password = ""
+//            driverClassName = "org.h2.Driver"
+//            url = "jdbc:h2:mem:devDb"
 //        }
+        dataSource {
+            dbCreate = "update"
+            username = "root"
+            password = "root"
+            driverClassName = "com.mysql.jdbc.Driver"
+            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
+            url = "jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
+        }
 //        dataSource {
 //            dbCreate = "update"
 //            username = "root"

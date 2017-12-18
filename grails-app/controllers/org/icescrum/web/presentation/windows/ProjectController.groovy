@@ -138,12 +138,8 @@ class ProjectController implements ControllerErrorHandler {
                 sprintService.generateSprints(release, projectParams.firstSprint)
             }
         }
-        if (!params.internalCall) {
-            flash.showAppStore = true
-            render(status: 201, contentType: 'application/json', text: project as JSON)
-        } else {
-            return project
-        }
+        flash.showAppStore = true
+        render(status: 201, contentType: 'application/json', text: project as JSON)
     }
 
     @Secured('scrumMaster() and !archivedProject()')
@@ -507,6 +503,12 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 
+    @Secured(['businessOwner() or portfolioStakeHolder()'])
+    def listByPortfolio(long portfolio) {
+        Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
+        render(status: 200, contentType: 'application/json', text: _portfolio.projects as JSON)
+    }
+
     @Secured(['isAuthenticated()'])
     def listByUserAndRole(long id, String term, Boolean paginate, Integer page, Integer count, String role, String create) {
         if (id && id != springSecurityService.principal.id && !request.admin) {
@@ -612,7 +614,7 @@ class ProjectController implements ControllerErrorHandler {
 
     private listByRole(long id, String term, Boolean paginate, Integer page, Integer count, def light, def role) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def projects = Project.findAllByRole(User.get(id), role, [cache: true], false, false, searchTerm).toList()
+        def projects = Project.findAllByRole(User.get(id), role, [cache: true], false, false, false, searchTerm).toList()
         if (paginate && !count) {
             count = 10
         }

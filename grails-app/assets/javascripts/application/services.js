@@ -226,10 +226,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
                 var pair = _.takeRight(_.filter((_prefix + name).split('.'), _.identity), 2);
                 var context = pair[0];
                 var property = pair[1];
-                // By default, arrays are NOT sent to the server
-                // Unless the key is a number, e.g. 1: [1, 2, 4, 5]
-                // Or the key is explicitely added in DomainConfigService
-                if ((DomainConfigService.config[context] && _.includes(DomainConfigService.config[context].array, property)) || _.isFinite(parseInt(context))) {
+                if (DomainConfigService.config[context] && _.includes(DomainConfigService.config[context].array, property)) {
                     if (value.length == 0) {
                         query += encodeURIComponent(_prefix + name) + '=&';
                     } else {
@@ -772,7 +769,7 @@ services.service("DomainConfigService", [function() {
             array: ['productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners']
         },
         portfolio: {
-            array: ['projects', 'stakeHolders', 'invitedStakeHolders']
+            array: ['projects', 'stakeHolders', 'invitedStakeHolders', 'businessOwners', 'invitedBusinessOwners']
         },
         team: {
             array: ['members', 'scrumMasters', 'invitedMembers', 'invitedScrumMasters']
@@ -782,6 +779,7 @@ services.service("DomainConfigService", [function() {
         }
     };
     this.config.projectd = this.config.project;
+    this.config.portfoliod = this.config.portfolio;
 }]);
 
 services.service('ContextService', ['$location', '$q', '$injector', 'Session', 'ProjectService', 'ActorService', 'FeatureService', function($location, $q, $injector, Session, ProjectService, ActorService, FeatureService) {

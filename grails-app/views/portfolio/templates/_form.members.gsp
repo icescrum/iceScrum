@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2017 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -20,43 +20,40 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-
-<script type="text/ng-template" id="form.members.project.html">
-<h4>${message(code: "todo.is.ui.project.members")}</h4>
-<p class="help-block">${message(code: 'todo.is.ui.project.members.help')}</p>
+<script type="text/ng-template" id="form.members.portfolio.html">
 <div class="row">
-    <div class="col-sm-4" ng-if="projectMembersEditable(project)">
-        <label for="productOwners.search">${message(code: 'todo.is.ui.select.productowner')}</label>
+    <div class="col-sm-4">
+        <label for="businessOwners.search">${message(code: 'todo.is.ui.select.portfolio.businessOwner')}</label>
         <p class="input-group">
             <input autocomplete="off"
                    type="text"
-                   name="productOwner.search"
-                   id="productOwner.search"
+                   name="businessOwners.search"
+                   id="businessOwners.search"
                    class="form-control"
                    placeholder="${message(code: 'todo.is.ui.select.notext')}"
-                   ng-model="po.name"
-                   uib-typeahead="po as po.name for po in searchUsers($viewValue, true)"
+                   ng-model="bo"
+                   uib-typeahead="bo as bo.name for bo in searchUsers($viewValue, true)"
                    typeahead-append-to-body="true"
-                   typeahead-loading="searchingPo"
+                   typeahead-loading="searchingBo"
                    typeahead-min-length="2"
                    typeahead-wait-ms="250"
-                   typeahead-on-select="addUser($item, 'po')"
+                   typeahead-on-select="addUser($item, 'bo')"
                    typeahead-template-url="select.member.html">
             <span class="input-group-addon">
-                <i class="fa" ng-class="{ 'fa-search': !searchingPo, 'fa-refresh':searchingPo }"></i>
+                <i class="fa" ng-class="{ 'fa-search': !searchingBo, 'fa-refresh':searchingBo }"></i>
             </span>
         </p>
     </div>
-    <div ng-class="projectMembersEditable(project) ? 'col-sm-8' : 'col-sm-12' ">
-        <label ng-if="project.productOwners.length">${message(code: 'todo.is.ui.project.productOwners')}</label>
-        <div ng-class="{'list-users': project.productOwners.length > 0}">
-            <ng-include ng-init="role = 'po';" ng-repeat="user in project.productOwners" src="'user.item.project.html'"></ng-include>
+    <div class="col-sm-8">
+        <label ng-if="portfolio.businessOwners.length">${message(code: 'todo.is.ui.portfolio.businessOwners')}</label>
+        <div ng-class="{'list-users': portfolio.businessOwners.length > 0}">
+            <ng-include ng-init="role = 'bo';" ng-repeat="user in portfolio.businessOwners" src="'user.item.portfolio.html'"></ng-include>
         </div>
     </div>
 </div>
-<div class="row" ng-show="project.preferences.hidden">
-    <div class="col-sm-4" ng-if="projectMembersEditable(project)">
-        <label for="stakeHolders.search">${message(code: 'todo.is.ui.select.stakeholder')}</label>
+<div class="row">
+    <div class="col-sm-4">
+        <label for="stakeHolders.search">${message(code: 'todo.is.ui.select.portfolio.stakeholder')}</label>
         <p class="input-group">
             <input autocomplete="off"
                    type="text"
@@ -64,7 +61,7 @@
                    id="stakeHolder.search"
                    class="form-control"
                    placeholder="${message(code: 'todo.is.ui.select.notext')}"
-                   ng-model="sh.name"
+                   ng-model="sh"
                    uib-typeahead="sh as sh.name for sh in searchUsers($viewValue)"
                    typeahead-append-to-body="true"
                    typeahead-loading="searchingSh"
@@ -77,10 +74,10 @@
             </span>
         </p>
     </div>
-    <div ng-class="projectMembersEditable(project) ? 'col-sm-8' : 'col-sm-12' ">
-        <label ng-if="project.stakeHolders.length">${message(code: 'todo.is.ui.project.stakeholders')}</label>
-        <div ng-class="{'list-users': project.stakeHolders.length > 0}">
-            <ng-include ng-init="role = 'sh';" ng-repeat="user in project.stakeHolders" src="'user.item.project.html'"></ng-include>
+    <div class="col-sm-8">
+        <label ng-if="portfolio.stakeHolders.length">${message(code: 'todo.is.ui.portfolio.stakeholders')}</label>
+        <div ng-class="{'list-users': portfolio.stakeHolders.length > 0}">
+            <ng-include ng-init="role = 'sh';" ng-repeat="user in portfolio.stakeHolders" src="'user.item.portfolio.html'"></ng-include>
         </div>
     </div>
 </div>

@@ -34,6 +34,11 @@ services.factory('Project', ['Resource', function($resource) {
                 url: '/project/user/:userId/:role',
                 isArray: true,
                 method: 'get'
+            },
+            listByPortfolio: {
+                url: '/project/portfolio/:portfolioId',
+                isArray: true,
+                method: 'get'
             }
         });
 }]);

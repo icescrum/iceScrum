@@ -26,23 +26,30 @@ services.factory('Portfolio', ['Resource', function($resource) {
     return $resource('/portfolio/:id/:action');
 }]);
 
-services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Project', function(Portfolio, Session, FormService, Project) {
+services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Project', '$q', function(Portfolio, Session, FormService, Project, $q) {
     this.save = function(portfolio) {
         portfolio.class = 'portfolio';
         return Portfolio.save(portfolio).$promise;
     };
+    this.update = function(portfolio) {
+        return Portfolio.update({id: portfolio.id}, {portfoliod: portfolio}).$promise;
+    };
     this['delete'] = function(portfolio) {
         return Portfolio.delete({id: portfolio.id}).$promise;
     };
-    this.listProjects = function() {
-        return FormService.httpGet('project').then(function(projects) {
-            return _.map(projects, function(project) {
-                return _.extend(new Project(), project);
-            });
-        })
+    this.listProjects = function(portfolio) {
+        if (_.isEmpty(portfolio.projects)) {
+            return Project.listByPortfolio({portfolioId: portfolio.id}, function(data) {
+                portfolio.projects = data;
+                portfolio.projects_count = portfolio.projects.length;
+            }).$promise;
+        } else {
+            return $q.when(portfolio.projects);
+        }
     };
     this.authorizedPortfolio = function(action) {
         switch (action) {
+            case 'edit':
             case 'update':
             case 'delete':
                 return Session.bo();

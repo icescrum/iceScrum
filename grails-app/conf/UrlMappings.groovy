@@ -258,6 +258,13 @@ class UrlMappings {
                 }
             }
         }
+        "/project/portfolio/$portfolio" {
+            controller = 'project'
+            action = 'listByPortfolio'
+            constraints {
+                portfolio(matches: /\d*/)
+            }
+        }
         "/project/$project/leaveTeam" {
             controller = 'project'
             action = 'leaveTeam'
@@ -414,6 +421,14 @@ class UrlMappings {
             controller = 'portfolio'
             action = [POST: "available"]
             constraints {
+                property(inList: ['name', 'fkey'])
+            }
+        }
+        "/portfolio/$portfolio/available/$property" {
+            controller = 'portfolio'
+            action = [POST: "available"]
+            constraints {
+                portfolio(matches: /\d*/)
                 property(inList: ['name', 'fkey'])
             }
         }

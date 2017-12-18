@@ -59,6 +59,20 @@
     </is:modal>
     </script>
 
+    <script type="text/ng-template" id="confirm.delete.projects.modal.html">
+    <is:modal form="confirmDelete()"
+              submitButton="${message(code: 'todo.is.ui.dirty.confirm.save')}"
+              closeButton="${message(code: 'is.button.cancel')}"
+              title="${message(code: 'todo.is.ui.dirty.confirm.title')}">
+        <table class="table table-bordered table-striped">
+            <tr ng-repeat="project in projectsToDelete">
+                <td><input type="checkbox" ng-model="project.keep"/></td>
+                <td>{{:: project.name }}</td>
+            </tr>
+        </table>
+    </is:modal>
+    </script>
+
     <script type="text/ng-template" id="select.or.create.team.html">
     <a>
         <span ng-show="!match.model.id">${message(code: 'todo.is.ui.create.team')}</span> <strong>{{ match.model.name }}</strong>

@@ -1,4 +1,4 @@
-<%@ page import="grails.converters.JSON" %>
+<%@ page import="grails.util.GrailsNameUtils; grails.converters.JSON" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -
@@ -48,22 +48,23 @@
                     is-disabled="!currentUser.id || workspaceType != 'project'"
                     as-sortable="menuSortableOptions"
                     ng-model="application.menus.visible">
-                    <li class="workspace-menu" uib-dropdown ng-class="[workspaceType]">
+                    <li class="workspace-menu {{:: workspaceType }}" uib-dropdown>
                         <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                                 <g:render template="/scrumOS/logo"/>
-                            </svg> <g:if test="${workspaceIcon}"><i class="fa fa-${workspaceIcon}"></i> Peetic a</g:if> <i class="fa fa-caret-down"></i>
+                            </svg> <g:if test="${workspace?.icon}"><i class="fa fa-${workspace.icon}"></i><span class="text-ellipsis" title="${workspace.object.name}"
+                                                                                                                style="display:inline-block; max-width: 100px">${workspace.object.name}</span></g:if> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li role="presentation" class="dropdown-header">
-                                ${message(code: 'todo.is.ui.projects')}
+                                ${message(code: 'todo.is.ui.workspaces')}
                             </li>
-                            <g:if test="${creationProjectEnable || creationPortfolioEnable}">
+                            <g:if test="${creationEnable}">
                                 <li>
                                     <a hotkey="{ 'shift+n': hotkeyClick}"
                                        hotkey-description="${message(code: 'todo.is.ui.project.createNew')}"
                                        ui-sref="new">
-                                        <g:message code="is.projectmenu.submenu.project.create"/> <small class="text-muted">(SHIFT+N)</small>
+                                        <g:message code="todo.is.ui.workspaces.create"/> <small class="text-muted">(SHIFT+N)</small>
                                     </a>
                                 </li>
                             </g:if>
@@ -77,7 +78,7 @@
                                     </a>
                                 </li>
                             </g:if>
-                            <g:if test="${browsableProjectsExist}">
+                            <g:if test="${browsableWorkspacesExist}">
                                 <li>
                                     <g:if test="${request.admin}">
                                         <a hotkey="{ 'shift+a': hotkeyClick}"
@@ -99,26 +100,27 @@
                                     </g:else>
                                 </li>
                             </g:if>
-                            <g:if test="${project}">
-                                <li ng-if="authorizedProject('edit')" role="presentation" class="divider"></li>
-                                <li ng-if="authorizedProject('edit')" role="presentation" class="dropdown-header">
-                                    ${message(code: 'todo.is.ui.projects.current')} <span class="current-project-name"><b>${project.name}</b></span>
+                            <g:if test="${workspace?.object}">
+                                <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="divider"></li>
+                                <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-header">
+                                    ${message(code: 'todo.is.ui.workspaces.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="${workspace.object.name}"
+                                                                                                                   style="display:inline-block; max-width:70px"><b>${workspace.object.name}</b></span>
                                 </li>
-                                <li ng-if="authorizedProject('edit')">
+                                <li ng-if="authorized${workspace.name.capitalize()}('edit')">
                                     <a hotkey="{ 'shift+e': hotkeyClick}"
                                        hotkey-description="${message(code: 'is.ui.apps.configure')}"
                                        href
-                                       ng-click="showProjectEditModal()">
-                                        <g:message code="is.projectmenu.submenu.project.edit"/> <small class="text-muted">(SHIFT+E)</small>
+                                       ng-click="show${workspace.name.capitalize()}EditModal()">
+                                        <g:message code="todo.is.ui.workspaces.submenu.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                     </a>
                                 </li>
                                 <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
-                                    <li ng-if="authorizedProject('edit')">
+                                    <li ng-if="authorized${workspace.name.capitalize()}('edit')">
                                         <a hotkey="{ 'shift+d': export}"
                                            hotkey-description="${message(code: 'is.dialog.exportProject.title')}"
                                            href
-                                           ng-click="export(project)">
-                                            <g:message code="is.projectmenu.submenu.project.export"/> <small class="text-muted">(SHIFT+X)</small>
+                                           ng-click="export(${workspace.name})">
+                                            <g:message code="todo.is.ui.workspaces.submenu.export"/> <small class="text-muted">(SHIFT+X)</small>
                                         </a>
                                     </li>
                                 </g:if>
@@ -128,22 +130,16 @@
                                     </a>
                                 </li>
                             </g:if>
-                            <g:if test="${projectFilteredsList}">
-                                <li role="presentation" class="divider" style='display:${projectFilteredsList ? 'block' : 'none'}'></li>
-                                <li role="presentation" class="dropdown-header" id="my-projects" style='display:${projectFilteredsList ? 'block' : 'none'}'>
-                                    ${message(code: 'is.projectmenu.submenu.project.my.title')}
+                            <g:if test="${workspacesFilteredsList}">
+                                <li role="presentation" class="divider" style='display:${workspacesFilteredsList ? 'block' : 'none'}'></li>
+                                <li role="presentation" class="dropdown-header" style='display:${workspacesFilteredsList ? 'block' : 'none'}'>
+                                    ${message(code: 'todo.is.ui.workspaces.my.title')}
                                 </li>
-                                <g:each var="curProject" in="${projectFilteredsList}">
-                                    <li class="project">
-                                        <a class="${project?.id == curProject.id ? 'active' : ''}"
-                                           href="${project?.id == curProject.id ? '' : createLink(controller: "scrumOS", params: [project: curProject.pkey]) + '/'}"
-                                           title="${curProject.name.encodeAsHTML()}">
-                                            ${curProject.name.encodeAsHTML()}
-                                        </a>
-                                    </li>
+                                <g:each var="workspaceFiltered" in="${workspacesFilteredsList}">
+                                    <is:workspaceListItem workspace="${workspaceFiltered}" currentWorkspace="${workspace?.object}"/>
                                 </g:each>
                             </g:if>
-                            <g:if test="${moreProjectsExist}">
+                            <g:if test="${moreWorkspacesExist}">
                                 <li>
                                     <a href ng-click="showProjectListModal('user')">
                                         <g:message code="is.projectmenu.submenu.project.more"/>

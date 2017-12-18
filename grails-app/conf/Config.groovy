@@ -23,6 +23,7 @@
  */
 
 
+import grails.plugin.springsecurity.SpringSecurityService
 import grails.util.Holders
 import grails.util.Metadata
 import org.apache.log4j.DailyRollingFileAppender
@@ -30,10 +31,12 @@ import org.apache.log4j.PatternLayout
 import org.codehaus.groovy.grails.plugins.web.taglib.JavascriptTagLib
 import org.icescrum.core.domain.*
 import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
+import javax.sound.sampled.Port
 
 /* Headless mode */
 System.setProperty("java.awt.headless", "true");
@@ -69,9 +72,9 @@ icescrum.project.private.enable = true
 icescrum.project.private.default = false
 
 /* Portfolio administration */
+icescrum.portfolio.import.enable = false
+icescrum.portfolio.export.enable = false
 icescrum.portfolio.creation.enable = true
-icescrum.portfolio.private.enable = true
-icescrum.portfolio.private.default = false
 
 /* iceScrum base dir */
 try {
@@ -183,7 +186,7 @@ icescrum.resourceBundles = [
 ]
 
 icescrum.marshaller = [
-        portfolio           : [],
+        portfolio           : [textile: ['description']],
         story               : [include: ['testState', 'tags', 'dependences', 'followed', 'countDoneTasks'],
                                exclude: ['voters'],
                                withIds: ['actors'],
@@ -273,7 +276,7 @@ icescrum {
             description = 'is.workspace.project.description'
             config = { project -> [key: project.pkey, path: 'p'] }
             params = { project -> [project: project.id] }
-            indexScrumOS = { projectWorkspace, user, securityService, springSecurityService ->
+            indexScrumOS = { projectWorkspace, User user, SecurityService securityService, SpringSecurityService springSecurityService ->
                 def project = projectWorkspace.object
                 if (project?.preferences?.hidden && !securityService.inProject(project, springSecurityService.authentication) && !securityService.stakeHolder(project, springSecurityService.authentication, false)) {
                     forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
@@ -293,7 +296,14 @@ icescrum {
             description = 'is.workspace.portfolio.description'
             config = { portfolio -> [key: portfolio.fkey, path: 'f'] }
             params = { portfolio -> [portfolio: portfolio.id] }
-            indexScrumOS = { portfolioWorkspace, user, securityService, springSecurityService -> true }
+            indexScrumOS = { portfolioWorkspace, User user, SecurityService securityService, SpringSecurityService springSecurityService ->
+                Portfolio portfolio = portfolioWorkspace.object
+                if (!securityService.businessOwner(portfolio, springSecurityService.authentication) && !securityService.portfolioStakeHolder(portfolio, springSecurityService.authentication)) {
+                    forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
+                    return false // Tells the controller to stop its execution. Cannot "return" directly from here since it only returns from the closure
+                }
+                return true
+            }
         }
     }
 }

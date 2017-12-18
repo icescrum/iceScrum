@@ -21,3 +21,9 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:render template="/portfolio/templates/form.general"/>
+<g:render template="/portfolio/templates/form.projects"/>
+<g:render template="/portfolio/templates/form.members"/>
+<g:render template="/portfolio/templates/edit.general"/>
+<g:render template="/portfolio/templates/edit.projects"/>
+<g:render template="/portfolio/templates/edit.members"/>
+<g:render template="/portfolio/templates/edit.administration"/>

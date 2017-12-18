@@ -143,7 +143,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     });
 }]);
 
-extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'manualSave', 'projectTemplate', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session, manualSave, projectTemplate) {
+extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'manualSave', 'projectTemplate', 'lastStepButtonLabel', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session, manualSave, projectTemplate, lastStepButtonLabel) {
     $controller('abstractProjectCtrl', {$scope: $scope});
     $scope.type = 'newProject';
     $scope.checkProjectPropertyUrl = '/project/available';
@@ -243,6 +243,7 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
         $scope.computePlanning();
     });
     $scope.totalDuration = 0;
+    $scope.lastStepButtonLabel = lastStepButtonLabel;
     $scope.sprints = [];
 }]);
 

@@ -40,6 +40,7 @@ class ScrumOSController implements ControllerErrorHandler {
     def messageSource
     def servletContext
     def projectService
+    def portfolioService
     def securityService
     def grailsApplication
     def uiDefinitionService
@@ -47,14 +48,18 @@ class ScrumOSController implements ControllerErrorHandler {
 
     def index() {
         def user = springSecurityService.currentUser
+        def workspaces = []
         def userProjects = user ? projectService.getAllActiveProjectsByUser(user) : []
-        def projectsLimit = 9
+        workspaces.addAll(userProjects)
+        def userPortfolios = user ? portfolioService.getAllPortfoliosByUser(user) : []
+        workspaces.addAll(userPortfolios)
+        def workspacesLimit = 9
         def browsableProjectsCount = request.admin ? Project.count() : ProjectPreferences.countByHidden(false, [cache: true])
-        def model = [user                  : user,
-                     lang                  : RCU.getLocale(request).toString().substring(0, 2),
-                     browsableProjectsExist: browsableProjectsCount > 0,
-                     moreProjectsExist     : userProjects?.size() > projectsLimit,
-                     projectFilteredsList  : userProjects.take(projectsLimit)]
+        def model = [user                    : user,
+                     lang                    : RCU.getLocale(request).toString().substring(0, 2),
+                     browsableWorkspacesExist: browsableProjectsCount > 0,
+                     moreWorkspacesExist     : workspaces?.size() > workspacesLimit,
+                     workspacesFilteredsList : workspaces.take(workspacesLimit)]
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         if (workspace) {
             workspace.indexScrumOS.delegate = this
@@ -63,7 +68,7 @@ class ScrumOSController implements ControllerErrorHandler {
                 return
             }
             model."$workspace.name" = workspace.object
-            model."workspaceIcon" = workspace.icon ?: null
+            model."workspace" = workspace
         }
         render(status: 200, view: 'index', model: model)
     }

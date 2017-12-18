@@ -1,6 +1,6 @@
 <%@ page import="org.icescrum.core.domain.security.Authority; grails.plugin.springsecurity.SpringSecurityUtils; org.icescrum.core.support.ApplicationSupport" %>
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2017 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -38,14 +38,11 @@
                    ng-change="nameChanged()"
                    ng-required="isCurrentStep(1, 'portfolio')">
             <span class="input-group-btn">
-                <button class="btn btn-model"
+                <button class="btn btn-hidden"
                         type="button"
-                        ng-disabled="!enableVisibilityChange()"
-                        ng-model="portfolio.hidden"
-                        ng-click="portfolio.hidden = !portfolio.hidden;"
-                        ng-class="{ 'btn-danger': portfolio.hidden, 'btn-success': !portfolio.hidden }">
-                    <i class="fa fa-lock" ng-class="{ 'fa-lock': portfolio.hidden, 'fa-unlock': !portfolio.hidden }"></i>
-                    {{ message(portfolio.hidden  ? 'is.workspace.hidden' : 'is.workspace.public') }}
+                        disabled="disabled">
+                    <i class="fa fa-lock"></i>
+                    ${g.message(code: 'is.workspace.hidden')}
                 </button>
             </span>
         </div>
