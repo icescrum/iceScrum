@@ -36,7 +36,6 @@ import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
-import javax.sound.sampled.Port
 
 /* Headless mode */
 System.setProperty("java.awt.headless", "true");

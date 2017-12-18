@@ -68,7 +68,7 @@ class ScrumOSController implements ControllerErrorHandler {
                 return
             }
             model."$workspace.name" = workspace.object
-            model."workspace" = workspace
+            model.workspace = workspace
         }
         render(status: 200, view: 'index', model: model)
     }

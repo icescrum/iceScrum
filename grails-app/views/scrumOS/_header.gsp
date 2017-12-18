@@ -1,4 +1,4 @@
-<%@ page import="grails.util.GrailsNameUtils; grails.converters.JSON" %>
+<%@ page import="grails.converters.JSON" %>
 %{--
 - Copyright (c) 2014 Kagilum SAS.
 -

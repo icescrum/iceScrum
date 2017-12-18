@@ -30,8 +30,6 @@ import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
 import org.icescrum.core.error.ControllerErrorHandler
-import org.icescrum.core.utils.ServicesUtils
-import org.icescrum.web.presentation.windows.ProjectController
 
 @Secured('isAuthenticated()')
 class PortfolioController implements ControllerErrorHandler {
