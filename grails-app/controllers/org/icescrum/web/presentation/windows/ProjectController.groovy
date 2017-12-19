@@ -515,27 +515,19 @@ class ProjectController implements ControllerErrorHandler {
             render(status: 403)
             return
         }
-        id = id ?: springSecurityService.currentUser.id
-        def light = params.light != null ? params.remove('light') : true
-        def projects = []
-        switch (role) {
-            case 'productOwner':
-                projects = listByRole(id, term, paginate, page, count, light, SecurityService.productOwnerPermissions)
-                break;
-            case 'scrumMaster':
-                projects = listByRole(id, term, paginate, page, count, light, SecurityService.scrumMasterPermissions)
-                break;
-            case 'teamMember':
-                projects = listByRole(id, term, paginate, page, count, light, SecurityService.teamMemberPermissions)
-                break;
-            case 'stakeHolder':
-                projects = listByRole(id, term, paginate, page, count, light, SecurityService.stakeHolderPermissions)
-                break;
+        if (!id) {
+            id = springSecurityService.currentUser.id
         }
-        if (create && !projects.any { it.name == term }) {
-            if (!Project.countByName(term)) {
-                projects.add(0, [name: params.term, pkey: ''])
-            }
+        def light = params.light != null ? params.remove('light') : true
+        def permissions = [
+                'productOwner': SecurityService.productOwnerPermissions,
+                'scrumMaster' : SecurityService.scrumMasterPermissions,
+                'teamMember'  : SecurityService.teamMemberPermissions,
+                'stakeHolder' : SecurityService.stakeHolderPermissions
+        ]
+        def projects = listByRole(id, term, paginate, page, count, light, permissions[role])
+        if (create && !projects.any { it.name == term } && !Project.countByName(term)) {
+            projects.add(0, [name: params.term, pkey: ''])
         }
         render(status: 200, contentType: 'application/json', text: projects as JSON)
     }
