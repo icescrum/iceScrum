@@ -85,7 +85,9 @@ extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'Featur
         selectionUpdated: function(selectedIds) {
             switch (selectedIds.length) {
                 case 0:
-                    $state.go($scope.viewName);
+                    if (!_.isUndefined($state.params.featureId) || !_.isUndefined($state.params.featureListId)) {
+                        $state.go($scope.viewName);
+                    }
                     break;
                 case 1:
                     $state.go($scope.viewName + '.details' + ($state.params.featureTabId ? '.tab' : ''), {featureId: selectedIds});
