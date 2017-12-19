@@ -26,7 +26,7 @@ services.factory('Portfolio', ['Resource', function($resource) {
     return $resource('/portfolio/:id/:action');
 }]);
 
-services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Project', '$q', function(Portfolio, Session, FormService, Project, $q) {
+services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'ProjectService', '$q', function(Portfolio, Session, FormService, ProjectService, $q) {
     this.save = function(portfolio) {
         portfolio.class = 'portfolio';
         return Portfolio.save(portfolio).$promise;
@@ -39,10 +39,10 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
     };
     this.listProjects = function(portfolio) {
         if (_.isEmpty(portfolio.projects)) {
-            return Project.listByPortfolio({portfolioId: portfolio.id}, function(data) {
-                portfolio.projects = data;
+            return ProjectService.listByPortfolio(portfolio.id).then(function(projects) {
+                portfolio.projects = projects;
                 portfolio.projects_count = portfolio.projects.length;
-            }).$promise;
+            });
         } else {
             return $q.when(portfolio.projects);
         }

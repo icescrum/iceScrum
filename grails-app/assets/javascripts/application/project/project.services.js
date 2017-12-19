@@ -109,6 +109,9 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         params.role = role;
         return Project.listByUserAndRole(params).$promise;
     };
+    this.listByPortfolio = function(portfolioId) {
+        return Project.listByPortfolio({portfolioId: portfolioId}).$promise
+    };
     this.getActivities = function(project) {
         return Project.query({action: 'activities', id: project.id}).$promise;
     };
