@@ -87,7 +87,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         var groupByStateAndSort = function(tasksDictionnary) {
             return _.mapValues(tasksDictionnary, function(tasks) {
                 return _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
-                    return _.sortBy($filter('filter')(tasks, $scope.currentSprintFilter.filter), 'rank');
+                    return _.sortBy(_.filter(tasks, $scope.currentSprintFilter.filter), 'rank');
                 });
             });
         };
@@ -269,7 +269,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
     $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
     //if saved filter is not available anymore
-    $scope.currentSprintFilter = $scope.currentSprintFilter ? $scope.currentSprintFilter : 'allTasks';
+    $scope.currentSprintFilter = $scope.currentSprintFilter ? $scope.currentSprintFilter : _.find($scope.sprintFilters, {id: 'allTasks'});
 
     $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;
