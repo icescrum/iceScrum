@@ -42,6 +42,7 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
             return ProjectService.listByPortfolio(portfolio.id).then(function(projects) {
                 portfolio.projects = projects;
                 portfolio.projects_count = portfolio.projects.length;
+                return projects;
             });
         } else {
             return $q.when(portfolio.projects);
