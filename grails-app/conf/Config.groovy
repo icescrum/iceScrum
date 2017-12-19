@@ -624,7 +624,6 @@ grails {
         dynamicUpdate true
     }
     gorm.default.constraints = {
-        println "ici" ${ApplicationSupport.isMySQLUTF8mb4()}
         if (ApplicationSupport.isMySQLUTF8mb4()) {
             keyMaxSize(maxSize: 191)
         } else {
