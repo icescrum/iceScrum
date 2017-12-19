@@ -41,7 +41,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
                 $scope.holder.project = project;
             });
         }
-        ProjectService.listByUser({term: term, paginate: true}).then(function(projectsAndCount) {
+        ProjectService.listByUser({term: term}).then(function(projectsAndCount) {
             $scope.projects = projectsAndCount.projects;
             if (!term && widget.settings && widget.settings.backlog && !_.find($scope.projects, {id: widget.settings.backlog.project.id})) {
                 $scope.projects.unshift(widget.settings.backlog.project);

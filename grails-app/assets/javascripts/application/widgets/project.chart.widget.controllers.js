@@ -46,7 +46,7 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
                 $scope.project = project; // Required for projectChartCtrl
             });
         }
-        ProjectService.listByUser({term: term, paginate: true}).then(function(projectsAndCount) {
+        ProjectService.listByUser({term: term}).then(function(projectsAndCount) {
             $scope.projects = projectsAndCount.projects;
             if (!term && widget.settings && widget.settings.project && !_.find($scope.projects, {id: widget.settings.project.id})) {
                 $scope.projects.unshift(widget.settings.project);

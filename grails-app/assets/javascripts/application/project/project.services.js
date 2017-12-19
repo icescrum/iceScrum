@@ -79,6 +79,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         if (!params) {
             params = {};
         }
+        params.paginate = true;
         return Project.get(params).$promise;
     };
     this.listPublic = function(params) {
@@ -86,6 +87,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
             params = {};
         }
         params.action = 'listPublic';
+        params.paginate = true;
         return Project.get(params).$promise;
     };
     this.listPublicWidget = function() {
@@ -96,6 +98,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
             params = {};
         }
         params.action = 'user';
+        params.paginate = true;
         return Project.get(params).$promise;
     };
     this.listByUserAndRole = function(userId, role, params) {

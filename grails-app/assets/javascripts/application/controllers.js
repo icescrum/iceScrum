@@ -292,7 +292,7 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioSe
                         user: ProjectService.listByUser,
                         all: ProjectService.list
                     }[listType];
-                    var params = {term: $scope.projectSearch, paginate: true, page: $scope.currentPage, count: $scope.projectsPerPage};
+                    var params = {term: $scope.projectSearch, page: $scope.currentPage, count: $scope.projectsPerPage};
                     listFunction(params).then(function(projectsAndCount) {
                         $scope.projectCount = projectsAndCount.count;
                         $scope.projects = projectsAndCount.projects;
