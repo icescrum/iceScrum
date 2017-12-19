@@ -122,7 +122,9 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         $scope.refreshTasks();
         var editableUser = angular.copy(Session.user);
         editableUser.preferences.filterTask = sprintFilter.id;
-        UserService.update(editableUser);
+        UserService.update(editableUser).then(function() {
+            Session.user.preferences.filterTask = sprintFilter.id;
+        });
     };
     $scope.storyFilter = function(story) {
         return $scope.currentSprintFilter.id == 'allTasks' ||
