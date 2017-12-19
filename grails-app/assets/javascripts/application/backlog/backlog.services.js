@@ -29,7 +29,7 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryServi
         return Backlog.get({id: id, projectId: project.id}).$promise;
     };
     this.list = function(project) {
-        var cachedBacklogs = CacheService.getCache('backlog');
+        var cachedBacklogs = project.backlogs;
         return _.isEmpty(cachedBacklogs) ?
                Backlog.query({projectId: project.id}, function(backlogs) {
                    _.each(backlogs, function(backlog) {

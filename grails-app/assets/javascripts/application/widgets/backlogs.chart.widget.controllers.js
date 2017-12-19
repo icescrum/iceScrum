@@ -55,7 +55,6 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
                 $scope.holder.backlog = backlog;
             });
         }
-        CacheService.emptyCache('backlog'); // TODO REMOVE THIS REALLY BAD HACK NEEDED BECAUSE CACHE IS PROJECT DEPENDENT
         BacklogService.list($scope.holder.project).then(function(backlogs) {
             $scope.holder.backlogs = backlogs;
         });

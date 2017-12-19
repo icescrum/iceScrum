@@ -264,7 +264,7 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
         PortfolioService.update(p)
             .then(function(updatedPortfolio) {
                 if ($scope.workspaceType == 'portfolio') {
-                    Session.updateWorkspace(updatedPortfolio);
+                    Session.updateWorkspace(updatedPortfolio); // TODO replace by crudMethods[IceScrumEventType.UPDATE] in PortfolioService
                 }
                 $scope.notifySuccess('todo.is.ui.portfolio.general.updated');
                 $scope.resetPortfolioForm();

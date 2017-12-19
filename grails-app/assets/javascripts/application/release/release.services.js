@@ -27,7 +27,6 @@ services.factory('Release', ['Resource', function($resource) {
 
 services.service("ReleaseService", ['$q', '$state', '$injector', 'Release', 'ReleaseStatesByName', 'IceScrumEventType', 'Session', 'CacheService', 'PushService', 'FormService', function($q, $state, $injector, Release, ReleaseStatesByName, IceScrumEventType, Session, CacheService, PushService, FormService) {
     var self = this;
-    Session.getProject().releases = CacheService.getCache('release');
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(release) {
         CacheService.addOrUpdate('release', release);

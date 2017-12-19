@@ -320,7 +320,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
         ProjectService.updateTeam(p)
             .then(function(updatedProject) {
                 if ($scope.workspaceType == 'project') {
-                    Session.updateWorkspace(updatedProject);
+                    Session.updateWorkspace(updatedProject); // TODO replace by crudMethods[IceScrumEventType.UPDATE] in ProjectService
                 }
                 $scope.resetTeamForm();
                 $scope.notifySuccess('todo.is.ui.project.members.updated');
@@ -354,7 +354,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
         ProjectService.update(project)
             .then(function(updatedProject) {
                 if ($scope.workspaceType == 'project') {
-                    Session.updateWorkspace(updatedProject);
+                    Session.updateWorkspace(updatedProject); // TODO replace by crudMethods[IceScrumEventType.UPDATE] in ProjectService
                 }
                 $scope.notifySuccess('todo.is.ui.project.general.updated');
                 $scope.resetProjectForm();

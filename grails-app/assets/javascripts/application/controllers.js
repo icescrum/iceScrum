@@ -597,7 +597,7 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
                 $scope.application.context = urlContext;
                 $scope.setContextTermAndColorIfNeeded();
                 $scope.application.search = null;
-                CacheService.emptyCaches();
+                CacheService.emptyCaches('project');
                 $state.reload();
             }
         }
@@ -610,10 +610,8 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
     });
     $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
         if (!event.defaultPrevented) {
-            if (fromState.name && toState.name) {
-                if (fromState.name.split('.')[0] !== toState.name.split('.')[0]) {
-                    $scope.application.search = null;
-                }
+            if (fromState.name && toState.name && fromState.name.split('.')[0] !== toState.name.split('.')[0]) {
+                $scope.application.search = null;
             }
             // Preserve context across state change, no other way for the moment, see https://github.com/angular-ui/ui-router/issues/202 https://github.com/angular-ui/ui-router/issues/539
             var appContext = $scope.application.context;

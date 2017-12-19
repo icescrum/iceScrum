@@ -38,6 +38,7 @@ services.factory('Project', ['Resource', function($resource) {
 }]);
 
 services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheService', 'IceScrumEventType', function(Project, Session, FormService, CacheService, IceScrumEventType) {
+    var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(project) {
         CacheService.addOrUpdate('project', project);
@@ -53,7 +54,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     };
     this.save = function(project) {
         project.class = 'project';
-        return Project.save(project).$promise;
+        return Project.save(project, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.updateTeam = function(project) {
         // Wrap the project inside a "projectd" because by default the formObjectData function will turn it into a "project" object
@@ -73,14 +74,19 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         return Project.update({id: project.id, action: 'unArchive'}, {}).$promise;
     };
     this['delete'] = function(project) {
-        return Project.delete({id: project.id}).$promise;
+        return Project.delete({id: project.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
+    };
+    this.mergeProjects = function(projects) {
+        _.each(projects, crudMethods[IceScrumEventType.CREATE]);
     };
     this.list = function(params) {
         if (!params) {
             params = {};
         }
         params.paginate = true;
-        return Project.get(params).$promise;
+        return Project.get(params, function(data) {
+            self.mergeProjects(data.projects);
+        }).$promise;
     };
     this.listPublic = function(params) {
         if (!params) {
@@ -88,10 +94,13 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         }
         params.action = 'listPublic';
         params.paginate = true;
-        return Project.get(params).$promise;
+        params.paginate = true;
+        return Project.get(params, function(data) {
+            self.mergeProjects(data.projects)
+        }).$promise;
     };
     this.listPublicWidget = function() {
-        return Project.query({action: 'listPublicWidget'}).$promise;
+        return Project.query({action: 'listPublicWidget'}, self.mergeProjects).$promise;
     };
     this.listByUser = function(params) {
         if (!params) {
@@ -99,7 +108,12 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         }
         params.action = 'user';
         params.paginate = true;
-        return Project.get(params).$promise;
+        params.paginate = true;
+        return Project.get(params, function(data) {
+            if (!params.light) {
+                self.mergeProjects(data.projects);
+            }
+        }).$promise;
     };
     this.listByUserAndRole = function(userId, role, params) {
         if (!params) {
@@ -107,10 +121,16 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         }
         params.userId = userId;
         params.role = role;
-        return Project.listByUserAndRole(params).$promise;
+        return Project.listByUserAndRole(params, function(data) {
+            if (!params.light) {
+                self.mergeProjects(data.projects);
+            }
+        }).$promise;
     };
     this.listByPortfolio = function(portfolioId) {
-        return Project.listByPortfolio({portfolioId: portfolioId}).$promise
+        return Project.listByPortfolio({portfolioId: portfolioId}, function(projects) {
+            self.mergeProjects(projects);
+        }).$promise
     };
     this.getActivities = function(project) {
         return Project.query({action: 'activities', id: project.id}).$promise; // TODO use httpGet
