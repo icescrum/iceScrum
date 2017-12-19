@@ -55,9 +55,6 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         project.class = 'project';
         return Project.save(project).$promise;
     };
-    this.countMembers = function(project) { // Requires the team to be loaded !
-        return _.union(_.map(project.team.scrumMasters, 'id'), _.map(project.team.members, 'id'), _.map(project.productOwners, 'id')).length;
-    };
     this.updateTeam = function(project) {
         // Wrap the project inside a "projectd" because by default the formObjectData function will turn it into a "project" object
         // The "project" object conflicts with the "project" attribute expected by a filter which expects it to be either a number (id) or string (pkey)
@@ -113,10 +110,10 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         return Project.listByPortfolio({portfolioId: portfolioId}).$promise
     };
     this.getActivities = function(project) {
-        return Project.query({action: 'activities', id: project.id}).$promise;
+        return Project.query({action: 'activities', id: project.id}).$promise; // TODO use httpGet
     };
     this.openChart = function(project, chart) {
-        return Project.get({id: project.id, action: chart}).$promise;
+        return Project.get({id: project.id, action: chart}).$promise; // TODO use httpGet
     };
     this.authorizedProject = function(action, project) {
         switch (action) {
@@ -140,5 +137,8 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     };
     this.getTags = function() {
         return FormService.httpGet('search/tag');
+    };
+    this.countMembers = function(project) { // Requires the team to be loaded !
+        return _.union(_.map(project.team.scrumMasters, 'id'), _.map(project.team.members, 'id'), _.map(project.productOwners, 'id')).length;
     };
 }]);
