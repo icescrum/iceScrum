@@ -315,6 +315,7 @@ grails.attachmentable.taskDir = {
 }
 
 grails.taggable.preserve.case = true
+grails.taggable.utf8mb4 = ApplicationSupport.isMySQLUTF8mb4()
 
 grails.plugin.databasemigration.updateOnStart = true
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
