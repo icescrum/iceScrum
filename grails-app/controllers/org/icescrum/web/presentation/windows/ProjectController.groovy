@@ -518,7 +518,7 @@ class ProjectController implements ControllerErrorHandler {
         if (!id) {
             id = springSecurityService.currentUser.id
         }
-        def light = params.light != null ? params.remove('light') : true
+        def light = params.light != null ? params.remove('light') : false
         def permissions = [
                 'productOwner': SecurityService.productOwnerPermissions,
                 'scrumMaster' : SecurityService.scrumMasterPermissions,

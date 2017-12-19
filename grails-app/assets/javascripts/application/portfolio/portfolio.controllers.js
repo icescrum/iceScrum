@@ -48,7 +48,7 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
         }
         return p;
     };
-    $scope.selectProject = function(project, model, label) {
+    $scope.selectProject = function(project) {
         if (project.portfolio) {
             return;
         }
@@ -58,7 +58,7 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
             project.pkey = _.upperCase(project.name).replace(/\W+/g, "").substring(0, 10);
             addNewProject(project);
         }
-        this.projectSelection = null;
+        $scope.formHolder.projectSelection = null;
     };
     var addNewProject = function(project) {
         $uibModal.open({
@@ -149,23 +149,6 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', 
         if (!fkeyModel.$touched) {
             $scope.portfolio.fkey = _.upperCase($scope.portfolio.name).replace(/\W+/g, "").substring(0, 10);
             fkeyModel.$setDirty(); // To trigger remote validation
-        }
-    };
-    $scope.searchProject = function(val) {
-        return ProjectService.listByUserAndRole(Session.user.id, 'productOwner', {term: val, create: true, light: "startDate,preferences,team,productOwners"}).then(function(projects) {
-            var projectsList = _.map($scope.portfolio.projects, function(project) { return project.name; });
-            return _.filter(projects, function(project) {
-                return !_.includes(projectsList, project.name);
-            });
-        })
-    };
-    $scope.removeProject = function(projectToRemove) {
-        if (projectToRemove.new) {
-            ProjectService.delete(projectToRemove).then(function() {
-                $scope.portfolio.projects = _.pull($scope.portfolio.projects, projectToRemove);
-            });
-        } else {
-            $scope.portfolio.projects = _.pull($scope.portfolio.projects, projectToRemove);
         }
     };
     $scope.searchUsers = function(val) {

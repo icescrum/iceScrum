@@ -32,9 +32,9 @@
            uib-typeahead="project as project.name for project in searchProject($viewValue)"
            typeahead-loading="searching"
            typeahead-wait-ms="250"
-           typeahead-on-select="selectProject($item, $model); "
+           typeahead-on-select="selectProject($item); "
            typeahead-template-url="select.or.create.project.html"
-           ng-model="projectSelection">
+           ng-model="formHolder.projectSelection">
     <span class="input-group-addon"><i class="fa fa-search"></i></span>
 </div>
 <table class="table table-striped table-bordered" ng-if="portfolio.projects.length > 0">
