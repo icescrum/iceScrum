@@ -52,8 +52,8 @@
                         <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                                 <g:render template="/scrumOS/logo"/>
-                            </svg> <g:if test="${workspace?.icon}"><i class="fa fa-${workspace.icon}"></i><span class="text-ellipsis" title="${workspace.object.name}"
-                                                                                                                style="display:inline-block; max-width: 100px">${workspace.object.name}</span></g:if> <i class="fa fa-caret-down"></i>
+                            </svg> <g:if test="${workspace?.icon}"><i class="fa fa-${workspace.icon}"></i><span class="text-ellipsis" title="{{ workspace.name }}"
+                                                                                                                style="display:inline-block; max-width: 100px">{{ workspace.name }}</span></g:if> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li role="presentation" class="dropdown-header">
@@ -103,8 +103,8 @@
                             <g:if test="${workspace?.object}">
                                 <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="divider"></li>
                                 <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-header">
-                                    ${message(code: 'todo.is.ui.workspaces.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="${workspace.object.name}"
-                                                                                                                   style="display:inline-block; max-width:70px"><b>${workspace.object.name}</b></span>
+                                    ${message(code: 'todo.is.ui.workspaces.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="{{ workspace.name }}"
+                                                                                                                   style="display:inline-block; max-width:70px"><b>{{ workspace.name }}</b></span>
                                 </li>
                                 <li ng-if="authorized${workspace.name.capitalize()}('edit')">
                                     <a hotkey="{ 'shift+e': hotkeyClick}"

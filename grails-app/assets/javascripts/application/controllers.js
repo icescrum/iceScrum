@@ -413,7 +413,9 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioSe
         modal.result.then(downloadFile, downloadFile);
     };
     // Init
-    $scope.project = Session.getProject();
+    Session.getWorkspace().then(function(workspace) {
+        $scope.workspace = workspace;
+    });
     $scope.menuDragging = false;
     $scope.sortableId = 'menu';
     var menuSortableChange = function(event) {
