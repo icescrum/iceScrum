@@ -42,9 +42,9 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
         _.extend(self.workspace, workspace);
     };
     if (isSettings.workspace) {
-        var workspaceConstructor = $injector.get(isSettings.workspace.class);
+        var workspaceConstructor = $injector.get(isSettings.workspace.class); // Get the ressource constructor, e.g. Portfolio or Project
         self.workspace = new workspaceConstructor();
-        self.updateWorkspace(isSettings.workspace); // TODO inline update workspace once it's not used elsewhere
+        _.extend(self.workspace, isSettings.workspace);
     } else {
         self.workspace = {};
     }
@@ -185,9 +185,13 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
         });
         CacheService.addOrUpdate('project', project);
     };
-    this.initWorkspace = function(workspace) {
-        if (workspace.class == 'Project') {
-            initProject();
+    this.initWorkspace = function() {
+        if (self.workspace.class) {
+            var workspaceType = self.workspace.class.toLowerCase();
+            if (workspaceType == 'project') {
+                initProject();
+            }
+            self.workspaceType = workspaceType;
         }
         self.isWorkspaceResolved.resolve();
     };

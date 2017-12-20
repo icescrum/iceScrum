@@ -888,11 +888,10 @@ var isApplication = angular.module('isApplication', [
             $rootScope.warning = isSettings.warning;
             $rootScope.workspaceType = isSettings.workspace ? isSettings.workspace.class.toLowerCase() : null;
             $rootScope.displayWhatsNew = isSettings.displayWhatsNew;
-            if (isSettings.workspace) {
-                Session.initWorkspace(isSettings.workspace);
-            }
+            Session.initWorkspace();
+            $rootScope.workspaceType = Session.workspaceType;
             if ($rootScope.workspaceType == 'project') {
-                $controller('contextCtrl', {$scope: $rootScope}); // Needs to be done after workspace init
+                $controller('contextCtrl', {$scope: $rootScope});
             }
             PushService.initPush(isSettings.workspace ? isSettings.workspace.id : null, $rootScope.workspaceType);
             I18nService.initMessages(isSettings.messages);
