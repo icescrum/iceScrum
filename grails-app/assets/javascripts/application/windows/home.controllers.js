@@ -17,63 +17,11 @@
  *
  * Authors:
  *
+ * Vincent Barrier (vbarrier@kagilum.com)
+ * Nicolas Noullet (nnoullet@kagilum.com)
+ * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
-controllers.controller('homeCtrl', ['$scope', '$uibModal', 'Session', 'CacheService', 'WidgetService', function($scope, $uibModal, Session, CacheService, WidgetService) {
-    // Functions
-    $scope.showAddWidgetModal = function() {
-        $uibModal.open({
-            keyboard: false,
-            templateUrl: 'addWidget.modal.html',
-            controller: ['$scope', function($scope) {
-                $scope.detailsWidgetDefinition = function(widgetDefinition) {
-                    $scope.widgetDefinition = widgetDefinition;
-                    $scope.addWidgetForm.$invalid = !widgetDefinition.available;
-                };
-                $scope.addWidget = function(widgetDefinition) {
-                    WidgetService.save(widgetDefinition.id).then(function() {
-                        $scope.$close();
-                    });
-                };
-                // Init
-                $scope.widgetDefinition = {};
-                $scope.widgetDefinitions = [];
-                WidgetService.getWidgetDefinitions().then(function(widgetDefinitions) {
-                    if (widgetDefinitions.length > 0) {
-                        $scope.widgetDefinitions = widgetDefinitions;
-                        $scope.widgetDefinition = widgetDefinitions[0];
-                    }
-                });
-            }],
-            size: 'lg'
-        });
-    };
-    $scope.templateWidgetUrl = function(widget) {
-        return 'ui/widget/' + widget.widgetDefinitionId + (widget.id ? '/' + widget.id : '');
-    };
-    // Init
-    var position = function(event) {
-        var widget = event.source.itemScope.modelValue;
-        widget.position = event.dest.index + 1;
-        WidgetService.update(widget).catch(function() {
-            $scope.revertSortable(event);
-        });
-    };
-    $scope.widgetSortableOptions = {
-        itemMoved: position,
-        orderChanged: position,
-        placeholderDisableComputeBounds: true,
-        placeholder: function($scopeItem) {
-            var widget = $scopeItem.element.find('.panel')[0];
-            var width = widget.getBoundingClientRect().width;
-            var height = widget.getBoundingClientRect().height;
-            return "<div style='height:" + height + "px;width:" + width + "px;'/>";
-        },
-        sortableId: 'widgets',
-        containment: '#view-home > .row',
-        containerPositioning: 'relative'
-    };
-    $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
-    $scope.widgets = CacheService.getCache('widget');
-    WidgetService.list();
+controllers.controller('homeCtrl', ['$scope', '$controller', function($scope, $controller) {
+    $controller('widgetViewCtrl', {$scope: $scope, containmentSelector: '#view-home > .row'});
 }]);

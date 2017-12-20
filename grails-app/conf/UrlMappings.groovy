@@ -125,6 +125,13 @@ class UrlMappings {
             controller = 'widget'
             action = 'definitions'
         }
+        "/ui/widget/definitions/portfolio/$portfolio" {
+            controller = 'widget'
+            action = 'definitions'
+            constraints {
+                portfolio(matches: /\d+/)
+            }
+        }
         // Window in null workspace
         "/ui/window/$windowDefinitionId" {
             controller = 'window'

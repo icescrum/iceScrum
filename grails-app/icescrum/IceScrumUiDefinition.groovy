@@ -29,7 +29,7 @@ import org.icescrum.core.utils.ServicesUtils
         icon                        default: ''                   | String (fontawesome)
         help                        default: ''                   | String (i18n key)
         secured                     default: "permitAll()"        | String (spEl expression)
-        workspace                   default: "project"            | String (project or ...)
+        workspace                   default: "project"            | String (project or portfolio or ...)
         templatePath                default: "windowName/window"  | String (full path to template)
         menu { => default: null
             title                   default: ''                   | String or Closure (i18n key)
@@ -167,7 +167,7 @@ windows = {
         icon                        default: ''                   | String (fontawesome)
         title                       default: name                 | String (i18n key or ...)
         secured                     default: "permitAll()"        | String (spEl expression)
-        workspace                   default: null                 | String (project or ...)
+        workspace                   default: null                 | String (project or portfolio or ...)
         ngController                default: null                 | String
         templatePath                default: "/widgets/widgetName/widget"| String (full path to template)
 

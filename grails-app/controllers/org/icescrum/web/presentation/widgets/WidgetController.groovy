@@ -136,11 +136,11 @@ class WidgetController implements ControllerErrorHandler {
     }
 
     @Secured('isAuthenticated()')
-    def definitions() {
+    def definitions(Long portfolio) {
         User user = springSecurityService.currentUser
         def userWidgets = user.preferences.widgets.collect { it.widgetDefinitionId }
         def widgetDefinitions = uiDefinitionService.widgetDefinitions.findResults {
-            ApplicationSupport.isAllowed(it.value, [], true) ? it : null
+            ApplicationSupport.isAllowed(it.value, portfolio ? params : [], true) ? it : null
         }.collect {
             [id         : it.value.id,
              icon       : it.value.icon,
