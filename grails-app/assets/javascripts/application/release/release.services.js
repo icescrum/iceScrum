@@ -98,7 +98,7 @@ services.service("ReleaseService", ['$q', '$state', '$injector', 'Release', 'Rel
         return Release.delete({id: release.id, projectId: project.id}, {}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.openChart = function(release, chart) {
-        return Release.get({id: release.id, projectId: release.parentProject.id, action: chart}).$promise;
+        return FormService.httpGet('p/' + release.parentProject.id + '/release/' + release.id + '/' + chart, null, true);
     };
     this.findAllSprints = function(releases) {
         return _.filter(_.flatMap(releases, 'sprints'), _.identity);

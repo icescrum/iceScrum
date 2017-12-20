@@ -152,7 +152,7 @@
         </div>
         <div class="widget-column">
             <div class="panel-container">
-                <div class="panel panel-light" ng-controller="chartCtrl" ng-init="openChart('project', 'burnup')">
+                <div class="panel panel-light" ng-controller="chartCtrl" ng-init="openChart('project', 'burnup', project)">
                     <div class="panel-heading" ng-controller="projectChartCtrl">
                         <h3 class="panel-title">
                             <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
@@ -178,7 +178,7 @@
                                 </button>
                                 <ul uib-dropdown-menu>
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>
-                                    <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChart('project', chart.id)">{{ message(chart.name) }}</a></li>
+                                    <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChart('project', chart.id, project)">{{ message(chart.name) }}</a></li>
                                     <li ng-if="release.id" class="divider"></li>
                                     <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
                                     <li ng-if="release.id" ng-repeat="chart in projectCharts.release"><a href ng-click="openChart('release', chart.id, release)">{{ message(chart.name) }}</a></li>

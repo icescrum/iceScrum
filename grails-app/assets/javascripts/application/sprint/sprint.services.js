@@ -25,7 +25,7 @@ services.factory('Sprint', ['Resource', function($resource) {
     return $resource('/p/:projectId/sprint/:type/:id/:action');
 }]);
 
-services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'IceScrumEventType', 'Session', 'PushService', 'CacheService', 'ReleaseService', function($q, $state, Sprint, SprintStatesByName, IceScrumEventType, Session, PushService, CacheService, ReleaseService) {
+services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName', 'IceScrumEventType', 'Session', 'PushService', 'CacheService', 'ReleaseService', 'FormService', function($q, $state, Sprint, SprintStatesByName, IceScrumEventType, Session, PushService, CacheService, ReleaseService, FormService) {
     var self = this;
     var crudMethods = {};
     this.crudMethods = crudMethods; // Access from outside
@@ -153,7 +153,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
         return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProject.id, action: 'unPlan'}, {}, self.mergeSprints).$promise;
     };
     this.openChart = function(sprint, project, chart) {
-        return Sprint.get({id: sprint.id, projectId: project.id, action: chart}).$promise;
+        return FormService.httpGet('p/' +  project.id + '/sprint/' + sprint.id + '/' + chart, null, true);
     };
     this.copyRecurrentTasks = function(sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'copyRecurrentTasks'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;

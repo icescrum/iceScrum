@@ -99,7 +99,7 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
                 case 'sprint':
                     SprintService.getCurrentOrLastSprint(widget.settings.project).then(function(sprint) {
                         if (sprint && sprint.id) {
-                            sprint.parentRelease.parentProject = widget.settings.project;
+                            $scope.project = widget.settings.project;
                             $scope.openChart('sprint', widget.settings.chart.id, sprint, chartWidgetOptions).then(addTitleAndCaption);
                         }
                     });

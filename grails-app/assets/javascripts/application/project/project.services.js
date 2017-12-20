@@ -133,10 +133,10 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         }).$promise
     };
     this.getActivities = function(project) {
-        return Project.query({action: 'activities', id: project.id}).$promise; // TODO use httpGet
+        return FormService.httpGet('project/' + project.id + '/activities', null, true);
     };
     this.openChart = function(project, chart) {
-        return Project.get({id: project.id, action: chart}).$promise; // TODO use httpGet
+        return FormService.httpGet('project/' + project.id + '/' + chart, null, true);
     };
     this.authorizedProject = function(action, project) {
         switch (action) {

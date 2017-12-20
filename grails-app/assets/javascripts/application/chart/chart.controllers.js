@@ -22,24 +22,24 @@
  *
  */
 
-extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal', '$timeout', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($scope, $element, $filter, $uibModal, $timeout, Session, ProjectService, SprintService, ReleaseService, BacklogService) {
+extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal', '$timeout', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($scope, $element, $filter, $uibModal, $timeout, ProjectService, SprintService, ReleaseService, BacklogService) {
     $scope.defaultOptions = {
         chart: {
             height: 350
         }
     };
     $scope.chartLoaders = {
-        project: function(chartName, item) {
-            return ProjectService.openChart(item ? item : Session.getProject(), chartName);
+        project: function(chartName, project) {
+            return ProjectService.openChart(project, chartName);
         },
-        release: function(chartName, item) {
-            return ReleaseService.openChart(item, chartName);
+        release: function(chartName, release) {
+            return ReleaseService.openChart(release, chartName);
         },
-        sprint: function(chartName, item) {
-            return SprintService.openChart(item, item.parentRelease.parentProject ? item.parentRelease.parentProject : ($scope.project ? $scope.project : Session.getProject()), chartName);
+        sprint: function(chartName, sprint) {
+            return SprintService.openChart(sprint, $scope.project ? $scope.project : $scope.getResolvedProjectFromState(), chartName);
         },
-        backlog: function(chartName, item) {
-            return BacklogService.openChart(item, item.project, chartName);
+        backlog: function(chartName, backlog) {
+            return BacklogService.openChart(backlog, backlog.project, chartName);
         }
     };
     var addMargin = function(number) {
