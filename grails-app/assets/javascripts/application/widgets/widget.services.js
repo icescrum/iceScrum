@@ -63,7 +63,7 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
         return Session.getWorkspace().then(function(workspace) {
             var url = 'ui/widget/definitions';
             if (!_.isEmpty(workspace)) {
-                url += ('/' +Session.workspaceType + '/' + workspace.id);
+                url += ('/' + Session.workspaceType + '/' + workspace.id);
             }
             return FormService.httpGet(url, null, true);
         });

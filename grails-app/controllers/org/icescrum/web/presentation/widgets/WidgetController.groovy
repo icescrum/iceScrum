@@ -47,7 +47,7 @@ class WidgetController implements ControllerErrorHandler {
             widgets = user.preferences.widgets
         } else {
             widgets = uiDefinitionService.widgetDefinitions.findResults {
-                ApplicationSupport.isAllowed(it.value, [], true) ? it : null
+                ApplicationSupport.isAllowed(it.value, []) ? it : null
             }.collect {
                 ['widgetDefinitionId': it.key, 'height': it.value.height, 'width': it.value.width]
             }
@@ -62,7 +62,7 @@ class WidgetController implements ControllerErrorHandler {
             return
         }
         def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
-        if (widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params, true)) {
+        if (widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params)) {
             UserPreferences userPreferences = springSecurityService.currentUser?.preferences
             if (id && !userPreferences) {
                 render(status: 200, text: "")
@@ -83,7 +83,7 @@ class WidgetController implements ControllerErrorHandler {
     def save(String widgetDefinitionId) {
         User user = springSecurityService.currentUser
         WidgetDefinition widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
-        if (!widgetDefinition || !user || !ApplicationSupport.isAllowed(widgetDefinition, [], true)) {
+        if (!widgetDefinition || !user || !ApplicationSupport.isAllowed(widgetDefinition, [])) {
             returnError(code: 'is.user.preferences.error.widget')
             return
         }
@@ -140,7 +140,7 @@ class WidgetController implements ControllerErrorHandler {
         User user = springSecurityService.currentUser
         def userWidgets = user.preferences.widgets.collect { it.widgetDefinitionId }
         def widgetDefinitions = uiDefinitionService.widgetDefinitions.findResults {
-            ApplicationSupport.isAllowed(it.value, portfolio ? params : [], true) ? it : null
+            ApplicationSupport.isAllowed(it.value, portfolio ? params : []) ? it : null
         }.collect {
             [id         : it.value.id,
              icon       : it.value.icon,
