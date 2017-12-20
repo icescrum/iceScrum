@@ -76,10 +76,10 @@ filters
             return $rootScope.serverUrl + '/user/initialsAvatar/?firstName=' + user.firstName + '&lastName=' + user.lastName;
         };
     }])
-    .filter('userColorRoles', ['$rootScope', 'Session', function($rootScope, Session) {
+    .filter('userColorRoles', ['$rootScope', function($rootScope) {
         return function(user) {
             var classes = "img-circle user-role";
-            var project = Session.getProject();
+            var project = $rootScope.getResolvedProjectFromState();
             if (!project || !project.pkey) {
                 return classes;
             }
