@@ -26,9 +26,10 @@ package org.icescrum.web.presentation.widgets
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.Widget
-import org.icescrum.core.domain.preferences.UserPreferences
+import org.icescrum.core.domain.Widget.WidgetParentType
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.ui.WidgetDefinition
@@ -38,115 +39,137 @@ class WidgetController implements ControllerErrorHandler {
     def widgetService
     def uiDefinitionService
     def springSecurityService
+    def securityService
 
     @Secured(['permitAll()'])
-    def index() {
-        User user = springSecurityService.currentUser
+    def index(Long portfolio) {
         def widgets
-        if (user) {
-            widgets = user.preferences.widgets
+        if (portfolio) {
+            def auth = springSecurityService.authentication
+            if (!securityService.businessOwner(portfolio, auth) && !securityService.portfolioStakeHolder(portfolio, auth)) {
+                render(status: 403)
+                return
+            }
+            widgets = Portfolio.withPortfolio(portfolio).widgets
         } else {
-            widgets = uiDefinitionService.widgetDefinitions.findResults {
-                ApplicationSupport.isAllowed(it.value, []) ? it : null
-            }.collect {
-                ['widgetDefinitionId': it.key, 'height': it.value.height, 'width': it.value.width]
+            User user = springSecurityService.currentUser
+            if (user) {
+                widgets = user.preferences.widgets
+            } else {
+                widgets = uiDefinitionService.widgetDefinitions.findResults { id, WidgetDefinition widgetDefinition ->
+                    ApplicationSupport.isAllowed(widgetDefinition, params) ? ['widgetDefinitionId': id, 'height': widgetDefinition.height, 'width': widgetDefinition.width] : null
+                }
             }
         }
         render(status: 200, contentType: 'application/json', text: widgets as JSON)
     }
 
     @Secured(['permitAll()'])
-    def show(String widgetDefinitionId, long id) {
-        if (!widgetDefinitionId) {
-            returnError(code: 'is.error.no.widget')
+    def show(String widgetDefinitionId, long id, Long portfolio) {
+        def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
+        if (!widgetDefinition || !ApplicationSupport.isAllowed(widgetDefinition, params)) {
+            render(status: 403)
             return
         }
-        def widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
-        if (widgetDefinition && ApplicationSupport.isAllowed(widgetDefinition, params)) {
-            UserPreferences userPreferences = springSecurityService.currentUser?.preferences
-            if (id && !userPreferences) {
-                render(status: 200, text: "")
-            } else {
-                def model = [widgetDefinition: widgetDefinition, widget: id ? Widget.findByIdAndUserPreferences(id, userPreferences) : null]
-                if (ApplicationSupport.controllerExist(widgetDefinition.id, "widget")) {
-                    forward(action: 'widget', controller: widgetDefinition.id, model: model)
-                } else if (widgetDefinition.templatePath) {
-                    render(plugin: widgetDefinition.pluginName, template: widgetDefinition.templatePath, model: model)
-                }
+        Widget widget = Widget.get(id)
+        if (widget) {
+            if (widget.parentType == WidgetParentType.PORTFOLIO && (
+                    widget.portfolio.id != portfolio ||
+                    !securityService.businessOwner(portfolio, springSecurityService.authentication) ||
+                    !securityService.portfolioStakeHolder(portfolio, springSecurityService.authentication))) {
+                render(status: 403)
+                return
             }
-        } else {
-            render(status: 200, text: "")
+            if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
+                render(status: 403)
+                return
+            }
+        }
+        def model = [widgetDefinition: widgetDefinition, widget: widget]
+        if (ApplicationSupport.controllerExist(widgetDefinition.id, "widget")) {
+            forward(action: 'widget', controller: widgetDefinition.id, model: model)
+        } else if (widgetDefinition.templatePath) {
+            render(plugin: widgetDefinition.pluginName, template: widgetDefinition.templatePath, model: model)
         }
     }
 
     @Secured('isAuthenticated()')
-    def save(String widgetDefinitionId) {
-        User user = springSecurityService.currentUser
+    def save(String widgetDefinitionId, Long portfolio) {
         WidgetDefinition widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
-        if (!widgetDefinition || !user || !ApplicationSupport.isAllowed(widgetDefinition, [])) {
-            returnError(code: 'is.widget.error')
+        if (!widgetDefinition || !ApplicationSupport.isAllowed(widgetDefinition, params)) {
+            returnError(code: 'is.widget.error.save')
             return
         }
-        Widget widget = widgetService.save(user, widgetDefinition)
+        def parentType
+        def parent
+        if (portfolio) {
+            parentType = WidgetParentType.PORTFOLIO
+            parent = Portfolio.withPortfolio(portfolio)
+        } else {
+            parentType = WidgetParentType.USER
+            parent = springSecurityService.currentUser.preferences
+        }
+        Widget widget = widgetService.save(widgetDefinition, parentType, parent)
         render(status: 201, contentType: 'application/json', text: widget as JSON)
     }
 
     @Secured('isAuthenticated()')
-    def update(long id) {
-        User user = springSecurityService.currentUser
+    def update(long id, Long portfolio) {
         def widgetParams = params.widget
-        if (!id || !widgetParams) {
-            returnError(code: 'is.widget.error')
+        if (!widgetParams) {
+            returnError(code: 'is.widget.error.update')
             return
         }
-        Widget widget = Widget.findByIdAndUserPreferences(id, user.preferences)
-        if (!widget) {
+        Widget widget = Widget.withWidget(id)
+        if (widget.parentType == WidgetParentType.PORTFOLIO && (widget.portfolio.id != portfolio || !securityService.businessOwner(portfolio, springSecurityService.authentication))) {
             render(status: 403)
-        } else {
-            Map props = [:]
-            if (widgetParams.position) {
-                props.position = widgetParams.int('position')
-            }
-            if (widgetParams.settingsData) {
-                props.settings = JSON.parse(widgetParams.settingsData)
-            }
-            if (widgetParams.type && widgetParams.typeId) {
-                widget.typeId = widgetParams.long('typeId')
-                widget.type = widgetParams.type
-            }
-            widgetService.update(widget, props)
-            render(status: 200, contentType: 'application/json', text: widget as JSON)
+            return
         }
+        if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
+            render(status: 403)
+            return
+        }
+        Map props = [:]
+        if (widgetParams.position) {
+            props.position = widgetParams.int('position')
+        }
+        if (widgetParams.settingsData) {
+            props.settings = JSON.parse(widgetParams.settingsData)
+        }
+        if (widgetParams.type && widgetParams.typeId) {
+            widget.typeId = widgetParams.long('typeId')
+            widget.type = widgetParams.type
+        }
+        widgetService.update(widget, props)
+        render(status: 200, contentType: 'application/json', text: widget as JSON)
     }
 
     @Secured('isAuthenticated()')
-    def delete() {
-        User user = springSecurityService.currentUser
-        if (!params.id) {
-            returnError(code: 'is.widget.error')
+    def delete(long id, Long portfolio) {
+        Widget widget = Widget.withWidget(id)
+        if (widget.parentType == WidgetParentType.PORTFOLIO && (widget.portfolio.id != portfolio || !securityService.businessOwner(portfolio, springSecurityService.authentication))) {
+            render(status: 403)
             return
         }
-        Widget widget = Widget.findByIdAndUserPreferences(params.long('id'), user.preferences)
-        if (!widget) {
+        if (widget.parentType == WidgetParentType.USER && widget.userPreferences.id != springSecurityService.currentUser.preferences.id) {
             render(status: 403)
-        } else {
-            widgetService.delete(widget)
-            render(status: 204)
+            return
         }
+        widgetService.delete(widget)
+        render(status: 204)
     }
 
     @Secured('isAuthenticated()')
     def definitions(Long portfolio) {
-        User user = springSecurityService.currentUser
-        def userWidgets = user.preferences.widgets.collect { it.widgetDefinitionId }
-        def widgetDefinitions = uiDefinitionService.widgetDefinitions.findResults {
-            ApplicationSupport.isAllowed(it.value, portfolio ? params : []) ? it : null
-        }.collect {
-            [id         : it.value.id,
-             icon       : it.value.icon,
-             name       : message(code: it.value.name),
-             description: message(code: it.value.description),
-             available  : !(!it.value.allowDuplicate && userWidgets.contains(it.value.id))]
+        def existingWidgets = portfolio ? Portfolio.withPortfolio(portfolio).widgets : springSecurityService.currentUser.preferences.widgets
+        def widgetDefinitions = uiDefinitionService.widgetDefinitions.findResults { id, WidgetDefinition widgetDefinition ->
+            ApplicationSupport.isAllowed(widgetDefinition, params) ? [
+                    id         : id,
+                    icon       : widgetDefinition.icon,
+                    name       : message(code: widgetDefinition.name),
+                    description: message(code: widgetDefinition.description),
+                    available  : widgetDefinition.allowDuplicate || !existingWidgets*.widgetDefinitionId.contains(id)
+            ] : null
         }
         render(status: 200, contentType: 'application/json', text: widgetDefinitions as JSON)
     }

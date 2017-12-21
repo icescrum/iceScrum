@@ -1,5 +1,3 @@
-import org.icescrum.core.support.ApplicationSupport
-
 /*
 * Copyright (c) 2017 Kagilum SAS
 *
@@ -24,18 +22,18 @@ import org.icescrum.core.support.ApplicationSupport
 * Colin Bontemps (cbontemps@kagilum.com)
 *
 */
+
 databaseChangeLog = {
-    include file: "changelog-promote.groovy"
-    include file: "changelog-7-0-2.groovy"
-    include file: "changelog-7-0-6.groovy"
-    include file: "changelog-7-1.groovy"
-    include file: "changelog-7-1-1.groovy"
-    include file: "changelog-7-2.groovy"
-    include file: "changelog-7-5.groovy"
-    include file: "changelog-7-7.groovy"
-    include file: "changelog-7-7-2.groovy"
-    include file: "changelog-7-9.groovy"
-    if (ApplicationSupport.isMySQLUTF8mb4()) {
-        include file: "changelog-utf8mb4.groovy"
+    changeSet(author: "vbarrier", id: "update_widget_parent_type_null") {
+        grailsChange {
+            change {
+                sql.execute("UPDATE is_up_widgets SET parent_type = 'USER' WHERE parent_type IS NULL")
+                sql.execute("UPDATE is_up_widgets SET parent_type = 'USER' WHERE parent_type = ''")
+            }
+        }
+    }
+    changeSet(author: "vbarrier", id: "drop_widget_up_not_null_constraint") {
+        dropNotNullConstraint(tableName: "is_up_widgets", columnName: "user_preferences_id", columnDataType: "BIGINT")
     }
 }
+
