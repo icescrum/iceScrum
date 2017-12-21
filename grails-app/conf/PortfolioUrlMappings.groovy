@@ -50,5 +50,29 @@ class PortfolioUrlMappings {
                 portfolio(matches: /[0-9A-Z]*/)
             }
         }
+        // Widget in portfolio workspace
+        "/f/$portfolio/ui/widget" {
+            controller = 'widget'
+            action = [GET: "index", POST: "save"]
+            constraints {
+                portfolio(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/f/$portfolio/ui/widget/$widgetDefinitionId/$id?" {
+            controller = 'widget'
+            action = [GET: "show", POST: "update", DELETE: "delete"]
+            constraints {
+                widgetDefinitionId(matches: /[a-zA-Z]*/)
+                id(matches: /\d*/)
+                portfolio(matches: /[0-9A-Z]*/)
+            }
+        }
+        "/f/$portfolio/ui/widget/definitions" {
+            controller = 'widget'
+            action = 'definitions'
+            constraints {
+                portfolio(matches: /[0-9A-Z]*/)
+            }
+        }
     }
 }

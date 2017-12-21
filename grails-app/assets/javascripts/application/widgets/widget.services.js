@@ -23,10 +23,10 @@
  */
 
 services.factory('Widget', ['Resource', function($resource) {
-    return $resource('/ui/widget/:widgetDefinitionId/:id');
+    return $resource('ui/widget/:widgetDefinitionId/:id');
 }]);
 
-services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget', 'Session', function(CacheService, FormService, $q, Widget, Session) {
+services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget', function(CacheService, FormService, $q, Widget) {
     this.list = function() {
         var cachedWidgets = CacheService.getCache('widget');
         return _.isEmpty(cachedWidgets) ? Widget.query({}, function(widgets) {
@@ -60,12 +60,6 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
         }).$promise;
     };
     this.getWidgetDefinitions = function() {
-        return Session.getWorkspace().then(function(workspace) {
-            var url = 'ui/widget/definitions';
-            if (!_.isEmpty(workspace)) {
-                url += ('/' + Session.workspaceType + '/' + workspace.id);
-            }
-            return FormService.httpGet(url, null, true);
-        });
+        return FormService.httpGet('ui/widget/definitions');
     };
 }]);

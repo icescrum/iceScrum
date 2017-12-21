@@ -108,7 +108,7 @@ class UrlMappings {
                 uid(matches: /[0-9]*/)
             }
         }
-        // Widget
+        // Widget in null workspace
         "/ui/widget" {
             controller = 'widget'
             action = [GET: "index", POST: "save"]
@@ -124,13 +124,6 @@ class UrlMappings {
         "/ui/widget/definitions" {
             controller = 'widget'
             action = 'definitions'
-        }
-        "/ui/widget/definitions/portfolio/$portfolio" {
-            controller = 'widget'
-            action = 'definitions'
-            constraints {
-                portfolio(matches: /\d+/)
-            }
         }
         // Window in null workspace
         "/ui/window/$windowDefinitionId" {
