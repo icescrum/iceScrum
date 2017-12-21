@@ -75,8 +75,7 @@ class WidgetController implements ControllerErrorHandler {
         if (widget) {
             if (widget.parentType == WidgetParentType.PORTFOLIO && (
                     widget.portfolio.id != portfolio ||
-                    !securityService.businessOwner(portfolio, springSecurityService.authentication) ||
-                    !securityService.portfolioStakeHolder(portfolio, springSecurityService.authentication))) {
+                    (!securityService.businessOwner(portfolio, springSecurityService.authentication) && !securityService.portfolioStakeHolder(portfolio, springSecurityService.authentication)))) {
                 render(status: 403)
                 return
             }
