@@ -84,7 +84,7 @@ class WidgetController implements ControllerErrorHandler {
         User user = springSecurityService.currentUser
         WidgetDefinition widgetDefinition = uiDefinitionService.getWidgetDefinitionById(widgetDefinitionId)
         if (!widgetDefinition || !user || !ApplicationSupport.isAllowed(widgetDefinition, [])) {
-            returnError(code: 'is.user.preferences.error.widget')
+            returnError(code: 'is.widget.error')
             return
         }
         Widget widget = widgetService.save(user, widgetDefinition)
@@ -96,7 +96,7 @@ class WidgetController implements ControllerErrorHandler {
         User user = springSecurityService.currentUser
         def widgetParams = params.widget
         if (!id || !widgetParams) {
-            returnError(code: 'is.user.preferences.error.widget')
+            returnError(code: 'is.widget.error')
             return
         }
         Widget widget = Widget.findByIdAndUserPreferences(id, user.preferences)
@@ -123,7 +123,7 @@ class WidgetController implements ControllerErrorHandler {
     def delete() {
         User user = springSecurityService.currentUser
         if (!params.id) {
-            returnError(code: 'is.user.preferences.error.widget')
+            returnError(code: 'is.widget.error')
             return
         }
         Widget widget = Widget.findByIdAndUserPreferences(params.long('id'), user.preferences)
