@@ -52,8 +52,7 @@
                         <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                                 <g:render template="/scrumOS/logo"/>
-                            </svg> <g:if test="${workspace?.icon}"><i class="fa fa-${workspace.icon}"></i><span class="text-ellipsis" title="{{ workspace.name }}"
-                                                                                                                style="display:inline-block; max-width: 100px">{{ workspace.name }}</span></g:if> <i class="fa fa-caret-down"></i>
+                            </svg> <g:if test="${workspace?.icon}"><i class="fa fa-${workspace.icon}"></i><span class="text-ellipsis" title="{{ workspace.name }}">{{ workspace.name }}</span></g:if> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li role="presentation" class="dropdown-header">

@@ -1938,17 +1938,25 @@ form[name="formHolder.timeBoxNotesTemplateForm"] {
   + li {
     margin-left: 15px;
   }
-  &.portfolio {
-    background: blue;
+  &.project {
+    background: lighten(#1C3660, 20%);
     &:after {
-      border-left-color: blue;
+      border-left-color: lighten(#1C3660, 20%);
     }
   }
-  &.project {
-    background: rosybrown;
+  &.portfolio {
+    background: lighten(#42A9E0, 30%);
     &:after {
-      border-left-color: rosybrown;
+      border-left-color: lighten(#42A9E0, 30%);
     }
+    > a {
+      color: #333333 !important;
+    }
+  }
+  > a.dropdown-menu > span {
+    display: inline-block;
+    max-width: 100px;
+    vertical-align: middle;
   }
 }
 
