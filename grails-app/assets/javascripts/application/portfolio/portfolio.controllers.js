@@ -249,7 +249,7 @@ controllers.controller('editPortfolioModalCtrl', ['$scope', 'PortfolioService', 
         return true;
     };
     // Init
-    $scope.currentPortfolio = $scope.getResolvedPortfolioFromState();
+    $scope.currentPortfolio = $scope.getPortfolioFromState();
     $scope.checkPortfolioPropertyUrl = '/portfolio/' + $scope.currentPortfolio.id + '/available';
     if (!$scope.panel) {
         var defaultView = $scope.authorizedPortfolio('update', $scope.currentPortfolio) ? 'general' : 'actors';
@@ -289,4 +289,24 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     // Init
     $scope.formHolder = {};
     $scope.resetPortfolioForm();
+}]);
+
+controllers.controller('portfolioProjectChartWidgetCtrl', ['$scope', 'ProjectService', '$controller', '$element', function($scope, ProjectService, $controller, $element) {
+    $controller('projectChartWidgetCtrl', {$scope: $scope, $element: $element});
+    var widget = $scope.widget; // $scope.widget is inherited
+    // Erase existing method to limit the project search to the ones in the portfolio
+    $scope.refreshProjects = function(term) {
+        if (widget.settings && widget.settings.project && !$scope.holder.projectResolved) {
+            ProjectService.get(widget.settings.project.id).then(function(project) {
+                $scope.holder.projectResolved = true;
+                $scope.holder.project = project;
+                $scope.project = project; // Required for projectChartCtrl
+            });
+        }
+        $scope.projects = _.filter($scope.portfolio.projects, function(project) {
+            return !term || project.name.toLowerCase().indexOf(term.toLowerCase()) != -1;
+        });
+    };
+    // Init
+    $scope.portfolio = $scope.getPortfolioFromState()
 }]);
