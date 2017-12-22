@@ -79,7 +79,7 @@ filters
     .filter('userColorRoles', ['$rootScope', function($rootScope) {
         return function(user) {
             var classes = "img-circle user-role";
-            var project = $rootScope.getResolvedProjectFromState();
+            var project = $rootScope.getProjectFromState();
             if (!project || !project.pkey) {
                 return classes;
             }
@@ -301,7 +301,7 @@ filters
                 feature: 'F',
                 task: 'T'
             };
-            return $rootScope.serverUrl + '/' + (projectKey ? projectKey : $rootScope.getResolvedProjectFromState().pkey) + '-' + prefixByType[type] + uid;
+            return $rootScope.serverUrl + '/' + (projectKey ? projectKey : $rootScope.getProjectFromState().pkey) + '-' + prefixByType[type] + uid;
         };
     }])
     .filter('flowFilesNotCompleted', function() {

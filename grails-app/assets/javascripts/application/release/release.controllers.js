@@ -157,7 +157,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
         }
     ];
     // Init
-    $scope.project = $scope.getResolvedProjectFromState();
+    $scope.project = $scope.getProjectFromState();
     $scope.startDateOptions = {
         opened: false
     };

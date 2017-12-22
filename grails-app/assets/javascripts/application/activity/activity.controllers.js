@@ -105,7 +105,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
     };
     // Init
     $scope.allActivities = false;
-    $scope.project = $scope.getResolvedProjectFromState();
+    $scope.project = $scope.getProjectFromState();
     $scope.groupedActivities = {};
     manageActivities($scope.selected.activities);
 }]);

@@ -82,7 +82,7 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window'
     };
     // Init
     $scope.appsOrder = ['-isNew', 'name'];
-    $scope.project = $scope.getResolvedProjectFromState();
+    $scope.project = $scope.getProjectFromState();
     $scope.holder = {};
     $scope.appDefinitions = [];
     AppService.getAppDefinitions().then(function(appDefinitions) {

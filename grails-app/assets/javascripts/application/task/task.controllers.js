@@ -45,7 +45,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
         return TaskService.authorizedTask(action, task);
     };
     // Init
-    $scope.project = $scope.getResolvedProjectFromState();
+    $scope.project = $scope.getProjectFromState();
     $scope.formHolder = {};
     $scope.resetTaskForm();
 }]);

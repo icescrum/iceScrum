@@ -904,10 +904,10 @@ var isApplication = angular.module('isApplication', [
         }
         $rootScope.authenticated = Session.authenticated;
         $rootScope.authorizedApp = AppService.authorizedApp;
-        $rootScope.getResolvedProjectFromState = function() {
+        $rootScope.getProjectFromState = function() {
             return $state.$current.locals.globals.project;
         };
-        $rootScope.getResolvedPortfolioFromState = function() {
+        $rootScope.getPortfolioFromState = function() {
             return $state.$current.locals.globals.portfolio;
         };
         $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, options) {

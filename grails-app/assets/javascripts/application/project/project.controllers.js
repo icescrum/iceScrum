@@ -269,7 +269,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'ProjectService', 'Rel
         return true;
     };
     // Init
-    $scope.currentProject = $scope.getResolvedProjectFromState();
+    $scope.currentProject = $scope.getProjectFromState();
     $scope.checkProjectPropertyUrl = '/project/' + $scope.currentProject.id + '/available';
     ReleaseService.list($scope.currentProject).then(function(releases) {
         if (releases.length > 0) {

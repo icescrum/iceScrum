@@ -36,7 +36,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             return ReleaseService.openChart(release, chartName);
         },
         sprint: function(chartName, sprint) {
-            return SprintService.openChart(sprint, $scope.project ? $scope.project : $scope.getResolvedProjectFromState(), chartName);
+            return SprintService.openChart(sprint, $scope.project ? $scope.project : $scope.getProjectFromState(), chartName);
         },
         backlog: function(chartName, backlog) {
             return BacklogService.openChart(backlog, backlog.project, chartName);

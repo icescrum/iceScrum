@@ -53,7 +53,7 @@ controllers.controller('actorCtrl', ['$scope', '$state', 'ActorService', functio
         return $state.href($state.current.name, $state.params) + '?context=actor_' + actor.id;
     };
     // Init
-    $scope.project = $scope.getResolvedProjectFromState();
+    $scope.project = $scope.getProjectFromState();
     $scope.actor = {};
     $scope.actors = [];
     ActorService.list($scope.project.id).then(function(actors) {

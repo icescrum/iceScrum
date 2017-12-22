@@ -195,13 +195,13 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
         return story.tasks_count > 0 && story.state < StoryStatesByName.DONE && story.state >= StoryStatesByName.PLANNED;
     };
     $scope.isEffortCustom = function() {
-        return $scope.getResolvedProjectFromState().planningPokerGameType == 2;
+        return $scope.getProjectFromState().planningPokerGameType == 2;
     };
     $scope.effortSuite = function(isNullable) {
         if (isNullable) {
-            return $scope.getResolvedProjectFromState().planningPokerGameType == 0 ? $scope.integerSuiteNullable : $scope.fibonacciSuiteNullable;
+            return $scope.getProjectFromState().planningPokerGameType == 0 ? $scope.integerSuiteNullable : $scope.fibonacciSuiteNullable;
         } else {
-            return $scope.getResolvedProjectFromState().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
+            return $scope.getProjectFromState().planningPokerGameType == 0 ? $scope.integerSuite : $scope.fibonacciSuite;
         }
     };
     $scope.isEffortNullable = function(story) {
@@ -259,7 +259,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                             $scope.editableStory.effort = $scope.effortSuiteValues[newVal];
                         });
                     }
-                    StoryService.listByField('effort', $scope.getResolvedProjectFromState().id).then(function(effortsAndStories) {
+                    StoryService.listByField('effort', $scope.getProjectFromState().id).then(function(effortsAndStories) {
                         initialEfforts = effortsAndStories.fieldValues;
                         var indexOfNull = initialEfforts.indexOf(null);
                         if (indexOfNull != -1) {
@@ -323,7 +323,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                     $scope.values = [];
                     $scope.storyRows = [];
                     $scope.count = [];
-                    StoryService.listByField('value', $scope.getResolvedProjectFromState().id).then(function(valuesAndStories) {
+                    StoryService.listByField('value', $scope.getProjectFromState().id).then(function(valuesAndStories) {
                         initialValues = valuesAndStories.fieldValues;
                         initialStoriesByValue = valuesAndStories.stories;
                         initialCount = valuesAndStories.count;
@@ -425,7 +425,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                             var effort = story.effort;
                             tasks.push({
                                 success: function() {
-                                    return StoryService.save(story, $scope.getResolvedProjectFromState().id);
+                                    return StoryService.save(story, $scope.getProjectFromState().id);
                                 }
                             });
                             if (effort >= 0) {
@@ -469,7 +469,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
 controllers.controller('storyAtWhoCtrl', ['$scope', '$controller', 'ActorService', function($scope, $controller, ActorService) {
     // Functions
     $scope.loadAtWhoActors = function() {
-        return ActorService.list($scope.getResolvedProjectFromState().id).then(function(actors) {
+        return ActorService.list($scope.getProjectFromState().id).then(function(actors) {
             _.each($scope.atOptions, function(options) {
                 if (options.actors) {
                     options.data = _.map(actors, function(actor) {
@@ -792,7 +792,7 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
             .orderBy(['stories[0].parentSprint.parentReleaseOrderNumber', 'stories[0].parentSprint.orderNumber', 'stories[0].state'], ['asc', 'asc', 'desc'])
             .value();
     }, true);
-    ActorService.list($scope.getResolvedProjectFromState().id).then(function(actors) {
+    ActorService.list($scope.getProjectFromState().id).then(function(actors) {
         $scope.actors = actors;
     });
 }]);

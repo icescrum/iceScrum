@@ -77,7 +77,7 @@ controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
     // Init
     $scope.timeBoxClass = $scope.selected.class.toLowerCase();
     $scope.refreshTimeBoxNotesTemplates();
-    $scope.project = $scope.getResolvedProjectFromState();
+    $scope.project = $scope.getProjectFromState();
 }]);
 
 controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'ProjectService', function($scope, ProjectService) {

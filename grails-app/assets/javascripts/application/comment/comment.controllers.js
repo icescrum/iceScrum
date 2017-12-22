@@ -74,5 +74,5 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
     // Init
     $scope.formHolder = {};
     $scope.resetCommentForm();
-    $scope.project = $scope.getResolvedProjectFromState();
+    $scope.project = $scope.getProjectFromState();
 }]);
