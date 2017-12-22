@@ -510,7 +510,7 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def listByUserAndRole(long id, String term, Boolean paginate, Integer page, Integer count, String role, String create) {
+    def listByUserAndRole(long id, String term, Boolean paginate, Integer page, Integer count, String role, Boolean create, Boolean owner) {
         if (id && id != springSecurityService.principal.id && !request.admin) {
             render(status: 403)
             return
@@ -525,7 +525,7 @@ class ProjectController implements ControllerErrorHandler {
                 'teamMember'  : SecurityService.teamMemberPermissions,
                 'stakeHolder' : SecurityService.stakeHolderPermissions
         ]
-        def projects = listByRole(id, term, paginate, page, count, light, permissions[role])
+        def projects = listByRole(id, term, paginate, page, count, light, permissions[role], owner)
         if (create && !projects.any { it.name == term } && !Project.countByName(term)) {
             projects.add(0, [name: params.term, pkey: ''])
         }
@@ -604,9 +604,9 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200);
     }
 
-    private listByRole(long id, String term, Boolean paginate, Integer page, Integer count, def light, def role) {
+    private listByRole(long id, String term, Boolean paginate, Integer page, Integer count, def light, def role, Boolean owner = false) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
-        def projects = Project.findAllByRole(User.get(id), role, [cache: true], false, false, false, searchTerm).toList()
+        def projects = Project.findAllByRole(User.get(id), role, [cache: true], false, false, owner, searchTerm).toList()
         if (paginate && !count) {
             count = 10
         }
