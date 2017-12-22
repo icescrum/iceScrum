@@ -45,7 +45,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     };
     crudMethods[IceScrumEventType.UPDATE] = function(project) {
         if (Session.workspaceType == 'project') {
-            var workspace = Session.workspace; // Direct workspace access is bad but we can't use the promise here because we need to update everything synchronously
+            var workspace = Session.getWorkspace();
             if (workspace.id == project.id) {
                 if (project.pkey != workspace.pkey) {
                     $rootScope.notifyWarning('todo.is.ui.project.updated.pkey');
@@ -63,7 +63,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     };
     crudMethods[IceScrumEventType.DELETE] = function(project) {
         if (Session.workspaceType == 'project') {
-            var workspace = Session.workspace; // Direct workspace access is bad but we can't use the promise here because we need to update everything synchronously
+            var workspace = Session.getWorkspace();
             if (workspace.id == project.id) {
                 $rootScope.notifyWarning('todo.is.ui.project.deleted');
                 document.location = $rootScope.serverUrl;

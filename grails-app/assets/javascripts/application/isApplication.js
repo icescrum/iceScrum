@@ -887,7 +887,6 @@ var isApplication = angular.module('isApplication', [
             $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
             $rootScope.warning = isSettings.warning;
             $rootScope.displayWhatsNew = isSettings.displayWhatsNew;
-            Session.initWorkspace();
             $rootScope.workspaceType = Session.workspaceType;
             if ($rootScope.workspaceType == 'project') {
                 $controller('contextCtrl', {$scope: $rootScope});

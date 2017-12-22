@@ -33,7 +33,7 @@ services.factory('AuthService', ['$http', '$rootScope', 'FormService', function(
     };
 }]);
 
-services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector', 'UserService', 'User', 'PushService', 'IceScrumEventType', 'FormService', 'CacheService', function($timeout, $http, $rootScope, $q, $injector, UserService, User, PushService, IceScrumEventType, FormService, CacheService) {
+services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'UserService', 'User', 'PushService', 'IceScrumEventType', 'FormService', 'CacheService', function($timeout, $http, $rootScope, $injector, UserService, User, PushService, IceScrumEventType, FormService, CacheService) {
     var self = this;
     self.defaultView = '';
     self.menus = {visible: [], hidden: []};
@@ -42,10 +42,17 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
         var workspaceConstructor = $injector.get(isSettings.workspace.class); // Get the ressource constructor, e.g. Portfolio or Project
         self.workspace = new workspaceConstructor();
         _.extend(self.workspace, isSettings.workspace);
+        var workspaceType = self.workspace.class.toLowerCase();
+        if (workspaceType == 'project') {
+            var project = self.workspace;
+            project.startDate = new Date(project.startDate);
+            project.endDate = new Date(project.endDate);
+        }
+        CacheService.addOrUpdate(workspaceType, self.workspace);
+        self.workspaceType = workspaceType;
     } else {
         self.workspace = {};
     }
-    self.isWorkspaceResolved = $q.defer();
     self.unreadActivitiesCount = 0;
     var defaultRoles = {
         businessOwner: false,
@@ -154,23 +161,8 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
     this.current = function(user) {
         return self.authenticated() && user && self.user.id == user.id;
     };
-    this.initWorkspace = function() {
-        if (self.workspace.class) {
-            var workspaceType = self.workspace.class.toLowerCase();
-            if (workspaceType == 'project') {
-                var project = self.workspace;
-                project.startDate = new Date(project.startDate);
-                project.endDate = new Date(project.endDate);
-            }
-            CacheService.addOrUpdate(workspaceType, self.workspace);
-            self.workspaceType = workspaceType;
-        }
-        self.isWorkspaceResolved.resolve();
-    };
     this.getWorkspace = function() {
-        return self.isWorkspaceResolved.promise.then(function() {
-            return self.workspace;
-        });
+        return self.workspace;
     };
     this.getProject = function() {
         return !self.workspace.class || self.workspace.class == 'Project' ? self.workspace : null; // TODO don't return empty workspace if not in project context, but it messes up the home
@@ -397,7 +389,7 @@ services.service('CacheService', ['$injector', function($injector) {
     };
 }]);
 
-services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', 'FeatureService', 'SprintService', 'BacklogService', 'projectCaches', function($rootScope, CacheService, StoryService, FeatureService, SprintService, BacklogService, projectCaches) {
+services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'projectCaches', function($rootScope, $injector, CacheService, projectCaches) { // Avoid injecting business service directly, use $injector instead in order to avoid circular references
     var sortByRank = function(obj1, obj2) {
         return obj1.rank - obj2.rank;
     };
@@ -466,6 +458,7 @@ services.service('SyncService', ['$rootScope', 'CacheService', 'StoryService', '
                 var cachedBacklogs = cachedProject.backlogs;
                 if (cachedBacklogs.length) {
                     var oldBacklogIds = [], newBacklogsIds = [];
+                    var BacklogService = $injector.get('BacklogService');
                     _.each(cachedBacklogs, function(cachedBacklog) {
                         if (oldStory && BacklogService.filterStories(cachedBacklog, [oldStory]).length) {
                             oldBacklogIds.push(cachedBacklog.id);
