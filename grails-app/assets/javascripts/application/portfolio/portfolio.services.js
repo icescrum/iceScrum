@@ -26,16 +26,26 @@ services.factory('Portfolio', ['Resource', function($resource) {
     return $resource('/portfolio/:id/:action');
 }]);
 
-services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'ProjectService', '$q', function(Portfolio, Session, FormService, ProjectService, $q) {
+services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'ProjectService', '$q', 'IceScrumEventType', 'CacheService', function(Portfolio, Session, FormService, ProjectService, $q, IceScrumEventType, CacheService) {
+    var crudMethods = {};
+    crudMethods[IceScrumEventType.CREATE] = function(portfolio) {
+        CacheService.addOrUpdate('portfolio', portfolio);
+    };
+    crudMethods[IceScrumEventType.UPDATE] = function(portfolio) {
+        CacheService.addOrUpdate('portfolio', portfolio);
+    };
+    crudMethods[IceScrumEventType.DELETE] = function(portfolio) {
+        CacheService.remove('portfolio', portfolio.id);
+    };
     this.save = function(portfolio) {
         portfolio.class = 'portfolio';
-        return Portfolio.save(portfolio).$promise;
+        return Portfolio.save(portfolio, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.update = function(portfolio) {
-        return Portfolio.update({id: portfolio.id}, {portfoliod: portfolio}).$promise;
+        return Portfolio.update({id: portfolio.id}, {portfoliod: portfolio}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this['delete'] = function(portfolio) {
-        return Portfolio.delete({id: portfolio.id}).$promise;
+        return Portfolio.delete({id: portfolio.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.listProjects = function(portfolio) {
         if (_.isEmpty(portfolio.projects)) {

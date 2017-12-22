@@ -261,14 +261,10 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     $controller('abstractPortfolioCtrl', {$scope: $scope});
     $scope.update = function(portfolio) {
         var p = $scope.preparePortfolio(portfolio);
-        PortfolioService.update(p)
-            .then(function(updatedPortfolio) {
-                if ($scope.workspaceType == 'portfolio') {
-                    Session.updateWorkspace(updatedPortfolio); // TODO replace by crudMethods[IceScrumEventType.UPDATE] in PortfolioService
-                }
-                $scope.notifySuccess('todo.is.ui.portfolio.general.updated');
-                $scope.resetPortfolioForm();
-            });
+        PortfolioService.update(p).then(function() {
+            $scope.notifySuccess('todo.is.ui.portfolio.general.updated');
+            $scope.resetPortfolioForm();
+        });
     };
     $scope.resetPortfolioForm = function() {
         $scope.resetFormValidation($scope.formHolder.editPortfolioForm);
