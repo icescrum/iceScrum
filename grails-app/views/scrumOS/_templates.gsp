@@ -279,7 +279,7 @@
               name="addWidgetForm"
               form="addWidget(widgetDefinition)"
               submitButton="${message(code: 'is.ui.widget.add')}"
-              class="add-widget split-modal">
+              class="split-modal">
         <div class="row">
             <div class="left-panel col-sm-3">
                 <div class="left-panel-header">

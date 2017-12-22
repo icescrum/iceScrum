@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<is:window windowDefinition="${windowDefinition}">
+<is:window windowDefinition="${windowDefinition}" classes="widget-dashboard">
     <div class="row">
         <div class="widget-column">
             <div class="panel-container">

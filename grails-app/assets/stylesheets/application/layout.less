@@ -1069,7 +1069,7 @@ table {
 }
 
 // Allow placeholder when sortable container is empty
-.as-sortable-un-selectable #view-home *[as-sortable], .postits[as-sortable] {
+.postits[as-sortable] {
   min-height: 60px;
 }
 
@@ -1312,10 +1312,6 @@ table {
       }
     }
   }
-  .widget .panel-light {
-    margin-bottom: 20px;
-  }
-
   .widget-quickProjects {
     .panel-body {
       text-align: center;
@@ -1328,7 +1324,6 @@ table {
       }
     }
   }
-
   .widget-backlogChart {
     .panel-heading {
       margin-top: 0;
@@ -1346,7 +1341,26 @@ table {
       }
     }
   }
+}
 
+.widget-dashboard {
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: @grid-gutter-width / 2 !important;
+  width: 100%;
+  .add-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    opacity: 0.5;
+    text-align: center;
+    &:hover {
+      opacity: 1;
+    }
+    .btn {
+      padding: 10px 15px;
+    }
+  }
 }
 
 @panel-height: 250px;
@@ -1395,6 +1409,9 @@ table {
     }
     &.widget-width-3 {
       .make-md-column(6);
+    }
+    .panel-light {
+      margin-bottom: 20px;
     }
     > div.panel {
       .panel-body {

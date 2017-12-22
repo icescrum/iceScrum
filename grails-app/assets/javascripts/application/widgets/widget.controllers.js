@@ -44,7 +44,7 @@ controllers.controller("widgetCtrl", ['$scope', 'WidgetService', '$q', function(
     };
 }]);
 
-controllers.controller('widgetViewCtrl', ['$scope', '$uibModal', 'Session', 'CacheService', 'WidgetService', 'containmentSelector', function($scope, $uibModal, Session, CacheService, WidgetService, containmentSelector) {
+controllers.controller('widgetViewCtrl', ['$scope', '$uibModal', 'Session', 'CacheService', 'WidgetService', function($scope, $uibModal, Session, CacheService, WidgetService) {
     // Functions
     $scope.showAddWidgetModal = function() {
         $uibModal.open({
@@ -95,7 +95,7 @@ controllers.controller('widgetViewCtrl', ['$scope', '$uibModal', 'Session', 'Cac
             return "<div style='height:" + height + "px;width:" + width + "px;'/>";
         },
         sortableId: 'widgets',
-        containment: containmentSelector,
+        containment: '.widget-dashboard > .row',
         containerPositioning: 'relative'
     };
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set

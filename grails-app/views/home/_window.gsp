@@ -18,7 +18,7 @@
 - Authors:Marwah Soltani (msoltani@kagilum.com)
 -
 --}%
-<div id="view-home" class="view">
+<div id="view-home" class="view widget-dashboard">
     <div class="content">
         <div class="row widgets"
              as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"

@@ -23,5 +23,5 @@
  *
  */
 controllers.controller('homeCtrl', ['$scope', '$controller', function($scope, $controller) {
-    $controller('widgetViewCtrl', {$scope: $scope, containmentSelector: '#view-home > .row'});
+    $controller('widgetViewCtrl', {$scope: $scope});
 }]);
