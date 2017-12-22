@@ -28,7 +28,6 @@
            autofocus
            name="project.name"
            class="form-control"
-           placeholder="${message(code: 'todo.is.ui.project.noproject')}"
            uib-typeahead="project as project.name for project in searchProject($viewValue)"
            typeahead-loading="searching"
            typeahead-wait-ms="250"
