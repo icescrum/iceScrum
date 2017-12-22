@@ -164,9 +164,6 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
     this.getWorkspace = function() {
         return self.workspace;
     };
-    this.getProject = function() {
-        return !self.workspace.class || self.workspace.class == 'Project' ? self.workspace : null; // TODO don't return empty workspace if not in project context, but it messes up the home
-    };
     this.getLanguages = function() {
         return FormService.httpGet('scrumOS/languages', {cache: true});
     };
@@ -389,7 +386,7 @@ services.service('CacheService', ['$injector', function($injector) {
     };
 }]);
 
-services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'projectCaches', function($rootScope, $injector, CacheService, projectCaches) { // Avoid injecting business service directly, use $injector instead in order to avoid circular references
+services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'projectCaches', 'Team', function($rootScope, $injector, CacheService, projectCaches, Team) { // Avoid injecting business service directly, use $injector instead in order to avoid circular references
     var sortByRank = function(obj1, obj2) {
         return obj1.rank - obj2.rank;
     };
@@ -399,6 +396,8 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                 _.each(projectCaches, function(projectCache) {
                     newProject[projectCache.arrayName] = []; // Init to empty to allow binding to a reference and automatically get the update
                 });
+                newProject.team = new Team(newProject.team);
+                CacheService.addOrUpdate('team', newProject.team);
             }
         },
         story: function(oldStory, newStory) {
