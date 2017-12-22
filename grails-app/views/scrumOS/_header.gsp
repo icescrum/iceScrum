@@ -245,7 +245,8 @@
                         <a hotkey="{ 'shift+h': goToHome}"
                            hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
                            uib-tooltip="${message(code: 'is.ui.home')} (shift+h)"
-                           tooltip-placement="bottom" href ng-click="goToHome()">
+                           tooltip-placement="bottom"
+                           ng-href="{{ serverUrl }}">
                             <i class="fa fa-home"></i>
                         </a>
                     </div>
