@@ -784,7 +784,7 @@ services.service("DomainConfigService", [function() {
     this.config.portfoliod = this.config.portfolio;
 }]);
 
-services.service('ContextService', ['$location', '$q', '$injector', 'Session', 'ProjectService', 'ActorService', 'FeatureService', function($location, $q, $injector, Session, ProjectService, ActorService, FeatureService) {
+services.service('ContextService', ['$location', '$q', '$injector', '$rootScope', 'ProjectService', 'ActorService', 'FeatureService', function($location, $q, $injector, $rootScope, ProjectService, ActorService, FeatureService) {
     var self = this;
     this.contextSeparator = '_';
     this.getContextFromUrl = function() {
@@ -798,7 +798,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'Session', '
     };
     this.contexts = [];
     this.loadContexts = function() {
-        var project = Session.getProject();
+        var project = $rootScope.getProjectFromState();
         return $q.all([ProjectService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
             var tags = _.uniqBy(data[0], _.lowerCase);
             var features = data[1];

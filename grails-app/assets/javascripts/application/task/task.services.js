@@ -128,7 +128,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 return Session.inProject() &&
                        (!task || !task.parentStory && task.sprint && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
             case 'rank':
-                return Session.sm() || Session.responsible(task) || Session.creator(task) || !task.responsible && Session.inProject() && Session.getProject().preferences.assignOnBeginTask; // No check on sprint & story state because rank cannot be called from there
+                return Session.sm() || Session.responsible(task) || Session.creator(task) || !task.responsible && Session.inProject() && $rootScope.getProjectFromState() && $rootScope.getProjectFromState().preferences.assignOnBeginTask; // No check on sprint & story state because rank cannot be called from there
             case 'upload':
             case 'update':
                 return (Session.sm() || Session.responsible(task) || Session.creator(task)) && task.state != TaskStatesByName.DONE;
@@ -145,9 +145,9 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             case 'setResponsible':
                 return Session.sm();
             case 'showUrgent':
-                return Session.getProject().preferences.displayUrgentTasks;
+                return $rootScope.getProjectFromState() && $rootScope.getProjectFromState().preferences.displayUrgentTasks;
             case 'showRecurrent':
-                return Session.getProject().preferences.displayRecurrentTasks;
+                return $rootScope.getProjectFromState() && $rootScope.getProjectFromState().preferences.displayRecurrentTasks;
             case 'makeStory':
                 return self.authorizedTask('delete', task) && task.state != TaskStatesByName.DONE && StoryService.authorizedStory('create');
             default:
