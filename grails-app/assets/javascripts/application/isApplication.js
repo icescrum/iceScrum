@@ -886,7 +886,6 @@ var isApplication = angular.module('isApplication', [
             $rootScope.storyStates = isSettings.states.story;
             $rootScope.acceptanceTestStates = isSettings.states.acceptanceTest;
             $rootScope.warning = isSettings.warning;
-            $rootScope.workspaceType = isSettings.workspace ? isSettings.workspace.class.toLowerCase() : null;
             $rootScope.displayWhatsNew = isSettings.displayWhatsNew;
             Session.initWorkspace();
             $rootScope.workspaceType = Session.workspaceType;
