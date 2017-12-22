@@ -38,9 +38,6 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
     self.defaultView = '';
     self.menus = {visible: [], hidden: []};
     self.user = new User();
-    this.updateWorkspace = function(workspace) {
-        _.extend(self.workspace, workspace);
-    };
     if (isSettings.workspace) {
         var workspaceConstructor = $injector.get(isSettings.workspace.class); // Get the ressource constructor, e.g. Portfolio or Project
         self.workspace = new workspaceConstructor();
@@ -61,10 +58,10 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
     };
     self.roles = _.clone(defaultRoles);
     self.listeners = {};
-    var reload = function() {
+    this.reload = function() {
         $timeout(function() {
             document.location.reload(true);
-        }, 2000);
+        }, 3500);
     };
     this.create = function(user, roles, menus, defaultView) {
         _.extend(self.user, user);
@@ -104,12 +101,12 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
                 } else if (updatedRole.oldRole == undefined) {
                     $rootScope.notifySuccess($rootScope.message('is.user.role.added.project') + ' ' + updatedProject.name);
                     if (self.workspace.class == 'Project' && updatedProject.id == self.workspace.id) {
-                        reload();
+                        self.reload();
                     }
                 } else {
                     $rootScope.notifySuccess($rootScope.message('is.user.role.updated.project') + ' ' + updatedProject.name);
                     if (self.workspace.class == 'Project' && updatedProject.id == self.workspace.id) {
-                        reload();
+                        self.reload();
                     }
                 }
             }
@@ -157,40 +154,15 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$q', '$injector
     this.current = function(user) {
         return self.authenticated() && user && self.user.id == user.id;
     };
-    var initProject = function() {
-        var project = self.workspace;
-        project.startDate = new Date(project.startDate);
-        project.endDate = new Date(project.endDate);
-        PushService.registerListener('project', IceScrumEventType.UPDATE, function(updatedProject) {
-            if (updatedProject.pkey != project.pkey) {
-                $rootScope.notifyWarning('todo.is.ui.project.updated.pkey');
-                document.location = document.location.href.replace(project.pkey, updatedProject.pkey);
-            } else if (updatedProject.preferences.hidden && !project.preferences.hidden && !self.inProject()) {
-                $rootScope.notifyWarning('todo.is.ui.project.updated.visibility');
-                reload();
-            } else if (updatedProject.preferences.archived != project.preferences.archived) {
-                if (updatedProject.preferences.archived == true) {
-                    $rootScope.notifyWarning('todo.is.ui.project.updated.archived');
-                } else {
-                    $rootScope.notifyWarning('todo.is.ui.project.updated.unarchived');
-                }
-                reload();
-            } else {
-                self.updateWorkspace(updatedProject); // TODO replace by crudMethods[IceScrumEventType.UPDATE] in ProjectService
-            }
-        });
-        PushService.registerListener('project', IceScrumEventType.DELETE, function() {
-            $rootScope.notifyWarning('todo.is.ui.project.deleted');
-            reload();
-        });
-        CacheService.addOrUpdate('project', project);
-    };
     this.initWorkspace = function() {
         if (self.workspace.class) {
             var workspaceType = self.workspace.class.toLowerCase();
             if (workspaceType == 'project') {
-                initProject();
+                var project = self.workspace;
+                project.startDate = new Date(project.startDate);
+                project.endDate = new Date(project.endDate);
             }
+            CacheService.addOrUpdate(workspaceType, self.workspace);
             self.workspaceType = workspaceType;
         }
         self.isWorkspaceResolved.resolve();
@@ -397,7 +369,6 @@ services.service('CacheService', ['$injector', function($injector) {
         });
     };
     this.addOrUpdate = function(cacheName, itemFromServer) {
-        //important
         var cachedItem = self.get(cacheName, itemFromServer.id);
         var oldItem = _.cloneDeep(cachedItem);
         var newItem;

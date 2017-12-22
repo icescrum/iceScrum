@@ -317,14 +317,10 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
     };
     $scope.updateProjectTeam = function(project) {
         var p = $scope.prepareProject(project);
-        ProjectService.updateTeam(p)
-            .then(function(updatedProject) {
-                if ($scope.workspaceType == 'project') {
-                    Session.updateWorkspace(updatedProject); // TODO replace by crudMethods[IceScrumEventType.UPDATE] in ProjectService
-                }
-                $scope.resetTeamForm();
-                $scope.notifySuccess('todo.is.ui.project.members.updated');
-            });
+        ProjectService.updateTeam(p).then(function() {
+            $scope.resetTeamForm();
+            $scope.notifySuccess('todo.is.ui.project.members.updated');
+        });
     };
     $scope.leaveTeam = function(project) {
         ProjectService.leaveTeam(project).then(function() {
@@ -351,14 +347,10 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
     $scope.stakeHolderViews = [];
     $scope.update = function(project) {
         $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.stakeHolderViews).filter({hidden: true}).map('id').value().join(',');
-        ProjectService.update(project)
-            .then(function(updatedProject) {
-                if ($scope.workspaceType == 'project') {
-                    Session.updateWorkspace(updatedProject); // TODO replace by crudMethods[IceScrumEventType.UPDATE] in ProjectService
-                }
-                $scope.notifySuccess('todo.is.ui.project.general.updated');
-                $scope.resetProjectForm();
-            });
+        ProjectService.update(project).then(function() {
+            $scope.notifySuccess('todo.is.ui.project.general.updated');
+            $scope.resetProjectForm();
+        });
     };
     $scope.resetProjectForm = function() {
         $scope.resetFormValidation($scope.formHolder.editProjectForm);
@@ -374,9 +366,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
             buttonColor: 'danger',
             buttonTitle: 'is.projectmenu.submenu.project.delete',
             callback: function() {
-                ProjectService.delete(project).then(function() {
-                    document.location = $scope.serverUrl;
-                });
+                ProjectService.delete(project);
             }
         })
     };
@@ -386,9 +376,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
             buttonColor: 'danger',
             buttonTitle: 'is.dialog.project.archive.button',
             callback: function() {
-                ProjectService.archive(project).then(function() {
-                    document.location = $scope.serverUrl;
-                });
+                ProjectService.archive(project);
             }
         });
     };

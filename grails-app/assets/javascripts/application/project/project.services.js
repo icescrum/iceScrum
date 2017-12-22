@@ -37,20 +37,49 @@ services.factory('Project', ['Resource', function($resource) {
         });
 }]);
 
-services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheService', 'IceScrumEventType', function(Project, Session, FormService, CacheService, IceScrumEventType) {
+services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheService', 'IceScrumEventType', 'PushService', '$rootScope', '$q', function(Project, Session, FormService, CacheService, IceScrumEventType, PushService, $rootScope, $q) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(project) {
         CacheService.addOrUpdate('project', project);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(project) {
+        if (Session.workspaceType == 'project') {
+            var workspace = Session.workspace; // Direct workspace access is bad but we can't use the promise here because we need to update everything synchronously
+            if (workspace.id == project.id) {
+                if (project.pkey != workspace.pkey) {
+                    $rootScope.notifyWarning('todo.is.ui.project.updated.pkey');
+                    document.location = document.location.href.replace(workspace.pkey, project.pkey);
+                } else if (project.preferences.hidden && !workspace.preferences.hidden && !Session.inProject()) {
+                    $rootScope.notifyWarning('todo.is.ui.project.updated.visibility');
+                    Session.reload();
+                } else if (project.preferences.archived != workspace.preferences.archived) {
+                    $rootScope.notifyWarning('todo.is.ui.project.updated.' + (project.preferences.archived ? 'archived' : 'unarchived'));
+                    Session.reload();
+                }
+            }
+        }
         CacheService.addOrUpdate('project', project);
     };
     crudMethods[IceScrumEventType.DELETE] = function(project) {
+        if (Session.workspaceType == 'project') {
+            var workspace = Session.workspace; // Direct workspace access is bad but we can't use the promise here because we need to update everything synchronously
+            if (workspace.id == project.id) {
+                $rootScope.notifyWarning('todo.is.ui.project.deleted');
+                document.location = $rootScope.serverUrl;
+            }
+        }
         CacheService.remove('project', project.id);
     };
+    _.each(crudMethods, function(crudMethod, eventType) {
+        PushService.registerListener('project', eventType, crudMethod);
+    });
     this.get = function(id) {
-        return Project.get({id: id}).$promise;
+        var cachedProject = CacheService.get('project', id);
+        return cachedProject ? $q.when(cachedProject) : self.refresh(id);
+    };
+    this.refresh = function(id) {
+        return Project.get({id: id}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.save = function(project) {
         project.class = 'project';
@@ -59,10 +88,10 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     this.updateTeam = function(project) {
         // Wrap the project inside a "projectd" because by default the formObjectData function will turn it into a "project" object
         // The "project" object conflicts with the "project" attribute expected by a filter which expects it to be either a number (id) or string (pkey)
-        return Project.update({id: project.id, action: 'updateTeam'}, {projectd: project}).$promise;
+        return Project.update({id: project.id, action: 'updateTeam'}, {projectd: project}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.update = function(project) {
-        return Project.update({id: project.id}, {projectd: project}).$promise;
+        return Project.update({id: project.id}, {projectd: project}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.leaveTeam = function(project) {
         return Project.update({id: project.id, action: 'leaveTeam'}, {}).$promise;
