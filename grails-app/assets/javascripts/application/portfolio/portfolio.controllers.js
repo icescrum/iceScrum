@@ -306,3 +306,9 @@ controllers.controller('portfolioProjectChartWidgetCtrl', ['$scope', 'ProjectSer
     // Init
     $scope.portfolio = $scope.getPortfolioFromState()
 }]);
+
+controllers.controller('portfolioProjectsWidgetCtrl', ['$scope', function($scope) {
+    // Init
+    $scope.portfolio = $scope.getPortfolioFromState()
+    $scope.projects = $scope.portfolio.projects;
+}]);
