@@ -26,7 +26,7 @@ services.factory('Widget', ['Resource', function($resource) {
     return $resource('ui/widget/:widgetDefinitionId/:id');
 }]);
 
-services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget', function(CacheService, FormService, $q, Widget) {
+services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget', 'Session', function(CacheService, FormService, $q, Widget, Session) {
     this.list = function() {
         var cachedWidgets = CacheService.getCache('widget');
         return _.isEmpty(cachedWidgets) ? Widget.query({}, function(widgets) {
@@ -61,5 +61,18 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
     };
     this.getWidgetDefinitions = function() {
         return FormService.httpGet('ui/widget/definitions');
+    };
+    this.authorizedWidget = function(action, widget) {
+        switch (action) {
+            case 'create':
+            case 'update':
+            case 'delete':
+                switch (Session.workspaceType) {
+                    case 'portfolio': return Session.bo();
+                    default: return Session.authenticated();
+                }
+            default:
+                return false;
+        }
     };
 }]);

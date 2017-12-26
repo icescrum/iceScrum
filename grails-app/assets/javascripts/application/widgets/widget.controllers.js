@@ -42,6 +42,7 @@ controllers.controller("widgetCtrl", ['$scope', 'WidgetService', '$q', function(
     $scope.delete = function(widget) {
         return WidgetService.delete(widget);
     };
+    $scope.authorizedWidget = WidgetService.authorizedWidget;
 }]);
 
 controllers.controller('widgetViewCtrl', ['$scope', '$uibModal', 'Session', 'CacheService', 'WidgetService', function($scope, $uibModal, Session, CacheService, WidgetService) {
@@ -100,5 +101,6 @@ controllers.controller('widgetViewCtrl', ['$scope', '$uibModal', 'Session', 'Cac
     };
     $scope.authenticated = Session.authenticated; // This is a function which return value will change when user will be set
     $scope.widgets = CacheService.getCache('widget');
+    $scope.authorizedWidget = WidgetService.authorizedWidget;
     WidgetService.list();
 }]);

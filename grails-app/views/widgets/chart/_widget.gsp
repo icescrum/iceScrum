@@ -22,14 +22,15 @@
 --}%
 
 <is:widget widgetDefinition="${widgetDefinition}">
-    <div ng-switch="widgetReady(widget)">
-        <div ng-switch-when="true">
-            <div ng-init="display(widget)">
-                <nvd3 options="options" ng-if="options.chart.type" data="data" config="{refreshDataOnly: false}"></nvd3>
-            </div>
+    <div ng-if="widgetReady(widget)">
+        <div ng-init="display(widget)">
+            <nvd3 options="options" ng-if="options.chart.type" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
-        <div ng-switch-default>
-            <a href ng-click="toggleSettings(widget)"><h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4></a>
-        </div>
+    </div>
+    <div ng-if="!widgetReady(widget) && authorizedWidget('update', widget)">
+        <a href ng-click="toggleSettings(widget)"><h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4></a>
+    </div>
+    <div ng-if="!widgetReady(widget) && !authorizedWidget('update', widget)">
+      <h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4>
     </div>
 </is:widget>

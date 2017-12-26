@@ -30,7 +30,7 @@
                  class="widget widget-{{ widget.widgetDefinitionId }} widget-height-{{ widget.height }} widget-width-{{ widget.width }}"
                  ng-repeat="widget in widgets"></div>
         </div>
-        <div class="add-widget" ng-if="authenticated()">
+        <div class="add-widget" ng-if="authorizedWidget('create')">
             <button class="btn btn-primary" ng-click="showAddWidgetModal()">
                 <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
             </button>
