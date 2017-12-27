@@ -37,6 +37,12 @@ class PortfolioController implements ControllerErrorHandler {
     def portfolioService
     def springSecurityService
 
+    @Secured(['businessOwner() or portfolioStackHolder()'])
+    def show(long portfolio) {
+        Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
+        render(status: 200, contentType: 'application/json', text: _portfolio as JSON)
+    }
+
     @Secured('isAuthenticated()')
     def save() {
         def portfolioParams = params.portfolio

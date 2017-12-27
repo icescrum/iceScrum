@@ -58,7 +58,7 @@
                                 wz-previous="previous">
                             ${message(code: 'todo.is.ui.wizard.previous')}
                         </button>
-                        <input type="submit" class="btn btn-default" ng-disabled="portfolio.projects.length < 2" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
+                        <input type="submit" class="btn btn-default" ng-disabled="portfolio.projects.length < 1" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
                     </div>
                 </div>
             </wz-step>

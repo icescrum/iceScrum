@@ -115,7 +115,7 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
         }
     };
     $scope.searchProject = function(val) {
-        return ProjectService.listByUserAndRole(Session.user.id, 'productOwner', {term: val, create: true, light: "startDate,preferences,team,productOwners"}).then(function(projects) {
+        return ProjectService.listByUserAndRole(Session.user.id, 'productOwner', {term: val, create: true, owner: true, light: "startDate,preferences,team,productOwners"}).then(function(projects) {
             var projectsList = _.map($scope.portfolio.projects, function(project) { return project.name; });
             return _.filter(projects, function(project) {
                 return !_.includes(projectsList, project.name);
@@ -190,18 +190,24 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', 
     var closeFunction = $scope.$close;
     $scope.$close = function(portfolio) {
         if (!portfolio) {
-            var deletableProjects = _.map($scope.portfolio.projects, {new: true});
-            var modal = alertCancelDeletableProjects(deletableProjects);
-            modal.result.then(function(projectsToDelete) {
-                if (projectsToDelete === false) {
-                    return; //go back to wizard
-                } else if (projectsToDelete.length > 0) {
-                    _.each(projectsToDelete, $scope.removeProject); //delete
-                }
-                closeFunction(portfolio);
-            }, function() {
-                alert('zdazd');
-            });
+            var deletableProjects = _.filter($scope.portfolio.projects, {new: true});
+            if (deletableProjects && deletableProjects.length > 0) {
+                var modal = alertCancelDeletableProjects(deletableProjects);
+                modal.result.then(function(projectsToDelete) {
+                    if (projectsToDelete === undefined) {
+                        return; //go back to wizard
+                    } else if (projectsToDelete.length > 0) {
+                        _.each(projectsToDelete, $scope.removeProject); //delete
+                    }
+                    closeFunction();
+                }, function() {
+                    alert('zdazd');
+                });
+            } else {
+                closeFunction();
+            }
+        } else {
+            closeFunction(portfolio);
         }
     };
 
@@ -209,10 +215,16 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', 
         return $uibModal.open({
             keyboard: false,
             backdrop: 'static',
-            templateUrl: "confirm.delete.projects.modal.html",
+            templateUrl: "confirm.portfolio.cancel.modal.html",
             size: 'md',
             controller: ['$scope', function($scope) {
-                $scope.projectsToDelete = deletableProjects;
+                _.each(deletableProjects, function(project) {
+                    project.delete = true;
+                });
+                $scope.deletableProjects = deletableProjects;
+                $scope.confirmDelete = function() {
+                    $scope.$close(_.filter($scope.deletableProjects, function(project) { return project.delete; }));
+                };
             }]
         });
     };
@@ -309,6 +321,6 @@ controllers.controller('portfolioProjectChartWidgetCtrl', ['$scope', 'ProjectSer
 
 controllers.controller('portfolioProjectsWidgetCtrl', ['$scope', function($scope) {
     // Init
-    $scope.portfolio = $scope.getPortfolioFromState()
+    $scope.portfolio = $scope.getPortfolioFromState();
     $scope.projects = $scope.portfolio.projects;
 }]);

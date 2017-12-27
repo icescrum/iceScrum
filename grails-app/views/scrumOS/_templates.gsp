@@ -59,16 +59,28 @@
     </is:modal>
     </script>
 
-    <script type="text/ng-template" id="confirm.delete.projects.modal.html">
+    <script type="text/ng-template" id="confirm.portfolio.cancel.modal.html">
     <is:modal form="confirmDelete()"
-              submitButton="${message(code: 'todo.is.ui.dirty.confirm.save')}"
-              closeButton="${message(code: 'is.button.cancel')}"
-              title="${message(code: 'todo.is.ui.dirty.confirm.title')}">
+              submitButtonColor="danger"
+              submitButton="${message(code: 'is.ui.portfolio.confirm.cancel.confirm')}"
+              closeButton="${message(code: 'is.ui.portfolio.confirm.cancel.back')}"
+              title="${message(code: 'is.ui.portfolio.confirm.cancel.title')}">
+        <div class="alert alert-warning" role="alert" style="margin-bottom: 15px;">
+            <i class="fa fa-warning"></i> ${message(code: 'is.ui.portfolio.confirm.cancel.description')}
+        </div>
         <table class="table table-bordered table-striped">
-            <tr ng-repeat="project in projectsToDelete">
-                <td><input type="checkbox" ng-model="project.keep"/></td>
-                <td>{{:: project.name }}</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>${message(code: 'is.project.name')}</th>
+                    <th style="width:20px"><i class="fa fa-trash"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="project in deletableProjects">
+                    <td>{{:: project.name }}</td>
+                    <td><input type="checkbox" ng-model="project.delete"/></td>
+                </tr>
+            </tbody>
         </table>
     </is:modal>
     </script>

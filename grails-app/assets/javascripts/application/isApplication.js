@@ -456,10 +456,10 @@ var isApplication = angular.module('isApplication', [
                         templateUrl: $rootScope.serverUrl + "/portfolio/add",
                         size: 'lg',
                         controller: 'newPortfolioCtrl'
-                    }).result.then(function(portfolio) {
+                    }).result.then(function() {
                         $state.transitionTo('root');
                     }, function() {
-                        $state.transitionTo('root');
+                        $state.transitionTo('root')
                     });
                 }]
             });
@@ -768,7 +768,12 @@ var isApplication = angular.module('isApplication', [
                 templateUrl: $rootScope.serverUrl + "/portfolio/edit",
                 size: 'lg',
                 scope: scope,
-                controller: 'editPortfolioModalCtrl'
+                controller: 'editPortfolioModalCtrl',
+                resolve: {
+                    projects: ['PortfolioService', function(PortfolioService) {
+                        return PortfolioService.listProjects(scope.getPortfolioFromState());
+                    }]
+                }
             });
         };
         $rootScope.showManageTeamsModal = function(team) { // Needs to be next to showProjectEditModal
