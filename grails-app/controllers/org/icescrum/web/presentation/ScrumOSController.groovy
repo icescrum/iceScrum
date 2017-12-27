@@ -49,10 +49,10 @@ class ScrumOSController implements ControllerErrorHandler {
     def index() {
         def user = springSecurityService.currentUser
         def workspaces = []
-        def userProjects = user ? projectService.getAllActiveProjectsByUser(user) : []
-        workspaces.addAll(userProjects)
         def userPortfolios = user ? portfolioService.getAllPortfoliosByUser(user) : []
         workspaces.addAll(userPortfolios)
+        def userProjects = user ? projectService.getAllActiveProjectsByUser(user) : []
+        workspaces.addAll(userProjects)
         def workspacesLimit = 9
         def browsableProjectsCount = request.admin ? Project.count() : ProjectPreferences.countByHidden(false, [cache: true])
         def model = [user                    : user,
