@@ -567,11 +567,6 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, template: "dialogs/editMembers")
     }
 
-    @Secured(['permitAll()'])
-    def listModal() {
-        render(status: 200, template: "dialogs/list")
-    }
-
     @Secured(['isAuthenticated()'])
     def add() {
         render(status: 200, template: "dialogs/new")

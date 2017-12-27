@@ -27,6 +27,7 @@ services.factory('Portfolio', ['Resource', function($resource) {
 }]);
 
 services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'ProjectService', '$q', 'IceScrumEventType', 'CacheService', function(Portfolio, Session, FormService, ProjectService, $q, IceScrumEventType, CacheService) {
+    var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(portfolio) {
         CacheService.addOrUpdate('portfolio', portfolio);
@@ -36,6 +37,15 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
     };
     crudMethods[IceScrumEventType.DELETE] = function(portfolio) {
         CacheService.remove('portfolio', portfolio.id);
+    };
+    this.list = function(params) {
+        if (!params) {
+            params = {};
+        }
+        params.paginate = true;
+        return Portfolio.get(params, function(data) {
+            self.mergePortfolios(data.portfolios);
+        }).$promise;
     };
     this.save = function(portfolio) {
         portfolio.class = 'portfolio';
@@ -67,5 +77,8 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
             default:
                 return false;
         }
+    };
+    this.mergePortfolios = function(portfolios) {
+        _.each(portfolios, crudMethods[IceScrumEventType.CREATE]);
     };
 }]);

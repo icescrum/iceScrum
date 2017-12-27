@@ -26,7 +26,9 @@ package org.icescrum.web.presentation
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.Project
+import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.ProjectPreferences
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
@@ -226,5 +228,61 @@ class ScrumOSController implements ControllerErrorHandler {
         </browserconfig>
         """
         render(status: 200, contentType: 'text/xml', text: content)
+    }
+
+    @Secured(['permitAll()'])
+    def listModal() {
+        render(status: 200, template: "dialogs/list")
+    }
+
+    @Secured(['isAuthenticated()'])
+    def workspacesListByUser(long id, String term, Boolean paginate, Integer page, Integer count, String workspaceType) {
+        if (id && id != springSecurityService.principal.id && !request.admin) {
+            render(status: 403)
+            return
+        }
+        User user = id ? User.get(id) : springSecurityService.currentUser
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def workspaces = []
+        if (!workspaceType || workspaceType == 'portfolio') {
+            workspaces.addAll(portfolioService.getAllPortfoliosByUser(user, searchTerm))
+        }
+        if (!workspaceType || workspaceType == 'project') {
+            workspaces.addAll(projectService.getAllActiveProjectsByUser(user, searchTerm))
+        }
+        if (paginate && !count) {
+            count = 10
+        }
+        def projects, portfolios = []
+        def returnedWorkspaces = !count ? workspaces : workspaces.drop(page ? (page - 1) * count : 0).take(count)
+        def light = params.light != null ? params.remove('light') : false
+        if (light && light != "false") {
+            def properties = light == "true" || light instanceof Boolean ? null : light.tokenize(',')
+            returnedWorkspaces = returnedWorkspaces.each {
+                if (it instanceof Project) {
+                    def p = [id: it.id, pkey: it.pkey, name: it.name, portfolio: it.portfolio ? [id: it.portfolio.id] : null]
+                    properties?.each { property ->
+                        if (it.hasProperty(property)) {
+                            p."$property" = it."$property"
+                        }
+                    }
+                    projects << p
+
+                } else {
+                    def p = [id: it.id, fkey: it.fkey, name: it.name]
+                    properties?.each { property ->
+                        if (it.hasProperty(property)) {
+                            p."$property" = it."$property"
+                        }
+                    }
+                    portfolios << p
+                }
+            }
+        } else {
+            projects = returnedWorkspaces.findAll { it instanceof Project }
+            portfolios = returnedWorkspaces.findAll { it instanceof Portfolio }
+        }
+        def returnData = paginate ? [projects: projects, portfolios: portfolios, count: workspaces.size()] : [projects: projects, portfolios: portfolios]
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 }

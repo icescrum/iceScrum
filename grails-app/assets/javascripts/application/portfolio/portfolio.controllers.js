@@ -21,6 +21,13 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
+controllers.controller('abstractPortfolioListCtrl', ['$scope', 'PortfolioService', 'ProjectService', function($scope, PortfolioService, ProjectService) {
+    $scope.selectPortfolio = function(portfolio) {
+        $scope.portfolio = portfolio;
+    };
+    // Init
+}]);
+
 
 controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootScope', 'ProjectService', 'PortfolioService', 'Session', function($scope, $uibModal, $rootScope, ProjectService, PortfolioService, Session) {
     $scope.preparePortfolio = function(portfolio) {

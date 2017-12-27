@@ -37,6 +37,23 @@ class PortfolioController implements ControllerErrorHandler {
     def portfolioService
     def springSecurityService
 
+    @Secured(["hasRole('ROLE_ADMIN')"])
+    def index(String term, Boolean paginate, Integer count, Integer page, String sorting, String order) {
+        def options = [cache: true]
+        if (paginate) {
+            if (!count) {
+                count = 10
+            }
+            options.offset = page ? (page - 1) * count : 0
+            options.max = count
+            options.sort = sorting ?: 'name'
+            options.order = order ?: 'asc'
+        }
+        def portfolios = Portfolio.findAllByTerm(options, term)
+        def returnData = paginate ? [portfolios: portfolios, count: portfolios.totalCount] : portfolios
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
     @Secured(['businessOwner() or portfolioStackHolder()'])
     def show(long portfolio) {
         Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
@@ -108,5 +125,33 @@ class PortfolioController implements ControllerErrorHandler {
     @Secured(['isAuthenticated()'])
     def edit() {
         render(status: 200, template: "dialogs/edit")
+    }
+
+    @Secured(['businessOwner() or portfolioStackHolder()'])
+    def listByUser(long id, String term, Boolean paginate, Integer page, Integer count) {
+        if (id && id != springSecurityService.principal.id && !request.admin) {
+            render(status: 403)
+            return
+        }
+        User user = id ? User.get(id) : springSecurityService.currentUser
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def portfolios = portfolioService.getAllPortfoliosByUser(user, searchTerm)
+        if (paginate && !count) {
+            count = 10
+        }
+        def returnedPortfolios = !count ? portfolios : portfolios.drop(page ? (page - 1) * count : 0).take(count)
+        def light = params.light != null ? params.remove('light') : false
+        if (light && light != "false") {
+            def properties = light == "true" || light instanceof Boolean ? null : light.tokenize(',')
+            returnedPortfolios = returnedPortfolios.collect {
+                def p = [id: it.id, fkey: it.fkey, name: it.name]
+                properties?.each { property ->
+                    p."$property" = it."$property"
+                }
+                return p
+            }
+        }
+        def returnData = paginate ? [portfolios: returnedPortfolios, count: portfolios.size()] : returnedPortfolios
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 }

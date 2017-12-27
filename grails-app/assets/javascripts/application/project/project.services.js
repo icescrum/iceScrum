@@ -123,7 +123,6 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         }
         params.action = 'listPublic';
         params.paginate = true;
-        params.paginate = true;
         return Project.get(params, function(data) {
             self.mergeProjects(data.projects)
         }).$promise;

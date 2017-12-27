@@ -278,36 +278,57 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage
 controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', '$state', function($scope, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal, $state) {
     $scope.authorizedProject = ProjectService.authorizedProject;
     $scope.authorizedPortfolio = PortfolioService.authorizedPortfolio;
-    $scope.showProjectListModal = function(listType) {
+    $scope.showWorkspaceListModal = function(listType, workspaceType) {
+        workspaceType = workspaceType ? workspaceType : 'all';
         $uibModal.open({
             keyboard: false,
-            templateUrl: $scope.serverUrl + "/project/listModal",
+            templateUrl: $scope.serverUrl + "/scrumOS/listModal",
             size: 'lg',
-            controller: ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
+            controller: ['$scope', '$controller', 'ProjectService', 'PortfolioService', 'Session', function($scope, $controller, ProjectService, PortfolioService, Session) {
                 $controller('abstractProjectListCtrl', {$scope: $scope});
+                $controller('abstractPortfolioListCtrl', {$scope: $scope});
                 // Functions
-                $scope.searchProjects = function() {
+                $scope.searchWorkspaces = function() {
                     var listFunction = {
-                        public: ProjectService.listPublic,
-                        user: ProjectService.listByUser,
-                        all: ProjectService.list
-                    }[listType];
-                    var params = {term: $scope.projectSearch, page: $scope.currentPage, count: $scope.projectsPerPage};
-                    listFunction(params).then(function(projectsAndCount) {
-                        $scope.projectCount = projectsAndCount.count;
-                        $scope.projects = projectsAndCount.projects;
-                        if (!_.isEmpty($scope.projects) && _.isEmpty($scope.project)) {
-                            $scope.selectProject(_.head($scope.projects));
+                        'portfolio': {
+                            all: PortfolioService.list
+                        },
+                        'project': {
+                            public: ProjectService.listPublic,
+                            all: ProjectService.list
+                        },
+                        'all': {
+                            user: Session.workspacesListByUser
+                        }
+                    }[workspaceType][listType];
+                    var params = {term: $scope.workspaceSearch, page: $scope.currentPage, count: $scope.workspacesPerPage};
+                    listFunction(params).then(function(workspacesAndCount) {
+                        $scope.workspaceCount = workspacesAndCount.count;
+                        $scope.workspaces = [];
+                        if (workspacesAndCount.portfolios) {
+                            $scope.workspaces = _.concat($scope.workspaces, workspacesAndCount.portfolios);
+                        }
+                        if (workspacesAndCount.projects) {
+                            $scope.workspaces = _.concat($scope.workspaces, workspacesAndCount.projects);
+                        }
+                        if (!_.isEmpty($scope.workspaces) && _.isEmpty($scope.workspace)) {
+                            $scope.selectWorkspace(_.head($scope.workspaces));
                         }
                     });
                 };
+                $scope.selectWorkspace = function(workspace) {
+                    $scope.summary = workspace.class.toLowerCase() + '.summary.html';
+                    $scope['select' + workspace.class](workspace);
+                    $scope.workspace = workspace;
+                };
                 // Init
-                $scope.projectCount = 0;
+                $scope.workspaceCount = 0;
                 $scope.currentPage = 1;
-                $scope.projectsPerPage = 9; // Constant
-                $scope.projectSearch = '';
-                $scope.projects = [];
-                $scope.searchProjects();
+                $scope.workspacesPerPage = 9; // Constant
+                $scope.workspaceSearch = '';
+                $scope.workspaces = [];
+                $scope.summary = null;
+                $scope.searchWorkspaces();
             }]
         });
     };

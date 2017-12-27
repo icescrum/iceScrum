@@ -30,23 +30,23 @@
             <div class="left-panel-header">
                 <div class="input-group">
                     <input type="text"
-                           ng-model="projectSearch"
-                           ng-change="searchProjects()"
+                           ng-model="workspaceSearch"
+                           ng-change="searchWorkspaces()"
                            ng-model-options="{debounce: 300}"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
                     <span class="input-group-btn">
                         <button class="btn btn-default"
                                 type="button"
-                                ng-click="projectSearch = null; searchProjects()">
-                            <i class="fa" ng-class="projectSearch ? 'fa-times' : 'fa-search'"></i>
+                                ng-click="workspaceSearch = null; searchWorkspaces()">
+                            <i class="fa" ng-class="workspaceSearch ? 'fa-times' : 'fa-search'"></i>
                         </button>
                     </span>
                 </div>
             </div>
             <ul class="left-panel-body nav nav-list">
-                <li ng-class="{ 'current': currentProject.id == project.id }" ng-repeat="currentProject in projects">
-                    <a ng-click="selectProject(currentProject)" href>{{ currentProject.name }}</a>
+                <li ng-class="{ 'current': currentWorkspace.id == workspace.id }" ng-repeat="currentWorkspace in workspaces">
+                    <a ng-click="selectWorkspace(currentWorkspace)" href><i class="fa" ng-class="['fa', {'fa-folder': currentWorkspace.pkey, 'fa-briefcase': currentWorkspace.fkey}]"></i> {{ currentWorkspace.name }}</a>
                 </li>
             </ul>
             <div class="left-panel-bottom">
@@ -55,19 +55,19 @@
                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
                      class="pagination-sm"
                      max-size="3"
-                     total-items="projectCount"
-                     items-per-page="projectsPerPage"
+                     total-items="workspaceCount"
+                     items-per-page="workspacesPerPage"
                      ng-model="currentPage"
-                     ng-change="searchProjects()">
+                     ng-change="searchWorkspaces()">
                 </div>
             </div>
         </div>
-        <div class="right-panel col-sm-9" ng-switch="projects != undefined && projects.length == 0">
+        <div class="right-panel col-sm-9" ng-switch="workspaces != undefined && workspaces.length == 0 && summary">
             <div ng-switch-when="true">
                 ${message(code: 'todo.is.ui.project.noproject')}
             </div>
             <div class="col-md-12" ng-switch-default>
-                <div ng-include="'project.summary.html'"></div>
+                <div ng-include="summary"></div>
             </div>
         </div>
     </div>

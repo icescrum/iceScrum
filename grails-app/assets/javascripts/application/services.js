@@ -170,6 +170,29 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
     this.getTimezones = function() {
         return FormService.httpGet('scrumOS/timezones', {cache: true}, true);
     };
+    this.workspacesListByUser = function(params) {
+        if (!params) {
+            params = {};
+        }
+        params.paginate = true;
+        return FormService.httpGet('scrumOS/workspacesListByUser', {params: params}, true).then(function(result) {
+            if (!params.light) {
+                var Project = $injector.get('Project');
+                var ProjectService = $injector.get('ProjectService');
+                _.each(result.projects, function(project) {
+                    _.merge(project, new Project());
+                });
+                ProjectService.mergeProjects(result.projects);
+                var Portfolio = $injector.get('Portfolio');
+                var PortfolioService = $injector.get('PortfolioService');
+                _.each(result.portfolios, function(portfolio) {
+                    _.merge(portfolio, new Portfolio());
+                });
+                PortfolioService.mergePortfolios(result.portfolios);
+            }
+            return result;
+        });
+    };
 }]);
 
 services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfigService', function($filter, $http, $rootScope, DomainConfigService) {

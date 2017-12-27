@@ -78,26 +78,37 @@
                                 </li>
                             </g:if>
                             <g:if test="${browsableWorkspacesExist}">
-                                <li>
-                                    <g:if test="${request.admin}">
+                                <g:if test="${request.admin}">
+                                    <li>
                                         <a hotkey="{ 'shift+a': hotkeyClick}"
                                            href
-                                           ng-click="showProjectListModal('all')"
+                                           ng-click="showWorkspaceListModal('all', 'project')"
                                            hotkey-description="${message(code: 'todo.is.ui.project.list.all')}">
                                             <g:message code="todo.is.ui.project.list.all"/>
                                             <small class="text-muted">(SHIFT+A)</small>
                                         </a>
-                                    </g:if>
-                                    <g:else>
+                                    </li>
+                                    <li>
+                                        <a hotkey="{ 'shift+z': hotkeyClick}"
+                                           href
+                                           ng-click="showWorkspaceListModal('all','portfolio')"
+                                           hotkey-description="${message(code: 'is.ui.portfolio.list.all')}">
+                                            <g:message code="is.ui.portfolio.list.all"/>
+                                            <small class="text-muted">(SHIFT+Z)</small>
+                                        </a>
+                                    </li>
+                                </g:if>
+                                <g:else>
+                                    <li>
                                         <a hotkey="{ 'shift+a': hotkeyClick}"
                                            href
-                                           ng-click="showProjectListModal('public')"
+                                           ng-click="showWorkspaceListModal('public', 'project')"
                                            hotkey-description="${message(code: 'todo.is.ui.project.list.public')}">
                                             <g:message code="todo.is.ui.project.list.public"/>
                                             <small class="text-muted">(SHIFT+A)</small>
                                         </a>
-                                    </g:else>
-                                </li>
+                                    </li>
+                                </g:else>
                             </g:if>
                             <g:if test="${workspace?.object}">
                                 <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="divider"></li>
@@ -140,7 +151,7 @@
                             </g:if>
                             <g:if test="${moreWorkspacesExist}">
                                 <li>
-                                    <a href ng-click="showProjectListModal('user')">
+                                    <a href ng-click="showWorkspaceListModal('user')">
                                         <g:message code="is.projectmenu.submenu.project.more"/>
                                     </a>
                                 </li>
