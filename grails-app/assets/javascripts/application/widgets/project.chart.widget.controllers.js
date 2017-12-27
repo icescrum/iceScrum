@@ -36,7 +36,7 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
         return $scope.widgetReady(widget) && $scope.holder.title ? widget.settings.project.pkey + ' - ' + $scope.holder.title : '';
     };
     $scope.getUrl = function() {
-        return $scope.widgetReady(widget) ? 'p/' + widget.settings.project.pkey + '/#/' + widget.settings.chart.view : '';
+        return $scope.widgetReady(widget) ? $scope.openWorkspaceUrl(widget.settings.project) : '';
     };
     $scope.refreshProjects = function(term) {
         if (widget.settings && widget.settings.project && !$scope.holder.projectResolved) {
