@@ -27,7 +27,7 @@
         <div class="panel-heading">
             <h3 class="panel-title small-title">
                 <div ng-controller="taskCtrl">
-                    <div class="sprints-dropdown pull-left" uib-dropdown on-toggle="scrollToActiveSprint(open)">
+                    <div class="planning-dropdown pull-left" uib-dropdown on-toggle="scrollToActiveSprint(open)">
                         <div class="active">
                             <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
                             <i ng-if="sprintEntries.length > 2" class="fa fa-caret-down" uib-dropdown-toggle></i>
@@ -45,7 +45,7 @@
                                 </span>
                             </div>
                         </div>
-                        <ul uib-dropdown-menu role="menu" class="sprints-menu">
+                        <ul uib-dropdown-menu role="menu" class="planning-menu">
                             <li ng-repeat="sprintEntry in sprintEntries | orderBy: 'orderNumber'"
                                 ng-switch="sprintEntry.type"
                                 ng-class="{'divider': 'divider', 'release': 'dropdown-header'}[sprintEntry.type]">

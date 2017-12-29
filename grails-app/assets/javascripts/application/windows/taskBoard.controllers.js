@@ -188,9 +188,9 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     };
     $scope.scrollToActiveSprint = function(open) {
         if (open) {
-            var dropdown = angular.element('.sprints-dropdown');
+            var dropdown = angular.element('.planning-dropdown');
             var ele = dropdown.find("li>a.active");
-            var list = dropdown.find('.sprints-menu');
+            var list = dropdown.find('.planning-menu');
             var posi = list.scrollTop() + ele.offset().top - ele.innerHeight();
             list.animate({
                 scrollTop: posi - 60
