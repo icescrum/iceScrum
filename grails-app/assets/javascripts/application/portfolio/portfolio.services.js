@@ -73,6 +73,7 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
             case 'edit':
             case 'update':
             case 'delete':
+            case 'updateMembers':
                 return Session.bo();
             default:
                 return false;

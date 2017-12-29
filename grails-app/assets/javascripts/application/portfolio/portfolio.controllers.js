@@ -29,7 +29,7 @@ controllers.controller('abstractPortfolioListCtrl', ['$scope', 'PortfolioService
 }]);
 
 
-controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootScope', 'ProjectService', 'PortfolioService', 'Session', function($scope, $uibModal, $rootScope, ProjectService, PortfolioService, Session) {
+controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootScope', '$filter', 'ProjectService', 'PortfolioService', 'UserService', 'Session', function($scope, $uibModal, $rootScope, $filter, ProjectService, PortfolioService, UserService, Session) {
     $scope.preparePortfolio = function(portfolio) {
         var p = angular.copy(portfolio);
         var mapId = function(objects) {
@@ -54,6 +54,39 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
             p.invitedstakeHolders = invited(portfolio.stakeHolders);
         }
         return p;
+    };
+    $scope.searchUsers = function(val) {
+        return UserService.search(val, true).then(function(users) {
+            return _.chain(users)
+                .filter(function(u) {
+                    var found = _.find($scope.portfolio.businessOwners, {email: u.email});
+                    if (!found) {
+                        found = _.find($scope.portfolio.stakeHolders, {email: u.email});
+                    }
+                    return !found;
+                })
+                .map(function(member) {
+                    member.name = $filter('userFullName')(member);
+                    return member;
+                })
+                .value();
+        });
+    };
+    $scope.addUser = function(user, role) {
+        if (role == 'bo') {
+            $scope.portfolio.businessOwners.push(user);
+            this.bo = "";
+        } else if (role == 'sh') {
+            $scope.portfolio.stakeHolders.push(user);
+            this.sh = "";
+        }
+    };
+    $scope.removeUser = function(user, role) {
+        if (role == 'bo') {
+            _.remove($scope.portfolio.businessOwners, {email: user.email});
+        } else if (role == 'sh') {
+            _.remove($scope.portfolio.stakeHolders, {email: user.email});
+        }
     };
     $scope.selectProject = function(project) {
         if (project.portfolio) {
@@ -129,6 +162,23 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
             });
         })
     };
+    $scope.alertCancelDeletableProjects = function(deletableProjects) {
+        return $uibModal.open({
+            keyboard: false,
+            backdrop: 'static',
+            templateUrl: "confirm.portfolio.cancel.modal.html",
+            size: 'md',
+            controller: ['$scope', function($scope) {
+                _.each(deletableProjects, function(project) {
+                    project.delete = true;
+                });
+                $scope.deletableProjects = deletableProjects;
+                $scope.confirmDelete = function() {
+                    $scope.$close(_.filter($scope.deletableProjects, function(project) { return project.delete; }));
+                };
+            }]
+        });
+    };
 }]);
 
 controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', '$uibModal', 'Session', 'WizardHandler', 'Portfolio', 'Project', 'ProjectService', 'PortfolioService', 'UserService', function($scope, $controller, $filter, $uibModal, Session, WizardHandler, Portfolio, Project, ProjectService, PortfolioService, UserService) {
@@ -158,39 +208,6 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', 
             fkeyModel.$setDirty(); // To trigger remote validation
         }
     };
-    $scope.searchUsers = function(val) {
-        return UserService.search(val, true).then(function(users) {
-            return _.chain(users)
-                .filter(function(u) {
-                    var found = _.find($scope.portfolio.businessOwners, {email: u.email});
-                    if (!found) {
-                        found = _.find($scope.portfolio.stakeHolders, {email: u.email});
-                    }
-                    return !found;
-                })
-                .map(function(member) {
-                    member.name = $filter('userFullName')(member);
-                    return member;
-                })
-                .value();
-        });
-    };
-    $scope.addUser = function(user, role) {
-        if (role == 'bo') {
-            $scope.portfolio.businessOwners.push(user);
-            this.bo = "";
-        } else if (role == 'sh') {
-            $scope.portfolio.stakeHolders.push(user);
-            this.sh = "";
-        }
-    };
-    $scope.removeUser = function(user, role) {
-        if (role == 'bo') {
-            _.remove($scope.portfolio.businessOwners, {email: user.email});
-        } else if (role == 'sh') {
-            _.remove($scope.portfolio.stakeHolders, {email: user.email});
-        }
-    };
     $scope.portfolioMembersEditable = function() {
         return true;
     };
@@ -199,7 +216,7 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', 
         if (!portfolio) {
             var deletableProjects = _.filter($scope.portfolio.projects, {new: true});
             if (deletableProjects && deletableProjects.length > 0) {
-                var modal = alertCancelDeletableProjects(deletableProjects);
+                var modal = $scope.alertCancelDeletableProjects(deletableProjects);
                 modal.result.then(function(projectsToDelete) {
                     if (projectsToDelete === undefined) {
                         return; //go back to wizard
@@ -207,33 +224,13 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', 
                         _.each(projectsToDelete, $scope.removeProject); //delete
                     }
                     closeFunction();
-                }, function() {
-                    alert('zdazd');
-                });
+                }, function() {});
             } else {
                 closeFunction();
             }
         } else {
             closeFunction(portfolio);
         }
-    };
-
-    var alertCancelDeletableProjects = function(deletableProjects) {
-        return $uibModal.open({
-            keyboard: false,
-            backdrop: 'static',
-            templateUrl: "confirm.portfolio.cancel.modal.html",
-            size: 'md',
-            controller: ['$scope', function($scope) {
-                _.each(deletableProjects, function(project) {
-                    project.delete = true;
-                });
-                $scope.deletableProjects = deletableProjects;
-                $scope.confirmDelete = function() {
-                    $scope.$close(_.filter($scope.deletableProjects, function(project) { return project.delete; }));
-                };
-            }]
-        });
     };
     // Init
     $scope.formHolder = {};
@@ -281,8 +278,11 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     $scope.update = function(portfolio) {
         var p = $scope.preparePortfolio(portfolio);
         PortfolioService.update(p).then(function() {
-            $scope.notifySuccess('todo.is.ui.portfolio.general.updated');
-            $scope.resetPortfolioForm();
+            $scope.currentPortfolio.projects = [];
+            return PortfolioService.listProjects($scope.currentPortfolio).then(function() {
+                $scope.notifySuccess('todo.is.ui.portfolio.general.updated');
+                $scope.resetPortfolioForm();
+            });
         });
     };
     $scope.resetPortfolioForm = function() {
@@ -300,6 +300,50 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
                 });
             }
         })
+    };
+    $scope.portfolioMembersEditable = function(portfolio) {
+        return PortfolioService.authorizedPortfolio('updateMembers', portfolio);
+    };
+    $scope.invitationToUserMock = function(invitation) {
+        return {email: invitation.email};
+    };
+    $scope.resetMembersForm = function() {
+        $scope.resetFormValidation($scope.formHolder.editPortfolioForm);
+        $scope.portfolio = angular.copy($scope.currentPortfolio);
+        $scope.portfolio.stakeHolders = $scope.portfolio.stakeHolders.concat(_.map($scope.portfolio.invitedStakeHolders, $scope.invitationToUserMock));
+        $scope.portfolio.businessOwners = $scope.portfolio.businessOwners.concat(_.map($scope.portfolio.invitedBusinessOwners, $scope.invitationToUserMock));
+    };
+    $scope.cancelMembers = function() {
+        if ($scope.formHolder.editPortfolioForm.$dirty) {
+            $scope.confirm({message: $scope.message('todo.is.ui.portfolio.members.cancel.confirm'), callback: $scope.$close});
+        } else {
+            $scope.$close();
+        }
+    };
+    $scope.cancelProjects = function() {
+        if ($scope.formHolder.editPortfolioForm.$dirty) {
+            var deletableProjects = _.filter($scope.portfolio.projects, {new: true});
+            if (deletableProjects && deletableProjects.length > 0) {
+                var modal = $scope.alertCancelDeletableProjects(deletableProjects);
+                modal.result.then(function(projectsToDelete) {
+                    if (projectsToDelete === undefined) {
+                        return;
+                    } else if (projectsToDelete.length > 0) {
+                        _.each(projectsToDelete, $scope.removeProject); //delete
+                    }
+                    $scope.$close();
+                }, function() {});
+            } else {
+                $scope.$close();
+            }
+        } else {
+            $scope.$close();
+        }
+    };
+    var $removeProject = $scope.removeProject;
+    $scope.removeProject = function(projectToRemove) {
+        $scope.formHolder.editPortfolioForm.editedProjects.$setDirty();
+        $removeProject(projectToRemove);
     };
     // Init
     $scope.formHolder = {};

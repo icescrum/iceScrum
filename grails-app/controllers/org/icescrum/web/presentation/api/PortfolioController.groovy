@@ -81,14 +81,15 @@ class PortfolioController implements ControllerErrorHandler {
     def update(long portfolio) {
         def portfolioParams = params.portfoliod
         Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
-        def projects = Project.withProjects(portfolioParams.projects, 'id', springSecurityService.currentUser)
-        def businessOwners = portfolioParams.businessOwners != null ? portfolioParams.businessOwners.list('id').collect { it.toLong() } : null
-        def stakeholders = portfolioParams.stakeHolders != null ? portfolioParams.stakeHolders.list('id').collect { it.toLong() } : null
-        businessOwners = businessOwners != null ? User.getAll(businessOwners) : null
-        stakeholders = stakeholders != null ? User.getAll(stakeholders) : null
-        Project.withTransaction {
+        def projects = Project.withProjects(portfolioParams.projects, 'id', !request.admin ? springSecurityService.currentUser : false)
+        def businessOwners = portfolioParams.businessOwners ? User.getAll(portfolioParams.businessOwners.list('id').collect { it.toLong() }) : []
+        def stakeholders = portfolioParams.stakeHolders ? User.getAll(portfolioParams.stakeHolders.list('id').collect { it.toLong() }) : []
+        def invitedBusinessOwners = portfolioParams.invitedBusinessOwners ? portfolioParams.invitedBusinessOwners.list('email') : []
+        def invitedStakeHolders = portfolioParams.invitedStakeHolders ? portfolioParams.invitedStakeHolders.list('email') : []
+        Portfolio.withTransaction {
             bindData(_portfolio, portfolioParams, [include: ['name', 'description', 'fkey']])
             portfolioService.update(_portfolio, projects, businessOwners, stakeholders)
+            portfolioService.managePortfolioInvitations(_portfolio, invitedBusinessOwners, invitedStakeHolders)
             entry.hook(id: "portfolio-update", model: [portfolio: _portfolio])
             render(status: 200, contentType: 'application/json', text: _portfolio as JSON)
         }

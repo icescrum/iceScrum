@@ -34,7 +34,7 @@
         <button type="button"
                 role="button"
                 class="btn btn-default"
-                ng-click="$close()">
+                ng-click="cancelMembers()">
             ${message(code: 'is.button.cancel')}
         </button>
         <button type='submit'

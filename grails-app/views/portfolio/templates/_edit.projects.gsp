@@ -30,12 +30,19 @@
       ng-submit='update(portfolio)'
       name="formHolder.editPortfolioForm">
     <ng-include src="'form.projects.portfolio.html'"></ng-include>
+    <input ng-model="formHolder.editedProjects" name="editedProjects" type="hidden"><!-- used to handle dirty on click remove button -->
     <div class="btn-toolbar pull-right">
         <button type="button"
                 role="button"
                 class="btn btn-default"
-                ng-click="$close()">
+                ng-click="cancelProjects()">
             ${message(code: 'is.button.cancel')}
+        </button>
+        <button type='submit'
+                role="button"
+                class='btn btn-primary'
+                ng-disabled="!formHolder.editPortfolioForm.$dirty || formHolder.editPortfolioForm.$invalid">
+            ${message(code: 'is.button.update')}
         </button>
     </div>
 </form>
