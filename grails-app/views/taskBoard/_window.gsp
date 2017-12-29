@@ -342,7 +342,7 @@
         </div>
     </div>
     <div ng-if="!sprint"
-         class="panel panel-light">
+         class="panel">
         <div class="panel-body">
             <div class="empty-view">
                 <p class="help-block">${message(code: 'todo.is.ui.taskBoard.empty')}<p>
