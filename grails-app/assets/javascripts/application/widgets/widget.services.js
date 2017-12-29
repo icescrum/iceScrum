@@ -64,6 +64,8 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
     };
     this.authorizedWidget = function(action, widget) {
         switch (action) {
+            case 'move':
+                return Session.authenticated();
             case 'create':
             case 'update':
             case 'delete':

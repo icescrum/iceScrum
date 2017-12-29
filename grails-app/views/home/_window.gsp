@@ -22,6 +22,7 @@
     <div class="content">
         <div class="row widgets"
              as-sortable="widgetSortableOptions | merge: sortableScrollOptions('#view-home')"
+             is-disabled="!authorizedWidget('move')"
              ng-model="widgets">
             <div as-sortable-item
                  ng-include src="templateWidgetUrl(widget)"
