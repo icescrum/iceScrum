@@ -51,7 +51,7 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
         }
         if (portfolio.stakeHolders) {
             p.stakeHolders = mapId(portfolio.stakeHolders);
-            p.invitedstakeHolders = invited(portfolio.stakeHolders);
+            p.invitedStakeHolders = invited(portfolio.stakeHolders);
         }
         return p;
     };
@@ -288,6 +288,8 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     $scope.resetPortfolioForm = function() {
         $scope.resetFormValidation($scope.formHolder.editPortfolioForm);
         $scope.portfolio = angular.copy($scope.currentPortfolio);
+        $scope.portfolio.stakeHolders = $scope.portfolio.stakeHolders.concat(_.map($scope.portfolio.invitedStakeHolders, $scope.invitationToUserMock));
+        $scope.portfolio.businessOwners = $scope.portfolio.businessOwners.concat(_.map($scope.portfolio.invitedBusinessOwners, $scope.invitationToUserMock));
     };
     $scope['delete'] = function(portfolio) {
         $scope.confirm({
@@ -306,12 +308,6 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     };
     $scope.invitationToUserMock = function(invitation) {
         return {email: invitation.email};
-    };
-    $scope.resetMembersForm = function() {
-        $scope.resetFormValidation($scope.formHolder.editPortfolioForm);
-        $scope.portfolio = angular.copy($scope.currentPortfolio);
-        $scope.portfolio.stakeHolders = $scope.portfolio.stakeHolders.concat(_.map($scope.portfolio.invitedStakeHolders, $scope.invitationToUserMock));
-        $scope.portfolio.businessOwners = $scope.portfolio.businessOwners.concat(_.map($scope.portfolio.invitedBusinessOwners, $scope.invitationToUserMock));
     };
     $scope.cancelMembers = function() {
         if ($scope.formHolder.editPortfolioForm.$dirty) {
