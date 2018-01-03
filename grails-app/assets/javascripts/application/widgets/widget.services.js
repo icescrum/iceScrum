@@ -23,7 +23,7 @@
  */
 
 services.factory('Widget', ['Resource', function($resource) {
-    return $resource('ui/widget/:widgetDefinitionId/:id');
+    return $resource('ui/widget/:widgetDefinitionId/:id?nocache=' + (new Date()).getTime()); //fix weird safari no-cache control from server
 }]);
 
 services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget', 'Session', function(CacheService, FormService, $q, Widget, Session) {
