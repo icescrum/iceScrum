@@ -243,7 +243,11 @@ class StoryController implements ControllerErrorHandler {
     def permalink(int uid, long project) {
         Project _project = Project.withProject(project)
         Story story = Story.findByBacklogAndUid(_project, uid)
-        redirect(uri: "/p/$_project.pkey/#/" + getStoryHash(story))
+        if (story) {
+            redirect(uri: "/p/$_project.pkey/#/" + getStoryHash(story))
+        } else {
+            redirect(controller: 'errors', action: 'error404')
+        }
     }
 
     @Secured(['permitAll()'])
