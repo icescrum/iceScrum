@@ -22,7 +22,7 @@
 --}%
 
 <is:modal title="${message(code: 'todo.is.ui.projects')}"
-          form="openWorkspace(project)"
+          form="openWorkspace(workspace)"
           submitButton="${message(code: 'todo.is.ui.open')}"
           class="split-modal">
     <div class="row">
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <ul class="left-panel-body nav nav-list">
-                <li ng-class="{ 'current': currentWorkspace.id == workspace.id }" ng-repeat="currentWorkspace in workspaces">
+                <li ng-class="{'current': currentWorkspace.id == workspace.id && currentWorkspace.class == workspace.class}" ng-repeat="currentWorkspace in workspaces">
                     <a ng-click="selectWorkspace(currentWorkspace)" href><i class="fa" ng-class="['fa', {'fa-folder': currentWorkspace.pkey, 'fa-briefcase': currentWorkspace.fkey}]"></i> {{ currentWorkspace.name }}</a>
                 </li>
             </ul>

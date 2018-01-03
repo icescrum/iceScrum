@@ -124,8 +124,8 @@
                                         <g:message code="todo.is.ui.workspaces.submenu.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                     </a>
                                 </li>
-                                <g:if test="${exportEnable && (request.scrumMaster || request.productOwner)}">
-                                    <li ng-if="authorized${workspace.name.capitalize()}('edit')">
+                                <g:if test="${exportEnable}">
+                                    <li ng-if="authorized${workspace.name.capitalize()}('export')">
                                         <a hotkey="{ 'shift+d': export}"
                                            hotkey-description="${message(code: 'is.dialog.exportProject.title')}"
                                            href

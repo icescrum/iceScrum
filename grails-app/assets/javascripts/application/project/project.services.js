@@ -170,6 +170,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         switch (action) {
             case 'unArchive':
                 return Session.admin();
+            case 'export':
             case 'upload':
                 return Session.poOrSm();
             case 'update':

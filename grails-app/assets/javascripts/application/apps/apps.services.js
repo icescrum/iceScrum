@@ -47,7 +47,7 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
     this.authorizedApp = function(action, appDefinitionOrId, project) {
         switch (action) {
             case 'show':
-                return Session.authenticated();
+                return Session.authenticated() && Session.workspaceType == 'project';
             case 'enableForProject':
                 var appDefinition = appDefinitionOrId;
                 return Session.sm() && appDefinition && appDefinition.availableForServer && appDefinition.enabledForServer && appDefinition.isProject;
