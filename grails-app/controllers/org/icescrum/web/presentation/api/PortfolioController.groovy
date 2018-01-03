@@ -81,7 +81,7 @@ class PortfolioController implements ControllerErrorHandler {
     def update(long portfolio) {
         def portfolioParams = params.portfoliod
         Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
-        def projects = Project.withProjects(portfolioParams.projects, 'id', !request.admin ? springSecurityService.currentUser : false)
+        def projects = Project.withProjects(portfolioParams.projects, 'id', request.admin ? null : springSecurityService.currentUser)
         def businessOwners = portfolioParams.businessOwners ? User.getAll(portfolioParams.businessOwners.list('id').collect { it.toLong() }) : []
         def stakeholders = portfolioParams.stakeHolders ? User.getAll(portfolioParams.stakeHolders.list('id').collect { it.toLong() }) : []
         def invitedBusinessOwners = portfolioParams.invitedBusinessOwners ? portfolioParams.invitedBusinessOwners.list('email') : []

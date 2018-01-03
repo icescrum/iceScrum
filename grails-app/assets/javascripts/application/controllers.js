@@ -290,19 +290,18 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioSe
                 // Functions
                 $scope.searchWorkspaces = function() {
                     var listFunction = {
-                        'portfolio': {
+                        portfolio: {
                             all: PortfolioService.list
                         },
-                        'project': {
+                        project: {
                             public: ProjectService.listPublic,
                             all: ProjectService.list
                         },
-                        'all': {
+                        all: {
                             user: Session.workspacesListByUser
                         }
                     }[workspaceType][listType];
-                    var params = {term: $scope.workspaceSearch, page: $scope.currentPage, count: $scope.workspacesPerPage};
-                    listFunction(params).then(function(workspacesAndCount) {
+                    listFunction({term: $scope.workspaceSearch, page: $scope.currentPage, count: $scope.workspacesPerPage}).then(function(workspacesAndCount) {
                         $scope.workspaceCount = workspacesAndCount.count;
                         $scope.workspaces = [];
                         if (workspacesAndCount.portfolios) {

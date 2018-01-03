@@ -459,7 +459,7 @@ var isApplication = angular.module('isApplication', [
                     }).result.then(function() {
                         $state.transitionTo('root');
                     }, function() {
-                        $state.transitionTo('root')
+                        $state.transitionTo('root');
                     });
                 }]
             });
