@@ -26,13 +26,19 @@ services.factory('Portfolio', ['Resource', function($resource) {
     return $resource('/portfolio/:id/:action');
 }]);
 
-services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'ProjectService', '$q', 'IceScrumEventType', 'CacheService', function(Portfolio, Session, FormService, ProjectService, $q, IceScrumEventType, CacheService) {
+services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'ProjectService', '$q', 'IceScrumEventType', 'CacheService', '$rootScope', function(Portfolio, Session, FormService, ProjectService, $q, IceScrumEventType, CacheService, $rootScope) {
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(portfolio) {
         CacheService.addOrUpdate('portfolio', portfolio);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(portfolio) {
+        if (Session.workspaceType == 'portfolio') {
+            var workspace = Session.getWorkspace();
+            if (workspace.id == portfolio.id && workspace.fkey != portfolio.fkey) {
+                document.location = document.location.href.replace(workspace.fkey, portfolio.fkey);
+            }
+        }
         CacheService.addOrUpdate('portfolio', portfolio);
     };
     crudMethods[IceScrumEventType.DELETE] = function(portfolio) {
