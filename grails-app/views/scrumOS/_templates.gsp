@@ -171,11 +171,9 @@
             <div class="text-muted">
                 <div>{{currentUser.email}}</div>
                 <div>{{currentUser.preferences.activity}}</div>
-                <g:if test="${project}">
-                    <div>
-                        <strong><is:displayRole project="${project}"/></strong>
-                    </div>
-                </g:if>
+                <div>
+                    <strong>{{:: getCurrentUserRoles() }}</strong>
+                </div>
                 <entry:point id="user-profile-panel"/>
             </div>
         </div>

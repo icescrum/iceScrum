@@ -146,6 +146,9 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
     this.stakeHolder = function() {
         return self.roles.stakeHolder;
     };
+    this.tm = function() {
+        return self.roles.teamMember;
+    };
     this.tmOrSm = function() {
         return self.roles.scrumMaster || self.roles.teamMember;
     };

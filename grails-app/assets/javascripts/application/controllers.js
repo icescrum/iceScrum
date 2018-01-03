@@ -533,9 +533,40 @@ controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserSer
     $scope.getPushState = function() {
         return PushService.push.connected ? 'connected' : 'disconnected';
     };
+    $scope.getCurrentUserRoles = function() {
+        var roles = [];
+        var pushRole = function(roleName) {
+            roles.push($scope.message('is.role.' + roleName));
+        };
+        if (Session.admin()) {
+            pushRole('admin');
+        } else if (Session.workspaceType == 'project') {
+            if (Session.owner(Session.workspace)) {
+                pushRole('owner');
+            }
+            if (Session.sm()) {
+                pushRole('scrumMaster');
+            }
+            if (Session.tm()) {
+                pushRole('teamMember');
+            }
+            if (Session.po()) {
+                pushRole('productOwner');
+            }
+            if (_.isEmpty(roles) && Session.stakeHolder()) {
+                pushRole('stakeHolder');
+            }
+        } else if (Session.workspaceType == 'portfolio') {
+            if (Session.bo()) {
+                pushRole('businessOwner');
+            } else {
+                pushRole('portfolioStakeHolder');
+            }
+        }
+        return roles.join(', ')
+    };
     // Init
     $scope.currentUser = Session.user;
-    $scope.roles = Session.roles;
     hotkeys.bindTo($scope).add({
         combo: 'shift+l',
         description: $scope.message('is.button.connect'),
