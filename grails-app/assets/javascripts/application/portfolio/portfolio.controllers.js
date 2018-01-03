@@ -326,9 +326,7 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
             if (deletableProjects && deletableProjects.length > 0) {
                 var modal = $scope.alertCancelDeletableProjects(deletableProjects);
                 modal.result.then(function(projectsToDelete) {
-                    if (projectsToDelete === undefined) {
-                        return;
-                    } else if (projectsToDelete.length > 0) {
+                    if (projectsToDelete && projectsToDelete.length > 0) {
                         _.each(projectsToDelete, $scope.removeProject); //delete
                     }
                     $scope.$close();
@@ -344,6 +342,21 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     $scope.removeProject = function(projectToRemove) {
         $scope.formHolder.editPortfolioForm.editedProjects.$setDirty();
         $removeProject(projectToRemove);
+    };
+    var $editScope = $scope.$parent.$parent.$parent; //Don't know how to do it better
+    $editScope.setCurrentPanel = function(panel) {
+        var deletableProjects = _.filter($scope.portfolio.projects, {new: true});
+        if (deletableProjects && deletableProjects.length > 0) {
+            var modal = $scope.alertCancelDeletableProjects(deletableProjects);
+            modal.result.then(function(projectsToDelete) {
+                if (projectsToDelete && projectsToDelete.length > 0) {
+                    _.each(projectsToDelete, $scope.removeProject); //delete
+                    $editScope.panel.current = panel;
+                }
+            }, function() {});
+        } else {
+            $editScope.panel.current = panel;
+        }
     };
     // Init
     $scope.formHolder = {};
