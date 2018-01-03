@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<is:modal title="${message(code: 'todo.is.ui.projects')}"
+<is:modal title="${message(code: 'todo.is.ui.workspaces')}"
           form="openWorkspace(workspace)"
           submitButton="${message(code: 'todo.is.ui.open')}"
           class="split-modal">
