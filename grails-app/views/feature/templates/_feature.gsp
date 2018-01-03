@@ -28,6 +28,7 @@
     <div class="head">
         <div class="head-left">
             <span class="id">{{:: feature.uid }}</span>
+            <entry:point id="feature-postit-head-left"/>
         </div>
         <div class="head-right">
             <span class="value"
