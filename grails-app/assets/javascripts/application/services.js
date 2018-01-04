@@ -240,7 +240,10 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
                         fullSubName = name + '.' + subName;
                         innerObj = {};
                         innerObj[fullSubName] = subValue;
-                        query += self.formObjectData(innerObj, _prefix) + '&';
+                        var innerObjString = self.formObjectData(innerObj, _prefix);
+                        if (innerObjString) {
+                            query += innerObjString + '&';
+                        }
                     }
                 }
             } else if (value === undefined) {
