@@ -25,11 +25,10 @@ controllers.controller('abstractPortfolioListCtrl', ['$scope', 'PortfolioService
     $scope.selectPortfolio = function(portfolio) {
         $scope.portfolio = portfolio;
     };
-    // Init
 }]);
 
 
-controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootScope', '$filter', 'ProjectService', 'PortfolioService', 'UserService', 'Session', function($scope, $uibModal, $rootScope, $filter, ProjectService, PortfolioService, UserService, Session) {
+controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootScope', '$filter', '$q', 'ProjectService', 'PortfolioService', 'UserService', 'Session', function($scope, $uibModal, $rootScope, $filter, $q, ProjectService, PortfolioService, UserService, Session) {
     $scope.preparePortfolio = function(portfolio) {
         var p = angular.copy(portfolio);
         var mapId = function(objects) {
@@ -145,14 +144,21 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
             }
         });
     };
-    $scope.removeProject = function(projectToRemove) {
-        if (projectToRemove.new) {
-            ProjectService.delete(projectToRemove).then(function() {
-                $scope.portfolio.projects = _.pull($scope.portfolio.projects, projectToRemove);
-            });
-        } else {
-            $scope.portfolio.projects = _.pull($scope.portfolio.projects, projectToRemove);
-        }
+    $scope.getDeletableProjects = function() {
+        return _.filter($scope.portfolio.projects, {new: true});
+    };
+    $scope.removeProject = function(project) {
+        var promise = project.new ? ProjectService.delete(project) : $q.when();
+        return promise.then(function() {
+            _.remove($scope.portfolio.projects, project);
+        });
+    };
+    $scope.removeProjects = function(projects) {
+        $q.serial(_.map(projects, function(project) {
+            return function() {
+                return $scope.removeProject(project);
+            };
+        }));
     };
     $scope.searchProject = function(val) {
         return ProjectService.listByUserAndRole(Session.user.id, 'productOwner', {term: val, create: true, owner: true, light: "startDate,preferences,team,productOwners"}).then(function(projects) {
@@ -162,21 +168,30 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
             });
         })
     };
-    $scope.alertCancelDeletableProjects = function(deletableProjects) {
-        return $uibModal.open({
+    $scope.alertCancelDeletableProjects = function(deletableProjects, callback) {
+        $uibModal.open({
             keyboard: false,
             backdrop: 'static',
             templateUrl: "confirm.portfolio.cancel.modal.html",
             size: 'md',
             controller: ['$scope', function($scope) {
+                // Functions
+                $scope.confirmDelete = function() {
+                    $scope.$close(_.filter($scope.deletableProjects, {delete: true}));
+                };
+                // Init
                 _.each(deletableProjects, function(project) {
                     project.delete = true;
                 });
                 $scope.deletableProjects = deletableProjects;
-                $scope.confirmDelete = function() {
-                    $scope.$close(_.filter($scope.deletableProjects, function(project) { return project.delete; }));
-                };
             }]
+        }).result.then(function(projectsToDelete) {
+            if (projectsToDelete) {
+                $scope.removeProjects(projectsToDelete);
+            }
+            if (projectsToDelete !== undefined && _.isFunction(callback)) {
+                callback();
+            }
         });
     };
 }]);
@@ -211,25 +226,17 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', 
     $scope.portfolioMembersEditable = function() {
         return true;
     };
-    var closeFunction = $scope.$close;
-    $scope.$close = function(portfolio) {
+    var oldClose = $scope.$close;
+    $scope.$close = function(portfolio) { // Override
         if (!portfolio) {
-            var deletableProjects = _.filter($scope.portfolio.projects, {new: true});
+            var deletableProjects = $scope.getDeletableProjects();
             if (deletableProjects && deletableProjects.length > 0) {
-                var modal = $scope.alertCancelDeletableProjects(deletableProjects);
-                modal.result.then(function(projectsToDelete) {
-                    if (projectsToDelete === undefined) {
-                        return; //go back to wizard
-                    } else if (projectsToDelete.length > 0) {
-                        _.each(projectsToDelete, $scope.removeProject); //delete
-                    }
-                    closeFunction();
-                }, function() {});
+                $scope.alertCancelDeletableProjects(deletableProjects, oldClose);
             } else {
-                closeFunction();
+                oldClose();
             }
         } else {
-            closeFunction(portfolio);
+            oldClose(portfolio);
         }
     };
     // Init
@@ -252,7 +259,7 @@ controllers.controller('editPortfolioModalCtrl', ['$scope', 'PortfolioService', 
         return PortfolioService.authorizedPortfolio(action, portfolio);
     };
     $scope.setCurrentPanel = function(panel) {
-        $scope.panel.current = panel;
+        $scope.functionHolder.setCurrentPanel(panel); // Hack to allow overriding it from child scope
     };
     $scope.getCurrentPanel = function() {
         return $scope.panel.current;
@@ -265,6 +272,11 @@ controllers.controller('editPortfolioModalCtrl', ['$scope', 'PortfolioService', 
         return true;
     };
     // Init
+    $scope.functionHolder = {
+        setCurrentPanel: function(panel) {
+            $scope.panel.current = panel;
+        }
+    };
     $scope.currentPortfolio = $scope.getPortfolioFromState();
     $scope.checkPortfolioPropertyUrl = '/portfolio/' + $scope.currentPortfolio.id + '/available';
     if (!$scope.panel) {
@@ -317,41 +329,22 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
         }
     };
     $scope.cancelProjects = function() {
-        if ($scope.formHolder.editPortfolioForm.$dirty) {
-            var deletableProjects = _.filter($scope.portfolio.projects, {new: true});
-            if (deletableProjects && deletableProjects.length > 0) {
-                var modal = $scope.alertCancelDeletableProjects(deletableProjects);
-                modal.result.then(function(projectsToDelete) {
-                    if (projectsToDelete && projectsToDelete.length > 0) {
-                        _.each(projectsToDelete, $scope.removeProject); //delete
-                    }
-                    $scope.$close();
-                }, function() {});
-            } else {
-                $scope.$close();
-            }
+        var deletableProjects = $scope.getDeletableProjects();
+        if (deletableProjects && deletableProjects.length > 0) {
+            $scope.alertCancelDeletableProjects(deletableProjects, $scope.$close);
         } else {
             $scope.$close();
         }
     };
-    var $removeProject = $scope.removeProject;
-    $scope.removeProject = function(projectToRemove) {
-        $scope.formHolder.editPortfolioForm.editedProjects.$setDirty();
-        $removeProject(projectToRemove);
-    };
-    var $editScope = $scope.$parent.$parent.$parent; //Don't know how to do it better
-    $editScope.setCurrentPanel = function(panel) {
-        var deletableProjects = _.filter($scope.portfolio.projects, {new: true});
+    var oldSetCurrentPanel = $scope.functionHolder.setCurrentPanel;
+    $scope.functionHolder.setCurrentPanel = function(panel) { // Override
+        var deletableProjects = $scope.getDeletableProjects();
         if (deletableProjects && deletableProjects.length > 0) {
-            var modal = $scope.alertCancelDeletableProjects(deletableProjects);
-            modal.result.then(function(projectsToDelete) {
-                if (projectsToDelete && projectsToDelete.length > 0) {
-                    _.each(projectsToDelete, $scope.removeProject); //delete
-                    $editScope.panel.current = panel;
-                }
-            }, function() {});
+            $scope.alertCancelDeletableProjects(deletableProjects, function() {
+                oldSetCurrentPanel(panel);
+            });
         } else {
-            $editScope.panel.current = panel;
+            oldSetCurrentPanel(panel);
         }
     };
     // Init

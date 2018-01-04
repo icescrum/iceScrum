@@ -52,14 +52,24 @@
     <tbody>
         <tr ng-repeat="project in portfolio.projects" is-watch="project">
             <td>
-                {{:: project.name }} <i ng-class="['fa', {'fa-unlock text-success': !project.preferences.hidden, 'fa-lock text-danger': project.preferences.hidden }]"></i> <div class="bg-success" ng-if="project.new"
-                                                                                                                                                                                 style="display: inline-block;padding-left: 2px;padding-right: 2px;font-weight:bold;">new</div>
+                {{:: project.name }}
+                <i ng-class="['fa', {'fa-unlock text-success': !project.preferences.hidden, 'fa-lock text-danger': project.preferences.hidden }]"></i>
+                <div class="bg-success"
+                     ng-if="project.new"
+                     style="display: inline-block;padding-left: 2px;padding-right: 2px;font-weight:bold;">new</div>
             </td>
             <td>{{:: project.startDate | dayShort }}</td>
             <td>{{:: project.preferences.estimatedSprintsDuration }} ${g.message(code: 'is.dialog.wizard.project.days').toLowerCase()}</td>
             <td>{{:: project.productOwners | displayNames }}</td>
             <td>{{:: project.team.name }} ({{:: (project.team.scrumMasters.length + project.team.members.length) }})</td>
-            <td><button class="btn btn-default btn-sm" ng-click="removeProject(project)" type="button"><i class="fa fa-times"></i></button></td>
+            <td>
+                <button class="btn btn-default btn-sm btn-model"
+                        ng-model="foo" %{-- Hack to make form dirty --}%
+                        ng-click="removeProject(project)"
+                        type="button">
+                    <i class="fa fa-times"></i>
+                </button>
+            </td>
         </tr>
     </tbody>
 </table>

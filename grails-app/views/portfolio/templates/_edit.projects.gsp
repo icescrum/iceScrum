@@ -30,7 +30,6 @@
       ng-submit='update(portfolio)'
       name="formHolder.editPortfolioForm">
     <ng-include src="'form.projects.portfolio.html'"></ng-include>
-    <input ng-model="formHolder.editedProjects" name="editedProjects" type="hidden"><!-- used to handle dirty on click remove button -->
     <div class="btn-toolbar pull-right">
         <button type="button"
                 role="button"
