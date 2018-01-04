@@ -41,7 +41,7 @@
         <button type='submit'
                 role="button"
                 class='btn btn-primary'
-                ng-disabled="!formHolder.editPortfolioForm.$dirty || formHolder.editPortfolioForm.$invalid">
+                ng-disabled="!formHolder.editPortfolioForm.$dirty || formHolder.editPortfolioForm.$invalid || portfolio.projects.length < 1">
             ${message(code: 'is.button.update')}
         </button>
     </div>
