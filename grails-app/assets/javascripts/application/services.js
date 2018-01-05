@@ -829,7 +829,7 @@ services.service("DomainConfigService", [function() {
     this.config.portfoliod = this.config.portfolio;
 }]);
 
-services.service('ContextService', ['$location', '$q', '$injector', '$rootScope', 'ProjectService', 'ActorService', 'FeatureService', function($location, $q, $injector, $rootScope, ProjectService, ActorService, FeatureService) {
+services.service('ContextService', ['$location', '$q', '$injector', '$rootScope', 'FormService', 'ActorService', 'FeatureService', function($location, $q, $injector, $rootScope, FormService, ActorService, FeatureService) {
     var self = this;
     this.contextSeparator = '_';
     this.getContextFromUrl = function() {
@@ -844,7 +844,7 @@ services.service('ContextService', ['$location', '$q', '$injector', '$rootScope'
     this.contexts = [];
     this.loadContexts = function() {
         var project = $rootScope.getProjectFromState();
-        return $q.all([ProjectService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
+        return $q.all([self.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
             var tags = _.uniqBy(data[0], _.lowerCase);
             var features = data[1];
             var actors = data[2];
@@ -864,6 +864,9 @@ services.service('ContextService', ['$location', '$q', '$injector', '$rootScope'
     this.equalContexts = function(context1, context2) {
         return context1 == context2 || context1 && context2 && context1.type == context2.type && context1.id == context2.id;
     };
+    this.getTags = function() {
+        return FormService.httpGet('tag'); // Workspace sensitive
+    }
 }]);
 
 services.service('postitSize', ['screenSize', '$localStorage', function(screenSize, $localStorage) {

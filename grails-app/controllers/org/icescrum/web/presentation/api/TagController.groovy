@@ -27,20 +27,15 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.grails.taggable.Tag
+import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.Project
 import org.icescrum.core.error.ControllerErrorHandler
 
-@Secured('inProject() or (isAuthenticated() and stakeHolder())')
-class SearchController implements ControllerErrorHandler {
+class TagController implements ControllerErrorHandler {
 
-    def springSecurityService
-
-    def tag(long project, String term) {
+    @Secured('isAuthenticated() && (stakeHolder() or inProject())')
+    def projectTag(long project, String term) {
         Project _project = Project.withProject(project)
-        if ((_project.preferences.hidden && !request.inProject) || (!_project.preferences.hidden && !springSecurityService.isLoggedIn())) {
-            render(status: 403, text: '')
-            return
-        }
         def tags = Tag.executeQuery("""
             SELECT DISTINCT tagLink.tag.name
             FROM org.grails.taggable.TagLink tagLink
@@ -73,6 +68,22 @@ class SearchController implements ControllerErrorHandler {
             AND tagLink.tag.name LIKE :term
             ORDER BY tagLink.tag.name
         """, [term: (term ?: '%') + '%', project: _project.id])
-        render(tags as JSON)
+        render(status: 200, contentType: 'application/json', text: tags as JSON)
+    }
+
+    @Secured('businessOwner() or portfolioStakeHolder()')
+    def portfolioTag(long portfolio, String term) {
+        Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
+        def tags = Tag.executeQuery("""
+            SELECT DISTINCT tagLink.tag.name
+            FROM org.grails.taggable.TagLink tagLink, Feature feature, Project project
+            WHERE tagLink.type = 'feature'
+            AND tagLink.tag.name LIKE :term
+            AND tagLink.tagRef = feature.id
+            AND feature.backlog.id = project.id
+            AND project.portfolio.id = :portfolio
+            ORDER BY tagLink.tag.name
+        """, [term: (term ?: '%') + '%', portfolio: _portfolio.id], [cache: true])
+        render(status: 200, contentType: 'application/json', text: tags as JSON)
     }
 }

@@ -32,6 +32,14 @@ class PortfolioUrlMappings {
                 portfolio(matches: /[0-9A-Z]*/)
             }
         }
+        // Tags
+        "/f/$portfolio/tag" {
+            controller = 'tag'
+            action = 'portfolioTag'
+            constraints {
+                portfolio(matches: /[0-9A-Z]*/)
+            }
+        }
         // Window in portfolio workspace
         "/f/$portfolio/ui/window/$windowDefinitionId" {
             controller = 'window'

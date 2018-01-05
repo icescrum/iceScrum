@@ -26,13 +26,6 @@ class ProjectUrlMappings {
 
     static mappings = {
 
-        "/p/$project/search" {
-            controller = 'search'
-            action = 'index'
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-            }
-        }
         name baseUrlProject: "/p/$project/" {
             controller = 'scrumOS'
             action = 'index'
@@ -76,7 +69,14 @@ class ProjectUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
-        // new way to handle requests (REST Style)
+        // Tags
+        "/p/$project/tag" {
+            controller = 'tag'
+            action = 'projectTag'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
         // Task
         "/p/$project/task" {
             controller = 'task'
