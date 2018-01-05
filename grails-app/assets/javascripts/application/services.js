@@ -420,6 +420,11 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
         return obj1.rank - obj2.rank;
     };
     var syncFunctions = {
+        portfolio: function(oldPortfolio, newPortfolio) {
+            if (newPortfolio && !oldPortfolio) {
+                newPortfolio.features = [];
+            }
+        },
         project: function(oldProject, newProject) {
             if (newProject && !oldProject) {
                 _.each(projectCaches, function(projectCache) {
@@ -563,6 +568,7 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
         feature: function(oldFeature, newFeature) {
             var cachedProject = CacheService.get('project', newFeature ? newFeature.backlog.id : oldFeature.backlog.id);
             if (cachedProject) {
+                // Project
                 if (oldFeature && newFeature && oldFeature.rank != newFeature.rank) {
                     cachedProject.features.sort(sortByRank);
                 }
@@ -577,6 +583,17 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                         }
                     }
                 });
+                // Portfolio
+                if (cachedProject.portfolio) {
+                    var cachedPortfolio = CacheService.get('portfolio', cachedProject.portfolio.id);
+                    if (cachedPortfolio) {
+                        if (!oldFeature && newFeature && !_.find(cachedPortfolio.features, {id: newFeature.id})) {
+                            cachedPortfolio.features.push(newFeature);
+                        } else if (oldFeature && !newFeature) {
+                            _.remove(cachedPortfolio.features, {id: oldFeature.id});
+                        }
+                    }
+                }
             }
         },
         sprint: function(oldSprint, newSprint) {

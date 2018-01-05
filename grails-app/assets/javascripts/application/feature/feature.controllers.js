@@ -118,7 +118,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
                 $scope.resetFeatureForm();
             } else {
                 $scope.setInEditingMode(true);
-                $state.go('^.details', {featureId: feature.id});
+                $scope.openFeatureDetails(feature);
             }
             $scope.notifySuccess('todo.is.ui.feature.saved');
         });
@@ -127,6 +127,9 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
         FeatureService.getAvailableColors().then(function(colors) {
             $scope.availableColors = colors;
         });
+    };
+    $scope.openFeatureDetails = function(feature) { // Here to be overriden
+        $state.go('^.details', {featureId: feature.id});
     };
     // Init
     $scope.formHolder = {};
