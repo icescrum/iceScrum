@@ -21,8 +21,8 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:if test="${project?.preferences?.archived}">
-    <div class="bg-danger text-center text-danger archived-message" style=""><i class="fa fa-archive"></i> <g:message code="is.ui.project.archived"/></div>
+<g:if test="${workspace?.object?.preferences?.archived}">
+    <div class="bg-danger text-center text-danger archived-message"><i class="fa fa-archive"></i> <g:message code="is.ui.${workspace.name}.archived"/></div>
 </g:if>
 <header ng-style="application.context | contextStyle">
     <button type="button" class="navbar-toggle offcanvas-toggle navbar-inverse" data-target="#menu-header" data-toggle="offcanvas">
@@ -55,7 +55,10 @@
                         <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                                 <g:render template="/scrumOS/logo"/>
-                            </svg> <g:if test="${workspace?.icon}"><i class="fa fa-${workspace.icon}"></i><span class="text-ellipsis" title="{{ workspace.name }}">{{ workspace.name }}</span></g:if> <i class="fa fa-caret-down"></i>
+                            </svg>&nbsp;<g:if test="${workspace}"><i tooltip-placement="bottom" uib-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
+                                                                     ng-if="workspace.preferences && !workspace.preferences.hidden && authorized${workspace.name.capitalize()}('edit')"
+                                                                     ng-click="show${workspace.name.capitalize()}EditModal(); $event.stopPropagation();" class="fa fa-eye">&nbsp;</i></g:if><g:if test="${workspace?.icon}"><i
+                                class="fa fa-${workspace.icon}"></i> <span class="text-ellipsis" title="{{ workspace.name }}">{{ workspace.name }}</span></g:if> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li role="presentation" class="dropdown-header">
