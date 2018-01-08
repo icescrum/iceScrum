@@ -21,6 +21,9 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
+<g:if test="${project?.preferences?.archived}">
+    <div class="bg-danger text-center text-danger archived-message" style=""><i class="fa fa-archive"></i> <g:message code="is.ui.project.archived"/></div>
+</g:if>
 <header ng-style="application.context | contextStyle">
     <button type="button" class="navbar-toggle offcanvas-toggle navbar-inverse" data-target="#menu-header" data-toggle="offcanvas">
         <span class="sr-only">${message(code: 'todo.is.ui.main.menu')}</span>
