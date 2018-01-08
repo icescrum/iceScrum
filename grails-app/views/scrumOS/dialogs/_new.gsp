@@ -29,8 +29,8 @@
             <g:each var="workspace" in="${Holders.grailsApplication.config.icescrum.workspaces}">
                 <div class="workspace col-md-6 text-center">
                     <i class="fa fa-${workspace.value.icon} fa-7x"></i>
-                    <div class="">${g.message(code: workspace.value.description)}</div>
-                    <button class="btn btn-primary" ng-click="openWizard('new${workspace.key.capitalize()}')">${g.message(code: 'todo.is.ui.workspace.new', args: [message(code: workspace.value.name)])}</button>
+                <div class="">${g.message(code: workspace.value.description)}</div>
+                <button class="btn btn-primary" ${workspace.value.enabled ? '' : 'disabled="disabled"'}" ng-click="openWizard('new${workspace.key.capitalize()}')">${g.message(code: 'todo.is.ui.workspace.new', args: [message(code: workspace.value.name)])}</button>
                 </div>
             </g:each>
         </div>

@@ -290,6 +290,7 @@ icescrum {
                 }
                 return true
             }
+            enabled = true
         }
         portfolio {
             objectClass = Portfolio
@@ -306,6 +307,7 @@ icescrum {
                 }
                 return true
             }
+            enabled = false
         }
     }
 }
