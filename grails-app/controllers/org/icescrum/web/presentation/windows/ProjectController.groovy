@@ -456,11 +456,11 @@ class ProjectController implements ControllerErrorHandler {
         return writer.toString()
     }
 
-    @Secured(['isAuthenticated()'])
+    @Secured(['permitAll()'])
     def listPublic(String term, Boolean paginate, Integer page, Integer count) {
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def publicProjects = Project.where { preferences.hidden == false && name =~ searchTerm }.list(sort: "name")
-        def userProjects = Project.findAllByUserAndActive(springSecurityService.currentUser, null, null)
+        def userProjects = springSecurityService.currentUser ? Project.findAllByUserAndActive(springSecurityService.currentUser, null, null) : []
         def projects = publicProjects - userProjects
         if (paginate && !count) {
             count = 10
