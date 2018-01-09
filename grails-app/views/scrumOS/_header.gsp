@@ -21,7 +21,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:if test="${workspace?.object?.preferences?.archived}">
+<g:if test="${workspace && workspace.name == 'project' && workspace.object.preferences.archived}">
     <div class="bg-danger text-center text-danger archived-message"><i class="fa fa-archive"></i> <g:message code="is.ui.${workspace.name}.archived"/></div>
 </g:if>
 <header ng-style="application.context | contextStyle">
