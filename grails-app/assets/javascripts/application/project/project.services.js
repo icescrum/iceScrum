@@ -187,6 +187,9 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     this.getVersions = function() {
         return FormService.httpGet('project/versions');
     };
+    this.createSample = function(params) {
+        return FormService.httpGet('project/createSample', params ? {params: params} : null, true);
+    };
     this.countMembers = function(project) { // Requires the team to be loaded !
         return _.union(_.map(project.team.scrumMasters, 'id'), _.map(project.team.members, 'id'), _.map(project.productOwners, 'id')).length;
     };

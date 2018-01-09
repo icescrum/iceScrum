@@ -21,12 +21,12 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('quickProjectsListCtrl', ['$scope', '$timeout', 'FormService', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, $timeout, FormService, PushService, ProjectService, IceScrumEventType) {
+extensibleController('quickProjectsListCtrl', ['$scope', '$timeout', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, $timeout, PushService, ProjectService, IceScrumEventType) {
     $scope.getProjectUrl = function(project, viewName) {
         return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
     };
     $scope.createSampleProject = function() {
-        return FormService.httpGet('project/createSample');
+        return ProjectService.createSample();
     };
     // Init
     $scope.projectsLoaded = false;
