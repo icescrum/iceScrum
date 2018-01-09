@@ -43,8 +43,8 @@
                         ng-disabled="!enableVisibilityChange()"
                         ng-model="project.preferences.hidden"
                         ng-click="project.preferences.hidden = !project.preferences.hidden;"
-                        ng-class="{ 'btn-danger': project.preferences.hidden, 'btn-success': !project.preferences.hidden }">
-                    <i class="fa fa-lock" ng-class="{ 'fa-eye-slash': project.preferences.hidden, 'fa-eye': !project.preferences.hidden }"></i>
+                        ng-class="project.preferences.hidden ? 'btn-success' : 'btn-danger'">
+                    <i class="fa" ng-class="project.preferences.hidden ? 'fa-eye-slash' : 'fa-eye'"></i>
                     {{ message(project.preferences.hidden  ? 'is.ui.workspace.hidden' : 'is.ui.workspace.public') }}
                 </button>
             </span>

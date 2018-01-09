@@ -41,7 +41,7 @@
                 <button class="btn btn-hidden"
                         type="button"
                         disabled="disabled">
-                    <i class="fa fa-lock"></i>
+                    <i class="fa fa-eye-slash"></i>
                     ${g.message(code: 'is.ui.workspace.hidden')}
                 </button>
             </span>
