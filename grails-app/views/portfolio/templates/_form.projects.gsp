@@ -53,7 +53,7 @@
         <tr ng-repeat="project in portfolio.projects" is-watch="project">
             <td>
                 {{:: project.name }}
-                <i ng-class="['fa', {'fa-eye text-success': !project.preferences.hidden, 'fa-eye-splash text-danger': project.preferences.hidden }]"></i>
+                <i ng-class="['fa', {'fa-eye text-danger': !project.preferences.hidden, 'fa-eye-splash text-success': project.preferences.hidden }]"></i>
                 <div class="bg-success"
                      ng-if="project.new"
                      style="display: inline-block;padding-left: 2px;padding-right: 2px;font-weight:bold;">${message(code: 'is.ui.new')}</div>
