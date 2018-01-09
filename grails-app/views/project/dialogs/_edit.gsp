@@ -41,7 +41,7 @@
                     <a ng-click="setCurrentPanel('planning')"><i class="fa fa-calendar"></i> <span class="hidden-xs hidden-sm">${message(code: 'todo.is.ui.project.planning')}</span></a>
                 </li>
                 <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('administration') }">
-                    <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm">${message(code: 'todo.is.ui.project.administration')}</span></a>
+                    <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.ui.administration')}</span></a>
                 </li>
                 <li ng-if="authorizedProject('update', currentProject)"
                     ng-repeat="appWithSettings in appsWithSettings"
@@ -80,7 +80,7 @@
             </section>
             <section ng-switch-when="administration"
                      class="step current"
-                     title="${message(code: 'todo.is.ui.project.administration')}">
+                     title="${message(code: 'is.ui.administration')}">
                 <div ng-include="'edit.administration.project.html'"></div>
             </section>
             <section ng-if="isCurrentPanel(appWithSettings.id)"

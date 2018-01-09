@@ -45,7 +45,7 @@
         </p>
     </div>
     <div class="col-sm-8">
-        <label ng-if="portfolio.businessOwners.length">${message(code: 'todo.is.ui.portfolio.businessOwners')}</label>
+        <label ng-if="portfolio.businessOwners.length">${message(code: 'is.ui.portfolio.businessOwners')}</label>
         <div ng-class="{'list-users': portfolio.businessOwners.length > 0}">
             <ng-include ng-init="role = 'bo';" ng-repeat="user in portfolio.businessOwners" src="'user.item.portfolio.html'"></ng-include>
         </div>
@@ -75,7 +75,7 @@
         </p>
     </div>
     <div class="col-sm-8">
-        <label ng-if="portfolio.stakeHolders.length">${message(code: 'todo.is.ui.portfolio.stakeholders')}</label>
+        <label ng-if="portfolio.stakeHolders.length">${message(code: 'is.ui.portfolio.stakeholders')}</label>
         <div ng-class="{'list-users': portfolio.stakeHolders.length > 0}">
             <ng-include ng-init="role = 'sh';" ng-repeat="user in portfolio.stakeHolders" src="'user.item.portfolio.html'"></ng-include>
         </div>

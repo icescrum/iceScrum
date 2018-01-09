@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 
-<is:modal title="${message(code: 'todo.is.ui.portfolio.edit')}" class="wizard split-modal" footer="${false}">
+<is:modal title="${message(code: 'is.ui.portfolio.edit')}" class="wizard split-modal" footer="${false}">
     <div class="row wizard-row">
         <div class="left-panel col-xs-12 col-sm-3">
             <ul class="left-panel-body nav nav-list">
@@ -35,7 +35,7 @@
                     <a ng-click="setCurrentPanel('members')"><i class="fa fa-users"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.dialog.wizard.section.portfolio.members')}</span></a>
                 </li>
                 <li ng-if="authorizedPortfolio('update', currentPortfolio)" ng-class="{ current: isCurrentPanel('administration') }">
-                    <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm">${message(code: 'todo.is.ui.portfolio.administration')}</span></a>
+                    <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.ui.administration')}</span></a>
                 </li>
             </ul>
         </div>
@@ -57,7 +57,7 @@
             </section>
             <section ng-switch-when="administration"
                      class="step current"
-                     title="${message(code: 'todo.is.ui.portfolio.administration')}">
+                     title="${message(code: 'is.ui.danger.zone')}">
                 <div ng-include="'edit.administration.portfolio.html'"></div>
             </section>
         </div>

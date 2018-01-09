@@ -209,7 +209,7 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
     };
     $scope.cancel = function() {
         if ($scope.formHolder.updateTeamForm.$dirty) {
-            $scope.confirm({message: $scope.message('todo.is.ui.project.members.cancel.confirm'), callback: $scope.cancelConfirmed});
+            $scope.confirm({message: $scope.message('is.confirm.cancel'), callback: $scope.cancelConfirmed});
         } else {
             $scope.cancelConfirmed();
         }

@@ -105,7 +105,7 @@
                                class="btn btn-primary"
                                ng-disabled="formHolder.projectForm.$invalid || application.submitting"
                                wz-finish="createProject(project)"
-                               value="{{ lastStepButtonLabel ? lastStepButtonLabel : '${message(code: 'todo.is.ui.wizard.finish', args: [message(code: 'is.workspace.project').toLowerCase()])}' }}"/>
+                               value="{{ lastStepButtonLabel ? lastStepButtonLabel : '${message(code: /todo.is.ui.wizard.finish.project/)}' }}"/>
                     </div>
                 </div>
             </wz-step>

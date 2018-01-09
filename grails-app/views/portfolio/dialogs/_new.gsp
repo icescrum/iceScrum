@@ -82,7 +82,7 @@
                                class="btn btn-primary"
                                ng-disabled=""
                                wz-finish="createPortfolio(portfolio)"
-                               value="${message(code: 'todo.is.ui.wizard.finish', args: [message(code: 'is.workspace.portfolio').toLowerCase()])}"/>
+                               value="${message(code: 'todo.is.ui.wizard.finish.portfolio')}"/>
                     </div>
                 </div>
             </wz-step>

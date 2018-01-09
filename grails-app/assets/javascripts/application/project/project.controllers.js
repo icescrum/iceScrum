@@ -333,7 +333,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
     };
     $scope.cancelMembers = function() {
         if ($scope.formHolder.editMembersForm.$dirty) {
-            $scope.confirm({message: $scope.message('todo.is.ui.project.members.cancel.confirm'), callback: $scope.$close});
+            $scope.confirm({message: $scope.message('is.confirm.cancel'), callback: $scope.$close});
         } else {
             $scope.$close();
         }

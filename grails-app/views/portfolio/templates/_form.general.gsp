@@ -33,7 +33,7 @@
                    name="name"
                    type="text"
                    class="form-control"
-                   placeholder="${message(code: 'todo.is.ui.portfolio.noname')}"
+                   placeholder="${message(code: 'is.ui.portfolio.noname')}"
                    ng-model="portfolio.name"
                    ng-change="nameChanged()"
                    ng-required="isCurrentStep(1, 'portfolio')">
@@ -42,7 +42,7 @@
                         type="button"
                         disabled="disabled">
                     <i class="fa fa-lock"></i>
-                    ${g.message(code: 'is.workspace.hidden')}
+                    ${g.message(code: 'is.ui.workspace.hidden')}
                 </button>
             </span>
         </div>
@@ -53,7 +53,7 @@
                type="text"
                capitalize
                class="form-control"
-               placeholder="${message(code: 'todo.is.ui.portfolio.nokey')}"
+               placeholder="${message(code: 'is.ui.portfolio.nokey')}"
                ng-model="portfolio.fkey"
                ng-pattern="/^[A-Z0-9]*$/"
                ng-required="isCurrentStep(1, 'portfolio')"
@@ -69,7 +69,7 @@
                   is-markitup
                   name="portfolio.description"
                   class="form-control"
-                  placeholder="${message(code: 'todo.is.ui.portfolio.description.placeholder')}"
+                  placeholder="${message(code: 'is.ui.portfolio.description.placeholder')}"
                   ng-model="portfolio.description"
                   ng-show="showDescriptionTextarea"
                   ng-blur="showDescriptionTextarea = false"
@@ -80,7 +80,7 @@
              ng-click="showDescriptionTextarea = true"
              ng-focus="showDescriptionTextarea = true"
              ng-class="{'placeholder': !portfolio.description_html}"
-             ng-bind-html="portfolio.description_html ? portfolio.description_html : '<p>${message(code: 'todo.is.ui.portfolio.description.placeholder')}</p>'"></div>
+             ng-bind-html="portfolio.description_html ? portfolio.description_html : '<p>${message(code: 'is.ui.portfolio.description.placeholder')}</p>'"></div>
     </div>
 </div>
 </script>

@@ -29,14 +29,14 @@
       ng-submit='update(portfolio)'
       name="formHolder.editPortfolioForm">
     <entry:point id="portfolio-edit-administration"/>
-    <h4>${message(code: "todo.is.ui.portfolio.administration.danger")}</h4>
+    <h4>${message(code: "is.ui.danger.zone")}</h4>
     <div class="btn-toolbar">
         <button ng-if="authorizedPortfolio('delete', portfolio)"
                 type="button"
                 role="button"
                 class="btn btn-danger"
                 ng-click="delete(portfolio)">
-            ${message(code: 'is.portfoliomenu.submenu.portfolio.delete')}
+            ${message(code: 'is.ui.portfolio.delete')}
         </button>
     </div>
     <div class="btn-toolbar pull-right">

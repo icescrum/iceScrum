@@ -292,7 +292,7 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
         PortfolioService.update(p).then(function() {
             $scope.currentPortfolio.projects = [];
             return PortfolioService.listProjects($scope.currentPortfolio).then(function() {
-                $scope.notifySuccess('todo.is.ui.portfolio.general.updated');
+                $scope.notifySuccess('is.ui.portfolio.updated');
                 $scope.resetPortfolioForm();
             });
         });
@@ -305,9 +305,9 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     };
     $scope['delete'] = function(portfolio) {
         $scope.confirm({
-            message: $scope.message('todo.is.ui.portfoliomenu.submenu.portfolio.delete.confirm'),
+            message: $scope.message('is.ui.portfolio.delete.confirm'),
             buttonColor: 'danger',
-            buttonTitle: 'is.portfoliomenu.submenu.portfolio.delete',
+            buttonTitle: 'is.ui.portfolio.delete',
             callback: function() {
                 PortfolioService.delete(portfolio).then(function() {
                     document.location = $scope.serverUrl;
@@ -323,7 +323,7 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     };
     $scope.cancelMembers = function() {
         if ($scope.formHolder.editPortfolioForm.$dirty) {
-            $scope.confirm({message: $scope.message('todo.is.ui.portfolio.members.cancel.confirm'), callback: $scope.$close});
+            $scope.confirm({message: $scope.message('is.confirm.cancel'), callback: $scope.$close});
         } else {
             $scope.$close();
         }

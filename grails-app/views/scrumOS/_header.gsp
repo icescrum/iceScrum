@@ -62,14 +62,14 @@
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li role="presentation" class="dropdown-header">
-                                ${message(code: 'todo.is.ui.workspaces')}
+                                ${message(code: 'is.ui.workspaces')}
                             </li>
                             <g:if test="${creationEnable}">
                                 <li>
                                     <a hotkey="{ 'shift+n': hotkeyClick}"
                                        hotkey-description="${message(code: 'todo.is.ui.project.createNew')}"
                                        ui-sref="new">
-                                        <g:message code="todo.is.ui.workspaces.create"/> <small class="text-muted">(SHIFT+N)</small>
+                                        <g:message code="is.ui.workspace.create"/> <small class="text-muted">(SHIFT+N)</small>
                                     </a>
                                 </li>
                             </g:if>
@@ -119,15 +119,15 @@
                             <g:if test="${workspace?.object}">
                                 <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="divider"></li>
                                 <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-header">
-                                    ${message(code: 'todo.is.ui.workspaces.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="{{ workspace.name }}"
-                                                                                                                   style="display:inline-block; max-width:70px"><b>{{ workspace.name }}</b></span>
+                                    ${message(code: 'is.ui.workspace.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="{{ workspace.name }}"
+                                                                                                             style="display:inline-block; max-width:70px"><b>{{ workspace.name }}</b></span>
                                 </li>
                                 <li ng-if="authorized${workspace.name.capitalize()}('edit')">
                                     <a hotkey="{ 'shift+e': hotkeyClick}"
                                        hotkey-description="${message(code: 'is.ui.apps.configure')}"
                                        href
                                        ng-click="show${workspace.name.capitalize()}EditModal()">
-                                        <g:message code="todo.is.ui.workspaces.submenu.edit"/> <small class="text-muted">(SHIFT+E)</small>
+                                        <g:message code="is.ui.workspace.submenu.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                     </a>
                                 </li>
                                 <g:if test="${exportEnable}">
@@ -136,7 +136,7 @@
                                            hotkey-description="${message(code: 'is.dialog.exportProject.title')}"
                                            href
                                            ng-click="export(${workspace.name})">
-                                            <g:message code="todo.is.ui.workspaces.submenu.export"/> <small class="text-muted">(SHIFT+X)</small>
+                                            <g:message code="is.ui.workspace.submenu.export"/> <small class="text-muted">(SHIFT+X)</small>
                                         </a>
                                     </li>
                                 </g:if>
@@ -149,7 +149,7 @@
                             <g:if test="${workspacesFilteredsList}">
                                 <li role="presentation" class="divider" style='display:${workspacesFilteredsList ? 'block' : 'none'}'></li>
                                 <li role="presentation" class="dropdown-header" style='display:${workspacesFilteredsList ? 'block' : 'none'}'>
-                                    ${message(code: 'todo.is.ui.workspaces.my.title')}
+                                    ${message(code: 'is.ui.workspace.my.title')}
                                 </li>
                                 <g:each var="workspaceFiltered" in="${workspacesFilteredsList}">
                                     <is:workspaceListItem workspace="${workspaceFiltered}" currentWorkspace="${workspace?.object}"/>
