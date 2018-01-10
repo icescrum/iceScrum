@@ -9,19 +9,7 @@ servlets = [
                 handler   : IceScrumMeteorHandler,
                 initParams: [
                         "org.atmosphere.cpr.AtmosphereFramework.analytics"                           : false,
-                        "org.atmosphere.cpr.broadcasterClass"                                        : "org.icescrum.atmosphere.IceScrumBroadcaster",
-                        "org.atmosphere.cpr.broadcasterCacheClass"                                   : "org.atmosphere.cache.UUIDBroadcasterCache",
-                        "org.atmosphere.cpr.AtmosphereInterceptor"                                   : """
-                                org.atmosphere.client.TrackMessageSizeInterceptor,
-                                org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor,
-                                org.atmosphere.interceptor.HeartbeatInterceptor,
-                                org.atmosphere.interceptor.OnDisconnectInterceptor
-                        """,
-                        "org.atmosphere.cpr.broadcasterLifeCyclePolicy"                              : "EMPTY_DESTROY",
-                        "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 15,
-                        "org.atmosphere.cpr.broadcaster.maxProcessingThreads"                        : -1,
-                        "org.atmosphere.cpr.broadcaster.maxAsyncWriteThreads"                        : -1,
-                        "org.atmosphere.useWebSocketAndServlet3"                                     : System.getProperty("icescrum.useWebSocketAndServlet3") != null ? System.getProperty("icescrum.useWebSocketAndServlet3") : true
+                        "org.atmosphere.cpr.broadcasterClass"                                        : "org.icescrum.atmosphere.IceScrumBroadcaster"
                 ]
         ]
 ]
