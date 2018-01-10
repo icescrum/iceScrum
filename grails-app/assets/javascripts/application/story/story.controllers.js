@@ -369,7 +369,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
     };
     $scope.retrieveParentSprintEntries = function() {
         if (_.isEmpty($scope.parentSprintEntries)) {
-            StoryService.getParentSprintEntries().then(function(parentSprintEntries) {
+            StoryService.getParentSprintEntries($scope.getProjectFromState().id).then(function(parentSprintEntries) {
                 $scope.parentSprintEntries = parentSprintEntries;
             });
         }
@@ -559,7 +559,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         };
         $scope.retrieveVersions = function() {
             if (_.isEmpty($scope.versions)) {
-                ProjectService.getVersions().then(function(versions) {
+                ProjectService.getVersions(project.id).then(function(versions) {
                     $scope.versions = versions;
                 });
             }
@@ -704,7 +704,7 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
             $timeout.cancel($scope.timerDuplicate);
             $scope.timerDuplicate = $timeout(function() {
                 if ($scope.lastSearchedTerm != trimmedTerm) {
-                    StoryService.findDuplicates(trimmedTerm).then(function(messageDuplicate) {
+                    StoryService.findDuplicates(trimmedTerm, project.id).then(function(messageDuplicate) {
                         $scope.lastSearchedTerm = trimmedTerm;
                         $scope.messageDuplicate = messageDuplicate ? messageDuplicate : '';
                     });

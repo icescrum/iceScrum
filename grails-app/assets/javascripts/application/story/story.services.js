@@ -309,16 +309,16 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return Story.get({projectId: projectId, action: 'listByField', field: field}).$promise
     };
     this.getDependenceEntries = function(story) {
-        return FormService.httpGet('story/' + story.id + '/dependenceEntries');
+        return FormService.httpGet('p/' + story.backlog.id + '/story/' + story.id + '/dependenceEntries', null, true);
     };
-    this.getParentSprintEntries = function() {
-        return FormService.httpGet('story/sprintEntries');
+    this.getParentSprintEntries = function(projectId) {
+        return FormService.httpGet('p/' + projectId + '/story/sprintEntries', null, true);
     };
-    this.findDuplicates = function(term) {
-        return FormService.httpGet('story/findDuplicates', {params: {term: term}});
+    this.findDuplicates = function(term, projectId) {
+        return FormService.httpGet('p/' + projectId + '/story/findDuplicates', {params: {term: term}}, true);
     };
-    this.getURL = function(id) {
-        return FormService.httpGet('story/' + id + '/url');
+    this.getURL = function(id, projectId) {
+        return FormService.httpGet('p/' + projectId + '/story/' + id + '/url', null, true);
     };
     this.filterStories = function(stories, storyFilter) {
         var getMatcher = function(key) {

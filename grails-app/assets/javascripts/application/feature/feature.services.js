@@ -126,7 +126,7 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
                 return false;
         }
     };
-    this.getAvailableColors = function() {
-        return FormService.httpGet('feature/colors');
+    this.getAvailableColors = function(projectId) {
+        return projectId ? FormService.httpGet('p/' + projectId + '/feature/colors', null, true) : $q.when([]);
     };
 }]);

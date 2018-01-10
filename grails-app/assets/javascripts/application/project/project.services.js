@@ -184,8 +184,8 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
                 return false;
         }
     };
-    this.getVersions = function() {
-        return FormService.httpGet('project/versions');
+    this.getVersions = function(projectId) {
+        return FormService.httpGet('p/' + projectId + '/project/versions', null, true);
     };
     this.createSample = function(params) {
         return FormService.httpGet('project/createSample', params ? {params: params} : null, true);

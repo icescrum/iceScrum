@@ -92,7 +92,7 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
         return $state.href(stateName, {featureTabId: featureTabId});
     };
     $scope.refreshAvailableColors = function() {
-        FeatureService.getAvailableColors().then(function(colors) {
+        FeatureService.getAvailableColors(project.id).then(function(colors) {
             $scope.availableColors = colors;
         });
     };
@@ -124,7 +124,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
         });
     };
     $scope.refreshAvailableColors = function() {
-        FeatureService.getAvailableColors().then(function(colors) {
+        FeatureService.getAvailableColors(project.id).then(function(colors) {
             $scope.availableColors = colors;
         });
     };

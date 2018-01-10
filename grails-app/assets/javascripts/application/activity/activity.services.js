@@ -28,8 +28,7 @@ services.service("ActivityService", ['FormService', '$rootScope', function(FormS
         if (all) {
             params.all = true;
         }
-        var url = $rootScope.serverUrl + '/p/' + projectId + '/activity/' + _.lowerFirst(fluxiable.class) + '/' + fluxiable.id;
-        return FormService.httpGet(url, {params: params}).then(function(activitiesAndCount) {
+        return FormService.httpGet('p/' + projectId + '/activity/' + _.lowerFirst(fluxiable.class) + '/' + fluxiable.id, {params: params}, true).then(function(activitiesAndCount) {
             fluxiable.activities = activitiesAndCount.activities;
             fluxiable.activities_total = activitiesAndCount.activitiesCount; // Don't use activities_count which already exists but does not represent the same activities (aggregated versus owned)
             return fluxiable.activities;

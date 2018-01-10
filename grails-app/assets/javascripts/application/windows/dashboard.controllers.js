@@ -44,7 +44,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
     };
     $scope.openFromId = function(activity) {
         if (activity.parentType == 'story') {
-            StoryService.getURL(activity.parentRef).then(function(data) {
+            StoryService.getURL(activity.parentRef, project.id).then(function(data) {
                 $location.url(data.relativeUrl);
             });
         }
