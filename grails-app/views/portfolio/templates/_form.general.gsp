@@ -23,7 +23,7 @@
 --}%
 <script type="text/ng-template" id="form.general.portfolio.html">
 <h4>${message(code: "is.dialog.wizard.section.portfolio")}</h4>
-<p class="help-block">${message(code: 'is.dialog.wizard.section.portfolio.description')}</p>
+<p class="help-block">${message(code: 'is.ui.portfolio.help.general')}</p>
 <entry:point id="portfolio-form-general-before"/>
 <div class="row">
     <div class="col-sm-8 col-xs-8 form-group">
