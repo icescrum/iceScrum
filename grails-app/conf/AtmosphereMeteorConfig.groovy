@@ -10,6 +10,7 @@ servlets = [
                 initParams: [
                         "org.atmosphere.cpr.AtmosphereFramework.analytics"                           : false,
                         "org.atmosphere.cpr.broadcasterClass"                                        : "org.icescrum.atmosphere.IceScrumBroadcaster",
+                        "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 15,
                         "org.atmosphere.cpr.AtmosphereInterceptor"                                   : """
                                 org.atmosphere.client.TrackMessageSizeInterceptor,
                                 org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor,
