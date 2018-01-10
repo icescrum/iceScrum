@@ -27,7 +27,13 @@
                 <div class="panel panel-light">
                     <div class="panel-heading">
                         <h3 class="panel-title">
-                            <i class="fa fa-home"></i> {{ project.name + ' (' + project.pkey + ')' }}
+                            <i tooltip-placement="right"
+                               uib-tooltip="${message(code: 'is.ui.project.public')}"
+                               ng-if="!project.preferences.hidden"
+                               ng-click="authorizedProject('edit') && showProjectEditModal()"
+                               class="fa fa-eye"></i>
+                            <i class="fa fa-folder"></i>
+                            {{ project.name + ' (' + project.pkey + ')' }}
                             <button class="btn btn-default btn-sm pull-right visible-on-hover"
                                     ng-if="authorizedProject('update', project)"
                                     ng-click="showProjectEditModal()"
