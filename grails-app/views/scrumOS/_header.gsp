@@ -145,6 +145,7 @@
                                         <b class="text-important">${message(code: 'is.ui.apps')}</b>
                                     </a>
                                 </li>
+                                <entry:point id="header-menu-current-workspace"/>
                             </g:if>
                             <g:if test="${workspacesFilteredsList}">
                                 <li role="presentation" class="divider" style='display:${workspacesFilteredsList ? 'block' : 'none'}'></li>
