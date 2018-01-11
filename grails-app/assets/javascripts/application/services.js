@@ -628,11 +628,17 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                 var cachedProject = CacheService.get('project', _.get(newItem, projectPath));
                 if (cachedProject && !_.find(cachedProject[projectCache.arrayName], {id: newItem.id})) {
                     cachedProject[projectCache.arrayName].push(newItem);
+                    if (projectCache.sort && projectCache.sort == 'rank') {
+                        cachedProject[projectCache.arrayName].sort(sortByRank);
+                    }
                 }
             } else if (oldItem && !newItem) {
                 var cachedProject = CacheService.get('project', _.get(oldItem, projectPath));
                 if (cachedProject) {
                     _.remove(cachedProject[projectCache.arrayName], {id: oldItem.id});
+                    if (projectCache.sort && projectCache.sort == 'rank') {
+                        cachedProject[projectCache.arrayName].sort(sortByRank);
+                    }
                 }
             }
         }

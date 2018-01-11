@@ -91,7 +91,8 @@ angular.module('isCore', ['ui.router'])
             },
             feature: {
                 arrayName: 'features',
-                projectPath: 'backlog'
+                projectPath: 'backlog',
+                sort: 'rank'
             },
             release: {
                 arrayName: 'releases',
