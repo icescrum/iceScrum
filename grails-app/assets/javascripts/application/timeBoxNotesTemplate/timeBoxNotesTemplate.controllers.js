@@ -80,11 +80,11 @@ controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
     $scope.project = $scope.getProjectFromState();
 }]);
 
-controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'ContextService', function($scope, ContextService) {
+controllers.controller('timeBoxNotesTemplateCtrl', ['$scope', 'TagService', function($scope, TagService) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
-            ContextService.getTags().then(function(tags) {
+            TagService.getTags().then(function(tags) {
                 $scope.tags = tags;
             });
         }

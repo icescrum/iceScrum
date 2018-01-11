@@ -23,11 +23,11 @@
  *
  */
 
-controllers.controller('featureCtrl', ['$scope', '$filter', 'ContextService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $filter, ContextService, FeatureService, postitSize, screenSize) {
+controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $filter, TagService, FeatureService, postitSize, screenSize) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
-            ContextService.getTags().then(function(tags) {
+            TagService.getTags().then(function(tags) {
                 $scope.tags = tags;
             });
         }

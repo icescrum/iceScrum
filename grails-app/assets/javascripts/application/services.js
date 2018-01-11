@@ -829,7 +829,7 @@ services.service("DomainConfigService", [function() {
     this.config.portfoliod = this.config.portfolio;
 }]);
 
-services.service('ContextService', ['$location', '$q', '$injector', '$rootScope', 'FormService', 'ActorService', 'FeatureService', function($location, $q, $injector, $rootScope, FormService, ActorService, FeatureService) {
+services.service('ContextService', ['$location', '$q', '$injector', 'TagService', 'ActorService', 'FeatureService', function($location, $q, $injector, TagService, ActorService, FeatureService) {
     var self = this;
     this.contextSeparator = '_';
     this.getContextFromUrl = function() {
@@ -843,27 +843,35 @@ services.service('ContextService', ['$location', '$q', '$injector', '$rootScope'
     };
     this.contexts = [];
     this.loadContexts = function() {
-        var project = $rootScope.getProjectFromState();
-        return $q.all([self.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
-            var tags = _.uniqBy(data[0], _.lowerCase);
-            var features = data[1];
-            var actors = data[2];
-            var contexts = _.map(tags, function(tag) {
-                return {type: 'tag', id: tag, term: tag, color: 'purple'};
+        var Session = $injector.get('Session');
+        if (Session.workspaceType == 'project') {
+            var project = Session.workspace;
+            return $q.all([TagService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
+                var tags = _.uniqBy(data[0], _.lowerCase);
+                var features = data[1];
+                var actors = data[2];
+                var contexts = _.map(tags, function(tag) {
+                    return {type: 'tag', id: tag, term: tag, color: 'purple'};
+                });
+                contexts = contexts.concat(_.map(features, function(feature) {
+                    return {type: 'feature', id: feature.id.toString(), term: feature.name, color: feature.color};
+                }));
+                contexts = contexts.concat(_.map(actors, function(actor) {
+                    return {type: 'actor', id: actor.id.toString(), term: actor.name, color: '#94d4b6'};
+                }));
+                self.contexts = contexts;
+                return contexts;
             });
-            contexts = contexts.concat(_.map(features, function(feature) {
-                return {type: 'feature', id: feature.id.toString(), term: feature.name, color: feature.color};
-            }));
-            contexts = contexts.concat(_.map(actors, function(actor) {
-                return {type: 'actor', id: actor.id.toString(), term: actor.name, color: '#94d4b6'};
-            }));
-            self.contexts = contexts;
-            return contexts;
-        });
+        } else {
+            return $q.when([])
+        }
     };
     this.equalContexts = function(context1, context2) {
         return context1 == context2 || context1 && context2 && context1.type == context2.type && context1.id == context2.id;
     };
+}]);
+
+services.service('TagService', ['FormService', function(FormService) {
     this.getTags = function() {
         return FormService.httpGet('tag'); // Workspace sensitive
     }

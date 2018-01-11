@@ -216,7 +216,7 @@ controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$con
     });
 }]);
 
-extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'ContextService', 'taskContext', 'detailsTask', 'project', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, ContextService, taskContext, detailsTask, project) {
+extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'TagService', 'taskContext', 'detailsTask', 'project', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, TagService, taskContext, detailsTask, project) {
     $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task', project: project});
     // Functions
@@ -228,7 +228,7 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
     };
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
-            ContextService.getTags().then(function(tags) {
+            TagService.getTags().then(function(tags) {
                 $scope.tags = tags;
             });
         }
