@@ -168,6 +168,8 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     };
     this.authorizedProject = function(action, project) {
         switch (action) {
+            case 'accessPortfolio':
+                return Session.bo() || Session.psh();
             case 'unArchive':
                 return Session.admin();
             case 'export':

@@ -31,9 +31,7 @@
                                uib-tooltip="${message(code: 'is.ui.project.public')}"
                                ng-if="!project.preferences.hidden"
                                ng-click="authorizedProject('edit') && showProjectEditModal()"
-                               class="fa fa-eye"></i>
-                            <i class="fa fa-folder"></i>
-                            {{ project.name + ' (' + project.pkey + ')' }}
+                               class="fa fa-eye"></i>&nbsp;<i class="fa fa-folder"></i>&nbsp;{{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
                             <button class="btn btn-default btn-sm pull-right visible-on-hover"
                                     ng-if="authorizedProject('update', project)"
                                     ng-click="showProjectEditModal()"

@@ -188,6 +188,7 @@ icescrum.resourceBundles = [
 
 icescrum.marshaller = [
         portfolio           : [include: ['businessOwners', 'stakeHolders', 'invitedBusinessOwners', 'invitedStakeHolders'],
+                               asShort: ['name', 'fkey'],
                                textile: ['description']],
         story               : [include: ['testState', 'tags', 'dependences', 'followed', 'countDoneTasks'],
                                exclude: ['voters'],
