@@ -23,7 +23,7 @@
  *
  */
 
-controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
+extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
     // Functions
     $scope.resetTaskForm = function() {
         $scope.task = {};
@@ -50,7 +50,7 @@ controllers.controller('taskStoryCtrl', ['$scope', '$controller', 'TaskService',
     $scope.resetTaskForm();
 }]);
 
-controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, postitSize, screenSize) {
+extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, postitSize, screenSize) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -159,7 +159,7 @@ controllers.controller('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter'
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
-controllers.controller('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', 'project', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint, project) {
+extensibleController('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', 'project', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint, project) {
     $controller('taskCtrl', {$scope: $scope});
     // Functions
     $scope.resetTaskForm = function() {
