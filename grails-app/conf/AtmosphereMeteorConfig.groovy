@@ -17,7 +17,7 @@ servlets = [
                         """,
                         "org.atmosphere.cpr.AtmosphereFramework.analytics"                           : false,
                         "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 15, // seconds
-                        "org.atmosphere.cpr.CometSupport.maxInactiveActivity"                        : 30 * 60, //30 minutes
+                        "org.atmosphere.cpr.CometSupport.maxInactiveActivity"                        : 30 * 60000, // 30 minutes
                         "org.atmosphere.cpr.broadcasterClass"                                        : "org.icescrum.atmosphere.IceScrumBroadcaster"
                 ]
         ]
