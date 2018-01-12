@@ -25,7 +25,7 @@
 services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', 'FormService', function($rootScope, $http, atmosphereService, IceScrumEventType, FormService) {
     var self = this;
     self.push = {};
-    self.logLevel = 'info';
+    self.logLevel = isSettings.pushLogLevel;
     this.enabled = true;
     this.listeners = {};
     var _canLog = function(level) {

@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<%@ page import="org.icescrum.core.support.ApplicationSupport; grails.converters.JSON;grails.util.Holders;" %>
+<%@ page import="grails.util.Environment; org.icescrum.core.support.ApplicationSupport; grails.converters.JSON;grails.util.Holders;" %>
 <script type="text/javascript">
     var isSettings = {
         lang: '${user ? user.preferences.language : lang}',
@@ -30,7 +30,7 @@
         roles: ${roles as JSON},
         defaultView: "${defaultView}",
         workspace: ${workspace ? workspace as JSON : 'null'},
-        pushLogLevel: "${Holders.config.icescrum.debug.enable ? 'debug' : 'info'}",
+        pushLogLevel: "${Holders.config.icescrum.debug.enable && Environment.getCurrent() == Environment.PRODUCTION ? 'debug' : 'info'}",
         projectPrivateDefault: ${grailsApplication.config.icescrum.project.private.default},
         projectPrivateEnabled: ${grailsApplication.config.icescrum.project.private.enable},
         portfolioPrivateDefault: ${grailsApplication.config.icescrum.project.private.default},
