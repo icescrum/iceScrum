@@ -226,6 +226,9 @@ controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', 
     $scope.portfolioMembersEditable = function() {
         return true;
     };
+    $scope.portfolioMembersDeletable = function(role) {
+        return true;
+    };
     var oldClose = $scope.$close;
     $scope.$close = function(portfolio) { // Override
         if (!portfolio) {
@@ -317,6 +320,9 @@ controllers.controller('editPortfolioCtrl', ['$scope', '$controller', 'Session',
     };
     $scope.portfolioMembersEditable = function(portfolio) {
         return PortfolioService.authorizedPortfolio('updateMembers', portfolio);
+    };
+    $scope.portfolioMembersDeletable = function(portfolio, role) {
+        return role === 'bo' ? portfolio.businessOwners.length > 1 : true;
     };
     $scope.invitationToUserMock = function(invitation) {
         return {email: invitation.email};
