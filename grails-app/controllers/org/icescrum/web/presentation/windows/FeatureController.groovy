@@ -46,7 +46,7 @@ class FeatureController implements ControllerErrorHandler {
     }
 
     @Secured('isAuthenticated()')
-    def show(long project) {
+    def show() {
         def features = Feature.withFeatures(params)
         def returnData = features.size() > 1 ? features : features.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
@@ -183,7 +183,6 @@ class FeatureController implements ControllerErrorHandler {
         if (request.getAttribute("_cachedKeyRequest")) {
             return request.getAttribute("_cachedKeyRequest")
         }
-        def date = new Date().getTime()
         def key = Feature.createCriteria().get {
             eq('backlog.id', params.project.toLong())
             projections {
@@ -191,8 +190,6 @@ class FeatureController implements ControllerErrorHandler {
                 max('lastUpdated')
             }
         }.join('_')
-        def date2 = new Date().getTime()
-        println(date2 - date)
         request.setAttribute("_cachedKeyRequest", key)
         return key
     }
