@@ -39,14 +39,14 @@ class FeatureController implements ControllerErrorHandler {
     def springSecurityService
     def grailsApplication
 
-    @Cacheable(value = 'featureCache')
+    @Cacheable(value = 'featuresCache')
     def index(long project) {
         def features = Feature.search(project, [feature: [:]]).sort { Feature feature -> feature.rank }
         render(status: 200, text: features as JSON, contentType: 'application/json')
     }
 
     @Secured('isAuthenticated()')
-    def show() {
+    def show(long project) {
         def features = Feature.withFeatures(params)
         def returnData = features.size() > 1 ? features : features.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
@@ -180,12 +180,20 @@ class FeatureController implements ControllerErrorHandler {
     }
 
     protected def indexCacheKey() {
-        return Feature.createCriteria().get {
+        if (request.getAttribute("_cachedKeyRequest")) {
+            return request.getAttribute("_cachedKeyRequest")
+        }
+        def date = new Date().getTime()
+        def key = Feature.createCriteria().get {
             eq('backlog.id', params.project.toLong())
             projections {
                 count('lastUpdated')
                 max('lastUpdated')
             }
         }.join('_')
+        def date2 = new Date().getTime()
+        println(date2 - date)
+        request.setAttribute("_cachedKeyRequest", key)
+        return key
     }
 }
