@@ -29,7 +29,7 @@
            ng-show="teamMembersEditable(team)">
             <i class="fa fa-close"></i>
         </a>
-        <img ng-src="{{ member | userAvatar }}" height="24" width="24" title="{{ member.username }}">
+        <img ng-src="{{ member | userAvatar }}" height="24" width="24" class="img-rounded user-role" title="{{ member.username }}">
     </td>
     <td>
         <span title="{{ member.username + ' (' + member.email + ')' }}" class="text-overflow">{{ member | userFullName }}</span>

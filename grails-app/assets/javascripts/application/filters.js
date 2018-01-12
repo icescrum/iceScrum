@@ -78,7 +78,7 @@ filters
     }])
     .filter('userColorRoles', ['$rootScope', function($rootScope) {
         return function(user) {
-            var classes = "img-circle user-role";
+            var classes = "img-rounded user-role";
             var project = $rootScope.getProjectFromState();
             if (!project || !project.pkey) {
                 return classes;
