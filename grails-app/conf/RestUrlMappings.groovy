@@ -178,7 +178,7 @@ class RestUrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
-                action(inList: ['copyToBacklog'])
+                action(inList: ['createStoryEpic'])
             }
             method = 'POST'
         }

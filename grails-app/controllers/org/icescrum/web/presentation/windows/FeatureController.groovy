@@ -25,6 +25,7 @@
 package org.icescrum.web.presentation.windows
 
 import grails.converters.JSON
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Feature
 import org.icescrum.core.domain.Project
@@ -38,6 +39,7 @@ class FeatureController implements ControllerErrorHandler {
     def springSecurityService
     def grailsApplication
 
+    @Cacheable(value = 'featureCache')
     def index(long project) {
         def features = Feature.search(project, [feature: [:]]).sort { Feature feature -> feature.rank }
         render(status: 200, text: features as JSON, contentType: 'application/json')
@@ -119,9 +121,9 @@ class FeatureController implements ControllerErrorHandler {
     }
 
     @Secured('productOwner() and !archivedProject()')
-    def copyToBacklog() {
+    def createStoryEpic() {
         List<Feature> features = Feature.withFeatures(params)
-        List<Story> stories = featureService.copyToBacklog(features)
+        List<Story> stories = featureService.createStoryEpic(features)
         def returnData = stories.size() > 1 ? stories : stories.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
@@ -175,5 +177,15 @@ class FeatureController implements ControllerErrorHandler {
         Collections.shuffle(colors)
         colors = colors.size() > 8 ? colors.subList(0, 7) : colors
         render(status: 200, contentType: 'application/json', text: colors as JSON)
+    }
+
+    protected def indexCacheKey() {
+        return Feature.createCriteria().get {
+            eq('backlog.id', params.project.toLong())
+            projections {
+                count('lastUpdated')
+                max('lastUpdated')
+            }
+        }.join('_')
     }
 }

@@ -117,12 +117,12 @@
                                 </g:else>
                             </g:if>
                             <g:if test="${workspace?.object}">
-                                <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="divider"></li>
-                                <li ng-if="authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-header">
+                                <li ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="divider"></li>
+                                <li ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-header">
                                     ${message(code: 'is.ui.workspace.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="{{ workspace.name }}"
                                                                                                              style="display:inline-block; max-width:70px"><b>{{ workspace.name }}</b></span>
                                 </li>
-                                <li ng-if="authorized${workspace.name.capitalize()}('edit')">
+                                <li ng-if=":: authorized${workspace.name.capitalize()}('edit')">
                                     <a hotkey="{ 'shift+e': hotkeyClick}"
                                        hotkey-description="${message(code: 'is.ui.apps.configure')}"
                                        href
@@ -131,7 +131,7 @@
                                     </a>
                                 </li>
                                 <g:if test="${exportEnable}">
-                                    <li ng-if="authorized${workspace.name.capitalize()}('export')">
+                                    <li ng-if=":: authorized${workspace.name.capitalize()}('export')">
                                         <a hotkey="{ 'shift+d': export}"
                                            hotkey-description="${message(code: 'is.dialog.exportProject.title')}"
                                            href
@@ -140,7 +140,7 @@
                                         </a>
                                     </li>
                                 </g:if>
-                                <li ng-if="authorizedApp('show')">
+                                <li ng-if=":: authorizedApp('show')">
                                     <a href ng-click="showAppsModal()">
                                         <b class="text-important">${message(code: 'is.ui.apps')}</b>
                                     </a>
@@ -175,7 +175,7 @@
                             <entry:point id="header-menu-icescrum"/>
                         </ul>
                     </li>
-                    <li id="{{ menu.id }}"
+                    <li id="{{:: menu.id }}"
                         as-sortable-item
                         ng-repeat="menu in application.menus.visible"
                         ng-include="'menuitem.item.html'"
@@ -251,7 +251,7 @@
                             </a>
                         </div>
                     </g:if>
-                    <div ng-if="currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
+                    <div ng-if=":: currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
                         <div class="navbar-fa navbar-notif"
                              uib-dropdown-toggle>
                             <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
@@ -264,11 +264,11 @@
                            hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
                            uib-tooltip="${message(code: 'is.ui.home')} (shift+h)"
                            tooltip-placement="bottom"
-                           ng-href="{{ serverUrl }}">
+                           ng-href="{{:: serverUrl }}">
                             <i class="fa fa-home"></i>
                         </a>
                     </div>
-                    <div ng-if="currentUser.username" uib-dropdown class="pull-left">
+                    <div ng-if=":: currentUser.username" uib-dropdown class="pull-left">
                         <div class="navbar-user pull-left" uib-dropdown-toggle>
                             <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="32px" width="32px"/>
                         </div>

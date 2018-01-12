@@ -24,6 +24,7 @@
 package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
+import grails.plugin.cache.Cacheable
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
@@ -37,6 +38,7 @@ class StoryController implements ControllerErrorHandler {
     def springSecurityService
     def activityService
 
+    //@Cacheable(value = 'storyCache')
     @Secured('stakeHolder() or inProject()')
     def index(long project, long typeId, String type) {
         def options
@@ -528,5 +530,15 @@ class StoryController implements ControllerErrorHandler {
             }
             renderReport('stories', 'PDF', [[project: _project.name, stories1: stories1 ?: null, stories2: stories2 ?: null]], _project.name)
         }
+    }
+
+    protected def indexCacheKey() {
+        return Story.createCriteria().get {
+            eq('backlog.id', params.project.toLong())
+            projections {
+                count('lastUpdated')
+                max('lastUpdated')
+            }
+        }.join('_')
     }
 }

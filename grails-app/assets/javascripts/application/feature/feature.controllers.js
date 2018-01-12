@@ -40,8 +40,8 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'Featu
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
-    $scope.copyToBacklog = function(feature) {
-        FeatureService.copyToBacklog(feature).then(function() {
+    $scope.createStoryEpic = function(feature) {
+        FeatureService.createStoryEpic(feature).then(function() {
             $scope.notifySuccess('todo.is.ui.feature.copied.to.backlog');
         });
     };
@@ -53,12 +53,12 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'Featu
         },
         {
             name: 'is.ui.feature.menu.copy',
-            visible: function(feature) { return $scope.authorizedFeature('copyToBacklog'); },
-            action: function(feature) { $scope.copyToBacklog(feature); }
+            visible: function(feature) { return $scope.authorizedFeature('createStoryEpic'); },
+            action: function(feature) { $scope.createStoryEpic(feature); }
         },
         {
             name: 'todo.is.ui.permalink.copy',
-            visible: function(feature) { return $scope.authorizedFeature('copyToBacklog'); },
+            visible: function(feature) { return $scope.authorizedFeature('createStoryEpic'); },
             action: function(feature) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(feature.uid, 'feature'))); }
         },
         {
@@ -163,8 +163,8 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'feature
             $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
         });
     };
-    $scope.copyToBacklogMultiple = function() {
-        FeatureService.copyToBacklogMultiple(featureListId, project.id).then(function() {
+    $scope.createStoryEpicMultiple = function() {
+        FeatureService.createStoryEpicMultiple(featureListId, project.id).then(function() {
             $scope.notifySuccess('todo.is.ui.feature.multiple.copied.to.backlog');
         });
     };

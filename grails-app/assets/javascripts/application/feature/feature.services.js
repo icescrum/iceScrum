@@ -70,8 +70,8 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
     this.update = function(feature) {
         return Feature.update({projectId: feature.backlog.id}, _.omit(feature, 'stories'), crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.copyToBacklog = function(feature) {
-        return Feature.update({id: feature.id, projectId: feature.backlog.id, action: 'copyToBacklog'}, {}).$promise;
+    this.createStoryEpic = function(feature) {
+        return Feature.update({id: feature.id, projectId: feature.backlog.id, action: 'createStoryEpic'}, {}).$promise;
     };
     this['delete'] = function(feature) {
         return Feature.delete({id: feature.id, projectId: feature.backlog.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
@@ -103,8 +103,8 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             _.each(features, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.copyToBacklogMultiple = function(ids, projectId) {
-        return Feature.updateArray({id: ids, projectId: projectId, action: 'copyToBacklog'}, {}).$promise;
+    this.createStoryEpicMultiple = function(ids, projectId) {
+        return Feature.updateArray({id: ids, projectId: projectId, action: 'createStoryEpic'}, {}).$promise;
     };
     this.deleteMultiple = function(ids, projectId) {
         return Feature.deleteArray({id: ids, projectId: projectId}, function() {
@@ -116,7 +116,7 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
     this.authorizedFeature = function(action) {
         switch (action) {
             case 'create':
-            case 'copyToBacklog':
+            case 'createStoryEpic':
             case 'upload':
             case 'update':
             case 'rank':

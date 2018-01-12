@@ -86,11 +86,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="btn-toolbar buttons-margin-bottom">
-                        <div ng-if="authorizedFeature('copyToBacklog')"
+                        <div ng-if="authorizedFeature('createStoryEpic')"
                              class="btn-group">
                             <button type="button"
                                     class="btn btn-default"
-                                    ng-click="copyToBacklogMultiple()">
+                                    ng-click="createStoryEpicMultiple()">
                                 <g:message code='is.ui.feature.menu.copy'/>
                             </button>
                         </div>
