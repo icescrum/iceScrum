@@ -113,15 +113,16 @@ services.service("FeatureService", ['$state', '$q', 'Feature', 'Session', 'Cache
             });
         }).$promise;
     };
-    this.authorizedFeature = function(action) {
+    this.authorizedFeature = function(action, project) {
         switch (action) {
             case 'create':
             case 'createStoryEpic':
             case 'upload':
             case 'update':
-            case 'rank':
             case 'delete':
                 return Session.po();
+            case 'rank':
+                return (project && project.portfolio) ? Session.bo() : Session.po();
             default:
                 return false;
         }

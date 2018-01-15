@@ -84,7 +84,7 @@
             <entry:point id="backlog-window-toolbar-right"/>
         </div>
     </div>
-    <div class="bulk-selection-enabled bg-warning" ng-if="selectableOptions.selectingMultiple">
+    <div class="window-alert bg-warning" ng-if="selectableOptions.selectingMultiple">
         ${message(code: 'todo.is.ui.selectable.bulk.enabled')} (<strong><a href class="link" ng-click="toggleSelectableMultiple()">${message(code: 'todo.is.ui.disable')}</a></strong>)
     </div>
     <div class="backlogs-list-details" selectable="selectableOptions">

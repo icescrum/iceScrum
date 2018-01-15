@@ -48,7 +48,7 @@ extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'Featur
         $scope.orderBy.current = _.find($scope.orderBy.values, {id: 'rank'});
     };
     $scope.isSortableFeature = function() {
-        return FeatureService.authorizedFeature('rank');
+        return FeatureService.authorizedFeature('rank', $scope.project);
     };
     $scope.isSortingFeature = function() {
         return $scope.isSortableFeature() && $scope.orderBy.current.id == 'rank' && !$scope.orderBy.reverse && !$scope.hasContextOrSearch();
