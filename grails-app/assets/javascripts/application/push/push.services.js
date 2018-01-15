@@ -25,7 +25,7 @@
 services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', 'FormService', function($rootScope, $http, atmosphereService, IceScrumEventType, FormService) {
     var self = this;
     self.push = {};
-    self.logLevel = isSettings.pushLogLevel;
+    self.logLevel = "debug";
     this.enabled = true;
     this.listeners = {};
     var _canLog = function(level) {
@@ -48,7 +48,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             contentType: 'application/json',
             logLevel: self.logLevel,
             transport: 'websocket',
-            fallbackTransport: 'long-polling',
+            fallbackTransport: 'streaming',
             trackMessageLength: true,
             reconnectInterval: 5000,
             enableXDR: true,
