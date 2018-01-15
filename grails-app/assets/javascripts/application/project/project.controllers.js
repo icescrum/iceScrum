@@ -40,15 +40,6 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
 
 controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
     $controller('abstractProjectListCtrl', {$scope: $scope});
-    // Init
-    $scope.openedProjects = {};
-    $scope.$watch('openedProjects', function(newVal) { // Really ugly hack, only way to watch which accordion group is opened...
-        var selectedProjectId = _.invert(newVal)[true];
-        if (selectedProjectId != undefined) {
-            var selectedProject = _.find($scope.projects, {id: parseInt(selectedProjectId)});
-            $scope.selectProject(selectedProject);
-        }
-    }, true); // Be careful of circular objects, it will blow up the stack when comparing equality by value
     ProjectService.listPublicWidget().then(function(projects) {
         $scope.projects = projects;
     });

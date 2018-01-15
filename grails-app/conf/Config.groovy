@@ -197,7 +197,7 @@ icescrum.marshaller = [
                                asShort: ['state', 'effort', 'uid', 'name', 'rank']],
         comment             : [textile: ['body'], include: ['poster']],
         project             : [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps', 'team'],
-                               exclude: ['cliches', 'teams'],
+                               exclude: ['cliches', 'teams', 'goal'],
                                textile: ['description']],
         team                : [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
         task                : [exclude: ['participants'],

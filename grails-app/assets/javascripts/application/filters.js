@@ -77,9 +77,9 @@ filters
         };
     }])
     .filter('userColorRoles', ['$rootScope', function($rootScope) {
-        return function(user) {
+        return function(user, project) {
             var classes = "img-rounded user-role";
-            var project = $rootScope.getProjectFromState();
+            project = project ? project : $rootScope.getProjectFromState();
             if (!project || !project.pkey) {
                 return classes;
             }
@@ -405,6 +405,21 @@ filters
         if (sprint) {
             return $rootScope.message('is.sprint') + ' ' + sprint.index;
         }
+    }
+}]).filter('stripTags', function() {
+    return function strip_tags(input, disallowed) {
+        disallowed = (((disallowed || '') + '')
+                          .toLowerCase()
+                          .match(/<[a-z][a-z0-9]*>/g) || [])
+            .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+        return input.replace(tags, function($0, $1) {
+            return disallowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? ' ' : $0;
+        });
+    }
+}).filter('allMembers', ['$rootScope', function($rootScope) {
+    return function(project) {
+        return _.unionBy(project.team.members, project.productOwners, 'id');
     }
 }]).filter('acceptanceTestColor', ['AcceptanceTestStatesByName', function(AcceptanceTestStatesByName) {
     return function(state) {
