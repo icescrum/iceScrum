@@ -256,7 +256,11 @@ class StoryController implements ControllerErrorHandler {
     def url(long id, long project) {
         Project _project = Project.withProject(project)
         Story story = Story.withStory(_project.id, id)
-        render(status: 200, contentType: 'application/json', text: [relativeUrl: getStoryHash(story)] as JSON)
+        if (story) {
+            render(status: 200, contentType: 'application/json', text: [relativeUrl: getStoryHash(story)] as JSON)
+        } else {
+            redirect(controller: 'errors', action: 'error404')
+        }
     }
 
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
