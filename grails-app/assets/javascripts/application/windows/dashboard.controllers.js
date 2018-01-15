@@ -87,6 +87,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
     });
     AttachmentService.list($scope.project, $scope.project.id);
     if (isSettings.showAppStore) {
+        isSettings.showAppStore = false;
         $scope.showAppsModal();
     }
 }]);
