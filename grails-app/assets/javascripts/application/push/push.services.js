@@ -48,7 +48,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             contentType: 'application/json',
             logLevel: self.logLevel,
             transport: 'websocket',
-            fallbackTransport: 'streaming',
+            fallbackTransport: 'long-polling',
             trackMessageLength: true,
             reconnectInterval: 5000,
             enableXDR: true,
