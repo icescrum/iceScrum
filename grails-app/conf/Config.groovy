@@ -426,6 +426,7 @@ log4j = {
 
     warn 'org.mortbay.log'
     warn 'org.atmosphere.cpr'
+    warn 'grails.plugin.cache'
 
     if (config.grails.entryPoints.debug) {
         debug 'org.icescrum.plugins.entryPoints'
