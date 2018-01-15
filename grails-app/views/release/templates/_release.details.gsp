@@ -52,7 +52,7 @@
                            tabindex="0"
                            ui-sref=".({releaseId: nextRelease.id})"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     </div>
-                    <details-layout-buttons ng-if="!isModal"/>
+                    <details-layout-buttons ng-if="!isModal" remove-ancestor="removeReleaseAncestorOnClose"/>
                 </div>
                 <g:set var="formats" value="${is.exportFormats(entryPoint: 'releaseDetails')}"/>
                 <g:if test="${formats}">

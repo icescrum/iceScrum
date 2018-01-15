@@ -28,7 +28,7 @@
                 <i class="fa fa-calendar"></i> <span class="item-name" title="${message(code: "todo.is.ui.release.new")}">${message(code: "todo.is.ui.release.new")}</span>
             </div>
             <div class="right-title">
-                <details-layout-buttons ng-if="!isModal" remove-ancestor="false"/>
+                <details-layout-buttons ng-if="!isModal"/>
             </div>
         </h3>
     </div>

@@ -911,7 +911,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     stateName += '.^'
                 }
                 if (scope.removeAncestor) {
-                    stateName += '.^'
+                    _.times(_.isNumber(scope.removeAncestor) ? parseInt(scope.removeAncestor) : 1, function() {
+                        stateName += '.^';
+                    });
                 }
                 return $state.href(stateName);
             };

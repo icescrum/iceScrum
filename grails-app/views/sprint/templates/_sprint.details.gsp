@@ -55,7 +55,7 @@
                            ui-sref=".({sprintId: nextSprint.id})"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i>
                         </a>
                     </div>
-                    <details-layout-buttons ng-if="!isModal"/>
+                    <details-layout-buttons ng-if="!isModal" remove-ancestor="removeSprintAncestorOnClose"/>
                 </div>
                 <g:set var="formats" value="${is.exportFormats(entryPoint: 'sprintDetails')}"/>
                 <g:if test="${formats}">
