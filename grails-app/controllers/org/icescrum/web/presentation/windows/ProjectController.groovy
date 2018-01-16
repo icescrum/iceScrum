@@ -41,6 +41,7 @@ import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
+import org.icescrum.core.utils.JSONIceScrumDomainClassMarshaller
 import org.icescrum.core.utils.ServicesUtils
 import org.springframework.beans.BeanWrapperImpl
 
@@ -474,7 +475,9 @@ class ProjectController implements ControllerErrorHandler {
     @Secured(['permitAll()'])
     def listPublicWidget() {
         def publicProjects = Project.where { preferences.hidden == false }.list(sort: 'dateCreated', order: 'desc', max: 9)
-        request.marshaller = ['project': ['include': ['currentOrNextRelease']]]
+        request.marshaller = [
+                'project': ['include': ['currentOrNextRelease']]
+        ]
         render(status: 200, contentType: 'application/json', text: publicProjects as JSON)
     }
 
@@ -493,7 +496,7 @@ class ProjectController implements ControllerErrorHandler {
         def returnedProjects = !count ? projects : projects.drop(page ? (page - 1) * count : 0).take(count)
         def light = params.light != null ? params.remove('light') : false
         if (light && light != "false") {
-            returnedProjects = generateLightProjectsObjects(returnedProjects, light)
+            lightProjectMarshaller(light)
         }
         def returnData = paginate ? [projects: returnedProjects, count: projects.size()] : returnedProjects
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
@@ -603,36 +606,20 @@ class ProjectController implements ControllerErrorHandler {
         }
         def returnedProjects = !count ? projects : projects.drop(page ? (page - 1) * count : 0).take(count)
         if (light && light != "false") {
-            returnedProjects = generateLightProjectsObjects(returnedProjects, light)
+            lightProjectMarshaller(light)
         }
         return paginate ? [projects: returnedProjects, count: projects.size()] : returnedProjects
     }
 
-    private static generateLightProjectsObjects(projects, def properties = false) {
-        return projects.collect { object ->
-            def beanWrapper = new BeanWrapperImpl(object)
-            properties = (properties == "true" || properties instanceof Boolean) ? null : (properties instanceof ArrayList ? properties : properties.tokenize(','))
-            def o = [id: object.id, pkey: object.pkey, name: object.name, portfolio: object.portfolio ? [id: object.portfolio.id] : null]
-            properties?.each { String property ->
-                if (property.endsWith('_count')) {
-                    String gormProperty = property.tokenize('_')[0]
-                    if (!object.hasProperty(property) && object.hasProperty(gormProperty)) {
-                        def referencedObject = beanWrapper.getPropertyValue(gormProperty)
-                        int count = object.getClass().withSession { session ->
-                            session.createFilter(referencedObject, 'select count(*)').uniqueResult()
-                        }
-                        o."$property" = count
-                    } else {
-                        o."$property" = object."$property"
-                    }
-                } else if (property.endsWith('_html')) {
-                    String gormProperty = property.tokenize('_')[0]
-                    o."$property" = ServicesUtils.textileToHtml(object."$gormProperty")
-                } else {
-                    o."$property" = object."$property"
-                }
-            }
-            return o
+    private void lightProjectMarshaller(def options) {
+        request.marshaller = [
+                'project'  : ['exclude': [JSONIceScrumDomainClassMarshaller.EXCLUDES_ALL_JSON_PROPERTIES],
+                              'include': [JSONIceScrumDomainClassMarshaller.OVERRIDE_JSON_PROPERTIES, 'pkey', 'name', 'portfolio']],
+                'portfolio': ['exclude': [JSONIceScrumDomainClassMarshaller.EXCLUDES_ALL_JSON_PROPERTIES],
+                              'include': [JSONIceScrumDomainClassMarshaller.OVERRIDE_JSON_PROPERTIES]]
+        ]
+        if (options != true && options != "true") {
+            request.marshaller.project.include.addAll(options.tokenize(','))
         }
     }
 }
