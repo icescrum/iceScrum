@@ -578,6 +578,9 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
             }
             return $state.href(stateName);
         };
+        $scope.listFeatures = function() {
+            FeatureService.list(project);
+        };
         // Init
         $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});
         $scope.dependenceEntries = [];
@@ -585,7 +588,6 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.versions = [];
         $scope.creators = [];
         $scope.features = project.features;
-        FeatureService.list(project);
         $scope.project = project;
         // For header
         //$scope.previousStory = FormService.previous(list, $scope.story);

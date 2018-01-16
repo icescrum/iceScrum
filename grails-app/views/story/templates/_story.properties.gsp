@@ -81,6 +81,7 @@
                 <div ng-class="{'input-group': editableStory.feature.id && !isModal}">
                     <ui-select input-group-fix-width="38"
                                ng-click="editForm(true)"
+                               uis-open-close="isOpen && listFeatures()"
                                ng-change="editForm(true)"
                                ng-disabled="!formEditable()"
                                class="form-control"
