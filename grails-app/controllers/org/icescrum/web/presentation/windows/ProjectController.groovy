@@ -476,7 +476,10 @@ class ProjectController implements ControllerErrorHandler {
     def listPublicWidget() {
         def publicProjects = Project.where { preferences.hidden == false }.list(sort: 'dateCreated', order: 'desc', max: 9)
         request.marshaller = [
-                'project': ['include': ['currentOrNextRelease']]
+                'project': [
+                        'include': ['currentOrNextRelease'],
+                        'withIds': ['backlogs']
+                ]
         ]
         render(status: 200, contentType: 'application/json', text: publicProjects as JSON)
     }

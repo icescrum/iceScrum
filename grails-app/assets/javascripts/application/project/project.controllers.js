@@ -43,6 +43,26 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
     ProjectService.listPublicWidget().then(function(projects) {
         $scope.projects = projects;
     });
+    $scope.retrieveBacklog = function(project) {
+        return {id: project.backlogs_ids[0].id, project: project, chartType: 'state'};
+    };
+    $scope.backlogChartOptions = {
+        chart: {
+            height: function($element) {
+                return $element ? $element.find('.panel-body')[0].getBoundingClientRect().height : 0;
+            },
+            margin: {top: 0, right: 0, bottom: 0, left: 0},
+            showXAxis: false,
+            showYAxis: false,
+            showLegend: false
+        },
+        title: {
+            enable: false
+        },
+        caption: {
+            enable: false
+        }
+    };
 }]);
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', 'UserService', function($scope, $filter, Session, UserService) {
