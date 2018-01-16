@@ -25,91 +25,94 @@
     <div class="backlogs-list-details">
         <div class="panel panel-light">
             <div class="panel-heading">
-                <div class="btn-toolbar pull-left">
-                    <div class="btn-group">
-                        <button type="button"
-                                ng-if="isSortableFeature()"
-                                class="btn btn-default hidden-sm hidden-xs"
-                                ng-click="enableSortable()"
-                                uib-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
-                            <i ng-class="isSortingFeature() ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
-                        </button>
-                        <div class="btn-group"
-                             uib-dropdown
-                             uib-tooltip="${message(code: 'todo.is.ui.sort')}">
-                            <button class="btn btn-default"
-                                    uib-dropdown-toggle type="button">
-                                <span>{{ orderBy.current.name }}</span>
-                                <i class="fa fa-caret-down"></i>
+                <h3 class="panel-title small-title clearfix">
+                    <span class="title pull-left"><i class="fa fa-puzzle-piece"></i> ${message(code: 'is.ui.feature')} ({{ features.length}})</span>
+                    <div class="btn-toolbar pull-left">
+                        <div class="btn-group">
+                            <button type="button"
+                                    ng-if="isSortableFeature()"
+                                    class="btn btn-default hidden-sm hidden-xs"
+                                    ng-click="enableSortable()"
+                                    uib-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
+                                <i ng-class="isSortingFeature() ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
                             </button>
-                            <ul uib-dropdown-menu role="menu">
-                                <li role="menuitem" ng-repeat="order in orderBy.values">
-                                    <a ng-click="orderBy.current = order" href>{{ order.name }}</a>
-                                </li>
+                            <div class="btn-group"
+                                 uib-dropdown
+                                 uib-tooltip="${message(code: 'todo.is.ui.sort')}">
+                                <button class="btn btn-default"
+                                        uib-dropdown-toggle type="button">
+                                    <span>{{ orderBy.current.name }}</span>
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+                                <ul uib-dropdown-menu role="menu">
+                                    <li role="menuitem" ng-repeat="order in orderBy.values">
+                                        <a ng-click="orderBy.current = order" href>{{ order.name }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button type="button"
+                                    class="btn btn-default"
+                                    ng-click="orderBy.reverse = !orderBy.reverse"
+                                    uib-tooltip="${message(code: 'todo.is.ui.order')}">
+                                <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
+                            </button>
+                        </div>
+                        <div class="btn-group hidden-sm hidden-xs"
+                             uib-dropdown
+                             uib-tooltip="${message(code: 'todo.is.ui.export')}">
+                            <button type="button"
+                                    class="btn btn-default"
+                                    uib-tooltip="${message(code: 'is.ui.window.print')} (P)"
+                                    ng-click="print($event)"
+                                    ng-disabled="!features.length"
+                                    ng-href="feature/print"
+                                    hotkey="{'P': hotkeyClick }"
+                                    hotkey-description="${message(code: 'is.ui.window.print')}">
+                                <i class="fa fa-print"></i>
+                            </button>
+                            <button class="btn btn-default"
+                                    uib-dropdown-toggle
+                                    ng-disabled="!features.length"
+                                    type="button">
+                                <i class="fa fa-download"></i> <i class="fa fa-caret-down"></i>
+                            </button>
+                            <ul uib-dropdown-menu
+                                role="menu">
+                                <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
+                                    <li role="menuitem">
+                                        <a href="${format.controller ?: 'feature'}/${format.action ?: 'print'}/${format.params.format}"
+                                           ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
+                                    </li>
+                                </g:each>
                             </ul>
                         </div>
-                        <button type="button"
-                                class="btn btn-default"
-                                ng-click="orderBy.reverse = !orderBy.reverse"
-                                uib-tooltip="${message(code: 'todo.is.ui.order')}">
-                            <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
-                        </button>
                     </div>
-                    <div class="btn-group hidden-sm hidden-xs"
-                         uib-dropdown
-                         uib-tooltip="${message(code: 'todo.is.ui.export')}">
-                        <button type="button"
-                                class="btn btn-default"
-                                uib-tooltip="${message(code: 'is.ui.window.print')} (P)"
-                                ng-click="print($event)"
-                                ng-disabled="!features.length"
-                                ng-href="feature/print"
-                                hotkey="{'P': hotkeyClick }"
-                                hotkey-description="${message(code: 'is.ui.window.print')}">
-                            <i class="fa fa-print"></i>
-                        </button>
-                        <button class="btn btn-default"
-                                uib-dropdown-toggle
-                                ng-disabled="!features.length"
-                                type="button">
-                            <i class="fa fa-download"></i> <i class="fa fa-caret-down"></i>
-                        </button>
-                        <ul uib-dropdown-menu
-                            role="menu">
-                            <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
-                                <li role="menuitem">
-                                    <a href="${format.controller ?: 'feature'}/${format.action ?: 'print'}/${format.params.format}"
-                                       ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
-                                </li>
-                            </g:each>
-                        </ul>
+                    <div class="btn-toolbar pull-right">
+                        <div class="btn-group">
+                            <button type="button"
+                                    class="btn btn-default hidden-xs hidden-sm"
+                                    uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                                    ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
+                            </button>
+                            <button type="button"
+                                    class="btn btn-default hidden-xs"
+                                    ng-click="fullScreen()"
+                                    uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                            </button>
+                        </div>
+                        <div class="btn-group hidden-xs">
+                            <button type="button"
+                                    class="btn btn-default"
+                                    ng-click="toggleSelectableMultiple()"
+                                    uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
+                                <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
+                            </button>
+                        </div>
+                        <a ng-if="authorizedFeature('create')"
+                           href="#/{{ ::viewName }}/new"
+                           class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
                     </div>
-                </div>
-                <div class="btn-toolbar pull-right">
-                    <div class="btn-group">
-                        <button type="button"
-                                class="btn btn-default hidden-xs hidden-sm"
-                                uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                                ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
-                        </button>
-                        <button type="button"
-                                class="btn btn-default hidden-xs"
-                                ng-click="fullScreen()"
-                                uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
-                        </button>
-                    </div>
-                    <div class="btn-group hidden-xs">
-                        <button type="button"
-                                class="btn btn-default"
-                                ng-click="toggleSelectableMultiple()"
-                                uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
-                            <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
-                        </button>
-                    </div>
-                    <a ng-if="authorizedFeature('create')"
-                       href="#/{{ ::viewName }}/new"
-                       class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
-                </div>
+                </h3>
                 <div class="clearfix"></div>
                 <div class="window-alert window-alert-margin-top bg-warning"
                      ng-if="selectableOptions.selectingMultiple">
