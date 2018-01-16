@@ -79,7 +79,9 @@ filters
     .filter('userColorRoles', ['$rootScope', function($rootScope) {
         return function(user, project) {
             var classes = "img-rounded user-role";
-            project = project ? project : $rootScope.getProjectFromState();
+            if (!project) {
+                project = $rootScope.getProjectFromState();
+            }
             if (!project || !project.pkey) {
                 return classes;
             }
@@ -417,7 +419,7 @@ filters
             return disallowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? ' ' : $0;
         });
     }
-}).filter('allMembers', ['$rootScope', function($rootScope) {
+}).filter('allMembers', [function() {
     return function(project) {
         return _.unionBy(project.team.members, project.productOwners, 'id');
     }

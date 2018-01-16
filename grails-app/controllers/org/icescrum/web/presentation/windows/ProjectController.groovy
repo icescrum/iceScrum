@@ -31,7 +31,6 @@ import grails.plugin.springsecurity.SpringSecurityUtils
 import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 import org.apache.commons.io.FilenameUtils
-import org.hibernate.criterion.CriteriaSpecification
 import org.icescrum.components.FileUploadInfoStorage
 import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.*
@@ -43,7 +42,6 @@ import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
 import org.icescrum.core.utils.JSONIceScrumDomainClassMarshaller
 import org.icescrum.core.utils.ServicesUtils
-import org.springframework.beans.BeanWrapperImpl
 
 @Secured('stakeHolder() or inProject()')
 class ProjectController implements ControllerErrorHandler {
@@ -474,7 +472,7 @@ class ProjectController implements ControllerErrorHandler {
 
     @Secured(['permitAll()'])
     def listPublicWidget() {
-        def publicProjects = Project.where { preferences.hidden == false }.list(sort: 'dateCreated', order: 'desc', max: 9)
+        def publicProjects = Project.where { preferences.hidden == false }.list(sort: 'dateCreated', order: 'desc', max: 9) // TODO better sort
         request.marshaller = [
                 'project': [
                         'include': ['currentOrNextRelease'],
