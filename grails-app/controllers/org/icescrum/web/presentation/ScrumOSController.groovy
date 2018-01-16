@@ -105,8 +105,8 @@ class ScrumOSController implements ControllerErrorHandler {
                         menuEntry.shortcut = 'ctrl+' + (index + 1)
                     }
                 }
-                if (windowDefinition.workspace == 'project') {
-                    projectMenus << [id: windowDefinitionId, title: windowDefinition.id == 'project' ? message(code: 'is.ui.project') : message(code: menu.title)]
+                if (windowDefinition.workspace == 'project' && windowDefinition.id != 'project') {
+                    projectMenus << [id: windowDefinitionId, title: message(code: menu.title)]
                 }
             }
         }
