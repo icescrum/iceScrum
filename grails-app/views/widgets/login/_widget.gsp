@@ -2,7 +2,7 @@
 <is:widget widgetDefinition="${widgetDefinition}">
     <form novalidate role="form" ng-submit="login(credentials)" ng-controller="loginCtrl">
         <div class="form-group">
-            <label for="credentials.j_username">${message(code: 'is.dialog.login.username.or.email')}</label>
+            <label for="credentials.j_username">${message(code: 'is.dialog.login.username.or.email')} <small class="pull-right text-muted" ng-click="showRegisterModal()">${message(code: 'is.button.register')}</small></label>
             <input required
                    ng-model="credentials.j_username"
                    type="text"
@@ -12,7 +12,7 @@
                    value="">
         </div>
         <div class="form-group">
-            <label for="credentials.j_password">${message(code: 'is.user.password')}</label>
+            <label for="credentials.j_password">${message(code: 'is.user.password')} <small class="pull-right text-muted" ng-click="showRetrieveModal()">${message(code: 'is.dialog.retrieve')}</small></label>
             <input required
                    ng-model="credentials.j_password"
                    type="password"
@@ -29,17 +29,7 @@
                 ${message(code: 'is.dialog.login.rememberme')}
             </label>
         </div>
-        <div class="btn-toolbar pull-right" style="margin-top: -5px;">
-            <button class="btn btn-default"
-                    type="button"
-                    ng-click="showRetrieveModal()">
-                <i class="fa fa-question"></i> ${message(code: 'is.dialog.retrieve')}
-            </button>
-            <button class="btn btn-default"
-                    type="button"
-                    ng-click="showRegisterModal()">
-                <i class="fa fa-user-plus"></i> ${message(code: 'is.button.register')}
-            </button>
+        <div class="footer-btn-toolbar btn-toolbar">
             <button class="btn btn-primary pull-right"
                     ng-disabled="application.submitting"
                     type="submit">

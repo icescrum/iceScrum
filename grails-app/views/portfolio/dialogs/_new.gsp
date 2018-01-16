@@ -30,7 +30,7 @@
         <wizard class="row wizard-row" name="portfolio">
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio")}" icon="fa fa-pencil">
                 <ng-include src="'form.general.portfolio.html'"></ng-include>
-                <div class="wizard-next">
+                <div class="footer-btn-toolbar">
                     <div class="pull-right btn-toolbar">
                         <button type="button"
                                 role="button"
@@ -44,7 +44,7 @@
             </wz-step>
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio.projects")}" icon="fa fa-folder">
                 <ng-include src="'form.projects.portfolio.html'"></ng-include>
-                <div class="wizard-next">
+                <div class="footer-btn-toolbar">
                     <button type="button"
                             role="button"
                             class="btn btn-default pull-left"
@@ -64,7 +64,7 @@
             </wz-step>
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio.members")}" icon="fa fa-users">
                 <ng-include src="'form.members.portfolio.html'"></ng-include>
-                <div class="wizard-next">
+                <div class="footer-btn-toolbar">
                     <button type="button"
                             role="button"
                             class="btn btn-default"
