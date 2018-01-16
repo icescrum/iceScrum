@@ -40,7 +40,6 @@ import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
-import org.icescrum.core.utils.JSONIceScrumDomainClassMarshaller
 import org.icescrum.core.utils.ServicesUtils
 
 @Secured('stakeHolder() or inProject()')
@@ -614,10 +613,8 @@ class ProjectController implements ControllerErrorHandler {
 
     private void lightProjectMarshaller(def options) {
         request.marshaller = [
-                'project'  : ['exclude': [JSONIceScrumDomainClassMarshaller.EXCLUDES_ALL_JSON_PROPERTIES],
-                              'include': [JSONIceScrumDomainClassMarshaller.OVERRIDE_JSON_PROPERTIES, 'pkey', 'name', 'portfolio']],
-                'portfolio': ['exclude': [JSONIceScrumDomainClassMarshaller.EXCLUDES_ALL_JSON_PROPERTIES],
-                              'include': [JSONIceScrumDomainClassMarshaller.OVERRIDE_JSON_PROPERTIES]]
+                project  : [excludeAll: true, overrideInclude: true, include: ['pkey', 'name', 'portfolio']],
+                portfolio: [excludeAll: true, overrideInclude: true,]
         ]
         if (options != true && options != "true") {
             request.marshaller.project.include.addAll(options.tokenize(','))
