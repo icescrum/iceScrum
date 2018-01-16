@@ -40,12 +40,14 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
 
 controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
     $controller('abstractProjectListCtrl', {$scope: $scope});
-    ProjectService.listPublicWidget().then(function(projects) {
-        $scope.projects = projects;
-    });
+    // Functions
     $scope.retrieveBacklog = function(project) {
         return {id: project.backlogs_ids[0].id, project: project, chartType: 'state'};
     };
+    // Init
+    ProjectService.listPublicWidget().then(function(projects) {
+        $scope.projects = projects;
+    });
     $scope.backlogChartOptions = {
         chart: {
             height: function($element) {
