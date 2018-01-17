@@ -50,13 +50,13 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
     });
     $scope.backlogChartOptions = {
         chart: {
-            height: function($element) {
-                return $element ? $element.find('.panel-body')[0].getBoundingClientRect().height : 0;
-            },
-            margin: {top: 0, right: 0, bottom: 0, left: 0},
+            width: 100,
+            height: 100,
+            margin: {top: -10, right: 0, bottom: 0, left: 0},
             showXAxis: false,
             showYAxis: false,
-            showLegend: false
+            showLegend: false,
+            showLabels: false
         },
         title: {
             enable: false
