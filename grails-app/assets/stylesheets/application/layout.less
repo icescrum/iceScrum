@@ -1169,14 +1169,7 @@ table {
     .make-flex-container(row);
     > .panel {
       .make-flex-panel();
-      > .panel-body {
-        padding-top: 0;
-        padding-bottom: 0;
-        padding: 4px;
-      }
-      > .panel-heading > .panel-title .title {
-        line-height: 30px;
-      }
+      .panel-backlog();
       border: 0 #EEE;
       border-right: 1px solid #EEE;
       &:last-of-type {
@@ -1186,7 +1179,10 @@ table {
   }
 }
 
-.view-feature {
+.panel-backlog {
+  > .panel-body {
+    padding: 0 4px !important;
+  }
   > .panel-heading > .panel-title .title {
     line-height: 30px;
   }
