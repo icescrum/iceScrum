@@ -32,7 +32,7 @@
                        uib-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
                        style="margin-right:3px;" href="{{ togglePinElementUrl(elem) }}"
                        ng-class="{'fa-pinned':isPinned(elem), 'fa-pin':!isPinned(elem)}"></i>
-                    <span as-sortable-item-handle>{{ elem | i18nName }} ({{ elem.count }})</span>
+                    <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
                 </a>
             </li>
             <li id="elementslist-more" class="nav-more" uib-dropdown is-open="more.isopen || menuDragging" ng-show="menuDragging || hiddenElementsList.length > 0" ng-class="{'active': isShownInMore()}">
@@ -49,7 +49,7 @@
                                uib-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
                                style="margin-right:3px;" href="{{ togglePinElementUrl(elem) }}"
                                ng-class="{'fa-pinned':isPinned(elem), 'fa-pin':!isPinned(elem)}"></i>
-                            <span as-sortable-item-handle title="{{ elem | i18nName }} ({{ elem.count }})">{{ elem | i18nName }} ({{ elem.count }})</span>
+                            <span as-sortable-item-handle title="{{ (elem | i18nName) + ' (' + elem.count + ')' }}">{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
                         </a>
                     </li>
                 </ul>
@@ -91,7 +91,12 @@
         <div class="panel panel-light" ng-repeat="backlogContainer in backlogContainers">
             <div class="panel-heading">
                 <h3 class="panel-title small-title clearfix">
-                    <span class="title pull-left"><a href="{{ openBacklogUrl(backlogContainer.backlog) }}" class="link"><i class="fa fa-inbox"></i> {{ backlogContainer.backlog | i18nName }}</a></span>
+                    <span class="title pull-left">
+                        <a href="{{ openBacklogUrl(backlogContainer.backlog) }}"
+                           class="link">
+                            <i class="fa fa-inbox"></i> {{ (backlogContainer.backlog | i18nName) + ' (' + backlogContainer.backlog.count + ')' }}
+                        </a>
+                    </span>
                     <div class="btn-toolbar pull-left">
                         <entry:point id="backlog-list-toolbar-left"/>
                         <div class="btn-group">

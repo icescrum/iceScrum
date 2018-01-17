@@ -70,6 +70,8 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         var tasks;
         tasks = $scope.sprint.tasks;
         $scope.taskCountByState = _.countBy(tasks, 'state');
+        $scope.taskCountByType = _.countBy(tasks, 'type');
+        $scope.countByFilter();
         switch ($scope.sprint.state) {
             case SprintStatesByName.TODO:
                 $scope.sprintTaskStates = [TaskStatesByName.TODO];
@@ -197,6 +199,16 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             }, 200);
         }
     };
+    $scope.initSprintFilter = function() {
+        var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
+        var filter = _.find($scope.sprintFilters, {id: sprintFilter});
+        $scope.currentSprintFilter = filter ? filter : _.find($scope.sprintFilters, {id: 'allTasks'});
+    };
+    $scope.countByFilter = function() {
+        _.each($scope.sprintFilters, function(sprintFilter) {
+            sprintFilter.count = _.filter($scope.sprint.tasks, sprintFilter.filter).length;
+        });
+    };
     // Init
     $scope.project = project;
     $scope.taskSortableOptions = {
@@ -260,19 +272,13 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             }
         }
     };
-    //give capabilities to plugin to register theirs filters;
-    $scope.sprintFilters = $scope.sprintFilters ? $scope.sprintFilters : [];
-    $scope.sprintFilters = $scope.sprintFilters.concat([
+    $scope.sprintFilters = [
         {id: 'allTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.allTasks'), filter: {}},
         {id: 'myTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.myTasks'), filter: {responsible: {id: Session.user.id}}},
         {id: 'freeTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.freeTasks'), filter: {responsible: null}},
         {id: 'blockedTasks', name: $scope.message('is.ui.sprintPlan.toolbar.filter.blockedTasks'), filter: {blocked: true}}
-    ]);
-    var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
-    $scope.currentSprintFilter = _.find($scope.sprintFilters, {id: sprintFilter});
-    //if saved filter is not available anymore
-    $scope.currentSprintFilter = $scope.currentSprintFilter ? $scope.currentSprintFilter : _.find($scope.sprintFilters, {id: 'allTasks'});
-
+    ];
+    $scope.initSprintFilter();
     $scope.sortableId = 'taskBoard';
     $scope.sprint = sprint;
     $scope.tasksByTypeByState = {};

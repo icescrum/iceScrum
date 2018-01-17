@@ -81,12 +81,18 @@
                                     uib-dropdown-toggle
                                     uib-tooltip="${message(code: 'todo.is.ui.filters')}"
                                     type="button">
-                                <span>{{ currentSprintFilter.name }}</span>
+                                <span>{{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}</span>
                                 <i class="fa fa-caret-down"></i>
                             </button>
                             <ul uib-dropdown-menu role="menu">
-                                <li role="menuitem" ng-repeat="sprintFilter in sprintFilters" ng-class="{'dropdown-header':sprintFilter.id == 'header', 'divider':sprintFilter.id == 'divider'}">
-                                    <a ng-if="sprintFilter.id != 'header' && sprintFilter.id != 'divider'" ng-click="changeSprintFilter(sprintFilter)" href>{{ ::sprintFilter.name }}</a>
+                                <li role="menuitem"
+                                    ng-repeat="sprintFilter in sprintFilters"
+                                    ng-class="{'dropdown-header':sprintFilter.id == 'header', 'divider':sprintFilter.id == 'divider'}">
+                                    <a ng-if="sprintFilter.id != 'header' && sprintFilter.id != 'divider'"
+                                       ng-click="changeSprintFilter(sprintFilter)"
+                                       href>
+                                        {{ sprintFilter.name + ' (' + sprintFilter.count + ')'}}
+                                    </a>
                                     <span ng-if="sprintFilter.id == 'header'">{{ ::sprintFilter.name }}</span>
                                 </li>
                             </ul>
@@ -129,7 +135,7 @@
                        ng-if="authorizedTask('showUrgent')">
                     <tr class="sticky-header">
                         <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
-                            <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')}</h3>
+                            <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')} ({{ taskCountByType[taskTypesByName.URGENT] }})</h3>
                         </td>
                     </tr>
                     <tr>
@@ -179,7 +185,7 @@
                        ng-if="authorizedTask('showRecurrent')">
                     <tr class="sticky-header">
                         <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
-                            <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')}</h3>
+                            <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] }})</h3>
                         </td>
                     </tr>
                     <tr>
