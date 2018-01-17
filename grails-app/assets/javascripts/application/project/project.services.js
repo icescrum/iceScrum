@@ -41,7 +41,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(project) {
-        CacheService.addOrUpdate('project', project);
+        return CacheService.addOrUpdate('project', project);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(project) {
         if (Session.workspaceType == 'project') {
@@ -59,7 +59,7 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
                 }
             }
         }
-        CacheService.addOrUpdate('project', project);
+        return CacheService.addOrUpdate('project', project);
     };
     crudMethods[IceScrumEventType.DELETE] = function(project) {
         if (Session.workspaceType == 'project') {
@@ -106,16 +106,17 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         return Project.delete({id: project.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
     this.mergeProjects = function(projects) {
-        _.each(projects, crudMethods[IceScrumEventType.CREATE]);
+        return _.map(projects, crudMethods[IceScrumEventType.CREATE]);
     };
     this.list = function(params) {
         if (!params) {
             params = {};
         }
         params.paginate = true;
-        return Project.get(params, function(data) {
-            self.mergeProjects(data.projects);
-        }).$promise;
+        return Project.get(params).$promise.then(function(data) {
+            data.projects = self.mergeProjects(data.projects);
+            return data;
+        });
     };
     this.listPublic = function(params) {
         if (!params) {
@@ -123,12 +124,13 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         }
         params.action = 'listPublic';
         params.paginate = true;
-        return Project.get(params, function(data) {
-            self.mergeProjects(data.projects)
-        }).$promise;
+        return Project.get(params).$promise.then(function(data) {
+            data.projects = self.mergeProjects(data.projects);
+            return data;
+        });
     };
     this.listPublicWidget = function() {
-        return Project.query({action: 'listPublicWidget'}, self.mergeProjects).$promise;
+        return Project.query({action: 'listPublicWidget'}).$promise;
     };
     this.listByUser = function(params) {
         if (!params) {
@@ -137,11 +139,12 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         params.action = 'user';
         params.paginate = true;
         params.paginate = true;
-        return Project.get(params, function(data) {
+        return Project.get(params).$promise.then(function(data) {
             if (!params.light) {
-                self.mergeProjects(data.projects);
+                data.projects = self.mergeProjects(data.projects);
             }
-        }).$promise;
+            return data;
+        });
     };
     this.listByUserAndRole = function(userId, role, params) {
         if (!params) {
@@ -149,16 +152,17 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         }
         params.userId = userId;
         params.role = role;
-        return Project.listByUserAndRole(params, function(data) {
+        return Project.listByUserAndRole(params).$promise.then(function(data) {
             if (!params.light) {
-                self.mergeProjects(data.projects);
+                data.projects = self.mergeProjects(data.projects);
             }
-        }).$promise;
+            return data;
+        });
     };
     this.listByPortfolio = function(portfolioId) {
-        return Project.listByPortfolio({portfolioId: portfolioId}, function(projects) {
-            self.mergeProjects(projects);
-        }).$promise
+        return Project.listByPortfolio({portfolioId: portfolioId}).$promise.then(function(projects) {
+            return self.mergeProjects(projects);
+        });
     };
     this.getActivities = function(project) {
         return FormService.httpGet('project/' + project.id + '/activities', null, true);

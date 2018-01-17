@@ -25,19 +25,15 @@ services.factory('Backlog', ['Resource', function($resource) {
 }]);
 
 services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryService', 'BacklogCodes', 'FormService', function(Backlog, $q, CacheService, StoryService, BacklogCodes, FormService) {
+    var self = this;
     this.get = function(id, project) {
         return Backlog.get({id: id, projectId: project.id}).$promise;
     };
     this.list = function(project) {
         var cachedBacklogs = project.backlogs;
-        return _.isEmpty(cachedBacklogs) ?
-               Backlog.query({projectId: project.id}, function(backlogs) {
-                   _.each(backlogs, function(backlog) {
-                       CacheService.addOrUpdate('backlog', backlog);
-                   });
-               }).$promise.then(function() {
-                       return cachedBacklogs;
-                   }) : $q.when(cachedBacklogs);
+        return _.isEmpty(cachedBacklogs) ? Backlog.query({projectId: project.id}, self.mergeBacklogs).$promise.then(function() {
+            return cachedBacklogs;
+        }) : $q.when(cachedBacklogs);
     };
     this.isAll = function(backlog) {
         return backlog.code == BacklogCodes.ALL;
@@ -54,5 +50,10 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryServi
     };
     this.openChart = function(backlog, project, chart) {
         return FormService.httpGet('p/' + project.id + '/backlog/' + backlog.id + '/' + 'chartByProperty', {params: {property: chart}}, true);
+    };
+    this.mergeBacklogs = function(backlogs) {
+        _.each(backlogs, function(backlog) {
+            CacheService.addOrUpdate('backlog', backlog);
+        });
     };
 }]);

@@ -178,22 +178,22 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
             params = {};
         }
         params.paginate = true;
-        return FormService.httpGet('scrumOS/workspacesListByUser', {params: params}, true).then(function(result) {
+        return FormService.httpGet('scrumOS/workspacesListByUser', {params: params}, true).then(function(data) {
             if (!params.light) {
                 var Project = $injector.get('Project');
                 var ProjectService = $injector.get('ProjectService');
-                _.each(result.projects, function(project) {
+                _.each(data.projects, function(project) {
                     _.merge(project, new Project());
                 });
-                ProjectService.mergeProjects(result.projects);
+                data.projects = ProjectService.mergeProjects(data.projects);
                 var Portfolio = $injector.get('Portfolio');
                 var PortfolioService = $injector.get('PortfolioService');
-                _.each(result.portfolios, function(portfolio) {
+                _.each(data.portfolios, function(portfolio) {
                     _.merge(portfolio, new Portfolio());
                 });
-                PortfolioService.mergePortfolios(result.portfolios);
+                PortfolioService.mergePortfolios(data.portfolios);
             }
-            return result;
+            return data;
         });
     };
 }]);
@@ -402,6 +402,7 @@ services.service('CacheService', ['$injector', function($injector) {
         } else if (!oldItem) {
             self.getCache(cacheName).push(newItem);
         }
+        return newItem;
     };
     this.get = function(cacheName, id) {
         return _.find(self.getCache(cacheName), {id: angular.isNumber(id) ? parseInt(id) : id});
