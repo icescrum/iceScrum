@@ -187,7 +187,7 @@
         </div>
     </div>
     <div class="panel-footer" ng-if="isModal || formHolder.editing">
-        <div class="btn-toolbar" ng-class="[{ 'pull-right' : isModal }]">
+        <div class="btn-toolbar" ng-class="[{ 'text-right' : isModal }]">
             <button class="btn btn-primary"
                     ng-if="formHolder.editing && (isLatest() || application.submitting)"
                     ng-disabled="!isDirty() || formHolder.sprintForm.$invalid || application.submitting"
