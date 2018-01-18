@@ -145,7 +145,11 @@ class UserController implements ControllerErrorHandler {
             if (request.admin && params.user.username != user.username) {
                 user.username = params.user.username
             }
-            bindData(user, params.user, [include: ['firstName', 'lastName', 'email', 'notes']])
+            def propertiesToBind = ['firstName', 'lastName', 'email', 'notes']
+            if (request.admin) {
+                propertiesToBind << 'accountExternal'
+            }
+            bindData(user, params.user, [include: propertiesToBind])
             if (params.user.preferences) {
                 bindData(user.preferences, params.user.preferences, [include: ['language', 'filterTask', 'activity', 'displayWhatsNew', 'displayReleaseNotes']])
             }
