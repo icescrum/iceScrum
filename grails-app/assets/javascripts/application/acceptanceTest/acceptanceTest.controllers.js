@@ -29,6 +29,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             state: AcceptanceTestStatesByName.TOCHECK
         };
         $scope.formHolder.editing = false;
+        $scope.showAcceptanceTestDescriptionTextarea = false;
         $scope.resetFormValidation($scope.formHolder.acceptanceTestForm);
     };
     $scope.formEditable = function() {
