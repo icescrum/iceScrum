@@ -5,11 +5,13 @@
         </div>
         <div ng-repeat="project in projects" class="row projects-list">
             <h4 class="col-md-12 clearfix">
-                <div class="pull-left">{{:: project.name }} <small>owned by {{ project.owner | userFullName }}</small></div>
-                <div class="pull-right"><small><time timeago datetime="{{ project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small></div>
+                <div class="pull-left"><a href="" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
+                <div class="pull-right">
+                    <small><time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small>
+                </div>
             </h4>
             <div class="col-lg-10 col-xs-9">
-                <div class="description" ng-bind-html="project.description_html | stripTags: '<br><p>'"></div>
+                <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project"></div>
             </div>
             <div class="col-lg-2 col-xs-3">
                 <div class="backlogCharts chart pull-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', retrieveBacklog(project), backlogChartOptions)">
@@ -17,13 +19,30 @@
                 </div>
             </div>
             <div class="col-lg-10 col-xs-9">
-                <a class="btn btn-sm btn-default pull-left" style="margin-right:10px;"><g:message code="todo.is.ui.details"/></a>
                 <ul class="list-inline text-muted pull-left">
-                    <li><i class="fa fa-puzzle-piece" style="color:rgb(45, 140, 204)"></i> {{:: project.features_count }}</li>
-                    <li><i class="fa fa-sticky-note" style="color: rgb(249, 241, 87);text-shadow:1px 1px 0px #CCC;"></i> {{:: project.stories_count }}</li>
-                    <li><i class="fa fa-clock-o"></i> {{:: project.activities_count }}</li>
-                    <li><i class="fa fa-calendar"></i> {{:: project.currentOrNextRelease.name }}</li>
-                    <li><i class="fa fa-tasks"></i> {{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</li>
+                    <li class="activities">
+                        <a href="p/{{:: project.pkey }}/#/project" class="link"><i class="fa fa-clock-o"></i> {{:: project.activities_count }}</a>
+                    </li>
+                    <li class="features">
+                        <a href="p/{{:: project.pkey }}/#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>
+                    </li>
+                    <li class="stories">
+                        <a href="p/{{:: project.pkey }}/#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
+                    </li>
+                    <li class="release" ng-if=":: project.currentOrNextRelease">
+                        <a href="p/{{:: project.pkey }}/#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
+                                class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
+                    </li>
+                    <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
+                        <a href="p/{{:: project.pkey }}/#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><i
+                                class="fa fa-tasks {{:: project.currentOrNextRelease.currentOrNextSprint.state | releaseStateColor }}"></i> <span class="text-ellipsis">{{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</span></a>
+                    </li>
+                    <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint.state > 1">
+                        <div class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
+                            <div class="progress-bar {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background' }}" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                                 style="width: 60%;"></div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div class="col-lg-2 col-xs-3">

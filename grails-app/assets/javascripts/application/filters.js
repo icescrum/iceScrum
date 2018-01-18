@@ -408,18 +408,29 @@ filters
             return $rootScope.message('is.sprint') + ' ' + sprint.index;
         }
     }
-}]).filter('stripTags', function() {
-    return function strip_tags(input, disallowed) {
+}]).filter('stripTags', ['$filter', function($filter) {
+    return function strip_tags(input, disallowed, limit, more) {
         disallowed = (((disallowed || '') + '')
                           .toLowerCase()
                           .match(/<[a-z][a-z0-9]*>/g) || [])
             .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
-        return input.replace(tags, function($0, $1) {
+        var value = input.replace(tags, function($0, $1) {
             return disallowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? ' ' : $0;
         });
+        value = value + value;
+        if (limit && value.length > limit) {
+            return $filter('limitTo')(value, limit - (more ? more.length : 0)) + more;
+        } else {
+            return value;
+        }
     }
-}).filter('allMembers', [function() {
+}]).filter('truncateAndSeeMore', ['$rootScope', '$filter', function($rootScope, $filter) {
+    return function strip_tags(text, key) {
+        var permalink = $rootScope.serverUrl + '/p/' + key;
+        return $filter('stripTags')(text, '<br><p>', '420', '&hellip;') + ' <a href="' + permalink + '">More info</a>';
+    }
+}]).filter('allMembers', [function() {
     return function(project) {
         return _.unionBy(project.team.members, project.productOwners, 'id');
     }
@@ -458,6 +469,38 @@ filters
                 break;
         }
         return iconByState;
+    }
+}]).filter('sprintStateColor', ['SprintStatesByName', function(SprintStatesByName) {
+    return function(state, prefix) {
+        var colorState = (prefix ? prefix + '-' : '') + 'sprint-';
+        switch (state) {
+            case SprintStatesByName.TODO:
+                colorState += 'todo';
+                break;
+            case SprintStatesByName.IN_PROGRESS:
+                colorState += 'inProgress';
+                break;
+            case SprintStatesByName.DONE:
+                colorState += 'done';
+                break;
+        }
+        return colorState;
+    }
+}]).filter('releaseStateColor', ['ReleaseStatesByName', function(ReleaseStatesByName) {
+    return function(state) {
+        var colorState = 'release-';
+        switch (state) {
+            case ReleaseStatesByName.TODO:
+                colorState += 'todo';
+                break;
+            case ReleaseStatesByName.IN_PROGRESS:
+                colorState += 'inProgress';
+                break;
+            case ReleaseStatesByName.DONE:
+                colorState += 'done';
+                break;
+        }
+        return colorState;
     }
 }]).filter('i18nName', ['$rootScope', function($rootScope) {
     return function(object) {

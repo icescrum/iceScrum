@@ -29,7 +29,7 @@
              uib-tooltip-template="'sprint.tooltip.html'"
              tooltip-enable="sprint.id"
              tooltip-placement="bottom"
-             type="{{ sprint.id ? { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] : 'invisible' }}"
+             type="{{ sprint.id ? { 1: 'todo', 2: 'inProgress', 3: 'done' }[sprint.state] : 'invisible' }}"
              value="sprint.duration">
         {{ sprint.id ? sprint.index : '' }}
     </uib-bar>
@@ -47,7 +47,7 @@
                  uib-tooltip-template="'sprint.tooltip.html'"
                  tooltip-enable="sprint.id"
                  tooltip-placement="bottom"
-                 type="{{ sprint.id ? { 1: 'default', 2: 'progress', 3: 'done' }[sprint.state] : 'invisible' }}"
+                 type="{{ sprint.id ? { 1: 'todo', 2: 'inProgress', 3: 'done' }[sprint.state] : 'invisible' }}"
                  value="sprint.duration">
             {{ sprint.id ? sprint.index : '' }}
         </uib-bar>

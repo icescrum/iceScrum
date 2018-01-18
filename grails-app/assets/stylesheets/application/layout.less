@@ -1498,38 +1498,38 @@ table {
       }
     }
     .selected {
-      &.release-default {
+      &.release-todo {
         fill: @state-suggested;
       }
-      &.release-progress {
+      &.release-inProgress {
         fill: @state-inProgress;
       }
       &.release-done {
         fill: @state-done;
       }
-      &.sprint-default {
+      &.sprint-todo {
         fill: lighten(@state-suggested, 5%);
       }
-      &.sprint-progress {
+      &.sprint-inProgress {
         fill: lighten(@state-inProgress, 5%);
       }
       &.sprint-done {
         fill: lighten(@state-done, 5%);
       }
     }
-    .release-default {
+    .release-todo {
       fill: @state-suggested-light;
     }
-    .release-progress {
+    .release-inProgress {
       fill: @state-inProgress-light;
     }
     .release-done {
       fill: @state-done-light;
     }
-    .sprint-default {
+    .sprint-todo {
       fill: darken(@state-suggested-light, 5%);
     }
-    .sprint-progress {
+    .sprint-inProgress {
       fill: darken(@state-inProgress-light, 5%);
     }
     .sprint-done {
@@ -1990,5 +1990,44 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
 .projects-list {
   .list-inline {
     margin-top: 5px;
+    font-size: 13px;
+  }
+  .release-todo, .background-sprint-todo {
+    color: @state-suggested;
+  }
+  .release-inProgress {
+    color: @state-inProgress;
+  }
+  .background-sprint-inProgress {
+    background: @state-inProgress;
+  }
+  .background-light-sprint-inProgress {
+    background: lighten(@state-inProgress, 35%);
+  }
+  li a.link:not(:hover), li a.link :not(.fa) {
+    color: @text-muted;
+  }
+  li.stories i.fa {
+    color: rgb(249, 241, 87);
+    text-shadow: 1px 1px 0 #CCC;
+  }
+  li.features i.fa {
+    color: rgb(45, 140, 204);
+  }
+  li > a {
+    vertical-align: middle;
+  }
+  li span.text-ellipsis {
+    max-width: 150px;
+    display: inline-block;
+  }
+  li.sprint .progress {
+    margin-bottom: 0;
+    width: 100px;
+    height: 15px;
+    vertical-align: middle;
+    display: inline-block;
+    border: none;
+    padding: 0;
   }
 }

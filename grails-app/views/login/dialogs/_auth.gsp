@@ -28,8 +28,8 @@
           form="login(credentials)">
     <entry:point id="auth-dialog-before-form"/>
     <div class="form-group">
-        <label for="credentials.j_username">${message(code: 'is.dialog.login.username.or.email')}</label>
-        <g:if test="${enableRegistration}"><div class="input-group"></g:if>
+        <label for="credentials.j_username">${message(code: 'is.dialog.login.username.or.email')} <g:if test="${enableRegistration}"><small class="pull-right text-muted"
+                                                                                                                                            ng-click="showRegisterModal()">${message(code: 'is.button.register')}</small></g:if></label>
         <input required
                ng-model="credentials.j_username"
                type="text"
@@ -37,40 +37,15 @@
                class="form-control"
                autofocus
                value="${params.username ?: ''}">
-        <g:if test="${enableRegistration}">
-            <span class="input-group-btn">
-                <a tabindex="-1"
-                   class="btn btn-default"
-                   href
-                   ng-click="showRegisterModal()"
-                   uib-tooltip="${message(code: 'is.button.register')}">
-                    <i class="fa fa-user-plus"></i>
-                </a>
-            </span>
-        </g:if>
-        <g:if test="${enableRegistration}"></div></g:if>
     </div>
     <div class="form-group">
-        <label for="credentials.j_password">${message(code: 'is.user.password')}</label>
-        <g:if test="${activeLostPassword}"><div class="input-group"></g:if>
+        <label for="credentials.j_password">${message(code: 'is.user.password')} <g:if test="${activeLostPassword}"><small class="pull-right text-muted" ng-click="showRetrieveModal()">${message(code: 'is.dialog.retrieve')}</small></g:if></label>
         <input required
                ng-model="credentials.j_password"
                type="password"
                id="credentials.j_password"
                class="form-control"
                value="">
-        <g:if test="${activeLostPassword}">
-            <span class="input-group-btn">
-                <a tabindex="-1"
-                   class="btn btn-default"
-                   href
-                   ng-click="showRetrieveModal()"
-                   uib-tooltip="${message(code: 'is.dialog.retrieve')}">
-                    <i class="fa fa-question"></i>
-                </a>
-            </span>
-        </g:if>
-        <g:if test="${activeLostPassword}"></div></g:if>
     </div>
     <div class="checkbox">
         <label for="credentials.remember_me">
