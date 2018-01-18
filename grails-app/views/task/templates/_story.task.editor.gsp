@@ -44,14 +44,17 @@
             </div>
         </div>
         <div class="form-group col-sm-4 hidden-not-expanded">
-            <input name="estimation"
-                   ng-model="task.estimation"
-                   type="number"
-                   min="0"
-                   step="any"
-                   ng-blur="formHolder.formExpanded = task.name || task.description || task.estimation;"
-                   placeholder="${message(code: 'is.task.estimation')}"
-                   class="form-control text-right">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-hourglass-start small-icon"></i></span>
+                <input name="estimation"
+                       ng-model="task.estimation"
+                       type="number"
+                       min="0"
+                       step="any"
+                       ng-blur="formHolder.formExpanded = task.name || task.description || task.estimation;"
+                       placeholder="${message(code: 'is.task.estimation')}"
+                       class="form-control text-right">
+            </div>
         </div>
     </div>
     <div class="form-group hidden-not-expanded">
