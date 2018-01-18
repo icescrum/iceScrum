@@ -1,5 +1,7 @@
 <script type="text/ng-template" id="story.split.html">
 <is:modal form="submit(stories)"
+          name="formHolder.storySplitForm"
+          validate="true"
           submitButton="${message(code: 'is.ui.backlog.menu.split')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'is.dialog.split.title')}">
@@ -19,6 +21,7 @@
                     <div class="form-group col-sm-8">
                         <label>${message(code: 'is.story.name')}</label>
                         <input required
+                               name="name{{ $index }}"
                                ng-maxlength="100"
                                type="text"
                                ng-model="stories[$index].name"
@@ -28,10 +31,10 @@
                         <label>${message(code: 'is.story.effort')}</label>
                         <ui-select ng-if="!isEffortCustom()"
                                    class="form-control"
-                                   name="effort"
+                                   name="effort{{ $index }}"
                                    search-enabled="true"
                                    ng-model="stories[$index].effort">
-                            <ui-select-match placeholder="?">{{ $select.selected | storyEffort }}</ui-select-match>
+                            <ui-select-match placeholder="?">{{ $select.selected }}</ui-select-match>
                             <ui-select-choices repeat="i in effortSuite(isEffortNullable(stories[$index])) | filter: $select.search">
                                 <span ng-bind-html="'' + i | highlight: $select.search"></span>
                             </ui-select-choices>
@@ -39,14 +42,14 @@
                         <input type="number"
                                ng-if="isEffortCustom()"
                                class="form-control"
-                               name="effort"
+                               name="effort{{ $index }}"
                                min="0"
                                ng-model="stories[$index].effort"/>
                     </div>
                     <div class="form-group col-sm-2">
                         <label>${message(code: 'is.story.value')}</label>
                         <ui-select class="form-control"
-                                   name="value"
+                                   name="value{{ $index }}"
                                    search-enabled="true"
                                    ng-model="stories[$index].value">
                             <ui-select-match>{{ $select.selected }}</ui-select-match>
@@ -57,8 +60,8 @@
                     </div>
                     <div class="form-group col-sm-12">
                         <label>${message(code: 'is.backlogelement.description')}</label>
-                        <textarea required
-                                  at="atOptions"
+                        <textarea at="atOptions"
+                                  name="description{{ $index }}"
                                   ng-maxlength="3000"
                                   type="text"
                                   ng-model="stories[$index].description"

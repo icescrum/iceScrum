@@ -66,7 +66,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}]).directive('showValidation', ['$compile', '$rootScope', function($compile, $rootScope) {
+}]).directive('showValidation', ['$compile', '$interpolate', '$rootScope', function($compile, $interpolate, $rootScope) {
     return {
         restrict: "A",
         link: function(scope, element, attrs) {
@@ -84,7 +84,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     if (container.hasClass('input-group')) {
                         container = container.parent();
                     }
-                    var inputModel = form[input.attr('name')];
+                    var inputName = $interpolate(input.attr('name'))(input.scope());
+                    var inputModel = form[inputName];
                     scope.$watch(function() {
                         return inputModel.$invalid && (inputModel.$dirty || inputModel.$touched);
                     }, function(newIsInvalid, oldIsInvalid) {

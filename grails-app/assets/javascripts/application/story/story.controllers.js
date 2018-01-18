@@ -377,6 +377,8 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
     $scope.showStorySplitModal = function(story) {
         var parentScope = $scope;
         $uibModal.open({
+            keyboard: false,
+            backdrop: 'static',
             templateUrl: 'story.split.html',
             controller: ['$scope', '$controller', '$q', function($scope, $controller, $q) {
                 $controller('storyAtWhoCtrl', {$scope: $scope});
@@ -398,7 +400,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                             $scope.stories.splice($scope.stories.length - 1, 1);
                         }
                     }
-                    //split effort from original story
+                    // Split effort from original story
                     if (originalEffort > 0) {
                         var effort = parseInt(originalEffort / $scope.splitCount);
                         effort = effort >= 1 ? effort : 1;
@@ -452,6 +454,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                 $scope.isEffortNullable = parentScope.isEffortNullable;
                 $scope.authorizedStory = parentScope.authorizedStory;
                 // Init
+                $scope.formHolder = {};
                 $scope.loadAtWhoActors();
                 $scope.stories = [];
                 $scope.stories.push(angular.copy(story));
