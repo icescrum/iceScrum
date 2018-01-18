@@ -75,6 +75,7 @@ class UserController implements ControllerErrorHandler {
                 userCount = term ? User.countUsersLike(false, term, [cache: true]) : User.count()
             }
         }
+        request.marshaller = [user: [include: ['preferences']]]
         def returnData = paginate ? [users: users, count: userCount] : users
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
@@ -82,6 +83,7 @@ class UserController implements ControllerErrorHandler {
     @Secured(["hasRole('ROLE_ADMIN')"])
     def show(long id) {
         User user = User.withUser(id)
+        request.marshaller = [user: [include: ['preferences']]]
         render(status: 200, contentType: 'application/json', text: user as JSON)
     }
 
