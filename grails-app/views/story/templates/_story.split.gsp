@@ -31,7 +31,7 @@
                                    name="effort"
                                    search-enabled="true"
                                    ng-model="stories[$index].effort">
-                            <ui-select-match>{{ $select.selected }}</ui-select-match>
+                            <ui-select-match placeholder="?">{{ $select.selected | storyEffort }}</ui-select-match>
                             <ui-select-choices repeat="i in effortSuite(isEffortNullable(stories[$index])) | filter: $select.search">
                                 <span ng-bind-html="'' + i | highlight: $select.search"></span>
                             </ui-select-choices>

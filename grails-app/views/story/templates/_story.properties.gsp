@@ -169,7 +169,7 @@
                                name="effort"
                                search-enabled="true"
                                ng-model="editableStory.effort">
-                        <ui-select-match>{{ $select.selected }}</ui-select-match>
+                        <ui-select-match placeholder="?">{{ $select.selected }}</ui-select-match>
                         <ui-select-choices repeat="i in effortSuite(isEffortNullable(story)) | filter: $select.search">
                             <span ng-bind-html="'' + i | highlight: $select.search"></span>
                         </ui-select-choices>
