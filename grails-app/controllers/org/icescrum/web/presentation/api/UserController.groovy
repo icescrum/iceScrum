@@ -333,6 +333,7 @@ class UserController implements ControllerErrorHandler {
             ]
         }
         user.preferences.lastReadActivities = new Date()
+        user.preferences.save(flush: true)
         render(status: 200, text: activitiesAndStories as JSON, contentType: 'application/json')
     }
 
