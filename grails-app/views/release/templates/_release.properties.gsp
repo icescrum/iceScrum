@@ -57,7 +57,7 @@
                            class="form-control"
                            required
                            ng-focus="editForm(true)"
-                           name="release.startDate"
+                           name="startDate"
                            ng-disabled="!authorizedRelease('updateDates', release)"
                            ng-model="editableRelease.startDate"
                            ng-model-options="{timezone: 'utc'}"
@@ -82,7 +82,7 @@
                            class="form-control"
                            required
                            ng-focus="editForm(true)"
-                           name="release.endDate"
+                           name="endDate"
                            ng-disabled="!authorizedRelease('updateDates', release)"
                            ng-model="editableRelease.endDate"
                            ng-model-options="{timezone: 'utc'}"
@@ -100,6 +100,10 @@
                     </span>
                 </div>
             </div>
+        </div>
+        <div ng-if="project.portfolio && (formHolder.releaseForm.startDate.$dirty || formHolder.releaseForm.endDate.$dirty)"
+             class="help-block bg-warning spaced-help-block">
+            ${message(code: 'is.ui.portfolio.warning.dates')}
         </div>
         <div class="chart"
              ng-controller="chartCtrl"

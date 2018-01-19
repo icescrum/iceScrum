@@ -34,7 +34,7 @@
                            class="form-control"
                            required
                            ng-focus="editForm(true)"
-                           name="sprint.startDate"
+                           name="startDate"
                            ng-disabled="!authorizedSprint('updateStartDate', sprint)"
                            ng-model="editableSprint.startDate"
                            ng-model-options="{timezone: 'utc'}"
@@ -59,7 +59,7 @@
                            class="form-control"
                            required
                            ng-focus="editForm(true)"
-                           name="sprint.endDate"
+                           name="endDate"
                            ng-disabled="!authorizedSprint('updateEndDate', sprint)"
                            ng-model="editableSprint.endDate"
                            ng-model-options="{timezone: 'utc'}"
@@ -77,6 +77,10 @@
                     </span>
                 </div>
             </div>
+        </div>
+        <div ng-if="project.portfolio && (formHolder.sprintForm.startDate.$dirty || formHolder.sprintForm.endDate.$dirty)"
+             class="help-block bg-warning spaced-help-block">
+            ${message(code: 'is.ui.portfolio.warning.dates')}
         </div>
         <div is-watch="sprint" is-watch-property="['doneDate','endDate']">
             <div class="chart"
