@@ -77,22 +77,8 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
         });
     };
     $scope['delete'] = function(story) {
-        //fake delete
-        StoryService.crudMethods[IceScrumEventType.DELETE](story);
-        var notif = $scope.notifySuccess('todo.is.ui.deleted', {
-            actions: [{
-                label: $scope.message('todo.is.ui.undo'),
-                fn: function() {
-                    notif.data.close = angular.noop;
-                    StoryService.crudMethods[IceScrumEventType.CREATE](story);
-                    $state.go('backlog.backlog.story.details', {id: story.id});
-                    $scope.notifySuccess('todo.is.ui.deleted.cancelled');
-                }
-            }],
-            close: function() {
-                StoryService.delete(story);
-            },
-            duration: 5000
+        StoryService.delete(story).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
     $scope.authorizedStory = function(action, story) {
@@ -188,7 +174,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
         {
             name: 'is.ui.backlog.menu.delete',
             visible: function(story) { return $scope.authorizedStory('delete', story) },
-            action: function(story) { $scope.delete(story); }
+            action: function(story) { $scope.confirmDelete({callback: $scope.delete, args: [story]}); }
         }
     ];
     $scope.tasksProgress = function(story) {
