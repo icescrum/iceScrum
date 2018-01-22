@@ -58,7 +58,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'Featu
         },
         {
             name: 'todo.is.ui.permalink.copy',
-            visible: function(feature) { return $scope.authorizedFeature('createStoryEpic'); },
+            visible: function(feature) { return true; },
             action: function(feature) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(feature.uid, 'feature'))); }
         },
         {
