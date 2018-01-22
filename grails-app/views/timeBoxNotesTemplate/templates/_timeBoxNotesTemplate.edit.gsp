@@ -34,15 +34,13 @@
                 <span class="item-name">{{ editableTimeBoxNotesTemplate.name }}</span>
             </div>
             <div class="right-title">
-                <span class="input-group-btn">
-                    <button class="btn btn-danger"
-                            tabindex="-1"
-                            type="button"
-                            name="delete"
-                            ng-click="confirmDelete({callback: delete, args: [editableTimeBoxNotesTemplate]})">
-                        ${message(code: 'default.button.delete.label')}
-                    </button>
-                </span>
+                <button class="btn btn-danger"
+                        tabindex="-1"
+                        type="button"
+                        name="delete"
+                        ng-click="confirmDelete({callback: delete, args: [editableTimeBoxNotesTemplate]})">
+                    ${message(code: 'default.button.delete.label')}
+                </button>
             </div>
         </h3>
     </div>
