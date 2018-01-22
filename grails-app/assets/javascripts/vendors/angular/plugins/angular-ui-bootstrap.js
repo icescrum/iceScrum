@@ -3381,7 +3381,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
         };
 
         rightalign = self.dropdownMenu.hasClass('dropdown-menu-right');
-        if (!rightalign) {
+        if (!rightalign || (pos.left + $element.width()) < self.dropdownMenu.width()) { // CUSTOM: display on right if no room on left
           css.left = pos.left + 'px';
           css.right = 'auto';
         } else {
@@ -3410,7 +3410,7 @@ angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
                 (pos.left - appendOffset.left + $element.prop('offsetWidth')) + 'px';
           }
         } else if (pos.top + self.dropdownMenu.height() + $element.height() + $element.prop('offsetHeight') > window.innerHeight) {
-          css.top = pos.top - self.dropdownMenu.height() - $element.height() - $element.prop('offsetHeight');
+          css.top = pos.top - self.dropdownMenu.height() - $element.height() - $element.prop('offsetHeight'); // CUSTOM: display on top if no room on bottom
         }
         self.dropdownMenu.css(css);
       };
