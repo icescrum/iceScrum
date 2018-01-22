@@ -53,8 +53,8 @@
         </div>
         <div class="form-group">
             <label for="description">
-                ${message(code: 'is.backlogelement.description')}
                 <span class="text-muted small pull-right">${message(code: 'is.actor.help.description')}</span>
+                <div>${message(code: 'is.backlogelement.description')}</div>
             </label>
             <textarea class="form-control"
                       ng-maxlength="3000"

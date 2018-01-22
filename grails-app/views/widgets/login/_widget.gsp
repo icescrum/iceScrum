@@ -3,8 +3,8 @@
     <form novalidate role="form" ng-submit="login(credentials)" ng-controller="loginCtrl">
         <div class="form-group">
             <label for="credentials.j_username">
-                ${message(code: 'is.dialog.login.username.or.email')}
                 <small class="pull-right text-muted" ng-click="showRegisterModal()">${message(code: 'is.button.register')}</small>
+                <div>${message(code: 'is.dialog.login.username.or.email')}</div>
             </label>
             <input required
                    ng-model="credentials.j_username"
@@ -17,13 +17,13 @@
         </div>
         <div class="form-group">
             <label for="credentials.j_password">
-                ${message(code: 'is.user.password')}
                 <small class="pull-right text-muted" ng-click="showRetrieveModal()">${message(code: 'is.dialog.retrieve')}</small>
+                <div>${message(code: 'is.user.password')}</div>
             </label>
             <input required
                    ng-model="credentials.j_password"
-                   name="is_password"
                    type="password"
+                   name="is_password"
                    id="credentials.j_password"
                    class="form-control"
                    value="">

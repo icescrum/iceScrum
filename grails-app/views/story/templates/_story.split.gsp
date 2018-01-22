@@ -59,7 +59,10 @@
                         </ui-select>
                     </div>
                     <div class="form-group col-sm-12">
-                        <label>${message(code: 'is.backlogelement.description')}</label>
+                        <label for="description">
+                            <span class="text-muted small pull-right">${message(code: 'is.actor.help.description')}</span>
+                            <div>${message(code: 'is.backlogelement.description')}</div>
+                        </label>
                         <textarea at="atOptions"
                                   name="description{{ $index }}"
                                   ng-maxlength="3000"
