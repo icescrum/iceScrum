@@ -686,14 +686,27 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
         j_username: $scope.username ? $scope.username : '',
         j_password: ''
     };
+    $scope.showNotEnabledFeature = function() {
+        $scope.alert({
+            message: $scope.message('is.ui.admin.contact.enable')
+        });
+    };
     $rootScope.showRegisterModal = function() {
-        if ($scope.$close) {
-            $scope.$close(false); // Close auth modal if present
+        if (isSettings.registrationEnabled) {
+            if ($scope.$close) {
+                $scope.$close(false); // Close auth modal if present
+            }
+            $state.go('userregister');
+        } else {
+            $scope.showNotEnabledFeature();
         }
-        $state.go('userregister');
     };
     $rootScope.showRetrieveModal = function() {
-        $state.go('userretrieve');
+        if (isSettings.retrieveEnabled) {
+            $state.go('userretrieve');
+        } else {
+            $scope.showNotEnabledFeature();
+        }
     };
     $scope.login = function(credentials) {
         AuthService.login(credentials).then(function(data) {

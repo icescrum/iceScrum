@@ -649,37 +649,13 @@ var isApplication = angular.module('isApplication', [
             modal.result.then(callCloseCallback, callCloseCallback);
         };
         $rootScope.alert = function(options) {
-            var modal = $uibModal.open({
+            $uibModal.open({
                 templateUrl: 'message.modal.html',
                 size: options.size ? options.size : 'sm',
-                controller: ["$scope", "hotkeys", function($scope, hotkeys) {
+                controller: ['$scope', function($scope) {
                     $scope.message = options.message;
-                    $scope.submit = function() {
-                        if (options.callback) {
-                            if (options.args) {
-                                options.callback.apply(options.callback, options.args);
-                            } else {
-                                options.callback();
-                            }
-                        }
-                        $scope.$close(true);
-                    };
-                    // Required because there is not input so the form cannot be submitted by "return"
-                    hotkeys.bindTo($scope).add({
-                        combo: 'return',
-                        callback: function(event) {
-                            event.preventDefault(); // Prevents propagation of click to unwanted places
-                            $scope.submit();
-                        }
-                    });
                 }]
             });
-            var callCloseCallback = function(confirmed) {
-                if (!confirmed && options.closeCallback) {
-                    options.closeCallback();
-                }
-            };
-            modal.result.then(callCloseCallback, callCloseCallback);
         };
         $rootScope.confirmDelete = function(options) {
             $rootScope.confirm(_.assign({ // Don't use merge, we want to keep the original references and avoid object copy

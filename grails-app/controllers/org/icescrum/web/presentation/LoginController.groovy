@@ -63,11 +63,7 @@ class LoginController implements ControllerErrorHandler {
         if (locale) {
             RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
         }
-        render(status: 200, template: "dialogs/auth", model: [
-                postUrl            : ApplicationSupport.serverURL() + config.apf.filterProcessesUrl,
-                rememberMeParameter: config.rememberMe.parameter,
-                activeLostPassword : ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable),
-                enableRegistration : ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)])
+        render(status: 200, template: "dialogs/auth", model: [rememberMeParameter: config.rememberMe.parameter])
     }
 
     def authAjax() {

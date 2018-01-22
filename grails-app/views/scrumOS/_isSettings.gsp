@@ -35,6 +35,8 @@
         projectPrivateEnabled: ${grailsApplication.config.icescrum.project.private.enable},
         portfolioPrivateDefault: ${grailsApplication.config.icescrum.project.private.default},
         portfolioPrivateEnabled: ${grailsApplication.config.icescrum.project.private.enable},
+        registrationEnabled: ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)},
+        retrieveEnabled: ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)},
         messages: ${i18nMessages as JSON},
         bundles: ${is.i18nBundle() as JSON},
         projectMenus: ${projectMenus as JSON},
