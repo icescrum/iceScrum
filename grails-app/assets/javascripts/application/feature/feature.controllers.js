@@ -42,7 +42,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'Featu
     };
     $scope.createStoryEpic = function(feature) {
         FeatureService.createStoryEpic(feature).then(function() {
-            $scope.notifySuccess('todo.is.ui.feature.copied.to.backlog');
+            $scope.notifySuccess('is.ui.feature.copy.epic.confirm');
         });
     };
     $scope.menus = [
@@ -52,7 +52,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'Featu
             url: $scope.featureContextUrl
         },
         {
-            name: 'is.ui.feature.menu.copy',
+            name: 'is.ui.feature.copy.epic',
             visible: function(feature) { return $scope.authorizedFeature('createStoryEpic'); },
             action: function(feature) { $scope.createStoryEpic(feature); }
         },
@@ -62,7 +62,7 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'Featu
             action: function(feature) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(feature.uid, 'feature'))); }
         },
         {
-            name: 'is.ui.feature.menu.delete',
+            name: 'default.button.delete.label',
             visible: function(feature) { return $scope.authorizedFeature('delete'); },
             action: function(feature) { $scope.confirmDelete({callback: $scope.delete, args: [feature]}); }
         }
@@ -165,7 +165,7 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'feature
     };
     $scope.createStoryEpicMultiple = function() {
         FeatureService.createStoryEpicMultiple(featureListId, project.id).then(function() {
-            $scope.notifySuccess('todo.is.ui.feature.multiple.copied.to.backlog');
+            $scope.notifySuccess('is.ui.feature.multiple.copy.epic.confirm');
         });
     };
     // Init

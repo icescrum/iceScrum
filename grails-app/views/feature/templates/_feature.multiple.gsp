@@ -91,7 +91,7 @@
                             <button type="button"
                                     class="btn btn-default"
                                     ng-click="createStoryEpicMultiple()">
-                                <g:message code='is.ui.feature.menu.copy'/>
+                                ${message(code: 'is.ui.feature.copy.epic')}
                             </button>
                         </div>
                         <div ng-if="authorizedFeature('delete')"
@@ -99,7 +99,7 @@
                             <button type="button"
                                     class="btn btn-default"
                                     ng-click="confirmDelete({ callback: deleteMultiple })">
-                                <g:message code='is.ui.feature.menu.delete'/>
+                                ${message(code: 'default.button.delete.label')}
                             </button>
                         </div>
                     </div>
