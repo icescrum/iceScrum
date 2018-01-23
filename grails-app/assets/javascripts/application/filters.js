@@ -408,6 +408,11 @@ filters
             return $rootScope.message('is.sprint') + ' ' + sprint.index;
         }
     }
+}]).filter('computePercentage', [function() {
+    return function(object, value, onValue) {
+        var val = Math.round((object[value] * 100) / object[onValue]);
+        return val > 100 ? 100 : val;
+    }
 }]).filter('stripTags', ['$filter', function($filter) {
     return function strip_tags(input, disallowed, limit, more) {
         disallowed = (((disallowed || '') + '')

@@ -1992,6 +1992,9 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
     margin-top: 5px;
     font-size: 13px;
   }
+  .backlogCharts {
+    margin-bottom: -5px;
+  }
   .release-todo, .background-sprint-todo {
     color: @state-suggested;
   }
@@ -2004,7 +2007,7 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
   .background-light-sprint-inProgress {
     background: lighten(@state-inProgress, 35%);
   }
-  li a.link:not(:hover), li a.link :not(.fa) {
+  li a.link:not(:hover), li a.link:not(:hover) :not(.fa), li a.link:not(:hover) time {
     color: @text-muted;
   }
   li.stories i.fa {
@@ -2020,14 +2023,34 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
   li span.text-ellipsis {
     max-width: 150px;
     display: inline-block;
+    vertical-align: middle;
   }
   li.sprint .progress {
-    margin-bottom: 0;
     width: 100px;
-    height: 15px;
-    vertical-align: middle;
-    display: inline-block;
+    height: 13px;
     border: none;
     padding: 0;
+    margin-bottom: 0;
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    text-align: center;
+    .progress-value {
+      position: absolute;
+      font-weight: bold;
+      font-size: 11px;
+      color: #fff !important;
+      right: 0;
+      left: 0;
+    }
+  }
+  .team-size {
+    color: #777;
+    font-weight: bold;
+    margin: 2px;
+  }
+  hr {
+    width: 50%;
+    margin: 10px auto;
   }
 }

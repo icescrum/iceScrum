@@ -42,7 +42,7 @@
         settings: {
             refreshMillis: 60000,
             allowPast: true,
-            allowFuture: false,
+            allowFuture: true,
             localeTitle: false,
             cutoff: 0,
             autoDispose: true,

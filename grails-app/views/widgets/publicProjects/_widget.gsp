@@ -4,6 +4,7 @@
             <h4 class="text-center">${message(code: 'todo.is.ui.project.nopublicproject')}</h4>
         </div>
         <div ng-repeat="project in projects" class="row projects-list">
+            <hr ng-if="!$first" class="ng-scope">
             <h4 class="col-md-12 clearfix">
                 <div class="pull-left"><a href="" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
                 <div class="pull-right">
@@ -20,9 +21,6 @@
             </div>
             <div class="col-lg-10 col-xs-9">
                 <ul class="list-inline text-muted pull-left">
-                    <li class="activities">
-                        <a href="p/{{:: project.pkey }}/#/project" class="link"><i class="fa fa-clock-o"></i> {{:: project.activities_count }}</a>
-                    </li>
                     <li class="features">
                         <a href="p/{{:: project.pkey }}/#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>
                     </li>
@@ -34,25 +32,29 @@
                                 class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
                     </li>
                     <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
-                        <a href="p/{{:: project.pkey }}/#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><i
-                                class="fa fa-tasks {{:: project.currentOrNextRelease.currentOrNextSprint.state | releaseStateColor }}"></i> <span class="text-ellipsis">{{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</span></a>
-                    </li>
-                    <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint.state > 1">
-                        <div class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
-                            <div class="progress-bar {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background' }}" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                                 style="width: 60%;"></div>
-                        </div>
+                        <a href="p/{{:: project.pkey }}/#/taskBoard/{{:: project.currentOrNextRelease.id }}/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><i
+                                class="fa fa-tasks {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor }}"></i>&nbsp;<div
+                                class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
+                            <span class="progress-value">{{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</span>
+                            <div class="progress-bar {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background' }}" role="progressbar"
+                                 aria-valuenow="{{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}" aria-valuemin="0" aria-valuemax="100"
+                                 style="width: {{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}%;"></div>
+                        </div>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;<time timeago datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.endDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.endDate | dateTime }}</time></a>
                     </li>
                 </ul>
             </div>
             <div class="col-lg-2 col-xs-3">
-                <img ng-repeat="user in ::project | allMembers"
-                     ng-src="{{:: user | userAvatar }}"
-                     height="26" width="26"
-                     class="pull-right {{:: user | userColorRoles:project }}"
-                     uib-tooltip="{{:: user | userFullName }}"/>
+                <div class="text-right">
+                    <img ng-repeat="user in ::project | allMembers | limitTo:2"
+                         ng-src="{{:: user | userAvatar }}"
+                         height="20" width="20"
+                         class="{{:: user | userColorRoles:project }}"
+                         style="margin:3px;"
+                         uib-tooltip="{{:: user | userFullName }}"/>
+                    <span class="team-size" ng-if="::(project | allMembers).length > 2">+ {{::(project | allMembers).length - 2}}</span>
+                </div>
+                <div class="text-ellipsis clearfix text-right" title="{{:: project.team.name }}"><small><i class="fa fa-users"></i> {{::project.team.name }}</small></div>
             </div>
-            <hr ng-if="!$last" class="ng-scope">
         </div>
     </div>
 </is:widget>

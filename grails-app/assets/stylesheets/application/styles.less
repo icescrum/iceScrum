@@ -524,7 +524,7 @@ tr:hover .on-hover span {
 }
 
 .progress.form-bar {
-  border: none;
+  border: 1px solid #fff;
   background-color: @brand-primary;
   .progress-empty {
     text-align: center;
@@ -1161,7 +1161,7 @@ i.fa-pinned {
 
 a.link {
   color: #333333;
-  &:hover {
+  &:hover, &:hover span, &:hover time {
     color: @brand-primary;
     text-decoration: none;
     .fa-border {
