@@ -96,6 +96,9 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
             $scope.availableColors = colors;
         });
     };
+    $scope.openStoryUrl = function(storyId) {
+        return $state.href('.story.details', {storyId: storyId});
+    };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsFeature, type: 'feature'});
     $scope.previousFeature = FormService.previous(features, $scope.feature);

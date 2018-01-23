@@ -28,7 +28,7 @@
                 <div class="clearfix no-padding">
                     <div class="col-sm-8">
                         <span class="name">
-                            <strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
+                            <a ui-sref=".task.details({taskId: task.id})" class="link"><strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}</a>
                         </span>
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="taskCtrl">

@@ -24,7 +24,7 @@
  */
 
 // Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We should think of a better way to systematically register the listeners
-extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEventType', 'TagService', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, IceScrumEventType, TagService, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
+extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 'IceScrumEventType', 'TagService', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, $window, IceScrumEventType, TagService, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -91,7 +91,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', 'IceScrumEv
                 return viewType === 'list' ? 100 : defaultPriority;
             },
             visible: function(story, viewType) { return viewType !== 'details'; },
-            action: function(story) { $state.go('.story.details', {storyId: story.id}); }
+            action: function(story) { $window.location.hash = $scope.openStoryUrl(story.id) ; } // Inherited
         },
         {
             name: 'is.ui.backlog.menu.acceptAsStory',

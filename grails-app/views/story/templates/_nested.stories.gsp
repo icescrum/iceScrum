@@ -37,7 +37,7 @@
                     <div class="clearfix no-padding">
                         <div class="col-sm-8">
                             <span class="name">
-                                <strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}
+                                <a ng-href="{{ openStoryUrl(story.id) }}" class="link"><strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}</a>
                             </span>
                         </div>
                         <div class="col-sm-4 text-right" ng-controller="storyCtrl">
