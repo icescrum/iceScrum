@@ -48,7 +48,8 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             contentType: 'application/json',
             logLevel: self.logLevel,
             transport: 'websocket',
-            fallbackTransport: 'streaming',
+            fallbackTransport: 'streaming', //fallbackToLastTransport long-polling if not connected after fallbackTransportTimeout
+            fallbackTransportTimeout: 5000,
             trackMessageLength: true,
             reconnectInterval: 5000,
             enableXDR: true,
@@ -83,7 +84,17 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 atmosphere.util.info(errorMsg);
             }
             if (_canLog('debug')) {
-                atmosphere.util.debug('Default transport is WebSocket, fallback is ' + options.fallbackTransport);
+                if (options.transport === 'streaming') {
+                    setTimeout(function() {
+                        if (!self.push.connected) {
+                            atmosphere.close();
+                            options.transport = 'long-polling';
+                            options.fallbackTransport = 'none';
+                            atmosphereService.subscribe(options);
+                        }
+                    }, options.reconnectInterval + options.fallbackTransportTimeout);
+                }
+                atmosphere.util.debug('Default transport is ' + options.transport + ', fallback is ' + options.fallbackTransport);
             }
         };
         options.onMessage = function(response) {
