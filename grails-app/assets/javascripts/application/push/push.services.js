@@ -91,6 +91,9 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                             atmosphere.close();
                             options.transport = 'long-polling';
                             options.fallbackTransport = 'none';
+                            if (_canLog('debug')) {
+                                atmosphere.util.debug('Atmosphere streaming failed fallback to ' + response.transport);
+                            }
                             atmosphereService.subscribe(options);
                         }
                     }, options.reconnectInterval + options.fallbackTransportTimeout);
