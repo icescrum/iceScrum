@@ -201,21 +201,27 @@ class UserController implements ControllerErrorHandler {
     }
 
     def avatar(long id) {
-        def avatar
-        User user
-        if (id) {
-            user = User.withUser(id)
-            File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter) new WildcardFileFilter("${user.id}.*"))
-            avatar = files ? files[0] : null
-        }
-        if (!avatar?.exists()) {
-            if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable && user)) {
-                redirect(url: "https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5())
-                return
+        withCacheHeaders {
+            def avatar
+            User user = id ? User.withUser(id) : null
+            delegate.lastModified {
+                user.lastUpdated
             }
-            avatar = getAssetAvatarFile("avatar.png")
+            generate {
+                if (user) {
+                    File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter) new WildcardFileFilter("${user.id}.*"))
+                    avatar = files ? files[0] : null
+                }
+                if (!avatar?.exists()) {
+                    if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable && user)) {
+                        redirect(url: "https://secure.gravatar.com/avatar/" + user.email.encodeAsMD5())
+                        return
+                    }
+                    avatar = getAssetAvatarFile("avatar.png")
+                }
+                render(file: avatar, contentType: 'image/png')
+            }
         }
-        render(file: avatar, contentType: 'image/png')
     }
 
     @Secured(['isAuthenticated()'])

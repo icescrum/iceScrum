@@ -68,7 +68,7 @@ filters
             if (Session.current(user)) {
                 user = Session.user; // Bind to current user to see avatar change immediately
             }
-            return user && user.id ? ($rootScope.serverUrl + '/user/' + (initials ? 'initialsAvatar' : 'avatar') + '/' + user.id + '?cache=' + new Date(user.lastUpdated ? user.lastUpdated : null).getTime()) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
+            return user && user.id ? ($rootScope.serverUrl + '/user/' + (initials ? 'initialsAvatar' : 'avatar') + '/' + user.id) : $rootScope.serverUrl + '/assets/avatars/avatar.png';
         };
     }])
     .filter('userInitialsAvatar', ['$rootScope', 'FormService', function($rootScope, FormService) {
@@ -433,7 +433,7 @@ filters
 }]).filter('truncateAndSeeMore', ['$rootScope', '$filter', function($rootScope, $filter) {
     return function strip_tags(text, key) {
         var permalink = $rootScope.serverUrl + '/p/' + key;
-        return $filter('stripTags')(text, '<br><p>', '420', '&hellip;') + ' <a href="' + permalink + '">More info</a>';
+        return $filter('stripTags')(text, '<br><p>', '400', '&hellip;') + ' <a href="' + permalink + '">More info</a>';
     }
 }]).filter('allMembers', [function() {
     return function(project) {

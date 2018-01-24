@@ -6,7 +6,7 @@
         <div ng-repeat="project in projects" class="row projects-list">
             <hr ng-if="!$first" class="ng-scope">
             <h4 class="col-md-12 clearfix">
-                <div class="pull-left"><a href="" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
+                <div class="pull-left"><a href="p/{{:: project.pkey }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
                 <div class="pull-right">
                     <small><time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small>
                 </div>
@@ -20,26 +20,29 @@
                 </div>
             </div>
             <div class="col-lg-10 col-xs-9">
-                <ul class="list-inline text-muted pull-left">
+                <ul class="list-inline text-muted">
+                    <li class="release" ng-if=":: project.currentOrNextRelease">
+                        <a href="p/{{:: project.pkey }}/#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
+                                class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
+                    </li>
                     <li class="features">
                         <a href="p/{{:: project.pkey }}/#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>
                     </li>
                     <li class="stories">
                         <a href="p/{{:: project.pkey }}/#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
                     </li>
-                    <li class="release" ng-if=":: project.currentOrNextRelease">
-                        <a href="p/{{:: project.pkey }}/#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
-                                class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
-                    </li>
                     <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
-                        <a href="p/{{:: project.pkey }}/#/taskBoard/{{:: project.currentOrNextRelease.id }}/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><i
-                                class="fa fa-tasks {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor }}"></i>&nbsp;<div
+                        <a href="p/{{:: project.pkey }}/#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><i
+                                class="fa fa-tasks {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor }}"></i> {{:: project.currentOrNextRelease.currentOrNextSprint.tasks_count }} <g:message code="todo.is.ui.tasks"/></a>
+                    </li>
+                    <li class="sprint pull-right" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
+                        <a href="p/{{:: project.pkey }}/#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><div
                                 class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
                             <span class="progress-value">{{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</span>
                             <div class="progress-bar {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background' }}" role="progressbar"
                                  aria-valuenow="{{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}" aria-valuemin="0" aria-valuemax="100"
                                  style="width: {{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}%;"></div>
-                        </div>&nbsp;<i class="fa fa-clock-o"></i>&nbsp;<time timeago datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.endDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.endDate | dateTime }}</time></a>
+                        </div></a>
                     </li>
                 </ul>
             </div>

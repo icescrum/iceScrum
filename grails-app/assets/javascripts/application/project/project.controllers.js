@@ -42,7 +42,9 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
     $controller('abstractProjectListCtrl', {$scope: $scope});
     // Functions
     $scope.retrieveBacklog = function(project) {
-        return {id: project.backlogs_ids[0].id, project: project, chartType: 'state'};
+        var backlog = _.find(project.backlogs, {'code': 'all'});
+        backlog.project = project;
+        return backlog;
     };
     // Init
     ProjectService.listPublicWidget().then(function(projects) {
