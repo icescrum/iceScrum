@@ -43,7 +43,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
+                                <div class="rich-content" compile="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
                             </div>
                             <div class="col-md-4 text-right">
                                 <img ng-src="{{ user | userAvatar }}"

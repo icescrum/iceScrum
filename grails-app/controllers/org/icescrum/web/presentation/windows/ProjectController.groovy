@@ -471,7 +471,16 @@ class ProjectController implements ControllerErrorHandler {
 
     @Secured(['permitAll()'])
     def listPublicWidget() {
-        def publicProjects = Project.where { preferences.hidden == false }.list(sort: 'dateCreated', order: 'desc', max: 9) // TODO better sort
+        def publicProjects = Project.withCriteria() {
+            preferences {
+                eq('hidden', false)
+            }
+            not {
+                like("name", "Peetic %")
+            }
+            order("dateCreated", "desc")
+            maxResults(9)
+        }
         request.marshaller = [
                 project: [
                         include: ['currentOrNextRelease', 'backlogs']

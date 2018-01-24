@@ -54,7 +54,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             reconnectInterval: 5000,
             enableXDR: true,
             timeout: 60000,
-            shared: true
+            shared: false
         };
         options.onOpen = function(response) {
             self.push.transport = response.transport;

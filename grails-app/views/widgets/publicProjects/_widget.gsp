@@ -12,7 +12,7 @@
                 </div>
             </h4>
             <div class="col-lg-10 col-xs-9">
-                <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project"></div>
+                <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project.pkey"></div>
             </div>
             <div class="col-lg-2 col-xs-3">
                 <div class="backlogCharts chart pull-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', retrieveBacklog(project), backlogChartOptions)">
