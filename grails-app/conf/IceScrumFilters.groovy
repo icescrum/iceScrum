@@ -69,7 +69,9 @@ class IceScrumFilters {
                         return false
                     }
                 }
-                securityService.filterRequest()
+                if (controllerName != 'errors') { // Avoid filtering request if error to avoid nasty loop
+                    securityService.filterRequest()
+                }
                 return
             }
         }
