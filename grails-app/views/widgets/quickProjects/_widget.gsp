@@ -12,7 +12,7 @@
         <button class="btn btn-default"
                 type="button"
                 click-async="createSampleProject()">
-            ${message(code: 'todo.is.ui.project.createSample')}
+            ${message(code: 'is.ui.project.sample.create')}
         </button>
     </div>
     <hr>

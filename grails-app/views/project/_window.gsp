@@ -43,7 +43,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="rich-content" compile="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
+                                <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
                             </div>
                             <div class="col-md-4 text-right">
                                 <img ng-src="{{ user | userAvatar }}"
@@ -54,6 +54,10 @@
                                 <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
                             </div>
                         </div>
+                        <a ng-if="authorizedProject('update', project) && project.name.indexOf('Peetic ') != -1"
+                           ng-click="showProjectEditModal('administration')">
+                            ${message(code: 'is.ui.project.sample.delete')}
+                        </a>
                         <div class="row project-info">
                             <div class="col-md-6" style="text-align: left;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${message(code: 'todo.is.ui.stories')}</div>
                             <div class="col-md-6" style="text-align: right;"><i class="fa fa-calendar"></i> {{ project.releases_count }} ${message(code: 'todo.is.ui.releases')}</div>
