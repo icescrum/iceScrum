@@ -41,7 +41,6 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     var self = this;
     var crudMethods = {};
     crudMethods[IceScrumEventType.CREATE] = function(project) {
-        debugger;
         return CacheService.addOrUpdate('project', project);
     };
     crudMethods[IceScrumEventType.UPDATE] = function(project) {
@@ -162,7 +161,6 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
     };
     this.listByPortfolio = function(portfolioId) {
         return Project.listByPortfolio({portfolioId: portfolioId}).$promise.then(function(projects) {
-            debugger;
             return self.mergeProjects(projects);
         });
     };
