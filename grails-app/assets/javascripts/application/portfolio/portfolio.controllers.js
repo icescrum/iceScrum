@@ -91,16 +91,22 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
         if (project.portfolio) {
             return;
         }
+        var promise;
         if (project.id) {
-            $scope.portfolio.projects.push(project);
+            promise = $q.when(project);
         } else {
             project.pkey = _.upperCase(project.name).replace(/\W+/g, "").substring(0, 10);
-            addNewProject(project);
+            promise = addNewProject(project);
         }
-        $scope.formHolder.projectSelection = null;
+        promise.then(function(project) {
+            $scope.formHolder.projectSelection = null;
+            if (project) {
+                $scope.portfolio.projects.push(project);
+            }
+        });
     };
     var addNewProject = function(project) {
-        $uibModal.open({
+        return $uibModal.open({
             keyboard: false,
             backdrop: 'static',
             templateUrl: $rootScope.serverUrl + "/project/add",
@@ -137,10 +143,11 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
             }
         }).result.then(function(project) {
             if (project) {
-                ProjectService.save(project).then(function(project) {
+                return ProjectService.save(project).then(function(project) {
                     project.new = true;
-                    $scope.portfolio.projects.push(project);
                 });
+            } else {
+                return null;
             }
         });
     };
@@ -194,6 +201,13 @@ controllers.controller('abstractPortfolioCtrl', ['$scope', '$uibModal', '$rootSc
             }
         });
     };
+    // Init
+    $scope.synchronizationHolder = {};
+    $scope.$watchCollection('portfolio.projects', function(projects) {
+        PortfolioService.getSynchronizedProjects(projects).then(function(synchronizationData) {
+            $scope.synchronizationHolder = synchronizationData;
+        });
+    });
 }]);
 
 controllers.controller('newPortfolioCtrl', ['$scope', '$controller', '$filter', '$uibModal', 'Session', 'WizardHandler', 'Portfolio', 'Project', 'ProjectService', 'PortfolioService', 'UserService', function($scope, $controller, $filter, $uibModal, Session, WizardHandler, Portfolio, Project, ProjectService, PortfolioService, UserService) {

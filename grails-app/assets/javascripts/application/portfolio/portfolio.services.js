@@ -74,6 +74,12 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
             return $q.when(portfolio.projects);
         }
     };
+    this.getSynchronizedProjects = function(projects) {
+        return FormService.httpGet('portfolio/synchronizedProjects', {params: {projects: _.map(projects, 'id')}}, true);
+    };
+    this.mergePortfolios = function(portfolios) {
+        _.each(portfolios, crudMethods[IceScrumEventType.CREATE]);
+    };
     this.authorizedPortfolio = function(action) {
         switch (action) {
             case 'edit':
@@ -84,8 +90,5 @@ services.service('PortfolioService', ['Portfolio', 'Session', 'FormService', 'Pr
             default:
                 return false;
         }
-    };
-    this.mergePortfolios = function(portfolios) {
-        _.each(portfolios, crudMethods[IceScrumEventType.CREATE]);
     };
 }]);

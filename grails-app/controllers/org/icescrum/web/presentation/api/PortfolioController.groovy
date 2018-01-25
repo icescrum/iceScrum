@@ -28,8 +28,11 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Portfolio
 import org.icescrum.core.domain.Project
+import org.icescrum.core.domain.Release
+import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.support.ApplicationSupport
 
 @Secured('isAuthenticated()')
 class PortfolioController implements ControllerErrorHandler {
@@ -153,6 +156,53 @@ class PortfolioController implements ControllerErrorHandler {
             }
         }
         def returnData = paginate ? [portfolios: returnedPortfolios, count: portfolios.size()] : returnedPortfolios
+        render(status: 200, contentType: 'application/json', text: returnData as JSON)
+    }
+
+    def synchronizedProjects() {
+        List<Project> projects = Project.withProjects(params, 'projects')
+        Date today = new Date()
+        // Flatten all the release and sprint dates for each project in order, starting from today
+        def projectDatesEntries = projects.collect { Project project ->
+            List<Date> dates = []
+            List<Release> releases = project.releases.findAll { it.endDate > today }.sort { it.orderNumber }
+            releases.each { Release release ->
+                dates << [release.startDate, today].max() // If we are in the middle of a release, we take today instead of release start date
+                dates << release.endDate
+                List<Sprint> sprints = release.sprints.findAll { it.endDate > today }.sort { it.orderNumber }
+                sprints.each { Sprint sprint ->
+                    dates << [sprint.startDate, today].max() // If we are in the middle of a sprint, we take today instead of release start date
+                    dates << sprint.endDate
+                }
+            }
+            return [project: project, dates: dates.collect { ApplicationSupport.getMidnightTime(it) }.sort()]
+        }
+        // Avoid treating projects that don't have dates
+        projectDatesEntries = projectDatesEntries.findAll { entry ->
+            return entry.dates.size() > 0
+        }
+        // Ditch the dates where we don't have dates for all TODO do better
+        def minNbDates = projectDatesEntries.collect { entry -> entry.dates.size() }.min()
+        projectDatesEntries = projectDatesEntries.each { entry ->
+            entry.dates = entry.dates.take(minNbDates)
+        }
+        // Grouped projects having same dates
+        def groupedProjects = projectDatesEntries.groupBy { entry -> entry.dates }.values().collect { entries ->
+            return entries.collect { entry -> entry.project }
+        }
+        def returnData = [text: '']
+        if (groupedProjects.size()) {
+            if (groupedProjects.size() == 1) {
+                if (groupedProjects[0].size() > 1) {
+                    returnData.text = message(code: 'is.ui.portfolio.sync.ok')
+                    returnData.status = 'success'
+                }
+            } else {
+                groupedProjects.remove(groupedProjects.max { it.size() })
+                returnData.text = message(code: 'is.ui.portfolio.sync.ko', args: [groupedProjects.flatten()*.name.join(', ')])
+                returnData.status = 'warning'
+            }
+        }
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
 }

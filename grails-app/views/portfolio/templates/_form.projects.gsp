@@ -73,4 +73,7 @@
         </tr>
     </tbody>
 </table>
+<div class="alert alert-{{ synchronizationHolder.status }}" role="alert" style="margin-bottom: 15px;" ng-if="synchronizationHolder.text">
+    {{ synchronizationHolder.text }}
+</div>
 </script>
