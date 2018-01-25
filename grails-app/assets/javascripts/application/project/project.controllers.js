@@ -33,23 +33,6 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
         });
     };
     // Init
-    $scope.release = {};
-    $scope.project = {};
-    $scope.projectMembersCount = 0;
-}]);
-
-controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
-    $controller('abstractProjectListCtrl', {$scope: $scope});
-    // Functions
-    $scope.retrieveBacklog = function(project) {
-        var backlog = _.find(project.backlogs, {'code': 'all'});
-        backlog.project = project;
-        return backlog;
-    };
-    // Init
-    ProjectService.listPublicWidget().then(function(projects) {
-        $scope.projects = projects;
-    });
     $scope.backlogChartOptions = {
         chart: {
             width: 80,
@@ -67,6 +50,17 @@ controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'Proje
             enable: false
         }
     };
+    $scope.release = {};
+    $scope.project = {};
+    $scope.projectMembersCount = 0;
+}]);
+
+controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {
+    $controller('abstractProjectListCtrl', {$scope: $scope});
+    // Init
+    ProjectService.listPublicWidget().then(function(projects) {
+        $scope.projects = projects;
+    });
 }]);
 
 controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', 'UserService', function($scope, $filter, Session, UserService) {

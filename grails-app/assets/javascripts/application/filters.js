@@ -306,6 +306,11 @@ filters
             return $rootScope.serverUrl + '/' + (projectKey ? projectKey : $rootScope.getProjectFromState().pkey) + '-' + prefixByType[type] + uid;
         };
     }])
+    .filter('absoluteProjectLink', ['$rootScope', function($rootScope) {
+        return function(projectKey) {
+            return $rootScope.serverUrl + '/p/' + projectKey + '/';
+        };
+    }])
     .filter('flowFilesNotCompleted', function() {
         return function(items) {
             var filtered = [];
@@ -569,4 +574,10 @@ filters
     return function(text, limit) {
         return text ? limitToFilter(text, limit) + (text.length > limit ? '...' : '') : text;
     }
-}]);
+}]).filter('retrieveBacklog', function() {
+    return function(project, code) {
+        var backlog = _.find(project.backlogs, {'code': code});
+        backlog.project = project;
+        return backlog;
+    }
+});

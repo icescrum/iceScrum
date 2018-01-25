@@ -147,6 +147,7 @@ class IceScrumFilters {
                         def data = request.JSON
                         data.remove("project")
                         params << request.JSON
+                        request.restAPI = true
                     }
                 }
             }

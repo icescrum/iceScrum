@@ -488,7 +488,7 @@ class ProjectController implements ControllerErrorHandler {
                 backlog: [
                         excludeAll : true,
                         overrideAll: true,
-                        include    : ['id', 'code', 'chartType']
+                        include    : ['code', 'chartType']
                 ]
         ]
         render(status: 200, contentType: 'application/json', text: publicProjects as JSON)
@@ -518,6 +518,16 @@ class ProjectController implements ControllerErrorHandler {
     @Secured(['businessOwner() or portfolioStakeHolder()'])
     def listByPortfolio(long portfolio) {
         Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
+        request.marshaller = [
+                project: [
+                        include: ['currentOrNextRelease', 'backlogs']
+                ],
+                backlog: [
+                        excludeAll : true,
+                        overrideAll: true,
+                        include    : ['code', 'chartType']
+                ]
+        ]
         render(status: 200, contentType: 'application/json', text: _portfolio.projects as JSON)
     }
 
