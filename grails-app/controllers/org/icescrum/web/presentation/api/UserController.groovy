@@ -94,7 +94,7 @@ class UserController implements ControllerErrorHandler {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        if (request.format == 'form' && userParams.confirmPassword != userParams.password) {
+        if (!request.restAPI && userParams.confirmPassword != userParams.password) {
             // Cannot be executed inside withFormat closure because return will return only from closure and code below will still be executed
             returnError(code: 'is.user.error.password.check')
             return
@@ -139,7 +139,7 @@ class UserController implements ControllerErrorHandler {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        if ((params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
+        if (!request.restAPI && (params.user.confirmPassword || params.user.password != "") && (params.user.confirmPassword != params.user.password)) {
             returnError(code: 'is.user.error.password.check')
             return
         }
