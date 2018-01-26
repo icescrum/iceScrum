@@ -21,6 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.projects.portfolio.html">
+<p class="help-block">${message(code: 'is.ui.portfolio.help.projects')}</p>
 <label for="project.name">${message(code: 'todo.is.ui.project.create.or.select')}</label>
 <div class="input-group" style="margin-bottom:15px;" ng-if="portfolio.projects.length < 10">
     <input autocomplete="off"
