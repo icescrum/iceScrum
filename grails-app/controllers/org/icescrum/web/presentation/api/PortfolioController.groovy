@@ -187,19 +187,21 @@ class PortfolioController implements ControllerErrorHandler {
             entry.dates = entry.dates.take(minNbDates)
         }
         // Grouped projects having same dates
-        def groupedProjects = projectDatesEntries.groupBy { entry -> entry.dates }.values().collect { entries ->
-            return entries.collect { entry -> entry.project }
-        }
+        def groupedEntries = projectDatesEntries.groupBy { entry -> entry.dates }.values()
         def returnData = [text: '']
-        if (groupedProjects.size()) {
-            if (groupedProjects.size() == 1) {
-                if (groupedProjects[0].size() > 1) {
-                    returnData.text = message(code: 'is.ui.portfolio.sync.ok')
+        if (groupedEntries.size()) {
+            if (groupedEntries.size() == 1) {
+                if (groupedEntries[0].size() > 1) {
+                    String lastDate = groupedEntries[0][0].dates.last().format(message(code: 'is.date.format.short'))
+                    returnData.text = message(code: 'is.ui.portfolio.sync.ok', args: [lastDate])
                     returnData.status = 'success'
                 }
             } else {
-                groupedProjects.remove(groupedProjects.max { it.size() })
-                returnData.text = message(code: 'is.ui.portfolio.sync.ko', args: [groupedProjects.flatten()*.name.join(', ')])
+                groupedEntries.remove(groupedEntries.max { it.size() })
+                String projectNames = groupedEntries.collect { entries ->
+                    return entries.collect { entry -> entry.project.name }
+                }.flatten().join(', ')
+                returnData.text = message(code: 'is.ui.portfolio.sync.ko', args: [projectNames])
                 returnData.status = 'warning'
             }
         }
