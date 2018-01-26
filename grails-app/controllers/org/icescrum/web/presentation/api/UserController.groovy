@@ -191,7 +191,8 @@ class UserController implements ControllerErrorHandler {
     def delete(long id, long substitutedBy) {
         User user = User.withUser(id)
         User substitute = User.withUser(substitutedBy)
-        userService.delete(user, substitute, params.boolean('deleteDataOwned'))
+        def deleteDataOwned = params.boolean('deleteDataOwned') ?: false
+        userService.delete(user, substitute, deleteDataOwned)
         render(status: 204)
     }
 
