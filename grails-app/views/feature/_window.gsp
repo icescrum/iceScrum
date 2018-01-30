@@ -53,7 +53,7 @@
                             <button type="button"
                                     class="btn btn-default"
                                     ng-click="orderBy.reverse = !orderBy.reverse"
-                                    uib-tooltip="${message(code: 'todo.is.ui.order')}">
+                                    uib-tooltip="${message(code: 'todo.is.ui.sort.order')}">
                                 <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
                             </button>
                         </div>
