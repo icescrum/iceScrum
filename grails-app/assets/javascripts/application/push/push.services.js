@@ -85,20 +85,22 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 atmosphere.util.info(errorMsg);
             }
             if (_canLog('debug')) {
-                if (options.transport === 'streaming') {
-                    setTimeout(function() {
-                        if (!self.push.connected) {
-                            atmosphere.close();
-                            options.transport = 'long-polling';
-                            options.fallbackTransport = 'none';
-                            if (_canLog('debug')) {
-                                atmosphere.util.debug('Atmosphere streaming failed fallback to ' + response.transport);
-                            }
-                            atmosphereService.subscribe(options);
-                        }
-                    }, options.reconnectInterval + options.fallbackTransportTimeout);
-                }
                 atmosphere.util.debug('Default transport is ' + options.transport + ', fallback is ' + options.fallbackTransport);
+            }
+            if (options.fallbackTransport === 'streaming') {
+                atmosphere.util.debug('reconnectInterval is ' + options.reconnectInterval);
+                atmosphere.util.debug('fallbackTransportTimeout is ' + options.fallbackTransportTimeout);
+                setTimeout(function() {
+                    if (!self.push.connected) {
+                        atmosphere.close();
+                        options.transport = 'long-polling';
+                        options.fallbackTransport = 'none';
+                        if (_canLog('debug')) {
+                            atmosphere.util.debug('Atmosphere streaming failed fallback to ' + response.transport);
+                        }
+                        atmosphereService.subscribe(options);
+                    }
+                }, options.reconnectInterval + options.fallbackTransportTimeout);
             }
         };
         options.onMessage = function(response) {
