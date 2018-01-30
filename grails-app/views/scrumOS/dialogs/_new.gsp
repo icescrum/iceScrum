@@ -30,7 +30,7 @@
                 <div class="workspace col-md-6 text-center">
                     <i class="fa fa-${workspace.value.icon} fa-7x"></i>
                     <div>${g.message(code: 'is.ui.workspace.description.' + workspace.key)}</div>
-                    <button class="btn btn-primary" ${workspace.value.enabled() ? '' : 'disabled="disabled"'}
+                    <button class="btn btn-primary" ${workspace.value.enabled(Holders.grailsApplication) ? '' : 'disabled="disabled"'}
                             ng-click="openWizard('new${workspace.key.capitalize()}')">
                         ${g.message(code: 'is.ui.workspace.new.' + workspace.key)}
                     </button>

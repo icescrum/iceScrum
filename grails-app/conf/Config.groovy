@@ -291,21 +291,6 @@ icescrum {
             }
             enabled = { true }
         }
-        portfolio {
-            objectClass = Portfolio
-            icon = 'briefcase'
-            config = { portfolio -> [key: portfolio.fkey, path: 'f'] }
-            params = { portfolio -> [portfolio: portfolio.id] }
-            indexScrumOS = { portfolioWorkspace, User user, SecurityService securityService, SpringSecurityService springSecurityService ->
-                Portfolio portfolio = portfolioWorkspace.object
-                if (!securityService.businessOwner(portfolio, springSecurityService.authentication) && !securityService.portfolioStakeHolder(portfolio, springSecurityService.authentication)) {
-                    forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
-                    return false // Tells the controller to stop its execution. Cannot "return" directly from here since it only returns from the closure
-                }
-                return true
-            }
-            enabled = { false }
-        }
     }
 }
 
