@@ -51,7 +51,7 @@ class ScrumOSController implements ControllerErrorHandler {
     def index() {
         def user = springSecurityService.currentUser
         def workspaces = []
-        def portfolioEnabled = grailsApplication.config.icescrum.workspaces.portfolio.enabled(grailsApplication)
+        def portfolioEnabled = grailsApplication.config.icescrum.workspaces.portfolio && grailsApplication.config.icescrum.workspaces.portfolio.enabled(grailsApplication)
         if (portfolioEnabled) {
             def userPortfolios = user ? portfolioService.getAllPortfoliosByUser(user) : []
             workspaces.addAll(userPortfolios)
