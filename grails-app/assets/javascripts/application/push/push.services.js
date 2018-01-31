@@ -92,7 +92,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 atmosphere.util.debug('fallbackTransportTimeout is ' + options.fallbackTransportTimeout);
                 setTimeout(function() {
                     if (!self.push.connected) {
-                        atmosphere.close();
+                        atmosphereService.unsubscribe();
                         options.transport = 'long-polling';
                         options.fallbackTransport = 'none';
                         if (_canLog('debug')) {
