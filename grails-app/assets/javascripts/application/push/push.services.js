@@ -51,7 +51,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             fallbackTransport: 'streaming', //fallbackToLastTransport long-polling if not connected after fallbackTransportTimeout
             fallbackTransportTimeout: 5000,
             trackMessageLength: true,
-            reconnectInterval: 5000,
+            reconnectInterval: 2000,
             enableXDR: true,
             timeout: 60000,
             shared: false
