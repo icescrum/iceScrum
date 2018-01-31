@@ -280,8 +280,7 @@ icescrum {
             indexScrumOS = { projectWorkspace, User user, SecurityService securityService, SpringSecurityService springSecurityService ->
                 def project = projectWorkspace.object
                 if (project?.preferences?.hidden && !securityService.inProject(project, springSecurityService.authentication) && !securityService.stakeHolder(project, springSecurityService.authentication, false)) {
-                    forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
-                    return false // Tells the controller to stop its execution. Cannot "return" directly from here since it only returns from the closure
+                    return false
                 }
                 if (project && user && !user.admin && user.preferences.lastProjectOpened != project.pkey) {
                     user.preferences.lastProjectOpened = project.pkey
@@ -289,7 +288,7 @@ icescrum {
                 }
                 return true
             }
-            enabled = { true }
+            enabled = { application -> true }
         }
     }
 }

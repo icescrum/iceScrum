@@ -94,15 +94,17 @@
                                             <small class="text-muted">(SHIFT+A)</small>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a hotkey="{ 'shift+z': hotkeyClick}"
-                                           href
-                                           ng-click="showWorkspaceListModal('all','portfolio')"
-                                           hotkey-description="${message(code: 'is.ui.portfolio.list.all')}">
-                                            <g:message code="is.ui.portfolio.list.all"/>
-                                            <small class="text-muted">(SHIFT+Z)</small>
-                                        </a>
-                                    </li>
+                                    <g:if test="${portfolioEnabled}">
+                                        <li>
+                                            <a hotkey="{ 'shift+z': hotkeyClick}"
+                                               href
+                                               ng-click="showWorkspaceListModal('all','portfolio')"
+                                               hotkey-description="${message(code: 'is.ui.portfolio.list.all')}">
+                                                <g:message code="is.ui.portfolio.list.all"/>
+                                                <small class="text-muted">(SHIFT+Z)</small>
+                                            </a>
+                                        </li>
+                                    </g:if>
                                 </g:if>
                                 <g:else>
                                     <li>

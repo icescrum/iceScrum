@@ -51,8 +51,11 @@ class ScrumOSController implements ControllerErrorHandler {
     def index() {
         def user = springSecurityService.currentUser
         def workspaces = []
-        def userPortfolios = user ? portfolioService.getAllPortfoliosByUser(user) : []
-        workspaces.addAll(userPortfolios)
+        def portfolioEnabled = grailsApplication.config.icescrum.workspaces.portfolio.enabled(grailsApplication)
+        if (portfolioEnabled) {
+            def userPortfolios = user ? portfolioService.getAllPortfoliosByUser(user) : []
+            workspaces.addAll(userPortfolios)
+        }
         def userProjects = user ? projectService.getAllActiveProjectsByUser(user) : []
         workspaces.addAll(userProjects)
         def workspacesLimit = 9
@@ -61,12 +64,14 @@ class ScrumOSController implements ControllerErrorHandler {
                      lang                    : RCU.getLocale(request).toString().substring(0, 2),
                      browsableWorkspacesExist: browsableProjectsCount > 0,
                      moreWorkspacesExist     : workspaces?.size() > workspacesLimit,
+                     portfolioEnabled        : portfolioEnabled,
                      workspacesFilteredsList : workspaces.take(workspacesLimit)]
         def workspace = ApplicationSupport.getCurrentWorkspace(params)
         if (workspace) {
             workspace.indexScrumOS.delegate = this
-            def carryOn = workspace.indexScrumOS(workspace, user, securityService, springSecurityService)
+            def carryOn = workspace.indexScrumOS(workspace, user, securityService, springSecurityService) && workspace.enabled
             if (!carryOn) {
+                forward(action: springSecurityService.isLoggedIn() ? 'error403' : 'error401', controller: 'errors')
                 return
             }
             model."$workspace.name" = workspace.object
