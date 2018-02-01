@@ -473,7 +473,6 @@ extensibleController('newCtrl', ['$scope', '$state', function($scope, $state) {
         $scope.$close(type);
         $state.go(type);
     };
-    //INIT
 }]);
 
 controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', 'UserTokenService', function($scope, $uibModal, Session, UserService, hotkeys, PushService, UserTokenService) {
