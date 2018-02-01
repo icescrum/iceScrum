@@ -168,7 +168,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
         return self.workspace;
     };
     this.getLanguages = function() {
-        return FormService.httpGet('scrumOS/languages', {cache: true});
+        return FormService.httpGet('scrumOS/languages', {cache: true}, true);
     };
     this.getTimezones = function() {
         return FormService.httpGet('scrumOS/timezones', {cache: true}, true);
