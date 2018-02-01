@@ -9,7 +9,7 @@ servlets = [
                 handler   : IceScrumMeteorHandler,
                 initParams: [
                         "org.atmosphere.cpr.AtmosphereFramework.analytics"                           : false,
-                        "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 15, // seconds
+                        "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 30, // seconds
                         "org.atmosphere.cpr.CometSupport.maxInactiveActivity"                        : 30 * 60000, // 30 minutes
                         "org.atmosphere.cpr.broadcasterClass"                                        : "org.icescrum.atmosphere.IceScrumBroadcaster",
                         "org.atmosphere.cpr.AtmosphereInterceptor"                                   : """
