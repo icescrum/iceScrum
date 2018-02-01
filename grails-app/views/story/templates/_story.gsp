@@ -28,7 +28,7 @@
      ng-class="[((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]" is-watch="story">
     <div class="head">
         <div class="head-left">
-            <span class="id">{{:: story.uid }}</span>
+            <span class="id" as-sortable-item-handle>{{:: story.uid }}</span>
             <a href
                class="follow {{:: story.followed ? 'active' : '' }}"
                fast-tooltip-el="{{:: story.followers_count }} ${message(code: 'todo.is.ui.followers')}"

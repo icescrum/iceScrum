@@ -27,7 +27,7 @@
      ng-class=":: ['task', application.postitSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]" is-watch="task">
     <div class="head">
         <div class="head-left">
-            <span class="id">{{:: task.uid }}</span>
+            <span class="id" as-sortable-item-handle>{{:: task.uid }}</span>
             <img ng-src="{{:: task.responsible | userAvatar }}"
                  ng-if=":: task.responsible"
                  ng-class="::['responsible', (task.responsible | userColorRoles)]"

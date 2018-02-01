@@ -27,7 +27,7 @@
      ng-class="[(feature.color | contrastColor), (feature.type | featureType)]" is-watch="feature">
     <div class="head">
         <div class="head-left">
-            <span class="id">{{feature.rank }}</span>
+            <span class="id" as-sortable-item-handle>{{feature.uid }}</span>
             <entry:point id="feature-postit-head-left"/>
         </div>
         <div class="head-right">
