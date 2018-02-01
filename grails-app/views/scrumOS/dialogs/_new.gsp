@@ -34,6 +34,9 @@
                             ng-click="openWizard('new${workspace.key.capitalize()}')">
                         ${g.message(code: 'is.ui.workspace.new.' + workspace.key)}
                     </button>
+                    <g:if test="${!workspace.value.enabled(Holders.grailsApplication)}">
+                        <div class="text-muted">${g.message(code: 'is.ui.workspace.disabled.' + workspace.key)}</div>
+                    </g:if>
                 </div>
             </g:each>
         </div>
