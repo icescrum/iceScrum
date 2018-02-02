@@ -533,148 +533,149 @@
       background: @table-bg-accent;
     }
     .postit {
-      display: flex;
       position: relative;
       border-left: none;
       border-right: none;
-      > .state {
-        display: none;
-      }
-      > .content {
-        order: 2;
-        flex: 1 1 auto;
-        border-top: 1px solid @table-border-color;
-        h3 {
-          display: inline;
-          margin: 0;
-          > div {
-            display: inline;
-          }
-        }
-        .description {
+      padding: 1px 0;
+      > div {
+        display: flex;
+        > .state {
           display: none;
         }
-      }
-      > div {
-        padding: 8px;
-      }
-      > .head {
-        order: 1;
-        flex: 0 0 auto;
-        padding-left: 8px;
-        padding-top: 6px;
-        padding-right: 8px;
-        display: flex;
-        flex-direction: column;
-        border-top: 1px solid @table-border-color;
-        .head-left, .head-right {
-          flex: 1;
-          .follow {
-            float: left;
-            margin-right: 5px;
-          }
-        }
-      }
-      > .footer {
-        order: 3;
-        text-align: right;
-        flex: 0 0 200px;
-        padding-left: 0;
-        padding-right: 26px;
-        display: flex;
-        flex-direction: column;
-        border-top: 1px solid @table-border-color;
-        .action {
-          flex: 0 0 auto;
+        > .content {
           order: 2;
-          padding: 0 4px;
-          display: inline-block;
-        }
-        .tags {
-          flex: 1;
-          order: 1;
-          font-size: 10px;
-          padding: 1px 2px;
-          border-radius: 2px;
-          a {
-            .tag {
-              margin-right: 4px;
-              font-size: 10px;
-              padding: 1px 2px;
-              border-radius: 2px;
-              background: rgba(0, 0, 0, 0.2);
-              color: @invert-color;
-            }
-
-            &:hover {
-              text-decoration: none;
-              .tag {
-                background: rgba(255, 255, 255, 0);
-                color: @gray;
-              }
+          flex: 1 1 auto;
+          border-top: 1px solid @table-border-color;
+          h3 {
+            display: inline;
+            margin: 0;
+            > div {
+              display: inline;
             }
           }
-          .action {
+          .description {
             display: none;
           }
         }
-        .state-progress {
-          order: 3;
+        > div {
+          padding: 8px;
+        }
+        > .head {
+          order: 1;
           flex: 0 0 auto;
-          height: 13px;
-          position: relative;
-          .state {
-            top: 2px;
-            right: 5px;
-            position: absolute;
-            font-size: 10px;
-            text-align: right;
-            line-height: 10px;
-            font-weight: bold;
+          padding-left: 8px;
+          padding-top: 6px;
+          padding-right: 8px;
+          display: flex;
+          flex-direction: column;
+          border-top: 1px solid @table-border-color;
+          .head-left, .head-right {
+            flex: 1;
+            .follow {
+              float: left;
+              margin-right: 5px;
+            }
           }
-          .progress {
-            width: 100%;
-            height: 15px;
-            padding: 0;
-            color: @gray;
-            margin-bottom: 0;
-            position: absolute;
-            border: 1px solid @table-border-color;
-            background: rgba(255, 255, 255, 0.6);
-            .progress-bar {
-              text-align: left;
-              background: rgba(0, 0, 0, 0.1);
-              &.bg-success {
-                .bg-variant(darken(@state-success-bg, 20%))
+          .id {
+            font-weight: 700;
+          }
+          .follow + .id {
+            &:before {
+              content: ' - ';
+            }
+          }
+        }
+        > .footer {
+          order: 3;
+          text-align: right;
+          flex: 0 0 200px;
+          padding-left: 0;
+          padding-right: 26px;
+          display: flex;
+          flex-direction: column;
+          border-top: 1px solid @table-border-color;
+          .action {
+            flex: 0 0 auto;
+            order: 2;
+            padding: 0 4px;
+            display: inline-block;
+          }
+          .tags {
+            flex: 1;
+            order: 1;
+            font-size: 10px;
+            padding: 1px 2px;
+            border-radius: 2px;
+            a {
+              .tag {
+                margin-right: 4px;
+                font-size: 10px;
+                padding: 1px 2px;
+                border-radius: 2px;
+                background: rgba(0, 0, 0, 0.2);
+                color: @invert-color;
               }
-              &.bg-danger {
-                .bg-variant(darken(@state-danger-bg, 20%))
+
+              &:hover {
+                text-decoration: none;
+                .tag {
+                  background: rgba(255, 255, 255, 0);
+                  color: @gray;
+                }
               }
             }
-            .status {
+            .action {
+              display: none;
+            }
+          }
+          .state-progress {
+            order: 3;
+            flex: 0 0 auto;
+            height: 13px;
+            position: relative;
+            .state {
               top: 2px;
-              left: 5px;
+              right: 5px;
               position: absolute;
               font-size: 10px;
+              text-align: right;
               line-height: 10px;
               font-weight: bold;
             }
+            .progress {
+              width: 100%;
+              height: 15px;
+              padding: 0;
+              color: @gray;
+              margin-bottom: 0;
+              position: absolute;
+              border: 1px solid @table-border-color;
+              background: rgba(255, 255, 255, 0.6);
+              .progress-bar {
+                text-align: left;
+                background: rgba(0, 0, 0, 0.1);
+                &.bg-success {
+                  .bg-variant(darken(@state-success-bg, 20%))
+                }
+                &.bg-danger {
+                  .bg-variant(darken(@state-danger-bg, 20%))
+                }
+              }
+              .status {
+                top: 2px;
+                left: 5px;
+                position: absolute;
+                font-size: 10px;
+                line-height: 10px;
+                font-weight: bold;
+              }
+            }
           }
         }
-      }
-      > .head {
-        .id {
-          font-weight: 700;
+        > .head > *, > .content h3, .footer > .actions {
+          font-size: 16px !important;
+          color: @gray;
         }
-        .follow + .id {
-          &:before {
-            content: ' - ';
-          }
-        }
-      }
-      > .head > *, > .content h3, .footer > .actions {
-        font-size: 16px !important;
-        color: @gray;
       }
       &.defect:after, &.functional:after, &.architectural:after, &.task-blocked:after {
         content: "";

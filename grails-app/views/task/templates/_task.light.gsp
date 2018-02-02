@@ -25,43 +25,45 @@
 <div ng-style="task.color | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
      ng-class="{'task-blocked': task.blocked}"
      class="postit task {{ application.postitSize.task + ' ' + (task.color | contrastColor) }}" ng-controller="taskCtrl">
-    <div class="head">
-        <div class="head-left">
-            <span class="id">{{ ::task.uid }}</span>
-        </div>
-        <div class="head-right">
-            <span class="remaining-time editable"
-                  ng-if="task.estimation != 0"
-                  ng-click="showEditEstimationModal(task, $event)"
-                  uib-tooltip="${message(code: 'is.task.estimation')}">
-                {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
-            </span>
-        </div>
-    </div>
-    <div class="content">
-        <h3 class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{ task.name }}</a></h3>
-    </div>
-    <div class="footer">
-        <div class="tags">
-            <a ng-repeat="tag in task.tags" href><span class="tag">{{ tag }}</span></a>
-        </div>
-        <div class="actions">
-            <span class="action" ng-class="{'active':task.attachments_count}">
-                <span uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                    <a href="{{ link }}">
-                        <i class="fa fa-paperclip"></i>
-                        <span class="badge">{{ task.attachments_count || '' }}</span>
-                    </a>
+    <div>
+        <div class="head">
+            <div class="head-left">
+                <span class="id">{{ ::task.uid }}</span>
+            </div>
+            <div class="head-right">
+                <span class="remaining-time editable"
+                      ng-if="task.estimation != 0"
+                      ng-click="showEditEstimationModal(task, $event)"
+                      uib-tooltip="${message(code: 'is.task.estimation')}">
+                    {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
                 </span>
-            </span>
-            <span class="action" ng-class="{'active':task.comments_count}">
-                <span uib-tooltip="${message(code: 'todo.is.ui.comments')}">
-                    <a href="{{ link }}">
-                        <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
-                        <span class="badge">{{ task.comments_count || '' }}</span>
-                    </a>
+            </div>
+        </div>
+        <div class="content">
+            <h3 class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{ task.name }}</a></h3>
+        </div>
+        <div class="footer">
+            <div class="tags">
+                <a ng-repeat="tag in task.tags" href><span class="tag">{{ tag }}</span></a>
+            </div>
+            <div class="actions">
+                <span class="action" ng-class="{'active':task.attachments_count}">
+                    <span uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                        <a href="{{ link }}">
+                            <i class="fa fa-paperclip"></i>
+                            <span class="badge">{{ task.attachments_count || '' }}</span>
+                        </a>
+                    </span>
                 </span>
-            </span>
+                <span class="action" ng-class="{'active':task.comments_count}">
+                    <span uib-tooltip="${message(code: 'todo.is.ui.comments')}">
+                        <a href="{{ link }}">
+                            <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                            <span class="badge">{{ task.comments_count || '' }}</span>
+                        </a>
+                    </span>
+                </span>
+            </div>
         </div>
     </div>
 </div>
