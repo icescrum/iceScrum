@@ -49,9 +49,10 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             logLevel: self.logLevel,
             transport: 'websocket',
             fallbackTransport: 'streaming', //fallbackToLastTransport long-polling if not connected after fallbackTransportTimeout
-            fallbackTransportTimeout: 5000,
+            fallbackTransportTimeout: 3000,
+            fallbackToLastTransport: 'long-polling',
             trackMessageLength: true,
-            reconnectInterval: 2000,
+            reconnectInterval: 1000,
             enableXDR: true,
             timeout: 60000,
             shared: false
@@ -93,7 +94,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 setTimeout(function() {
                     if (!self.push.connected) {
                         atmosphereService.unsubscribe();
-                        options.transport = 'long-polling';
+                        options.transport = options.fallbackToLastTransport;
                         options.fallbackTransport = 'none';
                         if (_canLog('debug')) {
                             atmosphere.util.debug('Atmosphere streaming failed fallback to ' + response.transport);

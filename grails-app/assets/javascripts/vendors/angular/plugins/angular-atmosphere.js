@@ -36,6 +36,9 @@ angular.module('angular.atmosphere', [])
                 });
 
                 return atmosphere.subscribe(result);
+            },
+            unsubscribe: function() {
+                return atmosphere.unsubscribe();
             }
         };
     }]);
