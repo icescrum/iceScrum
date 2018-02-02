@@ -25,7 +25,7 @@
 
 <is:modal title="${message(code: 'is.ui.workspace.choose')}" class="wizard">
     <div class="workspace-wizard">
-        <div class="row">
+        <div class="row" style="margin-top: 25px;">
             <g:each var="workspace" in="${Holders.grailsApplication.config.icescrum.workspaces}">
                 <div class="workspace col-md-6 text-center">
                     <i class="fa fa-${workspace.value.icon} fa-7x"></i>
@@ -35,10 +35,19 @@
                         ${g.message(code: 'is.ui.workspace.new.' + workspace.key)}
                     </button>
                     <g:if test="${!workspace.value.enabled(Holders.grailsApplication)}">
-                        <div class="text-muted">${g.message(code: 'is.ui.workspace.disabled.' + workspace.key)}</div>
+                        <a class="link" target="_blank" href="https://www.icescrum.com/pricing/">
+                            <div class="text-muted">
+                                <i class="fa fa-info-circle"></i> ${g.message(code: 'is.ui.workspace.disabled.' + workspace.key)}
+                            </div>
+                        </a>
                     </g:if>
                 </div>
             </g:each>
         </div>
+        <g:if test="${Holders.grailsApplication.config.icescrum.workspaces.size() > 1}">
+            <div class="text-center" style="margin-bottom: 25px;">
+                <a class="btn btn-default" target="_blank" href="https://www.icescrum.com/documentation/manage-product-development/"></a>
+            </div>
+        </g:if>
     </div>
 </is:modal>
