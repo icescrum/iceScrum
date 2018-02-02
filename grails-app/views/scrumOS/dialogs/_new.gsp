@@ -46,7 +46,7 @@
         </div>
         <g:if test="${Holders.grailsApplication.config.icescrum.workspaces.size() > 1}">
             <div class="text-center" style="margin-bottom: 25px;">
-                <a class="btn btn-default" target="_blank" href="https://www.icescrum.com/documentation/manage-product-development/"></a>
+                <a class="btn btn-default" target="_blank" href="https://www.icescrum.com/documentation/manage-product-development/">${g.message(code: 'is.ui.workspace.choose.help')}</a>
             </div>
         </g:if>
     </div>
