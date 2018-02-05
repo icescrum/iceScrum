@@ -438,7 +438,7 @@ filters
 }]).filter('truncateAndSeeMore', ['$rootScope', '$filter', function($rootScope, $filter) {
     return function strip_tags(text, key) {
         var permalink = $rootScope.serverUrl + '/p/' + key;
-        return $filter('stripTags')(text, '<br><p>', '380', '&hellip;') + ' <a href="' + permalink + '">More info</a>';
+        return $filter('stripTags')(text, '<br><p>', '380', '&hellip;') + ' <a href="' + permalink + '">' + $rootScope.message('todo.is.ui.more') + '</a>';
     }
 }]).filter('allMembers', [function() {
     return function(project) {
