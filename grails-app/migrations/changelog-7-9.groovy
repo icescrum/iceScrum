@@ -32,8 +32,43 @@ databaseChangeLog = {
             }
         }
     }
-    changeSet(author: "vbarrier", id: "drop_widget_up_not_null_constraint") {
-        dropNotNullConstraint(tableName: "is_up_widgets", columnName: "user_preferences_id", columnDataType: "BIGINT")
+    // No easy way to check if the constraint exists or not
+    // So we avoid running the migration if it is a fresh DB (we are sure the constraint is not here)
+    changeSet(author: 'vbarrier', id: 'drop_widget_up_not_null_constraint') {
+        preConditions(onFail: 'MARK_RAN') {
+            not {
+                dbms(type: 'mssql')
+            }
+            not {
+                sqlCheck(expectedResult: '0', 'SELECT count(*) FROM authority')
+            }
+        }
+        dropNotNullConstraint(tableName: 'is_up_widgets', columnName: 'user_preferences_id', columnDataType: 'BIGINT')
+    }
+    changeSet(author: 'vbarrier', id: 'drop_widget_up_not_null_constraint_mssql') {
+        preConditions(onFail: 'MARK_RAN') {
+            dbms(type: 'mssql')
+            not {
+                sqlCheck(expectedResult: '0', 'SELECT count(*) FROM authority')
+            }
+        }
+        dropIndex(tableName: 'is_up_widgets', indexName: 'up_wdi_index')
+        dropForeignKeyConstraint(baseTableName: 'is_up_widgets', constraintName: 'FK_ml7xvqvvhyvh0dyuc3xx7fe12isuserpreferences')
+        dropForeignKeyConstraint(baseTableName: 'is_user', constraintName: 'FK_kexf01yt25seb8tn1fyso82sdisuserpreferences')
+        dropNotNullConstraint(tableName: 'is_up_widgets', columnName: 'user_preferences_id', columnDataType: 'numeric(19,0)')
+        createIndex(tableName: 'is_up_widgets', indexName: 'up_wdi_index') {
+            column(name: 'user_preferences_id', type: 'numeric(19,0)')
+            column(name: 'widget_definition_id', type: 'numeric(19,0)')
+        }
+        addForeignKeyConstraint(
+                baseTableName: 'is_user', baseColumnNames: 'preferences_id',
+                constraintName: 'FK_kexf01yt25seb8tn1fyso82sdisuserpreferences',
+                referencedTableName: 'is_user_preferences', referencedColumnNames: 'id'
+        )
+        addForeignKeyConstraint(
+                baseTableName: 'is_up_widgets', baseColumnNames: 'user_preferences_id',
+                constraintName: 'FK_ml7xvqvvhyvh0dyuc3xx7fe12isuserpreferences',
+                referencedTableName: 'is_user_preferences', referencedColumnNames: 'id'
+        )
     }
 }
-
