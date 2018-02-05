@@ -357,10 +357,6 @@
             <li class="stories" ng-if=":: project.stories_count">
                 <a href="{{:: project.pkey | absoluteProjectLink }}#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
             </li>
-            <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
-                <a href="{{:: project.pkey | absoluteProjectLink }}#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><i
-                        class="fa fa-tasks {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor }}"></i> {{:: project.currentOrNextRelease.currentOrNextSprint.tasks_count }} <g:message code="todo.is.ui.tasks"/></a>
-            </li>
             <li class="sprint pull-right" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
                 <a href="{{:: project.pkey | absoluteProjectLink }}#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><div
                         class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">

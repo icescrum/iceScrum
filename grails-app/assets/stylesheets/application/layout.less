@@ -1996,17 +1996,14 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
   .backlogCharts {
     margin-bottom: -5px;
   }
-  .release-todo, .background-sprint-todo {
-    color: @state-suggested;
-  }
-  .release-inProgress {
-    color: @state-inProgress;
+  .background-light-sprint-todo {
+    background: lighten(@state-suggested, 10%);
   }
   .background-sprint-inProgress {
     background: @state-inProgress;
   }
   .background-light-sprint-inProgress {
-    background: lighten(@state-inProgress, 35%);
+    background: lighten(@state-inProgress, 25%);
   }
   li a.link:not(:hover), li a.link:not(:hover) :not(.fa), li a.link:not(:hover) time {
     color: @text-muted;
@@ -2017,9 +2014,6 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
   }
   li.features i.fa {
     color: rgb(45, 140, 204);
-  }
-  li.sprint i.fa {
-    color: #777;
   }
   li > a {
     vertical-align: middle;
@@ -2047,11 +2041,6 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
       right: 0;
       left: 0;
     }
-  }
-  .team-size {
-    color: #777;
-    font-weight: bold;
-    margin: 2px;
   }
   hr {
     width: 50%;
