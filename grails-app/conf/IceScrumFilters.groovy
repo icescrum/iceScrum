@@ -56,18 +56,10 @@ class IceScrumFilters {
                     redirect(controller: 'errors', action: 'browserNotSupported')
                     return false
                 }
-                if (params.project) {
-                    params.project = params.project.decodeProjectKey()
-                    if (!params.project) {
-                        forward(controller: "errors", action: "error404")
-                        return false
-                    }
-                } else if (params.portfolio) {
-                    params.portfolio = params.portfolio.decodePortfolioKey()
-                    if (!params.portfolio) {
-                        forward(controller: "errors", action: "error404")
-                        return false
-                    }
+                def keysOk = securityService.decodeKeys(params)
+                if (!keysOk) {
+                    forward(controller: 'errors', action: 'error404')
+                    return false
                 }
                 if (controllerName != 'errors') { // Avoid filtering request if error to avoid nasty loop
                     securityService.filterRequest()
