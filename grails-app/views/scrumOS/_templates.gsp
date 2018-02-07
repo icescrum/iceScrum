@@ -329,8 +329,7 @@
     </is:modal>
     </script>
 
-    <script type="text/ng-template" id="projects.list.html">
-    <hr ng-if="!$first" class="ng-scope">
+    <script type="text/ng-template" id="project.digest.html">
     <h4 class="col-md-12 clearfix">
         <div class="pull-left"><a href="{{:: project.pkey | absoluteProjectLink }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
         <div class="pull-right">
