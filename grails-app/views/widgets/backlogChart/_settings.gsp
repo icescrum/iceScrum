@@ -54,7 +54,7 @@
                    ng-model="holder.backlog">
             <ui-select-match placeholder="${message(code: 'is.ui.widget.backlogChart.no.backlog')}">{{ message($select.selected.name) }}</ui-select-match>
             <ui-select-choices refresh="refreshBacklogs()"
-                               repeat="backlog in holder.backlogs">{{ message(backlog.name) }}</ui-select-choices>
+                               repeat="backlog in holder.backlogs | filter: {name: $select.search}">{{ message(backlog.name) }}</ui-select-choices>
         </ui-select>
     </div>
 </div>
