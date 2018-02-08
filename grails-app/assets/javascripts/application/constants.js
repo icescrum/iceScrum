@@ -39,47 +39,51 @@ isApplication
         ALL: 'all'
     })
     .constant('StoryStatesByName', {
-        "SUGGESTED": 1,
-        "ACCEPTED": 2,
-        "ESTIMATED": 3,
-        "PLANNED": 4,
-        "IN_PROGRESS": 5,
-        "DONE": 7,
-        "ICEBOX": -1
+        SUGGESTED: 1,
+        ACCEPTED: 2,
+        ESTIMATED: 3,
+        PLANNED: 4,
+        IN_PROGRESS: 5,
+        DONE: 7,
+        ICEBOX: -1
     })
     .constant('StoryTypesByName', {
-        "USER_STORY": 0,
-        "DEFECT": 2,
-        "TECHNICAL_STORY": 3
+        USER_STORY: 0,
+        DEFECT: 2,
+        TECHNICAL_STORY: 3
     })
     .constant('TaskStatesByName', {
-        "TODO": 0,
-        "IN_PROGRESS": 1,
-        "DONE": 2
+        TODO: 0,
+        IN_PROGRESS: 1,
+        DONE: 2
     })
     .constant('TaskTypesByName', {
-        "RECURRENT": 10,
-        "URGENT": 11
+        RECURRENT: 10,
+        URGENT: 11
     })
     .constant('AcceptanceTestStatesByName', {
-        "TOCHECK": 1,
-        "FAILED": 5,
-        "SUCCESS": 10
+        TOCHECK: 1,
+        FAILED: 5,
+        SUCCESS: 10
     })
     .constant('SprintStatesByName', {
-        "TODO": 1,
-        "IN_PROGRESS": 2,
-        "DONE": 3
+        TODO: 1,
+        IN_PROGRESS: 2,
+        DONE: 3
     })
     .constant('FeatureStatesByName', {
-        "TODO": 0,
-        "IN_PROGRESS": 1,
-        "DONE": 2
+        TODO: 0,
+        IN_PROGRESS: 1,
+        DONE: 2
+    })
+    .constant('FeatureTypesByName', {
+        FUNCTIONAL: 0,
+        ARCHITECTURAL: 1
     })
     .constant('ReleaseStatesByName', {
-        "TODO": 1,
-        "IN_PROGRESS": 2,
-        "DONE": 3
+        TODO: 1,
+        IN_PROGRESS: 2,
+        DONE: 3
     })
     .constant('IceScrumEventType', {
         CREATE: 'CREATE',
