@@ -879,21 +879,29 @@ td.postits {
 }
 
 .list-group .postit-container {
-  .story-checkbox {
-    border: 1px solid #ddd;
-    width: 59px;
-    height: 59px;
-    padding-top: 22px;
-    border-bottom: 0;
-  }
-  &:nth-child(odd) .story-checkbox {
-    background: #f9f9f9;
-  }
-  &:last-child .story-checkbox {
-    height: 60px;
-    border-bottom: 1px solid #ddd;
-  }
   &.postit-no-state .postit .state {
     display: none;
+  }
+}
+
+.list-group {
+  .table-story-close {
+    tr td {
+      padding: 0;
+      > div {
+        padding: 0;
+      }
+    }
+    .story-checkbox {
+      padding-top: 20px;
+    }
+    .postit {
+      padding: 0;
+      div {
+        .head, .content, .footer {
+          border: none !important;
+        }
+      }
+    }
   }
 }

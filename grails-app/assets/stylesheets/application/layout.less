@@ -1642,14 +1642,15 @@ li {
   clear: both;
   overflow: hidden;
   margin-bottom: 0;
-  &.postits-disabled .postit-container {
-    button, a {
-      pointer-events: none;
-      cursor: default;
-    }
-    .action:not(.active) {
-      display: none !important;
-    }
+}
+
+.postits-disabled .postit-container {
+  button, a {
+    pointer-events: none;
+    cursor: default;
+  }
+  .action:not(.active) {
+    display: none !important;
   }
 }
 

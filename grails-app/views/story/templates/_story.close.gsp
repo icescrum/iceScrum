@@ -30,28 +30,30 @@
     </p>
     <div class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
         <div class="loading-logo" ng-include="'loading.html'"></div>
-        <div ng-if="backlog.stories.length != 0">
-            <div class="text-center pull-right" style="width: 59px">${message(code: 'is.story.state.done')}</div>
-            <div class="text-center">${message(code: 'is.story')}</div>
-        </div>
-        <div class="postits list-group postits-disabled"
+        <div class="list-group"
              ng-controller="storyBacklogCtrl"
-             ng-model="backlog.stories"
-             as-sortable
-             is-disabled="true">
+             ng-model="backlog.stories">
             <div ng-if="backlog.stories.length == 0"
                  class="empty-view">
                 <div ng-include="'story.backlog.close.empty.html'"></div>
             </div>
-            <div ng-repeat="story in backlogStories"
-                 as-sortable-item
-                 class="postit-container postit-no-state">
-                <div class="pull-right text-center story-checkbox">
-                    <input type="checkbox"
-                           ng-model="newDone[story.id]">
-                </div>
-                <div ng-include="'story.html'"></div>
-            </div>
+            <table class="table table-bordered table-striped table-story-close postits-disabled" ng-if="backlog.stories.length > 0">
+                <tr>
+                    <th class="text-center">${message(code: 'is.story')}</th>
+                    <th class="text-center">${message(code: 'is.story.state.done')}</th>
+                </tr>
+                <tr ng-repeat="story in backlogStories" class="postit-container postit-no-state">
+                    <td>
+                        <div ng-include="'story.html'"></div>
+                    </td>
+                    <td>
+                        <div class="text-center story-checkbox">
+                            <input type="checkbox"
+                                   ng-model="newDone[story.id]">
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </is:modal>
