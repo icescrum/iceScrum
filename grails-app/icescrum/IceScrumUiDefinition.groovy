@@ -229,7 +229,7 @@ widgets = {
     'publicProjects' {
         height 2
         width 3
-        icon 'folder-open'
+        icon 'folder'
         allowDuplicate false
     }
     'tasks' {
