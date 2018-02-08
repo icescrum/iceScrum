@@ -417,7 +417,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 sprintTextsSelector.exit().remove();
                 versionSelector.exit().remove();
                 // Insert
-                var classByState = {1: 'todo', 2: 'inProgress', 3: 'done'};
+                var classByState = {};
+                classByState[SprintStatesByName.TODO] = 'todo';
+                classByState[SprintStatesByName.IN_PROGRESS] = 'inProgress';
+                classByState[SprintStatesByName.DONE] = 'done';
                 releaseSelector.enter().append("rect")
                     .attr("y", releaseYMargin)
                     .attr("height", releaseHeight);

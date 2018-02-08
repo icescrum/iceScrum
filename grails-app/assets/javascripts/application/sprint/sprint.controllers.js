@@ -187,14 +187,14 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
         },
         {
             name: 'is.ui.releasePlan.menu.sprint.close',
-            priority: function(sprint, defaultPriority, viewType) { return sprint.state === 2 && viewType === 'details' ? 120 : (sprint.state === 2 ? 100 : defaultPriority); },
+            priority: function(sprint, defaultPriority, viewType) { return sprint.state === SprintStatesByName.IN_PROGRESS ? (viewType === 'details' ? 120 : 100) : defaultPriority; },
             visible: function(sprint) { return $scope.authorizedSprint('close', sprint); },
             action: function(sprint) { $scope.openCloseModal(sprint); }
         },
         {
             name: 'todo.is.ui.taskBoard',
             visible: function(sprint, viewType) { return viewType !== 'taskBoard'; },
-            priority: function(sprint, defaultPriority, viewType) { return viewType !== 'taskBoard' && sprint.state === 2 && sprint.endDate.getTime() > (new Date()).getTime() ? 110 : defaultPriority; },
+            priority: function(sprint, defaultPriority, viewType) { return viewType !== 'taskBoard' && sprint.state === SprintStatesByName.IN_PROGRESS && sprint.endDate.getTime() > (new Date()).getTime() ? 110 : defaultPriority; },
             url: function(sprint) { return '#taskBoard/' + sprint.id + '/details'; }
         },
         {

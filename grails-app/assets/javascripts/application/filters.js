@@ -100,44 +100,44 @@ filters
             return userVisualRolesCache[project.pkey][user.id];
         };
     }])
-    .filter('storyType', function() {
+    .filter('storyType', ['StoryTypesByName', function(StoryTypesByName) {
         return function(type) {
             switch (type) {
-                case 2:
+                case StoryTypesByName.DEFECT:
                     return 'defect';
-                case 3:
+                case StoryTypesByName.TECHNICAL_STORY:
                     return 'functional';
                 default:
                     return '';
             }
         };
-    })
-    .filter('storyTypeIcon', function() {
+    }])
+    .filter('storyTypeIcon', ['StoryTypesByName', function(StoryTypesByName) {
         return function(type) {
             switch (type) {
-                case 2:
+                case StoryTypesByName.DEFECT:
                     return 'bug';
-                case 3:
+                case StoryTypesByName.TECHNICAL_STORY:
                     return 'cogs';
                 default:
                     return '';
 
             }
         }
-    })
-    .filter('featureType', function() {
+    }])
+    .filter('featureType', ['FeatureTypesByName', function(FeatureTypesByName) {
         return function(type) {
-            return type == 1 ? 'architectural' : '';
+            return type == FeatureTypesByName.ARCHITECTURAL ? 'architectural' : '';
         };
-    })
+    }])
+    .filter('featureTypeIcon', ['FeatureTypesByName', function(FeatureTypesByName) {
+        return function(type) {
+            return type == FeatureTypesByName.ARCHITECTURAL ? 'cogs' : '';
+        };
+    }])
     .filter('join', function() {
         return function(array) {
             return _.join(array, ', ');
-        };
-    })
-    .filter('featureTypeIcon', function() {
-        return function(type) {
-            return type == 1 ? 'cogs' : '';
         };
     })
     .filter('contrastColor', function() {
