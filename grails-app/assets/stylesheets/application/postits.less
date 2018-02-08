@@ -387,20 +387,20 @@
     }
     position: relative;
     .postit {
-      &.defect:after, &.functional:after, &.architectural:after, &.task-blocked:after {
+      &.postit-type:after, &.task-blocked:after {
         content: "";
         position: absolute;
         top: 0;
         right: 0;
         border-top-right-radius: 2px;
-        border: 11px solid;
+        border: 11px solid transparent;
         display: block;
         -webkit-box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
         box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
         width: 0;
         z-index: 1;
       }
-      &.defect:before, &.functional:before, &.architectural:before, &.task-blocked:before {
+      &.postit-type:before, &.task-blocked:before {
         font: normal normal normal 14px/1 FontAwesome;
         font-size: 12px;
         text-rendering: auto;
@@ -413,7 +413,8 @@
         position: absolute;
       }
       &.defect:after, &.task-blocked:after {
-        border-color: @brand-danger @brand-danger transparent transparent;
+        border-top-color: @brand-danger;
+        border-right-color: @brand-danger;
       }
       &.defect:before {
         content: "\f188";
@@ -422,19 +423,20 @@
         padding-right: 4px;
         content: "\f12a";
       }
-      &.functional:after {
-        border-color: @brand-info @brand-info transparent transparent;
+      &.technical:after {
+        border-top-color: @brand-info;
+        border-right-color: @brand-info;
       }
-      &.functional:before {
+      &.technical:before {
         content: "\f085";
       }
       &.architectural:after {
-        border-color: @brand-success @brand-success transparent transparent;
+        border-top-color: @brand-success;
+        border-right-color: @brand-success;
       }
       &.architectural:before {
         content: "\f085";
       }
-
     }
   }
   &.size-l {
@@ -677,17 +679,17 @@
           color: @gray;
         }
       }
-      &.defect:after, &.functional:after, &.architectural:after, &.task-blocked:after {
+      &.postit-type:after, &.task-blocked:after {
         content: "";
         position: absolute;
         top: 0;
         right: 0;
-        border: 17px solid;
+        border: 17px solid transparent;
         display: block;
         width: 0;
         z-index: 1;
       }
-      &.defect:before, &.functional:before, &.architectural:before, &.task-blocked:before {
+      &.postit-type:before, &.task-blocked:before {
         font: normal normal normal 14px/1 FontAwesome;
         font-size: 15px;
         text-rendering: auto;
@@ -700,7 +702,8 @@
         position: absolute;
       }
       &.defect:after, &.task-blocked:after {
-        border-color: @brand-danger @brand-danger transparent transparent;
+        border-top-color: @brand-danger;
+        border-right-color: @brand-danger;
       }
       &.defect:before {
         content: "\f188";
@@ -709,14 +712,16 @@
         padding-right: 4px;
         content: "\f12a";
       }
-      &.functional:after {
-        border-color: @brand-info @brand-info transparent transparent;
+      &.technical:after {
+        border-top-color: @brand-info;
+        border-right-color: @brand-info;
       }
-      &.functional:before {
+      &.technical:before {
         content: "\f085";
       }
       &.architectural:after {
-        border-color: @brand-success @brand-success transparent transparent;
+        border-top-color: @brand-success;
+        border-right-color: @brand-success;
       }
       &.architectural:before {
         content: "\f085";

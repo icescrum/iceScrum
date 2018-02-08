@@ -949,3 +949,15 @@ services.service('postitSize', ['screenSize', '$localStorage', function(screenSi
         $localStorage[contextSizeName] = next;
     };
 }]);
+
+services.service('StoryTypesClasses', ['StoryTypesByName', function(StoryTypesByName) {
+    this[StoryTypesByName.USER_STORY] = '';
+    this[StoryTypesByName.DEFECT] = 'defect';
+    this[StoryTypesByName.TECHNICAL_STORY] = 'technical';
+}]);
+
+services.service('StoryTypesIcons', ['StoryTypesByName', function(StoryTypesByName) {
+    this[StoryTypesByName.USER_STORY] = '';
+    this[StoryTypesByName.DEFECT] = 'bug';
+    this[StoryTypesByName.TECHNICAL_STORY] = 'cogs';
+}]);

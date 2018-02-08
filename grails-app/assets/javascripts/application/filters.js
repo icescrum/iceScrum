@@ -100,34 +100,23 @@ filters
             return userVisualRolesCache[project.pkey][user.id];
         };
     }])
-    .filter('storyType', ['StoryTypesByName', function(StoryTypesByName) {
+    .filter('storyType', ['StoryTypesClasses', function(StoryTypesClasses) {
         return function(type) {
-            switch (type) {
-                case StoryTypesByName.DEFECT:
-                    return 'defect';
-                case StoryTypesByName.TECHNICAL_STORY:
-                    return 'functional';
-                default:
-                    return '';
+            var cssClass = StoryTypesClasses[type];
+            if (cssClass) {
+                cssClass += ' postit-type';
             }
+            return cssClass;
         };
     }])
-    .filter('storyTypeIcon', ['StoryTypesByName', function(StoryTypesByName) {
+    .filter('storyTypeIcon', ['StoryTypesIcons', function(StoryTypesIcons) {
         return function(type) {
-            switch (type) {
-                case StoryTypesByName.DEFECT:
-                    return 'bug';
-                case StoryTypesByName.TECHNICAL_STORY:
-                    return 'cogs';
-                default:
-                    return '';
-
-            }
+            return StoryTypesIcons[type];
         }
     }])
     .filter('featureType', ['FeatureTypesByName', function(FeatureTypesByName) {
         return function(type) {
-            return type == FeatureTypesByName.ARCHITECTURAL ? 'architectural' : '';
+            return type == FeatureTypesByName.ARCHITECTURAL ? 'architectural postit-type' : '';
         };
     }])
     .filter('featureTypeIcon', ['FeatureTypesByName', function(FeatureTypesByName) {
