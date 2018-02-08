@@ -286,7 +286,6 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioSe
             size: 'lg',
             controller: ['$scope', '$controller', 'ProjectService', 'PortfolioService', 'Session', function($scope, $controller, ProjectService, PortfolioService, Session) {
                 $controller('abstractProjectListCtrl', {$scope: $scope});
-                $controller('abstractPortfolioListCtrl', {$scope: $scope});
                 // Functions
                 $scope.searchWorkspaces = function() {
                     var listFunction = {
@@ -316,8 +315,13 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioSe
                     });
                 };
                 $scope.selectWorkspace = function(workspace) {
+                    debugger;
                     $scope.summary = workspace.class.toLowerCase() + '.summary.html';
-                    $scope['select' + workspace.class](workspace);
+                    if ($scope['select' + workspace.class]) {
+                        $scope['select' + workspace.class](workspace);
+                    } else {
+                        $scope[workspace.class.toLowerCase()] = workspace;
+                    }
                     $scope.workspace = workspace;
                 };
                 // Init
