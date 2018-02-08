@@ -315,7 +315,6 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioSe
                     });
                 };
                 $scope.selectWorkspace = function(workspace) {
-                    debugger;
                     $scope.summary = workspace.class.toLowerCase() + '.summary.html';
                     if ($scope['select' + workspace.class]) {
                         $scope['select' + workspace.class](workspace);
