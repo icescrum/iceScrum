@@ -21,7 +21,8 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, ProjectService, ReleaseService, SprintService, TeamService) {
+controllers.controller('abstractProjectListCtrl', ['$scope', '$controller', 'ProjectService', 'ReleaseService', 'SprintService', 'TeamService', function($scope, $controller, ProjectService, ReleaseService, SprintService, TeamService) {
+    $controller('projectDigestChartCtrl', {$scope: $scope});
     $scope.selectProject = function(project) {
         $scope.project = project;
         $scope.projectMembersCount = ProjectService.countMembers(project);
@@ -33,6 +34,12 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
         });
     };
     // Init
+    $scope.release = {};
+    $scope.project = {};
+    $scope.projectMembersCount = 0;
+}]);
+
+controllers.controller('projectDigestChartCtrl', ['$scope', function($scope) {
     $scope.backlogChartOptions = {
         chart: {
             width: 80,
@@ -50,9 +57,6 @@ controllers.controller('abstractProjectListCtrl', ['$scope', 'ProjectService', '
             enable: false
         }
     };
-    $scope.release = {};
-    $scope.project = {};
-    $scope.projectMembersCount = 0;
 }]);
 
 controllers.controller('publicProjectListCtrl', ['$scope', '$controller', 'ProjectService', function($scope, $controller, ProjectService) {

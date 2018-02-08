@@ -32,13 +32,13 @@
         </ui-select>
     </div>
     <div class="form-group">
-        <label>${message(code: 'is.ui.widget.chart.project')}</label>
+        <label>${message(code: 'is.project')}</label>
         <ui-select class="form-control"
                    search-enabled="true"
                    ng-change="projectChanged()"
                    append-to-body="true"
                    ng-model="holder.project">
-            <ui-select-match placeholder="${message(code: 'is.ui.widget.chart.no.project')}">{{ $select.selected.name }}</ui-select-match>
+            <ui-select-match placeholder="${message(code: 'is.ui.widget.project.no')}">{{ $select.selected.name }}</ui-select-match>
             <ui-select-choices repeat="proj in projects track by $index"
                                refresh="refreshProjects($select.search)"
                                refresh-delay="150">{{proj.name}}</ui-select-choices>

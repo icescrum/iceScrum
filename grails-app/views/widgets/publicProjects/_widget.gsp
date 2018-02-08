@@ -27,7 +27,7 @@
         </div>
         <div ng-repeat="project in projects" class="row projects-list">
             <hr ng-if="!$first">
-            <div ng-include src="'project.digest.html'"></div>
+            <div class="project-digest" ng-include src="'project.digest.html'"></div>
         </div>
     </div>
 </is:widget>
