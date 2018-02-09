@@ -27,6 +27,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.utils.ServicesUtils
 
@@ -145,13 +146,13 @@ class ReleaseController implements ControllerErrorHandler {
         def values = releaseService.releaseBurndownValues(release)
         def computedValues = [[key   : message(code: 'is.chart.releaseBurnDown.series.userstories.name'),
                                values: values.collect { return [it.userstories] },
-                               color : '#009900'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_USER_STORY]],
                               [key   : message(code: 'is.chart.releaseBurnDown.series.technicalstories.name'),
                                values: values.collect { return [it.technicalstories] },
-                               color : '#1F77B4'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_TECHNICAL_STORY]],
                               [key   : message(code: 'is.chart.releaseBurnDown.series.defectstories.name'),
                                values: values.collect { return [it.defectstories] },
-                               color : '#CC3300']]
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_DEFECT]]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.releaseBurnDown.title")]]

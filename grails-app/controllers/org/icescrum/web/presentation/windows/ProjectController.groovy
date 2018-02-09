@@ -284,22 +284,22 @@ class ProjectController implements ControllerErrorHandler {
         def values = projectService.cumulativeFlowValues(_project)
         def computedValues = [[key   : message(code: "is.chart.projectCumulativeflow.serie.suggested.name"),
                                values: values.collect { return [it.suggested] },
-                               color : '#AAAAAA'],
+                               color :  grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_SUGGESTED]],
                               [key   : message(code: "is.chart.projectCumulativeflow.serie.accepted.name"),
                                values: values.collect { return [it.accepted] },
-                               color : '#FFCC04'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_ACCEPTED]],
                               [key   : message(code: "is.chart.projectCumulativeflow.serie.estimated.name"),
                                values: values.collect { return [it.estimated] },
-                               color : '#FF9933'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_ESTIMATED]],
                               [key   : message(code: "is.chart.projectCumulativeflow.serie.planned.name"),
                                values: values.collect { return [it.planned] },
-                               color : '#CC3300'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_PLANNED]],
                               [key   : message(code: "is.chart.projectCumulativeflow.serie.inprogress.name"),
                                values: values.collect { return [it.inprogress] },
-                               color : '#42A9E0'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_INPROGRESS]],
                               [key   : message(code: "is.chart.projectCumulativeflow.serie.done.name"),
                                values: values.collect { return [it.done] },
-                               color : '#009900']].reverse()
+                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_DONE]]].reverse()
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectCumulativeflow.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.projectCumulativeflow.xaxis.label')]],
                        title: [text: message(code: "is.chart.projectCumulativeflow.title")]]
@@ -343,13 +343,13 @@ class ProjectController implements ControllerErrorHandler {
         def values = projectService.projectBurndownValues(_project)
         def computedValues = [[key   : message(code: 'is.chart.projectBurnDown.series.userstories.name'),
                                values: values.collect { return [it.userstories] },
-                               color : '#009900'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_USER_STORY]],
                               [key   : message(code: 'is.chart.projectBurnDown.series.technicalstories.name'),
                                values: values.collect { return [it.technicalstories] },
-                               color : '#1F77B4'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_TECHNICAL_STORY]],
                               [key   : message(code: 'is.chart.projectBurnDown.series.defectstories.name'),
                                values: values.collect { return [it.defectstories] },
-                               color : '#CC3300']]
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_DEFECT]]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.projectBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.projectBurnDown.title")]]
@@ -361,13 +361,13 @@ class ProjectController implements ControllerErrorHandler {
         def values = projectService.projectVelocityValues(_project)
         def computedValues = [[key   : message(code: 'is.chart.projectVelocity.series.userstories.name'),
                                values: values.collect { return [it.userstories] },
-                               color : '#009900'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_USER_STORY]],
                               [key   : message(code: 'is.chart.projectVelocity.series.technicalstories.name'),
                                values: values.collect { return [it.technicalstories] },
-                               color : '#1F77B4'],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_TECHNICAL_STORY]],
                               [key   : message(code: 'is.chart.projectVelocity.series.defectstories.name'),
                                values: values.collect { return [it.defectstories] },
-                               color : '#CC3300']]
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_DEFECT]]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectVelocity.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.projectVelocity.xaxis.label')]],
                        title: [text: message(code: "is.chart.projectVelocity.title")]]
