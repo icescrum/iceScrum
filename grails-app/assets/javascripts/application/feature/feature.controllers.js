@@ -23,7 +23,7 @@
  *
  */
 
-controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $filter, TagService, FeatureService, postitSize, screenSize) {
+extensibleController('featureCtrl', ['$scope', '$filter', 'TagService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $filter, TagService, FeatureService, postitSize, screenSize) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -40,21 +40,11 @@ controllers.controller('featureCtrl', ['$scope', '$filter', 'TagService', 'Featu
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
-    $scope.createStoryEpic = function(feature) {
-        FeatureService.createStoryEpic(feature).then(function() {
-            $scope.notifySuccess('is.ui.feature.copy.epic.confirm');
-        });
-    };
     $scope.menus = [
         {
             name: 'todo.is.ui.context.set',
             visible: function(feature) { return $scope.workspaceType == 'project' },
             url: $scope.featureContextUrl
-        },
-        {
-            name: 'is.ui.feature.copy.epic',
-            visible: function(feature) { return $scope.authorizedFeature('createStoryEpic'); },
-            action: function(feature) { $scope.createStoryEpic(feature); }
         },
         {
             name: 'todo.is.ui.permalink.copy',
@@ -145,7 +135,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     $scope.availableColors = [];
 }]);
 
-controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', 'project', function($scope, $controller, featureListId, FeatureService, project) {
+extensibleController('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', 'project', function($scope, $controller, featureListId, FeatureService, project) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.sumValues = function(features) {
@@ -166,14 +156,9 @@ controllers.controller('featureMultipleCtrl', ['$scope', '$controller', 'feature
             $scope.notifySuccess('todo.is.ui.feature.multiple.updated');
         });
     };
-    $scope.createStoryEpicMultiple = function() {
-        FeatureService.createStoryEpicMultiple(featureListId, project.id).then(function() {
-            $scope.notifySuccess('is.ui.feature.multiple.copy.epic.confirm');
-        });
-    };
     // Init
     $scope.selectableOptions.selectingMultiple = true;
-    $scope.ids = featureListId;
+    $scope.featureListId = featureListId;
     $scope.topFeature = {};
     $scope.featurePreview = {};
     $scope.features = [];

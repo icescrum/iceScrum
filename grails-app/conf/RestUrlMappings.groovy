@@ -173,15 +173,6 @@ class RestUrlMappings {
             method = 'GET'
         }
         // Feature nested actions
-        "/ws/project/$project/feature/$id/$action" {
-            controller = 'feature'
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                id(matches: /\d*/)
-                action(inList: ['createStoryEpic'])
-            }
-            method = 'POST'
-        }
         "/ws/project/$project/feature/$action" {
             controller = 'feature'
             constraints {

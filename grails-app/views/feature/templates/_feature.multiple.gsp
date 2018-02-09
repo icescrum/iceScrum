@@ -86,14 +86,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="btn-toolbar buttons-margin-bottom">
-                        <div ng-if="authorizedFeature('createStoryEpic')"
-                             class="btn-group">
-                            <button type="button"
-                                    class="btn btn-default"
-                                    ng-click="createStoryEpicMultiple()">
-                                ${message(code: 'is.ui.feature.copy.epic')}
-                            </button>
-                        </div>
+                        <entry:point id="feature-multiple-toolbar"/>
                         <div ng-if="authorizedFeature('delete')"
                              class="btn-group">
                             <button type="button"

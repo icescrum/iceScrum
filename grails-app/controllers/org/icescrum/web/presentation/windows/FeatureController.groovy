@@ -120,14 +120,6 @@ class FeatureController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('productOwner() and !archivedProject()')
-    def createStoryEpic() {
-        List<Feature> features = Feature.withFeatures(params)
-        List<Story> stories = featureService.createStoryEpic(features)
-        def returnData = stories.size() > 1 ? stories : stories.first()
-        render(status: 200, contentType: 'application/json', text: returnData as JSON)
-    }
-
     def projectParkingLotChart() {
         forward(controller: 'project', action: 'projectParkingLotChart', params: ['controllerName': controllerName])
     }
