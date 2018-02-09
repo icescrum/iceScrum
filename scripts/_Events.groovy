@@ -30,6 +30,17 @@ eventCreateWarStart = { warname, stagingDir ->
             entry(key: 'app.version', value: ' Pro Cloud', operation: '+')
         }
     }
+
+    /* Manage plugins migrations */
+    File classesDir = new File(stagingDir, 'WEB-INF/classes/migrations')
+    classesDir.mkdirs()
+    System.getProperty("icescrum.plugins.dir")?.split(";")?.each { pluginDir ->
+        if(new File(pluginDir + "/grails-app/migrations").exists()){
+            ant.copy(todir: classesDir.path, verbose: true) {
+                fileset dir: pluginDir + "/grails-app/migrations"
+            }
+        }
+    }
 }
 
 eventSetClasspath = {

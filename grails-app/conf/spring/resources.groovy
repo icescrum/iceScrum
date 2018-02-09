@@ -20,6 +20,12 @@
  * Vincent Barrier (vbarrier@kagilum.com)
  */
 
+
+import grails.plugin.databasemigration.MigrationUtils
+import liquibase.resource.ClassLoaderResourceAccessor
+import liquibase.resource.CompositeResourceAccessor
+import liquibase.resource.FileSystemResourceAccessor
+import liquibase.resource.ResourceAccessor
 import org.icescrum.core.security.MethodScrumExpressionHandler
 import org.icescrum.core.security.WebScrumExpressionHandler
 import org.icescrum.core.utils.TimeoutHttpSessionListener
@@ -47,5 +53,18 @@ beans = {
 
     timeoutHttpSessionListener(TimeoutHttpSessionListener) {
         config = grailsApplication.config
+    }
+
+    /* Manage plugins migrations */
+    if (!application.warDeployed) {
+
+        String changelogLocationPath = new File('grails-app/migrations').path
+        def openers = [new FileSystemResourceAccessor(changelogLocationPath), new ClassLoaderResourceAccessor()]
+        System.getProperty("icescrum.plugins.dir")?.split(";")?.each {
+            if(new File(it + "/grails-app/migrations").exists()){
+                openers << new FileSystemResourceAccessor(it + "/grails-app/migrations")
+            }
+        }
+        migrationResourceAccessor(CompositeResourceAccessor, openers)
     }
 }
