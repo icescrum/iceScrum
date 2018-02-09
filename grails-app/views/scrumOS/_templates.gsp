@@ -336,45 +336,49 @@
             <small><time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small>
         </div>
     </h4>
-    <div class="col-lg-10 col-xs-9">
+    <div class="col-lg-9">
         <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project.pkey"></div>
     </div>
-    <div class="col-lg-2 col-xs-3">
+    <div class="col-lg-3">
         <div class="backlogCharts chart pull-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
             <nvd3 options="options" ng-if="data.length > 0" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
-        <div class="team-name text-ellipsis"><i class="fa fa-users"></i> {{:: project.team.name }}</div>
+        <div class="team-name text-ellipsis" title="{{:: project.team.name }}"><i class="fa fa-users"></i> {{:: project.team.name }}</div>
     </div>
-    <div class="col-lg-10 col-xs-9">
-        <ul class="list-inline text-muted">
-            <li class="release" ng-if=":: project.currentOrNextRelease">
-                <a href="{{:: project.pkey | absoluteProjectLink }}#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
-                        class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
-            </li>
-            <li class="features" ng-if=":: project.features_count">
-                <a href="{{:: project.pkey | absoluteProjectLink }}#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>
-            </li>
-            <li class="stories" ng-if=":: project.stories_count">
-                <a href="{{:: project.pkey | absoluteProjectLink }}#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
-            </li>
-            <li class="sprint pull-right" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
-                <a href="{{:: project.pkey | absoluteProjectLink }}#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><div
-                        class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
-                    <span class="progress-value">{{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</span>
-                    <div class="progress-bar {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background' }}" role="progressbar"
-                         aria-valuenow="{{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}" aria-valuemin="0" aria-valuemax="100"
-                         style="width: {{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}%;"></div>
-                </div></a>
-            </li>
-        </ul>
+    <div class="col-lg-9" style="margin-top:2px">
+        <div class="row">
+            <ul class="list-inline text-muted col-md-8">
+                <li class="release" ng-if=":: project.currentOrNextRelease">
+                    <a href="{{:: project.pkey | absoluteProjectLink }}#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
+                            class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
+                </li>
+                <li class="features" ng-if=":: project.features_count">
+                    <a href="{{:: project.pkey | absoluteProjectLink }}#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>
+                </li>
+                <li class="stories" ng-if=":: project.stories_count">
+                    <a href="{{:: project.pkey | absoluteProjectLink }}#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
+                </li>
+            </ul>
+            <ul class="list-inline text-muted col-md-4 text-right">
+                <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
+                    <a href="{{:: project.pkey | absoluteProjectLink }}#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><div
+                            class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
+                        <span class="progress-value">{{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</span>
+                        <div class="progress-bar {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background' }}" role="progressbar"
+                             aria-valuenow="{{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}" aria-valuemin="0" aria-valuemax="100"
+                             style="width: {{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}%;"></div>
+                    </div></a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="col-lg-2 col-xs-3 users">
+    <div class="col-lg-3 users" style="margin-top:2px">
         <img ng-src="{{:: user | userAvatar }}"
-             ng-repeat="user in ::project.allUsers | limitTo:3"
-             height="22" width="22" style="margin-left:5px;"
+             ng-repeat="user in ::project.allUsers | limitTo:2"
+             height="20" width="20" style="margin-left:5px;"
              class="{{:: user | userColorRoles:project }}"
              uib-tooltip="{{:: user | userFullName }}"/>
-        <span class="team-count" ng-if=":: project.allUsers.length > 3">+ {{ project.allUsers.length - 3 }}</span>
+        <span class="team-count" ng-if=":: project.allUsers.length > 2">+ {{ project.allUsers.length - 2 }}</span>
     </div>
     </script>
 

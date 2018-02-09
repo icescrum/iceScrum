@@ -485,6 +485,11 @@ class ProjectController implements ControllerErrorHandler {
                 project: [
                         include: ['currentOrNextRelease', 'backlogs', 'allUsers']
                 ],
+                user   : [
+                        excludeAll : true,
+                        overrideAll: true,
+                        include    : ['firstName', 'lastName']
+                ],
                 backlog: [
                         excludeAll : true,
                         overrideAll: true,
@@ -520,7 +525,12 @@ class ProjectController implements ControllerErrorHandler {
         Portfolio _portfolio = Portfolio.withPortfolio(portfolio)
         request.marshaller = [
                 project: [
-                        include: ['currentOrNextRelease', 'backlogs']
+                        include: ['currentOrNextRelease', 'backlogs', 'allUsers']
+                ],
+                user   : [
+                        excludeAll : true,
+                        overrideAll: true,
+                        include    : ['firstName', 'lastName']
                 ],
                 backlog: [
                         excludeAll : true,
