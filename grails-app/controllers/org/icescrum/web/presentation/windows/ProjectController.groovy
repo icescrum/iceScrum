@@ -483,7 +483,7 @@ class ProjectController implements ControllerErrorHandler {
         }
         request.marshaller = [
                 project: [
-                        include: ['currentOrNextRelease', 'backlogs']
+                        include: ['currentOrNextRelease', 'backlogs', 'allUsers']
                 ],
                 backlog: [
                         excludeAll : true,

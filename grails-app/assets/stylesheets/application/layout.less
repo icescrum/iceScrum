@@ -1997,9 +1997,16 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
 }
 
 .project-digest {
+  .nvd3-svg {
+    float: right;
+    margin-right: 18px;
+  }
   .list-inline {
     margin-top: 5px;
     font-size: 13px;
+    li {
+      vertical-align: bottom;
+    }
   }
   .backlogCharts {
     margin-bottom: -5px;
@@ -2022,6 +2029,9 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
   }
   li.features i.fa {
     color: rgb(45, 140, 204);
+  }
+  li.sprint {
+    margin-top: 1px;
   }
   li > a {
     vertical-align: middle;
@@ -2049,5 +2059,15 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
       right: 0;
       left: 0;
     }
+  }
+  .team-name {
+    clear: both;
+    text-align: right;
+  }
+  .team-count {
+    font-weight: bold;
+  }
+  .users {
+    text-align: right;
   }
 }

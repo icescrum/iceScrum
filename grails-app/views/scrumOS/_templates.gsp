@@ -343,6 +343,7 @@
         <div class="backlogCharts chart pull-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
             <nvd3 options="options" ng-if="data.length > 0" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
+        <div class="team-name text-ellipsis"><i class="fa fa-users"></i> {{:: project.team.name }}</div>
     </div>
     <div class="col-lg-10 col-xs-9">
         <ul class="list-inline text-muted">
@@ -366,6 +367,14 @@
                 </div></a>
             </li>
         </ul>
+    </div>
+    <div class="col-lg-2 col-xs-3 users">
+        <img ng-src="{{:: user | userAvatar }}"
+             ng-repeat="user in ::project.allUsers | limitTo:3"
+             height="22" width="22" style="margin-left:5px;"
+             class="{{:: user | userColorRoles:project }}"
+             uib-tooltip="{{:: user | userFullName }}"/>
+        <span class="team-count" ng-if=":: project.allUsers.length > 3">+ {{ project.allUsers.length - 3 }}</span>
     </div>
     </script>
 
