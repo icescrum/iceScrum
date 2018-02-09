@@ -609,7 +609,7 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, template: "dialogs/import")
     }
 
-    @Secured(['scrumMaster() or productOwner()'])
+    @Secured(["hasRole('ROLE_ADMIN') or scrumMaster() or productOwner()"])
     def exportDialog() {
         render(status: 200, template: "dialogs/export")
     }
