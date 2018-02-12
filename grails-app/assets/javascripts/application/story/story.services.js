@@ -25,7 +25,7 @@ services.factory('Story', ['Resource', function($resource) {
     return $resource('/p/:projectId/story/:type/:typeId/:id/:action');
 }]);
 
-services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'CacheService', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, CacheService, FormService, ReleaseService, SprintService, StoryStatesByName, SprintStatesByName, IceScrumEventType, PushService) {
+services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$state', 'Story', 'Session', 'CacheService', 'FormService', 'ReleaseService', 'SprintService', 'StoryStatesByName', 'StoryTypesByName', 'SprintStatesByName', 'IceScrumEventType', 'PushService', function($timeout, $q, $http, $rootScope, $state, Story, Session, CacheService, FormService, ReleaseService, SprintService, StoryStatesByName, StoryTypesByName, SprintStatesByName, IceScrumEventType, PushService) {
     var self = this;
     var queryWithContext = function(parameters, success, error) {
         if (!parameters) {
@@ -270,7 +270,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             case 'updateEstimate':
                 return Session.tmOrSm() && story.state > StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE;
             case 'updateParentSprint':
-                return Session.poOrSm() && story.state > StoryStatesByName.ACCEPTED && story.state < StoryStatesByName.DONE;
+                return Session.poOrSm() && story.state > StoryStatesByName.ACCEPTED && story.state < StoryStatesByName.DONE && _.includes([StoryTypesByName.USER_STORY, StoryTypesByName.DEFECT, StoryTypesByName.TECHNICAL_STORY], story.type);
             case 'accept':
                 return Session.po() && story.state <= StoryStatesByName.SUGGESTED;
             case 'split':

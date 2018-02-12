@@ -23,7 +23,7 @@
  *
  */
 
-controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$uibModal', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', function($rootScope, $scope, $state, $q, $uibModal, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName) {
+controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$uibModal', 'Session', 'SprintService', 'SprintStatesByName', 'StoryService', 'StoryStatesByName', 'StoryTypesByName', function($rootScope, $scope, $state, $q, $uibModal, Session, SprintService, SprintStatesByName, StoryService, StoryStatesByName, StoryTypesByName) {
     // Functions
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
@@ -136,7 +136,8 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             order: 'rank',
             inputFilterEnabled: true,
             filter: {
-                state: StoryStatesByName.ESTIMATED
+                state: StoryStatesByName.ESTIMATED,
+                type: [StoryTypesByName.USER_STORY, StoryTypesByName.DEFECT, StoryTypesByName.TECHNICAL_STORY]
             },
             submit: function(selectedIds) {
                 if (selectedIds.length > 0) {
