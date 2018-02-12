@@ -341,15 +341,13 @@ class ProjectController implements ControllerErrorHandler {
     def burndown(long project) {
         Project _project = Project.withProject(project)
         def values = projectService.projectBurndownValues(_project)
-        def computedValues = [[key   : message(code: 'is.chart.projectBurnDown.series.userstories.name'),
-                               values: values.collect { return [it.userstories] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_USER_STORY]],
-                              [key   : message(code: 'is.chart.projectBurnDown.series.technicalstories.name'),
-                               values: values.collect { return [it.technicalstories] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_TECHNICAL_STORY]],
-                              [key   : message(code: 'is.chart.projectBurnDown.series.defectstories.name'),
-                               values: values.collect { return [it.defectstories] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_DEFECT]]]
+        def computedValues = grailsApplication.config.icescrum.storyTypes.collect { storyType ->
+            return [
+                    key   : message(code: 'is.chart.story.type.' + storyType),
+                    values: values.collect { return [it[storyType]] },
+                    color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[storyType]
+            ]
+        }
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.projectBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.projectBurnDown.title")]]
@@ -359,13 +357,13 @@ class ProjectController implements ControllerErrorHandler {
     def velocity(long project) {
         Project _project = Project.withProject(project)
         def values = projectService.projectVelocityValues(_project)
-        def computedValues = [[key   : message(code: 'is.chart.projectVelocity.series.userstories.name'),
+        def computedValues = [[key   : message(code: 'is.chart.story.type.0'),
                                values: values.collect { return [it.userstories] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_USER_STORY]],
-                              [key   : message(code: 'is.chart.projectVelocity.series.technicalstories.name'),
+                              [key   : message(code: 'is.chart.story.type.3'),
                                values: values.collect { return [it.technicalstories] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_TECHNICAL_STORY]],
-                              [key   : message(code: 'is.chart.projectVelocity.series.defectstories.name'),
+                              [key   : message(code: 'is.chart.story.type.2'),
                                values: values.collect { return [it.defectstories] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_DEFECT]]]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectVelocity.yaxis.label')],

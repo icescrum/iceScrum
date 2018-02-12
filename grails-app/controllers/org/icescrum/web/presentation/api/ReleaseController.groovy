@@ -144,15 +144,14 @@ class ReleaseController implements ControllerErrorHandler {
     def burndown(long project, long id) {
         Release release = Release.withRelease(project, id)
         def values = releaseService.releaseBurndownValues(release)
-        def computedValues = [[key   : message(code: 'is.chart.releaseBurnDown.series.userstories.name'),
-                               values: values.collect { return [it.userstories] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_USER_STORY]],
-                              [key   : message(code: 'is.chart.releaseBurnDown.series.technicalstories.name'),
-                               values: values.collect { return [it.technicalstories] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_TECHNICAL_STORY]],
-                              [key   : message(code: 'is.chart.releaseBurnDown.series.defectstories.name'),
-                               values: values.collect { return [it.defectstories] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_DEFECT]]]
+        def storyTypes = grailsApplication.config.icescrum.storyTypes
+        def computedValues = storyTypes.collect { storyType ->
+            return [
+                    key   : message(code: 'is.chart.story.type.' + storyType),
+                    values: values.collect { return [it[storyType]] },
+                    color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[storyType]
+            ]
+        }
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.releaseBurnDown.xaxis.label')]],
                        title: [text: message(code: "is.chart.releaseBurnDown.title")]]
