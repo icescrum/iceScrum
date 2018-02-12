@@ -1,4 +1,6 @@
+import grails.util.Holders
 import org.icescrum.core.support.ApplicationSupport
+import liquibase.exception.PreconditionErrorException
 
 /*
 * Copyright (c) 2017 Kagilum SAS
@@ -28,7 +30,14 @@ import org.icescrum.core.support.ApplicationSupport
 databaseChangeLog = {
     changeSet(author: "vbarrier", id: "change_database_to_utf8mb4") {
         def databaseName = ApplicationSupport.getDatabaseName()
-        preConditions(onFail: "MARK_RAN") {
+        preConditions(onFail: "CONTINUE", onError: "MARK_RAN") {
+            grailsPrecondition{
+                check{
+                    if(!Holders.grailsApplication.config.dataSource.driverClassName.contains("mysql")){
+                        throw new PreconditionErrorException("Not in MySQL context", [])
+                    }
+                }
+            }
             dbms(type: 'mysql')
             or {
                 not {
@@ -39,6 +48,7 @@ databaseChangeLog = {
         }
         grailsChange {
             change {
+                Holders.grailsApplication.config.utf8mb4migration = true
                 sql.execute("ALTER TABLE `DATABASECHANGELOG` CHANGE `ID` `ID` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `DATABASECHANGELOG` CHANGE `AUTHOR` `AUTHOR` varchar(63) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `DATABASECHANGELOG` CHANGE `EXECTYPE` `EXECTYPE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -73,22 +83,6 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_backlog` CHANGE `filter` `filter` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_backlog` CHANGE `name` `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_backlog` CHANGE `notes` `notes` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker` CHANGE `name` `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker` CHANGE `password` `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker` CHANGE `project_name` `project_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker` CHANGE `project_tag` `project_tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker` CHANGE `type` `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker` CHANGE `url` `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker` CHANGE `username` `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker_import` CHANGE `name` `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker_import` CHANGE `options_data` `options_data` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker_import` CHANGE `tags` `tags` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker_sync` CHANGE `field` `field` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_build` CHANGE `built_on` `built_on` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_build` CHANGE `built_on` `built_on` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_build` CHANGE `job_name` `job_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_build` CHANGE `name` `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_build` CHANGE `url` `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_event` CHANGE `name` `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature` CHANGE `color` `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature` CHANGE `description` `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -107,14 +101,7 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_project_preferences` CHANGE `stake_holder_restricted_views` `stake_holder_restricted_views` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_project_preferences` CHANGE `timezone` `timezone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_release` CHANGE `name` `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_roadmap` CHANGE `code` `code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_roadmap` CHANGE `name` `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_roadmap` CHANGE `notes` `notes` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit` CHANGE `cid` `cid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit` CHANGE `committer` `committer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit` CHANGE `url` `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_simple_project_app` CHANGE `app_definition_id` `app_definition_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_slack_preferences` CHANGE `url` `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_sprint` CHANGE `delivered_version` `delivered_version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_story` CHANGE `affect_version` `affect_version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_story` CHANGE `description` `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -132,8 +119,6 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_team` CHANGE `description` `description` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_team` CHANGE `name` `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_team` CHANGE `uid` `uid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_template` CHANGE `item_class` `item_class` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_template` CHANGE `name` `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_up_widgets` CHANGE `type` `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_up_widgets` CHANGE `widget_definition_id` `widget_definition_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_up_window` CHANGE `window_definition_id` `window_definition_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -161,17 +146,10 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_activity` CHANGE `after_value` `after_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_activity` CHANGE `before_value` `before_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_activity` CHANGE `label` `label` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_availability` CHANGE `days_data` `days_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_cliche` CHANGE `data` `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_release` CHANGE `vision` `vision` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_roadmap` CHANGE `data` `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit` CHANGE `added_data` `added_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit` CHANGE `message` `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit` CHANGE `modified_data` `modified_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit` CHANGE `removed_data` `removed_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_sprint` CHANGE `done_definition` `done_definition` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_sprint` CHANGE `retrospective` `retrospective` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_template` CHANGE `serialized_data` `serialized_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_timebox` CHANGE `description` `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_timebox` CHANGE `goal` `goal` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_up_widgets` CHANGE `settings_data` `settings_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -195,26 +173,17 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_acceptance_test_is_activity` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_activity` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_actor` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_availability` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_availability_preferences` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_backlog` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_build` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_build_is_task` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_cliche` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_event` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature_is_activity` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_invitation` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_mood` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_project` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_project_preferences` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_project_teams` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_release` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_roadmap` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_scm_commit_is_task` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_simple_project_app` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_slack_preferences` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_sprint` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_story` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_story_actors` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -226,16 +195,12 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_tbn_tpls` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_team` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_team_members` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_template` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_timebox` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_timebox_is_activity` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_up_widgets` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_up_window` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker_import` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_bugtracker_sync` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences_menu` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_preferences_menu_hidden` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_user_tokens` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
