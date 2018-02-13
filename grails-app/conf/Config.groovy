@@ -103,8 +103,6 @@ grails.mail.props = ["mail.smtp.auth":"true",
 /* Push */
 icescrum.push.enable = true
 
-icescrum.storyTypes = [Story.TYPE_USER_STORY, Story.TYPE_TECHNICAL_STORY, Story.TYPE_DEFECT] // The order matters to preserver order in charts
-
 icescrum.resourceBundles = [
         featureTypes           : [
                 (Feature.TYPE_FUNCTIONAL)   : 'is.feature.type.functional',

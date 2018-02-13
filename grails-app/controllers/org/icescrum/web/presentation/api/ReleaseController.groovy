@@ -144,7 +144,7 @@ class ReleaseController implements ControllerErrorHandler {
     def burndown(long project, long id) {
         Release release = Release.withRelease(project, id)
         def values = releaseService.releaseBurndownValues(release)
-        def storyTypes = grailsApplication.config.icescrum.storyTypes
+        def storyTypes = grailsApplication.config.icescrum.resourceBundles.storyTypes.keySet()
         def computedValues = storyTypes.collect { storyType ->
             return [
                     key   : message(code: 'is.chart.story.type.' + storyType),

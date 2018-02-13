@@ -341,7 +341,7 @@ class ProjectController implements ControllerErrorHandler {
     def burndown(long project) {
         Project _project = Project.withProject(project)
         def values = projectService.projectBurndownValues(_project)
-        def computedValues = grailsApplication.config.icescrum.storyTypes.collect { storyType ->
+        def computedValues = grailsApplication.config.icescrum.resourceBundles.storyTypes.keySet().collect { storyType ->
             return [
                     key   : message(code: 'is.chart.story.type.' + storyType),
                     values: values.collect { return [it[storyType]] },
