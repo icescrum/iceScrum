@@ -211,7 +211,7 @@
                                name="type"
                                ng-model="storyPreview.type">
                         <ui-select-match placeholder="${message(code: 'todo.is.ui.story.type.placeholder')}">{{ $select.selected | i18n:'StoryTypes' }}</ui-select-match>
-                        <ui-select-choices repeat="storyType in storyTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
+                        <ui-select-choices repeat="storyType in storyTypes | newStoryTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
                     </ui-select>
                 </div>
                 <div class="form-group">

@@ -569,4 +569,8 @@ filters
         backlog.project = project;
         return backlog;
     }
+}).filter('newStoryTypes', function() { // Can be overrided by plugins
+   return function(storyTypes) {
+       return storyTypes;
+   }
 });
