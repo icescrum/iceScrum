@@ -83,7 +83,6 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_backlog` CHANGE `filter` `filter` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_backlog` CHANGE `name` `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_backlog` CHANGE `notes` `notes` varchar(5000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_event` CHANGE `name` `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature` CHANGE `color` `color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature` CHANGE `description` `description` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature` CHANGE `name` `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -175,7 +174,6 @@ databaseChangeLog = {
                 sql.execute("ALTER TABLE `is_actor` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_backlog` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_cliche` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-                sql.execute("ALTER TABLE `is_event` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_feature_is_activity` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
                 sql.execute("ALTER TABLE `is_invitation` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
