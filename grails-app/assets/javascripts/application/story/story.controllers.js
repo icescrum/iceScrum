@@ -24,7 +24,7 @@
  */
 
 // Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We should think of a better way to systematically register the listeners
-extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 'IceScrumEventType', 'TagService', 'StoryService', 'TaskService', '$state', 'Session', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, $window, IceScrumEventType, TagService, StoryService, TaskService, $state, Session, StoryStatesByName, AcceptanceTestStatesByName) {
+extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 'TagService', 'StoryService', 'TaskService', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, $window, TagService, StoryService, TaskService, StoryStatesByName, AcceptanceTestStatesByName) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -361,98 +361,96 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
         }
     };
     $scope.showStorySplitModal = function(story) {
-        var parentScope = $scope;
         $uibModal.open({
             keyboard: false,
             backdrop: 'static',
             templateUrl: 'story.split.html',
-            controller: ['$scope', '$controller', '$q', function($scope, $controller, $q) {
-                $controller('storyAtWhoCtrl', {$scope: $scope});
-                // Functions
-                $scope.onChangeSplitNumber = function() {
-                    if ($scope.stories.length < $scope.splitCount) {
-                        while ($scope.stories.length < $scope.splitCount) {
-                            var newStory = angular.copy(story);
-                            newStory.name = "";
-                            newStory.id = null;
-                            newStory.notes = "";
-                            newStory.description = "";
-                            newStory.origin = story.name;
-                            newStory.state = story.state >= StoryStatesByName.ACCEPTED ? StoryStatesByName.ACCEPTED : StoryStatesByName.SUGGESTED;
-                            $scope.stories.push(newStory);
-                        }
-                    } else if ($scope.stories.length > $scope.splitCount) {
-                        while ($scope.stories.length > $scope.splitCount) {
-                            $scope.stories.splice($scope.stories.length - 1, 1);
-                        }
-                    }
-                    // Split effort from original story
-                    if (originalEffort > 0) {
-                        var effort = parseInt(originalEffort / $scope.splitCount);
-                        effort = effort >= 1 ? effort : 1;
-                        _.each($scope.stories, function(story) {
-                            story.effort = effort;
-                        });
-                    }
-                    if (originalValue > 0) {
-                        var value = parseInt(originalValue / $scope.splitCount);
-                        value = value >= 1 ? value : 1;
-                        _.each($scope.stories, function(story) {
-                            story.value = value;
-                        });
-                    }
-                };
-                $scope.submit = function(stories) {
-                    var tasks = [];
-                    _.each(stories, function(story) {
-                        if (story.id) {
-                            tasks.push(function() {
-                                return StoryService.update(story)
-                            });
-                        } else {
-                            var effort = story.effort;
-                            tasks.push({
-                                success: function() {
-                                    return StoryService.save(story, $scope.getProjectFromState().id);
-                                }
-                            });
-                            if (effort >= 0) {
-                                tasks.push({
-                                    success: function(createdStory) {
-                                        createdStory.effort = effort;
-                                        return StoryService.update(createdStory);
-                                    }
-                                })
-                            }
-                        }
-                    });
-                    tasks.push({
-                        success: function() {
-                            $scope.$close();
-                            $scope.notifySuccess('todo.is.ui.story.effort.updated');
-                            return $q.when();
-                        }
-                    });
-                    $q.serial(tasks);
-                };
-                $scope.isEffortCustom = parentScope.isEffortCustom;
-                $scope.effortSuite = parentScope.effortSuite;
-                $scope.isEffortNullable = parentScope.isEffortNullable;
-                $scope.authorizedStory = parentScope.authorizedStory;
-                // Init
-                $scope.formHolder = {};
-                $scope.loadAtWhoActors();
-                $scope.stories = [];
-                $scope.stories.push(angular.copy(story));
-                $scope.splitCount = 2;
-                var originalValue = story.value;
-                var originalEffort = story.effort;
-                $scope.onChangeSplitNumber();
-            }]
+            controller: 'storySplitCtrl',
+            resolve: {story: story}
         });
     };
     // Init
     $scope.tags = [];
+}]);
+
+extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StoryService', 'StoryStatesByName', 'story', function($scope, $controller, $q, StoryService, StoryStatesByName, story) {
+    $controller('storyCtrl', {$scope: $scope});
+    $controller('storyAtWhoCtrl', {$scope: $scope});
+    // Functions
+    $scope.onChangeSplitNumber = function() {
+        if ($scope.stories.length < $scope.splitCount) {
+            while ($scope.stories.length < $scope.splitCount) {
+                var newStory = angular.copy($scope.storyReference);
+                newStory.name = '';
+                newStory.id = null;
+                newStory.notes = '';
+                newStory.description = '';
+                newStory.origin = $scope.storyReference.name;
+                newStory.state = $scope.storyReference.state >= StoryStatesByName.ACCEPTED ? StoryStatesByName.ACCEPTED : StoryStatesByName.SUGGESTED;
+                $scope.stories.push(newStory);
+            }
+        } else if ($scope.stories.length > $scope.splitCount) {
+            while ($scope.stories.length > $scope.splitCount) {
+                $scope.stories.splice($scope.stories.length - 1, 1);
+            }
+        }
+        // Split effort from original story
+        if ($scope.storyReference.effort > 0) {
+            var effort = parseInt($scope.storyReference.effort / $scope.splitCount);
+            effort = effort >= 1 ? effort : 1;
+            _.each($scope.stories, function(story) {
+                story.effort = effort;
+            });
+        }
+        if ($scope.storyReference.value > 0) {
+            var value = parseInt($scope.storyReference.value / $scope.splitCount);
+            value = value >= 1 ? value : 1;
+            _.each($scope.stories, function(story) {
+                story.value = value;
+            });
+        }
+    };
+    $scope.submit = function(stories) {
+        var tasks = [];
+        _.each(stories, function(story) {
+            if (story.id) {
+                tasks.push(function() {
+                    return StoryService.update(story)
+                });
+            } else {
+                var effort = story.effort;
+                tasks.push({
+                    success: function() {
+                        return StoryService.save(story, $scope.getProjectFromState().id);
+                    }
+                });
+                if (effort >= 0) {
+                    tasks.push({
+                        success: function(createdStory) {
+                            createdStory.effort = effort;
+                            return StoryService.update(createdStory);
+                        }
+                    })
+                }
+            }
+        });
+        tasks.push({
+            success: function() {
+                $scope.$close();
+                $scope.notifySuccess('todo.is.ui.story.effort.updated');
+                return $q.when();
+            }
+        });
+        $q.serial(tasks);
+    };
+    // Init
+    $scope.storyReference = story;
+    $scope.formHolder = {};
+    $scope.loadAtWhoActors();
+    $scope.stories = [];
+    $scope.stories.push(angular.copy($scope.storyReference));
+    $scope.splitCount = 2;
+    $scope.onChangeSplitNumber();
 }]);
 
 controllers.controller('storyAtWhoCtrl', ['$scope', '$controller', 'ActorService', function($scope, $controller, ActorService) {
