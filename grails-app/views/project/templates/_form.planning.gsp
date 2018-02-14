@@ -136,7 +136,7 @@
             <uib-bar ng-repeat="sprint in sprints"
                      class="{{ $last ? 'last-bar' : '' }}"
                      uib-tooltip-template="'sprint.tooltip.html'"
-                     type="default"
+                     type="todo"
                      value="project.preferences.estimatedSprintsDuration">
                 {{ sprint.index }}
             </uib-bar>
