@@ -91,7 +91,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
                 return viewType === 'list' ? 100 : defaultPriority;
             },
             visible: function(story, viewType) { return viewType !== 'details'; },
-            action: function(story) { $window.location.hash = $scope.openStoryUrl(story.id) ; } // Inherited
+            action: function(story) { $window.location.hash = $scope.openStoryUrl(story.id); } // Inherited
         },
         {
             name: 'is.ui.backlog.menu.acceptAsStory',

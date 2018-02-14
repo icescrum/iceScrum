@@ -31,6 +31,6 @@
         <a href ng-click="toggleSettings(widget)"><h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4></a>
     </div>
     <div ng-if="!widgetReady(widget) && !authorizedWidget('update', widget)">
-      <h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4>
+        <h4 class="text-center"><g:message code="is.ui.widget.chart.no.chart"/></h4>
     </div>
 </is:widget>

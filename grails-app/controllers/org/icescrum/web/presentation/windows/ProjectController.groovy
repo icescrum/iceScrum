@@ -284,7 +284,7 @@ class ProjectController implements ControllerErrorHandler {
         def values = projectService.cumulativeFlowValues(_project)
         def computedValues = [[key   : message(code: "is.chart.projectCumulativeflow.serie.suggested.name"),
                                values: values.collect { return [it.suggested] },
-                               color :  grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_SUGGESTED]],
+                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_SUGGESTED]],
                               [key   : message(code: "is.chart.projectCumulativeflow.serie.accepted.name"),
                                values: values.collect { return [it.accepted] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_ACCEPTED]],

@@ -70,8 +70,10 @@ services.service("WidgetService", ['CacheService', 'FormService', '$q', 'Widget'
             case 'update':
             case 'delete':
                 switch (Session.workspaceType) {
-                    case 'portfolio': return Session.bo();
-                    default: return Session.authenticated();
+                    case 'portfolio':
+                        return Session.bo();
+                    default:
+                        return Session.authenticated();
                 }
             default:
                 return false;

@@ -153,7 +153,7 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
         return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProject.id, action: 'unPlan'}, {}, self.mergeSprints).$promise;
     };
     this.openChart = function(sprint, project, chart) {
-        return FormService.httpGet('p/' +  project.id + '/sprint/' + sprint.id + '/' + chart, null, true);
+        return FormService.httpGet('p/' + project.id + '/sprint/' + sprint.id + '/' + chart, null, true);
     };
     this.copyRecurrentTasks = function(sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'copyRecurrentTasks'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;

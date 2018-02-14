@@ -26,7 +26,7 @@
         <title>${project.name}</title>
     </g:if>
     <g:elseif test="${portfolio}">
-        <title>${message(code:'is.portfolio')} - ${portfolio.name}</title>
+        <title>${message(code: 'is.portfolio')} - ${portfolio.name}</title>
     </g:elseif>
 </head>
 <body>
