@@ -417,7 +417,6 @@ filters
         var value = input.replace(tags, function($0, $1) {
             return disallowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? ' ' : $0;
         });
-        value = value + value;
         if (limit && value.length > limit) {
             return $filter('limitTo')(value, limit - (more ? more.length : 0)) + more;
         } else {
@@ -425,9 +424,9 @@ filters
         }
     }
 }]).filter('truncateAndSeeMore', ['$rootScope', '$filter', function($rootScope, $filter) {
-    return function strip_tags(text, key) {
-        var permalink = $rootScope.serverUrl + '/p/' + key;
-        return $filter('stripTags')(text, '<br><p>', '350', '&hellip;') + ' <a href="' + permalink + '">' + $rootScope.message('todo.is.ui.more') + '</a>';
+    return function strip_tags(text, key, length, url) {
+        var permalink = $rootScope.serverUrl + '/p/' + key + (url ? url : '');
+        return $filter('stripTags')(text, '<br><p>', length ? length : 350, '&hellip;') + ' <a href="' + permalink + '">' + $rootScope.message('todo.is.ui.more') + '</a>';
     }
 }]).filter('allMembers', [function() {
     return function(project) {
@@ -570,7 +569,7 @@ filters
         return backlog;
     }
 }).filter('newStoryTypes', function() { // Can be overrided by plugins
-   return function(storyTypes) {
-       return storyTypes;
-   }
+    return function(storyTypes) {
+        return storyTypes;
+    }
 });

@@ -68,7 +68,7 @@
                             <div class="col-md-6 text-right">{{ release.endDate | dayShort }}</div>
                         </div>
                         <div ng-show="currentOrNextSprint.goal">
-                            <p><strong>${message(code: 'todo.is.ui.sprint.goal.label')}</strong> {{ currentOrNextSprint.goal }}</p>
+                            <p><strong>{{ message('todo.is.ui.sprint.goal.label', [currentOrNextSprint.index]) }}</strong> {{ currentOrNextSprint.goal }}</p>
                         </div>
                     </div>
                 </div>

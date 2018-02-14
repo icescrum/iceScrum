@@ -3,7 +3,7 @@
     if (isSettings.lang === 'es') {
         jQuery.timeago.settings.strings = {
             prefixAgo: "hace",
-            prefixFromNow: "dentro de",
+            prefixFromNow: "en",
             suffixAgo: "",
             suffixFromNow: "",
             seconds: "menos de un minuto",

@@ -336,18 +336,22 @@
             <small><time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small>
         </div>
     </h4>
-    <div class="col-lg-9">
-        <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project.pkey"></div>
+    <div class="col-lg-9 col-xs-9">
+        <div class="description" ng-bind-html="project.description_html | truncateAndSeeMore:project.pkey:(widget.settings.width == 2 ? 195 : null)"></div>
+        <div ng-if="project.currentOrNextRelease.currentOrNextSprint.goal" style="margin-top:8px;">
+            <p><strong>{{:: message('todo.is.ui.sprint.goal.label', [project.currentOrNextRelease.currentOrNextSprint.index]) }}</strong><span
+                    ng-bind-html="project.currentOrNextRelease.currentOrNextSprint.goal | truncateAndSeeMore:project.pkey:(widget.settings.width == 2 ? 20 : 80):'/#/taskBoard/'+project.currentOrNextRelease.currentOrNextSprint.id"></span></p>
+        </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3 col-xs-3">
         <div class="backlogCharts chart pull-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
             <nvd3 options="options" ng-if="data.length > 0" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
         <div class="team-name text-ellipsis" title="{{:: project.team.name }}"><i class="fa fa-users"></i> {{:: project.team.name }}</div>
     </div>
-    <div class="col-lg-9" style="margin-top:2px">
+    <div class="col-lg-9 col-xs-9" style="margin-top:2px">
         <div class="row">
-            <ul class="list-inline text-muted col-md-8">
+            <ul class="list-inline text-muted col-md-12">
                 <li class="release" ng-if=":: project.currentOrNextRelease">
                     <a href="{{:: project.pkey | absoluteProjectLink }}#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
                             class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
@@ -358,8 +362,6 @@
                 <li class="stories" ng-if=":: project.stories_count">
                     <a href="{{:: project.pkey | absoluteProjectLink }}#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
                 </li>
-            </ul>
-            <ul class="list-inline text-muted col-md-4 text-right">
                 <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
                     <a href="{{:: project.pkey | absoluteProjectLink }}#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><div
                             class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
@@ -368,11 +370,17 @@
                              aria-valuenow="{{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}" aria-valuemin="0" aria-valuemax="100"
                              style="width: {{:: project.currentOrNextRelease.currentOrNextSprint | computePercentage:'velocity':'capacity' }}%;"></div>
                     </div></a>
+                    <small ng-if="project.currentOrNextRelease.currentOrNextSprint.state == 2"><i class="fa fa-clock-o"></i> <time timeago
+                                                                                                                                   datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.endDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.endDate | dateTime }}</time>
+                    </small>
+                    <small ng-if="project.currentOrNextRelease.currentOrNextSprint.state == 1"><i class="fa fa-clock-o"></i> <time timeago
+                                                                                                                                   datetime="{{:: project.currentOrNextRelease.currentOrNextSprint.startDate }}">{{ project.currentOrNextRelease.currentOrNextSprint.startDate | dateTime }}</time>
+                    </small>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="col-lg-3 users" style="margin-top:2px">
+    <div class="col-lg-3 col-xs-3 users" style="margin-top:2px">
         <img ng-src="{{:: user | userAvatar }}"
              ng-repeat="user in ::project.allUsers | limitTo:2"
              height="20" width="20" style="margin-left:5px;"
