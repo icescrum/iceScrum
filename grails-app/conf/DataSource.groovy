@@ -37,6 +37,7 @@ dataSource {
 
 environments {
     development {
+//      -- H2
         dataSource {
             dbCreate = "create-drop"
             username = "sa"
@@ -44,14 +45,16 @@ environments {
             driverClassName = "org.h2.Driver"
             url = "jdbc:h2:mem:devDb"
         }
+////      -- MySQL
 //        dataSource {
 //            dbCreate = "update"
 //            username = "root"
 //            password = "root"
 //            driverClassName = "com.mysql.jdbc.Driver"
 //            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
-//            url = "jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8"
+//            url = "jdbc:mysql://localhost:3306/icescrum?useUnicode=true&characterEncoding=utf8" // docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=icescrum -p 3306:3306 -d mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 //        }
+////      -- PostgreSQL
 //        dataSource {
 //            dbCreate = "update"
 //            username = "root"
@@ -59,6 +62,7 @@ environments {
 //            driverClassName = "org.postgresql.Driver"
 //            url = "jdbc:postgresql://localhost:5432/icescrum"
 //        }
+////      -- Oracle
 //        dataSource {
 //            dbCreate = "update"
 //            username = "system"
@@ -68,6 +72,13 @@ environments {
 //            url = "jdbc:oracle:thin:@localhost:49161:XE" // docker run -d -p 49160:22 -p 49161:1521 --name oracle -e ORACLE_PASSWORD_VERIFY=true wnameless/oracle-xe-11g
 ////            url = "jdbc:oracle:thin:@localhost:1521:xe" // docker run -d -p 8090:8080 -p 1521:1521 --name oracle sath89/oracle-12c
 //        }
+////      -- MS SQL Server
+////      First startup:
+////      docker exec -it sql1 "bash"
+////      /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P '<YourStrong!Passw0rd>'
+////      CREATE DATABASE icescrum
+////      SELECT Name from sys.Databases
+////      GO
 //        dataSource {
 //            dbCreate = "update"
 //            username = "sa"
