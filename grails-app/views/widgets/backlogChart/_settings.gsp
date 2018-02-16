@@ -22,7 +22,7 @@
 --}%
 <div class="col-md-12">
     <div class="form-group">
-        <label for="chartType">${message(code: 'is.backlogs.ui.backlog.chartType')}</label>
+        <label for="chartType">${message(code: 'is.ui.widget.chart.chart')}</label>
         <ui-select class="form-control"
                    name="chartType"
                    append-to-body="true"

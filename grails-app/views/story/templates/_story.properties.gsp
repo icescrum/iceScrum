@@ -53,7 +53,7 @@
         </div>
         <div class="form-group">
             <label for="description">
-                <span class="text-muted small pull-right">${message(code: 'is.actor.help.description')}</span>
+                <span class="text-muted small pull-right"><i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}</span>
                 <div>${message(code: 'is.backlogelement.description')}</div>
             </label>
             <textarea class="form-control"

@@ -1003,39 +1003,8 @@ table {
   margin: 30px auto;
 }
 
-.popover.error {
-  .popover-content {
-    max-height: 200px;
-    overflow: auto;
-  }
-}
-
-#popover-user {
-  left: auto !important;
-  right: 10px;
-  top: 39px !important;
-  & > .arrow {
-    left: auto;
-    right: 12px;
-    top: -10px;
-  }
-  .popover-content {
-    width: 270px;
-    padding: 0;
-    .panel {
-      margin-bottom: 0;
-    }
-    .panel-body {
-      padding: @grid-gutter-width / 2;
-      > img {
-        margin-right: 10px;
-      }
-    }
-    .panel-footer {
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-  }
+.popover .popover-content ul {
+  padding: 5px 20px;
 }
 
 .progress.form-bar {
