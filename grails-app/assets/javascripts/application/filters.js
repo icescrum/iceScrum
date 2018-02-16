@@ -407,26 +407,26 @@ filters
         var val = Math.round((object[value] * 100) / object[onValue]);
         return val > 100 ? 100 : val;
     }
-}]).filter('stripTags', ['$filter', function($filter) {
-    return function strip_tags(input, disallowed, limit, more) {
+}]).filter('stripTags', [function() {
+    return function(input, disallowed) {
         disallowed = (((disallowed || '') + '')
                           .toLowerCase()
                           .match(/<[a-z][a-z0-9]*>/g) || [])
             .join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
-        var value = input.replace(tags, function($0, $1) {
+        return input.replace(tags, function($0, $1) {
             return disallowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? ' ' : $0;
         });
-        if (limit && value.length > limit) {
-            return $filter('limitTo')(value, limit - (more ? more.length : 0)) + more;
-        } else {
-            return value;
-        }
     }
 }]).filter('truncateAndSeeMore', ['$rootScope', '$filter', function($rootScope, $filter) {
-    return function strip_tags(text, key, length, url) {
-        var permalink = $rootScope.serverUrl + '/p/' + key + (url ? url : '');
-        return $filter('stripTags')(text, '<br><p>', length ? length : 350, '&hellip;') + ' <a href="' + permalink + '">' + $rootScope.message('todo.is.ui.more') + '</a>';
+    return function(text, key, length, url) {
+        var filteredText = $filter('stripTags')(text, '<br><p>');
+        var limit = length ? length : 350;
+        if (filteredText.length > limit) {
+            var permalink = $rootScope.serverUrl + '/p/' + key + (url ? url : '');
+            filteredText = $filter('ellipsis')(filteredText, limit, '&hellip;') + ' <a href="' + permalink + '">' + $rootScope.message('todo.is.ui.more') + '</a>';
+        }
+        return filteredText;
     }
 }]).filter('allMembers', [function() {
     return function(project) {
@@ -559,8 +559,11 @@ filters
         return inside ? '(' + inside + ')' : '';
     }
 }).filter('ellipsis', ['limitToFilter', function(limitToFilter) {
-    return function(text, limit) {
-        return text ? limitToFilter(text, limit) + (text.length > limit ? '...' : '') : text;
+    return function(text, limit, moreSign) {
+        if (!moreSign) {
+            moreSign = '...';
+        }
+        return text ? limitToFilter(text, limit) + (text.length > limit ? moreSign : '') : text;
     }
 }]).filter('retrieveBacklog', function() {
     return function(project, code) {
