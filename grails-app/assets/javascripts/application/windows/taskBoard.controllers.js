@@ -67,6 +67,9 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         });
     };
     $scope.refreshTasks = function() {
+        if (!$scope.sprint) {
+            return;
+        }
         var tasks;
         tasks = $scope.sprint.tasks;
         $scope.taskCountByState = _.countBy(tasks, 'state');
@@ -289,16 +292,15 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     $scope.sprintStatesByName = SprintStatesByName;
     $scope.taskTypesByName = TaskTypesByName;
     $scope.ghostStories = [];
-    $scope.$watch('sprint.tasks', function() {
-        if ($scope.sprint) {
+    var refreshIfNotEqual = function(oldValue, newValue) {
+        if (!_.isEqual(oldValue, newValue)) {
             $scope.refreshTasks();
         }
-    }, true);  // Be careful of circular objects, it will blow up the stack when comparing equality by value
-    $scope.$watch('sprint.state', function() { // To generate the proper $scope.sprintTaskStates when changing state
-        if ($scope.sprint) {
-            $scope.refreshTasks();
-        }
-    });
+    };
+    $scope.$watch('sprint.tasks', refreshIfNotEqual, true);
+    $scope.$watchCollection('sprint.stories', refreshIfNotEqual);
+    $scope.$watch('sprint.state', refreshIfNotEqual); // To generate the proper $scope.sprintTaskStates when changing state
+    $scope.refreshTasks();
     $scope.$watch('application.search', $scope.applySearchFilterToTasksByTypeByState);
     $scope.sprintEntries = [];
     _.each(_.sortBy(releases, 'orderNumber'), function(release) {
