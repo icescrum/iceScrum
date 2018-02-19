@@ -87,7 +87,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
                 break;
         }
         var partitionedTasks = _.partition(tasks, function(task) {
-            return _.isNull(task.parentStory);
+            return task.parentStory == null;
         });
         var groupByStateAndSort = function(tasksDictionnary) {
             return _.mapValues(tasksDictionnary, function(tasks) {
