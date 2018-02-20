@@ -527,10 +527,10 @@
 
 .list-group {
   .postit-container {
-    &:nth-child(even) .postit {
+    &:nth-child(even) .postit:not(.task) {
       background: #fff;
     }
-    &:nth-child(odd) .postit {
+    &:nth-child(odd) .postit:not(.task) {
       background: @table-bg-accent;
     }
     &.is-selected {
@@ -743,10 +743,10 @@
         }
       }
       &.add-task, &.hide-tasks {
-        background: transparent;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        height: 30px;
+        background: transparent !important;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        height: 50px;
         &:last-child {
           border: none;
         }

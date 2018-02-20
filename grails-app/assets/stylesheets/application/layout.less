@@ -1234,10 +1234,10 @@ table {
       }
       tbody:not(.story-done):not(.story-ghost):nth-child(odd) {
         > tr > td {
-          background: #F8F8F8 !important;
+          background: @table-bg-accent !important;
         }
         .list-group .postit-container .postit > div {
-          background: #F8F8F8 !important;
+          background: @table-bg-accent !important;
         }
       }
       tbody:not(.story-done):not(.story-ghost):nth-child(even) {
@@ -1261,6 +1261,9 @@ table {
       }
       .list-group .postit-container .postit {
         border: none;
+        &.task, &.add-task {
+          border-top: 1px solid #ddd;
+        }
       }
     }
     .sprint-state-1, .sprint-state-2 {
