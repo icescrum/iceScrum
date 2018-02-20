@@ -555,6 +555,9 @@
         > .state {
           display: none;
         }
+        > .content, >.head, >.footer {
+          padding: 8px;
+        }
         > .content {
           order: 2;
           flex: 1 1 auto;
@@ -568,9 +571,6 @@
           .description {
             display: none;
           }
-        }
-        > div {
-          padding: 8px;
         }
         > .head {
           order: 1;
@@ -743,6 +743,7 @@
         }
       }
       &.add-task, &.hide-tasks {
+        background: transparent;
         margin-top: 10px;
         margin-bottom: 10px;
         height: 30px;
