@@ -90,11 +90,6 @@
     }
   }
   .postit-container {
-    &.is-selected {
-      .postit {
-        border: 1px solid @brand-primary;
-      }
-    }
     .postit {
       .responsible {
         height: 22px;
@@ -107,6 +102,10 @@
 .grid-group {
   .as-sortable-placeholder {
     margin: 6px;
+  }
+  &.as-sortable-drag {
+    box-sizing: content-box;
+    padding: 6px;
   }
   &.has-selected {
     > .postit-container:not(.is-selected) {
@@ -528,14 +527,26 @@
 
 .list-group {
   .postit-container {
-    &:nth-child(even) .postit > div {
+    &:nth-child(even) .postit {
       background: #fff;
     }
-    &:nth-child(odd) .postit > div {
+    &:nth-child(odd) .postit {
       background: @table-bg-accent;
+    }
+    &.is-selected {
+      .postit {
+        padding: 0;
+        border: none;
+        border-left-width: 9px !important;
+      }
+      border: 1px solid @brand-primary;
+      + .is-selected {
+        border-top: none !important;
+      }
     }
     .postit {
       position: relative;
+      border: 1px solid @table-border-color;
       border-left: none;
       border-right: none;
       padding: 1px 0;
@@ -547,7 +558,6 @@
         > .content {
           order: 2;
           flex: 1 1 auto;
-          border-top: 1px solid @table-border-color;
           h3 {
             display: inline;
             margin: 0;
@@ -570,7 +580,6 @@
           padding-right: 8px;
           display: flex;
           flex-direction: column;
-          border-top: 1px solid @table-border-color;
           .head-left, .head-right {
             flex: 1;
             .follow {
@@ -595,7 +604,6 @@
           padding-right: 26px;
           display: flex;
           flex-direction: column;
-          border-top: 1px solid @table-border-color;
           .action {
             flex: 0 0 auto;
             order: 2;
@@ -749,21 +757,8 @@
         flex: 0 0 120px;
       }
     }
-    &:last-child .postit {
-      .head, .content, .footer {
-        border-bottom: 1px solid @table-border-color;
-      }
-    }
-    &.is-selected {
-      .head, .content, .footer {
-        border: none;
-      }
-    }
-    &.is-selected:nth-child(even):not(:first-child) .postit, &.is-selected:nth-child(odd):not(:first-child) .postit {
-      border-top-color: @brand-primary;
-    }
     &:nth-child(even):not(:first-child) .postit {
-      border-top-color: #fff;
+      border-top: none;
     }
     &:nth-child(odd):not(:first-child) .postit {
       border-top-color: @table-bg-accent;
@@ -902,12 +897,7 @@ td.postits {
       padding-top: 20px;
     }
     .postit {
-      padding: 0;
-      div {
-        .head, .content, .footer {
-          border: none !important;
-        }
-      }
+      border: none !important;
     }
   }
 }

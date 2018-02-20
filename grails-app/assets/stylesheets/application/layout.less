@@ -1252,9 +1252,15 @@ table {
         > tr > td {
           background: @state-danger-bg !important;
         }
-        .list-group .postit-container .postit > div {
+        .list-group .postit-container .postit {
           background: @state-danger-bg !important;
+          > div {
+            background: @state-danger-bg !important;
+          }
         }
+      }
+      .list-group .postit-container .postit {
+        border: none;
       }
     }
     .sprint-state-1, .sprint-state-2 {
@@ -1262,8 +1268,11 @@ table {
         > tr > td {
           background: @state-done-light !important;
         }
-        .list-group .postit-container .postit > div {
+        .list-group .postit-container .postit {
           background: @state-done-light !important;
+          > div {
+            background: @state-done-light !important;
+          }
         }
       }
     }
