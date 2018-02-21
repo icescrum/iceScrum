@@ -444,7 +444,7 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
         $q.serial(tasks);
     };
     // Init
-    $scope.storyReference = story;
+    $scope.storyReference = angular.copy(story);
     $scope.formHolder = {};
     $scope.loadAtWhoActors();
     $scope.stories = [];
