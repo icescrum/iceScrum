@@ -299,7 +299,7 @@ class StoryController implements ControllerErrorHandler {
     @Secured(['(productOwner() or scrumMaster()) and !archivedProject()'])
     def shiftToNextSprint(long id, long project) {
         def story = Story.withStory(project, id)
-        def nextSprint = story.parentSprint.nextSprint
+        def nextSprint = story.parentSprint?.nextSprint
         if (!nextSprint) {
             returnError(code: 'is.sprint.error.not.exist')
             return
