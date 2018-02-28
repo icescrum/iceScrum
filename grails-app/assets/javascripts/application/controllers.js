@@ -846,7 +846,7 @@ controllers.controller('menuItemCtrl', ['$scope', function($scope) {
     };
 }]);
 
-controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout', 'WindowService', '$state', function($scope, $element, $timeout, WindowService, $state) {
+controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout', '$state', function($scope, $element, $timeout, $state) {
     var self = this;
     // Functions
     $scope.hideAndOrderElementsFromSettings = function(elementsList) {

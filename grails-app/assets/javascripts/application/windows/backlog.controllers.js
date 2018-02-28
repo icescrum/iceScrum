@@ -171,7 +171,7 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
                     return savedBacklogsOrder.indexOf(a.backlog.code) - savedBacklogsOrder.indexOf(b.backlog.code)
                 });
             } else {
-                //keep old fashion way for all users that never reordered their backlog at least one time
+                // Keep old fashion way for all users that never reordered their backlog at least one time
                 $scope.backlogContainers = _.sortBy($scope.backlogContainers, function(backlogContainer) {
                     return backlogContainer.backlog.id;
                 });
@@ -184,8 +184,11 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         var elementId = newValues[2];
         if (stateName === 'backlog') {
             var visibleElementsListOrder = $scope.getWindowSetting('elementsListOrder');
-            var defaultBacklog = visibleElementsListOrder && visibleElementsListOrder.length > 0 ? _.head(visibleElementsListOrder) : _.head($scope.availableBacklogs).code;
-            $state.go('backlog.backlog', {elementId: defaultBacklog}, {location: 'replace'});
+            var defaultBacklogCode = _.head($scope.availableBacklogs).code;
+            if (visibleElementsListOrder && visibleElementsListOrder.length > 0 && _.find($scope.availableBacklogs, {code: _.head(visibleElementsListOrder)})) {
+                defaultBacklogCode = _.head(visibleElementsListOrder);
+            }
+            $state.go('backlog.backlog', {elementId: defaultBacklogCode}, {location: 'replace'});
         } else if (_.startsWith(stateName, 'backlog')) {
             if (pinnedElementId) {
                 $scope.showBacklog(pinnedElementId);
