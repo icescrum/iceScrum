@@ -51,7 +51,7 @@ var extensibleController = function(appControllerName, controllerArray) {
     controllers.controller(appControllerName, newControllerArray);
 };
 
-extensibleController('applicationCtrl', ['$controller', '$scope', '$localStorage', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', 'Session', 'UserService', 'postitSize', function($controller, $scope, $localStorage, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout, Session, UserService, postitSize) {
+extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', 'Session', 'UserService', 'postitSize', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout, Session, UserService, postitSize) {
     $controller('headerCtrl', {$scope: $scope});
     // Functions
     $scope.displayDetailsView = function() {
