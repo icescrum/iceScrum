@@ -21,14 +21,15 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div class="tasks panel-body" ng-controller="taskStoryCtrl">
-    <table class="table">
-        <tr ng-repeat="task in selected.tasks | orderBy: tasksOrderBy">
+<div class="tasks panel-body" ng-controller="taskSortableStoryCtrl">
+    <table class="table" as-sortable="taskSortableOptions | merge: sortableScrollOptions()" ng-model="tasks">
+        <tr class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
             <td class="content">
                 <div class="clearfix no-padding">
                     <div class="col-sm-8">
                         <span class="name">
-                            <a ui-sref=".task.details({taskId: task.id})" class="link"><strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}</a>
+                            <i class="fa fa-umbrella" as-sortable-item-handle="authorizedTask('rank', task) && task.state == 0"></i> <a ui-sref=".task.details({taskId: task.id})"
+                                                                                                                                        class="link"><strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}</a>
                         </span>
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="taskCtrl">

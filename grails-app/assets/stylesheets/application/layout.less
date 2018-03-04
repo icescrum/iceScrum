@@ -2053,3 +2053,31 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
     text-align: right;
   }
 }
+
+table {
+  tr.task-for-story {
+    background: #fff;
+    td.content {
+      display: block;
+    }
+  }
+  &.as-sortable-drag {
+    tr.task-for-story {
+      margin: 4px;
+      border: 1px solid @brand-primary;
+      .states .state {
+        margin-top: 2px;
+        width: 100% !important;
+        &.state-completed.state-current {
+          opacity: 1.0;
+        }
+        &:not(.state-current) {
+          display: none;
+        }
+      }
+      hr {
+        display: none;
+      }
+    }
+  }
+}
