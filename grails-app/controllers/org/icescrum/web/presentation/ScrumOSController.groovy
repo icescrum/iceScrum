@@ -61,7 +61,7 @@ class ScrumOSController implements ControllerErrorHandler {
         def workspacesLimit = 9
         def browsableProjectsCount = request.admin ? Project.count() : ProjectPreferences.countByHidden(false, [cache: true])
         def model = [user                    : user,
-                     lang                    : RCU.getLocale(request).toString().substring(0, 2),
+                     lang                    : RCU.getLocale(request).toString().take(2),
                      browsableWorkspacesExist: browsableProjectsCount > 0,
                      moreWorkspacesExist     : workspaces?.size() > workspacesLimit,
                      portfolioEnabled        : portfolioEnabled,
