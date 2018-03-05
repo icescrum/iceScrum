@@ -22,19 +22,20 @@
 --}%
 <script type="text/ng-template" id="story.tasks.html">
 <div class="tasks panel-body" ng-controller="taskSortableStoryCtrl">
-    <table class="table">
-        <tbody ng-repeat="(taskState, tasks) in tasksByState"
-               style="border-top: 0;"
-               is-disabled="!isTaskSortableByState(taskState)"
-               as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
-               ng-model="tasks">
+    <table class="table" ng-repeat="(taskState, tasks) in tasksByState">
+        <thead>
             <tr>
-                <th style="border-top: 0; padding:0">
+                <th style="border-top: 0; border-bottom: 0; padding:0">
                     <div class="text-center" style="margin-top:30px;margin-bottom:10px;font-size:15px;">
                         {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
                     </div>
                 </th>
             </tr>
+        </thead>
+        <tbody style="border-top: 0;"
+               is-disabled="!isTaskSortableByState(taskState)"
+               as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
+               ng-model="tasks">
             <tr class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
                 <td class="content">
                     <div class="clearfix no-padding">
