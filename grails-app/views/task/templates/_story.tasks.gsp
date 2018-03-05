@@ -22,41 +22,64 @@
 --}%
 <script type="text/ng-template" id="story.tasks.html">
 <div class="tasks panel-body" ng-controller="taskSortableStoryCtrl">
-    <table class="table" as-sortable="taskSortableOptions | merge: sortableScrollOptions()" ng-model="tasks">
-        <tr class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
-            <td class="content">
-                <div class="clearfix no-padding">
-                    <div class="col-sm-8">
-                        <span class="name">
-                            <span as-sortable-item-handle="authorizedTask('rank', task) && task.state == 0">=</span>
-                            <a ui-sref=".task.details({taskId: task.id})"
-                               class="link"><strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}</a>
-                        </span>
+    <table class="table">
+        <tbody ng-repeat="(taskState, tasks) in tasksByState"
+               style="border-top: 0;"
+               is-disabled="!isTaskSortableByState(taskState)"
+               as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
+               ng-model="tasks">
+            <tr>
+                <th style="border-top: 0; padding:0">
+                    <div class="text-center" style="margin-top:30px;margin-bottom:10px;font-size:15px;">
+                        {{ (taskState | i18n: 'TaskStates') + ' (' + tasks.length + ')' }}
                     </div>
-                    <div class="col-sm-4 text-right" ng-controller="taskCtrl">
-                        <div class="btn-group">
-                            <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true"></shortcut-menu>
-                            <div class="btn-group btn-group-sm" uib-dropdown>
-                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-caret-down"></i>
-                                </button>
-                                <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
+                </th>
+            </tr>
+            <tr class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
+                <td class="content">
+                    <div class="clearfix no-padding">
+                        <div class="col-sm-8">
+                            <span class="name">
+                                <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
+                                <a ui-sref=".task.details({taskId: task.id})" class="link">
+                                    <strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}
+                                </a>
+                            </span>
+                        </div>
+                        <div class="col-sm-4 text-right" ng-controller="taskCtrl">
+                            <div class="btn-group">
+                                <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true"></shortcut-menu>
+                                <div class="btn-group btn-group-sm" uib-dropdown>
+                                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
+                                        <i class="fa fa-caret-down"></i>
+                                    </button>
+                                    <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
+                                </div>
+                                <visual-states ng-model="task" model-states="taskStatesByName"/>
                             </div>
-                            <visual-states ng-model="task" model-states="taskStatesByName"/>
                         </div>
                     </div>
-                </div>
-                <div class="clearfix no-padding" ng-if="task.description">
-                    <p class="description form-control-static" ng-bind-html="task.description | lineReturns"></p>
-                </div>
-                <hr ng-if="!$last"/>
-            </td>
-        </tr>
-        <tr ng-show="selected.tasks !== undefined && !selected.tasks.length">
-            <td class="empty-content">
-                <small>${message(code: 'todo.is.ui.task.empty')}</small>
-            </td>
-        </tr>
+                    <div class="clearfix no-padding" ng-if="task.description">
+                        <p class="description form-control-static" ng-bind-html="task.description | lineReturns"></p>
+                    </div>
+                    <hr ng-if="!$last"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="col-sm-12"
+                         style="margin-top:10px;border-bottom:1px solid #eeeeee;margin-bottom:10px;">
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr ng-show="selected.tasks !== undefined && !selected.tasks.length">
+                <td class="empty-content">
+                    <small>${message(code: 'todo.is.ui.task.empty')}</small>
+                </td>
+            </tr>
+        </tbody>
     </table>
 </div>
 <div class="panel-footer" ng-controller="taskStoryCtrl">

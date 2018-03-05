@@ -50,9 +50,8 @@ extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', f
     $scope.resetTaskForm();
 }]);
 
-extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
+extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session', 'TaskStatesByName', function($scope, TaskService, Session, TaskStatesByName) {
     // Functions
-    $scope.authorizedTask = TaskService.authorizedTask;
     $scope.taskSortableOptions = {
         orderChanged: function(event) {
             var task = event.source.itemScope.modelValue;
@@ -62,14 +61,18 @@ extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', function
             });
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
-            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
+            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId &&
+                   sourceItemHandleScope.itemScope.sortableScope.taskState === destSortableScope.taskState;
         }
+    };
+    $scope.isTaskSortableByState = function(state) {
+        return state == TaskStatesByName.TODO && Session.sm();
     };
     // Init
     $scope.$watch('selected.tasks', function(tasks) {
-        $scope.tasks = _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
-            return _.sortBy(tasks, 'rank');
-        })[0];
+        $scope.tasksByState = _.mapValues(_.groupBy(tasks, 'state'), function(tasksOfState) {
+            return _.sortBy(tasksOfState, 'rank');
+        });
     }, true);
     $scope.sortableId = 'story-tasks';
 }]);
