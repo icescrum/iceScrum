@@ -28,8 +28,9 @@
                 <div class="clearfix no-padding">
                     <div class="col-sm-8">
                         <span class="name">
-                            <i class="fa fa-umbrella" as-sortable-item-handle="authorizedTask('rank', task) && task.state == 0"></i> <a ui-sref=".task.details({taskId: task.id})"
-                                                                                                                                        class="link"><strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}</a>
+                            <span as-sortable-item-handle="authorizedTask('rank', task) && task.state == 0">=</span>
+                            <a ui-sref=".task.details({taskId: task.id})"
+                               class="link"><strong>{{:: task.uid }}</strong>&nbsp;&nbsp;{{ task.name }}</a>
                         </span>
                     </div>
                     <div class="col-sm-4 text-right" ng-controller="taskCtrl">

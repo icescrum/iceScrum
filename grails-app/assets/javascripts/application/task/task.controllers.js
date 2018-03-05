@@ -50,19 +50,9 @@ extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', f
     $scope.resetTaskForm();
 }]);
 
-extensibleController('taskSortableStoryCtrl', ['$scope', '$controller', 'TaskService', function($scope, $controller, TaskService) {
+extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', function($scope, TaskService) {
     // Functions
-    $scope.authorizedTask = function(action, task) {
-        return TaskService.authorizedTask(action, task);
-    };
-    $scope.refreshTasks = function() {
-        var groupByStateAndSort = function(tasks) {
-            return _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
-                return _.sortBy(tasks, 'rank');
-            });
-        };
-        $scope.tasks = groupByStateAndSort($scope.selected.tasks)[0];
-    };
+    $scope.authorizedTask = TaskService.authorizedTask;
     $scope.taskSortableOptions = {
         orderChanged: function(event) {
             var task = event.source.itemScope.modelValue;
@@ -72,18 +62,16 @@ extensibleController('taskSortableStoryCtrl', ['$scope', '$controller', 'TaskSer
             });
         },
         accept: function(sourceItemHandleScope, destSortableScope) {
-            var sameSortable = sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
-            return sameSortable;
+            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId;
         }
     };
-    var refreshIfNotEqual = function(oldValue, newValue) {
-        $scope.refreshTasks();
-    };
     // Init
-    $scope.tasks = {};
-    $scope.$watch('selected.tasks', refreshIfNotEqual, true);
+    $scope.$watch('selected.tasks', function(tasks) {
+        $scope.tasks = _.mapValues(_.groupBy(tasks, 'state'), function(tasks) {
+            return _.sortBy(tasks, 'rank');
+        })[0];
+    }, true);
     $scope.sortableId = 'story-tasks';
-    $scope.refreshTasks();
 }]);
 
 extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, postitSize, screenSize) {
