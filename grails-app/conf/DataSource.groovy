@@ -84,6 +84,7 @@ environments {
 //            username = "sa"
 //            password = "<YourStrong!Passw0rd>"
 //            driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+//            dialect = "org.hibernate.dialect.SQLServer2012Dialect"
 //            url = "jdbc:sqlserver://localhost:1401;databaseName=icescrum" // docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=<YourStrong!Passw0rd>' -p 1401:1433 --name sql1 -d microsoft/mssql-server-linux:2017-latest
 ////            url = "jdbc:sqlserver://localhost:1433;databaseName=icescrum"
 //        }
