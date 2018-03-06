@@ -77,7 +77,7 @@ extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session
     $scope.sortableId = 'story-tasks';
 }]);
 
-extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, postitSize, screenSize) {
+extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'TaskStatesByName', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, TaskStatesByName, postitSize, screenSize) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -120,6 +120,21 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             name: 'is.ui.sprintPlan.menu.task.take',
             visible: function(task) { return $scope.authorizedTask('take', task); },
             action: function(task) { $scope.take(task); }
+        },
+        {
+            name: 'is.ui.task.state.done',
+            visible: function(task) { return task.state == TaskStatesByName.IN_PROGRESS && $scope.authorizedTask('updateState', task); },
+            action: function(task) { TaskService.updateState(task, TaskStatesByName.DONE); }
+        },
+        {
+            name: 'is.ui.task.state.inProgress',
+            visible: function(task) { return _.includes([TaskStatesByName.TODO, TaskStatesByName.DONE], task.state) && $scope.authorizedTask('updateState', task); },
+            action: function(task) { TaskService.updateState(task, TaskStatesByName.IN_PROGRESS); }
+        },
+        {
+            name: 'is.ui.task.state.todo',
+            visible: function(task) { return task.state == TaskStatesByName.IN_PROGRESS && $scope.authorizedTask('updateState', task); },
+            action: function(task) { TaskService.updateState(task, TaskStatesByName.TODO); }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.unassign',

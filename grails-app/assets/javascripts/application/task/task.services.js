@@ -90,6 +90,10 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
     this.copy = function(task) {
         return Task.update({projectId: task.parentProject.id, id: task.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
+    this.updateState = function(task, state) {
+        task.state = state;
+        return self.update(task, true);
+    };
     this.list = function(taskContext, projectId) {
         if (_.isEmpty(taskContext.tasks)) {
             var params = {projectId: projectId, typeId: taskContext.id, type: taskContext.class.toLowerCase()};
@@ -128,7 +132,11 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 return Session.inProject() &&
                        (!task || !task.parentStory && task.sprint && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
             case 'rank':
-                return Session.sm() || Session.responsible(task) || Session.creator(task) || !task.responsible && Session.inProject() && $rootScope.getProjectFromState() && $rootScope.getProjectFromState().preferences.assignOnBeginTask; // No check on sprint & story state because rank cannot be called from there
+                return Session.sm() ||
+                       Session.responsible(task) ||
+                       Session.creator(task) ||
+                       !task.responsible && Session.inProject() && $rootScope.getProjectFromState() && $rootScope.getProjectFromState().preferences.assignOnBeginTask && task.state == TaskStatesByName.TODO; // No check on sprint & story state because rank cannot be called from there
+
             case 'upload':
             case 'update':
                 return (Session.sm() || Session.responsible(task) || Session.creator(task)) && task.state != TaskStatesByName.DONE;
@@ -150,6 +158,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 return $rootScope.getProjectFromState() && $rootScope.getProjectFromState().preferences.displayRecurrentTasks;
             case 'makeStory':
                 return self.authorizedTask('delete', task) && task.state != TaskStatesByName.DONE && StoryService.authorizedStory('create');
+            case 'updateState':
+                return self.authorizedTask('rank', task) && (!task.parentStory && task.sprint && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
             default:
                 return false;
         }
