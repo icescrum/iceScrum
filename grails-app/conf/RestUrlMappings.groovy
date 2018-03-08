@@ -164,10 +164,19 @@ class RestUrlMappings {
             method = 'GET'
         }
         "/ws/project/$project/story/backlog/$id/printPostits/$format" {
-            controller = 'backlog'
+            controller = 'story'
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 action(inList: ['printPostitsByBacklog'])
+                id(matches: /\d*/)
+            }
+            method = 'GET'
+        }
+        "/ws/project/$project/story/sprint/$id/printPostits/$format" {
+            controller = 'story'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                action(inList: ['printPostitsBySprint'])
                 id(matches: /\d*/)
             }
             method = 'GET'

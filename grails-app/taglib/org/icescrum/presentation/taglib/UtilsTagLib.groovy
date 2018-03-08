@@ -29,6 +29,7 @@ import grails.util.Holders
 import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsHibernateUtil
 import org.icescrum.core.domain.security.Authority
 import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.ui.WindowDefinition
 
 class UtilsTagLib {
 
@@ -69,11 +70,12 @@ class UtilsTagLib {
         assert attrs.windowDefinition || attrs.entryPoint
         def exportFormats = attrs.windowDefinition ?: []
         if (attrs.windowDefinition) {
-            exportFormats = uiDefinitionService.getWindowDefinitionById(attrs.windowDefinition.id).exportFormats
+            def id = attrs.windowDefinition instanceof WindowDefinition ? attrs.windowDefinition.id : attrs.windowDefinition
+            exportFormats = uiDefinitionService.getWindowDefinitionById(id).exportFormats
             exportFormats.delegate = delegate
             exportFormats.resolveStrategy = Closure.DELEGATE_FIRST
             exportFormats = exportFormats()
-            entry.hook(id: "${attrs.windowDefinition.id}-exportFormats", model: [exportFormats: exportFormats])
+            entry.hook(id: "${id}-exportFormats", model: [exportFormats: exportFormats])
         }
         if (attrs.entryPoint) {
             entry.hook(id: "${attrs.entryPoint}-exportFormats", model: [exportFormats: exportFormats])

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape"
+              columnWidth="814" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" resourceBundle="grails-app/i18n/report" whenResourceMissingType="Empty">
+    <property name="ireport.zoom" value="0.75"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
+    <parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+    </parameter>
+    <field name="tasks1" class="java.util.List"/>
+    <field name="project" class="java.lang.String"/>
+    <field name="tasks2" class="java.util.List"/>
+    <background>
+        <band height="567" splitType="Stretch">
+            <line>
+                <reportElement x="406" y="0" width="1" height="567"/>
+                <graphicElement>
+                    <pen lineStyle="Dashed" lineColor="#CCCCCC"/>
+                </graphicElement>
+            </line>
+            <line>
+                <reportElement x="2" y="283" width="810" height="1"/>
+                <graphicElement>
+                    <pen lineStyle="Dashed" lineColor="#CCCCCC"/>
+                </graphicElement>
+            </line>
+        </band>
+    </background>
+    <detail>
+        <band height="283" splitType="Stretch">
+            <subreport>
+                <reportElement x="0" y="0" width="405" height="283"/>
+                <dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{tasks1})]]></dataSourceExpression>
+                <subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "postitTask.jasper"]]></subreportExpression>
+            </subreport>
+            <subreport>
+                <reportElement x="408" y="0" width="405" height="283"/>
+                <dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{tasks2})]]></dataSourceExpression>
+                <subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "postitTask.jasper"]]></subreportExpression>
+            </subreport>
+        </band>
+    </detail>
+</jasperReport>

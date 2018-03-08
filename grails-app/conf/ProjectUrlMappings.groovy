@@ -116,6 +116,14 @@ class ProjectUrlMappings {
                 project(matches: /[0-9A-Z]*/)
             }
         }
+        "/p/$project/task/sprint/$id/printPostits" {
+            controller = 'task'
+            action = 'printPostitsBySprint'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
         // Story
         "/p/$project/story" {
             controller = 'story'
@@ -166,6 +174,14 @@ class ProjectUrlMappings {
         "/p/$project/story/backlog/$id/printPostits" {
             controller = 'story'
             action = 'printPostitsByBacklog'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
+        "/p/$project/story/sprint/$id/printPostits" {
+            controller = 'story'
+            action = 'printPostitsBySprint'
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)

@@ -27,6 +27,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.*
 import org.icescrum.core.error.ControllerErrorHandler
+import org.icescrum.core.utils.ServicesUtils
 
 class TaskController implements ControllerErrorHandler {
 
@@ -254,5 +255,43 @@ class TaskController implements ControllerErrorHandler {
             maxResults(7)
         }?.collect { it[0] }
         render(status: 200, contentType: 'application/json', text: results as JSON)
+    }
+
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
+    def printPostitsBySprint(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
+        Project _project = sprint.parentRelease.parentProject
+        def tasks1 = []
+        def tasks2 = []
+        def first = 0
+        def tasks = sprint.tasks.sort { Task task -> task.parentStory }
+        if (!tasks) {
+            returnError(code: 'is.report.error.no.data')
+        } else {
+            tasks.each {
+                def task = [
+                        name       : it.name,
+                        id         : it.uid,
+                        state      : message(code: grailsApplication.config.icescrum.resourceBundles.taskStates[it.state]),
+                        description: it.description,
+                        notes      : ServicesUtils.textileToHtml(it.notes),
+                        sprint     : g.message(code: 'is.sprint') + " " + it.sprint.index,
+                        taskColor  : it.color,
+                        permalink  : createLink(absolute: true, uri: '/' + _project.pkey + '-T' + it.uid),
+                        story      : it.parentStory ? it.parentStory.name : null,
+                        estimation : it.estimation,
+                        type       : it.parentStory ? null : message(code: grailsApplication.config.icescrum.resourceBundles.taskTypes[it.type])
+                ]
+                if (first == 0) {
+                    tasks1 << task
+                    first = 1
+                } else {
+                    tasks2 << task
+                    first = 0
+                }
+
+            }
+            renderReport('tasks', 'PDF', [[project: _project.name, tasks1: tasks1 ?: null, tasks2: tasks2 ?: null]], _project.name + '-' + g.message(code: 'is.sprint') + "-" + sprint.index)
+        }
     }
 }

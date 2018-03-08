@@ -64,6 +64,26 @@
                         </ul>
                     </div>
                     <div class="btn-toolbar pull-right">
+                        <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
+                        <g:if test="${formats}">
+                            <div class="btn-group hidden-xs" uib-dropdown>
+                                <button class="btn btn-default"
+                                        uib-tooltip="${message(code: 'todo.is.ui.export')}"
+                                        uib-dropdown-toggle type="button">
+                                    <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
+                                </button>
+                                <ul uib-dropdown-menu
+                                    class="pull-right"
+                                    role="menu">
+                                    <g:each in="${formats}" var="format">
+                                        <li role="menuitem">
+                                            <a href="${format.resource ?: 'story'}/sprint/{{ ::sprint.id }}/${format.action ?: 'print'}/${format.params.format}"
+                                               ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
+                                        </li>
+                                    </g:each>
+                                </ul>
+                            </div>
+                        </g:if>
                         <div class="btn-group">
                             <button type="button"
                                     class="btn btn-default hidden-xs hidden-sm"

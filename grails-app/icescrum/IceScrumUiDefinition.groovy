@@ -159,6 +159,12 @@ windows = {
                     id
                 }
         ]
+        exportFormats = {
+            [
+                    [code: 'pdf', name: "${message(code: 'is.report.format.postits')} (${message(code: 'todo.is.ui.stories')})", action: "printPostits", resource: 'story', params: ["project": params.project]],
+                    [code: 'pdf', name: "${message(code: 'is.report.format.postits')} (${message(code: 'todo.is.ui.tasks')})", action: "printPostits", resource: 'task', params: ["project": params.project]]
+            ]
+        }
     }
 }
 

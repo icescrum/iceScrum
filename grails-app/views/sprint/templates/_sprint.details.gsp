@@ -57,7 +57,7 @@
                     </div>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="removeSprintAncestorOnClose"/>
                 </div>
-                <g:set var="formats" value="${is.exportFormats(entryPoint: 'sprintDetails')}"/>
+                <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
                 <g:if test="${formats}">
                     <div class="btn-group hidden-xs" uib-dropdown>
                         <button class="btn btn-default"
