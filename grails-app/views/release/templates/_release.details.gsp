@@ -67,7 +67,7 @@
                             role="menu">
                             <g:each in="${formats}" var="format">
                                 <li role="menuitem">
-                                    <a href="${format.resource ?: 'story'}/release/{{ ::release.id }}/${format.action ?: 'print'}/${format.params.format}"
+                                    <a href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/release/{{ ::release.id }}/' + (format.action ?: 'print') + '/' + format.params.format}"
                                        ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                                 </li>
                             </g:each>
