@@ -552,8 +552,11 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
             }
         };
         $scope.tabUrl = function(storyTabId) {
-            var stateName = $state.params.storyTabId ? (storyTabId ? '.' : '^') : (storyTabId ? '.tab' : '.');
+            var stateName = $state.params.storyTabId ? (storyTabId ? '.' : '^') : (storyTabId ? ($scope.application.focusedDetailsView ? '.focustab' : '.tab') : '.');
             return $state.href(stateName, {storyTabId: storyTabId});
+        };
+        $scope.toggleFocusUrl = function() {
+            return $state.href($scope.application.focusedDetailsView ? ($state.params.storyTabId ? '^.^.tab' : '^') : $state.params.storyTabId ? '^.focus.focustab' : '.focus', {storyTabId: $state.params.storyTabId});
         };
         $scope.currentStateUrl = function(id) {
             return $state.href($state.current.name, {storyId: id});
@@ -564,6 +567,9 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
                 stateName += '.^'
             }
             return $state.href(stateName);
+        };
+        $scope.storyFeatureUrl = function(story) {
+            return $state.href('.feature.details', {storyId: story.id, featureId: story.feature.id});
         };
         $scope.listFeatures = function() {
             FeatureService.list(project);
@@ -784,4 +790,8 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
     ActorService.list($scope.getProjectFromState().id).then(function(actors) {
         $scope.actors = actors;
     });
+}]);
+
+controllers.controller('testFuckCtrl', ['$scope', function($scope) {
+    $scope.selected = $scope.story;
 }]);

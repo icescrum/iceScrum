@@ -96,7 +96,7 @@
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-if="editableStory.feature.id && !isModal">
-                        <a ui-sref=".feature.details({featureId: editableStory.feature.id})"
+                        <a href="{{ storyFeatureUrl(editableStory) }}"
                            class="btn btn-default">
                             <i class="fa fa-info-circle"></i>
                         </a>

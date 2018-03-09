@@ -27,8 +27,8 @@
       ng-class="{'form-not-expanded': !formHolder.formExpanded}"
       show-validation
       novalidate>
-    <div class="form-group">
-        <div class="visible-hidden" style="right: 10px;position: absolute;">
+    <div class="form-group" style="position:relative;">
+        <div class="visible-hidden" style="right:0;position:absolute;">
             <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
         </div>
         <textarea at

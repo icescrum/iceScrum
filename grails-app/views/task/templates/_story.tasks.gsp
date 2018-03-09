@@ -66,13 +66,6 @@
                     <hr ng-if="!$last"/>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <div class="col-sm-12"
-                         style="margin-top:10px;border-bottom:1px solid #eeeeee;margin-bottom:10px;">
-                    </div>
-                </td>
-            </tr>
         </tbody>
         <tbody>
             <tr ng-show="selected.tasks !== undefined && !selected.tasks.length">

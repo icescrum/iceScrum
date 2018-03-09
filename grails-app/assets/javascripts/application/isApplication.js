@@ -287,7 +287,7 @@ var isApplication = angular.module('isApplication', [
                             {
                                 name: 'story',
                                 url: "/story",
-                                children: [isStateProvider.getStoryDetailsState('@planning')]
+                                children: [isStateProvider.getStoryDetailsState('@planning.release')]
                             },
                             {
                                 name: 'sprint',
@@ -324,7 +324,7 @@ var isApplication = angular.module('isApplication', [
                                             {
                                                 name: 'story',
                                                 url: "/story",
-                                                children: [isStateProvider.getStoryDetailsState('@planning')]
+                                                children: [isStateProvider.getStoryDetailsState('@planning.release.sprint.withId')]
                                             }
                                         ]
                                     },
@@ -345,7 +345,7 @@ var isApplication = angular.module('isApplication', [
                                             {
                                                 name: 'story',
                                                 url: "/story",
-                                                children: [isStateProvider.getStoryDetailsState('@planning')]
+                                                children: [isStateProvider.getStoryDetailsState('@planning.release.sprint.multiple')]
                                             }
                                         ]
                                     }
@@ -911,6 +911,7 @@ var isApplication = angular.module('isApplication', [
                     }
                 }
             }
+            $rootScope.application.focusedDetailsView = toState.name.indexOf('.focus') > 0;
             if (_.endsWith(fromState.name, 'details') && !_.endsWith(toState.name, 'details')) {
                 $rootScope.application.minimizedDetailsView = false;
             }

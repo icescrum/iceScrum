@@ -146,20 +146,22 @@ angular.module('isCore', ['ui.router'])
                     }]
                 },
                 tests: {
-                    resolve: ['$stateParams', 'AcceptanceTestService', 'detailsStory', function($stateParams, AcceptanceTestService, detailsStory) {
-                        if ($stateParams.storyTabId == 'tests') {
+                    resolve: ['$stateParams', '$rootScope', 'AcceptanceTestService', 'detailsStory', function($stateParams, $rootScope, AcceptanceTestService, detailsStory) {
+                        if ($stateParams.storyTabId == 'tests' || $rootScope.application.focusedDetailsView) {
                             return AcceptanceTestService.list(detailsStory);
                         }
                     }],
-                    templateUrl: 'story.acceptanceTests.html'
+                    templateUrl: 'story.acceptanceTests.html',
+                    focusTabCenter: true
                 },
                 tasks: {
-                    resolve: ['$stateParams', 'TaskService', 'detailsStory', 'project', function($stateParams, TaskService, detailsStory, project) {
-                        if ($stateParams.storyTabId == 'tasks') {
+                    resolve: ['$stateParams', '$rootScope', 'TaskService', 'detailsStory', 'project', function($stateParams, $rootScope, TaskService, detailsStory, project) {
+                        if ($stateParams.storyTabId == 'tasks' || $rootScope.application.focusedDetailsView) {
                             return TaskService.list(detailsStory, project.id);
                         }
                     }],
-                    templateUrl: 'story.tasks.html'
+                    templateUrl: 'story.tasks.html',
+                    focusTabRight: true
                 },
                 comments: {
                     resolve: ['$stateParams', 'CommentService', 'detailsStory', 'project', function($stateParams, CommentService, detailsStory, project) {
@@ -241,7 +243,7 @@ angular.module('isCore', ['ui.router'])
     })
     .provider('isState', ['itemTabsProvider', function(itemTabsProvider) {
         this.$get = angular.noop;
-        this.getFeatureNewState = function(viewContext) {
+        this.getFeatureNewState = function(fullParentPathState) {
             var featureNewState = {
                 name: 'new',
                 url: '/new',
@@ -252,7 +254,8 @@ angular.module('isCore', ['ui.router'])
                 },
                 views: {}
             };
-            featureNewState.views['details' + (viewContext ? viewContext : '')] = {
+            var mainState = fullParentPathState ? fullParentPathState.split('.')[0] : '';
+            featureNewState.views['details' + (mainState ? mainState : '')] = {
                 templateUrl: 'feature.new.html',
                 controller: 'featureNewCtrl'
             };
@@ -286,7 +289,7 @@ angular.module('isCore', ['ui.router'])
                 }]
             }, options);
         };
-        this.getBacklogDetailsState = function(viewContext) {
+        this.getBacklogDetailsState = function(fullParentPathState) {
             var backlogTabs = itemTabsProvider.itemTabs.backlog;
             var tabNames = _.keys(backlogTabs);
             var backlogState = {
@@ -325,13 +328,14 @@ angular.module('isCore', ['ui.router'])
             _.each(backlogTabs, function(value, key) {
                 backlogTabState.resolve['data' + key] = value.resolve;
             });
-            backlogState.views['details' + (viewContext ? viewContext : '')] = {
+            var mainState = fullParentPathState ? fullParentPathState.split('.')[0] : '';
+            backlogState.views['details' + (mainState ? mainState : '')] = {
                 templateUrl: 'backlog.details.html',
                 controller: 'backlogDetailsCtrl'
             };
             return backlogState;
         };
-        this.getTaskDetailsState = function(viewContext) {
+        this.getTaskDetailsState = function(fullParentPathState) {
             var taskTabs = itemTabsProvider.itemTabs.task;
             var tabNames = _.keys(taskTabs);
             var taskState = {
@@ -369,13 +373,13 @@ angular.module('isCore', ['ui.router'])
             _.each(taskTabs, function(value, key) {
                 taskTabState.resolve['data' + key] = value.resolve;
             });
-            taskState.views['details' + (viewContext ? viewContext : '')] = {
+            taskState.views['details' + (fullParentPathState ? fullParentPathState : '')] = {
                 templateUrl: 'task.details.html',
                 controller: 'taskDetailsCtrl'
             };
             return taskState;
         };
-        this.getFeatureDetailsState = function(viewContext, isModal) {
+        this.getFeatureDetailsState = function(fullParentPathState, isModal) {
             var featureTabs = itemTabsProvider.itemTabs.feature;
             var tabNames = _.keys(featureTabs);
             var featureState = {
@@ -414,7 +418,9 @@ angular.module('isCore', ['ui.router'])
             _.each(featureTabs, function(value, key) {
                 featureTabState.resolve['data' + key] = value.resolve;
             });
-            featureState.views['details' + (viewContext ? viewContext : '')] = {
+            var mainState = fullParentPathState ? fullParentPathState.split('.')[0] : '';
+            console.log('main: ' + mainState);
+            featureState.views['details' + (mainState ? mainState : '')] = {
                 templateUrl: 'feature.details.html',
                 controller: 'featureDetailsCtrl'
             };
@@ -427,7 +433,7 @@ angular.module('isCore', ['ui.router'])
             }
             return featureState;
         };
-        this.getStoryDetailsState = function(viewContext, isModal) {
+        this.getStoryDetailsState = function(fullParentPathState, isModal) {
             var storyTabs = itemTabsProvider.itemTabs.story;
             var tabNames = _.keys(storyTabs);
             var storyState = {
@@ -445,7 +451,7 @@ angular.module('isCore', ['ui.router'])
                         url: '/{storyTabId:(?:' + _.join(tabNames, '|') + ')}',
                         resolve: {},
                         views: {
-                            "details-tab": {
+                            "details-tab-left": {
                                 templateUrl: function($stateParams) {
                                     if ($stateParams.storyTabId) {
                                         return storyTabs[$stateParams.storyTabId].templateUrl;
@@ -456,20 +462,91 @@ angular.module('isCore', ['ui.router'])
                                 }]
                             }
                         }
+                    },
+                    {
+                        name: 'focus',
+                        url: '/focus',
+                        resolve: {
+                            focus: function() {
+                                return true;
+                            }
+                        },
+                        views: {
+                            "details-tab-center": {
+                                templateUrl: function($stateParams) {
+                                    return _.find(storyTabs, function(tab) { return tab.focusTabCenter; }).templateUrl;
+                                },
+                                controller: ['$scope', 'detailsStory', function($scope, detailsStory) {
+                                    $scope.selected = detailsStory;
+                                }]
+                            }
+                            ,
+                            "details-tab-right": {
+                                templateUrl: function($stateParams) {
+                                    return _.find(storyTabs, function(tab) { return tab.focusTabRight; }).templateUrl;
+                                },
+                                controller: ['$scope', 'detailsStory', function($scope, detailsStory) {
+                                    $scope.selected = detailsStory;
+                                }]
+                            }
+                        },
+                        children: [
+                            {
+                                name: 'focustab',
+                                url: '/{storyTabId:(?:' + _.join(tabNames, '|') + ')}',
+                                resolve: {},
+                                views: {
+                                    "details-tab-left": {
+                                        templateUrl: function($stateParams) {
+                                            if ($stateParams.storyTabId && !storyTabs[$stateParams.storyTabId].visibleOnFocus) {
+                                                return storyTabs[$stateParams.storyTabId].templateUrl;
+                                            }
+                                        },
+                                        controller: ['$scope', 'detailsStory', function($scope, detailsStory) {
+                                            $scope.selected = detailsStory;
+                                        }]
+                                    }
+                                }
+                            }
+                        ]
                     }
                 ]
             };
             // Default tab (without tabId)
             storyState.resolve.details = storyTabs.details.resolve;
             var storyTabState = storyState.children[0];
+            var storyFocusState = storyState.children[1];
+            var storyFocusTabState = storyState.children[1].children[0];
             _.each(storyTabs, function(value, key) {
                 storyTabState.resolve['data' + key] = value.resolve;
+                if (value.focusTabCenter || value.focusTabRight) {
+                    storyFocusState.resolve['data' + key] = value.resolve;
+                }
+                if (!value.focusTabCenter && !value.focusTabRight) {
+                    storyFocusTabState.resolve['data' + key] = value.resolve;
+                }
             });
-            storyState.views['details' + (viewContext ? viewContext : '')] = {
+
+            //put correct path to view dynamically
+            var mainState = fullParentPathState ? fullParentPathState.split('.')[0] : '';
+            storyState.views['details' + mainState] = {
                 templateUrl: 'story.details.html',
                 controller: 'storyDetailsCtrl'
             };
+
+            //put correct path to view dynamically
+            storyFocusTabState.views["details-tab-left" + (fullParentPathState ? (fullParentPathState + '.story.details') : '')] = storyFocusTabState.views["details-tab-left"];
+            delete storyFocusTabState.views["details-tab-left"];
+
             if (!isModal) {
+                storyState.children.push(this.getDetailsModalState('feature', {
+                    resolve: {
+                        features: ['FeatureService', 'project', function(FeatureService, project) {
+                            return FeatureService.list(project);
+                        }]
+                    },
+                    children: [this.getFeatureDetailsState('@', true)]
+                }));
                 storyTabState.children = [
                     this.getDetailsModalState('task', {
                         resolve: {
@@ -480,7 +557,7 @@ angular.module('isCore', ['ui.router'])
                         children: [this.getTaskDetailsState('@')]
                     })
                 ];
-                storyState.children.push(this.getDetailsModalState('feature', {
+                storyFocusState.children.push(this.getDetailsModalState('feature', {
                     resolve: {
                         features: ['FeatureService', 'project', function(FeatureService, project) {
                             return FeatureService.list(project);
@@ -488,10 +565,30 @@ angular.module('isCore', ['ui.router'])
                     },
                     children: [this.getFeatureDetailsState('@', true)]
                 }));
+                storyFocusState.children.push(
+                    this.getDetailsModalState('task', {
+                        resolve: {
+                            taskContext: ['detailsStory', function(detailsStory) {
+                                return detailsStory;
+                            }]
+                        },
+                        children: [this.getTaskDetailsState('@', true)]
+                    })
+                );
+                storyFocusTabState.children = [
+                    this.getDetailsModalState('task', {
+                        resolve: {
+                            taskContext: ['detailsStory', function(detailsStory) {
+                                return detailsStory;
+                            }]
+                        },
+                        children: [this.getTaskDetailsState('@', true)]
+                    })
+                ];
             }
             return storyState;
         };
-        this.getReleaseDetailsState = function(viewContext) {
+        this.getReleaseDetailsState = function(fullParentPathState) {
             var releaseTabs = itemTabsProvider.itemTabs.release;
             var tabNames = _.keys(releaseTabs);
             var releaseState = {
@@ -528,13 +625,14 @@ angular.module('isCore', ['ui.router'])
             _.each(releaseTabs, function(value, key) {
                 releaseTabState.resolve['data' + key] = value.resolve;
             });
-            releaseState.views['details' + (viewContext ? viewContext : '')] = {
+            var mainState = fullParentPathState ? fullParentPathState.split('.')[0] : '';
+            releaseState.views['details' + (mainState ? mainState : '')] = {
                 templateUrl: 'release.details.html',
                 controller: 'releaseDetailsCtrl'
             };
             return releaseState;
         };
-        this.getSprintDetailsState = function(viewContext) {
+        this.getSprintDetailsState = function(fullParentPathState) {
             var sprintTabs = itemTabsProvider.itemTabs.sprint;
             var tabNames = _.keys(sprintTabs);
             var sprintState = {
@@ -578,7 +676,8 @@ angular.module('isCore', ['ui.router'])
             _.each(sprintTabs, function(value, key) {
                 sprintTabState.resolve['data' + key] = value.resolve;
             });
-            sprintState.views['details' + (viewContext ? viewContext : '')] = {
+            var mainState = fullParentPathState ? fullParentPathState.split('.')[0] : '';
+            sprintState.views['details' + (mainState ? mainState : '')] = {
                 templateUrl: 'sprint.details.html',
                 controller: 'sprintDetailsCtrl'
             };
@@ -629,19 +728,19 @@ angular.module('isCore', ['ui.router'])
                             })
                         ]
                     },
-                    this.getStoryDetailsState('@backlog')
+                    this.getStoryDetailsState('@backlog.backlog')
                 ]
             }
         };
     }]).config(['$stateProvider', function($stateProvider) {
-        // Must be done in isCore to avoid doing it in isApplication + each plugin defining new states
-        $stateProvider.decorator('parent', function(state, parentFn) {
-            state.self.$$state = function() {
-                return state;
-            };
-            state.self.isSecured = function() {
-                return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
-            };
-            return parentFn(state);
-        });
-    }]);
+    // Must be done in isCore to avoid doing it in isApplication + each plugin defining new states
+    $stateProvider.decorator('parent', function(state, parentFn) {
+        state.self.$$state = function() {
+            return state;
+        };
+        state.self.isSecured = function() {
+            return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
+        };
+        return parentFn(state);
+    });
+}]);

@@ -462,7 +462,7 @@ header {
     }
     &.with-details {
       @media (min-width: @screen-xs-min) and (max-width: @screen-xs-max) {
-        .minimizable, .detachable {
+        .minimizable, .detachable, .expandable {
           display: none;
         }
       }
@@ -471,7 +471,7 @@ header {
           .make-sm-column(12);
         }
 
-        .detachable {
+        .detachable, .expandable {
           display: none;
         }
 
@@ -487,6 +487,10 @@ header {
           .minimizable {
             display: block;
           }
+        }
+
+        &.focused {
+          .focused()
         }
       }
       @media (min-width: @screen-md-min) and (max-width: 1400px) {
@@ -586,6 +590,47 @@ header {
   }
 }
 
+.focused() {
+  > .content {
+    .make-md-column(12);
+    padding: 0;
+  }
+
+  .minimizable, .detachable {
+    display: none;
+  }
+
+  > [ui-view='details'] {
+    z-index: 100;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    overflow: hidden;
+    top: 10px !important;
+    width: inherit !important;
+    > .panel-light {
+      border-left-width: 0 !important;
+    }
+    position: absolute;
+    border: 1px solid #ddd;
+    .details-content-container {
+      display: flex;
+      flex-direction: row !important;
+      .details-content {
+        width: 33%;
+        display: flex !important;
+        flex: 1 1 auto !important;
+        > div[ui-view] {
+          border-right: 1px solid #e5e5e5;
+        }
+        > div[ui-view="details-tab-right"] {
+          border-right: none;
+        }
+      }
+    }
+  }
+}
+
 .container-fluid.main > .view&.with-details, .modal-details > .modal-body {
 
   > [ui-view='details'] {
@@ -599,7 +644,7 @@ header {
         }
       }
     }
-    > .panel > [ui-view='details-tab'] {
+    > .panel div[ui-view^='details-tab'] {
       .chart {
         padding: 10px 10px 0;
         margin-bottom: 10px;
@@ -1073,7 +1118,7 @@ table {
   }
 }
 
-.comments, .tasks, .activities, .stories {
+.comments, .tasks, .activities, .stories, .acceptanceTests {
   .name {
     line-height: 19px;
     strong {
@@ -1670,6 +1715,22 @@ body {
               .make-flex-panel();
               overflow: auto;
               height: 1px;
+            }
+            > .details-content-container {
+              .make-flex-container();
+              > .details-content {
+                .make-flex-container();
+                > [ui-view], > [ui-view] > form, > .details-no-tab, > .details-no-tab > form {
+                  .make-flex-panel();
+                  overflow: auto;
+                  height: 1px;
+                }
+                &:not(:first-of-type) {
+                  > ul > li > a {
+                    border: none;
+                  }
+                }
+              }
             }
           }
         }
