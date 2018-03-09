@@ -791,7 +791,3 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
         $scope.actors = actors;
     });
 }]);
-
-controllers.controller('testFuckCtrl', ['$scope', function($scope) {
-    $scope.selected = $scope.story;
-}]);

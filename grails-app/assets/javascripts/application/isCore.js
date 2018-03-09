@@ -419,7 +419,6 @@ angular.module('isCore', ['ui.router'])
                 featureTabState.resolve['data' + key] = value.resolve;
             });
             var mainState = fullParentPathState ? fullParentPathState.split('.')[0] : '';
-            console.log('main: ' + mainState);
             featureState.views['details' + (mainState ? mainState : '')] = {
                 templateUrl: 'feature.details.html',
                 controller: 'featureDetailsCtrl'
