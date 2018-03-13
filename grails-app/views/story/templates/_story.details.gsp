@@ -61,6 +61,7 @@
                        tabindex="0"
                        href="{{:: currentStateUrl(nextStory.id) }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
                     <a class="btn btn-default expandable"
+                       ng-if="!isModal"
                        href="{{ toggleFocusUrl() }}"
                        uib-tooltip="${message(code: 'is.ui.window.expand')}">
                         <i ng-class="['fa', application.focusedDetailsView ? 'fa-compress' : 'fa-expand']"></i>
