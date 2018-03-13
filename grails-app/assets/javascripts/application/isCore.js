@@ -259,7 +259,12 @@ angular.module('isCore', ['ui.router'])
             };
             featureNewState.views['details' + getMainStateFromFullState(fullParentPathState)] = {
                 templateUrl: 'feature.new.html',
-                controller: 'featureNewCtrl'
+                controller: 'featureNewCtrl',
+                resolve: {
+                    availableColors: ['FeatureService', 'project', function(FeatureService, project) {
+                        return FeatureService.getAvailableColors(project.id);
+                    }]
+                }
             };
             return featureNewState;
         };
@@ -667,7 +672,8 @@ angular.module('isCore', ['ui.router'])
                 ]
             }
         };
-    }]).config(['$stateProvider', function($stateProvider) {
+    }
+    ]).config(['$stateProvider', function($stateProvider) {
     // Must be done in isCore to avoid doing it in isApplication + each plugin defining new states
     $stateProvider.decorator('parent', function(state, parentFn) {
         state.self.$$state = function() {

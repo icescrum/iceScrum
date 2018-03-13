@@ -98,17 +98,13 @@ controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller',
     $scope.availableColors = [];
 }]);
 
-controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', 'project', function($scope, $state, $controller, FeatureService, hotkeys, project) {
+controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'FeatureService', 'hotkeys', 'project', 'availableColors', function($scope, $state, $controller, FeatureService, hotkeys, project, availableColors) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.resetFeatureForm = function() {
-        $scope.feature = {};
+        $scope.feature = {color: $scope.availableColors && $scope.availableColors.length ? _.last($scope.availableColors) : "#2d8ccc"};
         $scope.resetFormValidation($scope.formHolder.featureForm);
-        $scope.refreshAvailableColors().then(function() {
-            if (!$scope.feature.color) {
-                $scope.feature.color = $scope.availableColors.length ? _.last($scope.availableColors) : "#2d8ccc";
-            }
-        });
+        $scope.refreshAvailableColors(); // To get a new list the next time
     };
     $scope.save = function(feature, andContinue) {
         FeatureService.save(feature, project.id).then(function(feature) {
@@ -131,13 +127,13 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     };
     // Init
     $scope.formHolder = {};
+    $scope.availableColors = availableColors;
     $scope.resetFeatureForm();
     hotkeys.bindTo($scope).add({
         combo: 'esc',
         allowIn: ['INPUT'],
         callback: $scope.resetFeatureForm
     });
-    $scope.availableColors = [];
 }]);
 
 extensibleController('featureMultipleCtrl', ['$scope', '$controller', 'featureListId', 'FeatureService', 'project', function($scope, $controller, featureListId, FeatureService, project) {
