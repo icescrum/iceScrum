@@ -552,11 +552,11 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
             }
         };
         $scope.tabUrl = function(storyTabId) {
-            var stateName = $state.params.storyTabId ? (storyTabId ? '.' : '^') : (storyTabId ? ($scope.application.focusedDetailsView ? '.focustab' : '.tab') : '.');
+            var stateName = $state.params.storyTabId ? (storyTabId ? '.' : '^') : (storyTabId ? '.tab' : '.');
             return $state.href(stateName, {storyTabId: storyTabId});
         };
         $scope.toggleFocusUrl = function() {
-            return $state.href($scope.application.focusedDetailsView ? ($state.params.storyTabId ? '^.^.tab' : '^') : $state.params.storyTabId ? '^.focus.focustab' : '.focus', {storyTabId: $state.params.storyTabId});
+            return $state.href($scope.application.focusedDetailsView ? ($state.params.storyTabId ? '^.^.tab' : '^') : $state.params.storyTabId ? '^.focus.tab' : '.focus', {storyTabId: $state.params.storyTabId});
         };
         $scope.currentStateUrl = function(id) {
             return $state.href($state.current.name, {storyId: id});
