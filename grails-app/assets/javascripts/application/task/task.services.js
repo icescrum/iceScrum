@@ -91,8 +91,9 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         return Task.update({projectId: task.parentProject.id, id: task.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.updateState = function(task, state) {
-        task.state = state;
-        return self.update(task, true);
+        var editableTask = angular.copy(task);
+        editableTask.state = state;
+        return self.update(editableTask, true);
     };
     this.list = function(taskContext, projectId) {
         if (_.isEmpty(taskContext.tasks)) {
@@ -136,7 +137,6 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                        Session.responsible(task) ||
                        Session.creator(task) ||
                        !task.responsible && Session.inProject() && $rootScope.getProjectFromState() && $rootScope.getProjectFromState().preferences.assignOnBeginTask && task.state == TaskStatesByName.TODO; // No check on sprint & story state because rank cannot be called from there
-
             case 'upload':
             case 'update':
                 return (Session.sm() || Session.responsible(task) || Session.creator(task)) && task.state != TaskStatesByName.DONE;
@@ -159,7 +159,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             case 'makeStory':
                 return self.authorizedTask('delete', task) && task.state != TaskStatesByName.DONE && StoryService.authorizedStory('create');
             case 'updateState':
-                return self.authorizedTask('rank', task) && (!task.parentStory && task.sprint && task.sprint.state != SprintStatesByName.DONE || task.parentStory && task.parentStory.state != StoryStatesByName.DONE);
+                return self.authorizedTask('rank', task) && task.sprint && task.sprint.state == SprintStatesByName.IN_PROGRESS && (!task.parentStory || task.parentStory.state != StoryStatesByName.DONE);
             default:
                 return false;
         }
