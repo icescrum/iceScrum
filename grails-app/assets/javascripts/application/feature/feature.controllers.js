@@ -105,7 +105,9 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
         $scope.feature = {};
         $scope.resetFormValidation($scope.formHolder.featureForm);
         $scope.refreshAvailableColors().then(function() {
-            $scope.feature.color =  $scope.availableColors.length ? _.last($scope.availableColors) : "#2d8ccc";
+            if (!$scope.feature.color) {
+                $scope.feature.color = $scope.availableColors.length ? _.last($scope.availableColors) : "#2d8ccc";
+            }
         });
     };
     $scope.save = function(feature, andContinue) {
