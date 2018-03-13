@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-extensibleController('quickProjectsListCtrl', ['$scope', '$timeout', 'PushService', 'ProjectService', 'IceScrumEventType', function($scope, $timeout, PushService, ProjectService, IceScrumEventType) {
+extensibleController('quickProjectsListCtrl', ['$scope', '$timeout', 'PushService', 'Session', 'ProjectService', 'IceScrumEventType', function($scope, $timeout, PushService, Session, ProjectService, IceScrumEventType) {
     $scope.getProjectUrl = function(project, viewName) {
         return $scope.serverUrl + '/p/' + project.pkey + '/' + (viewName ? "#/" + viewName : '');
     };
@@ -29,6 +29,7 @@ extensibleController('quickProjectsListCtrl', ['$scope', '$timeout', 'PushServic
         return ProjectService.createSample();
     };
     // Init
+    $scope.projectCreationEnabled = isSettings.projectCreationEnabled || Session.admin();
     $scope.projectsLoaded = false;
     $scope.projects = [];
     ProjectService.listByUser({count: 9, light: true}).then(function(projectsAndCount) {

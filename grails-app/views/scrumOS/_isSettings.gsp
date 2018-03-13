@@ -33,6 +33,7 @@
         pushLogLevel: "${Holders.config.icescrum.pushdebug.enable ? 'debug' : 'info'}",
         projectPrivateDefault: ${grailsApplication.config.icescrum.project.private.default},
         projectPrivateEnabled: ${grailsApplication.config.icescrum.project.private.enable},
+        projectCreationEnabled: ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)},
         registrationEnabled: ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.registration.enable)},
         retrieveEnabled: ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.login.retrieve.enable)},
         messages: ${i18nMessages as JSON},

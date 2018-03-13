@@ -86,6 +86,15 @@ class IceScrumFilters {
             }
         }
 
+        projectCreationEnableCreateSample(controller: 'project', action: 'createSample') {
+            before = {
+                if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
+                    forward(controller: "errors", action: "error403")
+                    return false
+                }
+            }
+        }
+
         projectImportEnable(controller: 'project', action: 'import') {
             before = {
                 if (!ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.import.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
