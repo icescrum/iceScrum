@@ -63,7 +63,7 @@
                     <a class="btn btn-default expandable"
                        ng-if="!isModal"
                        href="{{ toggleFocusUrl() }}"
-                       uib-tooltip="${message(code: 'is.ui.window.expand')}">
+                       uib-tooltip="{{ message('is.ui.window.' + (application.focusedDetailsView ? 'unfocus' : 'focus')) }}">
                         <i ng-class="['fa', application.focusedDetailsView ? 'fa-compress' : 'fa-expand']"></i>
                     </a>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
