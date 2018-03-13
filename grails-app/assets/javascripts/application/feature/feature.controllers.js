@@ -102,8 +102,11 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     // Functions
     $scope.resetFeatureForm = function() {
-        $scope.feature = {color: "#2d8ccc"};
+        $scope.feature = {};
         $scope.resetFormValidation($scope.formHolder.featureForm);
+        $scope.refreshAvailableColors().then(function() {
+            $scope.feature.color =  $scope.availableColors.length ? _.last($scope.availableColors) : "#2d8ccc";
+        });
     };
     $scope.save = function(feature, andContinue) {
         FeatureService.save(feature, project.id).then(function(feature) {
@@ -117,7 +120,7 @@ controllers.controller('featureNewCtrl', ['$scope', '$state', '$controller', 'Fe
         });
     };
     $scope.refreshAvailableColors = function() {
-        FeatureService.getAvailableColors(project.id).then(function(colors) {
+        return FeatureService.getAvailableColors(project.id).then(function(colors) {
             $scope.availableColors = colors;
         });
     };
