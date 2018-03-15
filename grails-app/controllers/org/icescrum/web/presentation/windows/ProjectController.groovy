@@ -228,7 +228,7 @@ class ProjectController implements ControllerErrorHandler {
     def available(long project, String property) {
         def result = false
         if (property == 'pkey') {
-            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && (project ? Project.countByPkeyAndId(request.JSON.value, project) : Project.countByPkey(request.JSON.value)) == 0
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*[A-Z]+[A-Z0-9]*$/ && (project ? Project.countByPkeyAndId(request.JSON.value, project) : Project.countByPkey(request.JSON.value)) == 0
         }
         render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
     }

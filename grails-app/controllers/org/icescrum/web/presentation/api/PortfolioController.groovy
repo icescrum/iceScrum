@@ -116,7 +116,7 @@ class PortfolioController implements ControllerErrorHandler {
     def available(long portfolio, String property) {
         def result = false
         if (property == 'fkey') {
-            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*$/ && (portfolio ? Portfolio.countByFkeyAndId(request.JSON.value, portfolio) : Portfolio.countByFkey(request.JSON.value)) == 0
+            result = request.JSON.value && request.JSON.value =~ /^[A-Z0-9]*[A-Z]+[A-Z0-9]*$/ && (portfolio ? Portfolio.countByFkeyAndId(request.JSON.value, portfolio) : Portfolio.countByFkey(request.JSON.value)) == 0
         }
         render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
     }
