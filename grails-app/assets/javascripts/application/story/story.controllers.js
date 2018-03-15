@@ -757,7 +757,7 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     // So it can look for previous / next story from a details view
     if ($scope.storyListGetters) {
         var storyListGetter = function() {
-            return $scope.backlogStories; // Needs to be in a function because it can change
+            return $filter('search')($scope.backlogStories); // Needs to be in a function because it can change
         };
         $scope.storyListGetters.push(storyListGetter);
         $scope.$on('$destroy', function() {
