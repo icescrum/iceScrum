@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 'ReleaseStatesByName', 'project', function($scope, $state, SprintStatesByName, ReleaseStatesByName, project) {
+extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'SprintStatesByName', 'ReleaseStatesByName', 'project', function($scope, $state, StoryService, SprintStatesByName, ReleaseStatesByName, project) {
     $scope.isSelected = function(selectable) {
         if ($state.params.storyId) {
             return $state.params.storyId == selectable.id;
@@ -228,4 +228,6 @@ extensibleController('planningCtrl', ['$scope', '$state', 'SprintStatesByName', 
             }
         }
     };
+    $scope.storyListGetters = []; // Mandatory to share code between two separate substates
+    $scope.findPreviousOrNextStory = StoryService.findPreviousOrNextStory($scope.storyListGetters);
 }]);

@@ -320,6 +320,19 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.getURL = function(id, projectId) {
         return FormService.httpGet('p/' + projectId + '/story/' + id + '/url', null, true);
     };
+    this.findPreviousOrNextStory = function(storyListGetters) {
+        return function(isPreviousOrNext, story) {
+            var previousOrNext;
+            _.some(storyListGetters, function(storyListGetter) { // To stop when we find the first occurrence
+                var result = FormService.previousOrNext(isPreviousOrNext, storyListGetter(), story);
+                if (result) {
+                    previousOrNext = result.previousOrNext;
+                }
+                return result;
+            });
+            return previousOrNext;
+        }
+    };
     this.filterStories = function(stories, storyFilter) {
         var getMatcher = function(key) {
             if (key == 'term') {

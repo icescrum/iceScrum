@@ -122,7 +122,6 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
     $scope.openStoryUrl = function(storyId) {
         return '#/' + $scope.viewName + '/' + $state.params.elementId + '/story/' + storyId;
     };
-
     $scope.closeBacklogUrl = function(backlog) {
         var stateParams;
         if (backlog.code === $state.params.pinnedElementId) {
@@ -223,7 +222,6 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         {id: 'state', value: 'state', name: $scope.message('todo.is.ui.sort.state')},
         {id: 'value/effort', value: getValueEffortRateForSorting, name: $scope.message('todo.is.ui.sort.value.effort.rate')}
     ];
-
     $scope.backlogSortableOptions = {
         itemMoved: function(event) {
             var story = event.source.itemScope.modelValue;
@@ -303,4 +301,6 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             }
         });
     });
+    $scope.storyListGetters = []; // Mandatory to share code between two separate substates
+    $scope.findPreviousOrNextStory = StoryService.findPreviousOrNextStory($scope.storyListGetters);
 }]);

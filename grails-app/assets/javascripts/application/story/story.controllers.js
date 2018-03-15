@@ -574,6 +574,16 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.listFeatures = function() {
             FeatureService.list(project);
         };
+        $scope.previousStory = function() {
+            if ($scope.findPreviousOrNextStory) {
+                return $scope.findPreviousOrNextStory('previous', detailsStory);
+            }
+        };
+        $scope.nextStory = function() {
+            if ($scope.findPreviousOrNextStory) {
+                return $scope.findPreviousOrNextStory('next', detailsStory);
+            }
+        };
         // Init
         $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});
         $scope.dependenceEntries = [];
@@ -583,8 +593,6 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.features = project.features;
         $scope.project = project;
         // For header
-        //$scope.previousStory = FormService.previous(list, $scope.story);
-        //$scope.nextStory = FormService.next(list, $scope.story);
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
         $scope.storyStatesByName = StoryStatesByName;
         $scope.storyTypesByName = StoryTypesByName;
@@ -745,6 +753,19 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     getPostitClass();
     screenSize.on('xs, sm', getPostitClass, $scope);
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
+    // Hack to provide all the lists of stories to the current view
+    // So it can look for previous / next story from a details view
+    if ($scope.storyListGetters) {
+        var storyListGetter = function() {
+            return $scope.backlogStories; // Needs to be in a function because it can change
+        };
+        $scope.storyListGetters.push(storyListGetter);
+        $scope.$on('$destroy', function() {
+            _.remove($scope.storyListGetters, function(storyListGetter2) {
+                return storyListGetter2 === storyListGetter;
+            });
+        })
+    }
 }]);
 
 controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter', 'StoryStatesByName', 'ActorService', function($controller, $scope, $filter, StoryStatesByName, ActorService) {

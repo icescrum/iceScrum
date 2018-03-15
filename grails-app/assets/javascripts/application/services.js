@@ -200,13 +200,22 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
 
 services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfigService', function($filter, $http, $rootScope, DomainConfigService) {
     var self = this;
-    this.previous = function(list, element) {
-        var ind = _.findIndex(list, {id: element.id});
-        return ind > 0 ? list[ind - 1] : null;
+    this.previous = function(itemList, item) {
+        var itemIndex = _.findIndex(itemList, {id: item.id});
+        return itemIndex > 0 ? itemList[itemIndex - 1] : null;
     };
-    this.next = function(list, element) {
-        var ind = _.findIndex(list, {id: element.id});
-        return ind + 1 <= list.length ? list[ind + 1] : null;
+    this.next = function(itemList, item) {
+        var itemIndex = _.findIndex(itemList, {id: item.id});
+        return itemIndex + 1 <= itemList.length ? itemList[itemIndex + 1] : null;
+    };
+    this.previousOrNext = function(isPreviousOrNext, itemList, item) {
+        var previousOrNext;
+        if (itemList && itemList.length && _.find(itemList, {id: item.id})) {
+            previousOrNext = {
+                previousOrNext: isPreviousOrNext === 'previous' ? self.previous(itemList, item) : self.next(itemList, item)
+            };
+        }
+        return previousOrNext;
     };
     this.formObjectData = function(obj, prefix) {
         var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;

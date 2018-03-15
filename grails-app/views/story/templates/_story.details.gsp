@@ -50,16 +50,24 @@
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
                              height="30px"/>
                     </span>
-                    <a ng-if="previousStory"
+                    <a ng-if="previousStory()"
                        class="btn btn-default"
                        role="button"
                        tabindex="0"
-                       href="{{:: currentStateUrl(previousStory.id) }}"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i></a>
-                    <a ng-if="nextStory"
+                       hotkey="{'left': hotkeyClick}"
+                       href="{{ currentStateUrl(previousStory().id) }}">
+                        <i class="fa fa-caret-left"
+                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i>
+                    </a>
+                    <a ng-if="nextStory()"
                        class="btn btn-default"
                        role="button"
                        tabindex="0"
-                       href="{{:: currentStateUrl(nextStory.id) }}"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
+                       hotkey="{'right': hotkeyClick}"
+                       href="{{ currentStateUrl(nextStory().id) }}">
+                        <i class="fa fa-caret-right"
+                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i>
+                    </a>
                     <a class="btn btn-default expandable"
                        ng-if="!isModal"
                        href="{{ toggleFocusUrl() }}"
