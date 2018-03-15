@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div class="right-title">
-                <div style="margin-bottom:10px">
+                <div style="margin-bottom:10px" class="buttons-margin-bottom">
                     <entry:point id="story-details-right-title"/>
                     <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
