@@ -28,7 +28,7 @@ import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.error.ControllerErrorHandler
-import org.icescrum.core.utils.ServicesUtils
+import org.icescrum.core.utils.DateUtils
 
 class ReleaseController implements ControllerErrorHandler {
 
@@ -55,10 +55,10 @@ class ReleaseController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         def releaseParams = params.release
         if (releaseParams.startDate) {
-            releaseParams.startDate = ServicesUtils.parseDateISO8601(releaseParams.startDate)
+            releaseParams.startDate = DateUtils.parseDateISO8601(releaseParams.startDate)
         }
         if (releaseParams.endDate) {
-            releaseParams.endDate = ServicesUtils.parseDateISO8601(releaseParams.endDate)
+            releaseParams.endDate = DateUtils.parseDateISO8601(releaseParams.endDate)
         }
         def release = new Release()
         Release.withTransaction {
@@ -72,8 +72,8 @@ class ReleaseController implements ControllerErrorHandler {
     def update(long project, long id) {
         def releaseParams = params.release
         Release release = Release.withRelease(project, id)
-        def startDate = releaseParams.startDate ? ServicesUtils.parseDateISO8601(releaseParams.startDate) : release.startDate
-        def endDate = releaseParams.endDate ? ServicesUtils.parseDateISO8601(releaseParams.endDate) : release.endDate
+        def startDate = releaseParams.startDate ? DateUtils.parseDateISO8601(releaseParams.startDate) : release.startDate
+        def endDate = releaseParams.endDate ? DateUtils.parseDateISO8601(releaseParams.endDate) : release.endDate
         Release.withTransaction {
             bindData(release, releaseParams, [include: ['name', 'vision', 'firstSprintIndex']])
             releaseService.update(release, startDate, endDate)

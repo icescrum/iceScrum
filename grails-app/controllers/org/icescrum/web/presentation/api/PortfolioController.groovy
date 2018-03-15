@@ -32,7 +32,7 @@ import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.domain.User
 import org.icescrum.core.error.ControllerErrorHandler
-import org.icescrum.core.support.ApplicationSupport
+import org.icescrum.core.utils.DateUtils
 
 @Secured('isAuthenticated()')
 class PortfolioController implements ControllerErrorHandler {
@@ -175,7 +175,7 @@ class PortfolioController implements ControllerErrorHandler {
                     dates << sprint.endDate
                 }
             }
-            return [project: project, dates: dates.collect { ApplicationSupport.getMidnightTime(it) }.sort()]
+            return [project: project, dates: dates.collect { DateUtils.getMidnightDate(it) }.sort()]
         }
         // Avoid treating projects that don't have dates
         projectDatesEntries = projectDatesEntries.findAll { entry ->

@@ -40,7 +40,7 @@ import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.support.ProgressSupport
-import org.icescrum.core.utils.ServicesUtils
+import org.icescrum.core.utils.DateUtils
 
 @Secured('stakeHolder() or inProject()')
 class ProjectController implements ControllerErrorHandler {
@@ -87,10 +87,10 @@ class ProjectController implements ControllerErrorHandler {
             returnError(code: 'todo.is.ui.no.data')
         }
 
-        projectParams.startDate = ServicesUtils.parseDateISO8601(projectParams.startDate)
-        projectParams.endDate = ServicesUtils.parseDateISO8601(projectParams.endDate)
+        projectParams.startDate = DateUtils.parseDateISO8601(projectParams.startDate)
+        projectParams.endDate = DateUtils.parseDateISO8601(projectParams.endDate)
         if (projectParams.firstSprint) {
-            projectParams.firstSprint = ServicesUtils.parseDateISO8601(projectParams.firstSprint)
+            projectParams.firstSprint = DateUtils.parseDateISO8601(projectParams.firstSprint)
         }
 
         if (projectPreferencesParams.hidden && !ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.private.enable) && !SpringSecurityUtils.ifAnyGranted(Authority.ROLE_ADMIN)) {
@@ -148,7 +148,7 @@ class ProjectController implements ControllerErrorHandler {
         def projectPreferencesParams = params.projectd?.remove('preferences')
         def projectParams = params.projectd
         Project.withTransaction {
-            projectParams.startDate = ServicesUtils.parseDateISO8601(projectParams.startDate);
+            projectParams.startDate = DateUtils.parseDateISO8601(projectParams.startDate);
             bindData(_project, projectParams, [include: ['name', 'description', 'startDate', 'pkey', 'planningPokerGameType']])
             bindData(_project.preferences, projectPreferencesParams, [exclude: ['archived']])
             if (!projectPreferencesParams?.stakeHolderRestrictedViews) {

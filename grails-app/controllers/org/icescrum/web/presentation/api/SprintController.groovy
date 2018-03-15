@@ -30,7 +30,7 @@ import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
-import org.icescrum.core.utils.ServicesUtils
+import org.icescrum.core.utils.DateUtils
 
 class SprintController implements ControllerErrorHandler {
 
@@ -66,10 +66,10 @@ class SprintController implements ControllerErrorHandler {
         }
         Release release = Release.withRelease(project, releaseId.toLong())
         if (sprintParams.startDate) {
-            sprintParams.startDate = ServicesUtils.parseDateISO8601(sprintParams.startDate)
+            sprintParams.startDate = DateUtils.parseDateISO8601(sprintParams.startDate)
         }
         if (sprintParams.endDate) {
-            sprintParams.endDate = ServicesUtils.parseDateISO8601(sprintParams.endDate)
+            sprintParams.endDate = DateUtils.parseDateISO8601(sprintParams.endDate)
         }
         Sprint sprint = new Sprint()
         Sprint.withTransaction {
@@ -83,8 +83,8 @@ class SprintController implements ControllerErrorHandler {
     def update(long project, long id) {
         def sprintParams = params.sprint
         Sprint sprint = Sprint.withSprint(project, id)
-        def startDate = sprintParams.startDate ? ServicesUtils.parseDateISO8601(sprintParams.startDate) : sprint.startDate
-        def endDate = sprintParams.endDate ? ServicesUtils.parseDateISO8601(sprintParams.endDate) : sprint.endDate
+        def startDate = sprintParams.startDate ? DateUtils.parseDateISO8601(sprintParams.startDate) : sprint.startDate
+        def endDate = sprintParams.endDate ? DateUtils.parseDateISO8601(sprintParams.endDate) : sprint.endDate
         Sprint.withTransaction {
             bindData(sprint, sprintParams, [include: ['goal', 'deliveredVersion', 'retrospective', 'doneDefinition']])
             sprintService.update(sprint, startDate, endDate)
