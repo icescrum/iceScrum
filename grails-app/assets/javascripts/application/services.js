@@ -854,7 +854,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
             return null;
         } else {
             var contextFields = contextParam.split(self.contextSeparator);
-            return {type: contextFields[0], id: contextFields.slice(1).join('_')};
+            return {type: contextFields[0], id: contextFields.slice(1).join(self.contextSeparator)};
         }
     };
     this.contexts = [];
