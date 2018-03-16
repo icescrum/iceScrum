@@ -55,7 +55,7 @@
                class="form-control"
                placeholder="${message(code: 'is.ui.portfolio.nokey')}"
                ng-model="portfolio.fkey"
-               ng-pattern="/^[A-Z0-9]*[A-Z]+[A-Z0-9]*$/"
+               ng-pattern="/^[A-Z0-9]*[A-Z][A-Z0-9]*$/"
                ng-required="isCurrentStep(1, 'portfolio')"
                ng-maxlength="10"
                ng-remote-validate-code="portfolio.fkey.unique"

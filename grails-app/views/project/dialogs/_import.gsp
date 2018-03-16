@@ -127,7 +127,7 @@
                            id="project.pkey"
                            name="project.pkey"
                            class="form-control text-capitalize"
-                           ng-pattern="/^[A-Z0-9]*[A-Z]+[A-Z0-9]*$/"
+                           ng-pattern="/^[A-Z0-9]*[A-Z][A-Z0-9]*$/"
                            ng-model="changes.project.pkey">
                 </div>
             </div>
