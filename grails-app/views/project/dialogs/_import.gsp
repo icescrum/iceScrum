@@ -128,6 +128,7 @@
                            name="project.pkey"
                            class="form-control text-capitalize"
                            ng-pattern="/^[A-Z0-9]*[A-Z][A-Z0-9]*$/"
+                           pattern-error-message="${message(code: 'project.pkey.matches.invalid')}"
                            ng-model="changes.project.pkey">
                 </div>
             </div>

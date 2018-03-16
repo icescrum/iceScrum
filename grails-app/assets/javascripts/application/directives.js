@@ -107,7 +107,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                                         } else if (key == 'maxlength') {
                                             errorMessage = $rootScope.message('default.invalid.max.size.message', ['', '', '', input.attr('ng-' + key)]);
                                         } else if (key == 'pattern') {
-                                            errorMessage = $rootScope.message('default.doesnt.match.message', ['', '', '', input.attr('ng-' + key)]);
+                                            errorMessage = input.attr('pattern-error-message') ? input.attr('pattern-error-message') : $rootScope.message('default.doesnt.match.message', ['', '', '', input.attr('ng-' + key)]);
                                         } else if (key == 'url') {
                                             errorMessage = $rootScope.message('default.invalid.url.message');
                                         } else if (key == 'email') {

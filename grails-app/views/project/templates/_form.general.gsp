@@ -59,6 +59,7 @@
                placeholder="${message(code: 'todo.is.ui.project.nokey')}"
                ng-model="project.pkey"
                ng-pattern="/^[A-Z0-9]*[A-Z][A-Z0-9]*$/"
+               pattern-error-message="${message(code: 'project.pkey.matches.invalid')}"
                ng-required="isCurrentStep(1, 'project')"
                ng-maxlength="10"
                ng-remote-validate-code="project.pkey.unique"
