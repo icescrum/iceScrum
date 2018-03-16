@@ -69,10 +69,20 @@
                            uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i>
                     </a>
                     <a class="btn btn-default expandable"
-                       ng-if="!isModal"
+                       ng-if="!isModal && !application.focusedDetailsView"
                        href="{{ toggleFocusUrl() }}"
-                       uib-tooltip="{{ message('is.ui.window.' + (application.focusedDetailsView ? 'unfocus' : 'focus')) }}">
-                        <i ng-class="['fa', application.focusedDetailsView ? 'fa-compress' : 'fa-expand']"></i>
+                       tabindex="0"
+                       hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
+                       uib-tooltip="${ message(code: 'is.ui.window.focus') }">
+                        <i class="fa fa-expand"></i>
+                    </a>
+                    <a class="btn btn-default expandable"
+                       ng-if="!isModal && application.focusedDetailsView"
+                       href="{{ toggleFocusUrl() }}"
+                       tabindex="0"
+                       hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
+                       uib-tooltip="${ message(code: 'is.ui.window.unfocus') }">
+                        <i class="fa fa-compress"></i>
                     </a>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
                 </div>
