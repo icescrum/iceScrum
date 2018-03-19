@@ -211,4 +211,19 @@ databaseChangeLog = {
             }
         }
     }
+    changeSet(author: "vbarrier", id: "change_database_to_utf8mb4_retry") {
+        preConditions(onError: "MARK_RAN") {
+            dbms(type: 'mysql')
+            grailsPrecondition {
+                check {
+                    assert ApplicationSupport.isMySQLUTF8mb4(): 'not in utf8mb4 context'
+                }
+            }
+        }
+        grailsChange {
+            change {
+                Holders.grailsApplication.config.utf8mb4migration = true
+            }
+        }
+    }
 }
