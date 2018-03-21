@@ -748,14 +748,16 @@ services.service("DateService", [function() {
         newDate.setMonth(date.getMonth() + months);
         return newDate;
     };
-    this.getMidnightUTC = function(date) {
+    this.setMidnightUTCDeprecated = function(date) { // TODO study its use and remove / fix it as it probably does not do what we want
         date.setHours(0, 0, 0, 0); // Midnight
         date.setMinutes(-date.getTimezoneOffset()); // UTC
         return date
     };
     this.getMidnightTodayUTC = function() {
         var today = new Date();
-        return self.getMidnightUTC(today);
+        today.setHours(0, 0, 0, 0); // Midnight
+        today.setMinutes(-today.getTimezoneOffset()); // UTC
+        return today;
     };
     this.daysBetweenDates = function(startDate, endDate) {
         var duration = new Date(endDate) - new Date(startDate); // Ensure that we have dates
