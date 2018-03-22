@@ -751,7 +751,7 @@ services.service("DateService", [function() {
     this.setMidnightUTCDeprecated = function(date) { // TODO study its use and remove / fix it as it probably does not do what we want
         date.setHours(0, 0, 0, 0); // Midnight
         date.setMinutes(-date.getTimezoneOffset()); // UTC
-        return date
+        return date;
     };
     this.getMidnightTodayUTC = function() {
         var today = new Date();
@@ -765,6 +765,12 @@ services.service("DateService", [function() {
     };
     this.daysBetweenDays = function(firstDay, lastDay) {
         return self.daysBetweenDates(firstDay, lastDay) + 1; // e.g. from 14/05 to 15/05 it is two days of work, whereas it is only one day in dates
+    };
+    this.isToday = function(date) {
+        return date.getTime() == DateService.getMidnightTodayUTC().getTime();
+    };
+    this.isWeekend = function(date) {
+        return date.getDay() % 6 == 0;
     };
 }]);
 
