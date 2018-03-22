@@ -766,11 +766,13 @@ services.service("DateService", [function() {
     this.daysBetweenDays = function(firstDay, lastDay) {
         return self.daysBetweenDates(firstDay, lastDay) + 1; // e.g. from 14/05 to 15/05 it is two days of work, whereas it is only one day in dates
     };
-    this.isToday = function(date) {
-        return date.getTime() == DateService.getMidnightTodayUTC().getTime();
+    this.isToday = function(date) { // Assumes that date is at midnight UTC (e.g. 4:00 at timezone +4)
+        return date.getTime() === self.getMidnightTodayUTC().getTime();
     };
     this.isWeekend = function(date) {
-        return date.getDay() % 6 == 0;
+        var testDate = new Date(date);
+        testDate.setMinutes(date.getTimezoneOffset()); // Cancel the timezone shift in order be sure to be the right day of week
+        return testDate.getDay() % 6 === 0;
     };
 }]);
 
