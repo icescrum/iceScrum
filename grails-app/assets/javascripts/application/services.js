@@ -748,7 +748,7 @@ services.service("DateService", [function() {
         newDate.setMonth(date.getMonth() + months);
         return newDate;
     };
-    this.getMidnightUTC = function(date) { // TODO study its use and remove / fix it as it probably does not do what we want //
+    this.getMidnightUTC = function(date) { // Be careful, it may not do what you expect!
         var newDate = new Date(date);
         newDate.setHours(0, 0, 0, 0); // Midnight
         newDate.setMinutes(-newDate.getTimezoneOffset()); // UTC
