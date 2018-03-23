@@ -748,10 +748,11 @@ services.service("DateService", [function() {
         newDate.setMonth(date.getMonth() + months);
         return newDate;
     };
-    this.setMidnightUTCDeprecated = function(date) { // TODO study its use and remove / fix it as it probably does not do what we want
-        date.setHours(0, 0, 0, 0); // Midnight
-        date.setMinutes(-date.getTimezoneOffset()); // UTC
-        return date;
+    this.getMidnightUTC = function(date) { // TODO study its use and remove / fix it as it probably does not do what we want //
+        var newDate = new Date(date);
+        newDate.setHours(0, 0, 0, 0); // Midnight
+        newDate.setMinutes(-newDate.getTimezoneOffset()); // UTC
+        return newDate;
     };
     this.getMidnightTodayUTC = function() {
         var today = new Date();
