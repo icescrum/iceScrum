@@ -75,7 +75,7 @@ extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session
     $scope.sortableId = 'story-tasks';
 }]);
 
-extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'TaskStatesByName', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, TaskStatesByName, postitSize, screenSize) {
+extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'TaskStatesByName', 'StoryStatesByName', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, TaskStatesByName, StoryStatesByName, postitSize, screenSize) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -195,6 +195,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
     getPostitClass();
     screenSize.on('xs, sm', getPostitClass, $scope);
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
+    $scope.storyStatesByName = StoryStatesByName;
 }]);
 
 extensibleController('taskNewCtrl', ['$scope', '$state', '$stateParams', '$controller', 'i18nFilter', 'TaskService', 'TaskTypesByName', 'hotkeys', 'sprint', 'project', function($scope, $state, $stateParams, $controller, i18nFilter, TaskService, TaskTypesByName, hotkeys, sprint, project) {

@@ -268,7 +268,7 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'" ng-class="{'story-done': story.state == 7 }">
+                <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'" ng-class="{'story-done': story.state == storyStatesByName.DONE }">
                     <tr class="sticky-header list-group">
                         <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
