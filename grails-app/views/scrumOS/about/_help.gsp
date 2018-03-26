@@ -1,3 +1,4 @@
+<%@ page import="grails.util.Environment" %>
 <div>
     <g:set var="analytics" value="?utm_source=about&utm_medium=link&utm_campaign=icescrum"/>
     <p>
@@ -80,21 +81,27 @@
                         <td>${server}</td>
                     </tr>
                     <tr>
-                        <td>JAVA_OPTS</td>
-                        <td>${System.getenv('JAVA_OPTS')}</td>
+                        <td>Env</td>
+                        <td>${Environment.current == Environment.DEVELOPMENT ? 'dev' : grailsApplication.config.icescrum.environment}</td>
                     </tr>
-                    <tr>
-                        <td>CATALINA_OPTS</td>
-                        <td>${System.getenv('CATALINA_OPTS')}</td>
-                    </tr>
-                    <tr>
-                        <td>CATALINA_HOME</td>
-                        <td>${System.getenv('CATALINA_HOME')}</td>
-                    </tr>
-                    <tr>
-                        <td>CATALINA_BASE</td>
-                        <td>${System.getenv('CATALINA_BASE')}</td>
-                    </tr>
+                    <g:if test="${System.getenv('JAVA_OPTS')}">
+                        <tr>
+                            <td>JAVA_OPTS</td>
+                            <td>${System.getenv('JAVA_OPTS')}</td>
+                        </tr>
+                        <tr>
+                            <td>CATALINA_OPTS</td>
+                            <td>${System.getenv('CATALINA_OPTS')}</td>
+                        </tr>
+                        <tr>
+                            <td>CATALINA_HOME</td>
+                            <td>${System.getenv('CATALINA_HOME')}</td>
+                        </tr>
+                        <tr>
+                            <td>CATALINA_BASE</td>
+                            <td>${System.getenv('CATALINA_BASE')}</td>
+                        </tr>
+                    </g:if>
                 </g:if>
             </tbody>
         </table>
