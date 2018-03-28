@@ -62,11 +62,11 @@
                              uib-tooltip="${message(code: 'todo.is.ui.export')}">
                             <button type="button"
                                     class="btn btn-default"
-                                    uib-tooltip="${message(code: 'is.ui.window.print')} (P)"
+                                    uib-tooltip="${message(code: 'is.ui.window.print')} (shift+p)"
                                     ng-click="print($event)"
                                     ng-disabled="!features.length"
                                     ng-href="feature/print"
-                                    hotkey="{'P': hotkeyClick }"
+                                    hotkey="{'shift+p': hotkeyClick }"
                                     hotkey-description="${message(code: 'is.ui.window.print')}">
                                 <i class="fa fa-print"></i>
                             </button>

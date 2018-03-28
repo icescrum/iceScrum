@@ -173,7 +173,15 @@
                             <li role="presentation" class="divider"></li>
                             <li role="presentation" class="dropdown-header">iceScrum</li>
                             <entry:point id="header-menu-icescrum-first"/>
-                            <li><a href hotkey="{'I': showAbout}" hotkey-description="${message(code: 'is.ui.about')}" ng-click="showAbout()">${message(code: 'is.ui.about')}</a></li>
+                            <li>
+                                <a href
+                                   hotkey="{'shift+i': showAbout}"
+                                   hotkey-description="${message(code: 'is.ui.about')}"
+                                   uib-tooltip="(shift+i)"
+                                   ng-click="showAbout()">
+                                    ${message(code: 'is.ui.about')}
+                                </a>
+                            </li>
                             <entry:point id="header-menu-icescrum"/>
                         </ul>
                     </li>

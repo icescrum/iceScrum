@@ -181,9 +181,9 @@
     <div class="btn-toolbar pull-right">
         <a href
            class="btn btn-default"
-           hotkey="{'U':showProfile}"
+           hotkey="{'shift+u':showProfile}"
            hotkey-description="${message(code: 'todo.is.ui.profile')}"
-           uib-tooltip="${message(code: 'is.dialog.profile')} (U)"
+           uib-tooltip="${message(code: 'is.dialog.profile')} (shift+u)"
            ng-click="showProfile()">${message(code: 'is.dialog.profile')}
         </a>
         <a class="btn btn-danger"
