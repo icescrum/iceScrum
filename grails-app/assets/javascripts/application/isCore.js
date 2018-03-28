@@ -494,6 +494,14 @@ angular.module('isCore', ['ui.router'])
             var storyTabState = storyState.children[0];
             var storyFocusState = storyState.children[1];
             var storyFocusTabState = _.cloneDeep(storyTabState);
+            storyFocusTabState.onEnter = ['$state', '$stateParams', '$timeout', function($state, $stateParams, $timeout) {
+                var focusTabs = _.keys(_.pickBy(storyTabs, function(tab) {
+                    return tab.focusTabCenter || tab.focusTabRight;
+                }));
+                if (_.includes(focusTabs, $stateParams.storyTabId)) {
+                    $timeout(function() {$state.go('^', $stateParams, {location: 'replace'});});
+                }
+            }];
             storyFocusState.children = [storyFocusTabState];
             _.each(storyTabs, function(value, key) {
                 storyTabState.resolve['data' + key] = value.resolve;
