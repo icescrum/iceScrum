@@ -43,12 +43,22 @@
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           ui-sref=".({featureId: previousFeature.id})"><i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i></a>
+                           hotkey="{'left': hotkeyClick}"
+                           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (←)"
+                           ui-sref=".({featureId: previousFeature.id})">
+                            <i class="fa fa-caret-left"></i>
+                        </a>
                         <a ng-if="nextFeature && !isModal"
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           ui-sref=".({featureId: nextFeature.id})"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i></a>
+                           hotkey="{'right': hotkeyClick}"
+                           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (→)"
+                           ui-sref=".({featureId: nextFeature.id})">
+                            <i class="fa fa-caret-right"></i>
+                        </a>
                     </div>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="!$state.includes('feature.**')"/>
                 </div>

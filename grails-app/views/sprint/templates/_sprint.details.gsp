@@ -45,14 +45,21 @@
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
+                           hotkey="{'left': hotkeyClick}"
+                           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (←)"
                            ui-sref=".({sprintId: previousSprint.id})">
-                            <i class="fa fa-caret-left" title="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i>
+                            <i class="fa fa-caret-left"></i>
                         </a>
                         <a ng-if="nextSprint"
                            class="btn btn-default"
                            role="button"
                            tabindex="0"
-                           ui-sref=".({sprintId: nextSprint.id})"><i class="fa fa-caret-right" title="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i>
+                           hotkey="{'right': hotkeyClick}"
+                           hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (→)"
+                           ui-sref=".({sprintId: nextSprint.id})">
+                            <i class="fa fa-caret-right"></i>
                         </a>
                     </div>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="removeSprintAncestorOnClose"/>

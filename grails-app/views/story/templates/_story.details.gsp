@@ -55,25 +55,28 @@
                        role="button"
                        tabindex="0"
                        hotkey="{'left': hotkeyClick}"
+                       hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
+                       uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (←)"
                        href="{{ currentStateUrl(previousStory().id) }}">
-                        <i class="fa fa-caret-left"
-                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')}"></i>
+                        <i class="fa fa-caret-left"></i>
                     </a>
                     <a ng-if="nextStory()"
                        class="btn btn-default"
                        role="button"
                        tabindex="0"
                        hotkey="{'right': hotkeyClick}"
+                       hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
+                       uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (→)"
                        href="{{ currentStateUrl(nextStory().id) }}">
-                        <i class="fa fa-caret-right"
-                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')}"></i>
+                        <i class="fa fa-caret-right"></i>
                     </a>
                     <a class="btn btn-default expandable"
                        ng-if="!isModal && !application.focusedDetailsView"
                        href="{{ toggleFocusUrl() }}"
                        tabindex="0"
                        hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
-                       uib-tooltip="${ message(code: 'is.ui.window.focus') }">
+                       hotkey-description="${message(code: 'is.ui.window.focus')}"
+                       uib-tooltip="${message(code: 'is.ui.window.focus')} (↑)">
                         <i class="fa fa-expand"></i>
                     </a>
                     <a class="btn btn-default expandable"
@@ -81,7 +84,8 @@
                        href="{{ toggleFocusUrl() }}"
                        tabindex="0"
                        hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
-                       uib-tooltip="${ message(code: 'is.ui.window.unfocus') }">
+                       hotkey-description="${message(code: 'is.ui.window.unfocus')}"
+                       uib-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)">
                         <i class="fa fa-compress"></i>
                     </a>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
