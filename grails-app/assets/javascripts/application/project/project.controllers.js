@@ -356,7 +356,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
     $scope.resetTeamForm();
 }]);
 
-controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
+extensibleController('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
     $scope.stakeHolderViews = [];
     $scope.update = function(project) {
         $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.stakeHolderViews).filter({hidden: true}).map('id').value().join(',');
@@ -397,6 +397,7 @@ controllers.controller('editProjectCtrl', ['$scope', 'Session', 'ProjectService'
         ProjectService.unArchive(project)
     };
     // Init
+    $scope.stakeHolderViewsFormEnabled = true;
     $scope.formHolder = {};
     $scope.resetProjectForm();
     $scope.timezones = {};
