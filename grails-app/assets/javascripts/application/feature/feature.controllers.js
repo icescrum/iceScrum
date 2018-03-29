@@ -32,9 +32,7 @@ extensibleController('featureCtrl', ['$scope', '$filter', 'TagService', 'Feature
             });
         }
     };
-    $scope.authorizedFeature = function(action) {
-        return FeatureService.authorizedFeature(action);
-    };
+    $scope.authorizedFeature = FeatureService.authorizedFeature;
     $scope['delete'] = function(feature) {
         FeatureService.delete(feature).then(function() {
             $scope.notifySuccess('todo.is.ui.deleted');
@@ -67,7 +65,7 @@ extensibleController('featureCtrl', ['$scope', '$filter', 'TagService', 'Feature
     $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
 }]);
 
-controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'Session', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, Session, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName, features, project) {
+controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName, features, project) {
     $controller('featureCtrl', {$scope: $scope}); // inherit from featureCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsFeature, clazz: 'feature', project: project});
     // Functions

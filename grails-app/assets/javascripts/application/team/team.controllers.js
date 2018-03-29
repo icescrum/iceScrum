@@ -217,9 +217,7 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
     $scope.teamSelected = function() {
         return !_.isEmpty($scope.team);
     };
-    $scope.authorizedTeam = function(action, team) {
-        return TeamService.authorizedTeam(action, team);
-    };
+    $scope.authorizedTeam = TeamService.authorizedTeam;
     $scope.searchTeams = function() {
         var offset = $scope.teamsPerPage * ($scope.currentPage - 1);
         TeamService.listByUser($scope.teamSearch, offset).then(function(teams) {

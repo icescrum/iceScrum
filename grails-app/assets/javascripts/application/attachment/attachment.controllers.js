@@ -26,9 +26,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
         AttachmentService.delete(attachment, attachmentable, project.id);
     };
-    $scope.authorizedAttachment = function(action, attachment) {
-        return AttachmentService.authorizedAttachment(action, attachment);
-    };
+    $scope.authorizedAttachment = AttachmentService.authorizedAttachment;
     $scope.getUrl = function(clazz, attachmentable, attachment) {
         return attachment.url ? attachment.url : $scope.attachmentBaseUrl + clazz + "/" + attachmentable.id + "/" + attachment.id;
     };

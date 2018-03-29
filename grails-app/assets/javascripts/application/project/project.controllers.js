@@ -265,9 +265,7 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'ProjectService', 'Rel
     $scope.enableVisibilityChange = function() {
         return true;
     };
-    $scope.authorizedProject = function(action, project) {
-        return ProjectService.authorizedProject(action, project);
-    };
+    $scope.authorizedProject = ProjectService.authorizedProject;
     $scope.setCurrentPanel = function(panel) {
         $scope.panel.current = panel;
     };

@@ -28,9 +28,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
     $scope.showSprintMenu = function() {
         return Session.poOrSm();
     };
-    $scope.authorizedSprint = function(action, sprint) {
-        return SprintService.authorizedSprint(action, sprint);
-    };
+    $scope.authorizedSprint = SprintService.authorizedSprint;
     $scope.activate = function(sprint) {
         $rootScope.uiWorking();
         SprintService.activate(sprint, $scope.project).then(function() {
@@ -371,9 +369,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
 
 controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detailsRelease', function($scope, SprintService, detailsRelease) {
     // Functions
-    $scope.authorizedSprints = function(action, sprints) {
-        return SprintService.authorizedSprints(action, sprints);
-    };
+    $scope.authorizedSprints = SprintService.authorizedSprints;
     $scope.autoPlanMultiple = function(sprints, capacity) {
         SprintService.autoPlanMultiple(sprints, capacity, $scope.release).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');

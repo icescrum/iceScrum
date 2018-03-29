@@ -25,12 +25,8 @@
 
 controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Session', 'ReleaseService', 'SprintService', function($scope, $state, $rootScope, Session, ReleaseService, SprintService) {
     // Functions
-    $scope.authorizedRelease = function(action, release) {
-        return ReleaseService.authorizedRelease(action, release);
-    };
-    $scope.authorizedSprint = function(action, sprint) {
-        return SprintService.authorizedSprint(action, sprint);
-    };
+    $scope.authorizedRelease = ReleaseService.authorizedRelease;
+    $scope.authorizedSprint = SprintService.authorizedSprint;
     $scope.showReleaseMenu = function() {
         return Session.poOrSm();
     };

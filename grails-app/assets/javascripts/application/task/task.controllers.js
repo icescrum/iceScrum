@@ -41,9 +41,7 @@ extensibleController('taskStoryCtrl', ['$scope', '$controller', 'TaskService', f
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
-    $scope.authorizedTask = function(action, task) {
-        return TaskService.authorizedTask(action, task);
-    };
+    $scope.authorizedTask = TaskService.authorizedTask;
     // Init
     $scope.project = $scope.getProjectFromState();
     $scope.formHolder = {};
@@ -104,9 +102,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
-    $scope.authorizedTask = function(action, task) {
-        return TaskService.authorizedTask(action, task);
-    };
+    $scope.authorizedTask = TaskService.authorizedTask;
     $scope.menus = [
         {
             name: 'todo.is.ui.details',

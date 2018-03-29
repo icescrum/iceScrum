@@ -81,9 +81,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
-    $scope.authorizedStory = function(action, story) {
-        return StoryService.authorizedStory(action, story);
-    };
+    $scope.authorizedStory = StoryService.authorizedStory;
     $scope.menus = [
         {
             name: 'todo.is.ui.details',
@@ -642,9 +640,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
             $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs' + target);
         });
     };
-    $scope.authorizedStories = function(action, stories) {
-        return StoryService.authorizedStories(action, stories);
-    };
+    $scope.authorizedStories = StoryService.authorizedStories;
     // Init
     $scope.selectableOptions.selectingMultiple = true;
     $scope.topStory = {};

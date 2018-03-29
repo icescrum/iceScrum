@@ -46,9 +46,7 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
             $scope.notifySuccess('todo.is.ui.deleted');
         });
     };
-    $scope.authorizedComment = function(action, comment) {
-        return CommentService.authorizedComment(action, comment);
-    };
+    $scope.authorizedComment = CommentService.authorizedComment;
     $scope.editForm = function(value) {
         $scope.formHolder.editing = $scope.formEditable() && value;
         if (value) {

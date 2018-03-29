@@ -23,15 +23,9 @@
  */
 
 controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'StoryService', 'project', '$controller', function($scope, $location, $state, $q, ProjectService, ReleaseService, SprintService, AttachmentService, StoryService, project, $controller) {
-    $scope.authorizedProject = function(action, project) {
-        return ProjectService.authorizedProject(action, project);
-    };
-    $scope.authorizedRelease = function(action, release) {
-        return ReleaseService.authorizedRelease(action, release);
-    };
-    $scope.authorizedSprint = function(action, sprint) {
-        return SprintService.authorizedSprint(action, sprint);
-    };
+    $scope.authorizedProject = ProjectService.authorizedProject;
+    $scope.authorizedRelease = ReleaseService.authorizedRelease;
+    $scope.authorizedSprint = SprintService.authorizedSprint;
     $scope.openSprintUrl = function(sprint) {
         var stateName = 'planning.release.sprint.withId';
         if ($state.current.name != 'planning.release.sprint.withId.details') {
