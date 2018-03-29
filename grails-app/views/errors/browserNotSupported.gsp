@@ -94,9 +94,11 @@
 
         <h1>Outdated browser detected</h1>
 
-        <p>iceScrum has detected that you are using an outdated browser. <b>An upgrade is required.</b></p>
+        <p>iceScrum has detected that you are using an outdated browser.</p>
 
-        <p>Use the links below to download a new browser or upgrade your existing browser.</b>
+        <p>If you use Internet Explorer, be careful: you browser may be in "compatibility mode", thus passing itself off as an older version of IE. In such case, disable the IE compatibility mode.</p>
+
+        <p><b>Otherwise an upgrade is required.</b> Use the links below to download a new browser or upgrade your existing browser.</b>
         </p>
         <ul class="browser-list">
             <li class="firefox"><a target="_blank" href="http://www.getfirefox.com/">Mozilla Firefox</a></li>
