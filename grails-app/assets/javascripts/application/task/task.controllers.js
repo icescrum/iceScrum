@@ -173,7 +173,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             $uibModal.open({
                 size: 'sm',
                 templateUrl: 'task.estimation.html',
-                controller: ["$scope", '$timeout', function($scope) {
+                controller: ['$scope', function($scope) {
                     $scope.editableTask = angular.copy(task);
                     $scope.initialValue = $scope.editableTask.value;
                     $scope.submit = function(task) {
