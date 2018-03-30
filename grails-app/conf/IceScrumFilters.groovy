@@ -40,7 +40,7 @@ class IceScrumFilters {
         all(controller: '*', action: '*') {
             before = {
                 pushService.bufferPushForThisThread()
-                if(userAgentIdentService.isMsie(ComparisonType.LOWER, "12") && request.getHeader('X-Requested-With')?.equals('XMLHttpRequest')){
+                if (userAgentIdentService.isMsie(ComparisonType.LOWER, "12") && request.getHeader('X-Requested-With')?.equals('XMLHttpRequest')) {
                     response.setHeader('Expires', '-1')
                 }
             }
