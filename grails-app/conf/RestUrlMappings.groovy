@@ -163,23 +163,29 @@ class RestUrlMappings {
             }
             method = 'GET'
         }
-        "/ws/project/$project/story/backlog/$id/printPostits/$format" {
+        "/ws/project/$project/story/backlog/$id/printPostits" {
             controller = 'story'
+            action = 'printPostitsByBacklog'
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                action(inList: ['printPostitsByBacklog'])
                 id(matches: /\d*/)
             }
-            method = 'GET'
         }
-        "/ws/project/$project/story/sprint/$id/printPostits/$format" {
+        "/ws/project/$project/story/sprint/$id/printPostits" {
             controller = 'story'
+            action = 'printPostitsBySprint'
             constraints {
                 project(matches: /[0-9A-Z]*/)
-                action(inList: ['printPostitsBySprint'])
                 id(matches: /\d*/)
             }
-            method = 'GET'
+        }
+        "/ws/project/$project/task/sprint/$id/printPostits" {
+            controller = 'task'
+            action = 'printPostitsBySprint'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
         }
         // Feature nested actions
         "/ws/project/$project/feature/$action" {
