@@ -47,7 +47,7 @@
                            tabindex="0"
                            hotkey="{'left': hotkeyClick}"
                            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (←)"
+                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
                            ui-sref=".({sprintId: previousSprint.id})">
                             <i class="fa fa-caret-left"></i>
                         </a>
@@ -57,7 +57,7 @@
                            tabindex="0"
                            hotkey="{'right': hotkeyClick}"
                            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (→)"
+                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
                            ui-sref=".({sprintId: nextSprint.id})">
                             <i class="fa fa-caret-right"></i>
                         </a>
