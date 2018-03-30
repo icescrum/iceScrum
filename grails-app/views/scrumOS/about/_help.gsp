@@ -81,8 +81,12 @@
                         <td>${server}</td>
                     </tr>
                     <tr>
-                        <td>Env</td>
+                        <td>${message(code: 'is.ui.server.environment')}</td>
                         <td>${Environment.current == Environment.DEVELOPMENT ? 'dev' : grailsApplication.config.icescrum.environment}</td>
+                    </tr>
+                    <tr test="${maxMemory}">
+                        <td>${message(code: 'is.ui.server.max.memory')}</td>
+                        <td>${maxMemory}</td>
                     </tr>
                     <g:if test="${System.getenv('JAVA_OPTS')}">
                         <tr>
