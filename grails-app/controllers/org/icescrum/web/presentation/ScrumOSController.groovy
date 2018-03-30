@@ -84,6 +84,7 @@ class ScrumOSController implements ControllerErrorHandler {
         def aboutFile = new File(grailsAttributes.getApplicationContext().getResource("/infos").getFile().toString() + File.separatorChar + "about.xml")
         render(status: 200, template: "about/index", model: [server        : servletContext.getServerInfo(),
                                                              versionNumber : g.meta([name: 'app.version']),
+                                                             maxMemory     : ApplicationSupport.getJavaMaxMemory(),
                                                              about         : new XmlSlurper().parse(aboutFile),
                                                              configLocation: grailsApplication.config.grails.config.locations instanceof List ? grailsApplication.config.grails.config.locations.join(', ') : ''])
     }
