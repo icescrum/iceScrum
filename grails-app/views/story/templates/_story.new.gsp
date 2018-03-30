@@ -59,18 +59,13 @@
                             </div>
                             <div class="actions">
                                 <span class="action">
-                                    <a>
-                                        <i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i>
-                                    </a>
-                                </span>
-                                <span class="action">
                                     <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                         <i class="fa fa-paperclip"></i>
                                     </a>
                                 </span>
                                 <span class="action">
                                     <a uib-tooltip="${message(code: 'todo.is.ui.comments')}">
-                                        <i class="fa fa-comment-o"></i>
+                                        <i class="fa fa-comment"></i>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':storyPreview.tasks_count}">
@@ -83,6 +78,11 @@
                                     <a uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
                                         <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
                                         <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
+                                    </a>
+                                </span>
+                                <span class="action">
+                                    <a>
+                                        <i class="fa fa-ellipsis-h"></i>
                                     </a>
                                 </span>
                             </div>
