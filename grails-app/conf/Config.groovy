@@ -296,6 +296,12 @@ icescrum {
             enabled = { application -> true }
         }
     }
+    atmosphere {
+        maxUsers = []
+        liveUsers = []
+        maxConnections = 0
+        liveConnections = 0
+    }
 }
 
 /*

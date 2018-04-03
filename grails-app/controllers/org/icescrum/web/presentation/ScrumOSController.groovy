@@ -89,6 +89,16 @@ class ScrumOSController implements ControllerErrorHandler {
                                                              configLocation: grailsApplication.config.grails.config.locations instanceof List ? grailsApplication.config.grails.config.locations.join(', ') : ''])
     }
 
+    @Secured(["hasRole('ROLE_ADMIN')"])
+    def connections() {
+        render(status: 200, contentType: 'application/json', text: [maxUsers          : grailsApplication.config.icescrum.atmosphere.maxUsers,
+                                                                    liveUsers         : grailsApplication.config.icescrum.atmosphere.liveUsers,
+                                                                    maxUsersDate      : grailsApplication.config.icescrum.atmosphere.maxUsersDate,
+                                                                    maxConnections    : grailsApplication.config.icescrum.atmosphere.maxConnections,
+                                                                    maxConnectionsDate: grailsApplication.config.icescrum.atmosphere.maxConnectionsDate,
+                                                                    liveConnections   : grailsApplication.config.icescrum.atmosphere.liveConnections] as JSON)
+    }
+
     def textileParser(String data) {
         render(text: ServicesUtils.textileToHtml(data))
     }
