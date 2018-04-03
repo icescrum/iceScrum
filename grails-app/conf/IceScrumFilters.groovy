@@ -34,14 +34,17 @@ class IceScrumFilters {
     def securityService
     def springSecurityService
     def userAgentIdentService
+    def grailsApplication
 
     def filters = {
 
         all(controller: '*', action: '*') {
             before = {
                 pushService.bufferPushForThisThread()
-                if (userAgentIdentService.isMsie(ComparisonType.LOWER, "12") && request.getHeader('X-Requested-With')?.equals('XMLHttpRequest')) {
-                    response.setHeader('Expires', '-1')
+                if (grailsApplication.config.icescrum.debug.enable) {
+                    if (userAgentIdentService.isMsie(ComparisonType.LOWER, "12") && request.getHeader('X-Requested-With')?.equals('XMLHttpRequest')) {
+                        response.setHeader('Expires', '-1')
+                    }
                 }
             }
             after = {
