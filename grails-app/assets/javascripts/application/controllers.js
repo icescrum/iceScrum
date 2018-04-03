@@ -471,12 +471,12 @@ extensibleController('aboutCtrl', ['$scope', '$interval', 'active', 'FormService
             $scope.atmosphere = data;
         });
     };
-    //init
+    // Init
+    if (active) {
+        $scope.active = active;
+    }
     if (Session.admin()) {
         $scope.refreshConnections();
-        if (active) {
-            $scope.active = active;
-        }
         var stop = $interval(function() {
             $scope.refreshConnections();
         }, 3000);
