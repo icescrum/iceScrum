@@ -871,9 +871,6 @@ var isApplication = angular.module('isApplication', [
             $rootScope.workspaceType = Session.workspaceType;
             if ($rootScope.workspaceType == 'project') {
                 $controller('contextCtrl', {$scope: $rootScope});
-                PushService.registerListener('projectUsers', 'update', function(object) {
-                    console.log(object.users);
-                });
             }
             PushService.initPush(isSettings.workspace ? isSettings.workspace.id : null, $rootScope.workspaceType);
             I18nService.initMessages(isSettings.messages);

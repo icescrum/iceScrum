@@ -247,7 +247,7 @@
                             <hr ng-if="!$last">
                         </div>
                         <div ng-if="activities.length > 5 && !pref.showMore" class="text-center">
-                            <a href ng-click="showMore()"><i class="fa fa-ellipsis-h"></i></a>
+                            <a href ng-click="showMore()"><i class="fa fa-caret-down"></i></a>
                         </div>
                         <div ng-if="activities != undefined && activities.length == 0">
                             <div style="text-align: center; padding:5px; font-size:14px;">
