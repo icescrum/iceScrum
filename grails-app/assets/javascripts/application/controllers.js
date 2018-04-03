@@ -472,6 +472,7 @@ extensibleController('aboutCtrl', ['$scope', '$interval', 'active', 'FormService
         });
     };
     //init
+    $scope.refreshConnections();
     if (active) {
         $scope.active = active;
     }
