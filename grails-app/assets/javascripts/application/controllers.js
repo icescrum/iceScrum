@@ -464,7 +464,7 @@ controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioSe
     };
 }]);
 
-extensibleController('aboutCtrl', ['$scope', '$interval', 'active', 'FormService', function($scope, $interval, active, FormService) {
+extensibleController('aboutCtrl', ['$scope', '$interval', 'active', 'FormService', 'Session', function($scope, $interval, active, FormService, Session) {
     // Functions
     $scope.refreshConnections = function() {
         FormService.httpGet('scrumOS/connections').then(function(data) {
@@ -472,19 +472,21 @@ extensibleController('aboutCtrl', ['$scope', '$interval', 'active', 'FormService
         });
     };
     //init
-    $scope.refreshConnections();
-    if (active) {
-        $scope.active = active;
-    }
-    var stop = $interval(function() {
+    if (Session.admin()) {
         $scope.refreshConnections();
-    }, 3000);
-    $scope.$on('$destroy', function() {
-        if (angular.isDefined(stop)) {
-            $interval.cancel(stop);
-            stop = undefined;
+        if (active) {
+            $scope.active = active;
         }
-    });
+        var stop = $interval(function() {
+            $scope.refreshConnections();
+        }, 3000);
+        $scope.$on('$destroy', function() {
+            if (angular.isDefined(stop)) {
+                $interval.cancel(stop);
+                stop = undefined;
+            }
+        });
+    }
 }]); // Used to extend about in plugins
 
 
