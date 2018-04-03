@@ -12,7 +12,7 @@ servlets = [
                         "org.atmosphere.interceptor.HeartbeatInterceptor.heartbeatFrequencyInSeconds": 30, // seconds
                         "org.atmosphere.cpr.CometSupport.maxInactiveActivity"                        : 30 * 60000, // 30 minutes
                         "org.atmosphere.cpr.broadcasterClass"                                        : "org.icescrum.atmosphere.IceScrumBroadcaster",
-                        "org.atmosphere.cpr.Broadcaster.sharedListenersList"                         : true,
+                        "org.atmosphere.cpr.Broadcaster.sharedListenersList"                         : false,
                         "org.atmosphere.cpr.AtmosphereInterceptor"                                   : """
                                 org.atmosphere.interceptor.IdleResourceInterceptor,
                                 org.atmosphere.interceptor.PaddingAtmosphereInterceptor,
