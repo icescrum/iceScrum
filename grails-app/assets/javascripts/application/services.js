@@ -772,7 +772,7 @@ services.service("DateService", [function() {
     };
     this.isWeekend = function(date) {
         var testDate = new Date(date);
-        testDate.setMinutes(date.getTimezoneOffset()); // Cancel the timezone shift in order be sure to be the right day of week
+        testDate.setTime(testDate.getTime() + date.getTimezoneOffset() * 60 * 1000); // Cancel the timezone shift in order be sure to be the right day of week
         return testDate.getDay() % 6 === 0;
     };
 }]);
