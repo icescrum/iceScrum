@@ -56,6 +56,10 @@
                         <td>${message(code: 'config.icescrum.log.dir')}</td>
                         <td>${grailsApplication.config.icescrum.log.dir}</td>
                     </tr>
+                    <tr>
+                        <td>${message(code: 'config.icescrum.debug.enable')}</td>
+                        <td>${grailsApplication.config.icescrum.debug.enable}</td>
+                    </tr>
                     <g:if test="${g.meta(name: 'build.date')}">
                         <tr>
                             <td>${message(code: 'is.dialog.about.version.buildDate')}</td>
