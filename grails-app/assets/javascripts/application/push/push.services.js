@@ -25,7 +25,7 @@
 services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'IceScrumEventType', 'FormService', function($rootScope, $http, atmosphereService, IceScrumEventType, FormService) {
     var self = this;
     self.push = {};
-    self.logLevel = isSettings.pushLogLevel;
+    self.logLevel = isSettings.push.pushLogLevel;
     this.enabled = true;
     this.listeners = {};
     var _canLog = function(level) {
@@ -43,14 +43,15 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
     };
     this.atmosphereRequest = null;
     this.initPush = function(workspaceId, workspaceType) {
+        $rootScope.application.transport = isSettings.push.transport;
         var options = {
             url: $rootScope.serverUrl + '/stream/app' + (workspaceId ? '/' + workspaceType + '-' + workspaceId : ''),
             contentType: 'application/json',
             logLevel: self.logLevel,
-            transport: 'websocket',
-            fallbackTransport: 'streaming', //fallbackToLastTransport long-polling if not connected after fallbackTransportTimeout
+            transport: isSettings.push.transport,
+            fallbackTransport: isSettings.push.fallbackTransport, //fallbackToLastTransport long-polling if not connected after fallbackTransportTimeout
             fallbackTransportTimeout: 3000,
-            fallbackToLastTransport: 'long-polling',
+            fallbackToLastTransport: isSettings.push.fallbackToLastTransport,
             trackMessageLength: true,
             reconnectInterval: 1000,
             enableXDR: true,
@@ -89,8 +90,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                 atmosphere.util.debug('Default transport is ' + options.transport + ', fallback is ' + options.fallbackTransport);
             }
             if (options.fallbackTransport === 'streaming') {
-                atmosphere.util.debug('reconnectInterval is ' + options.reconnectInterval);
-                atmosphere.util.debug('fallbackTransportTimeout is ' + options.fallbackTransportTimeout);
+                $rootScope.application.transport = options.fallbackTransport;
                 setTimeout(function() {
                     if (!self.push.connected) {
                         atmosphereService.unsubscribe();
@@ -99,6 +99,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                         if (_canLog('debug')) {
                             atmosphere.util.debug('Atmosphere streaming failed fallback to ' + response.transport);
                         }
+                        $rootScope.application.transport = options.transport;
                         atmosphereService.subscribe(options);
                     }
                 }, options.reconnectInterval + options.fallbackTransportTimeout);

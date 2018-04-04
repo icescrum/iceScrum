@@ -88,11 +88,11 @@
                         <td>${message(code: 'is.ui.server.max.memory')}</td>
                         <td>${maxMemory}</td>
                     </tr>
-                    <tr ng-if="atmosphere">
+                    <tr ng-if="atmosphere.liveConnections">
                         <td>${message(code: 'is.ui.server.connections.live')}</td>
                         <td>{{ atmosphere.liveConnections }} <small class="muted pull-right">${message(code: 'is.ui.server.connections.refreshed')}</small></td>
                     </tr>
-                    <tr ng-if="atmosphere">
+                    <tr ng-if="atmosphere.maxConnections">
                         <td>${message(code: 'is.ui.server.connections.max')}</td>
                         <td>{{ atmosphere.maxConnections }} <small class="muted pull-right">{{ atmosphere.maxConnectionsDate | dateTime}}</small></td>
                     </tr>
@@ -123,6 +123,10 @@
                         </tr>
                     </g:if>
                 </g:if>
+                <tr ng-if="application.transport">
+                    <td>${message(code: 'is.ui.server.connections.transport')}</td>
+                    <td>{{ application.transport }}</td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -30,7 +30,12 @@
         roles: ${roles as JSON},
         defaultView: "${defaultView}",
         workspace: ${workspace ? workspace as JSON : 'null'},
-        pushLogLevel: "${Holders.config.icescrum.pushdebug.enable ? 'debug' : 'info'}",
+        push: {
+            transport: "${Holders.config.icescrum.push.transport ?: 'websocket'}",
+            fallbackTransport: "${Holders.config.icescrum.push.fallbackTransport ?: 'streaming'}",
+            fallbackToLastTransport: "${Holders.config.icescrum.fallbackToLastTransport ?: 'long-polling'}",
+            pushLogLevel: "${Holders.config.icescrum.pushdebug.enable ? 'debug' : 'info'}"
+        },
         projectPrivateDefault: ${grailsApplication.config.icescrum.project.private.default},
         projectPrivateEnabled: ${grailsApplication.config.icescrum.project.private.enable},
         projectCreationEnabled: ${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.project.creation.enable)},
