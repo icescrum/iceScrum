@@ -212,6 +212,11 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
             sprintFilter.count = _.filter($scope.sprint.tasks, sprintFilter.filter).length;
         });
     };
+    $scope.findPreviousOrNextStory = StoryService.findPreviousOrNextStory([
+        function() {
+            return $filter('orderBy')($filter('search')($filter('filter')($scope.sprint.stories, $scope.storyFilter)), 'rank'); // Needs to be in a function because it can change
+        }
+    ]);
     // Init
     $scope.project = project;
     $scope.taskSortableOptions = {
