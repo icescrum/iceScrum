@@ -14,12 +14,8 @@ servlets = [
                         "org.atmosphere.cpr.broadcasterClass"                                        : "org.icescrum.atmosphere.IceScrumBroadcaster",
                         "org.atmosphere.cpr.Broadcaster.sharedListenersList"                         : true,
                         "org.atmosphere.cpr.AtmosphereInterceptor"                                   : """
-                                org.atmosphere.interceptor.IdleResourceInterceptor,
-                                org.atmosphere.interceptor.PaddingAtmosphereInterceptor,
                                 org.atmosphere.client.TrackMessageSizeInterceptor,
-                                org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor,
-                                org.atmosphere.interceptor.HeartbeatInterceptor,
-                                org.atmosphere.interceptor.OnDisconnectInterceptor
+                                org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor
                         """,
                 ]
         ]
