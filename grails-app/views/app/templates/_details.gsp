@@ -73,8 +73,21 @@
                         ng-click="updateEnabledForProject(appDefinition, true)">${message(code: 'is.ui.apps.enable')}</button>
                 <button ng-switch-default
                         type="button"
-                        class="btn btn-primary"
+                        class="btn btn-danger"
                         ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.disable')}</button>
+            </p>
+        </div>
+        <div class="text-center actions"
+             ng-if="!authorizedApp('enableForProject', appDefinition) && Session.inProject()">
+            <p ng-switch="isEnabledForProject(appDefinition)">
+                <a href="mailto:{{ project.owner.email }}?subject=Enable {{ appDefinition.name }} app for {{ project.name }}?" ng-switch-when="false"
+                   type="button"
+                   class="btn btn-primary">${message(code: 'is.ui.apps.enable')}</a>
+                <button ng-switch-default
+                        type="button"
+                        class="btn btn-success"
+                        disabled="disabled"
+                        ng-click="updateEnabledForProject(appDefinition, false)">${message(code: 'is.ui.apps.enabled')}</button>
             </p>
         </div>
         <div class="text-center actions"
