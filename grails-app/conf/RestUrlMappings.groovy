@@ -124,6 +124,26 @@ class RestUrlMappings {
                 id(matches: /\d*/)
             }
         }
+        // Comments
+        "/ws/project/$project/comment/$type/$commentable" {
+            controller = 'comment'
+            action = [GET: 'index', POST: 'save']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+                commentable(matches: /\d*/)
+            }
+        }
+        "/ws/project/$project/comment/$type/$commentable/$id" {
+            controller = 'comment'
+            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+                id(matches: /\d*/)
+                commentable(matches: /\d*/)
+            }
+        }
         // Story nested actions
         "/ws/project/$project/story/$id/$action" {
             controller = 'story'
@@ -314,6 +334,7 @@ class RestUrlMappings {
                 parentStory(matches: /\d*/)
             }
         }
+        // Portfolio
         "/ws/portfolio" {
             controller = 'portfolio'
             action = [GET: 'index', POST: 'save']
