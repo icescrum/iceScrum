@@ -58,7 +58,7 @@ class AppController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: marshalledDefinitions as JSON)
     }
 
-    @Secured('scrumMaster()')
+    @Secured('scrumMaster() or productOwner()')
     def updateEnabledForProject(long project, String appDefinitionId, boolean enabledForProject) {
         Project _project = Project.withProject(project)
         appService.updateEnabledForProject(_project, appDefinitionId, enabledForProject)
