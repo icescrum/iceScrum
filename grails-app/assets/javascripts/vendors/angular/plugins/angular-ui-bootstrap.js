@@ -2801,9 +2801,7 @@ function($scope, $element, $attrs, $compile, $log, $parse, $window, $document, $
     if (!$scope.datepickerOptions) {
       $scope.datepickerOptions = {};
     }
-    // if (!$scope.datepickerOptions.ngModelOptions && ngModelOptions) {
-    //     $scope.datepickerOptions.ngModelOptions = ngModelOptions; // Pass ngModelOptions to UibDatepickerController
-    // }
+
     if (isHtml5DateInput) {
       if ($attrs.type === 'month') {
         $scope.datepickerOptions.datepickerMode = 'month';
