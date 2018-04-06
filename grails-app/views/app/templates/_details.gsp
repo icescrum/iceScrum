@@ -78,9 +78,10 @@
             </p>
         </div>
         <div class="text-center actions"
-             ng-if="!authorizedApp('enableForProject', appDefinition) && Session.inProject()">
+             ng-if="authorizedApp('askToEnableForProject', appDefinition)">
             <p ng-switch="isEnabledForProject(appDefinition)">
-                <a href="mailto:{{ project.owner.email }}?subject=Enable {{ appDefinition.name }} app for {{ project.name }}?" ng-switch-when="false"
+                <a href="mailto:{{ project.owner.email }}?subject=Enable {{ appDefinition.name }} app for {{ project.name }}?"
+                   ng-switch-when="false"
                    type="button"
                    class="btn btn-primary">${message(code: 'is.ui.apps.enable')}</a>
                 <button ng-switch-default

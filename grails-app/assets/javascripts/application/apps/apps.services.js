@@ -51,6 +51,9 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
             case 'enableForProject':
                 var appDefinition = appDefinitionOrId;
                 return Session.poOrSm() && appDefinition && appDefinition.availableForServer && appDefinition.enabledForServer && appDefinition.isProject;
+            case 'askToEnableForProject':
+                var appDefinition = appDefinitionOrId;
+                return Session.tm() && appDefinition && appDefinition.availableForServer && appDefinition.enabledForServer && appDefinition.isProject;
             case 'updateProjectSettings':
                 var appDefinition = appDefinitionOrId;
                 return self.authorizedApp('enableForProject', appDefinition) && self.authorizedApp('use', appDefinition.id, project) && appDefinition.projectSettings;
