@@ -142,7 +142,7 @@ controllers.controller('teamCtrl', ['$scope', '$controller', '$filter', 'Session
     }
 }]);
 
-controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filter', 'TeamService', function($scope, $controller, $filter, TeamService) {
+controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filter', 'TeamService', 'ProjectService', function($scope, $controller, $filter, TeamService, ProjectService) {
     $controller('abstractTeamCtrl', {$scope: $scope});
     // Functions
     $scope.selectTeam = function(team) {
@@ -166,13 +166,21 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
         if (!_.find($scope.ownerCandidates, {id: owner.id})) {
             $scope.ownerCandidates.push(owner);
         }
+        $scope.projects = undefined;
+        ProjectService.listByTeam(team.id).then(function(projects) {
+            $scope.projects = projects;
+        })
+    };
+    $scope.isCurrentProject = function(project) {
+        var projectFromState = $scope.getProjectFromState();
+        return projectFromState && project.id == projectFromState.id;
     };
     $scope.save = function(team) {
         TeamService.save(team).then(function(team) {
             $scope.newTeam = {};
-            $scope.team = team;
             $scope.teams.push(team);
             $scope.resetFormValidation($scope.formHolder.newTeamForm);
+            $scope.selectTeam(team);
             $scope.notifySuccess('todo.is.ui.team.saved');
         });
     };

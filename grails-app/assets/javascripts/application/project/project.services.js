@@ -33,6 +33,11 @@ services.factory('Project', ['Resource', function($resource) {
                 url: '/project/portfolio/:portfolioId',
                 isArray: true,
                 method: 'get'
+            },
+            listByTeam: {
+                url: '/project/team/:teamId',
+                isArray: true,
+                method: 'get'
             }
         });
 }]);
@@ -163,6 +168,9 @@ services.service("ProjectService", ['Project', 'Session', 'FormService', 'CacheS
         return Project.listByPortfolio({portfolioId: portfolioId}).$promise.then(function(projects) {
             return self.mergeProjects(projects);
         });
+    };
+    this.listByTeam = function(teamId) {
+        return Project.listByTeam({teamId: teamId}).$promise; // Light
     };
     this.getActivities = function(project) {
         return FormService.httpGet('project/' + project.id + '/activities', null, true);

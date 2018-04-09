@@ -136,6 +136,32 @@
                             </span>
                         </p>
                     </div>
+                    <div class="col-sm-12 form-group">
+                        <label>${message(code: 'is.ui.projects')}</label>
+                        <div class="form-control-static"
+                             ng-if="projects.length">
+                            <span ng-repeat="project in projects">
+                                <a ng-if="isCurrentProject(project)"
+                                   class="link"
+                                   href
+                                   ng-click="$close(true); showProjectEditModal('team')">
+                                    <strong>{{ project.name + ($last ? '' : ',') }}</strong>
+                                </a>
+                                <a ng-if="!isCurrentProject(project)"
+                                   class="link"
+                                   ng-href="{{ project.pkey | projectUrl }}">
+                                    {{ project.name + ($last ? '' : ',') }}
+                                </a>
+                            </span>
+                        </div>
+                        <div ng-if="projects != undefined && !projects.length">
+                            <a class="btn btn-primary"
+                               ng-click="$close(true)"
+                               ui-sref="newProject">
+                                ${message(code: 'todo.is.ui.project.createNew')}
+                            </a>
+                        </div>
+                    </div>
                     <table ng-if="team.members.length" class="table table-striped table-responsive">
                         <thead>
                             <tr>

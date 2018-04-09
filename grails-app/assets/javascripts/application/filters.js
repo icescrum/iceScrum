@@ -295,7 +295,7 @@ filters
             return $rootScope.serverUrl + '/' + (projectKey ? projectKey : $rootScope.getProjectFromState().pkey) + '-' + prefixByType[type] + uid;
         };
     }])
-    .filter('absoluteProjectLink', ['$rootScope', function($rootScope) {
+    .filter('projectUrl', ['$rootScope', function($rootScope) {
         return function(projectKey) {
             return $rootScope.serverUrl + '/p/' + projectKey + '/';
         };

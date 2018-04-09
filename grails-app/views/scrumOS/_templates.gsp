@@ -331,7 +331,7 @@
 
     <script type="text/ng-template" id="project.digest.html">
     <h4 class="col-md-12 clearfix">
-        <div class="pull-left"><a href="{{:: project.pkey | absoluteProjectLink }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
+        <div class="pull-left"><a href="{{:: project.pkey | projectUrl }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
         <div class="pull-right">
             <small><time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small>
         </div>
@@ -354,17 +354,17 @@
         <div class="row">
             <ul class="list-inline text-muted col-md-12">
                 <li class="release" ng-if=":: project.currentOrNextRelease">
-                    <a href="{{:: project.pkey | absoluteProjectLink }}#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
+                    <a href="{{:: project.pkey | projectUrl }}#/planning/{{:: project.currentOrNextRelease.id }}" class="link"><i class="fa fa-calendar {{:: project.currentOrNextRelease.state | releaseStateColor }}"></i> <span
                             class="text-ellipsis">{{:: project.currentOrNextRelease.name }}</span></a>
                 </li>
                 <li class="features" ng-if=":: project.features_count">
-                    <a href="{{:: project.pkey | absoluteProjectLink }}#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>
+                    <a href="{{:: project.pkey | projectUrl }}#/feature" class="link"><i class="fa fa-puzzle-piece"></i> {{:: project.features_count }} <g:message code="is.ui.feature"/></a>
                 </li>
                 <li class="stories" ng-if=":: project.stories_count">
-                    <a href="{{:: project.pkey | absoluteProjectLink }}#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
+                    <a href="{{:: project.pkey | projectUrl }}#/backlog" class="link"><i class="fa fa-sticky-note"></i> {{:: project.stories_count }} <g:message code="todo.is.ui.stories"/></a>
                 </li>
                 <li class="sprint" ng-if=":: project.currentOrNextRelease.currentOrNextSprint">
-                    <a href="{{:: project.pkey | absoluteProjectLink }}#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><div
+                    <a href="{{:: project.pkey | projectUrl }}#/taskBoard/{{:: project.currentOrNextRelease.currentOrNextSprint.id }}" class="link"><div
                             class="progress {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background-light' }}">
                         <span class="progress-value">{{:: project.currentOrNextRelease.currentOrNextSprint | sprintName }}</span>
                         <div class="progress-bar {{:: project.currentOrNextRelease.currentOrNextSprint.state | sprintStateColor:'background' }}" role="progressbar"

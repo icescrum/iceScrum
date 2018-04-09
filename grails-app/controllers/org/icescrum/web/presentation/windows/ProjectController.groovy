@@ -539,6 +539,19 @@ class ProjectController implements ControllerErrorHandler {
         render(status: 200, contentType: 'application/json', text: _portfolio.projects as JSON)
     }
 
+    @Secured('isAuthenticated()')
+    def listByTeam(long team) {
+        Team _team = Team.withTeam(team)
+        def auth = springSecurityService.authentication
+        // Cannot check by annotation/request because we are not in a project workspace (URL)
+        if (!securityService.owner(_team, auth) && !securityService.scrumMaster(_team, auth)) {
+            render(status: 403)
+            return
+        }
+        lightProjectMarshaller(true)
+        render(status: 200, contentType: 'application/json', text: _team.projects.sort { it.name } as JSON)
+    }
+
     @Secured(['isAuthenticated()'])
     def listByUserAndRole(long id, String term, Boolean paginate, Integer page, Integer count, String role, Boolean create, Boolean owner) {
         if (id && id != springSecurityService.principal.id && !request.admin) {

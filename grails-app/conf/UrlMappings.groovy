@@ -265,6 +265,13 @@ class UrlMappings {
                 portfolio(matches: /\d*/)
             }
         }
+        "/project/team/$team" {
+            controller = 'project'
+            action = 'listByTeam'
+            constraints {
+                team(matches: /\d*/)
+            }
+        }
         "/project/$project/leaveTeam" {
             controller = 'project'
             action = 'leaveTeam'
