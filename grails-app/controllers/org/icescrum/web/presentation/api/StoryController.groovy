@@ -390,8 +390,9 @@ class StoryController implements ControllerErrorHandler {
         def stories = Story.withStories(params)
         stories.each { Story story ->
             User user = (User) springSecurityService.currentUser
-            if (params.follow == null || params.boolean('follow') != story.followed) {
-                if (story.followed) {
+            def isFollowed = story.followers.contains(user)
+            if (params.follow == null || params.boolean('follow') != isFollowed) {
+                if (isFollowed) {
                     story.removeFromFollowers(user)
                 } else {
                     story.addToFollowers(user)

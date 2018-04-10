@@ -30,9 +30,9 @@
             <div class="head-left">
                 <span class="id">{{ ::story.uid }}</span>
                 <a href
-                   class="follow {{ story.followed ? 'active' : '' }}"
-                   uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
-                   ng-click="follow(story)"><i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i></a>
+                   class="follow {{:: story | followedByUser:'active' }}"
+                   uib-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
+                   ng-click="follow(story)"><i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i></a>
                 <entry:point id="story-head-left"/>
             </div>
             <div class="head-right">

@@ -146,11 +146,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'unDone'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.follow = function(story) {
-        return Story.update({projectId: story.backlog.id, id: story.id, action: 'follow'}, {}, function(resultStory) {
-            story.followed = resultStory.followed;
-            story.followers_count = resultStory.followers_count;
-            crudMethods[IceScrumEventType.UPDATE](story);
-        }).$promise;
+        return Story.update({projectId: story.backlog.id, id: story.id, action: 'follow'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.acceptAs = function(story, target) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'turnInto' + target}, {}, function() {

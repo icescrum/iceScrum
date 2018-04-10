@@ -575,4 +575,8 @@ filters
     return function(storyTypes) {
         return storyTypes;
     }
-});
+}).filter('followedByUser', ['Session', function(Session) { // Can be overrided by plugins
+    return function(story, returnIfTrue, returnIfFalse) {
+        return Session.user ? (_.find(story.followers_ids, {id: Session.user.id}) ? (returnIfTrue ? returnIfTrue : true) : (returnIfFalse ? returnIfFalse : false)) : (returnIfFalse ? returnIfFalse : false);
+    }
+}]);

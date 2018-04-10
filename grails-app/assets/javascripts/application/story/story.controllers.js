@@ -602,7 +602,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         }
     }]);
 
-extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryService', 'storyListId', 'Session', 'FeatureService', 'project', function($scope, $controller, StoryService, storyListId, Session, FeatureService, project) {
+extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', 'StoryService', 'storyListId', 'Session', 'FeatureService', 'project', function($scope, $controller, $filter, StoryService, storyListId, Session, FeatureService, project) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.deleteMultiple = function() {
@@ -650,10 +650,14 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', 'StoryServic
     $scope.features = project.features;
     FeatureService.list(project);
     $scope.allFollowed = function(stories) {
-        return _.every(stories, 'followed');
+        return _.every(stories, function(story) {
+            return $filter('followedByUser')(story);
+        });
     };
     $scope.noneFollowed = function(stories) {
-        return !_.some(stories, 'followed');
+        return !_.some(stories, function(story) {
+            return $filter('followedByUser')(story);
+        });
     };
 
     function refreshStories() {

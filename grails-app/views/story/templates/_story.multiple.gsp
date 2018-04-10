@@ -44,8 +44,8 @@
                                     <div class="head-left">
                                         <span class="id">{{ topStory.uid }}</span>
                                         <a class="follow active"
-                                           uib-tooltip="{{ topStory.followers_count }} ${message(code: 'todo.is.ui.followers')}">
-                                            <i class="fa" ng-class="topStory.followed ? 'fa-star' : 'fa-star-o'"></i>
+                                           uib-tooltip="{{ topStory.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}">
+                                            <i class="fa" ng-class="topStory | followedByUser:'fa-star':'fa-star-o'"></i>
                                         </a>
                                     </div>
                                     <div class="head-right">

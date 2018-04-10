@@ -31,8 +31,8 @@
             <div class="head-left">
                 <span class="id">{{:: story.uid }}</span>
                 <a href
-                   class="follow {{:: story.followed ? 'active' : '' }}"
-                   fast-tooltip-el="{{:: story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                   class="follow {{:: story | followedByUser:'active' }}"
+                   fast-tooltip-el="{{:: story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
                    ng-click="follow(story)">
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star-o"></i>

@@ -34,9 +34,9 @@
             <div class="left-title">
                 <i class="fa fa-sticky-note" ng-style="{color: story.feature ? story.feature.color : '#f9f157'}"></i>
                 <strong>{{ ::story.uid }}</strong>
-                <span uib-tooltip="{{ story.followers_count }} ${message(code: 'todo.is.ui.followers')}"
+                <span uib-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
                       ng-click="follow(story)">
-                    <i class="fa" ng-class="story.followed ? 'fa-star' : 'fa-star-o'"></i>
+                    <i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i>
                 </span>
                 <span class="item-name" title="{{ story.name }}">{{ story.name }}</span>&nbsp;<small ng-show="story.origin">${message(code: 'is.story.origin')}: {{ story.origin }}</small>
                 <div style="margin-top:10px">
