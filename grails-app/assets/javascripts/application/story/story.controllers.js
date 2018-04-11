@@ -223,9 +223,13 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
                         });
                     }
                 };
+                $scope.hasSprint = function() {
+                    return !_.isArray($scope.parentSprintEntries) || $scope.parentSprintEntries.length != 0;
+                };
                 // Init
                 $scope.holder = {};
-                $scope.parentSprintEntries = [];
+                $scope.formHolder = {};
+                $scope.parentSprintEntries = undefined;
                 StoryService.getParentSprintEntries($scope.getProjectFromState().id).then(function(parentSprintEntries) {
                     $scope.parentSprintEntries = parentSprintEntries;
                     if (parentSprintEntries) {

@@ -22,14 +22,18 @@
 --}%
 <script type="text/ng-template" id="story.plan.html">
 <is:modal form="submit(holder.parentSprint)"
+          name="formHolder.storyPlanForm"
+          validate="true"
           submitButton="${message(code: 'default.button.update.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.story.plan')}">
     <div>
         <label for="parentSprint"><i class="fa fa-tasks"></i> ${message(code: 'is.sprint')}</label>
-        <ui-select class="form-control"
+        <ui-select ng-show="hasSprint()"
+                   class="form-control"
                    name="parentSprint"
                    search-enabled="true"
+                   required
                    ng-model="holder.parentSprint">
             <ui-select-match placeholder="${message(code: 'is.ui.story.noparentsprint')}">
                 {{ $select.selected | sprintNameWithState }}
@@ -38,6 +42,14 @@
                 <span ng-bind-html="parentSprintEntry | sprintNameWithState | highlight: $select.search"></span>
             </ui-select-choices>
         </ui-select>
+        <a ng-if="!hasSprint()"
+           ui-sref="planning"
+           ng-click="$close()"
+           class="btn btn-primary"
+           role="button"
+           tabindex="0">
+            ${message(code: 'todo.is.ui.sprint.new')}
+        </a>
     </div>
 </is:modal>
 </script>
