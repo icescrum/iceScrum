@@ -402,6 +402,12 @@ filters
             return $rootScope.message('is.sprint') + ' ' + sprint.index;
         }
     }
+}]).filter('sprintNameWithState', ['$rootScope', 'sprintNameFilter', 'SprintStatesByName', function($rootScope, sprintNameFilter, SprintStatesByName) {
+    return function(sprint) {
+        if (sprint) {
+            return sprintNameFilter(sprint) + (sprint.state === SprintStatesByName.IN_PROGRESS ? ' (' + $rootScope.message('is.sprint.state.inprogress') + ')' : '');
+        }
+    }
 }]).filter('computePercentage', [function() {
     return function(object, value, onValue) {
         var val = Math.round((object[value] * 100) / object[onValue]);

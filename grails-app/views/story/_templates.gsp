@@ -21,15 +21,16 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <g:render template="/story/templates/story"/>
-<g:render template="/story/templates/story.light"/>
 <g:render template="/story/templates/story.backlog"/>
 <g:render template="/story/templates/story.close"/>
 <g:render template="/story/templates/story.details"/>
+<g:render template="/story/templates/story.effort"/>
+<g:render template="/story/templates/story.light"/>
 <g:render template="/story/templates/story.multiple"/>
 <g:render template="/story/templates/story.new"/>
-<g:render template="/story/templates/story.effort"/>
-<g:render template="/story/templates/story.value"/>
-<g:render template="/story/templates/nested.stories"/>
+<g:render template="/story/templates/story.plan"/>
 <g:render template="/story/templates/story.selector"/>
 <g:render template="/story/templates/story.split"/>
 <g:render template="/story/templates/story.table.multiple.sum"/>
+<g:render template="/story/templates/story.value"/>
+<g:render template="/story/templates/nested.stories"/>

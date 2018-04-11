@@ -146,6 +146,11 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.shiftToNext(story); }
         },
         {
+            name: 'todo.is.ui.story.plan',
+            visible: function(story) { return $scope.authorizedStory('plan', story) },
+            action: function(story) { $scope.showPlanModal(story); }
+        },
+        {
             name: 'is.ui.backlog.menu.estimate',
             visible: function(story) { return $scope.authorizedStory('updateEstimate', story) },
             action: function(story) { $scope.showEditEffortModal(story); }
@@ -203,6 +208,32 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
                 scrollLeft: scrollLeft
             }, 400);
         }
+    };
+    $scope.showPlanModal = function(story) {
+        $uibModal.open({
+            size: 'sm',
+            templateUrl: 'story.plan.html',
+            controller: ['$scope', function($scope) {
+                // Functions
+                $scope.submit = function(sprint) {
+                    if (sprint) {
+                        StoryService.plan(story, sprint).then(function() {
+                            $scope.$close();
+                            $scope.notifySuccess('todo.is.ui.story.plan.success');
+                        });
+                    }
+                };
+                // Init
+                $scope.holder = {};
+                $scope.parentSprintEntries = [];
+                StoryService.getParentSprintEntries($scope.getProjectFromState().id).then(function(parentSprintEntries) {
+                    $scope.parentSprintEntries = parentSprintEntries;
+                    if (parentSprintEntries) {
+                        $scope.holder.parentSprint = _.first(parentSprintEntries);
+                    }
+                });
+            }]
+        });
     };
     $scope.showEditEffortModal = function(story, $event) {
         if (StoryService.authorizedStory('updateEstimate', story)) {
@@ -531,9 +562,6 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
                     $scope.editableStory.description = '';
                 }
             }
-        };
-        $scope.groupSprintByParentRelease = function(sprint) {
-            return sprint.parentRelease.name;
         };
         $scope.retrieveDependenceEntries = function(story) {
             if (_.isEmpty($scope.dependenceEntries)) {

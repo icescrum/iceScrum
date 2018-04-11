@@ -278,6 +278,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             case 'returnToSandbox':
                 return Session.po() && _.includes([StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED], story.state);
+            case 'plan':
+                return self.authorizedStory('updateParentSprint', story) && story.state == StoryStatesByName.ESTIMATED;
             case 'unPlan':
                 return Session.poOrSm() && story.state >= StoryStatesByName.PLANNED && story.state < StoryStatesByName.DONE;
             case 'shiftToNext':
