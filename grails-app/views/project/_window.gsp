@@ -160,7 +160,7 @@
         </div>
         <div class="widget-column">
             <div class="panel-container">
-                <div class="panel panel-light" ng-controller="chartCtrl" ng-init="openChart('project', 'burnup', project)">
+                <div class="panel panel-light" ng-controller="chartCtrl">
                     <div class="panel-heading" ng-controller="projectChartCtrl">
                         <h3 class="panel-title">
                             <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
@@ -186,18 +186,20 @@
                                 </button>
                                 <ul uib-dropdown-menu>
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>
-                                    <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChart('project', chart.id, project)">{{ message(chart.name) }}</a></li>
+                                    <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
                                     <li ng-if="release.id" class="divider"></li>
                                     <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
-                                    <li ng-if="release.id" ng-repeat="chart in projectCharts.release"><a href ng-click="openChart('release', chart.id, release)">{{ message(chart.name) }}</a></li>
+                                    <li ng-if="release.id" ng-repeat="chart in projectCharts.release"><a href ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
                                     <li ng-if="currentOrLastSprint.id" class="divider"></li>
                                     <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                                    <li ng-if="currentOrLastSprint.id" ng-repeat="chart in projectCharts.sprint"><a href ng-click="openChart('sprint', chart.id, currentOrLastSprint)">{{ message(chart.name) }}</a></li>
+                                    <li ng-if="currentOrLastSprint.id" ng-repeat="chart in projectCharts.sprint"><a href
+                                                                                                                    ng-click="openChartAndSaveSetting('sprint', chart.id, currentOrLastSprint , project, 'project', 'chart')">{{ message(chart.name) }}</a>
+                                    </li>
                                 </ul>
                             </div>
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item)">
                         <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
                     </div>
                 </div>

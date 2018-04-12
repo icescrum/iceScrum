@@ -142,6 +142,9 @@ var isApplication = angular.module('isApplication', [
                 resolve: {
                     project: ['Session', function(Session) {
                         return Session.getWorkspace();
+                    }],
+                    window: ['WindowService', 'project', function(WindowService, project) {
+                        return WindowService.get('project', project);
                     }]
                 },
                 controller: 'dashboardCtrl'

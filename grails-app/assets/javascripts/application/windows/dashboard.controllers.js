@@ -22,7 +22,8 @@
  *
  */
 
-controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'StoryService', 'project', '$controller', function($scope, $location, $state, $q, ProjectService, ReleaseService, SprintService, AttachmentService, StoryService, project, $controller) {
+controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 'window', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'StoryService', 'project', '$controller', function($scope, $location, $state, $q, window, ProjectService, ReleaseService, SprintService, AttachmentService, StoryService, project, $controller) {
+    $controller('windowCtrl', {$scope: $scope, window: window}); // inherit from windowCtrl
     $scope.authorizedProject = ProjectService.authorizedProject;
     $scope.authorizedRelease = ReleaseService.authorizedRelease;
     $scope.authorizedSprint = SprintService.authorizedSprint;
@@ -49,6 +50,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
     };
     $scope.release = {};
     $scope.activities = [];
+    $scope.userChart = {};
     $scope.currentOrLastSprint = {};
     $scope.currentOrNextSprint = {};
     $scope.projectMembersCount = 0;
@@ -62,6 +64,7 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
     ProjectService.getActivities($scope.project).then(function(activities) {
         $scope.activities = activities;
     });
+
     // Promises are chained like so to wait for request completion and avoid redundant queries to the server
     ReleaseService.getCurrentOrNextRelease($scope.project).then(function(release) {
         $scope.release = release;
@@ -78,6 +81,16 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
         SprintService.getCurrentOrNextSprint($scope.project).then(function(sprint) {
             $scope.currentOrNextSprint = sprint;
         });
+    }).then(function() {
+        var userChart = $scope.getWindowSetting('chart', {itemType: 'project', chartName: 'burnup'});
+        if (userChart.itemType === 'sprint') {
+            userChart.item = $scope.currentOrLastSprint;
+        } else if (userChart.itemType === 'release') {
+            userChart.item = $scope.release;
+        } else {
+            userChart.item = $scope.project;
+        }
+        $scope.userChart = userChart;
     });
     AttachmentService.list($scope.project, $scope.project.id);
     if (isSettings.showAppStore) {
