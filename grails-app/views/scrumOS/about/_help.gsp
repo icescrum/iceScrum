@@ -131,6 +131,10 @@
                     <td>${message(code: 'is.ui.server.connections.transport')}</td>
                     <td>{{ application.transport }}</td>
                 </tr>
+                <tr>
+                    <td>${message(code: 'config.icescrum.serverURL')}</td>
+                    <td>${serverUrl}</td>
+                </tr>
             </tbody>
         </table>
     </div>

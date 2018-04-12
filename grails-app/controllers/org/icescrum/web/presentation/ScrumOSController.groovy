@@ -85,6 +85,7 @@ class ScrumOSController implements ControllerErrorHandler {
         render(status: 200, template: "about/index", model: [server        : servletContext.getServerInfo(),
                                                              versionNumber : g.meta([name: 'app.version']),
                                                              maxMemory     : ApplicationSupport.getJavaMaxMemory(),
+                                                             serverUrl     : ApplicationSupport.serverURL(),
                                                              about         : new XmlSlurper().parse(aboutFile),
                                                              configLocation: grailsApplication.config.grails.config.locations instanceof List ? grailsApplication.config.grails.config.locations.join(', ') : ''])
     }
