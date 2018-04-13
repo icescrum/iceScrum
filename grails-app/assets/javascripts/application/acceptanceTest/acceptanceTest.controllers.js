@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'AcceptanceTestStatesByName', 'hotkeys', function($scope, AcceptanceTestService, AcceptanceTestStatesByName, hotkeys) {
+controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'FormService', 'AcceptanceTestStatesByName', 'hotkeys', function($scope, AcceptanceTestService, FormService, AcceptanceTestStatesByName, hotkeys) {
     // Functions
     $scope.resetAcceptanceTestForm = function() {
         $scope.editableAcceptanceTest = $scope.acceptanceTest ? $scope.acceptanceTest : {
@@ -77,16 +77,22 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             }
         }
     };
-    $scope.blurAcceptanceTestDescription = function() {
+    $scope.blurAcceptanceTestDescription = function($event) {
         $scope.showAcceptanceTestDescriptionTextarea = false;
         if ($scope.editableAcceptanceTest.description.trim() == $scope.acceptanceTestTemplate.trim()) {
             $scope.editableAcceptanceTest.description = '';
         }
+        FormService.blurAndClick($event);
     };
     $scope.focusAcceptanceTestDescription = function() {
         $scope.showAcceptanceTestDescriptionTextarea = true;
         if (!$scope.editableAcceptanceTest.description) {
             $scope.editableAcceptanceTest.description = $scope.acceptanceTestTemplate;
+        }
+    };
+    $scope.selectAcceptanceTestState = function(editableAcceptanceTest, selected) {
+        if (!$scope.formHolder.acceptanceTestForm.name.$dirty && !$scope.formHolder.acceptanceTestForm.description.$dirty) {
+            $scope.update(editableAcceptanceTest, selected);
         }
     };
     // Init

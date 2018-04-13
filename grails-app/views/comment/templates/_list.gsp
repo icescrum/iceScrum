@@ -27,6 +27,7 @@
             <td class="content">
                 <form name="formHolder.commentForm"
                       ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
+                      ng-submit="update(editableComment, selected)"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding">
@@ -51,11 +52,6 @@
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right">
                                     <li>
-                                        <a href ng-click="editForm(true); showCommentBodyTextarea = true;">
-                                            ${message(code: 'is.ui.backlogelement.comment.edit')}
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
                                             ${message(code: 'default.button.delete.label')}
                                         </a>
@@ -68,7 +64,7 @@
                         <textarea at
                                   required
                                   ng-maxlength="5000"
-                                  ng-blur="update(editableComment, selected); showCommentBodyTextarea = false;"
+                                  ng-blur="blurComment($event)"
                                   is-markitup
                                   name="body"
                                   ng-model="editableComment.body"
@@ -81,6 +77,20 @@
                              ng-focus="editForm(true); showCommentBodyTextarea = true"
                              tabindex="0"
                              ng-bind-html="editableComment.body_html"></div>
+                    </div>
+                    <div class="btn-toolbar"
+                         ng-if="formHolder.editing">
+                        <button class="btn btn-primary pull-right"
+                                ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid || application.submitting"
+                                ng-click="update(editableComment, selected)"
+                                type="submit">
+                            ${message(code: 'default.button.update.label')}
+                        </button>
+                        <button class="btn btn-default pull-right"
+                                ng-click="resetCommentForm()"
+                                type="button">
+                            ${message(code: 'is.button.cancel')}
+                        </button>
                     </div>
                 </form>
                 <hr ng-if="!$last"/>

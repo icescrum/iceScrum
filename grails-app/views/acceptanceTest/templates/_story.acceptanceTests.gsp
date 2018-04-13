@@ -28,6 +28,7 @@
             <td class="content">
                 <form name="formHolder.acceptanceTestForm"
                       ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formEditable() }"
+                      ng-submit="update(editableAcceptanceTest, selected)"
                       show-validation
                       novalidate>
                     <div class="clearfix no-padding form-group">
@@ -37,18 +38,18 @@
                                 <input required
                                        ng-maxlength="255"
                                        ng-focus="editForm(true)"
-                                       ng-blur="update(editableAcceptanceTest, selected)"
                                        type="text"
                                        name="name"
                                        ng-model="editableAcceptanceTest.name"
+                                       ng-change="editForm(true)"
                                        class="form-control"
                                        placeholder="${message(code: 'is.ui.backlogelement.noname')}">
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <ui-select class="form-control"
-                                       ng-click="editForm(true)"
-                                       on-select="update(editableAcceptanceTest, selected)"
+                                       ng-click="authorizedAcceptanceTest('updateState', selected) && editForm(true)"
+                                       on-select="selectAcceptanceTestState(editableAcceptanceTest, selected)"
                                        name="state"
                                        ng-model="editableAcceptanceTest.state"
                                        ng-disabled="!authorizedAcceptanceTest('updateState', selected)">
@@ -67,11 +68,6 @@
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right">
                                     <li>
-                                        <a href ng-click="showAcceptanceTestDescriptionTextarea = true;">
-                                            ${message(code: 'is.ui.backlogelement.comment.edit')}
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href ng-click="confirmDelete({ callback: delete, args: [acceptanceTest, selected] })">
                                             ${message(code: 'default.button.delete.label')}
                                         </a>
@@ -88,7 +84,7 @@
                                   ng-model="editableAcceptanceTest.description"
                                   is-model-html="editableAcceptanceTest.description_html"
                                   ng-show="showAcceptanceTestDescriptionTextarea"
-                                  ng-blur="update(editableAcceptanceTest, selected); blurAcceptanceTestDescription()"
+                                  ng-blur="blurAcceptanceTestDescription($event)"
                                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                         <div class="markitup-preview no-fixed-height"
                              ng-show="!showAcceptanceTestDescriptionTextarea"
@@ -97,6 +93,20 @@
                              ng-class="{'placeholder': !editableAcceptanceTest.description_html}"
                              tabindex="0"
                              ng-bind-html="editableAcceptanceTest.description_html ? editableAcceptanceTest.description_html : '<p>${message(code: 'is.ui.backlogelement.nodescription')}</p>'"></div>
+                    </div>
+                    <div class="btn-toolbar"
+                         ng-if="formHolder.editing">
+                        <button class="btn btn-primary pull-right"
+                                ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid || application.submitting"
+                                ng-click="update(editableAcceptanceTest, selected)"
+                                type="submit">
+                            ${message(code: 'default.button.update.label')}
+                        </button>
+                        <button class="btn btn-default pull-right"
+                                ng-click="resetAcceptanceTestForm()"
+                                type="button">
+                            ${message(code: 'is.button.cancel')}
+                        </button>
                     </div>
                 </form>
                 <hr ng-if="!$last"/>

@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', function($scope, CommentService, hotkeys) {
+controllers.controller('commentCtrl', ['$scope', 'CommentService', 'FormService', 'hotkeys', function($scope, CommentService, FormService, hotkeys) {
     // Functions
     $scope.resetCommentForm = function() {
         $scope.editableComment = $scope.comment ? angular.copy($scope.comment) : {};
@@ -68,6 +68,10 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
                 });
             }
         }
+    };
+    $scope.blurComment = function($event) {
+        $scope.showCommentBodyTextarea = false;
+        FormService.blurAndClick($event);
     };
     // Init
     $scope.formHolder = {};
