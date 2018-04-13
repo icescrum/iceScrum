@@ -22,7 +22,7 @@
  *
  */
 
-extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal', '$timeout', 'WindowService', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($scope, $element, $filter, $uibModal, $timeout, WindowService, ProjectService, SprintService, ReleaseService, BacklogService) {
+extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal', '$timeout', 'WindowService', 'Session', 'ProjectService', 'SprintService', 'ReleaseService', 'BacklogService', function($scope, $element, $filter, $uibModal, $timeout, WindowService, Session, ProjectService, SprintService, ReleaseService, BacklogService) {
     $scope.defaultOptions = {
         chart: {
             height: 350
@@ -231,10 +231,12 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
         });
     };
     $scope.openChartAndSaveSetting = function(itemType, chartName, item, workspace, windowName, settingName) {
-        WindowService.get(windowName, workspace).then(function(window) {
-            window.settings[settingName] = {itemType: itemType, chartName: chartName};
-            return WindowService.update(window).$promise;
-        });
+        if (Session.authenticated()) {
+            WindowService.get(windowName, workspace).then(function(window) {
+                window.settings[settingName] = {itemType: itemType, chartName: chartName};
+                return WindowService.update(window).$promise;
+            });
+        }
         $scope.openChart(itemType, chartName, item);
     };
     $scope.processSaveChart = function() {
