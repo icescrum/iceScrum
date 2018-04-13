@@ -551,7 +551,7 @@ var isApplication = angular.module('isApplication', [
     .factory('UserTimeZone', function() {
         return jstz.determine();
     })
-    .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$localStorage', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $localStorage, $interval, notifications, screenSize) {
+    .run(['Session', 'I18nService', 'PushService', 'UserService', 'WidgetService', 'AppService', 'FormService', '$controller', '$rootScope', '$timeout', '$state', '$uibModal', '$filter', '$document', '$window', '$localStorage', '$interval', 'notifications', 'screenSize', function(Session, I18nService, PushService, UserService, WidgetService, AppService, FormService, $controller, $rootScope, $timeout, $state, $uibModal, $filter, $document, $window, $localStorage, $interval, notifications, screenSize) {
         $rootScope.uiWorking = function(message) {
             $rootScope.application.loading = true;
             $rootScope.application.loadingText = $rootScope.message((message === true || message === undefined) ? 'todo.is.ui.loading.working' : message);
@@ -651,6 +651,7 @@ var isApplication = angular.module('isApplication', [
             };
             modal.result.then(callCloseCallback, callCloseCallback);
         };
+        $rootScope.blurAndClick = FormService.blurAndClick;
         $rootScope.alert = function(options) {
             $uibModal.open({
                 templateUrl: 'message.modal.html',

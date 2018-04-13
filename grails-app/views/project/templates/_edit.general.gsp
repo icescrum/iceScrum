@@ -39,6 +39,7 @@
         </button>
         <button type='submit'
                 role="button"
+                ng-click="update(project)"
                 class='btn btn-primary'
                 ng-disabled="!formHolder.editProjectForm.$dirty || formHolder.editProjectForm.$invalid">
             ${message(code: 'is.button.update')}

@@ -21,7 +21,7 @@
  * Nicolas Noullet (nnoullet@kagilum.com)
  *
  */
-controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'FormService', 'AcceptanceTestStatesByName', 'hotkeys', function($scope, AcceptanceTestService, FormService, AcceptanceTestStatesByName, hotkeys) {
+controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService', 'AcceptanceTestStatesByName', 'hotkeys', function($scope, AcceptanceTestService, AcceptanceTestStatesByName, hotkeys) {
     // Functions
     $scope.resetAcceptanceTestForm = function() {
         $scope.editableAcceptanceTest = $scope.acceptanceTest ? $scope.acceptanceTest : {
@@ -77,12 +77,11 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             }
         }
     };
-    $scope.blurAcceptanceTestDescription = function($event) {
+    $scope.blurAcceptanceTestDescription = function() {
         $scope.showAcceptanceTestDescriptionTextarea = false;
         if ($scope.editableAcceptanceTest.description.trim() == $scope.acceptanceTestTemplate.trim()) {
             $scope.editableAcceptanceTest.description = '';
         }
-        FormService.blurAndClick($event);
     };
     $scope.focusAcceptanceTestDescription = function() {
         $scope.showAcceptanceTestDescriptionTextarea = true;

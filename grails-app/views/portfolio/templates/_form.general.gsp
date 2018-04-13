@@ -73,7 +73,7 @@
                   placeholder="${message(code: 'is.ui.portfolio.description.placeholder')}"
                   ng-model="portfolio.description"
                   ng-show="showDescriptionTextarea"
-                  ng-blur="showDescriptionTextarea = false"
+                  ng-blur="showDescriptionTextarea = false; blurAndClick($event)"
                   is-model-html="portfolio.description_html"></textarea>
         <div class="markitup-preview"
              tabindex="0"

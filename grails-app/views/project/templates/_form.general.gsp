@@ -76,7 +76,7 @@
                   placeholder="${message(code: 'todo.is.ui.project.description.placeholder')}"
                   ng-model="project.description"
                   ng-show="showDescriptionTextarea"
-                  ng-blur="showDescriptionTextarea = false"
+                  ng-blur="showDescriptionTextarea = false; blurAndClick($event)"
                   is-model-html="project.description_html"></textarea>
         <div class="markitup-preview"
              tabindex="0"

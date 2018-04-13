@@ -64,7 +64,7 @@
                         <textarea at
                                   required
                                   ng-maxlength="5000"
-                                  ng-blur="blurComment($event)"
+                                  ng-blur="showCommentBodyTextarea = false; blurAndClick($event)"
                                   is-markitup
                                   name="body"
                                   ng-model="editableComment.body"

@@ -84,7 +84,7 @@
                                   ng-model="editableAcceptanceTest.description"
                                   is-model-html="editableAcceptanceTest.description_html"
                                   ng-show="showAcceptanceTestDescriptionTextarea"
-                                  ng-blur="blurAcceptanceTestDescription($event)"
+                                  ng-blur="blurAcceptanceTestDescription(); blurAndClick($event)"
                                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
                         <div class="markitup-preview no-fixed-height"
                              ng-show="!showAcceptanceTestDescriptionTextarea"
