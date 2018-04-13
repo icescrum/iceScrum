@@ -198,7 +198,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
     };
 }]);
 
-services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfigService', function($filter, $http, $rootScope, DomainConfigService) {
+services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', 'DomainConfigService', function($filter, $http, $rootScope, $timeout, DomainConfigService) {
     var self = this;
     this.previous = function(itemList, item) {
         var itemIndex = _.findIndex(itemList, {id: item.id});
@@ -216,6 +216,14 @@ services.service('FormService', ['$filter', '$http', '$rootScope', 'DomainConfig
             };
         }
         return previousOrNext;
+    };
+    this.blurAndClick = function($event) {
+        // BIG HACK when a DOM change in a blur event will move a button and it will not be there anymore to receive the click, so we manually trigger the click
+        if ($event.relatedTarget) {
+            $timeout(function() {
+                angular.element($event.relatedTarget).triggerHandler('click');
+            });
+        }
     };
     this.formObjectData = function(obj, prefix) {
         var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
