@@ -62,6 +62,7 @@ try {
     icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
 }
 println "| Server Timezone: ${icescrum.timezone.default}"
+println "| Java version: ${System.getProperty('java.version')}"
 
 /* Project administration */
 icescrum.project.import.enable = true
