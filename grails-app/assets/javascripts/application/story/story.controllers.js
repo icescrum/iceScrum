@@ -518,8 +518,8 @@ controllers.controller('storyAtWhoCtrl', ['$scope', '$controller', 'ActorService
     ];
 }]);
 
-extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", "TaskStatesByName", 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", "TaskStatesByName", 'AcceptanceTestStatesByName', 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, AcceptanceTestStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
         $controller('storyCtrl', {$scope: $scope});
         $controller('storyAtWhoCtrl', {$scope: $scope});
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story', project: project});
@@ -613,6 +613,11 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
             if ($scope.findPreviousOrNextStory) {
                 return $scope.findPreviousOrNextStory('next', detailsStory);
             }
+        };
+        $scope.getAcceptanceTestClass = function(story) {
+            return (story.testState == AcceptanceTestStatesByName.FAILED ? 'text-danger' :
+                   story.testState == AcceptanceTestStatesByName.SUCCESS ? 'text-success' : '') +
+                   ($state.params.storyTabId == 'tests' || $scope.application.focusedDetailsView ? ' active' : '');
         };
         // Init
         $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});

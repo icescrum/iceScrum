@@ -121,7 +121,7 @@
                     class="hidden-sm"
                     ng-if="!application.focusedDetailsView"
                     uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
-                    ng-class="{'active':$state.params.storyTabId == 'tests'}">
+                    ng-class="getAcceptanceTestClass(story)">
                     <a href="{{ tabUrl('tests') }}">
                         <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests.short')} {{ story.acceptanceTests_count | parens }}
                     </a>
@@ -142,7 +142,7 @@
                         <li role="presentation"
                             class="visible-sm-block"
                             uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
-                            ng-class="{'active':$state.params.storyTabId == 'tests'}">
+                            ng-class="getAcceptanceTestClass(story)">
                             <a href="{{ tabUrl('tests') }}">
                                 <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
                             </a>
@@ -170,7 +170,7 @@
         <div ng-if="application.focusedDetailsView" class="details-content details-content-center">
             <ul class="nav nav-tabs nav-tabs-is nav-justified">
                 <li role="presentation"
-                    class="active">
+                    ng-class="getAcceptanceTestClass(story)">
                     <a href>
                         <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
                     </a>

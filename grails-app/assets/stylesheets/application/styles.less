@@ -1271,6 +1271,26 @@ small a.link {
   font-family: "FontAwesome", "Arial", "Helvetica", "sans-serif";
 }
 
+li.text-primary > a {
+  .text-emphasis-variant(@brand-primary) !important;
+}
+
+li.text-success > a {
+  .text-emphasis-variant(@state-success-text) !important;
+}
+
+li.text-info > a {
+  .text-emphasis-variant(@state-info-text) !important;
+}
+
+li.text-warning > a {
+  .text-emphasis-variant(@state-warning-text) !important;
+}
+
+li.text-danger > a {
+  .text-emphasis-variant(@state-danger-text) !important;
+}
+
 /*.user-online:before {
   font-family: FontAwesome;
   content: "\f111";
