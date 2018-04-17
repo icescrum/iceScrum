@@ -234,13 +234,17 @@ class TaskController implements ControllerErrorHandler {
     def permalink(int uid, long project) {
         Project _project = Project.withProject(project)
         Task task = Task.findByParentProjectAndUid(_project, uid)
-        String uri = "/p/$_project.pkey/#/"
-        if (task.backlog) {
-            uri += "taskBoard/$task.backlog.id/task/$task.id"
+        if (task) {
+            String uri = "/p/$_project.pkey/#/"
+            if (task.backlog) {
+                uri += "taskBoard/$task.backlog.id/task/$task.id"
+            } else {
+                uri += "backlog/$task.parentStory.id/tasks/task/$task.id"
+            }
+            redirect(uri: uri)
         } else {
-            uri += "backlog/$task.parentStory.id/tasks/task/$task.id"
+            redirect(controller: 'errors', action: 'error404')
         }
-        redirect(uri: uri)
     }
 
     @Secured('inProject() or (isAuthenticated() and stakeHolder())')

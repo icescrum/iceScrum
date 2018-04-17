@@ -155,7 +155,11 @@ class FeatureController implements ControllerErrorHandler {
     def permalink(int uid, long project) {
         Project _project = Project.withProject(project)
         Feature feature = Feature.findByBacklogAndUid(_project, uid)
-        redirect(uri: "/p/$_project.pkey/#/feature/$feature.id")
+        if (feature) {
+            redirect(uri: "/p/$_project.pkey/#/feature/$feature.id")
+        } else {
+            redirect(controller: 'errors', action: 'error404')
+        }
     }
 
     @Secured('inProject() or (isAuthenticated() and stakeHolder())')
