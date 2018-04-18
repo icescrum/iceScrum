@@ -50,7 +50,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         return $state.href(stateName, {sprintId: sprint.id});
     };
     $scope.openNewTaskByStory = function(story) {
-        $state.go('taskBoard.task.new', {taskCategory: _.pick(story, ['id', 'name', 'class'])});
+        $state.go('taskBoard.task.new', {taskCategory: _.pick(story, ['id', 'name', 'class', 'feature'])});
     };
     $scope.openNewTaskByType = function(type) {
         $state.go('taskBoard.task.new', {taskCategory: {id: type, name: $filter('i18n')(type, 'TaskTypes')}});
