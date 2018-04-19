@@ -64,7 +64,6 @@ controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 
     ProjectService.getActivities($scope.project).then(function(activities) {
         $scope.activities = activities;
     });
-
     // Promises are chained like so to wait for request completion and avoid redundant queries to the server
     ReleaseService.getCurrentOrNextRelease($scope.project).then(function(release) {
         $scope.release = release;
