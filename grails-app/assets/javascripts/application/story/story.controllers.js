@@ -730,7 +730,7 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
                 $scope.resetStoryForm();
             } else {
                 $scope.setInEditingMode(true);
-                $state.go('^.details', {storyId: story.id, elementId: story.state == StoryStatesByName.ACCEPTED ? 'backlog' : 'sandbox'});
+                $state.go('^.details', {storyId: story.id, elementId: _.includes([StoryStatesByName.ACCEPTED, StoryStatesByName.ESTIMATED], story.state) ? 'backlog' : 'sandbox'});
             }
             $scope.notifySuccess('todo.is.ui.story.saved');
         });
