@@ -951,7 +951,21 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             scope.countString = (scope.count > scope.max) ? scope.max + '+' : (scope.count > 0 ? scope.count : '');
         }
     };
-}).directive('isWatch', ['$parse', function($parse) {
+}).directive('documentation', ['$rootScope', function($rootScope) {
+    return {
+        restrict: 'E',
+        scope: {
+            docUrl: '@',
+            title: '@',
+            big: '=?'
+        },
+        replace: true,
+        templateUrl: 'documentation.html',
+        link: function(scope) {
+            scope.message = $rootScope.message;
+        }
+    };
+}]).directive('isWatch', ['$parse', function($parse) {
     'use strict';
     return {
         transclude: true,

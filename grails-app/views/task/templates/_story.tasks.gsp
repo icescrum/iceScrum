@@ -67,14 +67,12 @@
                 </td>
             </tr>
         </tbody>
-        <tbody>
-            <tr ng-show="selected.tasks !== undefined && !selected.tasks.length">
-                <td class="empty-content">
-                    <small>${message(code: 'todo.is.ui.task.empty')}</small>
-                </td>
-            </tr>
-        </tbody>
     </table>
+    <div class="help-block text-center"
+         ng-if="selected.tasks !== undefined && !selected.tasks.length">
+        ${message(code: 'is.ui.task.help.story')}
+        <documentation doc-url="features-stories-tasks#tasks"/>
+    </div>
 </div>
 <div class="panel-footer" ng-controller="taskStoryCtrl">
     <div ng-if="authorizedTask('create', {parentStory: selected})" ng-include="'story.task.new.html'"></div>

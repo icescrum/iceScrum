@@ -24,7 +24,10 @@
 <div class="row">
     <div class="col-sm-12">
         <h4>${message(code: "is.team")}</h4>
-        <p class="help-block">{{ message(teamCreatable() ? 'is.dialog.wizard.section.team.description' : 'todo.is.ui.projet.team.description') }}</p>
+        <p class="help-block">
+            {{ message(teamCreatable() ? 'is.dialog.wizard.section.team.description' : 'todo.is.ui.projet.team.description') }}
+            <documentation doc-url="roles-teams-projects"/>
+        </p>
     </div>
     <div class="col-sm-4">
         <label for="team.name">{{ message(teamCreatable() ? 'todo.is.ui.create.or.select.team' : 'todo.is.ui.select.team' )}}</label>

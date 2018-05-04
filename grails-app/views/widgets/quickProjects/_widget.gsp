@@ -36,6 +36,9 @@
                 click-async="createSampleProject()">
             ${message(code: 'is.ui.project.sample.create')}
         </button>
+        <div>
+            <documentation doc-url="getting-started-with-icescrum" title="is.ui.documentation.getting.started"/>
+        </div>
     </div>
     <hr>
 </is:widget>

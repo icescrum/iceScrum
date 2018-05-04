@@ -163,7 +163,7 @@
                 <div class="panel panel-light" ng-controller="chartCtrl">
                     <div class="panel-heading" ng-controller="projectChartCtrl">
                         <h3 class="panel-title">
-                            <i class="fa fa-area-chart"></i> <g:message code="is.ui.project.chart.title"/>
+                            <i class="fa fa-area-chart"></i> ${message(code: 'is.ui.project.chart.title')}
                             <div class="btn-toolbar pull-right visible-on-hover"
                                  uib-dropdown>
                                 <div class="btn-group">
@@ -201,6 +201,10 @@
                     </div>
                     <div class="panel-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item)">
                         <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
+                    </div>
+                    <div class="text-right"
+                         style="padding: 0 10px 6px 0">
+                        <documentation doc-url="indicators-and-reporting" title="is.chart.help"/>
                     </div>
                 </div>
             </div>
@@ -255,7 +259,8 @@
                             <div style="text-align: center; padding:5px; font-size:14px;">
                                 <a target="_blank"
                                    href="https://www.icescrum.com/documentation/getting-started-with-icescrum?utm_source=dashboard&utm_medium=link&utm_campaign=icescrum">
-                                    ${message(code: 'is.ui.getting.started')}
+                                    <i class="fa fa-question-circle"></i>
+                                    ${message(code: 'is.ui.documentation.getting.started.extended')}
                                 </a>
                             </div>
                         </div>

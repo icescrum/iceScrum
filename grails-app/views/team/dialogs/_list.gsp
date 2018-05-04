@@ -63,6 +63,10 @@
         </div>
         <div class="right-panel col-sm-9" ng-switch="teamSelected()">
             <div ng-switch-default>
+                <div class="help-block">
+                    ${message(code: 'is.ui.team.help')}
+                    <documentation doc-url="roles-teams-projects"/>
+                </div>
                 <form ng-submit="save(newTeam)"
                       name="formHolder.newTeamForm"
                       show-validation
@@ -84,9 +88,6 @@
                         </button>
                     </div>
                 </form>
-                <div>
-                    ${message(code: 'is.ui.team.explanation')}
-                </div>
             </div>
             <div ng-switch-when="true">
                 <form ng-submit="update(team)"

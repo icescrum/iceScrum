@@ -35,7 +35,10 @@
     </div>
     <div class="details-no-tab">
         <div class="panel-body">
-            <div class="help-block">${message(code: 'is.ui.sandbox.help')}</div>
+            <div class="help-block">
+                ${message(code: 'is.ui.sandbox.help')}
+                <documentation doc-url="features-stories-tasks#stories"/>
+            </div>
             <div class="postits standalone">
                 <div class="postit-container solo">
                     <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"

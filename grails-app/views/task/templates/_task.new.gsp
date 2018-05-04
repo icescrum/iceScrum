@@ -35,7 +35,10 @@
     </div>
     <div class="details-no-tab">
         <div class="panel-body">
-            <div class="help-block">${message(code: 'is.ui.task.help')}</div>
+            <div class="help-block">
+                ${message(code: 'is.ui.task.help')}
+                <documentation doc-url="features-stories-tasks#tasks"/>
+            </div>
             <div class="postits standalone">
                 <div class="postit-container solo">
                     <div ng-style="'#f9f157' | createGradientBackground"

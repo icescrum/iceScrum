@@ -395,6 +395,26 @@
     <h4><i class="fa fa-{{ widgetDefinition.icon }}"></i> {{ widgetDefinition.name }}</h4>
     <p>{{ widgetDefinition.description }}</p>
     </script>
+
+    <script type="text/ng-template" id="documentation.html">
+    <a target="_blank"
+       style="font-weight: bold"
+       class="text-muted"
+       ng-class="{small: !big}"
+       href="https://www.icescrum.com/documentation/{{ docUrl }}?utm_source=tool&utm_medium=link&utm_campaign=icescrum">
+        <i class="fa fa-question-circle"></i>
+        <span ng-bind-html="message(title != null ? title : 'is.ui.documentation')"></span>
+    </a>
+    </script>
+
+    <script type="text/ng-template" id="story.workflow.html">
+    <is:modal title="${message(code: 'is.ui.story.workflow')}">
+        <div class="text-center" ng-click="$close()">
+            <asset:image src="story-workflow.png" style="max-width:100%"/>
+        </div>
+    </is:modal>
+    </script>
+
     <g:render template="/team/templates"/>
     <g:render template="/sprint/templates"/>
     <g:render template="/portfolio/templates"/>

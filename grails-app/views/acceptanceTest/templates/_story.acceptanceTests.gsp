@@ -114,7 +114,10 @@
         </tr>
         <tr ng-show="selected.acceptanceTests !== undefined && !selected.acceptanceTests.length">
             <td class="empty-content">
-                <small>${message(code: 'todo.is.ui.acceptanceTest.empty')}</small>
+                <div class="help-block">
+                    ${message(code: 'is.ui.acceptanceTest.help')}
+                    <documentation doc-url="features-stories-tasks#acceptancetests"/>
+                </div>
             </td>
         </tr>
     </table>

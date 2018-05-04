@@ -66,6 +66,12 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
         }
         return data;
     };
+    $scope.showStoryWorkflowModal = function() {
+        $uibModal.open({
+            templateUrl: "story.workflow.html",
+            size: 'lg'
+        });
+    };
     $scope.showAutoPlanModal = function(options) {
         $uibModal.open({
             templateUrl: 'sprint.autoPlan.html',
