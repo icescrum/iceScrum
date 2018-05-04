@@ -137,6 +137,13 @@
             </h3>
         </div>
         <div class="panel-body" id="tasks-board" ng-controller="taskCtrl">
+            <div class="window-alert bg-warning"
+                 ng-if="currentSprintFilter.id != 'allTasks'"
+                 style="margin: 0 10px;">
+                ${message(code: 'todo.is.ui.filter.current')}
+                {{ currentSprintFilter.name }}
+                (<strong><a href class="link" ng-click="changeSprintFilter(getDefaultFilter())">${message(code: 'todo.is.ui.disable')}</a></strong>)
+            </div>
             <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
                 <thead>
                     <tr class="table-header sticky-header sticky-stack">

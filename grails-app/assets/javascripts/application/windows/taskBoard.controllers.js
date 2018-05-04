@@ -205,7 +205,10 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     $scope.initSprintFilter = function() {
         var sprintFilter = Session.authenticated() ? Session.user.preferences.filterTask : 'allTasks';
         var filter = _.find($scope.sprintFilters, {id: sprintFilter});
-        $scope.currentSprintFilter = filter ? filter : _.find($scope.sprintFilters, {id: 'allTasks'});
+        $scope.currentSprintFilter = filter ? filter : $scope.getDefaultFilter();
+    };
+    $scope.getDefaultFilter = function() {
+        return _.find($scope.sprintFilters, {id: 'allTasks'});
     };
     $scope.countByFilter = function() {
         _.each($scope.sprintFilters, function(sprintFilter) {
