@@ -25,7 +25,7 @@ controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
     var widget = $scope.widget;
     $scope.display = function(widget) {
         $scope.holder.feed = {};
-        return FormService.httpGet('widget/feed', {widgetId: widget.id}, true).then(function(feedWithContent) {
+        return FormService.httpGet('widget/feed', {params: {widgetId: widget.id}}, true).then(function(feedWithContent) {
             $scope.holder.errorMessage = null;
             $scope.holder.feed = feedWithContent;
         }).catch(function(error) {
