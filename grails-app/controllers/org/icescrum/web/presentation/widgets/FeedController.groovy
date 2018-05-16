@@ -38,17 +38,14 @@ class FeedController implements ControllerErrorHandler {
 
     @Secured(['isAuthenticated()'])
     def index() {
-        def content
         def url
-        User user = springSecurityService.currentUser
         try {
+            def content = [title: '', items: []]
+            User user = springSecurityService.currentUser
             if (user && params.widgetId) {
-                Widget widgetFeed = Widget.findByUserPreferencesAndId(user.preferences, params.long('widgetId'))
-                //if user has select one feed
-                def selectedFeed = widgetFeed.settings.feeds?.find { it -> it.selected }
-                content = [title: '', items: []]
-                //one feed or combined ?
-                def feeds = selectedFeed ? [selectedFeed] : widgetFeed.settings.feeds
+                Widget feedWidget = Widget.findByUserPreferencesAndId(user.preferences, params.long('widgetId'))
+                def selectedFeed = feedWidget.settings.feeds?.find { it -> it.selected }
+                def feeds = selectedFeed ? [selectedFeed] : feedWidget.settings.feeds
                 feeds?.eachWithIndex { feed, index ->
                     url = feed.url
                     def feedContent = getFeedContent(url)
@@ -56,11 +53,10 @@ class FeedController implements ControllerErrorHandler {
                     content.items.addAll(feedContent.items)
                 }
                 content.items.sort { a, b ->
-                    return new Date(a.pubDate) <=> new Date(b.pubDate)
+                    return new Date(b.pubDate) <=> new Date(a.pubDate)
                 }
-                Collections.reverse(content.items)
             }
-            if (content) {
+            if (content.items) {
                 render(status: 200, contentType: "application/json", text: content as JSON)
             } else {
                 render(status: 204)
@@ -76,7 +72,7 @@ class FeedController implements ControllerErrorHandler {
 
     private static getFeedContent(String url) {
         try {
-            String feedText = ((URL) url.toURL()).getText(connectTimetout: TimeUnit.SECONDS.toMillis(5), readTimeout: TimeUnit.SECONDS.toMillis(30), 'UTF-8')
+            String feedText = ((URL) url.toURL()).getText(connectTimeout: TimeUnit.SECONDS.toMillis(5), readTimeout: TimeUnit.SECONDS.toMillis(30), 'UTF-8')
             def channel = new XmlSlurper().parseText(feedText).channel
             def contentFeed = [title: channel.title.text()]
             contentFeed.items = channel.item.collect { xmlItem ->
