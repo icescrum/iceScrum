@@ -21,14 +21,11 @@
  */
 controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'WidgetService', '$controller', function($scope, $filter, FormService, WidgetService, $controller) {
     $controller('widgetCtrl', {$scope: $scope});
-
     //$scope.widget inherited
     var widget = $scope.widget;
-
     $scope.display = function(widget) {
         $scope.holder.feed = {};
-        return FormService.httpPost('widget/feed', {widgetId: widget.id}, true).then(function(feedWithContent) {
-            //what do we do!
+        return FormService.httpGet('widget/feed', {widgetId: widget.id}, true).then(function(feedWithContent) {
             $scope.holder.errorMessage = null;
             $scope.holder.feed = feedWithContent;
         }).catch(function(error) {
@@ -63,7 +60,6 @@ controllers.controller("feedWidgetCtrl", ['$scope', '$filter', 'FormService', 'W
     $scope.getTitle = function() {
         return $scope.holder.feed && $scope.holder.feed.title ? $scope.holder.feed.title : '';
     };
-
     // Init
     $scope.holder = {
         feed: {},
