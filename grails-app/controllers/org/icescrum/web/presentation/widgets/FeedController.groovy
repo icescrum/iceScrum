@@ -72,7 +72,7 @@ class FeedController implements ControllerErrorHandler {
 
     private static getFeedContent(String url) {
         try {
-            String feedText = ((URL) url.toURL()).getText(connectTimeout: TimeUnit.SECONDS.toMillis(5), readTimeout: TimeUnit.SECONDS.toMillis(30), 'UTF-8')
+            String feedText = ((URL) url.toURL()).getText(connectTimeout: TimeUnit.SECONDS.toMillis(3), readTimeout: TimeUnit.SECONDS.toMillis(10), 'UTF-8')
             def channel = new XmlSlurper().parseText(feedText).channel
             def contentFeed = [title: channel.title.text()]
             contentFeed.items = channel.item.collect { xmlItem ->
