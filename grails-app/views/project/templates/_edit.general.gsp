@@ -27,7 +27,6 @@
       ng-controller="editProjectCtrl"
       show-validation
       novalidate
-      ng-submit='update(project)'
       name="formHolder.editProjectForm">
     <ng-include src="'form.general.project.html'"></ng-include>
     <div class="btn-toolbar pull-right">
