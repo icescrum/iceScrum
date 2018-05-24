@@ -29,7 +29,7 @@
             <documentation doc-url="roles-teams-projects"/>
         </p>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-4" style="margin-top: 11px;">
         <label for="team.name">{{ message(teamCreatable() ? 'todo.is.ui.create.or.select.team' : 'todo.is.ui.select.team' )}}</label>
         <p class="input-group">
             <input autocomplete="off"
@@ -53,7 +53,13 @@
                 </i>
             </span>
         </p>
-        <div ng-if="warning.on" class="help-block bg-danger">${message(code: 'todo.is.ui.team.warning.project.members')}</div>
+        <div class="form-group" ng-if="type == 'editProject'">
+            <label>${message(code: 'todo.is.ui.owner')}</label>
+            <div>
+                <img ng-src="{{ team.owner | userAvatar }}" height="24" width="24" class="img-rounded user-role" title="{{ team.owner.username }}">
+                {{ team.owner | userFullName }}
+            </div>
+        </div>
         <button ng-if="teamManageable(team)"
                 type="button"
                 class="btn btn-primary"
@@ -87,8 +93,7 @@
         <table ng-if="team.members.length" class="table table-striped table-responsive">
             <thead>
                 <tr>
-                    <th>${message(code: 'is.ui.team.members')}</th>
-                    <th></th>
+                    <th colspan="2">${message(code: 'is.ui.team.members')}</th>
                     <th class="text-right" style="font-weight: normal">${message(code: 'is.role.scrumMaster')}</th>
                 </tr>
             </thead>
