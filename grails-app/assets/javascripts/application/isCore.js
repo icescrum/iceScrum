@@ -26,8 +26,13 @@
 // Try to detect as early as possible that the root misses as slash
 // to trigger a redirect and lose as little time as possible
 (function() {
+    var fullPath = window.location.href;
+    if (fullPath.indexOf('#') != -1 && !_.endsWith(window.location.pathname, '/')) {
+        fullPath = window.location.origin + window.location.pathname + '/' + window.location.hash;
+        window.location.replace(fullPath);
+        throw new Error("Stopping page loading because a forward slash is missing before #, redirecting to the proper URL " + fullPath + '...');
+    }
     if (window.location.hash == '') {
-        var fullPath = window.location.href;
         if (fullPath[fullPath.length - 1] != '/' && fullPath.indexOf('/?') == -1) {
             if (fullPath.indexOf('?') > -1) {
                 fullPath = fullPath.replace('?', '/?');
@@ -35,7 +40,7 @@
                 fullPath = fullPath + '/'
             }
             window.location.replace(fullPath);
-            throw new Error("Stopping page loading because a forward slash is missing, redirecting to the proper URL...");
+            throw new Error("Stopping page loading because the trailing forward slash is missing, redirecting to the proper URL " + fullPath + '...');
         }
     }
 })();
