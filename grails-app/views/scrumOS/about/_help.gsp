@@ -23,7 +23,7 @@
             <tbody>
                 <tr>
                     <td><strong>${message(code: 'is.dialog.about.version.appVersion')}</strong></td>
-                    <td>${versionNumber.contains('Cloud') ? versionNumber : versionNumber + ' Standalone'}</td>
+                    <td>${versionNumber.contains('Cloud') ? versionNumber : versionNumber + ' On-Premise'}</td>
                 </tr>
                 <g:if test="${request.authenticated}">
                     <tr>
