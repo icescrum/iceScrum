@@ -23,7 +23,7 @@
 --}%
 <script type="text/ng-template" id="form.general.project.html">
 <h4>${message(code: "is.dialog.wizard.section.project")}</h4>
-<p class="help-block spaced-help-block" ng-class="{'bg-warning': !project.preferences.hidden}">${message(code: 'is.dialog.wizard.section.project.description')}</p>
+<p class="help-block spaced-help-block" ng-class="{'alert-warning': !project.preferences.hidden}">${message(code: 'is.dialog.wizard.section.project.description')}</p>
 <entry:point id="project-form-general-before"/>
 <div class="row">
     <div class="col-sm-8 col-xs-8 form-group">
