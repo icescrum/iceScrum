@@ -498,12 +498,25 @@ class ProjectController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def listByUser(long id, String term, Boolean paginate, Integer page, Integer count) {
-        if (id && id != springSecurityService.principal.id && !request.admin) {
+    def listByUser(def id, String term, Boolean paginate, Integer page, Integer count) {
+        User user
+        if (id instanceof String) {
+            if (id.isLong()) {
+                user = User.get(id.toLong())
+            } else {
+                user = User.findByUsername(id)
+            }
+        } else {
+            user = User.get(id)
+        }
+        if(!user){
+            redirect(controller: 'errors', action: 'error404')
+            return
+        }
+        if (user.id != springSecurityService.principal.id && !request.admin) {
             render(status: 403)
             return
         }
-        User user = id ? User.get(id) : springSecurityService.currentUser
         def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
         def projects = projectService.getAllActiveProjectsByUser(user, searchTerm)
         if (paginate && !count) {
