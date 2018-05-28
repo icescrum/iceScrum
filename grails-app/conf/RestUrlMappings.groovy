@@ -73,13 +73,10 @@ class RestUrlMappings {
             controller = 'project'
             action = [GET: 'index', POST: 'save']
         }
-        // (token must be admin if $id != currentUser.id
-        "/ws/project/user/$id?" {
+        // (token must be admin if $id != currentUser.id // id can be string or int
+        "/ws/project/user/$id" {
             controller = 'project'
             action = 'listByUser'
-            constraints {
-                id(matches: /\d*/)
-            }
             method = 'GET'
         }
         // (token must be admin is $id != currentUser.id
