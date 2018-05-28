@@ -74,7 +74,7 @@ class RestUrlMappings {
             action = [GET: 'index', POST: 'save']
         }
         // (token must be admin if $id != currentUser.id // id can be string or int
-        "/ws/project/user/$id" {
+        "/ws/project/user/$id?" {
             controller = 'project'
             action = 'listByUser'
             method = 'GET'
