@@ -114,7 +114,6 @@ class StoryController implements ControllerErrorHandler {
                 def acceptanceTest = new AcceptanceTest()
                 bindData(acceptanceTest, it, [include: ['description', 'name']])
                 acceptanceTestService.save(acceptanceTest, story, user)
-                story.addToAcceptanceTests(acceptanceTest) // required so the acceptance tests are returned with the story in JSON
             }
             if (storyParams.state && storyParams.state.toInteger() == Story.STATE_ACCEPTED && request.productOwner) {
                 storyService.acceptToBacklog(story)
