@@ -38,9 +38,17 @@ class RestUrlMappings {
         // (token must be admin)
         "/ws/user/$id" {
             controller = 'user'
-            action = [GET: 'show', PUT: 'update', POST: 'update', DELETE: 'delete']
+            action = [GET: 'show', PUT: 'update', POST: 'update']
             constraints {
                 id(matches: /\d*/)
+            }
+        }
+        "/ws/user/$id/replaceBy/$substitutedBy" { // ReplaceBy instead of substitutedBy for the exposed API as it is more user friendly
+            controller = 'user'
+            action = [DELETE: 'delete']
+            constraints {
+                id(matches: /\d*/)
+                substitutedBy(matches: /\d*/)
             }
         }
         "/ws/user/current" {
