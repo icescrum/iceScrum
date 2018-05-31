@@ -30,20 +30,19 @@ class RestUrlMappings {
             action = [GET: 'version']
             controller = 'scrumOS'
         }
-        // User (token must be admin)
-        "/ws/user" {
+        // User
+        "/ws/user" { // Admin
             controller = 'user'
             action = [GET: 'index', POST: 'save']
         }
-        // (token must be admin)
-        "/ws/user/$id" {
+        "/ws/user/$id" { // Admin
             controller = 'user'
             action = [GET: 'show', PUT: 'update', POST: 'update']
             constraints {
                 id(matches: /\d*/)
             }
         }
-        "/ws/user/$id/replaceBy/$substitutedBy" { // ReplaceBy instead of substitutedBy for the exposed API as it is more user friendly
+        "/ws/user/$id/replaceBy/$substitutedBy" { // Admin -- ReplaceBy instead of substitutedBy for the exposed API as it is more user friendly
             controller = 'user'
             action = [DELETE: 'delete']
             constraints {
