@@ -28,14 +28,18 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     };
     $scope.authorizedAttachment = AttachmentService.authorizedAttachment;
     $scope.getUrl = function(clazz, attachmentable, attachment) {
-        return attachment.url ? attachment.url : $scope.attachmentBaseUrl + clazz + "/" + attachmentable.id + "/" + attachment.id;
+        if (attachment.provider && $scope['getUrl' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)]) {
+            return $scope['getUrl' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)](clazz, attachmentable, attachment)
+        } else {
+            return attachment.url ? attachment.url : $scope.attachmentBaseUrl + clazz + "/" + attachmentable.id + "/" + attachment.id;
+        }
     };
     $scope.isPreviewable = function(attachment) {
-        if (attachment.provider) {
-            return false;
-        }
         var previewable;
         var ext = attachment.ext ? attachment.ext.toLowerCase() : '';
+        if (attachment.provider) {
+            return $scope['isPreviewable' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)] ? $scope['isPreviewable' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)]() : false;
+        }
         switch (ext) {
             case 'pdf':
                 previewable = 'pdf';
@@ -76,7 +80,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
                     };
                 }]
             });
-        } else if (previewType == 'picture') {
+        } else if (previewType === 'picture') {
             $uibModal.open({
                 templateUrl: "attachment.preview.picture.html",
                 size: 'lg',
@@ -85,8 +89,8 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
                     $scope.srcURL = attachmentBaseUrl + type + "/" + attachmentable.id + "/" + attachment.id;
                 }]
             });
-        } else {
-            attachment.showPreview = !attachment.showPreview;
+        } else if (previewType) {
+            $scope['showPreview' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)](attachment, attachmentable, type, clickedOnIcon);
         }
 
     };

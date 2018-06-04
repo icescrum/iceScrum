@@ -41,6 +41,11 @@
                 </div>
                 <div class="col-sm-4 col-xs-4 text-right">
                     <div class="btn-group">
+                        <a ng-if="editable(attachment)"
+                           href="{{ getUrl(clazz, attachmentable, attachment) }}"
+                           target="{{ attachment.provider ? '_blank' : '' }}"
+                           uib-tooltip="${message(code: 'todo.is.u')}"
+                           class="btn btn-default btn-xs"><i class="fa fa-edit"></i></a>
                         <a href="{{ getUrl(clazz, attachmentable, attachment) }}"
                            target="{{ attachment.provider ? '_blank' : '' }}"
                            uib-tooltip="${message(code: 'todo.is.ui.attachment.download')}"
@@ -57,16 +62,6 @@
                             <i class="fa fa-close"></i>
                         </button>
                     </div>
-                </div>
-                <div ng-if="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'picture'">
-                    <a ng-href="{{ getUrl(clazz, attachmentable, attachment) }}">
-                        <img ng-src="{{ getUrl(clazz, attachmentable, attachment) }}" width="100%"/>
-                    </a>
-                </div>
-                <div ng-if="attachment.showPreview" class="col-sm-12 ng-hide" ng-if="isPreviewable(attachment) == 'video'">
-                    <a ng-href="{{ getUrl(clazz, attachmentable, attachment) }}">
-                        <img ng-src="{{ getUrl(clazz, attachmentable, attachment) }}" width="100%"/>
-                    </a>
                 </div>
             </td>
         </tr>
