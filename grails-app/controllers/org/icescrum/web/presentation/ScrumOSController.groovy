@@ -143,8 +143,8 @@ class ScrumOSController implements ControllerErrorHandler {
             render(status: 404)
             return
         }
-        title = URLDecoder.decode(title)
-        image = URLDecoder.decode(image)
+        title = URLDecoder.decode(title, 'UTF-8')
+        image = URLDecoder.decode(image, 'UTF-8')
         image = image.substring(image.indexOf("base64,") + "base64,".length(), image.length())
         response.contentType = 'image/png'
         if (!params.view) {
