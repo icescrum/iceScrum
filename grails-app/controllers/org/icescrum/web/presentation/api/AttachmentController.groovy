@@ -57,7 +57,6 @@ class AttachmentController implements ControllerErrorHandler {
                     return
                 } else {
                     File file = attachmentableService.getFile(attachment)
-
                     if (file.exists()) {
                         String filename = attachment.filename
                         ['Content-disposition': "attachment;filename=\"$filename\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
@@ -89,7 +88,7 @@ class AttachmentController implements ControllerErrorHandler {
                 attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
             }
             def attachment = attachmentable.attachments.first()
-            attachment.provider = uploadInfo.provider ?: null // Force to set provider
+            attachment.provider = uploadInfo instanceof Map ? uploadInfo.provider : null
             if (attachmentable.hasProperty('attachments_count')) {
                 attachmentable.attachments_count = attachmentable.getTotalAttachments()
             }
@@ -98,11 +97,11 @@ class AttachmentController implements ControllerErrorHandler {
             render(status: 201, contentType: 'application/json', text: res as JSON)
         }
         if (attachmentable) {
-            if (!params.url) {
+            if (params.url) {
+                endOfUpload(params)
+            } else {
                 UtilsWebComponents.handleUpload.delegate = this
                 UtilsWebComponents.handleUpload(request, params, endOfUpload)
-            } else {
-                endOfUpload(params)
             }
         } else {
             render(status: 404)
