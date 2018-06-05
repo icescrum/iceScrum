@@ -59,6 +59,25 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
         }
         return previewable;
     };
+    $scope.isAttachmentEditable = function(attachment) {
+        if (attachment.provider) {
+            return $scope.getMethod(attachment, 'isAttachmentEditable') ? $scope.getMethod(attachment, 'isAttachmentEditable')() : false;
+        } else {
+            return false;
+        }
+    };
+    $scope.isAttachmentDownloadable = function(attachment) {
+        if (attachment.provider) {
+            return $scope.getMethod(attachment, 'isAttachmentDownloadable') ? $scope.getMethod(attachment, 'isAttachmentDownloadable')() : false;
+        } else {
+            return true;
+        }
+    };
+    $scope.editAttachment = function(attachment, attachmentable, type) {
+        if ($scope.isAttachmentEditable(attachment)) {
+            $scope.getMethod(attachment, 'editAttachment')(attachment, attachmentable, type)
+        }
+    };
     $scope.showPreview = function(attachment, attachmentable, type) {
         var previewType = $scope.isPreviewable(attachment);
         var attachmentBaseUrl = $scope.attachmentBaseUrl;

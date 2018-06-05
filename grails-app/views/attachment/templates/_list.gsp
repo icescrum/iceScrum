@@ -41,15 +41,19 @@
                 </div>
                 <div class="col-sm-4 col-xs-4 text-right">
                     <div class="btn-group">
-                        <a ng-if="editable(attachment)"
-                           href="{{ getUrl(clazz, attachmentable, attachment) }}"
-                           target="{{ attachment.provider ? '_blank' : '' }}"
-                           uib-tooltip="${message(code: 'todo.is.u')}"
-                           class="btn btn-default btn-xs"><i class="fa fa-edit"></i></a>
+                        <a ng-if="isAttachmentEditable(attachment)"
+                           ng-click="editAttachment(attachment, attachmentable, clazz)"
+                           uib-tooltip="${message(code: 'is.button.update')}"
+                           class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
                         <a href="{{ getUrl(clazz, attachmentable, attachment) }}"
-                           target="{{ attachment.provider ? '_blank' : '' }}"
+                           ng-if="isAttachmentDownloadable(attachment)"
                            uib-tooltip="${message(code: 'todo.is.ui.attachment.download')}"
-                           class="btn btn-default btn-xs"><i class="fa fa-{{ attachment.provider ? 'external-link' : 'download' }}"></i></a>
+                           class="btn btn-default btn-xs"><i class="fa fa-download"></i></a>
+                        <a href="{{ getUrl(clazz, attachmentable, attachment) }}"
+                           ng-if="!isAttachmentDownloadable(attachment)"
+                           target="_blank"
+                           uib-tooltip="${message(code: 'todo.is.ui.attachment.open')}"
+                           class="btn btn-default btn-xs"><i class="fa fa-external-link"></i></a>
                         <button ng-click="showPreview(attachment, attachmentable, clazz)" type="button"
                                 class="btn btn-xs btn-default ng-hide" ng-show="isPreviewable(attachment)"
                                 uib-tooltip="${message(code: 'todo.is.ui.attachment.preview')}">
