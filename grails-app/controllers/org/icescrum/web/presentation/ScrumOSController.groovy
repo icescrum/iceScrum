@@ -147,7 +147,7 @@ class ScrumOSController implements ControllerErrorHandler {
         image = URLDecoder.decode(image)
         image = image.substring(image.indexOf("base64,") + "base64,".length(), image.length())
         response.contentType = 'image/png'
-        if(!params.view){
+        if (!params.view) {
             ['Content-disposition': "attachment;filename=\"${title + '.png'}\"", 'Cache-Control': 'private', 'Pragma': ''].each { k, v ->
                 response.setHeader(k, v)
             }

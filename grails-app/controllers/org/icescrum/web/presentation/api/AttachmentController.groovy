@@ -89,7 +89,7 @@ class AttachmentController implements ControllerErrorHandler {
                 attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
             }
             def attachment = attachmentable.attachments.first()
-            attachment.provider = uploadInfo.provider ?: null //force to set provider
+            attachment.provider = uploadInfo.provider ?: null // Force to set provider
             if (attachmentable.hasProperty('attachments_count')) {
                 attachmentable.attachments_count = attachmentable.getTotalAttachments()
             }
