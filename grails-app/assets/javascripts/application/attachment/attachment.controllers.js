@@ -90,7 +90,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
                 }]
             });
         } else if (previewType) {
-            $scope['showPreview' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)](attachment, attachmentable, type, clickedOnIcon);
+            $scope['showPreview' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)](attachment, attachmentable, type);
         }
 
     };
