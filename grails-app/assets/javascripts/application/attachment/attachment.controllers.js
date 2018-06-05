@@ -27,9 +27,12 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
         AttachmentService.delete(attachment, attachmentable, project.id);
     };
     $scope.authorizedAttachment = AttachmentService.authorizedAttachment;
+    $scope.getMethod = function(attachment, method) {
+        return $scope[method + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)];
+    };
     $scope.getUrl = function(clazz, attachmentable, attachment) {
-        if (attachment.provider && $scope['getUrl' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)]) {
-            return $scope['getUrl' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)](clazz, attachmentable, attachment)
+        if (attachment.provider && $scope.getMethod(attachment, 'getUrl')) {
+            return $scope.getMethod(attachment, 'getUrl')(clazz, attachmentable, attachment)
         } else {
             return attachment.url ? attachment.url : $scope.attachmentBaseUrl + clazz + "/" + attachmentable.id + "/" + attachment.id;
         }
@@ -38,7 +41,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
         var previewable;
         var ext = attachment.ext ? attachment.ext.toLowerCase() : '';
         if (attachment.provider) {
-            return $scope['isPreviewable' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)] ? $scope['isPreviewable' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)]() : false;
+            return $scope.getMethod(attachment, 'isPreviewable') ? $scope.getMethod(attachment, 'isPreviewable')() : false;
         }
         switch (ext) {
             case 'pdf':
@@ -90,7 +93,7 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
                 }]
             });
         } else if (previewType) {
-            $scope['showPreview' + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)](attachment, attachmentable, type);
+            $scope.getMethod(attachment, 'showPreview')(attachment, attachmentable, type);
         }
 
     };
