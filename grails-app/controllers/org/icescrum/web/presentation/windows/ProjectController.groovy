@@ -506,7 +506,7 @@ class ProjectController implements ControllerErrorHandler {
     def listByUser(String term, Boolean paginate, Integer page, Integer count) {
         User user
         if (params.id) {
-            user = params.id.isLong() ? User.get(params.long('id')) : User.findByUsername(params.id)
+            user = params.id.isLong() ? User.withUser(params.long('id')) : User.findByUsername(params.id)
             if (!user) {
                 redirect(controller: 'errors', action: 'error404')
                 return

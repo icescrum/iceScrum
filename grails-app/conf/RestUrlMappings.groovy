@@ -46,7 +46,6 @@ class RestUrlMappings {
             controller = 'user'
             action = [DELETE: 'delete']
             constraints {
-                id(matches: /\d*/)
                 substitutedBy(matches: /\d*/)
             }
         }

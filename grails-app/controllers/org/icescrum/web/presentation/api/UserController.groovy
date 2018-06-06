@@ -188,8 +188,15 @@ class UserController implements ControllerErrorHandler {
     }
 
     @Secured(["hasRole('ROLE_ADMIN')"])
-    def delete(long id, long substitutedBy) {
-        User user = User.withUser(id)
+    def delete(long substitutedBy) {
+        User user
+        if (params.id) {
+            user = params.id.isLong() ? User.withUser(params.long('id')) : User.findByUsername(params.id)
+        }
+        if (!user) {
+            redirect(controller: 'errors', action: 'error404')
+            return
+        }
         User substitute = User.withUser(substitutedBy)
         def deleteOwnedData = params.boolean('deleteOwnedData') ?: false
         userService.delete(user, substitute, deleteOwnedData)
