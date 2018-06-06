@@ -139,18 +139,17 @@
                         </h3>
                     </div>
                     <div class="panel-body" style="padding-bottom:0">
-                        <div class="project-file-upload">
-                            <div ng-if="authorizedProject('upload', project)"
-                                 ng-controller="attachmentNestedCtrl">
-                                <button type="button"
-                                        class="btn btn-default"
-                                        flow-btn>
-                                    <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
-                                </button>
-                                <entry:point id="attachment-add-buttons"/>
-                            </div>
+                        <div ng-if="authorizedProject('upload', project)"
+                             style="position:relative"
+                             ng-controller="attachmentNestedCtrl">
+                            <button type="button"
+                                    class="btn btn-default"
+                                    flow-btn>
+                                <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
+                            </button>
+                            <entry:point id="attachment-add-buttons"/>
                         </div>
-                        <div class="row project-file-list" style="max-height: 175px; margin-top:10px;">
+                        <div class="row" style="max-height: 175px; margin-top:10px;">
                             <div ng-include="'attachment.list.html'">
                             </div>
                         </div>
