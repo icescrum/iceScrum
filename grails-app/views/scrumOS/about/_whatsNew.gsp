@@ -28,18 +28,19 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item text-center active">
-            <asset:image src="/whatsNew/EditableRoadmap.png" style="max-height:500px; padding: 10px; margin:0 auto;"/>
-            <div class="carousel-caption">
-                <h3>New Project roadmap App!</h3>
-                <p><strong>Create roadmaps to plan the evolution of your product's features and share it with your team and stakeholders!</strong></p>
+            <asset:image src="/whatsNew/diagrams.png" style="max-height:500px; margin:0 auto;"/>
+            <div class="carousel-caption" style="text-shadow: 0 0px 2px rgba(0,0,0,.6)">
+                <h3>New App: create diagrams and mockups</h3>
+                <p><strong>Use draw.io to create flowcharts, process diagrams, org charts, mockups, UML… directly in iceScrum.</strong></p>
                 <p><button ng-click="$close(); showAppsModal();" class="btn btn-primary">Enable it now!</button></p>
             </div>
         </div>
         <div class="item text-center">
-            <asset:image src="/whatsNew/emoji.png" style="max-height:500px; padding: 10px;  margin:0 auto;"/>
-            <div class="carousel-caption">
-                <h3>Christmas present! Emojis available in iceScrum</h3>
-                <p><strong>See the <a href="https://www.icescrum.com/documentation/how-to-install-icescrum/#emojis">documentation</a> to enable them</strong></p>
+            <asset:image src="/whatsNew/epics.png" style="max-height:500px;  margin:0 auto;"/>
+            <div class="carousel-caption" style="text-shadow: 0 0px 2px rgba(0,0,0,.6)">
+                <h3>New App: create epic stories</h3>
+                <p><strong>Identify stories that are too big and split them into smaller ones.</strong></p>
+                <p><button ng-click="$close(); showAppsModal();" class="btn btn-primary">Enable it now!</button></p>
             </div>
         </div>
     </div>
