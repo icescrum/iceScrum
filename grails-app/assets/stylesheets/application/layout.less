@@ -1771,20 +1771,32 @@ body {
   }
 }
 
-.toggle-visible {
-  .responsive-invisibility();
-}
-
-.toggle-hidden {
-  .responsive-visibility();
-}
-
-.toggle-container:hover {
-  .toggle-visible {
+.hover-container {
+  .hover-visible {
+    .responsive-invisibility();
+  }
+  .hover-visible-inline {
+    display: none;
+  }
+  .hover-hidden {
     .responsive-visibility();
   }
-  .toggle-hidden {
-    .responsive-invisibility();
+  .hover-hidden-inline {
+    display: inline-block;
+  }
+  &:hover {
+    .hover-visible {
+      .responsive-visibility();
+    }
+    .hover-visible-inline {
+      display: inline-block;
+    }
+    .hover-hidden {
+      .responsive-invisibility();
+    }
+    .hover-hidden-inline {
+      display: none;
+    }
   }
 }
 

@@ -28,7 +28,7 @@
         <tr ng-repeat="attachment in attachmentable.attachments">
             <td>
                 <div class="col-sm-8 col-xs-8">
-                    <div class="filename" title="{{ attachment.filename }}">
+                    <div class="filename hover-container" title="{{ attachment.filename }}">
                         <i class="fa fa-{{ attachment.ext | fileicon }}"></i>
                         <a target="{{ attachment.provider ? '_blank' : '' }}"
                            ng-show="!isPreviewable(attachment)"
@@ -36,6 +36,10 @@
                         <a ng-show="isPreviewable(attachment)"
                            href
                            ng-click="showPreview(attachment, attachmentable, clazz)">{{ attachment.filename }}</a>
+                        <a href
+                           ng-if="authorizedAttachment('update', attachment)"
+                           class="hover-visible-inline small"
+                           ng-click="showEditAttachmentName(attachment, attachmentable)">(${message(code: 'todo.is.ui.attachment.edit')})</a>
                     </div>
                     <div><small ng-if="attachment.length > 0">{{ attachment.length | filesize }}</small> <small>{{ attachment.provider ? '('+attachment.provider+')' : '' }}</small></div>
                 </div>

@@ -380,7 +380,7 @@ class UrlMappings {
         }
         "/p/$project/attachment/$type/$attachmentable/$id" {
             controller = 'attachment'
-            action = [GET: "show", DELETE: "delete"]
+            action = [GET: "show", POST: "update", DELETE: "delete"]
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 attachmentable(matches: /\d*/)

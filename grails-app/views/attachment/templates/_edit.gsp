@@ -1,5 +1,5 @@
 %{--
-- Copyright (c) 2014 Kagilum.
+- Copyright (c) 2018 Kagilum.
 -
 - This file is part of iceScrum.
 -
@@ -20,6 +20,18 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
-<g:render template="/attachment/templates/list"/>
-<g:render template="/attachment/templates/preview"/>
-<g:render template="/attachment/templates/edit"/>
+<script type="text/ng-template" id="attachment.edit.html">
+<is:modal form="submit(editableAttachment)"
+          submitButton="${message(code: 'default.button.update.label')}"
+          closeButton="${message(code: 'is.button.cancel')}"
+          title="${message(code: 'is.backlogelement.name')}">
+    <div>
+        <label for="name">${message(code: 'is.backlogelement.name')}</label>
+        <input type="text"
+               class="form-control"
+               autofocus
+               name="name"
+               ng-model="editableAttachment.name"/>
+    </div>
+</is:modal>
+</script>

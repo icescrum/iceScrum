@@ -35,6 +35,12 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
             attachmentable.attachments_count = attachmentable.attachments.length;
         }
     };
+    this.update = function(attachment, attachmentable, projectId) {
+        return Attachment.update({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id, projectId: projectId}, attachment, function(returnedAttachment) {
+            var existingAttachment = _.find(attachmentable.attachments, {id: returnedAttachment.id});
+            _.merge(existingAttachment, returnedAttachment);
+        }).$promise;
+    };
     this['delete'] = function(attachment, attachmentable, projectId) {
         return Attachment.delete({type: attachmentable.class.toLowerCase(), typeId: attachmentable.id, id: attachment.id, projectId: projectId}, function() {
             _.remove(attachmentable.attachments, {id: attachment.id});
@@ -43,8 +49,9 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
     };
     this.authorizedAttachment = function(action, attachment) {
         switch (action) {
+            case 'update':
             case 'delete':
-                return Session.poOrSm() || Session.user.id == attachment.posterId;
+                return Session.poOrSm();
             default:
                 return false;
         }

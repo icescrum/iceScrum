@@ -26,6 +26,20 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     $scope.deleteAttachment = function(attachment, attachmentable) { // cannot be just "delete" because it clashes with controllers that will inherit from this one
         AttachmentService.delete(attachment, attachmentable, project.id);
     };
+    $scope.showEditAttachmentName = function(attachment, attachmentable) {
+        $uibModal.open({
+            size: 'sm',
+            templateUrl: 'attachment.edit.html',
+            controller: ['$scope', function($scope) {
+                $scope.editableAttachment = angular.copy(attachment);
+                $scope.submit = function(updatedAttachment) {
+                    AttachmentService.update(updatedAttachment, attachmentable, project.id).then(function() {
+                        $scope.$close();
+                    });
+                };
+            }]
+        });
+    };
     $scope.authorizedAttachment = AttachmentService.authorizedAttachment;
     $scope.getMethod = function(attachment, method) {
         return $scope[method + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)];

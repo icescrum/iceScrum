@@ -28,6 +28,7 @@ import org.icescrum.core.domain.*
 import org.icescrum.core.error.BusinessException
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.event.IceScrumEventType
+import org.icescrum.plugins.attachmentable.domain.Attachment
 
 import javax.servlet.http.HttpServletResponse
 
@@ -105,6 +106,22 @@ class AttachmentController implements ControllerErrorHandler {
             }
         } else {
             render(status: 404)
+        }
+    }
+
+    @Secured('productOwner() or scrumMaster()')
+    def update() {
+        def attachmentable = getAttachmentableObject(params)
+        if (attachmentable) {
+            Attachment.withTransaction {
+                Attachment attachment = attachmentable.attachments?.find { it.id == params.long('id') }
+                if (attachment && params.attachment.name && attachment.name != params.attachment.name) {
+                    attachment.name = params.attachment.name
+                    attachment.inputName = attachment.filename
+                    attachment.save()
+                    render(status: 200, contentType: 'application/json', text: attachment as JSON)
+                }
+            }
         }
     }
 
