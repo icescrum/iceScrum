@@ -36,6 +36,7 @@ import org.icescrum.components.UtilsWebComponents
 import org.icescrum.core.domain.*
 import org.icescrum.core.domain.preferences.ProjectPreferences
 import org.icescrum.core.domain.security.Authority
+import org.icescrum.core.error.BusinessException
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.services.SecurityService
 import org.icescrum.core.support.ApplicationSupport
@@ -189,9 +190,13 @@ class ProjectController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         _project.withTransaction {
             def teamId = teamParams.id
-            //workaround but TODO fix UI => teamID can't be null
-            if (teamId != null && teamId != _project.team.id && securityService.owner(null, springSecurityService.authentication)) {
-                projectService.changeTeam(_project, Team.get(teamId))
+            // Workaround but TODO fix UI => teamID can't be null
+            if (teamId != null && teamId != _project.team.id) {
+                if (securityService.owner(null, springSecurityService.authentication)) {
+                    projectService.changeTeam(_project, Team.get(teamId))
+                } else {
+                    throw new BusinessException(text: 'Error, only the owner can change which team is associated to a project')
+                }
             }
             projectService.updateProjectMembers(_project, newMembers)
             projectService.manageProjectInvitations(_project, invitedProductOwners, invitedStakeHolders)

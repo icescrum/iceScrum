@@ -46,7 +46,7 @@
                    ng-readonly="team.selected"
                    ng-model="team.name"
                    ng-required="isCurrentStep(2, 'project')">
-            <span class="input-group-addon" ng-if="teamRemovable()">
+            <span class="input-group-addon" ng-if="teamRemovable(team)">
                 <i class="fa"
                    ng-click="unSelectTeam()"
                    ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }">
