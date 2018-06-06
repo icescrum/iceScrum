@@ -29,18 +29,18 @@
     <div class="carousel-inner" role="listbox">
         <div class="item text-center active">
             <asset:image src="/whatsNew/diagrams.png" style="max-height:500px; margin:0 auto;"/>
-            <div class="carousel-caption" style="text-shadow: 0 0px 2px rgba(0,0,0,.6)">
+            <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
                 <h3>New App: create diagrams and mockups</h3>
                 <p><strong>Use draw.io to create flowcharts, process diagrams, org charts, mockups, UML… directly in iceScrum.</strong></p>
-                <p><button ng-click="$close(); showAppsModal();" class="btn btn-primary">Enable it now!</button></p>
+                <p><button ng-click="$close(); showAppsModal('drawIO');" class="btn btn-primary">Enable it now!</button></p>
             </div>
         </div>
         <div class="item text-center">
             <asset:image src="/whatsNew/epics.png" style="max-height:500px;  margin:0 auto;"/>
-            <div class="carousel-caption" style="text-shadow: 0 0px 2px rgba(0,0,0,.6)">
+            <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
                 <h3>New App: create epic stories</h3>
                 <p><strong>Identify stories that are too big and split them into smaller ones.</strong></p>
-                <p><button ng-click="$close(); showAppsModal();" class="btn btn-primary">Enable it now!</button></p>
+                <p><button ng-click="$close(); showAppsModal('epic');" class="btn btn-primary">Enable it now!</button></p>
             </div>
         </div>
     </div>
