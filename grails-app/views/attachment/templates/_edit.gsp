@@ -24,7 +24,7 @@
 <is:modal form="submit(editableAttachment)"
           submitButton="${message(code: 'default.button.update.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
-          title="${message(code: 'is.backlogelement.name')}">
+          title="${message(code: 'todo.is.ui.attachment.edit')}">
     <div>
         <label for="name">${message(code: 'is.backlogelement.name')}</label>
         <input type="text"
