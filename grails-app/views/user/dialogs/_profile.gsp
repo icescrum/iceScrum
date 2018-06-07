@@ -27,7 +27,7 @@
           submitButton="${message(code: 'is.button.update')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.profile')}">
-    <uib-tabset type="pills" justified="true">
+    <uib-tabset type="pills" justified="true" class="tab-pane-higher">
         <uib-tab heading="${message(code: 'todo.is.ui.profile.general.title')}">
             <div flow-files-added="editableUser.avatar = 'custom';"
                  flow-files-submitted="$flow.upload()"
@@ -152,6 +152,10 @@
                     </div>
                 </div>
                 <entry:point id="user-dialog-profile-tab-general-after-form"/>
+                <a class="text-muted small"
+                   href="mailto:${ApplicationSupport.getFirstAdministrator()?.email}">
+                    <strong>${message(code: 'is.ui.admin.contact.data', args: [ApplicationSupport.getFirstAdministrator()?.email])}</strong>
+                </a>
             </div>
         </uib-tab>
         <entry:point id="user-dialog-profile-tab"/>
