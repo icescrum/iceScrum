@@ -147,9 +147,6 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     $scope.currentPostitSize = function(viewName, defaultSize) {
         return postitSize.currentPostitSize(viewName, defaultSize);
     };
-    $scope.isAsListPostit = function(viewName) {
-        return postitSize.currentPostitSize(viewName) == "list-group";
-    };
     $scope.iconCurrentPostitSize = function(viewName) {
         return postitSize.iconCurrentPostitSize(viewName);
     };

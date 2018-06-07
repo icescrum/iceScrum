@@ -173,9 +173,10 @@
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                             is-disabled="!isSortableTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
-                            <div ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
+                            <div is-watch="task"
+                                 ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                                  ng-if="tasksShown(taskState, taskTypesByName.URGENT)"
-                                 ng-class="{ 'is-selected': isSelected(task) }"
+                                 ng-class=":: { 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
@@ -223,9 +224,10 @@
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                             is-disabled="!isSortableTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
-                            <div ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
+                            <div is-watch="task"
+                                 ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                                  ng-if="tasksShown(taskState, taskTypesByName.RECURRENT)"
-                                 ng-class="{ 'is-selected': isSelected(task) }"
+                                 ng-class="::{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
@@ -288,9 +290,10 @@
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
                             is-disabled="!isSortableTaskBoard(sprint) || !isSortableStory(story)"
                             ng-repeat="taskState in sprintTaskStates">
-                            <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
+                            <div is-watch="task"
+                                 ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                                  ng-if="tasksShown(taskState, story)"
-                                 ng-class="{ 'is-selected': isSelected(task) }"
+                                 ng-class="::{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
@@ -335,9 +338,10 @@
                             as-sortable
                             is-disabled="true"
                             ng-repeat="taskState in sprintTaskStates">
-                            <div ng-repeat="task in tasksByStoryByState[story.id][taskState]"
+                            <div is-watch="task"
+                                 ng-repeat="task in tasksByStoryByState[story.id][taskState]"
                                  ng-if="tasksShown(taskState, story, true)"
-                                 ng-class="{ 'is-selected': isSelected(task) }"
+                                 ng-class="::{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">

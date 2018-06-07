@@ -569,11 +569,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
 }]).directive('postitColor', ['$filter', '$rootScope', function($filter, $rootScope) {
     return {
         restrict: 'A',
-        scope: {
-            postitColor: '@'
-        },
-        link: function(scope, element) {
-            element.css($filter('createGradientBackground')(scope.postitColor ? scope.postitColor : '#f9f157'));
+        link: function(scope, element, attrs) {
+            element.css($filter('createGradientBackground')(attrs.postitColor ? attrs.postitColor : '#f9f157'));
         }
     }
 }]).directive('fastTooltip', ['$compile', function($compile) { // For 140 stories, reduce display time by 0,8 s.

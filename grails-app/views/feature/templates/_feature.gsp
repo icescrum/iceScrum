@@ -22,9 +22,9 @@
 --}%
 
 <script type="text/ng-template" id="feature.html">
-<div ng-style="feature.color | createGradientBackground: isAsListPostit(viewName)"
+<div postit-color="{{:: feature.color }}"
      class="postit feature"
-     ng-class="[(feature.color | contrastColor), (feature.type | featureType)]" is-watch="feature">
+     ng-class=":: [(feature.color | contrastColor), (feature.type | featureType)]" >
     <div as-sortable-item-handle>
         <div class="head">
             <div class="head-left">

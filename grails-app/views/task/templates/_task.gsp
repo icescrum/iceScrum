@@ -22,9 +22,9 @@
 --}%
 
 <script type="text/ng-template" id="task.html">
-<div ng-style="task.color | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
+<div postit-color="{{:: task.color }}"
      class="postit"
-     ng-class=":: ['task', application.postitSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]" is-watch="task">
+     ng-class=":: ['task', application.postitSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]">
     <div as-sortable-item-handle="authorizedTask('rank', task)">
         <div class="head">
             <div class="head-left">
