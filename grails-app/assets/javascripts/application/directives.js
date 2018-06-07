@@ -566,6 +566,16 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
+}]).directive('postitColor', ['$filter', '$rootScope', function($filter, $rootScope) {
+    return {
+        restrict: 'A',
+        scope: {
+            postitColor: '@'
+        },
+        link: function(scope, element) {
+            element.css($filter('createGradientBackground')(scope.postitColor ? scope.postitColor : '#f9f157'));
+        }
+    }
 }]).directive('fastTooltip', ['$compile', function($compile) { // For 140 stories, reduce display time by 0,8 s.
     return {
         restrict: 'A',
@@ -931,23 +941,16 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
 }]).directive('iconBadge', function() { // Be careful, this directive has no watch, it will work only under isWatch
     return {
         restrict: 'E',
-        scope: {
-            max: "@?",
-            hide: "@",
-            count: '@'
-        },
-        replace: true,
+        scope: {},
         templateUrl: 'icon.with.badge.html',
+        replace:true,
         link: function(scope, element, attrs) {
-            scope.max = scope.max ? scope.$eval(scope.max) : 9;
-            if (scope.$eval(scope.hide) && scope.count <= scope.max) {
-                return;
-            }
-            scope.icon = attrs.icon;
+            scope.max = attrs.max ? scope.$eval(attrs.max) : 9;
+            scope.count = scope.$eval(attrs.count);
+            scope.icon = scope.count === 0 && attrs.iconEmpty ? attrs.iconEmpty : attrs.icon;
             scope.href = attrs.href;
-            scope.tooltip = attrs.tooltip;
-            scope.iconEmpty = attrs.iconEmpty ? attrs.iconEmpty : attrs.icon;
-            scope.classes = attrs.classes ? attrs.classes : '';
+            scope.tooltip = scope.count + ' ' + attrs.tooltip;
+            scope.classes = (attrs.classes ? attrs.classes : '') + (scope.count > 0 ? ' active' : '');
             scope.countString = (scope.count > scope.max) ? scope.max + '+' : (scope.count > 0 ? scope.count : '');
         }
     };
@@ -1024,4 +1027,83 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             }, typeof $parse(attrs.isWatch)(scope) === 'object');
         }
     };
-}]);
+}]).directive('suspendable', function() {
+    return {
+        link: function(scope, element, attrs) {
+            var $window = $(window),
+                DEBUG = attrs.suspendableDebug === 'true',
+                watchersForId = {},
+                uniqueSuspendableId = Math.random().toString(32).slice(2),
+                trackedEvents = ['scroll.suspendable-' + uniqueSuspendableId, 'resize.suspendable-' + uniqueSuspendableId],
+                heartbeat,
+                scopeCheckFunc;
+
+            // Attach custom events "suspend" and "resume" to our "suspendable" element
+            // Whenever these events get fired, we pass a unique identifier corresponding to
+            // the contained ng-scope to suspend/resume. We keep a map of scopeId -> scope.$$watchers
+            // Keep these events as raw jQuery, using $rootScope.$on and $rootScope.$emit as an event bus
+            // led to additional performance issues
+            element.on('suspend', function(event, suspendId, scopeToSuspend) {
+                if (!watchersForId[suspendId]) {
+                    watchersForId[suspendId] = scopeToSuspend.$$watchers;
+                    scopeToSuspend.$$watchers = [];
+                }
+            }).on('resume', function(event, resumeId, scopeToResume) {
+                if (watchersForId[resumeId]) {
+                    scopeToResume.$$watchers = watchersForId[resumeId];
+                    delete watchersForId[resumeId];
+                }
+            });
+
+            // If the scope gets destroyed, unbind the listeners we created
+            scope.$on('$destroy', function() {
+                $window.off(trackedEvents.join(" "));
+                element.off('suspend resume');
+                clearInterval(heartbeat);
+                watchersForId = null;
+            });
+
+            scopeCheckFunc = function() {
+                var windowOffset = $window.scrollTop(),
+                    windowHeight = $window.height(),
+                    scopeElems = element.find('.ng-scope, .ng-isolate-scope'),
+                    scopes = _.map(scopeElems, function(elem) {
+                        return {
+                            scope: angular.element(elem).scope(),
+                            elem: elem
+                        };
+                    });
+
+                _.each(scopes, function(obj) {
+                    var $elem = $(obj.elem),
+                        offset = $elem.offset();
+
+                    if (!$elem.attr('data-scope-id')) {
+                        $elem.attr('data-scope-id', _.uniqueId());
+                    }
+
+                    // TODO this implementation is naive and there should be finer grained checks around an element's position vs page position
+                    var event = (offset.top <= windowOffset || offset.top >= windowOffset + windowHeight || !$elem.is(':visible')) ? 'suspend' : 'resume';
+
+                    if (DEBUG) {
+                        if (event === 'suspend') {
+                            $elem.css("border-color", 'red');
+                        } else if (event === 'resume') {
+                            $elem.css("border-color", 'green');
+                        }
+                    }
+
+                    element.trigger(event, [$elem.attr('data-scope-id'), obj.scope]);
+                });
+            };
+
+            // Clean up after long/fast scrolls and reattach if hidden elements become visible
+            heartbeat = setInterval(scopeCheckFunc, 15000);
+
+            // Attach namespaced scroll and resize events to the window object. Only call the listener every 50ms
+            // The listener will find all scopes within the container, attach a unique ID if necessary, and trigger
+            // the appropriate event based on window scroll position and element offset.
+            $window.on(trackedEvents.join(" "), _.debounce(scopeCheckFunc, 15000));
+        }
+    };
+});

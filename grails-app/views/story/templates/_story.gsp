@@ -23,9 +23,9 @@
 
 <script type="text/ng-template" id="story.html">
 <div fast-tooltip
-     ng-style="(story.feature ? story.feature.color : '#f9f157') | createGradientBackground:disabledGradient ? disabledGradient : isAsListPostit(viewName)"
      class="postit story"
-     ng-class="[((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]" is-watch="story">
+     postit-color="{{:: story.feature.color }}"
+     ng-class=":: [((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
         <div class="head">
             <div class="head-left">

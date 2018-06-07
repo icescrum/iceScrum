@@ -43,7 +43,7 @@
                     <th class="text-center">${message(code: 'is.story.state.done')}</th>
                 </tr>
                 <tr ng-repeat="story in backlogStories" class="postit-container postit-no-state">
-                    <td>
+                    <td is-watch="story">
                         <div ng-include="'story.html'"></div>
                     </td>
                     <td>

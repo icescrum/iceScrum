@@ -156,21 +156,17 @@ filters
     })
     .filter('createGradientBackground', function() {
         return function(color, disabled) {
-            if (disabled) {
-                return {'border-left': "10px solid " + color};
-            } else if (color) {
-                if (!gradientBackgroundCache[color]) {
-                    var ratio = 18;
-                    var num = parseInt(color.substring(1), 16),
-                        ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
-                        amt = Math.round(2.55 * ratio),
-                        R = ((num >> 16) & 255) + amt,
-                        G = ((num >> 8) & 255) + amt,
-                        B = (num & 255) + amt;
-                    gradientBackgroundCache[color] = "linear-gradient(to top, rgba(" + ra + "," + ga + "," + ba + ",0.8) 0%, rgba(" + R + "," + G + "," + B + ",0.8) 100%)";
-                }
-                return {'background-image': gradientBackgroundCache[color]};
+            if (!gradientBackgroundCache[color]) {
+                var ratio = 18;
+                var num = parseInt(color.substring(1), 16),
+                    ra = (num >> 16) & 255, ga = (num >> 8) & 255, ba = num & 255,
+                    amt = Math.round(2.55 * ratio),
+                    R = ((num >> 16) & 255) + amt,
+                    G = ((num >> 8) & 255) + amt,
+                    B = (num & 255) + amt;
+                gradientBackgroundCache[color] = "linear-gradient(to top, rgba(" + ra + "," + ga + "," + ba + ",0.8) 0%, rgba(" + R + "," + G + "," + B + ",0.8) 100%)";
             }
+            return {'background-image': gradientBackgroundCache[color], 'border-left': "10px solid " + color};
         };
     })
     .filter('actorTag', ['$state', 'ContextService', function($state, ContextService) {

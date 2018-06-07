@@ -107,6 +107,11 @@
     box-sizing: content-box;
     padding: 6px;
   }
+  .postit-container {
+    .postit {
+      border-left: 1px solid @postit-border !important;
+    }
+  }
   &.has-selected {
     > .postit-container:not(.is-selected) {
       opacity: 0.5;
@@ -121,6 +126,7 @@
     .postit-container.is-selected {
       .postit {
         border: 1px solid @brand-primary;
+        border-left: 1px solid @brand-primary !important;
       }
     }
   }
@@ -549,6 +555,7 @@
       border: 1px solid @table-border-color;
       border-left: none;
       border-right: none;
+      background-image: none !important; //really important
       padding: 1px 0;
       > div {
         display: flex;

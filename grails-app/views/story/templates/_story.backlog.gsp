@@ -22,8 +22,9 @@
 --}%
 
 <script type="text/ng-template" id="story.backlog.html">
-<div ng-class="{ 'is-selected': isSelected(story) }"
-     selectable-id="{{ ::story.id }}"
+<div is-watch="story"
+     ng-class=":: { 'is-selected': isSelected(story) }"
+     selectable-id="{{:: story.id }}"
      ng-repeat="story in backlogStories | search"
      as-sortable-item
      class="postit-container">
