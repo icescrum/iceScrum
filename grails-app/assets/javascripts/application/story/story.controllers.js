@@ -616,7 +616,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         };
         $scope.getAcceptanceTestClass = function(story) {
             return (story.testState == AcceptanceTestStatesByName.FAILED ? 'text-danger' :
-                   story.testState == AcceptanceTestStatesByName.SUCCESS ? 'text-success' : '') +
+                    story.testState == AcceptanceTestStatesByName.SUCCESS ? 'text-success' : '') +
                    ($state.params.storyTabId == 'tests' || $scope.application.focusedDetailsView ? ' active' : '');
         };
         // Init

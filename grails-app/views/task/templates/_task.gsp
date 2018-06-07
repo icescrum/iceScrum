@@ -62,7 +62,6 @@
                 </a>
             </div>
             <div class="actions">
-
                 <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                             href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
                             icon="fa-paperclip"

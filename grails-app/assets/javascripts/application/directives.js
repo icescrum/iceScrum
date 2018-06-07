@@ -939,8 +939,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         replace: true,
         templateUrl: 'icon.with.badge.html',
         link: function(scope, element, attrs) {
-            scope.max = scope.max ? scope.max : 9;
-            if (scope.hide && scope.count <= scope.max) {
+            scope.max = scope.max ? scope.$eval(scope.max) : 9;
+            if (scope.$eval(scope.hide) && scope.count <= scope.max) {
                 return;
             }
             scope.icon = attrs.icon;
