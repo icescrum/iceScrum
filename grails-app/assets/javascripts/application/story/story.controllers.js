@@ -524,9 +524,9 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $controller('storyAtWhoCtrl', {$scope: $scope});
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story', project: project});
         // Functions
-        $scope.searchCreator = function(val) {
-            if ($scope.formHolder.editing) { // Could do better, e.g. check if permission to update creator or even better load only if dropdown opens (same as task responsible)
-                UserService.search(val).then(function(users) {
+        $scope.searchCreator = function($select) {
+            if ($scope.formHolder.editing && $select.open) {
+                UserService.search($select.search).then(function(users) {
                     $scope.creators = _.map(users, function(member) {
                         member.name = $filter('userFullName')(member);
                         return member;
