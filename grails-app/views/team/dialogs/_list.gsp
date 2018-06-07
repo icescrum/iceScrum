@@ -95,7 +95,7 @@
                       show-validation
                       novalidate>
                     <div class="col-sm-12 form-group">
-                        <label for="team.owner">${message(code: 'todo.is.ui.owner')}</label>
+                        <label for="team.owner">${message(code: 'is.role.owner')}</label>
                         <span class="form-control-static"
                               ng-if="!authorizedTeam('changeOwner', team)">{{ team.owner | userFullName }}</span>
                         <ui-select class="form-control"
