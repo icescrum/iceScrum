@@ -932,9 +932,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
     return {
         restrict: 'E',
         scope: {
-            max: "=?",
-            hide: "=",
-            count: '='
+            max: "@?",
+            hide: "@",
+            count: '@'
         },
         replace: true,
         templateUrl: 'icon.with.badge.html',

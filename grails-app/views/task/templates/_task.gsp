@@ -55,7 +55,7 @@
                             icon="fa-tags"
                             max="3"
                             hide="true"
-                            count="task.tags.length"/>
+                            count="{{:: task.tags.length }}"/>
                 <a ng-repeat="tag in ::task.tags"
                    href="{{:: tagContextUrl(tag) }}">
                     <span class="tag">{{:: tag }}</span>
@@ -66,13 +66,13 @@
                 <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                             href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
                             icon="fa-paperclip"
-                            count="task.attachments_count"/>
+                            count="{{:: task.attachments_count }}"/>
                 <icon-badge classes="comments"
                             tooltip="${message(code: 'todo.is.ui.comments')}"
                             href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}/comments"
                             icon="fa-comment"
                             icon-empty="fa-comment-o"
-                            count="task.comments_count"/>
+                            count="{{:: task.comments_count }}"/>
                 <span class="action" ng-if="::authorizedTask('take', task)">
                     <a href
                        ng-click="take(task)"

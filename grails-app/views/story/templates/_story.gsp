@@ -65,7 +65,7 @@
                             icon="fa-tags"
                             max="3"
                             hide="true"
-                            count="story.tags.length"/>
+                            count="{{:: story.tags.length }}"/>
                 <a ng-repeat="tag in ::story.tags"
                    href="{{:: tagContextUrl(tag) }}">
                     <span class="tag">{{:: tag }}</span>
@@ -75,23 +75,23 @@
                 <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                             href="{{:: openStoryUrl(story.id)}}"
                             icon="fa-paperclip"
-                            count="story.attachments_count"/>
+                            count="{{:: story.attachments_count }}"/>
                 <icon-badge classes="comments"
                             tooltip="${message(code: 'todo.is.ui.comments')}"
                             href="{{:: openStoryUrl(story.id) }}/comments"
                             icon="fa-comment"
                             icon-empty="fa-comment-o"
-                            count="story.comments_count"/>
+                            count="{{:: story.comments_count }}"/>
                 <icon-badge tooltip="${message(code: 'todo.is.ui.tasks')}"
                             href="{{:: openStoryUrl(story.id) }}/tasks"
                             icon="fa-tasks"
-                            count="story.tasks_count"/>
+                            count="{{:: story.tasks_count }}"/>
                 <icon-badge classes="acceptances-tests"
                             tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                             href="{{:: openStoryUrl(story.id) }}/tests"
                             icon="fa-check-square"
                             icon-empty="fa-check-square-o"
-                            count="story.acceptanceTests_count"/>
+                            count="{{:: story.acceptanceTests_count }}"/>
                 <span postit-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
             </div>
             <div class="state-progress">

@@ -51,7 +51,7 @@
                             icon="fa-tags"
                             max="3"
                             hide="true"
-                            count="feature.tags.length"/>
+                            count="{{:: feature.tags.length }}"/>
                 <a ng-repeat="tag in ::feature.tags"
                    href="{{ tagContextUrl(tag) }}">
                     <span class="tag">{{ tag }}</span>
@@ -61,11 +61,11 @@
                 <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                             href="{{:: openFeatureUrl(feature) }}"
                             icon="fa-paperclip"
-                            count="feature.attachments_count"/>
+                            count="{{:: feature.attachments_count }}"/>
                 <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
                             href="{{:: openFeatureUrl(feature) }}/stories"
                             icon="fa-sticky-note"
-                            count="feature.stories_ids.length"/>
+                            count="{{:: feature.stories_ids.length }}"/>
                 <span postit-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
             </div>
             <div class="state-progress">
