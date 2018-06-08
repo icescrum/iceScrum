@@ -210,15 +210,14 @@ class UserController implements ControllerErrorHandler {
 
     def avatar(long id) {
         withCacheHeaders {
-            def avatar
+            File avatar
             User user = id ? User.withUser(id) : null
             delegate.lastModified {
                 user.lastUpdated
             }
             generate {
                 if (user) {
-                    File[] files = new File(grailsApplication.config.icescrum.images.users.dir.toString()).listFiles((FilenameFilter) new WildcardFileFilter("${user.id}.*"))
-                    avatar = files ? files[0] : null
+                    avatar = userService.getAvatarFile(user)
                 }
                 if (!avatar?.exists()) {
                     if (ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable && user)) {
