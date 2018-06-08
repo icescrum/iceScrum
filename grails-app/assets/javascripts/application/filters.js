@@ -155,7 +155,7 @@ filters
         };
     })
     .filter('createGradientBackground', function() {
-        return function(color, disabled) {
+        return function(color) {
             if (!gradientBackgroundCache[color]) {
                 var ratio = 18;
                 var num = parseInt(color.substring(1), 16),
