@@ -176,7 +176,7 @@
                             <div is-watch="task"
                                  ng-repeat="task in tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                                  ng-if="tasksShown(taskState, taskTypesByName.URGENT)"
-                                 ng-class=":: { 'is-selected': isSelected(task) }"
+                                 ng-class="::{ 'is-selected': isSelected(task) }"
                                  selectable-id="{{ ::task.id }}"
                                  as-sortable-item
                                  class="postit-container">
@@ -279,7 +279,7 @@
                 </tbody>
                 <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'" ng-class="{'story-done': story.state == storyStatesByName.DONE }">
                     <tr class="sticky-header list-group">
-                        <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" is-watch="story" ng-class=":: {'is-selected': isSelected(story)}">
+                        <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" is-watch="story" ng-class="::{'is-selected': isSelected(story)}">
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </td>
                     </tr>

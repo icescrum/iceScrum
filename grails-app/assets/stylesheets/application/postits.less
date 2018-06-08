@@ -109,7 +109,7 @@
   }
   .postit-container {
     .postit {
-      border-left: 1px solid @postit-border !important;
+      border-left: 1px solid @postit-border !important; // Override gradient
     }
   }
   &.has-selected {
@@ -126,7 +126,7 @@
     .postit-container.is-selected {
       .postit {
         border: 1px solid @brand-primary;
-        border-left: 1px solid @brand-primary !important;
+        border-left: 1px solid @brand-primary !important; // Override gradient
       }
     }
   }
@@ -555,7 +555,7 @@
       border: 1px solid @table-border-color;
       border-left: none;
       border-right: none;
-      background-image: none !important; //really important
+      background-image: none !important; // Override gradient
       padding: 1px 0;
       > div {
         display: flex;

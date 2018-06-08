@@ -938,7 +938,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
 }]).directive('iconBadge', function() { // Be careful, this directive has no watch, it will work only under isWatch
     return {
         restrict: 'E',
-        scope: {},
+        scope: {}, // Required to get an isolated scope
         templateUrl: 'icon.with.badge.html',
         replace:true,
         link: function(scope, element, attrs) {

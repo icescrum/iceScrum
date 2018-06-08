@@ -274,11 +274,11 @@
     </script>
 
     <script type="text/ng-template" id="icon.with.badge.html">
-    <span class="action {{::classes}}">
-        <a href="{{::href}}"
-           uib-tooltip="{{::tooltip}}">
-            <i class="fa {{::icon}}"></i>
-            <span class="badge"><span class="limited">{{::countString}}</span><span class="full">{{::count}}</span></span>
+    <span class="action {{:: classes }}">
+        <a href="{{:: href }}"
+           uib-tooltip="{{:: tooltip }}">
+            <i class="fa {{:: icon }}"></i>
+            <span class="badge"><span class="limited">{{:: countString }}</span><span class="full">{{:: count }}</span></span>
         </a>
     </span>
     </script>
