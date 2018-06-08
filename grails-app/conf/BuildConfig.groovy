@@ -39,7 +39,7 @@ grails.tomcat.nio = true
 def jvmArgs = ['-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005',
                '-Dicescrum.plugins.dir=' + System.getProperty("icescrum.plugins.dir"),
 //               '-Dicescrum.noDummyze=true',
-               '-Dicescrum.largeDummyze=true',
+//               '-Dicescrum.largeDummyze=true',
                '-Dicescrum.clean=true',
                '-Dfile.encoding=UTF-8',
                '-Duser.timezone=UTC']
