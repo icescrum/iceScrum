@@ -518,12 +518,16 @@ filters
         var multiplicator = Math.pow(10, nbDecimals);
         return Math.round(number * multiplicator) / multiplicator;
     }
-}]).filter('preciseFloatSum', [function() {
+}]).filter('maxDecimalCount', [function() {
     return function(numbers) {
-        var multiplicator = Math.pow(10, _.max(_.map(numbers, function(number) {
+        return Math.pow(10, _.max(_.map(numbers, function(number) {
             var parts = number.toString().split('.');
             return parts.length > 1 ? parts[1].length : 0;
         })));
+    }
+}]).filter('preciseFloatSum', ['maxDecimalCountFilter', function(maxDecimalCountFilter) {
+    return function(numbers) {
+        var multiplicator = maxDecimalCountFilter(numbers);
         return _.sumBy(numbers, function(number) {
             return number * multiplicator;
         }) / multiplicator;
