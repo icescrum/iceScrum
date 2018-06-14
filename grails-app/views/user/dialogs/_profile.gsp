@@ -151,11 +151,13 @@
                                ng-model="editableUser.preferences.activity">
                     </div>
                 </div>
+                <div>
+                    <a class="text-muted small"
+                       href="mailto:${ApplicationSupport.getFirstAdministrator()?.email}">
+                        <strong>${message(code: 'is.ui.admin.contact.data', args: [ApplicationSupport.getFirstAdministrator()?.email])}</strong>
+                    </a>
+                </div>
                 <entry:point id="user-dialog-profile-tab-general-after-form"/>
-                <a class="text-muted small"
-                   href="mailto:${ApplicationSupport.getFirstAdministrator()?.email}">
-                    <strong>${message(code: 'is.ui.admin.contact.data', args: [ApplicationSupport.getFirstAdministrator()?.email])}</strong>
-                </a>
             </div>
         </uib-tab>
         <entry:point id="user-dialog-profile-tab"/>
