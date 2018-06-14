@@ -535,6 +535,9 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
             }
         };
         $scope.update = function(story) {
+            if (story.effort == undefined) {
+                story.effort = '?';
+            }
             StoryService.update(story).then(function() {
                 $scope.resetStoryForm();
                 $scope.notifySuccess('todo.is.ui.story.updated');
