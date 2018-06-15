@@ -93,14 +93,14 @@ class StoryController implements ControllerErrorHandler {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        Project _project = Project.withProject(project)
-        def tasks = storyParams.remove('tasks')
-        def acceptanceTests = storyParams.remove('acceptanceTests')
         Story story = new Story()
         Story.withTransaction {
             cleanBeforeBindData(storyParams, ['feature', 'dependsOn'])
             def propertiesToBind = ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']
+            Project _project = Project.withProject(project)
             entry.hook(id: 'story-before-save', model: [story: story, propertiesToBind: propertiesToBind, project: _project])
+            def tasks = storyParams.remove('tasks')
+            def acceptanceTests = storyParams.remove('acceptanceTests')
             bindData(story, storyParams, [include: propertiesToBind])
             User user = (User) springSecurityService.currentUser
             storyService.save(story, _project, user)
