@@ -206,7 +206,7 @@ icescrum.marshaller = [
                                exclude: ['cliches', 'teams', 'goal'],
                                textile: ['description']],
         team                : [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
-        task                : [exclude: ['participants'],
+        task                : [exclude: ['participants', 'responsible', 'spent'],
                                textile: ['notes'],
                                include: ['tags', 'sprint']],
         user                : [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'tokens', 'preferences'],

@@ -94,13 +94,14 @@ class StoryController implements ControllerErrorHandler {
             return
         }
         Project _project = Project.withProject(project)
-        entry.hook(id: 'story-save-before', model: [project: _project])
         def tasks = storyParams.remove('tasks')
         def acceptanceTests = storyParams.remove('acceptanceTests')
         Story story = new Story()
         Story.withTransaction {
             cleanBeforeBindData(storyParams, ['feature', 'dependsOn'])
-            bindData(story, storyParams, [include: ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']])
+            def propertiesToBind = ['name', 'description', 'notes', 'type', 'affectVersion', 'feature', 'dependsOn', 'value']
+            entry.hook(id: 'story-before-save', model: [story: story, propertiesToBind: propertiesToBind, project: _project])
+            bindData(story, storyParams, [include: propertiesToBind])
             User user = (User) springSecurityService.currentUser
             storyService.save(story, _project, user)
             story.tags = storyParams.tags instanceof String ? storyParams.tags.split(',') : (storyParams.tags instanceof String[] || storyParams.tags instanceof List) ? storyParams.tags : null
