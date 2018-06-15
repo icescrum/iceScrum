@@ -91,7 +91,7 @@ class TaskController implements ControllerErrorHandler {
         }
         Task task = new Task()
         Task.withTransaction {
-            cleanBeforeBindData(taskParams, ['parentStory', 'backlog'])
+            cleanBeforeBindData(taskParams, ['parentStory', 'backlog', 'responsible'])
             def propertiesToBind = ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']
             entry.hook(id: 'task-before-save', model: [task: task, propertiesToBind: propertiesToBind])
             bindData(task, taskParams, [include: propertiesToBind])
