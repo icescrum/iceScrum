@@ -95,7 +95,7 @@
                 <span postit-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
             </div>
             <div class="state-progress">
-                <div ng-if="::tasksProgress(story)" class="progress">
+                <div ng-if="::showStoryProgress(story)" class="progress">
                     <span class="status">{{:: story.countDoneTasks + '/' + story.tasks_count }}</span>
                     <div class="progress-bar"
                          ng-class="::['bg-'+(story.testState | acceptanceTestColor)]"
@@ -103,7 +103,7 @@
                     </div>
                 </div>
                 <div class="state"
-                     ng-class="::{'hover-progress':tasksProgress(story)}">{{:: story.state | i18n:'StoryStates' }}
+                     ng-class="::{'hover-progress':showStoryProgress(story)}">{{:: story.state | i18n:'StoryStates' }}
                 </div>
             </div>
         </div>

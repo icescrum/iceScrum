@@ -89,14 +89,14 @@
                 </span>
             </div>
             <div class="state-progress">
-                <div ng-if="tasksProgress(story)" class="progress">
+                <div ng-if="showStoryProgress(story)" class="progress">
                     <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
                     <div class="progress-bar"
                          ng-class="'bg-'+(story.testState | acceptanceTestColor)"
                          ng-style="{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
                     </div>
                 </div>
-                <div class="state" ng-class="{'hover-progress':tasksProgress(story)}">
+                <div class="state" ng-class="{'hover-progress':showStoryProgress(story)}">
                     <!-- special case hide state if shifted and ghost story -->
                     <span ng-if="!sprint || sprint.id == story.parentSprint.id">{{ story.state | i18n:'StoryStates' }}</span>
                     <span ng-if="sprint && sprint.id != story.parentSprint.id">{{ message('todo.is.ui.story.shifted') }}</span>

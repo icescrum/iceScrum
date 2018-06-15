@@ -88,6 +88,7 @@
                 </span>
                 <span postit-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
             </div>
+            <entry:point id="task-postit-bottom"/>
         </div>
     </div>
 </div>

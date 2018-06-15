@@ -180,7 +180,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.confirmDelete({callback: $scope.delete, args: [story]}); }
         }
     ];
-    $scope.tasksProgress = function(story) {
+    $scope.showStoryProgress = function(story) {
         return story.tasks_count > 0 && story.state < StoryStatesByName.DONE && story.state >= StoryStatesByName.PLANNED;
     };
     $scope.isEffortCustom = function() {
