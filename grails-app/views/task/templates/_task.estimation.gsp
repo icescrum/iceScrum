@@ -26,7 +26,7 @@
           submitButton="${message(code: 'default.button.update.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'is.task.estimation')}">
-    <div>
+    <div class="form-group">
         <label for="estimation">${message(code: 'is.task.estimation')}</label>
         <input type="number"
                class="form-control"
@@ -35,5 +35,6 @@
                min="0"
                ng-model="editableTask.estimation"/>
     </div>
+    <entry:point id="task-estimation-after"/>
 </is:modal>
 </script>

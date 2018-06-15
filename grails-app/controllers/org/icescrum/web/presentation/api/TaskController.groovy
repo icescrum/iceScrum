@@ -76,12 +76,14 @@ class TaskController implements ControllerErrorHandler {
             returnError(code: 'todo.is.ui.no.data')
             return
         }
-        if (taskParams?.estimation instanceof String) {
-            try {
-                taskParams.estimation = taskParams.estimation in ['?', ""] ? null : taskParams.estimation.replace(/,/, '.').toFloat()
-            } catch (NumberFormatException e) {
-                returnError(code: 'is.task.error.estimation.number')
-                return
+        ['estimation', 'spent'].each { property ->
+            if (taskParams[property] instanceof String) {
+                try {
+                    taskParams[property] = taskParams[property] in ['?', ""] ? null : taskParams[property].replace(/,/, '.').toFloat()
+                } catch (NumberFormatException e) {
+                    returnError(code: 'is.task.error.estimation.number')
+                    return
+                }
             }
         }
         if (!taskParams.backlog) {
@@ -108,12 +110,14 @@ class TaskController implements ControllerErrorHandler {
         }
         Task task = Task.withTask(project, id)
         User user = (User) springSecurityService.currentUser
-        if (taskParams.estimation instanceof String) {
-            try {
-                taskParams.estimation = taskParams.estimation in ['?', ""] ? null : taskParams.estimation.replace(/,/, '.').toFloat()
-            } catch (NumberFormatException e) {
-                returnError(code: 'is.task.error.estimation.number')
-                return
+        ['estimation', 'spent'].each { property ->
+            if (taskParams[property] instanceof String) {
+                try {
+                    taskParams[property] = taskParams[property] in ['?', ""] ? null : taskParams[property].replace(/,/, '.').toFloat()
+                } catch (NumberFormatException e) {
+                    returnError(code: 'is.task.error.estimation.number')
+                    return
+                }
             }
         }
         if (!taskParams.backlog) {

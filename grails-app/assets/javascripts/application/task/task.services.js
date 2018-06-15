@@ -62,6 +62,11 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         return Task.save({projectId: projectId}, task, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.update = function(task, removeRank) {
+        _.each(['estimation', 'spent'], function(property) {
+            if (task.hasOwnProperty(property) && task[property] === null) {
+                task[property] = '?';
+            }
+        });
         var taskData = removeRank ? _.omit(task, 'rank') : task; // Don't send the rank when we want the server to pick the right rank (e.g. update estimate to 0 => task will get a new rank in done state)
         return Task.update({projectId: task.parentProject.id}, taskData, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };

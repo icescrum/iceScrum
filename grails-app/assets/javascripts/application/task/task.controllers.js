@@ -176,10 +176,8 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
                 controller: ['$scope', function($scope) {
                     $scope.editableTask = angular.copy(task);
                     $scope.initialValue = $scope.editableTask.value;
+                    $scope.project = $scope.getProjectFromState();
                     $scope.submit = function(task) {
-                        if (task.estimation == undefined) {
-                            task.estimation = '?';
-                        }
                         TaskService.update(task).then(function() {
                             $scope.$close();
                             $scope.notifySuccess('todo.is.ui.task.updated');
@@ -263,9 +261,6 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task', project: project});
     // Functions
     $scope.update = function(task) {
-        if (task.estimation == undefined) {
-            task.estimation = '?';
-        }
         TaskService.update(task, true).then(function() {
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.updated');
