@@ -89,11 +89,8 @@ class TaskController implements ControllerErrorHandler {
         }
         Task task = new Task()
         Task.withTransaction {
-            cleanBeforeBindData(taskParams, ['parentStory', 'backlog', 'responsible'])
+            cleanBeforeBindData(taskParams, ['parentStory', 'backlog'])
             def propertiesToBind = ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']
-            if (request.scrumMaster) {
-                propertiesToBind << 'responsible'
-            }
             entry.hook(id: 'task-before-save', model: [task: task, propertiesToBind: propertiesToBind])
             bindData(task, taskParams, [include: propertiesToBind])
             taskService.save(task, springSecurityService.currentUser)
