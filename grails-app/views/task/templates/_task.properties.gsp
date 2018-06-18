@@ -73,7 +73,7 @@
                       name="description"
                       ng-model="editableTask.description"></textarea>
         </div>
-        <entry:point id="task-detail-middle"/>
+        <entry:point id="task-properties-middle"/>
         <div class="form-group">
             <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
             <ui-select class="form-control"
@@ -93,7 +93,10 @@
         </div>
         <div class="clearfix no-padding">
             <div class="form-half">
-                <label for="estimation"><i class="fa {{ task.state | taskStateIcon }}"></i> ${message(code: 'is.task.estimation')}</label>
+                <label for="estimation">
+                    <i class="fa {{ task.state | taskStateIcon }}"></i> ${message(code: 'is.task.estimation')}
+                    <entry:point id="task-estimation-after-label"/>
+                </label>
                 <input type="number"
                        min="0"
                        class="form-control"
