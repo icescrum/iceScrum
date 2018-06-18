@@ -390,17 +390,9 @@ environments {
     }
 }
 
-config.icescrum.tmp.dir = System.getProperty("java.io.tmpdir") ?: false
-if(config.icescrum.tmp.dir){
-    println "\n| Tmp directory: ${config.icescrum.tmp.dir}"
-}
+println "\n| Tmp directory: ${System.getProperty("java.io.tmpdir")}"
 
 grails.cache.config = {
-    if(config.icescrum.tmp.dir){
-        diskStore {
-            path config.icescrum.tmp.dir
-        }
-    }
     cache {
         name 'feed'
         timeToLiveSeconds 120
