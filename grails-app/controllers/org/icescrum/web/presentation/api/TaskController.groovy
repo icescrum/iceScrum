@@ -37,35 +37,31 @@ class TaskController implements ControllerErrorHandler {
     @Secured('inProject() or (isAuthenticated() and stakeHolder())')
     def index(long id, long project, String type) {
         def tasks
-        if (type == 'story') { //refactor with search and options
-            tasks = Story.withStory(project, id).tasks
-        } else if (type == 'sprint') {
-            tasks = Sprint.withSprint(project, id).tasks
-            if (params.context) {
-                tasks = tasks.findAll { Task task ->
-                    if (params.context.type == 'tag') {
-                        def tag = params.context.id.toLowerCase()
-                        return task.tags*.toLowerCase().contains(tag) || task.parentStory?.tags*.toLowerCase()?.contains(tag)
-                    } else if (task.parentStory) {
-                        if (params.context.type == 'feature') {
-                            return task.parentStory.feature?.id == params.context.id.toLong()
-                        } else if (params.context.type == 'actor') {
-                            return task.parentStory.actors.findAll { it.id == params.context.id.toLong() }
-                        }
-                    }
-                    return true
-                }
-            }
+        def options
+        if (params.filter) {
+            options = JSON.parse(params.filter)
         } else {
-            if (params.filter) {
-                try {
-                    def options = JSON.parse(params.filter)
-                    tasks = Task.search(project, options)
-                } catch (Exception e) {
-                    tasks = []
+            options = [task: [:]]
+            if (type == 'story') { //refactor with search and options
+                options.task.parentStory = id
+            } else if (type == 'sprint') {
+                options.task.parentSprint = id
+            }
+        }
+        tasks = Task.search(project, options)
+        if (params.context) {
+            tasks = tasks.findAll { Task task ->
+                if (params.context.type == 'tag') {
+                    def tag = params.context.id.toLowerCase()
+                    return task.tags*.toLowerCase().contains(tag) || task.parentStory?.tags*.toLowerCase()?.contains(tag)
+                } else if (task.parentStory) {
+                    if (params.context.type == 'feature') {
+                        return task.parentStory.feature?.id == params.context.id.toLong()
+                    } else if (params.context.type == 'actor') {
+                        return task.parentStory.actors.findAll { it.id == params.context.id.toLong() }
+                    }
                 }
-            } else {
-                tasks = Task.getAllInProject(project)
+                return true
             }
         }
         render(status: 200, contentType: 'application/json', text: tasks as JSON)
