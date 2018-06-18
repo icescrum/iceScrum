@@ -37,7 +37,7 @@ class TaskController implements ControllerErrorHandler {
     @Secured('inProject() or (isAuthenticated() and stakeHolder())')
     def index(long id, long project, String type) {
         def tasks
-        if (type == 'story') {
+        if (type == 'story') { //refactor with search and options
             tasks = Story.withStory(project, id).tasks
         } else if (type == 'sprint') {
             tasks = Sprint.withSprint(project, id).tasks
@@ -57,7 +57,16 @@ class TaskController implements ControllerErrorHandler {
                 }
             }
         } else {
-            tasks = Task.getAllInProject(project)
+            if (params.filter) {
+                try {
+                    def options = JSON.parse(params.filter)
+                    tasks = Task.search(project, options)
+                } catch (Exception e) {
+                    tasks = []
+                }
+            } else {
+                tasks = Task.getAllInProject(project)
+            }
         }
         render(status: 200, contentType: 'application/json', text: tasks as JSON)
     }
