@@ -32,7 +32,7 @@
             <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
                 <h3>New App: Time tracking</h3>
                 <p><strong>Track the time spent by tasks during the sprint.</strong></p>
-                <p><button ng-click="$close(); showAppsModal('epic');" class="btn btn-primary">Enable it now!</button></p>
+                <p><button ng-click="$close(); showAppsModal('taskTimeTracking');" class="btn btn-primary">Enable it now!</button></p>
             </div>
         </div>
         <div class="item text-center">
