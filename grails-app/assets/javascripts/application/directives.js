@@ -587,7 +587,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         var tooltipContent = tooltipElement.attr('defer-tooltip');
                         tooltipElement.removeAttr('defer-tooltip');
                         tooltipElement.attr('uib-tooltip', tooltipContent);
-                        tooltipElement.attr('tooltip-is-open', true);
                         var newScope = scope.$new();
                         if (cElementContent) {
                             tooltipElement.html(cElementContent);
@@ -595,7 +594,6 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         var tooltipCompiled = $compile(tooltipElement)(newScope);
                         element.replaceWith(tooltipCompiled);
                         scope.$digest(); //necessary in case there is ng-* on or inside
-                        tooltipCompiled.trigger('mouseenter');
                     }
                 });
             }

@@ -756,6 +756,8 @@
                      */
                     dragStart = function(event) {
                         $rootScope.application.dragging = true;
+                        angular.element('.sortable-item-over, .sortable-container-over:not(.as-sortable-drag)')
+                            .removeClass('sortable-item-over sortable-container-over');
                         var eventObj, tagName;
 
                         if (!hasTouch && (event.button === 2 || event.which === 3)) {
