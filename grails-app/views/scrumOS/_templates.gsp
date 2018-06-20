@@ -149,7 +149,7 @@
     <script type="text/ng-template" id="menuitem.item.html">
     <a hotkey="{ '{{ menu.shortcut }}' : hotkeyClick }"
        hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
-       uib-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
+       defer-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
        tooltip-placement="bottom"
        href="#/{{ menu.id }}">
         <i class="fa fa-lg" ng-class="'fa-' + menu.icon" as-sortable-item-handle></i> <span class="title hidden-sm">{{ menu.title }}</span>
@@ -183,7 +183,7 @@
            class="btn btn-default"
            hotkey="{'shift+u':showProfile}"
            hotkey-description="${message(code: 'todo.is.ui.profile')}"
-           uib-tooltip="${message(code: 'is.dialog.profile')} (shift+u)"
+           defer-tooltip="${message(code: 'is.dialog.profile')} (shift+u)"
            ng-click="showProfile()">${message(code: 'is.dialog.profile')}
         </a>
         <a class="btn btn-danger"
@@ -245,7 +245,7 @@
             <div ng-repeat="state in states" class="progress-bar state {{ state.class }}"
                  ng-class="{'state-completed': state.completed, 'state-current': state.current}"
                  tooltip-placement="left"
-                 uib-tooltip="{{ state.tooltip  }}"
+                 defer-tooltip="{{ state.tooltip  }}"
                  ng-style="{width: state.width + '%'}">
                 <span class="state-name">{{ state.name }}</span>
             </div>
@@ -257,17 +257,17 @@
     <div class="btn-group">
         <button class="btn btn-default minimizable"
                 ng-click="toggleMinimizedDetailsView()"
-                uib-tooltip="${message(code: 'is.ui.window.minimize')}">
+                defer-tooltip="${message(code: 'is.ui.window.minimize')}">
             <i ng-class="['fa fa-window-minimize', application.minimizedDetailsView ? 'fa-rotate-180' : '']"></i>
         </button>
         <button class="btn btn-default detachable"
                 ng-click="toggleDetachedDetailsView()"
-                uib-tooltip="${message(code: 'is.ui.window.detach')}">
+                defer-tooltip="${message(code: 'is.ui.window.detach')}">
             <i ng-class="['fa', application.detachedDetailsView ? 'fa-window-maximize' : 'fa-window-restore']"></i>
         </button>
         <a class="btn btn-default"
            href="{{ closeDetailsViewUrl() }}"
-           uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+           defer-tooltip="${message(code: 'is.ui.window.closeable')}">
             <i class="fa fa-times"></i>
         </a>
     </div>
@@ -276,7 +276,7 @@
     <script type="text/ng-template" id="icon.with.badge.html">
     <span class="action {{:: classes }}">
         <a href="{{:: href }}"
-           uib-tooltip="{{:: tooltip }}">
+           defer-tooltip="{{:: tooltip }}">
             <i class="fa {{:: icon }}"></i>
             <span class="badge"><span class="limited">{{:: countString }}</span><span class="full">{{:: count }}</span></span>
         </a>
@@ -386,7 +386,7 @@
              ng-repeat="user in ::project.allUsers | limitTo:2"
              height="20" width="20" style="margin-left:5px;"
              class="{{:: user | userColorRoles:project }}"
-             uib-tooltip="{{:: user | userFullName }}"/>
+             defer-tooltip="{{:: user | userFullName }}"/>
         <span class="team-count" ng-if=":: project.allUsers.length > 2">+ {{ project.allUsers.length - 2 }}</span>
     </div>
     </script>

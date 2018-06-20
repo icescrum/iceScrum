@@ -28,12 +28,12 @@
                 <i class="fa fa-inbox"></i> <span class="item-name" title="{{ backlog | i18nName }}">{{ backlog | i18nName }}</span>
                 <i class="fa fa-share-alt"
                    ng-if="backlog.shared && !backlog.isDefault"
-                   uib-tooltip="${message(code: 'is.ui.backlog.share')}"></i>
+                   defer-tooltip="${message(code: 'is.ui.backlog.share')}"></i>
                 <entry:point id="backlog-details-left-title"/>
             </div>
             <div class="right-title">
                 <entry:point id="backlog-details-right-title"/>
-                <span ng-if="backlog.owner" uib-tooltip="${message(code: 'is.story.creator')} {{ backlog.owner | userFullName }}">
+                <span ng-if="backlog.owner" defer-tooltip="${message(code: 'is.story.creator')} {{ backlog.owner | userFullName }}">
                     <img ng-src="{{ backlog.owner | userAvatar }}" alt="{{ backlog.owner | userFullName }}" class="{{ backlog.owner | userColorRoles }}" height="30px"/>
                 </span>
                 <details-layout-buttons ng-if="!isModal"/>

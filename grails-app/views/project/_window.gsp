@@ -28,7 +28,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             <i tooltip-placement="right"
-                               uib-tooltip="${message(code: 'is.ui.project.public')}"
+                               defer-tooltip="${message(code: 'is.ui.project.public')}"
                                ng-if="!project.preferences.hidden"
                                ng-click="authorizedProject('edit') && showProjectEditModal()"
                                class="fa fa-eye"></i>&nbsp;<i class="fa fa-folder"></i>&nbsp;{{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
@@ -50,7 +50,7 @@
                                      ng-repeat="user in allMembers"
                                      height="36" width="36" style="margin-left:5px;"
                                      class="{{ user | userColorRoles }}"
-                                     uib-tooltip="{{ user | userFullName }}"/>
+                                     defer-tooltip="{{ user | userFullName }}"/>
                                 <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                                     </button>
                                 </div>
                                 <button class="btn btn-default btn-sm"
-                                        uib-tooltip="${message(code: 'todo.is.ui.charts')}"
+                                        defer-tooltip="${message(code: 'todo.is.ui.charts')}"
                                         type="button"
                                         uib-dropdown-toggle>
                                     <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
@@ -215,7 +215,7 @@
                             <i class="fa fa-clock-o"></i> <g:message code="todo.is.ui.history"/>
                             <small class="pull-right">
                                 <a class="rss"
-                                   uib-tooltip="${message(code: 'todo.is.ui.feed')}"
+                                   defer-tooltip="${message(code: 'todo.is.ui.feed')}"
                                    href="{{ openWorkspaceUrl(project) + 'project/feed' }}">
                                     <i class="fa fa-rss fa-lg visible-on-hover"></i>
                                 </a>

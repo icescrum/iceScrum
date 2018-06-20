@@ -47,7 +47,7 @@
                            tabindex="0"
                            hotkey="{'left': hotkeyClick}"
                            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+                           defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
                            ui-sref=".({releaseId: previousRelease.id})">
                             <i class="fa fa-caret-left"></i>
                         </a>
@@ -57,7 +57,7 @@
                            tabindex="0"
                            hotkey="{'right': hotkeyClick}"
                            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+                           defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
                            ui-sref=".({releaseId: nextRelease.id})">
                             <i class="fa fa-caret-right"></i>
                         </a>
@@ -68,7 +68,7 @@
                 <g:if test="${formats}">
                     <div class="btn-group hidden-xs" uib-dropdown>
                         <button class="btn btn-default"
-                                uib-tooltip="${message(code: 'todo.is.ui.export')}"
+                                defer-tooltip="${message(code: 'todo.is.ui.export')}"
                                 uib-dropdown-toggle type="button">
                             <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
                         </button>

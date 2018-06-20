@@ -94,7 +94,7 @@
                 <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.featureForm.$invalid || application.submitting"
-                            uib-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                            defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                             hotkey="{'shift+return': hotkeyClick }"
                             hotkey-allow-in="INPUT"
                             hotkey-description="${message(code: 'todo.is.ui.create.and.continue')}"

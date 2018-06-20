@@ -27,7 +27,7 @@
             ${message(code: "todo.is.ui.stories")} ({{ stories.length }})
             <a class="pull-right btn btn-default"
                ui-sref="^.^"
-               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+               defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
             </a>
         </h3>
@@ -44,7 +44,7 @@
                                     <div class="head-left">
                                         <span class="id">{{ topStory.uid }}</span>
                                         <a class="follow active"
-                                           uib-tooltip="{{ topStory.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}">
+                                           defer-tooltip="{{ topStory.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}">
                                             <i class="fa" ng-class="topStory | followedByUser:'fa-star':'fa-star-o'"></i>
                                         </a>
                                     </div>
@@ -73,25 +73,25 @@
                                     <div class="actions">
                                         <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
                                         <span class="action" ng-class="{'active':topStory.attachments_count}">
-                                            <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                            <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                                 <i class="fa fa-paperclip"></i>
                                             </a>
                                         </span>
                                         <span class="action" ng-class="{'active':topStory.comments_count}">
-                                            <a uib-tooltip="${message(code: 'todo.is.ui.comments')}">
+                                            <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
                                                 <i class="fa"
                                                    ng-class="topStory.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                                                 <span class="badge">{{ topStory.comments_count || '' }}</span>
                                             </a>
                                         </span>
                                         <span class="action" ng-class="{'active':topStory.tasks_count}">
-                                            <a uib-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                            <a defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
                                                 <i class="fa fa-tasks"></i>
                                                 <span class="badge">{{ topStory.tasks_count || '' }}</span>
                                             </a>
                                         </span>
                                         <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
-                                            <a uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                                            <a defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
                                                 <i class="fa"
                                                    ng-class="topStory.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
                                                 <span class="badge">{{ topStory.acceptanceTests_count || '' }}</span>
@@ -165,10 +165,10 @@
                                     ng-click="followMultiple(!allFollowed(stories))">
                                 <i class="fa"
                                    ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'"
-                                   ng-switch-default uib-tooltip="${message(code: 'is.followable.start')}"></i>
+                                   ng-switch-default defer-tooltip="${message(code: 'is.followable.start')}"></i>
                                 <i class="fa fa-star"
                                    ng-switch-when="true"
-                                   uib-tooltip="${message(code: 'is.followable.stop')}"></i>
+                                   defer-tooltip="${message(code: 'is.followable.stop')}"></i>
                             </button>
                         </div>
                     </div>

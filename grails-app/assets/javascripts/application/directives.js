@@ -551,18 +551,19 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}]).directive('postitMenu', ['$compile', function($compile) {
-    // For 140 postits, reduce display time by 1 s. and initial watchers by 1700 by loading menu only on first hover
+}]).directive('postitMenu', ['$compile', '$rootScope', function($compile, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            element.closest('.postit').one('mouseenter', function() {
-                var newElement = element.clone();
-                newElement.removeAttr('postit-menu');
-                newElement.attr('uib-dropdown', '');
-                newElement.attr('dropdown-append-to-body', '');
-                newElement.html('<a uib-dropdown-toggle><i class="fa fa-ellipsis-h"></i></a><ul uib-dropdown-menu class="dropdown-menu-right" template-url="' + attrs.postitMenu + '"></ul>');
-                element.replaceWith(angular.element($compile(newElement)(scope)));
+            element.on('mouseover', function() {
+                if (!$rootScope.application.dragging) {
+                    var newElement = element.clone();
+                    newElement.removeAttr('postit-menu');
+                    newElement.attr('uib-dropdown', '');
+                    newElement.attr('dropdown-append-to-body', '');
+                    newElement.html('<a uib-dropdown-toggle><i class="fa fa-ellipsis-h"></i></a><ul uib-dropdown-menu class="dropdown-menu-right" template-url="' + attrs.postitMenu + '"></ul>');
+                    element.replaceWith(angular.element($compile(newElement)(scope)));
+                }
             });
         }
     }
@@ -573,29 +574,31 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             element.css($filter('createGradientBackground')(attrs.postitColor ? attrs.postitColor : '#f9f157'));
         }
     }
-}]).directive('fastTooltip', ['$compile', function($compile) { // For 140 stories, reduce display time by 0,8 s.
+}]).directive('deferTooltip', ['$compile', '$rootScope', function($compile, $rootScope) {
     return {
         restrict: 'A',
-        link: function(scope, element) {
-            element.on('mouseenter', function() { // Executed on each mouseenter because new dom elements may have appeared since the last time (e.g. with ng-if)
-                var tooltipAttr = 'fast-tooltip-el';
-                _.each(element.find('[' + tooltipAttr + ']'), function(tooltipElement) {
-                    tooltipElement = angular.element(tooltipElement);
-                    var newTooltipElement = tooltipElement.clone(); // Not sure that it is required
-                    // Tooltip content must be a static string, it cannot be an angular expression and the element cannot have children with angular expression !!!
-                    // because the original expression and the associated watcher will be lost in the process so the value will never be synced if it changes
-                    var tooltipContent = newTooltipElement.attr(tooltipAttr);
-                    newTooltipElement.removeAttr(tooltipAttr); // Remove attr to prevent doing it again on next mouseenter for elements already processed
-                    newTooltipElement.attr('uib-tooltip', tooltipContent);
-                    tooltipElement.replaceWith(angular.element($compile(newTooltipElement)(scope)));
-                    newTooltipElement.on('mouseenter', function() {
-                        newTooltipElement.trigger('tooltipmouseenter');
-                    });
-                    newTooltipElement.on('click', function() {
-                        newTooltipElement.trigger('mouseleave');
-                    });
+        transclude: false,
+        compile: function(cElement, attr) {
+            var cElementContent = cElement.html();
+            return function link(scope, element) {
+                element.on('mouseover', function() {
+                    if (!$rootScope.application.dragging) {
+                        var tooltipElement = element.clone();
+                        var tooltipContent = tooltipElement.attr('defer-tooltip');
+                        tooltipElement.removeAttr('defer-tooltip');
+                        tooltipElement.attr('uib-tooltip', tooltipContent);
+                        tooltipElement.attr('tooltip-is-open', true);
+                        var newScope = scope.$new();
+                        if (cElementContent) {
+                            tooltipElement.html(cElementContent);
+                        }
+                        var tooltipCompiled = $compile(tooltipElement)(newScope);
+                        element.replaceWith(tooltipCompiled);
+                        scope.$digest(); //necessary in case there is ng-* on or inside
+                        tooltipCompiled.trigger('mouseenter');
+                    }
                 });
-            });
+            }
         }
     }
 }]).directive('unavailableFeature', ['$uibModal', function($uibModal) {
@@ -940,7 +943,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         restrict: 'E',
         scope: {}, // Required to get an isolated scope
         templateUrl: 'icon.with.badge.html',
-        replace:true,
+        replace: true,
         link: function(scope, element, attrs) {
             scope.max = attrs.max ? scope.$eval(attrs.max) : 9;
             scope.count = scope.$eval(attrs.count);

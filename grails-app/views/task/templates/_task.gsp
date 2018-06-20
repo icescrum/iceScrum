@@ -32,13 +32,13 @@
                 <img ng-src="{{:: task.responsible | userAvatar }}"
                      ng-if=":: task.responsible"
                      ng-class="::['responsible', (task.responsible | userColorRoles)]"
-                     uib-tooltip="{{:: task.responsible | userFullName }}">
+                     defer-tooltip="{{:: task.responsible | userFullName }}">
             </div>
             <div class="head-right">
                 <span class="remaining-time editable"
                       ng-if=":: task.estimation != 0"
                       ng-click="showEditEstimationModal(task, $event)"
-                      uib-tooltip="${message(code: 'is.task.estimation')}">
+                      defer-tooltip="${message(code: 'is.task.estimation')}">
                     {{:: task.estimation != undefined ? task.estimation : '?' }} <i ng-class="::['fa', (task.state | taskStateIcon)]"></i>
                 </span>
             </div>
@@ -75,14 +75,14 @@
                 <span class="action" ng-if="::authorizedTask('take', task)">
                     <a href
                        ng-click="take(task)"
-                       uib-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.take')}">
+                       defer-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.take')}">
                         <i class="fa fa-user-plus"></i>
                     </a>
                 </span>
                 <span class="action" ng-if="::authorizedTask('release', task)">
                     <a href
                        ng-click="release(task)"
-                       uib-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.unassign')}">
+                       defer-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.unassign')}">
                         <i class="fa fa-user-times"></i>
                     </a>
                 </span>

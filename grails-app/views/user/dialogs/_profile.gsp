@@ -193,7 +193,7 @@
                             <td>{{ token.id }}<div class="small">{{ token.name }}</div>
                             </td>
                             <td class="text-right">
-                                <button type="button" class="btn btn-danger" ng-click="delete(token)" uib-tooltip="${message(code: 'is.ui.token.revoke')}">
+                                <button type="button" class="btn btn-danger" ng-click="delete(token)" defer-tooltip="${message(code: 'is.ui.token.revoke')}">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td>

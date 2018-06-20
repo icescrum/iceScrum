@@ -36,11 +36,11 @@
                                 <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                                 <span class="sprint-numbers">
                                     <span ng-if="sprint.state > sprintStatesByName.TODO"
-                                          uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
-                                    <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
+                                          defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
+                                    <span defer-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
                                     <i class="small-icon fa fa-dollar"></i>
                                 </span>
-                                <span class="sprint-remaining" uib-tooltip="${message(code: 'is.task.estimation')}">
+                                <span class="sprint-remaining" defer-tooltip="${message(code: 'is.task.estimation')}">
                                     {{ sprintRemainingTime(sprint) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
                                 </span>
                             </div>
@@ -68,7 +68,7 @@
                         <g:if test="${formats}">
                             <div class="btn-group hidden-xs" uib-dropdown>
                                 <button class="btn btn-default"
-                                        uib-tooltip="${message(code: 'todo.is.ui.export')}"
+                                        defer-tooltip="${message(code: 'todo.is.ui.export')}"
                                         uib-dropdown-toggle type="button">
                                     <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
                                 </button>
@@ -87,19 +87,19 @@
                         <div class="btn-group">
                             <button type="button"
                                     class="btn btn-default hidden-xs hidden-sm"
-                                    uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                                    defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                                     ng-click="setPostitSize(viewName)"><i class="fa" ng-class="iconCurrentPostitSize(viewName)"></i>
                             </button>
                             <button type="button"
                                     class="btn btn-default hidden-xs"
-                                    uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"
+                                    defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
                                     ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </div>
                         <div class="btn-group" uib-dropdown>
                             <button class="btn btn-default"
                                     uib-dropdown-toggle
-                                    uib-tooltip="${message(code: 'todo.is.ui.filters')}"
+                                    defer-tooltip="${message(code: 'todo.is.ui.filters')}"
                                     type="button">
                                 <span>{{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}</span>
                                 <i class="fa fa-caret-down"></i>
@@ -128,7 +128,7 @@
                             </div>
                         </div>
                         <a class="btn btn-default" href="{{ openSprintUrl(sprint) }}"
-                           uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                           defer-tooltip="${message(code: 'todo.is.ui.details')}">
                             <i class="fa fa-pencil"></i>
                         </a>
                     </div>

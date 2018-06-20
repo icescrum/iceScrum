@@ -29,7 +29,7 @@
                     <i as-sortable-item-handle
                        class="fa fa-lg fa-border fa-inbox"
                        tooltip-placement="right"
-                       uib-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
+                       defer-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
                        style="margin-right:3px;" href="{{ togglePinElementUrl(elem) }}"
                        ng-class="{'fa-pinned':isPinned(elem), 'fa-pin':!isPinned(elem)}"></i>
                     <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
@@ -46,7 +46,7 @@
                             <i as-sortable-item-handle
                                class="fa fa-lg fa-border fa-inbox"
                                tooltip-placement="right"
-                               uib-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
+                               defer-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
                                style="margin-right:3px;" href="{{ togglePinElementUrl(elem) }}"
                                ng-class="{'fa-pinned':isPinned(elem), 'fa-pin':!isPinned(elem)}"></i>
                             <span as-sortable-item-handle title="{{ (elem | i18nName) + ' (' + elem.count + ')' }}">{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
@@ -60,12 +60,12 @@
             <div class="btn-group">
                 <button type="button"
                         class="btn btn-default hidden-xs hidden-sm"
-                        uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                        defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                         ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
                 </button>
                 <button type="button"
                         class="btn btn-default hidden-xs"
-                        uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"
+                        defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
                         ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                 </button>
             </div>
@@ -73,7 +73,7 @@
                 <button type="button"
                         class="btn btn-default"
                         ng-click="toggleSelectableMultiple()"
-                        uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
+                        defer-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
                     <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
                 </button>
             </div>
@@ -106,12 +106,12 @@
                                     class="btn btn-default hidden-xs"
                                     ng-click="enableSortable(backlogContainer)"
                                     tooltip-placement="right"
-                                    uib-tooltip="{{ isSortingBacklog(backlogContainer) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
+                                    defer-tooltip="{{ isSortingBacklog(backlogContainer) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                                 <i ng-class="isSortingBacklog(backlogContainer) ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
                             </button>
                             <div class="btn-group"
                                  uib-dropdown
-                                 uib-tooltip="${message(code: 'todo.is.ui.sort')}">
+                                 defer-tooltip="${message(code: 'todo.is.ui.sort')}">
                                 <button class="btn btn-default" uib-dropdown-toggle type="button">
                                     <span>{{ backlogContainer.orderBy.current.name }}</span>
                                     <i class="fa fa-caret-down"></i>
@@ -124,7 +124,7 @@
                             </div>
                             <button type="button" class="btn btn-default"
                                     ng-click="reverseBacklogOrder(backlogContainer)"
-                                    uib-tooltip="${message(code: 'todo.is.ui.sort.order')}">
+                                    defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
                                 <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                             </button>
                             <entry:point id="backlog-list-toolbar-group-right"/>
@@ -132,7 +132,7 @@
                         <div class="btn-group hidden-xs" uib-dropdown>
                             <button type="button"
                                     class="btn btn-default"
-                                    uib-tooltip="${message(code: 'is.ui.window.print')} (shift+p)"
+                                    defer-tooltip="${message(code: 'is.ui.window.print')} (shift+p)"
                                     ng-click="print($event)"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     ng-href="story/backlog/{{ ::backlogContainer.backlog.id }}/print"
@@ -141,7 +141,7 @@
                                 <i class="fa fa-print"></i>
                             </button>
                             <button class="btn btn-default"
-                                    uib-tooltip="${message(code: 'todo.is.ui.export')}"
+                                    defer-tooltip="${message(code: 'todo.is.ui.export')}"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     uib-dropdown-toggle type="button">
                                 <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
@@ -161,14 +161,14 @@
                     </div>
                     <div class="btn-toolbar pull-right">
                         <a class="btn btn-default" href="{{ openBacklogUrl(backlogContainer.backlog) }}"
-                           uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                           defer-tooltip="${message(code: 'todo.is.ui.details')}">
                             <i class="fa fa-pencil"></i>
                         </a>
                         <entry:point id="backlog-list-toolbar-right"/>
                         <a href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
                            class="btn btn-default"
                            ng-if="backlogContainers.length > 1"
-                           uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                           defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                             <i class="fa fa-times"></i>
                         </a>
                     </div>

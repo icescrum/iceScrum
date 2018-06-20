@@ -33,12 +33,12 @@
                                     ng-if="isSortableFeature()"
                                     class="btn btn-default hidden-sm hidden-xs"
                                     ng-click="enableSortable()"
-                                    uib-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
+                                    defer-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                                 <i ng-class="isSortingFeature() ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
                             </button>
                             <div class="btn-group"
                                  uib-dropdown
-                                 uib-tooltip="${message(code: 'todo.is.ui.sort')}">
+                                 defer-tooltip="${message(code: 'todo.is.ui.sort')}">
                                 <button class="btn btn-default"
                                         uib-dropdown-toggle type="button">
                                     <span>{{ orderBy.current.name }}</span>
@@ -53,16 +53,16 @@
                             <button type="button"
                                     class="btn btn-default"
                                     ng-click="orderBy.reverse = !orderBy.reverse"
-                                    uib-tooltip="${message(code: 'todo.is.ui.sort.order')}">
+                                    defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
                                 <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
                             </button>
                         </div>
                         <div class="btn-group hidden-sm hidden-xs"
                              uib-dropdown
-                             uib-tooltip="${message(code: 'todo.is.ui.export')}">
+                             defer-tooltip="${message(code: 'todo.is.ui.export')}">
                             <button type="button"
                                     class="btn btn-default"
-                                    uib-tooltip="${message(code: 'is.ui.window.print')} (shift+p)"
+                                    defer-tooltip="${message(code: 'is.ui.window.print')} (shift+p)"
                                     ng-click="print($event)"
                                     ng-disabled="!features.length"
                                     ng-href="feature/print"
@@ -91,20 +91,20 @@
                         <div class="btn-group">
                             <button type="button"
                                     class="btn btn-default hidden-xs hidden-sm"
-                                    uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                                    defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                                     ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
                             </button>
                             <button type="button"
                                     class="btn btn-default hidden-xs"
                                     ng-click="fullScreen()"
-                                    uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                                    defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </div>
                         <div class="btn-group hidden-xs">
                             <button type="button"
                                     class="btn btn-default"
                                     ng-click="toggleSelectableMultiple()"
-                                    uib-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
+                                    defer-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
                                 <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
                             </button>
                         </div>

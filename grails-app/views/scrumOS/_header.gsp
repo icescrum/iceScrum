@@ -44,7 +44,7 @@
                    ng-click="showAbout()"
                    href
                    tooltip-placement="right"
-                   uib-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
+                   defer-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
                 </a>
                 <ul ng-controller="mainMenuCtrl"
                     class="nav navbar-nav menubar"
@@ -55,7 +55,7 @@
                         <a uib-dropdown-toggle>
                             <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                                 <g:render template="/scrumOS/logo"/>
-                            </svg>&nbsp;<g:if test="${workspace}"><i tooltip-placement="bottom" uib-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
+                            </svg>&nbsp;<g:if test="${workspace}"><i tooltip-placement="bottom" defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
                                                                      ng-if="workspace.preferences && !workspace.preferences.hidden && authorized${workspace.name.capitalize()}('edit')"
                                                                      ng-click="show${workspace.name.capitalize()}EditModal(); $event.stopPropagation();" class="fa fa-eye">&nbsp;</i></g:if><g:if test="${workspace?.icon}"><i
                                 class="fa fa-${workspace.icon}"></i> <span class="text-ellipsis" title="{{ workspace.name }}">{{ workspace.name }}</span></g:if> <i class="fa fa-caret-down"></i>
@@ -177,7 +177,7 @@
                                 <a href
                                    hotkey="{'shift+i': showAbout}"
                                    hotkey-description="${message(code: 'is.ui.about')}"
-                                   uib-tooltip="(shift+i)"
+                                   defer-tooltip="(shift+i)"
                                    ng-click="showAbout()">
                                     ${message(code: 'is.ui.about')}
                                 </a>
@@ -272,7 +272,7 @@
                     <div class="navbar-fa navbar-home pull-left">
                         <a hotkey="{ 'shift+h': goToHome}"
                            hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
-                           uib-tooltip="${message(code: 'is.ui.home')} (shift+h)"
+                           defer-tooltip="${message(code: 'is.ui.home')} (shift+h)"
                            tooltip-placement="bottom"
                            ng-href="{{:: serverUrl }}">
                             <i class="fa fa-home"></i>
@@ -288,7 +288,7 @@
                             ng-show="!(currentUser.username)"
                             class="btn btn-default"
                             ng-click="showAuthModal()"
-                            uib-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
+                            defer-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
                             tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
                 </div>
             </div>

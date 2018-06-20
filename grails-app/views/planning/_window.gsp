@@ -45,13 +45,13 @@
                 <div class="btn-group">
                     <button type="button"
                             class="btn btn-default hidden-xs hidden-sm"
-                            uib-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                            defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                             ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
                     </button>
                     <button type="button"
                             class="btn btn-default hidden-xs"
                             ng-click="fullScreen()"
-                            uib-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
+                            defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
                 <div class="btn-group" role="group" ng-controller="releaseCtrl">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <a class="btn btn-default" ng-href="{{ openReleaseUrl(release) }}"
-                   uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                   defer-tooltip="${message(code: 'todo.is.ui.details')}">
                     <i class="fa fa-pencil"></i>
                 </a>
             </div>
@@ -87,8 +87,8 @@
                             <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                             <span class="sprint-numbers">
                                 <span ng-if="sprint.state > sprintStatesByName.TODO"
-                                      uib-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
-                                <span uib-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }} <i class="small-icon fa fa-dollar"></i></span>
+                                      defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
+                                <span defer-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }} <i class="small-icon fa fa-dollar"></i></span>
                             </span>
                         </span>
                     </div>
@@ -103,7 +103,7 @@
                             </div>
                         </div>
                         <a class="btn btn-default" href="{{ openSprintUrl(sprint) }}"
-                           uib-tooltip="${message(code: 'todo.is.ui.details')}">
+                           defer-tooltip="${message(code: 'todo.is.ui.details')}">
                             <i class="fa fa-pencil"></i>
                         </a>
                     </div>

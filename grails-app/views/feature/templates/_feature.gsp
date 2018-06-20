@@ -33,7 +33,7 @@
             </div>
             <div class="head-right">
                 <span class="value"
-                      uib-tooltip="${message(code: 'is.feature.value')}"
+                      defer-tooltip="${message(code: 'is.feature.value')}"
                       ng-if="::feature.value">
                     {{:: feature.value }} <i class="fa fa-line-chart"></i>
                 </span>

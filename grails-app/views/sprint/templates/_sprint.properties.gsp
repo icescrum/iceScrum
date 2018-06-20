@@ -102,7 +102,7 @@
                         </button>
                     </div>
                     <button class="btn btn-default btn-sm"
-                            uib-tooltip="${message(code: 'todo.is.ui.charts')}"
+                            defer-tooltip="${message(code: 'todo.is.ui.charts')}"
                             type="button"
                             uib-dropdown-toggle>
                         <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>

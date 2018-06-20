@@ -41,7 +41,7 @@
                 <div style="margin-bottom:10px">
                     <entry:point id="task-details-right-title"/>
                     <span ng-if="task.responsible"
-                          uib-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
+                          defer-tooltip="${message(code: 'is.task.responsible')} {{ task.responsible | userFullName }}">
                         <img ng-src="{{ task.responsible | userAvatar }}"
                              class="{{ task.responsible | userColorRoles }}"
                              alt="{{ task.responsible | userFullName }}"
@@ -54,7 +54,7 @@
                            tabindex="0"
                            hotkey="{'left': hotkeyClick}"
                            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+                           defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
                            href="{{:: currentStateUrl(previousTask.id) }}">
                             <i class="fa fa-caret-left"></i>
                         </a>
@@ -64,7 +64,7 @@
                            tabindex="0"
                            hotkey="{'right': hotkeyClick}"
                            hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                           uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+                           defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
                            href="{{:: currentStateUrl(nextTask.id) }}">
                             <i class="fa fa-caret-right"></i>
                         </a>

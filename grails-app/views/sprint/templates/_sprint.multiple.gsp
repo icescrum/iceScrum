@@ -30,7 +30,7 @@
             <div class="right-title">
                 <a class="btn btn-default"
                    href="{{:: $state.href('^') }}"
-                   uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+                   defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>
                 </a>
             </div>

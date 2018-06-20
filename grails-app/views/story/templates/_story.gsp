@@ -22,8 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="story.html">
-<div fast-tooltip
-     class="postit story"
+<div class="postit story"
      postit-color="{{:: story.feature.color }}"
      ng-class=":: [((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
@@ -32,7 +31,7 @@
                 <span class="id">{{:: story.uid }}</span>
                 <a href
                    class="follow {{:: story | followedByUser:'active' }}"
-                   fast-tooltip-el="{{:: story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
+                   defer-tooltip="{{:: story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
                    ng-click="follow(story)">
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star-o"></i>
@@ -44,12 +43,12 @@
                 <span class="value editable"
                       ng-click="showEditValueModal(story, $event)"
                       ng-if=":: story.value">
-                    {{:: story.value }} <i class="fa fa-line-chart" fast-tooltip-el="${message(code: 'is.story.value')}"></i>
+                    {{:: story.value }} <i class="fa fa-line-chart" defer-tooltip="${message(code: 'is.story.value')}"></i>
                 </span>
                 <span class="estimation editable"
                       ng-if=":: story.state > 1"
                       ng-click="showEditEffortModal(story, $event)">
-                    {{:: story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" fast-tooltip-el="${message(code: 'is.story.effort')}"></i>
+                    {{:: story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" defer-tooltip="${message(code: 'is.story.effort')}"></i>
                 </span>
             </div>
         </div>

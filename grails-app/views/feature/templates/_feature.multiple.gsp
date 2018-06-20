@@ -27,7 +27,7 @@
             ${message(code: "is.ui.feature")} ({{ features.length }})
             <a class="pull-right visible-on-hover btn btn-default"
                href="#/{{ ::viewName }}"
-               uib-tooltip="${message(code: 'is.ui.window.closeable')}">
+               defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
             </a>
         </h3>
@@ -65,12 +65,12 @@
                                     <div class="actions">
                                         <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
                                         <span class="action" ng-class="{'active':topFeature.attachments_count}">
-                                            <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                            <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                                 <i class="fa fa-paperclip"></i>
                                             </a>
                                         </span>
                                         <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                                            <a uib-tooltip="${message(code: 'todo.is.ui.stories')}">
+                                            <a defer-tooltip="${message(code: 'todo.is.ui.stories')}">
                                                 <i class="fa fa-tasks"></i>
                                                 <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
                                             </a>

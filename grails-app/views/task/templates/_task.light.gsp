@@ -33,7 +33,7 @@
                 <span class="remaining-time editable"
                       ng-if="task.estimation != 0"
                       ng-click="showEditEstimationModal(task, $event)"
-                      uib-tooltip="${message(code: 'is.task.estimation')}">
+                      defer-tooltip="${message(code: 'is.task.estimation')}">
                     {{ task.estimation != undefined ? task.estimation : '?' }} <i class="fa {{ task.state | taskStateIcon }}"></i>
                 </span>
             </div>
@@ -47,7 +47,7 @@
             </div>
             <div class="actions">
                 <span class="action" ng-class="{'active':task.attachments_count}">
-                    <span uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                    <span defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                         <a href="{{ link }}">
                             <i class="fa fa-paperclip"></i>
                             <span class="badge">{{ task.attachments_count || '' }}</span>
@@ -55,7 +55,7 @@
                     </span>
                 </span>
                 <span class="action" ng-class="{'active':task.comments_count}">
-                    <span uib-tooltip="${message(code: 'todo.is.ui.comments')}">
+                    <span defer-tooltip="${message(code: 'todo.is.ui.comments')}">
                         <a href="{{ link }}">
                             <i class="fa" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
                             <span class="badge">{{ task.comments_count || '' }}</span>

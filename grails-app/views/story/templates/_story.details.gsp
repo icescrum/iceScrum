@@ -34,7 +34,7 @@
             <div class="left-title">
                 <i class="fa fa-sticky-note" ng-style="{color: story.feature ? story.feature.color : '#f9f157'}"></i>
                 <strong>{{ ::story.uid }}</strong>
-                <span uib-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
+                <span defer-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
                       ng-click="follow(story)">
                     <i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i>
                 </span>
@@ -46,7 +46,7 @@
             <div class="right-title">
                 <div style="margin-bottom:10px" class="buttons-margin-bottom">
                     <entry:point id="story-details-right-title"/>
-                    <span uib-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
+                    <span defer-tooltip="${message(code: 'is.story.creator')} {{ story.creator | userFullName }}">
                         <img ng-src="{{ story.creator | userAvatar }}" alt="{{ story.creator | userFullName }}" class="{{ story.creator | userColorRoles }}"
                              height="30px"/>
                     </span>
@@ -56,7 +56,7 @@
                        tabindex="0"
                        hotkey="{'left': hotkeyClick}"
                        hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                       uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
+                       defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
                        href="{{ currentStateUrl(previousStory().id) }}">
                         <i class="fa fa-caret-left"></i>
                     </a>
@@ -66,7 +66,7 @@
                        tabindex="0"
                        hotkey="{'right': hotkeyClick}"
                        hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                       uib-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
+                       defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
                        href="{{ currentStateUrl(nextStory().id) }}">
                         <i class="fa fa-caret-right"></i>
                     </a>
@@ -76,7 +76,7 @@
                        tabindex="0"
                        hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
                        hotkey-description="${message(code: 'is.ui.window.focus')}"
-                       uib-tooltip="${message(code: 'is.ui.window.focus')} (↑)">
+                       defer-tooltip="${message(code: 'is.ui.window.focus')} (↑)">
                         <i class="fa fa-expand"></i>
                     </a>
                     <a class="btn btn-default expandable"
@@ -85,7 +85,7 @@
                        tabindex="0"
                        hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
                        hotkey-description="${message(code: 'is.ui.window.unfocus')}"
-                       uib-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)">
+                       defer-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)">
                         <i class="fa fa-compress"></i>
                     </a>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
@@ -126,7 +126,7 @@
                 <li role="presentation"
                     class="hidden-sm"
                     ng-if="!application.focusedDetailsView"
-                    uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
+                    defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                     ng-class="getAcceptanceTestClass(story)">
                     <a href="{{ tabUrl('tests') }}">
                         <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests.short')} {{ story.acceptanceTests_count | parens }}
@@ -147,7 +147,7 @@
                     <ul class="dropdown-menu dropdown-more dropdown-menu-right">
                         <li role="presentation"
                             class="visible-sm-block"
-                            uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
+                            defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                             ng-class="getAcceptanceTestClass(story)">
                             <a href="{{ tabUrl('tests') }}">
                                 <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}

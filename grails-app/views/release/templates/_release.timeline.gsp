@@ -22,7 +22,7 @@
 --}%
 <script type="text/ng-template" id="release.timeline.html">
 <uib-progress class="form-control-static form-bar"
-              uib-tooltip="{{ release.name }}"
+              defer-tooltip="{{ release.name }}"
               max="release.duration">
     <uib-bar ng-repeat="sprint in releaseParts"
              class="{{ $last ? 'last-bar' : '' }}"
@@ -38,7 +38,7 @@
 </script>
 <script type="text/ng-template" id="release.timeline.href.html">
 <uib-progress class="form-control-static form-bar"
-              uib-tooltip="{{ release.name }}"
+              defer-tooltip="{{ release.name }}"
               max="release.duration">
     <a href="{{ sprint.id ? openSprintUrl(sprint) : '' }}"
        ng-class="{'disabled-link':!sprint.id}"

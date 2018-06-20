@@ -62,23 +62,23 @@
                             </div>
                             <div class="actions">
                                 <span class="action">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                    <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
                                         <i class="fa fa-paperclip"></i>
                                     </a>
                                 </span>
                                 <span class="action">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.comments')}">
+                                    <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
                                         <i class="fa fa-comment"></i>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                    <a defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
                                         <i class="fa fa-tasks"></i>
                                         <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
                                     </a>
                                 </span>
                                 <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                                    <a uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                                    <a defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
                                         <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
                                         <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
                                     </a>
@@ -147,7 +147,7 @@
                 <div class="btn-toolbar pull-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.storyForm.$invalid || application.submitting"
-                            uib-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
+                            defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"
                             hotkey="{'shift+return': hotkeyClick }"
                             hotkey-allow-in="INPUT"
                             hotkey-description="${message(code: 'todo.is.ui.create.and.continue')}"
