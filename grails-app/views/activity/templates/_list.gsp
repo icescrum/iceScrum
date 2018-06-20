@@ -36,7 +36,7 @@
                 <div>{{groupedActivity.poster | userFullName}}</div>
                 <ul>
                     <li ng-repeat="activity in groupedActivity.activities">
-                        <span uib-tooltip="{{:: activity.dateCreated | dateTime }}">{{:: activity.text }}</span>
+                        <span defer-tooltip="{{:: activity.dateCreated | dateTime }}">{{:: activity.text }}</span>
                         <a ng-if="activity.onClick !== undefined"
                            ng-click="activity.onClick()"
                            href>

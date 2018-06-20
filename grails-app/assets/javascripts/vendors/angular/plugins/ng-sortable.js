@@ -37,7 +37,8 @@
             placeHolderClass: 'as-sortable-placeholder',
             dragClass: 'as-sortable-drag',
             hiddenClass: 'as-sortable-hidden',
-            dragging: 'as-sortable-dragging'
+            dragging: 'as-sortable-dragging',
+            throttle: 50
         });
 }());
 
@@ -141,8 +142,9 @@
                  */
                 positionStarted: function(event, target, scrollableContainer) {
                     var pos = {};
-                    pos.offsetX = event.pageX - this.offset(target, scrollableContainer).left;
-                    pos.offsetY = event.pageY - this.offset(target, scrollableContainer).top;
+                    var offset = this.offset(target, scrollableContainer);
+                    pos.offsetX = event.pageX - offset.left;
+                    pos.offsetY = event.pageY - offset.top;
                     pos.startX = pos.lastX = event.pageX;
                     pos.startY = pos.lastY = event.pageY;
                     pos.nowX = pos.nowY = pos.distX = pos.distY = pos.dirAx = 0;
@@ -218,6 +220,7 @@
 
                     if (container) {
                         bounds = this.offset(container, scrollableContainer);
+                        var offset = this.offset(element);
 
                         if (useRelative) {
                             // reduce positioning by bounds
@@ -231,13 +234,13 @@
 
                         if (element.x < bounds.left) {
                             element.x = bounds.left;
-                        } else if (element.x >= bounds.width + bounds.left - this.offset(element).width) {
-                            element.x = bounds.width + bounds.left - this.offset(element).width;
+                        } else if (element.x >= bounds.width + bounds.left - offset.width) {
+                            element.x = bounds.width + bounds.left - offset.width;
                         }
                         if (element.y < bounds.top) {
                             element.y = bounds.top;
-                        } else if (element.y >= bounds.height + bounds.top - this.offset(element).height) {
-                            element.y = bounds.height + bounds.top - this.offset(element).height;
+                        } else if (element.y >= bounds.height + bounds.top - offset.height) {
+                            element.y = bounds.height + bounds.top - offset.height;
                         }
                     }
 
@@ -441,8 +444,8 @@
      * Sets modelValue, callbacks, element in scope.
      * sortOptions also includes a longTouch option which activates longTouch when set to true (default is false).
      */
-    mainModule.directive('asSortable',
-        function() {
+    mainModule.directive('asSortable', ['sortableConfig',
+        function(sortableConfig) {
             return {
                 require: 'ngModel', // get a hold of NgModelController
                 restrict: 'A',
@@ -464,6 +467,14 @@
                     };
                     //set the element in scope to be accessed by its sub scope.
                     scope.element = element;
+
+                    element.on('mouseenter', _.throttle(function() {
+                        element.addClass('sortable-container-over');
+                    }, sortableConfig.throttle));
+                    element.on('mouseleave', _.throttle(function() {
+                        element.removeClass('sortable-container-over');
+                    }, sortableConfig.throttle));
+
                     element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
 
                     callbacks = {accept: null, orderChanged: null, itemMoved: null, dragStart: null, dragMove: null, dragCancel: null, dragEnd: null};
@@ -554,7 +565,7 @@
                     }
                 }
             };
-        });
+        }]);
 
 }());
 
@@ -595,8 +606,8 @@
     /**
      * Directive for sortable item handle.
      */
-    mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document', '$timeout', '$interval',
-        function(sortableConfig, $helper, $window, $document, $timeout, $interval) {
+    mainModule.directive('asSortableItemHandle', ['sortableConfig', '$helper', '$window', '$document', '$timeout', '$interval', '$rootScope',
+        function(sortableConfig, $helper, $window, $document, $timeout, $interval, $rootScope) {
             return {
                 // require: '^asSortableItem', CUSTOM: disabled to use soft return instead of throwing error
                 scope: true,
@@ -639,7 +650,7 @@
                         isPlaceHolderPresent,//is placeholder present.
                         isDisabled = false, // drag enabled
                         escapeListen, // escape listen event
-                    // CUSTOM
+                        // CUSTOM
                         // checking if dragMove callback exists, to prevent application
                         // rerenderings on each mouse move event
                         scrollSpeed = 0,
@@ -652,7 +663,7 @@
                                 scheduledScroll = null;
                             }
                         },
-                    // END CUSTOM
+                        // END CUSTOM
                         isLongTouch = false; //long touch disabled.
 
                     hasTouch = 'ontouchstart' in $window;
@@ -744,7 +755,7 @@
                      * @param event the event object.
                      */
                     dragStart = function(event) {
-
+                        $rootScope.application.dragging = true;
                         var eventObj, tagName;
 
                         if (!hasTouch && (event.button === 2 || event.which === 3)) {
@@ -903,7 +914,7 @@
                      */
                     dragMove = function(event) {
 
-                        var eventObj, targetX, targetY, targetScope, targetElement;
+                        var eventObj, targetY, targetScope, targetElement;
 
                         if (hasTouch && $helper.isTouchInvalid(event)) {
                             return;
@@ -917,16 +928,18 @@
                             event.preventDefault();
 
                             eventObj = $helper.eventObj(event);
-
+                            targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
+                            targetElement = angular.element('.sortable-item-over, .sortable-container-over:not(.as-sortable-drag)');
+                            if (targetElement && targetElement.length > 1) {
+                                targetElement = angular.element(_.find(targetElement, function(targetElement) { return targetElement.className.indexOf('sortable-item-over') > 0}));
+                            }
                             // CUSTOM
                             if (eventObj) {
                                 // This HORRIBLE SOUP isolated in a private function gets the dest panel body and stores it in a captured variable.
                                 // There may be a better way but it is the way ng-sortable does it
                                 (function(eventObj) {
-                                    var destX = eventObj.pageX - $document[0].documentElement.scrollLeft;
-                                    var destY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
-                                    $document[0].elementFromPoint(destX, destY); // This is done twice on purpose, ng-sortable does it like that (don't know why though...)
-                                    var destElement = angular.element($document[0].elementFromPoint(destX, destY)); // Gets the DOM element under the cursor
+                                    var destElement = angular.element(targetElement);
+
                                     function fetchScope(element) {
                                         var scope;
                                         while (!scope && element.length) {
@@ -946,7 +959,6 @@
                                 // Retrieve scrollable container, very likely stored during a previous move, and scroll if needed (for the moment scroll occurs only when moving)
                                 if (destScrollableContainer) {
                                     var marginAroundCursor = 30;
-                                    var targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
                                     var containerRect = destScrollableContainer.getBoundingClientRect();
                                     var topDifference = containerRect.top - targetY + marginAroundCursor;
                                     var bottomDifference = containerRect.bottom - targetY - marginAroundCursor;
@@ -981,12 +993,8 @@
                                 });
                             }
 
-                            targetX = eventObj.pageX - $document[0].documentElement.scrollLeft;
-                            targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
-
                             //IE fixes: hide show element, call element from point twice to return pick correct element.
                             dragElement.addClass(sortableConfig.hiddenClass);
-                            targetElement = angular.element($document[0].elementFromPoint(targetX, targetY));
                             dragElement.removeClass(sortableConfig.hiddenClass);
 
                             $helper.movePosition(eventObj, dragElement, itemPosition, containment, containerPositioning, scrollableContainer);
@@ -1114,6 +1122,7 @@
                      * @param event - the event object.
                      */
                     dragEnd = function(event) {
+                        $rootScope.application.dragging = false;
                         // Ignore event if not handled
                         if (!dragHandled) {
                             return;
@@ -1231,11 +1240,12 @@
                     /**
                      * Binds the events based on the actions.
                      */
+                    var dragMoveThrottled = _.throttle(dragMove, sortableConfig.throttle);
                     bindEvents = function() {
-                        angular.element($document).bind('touchmove', dragMove);
+                        angular.element($document).bind('touchmove', dragMoveThrottled);
                         angular.element($document).bind('touchend', dragEnd);
                         angular.element($document).bind('touchcancel', dragCancel);
-                        angular.element($document).bind('mousemove', dragMove);
+                        angular.element($document).bind('mousemove', dragMoveThrottled);
                         angular.element($document).bind('mouseup', dragEnd);
                     };
 
@@ -1245,9 +1255,9 @@
                     unBindEvents = function() {
                         angular.element($document).unbind('touchend', dragEnd);
                         angular.element($document).unbind('touchcancel', dragCancel);
-                        angular.element($document).unbind('touchmove', dragMove);
+                        angular.element($document).unbind('touchmove', dragMoveThrottled);
                         angular.element($document).unbind('mouseup', dragEnd);
-                        angular.element($document).unbind('mousemove', dragMove);
+                        angular.element($document).unbind('mousemove', dragMoveThrottled);
                     };
                 }
             };
@@ -1319,6 +1329,12 @@
                         scope.modelValue = sortableController.scope.modelValue[scope.$index];
                     }
                     scope.element = element;
+                    element.on('mouseenter', _.throttle(function() {
+                        element.addClass('sortable-item-over');
+                    }, sortableConfig.throttle));
+                    element.on('mouseleave', _.throttle(function() {
+                        element.removeClass('sortable-item-over');
+                    }, sortableConfig.throttle));
                     element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
                 }
             };
