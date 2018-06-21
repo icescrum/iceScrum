@@ -149,10 +149,9 @@
     <script type="text/ng-template" id="menuitem.item.html">
     <a hotkey="{ '{{ menu.shortcut }}' : hotkeyClick }"
        hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
-       defer-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
-       tooltip-placement="bottom"
        href="#/{{ menu.id }}">
-        <i class="fa fa-lg" ng-class="'fa-' + menu.icon" as-sortable-item-handle></i> <span class="title hidden-sm">{{ menu.title }}</span>
+        <i class="fa fa-lg" ng-class="'fa-' + menu.icon" as-sortable-item-handle></i> <span defer-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
+                                                                                            tooltip-placement="bottom" class="title hidden-sm">{{ menu.title }}</span>
     </a>
     </script>
 
@@ -244,10 +243,8 @@
         <div class="states">
             <div ng-repeat="state in states" class="progress-bar state {{ state.class }}"
                  ng-class="{'state-completed': state.completed, 'state-current': state.current}"
-                 tooltip-placement="left"
-                 defer-tooltip="{{ state.tooltip  }}"
                  ng-style="{width: state.width + '%'}">
-                <span class="state-name">{{ state.name }}</span>
+                <span class="state-name" tooltip-placement="left" defer-tooltip="{{ state.tooltip  }}">{{ state.name }}</span>
             </div>
         </div>
     </div>

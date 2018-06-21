@@ -38,7 +38,7 @@
 </script>
 <script type="text/ng-template" id="release.timeline.href.html">
 <uib-progress class="form-control-static form-bar"
-              defer-tooltip="{{ release.name }}"
+              uib-tooltip="{{ release.name }}"
               max="release.duration">
     <a href="{{ sprint.id ? openSprintUrl(sprint) : '' }}"
        ng-class="{'disabled-link':!sprint.id}"

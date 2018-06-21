@@ -57,18 +57,18 @@
         function($document, $window) {
             return {
 
-                elemsWithBoundingCached:[],
+                elemsWithBoundingCached: [],
 
-                cleanCache: function(){
-                    _.forEach(this.elemsWithDimensionCached, function(elem){
+                cleanCache: function() {
+                    _.forEach(this.elemsWithDimensionCached, function(elem) {
                         elem._bounding = null;
                     });
                     this.elemsWithDimensionCached = [];
                 },
 
-                boundingClient:function(element){
-                    if(!element._bounding){
-                        if(this.elemsWithBoundingCached.length > 0 && element.className.indexOf("postit") >= 0 && this.elemsWithBoundingCached[0].className.indexOf("postit") >= 0){
+                boundingClient: function(element) {
+                    if (!element._bounding) {
+                        if (this.elemsWithBoundingCached.length > 0 && element.className.indexOf("postit") >= 0 && this.elemsWithBoundingCached[0].className.indexOf("postit") >= 0) {
                             element._bounding = this.elemsWithBoundingCached[0]._bounding;
                         } else {
                             element._bounding = element.getBoundingClientRect();
@@ -240,6 +240,7 @@
 
                     if (container) {
                         bounds = this.boundingClient(container[0]);
+                        bounds = {top: bounds.top, left: bounds.left, width: bounds.width, height: bounds.height};
                         if (useRelative) {
                             // reduce positioning by bounds
                             element.x -= bounds.left;
@@ -462,8 +463,8 @@
      * Sets modelValue, callbacks, element in scope.
      * sortOptions also includes a longTouch option which activates longTouch when set to true (default is false).
      */
-    mainModule.directive('asSortable', ['sortableConfig',
-        function(sortableConfig) {
+    mainModule.directive('asSortable', ['sortableConfig', '$rootScope',
+        function(sortableConfig, $rootScope) {
             return {
                 require: 'ngModel', // get a hold of NgModelController
                 restrict: 'A',
@@ -487,7 +488,9 @@
                     scope.element = element;
 
                     element.on('mouseenter', _.throttle(function() {
-                        element.addClass('sortable-container-over');
+                        if ($rootScope.application.dragging) {
+                            element.addClass('sortable-container-over');
+                        }
                     }, sortableConfig.throttle));
                     element.on('mouseleave', _.throttle(function() {
                         element.removeClass('sortable-container-over');
@@ -1041,7 +1044,7 @@
                                     return;
                                 }
 
-                                var placeholderIndex = placeHolderIndex(targetScope.sortableScope.element);
+                                var placeholderIndex = targetElement.index() - 1;
                                 if (placeholderIndex < 0) {
                                     insertBefore(targetElement, targetScope);
                                 } else {
@@ -1113,7 +1116,7 @@
                     /**
                      * Check there is no place holder placed by itemScope.
                      * @param targetElement the target element to check with.
-                     * @returns {*} true if place holder present.
+                     * @returns {*} true if place holder present. //TODO REMOVE
                      */
                     isPlaceHolderPresent = function(targetElement) {
                         return placeHolderIndex(targetElement) >= 0;
@@ -1330,8 +1333,8 @@
     /**
      * sortableItem directive.
      */
-    mainModule.directive('asSortableItem', ['sortableConfig',
-        function(sortableConfig) {
+    mainModule.directive('asSortableItem', ['sortableConfig', '$rootScope',
+        function(sortableConfig, $rootScope) {
             return {
                 require: ['^asSortable', '?ngModel'],
                 restrict: 'A',
@@ -1351,8 +1354,10 @@
                         scope.modelValue = sortableController.scope.modelValue[scope.$index];
                     }
                     scope.element = element;
-                    element.on('mouseenter', _.throttle(function() {
-                        element.addClass('sortable-item-over');
+                    element.on('mouseenter', _.throttle(function(e) {
+                        if ($rootScope.application.dragging) {
+                            element.addClass('sortable-item-over');
+                        }
                     }, sortableConfig.throttle));
                     element.on('mouseleave', _.throttle(function() {
                         element.removeClass('sortable-item-over');
