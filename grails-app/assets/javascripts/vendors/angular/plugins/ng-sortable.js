@@ -57,6 +57,26 @@
         function($document, $window) {
             return {
 
+                elemsWithBoundingCached:[],
+
+                cleanCache: function(){
+                    _.forEach(this.elemsWithDimensionCached, function(elem){
+                        elem._bounding = null;
+                    });
+                    this.elemsWithDimensionCached = [];
+                },
+
+                boundingClient:function(element){
+                    if(!element._bounding){
+                        if(this.elemsWithBoundingCached.length > 0 && element.className.indexOf("postit") >= 0 && this.elemsWithBoundingCached[0].className.indexOf("postit") >= 0){
+                            element._bounding = this.elemsWithBoundingCached[0]._bounding;
+                        } else {
+                            element._bounding = element.getBoundingClientRect();
+                        }
+                        this.elemsWithBoundingCached.push(element);
+                    }
+                    return element._bounding;
+                },
                 /**
                  * Get the height of an element.
                  *
@@ -64,7 +84,7 @@
                  * @returns {String} Height
                  */
                 height: function(element) {
-                    return element[0].getBoundingClientRect().height;
+                    return this.boundingClient(element[0]).height;
                 },
 
                 /**
@@ -74,7 +94,7 @@
                  * @returns {String} Width
                  */
                 width: function(element) {
-                    return element[0].getBoundingClientRect().width;
+                    return this.boundingClient(element[0]).width;
                 },
 
                 /**
@@ -82,14 +102,14 @@
                  *
                  * @param {Object} element Angular element.
                  * @param {Object} [scrollableContainer] Scrollable container object for calculating relative top & left (optional, defaults to Document)
+                 * @param {Object} cache position.
                  * @returns {Object} Object with properties width, height, top and left
                  */
-                offset: function(element, scrollableContainer) {
-                    var boundingClientRect = element[0].getBoundingClientRect();
+                offset: function(element, scrollableContainer, cache) {
+                    var boundingClientRect = cache ? this.boundingClient(element[0]) : element[0].getBoundingClientRect();
                     if (!scrollableContainer) {
                         scrollableContainer = $document[0].documentElement;
                     }
-
                     return {
                         width: boundingClientRect.width || element.prop('offsetWidth'),
                         height: boundingClientRect.height || element.prop('offsetHeight'),
@@ -142,7 +162,7 @@
                  */
                 positionStarted: function(event, target, scrollableContainer) {
                     var pos = {};
-                    var offset = this.offset(target, scrollableContainer);
+                    var offset = this.offset(target, scrollableContainer, false);
                     pos.offsetX = event.pageX - offset.left;
                     pos.offsetY = event.pageY - offset.top;
                     pos.startX = pos.lastX = event.pageX;
@@ -219,9 +239,7 @@
                     element.y = event.pageY - pos.offsetY;
 
                     if (container) {
-                        bounds = this.offset(container, scrollableContainer);
-                        var offset = this.offset(element);
-
+                        bounds = this.boundingClient(container[0]);
                         if (useRelative) {
                             // reduce positioning by bounds
                             element.x -= bounds.left;
@@ -234,13 +252,13 @@
 
                         if (element.x < bounds.left) {
                             element.x = bounds.left;
-                        } else if (element.x >= bounds.width + bounds.left - offset.width) {
-                            element.x = bounds.width + bounds.left - offset.width;
+                        } else if (element.x >= bounds.width + bounds.left - this.width(element).width) {
+                            element.x = bounds.width + bounds.left - this.width(element).width;
                         }
                         if (element.y < bounds.top) {
                             element.y = bounds.top;
-                        } else if (element.y >= bounds.height + bounds.top - offset.height) {
-                            element.y = bounds.height + bounds.top - offset.height;
+                        } else if (element.y >= bounds.height + bounds.top - this.width(element).height) {
+                            element.y = bounds.height + bounds.top - this.width(element).height;
                         }
                     }
 
@@ -755,9 +773,6 @@
                      * @param event the event object.
                      */
                     dragStart = function(event) {
-                        $rootScope.application.dragging = true;
-                        angular.element('.sortable-item-over, .sortable-container-over:not(.as-sortable-drag)')
-                            .removeClass('sortable-item-over sortable-container-over');
                         var eventObj, tagName;
 
                         if (!hasTouch && (event.button === 2 || event.which === 3)) {
@@ -961,7 +976,7 @@
                                 // Retrieve scrollable container, very likely stored during a previous move, and scroll if needed (for the moment scroll occurs only when moving)
                                 if (destScrollableContainer) {
                                     var marginAroundCursor = 30;
-                                    var containerRect = destScrollableContainer.getBoundingClientRect();
+                                    var containerRect = $helper.boundingClient(destScrollableContainer);
                                     var topDifference = containerRect.top - targetY + marginAroundCursor;
                                     var bottomDifference = containerRect.bottom - targetY - marginAroundCursor;
                                     var cursorUpperThanPanel = topDifference > 0;
@@ -1021,7 +1036,7 @@
                                 targetElement = targetScope.element;
 
                                 // Fix #241 Drag and drop have trembling with blocks of different size
-                                var targetElementOffset = $helper.offset(targetElement, scrollableContainer);
+                                var targetElementOffset = $helper.offset(targetElement, scrollableContainer, true);
                                 if (!dragItemInfo.canMove(itemPosition, targetElement, targetElementOffset)) {
                                     return;
                                 }
@@ -1036,6 +1051,8 @@
                                         insertBefore(targetElement, targetScope);
                                     }
                                 }
+                            } else {
+                                targetElement.removeClass('sortable-item-over sortable-container-over');
                             }
 
                             if (targetScope.type === 'sortable') {//sortable scope.
@@ -1124,7 +1141,6 @@
                      * @param event - the event object.
                      */
                     dragEnd = function(event) {
-                        $rootScope.application.dragging = false;
                         // Ignore event if not handled
                         if (!dragHandled) {
                             return;
@@ -1244,6 +1260,7 @@
                      */
                     var dragMoveThrottled = _.throttle(dragMove, sortableConfig.throttle);
                     bindEvents = function() {
+                        $rootScope.application.dragging = true;
                         angular.element($document).bind('touchmove', dragMoveThrottled);
                         angular.element($document).bind('touchend', dragEnd);
                         angular.element($document).bind('touchcancel', dragCancel);
@@ -1255,6 +1272,9 @@
                      * Un binds the events for drag support.
                      */
                     unBindEvents = function() {
+                        $rootScope.application.dragging = false;
+                        angular.element('.sortable-item-over, .sortable-container-over:not(.as-sortable-drag)')
+                            .removeClass('sortable-item-over sortable-container-over');
                         angular.element($document).unbind('touchend', dragEnd);
                         angular.element($document).unbind('touchcancel', dragCancel);
                         angular.element($document).unbind('touchmove', dragMoveThrottled);
