@@ -54,12 +54,15 @@ services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Com
         }).$promise;
     };
     this.list = function(commentable, projectId) {
-        if (_.isEmpty(commentable.comments)) {
+        if (_.isEmpty(commentable.comments) && commentable.comments_count > 0) {
             return Comment.query({projectId: projectId, typeId: commentable.id, type: commentable.class.toLowerCase()}, function(data) {
                 commentable.comments = data;
                 commentable.comments_count = commentable.comments.length;
             }).$promise;
         } else {
+            if(!angular.isArray(commentable.comments)){
+                commentable.comments = []
+            }
             return $q.when(commentable.comments);
         }
     };

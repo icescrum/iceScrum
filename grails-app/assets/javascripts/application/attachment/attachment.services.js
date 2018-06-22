@@ -57,12 +57,15 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
         }
     };
     this.list = function(attachmentable, projectId) {
-        if (_.isEmpty(attachmentable.attachments)) {
+        if (_.isEmpty(attachmentable.attachments) && attachmentable.attachments_count > 0) {
             return Attachment.query({typeId: attachmentable.id, type: attachmentable.class.toLowerCase(), projectId: projectId}, function(data) {
                 attachmentable.attachments = data;
                 attachmentable.attachments_count = attachmentable.attachments.length;
             }).$promise;
         } else {
+            if(!angular.isArray(attachmentable.attachments)){
+                attachmentable.attachments = []
+            }
             return $q.when(attachmentable.attachments);
         }
     };

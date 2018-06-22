@@ -64,7 +64,7 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
     this.list = function(story) {
         // TODO use a global cache instead (don't forget to set appropriate sync to push count to story)
         // The code below registers listeners each time we access a story acceptance tests tab, this is bad !
-        if (_.isEmpty(story.acceptanceTests)) {
+        if (_.isEmpty(story.acceptanceTests) && story.acceptanceTests_count > 0) {
             return AcceptanceTest.query({projectId: story.backlog.id, storyId: story.id, type: 'story'}, function(data) {
                 story.acceptanceTests = data;
                 story.acceptanceTests_count = story.acceptanceTests.length;
@@ -74,6 +74,9 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
                 });
             }).$promise;
         } else {
+            if(!angular.isArray(story.acceptanceTests)){
+                story.acceptanceTests = []
+            }
             return $q.when(story.acceptanceTests);
         }
     };

@@ -101,7 +101,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         return self.update(editableTask, true);
     };
     this.list = function(taskContext, projectId) {
-        if (_.isEmpty(taskContext.tasks)) {
+        if (_.isEmpty(taskContext.tasks) && taskContext.tasks_count > 0) {
             var params = {projectId: projectId, typeId: taskContext.id, type: taskContext.class.toLowerCase()};
             if ($rootScope.application.context) {
                 _.merge(params, {'context.type': $rootScope.application.context.type, 'context.id': $rootScope.application.context.id});
@@ -123,6 +123,9 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 self.mergeTasks(tasks);
             }).$promise;
         } else {
+            if(!angular.isArray(taskContext.tasks)){
+                taskContext.tasks = []
+            }
             return $q.when(taskContext.tasks);
         }
     };
