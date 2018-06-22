@@ -38,7 +38,9 @@
             dragClass: 'as-sortable-drag',
             hiddenClass: 'as-sortable-hidden',
             dragging: 'as-sortable-dragging',
-            throttle: 50
+            throttle: 50,
+            elementsOver:[],
+            elementsBounding:[]
         });
 }());
 
@@ -53,27 +55,32 @@
     /**
      * Helper factory for sortable.
      */
-    mainModule.factory('$helper', ['$document', '$window',
-        function($document, $window) {
+    mainModule.factory('$helper', ['$document', '$window', 'sortableConfig',
+        function($document, $window, sortableConfig) {
             return {
-
-                elemsWithBoundingCached: [],
-
                 cleanCache: function() {
-                    _.forEach(this.elemsWithDimensionCached, function(elem) {
+                    _.forEach(sortableConfig.elementsBounding, function(elem) {
                         elem._bounding = null;
                     });
-                    this.elemsWithDimensionCached = [];
+                    sortableConfig.elementsBounding = [];
+                },
+
+                cleanStyles: function(el) {
+                    if(el){
+                        angular.element(el).removeClass('sortable-item-over sortable-container-over sortable-item-over-right sortable-item-over-left');
+                    } else{
+                        angular.element('.sortable-item-over, .sortable-container-over').removeClass('sortable-item-over sortable-container-over sortable-item-over-right sortable-item-over-left');
+                    }
                 },
 
                 boundingClient: function(element) {
                     if (!element._bounding) {
-                        if (this.elemsWithBoundingCached.length > 0 && element.className.indexOf("postit") >= 0 && this.elemsWithBoundingCached[0].className.indexOf("postit") >= 0) {
-                            element._bounding = this.elemsWithBoundingCached[0]._bounding;
+                        if (sortableConfig.elementsBounding.length > 0 && element.className.indexOf("postit") >= 0 && sortableConfig.elementsBounding[0].className.indexOf("postit") >= 0) {
+                            element._bounding = sortableConfig.elementsBounding[0]._bounding;
                         } else {
                             element._bounding = element.getBoundingClientRect();
                         }
-                        this.elemsWithBoundingCached.push(element);
+                        sortableConfig.elementsBounding.push(element);
                     }
                     return element._bounding;
                 },
@@ -296,7 +303,7 @@
                         },
                         canMove: function(itemPosition, targetElement, targetElementOffset) {
                             // return true if targetElement has been changed since last call
-                            if (this.targetElement !== targetElement) {
+                            if ( this.targetElement !== targetElement || (this.targetElement && this.targetElement[0].className === targetElement[0].className)) {
                                 this.targetElement = targetElement;
                                 this.targetElementOffset = targetElementOffset;
                                 return true;
@@ -489,6 +496,7 @@
 
                     element.on('mouseenter', _.throttle(function() {
                         if ($rootScope.application.dragging) {
+                            sortableConfig.elementsOver.push(element);
                             element.addClass('sortable-container-over');
                         }
                     }, sortableConfig.throttle));
@@ -933,7 +941,6 @@
                      * @param event - the event object.
                      */
                     dragMove = function(event) {
-
                         var eventObj, targetY, targetScope, targetElement;
 
                         if (hasTouch && $helper.isTouchInvalid(event)) {
@@ -949,9 +956,16 @@
 
                             eventObj = $helper.eventObj(event);
                             targetY = eventObj.pageY - ($window.pageYOffset || $document[0].documentElement.scrollTop);
-                            targetElement = angular.element('.sortable-item-over, .sortable-container-over:not(.as-sortable-drag)');
-                            if (targetElement && targetElement.length > 1) {
-                                targetElement = angular.element(_.find(targetElement, function(targetElement) { return targetElement.className.indexOf('sortable-item-over') > 0}));
+                            var targetElements = angular.element('.sortable-item-over, .sortable-container-over:not(.as-sortable-drag)');
+                            if (targetElements && targetElements.length > 1) { //it should not be the case but in case... xD
+                                targetElement = angular.element(_.find(targetElements, function(targetElement) { return targetElement.className.indexOf('sortable-item-over') > 0}));
+                                _.each(targetElements, function(el){
+                                    if(targetElement !== el){
+                                        $helper.cleanStyles(el);
+                                    }
+                                })
+                            } else {
+                                targetElement = targetElements;
                             }
                             // CUSTOM
                             if (eventObj) {
@@ -1043,19 +1057,13 @@
                                 if (!dragItemInfo.canMove(itemPosition, targetElement, targetElementOffset)) {
                                     return;
                                 }
-
-                                var placeholderIndex = targetElement.index() - 1;
-                                if (placeholderIndex < 0) {
-                                    insertBefore(targetElement, targetScope);
+                                if (targetElement.hasClass('sortable-item-over-right')) {
+                                    insertAfter(targetElement, targetScope);
                                 } else {
-                                    if (placeholderIndex <= targetScope.index()) {
-                                        insertAfter(targetElement, targetScope);
-                                    } else {
-                                        insertBefore(targetElement, targetScope);
-                                    }
+                                    insertBefore(targetElement, targetScope);
                                 }
                             } else {
-                                targetElement.removeClass('sortable-item-over sortable-container-over');
+                                $helper.cleanStyles();
                             }
 
                             if (targetScope.type === 'sortable') {//sortable scope.
@@ -1276,13 +1284,12 @@
                      */
                     unBindEvents = function() {
                         $rootScope.application.dragging = false;
-                        angular.element('.sortable-item-over, .sortable-container-over:not(.as-sortable-drag)')
-                            .removeClass('sortable-item-over sortable-container-over');
                         angular.element($document).unbind('touchend', dragEnd);
                         angular.element($document).unbind('touchcancel', dragCancel);
                         angular.element($document).unbind('touchmove', dragMoveThrottled);
                         angular.element($document).unbind('mouseup', dragEnd);
                         angular.element($document).unbind('mousemove', dragMoveThrottled);
+                        $helper.cleanStyles();
                     };
                 }
             };
@@ -1333,8 +1340,8 @@
     /**
      * sortableItem directive.
      */
-    mainModule.directive('asSortableItem', ['sortableConfig', '$rootScope',
-        function(sortableConfig, $rootScope) {
+    mainModule.directive('asSortableItem', ['sortableConfig', '$rootScope', '$helper',
+        function(sortableConfig, $rootScope, $helper) {
             return {
                 require: ['^asSortable', '?ngModel'],
                 restrict: 'A',
@@ -1354,13 +1361,17 @@
                         scope.modelValue = sortableController.scope.modelValue[scope.$index];
                     }
                     scope.element = element;
-                    element.on('mouseenter', _.throttle(function(e) {
+                    element.on('mousemove', _.throttle(function(e) {
                         if ($rootScope.application.dragging) {
-                            element.addClass('sortable-item-over');
+                            var offset = $helper.offset(element, null, false);
+                            var x = e.pageX - offset.left;
+                            var margin = offset.width * 10 / 100;
+                            $helper.cleanStyles();
+                            element.addClass('sortable-item-over sortable-item-over-' + (x + margin > ((offset.width / 2) - margin) ? 'right' : 'left'));
                         }
                     }, sortableConfig.throttle));
                     element.on('mouseleave', _.throttle(function() {
-                        element.removeClass('sortable-item-over');
+                        element.removeClass('sortable-item-over sortable-item-over-left sortable-item-over-right');
                     }, sortableConfig.throttle));
                     element.data('_scope', scope); // #144, work with angular debugInfoEnabled(false)
                 }
