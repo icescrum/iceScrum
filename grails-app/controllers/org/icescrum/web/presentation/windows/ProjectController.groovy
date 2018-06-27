@@ -123,6 +123,7 @@ class ProjectController implements ControllerErrorHandler {
                 entry.hook(id: 'project-team-save-before')
                 teamService.save(team, members, scrumMasters)
                 projectService.manageTeamInvitations(team, invitedMembers, invitedScrumMasters)
+                entry.hook(id: 'project-team-save')
             } else {
                 team = Team.withTeam(teamParams.long('id'))
             }
@@ -130,6 +131,7 @@ class ProjectController implements ControllerErrorHandler {
             def stakeHolders = projectParams.stakeHolders ? projectParams.stakeHolders.list('id').collect { it.toLong() } : []
             def invitedProductOwners = projectParams.invitedProductOwners ? projectParams.invitedProductOwners.list('email') : []
             def invitedStakeHolders = projectParams.invitedStakeHolders ? projectParams.invitedStakeHolders.list('email') : []
+            entry.hook(id: 'project-save-before')
             projectService.save(project, productOwners, stakeHolders)
             projectService.manageProjectInvitations(project, invitedProductOwners, invitedStakeHolders)
             projectService.addTeamToProject(project, team)
@@ -138,6 +140,7 @@ class ProjectController implements ControllerErrorHandler {
                 releaseService.save(release, project)
                 sprintService.generateSprints(release, projectParams.firstSprint)
             }
+            entry.hook(id: 'project-save')
         }
         flash.showAppStore = true
         render(status: 201, contentType: 'application/json', text: project as JSON)
@@ -155,6 +158,7 @@ class ProjectController implements ControllerErrorHandler {
             if (!projectPreferencesParams?.stakeHolderRestrictedViews) {
                 _project.preferences.stakeHolderRestrictedViews = null
             }
+            entry.hook(id: "project-update-before", model: [project: _project])
             projectService.update(_project, _project.preferences.isDirty('hidden'), _project.isDirty('pkey') ? _project.getPersistentValue('pkey') : null)
             entry.hook(id: "project-update", model: [project: _project])
             render(status: 200, contentType: 'application/json', text: _project as JSON)
@@ -189,6 +193,7 @@ class ProjectController implements ControllerErrorHandler {
         // Update project & team
         Project _project = Project.withProject(project)
         _project.withTransaction {
+            entry.hook(id: "projectTeam-update-before", model: [project: _project])
             def teamId = teamParams.id
             // Workaround but TODO fix UI => teamID can't be null
             if (teamId != null && teamId != _project.team.id) {
@@ -200,6 +205,7 @@ class ProjectController implements ControllerErrorHandler {
             }
             projectService.updateProjectMembers(_project, newMembers)
             projectService.manageProjectInvitations(_project, invitedProductOwners, invitedStakeHolders)
+            entry.hook(id: "projectTeam-update", model: [project: _project])
         }
         render(status: 200, contentType: 'application/json', text: _project as JSON)
     }

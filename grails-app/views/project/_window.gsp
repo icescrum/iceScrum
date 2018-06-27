@@ -46,11 +46,12 @@
                                 <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
                             </div>
                             <div class="col-md-4 text-right">
-                                <img ng-src="{{ user | userAvatar }}"
-                                     ng-repeat="user in allMembers"
-                                     height="36" width="36" style="margin-left:5px;"
-                                     class="{{ user | userColorRoles }}"
-                                     defer-tooltip="{{ user | userFullName }}"/>
+                                <span ng-repeat="user in allMembers">
+                                    <img ng-src="{{:: user | userAvatar }}"
+                                         height="36" width="36" style="margin-left:5px;"
+                                         class="{{:: user | userColorRoles }}"
+                                         defer-tooltip="{{:: user | userFullName }}"/>
+                                </span>
                                 <h5><i class="fa fa-users"></i> {{ project.team.name }}</h5>
                             </div>
                         </div>

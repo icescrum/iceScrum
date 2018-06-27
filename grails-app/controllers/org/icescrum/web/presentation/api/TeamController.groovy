@@ -50,6 +50,7 @@ class TeamController implements ControllerErrorHandler {
         Team.withTransaction {
             entry.hook(id: 'team-save-before')
             teamService.save(team, null, [springSecurityService.currentUser.id])
+            entry.hook(id: 'team-save')
             render(status: 201, text: team as JSON, contentType: 'application/json')
         }
     }
@@ -82,6 +83,7 @@ class TeamController implements ControllerErrorHandler {
         def invitedScrumMasters = teamParams.invitedScrumMasters ? teamParams.invitedScrumMasters.list('email') : []
         def newOwnerId = teamParams.owner?.id?.toLong()
         Team.withTransaction {
+            entry.hook(id: 'team-update-before')
             if (team.name != teamParams.name) {
                 team.name = teamParams.name
                 team.save()
@@ -95,6 +97,7 @@ class TeamController implements ControllerErrorHandler {
                     securityService.changeOwner(newOwner, project)
                 }
             }
+            entry.hook(id: 'team-update')
         }
         render(status: 200, text: team as JSON, contentType: 'application/json')
     }
