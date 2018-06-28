@@ -85,6 +85,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
                         feature: 'is.feature',
                         dependsOn: 'is.story.dependsOn',
                         effort: 'is.story.effort',
+                        estimation: 'is.task.estimation',
                         notes: 'is.backlogelement.notes',
                         description: 'is.backlogelement.description',
                         tags: 'is.backlogelement.tags'

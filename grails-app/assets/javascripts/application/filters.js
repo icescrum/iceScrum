@@ -315,7 +315,7 @@ filters
         return function(activity, hideType) {
             if (hideType) {
                 var code = activity.code == 'update' ? 'updateField' : activity.code;
-                return $rootScope.message('is.fluxiable.' + code);
+                return $rootScope.message('is.fluxiable.' + code, [activity.label]);
             } else {
                 var type = activity.parentType;
                 if (activity.code == 'acceptanceTestDelete') {
@@ -325,7 +325,7 @@ filters
                 } else if (activity.code == 'delete') {
                     type = 'story'
                 }
-                return $rootScope.message('is.fluxiable.' + activity.code) + ' ' + $rootScope.message('is.' + type);
+                return $rootScope.message('is.fluxiable.' + activity.code, [activity.label]) + ' ' + $rootScope.message('is.' + type);
             }
         };
     }])
