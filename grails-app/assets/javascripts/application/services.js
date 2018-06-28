@@ -284,6 +284,13 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             return response.data;
         });
     };
+    this.httpDelete = function(path, params, isAbsolute) {
+        var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
+        var paramObj = params || {};
+        return $http.delete(fullPath, paramObj).then(function(response) {
+            return response.data;
+        });
+    };
     this.httpPost = function(path, data, isAbsolute, params) {
         var fullPath = isAbsolute ? $rootScope.serverUrl + '/' + path : path;
         var paramObj = params || {
