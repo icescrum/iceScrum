@@ -101,7 +101,7 @@
                     <span class="input-group-btn">
                         <button class="btn btn-default"
                                 type="button"
-                                ng-click="editableTask.estimation = minus(editableTask.estimation);">
+                                ng-click="editForm(true); editableTask.estimation = minus(editableTask.estimation);">
                             <i class="fa fa-minus"></i>
                         </button>
                     </span>
@@ -115,7 +115,7 @@
                     <span class="input-group-btn">
                         <button class="btn btn-default"
                                 type="button"
-                                ng-click="editableTask.estimation = plus(editableTask.estimation);">
+                                ng-click="editForm(true); editableTask.estimation = plus(editableTask.estimation);">
                             <i class="fa fa-plus"></i>
                         </button>
                     </span>
