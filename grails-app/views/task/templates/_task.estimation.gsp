@@ -29,12 +29,28 @@
     <entry:point id="task-estimation-before"/>
     <div class="form-group">
         <label for="estimation">${message(code: 'is.task.estimation')}</label>
-        <input type="number"
-               class="form-control"
-               autofocus
-               name="estimation"
-               min="0"
-               ng-model="editableTask.estimation"/>
+        <div class="input-group minus-plus-group">
+            <span class="input-group-btn">
+                <button class="btn btn-default"
+                        type="button"
+                        ng-click="editableTask.estimation = minus(editableTask.estimation);">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </span>
+            <input type="number"
+                   class="form-control"
+                   autofocus
+                   name="estimation"
+                   min="0"
+                   ng-model="editableTask.estimation"/>
+            <span class="input-group-btn">
+                <button class="btn btn-default"
+                        type="button"
+                        ng-click="editableTask.estimation = plus(editableTask.estimation);">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </span>
+        </div>
     </div>
 </is:modal>
 </script>

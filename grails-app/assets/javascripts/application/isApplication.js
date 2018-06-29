@@ -652,6 +652,12 @@ var isApplication = angular.module('isApplication', [
             modal.result.then(callCloseCallback, callCloseCallback);
         };
         $rootScope.blurAndClick = FormService.blurAndClick;
+        $rootScope.plus = function(value) {
+            return value += 1;
+        };
+        $rootScope.minus = function(value) {
+            return value -= 1;
+        };
         $rootScope.alert = function(options) {
             $uibModal.open({
                 templateUrl: 'message.modal.html',

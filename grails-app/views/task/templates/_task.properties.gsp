@@ -95,15 +95,31 @@
             <div class="form-half">
                 <label for="estimation">
                     <i class="fa {{ task.state | taskStateIcon }}"></i> ${message(code: 'is.task.estimation')}
-                    <entry:point id="task-estimation-after-label"/>
+                <entry:point id="task-estimation-after-label"/>
                 </label>
-                <input type="number"
-                       min="0"
-                       class="form-control"
-                       ng-focus="editForm(true)"
-                       ng-disabled="!formEditable()"
-                       name="estimation"
-                       ng-model="editableTask.estimation"/>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="editableTask.estimation = minus(editableTask.estimation);">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </span>
+                    <input type="number"
+                           min="0"
+                           class="form-control"
+                           ng-focus="editForm(true)"
+                           ng-disabled="!formEditable()"
+                           name="estimation"
+                           ng-model="editableTask.estimation"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"
+                                type="button"
+                                ng-click="editableTask.estimation = plus(editableTask.estimation);">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </span>
+                </div>
             </div>
             <div ng-if="editableTask.initial != null" class="form-half">
                 <label for="initial">${message(code: 'is.task.initial.long')}</label>
