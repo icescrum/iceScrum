@@ -68,9 +68,8 @@
                 <g:if test="${formats}">
                     <div class="btn-group hidden-xs" uib-dropdown>
                         <button class="btn btn-default"
-                                defer-tooltip="${message(code: 'todo.is.ui.export')}"
                                 uib-dropdown-toggle type="button">
-                            <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
+                            <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i></span>
                         </button>
                         <ul uib-dropdown-menu
                             class="pull-right"

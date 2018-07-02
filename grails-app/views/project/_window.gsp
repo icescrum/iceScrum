@@ -179,10 +179,9 @@
                                     </button>
                                 </div>
                                 <button class="btn btn-default btn-sm"
-                                        defer-tooltip="${message(code: 'todo.is.ui.charts')}"
                                         type="button"
                                         uib-dropdown-toggle>
-                                    <i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i>
+                                    <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i></span>
                                 </button>
                                 <ul uib-dropdown-menu>
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>

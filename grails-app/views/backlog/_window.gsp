@@ -141,10 +141,9 @@
                                 <i class="fa fa-print"></i>
                             </button>
                             <button class="btn btn-default"
-                                    defer-tooltip="${message(code: 'todo.is.ui.export')}"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     uib-dropdown-toggle type="button">
-                                <i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i>
+                                <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i></span>
                             </button>
                             <ul uib-dropdown-menu
                                 class="pull-right"
