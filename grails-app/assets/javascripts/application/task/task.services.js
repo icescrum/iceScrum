@@ -123,7 +123,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
                 self.mergeTasks(tasks);
             }).$promise;
         } else {
-            if(!angular.isArray(taskContext.tasks)){
+            if (!angular.isArray(taskContext.tasks)) {
                 taskContext.tasks = []
             }
             return $q.when(taskContext.tasks);

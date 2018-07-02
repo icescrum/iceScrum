@@ -74,7 +74,7 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
                 });
             }).$promise;
         } else {
-            if(!angular.isArray(story.acceptanceTests)){
+            if (!angular.isArray(story.acceptanceTests)) {
                 story.acceptanceTests = []
             }
             return $q.when(story.acceptanceTests);

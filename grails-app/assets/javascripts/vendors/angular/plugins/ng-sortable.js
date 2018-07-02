@@ -39,8 +39,8 @@
             hiddenClass: 'as-sortable-hidden',
             dragging: 'as-sortable-dragging',
             throttle: 50,
-            elementsOver:[],
-            elementsBounding:[]
+            elementsOver: [],
+            elementsBounding: []
         });
 }());
 
@@ -66,9 +66,9 @@
                 },
 
                 cleanStyles: function(el) {
-                    if(el){
+                    if (el) {
                         angular.element(el).removeClass('sortable-item-over sortable-container-over sortable-item-over-right sortable-item-over-left');
-                    } else{
+                    } else {
                         angular.element('.sortable-item-over, .sortable-container-over').removeClass('sortable-item-over sortable-container-over sortable-item-over-right sortable-item-over-left');
                     }
                 },
@@ -303,7 +303,7 @@
                         },
                         canMove: function(itemPosition, targetElement, targetElementOffset) {
                             // return true if targetElement has been changed since last call
-                            if ( this.targetElement !== targetElement || (this.targetElement && this.targetElement[0].className === targetElement[0].className)) {
+                            if (this.targetElement !== targetElement || (this.targetElement && this.targetElement[0].className === targetElement[0].className)) {
                                 this.targetElement = targetElement;
                                 this.targetElementOffset = targetElementOffset;
                                 return true;
@@ -959,8 +959,8 @@
                             var targetElements = angular.element('.sortable-item-over, .sortable-container-over:not(.as-sortable-drag)');
                             if (targetElements && targetElements.length > 1) { //it should not be the case but in case... xD
                                 targetElement = angular.element(_.find(targetElements, function(targetElement) { return targetElement.className.indexOf('sortable-item-over') > 0}));
-                                _.each(targetElements, function(el){
-                                    if(targetElement !== el){
+                                _.each(targetElements, function(el) {
+                                    if (targetElement !== el) {
                                         $helper.cleanStyles(el);
                                     }
                                 })

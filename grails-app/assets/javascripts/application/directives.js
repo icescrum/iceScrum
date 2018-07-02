@@ -215,8 +215,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             scope.$watch(function() {
                 return scope.$eval(attrs.at); // Cannot use isolated scope (e.g. scope { at: '=' } because there is already an isolated scope on the element
             }, function(newOptions) {
-                element.one('focus', function(){
-                    if(element._atwho){
+                element.one('focus', function() {
+                    if (element._atwho) {
                         element.atwho('destroy');
                         element._atwho = null;
                     }

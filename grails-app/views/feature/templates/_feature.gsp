@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="feature.html">
 <div postit-color="{{:: feature.color }}"
      class="postit feature"
-     ng-class=":: [(feature.color | contrastColor), (feature.type | featureType)]" >
+     ng-class=":: [(feature.color | contrastColor), (feature.type | featureType)]">
     <div as-sortable-item-handle>
         <div class="head">
             <div class="head-left">

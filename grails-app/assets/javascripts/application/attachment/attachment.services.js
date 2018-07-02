@@ -63,7 +63,7 @@ services.service("AttachmentService", ['Attachment', 'Session', '$q', function(A
                 attachmentable.attachments_count = attachmentable.attachments.length;
             }).$promise;
         } else {
-            if(!angular.isArray(attachmentable.attachments)){
+            if (!angular.isArray(attachmentable.attachments)) {
                 attachmentable.attachments = []
             }
             return $q.when(attachmentable.attachments);

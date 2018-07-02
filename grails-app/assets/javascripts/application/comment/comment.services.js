@@ -60,7 +60,7 @@ services.service("CommentService", ['$q', 'Comment', 'Session', function($q, Com
                 commentable.comments_count = commentable.comments.length;
             }).$promise;
         } else {
-            if(!angular.isArray(commentable.comments)){
+            if (!angular.isArray(commentable.comments)) {
                 commentable.comments = []
             }
             return $q.when(commentable.comments);
