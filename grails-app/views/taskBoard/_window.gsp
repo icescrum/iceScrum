@@ -99,8 +99,10 @@
                             <button class="btn btn-default"
                                     uib-dropdown-toggle
                                     type="button">
-                                <span defer-tooltip="${message(code: 'todo.is.ui.filters')}"><span>{{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}</span>
-                                    <i class="fa fa-caret-down"></i></span>
+                                <span defer-tooltip="${message(code: 'todo.is.ui.filters')}">
+                                    <span>{{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}</span>
+                                    <i class="fa fa-caret-down"></i>
+                                </span>
                             </button>
                             <ul uib-dropdown-menu role="menu">
                                 <li role="menuitem"
