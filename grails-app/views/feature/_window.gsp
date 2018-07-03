@@ -154,7 +154,7 @@
                      is-disabled="!isSortingFeature()"
                      ng-model="features">
                     <div is-watch="feature"
-                         ng-class="::{ 'is-selected': isSelected(feature) }"
+                         ng-class="{ 'is-selected': isSelected(feature) }"
                          selectable-id="{{ ::feature.id }}"
                          as-sortable-item
                          ng-repeat="feature in features | search | orderBy:orderBy.current.id:orderBy.reverse"
