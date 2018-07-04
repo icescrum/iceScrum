@@ -359,7 +359,7 @@ class StoryController implements ControllerErrorHandler {
     @Secured(['productOwner() and !archivedProject()'])
     def turnIntoFeature() {
         def stories = Story.withStories(params)?.reverse()
-        def features = storyService.acceptToFeature(stories)
+        def features = storyService.turnIntoFeature(stories)
         def returnData = features.size() > 1 ? features : features.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
@@ -367,7 +367,7 @@ class StoryController implements ControllerErrorHandler {
     @Secured(['productOwner() and !archivedProject()'])
     def turnIntoTask() {
         def stories = Story.withStories(params)?.reverse()
-        def tasks = storyService.acceptToUrgentTask(stories)
+        def tasks = storyService.turnIntoUrgentTask(stories)
         def returnData = tasks.size() > 1 ? tasks : tasks.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }
