@@ -190,6 +190,13 @@ filters
             }
         }
     }])
+    .filter('menuElementName', ['$rootScope', function($rootScope) {
+        return function(menuElement) {
+            if (menuElement) {
+                return _.isFunction(menuElement.name) ? menuElement.name() : $rootScope.message(menuElement.name);
+            }
+        };
+    }])
     .filter('lineReturns', function() {
         return function(text) {
             return text ? _.escape(text).replace(/\r\n/g, "<br/>").replace(/\n/g, '<br/>') : "";

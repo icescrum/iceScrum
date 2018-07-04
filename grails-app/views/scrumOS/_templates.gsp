@@ -100,11 +100,11 @@
     <script type="text/ng-template" id="button.shortcutMenu.html">
     <a ng-show="menuElement.name"
        class="btn"
-       title="{{ message(menuElement.name) }}"
+       title="{{ menuElement | menuElementName }}"
        ng-class="{'btn-sm': btnSm, 'btn-primary': btnPrimary, 'btn-default': !btnPrimary}"
        ng-href="{{ menuElement.url(ngModel) }}"
        ng-click="menuElement.action(ngModel)">
-        {{ message(menuElement.name) }}
+        {{ menuElement | menuElementName }}
     </a>
     </script>
 
@@ -113,7 +113,7 @@
         <li ng-repeat="menuElement in menus | visibleMenuElement: getItem()">
             <a ng-href="{{ menuElement.url(getItem()) }}"
                ng-click="menuElement.action(getItem())">
-                {{ message(menuElement.name) }}
+                {{ menuElement | menuElementName }}
             </a>
         </li>
     </ul>
