@@ -110,33 +110,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="btn-toolbar buttons-margin-bottom">
-                        <div ng-if="authorizedStories('accept', stories)"
-                             class="btn-group"
-                             uib-dropdown>
-                            <button type="button"
-                                    class="btn btn-default"
-                                    uib-dropdown-toggle>
-                                ${message(code: 'is.dialog.acceptAs.acceptAs.title')} <i class="fa fa-caret-down"></i>
-                            </button>
-                            <ul uib-dropdown-menu role="menu">
-                                <li>
-                                    <a href ng-click="acceptToBacklogMultiple()">
-                                        ${message(code: 'is.ui.backlog.menu.acceptAsStory')}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href ng-click="acceptAsMultiple('Feature')">
-                                        ${message(code: 'is.ui.backlog.menu.acceptAsFeature')}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href ng-click="acceptAsMultiple('Task')">
-                                        ${message(code: 'is.ui.backlog.menu.acceptAsUrgentTask')}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
                         <div class="btn-group">
+                            <button type="button"
+                                    ng-if="authorizedStories('accept', stories)"
+                                    class="btn btn-default"
+                                    ng-click="acceptToBacklogMultiple()">
+                                ${message(code: 'is.ui.backlog.menu.acceptAsStory')}
+                            </button>
                             <button type="button"
                                     ng-if="authorizedStories('copy', stories)"
                                     class="btn btn-default"
@@ -170,6 +150,27 @@
                                    ng-switch-when="true"
                                    defer-tooltip="${message(code: 'is.followable.stop')}"></i>
                             </button>
+                        </div>
+                        <div ng-if="authorizedStories('accept', stories)"
+                             class="btn-group"
+                             uib-dropdown>
+                            <button type="button"
+                                    class="btn btn-default"
+                                    uib-dropdown-toggle>
+                                ${message(code: 'is.ui.story.turnInto')} <i class="fa fa-caret-down"></i>
+                            </button>
+                            <ul uib-dropdown-menu role="menu">
+                                <li>
+                                    <a href ng-click="confirm({message: message('is.ui.story.turnIntoFeature.confirm.multiple'), callback: turnIntoMultiple, args: ['Feature']})">
+                                        ${message(code: 'is.ui.story.turnIntoFeature')}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href ng-click="confirm({message: message('is.ui.story.turnIntoTask.confirm.multiple'), callback: turnIntoMultiple, args: ['Task']})">
+                                        ${message(code: 'is.ui.story.turnIntoTask')}
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <br>

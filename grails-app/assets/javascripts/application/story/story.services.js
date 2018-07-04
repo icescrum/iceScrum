@@ -148,7 +148,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.follow = function(story) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'follow'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.acceptAs = function(story, target) {
+    this.turnInto = function(story, target) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'turnInto' + target}, {}, function() {
             crudMethods[IceScrumEventType.DELETE](story);
         }).$promise;
@@ -213,7 +213,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.acceptAsMultiple = function(ids, target, projectId) {
+    this.turnIntoMultiple = function(ids, target, projectId) {
         return Story.updateArray({projectId: projectId, id: ids, action: 'turnInto' + target}, {}, function() {
             _.each(ids, function(stringId) {
                 crudMethods[IceScrumEventType.DELETE]({id: parseInt(stringId)});

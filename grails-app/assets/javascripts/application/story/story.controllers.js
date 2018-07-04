@@ -38,9 +38,9 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             $scope.notifySuccess('todo.is.ui.story.accepted');
         });
     };
-    $scope.acceptAs = function(story, target) {
-        StoryService.acceptAs(story, target).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.acceptedAs' + target);
+    $scope.turnInto = function(story, target) {
+        StoryService.turnInto(story, target).then(function() {
+            $scope.notifySuccess('is.ui.story.turnInto' + target + '.success');
         });
     };
     $scope.returnToSandbox = function(story) {
@@ -97,14 +97,14 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.acceptToBacklog(story); }
         },
         {
-            name: 'is.ui.backlog.menu.acceptAsFeature',
+            name: 'is.ui.story.turnIntoFeature',
             visible: function(story) { return $scope.authorizedStory('accept', story) },
-            action: function(story) { $scope.confirm({message: $scope.message('is.ui.backlog.menu.acceptAsFeature.confirm'), callback: $scope.acceptAs, args: [story, 'Feature']}); }
+            action: function(story) { $scope.confirm({message: $scope.message('is.ui.story.turnIntoFeature.confirm'), callback: $scope.turnInto, args: [story, 'Feature']}); }
         },
         {
-            name: 'is.ui.backlog.menu.acceptAsUrgentTask',
+            name: 'is.ui.story.turnIntoTask',
             visible: function(story) { return $scope.authorizedStory('accept', story) },
-            action: function(story) { $scope.confirm({message: $scope.message('is.ui.backlog.menu.acceptAsUrgentTask.confirm'), callback: $scope.acceptAs, args: [story, 'Task']}); }
+            action: function(story) { $scope.confirm({message: $scope.message('is.ui.story.turnIntoTask.confirm'), callback: $scope.turnInto, args: [story, 'Task']}); }
         },
         {
             name: 'is.ui.releasePlan.menu.story.done',
@@ -675,9 +675,9 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', '
             refreshStories();
         });
     };
-    $scope.acceptAsMultiple = function(target) {
-        StoryService.acceptAsMultiple(storyListId, target, project.id).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.multiple.acceptedAs' + target);
+    $scope.turnIntoMultiple = function(target) {
+        StoryService.turnIntoMultiple(storyListId, target, project.id).then(function() {
+            $scope.notifySuccess('is.ui.story.turnInto' + target + '.success.multiple');
         });
     };
     $scope.authorizedStories = StoryService.authorizedStories;
