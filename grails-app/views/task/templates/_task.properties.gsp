@@ -155,7 +155,7 @@
                  ng-bind-html="editableTask.notes_html ? editableTask.notes_html : '<p>${message(code: 'is.ui.backlogelement.nonotes')}</p>'"></div>
         </div>
         <div class="form-group">
-            <label>${message(code: 'is.backlogelement.attachment')} {{ task.attachments_count > 0 ? '(' + task.aattachments_count + ')' : '' }}</label>
+            <label>${message(code: 'is.backlogelement.attachment')} {{ task.attachments_count > 0 ? '(' + task.attachments_count + ')' : '' }}</label>
             <div ng-if="authorizedTask('upload', task)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"
