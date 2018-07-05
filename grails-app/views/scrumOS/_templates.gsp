@@ -113,7 +113,7 @@
         <li ng-repeat="menuElement in menus | visibleMenuElement: getItem()">
             <a ng-href="{{ menuElement.url(getItem()) }}"
                ng-click="menuElement.action(getItem())">
-                {{ menuElement | menuElementName }}
+                {{:: menuElement | menuElementName }}
             </a>
         </li>
     </ul>
