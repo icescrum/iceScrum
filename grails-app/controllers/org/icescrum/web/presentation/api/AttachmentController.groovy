@@ -94,8 +94,7 @@ class AttachmentController implements ControllerErrorHandler {
                 attachmentable.attachments_count = attachmentable.getTotalAttachments()
             }
             service.publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment': attachment])
-            def res = ['provider': attachment.provider, 'filename': attachment.filename, 'length': attachment.length, 'ext': attachment.ext, 'id': attachment.id, attachmentable: [id: attachmentable.id, 'class': params.type]]
-            render(status: 201, contentType: 'application/json', text: res as JSON)
+            render(status: 201, contentType: 'application/json', text: attachment as JSON)
         }
         if (attachmentable) {
             if (params.url) {
