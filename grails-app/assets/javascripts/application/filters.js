@@ -183,11 +183,20 @@ filters
             }) : '';
         };
     }])
-    .filter('i18n', ['I18nService', function(I18nService) {
-        return function(key, bundleName) {
-            if (key != undefined && key != null && I18nService.getBundle(bundleName)) {
-                return I18nService.getBundle(bundleName)[key];
+    .filter('i18n', ['I18nService', 'storyStateNameFilter', function(I18nService, storyStateNameFilter) {
+        return function(key, bundleName, forceBundle) {
+            if (key != undefined && key != null) {
+                if (bundleName == 'StoryStates' && !forceBundle) {
+                    return storyStateNameFilter(key);
+                } else if (I18nService.getBundle(bundleName)) {
+                    return I18nService.getBundle(bundleName)[key];
+                }
             }
+        }
+    }])
+    .filter('storyStateName', ['$filter', function($filter) {
+        return function(state) {
+            return $filter('i18n')(state, 'StoryStates', true);
         }
     }])
     .filter('menuElementName', ['$rootScope', function($rootScope) {
