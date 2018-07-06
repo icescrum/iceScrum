@@ -511,6 +511,7 @@ class StoryController implements ControllerErrorHandler {
     }
 
     private Map getStoryPostitInformation(Project _project, stories) {
+        def storyStateNames = _project.getStoryStateNames()
         def stories1 = []
         def stories2 = []
         def first = 0
@@ -520,7 +521,7 @@ class StoryController implements ControllerErrorHandler {
                     name          : it.name,
                     id            : it.uid,
                     effort        : it.effort,
-                    state         : message(code: grailsApplication.config.icescrum.resourceBundles.storyStates[it.state]),
+                    state         : message(code: storyStateNames[it.state]),
                     description   : is.storyDescription([story: it, displayBR: true]),
                     notes         : ServicesUtils.textileToHtml(it.notes),
                     type          : message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.type]),

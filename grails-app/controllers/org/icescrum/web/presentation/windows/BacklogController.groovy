@@ -61,6 +61,8 @@ class BacklogController implements ControllerErrorHandler {
                 render(status: 403)
                 return
             }
+            Project _project = Project.withProject(project)
+            def storyStateNames = _project.getStoryStateNames()
             def stories = Story.search(project, JSON.parse(backlog.filter))
             def storiesByProperty = stories.groupBy({ story -> story."$property" })
             def data = [], colors = [], total = 0
@@ -79,7 +81,7 @@ class BacklogController implements ControllerErrorHandler {
                         bundle = 'is.story.' + property
                         break
                     case "state":
-                        name = message(code: grailsApplication.config.icescrum.resourceBundles.storyStates[it.key])
+                        name = message(code: storyStateNames[it.key])
                         color = grailsApplication.config.icescrum.resourceBundles.storyStatesColor[it.key]
                         bundle = 'is.story.' + property
                         break
