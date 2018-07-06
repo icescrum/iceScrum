@@ -183,20 +183,21 @@ filters
             }) : '';
         };
     }])
-    .filter('i18n', ['I18nService', 'storyStateNameFilter', function(I18nService, storyStateNameFilter) {
-        return function(key, bundleName, forceBundle) {
+    .filter('i18n', ['I18nService', '$rootScope', function(I18nService, $rootScope) {
+        return function(key, bundleName) {
             if (key != undefined && key != null) {
-                if (bundleName == 'StoryStates' && !forceBundle) {
-                    return storyStateNameFilter(key);
-                } else if (I18nService.getBundle(bundleName)) {
-                    return I18nService.getBundle(bundleName)[key];
+                var result;
+                if (bundleName === 'StoryStates') {
+                    var project = $rootScope.getProjectFromState();
+                    if (project) {
+                        result = project.storyStateNames[key];
+                    }
                 }
+                if (!result && I18nService.getBundle(bundleName)) {
+                    result = I18nService.getBundle(bundleName)[key];
+                }
+                return result;
             }
-        }
-    }])
-    .filter('storyStateName', ['$filter', function($filter) {
-        return function(state) {
-            return $filter('i18n')(state, 'StoryStates', true);
         }
     }])
     .filter('menuElementName', ['$rootScope', function($rootScope) {
