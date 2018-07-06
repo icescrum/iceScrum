@@ -80,7 +80,7 @@
                                 role="menu">
                                 <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                                     <li role="menuitem">
-                                        <a href="${format.onlyJsClick ? '' : (format.controller ?: 'feature') + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                        <a href="${format.onlyJsClick ? '' : (format.resource ?: 'feature') + '/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
                                            ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                                     </li>
                                 </g:each>
