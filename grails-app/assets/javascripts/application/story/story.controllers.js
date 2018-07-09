@@ -403,6 +403,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
         });
     };
     // Init
+    $scope.storyStatesByName = StoryStatesByName;
     $scope.tags = [];
 }]);
 
@@ -518,8 +519,8 @@ controllers.controller('storyAtWhoCtrl', ['$scope', '$controller', 'ActorService
     ];
 }]);
 
-extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', 'StoryStatesByName', "StoryTypesByName", "TaskStatesByName", 'AcceptanceTestStatesByName', 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
-    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryStatesByName, StoryTypesByName, TaskStatesByName, AcceptanceTestStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
+extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$timeout', '$filter', 'TaskConstants', "StoryTypesByName", "TaskStatesByName", 'AcceptanceTestStatesByName', 'Session', 'StoryService', 'FormService', 'FeatureService', 'ProjectService', 'UserService', 'ActorService', 'detailsStory', 'project',
+    function($scope, $controller, $state, $timeout, $filter, TaskConstants, StoryTypesByName, TaskStatesByName, AcceptanceTestStatesByName, Session, StoryService, FormService, FeatureService, ProjectService, UserService, ActorService, detailsStory, project) {
         $controller('storyCtrl', {$scope: $scope});
         $controller('storyAtWhoCtrl', {$scope: $scope});
         $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsStory, clazz: 'story', project: project});
@@ -632,7 +633,6 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.project = project;
         // For header
         $scope.tasksOrderBy = TaskConstants.ORDER_BY;
-        $scope.storyStatesByName = StoryStatesByName;
         $scope.storyTypesByName = StoryTypesByName;
         $scope.taskStatesByName = TaskStatesByName;
         if (detailsStory.actors_ids && detailsStory.actors_ids.length) {
