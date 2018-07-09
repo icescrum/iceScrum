@@ -22,7 +22,7 @@
 --}%
 <script type="text/ng-template" id="release.timeline.html">
 <uib-progress class="form-control-static form-bar"
-              defer-tooltip="{{ release.name }}"
+              uib-tooltip="{{ release.name }}"
               max="release.duration">
     <uib-bar ng-repeat="sprint in releaseParts"
              class="{{ $last ? 'last-bar' : '' }}"
