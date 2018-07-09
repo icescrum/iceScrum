@@ -189,8 +189,8 @@ filters
                 var result;
                 if (bundleName === 'StoryStates') {
                     var project = $rootScope.getProjectFromState();
-                    if (project) {
-                        result = project.storyStateNames[key];
+                    if (project && project.storyStateNames) {
+                        result = $rootScope.message(project.storyStateNames[key]);
                     }
                 }
                 if (!result && I18nService.getBundle(bundleName)) {
