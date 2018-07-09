@@ -936,7 +936,16 @@ var isApplication = angular.module('isApplication', [
                         });
                     };
                     $scope.selectWorkspace = function(workspace) {
-                        $scope.summary = workspace.class.toLowerCase() + '.summary.html';
+                        var setSummary = function() {
+                            $scope.summary = workspace.class.toLowerCase() + '.summary.html';
+                        };
+                        if ($scope.summary != null) {
+                            // Force deletion / re-creation of template to start over with fresh data
+                            $scope.summary = null;
+                            $timeout(setSummary);
+                        } else {
+                            setSummary();
+                        }
                         if ($scope['select' + workspace.class]) {
                             $scope['select' + workspace.class](workspace);
                         } else {
