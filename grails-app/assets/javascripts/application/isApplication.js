@@ -653,10 +653,10 @@ var isApplication = angular.module('isApplication', [
         };
         $rootScope.blurAndClick = FormService.blurAndClick;
         $rootScope.plus = function(value) {
-            return _.isNumber(value) ? $filter('preciseFloatSum')([value, 1]) : value;
+            return _.isNumber(value) ? $filter('preciseFloatSum')([value, 1]) : 1;
         };
         $rootScope.minus = function(value) {
-            return _.isNumber(value) && value >= 1 ? $filter('preciseFloatSum')([value, -1]) : value;
+            return _.isNumber(value) && value >= 1 ? $filter('preciseFloatSum')([value, -1]) : 0;
         };
         $rootScope.alert = function(options) {
             $uibModal.open({
