@@ -46,7 +46,11 @@
             </div>
             <ul class="left-panel-body nav nav-list">
                 <li ng-class="{'current': currentWorkspace.id == workspace.id && currentWorkspace.class == workspace.class}" ng-repeat="currentWorkspace in workspaces">
-                    <a ng-click="selectWorkspace(currentWorkspace)" href><i class="fa" ng-class="['fa', {'fa-folder': currentWorkspace.pkey, 'fa-briefcase': currentWorkspace.fkey}]"></i> {{ currentWorkspace.name }}</a>
+                    <a ng-click="selectWorkspace(currentWorkspace)" href>
+                        <i ng-if="currentWorkspace.pkey && !currentWorkspace.preferences.hidden" class="fa fa-eye"></i>
+                        <i class="fa" ng-class="['fa', {'fa-folder': currentWorkspace.pkey, 'fa-briefcase': currentWorkspace.fkey}]"></i>
+                        {{ currentWorkspace.name }}
+                    </a>
                 </li>
             </ul>
             <div class="left-panel-bottom">
