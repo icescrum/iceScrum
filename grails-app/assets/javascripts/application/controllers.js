@@ -278,65 +278,9 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     }
 }]);
 
-controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', '$state', function($scope, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal, $state) {
+controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', function($scope, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal) {
     $scope.authorizedProject = ProjectService.authorizedProject;
     $scope.authorizedPortfolio = PortfolioService.authorizedPortfolio;
-    $scope.showWorkspaceListModal = function(listType, workspaceType) {
-        workspaceType = workspaceType ? workspaceType : 'all';
-        $uibModal.open({
-            keyboard: false,
-            templateUrl: $scope.serverUrl + "/scrumOS/listModal",
-            size: 'lg',
-            controller: ['$scope', '$controller', 'ProjectService', 'PortfolioService', 'Session', function($scope, $controller, ProjectService, PortfolioService, Session) {
-                $controller('abstractProjectListCtrl', {$scope: $scope});
-                // Functions
-                $scope.searchWorkspaces = function() {
-                    var listFunction = {
-                        portfolio: {
-                            all: PortfolioService.list
-                        },
-                        project: {
-                            public: ProjectService.listPublic,
-                            all: ProjectService.list
-                        },
-                        all: {
-                            user: Session.workspacesListByUser
-                        }
-                    }[workspaceType][listType];
-                    listFunction({term: $scope.workspaceSearch, page: $scope.currentPage, count: $scope.workspacesPerPage}).then(function(workspacesAndCount) {
-                        $scope.workspaceCount = workspacesAndCount.count;
-                        $scope.workspaces = [];
-                        if (workspacesAndCount.portfolios) {
-                            $scope.workspaces = _.concat($scope.workspaces, workspacesAndCount.portfolios);
-                        }
-                        if (workspacesAndCount.projects) {
-                            $scope.workspaces = _.concat($scope.workspaces, workspacesAndCount.projects);
-                        }
-                        if (!_.isEmpty($scope.workspaces) && _.isEmpty($scope.workspace)) {
-                            $scope.selectWorkspace(_.head($scope.workspaces));
-                        }
-                    });
-                };
-                $scope.selectWorkspace = function(workspace) {
-                    $scope.summary = workspace.class.toLowerCase() + '.summary.html';
-                    if ($scope['select' + workspace.class]) {
-                        $scope['select' + workspace.class](workspace);
-                    } else {
-                        $scope[workspace.class.toLowerCase()] = workspace;
-                    }
-                    $scope.workspace = workspace;
-                };
-                // Init
-                $scope.workspaceCount = 0;
-                $scope.currentPage = 1;
-                $scope.workspacesPerPage = 9; // Constant
-                $scope.workspaceSearch = '';
-                $scope.workspaces = [];
-                $scope.summary = null;
-                $scope.searchWorkspaces();
-            }]
-        });
-    };
     $scope['import'] = function(project) {
         var url = $scope.serverUrl + "/project/import";
         $uibModal.open({
