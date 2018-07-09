@@ -189,7 +189,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
         }
     };
     $scope.sprintRemainingTime = function(sprint) {
-        return _.sumBy(sprint.tasks, 'estimation');
+        return _.sum(_.filter(_.map(sprint.tasks, 'estimation'), _.isNumber));
     };
     $scope.scrollToActiveSprint = function(open) {
         if (open) {
