@@ -54,6 +54,7 @@
         </div>
         <div class="content" ng-class="::{'without-description':!story.description}">
             <h3 class="title">{{:: story.name }}</h3>
+            <h3 class="title title-sm">{{:: story.name | ellipsis:45 }}</h3>
             <div class="description"
                  ng-bind-html=":: story.description | lineReturns | actorTag"></div>
         </div>

@@ -41,6 +41,7 @@
         </div>
         <div ng-class="::['content',{'without-description':!feature.description}]">
             <h3 class="title">{{:: feature.name }}</h3>
+            <h3 class="title title-sm">{{:: feature.name | ellipsis:45 }}</h3>
             <div class="description"
                  ng-bind-html="::feature.description | lineReturns"></div>
         </div>

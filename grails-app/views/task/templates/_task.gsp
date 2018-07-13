@@ -45,8 +45,8 @@
         </div>
         <div ng-class=":: ['content', {'without-description':!task.description}]">
             <h3 class="title">{{:: task.name }}</h3>
-            <div class="description"
-                 ng-bind-html=":: task.description | lineReturns"></div>
+            <h3 class="title title-sm">{{:: task.name | ellipsis:45 }}</h3>
+            <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>
         <div class="footer">
             <div class="tags">

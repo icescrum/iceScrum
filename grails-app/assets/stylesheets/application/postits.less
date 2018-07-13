@@ -95,6 +95,9 @@
         height: 22px;
         margin-left: 2px;
       }
+      .title-sm {
+        display:none;
+      }
     }
   }
 }
@@ -446,7 +449,7 @@
   &.size-l {
     .postit-container .postit:hover {
       .content:not(.without-description) {
-        .title {
+        .title:not(.title-sm) {
           .text-overflow();
         }
         .description {
@@ -463,19 +466,10 @@
       height: @postit-height-sm;
       .content {
         h3.title {
-          display: block; /* Fallback for non-webkit */
-          display: -webkit-box;
-          max-width: 400px;
-          height: @font-size-postit-sm*@line-height-postit-sm*@lines-to-show-postit-sm + 1; /* Fallback for non-webkit */
-          margin: 0 auto;
-          font-size: @font-size-postit-sm;
-          line-height: @line-height-postit-sm;
-          -webkit-line-clamp: @lines-to-show-postit-sm;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          padding-top: 2px;
-          white-space: normal;
+          display:none;
+          &.title-sm {
+            display:block;
+          }
         }
         height: @font-size-postit-sm*@line-height-postit-sm*@lines-to-show-postit-sm + 1;
         padding-left: 5px;
@@ -534,6 +528,13 @@
       }
       &.add-task, &.hide-tasks {
         border: none;
+      }
+    }
+  }
+  .postit-container.as-sortable-dragging-item .postit {
+    .content {
+      .description {
+        display: none !important;
       }
     }
   }
