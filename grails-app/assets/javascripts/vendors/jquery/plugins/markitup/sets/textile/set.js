@@ -36,7 +36,7 @@ textileSettings = {
 		{name:'Quotes', icon:'fa fa-quote-left', key:'Q', openWith:'bq(!(([![Class]!]))!). '},
 		{name:'Code', icon:'fa fa-code', key:'O', openWith:'@', closeWith:'@'},
         {name:'BlockCode',icon:'fa fa-wrench', key:'K', openWith:'bc(!(([![Class]!]))!). '},
-        {name:'Checkbox',icon:'fa fa-square-o', key:'S', openWith:'[] '},
-        {name:'Checkbox with check',icon:'fa fa-check-square-o', key:'C', openWith:'[x] '}
+        {name:'Checkbox',icon:'fa fa-square-o', key:'E', openWith:'[] '},
+        {name:'Checkbox with check',icon:'fa fa-check-square-o', key:'M', openWith:'[x] '}
 	]
 };
