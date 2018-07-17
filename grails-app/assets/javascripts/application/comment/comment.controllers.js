@@ -59,6 +59,12 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
             hotkeys.del('esc');
         }
     };
+    $scope.editCommentBody = function() {
+        if ($scope.formEditable()) {
+            $scope.editForm(true);
+            $scope.showCommentBodyTextarea = true
+        }
+    };
     $scope.update = function(comment, commentable) {
         if (!$scope.formHolder.commentForm.$invalid) {
             $scope.editForm(false);

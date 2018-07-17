@@ -83,6 +83,12 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
             $scope.editableAcceptanceTest.description = '';
         }
     };
+    $scope.editAcceptanceTestDescription = function() {
+        if ($scope.formEditable()) {
+            $scope.editForm(true);
+            $scope.focusAcceptanceTestDescription();
+        }
+    };
     $scope.focusAcceptanceTestDescription = function() {
         $scope.showAcceptanceTestDescriptionTextarea = true;
         if (!$scope.editableAcceptanceTest.description) {
