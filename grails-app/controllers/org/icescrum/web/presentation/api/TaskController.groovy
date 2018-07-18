@@ -125,9 +125,6 @@ class TaskController implements ControllerErrorHandler {
                 }
             }
         }
-        if (!taskParams.backlog) {
-            taskParams.backlog = taskParams.sprint
-        }
         def props = [:]
         Integer rank = taskParams.rank instanceof String ? taskParams.rank.toInteger() : taskParams.rank
         if (rank != null) {
@@ -138,8 +135,8 @@ class TaskController implements ControllerErrorHandler {
             props.state = state
         }
         Task.withTransaction {
-            cleanBeforeBindData(taskParams, ['parentStory', 'backlog', 'responsible'])
-            def propertiesToBind = ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'backlog', 'blocked']
+            cleanBeforeBindData(taskParams, ['parentStory', 'responsible'])
+            def propertiesToBind = ['name', 'estimation', 'description', 'notes', 'color', 'parentStory', 'type', 'blocked']
             entry.hook(id: 'task-before-update', model: [task: task, propertiesToBind: propertiesToBind, propertiesEdited: props])
             bindData(task, taskParams, [include: propertiesToBind])
             if (taskParams.parentStory && !taskParams.type) {
