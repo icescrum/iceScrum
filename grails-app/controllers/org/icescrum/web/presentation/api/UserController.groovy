@@ -212,6 +212,10 @@ class UserController implements ControllerErrorHandler {
         withCacheHeaders {
             File avatar
             User user = id ? User.withUser(id) : null
+            // If the cache has expired, tell the browser when the last change occured.
+            // If the image has not changed, then the browser will keep using the cached image again for 30 seconds starting from this call
+            // The combination of withCacheHeaders and cache(validFor: 30) ensures that for 1 user and 1 browser, this action is called at most once a minute
+            // and that the image is rendered again only if it has changed
             delegate.lastModified {
                 user.lastUpdated
             }
@@ -226,6 +230,7 @@ class UserController implements ControllerErrorHandler {
                     }
                     avatar = getAssetAvatarFile("avatar.png")
                 }
+                cache(validFor: 30) // The browser will cache the request 30 seconds so it will not call the request again during this duration regardless of if the content has changed
                 render(file: avatar, contentType: 'image/png')
             }
         }
