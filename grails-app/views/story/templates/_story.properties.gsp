@@ -88,7 +88,9 @@
                                name="feature"
                                search-enabled="true"
                                ng-model="editableStory.feature">
-                        <ui-select-match allow-clear="{{ formHolder.editing }}" placeholder="${message(code: 'is.ui.story.nofeature')}">
+                        <ui-select-match allow-clear="{{ formHolder.editing }}"
+                                         title="{{ $select.selected.name }}"
+                                         placeholder="${message(code: 'is.ui.story.nofeature')}">
                             <i class="fa fa-puzzle-piece" ng-style="{color: $select.selected.color}"></i> {{ $select.selected.name }}
                         </ui-select-match>
                         <ui-select-choices repeat="feature in features | orFilter: { name: $select.search, uid: $select.search }">
@@ -258,7 +260,7 @@
                            name="creator"
                            search-enabled="true"
                            ng-model="editableStory.creator">
-                    <ui-select-match>
+                    <ui-select-match title="{{ $select.selected | userFullName }}">
                         {{ $select.selected | userFullName }}
                     </ui-select-match>
                     <ui-select-choices refresh="searchCreator($select)"
