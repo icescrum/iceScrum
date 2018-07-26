@@ -471,7 +471,7 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
         tasks.push({
             success: function() {
                 $scope.$close();
-                $scope.notifySuccess('todo.is.ui.story.effort.updated');
+                $scope.notifySuccess('is.ui.backlog.menu.split.success');
                 return $q.when();
             }
         });
