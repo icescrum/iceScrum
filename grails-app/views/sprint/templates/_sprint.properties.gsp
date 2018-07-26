@@ -132,7 +132,7 @@
                       ng-model="editableSprint.retrospective"
                       is-model-html="editableSprint.retrospective_html"
                       ng-show="showRetrospectiveTextarea"
-                      ng-blur="showRetrospectiveTextarea = false"
+                      ng-blur="showRetrospectiveTextarea = false; blurAndClick($event)"
                       placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
             <div class="markitup-preview important"
                  ng-disabled="!formEditable()"
@@ -163,7 +163,7 @@
                       ng-model="editableSprint.doneDefinition"
                       is-model-html="editableSprint.doneDefinition_html"
                       ng-show="showDoneDefinitionTextarea"
-                      ng-blur="showDoneDefinitionTextarea = false"
+                      ng-blur="showDoneDefinitionTextarea = false; blurAndClick($event)"
                       placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
             <div class="markitup-preview important"
                  ng-disabled="!formEditable()"

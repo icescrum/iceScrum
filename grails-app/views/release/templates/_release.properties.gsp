@@ -144,7 +144,7 @@
                       ng-model="editableRelease.vision"
                       is-model-html="editableRelease.vision_html"
                       ng-show="showVisionTextarea"
-                      ng-blur="showVisionTextarea = false"
+                      ng-blur="showVisionTextarea = false; blurAndClick($event)"
                       placeholder="${message(code: 'todo.is.ui.release.novision')}"></textarea>
             <div class="markitup-preview"
                  ng-disabled="!formEditable()"
