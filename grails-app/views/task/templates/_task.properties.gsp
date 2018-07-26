@@ -174,12 +174,14 @@
             <button class="btn btn-primary"
                     ng-if="formHolder.editing && (isLatest() || application.submitting)"
                     ng-disabled="!isDirty() || formHolder.taskForm.$invalid || application.submitting"
+                    ng-click="update(editableTask)"
                     type="submit">
                 ${message(code: 'default.button.update.label')}
             </button>
             <button class="btn btn-danger"
                     ng-if="formHolder.editing && !isLatest() && !application.submitting"
                     ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
+                    ng-click="update(editableTask)"
                     type="submit">
                 ${message(code: 'default.button.override.label')}
             </button>
