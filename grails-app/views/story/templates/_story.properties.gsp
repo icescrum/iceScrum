@@ -281,7 +281,7 @@
                       ng-model="editableStory.notes"
                       is-model-html="editableStory.notes_html"
                       ng-show="showNotesTextarea"
-                      ng-blur="showNotesTextarea = false"
+                      ng-blur="showNotesTextarea = false; blurAndClick($event)"
                       placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
             <div class="markitup-preview important"
                  ng-disabled="!formEditable()"
