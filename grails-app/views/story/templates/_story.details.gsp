@@ -56,9 +56,8 @@
                        tabindex="0"
                        hotkey="{'left': hotkeyClick}"
                        hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.previous')}"
-                       defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"
                        href="{{ currentStateUrl(previousStory().id) }}">
-                        <i class="fa fa-caret-left"></i>
+                        <i class="fa fa-caret-left" defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.previous')} (&#xf060;)"></i>
                     </a>
                     <a ng-if="nextStory()"
                        class="btn btn-default"
@@ -66,27 +65,24 @@
                        tabindex="0"
                        hotkey="{'right': hotkeyClick}"
                        hotkey-description="${message(code: 'is.ui.backlogelement.toolbar.next')}"
-                       defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"
                        href="{{ currentStateUrl(nextStory().id) }}">
-                        <i class="fa fa-caret-right"></i>
+                        <i class="fa fa-caret-right" defer-tooltip="${message(code: 'is.ui.backlogelement.toolbar.next')} (&#xf061;)"></i>
                     </a>
                     <a class="btn btn-default expandable"
                        ng-if="!isModal && !application.focusedDetailsView"
                        href="{{ toggleFocusUrl() }}"
                        tabindex="0"
                        hotkey="{'space': hotkeyClick, 'up': hotkeyClick}"
-                       hotkey-description="${message(code: 'is.ui.window.focus')}"
-                       defer-tooltip="${message(code: 'is.ui.window.focus')} (↑)">
-                        <i class="fa fa-expand"></i>
+                       hotkey-description="${message(code: 'is.ui.window.focus')}">
+                        <i class="fa fa-expand" defer-tooltip="${message(code: 'is.ui.window.focus')} (↑)"></i>
                     </a>
                     <a class="btn btn-default expandable"
                        ng-if="!isModal && application.focusedDetailsView"
                        href="{{ toggleFocusUrl() }}"
                        tabindex="0"
                        hotkey="{'escape': hotkeyClick, 'down': hotkeyClick}"
-                       hotkey-description="${message(code: 'is.ui.window.unfocus')}"
-                       defer-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)">
-                        <i class="fa fa-compress"></i>
+                       hotkey-description="${message(code: 'is.ui.window.unfocus')}">
+                        <i class="fa fa-compress" defer-tooltip="${message(code: 'is.ui.window.unfocus')} (↓)"></i>
                     </a>
                     <details-layout-buttons ng-if="!isModal" remove-ancestor="true"/>
                 </div>
