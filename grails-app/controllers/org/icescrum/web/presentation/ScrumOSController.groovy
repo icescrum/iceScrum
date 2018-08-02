@@ -155,8 +155,25 @@ class ScrumOSController implements ControllerErrorHandler {
         response.outputStream << new BASE64Decoder().decodeBuffer(image)
     }
 
-    def version() {
-        render(status: '200', text: g.meta([name: 'app.version']))
+    def version(boolean verbose) {
+        if (verbose) {
+            def data = [version: g.meta([name: 'app.version'])]
+            if (grailsApplication.config.icescrum.check.response?.up_to_date == false) {
+                def versionNormalized = grailsApplication.config.icescrum.check.response.version.replaceAll("\\.", "-")
+                data.upgrade = [
+                        version     : grailsApplication.config.icescrum.check.response.version,
+                        releaseDate : Date.parse('dd/MM/yyyy', grailsApplication.config.icescrum.check.response.date),
+                        description : grailsApplication.config.icescrum.check.response.message,
+                        changeLogUrl: grailsApplication.config.icescrum.check.response.url,
+                        downloadUrl : "https://www.icescrum.com/download/v${versionNormalized}${grailsApplication.config.icescrum.environment != "jar" ? '-war' : ''}/"
+                ]
+            } else {
+                data.upgrade = false
+            }
+            render(status: '200', contentType: 'application/json', text: data as JSON)
+        } else {
+            render(status: '200', text: g.meta([name: 'app.version']))
+        }
     }
 
     def progress() {
