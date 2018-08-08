@@ -44,8 +44,7 @@ isApplication
         ESTIMATED: 3,
         PLANNED: 4,
         IN_PROGRESS: 5,
-        DONE: 7,
-        ICEBOX: -1
+        DONE: 7
     })
     .constant('StoryTypesByName', {
         USER_STORY: 0,

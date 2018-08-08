@@ -60,12 +60,12 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
     };
     $scope.done = function(story) {
         StoryService.done(story).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.done');
+            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success', [$scope.storyStateName(StoryStatesByName.DONE)]));
         });
     };
     $scope.unDone = function(story) {
         StoryService.unDone(story).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.unDone');
+            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success', [$scope.storyStateName(StoryStatesByName.IN_PROGRESS)]));
         });
     };
     $scope.follow = function(story) {
@@ -82,6 +82,9 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
         });
     };
     $scope.authorizedStory = StoryService.authorizedStory;
+    $scope.storyStateName = function(state) {
+        return $filter('i18n')(state, 'StoryStates');
+    };
     $scope.menus = [
         {
             name: 'todo.is.ui.details',
@@ -107,7 +110,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.confirm({message: $scope.message('is.ui.story.turnIntoTask.confirm'), callback: $scope.turnInto, args: [story, 'Task']}); }
         },
         {
-            name: 'is.ui.releasePlan.menu.story.done',
+            name: function() { return $scope.message('is.ui.story.state.markAs') + ' ' + $scope.storyStateName(StoryStatesByName.DONE); },
             visible: function(story) { return $scope.authorizedStory('done', story) },
             action: function(story) {
                 var remainingAcceptanceTests = story.testState != AcceptanceTestStatesByName.SUCCESS && story.acceptanceTests_count;
@@ -115,10 +118,10 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
                 if (remainingAcceptanceTests || remainingTasks) {
                     var messages = [];
                     if (remainingAcceptanceTests) {
-                        messages.push('todo.is.ui.story.done.acceptanceTest.confirm');
+                        messages.push($scope.message('todo.is.ui.story.done.acceptanceTest.confirm', [$scope.storyStateName(StoryStatesByName.DONE)]));
                     }
                     if (remainingTasks) {
-                        messages.push('todo.is.ui.story.done.task.confirm');
+                        messages.push($scope.message('todo.is.ui.story.done.task.confirm', [$scope.storyStateName(StoryStatesByName.DONE)]));
                     }
                     $scope.confirm({
                         message: _.map(messages, $scope.message).join('<br/><br/>'),
@@ -131,7 +134,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             }
         },
         {
-            name: 'is.ui.releasePlan.menu.story.undone',
+            name: function() { return $scope.message('is.ui.story.state.markAs') + ' ' + $scope.storyStateName(StoryStatesByName.IN_PROGRESS); },
             visible: function(story) { return $scope.authorizedStory('unDone', story) },
             action: function(story) { $scope.unDone(story); }
         },
