@@ -220,7 +220,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
     $scope.endDateOptions = angular.copy($scope.startDateOptions);
 }]);
 
-controllers.controller('sprintBacklogCtrl', ['$scope', '$rootScope', '$q', '$controller', 'StoryService', 'SprintStatesByName', 'StoryStatesByName', 'BacklogCodes', function($scope, $rootScope, $q, $controller, StoryService, SprintStatesByName, StoryStatesByName, BacklogCodes) {
+controllers.controller('sprintBacklogCtrl', ['$scope', '$rootScope', '$controller', 'StoryService', 'SprintStatesByName', 'BacklogCodes', function($scope, $rootScope, $controller, StoryService, SprintStatesByName, BacklogCodes) {
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     // Functions
     $scope.isSortingSprint = function(sprint) {
