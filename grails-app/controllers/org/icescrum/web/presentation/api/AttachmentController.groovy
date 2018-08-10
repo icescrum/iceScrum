@@ -79,16 +79,16 @@ class AttachmentController implements ControllerErrorHandler {
         def endOfUpload = { uploadInfo ->
             def service = grailsApplication.mainContext[params.type + 'Service']
             service.publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['addAttachment': null])
+            Attachment attachment
             if (uploadInfo.filePath) {
                 File attachmentFile = new File(uploadInfo.filePath)
                 if (!attachmentFile.length()) {
                     throw new BusinessException(code: 'todo.is.ui.backlogelement.attachments.error.empty')
                 }
-                attachmentable.addAttachment(springSecurityService.currentUser, attachmentFile, uploadInfo.filename)
+                attachment = attachmentable.addAttachment(springSecurityService.currentUser, attachmentFile, uploadInfo.filename)
             } else {
-                attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
+                attachment = attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
             }
-            def attachment = attachmentable.attachments.first()
             attachment.provider = uploadInfo instanceof Map ? uploadInfo.provider : null
             if (attachmentable.hasProperty('attachments_count')) {
                 attachmentable.attachments_count = attachmentable.getTotalAttachments()
