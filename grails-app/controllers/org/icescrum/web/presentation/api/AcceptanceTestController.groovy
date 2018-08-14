@@ -27,6 +27,7 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.AcceptanceTest
+import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.User
 import org.icescrum.core.error.ControllerErrorHandler
@@ -66,7 +67,7 @@ class AcceptanceTestController implements ControllerErrorHandler {
             if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                 newState = AcceptanceTest.AcceptanceTestState.byId(state)
                 if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                    returnError(code: 'is.acceptanceTest.error.update.state.storyState')
+                    returnError(code: 'is.acceptanceTest.error.update.state.storyState', args: [((Project) story.backlog).getStoryStateNames()[Story.STATE_INPROGRESS]])
                     return
                 }
             } else {
@@ -105,7 +106,7 @@ class AcceptanceTestController implements ControllerErrorHandler {
             if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                 newState = AcceptanceTest.AcceptanceTestState.byId(state)
                 if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                    returnError(code: 'is.acceptanceTest.error.update.state.storyState')
+                    returnError(code: 'is.acceptanceTest.error.update.state.storyState', args: [((Project) story.backlog).getStoryStateNames()[Story.STATE_INPROGRESS]])
                     return
                 }
             } else {
