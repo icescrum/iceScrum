@@ -57,8 +57,9 @@ class AcceptanceTestController implements ControllerErrorHandler {
             return
         }
         def story = Story.withStory(project, acceptanceTestParams.parentStory.id.toLong())
+        Project _project = ((Project) story.backlog)
         if (story.state >= Story.STATE_DONE) {
-            returnError(code: 'is.acceptanceTest.error.save.storyState')
+            returnError(code: 'is.acceptanceTest.error.save.storyState', args: [_project.getStoryStateNames()[Story.STATE_DONE]])
             return
         }
         def state = acceptanceTestParams.state?.toInteger()
@@ -67,11 +68,11 @@ class AcceptanceTestController implements ControllerErrorHandler {
             if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                 newState = AcceptanceTest.AcceptanceTestState.byId(state)
                 if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                    returnError(code: 'is.acceptanceTest.error.update.state.storyState', args: [((Project) story.backlog).getStoryStateNames()[Story.STATE_INPROGRESS]])
+                    returnError(code: 'is.acceptanceTest.error.update.state.storyState', args: [_project.getStoryStateNames()[Story.STATE_INPROGRESS]])
                     return
                 }
             } else {
-                returnError(code: 'is.acceptanceTest.error.state.not.exist')
+                returnError(text: "Error: the provided acceptance test state doesn't exist.")
                 return
             }
         }
@@ -110,7 +111,7 @@ class AcceptanceTestController implements ControllerErrorHandler {
                     return
                 }
             } else {
-                returnError(code: 'is.acceptanceTest.error.state.not.exist')
+                returnError(text: "Error: the provided acceptance test state doesn't exist.")
                 return
             }
         }
