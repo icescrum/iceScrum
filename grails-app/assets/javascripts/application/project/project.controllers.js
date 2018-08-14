@@ -156,7 +156,7 @@ controllers.controller('abstractProjectCtrl', ['$scope', '$filter', 'Session', '
     });
 }]);
 
-extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'manualSave', 'projectTemplate', 'lastStepButtonLabel', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session, manualSave, projectTemplate, lastStepButtonLabel) {
+extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 'UserTimeZone', 'WizardHandler', 'Project', 'ProjectService', 'Session', 'manualSave', 'projectTemplate', 'lastStepButtonLabel', 'StoryStatesByName', function($scope, $controller, DateService, UserTimeZone, WizardHandler, Project, ProjectService, Session, manualSave, projectTemplate, lastStepButtonLabel, StoryStatesByName) {
     $controller('abstractProjectCtrl', {$scope: $scope});
     $scope.type = 'newProject';
     $scope.checkProjectPropertyUrl = '/project/available';
@@ -258,6 +258,7 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
     $scope.totalDuration = 0;
     $scope.lastStepButtonLabel = lastStepButtonLabel;
     $scope.sprints = [];
+    $scope.storyStatesByName = StoryStatesByName;
 }]);
 
 controllers.controller('editProjectModalCtrl', ['$scope', 'ProjectService', 'ReleaseService', 'AppService', function($scope, ProjectService, ReleaseService, AppService) {
@@ -354,7 +355,7 @@ controllers.controller('editProjectMembersCtrl', ['$scope', '$controller', 'Sess
     $scope.resetTeamForm();
 }]);
 
-extensibleController('editProjectCtrl', ['$scope', 'Session', 'ProjectService', function($scope, Session, ProjectService) {
+extensibleController('editProjectCtrl', ['$scope', 'Session', 'ProjectService', 'StoryStatesByName', function($scope, Session, ProjectService, StoryStatesByName) {
     $scope.stakeHolderViews = [];
     $scope.update = function(project) {
         $scope.project.preferences.stakeHolderRestrictedViews = _.chain($scope.stakeHolderViews).filter({hidden: true}).map('id').value().join(',');
@@ -404,6 +405,7 @@ extensibleController('editProjectCtrl', ['$scope', 'Session', 'ProjectService', 
         $scope.timezones = timezones;
         $scope.timezoneKeys = _.keys(timezones);
     });
+    $scope.storyStatesByName = StoryStatesByName;
 }]);
 
 controllers.controller('projectChartCtrl', ['$scope', 'charts', function($scope, charts) {
