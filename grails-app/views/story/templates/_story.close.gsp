@@ -26,7 +26,7 @@
           closeButton="${message(code: 'is.button.cancel')}"
           title="{{ message('todo.is.ui.story.selector.close.title') }}">
     <p class="help-block"
-       ng-bind-html="message('todo.is.ui.story.selector.close.description')">
+       ng-bind-html="message('todo.is.ui.story.selector.close.description', [(storyStatesByName.DONE | i18n: 'StoryStates')])">
     </p>
     <div class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">
         <div class="loading-logo" ng-include="'loading.html'"></div>
@@ -40,7 +40,7 @@
             <table class="table table-bordered table-striped table-story-close postits-disabled" ng-if="backlog.stories.length > 0">
                 <tr>
                     <th class="text-center">${message(code: 'is.story')}</th>
-                    <th class="text-center">${message(code: 'is.story.state.done')}</th>
+                    <th class="text-center">{{:: storyStatesByName.DONE | i18n: 'StoryStates' }}</th>
                 </tr>
                 <tr ng-repeat="story in backlogStories" class="postit-container postit-no-state">
                     <td is-watch="story">

@@ -125,6 +125,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     storiesLoaded: false
                 };
                 $scope.loadStories();
+                $scope.storyStatesByName = StoryStatesByName;
             }]
         });
     };
