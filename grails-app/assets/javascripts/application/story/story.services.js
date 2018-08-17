@@ -259,7 +259,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                 return Session.po();
             case 'upload':
             case 'update':
-                return (Session.po() && story.state >= StoryStatesByName.SUGGESTED && story.state < StoryStatesByName.DONE) ||
+                return (Session.po() && story.state < StoryStatesByName.DONE) ||
                        (Session.creator(story) && story.state == StoryStatesByName.SUGGESTED);
             case 'updateCreator':
                 return Session.po() && story.state < StoryStatesByName.DONE;
