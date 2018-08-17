@@ -449,8 +449,10 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
     };
     $scope.submit = function(stories) {
         var tasks = [];
+        var lastRank = null;
         _.each(stories, function(story) {
             if (story.id) {
+                lastRank = story.rank;
                 tasks.push(function() {
                     return StoryService.update(story)
                 });
@@ -461,6 +463,15 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
                         return StoryService.save(story, $scope.getProjectFromState().id);
                     }
                 });
+                if (lastRank != null) {
+                    tasks.push({
+                        success: function(createdStory) {
+                            createdStory.rank = lastRank + 1;
+                            lastRank++;
+                            return StoryService.update(createdStory);
+                        }
+                    })
+                }
                 if (effort >= 0) {
                     tasks.push({
                         success: function(createdStory) {
