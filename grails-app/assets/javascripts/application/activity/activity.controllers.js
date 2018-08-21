@@ -75,8 +75,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
         });
         _.each(groupedActivities, function(activityGroup) {
             _.map(activityGroup.activities, function(activity) {
-                var hideType = activity.code == ActivityCodeByName.UPDATE;
-                var text = $filter('activityName')(activity, hideType);
+                var text = $filter('activityName')(activity, activity.code == ActivityCodeByName.UPDATE);
                 if (activity.code == ActivityCodeByName.UPDATE) {
                     var fieldI18n = {
                         name: 'is.story.name',
@@ -91,15 +90,13 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
                         tags: 'is.backlogelement.tags'
                     };
                     text += ' ' + $scope.message(fieldI18n[activity.field]) + ' ';
-                }
-                activity.text = text;
-                if (activity.code == ActivityCodeByName.UPDATE) {
                     if (activity.field == 'type') {
                         activity.afterValue = $filter('i18n')(activity.afterValue, 'StoryTypes');
                     } else if (_.includes(['dependsOn', 'feature'], activity.field)) {
                         activity.afterValue = activity.afterLabel;
                     }
                 }
+                activity.text = text;
             });
         });
         $scope.groupedActivities = groupedActivities;
