@@ -277,7 +277,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             case 'shiftToNext':
                 return Session.poOrSm() && story.state >= StoryStatesByName.PLANNED && story.state <= StoryStatesByName.IN_PROGRESS;
             case 'done':
-                return Session.poOrSm() && story.state == StoryStatesByName.IN_PROGRESS;
+                return Session.poOrSm() && story.state >= StoryStatesByName.IN_PROGRESS && story.state < StoryStatesByName.DONE;
             case 'unDone':
                 return Session.poOrSm() && story.state == StoryStatesByName.DONE && story.parentSprint.state == SprintStatesByName.IN_PROGRESS;
             default:
