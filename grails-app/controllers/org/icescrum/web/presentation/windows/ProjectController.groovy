@@ -292,23 +292,24 @@ class ProjectController implements ControllerErrorHandler {
     // Cannot end with Flow because of f*cked up filter in SpringSecurity (AnnotationFilterInvocationDefinition.java:256)
     def flowCumulative(long project) {
         Project _project = Project.withProject(project)
+        def storyStateNames = _project.getStoryStateNames()
         def values = projectService.cumulativeFlowValues(_project)
-        def computedValues = [[key   : message(code: "is.chart.projectCumulativeflow.serie.suggested.name"),
+        def computedValues = [[key   : message(code: storyStateNames[Story.STATE_SUGGESTED]),
                                values: values.collect { return [it.suggested] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_SUGGESTED]],
-                              [key   : message(code: "is.chart.projectCumulativeflow.serie.accepted.name"),
+                              [key   : message(code: storyStateNames[Story.STATE_ACCEPTED]),
                                values: values.collect { return [it.accepted] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_ACCEPTED]],
-                              [key   : message(code: "is.chart.projectCumulativeflow.serie.estimated.name"),
+                              [key   : message(code: storyStateNames[Story.STATE_ESTIMATED]),
                                values: values.collect { return [it.estimated] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_ESTIMATED]],
-                              [key   : message(code: "is.chart.projectCumulativeflow.serie.planned.name"),
+                              [key   : message(code: storyStateNames[Story.STATE_PLANNED]),
                                values: values.collect { return [it.planned] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_PLANNED]],
-                              [key   : message(code: "is.chart.projectCumulativeflow.serie.inprogress.name"),
+                              [key   : message(code: storyStateNames[Story.STATE_INPROGRESS]),
                                values: values.collect { return [it.inprogress] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_INPROGRESS]],
-                              [key   : message(code: "is.chart.projectCumulativeflow.serie.done.name"),
+                              [key   : message(code: storyStateNames[Story.STATE_DONE]),
                                values: values.collect { return [it.done] },
                                color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_DONE]]].reverse()
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectCumulativeflow.yaxis.label')],
