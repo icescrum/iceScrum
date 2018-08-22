@@ -82,6 +82,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
                         type: 'is.story.type',
                         value: 'is.story.value',
                         feature: 'is.feature',
+                        parentSprint: 'is.sprint',
                         dependsOn: 'is.story.dependsOn',
                         effort: 'is.story.effort',
                         estimation: 'is.task.estimation',
@@ -92,7 +93,7 @@ controllers.controller('activityCtrl', ['$scope', '$state', '$filter', 'DateServ
                     text += ' ' + $scope.message(fieldI18n[activity.field]) + ' ';
                     if (activity.field == 'type') {
                         activity.afterValue = $filter('i18n')(activity.afterValue, 'StoryTypes');
-                    } else if (_.includes(['dependsOn', 'feature'], activity.field)) {
+                    } else if (_.includes(['dependsOn', 'feature', 'parentSprint'], activity.field)) {
                         activity.afterValue = activity.afterLabel;
                     }
                 }

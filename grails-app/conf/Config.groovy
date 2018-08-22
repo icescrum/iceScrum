@@ -246,7 +246,7 @@ icescrum.marshaller = [
                                exclude: ['configsData']]
 ]
 
-icescrum.activities.important = [Activity.CODE_SAVE, 'acceptAs', 'estimate', 'plan', 'unPlan', 'done', 'unDone', 'returnToSandbox']
+icescrum.activities.important = [Activity.CODE_SAVE, 'updateState']
 
 /* Assets */
 grails.assets.less.compile = 'less4j'
