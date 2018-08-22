@@ -841,7 +841,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             }).length;
             scope.$watch(function() { return modelCtrl.$modelValue.state; }, function(newState) {
                 scope.states = [];
-                _.each(scope.modelStates, function(state, code) {
+                _.each(_.sortBy(_.toPairs(scope.modelStates), '[1]'), function(pair) {
+                    var code = pair[0];
+                    var state = pair[1];
                     if (state >= 0) {
                         var newModel = modelCtrl.$modelValue;
                         var codeN = attrs.$normalize(code.toLowerCase());
