@@ -139,11 +139,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.shiftToNext = function(story) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'shiftToNextSprint'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.done = function(story) {
-        return Story.update({projectId: story.backlog.id, id: story.id, action: 'done'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
-    };
-    this.unDone = function(story) {
-        return Story.update({projectId: story.backlog.id, id: story.id, action: 'unDone'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    this.updateState = function(story, action) {
+        return Story.update({projectId: story.backlog.id, id: story.id, action: action}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.follow = function(story) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'follow'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
@@ -225,13 +222,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
-    this.doneMultiple = function(ids, projectId) {
-        return Story.updateArray({projectId: projectId, id: ids, action: 'done'}, {}, function(stories) {
-            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
-        }).$promise;
-    };
-    this.unDoneMultiple = function(ids, projectId) {
-        return Story.updateArray({projectId: projectId, id: ids, action: 'unDone'}, {}, function(stories) {
+    this.updateStateMultiple = function(ids, projectId, action) {
+        return Story.updateArray({projectId: projectId, id: ids, action: action}, {}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };

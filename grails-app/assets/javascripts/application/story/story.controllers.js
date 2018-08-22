@@ -58,14 +58,9 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             $scope.notifySuccess('todo.is.ui.story.shiftedToNext');
         });
     };
-    $scope.done = function(story) {
-        StoryService.done(story).then(function() {
-            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success', [$scope.storyStateName(StoryStatesByName.DONE)]));
-        });
-    };
-    $scope.unDone = function(story) {
-        StoryService.unDone(story).then(function() {
-            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success', [$scope.storyStateName(StoryStatesByName.IN_PROGRESS)]));
+    $scope.updateState = function(story, action, state) {
+        StoryService.updateState(story, action).then(function() {
+            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success', [$scope.storyStateName(state)]));
         });
     };
     $scope.follow = function(story) {
@@ -84,6 +79,9 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
     $scope.authorizedStory = StoryService.authorizedStory;
     $scope.storyStateName = function(state) {
         return $filter('i18n')(state, 'StoryStates');
+    };
+    $scope.i18nMarkAs = function(state) {
+        return $scope.message('is.ui.story.state.markAs') + ' ' + $scope.storyStateName(state);
     };
     $scope.menus = [
         {
@@ -110,7 +108,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.confirm({message: $scope.message('is.ui.story.turnIntoTask.confirm'), callback: $scope.turnInto, args: [story, 'Task']}); }
         },
         {
-            name: function() { return $scope.message('is.ui.story.state.markAs') + ' ' + $scope.storyStateName(StoryStatesByName.DONE); },
+            name: function() { return $scope.i18nMarkAs(StoryStatesByName.DONE); },
             visible: function(story) { return $scope.authorizedStory('done', story) },
             action: function(story) {
                 var remainingAcceptanceTests = story.testState != AcceptanceTestStatesByName.SUCCESS && story.acceptanceTests_count;
@@ -125,18 +123,18 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
                     }
                     $scope.confirm({
                         message: _.map(messages, $scope.message).join('<br/><br/>'),
-                        callback: $scope.done,
-                        args: [story]
+                        callback: $scope.updateState,
+                        args: [story, 'done', StoryStatesByName.DONE]
                     });
                 } else {
-                    $scope.done(story);
+                    $scope.updateState(story, 'done', StoryStatesByName.DONE);
                 }
             }
         },
         {
-            name: function() { return $scope.message('is.ui.story.state.markAs') + ' ' + $scope.storyStateName(StoryStatesByName.IN_PROGRESS); },
+            name: function() { return $scope.i18nMarkAs(StoryStatesByName.IN_PROGRESS); },
             visible: function(story) { return $scope.authorizedStory('unDone', story) },
-            action: function(story) { $scope.unDone(story); }
+            action: function(story) { $scope.updateState(story, 'unDone', StoryStatesByName.IN_PROGRESS); }
         },
         {
             name: 'is.ui.releasePlan.menu.story.dissociate',
@@ -693,6 +691,9 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', '
         StoryService.turnIntoMultiple(storyListId, target, project.id).then(function() {
             $scope.notifySuccess('is.ui.story.turnInto' + target + '.success.multiple');
         });
+    };
+    $scope.storyStateName = function(state) {
+        return $filter('i18n')(state, 'StoryStates');
     };
     $scope.authorizedStories = StoryService.authorizedStories;
     // Init

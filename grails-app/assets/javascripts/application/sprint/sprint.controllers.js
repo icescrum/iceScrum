@@ -103,12 +103,12 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
                     var promise = $q.when();
                     if (toBeUndone.length) {
                         promise = promise.then(function() {
-                            return toBeUndone.length > 1 ? StoryService.unDoneMultiple(toBeUndone, $scope.getProjectFromState().id) : StoryService.unDone(getStory(toBeUndone[0]));
+                            return toBeUndone.length > 1 ? StoryService.updateStateMultiple(toBeUndone, $scope.getProjectFromState().id, 'unDone') : StoryService.updateState(getStory(toBeUndone[0]), 'unDone');
                         });
                     }
                     if (toBeDone.length) {
                         promise = promise.then(function() {
-                            return toBeDone.length > 1 ? StoryService.doneMultiple(toBeDone, $scope.getProjectFromState().id) : StoryService.done(getStory(toBeDone[0]));
+                            return toBeDone.length > 1 ? StoryService.updateStateMultiple(toBeDone, $scope.getProjectFromState().id, 'done') : StoryService.updateState(getStory(toBeDone[0]), 'done');
                         });
                     }
                     promise.then(function() {
