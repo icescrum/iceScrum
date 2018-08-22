@@ -137,11 +137,6 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.updateState(story, 'unDone', StoryStatesByName.IN_PROGRESS); }
         },
         {
-            name: 'is.ui.releasePlan.menu.story.dissociate',
-            visible: function(story) { return $scope.authorizedStory('unPlan', story) },
-            action: function(story) { $scope.unPlan(story); }
-        },
-        {
             name: 'is.ui.sprintPlan.menu.postit.shiftToNext',
             visible: function(story) { return $scope.authorizedStory('shiftToNext', story)},
             action: function(story) { $scope.shiftToNext(story); }
@@ -157,11 +152,6 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.showEditEffortModal(story); }
         },
         {
-            name: 'is.ui.backlog.menu.returnToSandbox',
-            visible: function(story) { return $scope.authorizedStory('returnToSandbox', story) },
-            action: function(story) { $scope.returnToSandbox(story); }
-        },
-        {
             name: 'is.ui.backlog.menu.split',
             visible: function(story) { return $scope.authorizedStory('split', story) },
             action: function(story) { $scope.showStorySplitModal(story); }
@@ -174,6 +164,16 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             name: 'todo.is.ui.permalink.copy',
             visible: function(story) { return true },
             action: function(story) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(story.uid, 'story'))); }
+        },
+        {
+            name: 'is.ui.releasePlan.menu.story.dissociate',
+            visible: function(story) { return $scope.authorizedStory('unPlan', story) },
+            action: function(story) { $scope.unPlan(story); }
+        },
+        {
+            name: 'is.ui.backlog.menu.returnToSandbox',
+            visible: function(story) { return $scope.authorizedStory('returnToSandbox', story) },
+            action: function(story) { $scope.returnToSandbox(story); }
         },
         {
             name: 'is.ui.backlog.menu.delete',
