@@ -254,6 +254,7 @@ grails.assets.excludes = ["**/*.less"]
 grails.assets.includes = ["styles.less"]
 grails.assets.plugin."commentable".excludes = ["**/*"]
 grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
+grails.assets.enableGzip = true
 
 /* CORS */
 icescrum.cors.enable = true
