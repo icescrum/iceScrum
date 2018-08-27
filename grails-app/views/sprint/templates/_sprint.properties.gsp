@@ -132,7 +132,7 @@
                       ng-model="editableSprint.retrospective"
                       is-model-html="editableSprint.retrospective_html"
                       ng-show="showRetrospectiveTextarea"
-                      ng-blur="showRetrospectiveTextarea = false; blurAndClick($event)"
+                      ng-blur="showRetrospectiveTextarea = false"
                       placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
             <div class="markitup-preview important"
                  ng-disabled="!formEditable()"
@@ -163,7 +163,7 @@
                       ng-model="editableSprint.doneDefinition"
                       is-model-html="editableSprint.doneDefinition_html"
                       ng-show="showDoneDefinitionTextarea"
-                      ng-blur="showDoneDefinitionTextarea = false; blurAndClick($event)"
+                      ng-blur="showDoneDefinitionTextarea = false"
                       placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
             <div class="markitup-preview important"
                  ng-disabled="!formEditable()"
@@ -194,14 +194,12 @@
             <button class="btn btn-primary"
                     ng-if="formHolder.editing && (isLatest() || application.submitting)"
                     ng-disabled="!isDirty() || formHolder.sprintForm.$invalid || application.submitting"
-                    ng-click="update(editableSprint)"
                     type="submit">
                 ${message(code: 'default.button.update.label')}
             </button>
             <button class="btn btn-danger"
                     ng-if="formHolder.editing && !isLatest() && !application.submitting"
                     ng-disabled="!isDirty() || formHolder.sprintForm.$invalid"
-                    ng-click="update(editableSprint)"
                     type="submit">
                 ${message(code: 'default.button.override.label')}
             </button>

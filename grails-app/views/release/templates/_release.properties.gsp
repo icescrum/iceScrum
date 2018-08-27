@@ -144,7 +144,7 @@
                       ng-model="editableRelease.vision"
                       is-model-html="editableRelease.vision_html"
                       ng-show="showVisionTextarea"
-                      ng-blur="showVisionTextarea = false; blurAndClick($event)"
+                      ng-blur="showVisionTextarea = false"
                       placeholder="${message(code: 'todo.is.ui.release.novision')}"></textarea>
             <div class="markitup-preview"
                  ng-disabled="!formEditable()"
@@ -175,14 +175,12 @@
             <button class="btn btn-primary"
                     ng-if="formHolder.editing && (isLatest() || application.submitting)"
                     ng-disabled="!isDirty() || formHolder.releaseForm.$invalid || application.submitting"
-                    ng-click="update(editableRelease)"
                     type="submit">
                 ${message(code: 'default.button.update.label')}
             </button>
             <button class="btn btn-danger"
                     ng-if="formHolder.editing && !isLatest() && !application.submitting"
                     ng-disabled="!isDirty() || formHolder.releaseForm.$invalid"
-                    ng-click="update(editableRelease)"
                     type="submit">
                 ${message(code: 'default.button.override.label')}
             </button>
