@@ -219,7 +219,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
     };
     this.blurAndClick = function($event) {
         // BIG HACK when a DOM change in a blur event will move a button and it will not be there anymore to receive the click, so we manually trigger the click
-        if ($event.relatedTarget) {
+        if ($event.relatedTarget) { // relatedTarget is null when clicking on button on FF :( it only works when clicking on input
             $timeout(function() {
                 angular.element($event.relatedTarget).triggerHandler('click');
             });
