@@ -111,7 +111,7 @@
                                     <a ng-if="sprintFilter.id != 'header' && sprintFilter.id != 'divider'"
                                        ng-click="changeSprintFilter(sprintFilter)"
                                        href>
-                                        {{ sprintFilter.name + ' (' + sprintFilter.count + ')'}}
+                                        {{ sprintFilter.name + ' (' + (sprintFilter.count | orElse: 0) + ')'}}
                                     </a>
                                     <span ng-if="sprintFilter.id == 'header'">{{ ::sprintFilter.name }}</span>
                                 </li>
