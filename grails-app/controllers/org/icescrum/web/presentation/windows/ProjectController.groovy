@@ -294,24 +294,13 @@ class ProjectController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         def storyStateNames = _project.getStoryStateNames()
         def values = projectService.cumulativeFlowValues(_project)
-        def computedValues = [[key   : message(code: storyStateNames[Story.STATE_SUGGESTED]),
-                               values: values.collect { return [it.suggested] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_SUGGESTED]],
-                              [key   : message(code: storyStateNames[Story.STATE_ACCEPTED]),
-                               values: values.collect { return [it.accepted] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_ACCEPTED]],
-                              [key   : message(code: storyStateNames[Story.STATE_ESTIMATED]),
-                               values: values.collect { return [it.estimated] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_ESTIMATED]],
-                              [key   : message(code: storyStateNames[Story.STATE_PLANNED]),
-                               values: values.collect { return [it.planned] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_PLANNED]],
-                              [key   : message(code: storyStateNames[Story.STATE_INPROGRESS]),
-                               values: values.collect { return [it.inprogress] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_INPROGRESS]],
-                              [key   : message(code: storyStateNames[Story.STATE_DONE]),
-                               values: values.collect { return [it.done] },
-                               color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[Story.STATE_DONE]]].reverse()
+        def computedValues = [Story.STATE_SUGGESTED, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, Story.STATE_PLANNED, Story.STATE_INPROGRESS, Story.STATE_INREVIEW, Story.STATE_DONE].collect { state ->
+            [
+                    key   : message(code: storyStateNames[state]),
+                    values: values.collect { return [it[state]] },
+                    color : grailsApplication.config.icescrum.resourceBundles.storyStatesColor[state]
+            ]
+        }.reverse()
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectCumulativeflow.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.projectCumulativeflow.xaxis.label')]],
                        title: [text: message(code: "is.chart.projectCumulativeflow.title")]]
