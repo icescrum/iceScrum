@@ -230,9 +230,9 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
             var destScope = event.dest.sortableScope;
             var promise;
             if (BacklogService.isBacklog(sourceScope.backlogContainer.backlog) && BacklogService.isSandbox(destScope.backlogContainer.backlog)) {
-                promise = StoryService.returnToSandbox(story, newRank);
+                promise = StoryService.updateState(story, 'returnToSandbox', newRank);
             } else if (BacklogService.isSandbox(sourceScope.backlogContainer.backlog) && BacklogService.isBacklog(destScope.backlogContainer.backlog)) {
-                promise = StoryService.acceptToBacklog(story, newRank);
+                promise = StoryService.updateState(story, 'accept', newRank);
             }
             if (promise) {
                 promise.catch(function() {

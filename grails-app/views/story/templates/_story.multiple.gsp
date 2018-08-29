@@ -115,7 +115,7 @@
                                     ng-if="authorizedStories('accept', stories)"
                                     class="btn btn-default"
                                     ng-click="acceptToBacklogMultiple()">
-                                ${message(code: 'is.ui.backlog.menu.acceptAsStory')}
+                                ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.ACCEPTED | i18n:'StoryStates' }}
                             </button>
                             <button type="button"
                                     ng-if="authorizedStories('copy', stories)"
@@ -127,7 +127,7 @@
                                     ng-if="authorizedStories('returnToSandbox', stories)"
                                     class="btn btn-default"
                                     ng-click="returnToSandboxMultiple()">
-                                ${message(code: 'is.ui.backlog.menu.returnToSandbox')}
+                                ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.SUGGESTED | i18n:'StoryStates' }}
                             </button>
                             <button type="button"
                                     ng-if="authorizedStories('delete', stories)"

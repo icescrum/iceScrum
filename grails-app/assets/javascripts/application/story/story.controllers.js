@@ -34,8 +34,8 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
         }
     };
     $scope.acceptToBacklog = function(story) {
-        StoryService.acceptToBacklog(story).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.accepted');
+        StoryService.updateState(story, 'accept').then(function() {
+            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success', [$scope.storyStateName(StoryStatesByName.ACCEPTED)]) + ' ' + $scope.message('is.ui.story.state.backlog.success'));
         });
     };
     $scope.turnInto = function(story, target) {
@@ -44,8 +44,8 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
         });
     };
     $scope.returnToSandbox = function(story) {
-        StoryService.returnToSandbox(story).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.returnedToSandbox');
+        StoryService.updateState(story, 'returnToSandbox').then(function() {
+            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success', [$scope.storyStateName(StoryStatesByName.SUGGESTED)]) + ' ' + $scope.message('is.ui.story.state.sandbox.success'));
         });
     };
     $scope.unPlan = function(story) {
@@ -93,7 +93,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $window.location.hash = $scope.openStoryUrl(story.id); } // Inherited
         },
         {
-            name: 'is.ui.backlog.menu.acceptAsStory',
+            name: function() { return $scope.i18nMarkAs(StoryStatesByName.ACCEPTED); },
             visible: function(story) { return $scope.authorizedStory('accept', story) },
             action: function(story) { $scope.acceptToBacklog(story); }
         },
@@ -171,7 +171,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.unPlan(story); }
         },
         {
-            name: 'is.ui.backlog.menu.returnToSandbox',
+            name: function() { return $scope.i18nMarkAs(StoryStatesByName.SUGGESTED); },
             visible: function(story) { return $scope.authorizedStory('returnToSandbox', story) },
             action: function(story) { $scope.returnToSandbox(story); }
         },
@@ -654,7 +654,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         }
     }]);
 
-extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', 'StoryService', 'storyListId', 'Session', 'FeatureService', 'project', function($scope, $controller, $filter, StoryService, storyListId, Session, FeatureService, project) {
+extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', 'StoryService', 'storyListId', 'Session', 'FeatureService', 'StoryStatesByName', 'project', function($scope, $controller, $filter, StoryService, storyListId, Session, FeatureService, StoryStatesByName, project) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.deleteMultiple = function() {
@@ -673,13 +673,13 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', '
         });
     };
     $scope.acceptToBacklogMultiple = function() {
-        StoryService.acceptToBacklogMultiple(storyListId, project.id).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.multiple.accepted');
+        StoryService.updateStateMultiple(storyListId, project.id, 'accept').then(function() {
+            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success.multiple', [$scope.storyStateName(StoryStatesByName.ACCEPTED)]) + ' ' + $scope.message('is.ui.story.state.backlog.success.multiple'));
         });
     };
     $scope.returnToSandboxMultiple = function() {
-        StoryService.returnToSandboxMultiple(storyListId, project.id).then(function() {
-            $scope.notifySuccess('todo.is.ui.story.multiple.updated');
+        StoryService.updateStateMultiple(storyListId, project.id, 'returnToSandbox').then(function() {
+            $scope.notifySuccess($scope.message('is.ui.story.state.markAs.success.multiple', [$scope.storyStateName(StoryStatesByName.SUGGESTED)]) + ' ' + $scope.message('is.ui.story.state.sandbox.success.multiple'));
         });
     };
     $scope.followMultiple = function(follow) {

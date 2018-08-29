@@ -107,20 +107,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this['delete'] = function(story) {
         return Story.delete({projectId: story.backlog.id, id: story.id}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
-    this.acceptToBacklog = function(story, rank) {
-        var params = {story: {}};
-        if (rank) {
-            params.story.rank = rank;
-        }
-        return Story.update({projectId: story.backlog.id, id: story.id, action: 'accept'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
-    };
-    this.returnToSandbox = function(story, rank) {
-        var params = {story: {}};
-        if (rank) {
-            params.story.rank = rank;
-        }
-        return Story.update({projectId: story.backlog.id, id: story.id, action: 'returnToSandbox'}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
-    };
     this.plan = function(story, sprint, rank) {
         var params = {story: {parentSprint: {id: sprint.id}}};
         if (rank) {
@@ -139,8 +125,12 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.shiftToNext = function(story) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'shiftToNextSprint'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.updateState = function(story, action) {
-        return Story.update({projectId: story.backlog.id, id: story.id, action: action}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    this.updateState = function(story, action, rank) {
+        var params = {story: {}};
+        if (rank) {
+            params.story.rank = rank;
+        }
+        return Story.update({projectId: story.backlog.id, id: story.id, action: action}, params, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.follow = function(story) {
         return Story.update({projectId: story.backlog.id, id: story.id, action: 'follow'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
@@ -198,16 +188,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.copyMultiple = function(ids, projectId) {
         return Story.updateArray({projectId: projectId, id: ids, action: 'copy'}, {}, function(stories) {
             _.each(stories, crudMethods[IceScrumEventType.CREATE]);
-        }).$promise;
-    };
-    this.acceptToBacklogMultiple = function(ids, projectId) {
-        return Story.updateArray({projectId: projectId, id: ids, action: 'accept'}, {}, function(stories) {
-            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
-        }).$promise;
-    };
-    this.returnToSandboxMultiple = function(ids, projectId) {
-        return Story.updateArray({projectId: projectId, id: ids, action: 'returnToSandbox'}, {}, function(stories) {
-            _.each(stories, crudMethods[IceScrumEventType.UPDATE]);
         }).$promise;
     };
     this.turnIntoMultiple = function(ids, target, projectId) {
