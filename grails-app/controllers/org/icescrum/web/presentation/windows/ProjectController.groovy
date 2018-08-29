@@ -294,7 +294,7 @@ class ProjectController implements ControllerErrorHandler {
         Project _project = Project.withProject(project)
         def storyStateNames = _project.getStoryStateNames()
         def values = projectService.cumulativeFlowValues(_project)
-        def computedValues = [Story.STATE_SUGGESTED, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, Story.STATE_PLANNED, Story.STATE_INPROGRESS, Story.STATE_INREVIEW, Story.STATE_DONE].collect { state ->
+        def computedValues = [Story.STATE_SUGGESTED, Story.STATE_ACCEPTED, Story.STATE_ESTIMATED, Story.STATE_PLANNED, Story.STATE_INPROGRESS, Story.STATE_DONE].collect { state ->
             [
                     key   : message(code: storyStateNames[state]),
                     values: values.collect { return [it[state]] },
