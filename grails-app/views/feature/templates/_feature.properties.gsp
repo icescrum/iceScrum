@@ -43,10 +43,11 @@
                             type="button"
                             ng-style="{'background-color': editableFeature.color}"
                             colorpicker-position="left"
-                            value="#bf3d3d"
+                            colorpicker-with-input="true"
                             ng-click="editForm(true); refreshAvailableColors();"
-                            colors="availableColors"
+                            value="#bf3d3d"
                             name="color"
+                            colors="availableColors"
                             ng-model="editableFeature.color"><i class="fa fa-pencil"></i> ${message(code: 'todo.is.ui.color')}</button>
                 </span>
             </div>

@@ -351,26 +351,6 @@ angular.module('colorpicker.module', [])
                     });
                 });
 
-                if (withInput) {
-                    var pickerColorInput = colorpickerTemplate.find('input');
-                    pickerColorInput
-                        .on('mousedown', function(event) {
-                            event.stopPropagation();
-                        })
-                        .on('keyup', function(event) {
-                            var newColor = this.value;
-                            elem.val(newColor);
-                            if(ngModel) {
-                                $scope.$apply(ngModel.$setViewValue(newColor));
-                            }
-                            event.stopPropagation();
-                            event.preventDefault();
-                        });
-                    elem.on('keyup', function() {
-                        pickerColorInput.val(elem.val());
-                    });
-                }
-
                 var bindMouseEvents = function() {
                     $document.on('mousemove', mousemove);
                     $document.on('mouseup', mouseup);
@@ -490,6 +470,27 @@ angular.module('colorpicker.module', [])
                     pickerColorPointers.eq(2).css('top', 100 * (1 - pickerColor.value.a) + 'px');
                     previewColor();
                 };
+
+                if (withInput) {
+                    var pickerColorInput = colorpickerTemplate.find('input');
+                    pickerColorInput
+                        .on('mousedown', function(event) {
+                            event.stopPropagation();
+                        })
+                        .on('keyup', function(event) {
+                            var newColor = this.value;
+                            elem.val(newColor);
+                            if(ngModel) {
+                                $scope.$apply(ngModel.$setViewValue(newColor));
+                            }
+                            update();
+                            event.stopPropagation();
+                            event.preventDefault();
+                        });
+                    elem.on('keyup', function() {
+                        pickerColorInput.val(elem.val());
+                    });
+                }
 
                 var getColorpickerTemplatePosition = function() {
                     var
