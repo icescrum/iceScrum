@@ -59,6 +59,9 @@ var isApplication = angular.module('isApplication', [
         $httpProvider.interceptors.push('SubmittingInterceptor');
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }])
+    .config(['$compileProvider', function($compileProvider) {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob|smb|skype):/)
+    }])
     .config(['stateHelperProvider', '$urlRouterProvider', '$stateProvider', 'isStateProvider', function(stateHelperProvider, $urlRouterProvider, $stateProvider, isStateProvider) {
         $urlRouterProvider.when('', '/');
         stateHelperProvider
