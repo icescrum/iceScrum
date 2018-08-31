@@ -278,7 +278,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     }
 }]);
 
-controllers.controller('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', function($scope, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal) {
+extensibleController('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', function($scope, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal) {
     $scope.authorizedProject = ProjectService.authorizedProject;
     $scope.authorizedPortfolio = PortfolioService.authorizedPortfolio;
     $scope['import'] = function(project) {

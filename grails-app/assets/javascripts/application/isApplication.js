@@ -666,6 +666,7 @@ var isApplication = angular.module('isApplication', [
                 templateUrl: 'message.modal.html',
                 size: options.size ? options.size : 'sm',
                 controller: ['$scope', function($scope) {
+                    $scope.title = options.title ? options.title : $scope.message('todo.is.ui.message.title');
                     $scope.message = options.message;
                 }]
             });

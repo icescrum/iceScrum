@@ -44,7 +44,7 @@
     </script>
 
     <script type="text/ng-template" id="message.modal.html">
-    <is:modal title="${message(code: 'todo.is.ui.message.title')}">
+    <is:modal title="{{:: title }}">
         <span ng-bind-html="message"></span>
     </is:modal>
     </script>
