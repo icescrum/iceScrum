@@ -160,6 +160,7 @@ controllers.controller('manageTeamsModalCtrl', ['$scope', '$controller', '$filte
                     return _.merge($scope.invitationToUserMock(invitation), {scrumMaster: true});
                 }));
             }
+            $scope.team.members = _.uniqBy($scope.team.members, 'email'); // Invited members may have already been added, we don't want to add them again
         }
         $scope.ownerCandidates = angular.copy($scope.team.members);
         var owner = team.owner;
