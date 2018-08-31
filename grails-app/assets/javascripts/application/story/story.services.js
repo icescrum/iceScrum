@@ -72,13 +72,22 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         if (!_.isArray(obj.stories)) {
             obj.stories = [];
         }
-        var promise = queryWithContext({projectId: projectId, typeId: obj.id, type: obj.class.toLowerCase()}, function(stories) {
+        var type = obj.class.toLowerCase();
+        var promise = queryWithContext({projectId: projectId, typeId: obj.id, type: type}, function(stories) {
             self.mergeStories(stories);
             _.each(stories, function(story) {
                 if (!_.find(obj.stories, {id: story.id})) {
                     obj.stories.push(CacheService.get('story', story.id));
                 }
             });
+            // Big hack to manage the case where the story has been "get" before the sprint is loaded on client
+            // We should rather in CacheService attach existing stories from the cache to the sprint when the sprint is loaded
+            // The same could be done for other items
+            if (type === 'sprint') {
+                obj.stories.sort(function(obj1, obj2) {
+                    return obj1.rank - obj2.rank;
+                });
+            }
         }).$promise;
         return obj.stories.length == 0 ? promise : $q.when(obj.stories);
     };

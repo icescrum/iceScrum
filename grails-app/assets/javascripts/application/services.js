@@ -475,12 +475,16 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                 }
                 if (newSprintId) {
                     var cachedSprint = CacheService.get('sprint', newSprintId);
-                    if (cachedSprint && !_.find(cachedSprint.stories, {id: newStory.id})) {
-                        if (!_.isArray(cachedSprint.stories)) {
-                            cachedSprint.stories = [];
+                    if (cachedSprint) {
+                        if (!_.find(cachedSprint.stories, {id: newStory.id})) {
+                            if (!_.isArray(cachedSprint.stories)) {
+                                cachedSprint.stories = [];
+                            }
+                            cachedSprint.stories.push(newStory);
                         }
-                        cachedSprint.stories.push(newStory);
-                        cachedSprint.stories.sort(sortByRank);
+                        if (cachedSprint.stories) {
+                            cachedSprint.stories.sort(sortByRank);
+                        }
                     }
                 }
             } else if (newSprintId && oldStory.rank != newStory.rank) {
