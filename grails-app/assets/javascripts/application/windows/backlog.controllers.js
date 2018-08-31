@@ -242,8 +242,13 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         },
         orderChanged: function(event) {
             var story = event.source.itemScope.modelValue;
-            story.rank = event.dest.index + 1;
-            StoryService.update(story).catch(function() {
+            var newRank = event.dest.index + 1;
+            story.rank = newRank;
+            StoryService.update(story).then(function(updatedStory) {
+                if (updatedStory.rank !== newRank) {
+                    $scope.notifyWarning('is.ui.story.warning.rank.dependsOn');
+                }
+            }).catch(function() {
                 $scope.revertSortable(event);
             });
         },
