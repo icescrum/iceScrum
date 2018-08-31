@@ -268,13 +268,15 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
                             formatter: function(val) {
                                 return $scope.effortSuiteValues[val.value];
                             },
-                            rangeHighlights: [
-                                {"start": 0, "end": $scope.effortSuiteValues.indexOf(5)},
-                                {"start": $scope.effortSuiteValues.indexOf(5), "end": $scope.effortSuiteValues.indexOf(13)},
-                                {"start": $scope.effortSuiteValues.indexOf(13), "end": $scope.effortSuiteValues.length - 1}
-                            ],
                             sliderid: "slider-effort"
                         };
+                        if ($scope.effortSuiteValues.length < 30) {
+                            $scope.sliderEffort.rangeHighlights = [
+                                {start: 0, end: $scope.effortSuiteValues.indexOf(5)},
+                                {start: $scope.effortSuiteValues.indexOf(5), end: $scope.effortSuiteValues.indexOf(13)},
+                                {start: $scope.effortSuiteValues.indexOf(13), end: $scope.effortSuiteValues.length - 1}
+                            ]
+                        }
                         $scope.$watch('sliderEffort.labelValue', function(newVal) {
                             $scope.editableStory.effort = $scope.effortSuiteValues[newVal];
                         });
