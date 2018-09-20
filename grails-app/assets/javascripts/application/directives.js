@@ -485,7 +485,10 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
 
             // Brush management
             function reinitializeBrush() {
-                brushSelector.call(brush.clear());
+                $timeout(function() {
+                    brush.clear();
+                    brushSelector.call(brush);
+                }, 150); // Delay to let the window the time to resize
             }
 
             function findSprintsOrAReleaseInRange(ranges) {
