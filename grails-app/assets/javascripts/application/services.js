@@ -515,7 +515,10 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                     }
                 }
             }
-            var cachedProject = CacheService.get('project', newStory ? newStory.backlog.id : oldStory.backlog.id);
+            var cachedProject;
+            if (newStory && newStory.backlog || oldStory && oldStory.backlog) { // Not present when push only rank
+                cachedProject = CacheService.get('project', newStory ? newStory.backlog.id : oldStory.backlog.id);
+            }
             if (cachedProject) {
                 var cachedBacklogs = cachedProject.backlogs;
                 if (cachedBacklogs.length) {

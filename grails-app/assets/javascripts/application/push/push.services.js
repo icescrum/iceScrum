@@ -129,8 +129,9 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                     }
                 } catch (e) {
                     if (_canLog('debug')) {
-                        atmosphere.util.debug("Error parsing JSON: " + text);
+                        atmosphere.util.debug("Error handling JSON: " + text);
                     }
+                    console.error(e);
                 }
             });
             $rootScope.application.loading = false;
