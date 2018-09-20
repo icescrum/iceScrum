@@ -556,9 +556,6 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                     var cachedSprint = CacheService.get('sprint', oldSprintId);
                     if (cachedSprint) {
                         _.remove(cachedSprint.tasks, {id: oldTask.id});
-                        if (_.isArray(cachedSprint.tasks)) {
-                            cachedSprint.tasks_count = cachedSprint.tasks.length;
-                        }
                     }
                 }
                 if (newSprintId) {
@@ -578,7 +575,6 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                     var cachedStory = CacheService.get('story', oldStoryId);
                     if (cachedStory) {
                         _.remove(cachedStory.tasks, {id: oldTask.id});
-                        cachedStory.tasks_count--;
                     }
                 }
                 if (newStoryId) {
@@ -586,10 +582,8 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                     if (cachedStory && !_.find(cachedStory.tasks, {id: newTask.id})) {
                         if (!_.isArray(cachedStory.tasks)) {
                             cachedStory.tasks = [];
-                            cachedStory.tasks_count = 0;
                         }
                         cachedStory.tasks.push(newTask);
-                        cachedStory.tasks_count++;
                     }
                 }
             }

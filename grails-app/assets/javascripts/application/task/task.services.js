@@ -55,7 +55,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         PushService.registerListener('task', eventType, crudMethod);
     });
     this.mergeTasks = function(tasks) {
-        _.each(tasks, crudMethods[IceScrumEventType.CREATE]);
+        _.each(tasks, crudMethods[IceScrumEventType.UPDATE]);
     };
     this.save = function(task, projectId) {
         task.class = 'task';
@@ -100,34 +100,24 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         editableTask.state = state;
         return self.update(editableTask, true);
     };
-    this.list = function(taskContext, projectId) {
-        if (_.isEmpty(taskContext.tasks) && taskContext.tasks_count > 0) {
-            var params = {projectId: projectId, typeId: taskContext.id, type: taskContext.class.toLowerCase()};
-            if ($rootScope.application.context) {
-                _.merge(params, {'context.type': $rootScope.application.context.type, 'context.id': $rootScope.application.context.id});
-            }
-            return Task.query(params, function(tasks) {
-                if (angular.isArray(taskContext.tasks)) {
-                    _.each(tasks, function(task) {
-                        var existingSprint = _.find(taskContext.tasks, {id: task.id});
-                        if (existingSprint) {
-                            angular.extend(existingSprint, task);
-                        } else {
-                            taskContext.tasks.push(task);
-                        }
-                    });
-                } else {
-                    taskContext.tasks = tasks;
-                }
-                taskContext.tasks_count = tasks.length;
-                self.mergeTasks(tasks);
-            }).$promise;
-        } else {
-            if (!angular.isArray(taskContext.tasks)) {
-                taskContext.tasks = []
-            }
-            return $q.when(taskContext.tasks);
+    this.list = function(obj, projectId) {
+        if (!_.isArray(obj.tasks)) {
+            obj.tasks = [];
         }
+        var params = {projectId: projectId, typeId: obj.id, type: obj.class.toLowerCase()};
+        if ($rootScope.application.context) {
+            _.merge(params, {'context.type': $rootScope.application.context.type, 'context.id': $rootScope.application.context.id});
+        }
+        var promise = Task.query(params, function(tasks) {
+            self.mergeTasks(tasks);
+            _.each(tasks, function(task) {
+                if (!_.find(obj.tasks, {id: task.id})) {
+                    obj.tasks.push(CacheService.get('task', task.id));
+                }
+            });
+            obj.tasks_count = tasks.length;
+        }).$promise;
+        return obj.tasks.length === 0 ? promise : $q.when(obj.tasks);
     };
     this.get = function(id, taskContext, projectId) {
         return self.list(taskContext, projectId).then(function(tasks) {
