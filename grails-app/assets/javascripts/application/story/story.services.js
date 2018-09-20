@@ -274,7 +274,6 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }
     };
     this.authorizedStories = function(action, stories) {
-        var self = this;
         switch (action) {
             case 'copy':
                 return Session.po();

@@ -184,7 +184,6 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
         }
     };
     this.authorizedSprints = function(action, sprints) {
-        var self = this;
         return _.every(sprints, function(sprint) {
             return self.authorizedSprint(action, sprint);
         });
