@@ -79,6 +79,7 @@ angular.module('isCore', ['ui.router'])
                 sprint: [
                     {id: 'burndownRemaining', name: 'is.ui.sprintPlan.charts.sprintBurndownRemainingChart', 'view': 'taskBoard'},
                     {id: 'burnupTasks', name: 'is.ui.sprintPlan.charts.sprintBurnupTasksChart', 'view': 'taskBoard'},
+                    {id: 'burndownPoints', name: 'is.ui.sprintPlan.charts.sprintBurndownPointsChart', 'view': 'taskBoard'},
                     {id: 'burnupPoints', name: 'is.ui.sprintPlan.charts.sprintBurnupPointsChart', 'view': 'taskBoard'},
                     {id: 'burnupStories', name: 'is.ui.sprintPlan.charts.sprintBurnupStoriesChart', 'view': 'taskBoard'}
                 ]

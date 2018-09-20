@@ -200,9 +200,27 @@ class SprintController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
+    def burndownPoints(long project, long id) {
+        Sprint sprint = Sprint.withSprint(project, id)
+        def values = sprintService.sprintStoriesValues(sprint)
+        def computedValues = [
+                [key   : message(code: "is.chart.sprintBurndownPointsChart.serie.points.name"),
+                 values: values.findAll { it.remainingPoints != null }.collect { return [it.label, it.remainingPoints] },
+                 color : '#1C3660']
+        ]
+        def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
+        def options = [chart: [yDomain: [0, values.max { it.remainingPoints }],
+                               xDomain: xDomain,
+                               yAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownPointsChart.yaxis.label')],
+                               xAxis  : [axisLabel: message(code: 'is.chart.sprintBurndownPointsChart.xaxis.label'), tickValues: ApplicationSupport.getChartTickValues(xDomain)]],
+                       title: [text: message(code: "is.chart.sprintBurndownPointsChart.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
+    }
+
+    @Secured(['stakeHolder() or inProject()'])
     def burnupPoints(long project, long id) {
         Sprint sprint = Sprint.withSprint(project, id)
-        def values = sprintService.sprintBurnupStoriesValues(sprint)
+        def values = sprintService.sprintStoriesValues(sprint)
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
                  values: values.findAll { it.totalPoints != null }.collect { return [it.label, it.totalPoints] },
@@ -223,7 +241,7 @@ class SprintController implements ControllerErrorHandler {
     @Secured(['stakeHolder() or inProject()'])
     def burnupStories(long project, long id) {
         Sprint sprint = Sprint.withSprint(project, id)
-        def values = sprintService.sprintBurnupStoriesValues(sprint)
+        def values = sprintService.sprintStoriesValues(sprint)
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),
                  values: values.findAll { it.stories != null }.collect { return [it.label, it.stories] },
