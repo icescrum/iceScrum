@@ -26,7 +26,6 @@ package org.icescrum.web.presentation.api
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 import org.apache.commons.io.FilenameUtils
-import org.apache.commons.io.filefilter.WildcardFileFilter
 import org.apache.commons.validator.GenericValidator
 import org.hibernate.ObjectNotFoundException
 import org.icescrum.components.FileUploadInfo
@@ -36,6 +35,7 @@ import org.icescrum.core.domain.Invitation
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.User
 import org.icescrum.core.domain.preferences.UserPreferences
+import org.icescrum.core.error.BusinessException
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.support.ApplicationSupport
 import org.springframework.mail.MailException
@@ -196,6 +196,9 @@ class UserController implements ControllerErrorHandler {
         if (!user) {
             redirect(controller: 'errors', action: 'error404')
             return
+        }
+        if (user.admin) {
+            throw new BusinessException(code: 'Error, this user is an administrator and administrators cannot be deleted')
         }
         User substitute = User.withUser(substitutedBy)
         def deleteOwnedData = params.boolean('deleteOwnedData') ?: false
