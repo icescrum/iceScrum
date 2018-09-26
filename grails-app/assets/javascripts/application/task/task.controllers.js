@@ -118,6 +118,11 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             action: function(task) { $scope.take(task); }
         },
         {
+            name: 'is.ui.sprintPlan.menu.task.unblock',
+            visible: function(task) { return $scope.authorizedTask('unBlock', task); },
+            action: function(task) { $scope.unBlock(task); }
+        },
+        {
             name: 'is.ui.task.state.done',
             visible: function(task) { return task.state == TaskStatesByName.IN_PROGRESS && $scope.authorizedTask('updateState', task); },
             action: function(task) { TaskService.updateState(task, TaskStatesByName.DONE); }
@@ -161,11 +166,6 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             name: 'is.ui.sprintPlan.menu.task.block',
             visible: function(task) { return $scope.authorizedTask('block', task); },
             action: function(task) { $scope.block(task); }
-        },
-        {
-            name: 'is.ui.sprintPlan.menu.task.unblock',
-            visible: function(task) { return $scope.authorizedTask('unBlock', task); },
-            action: function(task) { $scope.unBlock(task); }
         }
     ];
     $scope.showEditEstimationModal = function(task, $event) {
