@@ -159,16 +159,17 @@
                         </div>
                     </div>
                     <div class="btn-toolbar pull-right">
-                        <a class="btn btn-default" href="{{ openBacklogUrl(backlogContainer.backlog) }}"
-                           defer-tooltip="${message(code: 'todo.is.ui.details')}">
-                            <i class="fa fa-pencil"></i>
+                        <a class="btn btn-default"
+                           ng-href="{{ openBacklogUrl(backlogContainer.backlog) }}">
+                            <i class="fa fa-pencil"
+                               defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                         </a>
                         <entry:point id="backlog-list-toolbar-right"/>
-                        <a href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
+                        <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
                            class="btn btn-default"
-                           ng-if="backlogContainers.length > 1"
-                           defer-tooltip="${message(code: 'is.ui.window.closeable')}">
-                            <i class="fa fa-times"></i>
+                           ng-if="backlogContainers.length > 1">
+                            <i class="fa fa-times"
+                               defer-tooltip="${message(code: 'is.ui.window.closeable')}"></i>
                         </a>
                     </div>
                 </h3>
