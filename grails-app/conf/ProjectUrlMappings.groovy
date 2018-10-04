@@ -226,6 +226,13 @@ class ProjectUrlMappings {
                 id(matches: /\d+(,\d+)*/)
             }
         }
+        "/p/$project/feature/print/$format?" {
+            controller = 'feature'
+            action = 'print'
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+            }
+        }
         // Activity
         "/p/$project/activity/$type/$fluxiableId" {
             controller = 'activity'
