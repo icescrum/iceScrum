@@ -34,14 +34,12 @@
     <div class="table-scrollable">
         <table class="table">
             <tr>
-                <th class="title">${g.message(code: 'is.story.value')}</th>
                 <th ng-repeat="value in values" ng-click="setValue(value)" class="clickable">
                     <span class="badge">{{ count[$index] }} <g:message code="is.ui.backlog.title.details.stories"/></span>
                     {{ value }}
                 </th>
             </tr>
             <tr>
-                <td class="title"><strong><g:message code="is.ui.backlog.title.details.stories"/></strong></td>
                 <td ng-repeat="stories in storiesByValue">
                     <table class="table table-striped">
                         <tr ng-repeat="story in stories" title="{{ story.description | actorTag }}" ng-class="{ 'text-primary' : story.id == editableStory.id }">

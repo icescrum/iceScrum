@@ -244,6 +244,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
         if (StoryService.authorizedStory('updateEstimate', story)) {
             var parentScope = $scope;
             $uibModal.open({
+                size: 'lg',
                 templateUrl: 'story.effort.html',
                 controller: ['$scope', '$timeout', function($scope, $timeout) {
                     $scope.editableStory = angular.copy(story);
@@ -335,6 +336,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
     $scope.showEditValueModal = function(story, $event) {
         if (StoryService.authorizedStory('update', story)) {
             $uibModal.open({
+                size: 'lg',
                 templateUrl: 'story.value.html',
                 controller: ["$scope", '$timeout', function($scope, $timeout) {
                     $scope.editableStory = angular.copy(story);
