@@ -27,16 +27,14 @@
           submitButtonColor="danger"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'is.ui.releasePlan.menu.sprint.activate')}">
-    <p class="help-block">
+    <p>
         ${message(code: 'is.ui.releasePlan.menu.sprint.activate.confirm')}
     </p>
-    <div class="table-responsive">
-        <table class="table">
-            <tbody>
-                <tr><td>${message(code: 'is.sprint.startDate')}</td><td class="ng-binding">{{ sprint.startDate | dayShort }}</td></tr>
-                <tr><td>${message(code: 'is.sprint.plannedVelocity')}</td><td class="ng-binding">{{ sprint.capacity }}</td></tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="table">
+        <tbody>
+            <tr><td><strong>${message(code: 'is.sprint.startDate')}</strong></td><td class="ng-binding">{{ sprint.startDate | dayShort }}</td></tr>
+            <tr><td><strong>${message(code: 'is.sprint.plannedVelocity')}</strong></td><td class="ng-binding">{{ sprint.capacity }}</td></tr>
+        </tbody>
+    </table>
 </is:modal>
 </script>
