@@ -63,6 +63,17 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
         var stateName = $state.params.sprintTabId ? (sprintTabId ? '.' : '^') : (sprintTabId ? '.tab' : '.');
         return $state.href(stateName, {sprintTabId: sprintTabId});
     };
+    $scope.openActivateModal = function(sprint) {
+        var parentScope = $scope;
+        $uibModal.open({
+            templateUrl: 'story.activate.html',
+            size: 'md',
+            controller: ['$scope', function($scope) {
+                $scope.activate = parentScope.activate;
+                $scope.sprint = sprint;
+            }]
+        });
+    };
     $scope.openCloseModal = function(sprint) {
         var project = $scope.project;
         $uibModal.open({
@@ -161,15 +172,7 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             name: 'is.ui.releasePlan.menu.sprint.activate',
             visible: function(sprint) { return $scope.authorizedSprint('activate', sprint); },
             priority: function(sprint, defaultPriority) { return sprint.state === 1 && (sprint.stories_ids && sprint.stories_ids.length > 0 || sprint.startDate.getTime() < (new Date()).getTime()) ? 100 : defaultPriority; },
-            action: function(sprint) {
-                $scope.confirm({
-                    buttonColor: 'danger',
-                    buttonTitle: 'is.ui.releasePlan.menu.sprint.activate',
-                    message: $scope.message('is.ui.releasePlan.menu.sprint.activate.confirm'),
-                    callback: $scope.activate,
-                    args: [sprint]
-                });
-            }
+            action: $scope.openActivateModal
         },
         {
             name: 'is.ui.releasePlan.menu.sprint.reactivate',
