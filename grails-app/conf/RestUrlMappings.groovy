@@ -245,7 +245,7 @@ class RestUrlMappings {
             constraints {
                 id(matches: /\d*/)
                 project(matches: /[0-9A-Z]*/)
-                capacity(matches: /\d*/)
+                plannedVelocity(matches: /\d*/)
             }
         }
         // Generate release notes
@@ -276,7 +276,7 @@ class RestUrlMappings {
             constraints {
                 project(matches: /[0-9A-Z]*/)
                 id(matches: /\d*/)
-                capacity(matches: /\d*/)
+                plannedVelocity(matches: /\d*/)
             }
         }
         // Generate sprint for a release
