@@ -37,7 +37,7 @@
                                 <span class="sprint-numbers">
                                     <span ng-if="sprint.state > sprintStatesByName.TODO"
                                           defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
-                                    <span defer-tooltip="${message(code: 'is.sprint.capacity')}">{{ sprint.capacity | roundNumber:2 }}</span>
+                                    <span defer-tooltip="${message(code: 'is.sprint.plannnedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</span>
                                     <i class="small-icon fa fa-dollar"></i>
                                 </span>
                                 <span class="sprint-remaining" defer-tooltip="${message(code: 'is.task.estimation')}">
