@@ -80,8 +80,8 @@ services.service("ReleaseService", ['$q', '$state', '$injector', 'Release', 'Rel
     this.close = function(release) {
         return Release.update({id: release.id, projectId: release.parentProject.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.autoPlan = function(release, capacity) {
-        return FormService.httpPost('release/' + release.id + '/autoPlan', {capacity: capacity}).then(function(result) {
+    this.autoPlan = function(release, plannedVelocity) {
+        return FormService.httpPost('release/' + release.id + '/autoPlan', {plannedVelocity: plannedVelocity}).then(function(result) {
             _.each(result.stories, $injector.get('StoryService').crudMethods[IceScrumEventType.UPDATE]);
         });
     };

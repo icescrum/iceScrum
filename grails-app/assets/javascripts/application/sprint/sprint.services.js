@@ -137,8 +137,8 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this.close = function(sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'close'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
-    this.autoPlan = function(sprint, capacity, project) {
-        return Sprint.update({id: sprint.id, projectId: project.id, action: 'autoPlan'}, {capacity: capacity}, crudMethods[IceScrumEventType.UPDATE]).$promise;
+    this.autoPlan = function(sprint, plannedVelocity, project) {
+        return Sprint.update({id: sprint.id, projectId: project.id, action: 'autoPlan'}, {plannedVelocity: plannedVelocity}, crudMethods[IceScrumEventType.UPDATE]).$promise;
     };
     this.unPlan = function(sprint, project) {
         return Sprint.update({id: sprint.id, projectId: project.id, action: 'unPlan'}, {}, crudMethods[IceScrumEventType.UPDATE]).$promise;
@@ -146,8 +146,8 @@ services.service("SprintService", ['$q', '$state', 'Sprint', 'SprintStatesByName
     this['delete'] = function(sprint, release) {
         return Sprint.delete({id: sprint.id, projectId: release.parentProject.id}, {}, crudMethods[IceScrumEventType.DELETE]).$promise;
     };
-    this.autoPlanMultiple = function(sprints, capacity, release) {
-        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProject.id, action: 'autoPlan'}, {capacity: capacity}, self.mergeSprints).$promise;
+    this.autoPlanMultiple = function(sprints, plannedVelocity, release) {
+        return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProject.id, action: 'autoPlan'}, {plannedVelocity: plannedVelocity}, self.mergeSprints).$promise;
     };
     this.unPlanMultiple = function(sprints, release) {
         return Sprint.updateArray({id: _.map(sprints, 'id'), projectId: release.parentProject.id, action: 'unPlan'}, {}, self.mergeSprints).$promise;

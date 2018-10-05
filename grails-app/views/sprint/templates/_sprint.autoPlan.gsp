@@ -22,21 +22,21 @@
 --}%
 
 <script type="text/ng-template" id="sprint.autoPlan.html">
-<is:modal form="submit(modelHolder.capacity)"
-          submitButton="${message(code: 'is.dialog.promptCapacityAutoPlan.button')}"
+<is:modal form="submit(modelHolder.plannedVelocity)"
+          submitButton="${message(code: 'is.dialog.promptAutoPlan.button')}"
           closeButton="${message(code: 'is.button.cancel')}"
-          title="${message(code: 'is.dialog.promptCapacityAutoPlan.title')}">
+          title="${message(code: 'is.dialog.promptAutoPlan.title')}">
     <p class="help-block">
-        ${message(code: 'is.dialog.promptCapacityAutoPlan.description')}
+        ${message(code: 'is.dialog.promptAutoPlan.description')}
     </p>
     <div class="form-group">
-        <label for="capacity">${message(code: 'is.dialog.promptCapacityAutoPlan.capacity')}</label>
+        <label for="plannedVelocity">${message(code: 'is.sprint.plannedVelocity')}</label>
         <input autofocus
-               name="capacity"
+               name="plannedVelocity"
                type="number"
                min="0"
                class="form-control"
-               ng-model="modelHolder.capacity"/>
+               ng-model="modelHolder.plannedVelocity"/>
     </div>
 </is:modal>
 </script>

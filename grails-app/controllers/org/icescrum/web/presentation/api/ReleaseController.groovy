@@ -117,10 +117,10 @@ class ReleaseController implements ControllerErrorHandler {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
-    def autoPlan(long project, long id, Double capacity) {
+    def autoPlan(long project, long id, Double plannedVelocity) {
         Release release = Release.withRelease(project, id)
         if (release.sprints) {
-            def plannedStories = storyService.autoPlan(release.sprints.asList(), capacity)
+            def plannedStories = storyService.autoPlan(release.sprints.asList(), plannedVelocity)
             render(status: 200, contentType: 'application/json', text: plannedStories as JSON)
         } else {
             returnError(code: 'todo.is.ui.nosprint')

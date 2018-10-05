@@ -238,8 +238,8 @@ class RestUrlMappings {
             }
             method = 'POST'
         }
-        // Plan a release with a capacity
-        "/ws/project/$project/release/$id/autoPlan/$capacity" {
+        // Plan a release with a plannedVelocity
+        "/ws/project/$project/release/$id/autoPlan/$plannedVelocity" {
             controller = 'release'
             action = [POST: 'autoPlan']
             constraints {
@@ -269,8 +269,8 @@ class RestUrlMappings {
             }
             method = 'POST'
         }
-        // Plan a sprint with a capacity
-        "/ws/project/$project/sprint/$id/autoPlan/$capacity" {
+        // Plan a sprint with a plannedVelocity
+        "/ws/project/$project/sprint/$id/autoPlan/$plannedVelocity" {
             controller = 'sprint'
             action = [POST: 'autoPlan']
             constraints {

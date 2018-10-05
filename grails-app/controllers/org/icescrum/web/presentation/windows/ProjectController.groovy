@@ -310,16 +310,16 @@ class ProjectController implements ControllerErrorHandler {
     def velocityCapacity(long project) {
         Project _project = Project.withProject(project)
         def values = projectService.projectVelocityCapacityValues(_project)
-        def computedValues = [[key   : message(code: "is.chart.projectVelocityCapacity.serie.velocity.name"),
+        def computedValues = [[key   : message(code: 'is.sprint.velocity'),
                                values: values.collect { return [it.velocity] },
                                color : '#009900'],
-                              [key   : message(code: "is.chart.projectVelocityCapacity.serie.capacity.name"),
+                              [key   : message(code: 'is.sprint.plannedVelocity'),
                                values: values.collect { return [it.capacity] },
                                color : '#1C3660']]
         def options = [chart: [yDomain: [0, values.collect { [it.velocity, it.capacity].max() }.max()],
                                yAxis  : [axisLabel: message(code: 'is.chart.projectVelocityCapacity.yaxis.label')],
                                xAxis  : [axisLabel: message(code: 'is.chart.projectVelocityCapacity.xaxis.label')]],
-                       title: [text: message(code: "is.chart.projectVelocityCapacity.title")]]
+                       title: [text: message(code: "is.ui.project.charts.projectVelocityCapacity")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 

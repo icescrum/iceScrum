@@ -50,9 +50,9 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
             $scope.notifySuccess('todo.is.ui.release.generatedSprints');
         });
     };
-    $scope.autoPlan = function(release, capacity) {
+    $scope.autoPlan = function(release, plannedVelocity) {
         $rootScope.uiWorking();
-        ReleaseService.autoPlan(release, capacity).then(function() {
+        ReleaseService.autoPlan(release, plannedVelocity).then(function() {
             $scope.notifySuccess('todo.is.ui.release.autoPlanned');
         }).finally($rootScope.uiReady);
     };

@@ -65,7 +65,7 @@
                     <tr><td>${message(code: 'todo.is.ui.sprint.multiple.story.sum')}</td><td>{{ sumStory }}</td></tr>
                     <tr><td>${message(code: 'todo.is.ui.sprint.multiple.story.mean')}</td><td>{{ meanStory }}</td></tr>
                     <tr><td>${message(code: 'todo.is.ui.sprint.multiple.velocity.mean')}</td><td>{{ meanVelocity }}</td></tr>
-                    <tr><td>${message(code: 'todo.is.ui.sprint.multiple.capacity.mean')}</td><td>{{ meanCapacity }}</td></tr>
+                    <tr><td>${message(code: 'todo.is.ui.sprint.multiple.plannedVelocity.mean')}</td><td>{{ meanCapacity }}</td></tr>
                 </table>
             </div>
         </div>

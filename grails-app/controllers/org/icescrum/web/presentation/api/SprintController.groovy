@@ -114,9 +114,9 @@ class SprintController implements ControllerErrorHandler {
     }
 
     @Secured('(productOwner() or scrumMaster()) and !archivedProject()')
-    def autoPlan(Double capacity) {
+    def autoPlan(Double plannedVelocity) {
         def sprints = Sprint.withSprints(params)
-        storyService.autoPlan(sprints, capacity)
+        storyService.autoPlan(sprints, plannedVelocity)
         def returnData = sprints.size() > 1 ? sprints : sprints.first()
         render(status: 200, contentType: 'application/json', text: returnData as JSON)
     }

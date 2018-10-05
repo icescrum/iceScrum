@@ -41,9 +41,9 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             $scope.notifySuccess('todo.is.ui.sprint.reactivated');
         }).finally($rootScope.uiReady);
     };
-    $scope.autoPlan = function(sprint, capacity) {
+    $scope.autoPlan = function(sprint, plannedVelocity) {
         $rootScope.uiWorking();
-        SprintService.autoPlan(sprint, capacity, $scope.project).then(function() {
+        SprintService.autoPlan(sprint, plannedVelocity, $scope.project).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
         }).finally($rootScope.uiReady);
     };
@@ -371,8 +371,8 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
 controllers.controller('sprintMultipleCtrl', ['$scope', 'SprintService', 'detailsRelease', function($scope, SprintService, detailsRelease) {
     // Functions
     $scope.authorizedSprints = SprintService.authorizedSprints;
-    $scope.autoPlanMultiple = function(sprints, capacity) {
-        SprintService.autoPlanMultiple(sprints, capacity, $scope.release).then(function() {
+    $scope.autoPlanMultiple = function(sprints, plannedVelocity) {
+        SprintService.autoPlanMultiple(sprints, plannedVelocity, $scope.release).then(function() {
             $scope.notifySuccess('todo.is.ui.sprint.autoPlanned');
         });
     };

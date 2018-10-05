@@ -78,8 +78,8 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
             size: 'sm',
             controller: ["$scope", function($scope) {
                 $scope.modelHolder = {};
-                $scope.submit = function(capacity) {
-                    options.args.push(capacity);
+                $scope.submit = function(plannedVelocity) {
+                    options.args.push(plannedVelocity);
                     options.callback.apply(options.callback, options.args);
                     $scope.$close(true);
                 };
