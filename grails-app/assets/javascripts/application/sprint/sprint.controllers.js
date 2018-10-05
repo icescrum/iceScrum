@@ -69,7 +69,10 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             templateUrl: 'story.activate.html',
             size: 'md',
             controller: ['$scope', function($scope) {
-                $scope.activate = parentScope.activate;
+                $scope.activate = function(sprint) {
+                    $scope.$close(true);
+                    parentScope.activate(sprint);
+                };
                 $scope.sprint = sprint;
             }]
         });
