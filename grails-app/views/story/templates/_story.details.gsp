@@ -98,12 +98,6 @@
             </div>
         </h3>
         <a href="{{ tabUrl('activities') }}" class="story-states"><visual-states ng-model="story" model-states="storyStatesByName"/></a>
-        <div class="small pull-right text-muted"
-             style="padding-right: 15px; font-weight: bold"
-             ng-click="showStoryWorkflowModal()">
-            <i class="fa fa-question-circle"></i>
-            ${message(code: 'is.ui.story.workflow')}
-        </div>
         <entry:point id="story-details-before-tabs"/>
     </div>
     <div class="details-content-container">

@@ -50,12 +50,7 @@
 <script type="text/ng-template" id="story.backlog.backlogs.empty.html">
 <p class="help-block">
     {{:: message('todo.is.ui.story.empty.backlogs.' + backlog.code, [], 'todo.is.ui.story.empty.backlogs.default') }}
-    <span class="small text-muted"
-          style="font-weight: bold"
-          ng-click="showStoryWorkflowModal()">
-        <i class="fa fa-question-circle"></i>
-        ${message(code: 'is.ui.story.workflow')}
-    </span>
+    <entry:point id="story-backlog-empty"/>
 </p>
 <a class="btn btn-primary"
    ng-if="authorizedStory('create')"
