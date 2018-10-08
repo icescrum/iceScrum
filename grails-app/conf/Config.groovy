@@ -125,13 +125,13 @@ icescrum.resourceBundles = [
                 (Story.STATE_DONE)      : 'is.story.state.done'
         ],
         storyStatesColor       : [
-                (Story.STATE_FROZEN)    : '#DDF6FF',
-                (Story.STATE_SUGGESTED) : '#AAAAAA',
-                (Story.STATE_ACCEPTED)  : '#FFCC04',
-                (Story.STATE_ESTIMATED) : '#FF9933',
-                (Story.STATE_PLANNED)   : '#CC3300',
+                (Story.STATE_FROZEN)    : '#AAAAAA',
+                (Story.STATE_SUGGESTED) : '#FFCC04',
+                (Story.STATE_ACCEPTED)  : '#FF9933',
+                (Story.STATE_ESTIMATED) : '#CC3300',
+                (Story.STATE_PLANNED)   : '#A46BFF',
                 (Story.STATE_INPROGRESS): '#42A9E0',
-                (Story.STATE_INREVIEW)  : '#006870',
+                (Story.STATE_INREVIEW)  : '#005769',
                 (Story.STATE_DONE)      : '#009900'
         ],
         storyTypes             : [
