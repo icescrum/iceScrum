@@ -43,6 +43,7 @@
                 <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('administration') }">
                     <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.ui.administration')}</span></a>
                 </li>
+                <entry:point id="project-edit-left"/>
                 <li ng-if="authorizedProject('update', currentProject)"
                     ng-repeat="appWithSettings in appsWithSettings"
                     ng-class="{ current: isCurrentPanel(appWithSettings.id) }">
@@ -83,6 +84,7 @@
                      title="${message(code: 'is.ui.administration')}">
                 <div ng-include="'edit.administration.project.html'"></div>
             </section>
+            <entry:point id="project-edit-right"/>
             <section ng-if="isCurrentPanel(appWithSettings.id)"
                      class="step current"
                      ng-repeat="appWithSettings in appsWithSettings"
