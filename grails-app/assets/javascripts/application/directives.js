@@ -839,28 +839,25 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         replace: true,
         templateUrl: 'states.html',
         link: function(scope, element, attrs, modelCtrl) {
-            var width = 100 / _.filter(_.keys(scope.modelStates), function(key) {
-                return scope.modelStates[key] >= 0
-            }).length;
             scope.$watch(function() { return modelCtrl.$modelValue.state; }, function(newState) {
-                scope.states = [];
-                _.each(_.sortBy(_.toPairs(scope.modelStates), '[1]'), function(pair) {
-                    var code = pair[0];
+                var allStates = _.filter(_.toPairs(scope.modelStates), function(pair) {
                     var state = pair[1];
-                    if (state >= 0) {
-                        var newModel = modelCtrl.$modelValue;
-                        var codeN = attrs.$normalize(code.toLowerCase());
-                        var date = newModel[codeN + 'Date'];
-                        var name = $filter('i18n')(state, newModel.class + 'States');
-                        scope.states.push({
-                            name: name,
-                            width: width,
-                            completed: newState >= state,
-                            current: newState == state,
-                            tooltip: name + (date ? ': ' + ($filter('dateTime')(date)) : ''),
-                            class: 'color-state-' + codeN
-                        });
-                    }
+                    return newState < 0 ? state < 0 : state >= 0;
+                });
+                scope.states = _.map(_.sortBy(allStates, '[1]'), function(pair) {
+                    var state = pair[1];
+                    var newModel = modelCtrl.$modelValue;
+                    var code = attrs.$normalize(pair[0].toLowerCase());
+                    var date = newModel[code + 'Date'];
+                    var name = $filter('i18n')(state, newModel.class + 'States');
+                    return {
+                        name: name,
+                        width: 100 / allStates.length,
+                        completed: newState >= state,
+                        current: newState == state,
+                        tooltip: name + (date ? ': ' + ($filter('dateTime')(date)) : ''),
+                        class: 'color-state-' + state
+                    };
                 });
             });
         }
