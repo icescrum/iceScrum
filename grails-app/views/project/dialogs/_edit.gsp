@@ -44,8 +44,7 @@
                     <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.ui.administration')}</span></a>
                 </li>
                 <entry:point id="project-edit-left"/>
-                <li ng-if="authorizedProject('update', currentProject)"
-                    ng-repeat="appWithSettings in appsWithSettings"
+                <li ng-repeat="appWithSettings in appsWithSettings"
                     ng-class="{ current: isCurrentPanel(appWithSettings.id) }">
                     <a ng-click="setCurrentPanel(appWithSettings.id)">
                         <i class="fa" ng-class="appWithSettings.projectSettings.icon"></i> <span class="hidden-xs hidden-sm">{{ appWithSettings.name }}</span>

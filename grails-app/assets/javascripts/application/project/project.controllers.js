@@ -280,6 +280,9 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'ProjectService', 'Rel
     $scope.isCurrentStep = function() {
         return true;
     };
+    $scope.isAppWithSettings = function(appDefinitionId) {
+        return !!_.find($scope.appsWithSettings, {id: appDefinitionId});
+    };
     // Init
     $scope.currentProject = $scope.getProjectFromState();
     $scope.checkProjectPropertyUrl = '/project/' + $scope.currentProject.id + '/available';
