@@ -28,19 +28,19 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item text-center active">
+            <asset:image src="/whatsNew/story-workflow.jpg" style="max-height:500px; margin:0 auto;"/>
+            <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
+                <h3>New App: Story workflow</h3>
+                <p><strong>Customize the story workflow on your project and add the "Frozen" and "In review" states.</strong></p>
+                <p><button ng-click="$close(); showAppsModal('storyWorkflow');" class="btn btn-primary">Enable it now!</button></p>
+            </div>
+        </div>
+        <div class="item text-center">
             <asset:image src="/whatsNew/time-tracking.png" style="max-height:500px;  margin:0 auto;"/>
             <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
                 <h3>New App: Time tracking</h3>
                 <p><strong>Track the time spent by tasks during the sprint.</strong></p>
                 <p><button ng-click="$close(); showAppsModal('taskTimeTracking');" class="btn btn-primary">Enable it now!</button></p>
-            </div>
-        </div>
-        <div class="item text-center">
-            <asset:image src="/whatsNew/diagrams.png" style="max-height:500px; margin:0 auto;"/>
-            <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
-                <h3>New App: create diagrams and mockups</h3>
-                <p><strong>Use draw.io to create flowcharts, process diagrams, org charts, mockups, UML… directly in iceScrum.</strong></p>
-                <p><button ng-click="$close(); showAppsModal('drawIO');" class="btn btn-primary">Enable it now!</button></p>
             </div>
         </div>
     </div>
