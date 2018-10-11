@@ -59,8 +59,7 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
                 return self.authorizedApp('enableForProject', appDefinition) && self.authorizedApp('use', appDefinition.id, project) && appDefinition.projectSettings;
             case 'use':
                 var appDefinitionId = appDefinitionOrId;
-                // TODO improve
-                return isSettings.licenseable && isSettings.licenseable.hasValidLicense && !!(project && _.find(project.simpleProjectApps, {appDefinitionId: appDefinitionId, enabled: true}));
+                return !!(project && _.find(project.simpleProjectApps, {appDefinitionId: appDefinitionId, availableForServer: true, enabledForServer: true, enabled: true}));
             default:
                 return false;
         }

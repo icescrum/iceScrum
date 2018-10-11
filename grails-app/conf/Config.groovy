@@ -245,7 +245,8 @@ icescrum.marshaller = [
         attachment          : [include: ['filename']],
         acceptancetest      : [textile: ['description'], asShort: ['state']],
         template            : [asShort: ['name']],
-        simpleprojectapp    : [exclude: ['parentProject']],
+        simpleprojectapp    : [include: ['availableForServer', 'enabledForServer'],
+                               exclude: ['parentProject']],
         timeboxnotestemplate: [include: ['configs'],
                                exclude: ['configsData']]
 ]
