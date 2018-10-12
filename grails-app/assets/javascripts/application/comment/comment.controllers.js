@@ -62,8 +62,11 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
     $scope.editCommentBody = function() {
         if ($scope.formEditable()) {
             $scope.editForm(true);
-            $scope.showCommentBodyTextarea = true
+            $scope.showCommentBodyTextarea = true;
         }
+    };
+    $scope.blurComment = function() {
+        $scope.showCommentBodyTextarea = false;
     };
     $scope.update = function(comment, commentable) {
         if (!$scope.formHolder.commentForm.$invalid) {

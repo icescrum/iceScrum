@@ -76,13 +76,13 @@
                   placeholder="${message(code: 'todo.is.ui.project.description.placeholder')}"
                   ng-model="project.description"
                   ng-show="showDescriptionTextarea"
-                  ng-blur="showDescriptionTextarea = false; blurAndClick($event)"
+                  ng-blur="delayCall(toggleDescription, [false])"
                   is-model-html="project.description_html"></textarea>
         <div class="markitup-preview"
              tabindex="0"
              ng-show="!showDescriptionTextarea"
-             ng-click="showDescriptionTextarea = true"
-             ng-focus="showDescriptionTextarea = true"
+             ng-click="toggleDescription(true)"
+             ng-focus="toggleDescription(true)"
              ng-class="{'placeholder': !project.description_html}"
              ng-bind-html="project.description_html ? project.description_html : '<p>${message(code: 'todo.is.ui.project.description.placeholder')}</p>'"></div>
     </div>

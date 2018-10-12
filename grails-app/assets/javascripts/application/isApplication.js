@@ -654,7 +654,16 @@ var isApplication = angular.module('isApplication', [
             };
             modal.result.then(callCloseCallback, callCloseCallback);
         };
-        $rootScope.blurAndClick = FormService.blurAndClick;
+        $rootScope.delayCall = function(callback, args) {
+            // BIG HACK when a DOM change in a blur event will move a button and it will not be there anymore to receive the click, so we delay the blur enough so the button is clicked first
+            $timeout(function() {
+                if (args) {
+                    callback.apply(callback, args);
+                } else {
+                    callback();
+                }
+            }, 200); // Less than that often does not work
+        };
         $rootScope.plus = function(value) {
             return _.isNumber(value) ? $filter('preciseFloatSum')([value, 1]) : 1;
         };

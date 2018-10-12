@@ -151,13 +151,13 @@
                   placeholder="${message(code: 'todo.is.ui.release.novision')}"
                   ng-model="project.vision"
                   ng-show="showVisionTextarea"
-                  ng-blur="showVisionTextarea = false; blurAndClick($event)"
+                  ng-blur="delayCall(toggleVision, [false])"
                   is-model-html="project.vision_html"></textarea>
         <div class="markitup-preview"
              tabindex="0"
              ng-show="!showVisionTextarea"
-             ng-click="showVisionTextarea = true"
-             ng-focus="showVisionTextarea = true"
+             ng-click="toggleVision(true)"
+             ng-focus="toggleVision(true)"
              ng-class="{'placeholder': !project.vision_html}"
              ng-bind-html="project.vision_html ? project.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'"></div>
     </div>

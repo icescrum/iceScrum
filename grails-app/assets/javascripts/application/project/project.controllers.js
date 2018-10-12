@@ -216,6 +216,12 @@ extensibleController('newProjectCtrl', ['$scope', '$controller', 'DateService', 
             pkeyModel.$setDirty(); // To trigger remote validation
         }
     };
+    $scope.toggleDescription = function(showDescriptionTextarea) {
+        $scope.showDescriptionTextarea = showDescriptionTextarea;
+    };
+    $scope.toggleVision = function(showVisionTextarea) {
+        $scope.showVisionTextarea = showVisionTextarea;
+    };
     // Init
     $scope.formHolder = {};
     $scope.project = new Project();
@@ -282,6 +288,9 @@ controllers.controller('editProjectModalCtrl', ['$scope', 'ProjectService', 'Rel
     };
     $scope.isAppWithSettings = function(appDefinitionId) {
         return !!_.find($scope.appsWithSettings, {id: appDefinitionId});
+    };
+    $scope.toggleDescription = function(showDescriptionTextarea) {
+        $scope.showDescriptionTextarea = showDescriptionTextarea;
     };
     // Init
     $scope.currentProject = $scope.getProjectFromState();

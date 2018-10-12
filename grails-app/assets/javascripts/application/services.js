@@ -217,14 +217,6 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
         }
         return previousOrNext;
     };
-    this.blurAndClick = function($event) {
-        // BIG HACK when a DOM change in a blur event will move a button and it will not be there anymore to receive the click, so we manually trigger the click
-        if ($event.relatedTarget) { // relatedTarget is null when clicking on button on FF :( it only works when clicking on input
-            $timeout(function() {
-                angular.element($event.relatedTarget).triggerHandler('click');
-            });
-        }
-    };
     this.formObjectData = function(obj, prefix) {
         var query = '', name, value, fullSubName, subName, subValue, innerObj, i, _prefix;
         _prefix = prefix ? prefix : (obj['class'] ? obj['class'] + '.' : '');
