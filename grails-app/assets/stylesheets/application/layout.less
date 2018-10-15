@@ -1212,6 +1212,9 @@ table {
     max-height: 52px; // Prevents tabs from being displayed on a second line
     .nav-tabs {
       border-bottom-style: none;
+      li {
+        margin-left: -1px;
+      }
       &:not(.hasElements) {
         padding-left: 5px; // Allow to move menu to main bar if all are hidden in "more" dropdown
       }
