@@ -132,21 +132,18 @@
                                         <g:message code="is.ui.workspace.submenu.edit"/> <small class="text-muted">(SHIFT+E)</small>
                                     </a>
                                 </li>
-                                <g:if test="${exportEnable}">
-                                    <li ng-if=":: authorized${workspace.name.capitalize()}('export')">
-                                        <a hotkey="{ 'shift+d': export}"
-                                           hotkey-description="${message(code: 'is.dialog.exportProject.title')}"
-                                           href
-                                           ng-click="export(${workspace.name})">
-                                            <g:message code="is.ui.workspace.submenu.export"/> <small class="text-muted">(SHIFT+X)</small>
-                                        </a>
-                                    </li>
-                                </g:if>
                                 <li ng-if=":: authorizedApp('show')">
                                     <a href ng-click="showAppsModal()">
                                         <b class="text-important">${message(code: 'is.ui.apps')}</b>
                                     </a>
                                 </li>
+                                <g:if test="${exportEnable}">
+                                    <li ng-if=":: authorized${workspace.name.capitalize()}('export')">
+                                        <a href ng-click="confirm({buttonTitle: 'is.ui.workspace.submenu.export', message: message('is.ui.project.export.confirm'), callback: export, args: [${workspace.name}]})">
+                                            ${message(code: 'is.ui.workspace.submenu.export')}
+                                        </a>
+                                    </li>
+                                </g:if>
                                 <entry:point id="header-menu-current-workspace"/>
                             </g:if>
                             <g:if test="${workspacesFilteredsList}">
