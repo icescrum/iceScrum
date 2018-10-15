@@ -29,7 +29,7 @@
                     <i as-sortable-item-handle
                        class="fa fa-lg fa-border fa-inbox"
                        tooltip-placement="right"
-                       defer-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
+                       uib-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
                        style="margin-right:3px;" href="{{ togglePinElementUrl(elem) }}"
                        ng-class="{'fa-pinned':isPinned(elem), 'fa-pin':!isPinned(elem)}"></i>
                     <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
@@ -46,10 +46,10 @@
                             <i as-sortable-item-handle
                                class="fa fa-lg fa-border fa-inbox"
                                tooltip-placement="right"
-                               defer-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
+                               uib-tooltip="{{ isPinned(elem) ? '${message(code: /todo.is.ui.backlog.pinned/)}' : '${message(code: /todo.is.ui.backlog.pin/)}' }}"
                                style="margin-right:3px;" href="{{ togglePinElementUrl(elem) }}"
                                ng-class="{'fa-pinned':isPinned(elem), 'fa-pin':!isPinned(elem)}"></i>
-                            <span as-sortable-item-handle title="{{ (elem | i18nName) + ' (' + elem.count + ')' }}">{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
+                            <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
                         </a>
                     </li>
                 </ul>
