@@ -776,6 +776,7 @@
                         element.bind('touchend', unbindMoveListen);
                         element.bind('touchcancel', unbindMoveListen);
                         event.stopPropagation();
+                        event.preventDefault();
                     };
 
                     /**
