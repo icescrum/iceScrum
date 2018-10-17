@@ -130,16 +130,6 @@
                             <entry:point id="backlog-list-toolbar-group-right"/>
                         </div>
                         <div class="btn-group hidden-xs" uib-dropdown>
-                            <button type="button"
-                                    class="btn btn-default"
-                                    defer-tooltip="${message(code: 'is.ui.window.print')} (shift+p)"
-                                    ng-click="print($event)"
-                                    ng-disabled="!backlogContainer.backlog.stories.length"
-                                    ng-href="story/backlog/{{ ::backlogContainer.backlog.id }}/print"
-                                    hotkey="{'shift+p': hotkeyClick }"
-                                    hotkey-description="${message(code: 'is.ui.window.print')}">
-                                <i class="fa fa-print"></i>
-                            </button>
                             <button class="btn btn-default"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     uib-dropdown-toggle type="button">

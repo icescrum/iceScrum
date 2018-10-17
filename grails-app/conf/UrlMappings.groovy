@@ -335,14 +335,6 @@ class UrlMappings {
                 property(inList: ['name', 'pkey'])
             }
         }
-        // Print
-        "/p/$project/$controller/print" {
-            action = 'print'
-            constraints {
-                project(matches: /[0-9A-Z]*/)
-                controller(inList: ['backlog', 'feature'])
-            }
-        }
         // Export
         "/p/$project/export/$format?" {
             controller = 'project'

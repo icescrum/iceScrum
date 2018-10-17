@@ -60,16 +60,6 @@
                         <div class="btn-group hidden-sm hidden-xs"
                              uib-dropdown
                              defer-tooltip="${message(code: 'todo.is.ui.export')}">
-                            <button type="button"
-                                    class="btn btn-default"
-                                    defer-tooltip="${message(code: 'is.ui.window.print')} (shift+p)"
-                                    ng-click="print($event)"
-                                    ng-disabled="!features.length"
-                                    ng-href="feature/print"
-                                    hotkey="{'shift+p': hotkeyClick }"
-                                    hotkey-description="${message(code: 'is.ui.window.print')}">
-                                <i class="fa fa-print"></i>
-                            </button>
                             <button class="btn btn-default"
                                     uib-dropdown-toggle
                                     ng-disabled="!features.length"

@@ -40,7 +40,7 @@ import org.icescrum.core.utils.ServicesUtils
         details =                   default: false                | true/false
         printable =                 default: true                 | true/false
         fullScreen =                default: true                 | true/false
-        exportFormats =             default: {[]}                 | Closure return Array of Maps: [code:extension,name:'i18n.code',params:[]]
+        exportFormats =             default: {[]}                 | Closure return Array of Maps: [name:'i18n.code',params:[]]
         before        =             default:null                  | Closure
     }
  */
@@ -68,10 +68,11 @@ windows = {
         ]
         exportFormats = {
             [
-                    [code: 'pdf', name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]],
-                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF']],
-                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX']],
-                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT']]
+                    [name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]],
+                    [name: message(code: 'is.report.format.pdf'), params: [project: params.project]],
+                    [name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF']],
+                    [name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX']],
+                    [name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT']]
             ]
         }
     }
@@ -92,9 +93,10 @@ windows = {
         ]
         exportFormats = {
             [
-                    [code: 'rtf', name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF']],
-                    [code: 'docx', name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX']],
-                    [code: 'odt', name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT']]
+                    [name: message(code: 'is.report.format.pdf'), params: [project: params.project]],
+                    [name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF']],
+                    [name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX']],
+                    [name: message(code: 'is.report.format.odt'), params: [project: params.project, format: 'ODT']]
             ]
         }
     }
@@ -161,8 +163,8 @@ windows = {
         ]
         exportFormats = {
             [
-                    [code: 'pdf', name: "${message(code: 'is.report.format.postits')} (${message(code: 'todo.is.ui.stories')})", action: "printPostits", resource: 'story', params: ["project": params.project]],
-                    [code: 'pdf', name: "${message(code: 'is.report.format.postits')} (${message(code: 'todo.is.ui.tasks')})", action: "printPostits", resource: 'task', params: ["project": params.project]]
+                    [name: "${message(code: 'is.report.format.postits')} - ${message(code: 'todo.is.ui.stories')}", action: "printPostits", resource: 'story', params: ["project": params.project]],
+                    [name: "${message(code: 'is.report.format.postits')} - ${message(code: 'todo.is.ui.tasks')}", action: "printPostits", resource: 'task', params: ["project": params.project]]
             ]
         }
     }
