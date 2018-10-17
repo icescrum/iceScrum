@@ -412,8 +412,11 @@ services.service('CacheService', ['$injector', function($injector) {
         } else {
             newItem = itemFromServer;
         }
-        $injector.get('SyncService').sync(cacheName, oldItem, newItem);
-        if (!$injector.get('OptionsCacheService').isAllowed(cacheName, newItem)) {
+        var isAllowed = $injector.get('OptionsCacheService').isAllowed(cacheName, newItem);
+        if (isAllowed) {
+            $injector.get('SyncService').sync(cacheName, oldItem, newItem);
+        }
+        if (!isAllowed) {
             self.remove(cacheName, itemFromServer.id);
         } else if (!oldItem) {
             self.getCache(cacheName).push(newItem);
