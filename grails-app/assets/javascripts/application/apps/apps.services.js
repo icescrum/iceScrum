@@ -28,7 +28,7 @@ services.service("AppService", ['Session', 'FormService', function(Session, Form
         return FormService.httpPost('app/updateEnabledForProject', {appDefinitionId: appDefinition.id, enabledForProject: enabledForProject}).then(function() {
             var updatedAppDefinition = _.find(project.simpleProjectApps, {appDefinitionId: appDefinition.id});
             if (!updatedAppDefinition) {
-                updatedAppDefinition = {appDefinitionId: appDefinition.id};
+                updatedAppDefinition = {appDefinitionId: appDefinition.id, availableForServer: true, enabledForServer: true};
                 project.simpleProjectApps.push(updatedAppDefinition);
             }
             updatedAppDefinition.enabled = enabledForProject;
