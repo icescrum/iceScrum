@@ -1536,7 +1536,7 @@ table {
     }
     .selected {
       &.release-todo {
-        fill: @state-suggested;
+        fill: @state-todo;
       }
       &.release-inProgress {
         fill: @state-inProgress;
@@ -1545,7 +1545,7 @@ table {
         fill: @state-done;
       }
       &.sprint-todo {
-        fill: lighten(@state-suggested, 5%);
+        fill: lighten(@state-todo, 5%);
       }
       &.sprint-inProgress {
         fill: lighten(@state-inProgress, 5%);
@@ -1555,7 +1555,7 @@ table {
       }
     }
     .release-todo {
-      fill: @state-suggested-light;
+      fill: @state-todo-light;
     }
     .release-inProgress {
       fill: @state-inProgress-light;
@@ -1564,7 +1564,7 @@ table {
       fill: @state-done-light;
     }
     .sprint-todo {
-      fill: darken(@state-suggested-light, 5%);
+      fill: darken(@state-todo-light, 5%);
     }
     .sprint-inProgress {
       fill: darken(@state-inProgress-light, 5%);
@@ -2077,7 +2077,7 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
     margin-bottom: -5px;
   }
   .background-light-sprint-todo {
-    background: lighten(@state-suggested, 10%);
+    background: lighten(@state-todo, 10%);
   }
   .background-sprint-inProgress {
     background: @state-inProgress;

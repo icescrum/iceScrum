@@ -525,7 +525,7 @@ tr:hover .on-hover span {
       background-color: @brand-primary;
     }
     &.progress-bar-todo {
-      background-color: @state-suggested-light;
+      background-color: @state-todo-light;
       color: @gray;
     }
     &.progress-bar-inProgress {
@@ -1107,8 +1107,12 @@ i.fa-pinned {
   background-color: @state-frozen;
 }
 
-.color-state-suggested, .color-state-todo, .color-state-1 {
+.color-state-suggested, .color-state-1 {
   background-color: @state-suggested;
+}
+
+.color-state-todo {
+  background-color: @state-todo;
 }
 
 .color-state-accepted, .color-state-2 {
