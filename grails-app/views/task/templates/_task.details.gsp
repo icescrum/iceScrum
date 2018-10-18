@@ -84,7 +84,7 @@
         </h3>
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="task" model-states="taskStatesByName"/></a>
     </div>
-    <ul class="nav nav-tabs nav-tabs-is nav-justified">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
         <li role="presentation" ng-class="{'active':!$state.params.taskTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}

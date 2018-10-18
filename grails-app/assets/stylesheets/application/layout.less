@@ -818,6 +818,9 @@ header {
         border-color: @brand-primary;
       }
     }
+    &.disable-active-link li.active > a {
+      pointer-events: none;
+    }
   }
   &.nav-justified {
     li:first-of-type a {

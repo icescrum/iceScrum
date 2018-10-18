@@ -272,7 +272,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     }
 }]);
 
-extensibleController('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', function($scope, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal) {
+extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', 'ProjectService', 'PortfolioService', 'FormService', 'PushService', 'UserService', 'Session', '$uibModal', function($scope, $location, ContextService, ProjectService, PortfolioService, FormService, PushService, UserService, Session, $uibModal) {
     $scope.authorizedProject = ProjectService.authorizedProject;
     $scope.authorizedPortfolio = PortfolioService.authorizedPortfolio;
     $scope['import'] = function(project) {
@@ -375,6 +375,14 @@ extensibleController('mainMenuCtrl', ["$scope", 'ProjectService', 'PortfolioServ
             $scope.downloadFile("");
         };
         modal.result.then(downloadFile, downloadFile);
+    };
+    $scope.getMenuUrl = function(menu) {
+        var menuUrl = '#/' + menu.id;
+        var context = ContextService.getContextFromUrl();
+        if (context) {
+            menuUrl += '?context=' + context.type + ContextService.contextSeparator + context.id
+        }
+        return menuUrl;
     };
     // Init
     $scope.workspace = Session.getWorkspace();
@@ -806,7 +814,7 @@ controllers.controller('menuItemCtrl', ['$scope', function($scope) {
     };
 }]);
 
-controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout', '$state', function($scope, $element, $timeout, $state) {
+controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout', '$state', '$location', function($scope, $element, $timeout, $state, $location) {
     var self = this;
     // Functions
     $scope.hideAndOrderElementsFromSettings = function(elementsList) {
@@ -889,7 +897,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
             if (!$state.params.pinnedElementId == !$state.params.elementId) { // Dirty hack to do a XOR
                 return $scope.closeElementUrl(element);
             } else {
-                return $state.href('.');
+                return $location.absUrl(); // Don't use $state as we want to keep the "search" part of the URL that includes the context
             }
         } else {
             var stateName = _.startsWith($state.current.name, self.parentView + '.' + self.type) || _.startsWith($state.current.name, self.parentView + '.multiple') ? '.' : self.parentView + '.' + self.type;

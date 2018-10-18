@@ -96,7 +96,7 @@
         </h3>
         <visual-states ng-model="sprint" model-states="sprintStatesByName"/>
     </div>
-    <ul class="nav nav-tabs nav-tabs-is nav-justified" ng-if="$state.current.data.displayTabs">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link" ng-if="$state.current.data.displayTabs">
         <li role="presentation" ng-class="{'active':!$state.params.sprintTabId}">
             <a href="{{ tabUrl() }}">
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}

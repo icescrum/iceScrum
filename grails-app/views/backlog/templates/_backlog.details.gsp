@@ -47,7 +47,7 @@
             <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
     </div>
-    <ul class="nav nav-tabs nav-tabs-is nav-justified" ng-if="$state.current.data.displayTabs">
+    <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link" ng-if="$state.current.data.displayTabs">
         <entry:point id="backlog-details-tab-button"/>
     </ul>
     <div ui-view="details-tab">
