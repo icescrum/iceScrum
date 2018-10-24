@@ -953,6 +953,9 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         link: function(scope, element, attrs) {
             scope.max = attrs.max ? scope.$eval(attrs.max) : 9;
             scope.count = scope.$eval(attrs.count);
+            if (scope.$eval(attrs.hide) && scope.count <= scope.max) {
+                return;
+            }
             scope.icon = scope.count === 0 && attrs.iconEmpty ? attrs.iconEmpty : attrs.icon;
             scope.href = attrs.href;
             scope.tooltip = scope.count + ' ' + attrs.tooltip;
