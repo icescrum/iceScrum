@@ -48,7 +48,7 @@
         </p>
     </div>
     <div ng-class="projectMembersEditable(project) ? 'col-sm-8' : 'col-sm-12' ">
-        <label ng-if="project.productOwners.length">${message(code: 'todo.is.ui.project.productOwners')}</label>
+        <label ng-if="project.productOwners.length">${message(code: 'todo.is.ui.project.productOwners')} ({{ project.productOwners.length }})</label>
         <div ng-class="{'list-users': project.productOwners.length > 0}">
             <ng-include ng-init="role = 'po';" ng-repeat="user in project.productOwners" src="'user.item.project.html'"></ng-include>
         </div>
@@ -78,7 +78,7 @@
         </p>
     </div>
     <div ng-class="projectMembersEditable(project) ? 'col-sm-8' : 'col-sm-12' ">
-        <label ng-if="project.stakeHolders.length">${message(code: 'todo.is.ui.project.stakeholders')}</label>
+        <label ng-if="project.stakeHolders.length">${message(code: 'todo.is.ui.project.stakeholders')} ({{ project.stakeHolders.length }})</label>
         <div ng-class="{'list-users': project.stakeHolders.length > 0}">
             <ng-include ng-init="role = 'sh';" ng-repeat="user in project.stakeHolders" src="'user.item.project.html'"></ng-include>
         </div>

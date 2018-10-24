@@ -93,7 +93,7 @@
         <table ng-if="team.members.length" class="table table-striped table-responsive">
             <thead>
                 <tr>
-                    <th colspan="2">${message(code: 'is.ui.team.members')}</th>
+                    <th colspan="2">${message(code: 'is.ui.team.members')} ({{ team.members.length }})</th>
                     <th class="text-right" style="font-weight: normal">${message(code: 'is.role.scrumMaster')}</th>
                 </tr>
             </thead>
