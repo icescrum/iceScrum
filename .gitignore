@@ -4,6 +4,7 @@ target/
 .slcache/
 .idea/
 logs/
+.sass-cache
 
 # Compiled source #
 ###################
