@@ -90,9 +90,6 @@ class AttachmentController implements ControllerErrorHandler {
                 attachment = attachmentable.addAttachment(springSecurityService.currentUser, uploadInfo, uploadInfo.name)
             }
             attachment.provider = uploadInfo instanceof Map ? uploadInfo.provider : null
-            if (attachmentable.hasProperty('attachments_count')) {
-                attachmentable.attachments_count = attachmentable.getTotalAttachments()
-            }
             service.publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['addedAttachment': attachment])
             render(status: 201, contentType: 'application/json', text: attachment as JSON)
         }
@@ -132,9 +129,6 @@ class AttachmentController implements ControllerErrorHandler {
             if (attachment) {
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, attachmentable, ['removeAttachment': attachment])
                 attachmentable.removeAttachment(attachment)
-                if (attachmentable.hasProperty('attachments_count')) {
-                    attachmentable.attachments_count = attachmentable.getTotalAttachments()
-                }
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, attachmentable, ['removedAttachment': null])
                 render(status: 204)
             }
