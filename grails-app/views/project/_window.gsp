@@ -48,7 +48,7 @@
                             <div class="col-md-4 text-right">
                                 <span ng-repeat="user in allMembers">
                                     <img ng-src="{{:: user | userAvatar }}"
-                                         height="36" width="36" style="margin-left:5px;"
+                                         height="36" width="36" style="margin:5px"
                                          class="{{:: user | userColorRoles }}"
                                          defer-tooltip="{{:: user | userFullName }}"/>
                                 </span>
