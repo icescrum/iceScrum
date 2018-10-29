@@ -331,7 +331,7 @@ filters
     .filter('activityName', ['$rootScope', '$filter', function($rootScope, $filter) {
         return function(activity, hideType) {
             if (activity.code == 'updateState') {
-                return $rootScope.message('is.fluxiable.' + activity.code, [$filter('i18n')(activity.afterValue, 'StoryStates')])  + ' ' + $rootScope.message('is.story');
+                return $rootScope.message('is.fluxiable.' + activity.code, [$filter('i18n')(activity.afterValue, 'StoryStates')]) + ' ' + $rootScope.message('is.story');
             } else if (hideType) {
                 var code = activity.code == 'update' ? 'updateField' : activity.code;
                 return $rootScope.message('is.fluxiable.' + code, [activity.label]);
