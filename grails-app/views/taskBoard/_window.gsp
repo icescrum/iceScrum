@@ -41,7 +41,7 @@
                                     <i class="small-icon fa fa-dollar"></i>
                                 </span>
                                 <span class="sprint-remaining" defer-tooltip="${message(code: 'is.task.estimation')}">
-                                    {{ sprintRemainingTime(sprint) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
+                                    {{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
                                 </span>
                             </div>
                         </div>
