@@ -722,8 +722,8 @@ var isApplication = angular.module('isApplication', [
                 }]
             });
             var callCloseCallback = function(confirmed) {
-                if (!confirmed && options.cancelCallback) {
-                    options.cancelCallback();
+                if (!confirmed && options.cancelChangesCallback) {
+                    options.cancelChangesCallback();
                 }
             };
             modal.result.then(callCloseCallback, callCloseCallback);
