@@ -127,15 +127,37 @@ class ScrumOSController implements ControllerErrorHandler {
                 }
             }
         }
-        render(status: 200, template: 'isSettings', model: [workspace      : workspace?.object,
-                                                            user           : springSecurityService.currentUser,
-                                                            roles          : securityService.getRolesRequest(false),
-                                                            i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
-                                                            resourceBundles: grailsApplication.config.icescrum.resourceBundles,
-                                                            menus          : menus,
-                                                            defaultView    : workspace ? menus.sort { it.position }[0]?.id : 'home',
-                                                            serverURL      : ApplicationSupport.serverURL(),
-                                                            projectMenus   : projectMenus])
+        try {
+            render(status: 200, template: 'isSettings', model: [workspace      : workspace?.object,
+                                                                user           : springSecurityService.currentUser,
+                                                                roles          : securityService.getRolesRequest(false),
+                                                                i18nMessages   : messageSource.getAllMessages(RCU.getLocale(request)),
+                                                                resourceBundles: grailsApplication.config.icescrum.resourceBundles,
+                                                                menus          : menus,
+                                                                defaultView    : workspace ? menus.sort { it.position }[0]?.id : 'home',
+                                                                serverURL      : ApplicationSupport.serverURL(),
+                                                                projectMenus   : projectMenus])
+        } catch (Exception exception) {
+            if (!exception.message?.contains("Row was updated or deleted by another transaction")) {
+                throw exception
+            }
+            if (log.debugEnabled) {
+                log.debug(exception)
+                log.debug(exception.cause)
+                exception.stackTrace.each {
+                    log.debug(it)
+                }
+            } else if (log.errorEnabled) {
+                log.error(exception)
+                log.error(exception.cause)
+                exception.stackTrace.each {
+                    log.error(it)
+                }
+            }
+            render(status: 200, '</script><h3 class="text-center" style="margin-bottom: 250px">' +
+                                message(code: 'is.error.row.updated.another.transaction') + ' ' +
+                                message(code: 'is.error.row.updated.another.transaction.refresh') + '</h3>')
+        }
     }
 
     def saveImage(String image, String title) {
