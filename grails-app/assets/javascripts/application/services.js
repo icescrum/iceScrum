@@ -295,7 +295,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             return response.data;
         });
     };
-    this.addStateChangeDirtyFormListener = function($scope, submit, type, isModal) {
+    this.addStateChangeDirtyFormListener = function($scope, submit, type, isModal, anyStateChange) {
         var triggerChangesConfirmModal = function(event, saveChangesCallback, dontSaveChangesCallback) {
             if ($scope.isDirty() || ($scope.flow != undefined && $scope.flow.isUploading())) {
                 event.preventDefault(); // cancel the state change
@@ -303,8 +303,12 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
                 $scope.dirtyChangesConfirm({
                     message: $scope.message('todo.is.ui.dirty.confirm'),
                     saveChangesCallback: function() {
-                        submit();
-                        saveChangesCallback();
+                        var result = submit();
+                        if (result) {
+                            result.then(saveChangesCallback);
+                        } else {
+                            saveChangesCallback();
+                        }
                     },
                     dontSaveChangesCallback: function() {
                         if ($scope.flow != undefined && $scope.flow.isUploading()) {
@@ -322,7 +326,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
         $scope.mustConfirmStateChange = true; // to prevent infinite recursion when calling $stage.go
         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
             var formDirtyType = $scope.stateIdProp ? $scope.stateIdProp : type + 'Id';
-            if ($scope.mustConfirmStateChange && fromParams[formDirtyType] != toParams[formDirtyType]) {
+            if ($scope.mustConfirmStateChange && (anyStateChange || fromParams[formDirtyType] != toParams[formDirtyType])) {
                 var callback = function() {
                     $scope.$state.go(toState, toParams);
                 };

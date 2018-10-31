@@ -69,7 +69,7 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         if (!$scope.formHolder.acceptanceTestForm.$invalid) {
             $scope.editForm(false);
             if ($scope.formHolder.acceptanceTestForm.$dirty) {
-                AcceptanceTestService.update(acceptanceTest, story)
+                return AcceptanceTestService.update(acceptanceTest, story)
                     .then(function() {
                         $scope.resetAcceptanceTestForm();
                         $scope.notifySuccess('todo.is.ui.acceptanceTest.updated');
@@ -105,5 +105,35 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         return '_*' + $scope.message('is.acceptanceTest.template.' + step) + '*_ ';
     }).join('\n');
     $scope.formHolder = {};
+    if ($scope.editorList) {
+        $scope.editorList.push({
+            isDirty: function() {
+                return !_.isEqual($scope.acceptanceTest, $scope.editableAcceptanceTest);
+            },
+            update: function() {
+                return $scope.update($scope.editableAcceptanceTest, $scope.selected);
+            }
+        });
+    }
     $scope.resetAcceptanceTestForm();
+}]);
+
+controllers.controller('acceptanceTestListCtrl', ['$scope', '$q', 'FormService', function($scope, $q, FormService) {
+    // Functions
+    $scope.isDirty = function() {
+        return _.some($scope.editorList, function(editor) {
+            return editor.isDirty();
+        })
+    };
+    // Init
+    $scope.editorList = [];
+    FormService.addStateChangeDirtyFormListener($scope, function() {
+        var promiseChain = $q.when();
+        _.each($scope.editorList, function(editor) {
+            if (editor.isDirty()) {
+                promiseChain = promiseChain.then(editor.update); // Chain to avoid concurrent update on story
+            }
+        });
+        return promiseChain;
+    }, 'acceptanceTest', false, true);
 }]);
