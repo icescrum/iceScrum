@@ -643,6 +643,22 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                     sprint.index = newRelease.firstSprintIndex + sprint.orderNumber - 1;
                 });
             }
+        },
+        acceptanceTest: function(oldAcceptanceTest, newAcceptanceTest) {
+            if (!oldAcceptanceTest && newAcceptanceTest) {
+                var cacheStory = CacheService.get('story', newAcceptanceTest.parentStory.id);
+                if (cacheStory && !_.find(cacheStory.acceptanceTests, {id: newAcceptanceTest.id})) {
+                    if (!_.isArray(cacheStory.acceptanceTests)) {
+                        cacheStory.acceptanceTests = [];
+                    }
+                    cacheStory.acceptanceTests.push(newAcceptanceTest);
+                }
+            } else if (oldAcceptanceTest && !newAcceptanceTest) {
+                var cachedStory = CacheService.get('story', oldAcceptanceTest.parentStory.id);
+                if (cachedStory) {
+                    _.remove(cachedStory.acceptanceTests, {id: oldAcceptanceTest.id});
+                }
+            }
         }
     };
     this.sync = function(itemType, oldItem, newItem) {
