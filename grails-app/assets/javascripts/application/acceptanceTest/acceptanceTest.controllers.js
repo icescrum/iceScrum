@@ -118,14 +118,31 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
     $scope.resetAcceptanceTestForm();
 }]);
 
-controllers.controller('acceptanceTestListCtrl', ['$scope', '$q', 'FormService', function($scope, $q, FormService) {
+controllers.controller('acceptanceTestListCtrl', ['$scope', '$q', 'FormService', 'AcceptanceTestService', 'Session', function($scope, $q, FormService, AcceptanceTestService, Session) {
     // Functions
     $scope.isDirty = function() {
         return _.some($scope.editorList, function(editor) {
             return editor.isDirty();
         })
     };
+    $scope.isAcceptanceTestSortable = function() {
+        return Session.po();
+    };
+    $scope.authorizedAcceptanceTest = AcceptanceTestService.authorizedAcceptanceTest;
     // Init
+    $scope.acceptanceTestSortableOptions = {
+        orderChanged: function(event) {
+            var acceptanceTest = event.source.itemScope.modelValue;
+            acceptanceTest.rank = event.dest.index + 1;
+            AcceptanceTestService.update(acceptanceTest, $scope.selected).catch(function() {
+                $scope.revertSortable(event);
+            });
+        },
+        accept: function(sourceItemHandleScope, destSortableScope) {
+            return sourceItemHandleScope.itemScope.sortableScope.sortableId === destSortableScope.sortableId
+        }
+    };
+    $scope.sortableId = 'story-acceptance-tests';
     $scope.editorList = [];
     FormService.addStateChangeDirtyFormListener($scope, function() {
         var promiseChain = $q.when();

@@ -645,13 +645,18 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
             }
         },
         acceptanceTest: function(oldAcceptanceTest, newAcceptanceTest) {
+            if (oldAcceptanceTest && newAcceptanceTest && oldAcceptanceTest.rank != newAcceptanceTest.rank) {
+                var cachedStory = CacheService.get('story', oldAcceptanceTest.parentStory.id);
+                cachedStory.acceptanceTests.sort(sortByRank);
+            }
             if (!oldAcceptanceTest && newAcceptanceTest) {
-                var cacheStory = CacheService.get('story', newAcceptanceTest.parentStory.id);
-                if (cacheStory && !_.find(cacheStory.acceptanceTests, {id: newAcceptanceTest.id})) {
-                    if (!_.isArray(cacheStory.acceptanceTests)) {
-                        cacheStory.acceptanceTests = [];
+                var cachedStory = CacheService.get('story', newAcceptanceTest.parentStory.id);
+                if (cachedStory && !_.find(cachedStory.acceptanceTests, {id: newAcceptanceTest.id})) {
+                    if (!_.isArray(cachedStory.acceptanceTests)) {
+                        cachedStory.acceptanceTests = [];
                     }
-                    cacheStory.acceptanceTests.push(newAcceptanceTest);
+                    cachedStory.acceptanceTests.push(newAcceptanceTest);
+                    cachedStory.acceptanceTests.sort(sortByRank);
                 }
             } else if (oldAcceptanceTest && !newAcceptanceTest) {
                 var cachedStory = CacheService.get('story', oldAcceptanceTest.parentStory.id);

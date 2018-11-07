@@ -23,8 +23,11 @@
 <script type="text/ng-template" id="story.acceptanceTests.html">
 <div class="acceptanceTests panel-body" ng-controller="acceptanceTestListCtrl">
     <entry:point id="acceptanceTests-before-list"/>
-    <table class="table">
-        <tr ng-repeat="acceptanceTest in selected.acceptanceTests | orderBy:'dateCreated'" ng-controller="acceptanceTestCtrl">
+    <table class="table"
+           is-disabled="!isAcceptanceTestSortable()"
+           as-sortable="acceptanceTestSortableOptions | merge: sortableScrollOptions()"
+           ng-model="selected.acceptanceTests">
+        <tr ng-repeat="acceptanceTest in selected.acceptanceTests" as-sortable-item ng-controller="acceptanceTestCtrl" style="display: table-row">
             <td class="content">
                 <form name="formHolder.acceptanceTestForm"
                       ng-class="{ 'form-editing': formHolder.editing, 'form-editable': formEditable() }"
@@ -34,7 +37,10 @@
                     <div class="clearfix no-padding form-group">
                         <div class="col-sm-7">
                             <div class="input-group">
-                                <span class="input-group-addon no-style"><strong>{{ editableAcceptanceTest.uid }}</strong></span>
+                                <span class="input-group-addon no-style">
+                                    <i class="fa fa-drag-handle" ng-if="authorizedAcceptanceTest('rank', selected)" as-sortable-item-handle></i>
+                                    <strong>{{:: editableAcceptanceTest.uid }}</strong>
+                                </span>
                                 <input required
                                        ng-maxlength="255"
                                        ng-focus="editForm(true)"

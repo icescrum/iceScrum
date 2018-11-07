@@ -115,12 +115,17 @@ class AcceptanceTestController implements ControllerErrorHandler {
                 return
             }
         }
+        def props = [:]
+        Integer rank = acceptanceTestParams.rank instanceof String ? acceptanceTestParams.rank.toInteger() : acceptanceTestParams.rank
+        if (rank != null) {
+            props.rank = rank
+        }
         AcceptanceTest.withTransaction {
             if (newState) {
                 acceptanceTest.stateEnum = newState
             }
             bindData(acceptanceTest, acceptanceTestParams, [include: ['name', 'description']])
-            acceptanceTestService.update(acceptanceTest)
+            acceptanceTestService.update(acceptanceTest, props)
         }
         render(status: 200, contentType: 'application/json', text: acceptanceTest as JSON)
     }

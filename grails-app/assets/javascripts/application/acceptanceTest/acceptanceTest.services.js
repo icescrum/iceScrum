@@ -66,6 +66,8 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
             case 'update':
             case 'delete':
                 return story.state < StoryStatesByName.DONE && Session.inProject();
+            case 'rank':
+                return story.state < StoryStatesByName.DONE && Session.po();
             case 'updateState':
                 return story.state == StoryStatesByName.IN_PROGRESS && Session.inProject();
             default:
