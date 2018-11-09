@@ -120,6 +120,8 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                                             errorMessage = $rootScope.message('default.unique.message');
                                         } else if (key == 'ngRemoteValidate') {
                                             errorMessage = $rootScope.message(input.attr('ng-remote-validate-code'), [value])
+                                        } else if (key == 'customValidate') {
+                                            errorMessage = $rootScope.message(input.attr('custom-validate-code'), [value])
                                         }
                                         errorMessages.push(errorMessage);
                                     }
@@ -175,7 +177,25 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}).directive('formAutofillFix', ['$timeout', function($timeout) {
+}).directive('customValidate', [function() {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        scope: {
+            customValidate: '=',
+            customValidateItem: '='
+        },
+        link: function(scope, element, attrs, modelCtrl) {
+            modelCtrl.$validators.customValidate = function(modelValue) {
+                if (scope.customValidateItem) {
+                    return scope.customValidate(modelValue, scope.customValidateItem);
+                } else {
+                    return scope.customValidate(modelValue)
+                }
+            };
+        }
+    };
+}]).directive('formAutofillFix', ['$timeout', function($timeout) {
     return function(scope, element, attrs) {
         element.prop('method', 'post');
         if (attrs.ngSubmit) {

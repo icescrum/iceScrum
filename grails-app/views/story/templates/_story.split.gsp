@@ -45,6 +45,11 @@
                         <input required
                                name="name{{ $index }}"
                                ng-maxlength="100"
+                               ng-remote-validate="{{ getCheckStoryNameUrl(stories[$index]) }}"
+                               ng-remote-validate-code="story.name.unique"
+                               custom-validate="validateStoryName"
+                               custom-validate-item="stories[$index]"
+                               custom-validate-code="story.name.unique"
                                type="text"
                                ng-model="stories[$index].name"
                                class="form-control">

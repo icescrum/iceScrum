@@ -493,6 +493,14 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
         });
         $q.serial(tasks);
     };
+    $scope.getCheckStoryNameUrl = function(story) {
+        return '/p/' + $scope.getProjectFromState().id + '/story' + (story.id ? ('/' + story.id) : '') + '/available';
+    };
+    $scope.validateStoryName = function(newName, story) {
+        return !newName || !story || _.find($scope.stories, function(otherStory) {
+            return story !== otherStory  && newName.toLowerCase() === otherStory.name.toLowerCase();
+        }) == null;
+    };
     // Init
     $scope.storyReference = angular.copy(story);
     $scope.formHolder = {};

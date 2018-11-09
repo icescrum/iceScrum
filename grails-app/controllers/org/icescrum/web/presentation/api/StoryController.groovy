@@ -210,6 +210,12 @@ class StoryController implements ControllerErrorHandler {
         }
     }
 
+    @Secured('stakeHolder() or inProject()')
+    def available(long project, Long id) {
+        def result = request.JSON.value && Story.findByNameLikeAndBacklogAndIdNotEqual(request.JSON.value, Project.get(project), id) == null
+        render(status: 200, text: [isValid: result, value: request.JSON.value] as JSON, contentType: 'application/json')
+    }
+
     @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
     def copy() {
         def stories = Story.withStories(params)
