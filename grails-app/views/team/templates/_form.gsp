@@ -40,9 +40,10 @@
                    placeholder="${message(code: 'todo.is.ui.team.noteam')}"
                    uib-typeahead="team as team.name for team in searchTeam($viewValue, teamCreatable())"
                    typeahead-loading="searching"
-                   typeahead-wait-ms="250"
+                   typeahead-wait-ms="150"
                    typeahead-on-select="selectTeam($item, $model, $label)"
                    typeahead-template-url="select.or.create.team.html"
+                   typeahead-select-on-blur="true"
                    ng-readonly="team.selected"
                    ng-model="team.name"
                    ng-required="isCurrentStep(2, 'project')">
