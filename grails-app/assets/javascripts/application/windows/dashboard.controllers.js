@@ -22,11 +22,15 @@
  *
  */
 
-controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 'window', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'StoryService', 'project', '$controller', function($scope, $location, $state, $q, window, ProjectService, ReleaseService, SprintService, AttachmentService, StoryService, project, $controller) {
+controllers.controller('dashboardCtrl', ['$scope', '$location', '$state', '$q', 'window', 'Session', 'ProjectService', 'ReleaseService', 'SprintService', 'AttachmentService', 'FeatureService', 'StoryService', 'TaskService', 'project', '$controller', function($scope, $location, $state, $q, window, Session, ProjectService, ReleaseService, SprintService, AttachmentService, FeatureService, StoryService, TaskService, project, $controller) {
     $controller('windowCtrl', {$scope: $scope, window: window}); // inherit from windowCtrl
     $scope.authorizedProject = ProjectService.authorizedProject;
     $scope.authorizedRelease = ReleaseService.authorizedRelease;
     $scope.authorizedSprint = SprintService.authorizedSprint;
+    $scope.authorizedFeature = FeatureService.authorizedFeature;
+    $scope.authorizedStory = StoryService.authorizedStory;
+    $scope.authorizedTask = TaskService.authorizedTask;
+    $scope.session = Session;
     $scope.openSprintUrl = function(sprint) {
         var stateName = 'planning.release.sprint.withId';
         if ($state.current.name != 'planning.release.sprint.withId.details') {

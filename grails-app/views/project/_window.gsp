@@ -71,6 +71,19 @@
                         <div ng-show="currentOrNextSprint.goal">
                             <p><strong>{{ message('todo.is.ui.sprint.goal.label', [currentOrNextSprint.index]) }}</strong> {{ currentOrNextSprint.goal }}</p>
                         </div>
+                        <div class="row">
+                            <div class="btn-toolbar">
+                                <a ng-if="authorizedFeature('create')"
+                                   href="#/feature/new"
+                                   class="btn btn-default">${message(code: "todo.is.ui.feature.new")}</a>
+                                <a ng-if="authorizedStory('create')"
+                                   ui-sref="backlog.backlog.story.new({elementId: 'sandbox'})"
+                                   class="btn btn-default">${message(code: "todo.is.ui.story.new")}</a>
+                                <a ng-if="currentOrNextSprint && authorizedTask('create', {sprint: currentOrNextSprint}) && !(session.po() && !session.sm())"
+                                   ui-sref="taskBoard.task.new({sprintId: currentOrNextSprint.id})"
+                                   class="btn btn-default">${message(code: "todo.is.ui.task.new")}</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
