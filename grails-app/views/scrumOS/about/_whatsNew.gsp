@@ -28,19 +28,19 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item text-center active">
+            <asset:image src="/whatsNew/new-ui.png" style="max-height:500px;  margin:0 auto;"/>
+            <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
+                <h3>Coming soon...</h3>
+                <p><strong>A new UI is coming! First on our website, and then in iceScrum.</strong></p>
+                <p><strong>Don't worry, you will not have to learn using iceScrum again. It will just be prettier and easier!</strong></p>
+            </div>
+        </div>
+        <div class="item text-center">
             <asset:image src="/whatsNew/story-workflow.jpg" style="max-height:500px; margin:0 auto;"/>
             <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
                 <h3>New App: Story workflow</h3>
                 <p><strong>Customize the story workflow on your project and add the "Frozen" and "In review" states.</strong></p>
                 <p><button ng-click="$close(); showAppsModal('storyWorkflow');" class="btn btn-primary">Enable it now!</button></p>
-            </div>
-        </div>
-        <div class="item text-center">
-            <asset:image src="/whatsNew/time-tracking.png" style="max-height:500px;  margin:0 auto;"/>
-            <div class="carousel-caption" style="text-shadow: 0 0 2px rgba(0,0,0,.6)">
-                <h3>New App: Time tracking</h3>
-                <p><strong>Track the time spent by tasks during the sprint.</strong></p>
-                <p><button ng-click="$close(); showAppsModal('taskTimeTracking');" class="btn btn-primary">Enable it now!</button></p>
             </div>
         </div>
     </div>
