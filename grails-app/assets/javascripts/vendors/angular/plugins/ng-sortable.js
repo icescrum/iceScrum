@@ -1369,8 +1369,9 @@
                         if ($rootScope.application.dragging && !element.hasClass('as-sortable-dragging-item')) {
                             var offset = $helper.offset(element, null, false);
                             var x = e.pageX - offset.left;
+                            var y = e.pageY - offset.top;
                             $helper.cleanStyles();
-                            element.addClass('sortable-item-over sortable-item-over-' + (x > ((offset.width / 2)) ? 'right' : 'left'));
+                            element.addClass('sortable-item-over sortable-item-over-' + (x > ((offset.width / 2) || y > (offset.height / 2)) ? 'right' : 'left'));
                         }
                     }, sortableConfig.throttle));
                     element.on('mouseleave', _.throttle(function() {
