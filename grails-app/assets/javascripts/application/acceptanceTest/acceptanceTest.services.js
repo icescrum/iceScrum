@@ -69,7 +69,7 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
             case 'rank':
                 return story.state < StoryStatesByName.DONE && Session.po();
             case 'updateState':
-                return story.state == StoryStatesByName.IN_PROGRESS && Session.inProject();
+                return story.state >= StoryStatesByName.IN_PROGRESS && story.state < StoryStatesByName.DONE && Session.inProject();
             default:
                 return false;
         }
