@@ -248,9 +248,14 @@ controllers.controller('sprintBacklogCtrl', ['$scope', '$rootScope', '$controlle
         },
         orderChanged: function(event) {
             var story = event.source.itemScope.modelValue;
-            story.rank = event.dest.index + 1;
+            var newRank = event.dest.index + 1;
+            story.rank = newRank;
             $rootScope.waitSortingTask = true;
-            StoryService.update(story).catch(function() {
+            StoryService.update(story).then(function(updatedStory) {
+                if (updatedStory.rank !== newRank) {
+                    $scope.notifyWarning('is.ui.story.warning.rank');
+                }
+            }).catch(function() {
                 $scope.revertSortable(event);
             }).finally(function() {
                 $rootScope.waitSortingTask = false;
