@@ -24,6 +24,7 @@
 <g:render template="/story/templates/story.backlog"/>
 <g:render template="/story/templates/story.close"/>
 <g:render template="/story/templates/story.details"/>
+<g:render template="/story/templates/story.editor"/>
 <g:render template="/story/templates/story.effort"/>
 <g:render template="/story/templates/story.light"/>
 <g:render template="/story/templates/story.multiple"/>

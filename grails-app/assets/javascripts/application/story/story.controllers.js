@@ -498,7 +498,7 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
     };
     $scope.validateStoryName = function(newName, story) {
         return !newName || !story || _.find($scope.stories, function(otherStory) {
-            return story !== otherStory  && newName.toLowerCase() === otherStory.name.toLowerCase();
+            return story !== otherStory && newName.toLowerCase() === otherStory.name.toLowerCase();
         }) == null;
     };
     // Init
@@ -878,4 +878,47 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
     ActorService.list($scope.getProjectFromState().id).then(function(actors) {
         $scope.actors = actors;
     });
+}]);
+
+extensibleController('featureStoryCtrl', ['$scope', '$controller', '$timeout', 'StoryService', function($scope, $controller, $timeout, StoryService) {
+    $controller('storyCtrl', {$scope: $scope});
+    $controller('storyAtWhoCtrl', {$scope: $scope});
+    // Functions
+    $scope.resetStoryForm = function() {
+        $scope.editableStory = {
+            feature: {id: $scope.selected.id}
+        };
+        $scope.resetFormValidation($scope.formHolder.storyForm);
+    };
+    $scope.save = function(story) {
+        StoryService.save(story, $scope.getProjectFromState().id).then(function() {
+            $scope.resetStoryForm();
+            $scope.notifySuccess('todo.is.ui.story.saved');
+        });
+    };
+    $scope.clickDescriptionPreview = function($event, template) {
+        $scope.loadAtWhoActors();
+        $scope.showDescriptionTextarea = true;
+        if (!$scope.editableStory.description) {
+            ($scope.editableStory.description = template);
+        }
+    };
+    $scope.focusDescriptionPreview = function($event) {
+        if (!$scope.descriptionPreviewMouseDown) {
+            $timeout(function() {
+                angular.element($event.target).triggerHandler('click');
+            });
+        }
+    };
+    $scope.blurDescription = function(template) {
+        if (!$('.atwho-view:visible').length && $scope.formHolder.storyForm.description.$valid) { // ugly hack on atwho
+            $scope.showDescriptionTextarea = false;
+            if ($scope.editableStory.description == null || $scope.editableStory.description.trim() == template.trim()) {
+                $scope.editableStory.description = '';
+            }
+        }
+    };
+    // Init
+    $scope.formHolder = {};
+    $scope.resetStoryForm();
 }]);

@@ -76,4 +76,7 @@
         </tbody>
     </table>
 </div>
+<div class="panel-footer" ng-controller="featureStoryCtrl">
+    <div ng-if="authorizedStory('create')" ng-include="'feature.storyForm.editor.html'"></div>
+</div>
 </script>
