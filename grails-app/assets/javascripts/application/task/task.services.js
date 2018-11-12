@@ -157,7 +157,7 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
             case 'makeStory':
                 return self.authorizedTask('delete', task) && task.state != TaskStatesByName.DONE && StoryService.authorizedStory('create');
             case 'updateState':
-                return self.authorizedTask('rank', task) && task.sprint && task.sprint.state == SprintStatesByName.IN_PROGRESS && (!task.parentStory || task.parentStory.state == StoryStatesByName.IN_PROGRESS);
+                return self.authorizedTask('rank', task) && task.sprint && task.sprint.state == SprintStatesByName.IN_PROGRESS && (!task.parentStory || task.parentStory.state >= StoryStatesByName.IN_PROGRESS && task.parentStory.state < StoryStatesByName.DONE);
             default:
                 return false;
         }

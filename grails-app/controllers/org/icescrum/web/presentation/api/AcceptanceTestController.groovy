@@ -59,7 +59,7 @@ class AcceptanceTestController implements ControllerErrorHandler {
         def story = Story.withStory(project, acceptanceTestParams.parentStory.id.toLong())
         Project _project = ((Project) story.backlog)
         if (story.state >= Story.STATE_DONE) {
-            returnError(code: 'is.acceptanceTest.error.save.storyState', args: [_project.getStoryStateNames()[Story.STATE_DONE]])
+            returnError(code: 'is.acceptanceTest.error.save.storyState', args: [message(code: _project.getStoryStateNames()[Story.STATE_DONE])])
             return
         }
         def state = acceptanceTestParams.state?.toInteger()
@@ -67,8 +67,8 @@ class AcceptanceTestController implements ControllerErrorHandler {
         if (state != null) {
             if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                 newState = AcceptanceTest.AcceptanceTestState.byId(state)
-                if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                    returnError(code: 'is.acceptanceTest.error.update.state.storyState', args: [_project.getStoryStateNames()[Story.STATE_INPROGRESS]])
+                if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && !(story.state in [Story.STATE_INPROGRESS, Story.STATE_INREVIEW])) {
+                    returnError(code: 'is.acceptanceTest.error.update.state.storyState', args: [message(code: _project.getStoryStateNames()[Story.STATE_INPROGRESS])])
                     return
                 }
             } else {
@@ -106,8 +106,8 @@ class AcceptanceTestController implements ControllerErrorHandler {
         if (state != null) {
             if (AcceptanceTest.AcceptanceTestState.exists(state)) {
                 newState = AcceptanceTest.AcceptanceTestState.byId(state)
-                if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && story.state != Story.STATE_INPROGRESS) {
-                    returnError(code: 'is.acceptanceTest.error.update.state.storyState', args: [((Project) story.backlog).getStoryStateNames()[Story.STATE_INPROGRESS]])
+                if (newState > AcceptanceTest.AcceptanceTestState.TOCHECK && !(story.state in [Story.STATE_INPROGRESS, Story.STATE_INREVIEW])) {
+                    returnError(code: 'is.acceptanceTest.error.update.state.storyState', args: [message(code: ((Project) story.backlog).getStoryStateNames()[Story.STATE_INPROGRESS])])
                     return
                 }
             } else {
