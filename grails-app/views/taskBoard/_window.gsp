@@ -66,7 +66,7 @@
                     <div class="btn-toolbar pull-right">
                         <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
                         <g:if test="${formats}">
-                            <div class="btn-group hidden-xs" uib-dropdown>
+                            <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
                                 <button class="btn btn-default"
                                         uib-dropdown-toggle type="button">
                                     <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i></span>

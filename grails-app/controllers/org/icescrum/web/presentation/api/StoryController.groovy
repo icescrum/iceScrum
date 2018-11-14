@@ -464,7 +464,7 @@ class StoryController implements ControllerErrorHandler {
         render(text: [fieldValues: fieldValues, stories: stories, count: count] as JSON, contentType: 'application/json', status: 200)
     }
 
-    @Secured('stakeHolder() or inProject()')
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
     def printByBacklog(long project, long id, String format) {
         Backlog backlog = Backlog.withBacklog(project, id)
         Project _project = backlog.project
@@ -490,7 +490,7 @@ class StoryController implements ControllerErrorHandler {
         }
     }
 
-    @Secured('stakeHolder() or inProject()')
+    @Secured('inProject() or (isAuthenticated() and stakeHolder())')
     def printPostitsByBacklog(long project, long id) {
         Backlog backlog = Backlog.withBacklog(project, id)
         Project _project = backlog.project

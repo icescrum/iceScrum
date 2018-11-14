@@ -128,7 +128,7 @@
                             </button>
                             <entry:point id="backlog-list-toolbar-group-right"/>
                         </div>
-                        <div class="btn-group hidden-xs" uib-dropdown>
+                        <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
                             <button class="btn btn-default"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     uib-dropdown-toggle type="button">

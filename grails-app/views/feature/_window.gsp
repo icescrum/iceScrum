@@ -59,6 +59,7 @@
                         </div>
                         <div class="btn-group hidden-sm hidden-xs"
                              uib-dropdown
+                             ng-if="authenticated()"
                              defer-tooltip="${message(code: 'todo.is.ui.export')}">
                             <button class="btn btn-default"
                                     uib-dropdown-toggle
