@@ -257,8 +257,8 @@ angular.module('isCore', ['ui.router'])
                 name: 'new',
                 url: '/new',
                 data: {
-                    authorize: {
-                        roles: ['po']
+                    authorizedState: function(Session) {
+                        return Session.po();
                     }
                 },
                 views: {}
@@ -646,8 +646,8 @@ angular.module('isCore', ['ui.router'])
                         name: 'new',
                         url: "/new",
                         data: {
-                            authorize: {
-                                roles: ['inProject or stakeHolder']
+                            authorizedState: function(Session) {
+                                return Session.inProject() || Session.stakeHolder();
                             }
                         },
                         views: {
@@ -692,9 +692,6 @@ angular.module('isCore', ['ui.router'])
     $stateProvider.decorator('parent', function(state, parentFn) {
         state.self.$$state = function() {
             return state;
-        };
-        state.self.isSecured = function() {
-            return angular.isDefined(state.data) && angular.isDefined(state.data.authorize);
         };
         return parentFn(state);
     });

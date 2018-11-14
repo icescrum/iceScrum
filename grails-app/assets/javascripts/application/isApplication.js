@@ -266,8 +266,8 @@ var isApplication = angular.module('isApplication', [
                         name: 'new',
                         url: "/new",
                         data: {
-                            authorize: {
-                                roles: ['poOrSm']
+                            authorizedState: function(Session) {
+                                return Session.poOrSm();
                             }
                         },
                         views: {
@@ -303,8 +303,8 @@ var isApplication = angular.module('isApplication', [
                                         name: 'new',
                                         url: "/new",
                                         data: {
-                                            authorize: {
-                                                roles: ['poOrSm']
+                                            authorizedState: function(Session) {
+                                                return Session.poOrSm();
                                             }
                                         },
                                         views: {
@@ -427,8 +427,8 @@ var isApplication = angular.module('isApplication', [
                                 name: 'new',
                                 url: "/new",
                                 data: {
-                                    authorize: {
-                                        roles: ['inProject']
+                                    authorizedState: function(Session) {
+                                        return Session.inProject();
                                     }
                                 },
                                 params: {
@@ -983,12 +983,8 @@ var isApplication = angular.module('isApplication', [
                 $state.go('root');
             } else if (!event.defaultPrevented) {
                 var state = toState.$$state();
-                if (state.isSecured()) {
-                    var authorized = _.every(state.data.authorize.roles, function(orRoles) {
-                        return _.some(orRoles.split(' or '), function(role) {
-                            return role.indexOf('!') > -1 ? !Session[role.substring(role.indexOf('!') + 1)]() : (Session[role]() === true);
-                        });
-                    });
+                if (state.data && state.data.authorizedState) {
+                    var authorized = state.data.authorizedState(Session);
                     if (!authorized) {
                         event.preventDefault();
                         if (!Session.authenticated()) {
