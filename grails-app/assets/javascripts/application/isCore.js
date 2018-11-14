@@ -647,7 +647,7 @@ angular.module('isCore', ['ui.router'])
                         url: "/new",
                         data: {
                             authorizedState: function(Session) {
-                                return Session.inProject() || Session.stakeHolder();
+                                return Session.authenticated() && (Session.inProject() || Session.stakeHolder());
                             }
                         },
                         views: {

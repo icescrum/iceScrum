@@ -76,8 +76,7 @@
                                 <a ng-if="authorizedFeature('create')"
                                    href="#/feature/new"
                                    class="btn btn-default">${message(code: "todo.is.ui.feature.new")}</a>
-                                <a ng-if="authorizedStory('create')"
-                                   ui-sref="backlog.backlog.story.new({elementId: 'sandbox'})"
+                                <a ui-sref="backlog.backlog.story.new({elementId: 'sandbox'})"
                                    class="btn btn-default">${message(code: "todo.is.ui.story.new")}</a>
                                 <a ng-if="currentOrNextSprint && authorizedTask('create', {sprint: currentOrNextSprint}) && !(session.po() && !session.sm())"
                                    ui-sref="taskBoard.task.new({sprintId: currentOrNextSprint.id})"

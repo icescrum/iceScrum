@@ -77,8 +77,7 @@
                     <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
                 </button>
             </div>
-            <a ng-if="authorizedStory('create')"
-               ui-sref="backlog.backlog.story.new"
+            <a ui-sref="backlog.backlog.story.new"
                ng-class="{ 'pull-right': backlogContainers.length == 1 }"
                class="btn btn-primary"><span>${message(code: "todo.is.ui.story.new")}</span></a>
             <entry:point id="backlog-window-toolbar-right"/>

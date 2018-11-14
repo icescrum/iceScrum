@@ -29,14 +29,18 @@
       novalidate>
     <div class="form-group" style="position:relative;">
         <div class="visible-hidden" style="right:0;position:absolute;">
-            <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
+            <button class="btn btn-primary"
+                    type="button"
+                    ng-click="expandCommentEditor()">
+                <i class="fa fa-plus"></i>
+            </button>
         </div>
         <textarea at
                   required
                   ng-maxlength="5000"
                   name="body"
                   is-markitup
-                  ng-focus="formHolder.formExpanded = true;"
+                  ng-focus="expandCommentEditor()"
                   ng-blur="showCommentBodyTextarea = false; formHolder.formExpanded = editableComment.body;"
                   ng-model="editableComment.body"
                   class="form-control"

@@ -78,6 +78,13 @@ controllers.controller('commentCtrl', ['$scope', 'CommentService', 'hotkeys', fu
             }
         }
     };
+    $scope.expandCommentEditor = function() {
+        if ($scope.authorizedComment('create')) {
+            $scope.formHolder.formExpanded = true;
+        } else {
+            $scope.showAuthModal();
+        }
+    };
     // Init
     $scope.formHolder = {};
     $scope.resetCommentForm();
