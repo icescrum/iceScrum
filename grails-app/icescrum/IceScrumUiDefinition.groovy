@@ -121,7 +121,7 @@ windows = {
         workspace 'project'
         icon 'calendar'
         help 'todo.is.ui.planning.help'
-        secured 'inProject() or (isAuthenticated() and stakeHolder())'
+        secured 'stakeHolder() or inProject()'
         menu {
             title 'todo.is.ui.planning'
             defaultPosition 3

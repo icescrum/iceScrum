@@ -102,7 +102,7 @@
                 <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.sprintTabId == 'notes'}">
+        <li role="presentation" ng-if="authorizedTimeboxNotes()" ng-class="{'active':$state.params.sprintTabId == 'notes'}">
             <a href="{{ tabUrl('notes') }}">
                 <i class="fa fa-lg fa-newspaper-o"></i> ${message(code: 'todo.is.ui.sprint.notes')}
             </a>

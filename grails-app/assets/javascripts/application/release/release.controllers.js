@@ -211,7 +211,7 @@ controllers.controller('releaseNewCtrl', ['$scope', '$controller', '$state', 'Da
     });
 }]);
 
-controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'DateService', 'ReleaseService', 'FormService', 'detailsRelease', 'project', function($scope, $controller, ReleaseStatesByName, DateService, ReleaseService, FormService, detailsRelease, project) {
+controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseStatesByName', 'DateService', 'ReleaseService', 'TimeBoxNotesTemplateService', 'FormService', 'detailsRelease', 'project', function($scope, $controller, ReleaseStatesByName, DateService, ReleaseService, TimeBoxNotesTemplateService, FormService, detailsRelease, project) {
     $controller('releaseCtrl', {$scope: $scope}); // inherit from releaseCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsRelease, clazz: 'release', project: project});
     // Functions
@@ -221,6 +221,7 @@ controllers.controller('releaseDetailsCtrl', ['$scope', '$controller', 'ReleaseS
             $scope.notifySuccess('todo.is.ui.release.updated');
         });
     };
+    $scope.authorizedTimeboxNotes = TimeBoxNotesTemplateService.authorizedTimeboxNotes;
     // Init
     $scope.$watchCollection('project.releases', function(releases) {
         if (!_.isUndefined(releases)) {

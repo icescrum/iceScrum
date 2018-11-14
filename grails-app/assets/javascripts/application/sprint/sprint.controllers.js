@@ -341,7 +341,7 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Dat
     });
 }]);
 
-controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'DateService', 'SprintService', 'ReleaseService', 'FormService', 'detailsSprint', 'detailsRelease', 'project', function($scope, $controller, SprintStatesByName, DateService, SprintService, ReleaseService, FormService, detailsSprint, detailsRelease, project) {
+controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintStatesByName', 'DateService', 'SprintService', 'ReleaseService', 'TimeBoxNotesTemplateService', 'FormService', 'detailsSprint', 'detailsRelease', 'project', function($scope, $controller, SprintStatesByName, DateService, SprintService, ReleaseService, TimeBoxNotesTemplateService, FormService, detailsSprint, detailsRelease, project) {
     $controller('sprintCtrl', {$scope: $scope}); // inherit from sprintCtrl
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsSprint, clazz: 'sprint', project: project});
     // Functions
@@ -351,6 +351,7 @@ controllers.controller('sprintDetailsCtrl', ['$scope', '$controller', 'SprintSta
             $scope.notifySuccess('todo.is.ui.sprint.updated');
         });
     };
+    $scope.authorizedTimeboxNotes = TimeBoxNotesTemplateService.authorizedTimeboxNotes;
     // Init
     $scope.$watchCollection('release.sprints', function(sprints) {
         if (!_.isUndefined(sprints)) {

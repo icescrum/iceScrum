@@ -25,7 +25,7 @@ services.factory('TimeBoxNotesTemplate', ['Resource', function($resource) {
     return $resource('/p/:projectId/timeBoxNotesTemplate/:id');
 }]);
 
-services.service("TimeBoxNotesTemplateService", ['FormService', '$q', 'TimeBoxNotesTemplate', function(FormService, $q, TimeBoxNotesTemplate) {
+services.service("TimeBoxNotesTemplateService", ['FormService', '$q', 'TimeBoxNotesTemplate', 'Session', function(FormService, $q, TimeBoxNotesTemplate, Session) {
     this.save = function(timeBoxNotesTemplate, project) {
         timeBoxNotesTemplate.class = 'timeBoxNotesTemplate';
         timeBoxNotesTemplate.configsData = JSON.stringify(timeBoxNotesTemplate.configs);
@@ -64,5 +64,8 @@ services.service("TimeBoxNotesTemplateService", ['FormService', '$q', 'TimeBoxNo
     };
     this.getSprintNotes = function(sprint, template) {
         return FormService.httpGet('sprint/' + sprint.id + '/sprintNotes/' + template.id);
+    };
+    this.authorizedTimeboxNotes = function() {
+        return Session.inProject();
     };
 }]);
