@@ -248,7 +248,8 @@ icescrum.marshaller = [
         simpleprojectapp    : [include: ['availableForServer', 'enabledForServer'],
                                exclude: ['parentProject']],
         timeboxnotestemplate: [include: ['configs'],
-                               exclude: ['configsData']]
+                               exclude: ['configsData']],
+        invitation          : [include: ['project', 'team', 'portfolio']]
 ]
 
 icescrum.activities.important = [Activity.CODE_SAVE, 'updateState']

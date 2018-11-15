@@ -369,13 +369,13 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, text: [unreadActivitiesCount: Activity.countNewImportantStoryActivities(user)] as JSON, contentType: 'application/json')
     }
 
-    def invitationEmail(String token) {
+    def invitation(String token) {
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
-        Invitation invitation = Invitation.findByToken(token)
-        if (!invitation || !enableInvitation) {
-            throw new ObjectNotFoundException(token, 'Invitation') // TODO manage error independently
+        def invitations = Invitation.findAllByToken(token)
+        if (!invitations || !enableInvitation) {
+            throw new ObjectNotFoundException(token, 'Invitation')
         }
-        render(status: 200, text: [email: invitation.email] as JSON, contentType: 'application/json')
+        render(status: 200, text: invitations as JSON, contentType: 'application/json')
     }
 
     private File getAssetAvatarFile(String avatarFileName) {

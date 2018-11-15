@@ -46,8 +46,8 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     this.retrievePassword = function(user) {
         return FormService.httpPost('user/retrieve', {user: {username: user.username}}, true);
     };
-    this.invitationEmail = function(token) {
-        return FormService.httpGet('user/invitationEmail', {params: {token: token}}, true);
+    this.getInvitations = function(token) {
+        return FormService.httpGet('user/invitation', {params: {token: token}}, true);
     };
     this.updateMenuPreferences = function(info) {
         var Session = $injector.get('Session');

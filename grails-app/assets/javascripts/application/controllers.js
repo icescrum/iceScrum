@@ -710,8 +710,8 @@ extensibleController('registerCtrl', ['$scope', '$state', '$filter', 'User', 'Us
     // Init
     $scope.user = new User();
     if ($state.params.token) {
-        UserService.invitationEmail($state.params.token).then(function(invitation) {
-            var namesFromEmail = $filter('userNamesFromEmail')(invitation.email);
+        UserService.getInvitations($state.params.token).then(function(invitations) {
+            var namesFromEmail = $filter('userNamesFromEmail')(_.first(invitations).email);
             _.merge($scope.user, namesFromEmail);
             $scope.user.token = $state.params.token;
         });
