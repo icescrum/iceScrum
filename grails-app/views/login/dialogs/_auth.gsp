@@ -26,10 +26,9 @@
           closeButton="${message(code: 'is.button.cancel')}"
           autoFillFix="true"
           form="login(credentials)">
-    <entry:point id="auth-dialog-before-form"/>
     <div class="form-group">
         <label for="credentials.j_username">
-            <small class="pull-right text-muted" ng-click="showRegisterModal()">${message(code: 'is.button.register')}</small>
+            <small class="pull-right text-muted" ng-click="$close(); showRegisterModal()">${message(code: 'is.button.register')}</small>
             <div>${message(code: 'is.dialog.login.username.or.email')}</div>
         </label>
         <input required
@@ -63,5 +62,4 @@
             ${message(code: 'is.dialog.login.rememberme')}
         </label>
     </div>
-    <entry:point id="auth-dialog-after-form"/>
 </is:modal>

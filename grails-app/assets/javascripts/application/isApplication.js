@@ -87,18 +87,8 @@ var isApplication = angular.module('isApplication', [
                 name: 'userregister',
                 url: "/user/register/:token",
                 params: {token: {value: null}}, // Doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
-                onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
-                    $uibModal.open({
-                        keyboard: false,
-                        backdrop: 'static',
-                        templateUrl: $rootScope.serverUrl + '/user/register',
-                        controller: 'registerCtrl'
-                    }).result.then(function(username) {
-                        $state.transitionTo('root');
-                        $rootScope.showAuthModal(username);
-                    }, function() {
-                        $state.transitionTo('root');
-                    });
+                onEnter: ['$rootScope', function($rootScope) {
+                    $rootScope.showRegisterModal();
                 }]
             })
             .state({
@@ -812,6 +802,23 @@ var isApplication = angular.module('isApplication', [
             $rootScope.alert({
                 message: $rootScope.message('is.ui.admin.contact.enable')
             });
+        };
+        $rootScope.showRegisterModal = function() {
+            if (isSettings.registrationEnabled) {
+                $uibModal.open({
+                    keyboard: false,
+                    backdrop: 'static',
+                    templateUrl: $rootScope.serverUrl + '/user/register',
+                    controller: 'registerCtrl'
+                }).result.then(function(username) {
+                    $state.transitionTo('root');
+                    $rootScope.showAuthModal(username);
+                }, function() {
+                    $state.transitionTo('root');
+                });
+            } else {
+                $rootScope.showNotEnabledFeature();
+            }
         };
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();

@@ -654,16 +654,6 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
         j_username: $scope.username ? $scope.username : '',
         j_password: ''
     };
-    $rootScope.showRegisterModal = function() {
-        if (isSettings.registrationEnabled) {
-            if ($scope.$close) {
-                $scope.$close(false); // Close auth modal if present
-            }
-            $state.go('userregister');
-        } else {
-            $rootScope.showNotEnabledFeature();
-        }
-    };
     $rootScope.showRetrieveModal = function() {
         if (isSettings.retrieveEnabled) {
             $state.go('userretrieve');
