@@ -817,6 +817,11 @@ var isApplication = angular.module('isApplication', [
                 size: 'sm'
             }).result.then(loginCallback);
         };
+        $rootScope.showNotEnabledFeature = function() {
+            $rootScope.alert({
+                message: $rootScope.message('is.ui.admin.contact.enable')
+            });
+        };
         $rootScope.showAppsModal = function(appDefinitionId, isTerm) {
             var scope = $rootScope.$new();
             if (appDefinitionId) {
