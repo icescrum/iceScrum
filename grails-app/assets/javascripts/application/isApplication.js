@@ -789,33 +789,24 @@ var isApplication = angular.module('isApplication', [
                 }]
             });
         };
-        $rootScope.showAuthModal = function(username, loginSuccess, loginFailure) {
-            var childScope = $rootScope.$new();
-            if (username) {
-                childScope.username = username;
-            }
-            var loginCallback = function() {
-                $rootScope.application.visibleAuthModal = false;
-            };
-            if (loginSuccess) {
-                childScope.loginCallback = true;
-                loginCallback = function(loggedIn) {
+        $rootScope.showAuthModal = function(username) {
+            if (!$rootScope.application.visibleAuthModal) {
+                var childScope = $rootScope.$new();
+                if (username) {
+                    childScope.username = username;
+                }
+                $rootScope.application.visibleAuthModal = true;
+                var callback = function() {
                     $rootScope.application.visibleAuthModal = false;
-                    if (loggedIn) {
-                        loginSuccess();
-                    } else {
-                        loginFailure();
-                    }
                 };
+                $uibModal.open({
+                    keyboard: false,
+                    templateUrl: $rootScope.serverUrl + '/login/auth',
+                    controller: 'loginCtrl',
+                    scope: childScope,
+                    size: 'sm'
+                }).result.then(callback, callback);
             }
-            $rootScope.application.visibleAuthModal = true;
-            $uibModal.open({
-                keyboard: false,
-                templateUrl: $rootScope.serverUrl + '/login/auth',
-                controller: 'loginCtrl',
-                scope: childScope,
-                size: 'sm'
-            }).result.then(loginCallback);
         };
         $rootScope.showNotEnabledFeature = function() {
             $rootScope.alert({

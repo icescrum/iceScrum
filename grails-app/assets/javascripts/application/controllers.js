@@ -225,9 +225,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     });
     // Init error managmeent
     $scope.$on(SERVER_ERRORS.notAuthenticated, function() {
-        if (!$scope.application.visibleAuthModal) {
-            $scope.showAuthModal();
-        }
+        $scope.showAuthModal();
     });
     $scope.$on(SERVER_ERRORS.clientError, function(event, error) {
         var data = error.data;
@@ -675,19 +673,15 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
     };
     $scope.login = function(credentials) {
         AuthService.login(credentials).then(function(data) {
-            if (!$scope.loginCallback) {
-                $scope.application.submitting = true; // Avoid duplicated login, the page reloading will set that back to false
-                var lastOpenedUrl = data.url;
-                var currentLocation = window.location.href.replace($rootScope.serverUrl, "");
-                if ($state.params.redirectTo) {
-                    document.location = $state.params.redirectTo;
-                } else if (['/', '/#', '/#/', '#/'].indexOf(currentLocation) && lastOpenedUrl) {
-                    document.location = lastOpenedUrl;
-                } else {
-                    document.location.reload(true);
-                }
+            $scope.application.submitting = true; // Avoid duplicated login, the page reloading will set that back to false
+            var lastOpenedUrl = data.url;
+            var currentLocation = window.location.href.replace($rootScope.serverUrl, "");
+            if ($state.params.redirectTo) {
+                document.location = $state.params.redirectTo;
+            } else if (['/', '/#', '/#/', '#/'].indexOf(currentLocation) && lastOpenedUrl) {
+                document.location = lastOpenedUrl;
             } else {
-                $scope.$close(data);
+                document.location.reload(true);
             }
         }, function() {
             $rootScope.$broadcast(SERVER_ERRORS.loginFailed);
