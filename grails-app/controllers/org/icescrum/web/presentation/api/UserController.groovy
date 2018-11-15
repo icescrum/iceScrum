@@ -378,6 +378,17 @@ class UserController implements ControllerErrorHandler {
         render(status: 200, text: invitations as JSON, contentType: 'application/json')
     }
 
+    @Secured(['isAuthenticated()'])
+    def acceptInvitations(String token) {
+        def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
+        def invitations = Invitation.findAllByToken(token)
+        if (!invitations || !enableInvitation) {
+            throw new ObjectNotFoundException(token, 'Invitation')
+        }
+        userService.acceptInvitations(invitations, springSecurityService.currentUser)
+        render(status: 200)
+    }
+
     private File getAssetAvatarFile(String avatarFileName) {
         def avatarPath
         if (grailsApplication.warDeployed) {

@@ -49,6 +49,9 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
     this.getInvitations = function(token) {
         return FormService.httpGet('user/invitation', {params: {token: token}}, true);
     };
+    this.acceptInvitations = function(token) {
+        return FormService.httpGet('user/acceptInvitations', {params: {token: token}}, true);
+    };
     this.updateMenuPreferences = function(info) {
         var Session = $injector.get('Session');
         return $http({
