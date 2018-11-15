@@ -121,7 +121,10 @@
 
     <script type="text/ng-template" id="select.member.html">
     <a>
-        <span style="margin-top: 5px;margin-left:5px;">{{ match.model | userFullName }}</span> <button class="btn btn-default btn-sm" type="button" ng-show="!match.model.id">${message(code: 'todo.is.ui.user.will.be.invited.click')}</button>
+        <span style="margin-top: 5px;margin-left:5px;">{{ match.model | userFullName }}</span>
+        <button class="btn btn-default btn-sm" type="button" ng-show="!match.model.id">
+            ${message(code: 'todo.is.ui.user.will.be.invited.click')} <i class="fa fa-envelope"></i>
+        </button>
     </a>
     </script>
 

@@ -33,7 +33,7 @@
     </td>
     <td>
         <span title="{{ member.username + ' (' + member.email + ')' }}" class="text-overflow">{{ member | userFullName }}</span>
-        <span ng-show="!member.id"><small>${message(code: 'todo.is.ui.user.will.be.invited')}</small></span>
+        <span ng-show="!member.id"><small>${message(code: 'todo.is.ui.user.will.be.invited')} <i class="fa fa-envelope text-muted"></i></small></span>
     </td>
     <td class="text-right">
         <input type="checkbox" ng-change='scrumMasterChanged(member)' name="member.role" ng-model="member.scrumMaster" ng-disabled="!teamMembersEditable(team) || member.productOwner">
