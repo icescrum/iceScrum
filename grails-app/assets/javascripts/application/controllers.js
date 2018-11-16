@@ -668,6 +668,7 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
             var currentLocation = window.location.href.replace($rootScope.serverUrl, "");
             if ($state.params.redirectTo) {
                 document.location = $state.params.redirectTo;
+                document.location.reload(true);
             } else if (['/', '/#', '/#/', '#/'].indexOf(currentLocation) !== -1 && lastOpenedUrl) {
                 document.location = lastOpenedUrl;
             } else {
@@ -679,7 +680,7 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
     };
 }]);
 
-extensibleController('registerCtrl', ['$scope', '$state', '$filter', 'User', 'UserService', 'Session', function($scope, $state, $filter, User, UserService, Session) {
+extensibleController('registerCtrl', ['$scope', 'User', 'UserService', 'Session', function($scope, User, UserService, Session) {
     // Functions
     $scope.register = function() {
         UserService.save($scope.user).then(function() {
@@ -687,14 +688,11 @@ extensibleController('registerCtrl', ['$scope', '$state', '$filter', 'User', 'Us
         });
     };
     // Init
-    $scope.user = new User();
-    if ($state.params.token) {
-        UserService.getInvitations($state.params.token).then(function(invitations) {
-            var namesFromEmail = $filter('userNamesFromEmail')(_.first(invitations).email);
-            _.merge($scope.user, namesFromEmail);
-            $scope.user.token = $state.params.token;
-        });
+    var newUser = new User();
+    if ($scope.user) {
+        _.merge(newUser, $scope.user);
     }
+    $scope.user = newUser;
     $scope.languages = {};
     $scope.languageKeys = [];
     Session.getLanguages().then(function(languages) {

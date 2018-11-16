@@ -73,3 +73,57 @@ controllers.controller('userCtrl', ['$scope', '$timeout', 'UserService', 'User',
         $scope.languageKeys = _.keys(languages);
     });
 }]);
+
+controllers.controller('userInvitationCtrl', ['$scope', '$state', '$timeout', '$location', '$filter', 'UserService', 'Session', function($scope, $state, $timeout, $location, $filter, UserService, Session) {
+    // Functions
+    $scope.acceptInvitations = function() {
+        UserService.acceptInvitations($scope.token).then(function() {
+            document.location = $scope.serverUrl;
+        })
+    };
+    $scope.logIn = function() {
+        $state.params.redirectTo = window.location.href + '?accept=true';
+        $scope.$close(true);
+        $scope.showAuthModal();
+    };
+    $scope.register = function() {
+        var user = $filter('userNamesFromEmail')($scope.invitedEmailAddress);
+        user.token = $scope.token;
+        $scope.$close(true);
+        $scope.showRegisterModal(user);
+    };
+    // Init
+    $scope.token = $state.params.token;
+    if (Session.authenticated()) {
+        $scope.currentEmailAddress = Session.user.email;
+    }
+    UserService.getInvitations($scope.token).then(function(invitations) {
+        if ($location.search().accept === 'true') {
+            UserService.acceptInvitations($scope.token).then(function() {
+                $scope.application.submitting = true;
+                $timeout(function() {
+                    document.location = $scope.serverUrl;
+                }, 2000);
+            })
+        } else {
+            $scope.invitationEntries = _.map(invitations, function(invitation) {
+                var type = invitation.type.name;
+                var object;
+                if (type === 'PROJECT') {
+                    object = invitation.project;
+                } else if (type === 'PORTFOLIO') {
+                    object = invitation.portfolio;
+                } else if (type === 'TEAM') {
+                    object = invitation.team;
+                }
+                return {
+                    type: $scope.message('is.' + type.toLowerCase()),
+                    objectName: object.name
+                };
+            });
+            $scope.invitedEmailAddress = _.first(invitations).email;
+        }
+    }, function() {
+        $timeout($scope.$close, 3000);
+    });
+}]);

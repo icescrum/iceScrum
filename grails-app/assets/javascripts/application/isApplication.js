@@ -87,8 +87,23 @@ var isApplication = angular.module('isApplication', [
                 name: 'userregister',
                 url: "/user/register/:token",
                 params: {token: {value: null}}, // Doesn't work currently but it should, see https://github.com/angular-ui/ui-router/pull/1032 & https://github.com/angular-ui/ui-router/issues/1652
-                onEnter: ['$rootScope', function($rootScope) {
-                    $rootScope.showRegisterModal();
+                onEnter: ['$rootScope', '$state', '$stateParams', '$uibModal', function($rootScope, $state, $stateParams, $uibModal) {
+                    if ($stateParams.token) {
+                        $uibModal.open({
+                            keyboard: false,
+                            backdrop: 'static',
+                            templateUrl: 'user.invitation.html',
+                            controller: 'userInvitationCtrl'
+                        }).result.then(function(continuing) {
+                            if (!continuing) {
+                                $state.transitionTo('root');
+                            }
+                        }, function() {
+                            $state.transitionTo('root');
+                        });
+                    } else {
+                        $rootScope.showRegisterModal();
+                    }
                 }]
             })
             .state({
@@ -803,13 +818,18 @@ var isApplication = angular.module('isApplication', [
                 message: $rootScope.message('is.ui.admin.contact.enable')
             });
         };
-        $rootScope.showRegisterModal = function() {
+        $rootScope.showRegisterModal = function(user) {
             if (isSettings.registrationEnabled) {
+                var childScope = $rootScope.$new();
+                if (user) {
+                    childScope.user = user;
+                }
                 $uibModal.open({
                     keyboard: false,
                     backdrop: 'static',
                     templateUrl: $rootScope.serverUrl + '/user/register',
-                    controller: 'registerCtrl'
+                    controller: 'registerCtrl',
+                    scope: childScope
                 }).result.then(function(username) {
                     $state.transitionTo('root');
                     $rootScope.showAuthModal(username);
