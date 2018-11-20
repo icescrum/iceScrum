@@ -65,7 +65,7 @@ services.service("UserService", ['User', '$http', '$rootScope', '$injector', 'Fo
         });
     };
     this.search = function(term, invite, project) {
-        var params = {value: term};
+        var params = {term: term};
         if (project) {
             params.pkey = project.pkey;
         }

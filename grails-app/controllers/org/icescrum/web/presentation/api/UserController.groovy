@@ -247,19 +247,19 @@ class UserController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated()'])
-    def search(String value, boolean showDisabled, String pkey, boolean invite) {
+    def search(String term, boolean showDisabled, String pkey, boolean invite) {
         def users
         if (pkey) {
-            def valueLower = value.toLowerCase()
+            def termLower = term.toLowerCase()
             users = Project.findByPkey(pkey).getAllUsers().findAll {
-                it.email.toLowerCase().contains(valueLower) || it.username.toLowerCase().contains(valueLower) || "$it.lastName $it.firstName".toLowerCase().contains(valueLower) || "$it.firstName $it.lastName".toLowerCase().contains(valueLower)
+                it.email.toLowerCase().contains(termLower) || it.username.toLowerCase().contains(termLower) || "$it.lastName $it.firstName".toLowerCase().contains(termLower) || "$it.firstName $it.lastName".toLowerCase().contains(termLower)
             }.take(9)
         } else {
-            users = User.findUsersLike(value ?: '', false, showDisabled, [max: 9])
+            users = User.findUsersLike(term ?: '', false, showDisabled, [max: 9])
         }
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
-        if (!users && invite && GenericValidator.isEmail(value) && enableInvitation) {
-            users << [id: null, email: value]
+        if (!users && invite && GenericValidator.isEmail(term) && enableInvitation) {
+            users << [id: null, email: term]
         }
         render(status: 200, contentType: 'application/json', text: users as JSON)
     }
