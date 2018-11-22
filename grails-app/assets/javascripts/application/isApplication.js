@@ -125,21 +125,18 @@ var isApplication = angular.module('isApplication', [
                 name: 'new',
                 url: "/new",
                 onEnter: ["$state", "$uibModal", "$rootScope", function($state, $uibModal, $rootScope) {
+                    var callback = function(type) {
+                        if (type === undefined || type === false) {
+                            $state.transitionTo('root');
+                        }
+                    };
                     $uibModal.open({
                         keyboard: false,
                         backdrop: 'static',
                         templateUrl: $rootScope.serverUrl + "/add",
                         size: 'md2',
                         controller: 'newCtrl'
-                    }).result.then(function(type) {
-                        if (type === undefined || type === false) {
-                            $state.transitionTo('root');
-                        }
-                    }, function(type) {
-                        if (type === undefined || type === false) {
-                            $state.transitionTo('root');
-                        }
-                    });
+                    }).result.then(callback, callback);
                 }]
             })
             // Project workspace
