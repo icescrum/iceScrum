@@ -437,11 +437,20 @@ extensibleController('aboutCtrl', ['$scope', '$interval', 'active', 'FormService
 }]); // Used to extend about in plugins
 
 
-extensibleController('newCtrl', ['$scope', '$state', function($scope, $state) {
+extensibleController('newCtrl', ['$scope', '$state', 'ProjectService', function($scope, $state, ProjectService) {
+    // Functions
     $scope.openWizard = function(type) {
         $scope.$close(type);
         $state.go(type);
     };
+    $scope.createSampleProject = function() {
+        return ProjectService.createSample({hidden: $scope.privateProject}).then(function(project) {
+            $scope.$close();
+            $scope.openWorkspace(project);
+        });
+    };
+    // Init
+    $scope.privateProject = true;
 }]);
 
 controllers.controller('headerCtrl', ['$scope', '$uibModal', 'Session', 'UserService', 'hotkeys', 'PushService', 'UserTokenService', function($scope, $uibModal, Session, UserService, hotkeys, PushService, UserTokenService) {

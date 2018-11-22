@@ -26,11 +26,23 @@
 <is:modal title="${message(code: 'is.ui.workspace.choose')}" class="wizard">
     <div class="workspace-wizard">
         <div class="row" style="margin-top: 25px;">
-            <g:each var="workspace" in="${Holders.grailsApplication.config.icescrum.workspaces}">
-                <div class="workspace col-md-6 text-center">
+            <div class="workspace col-md-4 text-center">
+                <i class="fa fa-folder fa-7x"></i>
+                <div>${message(code: 'is.ui.workspace.description.sampleProject')}</div>
+                <button class="btn btn-default"
+                        ng-disabled="application.submitting"
+                        type="button"
+                        tabindex="-1"
+                        ng-click="createSampleProject()">
+                    ${message(code: 'is.ui.workspace.new.sampleProject')}
+                </button>
+            </div>
+            <g:each var="workspace" in="${Holders.grailsApplication.config.icescrum.workspaces}" status="i">
+                <div class="workspace col-md-4 text-center">
                     <i class="fa fa-${workspace.value.icon} fa-7x"></i>
                     <div>${g.message(code: 'is.ui.workspace.description.' + workspace.key)}</div>
                     <button class="btn btn-primary" ${workspace.value.enabled(Holders.grailsApplication) ? '' : 'disabled="disabled"'}
+                            type="button"
                             ng-click="openWizard('new${workspace.key.capitalize()}')">
                         ${g.message(code: 'is.ui.workspace.new.' + workspace.key)}
                     </button>

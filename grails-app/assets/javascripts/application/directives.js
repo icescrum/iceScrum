@@ -909,24 +909,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     };
-}]).directive('clickAsync', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            clickAsync: '&'
-        },
-        link: function(scope, element) {
-            element.on('click', function() {
-                element.prop('disabled', true);
-                scope.$apply(function() {
-                    scope.clickAsync().finally(function() {
-                        element.prop('disabled', false);
-                    });
-                });
-            });
-        }
-    };
-}).directive('detailsLayoutButtons', ['$rootScope', '$state', '$localStorage', function($rootScope, $state, $localStorage) {
+}]).directive('detailsLayoutButtons', ['$rootScope', '$state', '$localStorage', function($rootScope, $state, $localStorage) {
     return {
         restrict: 'E',
         scope: {

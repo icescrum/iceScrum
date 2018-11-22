@@ -28,14 +28,9 @@
     </div>
     <div ng-if="!projects.length && projectsLoaded && projectCreationEnabled" class="buttons-margin-bottom">
         <a class="btn btn-primary"
-           ui-sref="newProject">
+           ui-sref="new">
             ${message(code: 'todo.is.ui.project.createNew')}
         </a>
-        <button class="btn btn-default"
-                type="button"
-                click-async="createSampleProject()">
-            ${message(code: 'is.ui.project.sample.create')}
-        </button>
         <div>
             <documentation doc-url="getting-started-with-icescrum" title="is.ui.documentation.getting.started"/>
         </div>

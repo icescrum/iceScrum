@@ -643,12 +643,12 @@ class ProjectController implements ControllerErrorHandler {
             hidden = false
         }
         try {
-            dummyService.createSampleProject(springSecurityService.currentUser, hidden);
+            def project = dummyService.createSampleProject(springSecurityService.currentUser, hidden)
+            render(status: 201, contentType: 'application/json', text: project as JSON)
         } catch (ValidationException e) {
             e.printStackTrace()
             throw e
         }
-        render(status: 200);
     }
 
     private listByRole(long id, String term, Boolean paginate, Integer page, Integer count, def light, def role, Boolean owner = false) {
