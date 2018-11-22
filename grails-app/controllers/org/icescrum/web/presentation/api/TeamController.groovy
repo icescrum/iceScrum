@@ -83,7 +83,7 @@ class TeamController implements ControllerErrorHandler {
         def invitedScrumMasters = teamParams.invitedScrumMasters ? teamParams.invitedScrumMasters.list('email') : []
         def newOwnerId = teamParams.owner?.id?.toLong()
         Team.withTransaction {
-            entry.hook(id: 'team-update-before')
+            entry.hook(id: 'team-update-before', model: [team: team])
             if (team.name != teamParams.name) {
                 team.name = teamParams.name
                 team.save()
@@ -97,7 +97,7 @@ class TeamController implements ControllerErrorHandler {
                     securityService.changeOwner(newOwner, project)
                 }
             }
-            entry.hook(id: 'team-update')
+            entry.hook(id: 'team-update', model: [team: team])
         }
         render(status: 200, text: team as JSON, contentType: 'application/json')
     }
