@@ -411,9 +411,9 @@ class StoryController implements ControllerErrorHandler {
     }
 
     @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
-    def dependenceEntries(long id, long project) {
+    def dependenceEntries(long id, long project, String term) {
         def story = Story.withStory(project, id)
-        def stories = Story.findPossiblesDependences(story).list()?.sort { a -> a.feature == story.feature ? 0 : 1 }
+        def stories = Story.findPossiblesDependences(story, term).list()?.sort { a -> a.feature == story.feature ? 0 : 1 }
         def storyEntries = stories.collect { Story dependencyStory ->
             def entry = [id: dependencyStory.id, name: dependencyStory.name, uid: dependencyStory.uid]
             if (dependencyStory.feature) {

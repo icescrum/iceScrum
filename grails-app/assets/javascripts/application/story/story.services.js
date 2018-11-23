@@ -286,8 +286,8 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
     this.listByField = function(field, projectId) {
         return Story.get({projectId: projectId, action: 'listByField', field: field}).$promise
     };
-    this.getDependenceEntries = function(story) {
-        return FormService.httpGet('p/' + story.backlog.id + '/story/' + story.id + '/dependenceEntries', null, true);
+    this.getDependenceEntries = function(story, term) {
+        return FormService.httpGet('p/' + story.backlog.id + '/story/' + story.id + '/dependenceEntries', {params: {term: term} }, true);
     };
     this.getParentSprintEntries = function(projectId) {
         return FormService.httpGet('p/' + projectId + '/story/sprintEntries', null, true);

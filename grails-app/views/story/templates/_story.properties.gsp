@@ -110,7 +110,7 @@
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">
                     <ui-select input-group-fix-width="38"
                                class="form-control"
-                               ng-click="retrieveDependenceEntries(editableStory); editForm(true)"
+                               ng-click="editForm(true); searchDependenceEntries(editableStory, $select)"
                                ng-change="editForm(true)"
                                ng-disabled="!formEditable()"
                                name="dependsOn"
@@ -121,7 +121,9 @@
                                          placeholder="${message(code: 'is.ui.story.nodependence')}">
                             {{ $select.selected | storyLabel: true }}
                         </ui-select-match>
-                        <ui-select-choices repeat="dependenceEntry in dependenceEntries | orFilter: { name: $select.search, uid: $select.search }">
+                        <ui-select-choices refresh="searchDependenceEntries(editableStory, $select)"
+                                           refresh-delay="100"
+                                           repeat="dependenceEntry in dependenceEntries">
                             <i class="fa fa-sticky-note" ng-style="{color: dependenceEntry.feature ? dependenceEntry.feature.color : '#f9f157'}"></i>
                             <span ng-bind-html="dependenceEntry | storyLabel | highlight: $select.search"></span>
                         </ui-select-choices>

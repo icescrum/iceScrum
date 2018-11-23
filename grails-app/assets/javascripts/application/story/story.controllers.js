@@ -595,9 +595,9 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
                 }
             }
         };
-        $scope.retrieveDependenceEntries = function(story) {
-            if (_.isEmpty($scope.dependenceEntries)) {
-                StoryService.getDependenceEntries(story).then(function(dependenceEntries) {
+        $scope.searchDependenceEntries = function(story, $select) {
+            if ($scope.formHolder.editing && $select.open) {
+                StoryService.getDependenceEntries(story, $select.search).then(function(dependenceEntries) {
                     $scope.dependenceEntries = dependenceEntries;
                 });
             }
