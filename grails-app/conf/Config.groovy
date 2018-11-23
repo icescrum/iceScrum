@@ -44,6 +44,7 @@ System.setProperty("java.awt.headless", "true");
 icescrum.registration.enable = true
 icescrum.login.retrieve.enable = false
 icescrum.invitation.enable = false
+icescrum.user.search.enable=true
 icescrum.gravatar.enable = true
 icescrum.alerts.subject_prefix = "[icescrum]"
 icescrum.alerts.enable = false

@@ -248,14 +248,24 @@ class UserController implements ControllerErrorHandler {
 
     @Secured(['isAuthenticated()'])
     def search(String term, boolean showDisabled, String pkey, boolean invite) {
-        def users
-        if (pkey) {
+        def users = []
+        def userFilter = { user ->
             def termLower = term.toLowerCase()
-            users = Project.findByPkey(pkey).getAllUsers().findAll {
-                it.email.toLowerCase().contains(termLower) || it.username.toLowerCase().contains(termLower) || "$it.lastName $it.firstName".toLowerCase().contains(termLower) || "$it.firstName $it.lastName".toLowerCase().contains(termLower)
-            }.take(9)
-        } else {
+            user.email.toLowerCase().contains(termLower) ||
+            user.username.toLowerCase().contains(termLower) ||
+            "$user.lastName $user.firstName".toLowerCase().contains(termLower) ||
+            "$user.firstName $user.lastName".toLowerCase().contains(termLower)
+        }
+        if (pkey) {
+            users = Project.findByPkey(pkey).getAllUsers().findAll(userFilter).take(9)
+        } else if (grailsApplication.config.icescrum.user.search.enable) {
             users = User.findUsersLike(term ?: '', false, showDisabled, [max: 9])
+        } else if (term) {
+            users = User.findAllByEmailIlike(term)
+            Project.findAllByUserAndActive(springSecurityService.currentUser, null, null).each { project ->
+                users.addAll(project.getAllUsers())
+            }
+            users = users.unique { it.email }.findAll(userFilter).take(9)
         }
         def enableInvitation = grailsApplication.config.icescrum.registration.enable && grailsApplication.config.icescrum.invitation.enable
         if (!users && invite && GenericValidator.isEmail(term) && enableInvitation) {
