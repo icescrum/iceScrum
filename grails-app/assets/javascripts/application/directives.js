@@ -57,6 +57,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var val = element.val();
                 scope.$apply($http({
                     method: 'POST',
+                    isBackground: true, // Custom attribute to prevent application.submitting
                     url: $rootScope.serverUrl + '/textileParser',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
                     data: 'data=' + encodeURIComponent(val)

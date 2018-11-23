@@ -532,7 +532,7 @@ var isApplication = angular.module('isApplication', [
     }])
     .factory('SubmittingInterceptor', ['$rootScope', '$q', function($rootScope, $q) {
         var isSubmitting = function(config) {
-            return _.includes(['POST', 'DELETE'], config.method);
+            return _.includes(['POST', 'DELETE'], config.method) && !config.isBackground;
         };
         return {
             request: function(config) {
