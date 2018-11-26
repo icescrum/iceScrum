@@ -66,7 +66,11 @@ class LoginController implements ControllerErrorHandler {
             }
             render(status: 200, template: "dialogs/auth", model: [rememberMeParameter: config.rememberMe.parameter])
         } else {
-            redirect(url: ApplicationSupport.serverURL())
+            render(status: 200, text: """
+                <p style="margin-top: 100px; text-align: center; font-family: arial">
+                    Oops, wrong page, please try opening <a href="${ApplicationSupport.serverURL()}">${ApplicationSupport.serverURL()}</a> or contact us at <a href="mailto:support@kagilum.com">support@kagilum.com</a>.
+                </p>
+            """)
         }
     }
 
