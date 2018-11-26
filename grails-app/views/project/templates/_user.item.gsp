@@ -3,7 +3,7 @@
     <img ng-src="{{ user | userAvatar }}" height="24" width="24" class="img-rounded user-role" title="{{ user.username }}">
     <span title="{{ user.username + ' (' + user.email + ')' }}" class="name">
         {{ user | userFullName }}
-        <small ng-if="!user.id" title="${message(code: 'todo.is.ui.user.will.be.invited')}"><i class="fa fa-envelope text-muted"></i></small>
+        <small ng-if="!user.id" title="${message(code: 'is.ui.user.will.be.invited')}"><i class="fa fa-envelope text-muted"></i></small>
     </span>
     <a class="btn btn-danger btn-xs btn-model"
        ng-model="foo" %{-- Hack to make form dirty --}%
@@ -18,7 +18,7 @@
     <img ng-src="{{ user | userAvatar }}" height="24" width="24" class="img-rounded user-role" title="{{ user.username }}">
     <span title="{{ user.username + ' (' + user.email + ')' }}" class="name">
         {{ user | userFullName }}
-        <small ng-if="!user.id" title="${message(code: 'todo.is.ui.user.will.be.invited')}"><i class="fa fa-envelope text-muted"></i></small>
+        <small ng-if="!user.id" title="${message(code: 'is.ui.user.will.be.invited')}"><i class="fa fa-envelope text-muted"></i></small>
     </span>
     <a class="btn btn-danger btn-xs btn-model"
        ng-model="foo" %{-- Hack to make form dirty --}%
