@@ -258,7 +258,7 @@ class UserController implements ControllerErrorHandler {
         }
         if (pkey) {
             users = Project.findByPkey(pkey).getAllUsers().findAll(userFilter).take(9)
-        } else if (grailsApplication.config.icescrum.user.search.enable) {
+        } else if (grailsApplication.config.icescrum.user.search.enable || request.admin) {
             users = User.findUsersLike(term ?: '', false, showDisabled, [max: 9])
         } else if (term) {
             users = User.findAllByEmailIlike(term)
