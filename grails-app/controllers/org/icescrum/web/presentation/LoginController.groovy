@@ -46,24 +46,28 @@ class LoginController implements ControllerErrorHandler {
     def springSecurityService
 
     def auth() {
-        def config = SpringSecurityUtils.securityConfig
-        if (springSecurityService.isLoggedIn()) {
-            redirect(uri: config.successHandler.defaultTargetUrl)
-            return
-        }
-        session.invalidate()
-        // required because locale is lost when session is invalidated
-        def locale = params.lang ?: null
-        try {
-            def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
-            if (localeAccept?.size() > 0) {
-                locale = params.lang ?: localeAccept[0].toString()
+        if (request.xhr) {
+            def config = SpringSecurityUtils.securityConfig
+            if (springSecurityService.isLoggedIn()) {
+                redirect(uri: config.successHandler.defaultTargetUrl)
+                return
             }
-        } catch (Exception e) {}
-        if (locale) {
-            RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
+            session.invalidate()
+            // required because locale is lost when session is invalidated
+            def locale = params.lang ?: null
+            try {
+                def localeAccept = request?.getHeader("accept-language")?.split(",")[0]?.split("-")
+                if (localeAccept?.size() > 0) {
+                    locale = params.lang ?: localeAccept[0].toString()
+                }
+            } catch (Exception e) {}
+            if (locale) {
+                RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
+            }
+            render(status: 200, template: "dialogs/auth", model: [rememberMeParameter: config.rememberMe.parameter])
+        } else {
+            redirect(url: ApplicationSupport.serverURL())
         }
-        render(status: 200, template: "dialogs/auth", model: [rememberMeParameter: config.rememberMe.parameter])
     }
 
     def authAjax() {
