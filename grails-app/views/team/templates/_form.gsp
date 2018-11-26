@@ -25,7 +25,13 @@
     <div class="col-sm-12">
         <h4>${message(code: "is.team")}</h4>
         <p class="help-block">
-            {{ message(teamCreatable() ? 'is.dialog.wizard.section.team.description' : 'todo.is.ui.projet.team.description') }}
+            <span ng-if="teamCreatable()">
+                ${message(code: 'is.dialog.wizard.section.team.description')}
+                ${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}
+            </span>
+            <span ng-if="!teamCreatable()">
+                ${message(code: 'todo.is.ui.projet.team.description')}
+            </span>
             <documentation doc-url="roles-teams-projects"/>
         </p>
     </div>
@@ -78,7 +84,7 @@
                        id="member.search"
                        autofocus
                        class="form-control"
-                       placeholder="${message(code: 'todo.is.ui.select.notext')}"
+                       placeholder="${message(code: 'is.ui.user.search.placeholder' + (grailsApplication.config.icescrum.user.search.enable ? '' : '.email'))}"
                        ng-model="member.name"
                        uib-typeahead="member as member.name for member in searchMembers($viewValue)"
                        typeahead-loading="searchingMember"

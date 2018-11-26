@@ -90,6 +90,9 @@
                 </form>
             </div>
             <div ng-switch-when="true">
+                <div class="help-block">
+                    ${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}
+                </div>
                 <form ng-submit="update(team)"
                       name="formHolder.updateTeamForm"
                       show-validation
@@ -124,7 +127,7 @@
                                    id="member.search"
                                    autofocus
                                    class="form-control"
-                                   placeholder="${message(code: 'todo.is.ui.select.notext')}"
+                                   placeholder="${message(code: 'is.ui.user.search.placeholder' + (grailsApplication.config.icescrum.user.search.enable ? '' : '.email'))}"
                                    ng-model="member.name"
                                    uib-typeahead="member as member.name for member in searchMembers($viewValue)"
                                    typeahead-loading="searchingMember"

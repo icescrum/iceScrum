@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.members.portfolio.html">
-<p class="help-block">${message(code: 'is.ui.portfolio.help.members')}</p>
+<p class="help-block">${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}</p>
 <div class="row">
     <div class="col-sm-4">
         <label for="businessOwners.search">${message(code: 'todo.is.ui.select.portfolio.businessOwner')}</label>
@@ -31,7 +31,7 @@
                    name="businessOwners.search"
                    id="businessOwners.search"
                    class="form-control"
-                   placeholder="${message(code: 'todo.is.ui.select.notext')}"
+                   placeholder="${message(code: 'is.ui.user.search.placeholder' + (grailsApplication.config.icescrum.user.search.enable ? '' : '.email'))}"
                    ng-model="bo"
                    uib-typeahead="bo as bo.name for bo in searchUsers($viewValue, true)"
                    typeahead-append-to-body="true"
@@ -61,7 +61,7 @@
                    name="stakeHolder.search"
                    id="stakeHolder.search"
                    class="form-control"
-                   placeholder="${message(code: 'todo.is.ui.select.notext')}"
+                   placeholder="${message(code: 'is.ui.user.search.placeholder' + (grailsApplication.config.icescrum.user.search.enable ? '' : '.email'))}"
                    ng-model="sh"
                    uib-typeahead="sh as sh.name for sh in searchUsers($viewValue)"
                    typeahead-append-to-body="true"
