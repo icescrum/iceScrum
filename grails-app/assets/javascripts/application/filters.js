@@ -407,9 +407,13 @@ filters
         }
     }
 }]).filter('storyLabel', [function() {
-    return function(story, after) {
+    return function(story, after, displayProject) {
         if (story) {
-            return after ? story.name + ' - ' + story.uid : story.uid + ' - ' + story.name;
+            var label = after ? story.name + ' - ' + story.uid : story.uid + ' - ' + story.name;
+            if (displayProject) {
+                label += ' (' +  story.project.name + ')';
+            }
+            return label;
         }
     }
 }]).filter('sprintName', ['$rootScope', function($rootScope) {

@@ -117,19 +117,25 @@
                                search-enabled="true"
                                ng-model="editableStory.dependsOn">
                         <ui-select-match allow-clear="{{ formHolder.editing }}"
-                                         title="{{ $select.selected | storyLabel }}"
+                                         title="{{ $select.selected | storyLabel : false : !hasSameProject(editableStory, $select.selected) }}"
                                          placeholder="${message(code: 'is.ui.story.nodependence')}">
-                            {{ $select.selected | storyLabel: true }}
+                            {{ $select.selected | storyLabel : true : !hasSameProject(editableStory, $select.selected) }}
                         </ui-select-match>
                         <ui-select-choices refresh="searchDependenceEntries(editableStory, $select)"
                                            refresh-delay="100"
                                            repeat="dependenceEntry in dependenceEntries">
                             <i class="fa fa-sticky-note" ng-style="{color: dependenceEntry.feature ? dependenceEntry.feature.color : '#f9f157'}"></i>
-                            <span ng-bind-html="dependenceEntry | storyLabel | highlight: $select.search"></span>
+                            <span ng-bind-html="dependenceEntry | storyLabel : false : !hasSameProject(editableStory, dependenceEntry) | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
                     <span class="input-group-btn" ng-if="editableStory.dependsOn.id">
-                        <a ui-sref=".({storyId: editableStory.dependsOn.id})"
+                        <a ng-if="hasSameProject(editableStory, editableStory.dependsOn)"
+                           ui-sref=".({storyId: editableStory.dependsOn.id})"
+                           class="btn btn-default">
+                            <i class="fa fa-info-circle"></i>
+                        </a>
+                        <a ng-if="!hasSameProject(editableStory, editableStory.dependsOn)"
+                           ng-href="{{ editableStory.dependsOn.uid | permalink: 'story': editableStory.dependsOn.project.pkey }}"
                            class="btn btn-default">
                             <i class="fa fa-info-circle"></i>
                         </a>
@@ -141,7 +147,14 @@
             <label>${message(code: 'is.story.dependences')}</label>
             <div class="form-control-static">
                 <span ng-repeat="dependence in editableStory.dependences track by dependence.id">
-                    <a ui-sref=".({storyId: dependence.id})" title="{{ dependence | storyLabel }}">{{ dependence.name | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
+                    <a ng-if="hasSameProject(editableStory, dependence)"
+                       ui-sref=".({storyId: dependence.id})"
+                       title="{{ dependence | storyLabel }}">
+                        {{ dependence.name | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
+                    <a ng-if="!hasSameProject(editableStory, dependence)"
+                       ng-href="{{ dependence.uid | permalink: 'story': dependence.project.pkey }}"
+                       title="{{ dependence | storyLabel : false : true }}">
+                        {{ (dependence.name + ' (' +  dependence.project.name + ')') | ellipsis: 30 }}</a><span ng-if="!$last">,</span>
                 </span>
             </div>
         </div>

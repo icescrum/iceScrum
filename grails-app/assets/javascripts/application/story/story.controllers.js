@@ -647,6 +647,9 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
                     story.testState == AcceptanceTestStatesByName.SUCCESS ? 'text-success' : '') +
                    ($state.params.storyTabId == 'tests' || $scope.application.focusedDetailsView ? ' active' : '');
         };
+        $scope.hasSameProject = function(story1, story2) {
+            return !story2 || !story2.project || (story1.project.id == story2.project.id)
+        };
         // Init
         $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});
         $scope.dependenceEntries = [];
