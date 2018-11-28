@@ -81,6 +81,7 @@
                                 <a ng-if="currentOrNextSprint && authorizedTask('create', {sprint: currentOrNextSprint}) && !(session.po() && !session.sm())"
                                    ui-sref="taskBoard.task.new({sprintId: currentOrNextSprint.id})"
                                    class="btn btn-default">${message(code: "todo.is.ui.task.new")}</a>
+                                <entry:point id="project-dashboard-buttons"/>
                             </div>
                         </div>
                     </div>
