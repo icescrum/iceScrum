@@ -61,7 +61,10 @@
             </span>
         </p>
         <div class="form-group" ng-if="type == 'editProject' && team.owner">
-            <label>${message(code: 'is.role.owner')}</label>
+            <label>
+                ${message(code: 'is.role.owner')}
+                <entry:point id="project-team-list-owner"/>
+            </label>
             <div>
                 <img ng-src="{{ team.owner | userAvatar }}" height="24" width="24" class="img-rounded user-role" title="{{ team.owner.username }}">
                 {{ team.owner | userFullName }}
