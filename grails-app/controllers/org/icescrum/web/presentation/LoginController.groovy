@@ -47,9 +47,8 @@ class LoginController implements ControllerErrorHandler {
 
     def auth() {
         if (request.xhr) {
-            def config = SpringSecurityUtils.securityConfig
             if (springSecurityService.isLoggedIn()) {
-                redirect(uri: config.successHandler.defaultTargetUrl)
+                render(status: 200, text: '<script>document.location.href="' + ApplicationSupport.serverURL() + '"</script>')
                 return
             }
             session.invalidate()
@@ -64,7 +63,7 @@ class LoginController implements ControllerErrorHandler {
             if (locale) {
                 RCU.getLocaleResolver(request).setLocale(request, response, new Locale(locale))
             }
-            render(status: 200, template: "dialogs/auth", model: [rememberMeParameter: config.rememberMe.parameter])
+            render(status: 200, template: "dialogs/auth", model: [rememberMeParameter: SpringSecurityUtils.securityConfig.rememberMe.parameter])
         } else {
             render(status: 200, text: """
                 <p style="margin-top: 100px; text-align: center; font-family: arial">
