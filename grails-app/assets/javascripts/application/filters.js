@@ -406,6 +406,13 @@ filters
             return items;
         }
     }
+}]).filter('taskBoardSearch', ['searchFilter', function(searchFilter) {
+    return function(stories, tasksByStoryByState) {
+        var matchingStories = _.map(searchFilter(stories), 'id');
+        return _.filter(stories, function(story) {
+            return _.includes(matchingStories, story.id) || searchFilter(_.flatten(_.values(tasksByStoryByState[story.id]))).length > 0;
+        });
+    }
 }]).filter('storyLabel', [function() {
     return function(story, after, displayProject) {
         if (story) {

@@ -277,7 +277,7 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody ng-repeat="story in sprint.stories | filter: storyFilter | search | orderBy: 'rank'" ng-class="{'story-done': story.state == storyStatesByName.DONE }">
+                <tbody ng-repeat="story in sprint.stories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'rank'" ng-class="{'story-done': story.state == storyStatesByName.DONE }">
                     <tr class="sticky-header list-group">
                         <td colspan="3"
                             class="postit-container story-container"
@@ -330,7 +330,7 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody ng-repeat="story in ghostStories | filter: storyFilter | search | orderBy: 'id'" class="story-ghost">
+                <tbody ng-repeat="story in ghostStories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'id'" class="story-ghost">
                     <tr class="sticky-header list-group">
                         <td colspan="3" class="postit-container story-container" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
                             <div ng-include="'story.light.html'" ng-init="disabledGradient = true"></div>

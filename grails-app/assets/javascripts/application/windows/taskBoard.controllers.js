@@ -217,7 +217,7 @@ extensibleController('taskBoardCtrl', ['$scope', '$state', '$filter', 'UserServi
     };
     $scope.findPreviousOrNextStory = StoryService.findPreviousOrNextStory([
         function() {
-            return $filter('orderBy')($filter('search')($filter('filter')($scope.sprint.stories, $scope.storyFilter)), 'rank'); // Needs to be in a function because it can change
+            return $filter('orderBy')($filter('taskBoardSearch')($filter('filter')($scope.sprint.stories, $scope.storyFilter), $scope.tasksByStoryByState), 'rank'); // Needs to be in a function because it can change
         }
     ]);
     // Init
