@@ -867,7 +867,12 @@ controllers.controller('featureStoriesCtrl', ['$controller', '$scope', '$filter'
                 } else {
                     label = $filter('i18n')(state, 'StoryStates');
                 }
-                label += ' (' + stories.length + ')';
+                label += ' (' + stories.length;
+                var totalEffort = _.sumBy(stories, 'effort');
+                if (totalEffort) {
+                    label += ' - ' + totalEffort + '<i class="fa fa-dollar fa-small"></i></small>'
+                }
+                label += ')';
                 return {
                     label: label,
                     stories: _.sortBy(stories, [function(story) {

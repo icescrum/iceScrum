@@ -27,8 +27,9 @@
         <tbody ng-repeat="storyEntry in storyEntries" style="border-top: 0;">
             <tr>
                 <th style="border-top: 0; padding:0">
-                    <div class="text-center" style="margin-top:30px;margin-bottom:10px;font-size:15px;">
-                        {{ storyEntry.label }}
+                    <div class="text-center"
+                         style="margin-top:30px;margin-bottom:10px;font-size:15px;"
+                         ng-bind-html="storyEntry.label">
                     </div>
                 </th>
             </tr>
