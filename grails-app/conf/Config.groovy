@@ -288,8 +288,10 @@ icescrum.warnings = []
 icescrum {
     workspaces {
         project {
-            objectClass = Project
+            path = 'p'
             icon = 'folder'
+            type = 'project'
+            objectClass = Project
             config = { project -> [key: project.pkey, path: 'p'] }
             params = { project -> [project: project.id] }
             indexScrumOS = { projectWorkspace, User user, SecurityService securityService, SpringSecurityService springSecurityService ->
