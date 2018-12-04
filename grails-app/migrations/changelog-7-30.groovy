@@ -1,7 +1,8 @@
-import org.icescrum.core.support.ApplicationSupport
+import liquibase.statement.core.RawSqlStatement
+import org.icescrum.core.domain.*
 
 /*
-* Copyright (c) 2017 Kagilum SAS
+* Copyright (c) 2018 Kagilum SAS
 *
 * This file is part of iceScrum.
 *
@@ -21,23 +22,10 @@ import org.icescrum.core.support.ApplicationSupport
 *
 * Nicolas Noullet (nnoullet@kagilum.com)
 * Vincent BARRIER (vbarrier@kagilum.com)
-* Colin Bontemps (cbontemps@kagilum.com)
 *
 */
 databaseChangeLog = {
-    include file: "changelog-promote.groovy"
-    include file: "changelog-7-0-2.groovy"
-    include file: "changelog-7-0-6.groovy"
-    include file: "changelog-7-1.groovy"
-    include file: "changelog-7-1-1.groovy"
-    include file: "changelog-7-2.groovy"
-    include file: "changelog-7-5.groovy"
-    include file: "changelog-7-7.groovy"
-    include file: "changelog-7-7-2.groovy"
-    include file: "changelog-7-9.groovy"
-    include file: "changelog-7-29.groovy"
-    include file: "changelog-7-30.groovy"
-    if (ApplicationSupport.isMySQLUTF8mb4()) {
-        include file: "changelog-utf8mb4.groovy"
+    changeSet(author: "vbarrier", id: "update_type_meta_value_longtext_is_meta") {
+        modifyDataType(tableName: 'is_meta', columnName: 'meta_value', newDataType: 'longtext')
     }
 }
