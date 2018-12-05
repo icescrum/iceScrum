@@ -30,7 +30,7 @@
 
 //= require_full_tree vendors/vanilla
 
-//= require           vendors/bootstrap/bootstrap.min
+//= require           vendors/bootstrap/bootstrap.bundle.min
 //= require           vendors/bootstrap/bootstrap.offcanvas.min
 //= require           vendors/bootstrap/bootstrap-slider.min
 
