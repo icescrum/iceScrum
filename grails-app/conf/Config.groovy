@@ -337,8 +337,8 @@ grails.mail.props = ["mail.smtp.auth":"true",
 
 /* Assets */
 grails.assets.less.compile = 'less4j'
-grails.assets.excludes = ["**/*.less"]
-grails.assets.includes = ["styles.less"]
+grails.assets.excludes = ["**/*.scss"]
+grails.assets.includes = ["styles.scss"]
 grails.assets.plugin."commentable".excludes = ["**/*"]
 grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
 grails.assets.enableGzip = true
