@@ -26,6 +26,6 @@ import org.icescrum.core.domain.*
 */
 databaseChangeLog = {
     changeSet(author: "vbarrier", id: "update_type_meta_value_longtext_is_meta") {
-        modifyDataType(tableName: 'is_meta', columnName: 'meta_value', newDataType: 'longtext')
+        modifyDataType(tableName: 'is_metadata', columnName: 'meta_value', newDataType: 'longtext')
     }
 }

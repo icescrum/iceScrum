@@ -37,256 +37,108 @@ import org.icescrum.web.JQueryProvider
 
 import javax.naming.InitialContext
 
-/* Headless mode */
-System.setProperty("java.awt.headless", "true");
-
-/* Administration */
-icescrum.registration.enable = true
-icescrum.login.retrieve.enable = false
-icescrum.invitation.enable = false
-icescrum.user.search.enable=true
-icescrum.gravatar.enable = true
-icescrum.alerts.subject_prefix = "[icescrum]"
-icescrum.alerts.enable = false
-icescrum.alerts.default.from = "webmaster@icescrum.org"
-icescrum.alerts.emailPerAccount = false
-icescrum.alerts.errors.to = "dev@icescrum.org"
-icescrum.sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default // TODO may not work on Tomcat 8.5, see maxInactiveInterval in https://tomcat.apache.org/migration-85.html
-
-/* Server TimeZone */
-try {
-    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.timezone.default")
-    if (extConfFile) {
-        icescrum.timezone.default = extConfFile;
-    }
-} catch (Exception e) {
-    icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
-}
-println "| Server Timezone: ${icescrum.timezone.default}"
-println "| Java version: ${System.getProperty('java.version')}"
-
-/* Project administration */
-icescrum.project.import.enable = true
-icescrum.project.export.enable = true
-icescrum.project.creation.enable = true
-icescrum.project.private.enable = true
-icescrum.project.private.default = false
-
-/* Portfolio administration */
-icescrum.portfolio.import.enable = false
-icescrum.portfolio.export.enable = false
-icescrum.portfolio.creation.enable = true
-
-/* iceScrum base dir */
-try {
-    String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.basedir")
-    if (extConfFile) {
-        icescrum.baseDir = extConfFile;
-    }
-} catch (Exception e) {
-    icescrum.baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
-}
-
-/* Autofollowing */
-icescrum.auto_follow_productowner = true
-icescrum.auto_follow_stakeholder = true
-icescrum.auto_follow_scrummaster = true
-
-/*  Mail */
-/*grails.mail.host = "smtp.gmail.com"
-grails.mail.port = 465
-grails.mail.username = "username@gmail.com"
-grails.mail.password = ""
-grails.mail.props = ["mail.smtp.auth":"true",
-                     "mail.smtp.socketFactory.port":"465",
-                     "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
-                     "mail.smtp.socketFactory.fallback":"false"]*/
-
-/* Push */
-icescrum.push.enable = true
-
-icescrum.resourceBundles = [
-        featureTypes           : [
-                (Feature.TYPE_FUNCTIONAL)   : 'is.feature.type.functional',
-                (Feature.TYPE_ARCHITECTURAL): 'is.feature.type.architectural'
-        ],
-        featureStates          : [
-                (Feature.STATE_WAIT): 'is.feature.state.wait',
-                (Feature.STATE_BUSY): 'is.feature.state.inprogress',
-                (Feature.STATE_DONE): 'is.feature.state.done'
-        ],
-        storyStates            : [
-                (Story.STATE_FROZEN)    : 'is.story.state.frozen',
-                (Story.STATE_SUGGESTED) : 'is.story.state.suggested',
-                (Story.STATE_ACCEPTED)  : 'is.story.state.accepted',
-                (Story.STATE_ESTIMATED) : 'is.story.state.estimated',
-                (Story.STATE_PLANNED)   : 'is.story.state.planned',
-                (Story.STATE_INPROGRESS): 'is.story.state.inprogress',
-                (Story.STATE_INREVIEW)  : 'is.story.state.inReview',
-                (Story.STATE_DONE)      : 'is.story.state.done'
-        ],
-        storyStatesColor       : [
-                (Story.STATE_FROZEN)    : '#AAAAAA',
-                (Story.STATE_SUGGESTED) : '#FFCC04',
-                (Story.STATE_ACCEPTED)  : '#FF9933',
-                (Story.STATE_ESTIMATED) : '#CC3300',
-                (Story.STATE_PLANNED)   : '#A46BFF',
-                (Story.STATE_INPROGRESS): '#42A9E0',
-                (Story.STATE_INREVIEW)  : '#005769',
-                (Story.STATE_DONE)      : '#009900'
-        ],
-        storyTypes             : [
-                (Story.TYPE_USER_STORY)     : 'is.story.type.story',
-                (Story.TYPE_DEFECT)         : 'is.story.type.defect',
-                (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
-        ],
-        storyTypesColor        : [
-                (Story.TYPE_USER_STORY)     : '#35aa47',
-                (Story.TYPE_DEFECT)         : '#d84a38',
-                (Story.TYPE_TECHNICAL_STORY): '#5bc0de'
-        ],
-        storyTypesCliche       : [
-                (Story.TYPE_USER_STORY)     : Cliche.FUNCTIONAL_STORY_PROJECT_REMAINING_POINTS,
-                (Story.TYPE_DEFECT)         : Cliche.DEFECT_STORY_PROJECT_REMAINING_POINTS,
-                (Story.TYPE_TECHNICAL_STORY): Cliche.TECHNICAL_STORY_PROJECT_REMAINING_POINTS
-        ],
-        releaseStates          : [
-                (Release.STATE_WAIT)      : 'is.release.state.wait',
-                (Release.STATE_INPROGRESS): 'is.release.state.inprogress',
-                (Release.STATE_DONE)      : 'is.release.state.done'
-        ],
-        sprintStates           : [
-                (Sprint.STATE_WAIT)      : 'is.sprint.state.wait',
-                (Sprint.STATE_INPROGRESS): 'is.sprint.state.inprogress',
-                (Sprint.STATE_DONE)      : 'is.sprint.state.done'
-        ],
-        taskStates             : [
-                (Task.STATE_WAIT): 'is.task.state.wait',
-                (Task.STATE_BUSY): 'is.task.state.inprogress',
-                (Task.STATE_DONE): 'is.task.state.done'
-        ],
-        taskTypes              : [
-                (Task.TYPE_RECURRENT): 'is.task.type.recurrent',
-                (Task.TYPE_URGENT)   : 'is.task.type.urgent'
-        ],
-        roles                  : [
-                (Authority.MEMBER)              : 'is.role.teamMember',
-                (Authority.SCRUMMASTER)         : 'is.role.scrumMaster',
-                (Authority.PRODUCTOWNER)        : 'is.role.productOwner',
-                (Authority.STAKEHOLDER)         : 'is.role.stakeHolder',
-                (Authority.PO_AND_SM)           : 'is.role.poAndSm',
-                (Authority.BUSINESSOWNER)       : 'is.role.businessOwner',
-                (Authority.PORTFOLIOSTAKEHOLDER): 'is.role.portfolioStakeHolder'
-        ],
-        planningPokerGameSuites: [
-                (PlanningPokerGame.FIBO_SUITE)   : 'is.estimationSuite.fibonacci',
-                (PlanningPokerGame.INTEGER_SUITE): 'is.estimationSuite.integer',
-                (PlanningPokerGame.CUSTOM_SUITE) : 'is.estimationSuite.custom',
-        ],
-        acceptanceTestStates   : [
-                (AcceptanceTest.AcceptanceTestState.TOCHECK.id): 'is.acceptanceTest.state.tocheck',
-                (AcceptanceTest.AcceptanceTestState.FAILED.id) : 'is.acceptanceTest.state.failed',
-                (AcceptanceTest.AcceptanceTestState.SUCCESS.id): 'is.acceptanceTest.state.success'
-        ],
-        backlogChartTypes      : [
-                'feature': 'is.feature',
-                'type'   : 'is.story.type',
-                'value'  : 'is.story.value',
-                'state'  : 'is.story.state',
-                'effort' : 'is.story.effort'
-        ]
-]
-
-icescrum.marshaller = [
-        portfolio           : [include: ['businessOwners', 'stakeHolders', 'invitedBusinessOwners', 'invitedStakeHolders'],
-                               asShort: ['name', 'fkey'],
-                               textile: ['description']],
-        story               : [include: ['testState', 'tags', 'dependences', 'countDoneTasks', 'project'],
-                               exclude: ['voters', 'metaDatas'],
-                               withIds: ['actors', 'followers'],
-                               textile: ['notes'],
-                               asShort: ['state', 'effort', 'uid', 'name', 'rank', 'project']],
-        comment             : [textile: ['body'], include: ['poster']],
-        project             : [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps', 'team', 'storyStateNames'],
-                               exclude: ['cliches', 'teams', 'goal', 'metaDatas'],
-                               textile: ['description']],
-        team                : [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
-        task                : [exclude: ['participants', 'spent', 'metaDatas'],
-                               textile: ['notes'],
-                               include: ['tags', 'sprint']],
-        user                : [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'tokens', 'preferences'],
-                               asShort: ['firstName', 'lastName'],
-                               include: ['admin']],
-        actor               : [asShort: ['name']],
-        feature             : [include: ['countDoneStories', 'state', 'effort', 'tags', 'inProgressDate', 'doneDate'],
-                               exclude: ['metaDatas'],
-                               withIds: ['stories'],
-                               textile: ['notes'],
-                               asShort: ['color', 'name']],
-        sprint              : [include: ['activable', 'reactivable', 'totalRemaining', 'duration', 'index', 'plannedVelocity'],
-                               exclude: ['cliches', 'metaDatas'],
-                               withIds: ['stories'],
-                               textile: ['retrospective', 'doneDefinition'],
-                               asShort: ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'reactivable', 'parentReleaseName', 'parentReleaseOrderNumber', 'deliveredVersion', 'index', 'plannedVelocity']],
-        release             : [include: ['duration', 'closable', 'activable', 'reactivable'],
-                               textile: ['vision'],
-                               asShort: ['name', 'state', 'endDate', 'startDate', 'orderNumber'],
-                               exclude: ['cliches', 'metaDatas']
-        ],
-        backlog             : [include: ['count', 'isDefault'],
-                               textile: ['notes']],
-        activity            : [include: ['important']],
-        widget              : [include: ['width', 'height'],
-                               exclude: ['userPreferences']],
-        usertoken           : [:],
-        userpreferences     : [include: ['emailsSettings'],
-                               exclude: ['user', 'menu', 'menuHidden', 'emailsSettingsData', 'widgets']],
-        projectpreferences  : [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
-                                         'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
-        attachment          : [include: ['filename']],
-        acceptancetest      : [textile: ['description'], asShort: ['state']],
-        template            : [asShort: ['name']],
-        simpleprojectapp    : [include: ['availableForServer', 'enabledForServer'],
-                               exclude: ['parentProject']],
-        timeboxnotestemplate: [include: ['configs'],
-                               exclude: ['configsData']],
-        invitation          : [include: ['project', 'team', 'portfolio']]
-]
-
-icescrum.activities.important = [Activity.CODE_SAVE, 'updateState']
-
-/* Assets */
-grails.assets.less.compile = 'less4j'
-grails.assets.excludes = ["**/*.less"]
-grails.assets.includes = ["styles.less"]
-grails.assets.plugin."commentable".excludes = ["**/*"]
-grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
-grails.assets.enableGzip = true
-
-/* CORS */
-icescrum.cors.enable = true
-icescrum.cors.url.pattern = '/ws/*'
-
-/* Check for update */
-icescrum.check.enable = true
-icescrum.check.url = 'https://www.icescrum.com'
-icescrum.check.path = 'wp-json/kagilum/v1/version'
-icescrum.check.interval = 1440 // in minutes (24h)
-icescrum.check.timeout = 5000
-
-/* Report data to improve IS */
-icescrum.reportUsage.enable = true
-icescrum.reportUsage.url = 'https://www.icescrum.com'
-icescrum.reportUsage.path = 'wp-json/kagilum/v1/report'
-icescrum.reportUsage.interval = 1440
-icescrum.reportUsage.timeout = 5000
-
-/* Server warnings to display to users */
-icescrum.warnings = []
-
-/* Workspaces */
 icescrum {
+
+    /* Administration */
+    registration.enable = true
+    login.retrieve.enable = false
+    invitation.enable = false
+    user.search.enable = true
+    gravatar.enable = true
+
+    /* Alerts */
+    alerts {
+        subject_prefix = "[icescrum]"
+        enable = false
+        emailPerAccount = false
+        errors.to = "dev@icescrum.org"
+    }
+    alerts.default.from = "webmaster@icescrum.org"
+
+    sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default // TODO may not work on Tomcat 8.5, see maxInactiveInterval in https://tomcat.apache.org/migration-85.html
+
+    /* Server TimeZone */
+    try {
+        String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.timezone.default")
+        if (extConfFile) {
+            icescrum.timezone.default = extConfFile;
+        }
+    } catch (Exception e) {
+        icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
+    }
+
+    /* Push */
+    push.enable = true
+
+    /* iceScrum base dir */
+    try {
+        String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.basedir")
+        if (extConfFile) {
+            baseDir = extConfFile;
+        }
+    } catch (Exception e) {
+        baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
+    }
+
+    /* Autofollowing */
+    auto_follow_productowner = true
+    auto_follow_stakeholder = true
+    auto_follow_scrummaster = true
+
+    activities {
+        important = [Activity.CODE_SAVE, 'updateState']
+    }
+
+    /* CORS */
+    cors {
+        enable = true
+        url {
+            pattern = '/ws/*'
+        }
+    }
+
+    /* Check for update */
+    check {
+        enable = true
+        url = 'https://www.icescrum.com'
+        path = 'wp-json/kagilum/v1/version'
+        interval = 1440 // in minutes (24h)
+        timeout = 5000
+    }
+
+    /* Report data to improve IS */
+    reportUsage {
+        enable = true
+        url = 'https://www.icescrum.com'
+        path = 'wp-json/kagilum/v1/report'
+        interval = 1440
+        timeout = 5000
+    }
+
+    /* Server warnings to display to users */
+    warnings = []
+
+    /* Project administration */
+    project {
+
+        export.enable = true
+        creation.enable = true
+
+    }
+    project.import.enable = true
+    project.private.enable = true
+    project.private.default = false
+
+    /* Portfolio administration */
+    portfolio {
+        export.enable = false
+        creation.enable = true
+    }
+    portfolio.import.enable = false
+
+    /* Workspaces */
     workspaces {
+        /* Project workspace */
         project {
             path = 'p'
             icon = 'folder'
@@ -306,15 +158,215 @@ icescrum {
                 return true
             }
             enabled = { application -> true }
+            /* registered project hooks */
+            hooks = [
+                    "feature.create", "feature.update", "feature.delete",
+                    "story.create", "story.update", "story.delete",
+                    "task.create", "task.update", "task.delete",
+                    "release.create", "release.update", "release.delete",
+                    "sprint.create", "sprint.update", "sprint.delete",
+                    "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete",
+                    "actor.create", "actor.update", "actor.delete"
+            ]
         }
     }
+
+    /* registered hooks */
+    hooks = [
+            "user.create", "user.update", "user.delete",
+            "project.create", "project.update", "project.delete"
+    ]
+
+    /*atmosphere config */
     atmosphere {
         maxUsers = []
         liveUsers = []
         maxConnections = 0
         liveConnections = 0
     }
+
+    securitydebug {
+        enable = false
+    }
+    pushdebug {
+        enable = false
+    }
+    log {
+        dir = null
+    }
+
+    marshaller = [
+            portfolio           : [include: ['businessOwners', 'stakeHolders', 'invitedBusinessOwners', 'invitedStakeHolders'],
+                                   asShort: ['name', 'fkey'],
+                                   textile: ['description']],
+            story               : [include: ['testState', 'tags', 'dependences', 'countDoneTasks', 'project'],
+                                   exclude: ['voters', 'metaDatas'],
+                                   withIds: ['actors', 'followers'],
+                                   textile: ['notes'],
+                                   asShort: ['state', 'effort', 'uid', 'name', 'rank', 'project']],
+            comment             : [textile: ['body'], include: ['poster']],
+            project             : [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps', 'team', 'storyStateNames'],
+                                   exclude: ['cliches', 'teams', 'goal', 'metaDatas'],
+                                   textile: ['description']],
+            team                : [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
+            task                : [exclude: ['participants', 'spent', 'metaDatas'],
+                                   textile: ['notes'],
+                                   include: ['tags', 'sprint']],
+            user                : [exclude: ['password', 'accountExpired', 'accountLocked', 'passwordExpired', 'tokens', 'preferences'],
+                                   asShort: ['firstName', 'lastName'],
+                                   include: ['admin']],
+            actor               : [asShort: ['name']],
+            feature             : [include: ['countDoneStories', 'state', 'effort', 'tags', 'inProgressDate', 'doneDate', 'project'],
+                                   exclude: ['metaDatas'],
+                                   withIds: ['stories'],
+                                   textile: ['notes'],
+                                   asShort: ['color', 'name']],
+            sprint              : [include: ['activable', 'reactivable', 'totalRemaining', 'duration', 'index', 'plannedVelocity'],
+                                   exclude: ['cliches', 'metaDatas'],
+                                   withIds: ['stories'],
+                                   textile: ['retrospective', 'doneDefinition'],
+                                   asShort: ['state', 'capacity', 'velocity', 'orderNumber', 'parentReleaseId', 'hasNextSprint', 'reactivable', 'parentReleaseName', 'parentReleaseOrderNumber', 'deliveredVersion', 'index', 'plannedVelocity']],
+            release             : [include: ['duration', 'closable', 'activable', 'reactivable'],
+                                   textile: ['vision'],
+                                   asShort: ['name', 'state', 'endDate', 'startDate', 'orderNumber'],
+                                   exclude: ['cliches', 'metaDatas']
+            ],
+            backlog             : [include: ['count', 'isDefault'],
+                                   textile: ['notes']],
+            activity            : [include: ['important']],
+            widget              : [include: ['width', 'height'],
+                                   exclude: ['userPreferences']],
+            usertoken           : [:],
+            userpreferences     : [include: ['emailsSettings'],
+                                   exclude: ['user', 'menu', 'menuHidden', 'emailsSettingsData', 'widgets']],
+            projectpreferences  : [asShort: ['archived', 'noEstimation', 'autoDoneStory', 'displayRecurrentTasks', 'displayUrgentTasks', 'hidden', 'limitUrgentTasks', 'assignOnCreateTask',
+                                             'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
+            attachment          : [include: ['filename']],
+            acceptancetest      : [textile: ['description'], asShort: ['state']],
+            template            : [asShort: ['name']],
+            simpleprojectapp    : [include: ['availableForServer', 'enabledForServer'],
+                                   exclude: ['parentProject']],
+            timeboxnotestemplate: [include: ['configs'],
+                                   exclude: ['configsData']],
+            invitation          : [include: ['project', 'team', 'portfolio']]
+    ]
+
+    resourceBundles = [
+            featureTypes           : [
+                    (Feature.TYPE_FUNCTIONAL)   : 'is.feature.type.functional',
+                    (Feature.TYPE_ARCHITECTURAL): 'is.feature.type.architectural'
+            ],
+            featureStates          : [
+                    (Feature.STATE_WAIT): 'is.feature.state.wait',
+                    (Feature.STATE_BUSY): 'is.feature.state.inprogress',
+                    (Feature.STATE_DONE): 'is.feature.state.done'
+            ],
+            storyStates            : [
+                    (Story.STATE_FROZEN)    : 'is.story.state.frozen',
+                    (Story.STATE_SUGGESTED) : 'is.story.state.suggested',
+                    (Story.STATE_ACCEPTED)  : 'is.story.state.accepted',
+                    (Story.STATE_ESTIMATED) : 'is.story.state.estimated',
+                    (Story.STATE_PLANNED)   : 'is.story.state.planned',
+                    (Story.STATE_INPROGRESS): 'is.story.state.inprogress',
+                    (Story.STATE_INREVIEW)  : 'is.story.state.inReview',
+                    (Story.STATE_DONE)      : 'is.story.state.done'
+            ],
+            storyStatesColor       : [
+                    (Story.STATE_FROZEN)    : '#AAAAAA',
+                    (Story.STATE_SUGGESTED) : '#FFCC04',
+                    (Story.STATE_ACCEPTED)  : '#FF9933',
+                    (Story.STATE_ESTIMATED) : '#CC3300',
+                    (Story.STATE_PLANNED)   : '#A46BFF',
+                    (Story.STATE_INPROGRESS): '#42A9E0',
+                    (Story.STATE_INREVIEW)  : '#005769',
+                    (Story.STATE_DONE)      : '#009900'
+            ],
+            storyTypes             : [
+                    (Story.TYPE_USER_STORY)     : 'is.story.type.story',
+                    (Story.TYPE_DEFECT)         : 'is.story.type.defect',
+                    (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
+            ],
+            storyTypesColor        : [
+                    (Story.TYPE_USER_STORY)     : '#35aa47',
+                    (Story.TYPE_DEFECT)         : '#d84a38',
+                    (Story.TYPE_TECHNICAL_STORY): '#5bc0de'
+            ],
+            storyTypesCliche       : [
+                    (Story.TYPE_USER_STORY)     : Cliche.FUNCTIONAL_STORY_PROJECT_REMAINING_POINTS,
+                    (Story.TYPE_DEFECT)         : Cliche.DEFECT_STORY_PROJECT_REMAINING_POINTS,
+                    (Story.TYPE_TECHNICAL_STORY): Cliche.TECHNICAL_STORY_PROJECT_REMAINING_POINTS
+            ],
+            releaseStates          : [
+                    (Release.STATE_WAIT)      : 'is.release.state.wait',
+                    (Release.STATE_INPROGRESS): 'is.release.state.inprogress',
+                    (Release.STATE_DONE)      : 'is.release.state.done'
+            ],
+            sprintStates           : [
+                    (Sprint.STATE_WAIT)      : 'is.sprint.state.wait',
+                    (Sprint.STATE_INPROGRESS): 'is.sprint.state.inprogress',
+                    (Sprint.STATE_DONE)      : 'is.sprint.state.done'
+            ],
+            taskStates             : [
+                    (Task.STATE_WAIT): 'is.task.state.wait',
+                    (Task.STATE_BUSY): 'is.task.state.inprogress',
+                    (Task.STATE_DONE): 'is.task.state.done'
+            ],
+            taskTypes              : [
+                    (Task.TYPE_RECURRENT): 'is.task.type.recurrent',
+                    (Task.TYPE_URGENT)   : 'is.task.type.urgent'
+            ],
+            roles                  : [
+                    (Authority.MEMBER)              : 'is.role.teamMember',
+                    (Authority.SCRUMMASTER)         : 'is.role.scrumMaster',
+                    (Authority.PRODUCTOWNER)        : 'is.role.productOwner',
+                    (Authority.STAKEHOLDER)         : 'is.role.stakeHolder',
+                    (Authority.PO_AND_SM)           : 'is.role.poAndSm',
+                    (Authority.BUSINESSOWNER)       : 'is.role.businessOwner',
+                    (Authority.PORTFOLIOSTAKEHOLDER): 'is.role.portfolioStakeHolder'
+            ],
+            planningPokerGameSuites: [
+                    (PlanningPokerGame.FIBO_SUITE)   : 'is.estimationSuite.fibonacci',
+                    (PlanningPokerGame.INTEGER_SUITE): 'is.estimationSuite.integer',
+                    (PlanningPokerGame.CUSTOM_SUITE) : 'is.estimationSuite.custom',
+            ],
+            acceptanceTestStates   : [
+                    (AcceptanceTest.AcceptanceTestState.TOCHECK.id): 'is.acceptanceTest.state.tocheck',
+                    (AcceptanceTest.AcceptanceTestState.FAILED.id) : 'is.acceptanceTest.state.failed',
+                    (AcceptanceTest.AcceptanceTestState.SUCCESS.id): 'is.acceptanceTest.state.success'
+            ],
+            backlogChartTypes      : [
+                    'feature': 'is.feature',
+                    'type'   : 'is.story.type',
+                    'value'  : 'is.story.value',
+                    'state'  : 'is.story.state',
+                    'effort' : 'is.story.effort'
+            ]
+    ]
 }
+
+println "| Server Timezone: ${icescrum.timezone.default}"
+println "| Java version: ${System.getProperty('java.version')}"
+
+/* Headless mode */
+System.setProperty("java.awt.headless", "true");
+
+/*  Mail */
+/*grails.mail.host = "smtp.gmail.com"
+grails.mail.port = 465
+grails.mail.username = "username@gmail.com"
+grails.mail.password = ""
+grails.mail.props = ["mail.smtp.auth":"true",
+                     "mail.smtp.socketFactory.port":"465",
+                     "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+                     "mail.smtp.socketFactory.fallback":"false"]*/
+
+/* Assets */
+grails.assets.less.compile = 'less4j'
+grails.assets.excludes = ["**/*.less"]
+grails.assets.includes = ["styles.less"]
+grails.assets.plugin."commentable".excludes = ["**/*"]
+grails.assets.plugin."hd-image-utils".excludes = ["**/*"]
+grails.assets.enableGzip = true
 
 /*
  Attachmentable section
@@ -410,10 +462,6 @@ grails.cache.config = {
     }
 }
 
-icescrum.securitydebug.enable = false
-icescrum.pushdebug.enable = false
-//fix ilog dir due to lazy object initialization - init object
-icescrum.log.dir = null
 log4j = {
     def config = Holders.config
     def logLayoutPattern = new PatternLayout("%d [%t] %-5p %c %x - %m%n")
@@ -640,6 +688,7 @@ grails {
         }
     }
 }
+
 beans {
     cacheManager {
         shared = true
