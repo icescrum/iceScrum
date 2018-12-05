@@ -38,6 +38,13 @@ extensibleController('backlogDetailsCtrl', ['$scope', 'StoryService', 'BacklogSe
     });
 }]);
 
+extensibleController('backlogChartCtrl', ['$scope', '$controller', '$element', function($scope, $controller, $element) {
+    $controller('chartCtrl', {$scope: $scope, $element: $element});
+    $scope.$watchGroup(['backlog.chartType'], function(newValues) {
+        $scope.openChart('backlog', newValues[0], $scope.backlog);
+    }, true);
+}]);
+
 
 extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter', '$timeout', '$state', 'StoryService', 'BacklogService', 'BacklogCodes', 'StoryStatesByName', 'project', 'backlogs', function($controller, $scope, window, $filter, $timeout, $state, StoryService, BacklogService, BacklogCodes, StoryStatesByName, project, backlogs) {
     $controller('windowCtrl', {$scope: $scope, window: window}); // inherit from windowCtrl

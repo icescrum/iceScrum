@@ -29,7 +29,6 @@
                 <i class="fa fa-share-alt"
                    ng-if="backlog.shared && !backlog.isDefault"
                    defer-tooltip="${message(code: 'is.ui.backlog.share')}"></i>
-                <entry:point id="backlog-details-left-title"/>
             </div>
             <div class="right-title">
                 <entry:point id="backlog-details-right-title"/>
@@ -43,7 +42,8 @@
             <div ng-if="backlog.isDefault" ng-bind-html="backlog.notes_html"></div>
             <div ng-include="'story.table.multiple.sum.html'"></div>
         </div>
-        <div class="col-md-6 backlogCharts chart" ng-controller="chartCtrl" ng-init="openChart('backlog', backlog.chartType, backlog)">
+        <entry:point id="backlog-details-chart-before"/>
+        <div class="col-md-6 backlogCharts chart" ng-controller="backlogChartCtrl">
             <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
     </div>
