@@ -82,7 +82,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
             var chartWidgetOptions = _.merge($scope.getChartWidgetOptions(widget), {
                 chart: {
                     height: function($element) {
-                        return $element ? $element.find('.panel-body')[0].getBoundingClientRect().height : 0;
+                        return $element ? $element.find('.card-body')[0].getBoundingClientRect().height : 0;
                     },
                     margin: {top: 0, right: 0, bottom: 0, left: 0}
                 },

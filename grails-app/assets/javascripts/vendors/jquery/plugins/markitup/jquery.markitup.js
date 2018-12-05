@@ -148,7 +148,7 @@
                 var createButton = function(button, sub){
                     var title = (button.key) ? (button.name||'')+' [Ctrl+'+button.key+']' : (button.name||'');
                     var key   = (button.key) ? 'accesskey="'+button.key+'"' : '';
-                    var btn = $('<a data-toggle="tooltip" data-container="body" data-placement="bottom" class="'+( sub ? '' : 'btn btn-default btn-sm' )+' '+(button.className||'')+'" '+key+' title="'+title+'" '+(sub ? 'role="menuitem" tabindex="-1"' : 'type="button"')+'>'+(button.icon ? '<i class="'+button.icon+'"></i>' : button.name)+'</a>')
+                    var btn = $('<a data-toggle="tooltip" data-container="body" data-placement="bottom" class="'+( sub ? '' : 'btn btn-secondary btn-sm' )+' '+(button.className||'')+'" '+key+' title="'+title+'" '+(sub ? 'role="menuitem" tabindex="-1"' : 'type="button"')+'>'+(button.icon ? '<i class="'+button.icon+'"></i>' : button.name)+'</a>')
                     .bind("contextmenu", function() { // prevent contextmenu on mac and allow ctrl+click
                         return false;
                     }).click(function() {
@@ -169,7 +169,7 @@
 				$.each(markupSet, function() {
 					var button = this, btn;
                     if (button.dropMenu) {
-                        btn = $('<div class="btn-group btn-group-sm"><button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">'+(button.icon ? '<i class="'+button.icon+'"></i>' : '')+' <i class="fa fa-caret-down"></i></button></div>')
+                        btn = $('<div class="btn-group btn-group-sm"><button data-toggle="dropdown" class="btn btn-secondary dropdown-toggle" type="button">'+(button.icon ? '<i class="'+button.icon+'"></i>' : '')+'</button></div>')
                             .focusin(function(){
                                 $$.focus();
                             });

@@ -90,7 +90,7 @@ controllers.controller('widgetViewCtrl', ['$scope', '$uibModal', 'Session', 'Cac
         orderChanged: position,
         placeholderDisableComputeBounds: true,
         placeholder: function($scopeItem) {
-            var widget = $scopeItem.element.find('.panel')[0];
+            var widget = $scopeItem.element.find('.card')[0];
             var width = widget.getBoundingClientRect().width;
             var height = widget.getBoundingClientRect().height;
             return "<div style='height:" + height + "px;width:" + width + "px;'/>";

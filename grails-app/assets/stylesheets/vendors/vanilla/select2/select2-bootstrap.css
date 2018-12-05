@@ -349,11 +349,9 @@
  * may grown higher than their initial size.
  */
 .select2-bootstrap-append .select2-container-multiple,
-.select2-bootstrap-append .input-group-btn,
-.select2-bootstrap-append .input-group-btn .btn,
+.select2-bootstrap-append .input-group .btn,
 .select2-bootstrap-prepend .select2-container-multiple,
-.select2-bootstrap-prepend .input-group-btn,
-.select2-bootstrap-prepend .input-group-btn .btn {
+.select2-bootstrap-prepend .input-group .btn {
     vertical-align: top;
 }
 

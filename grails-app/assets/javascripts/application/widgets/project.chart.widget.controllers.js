@@ -78,7 +78,7 @@ controllers.controller('projectChartWidgetCtrl', ['$scope', 'ProjectService', 'R
             var chartWidgetOptions = _.merge($scope.getChartWidgetOptions(widget), {
                 chart: {
                     height: function($element) {
-                        return $element ? $element.find('.panel-body')[0].getBoundingClientRect().height : 0;
+                        return $element ? $element.find('.card-body')[0].getBoundingClientRect().height : 0;
                     }
                 },
                 title: {

@@ -890,7 +890,7 @@ var isApplication = angular.module('isApplication', [
         $rootScope.$state = $state; // To be able to track state in views
         $rootScope.sortableScrollOptions = function(scrollableContainerSelector) {
             return {
-                scrollableContainerSelector: scrollableContainerSelector ? scrollableContainerSelector : '.panel-body',
+                scrollableContainerSelector: scrollableContainerSelector ? scrollableContainerSelector : '.card-body',
                 dragStart: function() {
                     $rootScope.application.sortableMoving = true;
                 },

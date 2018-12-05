@@ -130,12 +130,12 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                             };
                             childScope.input = input;
                             container.addClass('has-error');
-                            var template = '<div class="help-block bg-danger spaced-help-block"><span ng-repeat="errorMessage in errorMessages(inputModel.$error)">{{ errorMessage }}</span></div>';
+                            var template = '<div class="form-text bg-danger spaced-form-text"><span ng-repeat="errorMessage in errorMessages(inputModel.$error)">{{ errorMessage }}</span></div>';
                             var compiledTemplate = angular.element($compile(template)(childScope));
                             container.append(compiledTemplate);
                         } else if (!newIsInvalid && oldIsInvalid) {
                             container.removeClass('has-error');
-                            container.find('.help-block').remove();
+                            container.find('.form-text').remove();
                         }
                     });
                 });
@@ -423,7 +423,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                 var _releases = scope.timeline;
                 if (!scope.timeline || !scope.timeline.length) return;
                 rootSvg.attr("width", element.width());
-                var elementWidth = element.width(); // WARNING: element.width must be recomputed after rootSvg.attr("width", ...) because it changes if the right panel has lateral padding (e.g. with .new form which has .panel-body padding)
+                var elementWidth = element.width(); // WARNING: element.width must be recomputed after rootSvg.attr("width", ...) because it changes if the right panel has lateral padding (e.g. with .new form which has .card-body padding)
                 var width = elementWidth - margin.left - margin.right;
                 x.domain([_.head(_releases).startDate, _.last(_releases).endDate]).range([0, width]);
                 xAxis.scale(x);
@@ -639,7 +639,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             if (scope.unavailableFeature) {
                 element.on('click', function() {
                     $uibModal.open({
-                        template: '<div class="modal-header"><h4 class="modal-title">Feature Coming Soon</h4></div><div class="modal-body">This feature is still in development, it will be available soon!</div><div class="modal-footer"><button type="button" class="btn btn-default" ng-click="$close()">Close</button></div>',
+                        template: '<div class="modal-header"><h4 class="modal-title">Feature Coming Soon</h4></div><div class="modal-body">This feature is still in development, it will be available soon!</div><div class="modal-footer"><button type="button" class="btn btn-secondary" ng-click="$close()">Close</button></div>',
                         size: 'sm'
                     });
                     return false;
@@ -656,7 +656,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
         link: function(scope, element) {
             // Scroll to selection on refresh
             element.scope().$on('selectable-refresh', function() {
-                var scrollableContainerSelector = '.panel-body';
+                var scrollableContainerSelector = '.card-body';
                 element.find(scrollableContainerSelector).addBack(scrollableContainerSelector).each(function(i, container) {
                     container = $(container);
                     var selectedElements = container.find('.is-selected');
@@ -671,7 +671,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                         });
                         if (!anySelectedVisible) {
                             var firstSelected = selectedElements.first();
-                            var offset = 45; // Hardcoded offset to compensate panel-heading & margin, TODO use dynamic offset
+                            var offset = 45; // Hardcoded offset to compensate card-header & margin, TODO use dynamic offset
                             var currentScroll = container.scrollTop(); // current scroll reduces the firstSelected top position, we must add it back to get the initial position
                             var scrollTop = firstSelected.position().top - offset + currentScroll;
                             // Rely on jquery animate :/

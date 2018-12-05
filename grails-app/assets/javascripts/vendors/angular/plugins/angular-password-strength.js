@@ -181,7 +181,7 @@ angular.module('ngPasswordStrength', [
                     return 'verystrong'
                 }
             };
-            var template = '<div id="pass-strength-result" class="help-block {{class}}">{{ label }}</div>';
+            var template = '<div id="pass-strength-result" class="form-text {{class}}">{{ label }}</div>';
             scope.$watch('pwd', function() {
                 if (!ngModel.$pristine) {
                     scope.value = mesureStrength(scope.pwd);

@@ -307,7 +307,7 @@ controllers.controller('chartWidgetCtrl', ['$scope', 'WidgetService', 'FormServi
         var chartWidgetOptions = {
             chart: {
                 height: function($element) {
-                    return $element ? $element.parents('.panel-body')[0].getBoundingClientRect().height : 0;
+                    return $element ? $element.parents('.card-body')[0].getBoundingClientRect().height : 0;
                 }
             },
             title: {
