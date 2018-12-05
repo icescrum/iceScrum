@@ -1,6 +1,3 @@
-import liquibase.statement.core.RawSqlStatement
-import org.icescrum.core.domain.*
-
 /*
 * Copyright (c) 2018 Kagilum SAS
 *
