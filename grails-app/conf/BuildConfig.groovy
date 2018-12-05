@@ -91,9 +91,9 @@ grails.project.dependency.resolution = {
     }
     plugins {
         compile ':cache-headers:1.1.7'
-        compile ':asset-pipeline:2.11.0'
-        compile ':less-asset-pipeline:2.11.0'
-        compile ':browser-detection:2.8.0'
+        compile ':asset-pipeline:2.14.1.1'
+        compile ':less-asset-pipeline:2.14.1'
+        compile ':browser-detection:2.9.0'
         runtime ':hibernate4:4.3.10'
         runtime 'org.grails.plugins:database-migration:1.4.1'
         build ':tomcat:7.0.70'
