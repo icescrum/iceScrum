@@ -61,10 +61,10 @@ icescrum {
     try {
         String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.timezone.default")
         if (extConfFile) {
-            icescrum.timezone.default = extConfFile;
+            timezone.default = extConfFile
         }
     } catch (Exception e) {
-        icescrum.timezone.default = System.getProperty('user.timezone') ?: 'UTC'
+        timezone.default = System.getProperty('user.timezone') ?: 'UTC'
     }
 
     /* Push */
@@ -74,7 +74,7 @@ icescrum {
     try {
         String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.basedir")
         if (extConfFile) {
-            baseDir = extConfFile;
+            baseDir = extConfFile
         }
     } catch (Exception e) {
         baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
@@ -120,10 +120,8 @@ icescrum {
 
     /* Project administration */
     project {
-
         export.enable = true
         creation.enable = true
-
     }
     project.import.enable = true
     project.private.enable = true
@@ -348,7 +346,7 @@ println "| Server Timezone: ${icescrum.timezone.default}"
 println "| Java version: ${System.getProperty('java.version')}"
 
 /* Headless mode */
-System.setProperty("java.awt.headless", "true");
+System.setProperty("java.awt.headless", "true")
 
 /*  Mail */
 /*grails.mail.host = "smtp.gmail.com"
@@ -529,10 +527,10 @@ log4j = {
         try {
             String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.log.dir")
             if (extConfFile) {
-                config.icescrum.log.dir = extConfFile;
+                config.icescrum.log.dir = extConfFile
             }
         } catch (Exception e) {
-            config.icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: config.icescrum.log.dir ?: new File('logs').absolutePath;
+            config.icescrum.log.dir = System.getProperty('icescrum.log.dir') ?: config.icescrum.log.dir ?: new File('logs').absolutePath
         }
         //fix log dir due to lazy object initialization - save object to get it in bootStrapService
         System.setProperty('save.icescrum.log.dir', config.icescrum.log.dir)
