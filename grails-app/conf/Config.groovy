@@ -46,7 +46,6 @@ icescrum {
     user.search.enable = true
     gravatar.enable = true
 
-    /* Alerts */
     alerts {
         subject_prefix = "[icescrum]"
         enable = false
@@ -57,7 +56,6 @@ icescrum {
 
     sessionTimeoutSeconds = 1 * 60 * 30 //30 minutes default // TODO may not work on Tomcat 8.5, see maxInactiveInterval in https://tomcat.apache.org/migration-85.html
 
-    /* Server TimeZone */
     try {
         String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.timezone.default")
         if (extConfFile) {
@@ -67,10 +65,8 @@ icescrum {
         timezone.default = System.getProperty('user.timezone') ?: 'UTC'
     }
 
-    /* Push */
     push.enable = true
 
-    /* iceScrum base dir */
     try {
         String extConfFile = (String) new InitialContext().lookup("java:comp/env/icescrum.basedir")
         if (extConfFile) {
@@ -80,24 +76,17 @@ icescrum {
         baseDir = new File(System.getProperty('user.home'), appName).canonicalPath
     }
 
-    /* Autofollowing */
     auto_follow_productowner = true
     auto_follow_stakeholder = true
     auto_follow_scrummaster = true
 
-    activities {
-        important = [Activity.CODE_SAVE, 'updateState']
-    }
+    activities.important = [Activity.CODE_SAVE, 'updateState']
 
-    /* CORS */
     cors {
         enable = true
-        url {
-            pattern = '/ws/*'
-        }
+        url.pattern = '/ws/*'
     }
 
-    /* Check for update */
     check {
         enable = true
         url = 'https://www.icescrum.com'
@@ -106,7 +95,6 @@ icescrum {
         timeout = 5000
     }
 
-    /* Report data to improve IS */
     reportUsage {
         enable = true
         url = 'https://www.icescrum.com'
@@ -134,9 +122,7 @@ icescrum {
     }
     portfolio.import.enable = false
 
-    /* Workspaces */
     workspaces {
-        /* Project workspace */
         project {
             path = 'p'
             icon = 'folder'
@@ -156,7 +142,6 @@ icescrum {
                 return true
             }
             enabled = { application -> true }
-            /* registered project hooks */
             hooks = [
                     "feature.create", "feature.update", "feature.delete",
                     "story.create", "story.update", "story.delete",
@@ -169,13 +154,11 @@ icescrum {
         }
     }
 
-    /* registered hooks */
     hooks = [
             "user.create", "user.update", "user.delete",
             "project.create", "project.update", "project.delete"
     ]
 
-    /*atmosphere config */
     atmosphere {
         maxUsers = []
         liveUsers = []
@@ -183,15 +166,9 @@ icescrum {
         liveConnections = 0
     }
 
-    securitydebug {
-        enable = false
-    }
-    pushdebug {
-        enable = false
-    }
-    log {
-        dir = null
-    }
+    securitydebug.enable = false
+    pushdebug.enable = false
+    log.dir = null // Fix ilog dir due to lazy object initialization - init object
 
     marshaller = [
             portfolio           : [include: ['businessOwners', 'stakeHolders', 'invitedBusinessOwners', 'invitedStakeHolders'],
@@ -672,8 +649,7 @@ grails {
             }
         }
     }
-
-    //to improve perf
+    // To improve perf
     gorm.default.mapping = {
         dynamicUpdate true
     }
