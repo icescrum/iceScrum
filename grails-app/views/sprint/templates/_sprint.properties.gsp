@@ -25,7 +25,7 @@
       ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
       show-validation
       novalidate>
-    <div class="panel-body">
+    <div class="card-body">
         <div class="clearfix no-padding">
             <div class="form-half">
                 <label for="sprint.startDate">${message(code: 'is.sprint.startDate')}</label>
@@ -41,10 +41,10 @@
                            uib-datepicker-popup
                            datepicker-options="startDateOptions"
                            is-open="startDateOptions.opened"/>
-                    <span class="input-group-btn"
+                    <span class="input-group-after"
                           ng-if="authorizedSprint('updateStartDate', sprint)">
                         <button type="button"
-                                class="btn btn-default"
+                                class="btn btn-secondary"
                                 ng-focus="editForm(true)"
                                 ng-click="openDatepicker($event, startDateOptions)">
                             <i class="fa fa-calendar"></i>
@@ -66,10 +66,10 @@
                            uib-datepicker-popup
                            datepicker-options="endDateOptions"
                            is-open="endDateOptions.opened"/>
-                    <span class="input-group-btn"
+                    <span class="input-group-after"
                           ng-if="authorizedSprint('updateEndDate', sprint)">
                         <button type="button"
-                                class="btn btn-default"
+                                class="btn btn-secondary"
                                 ng-focus="editForm(true)"
                                 ng-click="openDatepicker($event, endDateOptions)">
                             <i class="fa fa-calendar"></i>
@@ -79,7 +79,7 @@
             </div>
         </div>
         <div ng-if="project.portfolio && (formHolder.sprintForm.startDate.$dirty || formHolder.sprintForm.endDate.$dirty)"
-             class="help-block bg-warning spaced-help-block">
+             class="form-text bg-warning spaced-form-text">
             ${message(code: 'is.ui.portfolio.warning.dates')}
         </div>
         <div is-watch="sprint" is-watch-property="['doneDate','endDate']">
@@ -90,21 +90,21 @@
                      ng-controller="projectChartCtrl"
                      class="pull-right">
                     <div class="btn-group visible-on-hover">
-                        <button class="btn btn-default btn-sm"
+                        <button class="btn btn-secondary btn-sm"
                                 ng-click="openChartInModal(chartParams)"
                                 type="button">
                             <i class="fa fa-search-plus"></i>
                         </button>
-                        <button class="btn btn-default btn-sm"
+                        <button class="btn btn-secondary btn-sm"
                                 ng-click="saveChart(chartParams)"
                                 type="button">
                             <i class="fa fa-floppy-o"></i>
                         </button>
                     </div>
-                    <button class="btn btn-default btn-sm"
+                    <button class="btn btn-secondary btn-sm"
                             type="button"
                             uib-dropdown-toggle>
-                        <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i></span>
+                        <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i></span>
                     </button>
                     <ul uib-dropdown-menu>
                         <li ng-repeat="chart in projectCharts.sprint"><a href ng-click="openChart('sprint', chart.id, sprint)">{{ message(chart.name) }}</a></li>
@@ -179,7 +179,7 @@
             <div ng-if="authorizedSprint('upload', sprint)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"
-                        class="btn btn-default"
+                        class="btn btn-secondary"
                         flow-btn>
                     <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
                 </button>
@@ -189,7 +189,7 @@
             </div>
         </div>
     </div>
-    <div class="panel-footer" ng-if="isModal || formHolder.editing">
+    <div class="card-footer" ng-if="isModal || formHolder.editing">
         <div class="btn-toolbar" ng-class="[{ 'text-right' : isModal }]">
             <button class="btn btn-primary"
                     ng-if="formHolder.editing && (isLatest() || application.submitting)"
@@ -203,7 +203,7 @@
                     type="submit">
                 ${message(code: 'default.button.override.label')}
             </button>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     type="button"
                     ng-if="(!isModal && formHolder.editing) || (isModal && isDirty())"
                     ng-click="editForm(false)">
@@ -215,7 +215,7 @@
                     ng-click="resetSprintForm()">
                 <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     type="button"
                     ng-if="isModal && !isDirty()"
                     ng-click="$close()">

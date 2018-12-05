@@ -70,7 +70,7 @@
                                      src="${asset.assetPath(src: 'avatars/admin-ico.png')}"/>
                                 <div class="choose-file">
                                     <span ng-class="{'hide': editableUser.avatar == 'custom' }"
-                                          flow-btn class="btn btn-default"><i class="fa fa-photo"></i></span>
+                                          flow-btn class="btn btn-secondary"><i class="fa fa-photo"></i></span>
                                     <img flow-btn
                                          ng-class="{'selected': editableUser.avatar == 'custom', 'hide': editableUser.avatar != 'custom' }"
                                          flow-img="$flow.files[0] ? $flow.files[0] : null"/>
@@ -171,14 +171,14 @@
                                class="form-control"
                                placeholder="${message(code: 'is.user.token.name.placeholder')}"
                                ng-model="editableUserToken.name">
-                        <span class="input-group-btn">
+                        <span class="input-group-after">
                             <button type="button" ng-click="save()" ng-disabled="!editableUserToken.name" class="btn btn-primary">
                                 ${message(code: 'is.ui.token.generate')}
                             </button>
                         </span>
                     </div>
                 </div>
-                <div class="help-block">
+                <div class="form-text">
                     ${message(code: 'is.dialog.profile.tokensSettings.description')}
                 </div>
                 <table class="table table-bordered table-striped" ng-if="user.tokens_count > 0">

@@ -25,7 +25,7 @@
       ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
       show-validation
       novalidate>
-    <div class="panel-body">
+    <div class="card-body">
         <div class="form-group">
             <label for="name">${message(code: 'is.feature.name')}</label>
             <div class="input-group">
@@ -37,7 +37,7 @@
                        ng-model="editableFeature.name"
                        type="text"
                        class="form-control">
-                <span class="input-group-btn" ng-if="formEditable()">
+                <span class="input-group-after" ng-if="formEditable()">
                     <button colorpicker
                             class="btn {{ editableFeature.color | contrastColor }}"
                             type="button"
@@ -132,7 +132,7 @@
             <div ng-if="authorizedFeature('upload', feature)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"
-                        class="btn btn-default"
+                        class="btn btn-secondary"
                         flow-btn>
                     <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
                 </button>
@@ -142,7 +142,7 @@
             </div>
         </div>
     </div>
-    <div class="panel-footer" ng-if="isModal || formHolder.editing">
+    <div class="card-footer" ng-if="isModal || formHolder.editing">
         <div class="btn-toolbar">
             <button class="btn btn-primary"
                     ng-if="formHolder.editing && (isLatest() || application.submitting)"
@@ -156,7 +156,7 @@
                     type="submit">
                 ${message(code: 'default.button.override.label')}
             </button>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     type="button"
                     ng-if="(!isModal && formHolder.editing) || (isModal && isDirty())"
                     ng-click="editForm(false)">
@@ -168,7 +168,7 @@
                     ng-click="resetFeatureForm()">
                 <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     type="button"
                     ng-if="isModal && !isDirty()"
                     ng-click="$close()">

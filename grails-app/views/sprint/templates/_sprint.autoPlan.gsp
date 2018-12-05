@@ -26,7 +26,7 @@
           submitButton="${message(code: 'is.dialog.promptAutoPlan.button')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'is.dialog.promptAutoPlan.title')}">
-    <p class="help-block">
+    <p class="form-text">
         ${message(code: 'is.dialog.promptAutoPlan.description')}
     </p>
     <div class="form-group">

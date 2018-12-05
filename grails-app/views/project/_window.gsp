@@ -23,16 +23,16 @@
 <is:window windowDefinition="${windowDefinition}" classes="widget-dashboard">
     <div class="row">
         <div class="widget-column">
-            <div class="panel-container">
-                <div class="panel panel-light">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i tooltip-placement="right"
                                defer-tooltip="${message(code: 'is.ui.project.public')}"
                                ng-if="!project.preferences.hidden"
                                ng-click="authorizedProject('edit') && showProjectEditModal()"
                                class="fa fa-eye"></i>&nbsp;<i class="fa fa-folder"></i>&nbsp;{{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
-                            <button class="btn btn-default btn-sm pull-right visible-on-hover"
+                            <button class="btn btn-secondary btn-sm pull-right visible-on-hover"
                                     ng-if="authorizedProject('update', project)"
                                     ng-click="showProjectEditModal()"
                                     type="button">
@@ -40,7 +40,7 @@
                             </button>
                         </h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="rich-content" ng-bind-html="project.description_html ? project.description_html : '<p>' + message('todo.is.ui.project.nodescription') + '</p>'"></div>
@@ -87,77 +87,77 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-container">
-                <div class="panel panel-light">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i class="fa fa-picture-o"></i> <g:message code="is.ui.project.vision.title"/>
-                            <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                            <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                                href="#/planning/{{ release.id }}/details"
                                ng-if="release.id && authorizedRelease('update', release)">
                                 <i class="fa fa-pencil"></i>
                             </a>
                         </h3>
                     </div>
-                    <div class="panel-body rich-content"
+                    <div class="card-body rich-content"
                          ng-bind-html="release.vision_html ? release.vision_html : '<p>${message(code: 'todo.is.ui.release.novision')}</p>'">
                     </div>
                 </div>
             </div>
-            <div class="panel-container">
-                <div class="panel panel-light">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i class="fa fa-check-square-o"></i> <g:message code="is.ui.project.doneDefinition.title"/>
-                            <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                            <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                                href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
                                ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
                                 <i class="fa fa-pencil"></i>
                             </a>
                         </h3>
                     </div>
-                    <div class="panel-body rich-content"
+                    <div class="card-body rich-content"
                          ng-bind-html="currentOrNextSprint.doneDefinition_html ? currentOrNextSprint.doneDefinition_html : '<p>${message(code: 'todo.is.ui.sprint.nodonedefinition')}</p>'">
                     </div>
                 </div>
             </div>
-            <div class="panel-container">
-                <div class="panel panel-light">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i class="fa fa-repeat"></i> <g:message code="is.ui.project.retrospective.title"/>
-                            <a class="btn btn-default btn-sm pull-right visible-on-hover"
+                            <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                                href="#/taskBoard/{{ lastSprint.id }}/details"
                                ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
                                 <i class="fa fa-pencil"></i>
                             </a>
                         </h3>
                     </div>
-                    <div class="panel-body rich-content"
+                    <div class="card-body rich-content"
                          ng-bind-html="lastSprint.retrospective_html ? lastSprint.retrospective_html : '<p>${message(code: 'todo.is.ui.sprint.noretrospective')}</p>'">
                     </div>
                 </div>
             </div>
-            <div class="panel-container">
-                <div class="panel panel-light"
+            <div class="card-container">
+                <div class="card"
                      flow-init
                      flow-drop
                      flow-files-submitted="attachmentQuery($flow, project)"
                      flow-drop-enabled="authorizedProject('upload', project)"
-                     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
-                     flow-drag-leave="dropClass='panel panel-light'"
+                     flow-drag-enter="dropClass='card drop-enabled'"
+                     flow-drag-leave="dropClass='card'"
                      ng-class="authorizedProject('upload', project) && dropClass">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i class="fa fa-file"></i> <g:message code="is.ui.project.attachment.title"/>
                         </h3>
                     </div>
-                    <div class="panel-body" style="padding-bottom:0">
+                    <div class="card-body" style="padding-bottom:0">
                         <div ng-if="authorizedProject('upload', project)"
                              style="position:relative"
                              ng-controller="attachmentNestedCtrl">
                             <button type="button"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     flow-btn>
                                 <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
                             </button>
@@ -172,37 +172,37 @@
             </div>
         </div>
         <div class="widget-column">
-            <div class="panel-container">
-                <div class="panel panel-light" ng-controller="chartCtrl">
-                    <div class="panel-heading" ng-controller="projectChartCtrl">
-                        <h3 class="panel-title">
+            <div class="card-container">
+                <div class="card" ng-controller="chartCtrl">
+                    <div class="card-header" ng-controller="projectChartCtrl">
+                        <h3 class="card-title">
                             <i class="fa fa-area-chart"></i> ${message(code: 'is.ui.project.chart.title')}
                             <div class="btn-toolbar pull-right visible-on-hover"
                                  uib-dropdown>
                                 <div class="btn-group">
-                                    <button class="btn btn-default btn-sm"
+                                    <button class="btn btn-secondary btn-sm"
                                             ng-click="openChartInModal(chartParams)"
                                             type="button">
                                         <i class="fa fa-search-plus"></i>
                                     </button>
-                                    <button class="btn btn-default btn-sm"
+                                    <button class="btn btn-secondary btn-sm"
                                             ng-click="saveChart(chartParams)"
                                             type="button">
                                         <i class="fa fa-floppy-o"></i>
                                     </button>
                                 </div>
-                                <button class="btn btn-default btn-sm"
+                                <button class="btn btn-secondary btn-sm"
                                         type="button"
                                         uib-dropdown-toggle>
-                                    <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i></span>
+                                    <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i></span>
                                 </button>
                                 <ul uib-dropdown-menu>
                                     <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>
                                     <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
-                                    <li ng-if="release.id" class="divider"></li>
+                                    <li ng-if="release.id" class="dropdown-divider"></li>
                                     <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
                                     <li ng-if="release.id" ng-repeat="chart in projectCharts.release"><a href ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
-                                    <li ng-if="currentOrLastSprint.id" class="divider"></li>
+                                    <li ng-if="currentOrLastSprint.id" class="dropdown-divider"></li>
                                     <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
                                     <li ng-if="currentOrLastSprint.id" ng-repeat="chart in projectCharts.sprint"><a href
                                                                                                                     ng-click="openChartAndSaveSetting('sprint', chart.id, currentOrLastSprint , project, 'project', 'chart')">{{ message(chart.name) }}</a>
@@ -211,7 +211,7 @@
                             </div>
                         </h3>
                     </div>
-                    <div class="panel-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item)">
+                    <div class="card-body" ng-if="userChart.item" ng-init="openChart(userChart.itemType, userChart.chartName, userChart.item)">
                         <nvd3 options="options" data="data" config="{refreshDataOnly: false}"></nvd3>
                     </div>
                     <div class="text-right"
@@ -221,10 +221,10 @@
                 </div>
             </div>
             <entry:point id="project-dashboard-top-right"/>
-            <div class="panel-container">
-                <div class="panel panel-light">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
                             <i class="fa fa-clock-o"></i> <g:message code="todo.is.ui.history"/>
                             <small class="pull-right">
                                 <a class="rss"
@@ -235,7 +235,7 @@
                             </small>
                         </h3>
                     </div>
-                    <div class="panel-body activities panel-light">
+                    <div class="card-body activities">
                         <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore">
                             <div class="activity">
                                 <div class="media-left">

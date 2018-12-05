@@ -22,16 +22,16 @@
 - Colin Bontemps (cbontemps@kagilum.com)
 --}%
 <script type="text/ng-template" id="release.details.html">
-<div class="panel panel-light"
+<div class="card"
      flow-init
      flow-drop
      flow-files-submitted="attachmentQuery($flow, release)"
      flow-drop-enabled="authorizedRelease('upload', release)"
-     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
-     flow-drag-leave="dropClass='panel panel-light'"
+     flow-drag-enter="dropClass='card drop-enabled'"
+     flow-drag-leave="dropClass='card'"
      ng-class="authorizedRelease('upload', release) && dropClass">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 <i class="fa fa-calendar"></i>
                 <span class="item-name" title="{{ release.name }}">{{ release.name }}</span>
@@ -42,7 +42,7 @@
                     <entry:point id="release-details-right-title"/>
                     <div class="btn-group">
                         <a ng-if="previousRelease"
-                           class="btn btn-default"
+                           class="btn btn-secondary"
                            role="button"
                            tabindex="0"
                            hotkey="{'left': hotkeyClick}"
@@ -52,7 +52,7 @@
                             <i class="fa fa-caret-left"></i>
                         </a>
                         <a ng-if="nextRelease"
-                           class="btn btn-default"
+                           class="btn btn-secondary"
                            role="button"
                            tabindex="0"
                            hotkey="{'right': hotkeyClick}"
@@ -67,9 +67,9 @@
                 <g:set var="formats" value="${is.exportFormats(entryPoint: 'releaseDetails')}"/>
                 <g:if test="${formats}">
                     <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
-                        <button class="btn btn-default"
+                        <button class="btn btn-secondary"
                                 uib-dropdown-toggle type="button">
-                            <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i>&nbsp;<i class="fa fa-caret-down"></i></span>
+                            <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
                         </button>
                         <ul uib-dropdown-menu
                             class="pull-right"
@@ -86,8 +86,7 @@
                 <div class="btn-group shortcut-menu" role="group">
                     <shortcut-menu ng-model="release" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
-                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i ng-class="['fa', application.minimizedDetailsView ? 'fa-caret-up' : 'fa-caret-down']"></i>
+                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
                     </div>

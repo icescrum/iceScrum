@@ -20,7 +20,7 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 --}%
 <script type="text/ng-template" id="activity.list.html">
-<div class="activities panel-body" ng-controller="activityCtrl">
+<div class="activities card-body" ng-controller="activityCtrl">
     <div ng-repeat="groupedActivity in groupedActivities">
         <div class="activity">
             <div class="media-left">
@@ -55,12 +55,12 @@
          ng-switch="allActivities"
          class="text-center">
         <button ng-switch-default
-                class="btn btn-default"
+                class="btn btn-secondary"
                 ng-click="activities(selected, true)">
             <i class="fa fa-plus-square"></i> ${message(code: 'todo.is.ui.history.more')}
         </button>
         <button ng-switch-when="true"
-                class="btn btn-default"
+                class="btn btn-secondary"
                 ng-click="activities(selected, false)">
             <i class="fa fa-minus-square"></i> ${message(code: 'todo.is.ui.history.less')}
         </button>

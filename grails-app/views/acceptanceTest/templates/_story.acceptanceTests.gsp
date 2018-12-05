@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.acceptanceTests.html">
-<div class="acceptanceTests panel-body" ng-controller="acceptanceTestListCtrl">
+<div class="acceptanceTests card-body" ng-controller="acceptanceTestListCtrl">
     <entry:point id="acceptanceTests-before-list"/>
     <table class="table"
            is-disabled="!isAcceptanceTestSortable()"
@@ -37,9 +37,11 @@
                     <div class="clearfix no-padding form-group">
                         <div class="col-sm-7">
                             <div class="input-group">
-                                <span class="input-group-addon no-style">
+                                <span class="input-group-before">
+                                    <span class="input-group-text no-style">
                                     <i class="fa fa-drag-handle" ng-if="authorizedAcceptanceTest('rank', selected)" as-sortable-item-handle></i>
                                     <strong>{{:: editableAcceptanceTest.uid }}</strong>
+                                </span>
                                 </span>
                                 <input required
                                        ng-maxlength="255"
@@ -69,8 +71,8 @@
                         </div>
                         <div class="col-sm-1 text-right">
                             <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
-                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-h"></i>
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right">
                                     <li>
@@ -108,7 +110,7 @@
                                 type="submit">
                             ${message(code: 'default.button.update.label')}
                         </button>
-                        <button class="btn btn-default pull-right"
+                        <button class="btn btn-secondary pull-right"
                                 ng-click="resetAcceptanceTestForm()"
                                 type="button">
                             ${message(code: 'is.button.cancel')}
@@ -120,7 +122,7 @@
         </tr>
         <tr ng-show="selected.acceptanceTests !== undefined && !selected.acceptanceTests.length">
             <td class="empty-content">
-                <div class="help-block">
+                <div class="form-text">
                     ${message(code: 'is.ui.acceptanceTest.help')}
                     <documentation doc-url="features-stories-tasks#acceptancetests"/>
                 </div>
@@ -128,7 +130,7 @@
         </tr>
     </table>
 </div>
-<div class="panel-footer" ng-controller="acceptanceTestCtrl">
+<div class="card-footer" ng-controller="acceptanceTestCtrl">
     <div ng-if="authorizedAcceptanceTest('create', selected)" ng-include="'story.acceptanceTest.editor.html'"></div>
 </div>
 </script>

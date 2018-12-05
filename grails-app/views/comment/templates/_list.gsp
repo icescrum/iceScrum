@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="comment.list.html">
-<div class="comments panel-body">
+<div class="comments card-body">
     <table class="table">
         <tr ng-repeat="comment in selected.comments | orderBy:'dateCreated'" ng-controller="commentCtrl">
             <td class="content">
@@ -47,8 +47,8 @@
                                 </time> <i class="fa fa-clock-o"></i> <span ng-show="comment.dateCreated != comment.lastUpdated">(${message(code: 'todo.is.ui.comment.edited')})</span>&nbsp;
                             </span>
                             <div class="btn-group btn-group-sm" ng-show="formDeletable() || formEditable()" uib-dropdown>
-                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-ellipsis-h"></i> <i class="fa fa-caret-down"></i>
+                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+                                    <i class="fa fa-ellipsis-h"></i>
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right">
                                     <li>
@@ -86,7 +86,7 @@
                                 type="submit">
                             ${message(code: 'default.button.update.label')}
                         </button>
-                        <button class="btn btn-default pull-right"
+                        <button class="btn btn-secondary pull-right"
                                 ng-click="resetCommentForm()"
                                 type="button">
                             ${message(code: 'is.button.cancel')}
@@ -103,7 +103,7 @@
         </tr>
     </table>
 </div>
-<div class="panel-footer" ng-controller="commentCtrl">
+<div class="card-footer" ng-controller="commentCtrl">
     <div ng-include="'comment.editor.html'"></div>
 </div>
 </script>

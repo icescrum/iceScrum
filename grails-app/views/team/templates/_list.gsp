@@ -23,7 +23,7 @@
 <script type="text/ng-template" id="wizard.members.list.html">
 <tr>
     <td>
-        <a class="btn btn-danger btn-xs btn-model"
+        <a class="btn btn-danger btn-sm btn-model"
            ng-model="foo" %{-- Hack to make form dirty --}%
            ng-click="removeTeamMember(member)"
            ng-show="teamMembersEditable(team)">

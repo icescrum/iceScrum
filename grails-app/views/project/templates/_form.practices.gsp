@@ -25,7 +25,7 @@
 <h5>${message(code: "is.dialog.wizard.section.practices.backlog")}</h5>
 <div class="row">
     <div class="form-group" ng-class="project.preferences.noEstimation ? 'col-sm-12' : 'col-sm-6'">
-        <label for="noEstimation" class="checkbox-inline">
+        <label for="noEstimation">
             <input type="checkbox"
                    name="project.preferences.noEstimation"
                    id="noEstimation"
@@ -47,7 +47,7 @@
 <h5>${message(code: "is.dialog.wizard.section.practices.sprint")}</h5>
 <div class="row">
     <div class="form-half">
-        <label for="autoDoneStory" class="checkbox-inline">
+        <label for="autoDoneStory">
             <input type="checkbox"
                    name="project.preferences.autoDoneStory"
                    id="autoDoneStory"
@@ -56,7 +56,7 @@
         </label>
     </div>
     <div class="form-half">
-        <label for="autoCreateTaskOnEmptyStory" class="checkbox-inline">
+        <label for="autoCreateTaskOnEmptyStory">
             <input type="checkbox"
                    name="project.preferences.autoCreateTaskOnEmptyStory"
                    id="autoCreateTaskOnEmptyStory"
@@ -65,7 +65,7 @@
         </label>
     </div>
     <div class="form-half">
-        <label for="assignOnCreateTask" class="checkbox-inline">
+        <label for="assignOnCreateTask">
             <input type="checkbox"
                    name="project.preferences.assignOnCreateTask"
                    id="assignOnCreateTask"
@@ -74,7 +74,7 @@
         </label>
     </div>
     <div class="form-half">
-        <label for="assignOnBeginTask" class="checkbox-inline">
+        <label for="assignOnBeginTask">
             <input type="checkbox"
                    name="project.preferences.assignOnBeginTask"
                    id="assignOnBeginTask"
@@ -83,7 +83,7 @@
         </label>
     </div>
     <div class="form-half">
-        <label for="displayRecurrentTasks" class="checkbox-inline">
+        <label for="displayRecurrentTasks">
             <input type="checkbox"
                    name="project.preferences.displayRecurrentTasks"
                    id="displayRecurrentTasks"
@@ -94,7 +94,7 @@
 </div>
 <div class="row">
     <div class="form-group" ng-class="project.preferences.displayUrgentTasks ? 'col-sm-6' : 'col-sm-12'">
-        <label for="displayUrgentTasks" class="checkbox-inline">
+        <label for="displayUrgentTasks">
             <input type="checkbox"
                    name="project.preferences.displayUrgentTasks"
                    id="displayUrgentTasks"

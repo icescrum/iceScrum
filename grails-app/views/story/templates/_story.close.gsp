@@ -25,7 +25,7 @@
 <is:modal button="[[action: 'closeSprint()', text: message(code: 'todo.is.ui.story.selector.close.button'), color: 'danger']]"
           closeButton="${message(code: 'is.button.cancel')}"
           title="{{ message('todo.is.ui.story.selector.close.title') }}">
-    <p class="help-block"
+    <p class="form-text"
        ng-bind-html="message('todo.is.ui.story.selector.close.description', [(storyStatesByName.DONE | i18n: 'StoryStates')])">
     </p>
     <div class="loadable" ng-class="{'loading': !backlog.storiesLoaded}">

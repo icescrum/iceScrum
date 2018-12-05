@@ -25,7 +25,7 @@
       ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
       show-validation
       novalidate>
-    <div class="panel-body">
+    <div class="card-body">
         <div class="clearfix no-padding">
             <div class="form-2-tiers">
                 <label for="name">${message(code: 'is.task.name')}</label>
@@ -38,7 +38,7 @@
                            ng-model="editableTask.name"
                            type="text"
                            class="form-control">
-                    <span class="input-group-btn" ng-if="formEditable()">
+                    <span class="input-group-after" ng-if="formEditable()">
                         <button colorpicker
                                 class="btn {{ editableTask.color | contrastColor }}"
                                 type="button"
@@ -98,8 +98,8 @@
                 <entry:point id="task-estimation-after-label"/>
                 </label>
                 <div class="input-group">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-before">
+                        <button class="btn btn-secondary"
                                 type="button"
                                 ng-click="editForm(true); editableTask.estimation = minus(editableTask.estimation);">
                             <i class="fa fa-minus"></i>
@@ -112,8 +112,8 @@
                            ng-disabled="!formEditable()"
                            name="estimation"
                            ng-model="editableTask.estimation"/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-after">
+                        <button class="btn btn-secondary"
                                 type="button"
                                 ng-click="editForm(true); editableTask.estimation = plus(editableTask.estimation);">
                             <i class="fa fa-plus"></i>
@@ -159,7 +159,7 @@
             <div ng-if="authorizedTask('upload', task)"
                  ng-controller="attachmentNestedCtrl">
                 <button type="button"
-                        class="btn btn-default"
+                        class="btn btn-secondary"
                         flow-btn>
                     <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
                 </button>
@@ -169,7 +169,7 @@
             </div>
         </div>
     </div>
-    <div class="panel-footer" ng-if="isModal || formHolder.editing">
+    <div class="card-footer" ng-if="isModal || formHolder.editing">
         <div class="btn-toolbar" ng-class="[{ 'text-right' : isModal }]">
             <button class="btn btn-primary"
                     ng-if="formHolder.editing && (isLatest() || application.submitting)"
@@ -183,7 +183,7 @@
                     type="submit">
                 ${message(code: 'default.button.override.label')}
             </button>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     type="button"
                     ng-if="(!isModal && formHolder.editing) || (isModal && isDirty())"
                     ng-click="editForm(false)">
@@ -195,7 +195,7 @@
                     ng-click="resetTaskForm()">
                 <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     type="button"
                     ng-if="isModal && !isDirty()"
                     ng-click="$close()">

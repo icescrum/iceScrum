@@ -12,7 +12,7 @@
         <nvd3 options="options | merge: {chart:{height: 200}, title:{enable: false}}" data="data"></nvd3>
     </div>
 </div>
-<div class="well">
+<div>
     <div class="row project-info">
         <div class="col-md-4" style="text-align: left;"><i class="fa fa-user"></i> {{ projectMembersCount }} ${message(code: 'todo.is.ui.members')}</div>
         <div class="col-md-4" style="text-align: center;"><i class="fa fa-sticky-note"></i> {{ project.stories_count }} ${message(code: 'todo.is.ui.stories')}</div>

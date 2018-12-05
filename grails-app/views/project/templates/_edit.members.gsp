@@ -42,7 +42,7 @@
     <div class="btn-toolbar pull-right">
         <button type="button"
                 role="button"
-                class="btn btn-default"
+                class="btn btn-secondary"
                 ng-click="cancelMembers()">
             ${message(code: 'is.button.cancel')}
         </button>

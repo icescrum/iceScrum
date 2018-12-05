@@ -27,7 +27,7 @@
           submitButton="${message(code: 'default.button.create.label')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'todo.is.ui.timeBoxNotesTemplate.new')}">
-    <div class="panel-body">
+    <div class="card-body">
         <div class="form-group">
             <label for="name">${message(code: 'todo.is.ui.timeBoxNotesTemplate.name')}</label>
             <input required
@@ -48,24 +48,24 @@
         <hr/>
         <label for="header">${message(code: 'todo.is.ui.timeBoxNotesTemplate.sections')}</label>
         <div as-sortable="sectionSortOptions" ng-model="timeBoxNotesTemplate.configs">
-            <div class="panel panel-light"
+            <div class="card"
                  ng-repeat="config in timeBoxNotesTemplate.configs"
                  is-open="collapseSectionStatus[$index]"
                  as-sortable-item>
-                <div class="panel-heading" as-sortable-item-handle ng-class="{'open': !collapseSectionStatus[$index]}">
+                <div class="card-header" as-sortable-item-handle ng-class="{'open': !collapseSectionStatus[$index]}">
                     <div as-sortable-item-handle
                          class="text-ellipsis"
                          style="display: inline-block; width: 200px">
                         ${message(code: 'todo.is.ui.timeBoxNotesTemplate.section')} {{($index+1) + (config.header ? " - "+config.header : "")}}
                     </div>
                     <button type="button"
-                            class="btn btn-default btn-sm pull-right"
+                            class="btn btn-secondary btn-sm pull-right"
                             name="expand"
                             ng-click="expandSection($index)">
                         <i class="fa fa-pencil"></i>
                     </button>
                 </div>
-                <div class="panel-body" uib-collapse="collapseSectionStatus[$index]">
+                <div class="card-body" uib-collapse="collapseSectionStatus[$index]">
                     <div class="form-group">
                         <label for="configs-{($index}}-header">${message(code: 'todo.is.ui.timeBoxNotesTemplate.section.header')}</label>
                         <textarea name="configs-{($index}}-header"
@@ -131,7 +131,7 @@
                     </button>
                 </div>
             </div>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     style="width: 100%"
                     type="button"
                     name="delete"

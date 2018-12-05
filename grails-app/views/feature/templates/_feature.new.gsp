@@ -21,9 +21,9 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="feature.new.html">
-<div class="panel panel-light">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span class="item-name" title="${message(code: 'todo.is.ui.feature.new')}">${message(code: 'todo.is.ui.feature.new')}</span>
             </div>
@@ -33,8 +33,8 @@
         </h3>
     </div>
     <div class="details-no-tab">
-        <div class="panel-body">
-            <div class="help-block">
+        <div class="card-body">
+            <div class="form-text">
                 ${message(code: 'is.ui.feature.help')}
                 <documentation doc-url="features-stories-tasks#features"/>
             </div>
@@ -76,7 +76,7 @@
                                    class="form-control"
                                    ng-disabled="!authorizedFeature('create')"
                                    placeholder="${message(code: 'is.ui.feature.noname')}"/>
-                            <span class="input-group-btn">
+                            <span class="input-group-append">
                                 <button colorpicker
                                         class="btn {{ feature.color | contrastColor }}"
                                         type="button"

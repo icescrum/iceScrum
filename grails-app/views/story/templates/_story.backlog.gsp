@@ -32,8 +32,8 @@
 </div>
 <div ng-if="application.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0"
      class="empty-view">
-    <p class="help-block">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ application.search }}</strong></p>
-    <button class="btn btn-default"
+    <p class="form-text">${message(code: 'todo.is.ui.backlog.search.empty')} <strong>{{ application.search }}</strong></p>
+    <button class="btn btn-secondary"
             ng-click="application.search = null">
         ${message(code: 'todo.is.ui.search.clear')}
     </button>
@@ -48,7 +48,7 @@
 </script>
 
 <script type="text/ng-template" id="story.backlog.backlogs.empty.html">
-<p class="help-block">
+<p class="form-text">
     {{:: message('todo.is.ui.story.empty.backlogs.' + backlog.code, [], 'todo.is.ui.story.empty.backlogs.default') }}
     <entry:point id="story-backlog-empty"/>
 </p>
@@ -61,7 +61,7 @@
 
 <script type="text/ng-template" id="story.backlog.planning.empty.html">
 <div ng-if="sprint.state < sprintStatesByName.DONE">
-    <p class="help-block">${message(code: 'todo.is.ui.story.empty.planning')}</p>
+    <p class="form-text">${message(code: 'todo.is.ui.story.empty.planning')}</p>
     <button class="btn btn-primary"
             type="button"
             ng-click="openPlanModal(sprint)"
@@ -72,7 +72,7 @@
 </script>
 
 <script type="text/ng-template" id="story.backlog.plan.empty.html">
-<p class="help-block">${message(code: 'todo.is.ui.story.empty.plan')}</p>
+<p class="form-text">${message(code: 'todo.is.ui.story.empty.plan')}</p>
 <a class="btn btn-primary"
    ng-click="$close()"
    href="#/backlog/backlog">

@@ -25,7 +25,7 @@
 <script type="text/ng-template" id="app.details.html">
 <h3>
     <button ng-click="openAppDefinition()"
-            class="btn btn-default">
+            class="btn btn-secondary">
         <i class="fa fa-arrow-left"></i>
     </button>
     {{ appDefinition.name }}
@@ -105,7 +105,7 @@
             <p>
                 <a href="{{ appDefinition.docUrl }}"
                    target="_blank"
-                   class="btn btn-default">
+                   class="btn btn-secondary">
                     ${message(code: 'is.app.documentation')}
                 </a>
             </p>

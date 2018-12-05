@@ -101,7 +101,7 @@
     <a ng-show="menuElement.name"
        class="btn"
        title="{{ menuElement | menuElementName }}"
-       ng-class="{'btn-sm': btnSm, 'btn-primary': btnPrimary, 'btn-default': !btnPrimary}"
+       ng-class="{'btn-sm': btnSm, 'btn-primary': btnPrimary, 'btn-secondary': !btnPrimary}"
        ng-href="{{ menuElement.url(ngModel) }}"
        ng-click="menuElement.action(ngModel)">
         {{ menuElement | menuElementName }}
@@ -122,7 +122,7 @@
     <script type="text/ng-template" id="select.member.html">
     <a>
         <span style="margin-top: 5px;margin-left:5px;">{{ match.model | userFullName }}</span>
-        <button class="btn btn-default btn-sm" type="button" ng-show="!match.model.id">
+        <button class="btn btn-secondary btn-sm" type="button" ng-show="!match.model.id">
             ${message(code: 'is.ui.user.will.be.invited.click')} <i class="fa fa-envelope"></i>
         </button>
     </a>
@@ -136,7 +136,7 @@
 
     <script type="text/ng-template" id="report.progress.html">
     <is:modal title="${message(code: 'is.dialog.report.generation')}">
-        <p class="help-block">
+        <p class="form-text">
             <g:message code="is.dialog.report.description"/>
         </p>
         <is-progress start="progress"></is-progress>
@@ -182,7 +182,7 @@
     </div>
     <div class="btn-toolbar pull-right">
         <a href
-           class="btn btn-default"
+           class="btn btn-secondary"
            hotkey="{'shift+u':showProfile}"
            hotkey-description="${message(code: 'todo.is.ui.profile')}"
            defer-tooltip="${message(code: 'is.dialog.profile')} (shift+u)"
@@ -255,17 +255,17 @@
 
     <script type="text/ng-template" id="details.layout.buttons.html">
     <div class="btn-group">
-        <button class="btn btn-default minimizable"
+        <button class="btn btn-secondary minimizable"
                 ng-click="toggleMinimizedDetailsView()"
                 defer-tooltip="${message(code: 'is.ui.window.minimize')}">
             <i ng-class="['fa fa-window-minimize', application.minimizedDetailsView ? 'fa-rotate-180' : '']"></i>
         </button>
-        <button class="btn btn-default detachable"
+        <button class="btn btn-secondary detachable"
                 ng-click="toggleDetachedDetailsView()"
                 defer-tooltip="${message(code: 'is.ui.window.detach')}">
             <i ng-class="['fa', application.detachedDetailsView ? 'fa-window-maximize' : 'fa-window-restore']"></i>
         </button>
-        <a class="btn btn-default"
+        <a class="btn btn-secondary"
            href="{{ closeDetailsViewUrl() }}"
            defer-tooltip="${message(code: 'is.ui.window.closeable')}">
             <i class="fa fa-times"></i>
@@ -291,16 +291,16 @@
               submitButton="${message(code: 'is.ui.widget.add')}"
               class="split-modal">
         <div class="row">
-            <div class="left-panel col-sm-3">
-                <div class="left-panel-header">
+            <div class="left-card col-sm-3">
+                <div class="left-card-header">
                     <div class="input-group">
                         <input type="text"
                                ng-model="widgetDefinitionSearch"
                                name="widget-definition-search-input"
                                class="form-control"
                                placeholder="${message(code: 'todo.is.ui.search.action')}">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default"
+                        <span class="input-group-after">
+                            <button class="btn btn-secondary"
                                     type="button"
                                     ng-click="widgetDefinitionSearch = ''">
                                 <i class="fa" ng-class="widgetDefinitionSearch ? 'fa-times' : 'fa-search'"></i>
@@ -308,7 +308,7 @@
                         </span>
                     </div>
                 </div>
-                <ul class="left-panel-body nav nav-list">
+                <ul class="left-card-body nav nav-list">
                     <li ng-class="{ 'current': currentWidgetDefinition.id == widgetDefinition.id }"
                         ng-repeat="currentWidgetDefinition in widgetDefinitions | filter:widgetDefinitionSearch">
                         <a ng-click="detailsWidgetDefinition(currentWidgetDefinition)" href>
@@ -317,7 +317,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="right-panel col-sm-9" ng-switch="widgetDefinitions != undefined && widgetDefinitions.length == 0">
+            <div class="right-card col-sm-9" ng-switch="widgetDefinitions != undefined && widgetDefinitions.length == 0">
                 <div ng-switch-when="true">
                     ${message(code: 'is.ui.widget.noAvailableWidgetDefinitions')}
                 </div>

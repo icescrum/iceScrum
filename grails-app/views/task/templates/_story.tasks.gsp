@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.tasks.html">
-<div class="tasks panel-body" ng-controller="taskSortableStoryCtrl">
+<div class="tasks card-body" ng-controller="taskSortableStoryCtrl">
     <table class="table" ng-repeat="(taskState, tasks) in tasksByState">
         <thead>
             <tr>
@@ -51,8 +51,7 @@
                             <div class="btn-group">
                                 <shortcut-menu ng-model="task" model-menus="menus" view-type="'list'" btn-sm="true"></shortcut-menu>
                                 <div class="btn-group btn-group-sm" uib-dropdown>
-                                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                        <i class="fa fa-caret-down"></i>
+                                    <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                     </button>
                                     <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
                                 </div>
@@ -68,13 +67,13 @@
             </tr>
         </tbody>
     </table>
-    <div class="help-block text-center"
+    <div class="form-text text-center"
          ng-if="selected.tasks !== undefined && !selected.tasks.length">
         ${message(code: 'is.ui.task.help.story')}
         <documentation doc-url="features-stories-tasks#tasks"/>
     </div>
 </div>
-<div class="panel-footer" ng-controller="taskStoryCtrl">
+<div class="card-footer" ng-controller="taskStoryCtrl">
     <div ng-if="authorizedTask('create', {parentStory: selected})" ng-include="'story.task.new.html'"></div>
 </div>
 </script>

@@ -21,16 +21,16 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="feature.details.html">
-<div class="panel panel-light"
+<div class="card"
      flow-init
      flow-drop
      flow-files-submitted="attachmentQuery($flow, feature)"
      flow-drop-enabled="authorizedFeature('upload', feature)"
-     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
-     flow-drag-leave="dropClass='panel panel-light'"
+     flow-drag-enter="dropClass='card drop-enabled'"
+     flow-drag-leave="dropClass='card'"
      ng-class="authorizedFeature('upload', feature) && dropClass">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <strong>{{ ::feature.uid }}</strong>&nbsp;<span class="item-name" title="{{ feature.name }}">{{ feature.name }}</span>
                 <entry:point id="feature-details-left-title"/>
@@ -40,7 +40,7 @@
                     <entry:point id="feature-details-right-title"/>
                     <div class="btn-group">
                         <a ng-if="previousFeature && !isModal"
-                           class="btn btn-default"
+                           class="btn btn-secondary"
                            role="button"
                            tabindex="0"
                            hotkey="{'left': hotkeyClick}"
@@ -50,7 +50,7 @@
                             <i class="fa fa-caret-left"></i>
                         </a>
                         <a ng-if="nextFeature && !isModal"
-                           class="btn btn-default"
+                           class="btn btn-secondary"
                            role="button"
                            tabindex="0"
                            hotkey="{'right': hotkeyClick}"
@@ -65,8 +65,7 @@
                 <div class="btn-group shortcut-menu" role="group">
                     <shortcut-menu ng-model="feature" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
-                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i ng-class="['fa', application.minimizedDetailsView ? 'fa-caret-up' : 'fa-caret-down']"></i>
+                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'feature'" template-url="item.menu.html"></ul>
                     </div>

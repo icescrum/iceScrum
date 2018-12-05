@@ -21,9 +21,9 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="backlog.details.html">
-<div class="panel panel-light">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 <i class="fa fa-inbox"></i> <span class="item-name" title="{{ backlog | i18nName }}">{{ backlog | i18nName }}</span>
                 <i class="fa fa-share-alt"

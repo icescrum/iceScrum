@@ -21,11 +21,11 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.multiple.html">
-<div class="panel panel-light">
-    <div class="panel-heading">
-        <h3 class="panel-title">
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
             ${message(code: "todo.is.ui.stories")} ({{ stories.length }})
-            <a class="pull-right btn btn-default"
+            <a class="pull-right btn btn-secondary"
                ui-sref="^.^"
                defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
@@ -33,7 +33,7 @@
         </h3>
     </div>
     <div class="details-no-tab">
-        <div class="panel-body">
+        <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <div class="postits standalone">
@@ -113,25 +113,25 @@
                         <div class="btn-group">
                             <button type="button"
                                     ng-if="authorizedStories('accept', stories)"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     ng-click="acceptToBacklogMultiple()">
                                 ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.ACCEPTED | i18n:'StoryStates' }}
                             </button>
                             <button type="button"
                                     ng-if="authorizedStories('copy', stories)"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     ng-click="copyMultiple()">
                                 ${message(code: 'is.ui.releasePlan.menu.story.clone')}
                             </button>
                             <button type="button"
                                     ng-if="authorizedStories('returnToSandbox', stories)"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     ng-click="returnToSandboxMultiple()">
                                 ${message(code: 'is.ui.story.state.markAs')} {{ storyStatesByName.SUGGESTED | i18n:'StoryStates' }}
                             </button>
                             <button type="button"
                                     ng-if="authorizedStories('delete', stories)"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     ng-click="confirmDelete({ callback: deleteMultiple })">
                                 ${message(code: 'is.ui.backlog.menu.delete')}
                             </button>
@@ -141,7 +141,7 @@
                              class="btn-group">
                             <button type="button"
                                     ng-switch="allFollowed(stories)"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     ng-click="followMultiple(!allFollowed(stories))">
                                 <i class="fa"
                                    ng-class="noneFollowed(stories) ? 'fa-star-o' : 'fa-star-half-o'"
@@ -155,9 +155,9 @@
                              class="btn-group"
                              uib-dropdown>
                             <button type="button"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     uib-dropdown-toggle>
-                                ${message(code: 'is.ui.story.turnInto')} <i class="fa fa-caret-down"></i>
+                                ${message(code: 'is.ui.story.turnInto')}
                             </button>
                             <ul uib-dropdown-menu role="menu">
                                 <li>
@@ -198,9 +198,9 @@
                                 <i class="fa fa-sticky-note" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
-                        <span class="input-group-btn" ng-if="storyPreview.feature.id">
+                        <span class="input-group-after" ng-if="storyPreview.feature.id">
                             <a ui-sref=".feature.details({featureId: storyPreview.feature.id})"
-                               class="btn btn-default">
+                               class="btn btn-secondary">
                                 <i class="fa fa-info-circle"></i>
                             </a>
                         </span>
@@ -290,7 +290,7 @@
                             ng-disabled="!storyForm.$dirty || storyForm.$invalid || application.submitting">
                         ${message(code: 'default.button.update.label')}
                     </button>
-                    <a class="btn btn-default pull-right"
+                    <a class="btn btn-secondary pull-right"
                        ui-sref="^.^">
                         ${message(code: 'is.button.cancel')}
                     </a>

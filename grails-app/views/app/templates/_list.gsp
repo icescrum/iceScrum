@@ -30,8 +30,8 @@
                    name="app-search-input"
                    class="form-control"
                    placeholder="${message(code: 'todo.is.ui.search.action')}">
-            <span class="input-group-btn">
-                <button class="btn btn-default"
+            <span class="input-group-after">
+                <button class="btn btn-secondary"
                         type="button"
                         ng-click="searchApp('')">
                     <i class="fa" ng-class="holder.appSearch ? 'fa-times' : 'fa-search'"></i>

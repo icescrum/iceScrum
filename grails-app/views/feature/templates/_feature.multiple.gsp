@@ -21,11 +21,11 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="feature.multiple.html">
-<div class="panel panel-light">
-    <div class="panel-heading">
-        <h3 class="panel-title">
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
             ${message(code: "is.ui.feature")} ({{ features.length }})
-            <a class="pull-right visible-on-hover btn btn-default"
+            <a class="pull-right visible-on-hover btn btn-secondary"
                href="#/{{ ::viewName }}"
                defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
@@ -33,7 +33,7 @@
         </h3>
     </div>
     <div class="details-no-tab">
-        <div class="panel-body">
+        <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
                     <div class="postits standalone">
@@ -90,7 +90,7 @@
                         <div ng-if="authorizedFeature('delete')"
                              class="btn-group">
                             <button type="button"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     ng-click="confirmDelete({ callback: deleteMultiple })">
                                 ${message(code: 'default.button.delete.label')}
                             </button>
@@ -143,7 +143,7 @@
                             ng-disabled="!featureForm.$dirty || featureForm.$invalid || application.submitting">
                         ${message(code: 'default.button.update.label')}
                     </button>
-                    <a class="btn btn-default pull-right"
+                    <a class="btn btn-secondary pull-right"
                        href="#/{{ ::viewName }}">
                         ${message(code: 'is.button.cancel')}
                     </a>

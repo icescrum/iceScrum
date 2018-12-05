@@ -30,7 +30,9 @@
     <div class="clearfix no-padding">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
             <div class="input-group">
-                <span class="input-group-addon no-style"><strong>42</strong></span>
+                <span class="input-group-before">
+                    <span class="input-group-text no-style"><strong>42</strong></span>
+                </span>
                 <input required
                        type="text"
                        ng-maxlength="255"
@@ -39,7 +41,7 @@
                        ng-focus="formHolder.formExpanded = true;"
                        class="form-control"
                        placeholder="${message(code: 'is.acceptanceTest')}">
-                <span class="input-group-btn visible-hidden">
+                <span class="input-group-after visible-hidden">
                     <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
                 </span>
             </div>
@@ -82,7 +84,7 @@
                 type="submit">
             ${message(code: 'default.button.create.label')}
         </button>
-        <button class="btn btn-default pull-right"
+        <button class="btn btn-secondary pull-right"
                 ng-click="formHolder.formExpanded = false;"
                 type="button">
             ${message(code: 'is.button.cancel')}

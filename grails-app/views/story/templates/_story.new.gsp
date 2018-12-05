@@ -21,9 +21,9 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="story.new.html">
-<div class="panel panel-light">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 <i class="fa fa-sticky-note" ng-style="{color: storyPreview.feature ? storyPreview.feature.color : '#f9f157'}"></i>
                 <span class="item-name" title="${message(code: 'todo.is.ui.story.new')}">${message(code: 'todo.is.ui.story.new')}</span>
@@ -34,8 +34,8 @@
         </h3>
     </div>
     <div class="details-no-tab">
-        <div class="panel-body">
-            <div class="help-block">
+        <div class="card-body">
+            <div class="form-text">
                 ${message(code: 'is.ui.sandbox.help')}
                 <documentation doc-url="features-stories-tasks#stories"/>
             </div>
@@ -110,7 +110,7 @@
                                ng-model="story.name"
                                ng-change="findDuplicates(story.name)"/>
                         <div ng-if="messageDuplicate"
-                             class="help-block bg-warning spaced-help-block"
+                             class="form-text bg-warning spaced-form-text"
                              ng-bind-html="messageDuplicate"></div>
                     </div>
                     <entry:point id="story-new-form"/>

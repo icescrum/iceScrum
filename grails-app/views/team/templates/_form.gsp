@@ -24,7 +24,7 @@
 <div class="row">
     <div class="col-sm-12">
         <h4>${message(code: "is.team")}</h4>
-        <p class="help-block">
+        <p class="form-text">
             <span ng-if="teamCreatable()">
                 ${message(code: 'is.dialog.wizard.section.team.description')}
                 ${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}
@@ -53,11 +53,13 @@
                    ng-readonly="team.selected"
                    ng-model="team.name"
                    ng-required="isCurrentStep(2, 'project')">
-            <span class="input-group-addon" ng-if="teamRemovable(team)">
-                <i class="fa"
-                   ng-click="unSelectTeam()"
-                   ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }">
-                </i>
+            <span class="input-group-after" ng-if="teamRemovable(team)">
+                <span class="input-group-text">
+                    <i class="fa"
+                       ng-click="unSelectTeam()"
+                       ng-class="{ 'fa-search': !searching, 'fa-refresh':searching, 'fa-close':team.selected }">
+                    </i>
+                </span>
             </span>
         </p>
         <div class="form-group" ng-if="type == 'editProject' && team.owner">
@@ -95,8 +97,10 @@
                        typeahead-wait-ms="250"
                        typeahead-on-select="addTeamMember($item, $model, $label)"
                        typeahead-template-url="select.member.html">
-                <span class="input-group-addon">
-                    <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
+                <span class="input-group-after">
+                    <span class="input-group-text">
+                        <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
+                    </span>
                 </span>
             </p>
         </div>

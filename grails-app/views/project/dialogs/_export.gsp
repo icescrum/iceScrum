@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:modal title="${message(code: 'is.dialog.exportProject.title')}">
-    <div class="help-block">
+    <div class="form-text">
         <g:message code="is.dialog.exportProject.description"/>
     </div>
     <is-progress start="progress" ng-show="progress"></is-progress>

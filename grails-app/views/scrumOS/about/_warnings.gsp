@@ -44,7 +44,7 @@
                         <button ng-if="warning.hideable"
                                 ng-click="hideWarning(warning)"
                                 type="button"
-                                class="btn btn-sm btn-default">
+                                class="btn btn-sm btn-secondary">
                             <i class="fa" ng-class="warning.silent ? 'fa-bell-slash' : 'fa-bell'"></i>
                         </button>
                     </td>

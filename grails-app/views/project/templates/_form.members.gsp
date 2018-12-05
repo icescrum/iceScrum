@@ -23,7 +23,7 @@
 
 <script type="text/ng-template" id="form.members.project.html">
 <h4>${message(code: "todo.is.ui.project.members")}</h4>
-<p class="help-block">${message(code: 'todo.is.ui.project.members.help')}</p>
+<p class="form-text">${message(code: 'todo.is.ui.project.members.help')}</p>
 <div class="row">
     <div class="col-sm-4" ng-if="projectMembersEditable(project)">
         <label for="productOwners.search">${message(code: 'todo.is.ui.select.productowner')}</label>
@@ -42,8 +42,10 @@
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'po')"
                    typeahead-template-url="select.member.html">
-            <span class="input-group-addon">
-                <i class="fa" ng-class="{ 'fa-search': !searchingPo, 'fa-refresh':searchingPo }"></i>
+            <span class="input-group-after">
+                <span class="input-group-text">
+                    <i class="fa" ng-class="{ 'fa-search': !searchingPo, 'fa-refresh':searchingPo }"></i>
+                </span>
             </span>
         </p>
     </div>
@@ -72,8 +74,10 @@
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'sh')"
                    typeahead-template-url="select.member.html">
-            <span class="input-group-addon">
-                <i class="fa" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh }"></i>
+            <span class="input-group-after">
+                <span class="input-group-text">
+                    <i class="fa" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh }"></i>
+                </span>
             </span>
         </p>
     </div>

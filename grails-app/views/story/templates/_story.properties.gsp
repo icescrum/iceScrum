@@ -25,7 +25,7 @@
       ng-class="{'form-editable': formEditable(), 'form-editing': formHolder.editing }"
       show-validation
       novalidate>
-    <div class="panel-body">
+    <div class="card-body">
         <div class="clearfix no-padding">
             <entry:point id="story-properties-before-properties"/>
             <div class="form-2-tiers">
@@ -97,9 +97,9 @@
                             <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <span class="input-group-btn" ng-if="editableStory.feature.id && !isModal">
+                    <span class="input-group-after" ng-if="editableStory.feature.id && !isModal">
                         <a href="{{ storyFeatureUrl(editableStory) }}"
-                           class="btn btn-default">
+                           class="btn btn-secondary">
                             <i class="fa fa-info-circle"></i>
                         </a>
                     </span>
@@ -131,7 +131,7 @@
                             <span ng-bind-html="dependenceEntry | storyLabel : false : !hasSameProject(editableStory, dependenceEntry) | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <span class="input-group-btn" ng-if="editableStory.dependsOn.id">
+                    <span class="input-group-after" ng-if="editableStory.dependsOn.id">
                         <a ng-if="hasSameProject(editableStory, editableStory.dependsOn)"
                            ui-sref=".({storyId: editableStory.dependsOn.id})"
                            class="btn btn-default">
@@ -139,7 +139,7 @@
                         </a>
                         <a ng-if="!hasSameProject(editableStory, editableStory.dependsOn)"
                            ng-href="{{ editableStory.dependsOn.uid | permalink: 'story': editableStory.dependsOn.project.pkey }}"
-                           class="btn btn-default">
+                           class="btn btn-secondary">
                             <i class="fa fa-info-circle"></i>
                         </a>
                     </span>
@@ -202,8 +202,8 @@
                            name="effort"
                            min="0"
                            ng-model="editableStory.effort"/>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-after">
+                        <button class="btn btn-secondary"
                                 type="button"
                                 name="edit-effort"
                                 ng-click="showEditEffortModal(story)"><i class="fa fa-pencil"></i></button>
@@ -243,8 +243,8 @@
                             <span ng-bind-html="'' + i | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <span class="input-group-btn" ng-if="authorizedStory('update', editableStory)">
-                        <button class="btn btn-default"
+                    <span class="input-group-after" ng-if="authorizedStory('update', editableStory)">
+                        <button class="btn btn-secondary"
                                 type="button"
                                 name="edit-value"
                                 ng-click="showEditValueModal(story)"><i class="fa fa-pencil"></i></button>
@@ -314,7 +314,7 @@
             <label><i class="fa fa-paperclip"></i> ${message(code: 'is.backlogelement.attachment')} {{ story.attachments_count > 0 ? '(' + story.attachments.length + ')' : '' }}</label>
             <div ng-if="authorizedStory('upload', story)" ng-controller="attachmentNestedCtrl">
                 <button type="button"
-                        class="btn btn-default"
+                        class="btn btn-secondary"
                         flow-btn>
                     <i class="fa fa-upload"></i> ${message(code: 'todo.is.ui.new.upload')}
                 </button>
@@ -324,7 +324,7 @@
             </div>
         </div>
     </div>
-    <div class="panel-footer" ng-if="isModal || formHolder.editing">
+    <div class="card-footer" ng-if="isModal || formHolder.editing">
         <div class="btn-toolbar" ng-class="[{ 'text-right' : isModal }]">
             <button class="btn btn-primary"
                     ng-if="formHolder.editing && (isLatest() || application.submitting)"
@@ -338,7 +338,7 @@
                     type="submit">
                 ${message(code: 'default.button.override.label')}
             </button>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     type="button"
                     ng-if="(!isModal && formHolder.editing) || (isModal && isDirty())"
                     ng-click="editForm(false)">
@@ -350,7 +350,7 @@
                     ng-click="resetStoryForm()">
                 <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
-            <button class="btn btn-default"
+            <button class="btn btn-secondary"
                     type="button"
                     ng-if="isModal && !isDirty()"
                     ng-click="$close()">

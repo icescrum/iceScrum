@@ -22,7 +22,7 @@
 
 <script type="text/ng-template" id="timeBoxNotesTemplates.timeBox.notes.html">
 <div ng-controller="timeBoxNotesCtrl as ctrl">
-    <div class="panel-body timeBoxNotes">
+    <div class="card-body timeBoxNotes">
         <div class="form-group">
             <label for="select-template">{{message('todo.is.ui.'+timeBoxClass+'.notes.template')}}</label>
             <div class="input-group">
@@ -38,8 +38,8 @@
                         {{:: item.id }} - {{ item.name }}
                     </ui-select-choices>
                 </ui-select>
-                <span class="input-group-btn">
-                    <button class="btn btn-default"
+                <span class="input-group-after">
+                    <button class="btn btn-secondary"
                             type="button"
                             name="new"
                             ng-click="showNewTemplateModal()">
@@ -54,7 +54,7 @@
                 <div class="pull-left">
                     <label for="content">{{message('todo.is.ui.'+timeBoxClass+'.notes.content')}}</label>
                 </div>
-                <button class="btn btn-default btn-sm pull-right"
+                <button class="btn btn-secondary btn-sm pull-right"
                         ng-if="ctrl.template.id"
                         type="button"
                         name="edit"

@@ -24,9 +24,9 @@
 <script type="text/ng-template" id="apps.modal.html">
 <is:modal title="${message(code: 'is.ui.apps')}"
           class="apps-modal split-modal">
-    <div class="row" ng-class="{'hide-left-panel': !appDefinition}">
-        <div class="left-panel">
-            <div class="left-panel-header">
+    <div class="row" ng-class="{'hide-left-card': !appDefinition}">
+        <div class="left-card">
+            <div class="left-card-header">
                 <div class="input-group">
                     <input type="text"
                            ng-model="holder.appSearch"
@@ -34,8 +34,8 @@
                            value="{{ holder.appSearch }}"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-after">
+                        <button class="btn btn-secondary"
                                 type="button"
                                 ng-click="searchApp('')">
                             <i class="fa" ng-class="holder.appSearch ? 'fa-times' : 'fa-search'"></i>
@@ -43,7 +43,7 @@
                     </span>
                 </div>
             </div>
-            <ul class="left-panel-body nav nav-list">
+            <ul class="left-card-body nav nav-list">
                 <div class="text-center more-results" ng-hide="filteredApps.length">
                     <a href="${message(code: 'is.ui.apps.store.query')}{{ holder.appSearch }}">${message(code: 'is.ui.apps.store.search')}</a>
                 </div>
@@ -60,7 +60,7 @@
                 </li>
             </ul>
         </div>
-        <div class="right-panel">
+        <div class="right-card">
             <div ng-if="appDefinition" class="app-details">
                 <div ng-include="'app.details.html'"></div>
             </div>

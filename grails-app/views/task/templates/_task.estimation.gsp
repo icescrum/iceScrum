@@ -30,8 +30,8 @@
     <div class="form-group">
         <label for="estimation">${message(code: 'is.task.estimation')}</label>
         <div class="input-group minus-plus-group">
-            <span class="input-group-btn">
-                <button class="btn btn-default"
+            <span class="input-group-before">
+                <button class="btn btn-secondary"
                         type="button"
                         ng-click="editableTask.estimation = minus(editableTask.estimation);">
                     <i class="fa fa-minus"></i>
@@ -43,8 +43,8 @@
                    name="estimation"
                    min="0"
                    ng-model="editableTask.estimation"/>
-            <span class="input-group-btn">
-                <button class="btn btn-default"
+            <span class="input-group-after">
+                <button class="btn btn-secondary"
                         type="button"
                         ng-click="editableTask.estimation = plus(editableTask.estimation);">
                     <i class="fa fa-plus"></i>

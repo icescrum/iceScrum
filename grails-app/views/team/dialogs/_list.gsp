@@ -25,8 +25,8 @@
           class="split-modal"
           footer="${false}">
     <div class="row">
-        <div class="left-panel col-sm-3">
-            <div class="left-panel-header">
+        <div class="left-card col-sm-3">
+            <div class="left-card-header">
                 <div class="input-group">
                     <input type="text"
                            ng-model="teamSearch"
@@ -34,8 +34,8 @@
                            ng-model-options="{debounce: 300}"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-after">
+                        <button class="btn btn-secondary"
                                 type="button"
                                 ng-click="teamSearch = null; searchTeams()">
                             <i class="fa" ng-class="teamSearch ? 'fa-times' : 'fa-search'"></i>
@@ -43,12 +43,12 @@
                     </span>
                 </div>
             </div>
-            <ul class="left-panel-body nav nav-list">
+            <ul class="left-card-body nav nav-list">
                 <li ng-class="{ 'current': team.id == currentTeam.id }" ng-repeat="currentTeam in teams">
                     <a ng-click="selectTeam(currentTeam)" href>{{ currentTeam.name }}</a>
                 </li>
             </ul>
-            <div class="left-panel-bottom">
+            <div class="left-card-bottom">
                 <div uib-pagination
                      boundary-links="true"
                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
@@ -61,9 +61,9 @@
                 </div>
             </div>
         </div>
-        <div class="right-panel col-sm-9" ng-switch="teamSelected()">
+        <div class="right-card col-sm-9" ng-switch="teamSelected()">
             <div ng-switch-default>
-                <div class="help-block">
+                <div class="form-text">
                     ${message(code: 'is.ui.team.help')}
                     <documentation doc-url="roles-teams-projects"/>
                 </div>
@@ -138,8 +138,10 @@
                                    typeahead-wait-ms="250"
                                    typeahead-on-select="addTeamMember($item, $model, $label)"
                                    typeahead-template-url="select.member.html">
-                            <span class="input-group-addon">
-                                <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
+                            <span class="input-group-after">
+                                <span class="input-group-text">
+                                    <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
+                                </span>
                             </span>
                         </p>
                     </div>
@@ -184,7 +186,7 @@
                         ${message(code: 'todo.is.ui.team.no.members')}
                     </div>
                     <div class="btn-toolbar pull-right">
-                        <button class="btn btn-default"
+                        <button class="btn btn-secondary"
                                 type="button"
                                 ng-click="cancel()">
                             ${message(code: 'is.button.cancel')}

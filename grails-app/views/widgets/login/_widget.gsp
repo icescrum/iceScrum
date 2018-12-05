@@ -51,7 +51,7 @@
                    value="">
         </div>
         <div class="checkbox">
-            <label for="credentials.remember_me" class="checkbox-inline">
+            <label for="credentials.remember_me">
                 <input type="checkbox"
                        ng-model="credentials.${SpringSecurityUtils.securityConfig.rememberMe.parameter}"
                        name="${SpringSecurityUtils.securityConfig.rememberMe.parameter}"

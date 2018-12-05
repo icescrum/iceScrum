@@ -21,14 +21,14 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="sprint.multiple.html">
-<div class="panel panel-light">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 ${message(code: 'todo.is.ui.sprints')} ({{ sprints.length }})
             </div>
             <div class="right-title">
-                <a class="btn btn-default"
+                <a class="btn btn-secondary"
                    href="{{:: $state.href('^') }}"
                    defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                     <i class="fa fa-times"></i>
@@ -37,12 +37,12 @@
         </h3>
     </div>
     <div class="details-no-tab">
-        <div class="panel-body">
+        <div class="card-body">
             <div class="btn-toolbar" ng-if="authorizedSprints('autoPlan', sprints) || authorizedSprints('unPlan', sprints)">
                 <div ng-if="authorizedSprints('autoPlan', sprints)"
                      class="btn-group">
                     <button type="button"
-                            class="btn btn-default"
+                            class="btn btn-secondary"
                             ng-click="showAutoPlanModal({callback: autoPlanMultiple, args: [sprints]})">
                         <g:message code='is.ui.releasePlan.toolbar.autoPlan'/>
                     </button>
@@ -50,7 +50,7 @@
                 <div ng-if="authorizedSprints('unPlan', sprints)"
                      class="btn-group">
                     <button type="button"
-                            class="btn btn-default"
+                            class="btn btn-secondary"
                             ng-click="unPlanMultiple(sprints)">
                         <g:message code='is.ui.releasePlan.menu.sprint.dissociateAll'/>
                     </button>

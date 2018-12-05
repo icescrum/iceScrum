@@ -27,7 +27,7 @@
           submitButtonColor="{{ buttonColor }}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="{{ message('todo.is.ui.story.selector.' + backlog.code + '.title') }}">
-    <p class="help-block"
+    <p class="form-text"
        ng-bind-html="message('todo.is.ui.story.selector.' + backlog.code + '.description')">
     </p>
     <div class="form-group" ng-if="selectorOptions.inputFilterEnabled">
@@ -39,9 +39,9 @@
                    ng-model-options="{debounce: 400}"
                    ng-change="filterStories()"
                    placeholder="${message(code: 'todo.is.ui.story.selector.filter.action')}">
-            <span class="input-group-btn">
+            <span class="input-group-after">
                 <button type="button"
-                        class="btn btn-default"
+                        class="btn btn-secondary"
                         ng-click="selectorOptions.filter.term = ''; filterStories()">
                     <i class="fa" ng-class="selectorOptions.filter.term ? 'fa-times' : 'fa-filter'"></i>
                 </button>

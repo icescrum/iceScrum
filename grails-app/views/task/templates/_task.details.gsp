@@ -21,16 +21,16 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="task.details.html">
-<div class="panel panel-light"
+<div class="card"
      flow-init
      flow-drop
      flow-files-submitted="attachmentQuery($flow, task)"
      flow-drop-enabled="authorizedTask('upload', task)"
-     flow-drag-enter="dropClass='panel panel-light drop-enabled'"
-     flow-drag-leave="dropClass='panel panel-light'"
+     flow-drag-enter="dropClass='card drop-enabled'"
+     flow-drag-leave="dropClass='card'"
      ng-class="authorizedTask('upload', task) && dropClass">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 <i class="fa fa-file" ng-style="{color: task.color }"></i> <strong>{{:: task.uid }}</strong>&nbsp;<span class="item-name" title="{{ task.name }}">{{ task.name }}</span>
                 <div style="margin-top:10px">
@@ -49,7 +49,7 @@
                     </span>
                     <div class="btn-group">
                         <a ng-if="previousTask"
-                           class="btn btn-default"
+                           class="btn btn-secondary"
                            role="button"
                            tabindex="0"
                            hotkey="{'left': hotkeyClick}"
@@ -59,7 +59,7 @@
                             <i class="fa fa-caret-left"></i>
                         </a>
                         <a ng-if="nextTask"
-                           class="btn btn-default"
+                           class="btn btn-secondary"
                            role="button"
                            tabindex="0"
                            hotkey="{'right': hotkeyClick}"
@@ -74,8 +74,7 @@
                 <div class="btn-group shortcut-menu" role="group">
                     <shortcut-menu ng-model="task" model-menus="menus" view-type="'details'"></shortcut-menu>
                     <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
-                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i ng-class="['fa', application.minimizedDetailsView ? 'fa-caret-up' : 'fa-caret-down']"></i>
+                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
                     </div>

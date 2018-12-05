@@ -30,12 +30,12 @@
             </h4>
             <div class="btn-toolbar pull-right">
                 <div class="btn-group">
-                    <button class="btn btn-default"
+                    <button class="btn btn-secondary"
                             ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
                             ng-click="visibleSprintsPrevious()">
                         <i class="fa fa-caret-left"></i>
                     </button>
-                    <button class="btn btn-default"
+                    <button class="btn btn-secondary"
                             ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
                             ng-click="visibleSprintsNext()">
                         <i class="fa fa-caret-right"></i>
@@ -44,12 +44,12 @@
 
                 <div class="btn-group">
                     <button type="button"
-                            class="btn btn-default hidden-xs hidden-sm"
+                            class="btn btn-secondary hidden-xs hidden-sm"
                             defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                             ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
                     </button>
                     <button type="button"
-                            class="btn btn-default hidden-xs"
+                            class="btn btn-secondary hidden-xs"
                             ng-click="fullScreen()"
                             defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
@@ -57,13 +57,12 @@
                 <div class="btn-group" role="group" ng-controller="releaseCtrl">
                     <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                            <i class="fa fa-caret-down"></i>
+                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                         </button>
                         <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
                     </div>
                 </div>
-                <a class="btn btn-default" ng-href="{{ openReleaseUrl(release) }}">
+                <a class="btn btn-secondary" ng-href="{{ openReleaseUrl(release) }}">
                     <i class="fa fa-pencil"
                        defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                 </a>
@@ -73,11 +72,11 @@
     <div ng-if="releases.length > 0"
          class="backlogs-list-details"
          selectable="selectableOptions">
-        <div class="panel panel-light"
+        <div class="card"
              ng-repeat="sprint in visibleSprints"
              ng-controller="sprintBacklogCtrl">
-            <div class="panel-heading">
-                <h3 class="panel-title small-title">
+            <div class="card-header">
+                <h3 class="card-title small-title">
                     <div class="pull-left">
                         <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
                         <br/>
@@ -96,20 +95,19 @@
                         <div class="btn-group" role="group">
                             <shortcut-menu ng-model="sprint" model-menus="menus" btn-primary="false"></shortcut-menu>
                             <div class="btn-group" uib-dropdown>
-                                <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                    <i class="fa fa-caret-down"></i>
+                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                             </div>
                         </div>
-                        <a class="btn btn-default" href="{{ openSprintUrl(sprint) }}">
+                        <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">
                             <i class="fa fa-pencil"
                                defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                         </a>
                     </div>
                 </h3>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="postits {{ postitClass }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"
@@ -122,18 +120,18 @@
             </div>
         </div>
         <div ng-if="!sprints || sprints.length == 0"
-             class="panel panel-light text-center">
-            <div class="panel-body">
+             class="card text-center">
+            <div class="card-body">
                 <div class="empty-view">
-                    <p class="help-block">${message(code: 'is.ui.sprint.help')}<p>
+                    <p class="form-text">${message(code: 'is.ui.sprint.help')}<p>
                 </div>
             </div>
         </div>
     </div>
-    <div ng-if="releases.length == 0" class="panel panel-light">
-        <div class="panel-body">
+    <div ng-if="releases.length == 0" class="card">
+        <div class="card-body">
             <div class="empty-view" ng-controller="releaseCtrl">
-                <p class="help-block">${message(code: 'is.ui.release.help')}<p>
+                <p class="form-text">${message(code: 'is.ui.release.help')}<p>
                 <a class="btn btn-primary"
                    ng-if="authorizedRelease('create')"
                    href="#{{ ::viewName }}/new">

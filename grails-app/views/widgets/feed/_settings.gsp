@@ -33,7 +33,7 @@
     <button ng-click="add(holder.feedUrl)"
             type="button"
             ng-disabled="!holder.feedUrl"
-            class="btn btn-default">
+            class="btn btn-secondary">
         ${message(code: 'is.button.add')}
     </button>
 </div>
@@ -50,7 +50,7 @@
     </div>
     <button ng-disabled="disableDeleteButton"
             type="button"
-            class="btn btn-default"
+            class="btn btn-secondary"
             ng-click="deleteFeed(holder.selected)">
         ${message(code: 'default.button.delete.label')}
     </button>

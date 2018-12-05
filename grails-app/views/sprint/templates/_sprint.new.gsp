@@ -21,9 +21,9 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="sprint.new.html">
-<div class="panel panel-light">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 <i class="fa fa-tasks"></i> <span class="item-name" title="${message(code: "todo.is.ui.sprint.new")}">${message(code: "todo.is.ui.sprint.new")}</span>
             </div>
@@ -33,8 +33,8 @@
         </h3>
     </div>
     <div class="details-no-tab">
-        <div class="panel-body">
-            <div class="help-block">${message(code: 'is.ui.sprint.help')}</div>
+        <div class="card-body">
+            <div class="form-text">${message(code: 'is.ui.sprint.help')}</div>
             <form ng-submit="save(sprint, false)"
                   name='formHolder.sprintForm'
                   novalidate>
@@ -52,9 +52,9 @@
                     <div class="form-half">
                         <label for="sprint.startDate">${message(code: 'is.sprint.startDate')}</label>
                         <div class="input-group">
-                            <span class="input-group-btn">
+                            <span class="input-group-before">
                                 <button type="button"
-                                        class="btn btn-default"
+                                        class="btn btn-secondary"
                                         ng-click="openDatepicker($event, startDateOptions)">
                                     <i class="fa fa-calendar"></i>
                                 </button>
@@ -82,9 +82,9 @@
                                    uib-datepicker-popup
                                    datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>
-                            <span class="input-group-btn">
+                            <span class="input-group-after">
                                 <button type="button"
-                                        class="btn btn-default"
+                                        class="btn btn-secondary"
                                         ng-click="openDatepicker($event, endDateOptions)">
                                     <i class="fa fa-calendar"></i>
                                 </button>

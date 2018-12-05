@@ -28,7 +28,7 @@
       ng-controller="actorCtrl"
       name="formHolder.actorForm">
     <h4>${message(code: "is.ui.actor.actors")}</h4>
-    <p class="help-block">${message(code: 'is.ui.actor.help')}</p>
+    <p class="form-text">${message(code: 'is.ui.actor.help')}</p>
     <div ng-if="authorizedActor('create') || authorizedActor('update')">
         <label for="actor.name">${message(code: 'is.actor.name')}</label>
         <div class="input-group">
@@ -40,8 +40,8 @@
                    class="form-control"
                    placeholder="{{ actor.id ? '' : message('is.ui.actor.noname') }}"
                    ng-model="actor.name"/>
-            <span class="input-group-btn">
-                <button class="btn btn-default"
+            <span class="input-group-after">
+                <button class="btn btn-secondary"
                         ng-if="!actor.id"
                         ng-disabled="formHolder.actorForm.$invalid || application.submitting"
                         type="submit"
@@ -55,7 +55,7 @@
                         ng-click="update(actor)">
                     ${message(code: 'default.button.update.label')}
                 </button>
-                <button class="btn btn-default"
+                <button class="btn btn-secondary"
                         ng-if="actor.id"
                         ng-disabled="!formHolder.actorForm.$dirty"
                         type="submit"
@@ -86,12 +86,12 @@
                 </td>
                 <td class="btn-toolbar"
                     ng-if="authorizedActor('update') || authorizedActor('delete', actor)">
-                    <a class="btn btn-primary btn-xs pull-right"
+                    <a class="btn btn-primary btn-sm pull-right"
                        ng-if="authorizedActor('update')"
                        ng-click="edit(actor)">
                         <i class="fa fa-pencil"></i>
                     </a>
-                    <a class="btn btn-danger btn-xs pull-right"
+                    <a class="btn btn-danger btn-sm pull-right"
                        ng-if="authorizedActor('delete', actor)"
                        ng-click="confirmDelete({ callback: delete, args: [actor] })">
                         <i class="fa fa-close"></i>

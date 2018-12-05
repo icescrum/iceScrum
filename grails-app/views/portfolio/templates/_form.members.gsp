@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.members.portfolio.html">
-<p class="help-block">${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}</p>
+<p class="form-text">${message(code: 'is.ui.user.add' + (grailsApplication.config.icescrum.invitation.enable ? '' : '.invite'))}</p>
 <div class="row">
     <div class="col-sm-4">
         <label for="businessOwners.search">${message(code: 'todo.is.ui.select.portfolio.businessOwner')}</label>
@@ -40,8 +40,10 @@
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'bo')"
                    typeahead-template-url="select.member.html">
-            <span class="input-group-addon">
-                <i class="fa" ng-class="{ 'fa-search': !searchingBo, 'fa-refresh':searchingBo }"></i>
+            <span class="input-group-after">
+                <span class="input-group-text">
+                    <i class="fa" ng-class="{ 'fa-search': !searchingBo, 'fa-refresh':searchingBo }"></i>
+                </span>
             </span>
         </p>
     </div>
@@ -70,8 +72,10 @@
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'sh')"
                    typeahead-template-url="select.member.html">
-            <span class="input-group-addon">
-                <i class="fa" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh }"></i>
+            <span class="input-group-after">
+                <span class="input-group-text">
+                    <i class="fa" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh }"></i>
+                </span>
             </span>
         </p>
     </div>

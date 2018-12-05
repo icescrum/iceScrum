@@ -26,8 +26,8 @@
     <div class="form-half">
         <label for="project.startDate">${message(code: 'is.dialog.wizard.project.startDate')}</label>
         <div class="input-group">
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="openDatepicker($event, startDateOptions)"><i class="fa fa-calendar"></i></button>
+            <span class="input-group-before">
+                <button type="button" class="btn btn-secondary" ng-click="openDatepicker($event, startDateOptions)"><i class="fa fa-calendar"></i></button>
             </span>
             <input type="text"
                    class="form-control"
@@ -68,15 +68,16 @@
                    ng-required="isCurrentStep(4, 'project')"
                    ng-change="computePlanning()"
                    ng-model="project.preferences.estimatedSprintsDuration">
-            <div class="input-group-addon">${message(code: 'is.dialog.wizard.project.days')}</div>
+            <div class="input-group-after">
+                <div class="input-group-text">${message(code: 'is.dialog.wizard.project.days')}</div>
+            </div>
         </div>
     </div>
 </div>
 <div class="row">
     <div class="form-half">
         <label ng-if="type == 'newProject'"
-               for="initializeProject"
-               class="checkbox-inline">
+               for="initializeProject">
             <input type="checkbox"
                    name="project.initialize"
                    id="initializeProject"
@@ -84,8 +85,7 @@
             ${message(code: 'todo.is.ui.project.planning.initialize')}
         </label>
         <label ng-if="type != 'newProject'"
-               for="hideWeekend"
-               class="checkbox-inline">
+               for="hideWeekend">
             <input type="checkbox"
                    name="project.preferences.hideWeekend"
                    id="hideWeekend"
@@ -98,8 +98,8 @@
     <div class="form-half">
         <label for="project.firstSprint">${message(code: 'is.dialog.wizard.firstSprint')}</label>
         <div class="input-group">
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="openDatepicker($event, firstSprintOptions)"><i class="fa fa-calendar"></i></button>
+            <span class="input-group-before">
+                <button type="button" class="btn btn-secondary" ng-click="openDatepicker($event, firstSprintOptions)"><i class="fa fa-calendar"></i></button>
             </span>
             <input type="text"
                    class="form-control"
@@ -126,8 +126,8 @@
                    datepicker-options="endDateOptions"
                    ng-class="{current:step.selected}"
                    ng-required="isCurrentStep(4, 'project')"/>
-            <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="openDatepicker($event, endDateOptions)"><i class="fa fa-calendar"></i></button>
+            <span class="input-group-after">
+                <button type="button" class="btn btn-secondary" ng-click="openDatepicker($event, endDateOptions)"><i class="fa fa-calendar"></i></button>
             </span>
         </div>
     </div>

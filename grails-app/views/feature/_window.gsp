@@ -23,15 +23,15 @@
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="backlogs-list-details">
-        <div class="panel panel-light">
-            <div class="panel-heading">
-                <h3 class="panel-title small-title clearfix">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title small-title clearfix">
                     <span class="title pull-left"><i class="fa fa-puzzle-piece"></i> ${message(code: 'is.ui.feature')} ({{ features.length}})</span>
                     <div class="btn-toolbar pull-left">
                         <div class="btn-group">
                             <button type="button"
                                     ng-if="isSortableFeature()"
-                                    class="btn btn-default hidden-sm hidden-xs"
+                                    class="btn btn-secondary hidden-sm hidden-xs"
                                     ng-click="enableSortable()"
                                     defer-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
                                 <i ng-class="isSortingFeature() ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
@@ -39,10 +39,9 @@
                             <div class="btn-group"
                                  uib-dropdown
                                  defer-tooltip="${message(code: 'todo.is.ui.sort')}">
-                                <button class="btn btn-default"
+                                <button class="btn btn-secondary"
                                         uib-dropdown-toggle type="button">
                                     <span>{{ orderBy.current.name }}</span>
-                                    <i class="fa fa-caret-down"></i>
                                 </button>
                                 <ul uib-dropdown-menu role="menu">
                                     <li role="menuitem" ng-repeat="order in orderBy.values">
@@ -51,7 +50,7 @@
                                 </ul>
                             </div>
                             <button type="button"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     ng-click="orderBy.reverse = !orderBy.reverse"
                                     defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
                                 <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
@@ -61,11 +60,11 @@
                              uib-dropdown
                              ng-if="authenticated()"
                              defer-tooltip="${message(code: 'todo.is.ui.export')}">
-                            <button class="btn btn-default"
+                            <button class="btn btn-secondary"
                                     uib-dropdown-toggle
                                     ng-disabled="!features.length"
                                     type="button">
-                                <i class="fa fa-download"></i> <i class="fa fa-caret-down"></i>
+                                <i class="fa fa-download"></i>
                             </button>
                             <ul uib-dropdown-menu
                                 role="menu">
@@ -81,19 +80,19 @@
                     <div class="btn-toolbar pull-right">
                         <div class="btn-group">
                             <button type="button"
-                                    class="btn btn-default hidden-xs hidden-sm"
+                                    class="btn btn-secondary hidden-xs hidden-sm"
                                     defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
                                     ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
                             </button>
                             <button type="button"
-                                    class="btn btn-default hidden-xs"
+                                    class="btn btn-secondary hidden-xs"
                                     ng-click="fullScreen()"
                                     defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </div>
                         <div class="btn-group hidden-xs">
                             <button type="button"
-                                    class="btn btn-default"
+                                    class="btn btn-secondary"
                                     ng-click="toggleSelectableMultiple()"
                                     defer-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
                                 <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
@@ -114,11 +113,11 @@
                     ${message(code: 'is.ui.feature.rank.disabled')}
                 </div>
             </div>
-            <div class="panel-body"
+            <div class="card-body"
                  selectable="selectableOptions">
                 <div ng-if="features.length == 0"
                      class="empty-view">
-                    <p class="help-block">${message(code: 'is.ui.feature.help')}<p>
+                    <p class="form-text">${message(code: 'is.ui.feature.help')}<p>
                     <a class="btn btn-primary"
                        ng-if="authorizedFeature('create')"
                        href="#{{ ::viewName }}/new">
@@ -127,8 +126,8 @@
                 </div>
                 <div ng-if="application.search && features.length != 0 && (features | search).length == 0"
                      class="empty-view">
-                    <p class="help-block">${message(code: 'is.ui.feature.search.empty')} <strong>{{ application.search }}</strong></p>
-                    <button class="btn btn-default"
+                    <p class="form-text">${message(code: 'is.ui.feature.search.empty')} <strong>{{ application.search }}</strong></p>
+                    <button class="btn btn-secondary"
                             ng-click="application.search = null">
                         ${message(code: 'todo.is.ui.search.clear')}
                     </button>

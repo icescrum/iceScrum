@@ -27,7 +27,7 @@
           submitButton="${message(code: 'is.ui.backlog.menu.split')}"
           closeButton="${message(code: 'is.button.cancel')}"
           title="${message(code: 'is.dialog.split.title')}">
-    <p class="help-block">${message(code: 'is.dialog.split.description')}</p>
+    <p class="form-text">${message(code: 'is.dialog.split.description')}</p>
     <div class="form-group col-sm-12">
         <slider ng-model="splitCount"
                 min="2"

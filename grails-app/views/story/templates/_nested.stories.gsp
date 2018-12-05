@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="nested.stories.html">
-<div class="stories panel-body">
+<div class="stories card-body">
     <table class="table" ng-controller="featureStoriesCtrl">
         <tbody ng-repeat="storyEntry in storyEntries" style="border-top: 0;">
             <tr>
@@ -45,8 +45,7 @@
                             <div class="btn-group">
                                 <shortcut-menu ng-model="story" model-menus="menus" view-type="'list'" btn-sm="true"></shortcut-menu>
                                 <div class="btn-group btn-group-sm" uib-dropdown>
-                                    <button type="button" class="btn btn-default" uib-dropdown-toggle>
-                                        <i class="fa fa-caret-down"></i>
+                                    <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                     </button>
                                     <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'story'" template-url="item.menu.html"></ul>
                                 </div>

@@ -34,11 +34,11 @@
                     <div class="pull-right btn-toolbar">
                         <button type="button"
                                 role="button"
-                                class="btn btn-default"
+                                class="btn btn-secondary"
                                 ng-click="$close()">
                             ${message(code: 'is.button.cancel')}
                         </button>
-                        <input type="submit" class="btn btn-default" ng-disabled="formHolder.portfolioForm.$invalid" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
+                        <input type="submit" class="btn btn-secondary" ng-disabled="formHolder.portfolioForm.$invalid" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
                     </div>
                 </div>
             </wz-step>
@@ -47,18 +47,18 @@
                 <div class="footer-btn-toolbar">
                     <button type="button"
                             role="button"
-                            class="btn btn-default pull-left"
+                            class="btn btn-secondary pull-left"
                             ng-click="$close()">
                         ${message(code: 'is.button.cancel')}
                     </button>
                     <div class="btn-toolbar pull-right">
                         <button type="button"
                                 role="button"
-                                class="btn btn-default"
+                                class="btn btn-secondary"
                                 wz-previous="previous">
                             ${message(code: 'todo.is.ui.wizard.previous')}
                         </button>
-                        <input type="submit" class="btn btn-default" ng-disabled="portfolio.projects.length < 1" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
+                        <input type="submit" class="btn btn-secondary" ng-disabled="portfolio.projects.length < 1" wz-next value="${message(code: 'todo.is.ui.wizard.next')}"/>
                     </div>
                 </div>
             </wz-step>
@@ -67,14 +67,14 @@
                 <div class="footer-btn-toolbar">
                     <button type="button"
                             role="button"
-                            class="btn btn-default"
+                            class="btn btn-secondary"
                             ng-click="$close()">
                         ${message(code: 'is.button.cancel')}
                     </button>
                     <div class="btn-toolbar pull-right">
                         <button type="button"
                                 role="button"
-                                class="btn btn-default"
+                                class="btn btn-secondary"
                                 wz-previous="previous">
                             ${message(code: 'todo.is.ui.wizard.previous')}
                         </button>

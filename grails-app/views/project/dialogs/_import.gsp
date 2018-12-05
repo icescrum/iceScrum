@@ -50,7 +50,7 @@
          flow-file-success="checkValidation($message)"
          flow-error="handleImportError($file, $message, $flow)"
          flow-files-submitted="$flow.upload(); showProgress()">
-        <div ng-hide="$flow.files.length" class="help-block text-center">
+        <div ng-hide="$flow.files.length" class="form-text text-center">
             <g:message code="is.dialog.importProject.choose.description"/>
         </div>
         <div ng-hide="$flow.files.length" style="text-align: center">
@@ -67,7 +67,7 @@
               show-validation
               ng-show="changes"
               ng-submit="applyChanges()" novalidate>
-            <div class="help-block">
+            <div class="form-text">
                 <g:message code="todo.is.ui.import.changes"/>
             </div>
             <div class="changes row" ng-if="_changes.erasable">

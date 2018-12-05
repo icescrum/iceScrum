@@ -32,7 +32,7 @@
     <div class="error-actions">
         <a href="${homeUrl}" class="btn btn-primary btn-lg">
             <i class="fa fa-home"></i> ${message(code: 'todo.is.ui.40x.home')}</a>
-        <a href="mailto:${emailSupport}" class="btn btn-default btn-lg">
+        <a href="mailto:${emailSupport}" class="btn btn-secondary btn-lg">
             <i class="fa fa-envelope"></i> ${message(code: 'todo.is.ui.40x.support')}</a>
     </div>
 </body>

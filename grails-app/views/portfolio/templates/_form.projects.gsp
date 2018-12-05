@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="form.projects.portfolio.html">
-<p class="help-block">${message(code: 'is.ui.portfolio.help.projects')}</p>
+<p class="form-text">${message(code: 'is.ui.portfolio.help.projects')}</p>
 <label for="project.name">${message(code: 'todo.is.ui.project.create.or.select')}</label>
 <div class="input-group" style="margin-bottom:15px;" ng-if="portfolio.projects.length < 10">
     <input autocomplete="off"
@@ -36,7 +36,9 @@
            typeahead-template-url="select.or.create.project.html"
            ng-model="formHolder.projectSelection"
            ng-disabled="portfolio.projects.length >= 10">
-    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+    <span class="input-group-after">
+        <span class="input-group-text"><i class="fa fa-search"></i></span>
+    </span>
 </div>
 <div class="alert alert-warning" role="alert" style="margin-bottom: 15px;" ng-if="portfolio.projects.length >= 10">
     ${message(code: 'is.ui.portfolio.limit.projects')}
@@ -64,7 +66,7 @@
             <td>{{:: project.productOwners | displayNames }}</td>
             <td>{{:: project.team.name }} ({{:: (project.team.scrumMasters.length + project.team.members.length) }})</td>
             <td>
-                <button class="btn btn-default btn-sm btn-model"
+                <button class="btn btn-secondary btn-sm btn-model"
                         ng-model="foo" %{-- Hack to make form dirty --}%
                         ng-click="removeProject(project)"
                         type="button">

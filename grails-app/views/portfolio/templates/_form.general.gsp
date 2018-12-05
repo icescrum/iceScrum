@@ -23,7 +23,7 @@
 --}%
 <script type="text/ng-template" id="form.general.portfolio.html">
 <h4>${message(code: "is.dialog.wizard.section.portfolio")}</h4>
-<p class="help-block">${message(code: 'is.ui.portfolio.help.general')}</p>
+<p class="form-text">${message(code: 'is.ui.portfolio.help.general')}</p>
 <entry:point id="portfolio-form-general-before"/>
 <div class="row">
     <div class="col-sm-8 col-xs-8 form-group">
@@ -37,7 +37,7 @@
                    ng-model="portfolio.name"
                    ng-change="nameChanged()"
                    ng-required="isCurrentStep(1, 'portfolio')">
-            <span class="input-group-btn">
+            <span class="input-group-after">
                 <button class="btn btn-hidden"
                         type="button"
                         disabled="disabled">

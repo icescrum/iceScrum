@@ -26,8 +26,8 @@
           submitButton="${message(code: 'todo.is.ui.open')}"
           class="split-modal">
     <div class="row">
-        <div class="left-panel col-sm-3">
-            <div class="left-panel-header">
+        <div class="left-card col-sm-3">
+            <div class="left-card-header">
                 <div class="input-group">
                     <input type="text"
                            ng-model="workspaceSearch"
@@ -35,8 +35,8 @@
                            ng-model-options="{debounce: 300}"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default"
+                    <span class="input-group-after">
+                        <button class="btn btn-secondary"
                                 type="button"
                                 ng-click="workspaceSearch = null; searchWorkspaces()">
                             <i class="fa" ng-class="workspaceSearch ? 'fa-times' : 'fa-search'"></i>
@@ -44,7 +44,7 @@
                     </span>
                 </div>
             </div>
-            <ul class="left-panel-body nav nav-list">
+            <ul class="left-card-body nav nav-list">
                 <li ng-class="{'current': currentWorkspace.id == workspace.id && currentWorkspace.class == workspace.class}" ng-repeat="currentWorkspace in workspaces">
                     <a ng-click="selectWorkspace(currentWorkspace)" href>
                         <i ng-if="currentWorkspace.pkey && !currentWorkspace.preferences.hidden" class="fa fa-eye"></i>
@@ -53,7 +53,7 @@
                     </a>
                 </li>
             </ul>
-            <div class="left-panel-bottom">
+            <div class="left-card-bottom">
                 <div uib-pagination
                      boundary-links="true"
                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="right-panel col-sm-9" ng-switch="workspaces != undefined && workspaces.length == 0 && summary">
+        <div class="right-card col-sm-9" ng-switch="workspaces != undefined && workspaces.length == 0 && summary">
             <div ng-switch-when="true">
                 ${message(code: 'todo.is.ui.project.noproject')}
             </div>

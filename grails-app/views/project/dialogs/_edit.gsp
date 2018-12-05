@@ -23,8 +23,8 @@
 
 <is:modal title="${message(code: 'todo.is.ui.project.edit')}" class="wizard split-modal" footer="${false}">
     <div class="row wizard-row">
-        <div class="left-panel col-xs-12 col-sm-3">
-            <ul class="left-panel-body nav nav-list">
+        <div class="left-card col-xs-12 col-sm-3">
+            <ul class="left-card-body nav nav-list">
                 <li ng-if="authorizedProject('update', currentProject)" ng-class="{ current: isCurrentPanel('general') }">
                     <a ng-click="setCurrentPanel('general')"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.dialog.wizard.section.project')}</span></a>
                 </li>
@@ -52,7 +52,7 @@
                 </li>
             </ul>
         </div>
-        <div class="right-panel steps col-xs-12 col-sm-9" ng-switch="getCurrentPanel()">
+        <div class="right-card steps col-xs-12 col-sm-9" ng-switch="getCurrentPanel()">
             <section ng-switch-when="general"
                      class="step current"
                      title="${message(code: 'is.dialog.wizard.section.project')}">

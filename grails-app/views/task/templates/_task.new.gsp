@@ -21,9 +21,9 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="task.new.html">
-<div class="panel panel-light">
-    <div class="panel-heading">
-        <h3 class="panel-title row">
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title row">
             <div class="left-title">
                 <i class="fa fa-file" ng-style="{color: task.color ? task.color : '#f9f157' }"></i>
                 <span class="item-name" title="${message(code: 'todo.is.ui.task.new')}">${message(code: 'todo.is.ui.task.new')}</span>
@@ -34,8 +34,8 @@
         </h3>
     </div>
     <div class="details-no-tab">
-        <div class="panel-body">
-            <div class="help-block">
+        <div class="card-body">
+            <div class="form-text">
                 ${message(code: 'is.ui.task.help')}
                 <documentation doc-url="features-stories-tasks#tasks"/>
             </div>

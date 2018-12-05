@@ -25,12 +25,6 @@
     <div class="bg-danger text-center text-danger archived-message"><i class="fa fa-archive"></i> <g:message code="is.ui.${workspace.name}.archived"/></div>
 </g:if>
 <header ng-style="application.context | contextStyle">
-    <button type="button" class="navbar-toggle offcanvas-toggle navbar-inverse" data-target="#menu-header" data-toggle="offcanvas">
-        <span class="sr-only">${message(code: 'todo.is.ui.main.menu')}</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </button>
     <entry:point id="header-before-menu"/>
     <nav id="menu-header"
          class="navbar navbar-masthead navbar-offcanvas navbar-icescrum navbar-default navbar-inverse {{ application.context.color | contrastColor:true }}"
@@ -58,7 +52,7 @@
                             </svg>&nbsp;<g:if test="${workspace}"><i tooltip-placement="bottom" defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
                                                                      ng-if="workspace.preferences && !workspace.preferences.hidden && authorized${workspace.name.capitalize()}('edit')"
                                                                      ng-click="show${workspace.name.capitalize()}EditModal(); $event.stopPropagation();" class="fa fa-eye">&nbsp;</i></g:if><g:if test="${workspace?.icon}"><i
-                                class="fa fa-${workspace.icon}"></i> <span class="text-ellipsis" title="{{ workspace.name }}">{{ workspace.name }}</span></g:if> <i class="fa fa-caret-down"></i>
+                                class="fa fa-${workspace.icon}"></i> <span class="text-ellipsis" title="{{ workspace.name }}">{{ workspace.name }}</span></g:if>
                         </a>
                         <ul uib-dropdown-menu class="main-dropdown-menu">
                             <li role="presentation" class="dropdown-header">
@@ -119,7 +113,7 @@
                                 </g:else>
                             </g:if>
                             <g:if test="${workspace?.object}">
-                                <li ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="divider"></li>
+                                <li ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-divider"></li>
                                 <li ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-header">
                                     ${message(code: 'is.ui.workspace.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="{{ workspace.name }}"
                                                                                                              style="display:inline-block; max-width:70px"><b>{{ workspace.name }}</b></span>
@@ -147,7 +141,7 @@
                                 <entry:point id="header-menu-current-workspace"/>
                             </g:if>
                             <g:if test="${workspacesFilteredsList}">
-                                <li role="presentation" class="divider" style='display:${workspacesFilteredsList ? 'block' : 'none'}'></li>
+                                <li role="presentation" class="dropdown-divider" style='display:${workspacesFilteredsList ? 'block' : 'none'}'></li>
                                 <li role="presentation" class="dropdown-header" style='display:${workspacesFilteredsList ? 'block' : 'none'}'>
                                     ${message(code: 'is.ui.workspace.my.title')}
                                 </li>
@@ -163,11 +157,11 @@
                                 </li>
                             </g:if>
                             <g:if test="${request.authenticated}">
-                                <li role="presentation" class="divider"></li>
+                                <li role="presentation" class="dropdown-divider"></li>
                                 <li role="presentation" class="dropdown-header">${message(code: 'is.ui.team.menu')}</li>
                                 <li><a href ng-click="showManageTeamsModal()">${message(code: 'is.ui.manage')}</a></li>
                             </g:if>
-                            <li role="presentation" class="divider"></li>
+                            <li role="presentation" class="dropdown-divider"></li>
                             <li role="presentation" class="dropdown-header">iceScrum</li>
                             <entry:point id="header-menu-icescrum-first"/>
                             <li>
@@ -190,7 +184,7 @@
                         class="menuitem">
                     </li>
                     <li class="menubar-more" uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && application.menus.hidden.length == 0 }">
-                        <a uib-dropdown-toggle href>${message(code: 'todo.is.ui.more')} <i class="fa fa-caret-down"></i></a>
+                        <a uib-dropdown-toggle href>${message(code: 'todo.is.ui.more')}</a>
                         <ul uib-dropdown-menu class="menubar"
                             is-disabled="!currentUser.id || workspaceType != 'project'"
                             as-sortable="menuSortableOptions"
@@ -207,7 +201,7 @@
                         <form class="navbar-form pull-left" role="search">
                             <div class="input-group search">
                                 <span class="input-group-btn" ng-if="application.context">
-                                    <button class="btn btn-default"
+                                    <button class="btn btn-secondary"
                                             type="button"
                                             ng-click="setContext(null)">
                                         <i class="fa" ng-class="application.context.type | contextIcon"></i>
@@ -226,7 +220,7 @@
                                        typeahead-on-select="setContext($item)"
                                        typeahead-template-url="search.context.html">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="application.search = null">
+                                    <button class="btn btn-secondary" type="button" ng-click="application.search = null">
                                         <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
                                     </button>
                                 </span>
@@ -244,7 +238,7 @@
                                        placeholder="${message(code: 'todo.is.ui.search.action')}"
                                        ng-model-options="{ debounce: 300 }">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="application.search = null">
+                                    <button class="btn btn-secondary" type="button" ng-click="application.search = null">
                                         <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
                                     </button>
                                 </span>
@@ -283,7 +277,7 @@
                     </div>
                     <button id="login"
                             ng-show="!(currentUser.username)"
-                            class="btn btn-default"
+                            class="btn btn-secondary"
                             ng-click="showAuthModal()"
                             defer-tooltip="${message(code: 'is.button.connect')} (SHIFT+L)"
                             tooltip-placement="bottom"><g:message code="is.button.connect"/></button>
