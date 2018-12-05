@@ -1,8 +1,6 @@
-@import (reference) "../vendors/bootstrap/less/forms.less";
-@import (reference) "../vendors/bootstrap/less/responsive-utilities.less";
-@import (reference) "../vendors/todc/less/todc-bootstrap.less";
-@import (reference) "./variables.less";
-@import (reference) "./mixin.less";
+@import "variables";
+@import "mixin";
+@import "shims";
 
 .standalone {
   .postit-container {
@@ -10,7 +8,8 @@
     padding: 0;
     .postit {
       z-index: 10;
-      .grid-group .postit-container .postit;
+      @extend .postit-container; // TODO surround by grid-group
+      @extend .postit;
       background: white;
     }
     &.solo {
@@ -25,10 +24,10 @@
       margin: 0 30px 10px 0;
       margin-bottom: 20px;
       &:before, &:after {
-        width: @postit-width;
-        height: @postit-height;
-        color: @gray;
-        border: 1px solid @postit-border;
+        width: $postit-width;
+        height: $postit-height;
+        color: $gray;
+        border: 1px solid $postit-border;
         border-radius: 2px;
         box-shadow: 0 1px 2px rgba(0, 0, 0, .25), inset 0 0 3px rgba(255, 255, 255, .75);
         content: "";
@@ -47,17 +46,17 @@
         top: 2px;
         z-index: 0;
       }
-      @postit-twisted-offset: 4deg;
+      $postit-twisted-offset: 4deg;
       &.twisted {
         &:before {
-          -webkit-transform: rotate(@postit-twisted-offset);
-          -moz-transform: rotate(@postit-twisted-offset);
-          transform: rotate(@postit-twisted-offset);
+          -webkit-transform: rotate($postit-twisted-offset);
+          -moz-transform: rotate($postit-twisted-offset);
+          transform: rotate($postit-twisted-offset);
         }
         &:after {
-          -webkit-transform: rotate(-@postit-twisted-offset);
-          -moz-transform: rotate(-@postit-twisted-offset);
-          transform: rotate(-@postit-twisted-offset);
+          -webkit-transform: rotate(-$postit-twisted-offset);
+          -moz-transform: rotate(-$postit-twisted-offset);
+          transform: rotate(-$postit-twisted-offset);
         }
       }
       &:hover {
@@ -96,7 +95,7 @@
         margin-left: 2px;
       }
       .title-sm {
-        display:none;
+        display: none;
       }
     }
   }
@@ -112,7 +111,7 @@
   }
   .postit-container {
     .postit {
-      border-left: 1px solid @postit-border !important; // Override gradient
+      border-left: 1px solid $postit-border !important; // Override gradient
     }
   }
   &.has-selected {
@@ -128,8 +127,8 @@
     }
     .postit-container.is-selected {
       .postit {
-        border: 1px solid @brand-primary;
-        border-left: 1px solid @brand-primary !important; // Override gradient
+        border: 1px solid $brand-primary;
+        border-left: 1px solid $brand-primary !important; // Override gradient
       }
     }
   }
@@ -144,21 +143,21 @@
     cursor: pointer;
 
     .postit {
-      width: @postit-width;
-      height: @postit-height;
+      width: $postit-width;
+      height: $postit-height;
       padding: 2px 5px;
       position: relative;
-      color: @gray;
-      border: 1px solid @postit-border;
+      color: $gray;
+      border: 1px solid $postit-border;
       border-radius: 2px;
       &.invert {
-        color: @invert-color;
+        color: $invert-color;
         .hover-progress {
-          color: @gray;
+          color: $gray;
         }
         .head {
           a.follow {
-            color: @invert-color;
+            color: $invert-color;
           }
           .estimation, .value {
             text-shadow: 0 1px 1px rgba(255, 255, 255, .15);
@@ -167,7 +166,7 @@
         .content {
           text-shadow: 0 1px 0 #999;
           a {
-            color: @invert-color;
+            color: $invert-color;
           }
         }
         .tags {
@@ -178,24 +177,24 @@
           }
           .tag {
             background: rgba(0, 0, 0, 0.2);
-            color: @invert-color;
+            color: $invert-color;
           }
           > .action {
             i {
-              color: @invert-color;
+              color: $invert-color;
             }
             a .badge {
-              color: @invert-color;
+              color: $invert-color;
             }
           }
         }
         .actions {
           > .action {
             i {
-              color: @invert-color;
+              color: $invert-color;
             }
             a .badge {
-              color: @invert-color;
+              color: $invert-color;
             }
           }
         }
@@ -206,7 +205,7 @@
           vertical-align: top;
           .follow {
             font-size: 16px;
-            color: @gray;
+            color: $gray;
             text-decoration: none;
             visibility: hidden;
             &.active {
@@ -249,19 +248,19 @@
           margin: 0;
           font-size: 16px;
           text-align: center;
-          max-height: @postit-content-height;
+          max-height: $postit-content-height;
         }
         .description {
           visibility: hidden;
           display: inline-block;
-          max-height: @postit-content-height;
+          max-height: $postit-content-height;
           display: -webkit-box;
           max-width: 400px;
-          height: @font-size-postit*@line-height-postit*@lines-to-show-postit; /* Fallback for non-webkit */
+          height: $font-size-postit*$line-height-postit*$lines-to-show-postit; /* Fallback for non-webkit */
           margin: 0 auto;
-          font-size: @font-size-postit;
-          line-height: @line-height-postit;
-          -webkit-line-clamp: @lines-to-show-postit;
+          font-size: $font-size-postit;
+          line-height: $line-height-postit;
+          -webkit-line-clamp: $lines-to-show-postit;
           -webkit-box-orient: vertical;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -271,7 +270,7 @@
           font-size: 13px;
           font-style: italic;
           overflow: hidden;
-          max-height: @postit-content-height;
+          max-height: $postit-content-height;
         }
       }
       .tags {
@@ -285,7 +284,7 @@
           }
         }
         .tag {
-          color: @gray;
+          color: $gray;
           margin-right: 4px;
           background-color: rgba(255, 255, 255, .6);
           font-size: 10px;
@@ -293,7 +292,7 @@
           border-radius: 2px;
         }
         > .action i {
-          color: @gray;
+          color: $gray;
         }
         overflow: hidden;
       }
@@ -334,17 +333,17 @@
           padding: 0;
           height: 13px;
           border: none;
-          color: @gray;
+          color: $gray;
           margin-bottom: 0;
           background: rgba(255, 255, 255, 0.6);
           .progress-bar {
             text-align: left;
             background: rgba(255, 255, 255, 0.9);
             &.bg-success {
-              .bg-variant(darken(@state-success-bg, 20%))
+              background-color: $state-success-bg !important
             }
             &.bg-danger {
-              .bg-variant(darken(@state-danger-bg, 20%))
+              background-color: $state-danger-bg !important
             }
           }
           .status {
@@ -386,8 +385,8 @@
         }
         > .btn, > .btn-group {
           margin-top: -15px;
-          .vertical-align;
-          .horizontal-align;
+          @include vertical-align;
+          @include horizontal-align;
           position: relative; // Override position: absolute from .horizontal-align
         }
       }
@@ -420,8 +419,8 @@
         position: absolute;
       }
       &.defect:after, &.task-blocked:after {
-        border-top-color: @brand-danger;
-        border-right-color: @brand-danger;
+        border-top-color: $brand-danger;
+        border-right-color: $brand-danger;
       }
       &.defect:before {
         content: "\f188";
@@ -431,15 +430,15 @@
         content: "\f12a";
       }
       &.technical:after {
-        border-top-color: @brand-info;
-        border-right-color: @brand-info;
+        border-top-color: $brand-info;
+        border-right-color: $brand-info;
       }
       &.technical:before {
         content: "\f085";
       }
       &.architectural:after {
-        border-top-color: @brand-success;
-        border-right-color: @brand-success;
+        border-top-color: $brand-success;
+        border-right-color: $brand-success;
       }
       &.architectural:before {
         content: "\f085";
@@ -450,7 +449,7 @@
     .postit-container .postit:hover {
       .content:not(.without-description) {
         .title:not(.title-sm) {
-          .text-overflow();
+          @include text-overflow();
         }
         .description {
           overflow: hidden;
@@ -462,16 +461,16 @@
   }
   &.size-sm {
     .postit-container .postit {
-      width: @postit-width-sm;
-      height: @postit-height-sm;
+      width: $postit-width-sm;
+      height: $postit-height-sm;
       .content {
         h3.title {
-          display:none;
+          display: none;
           &.title-sm {
-            display:block;
+            display: block;
           }
         }
-        height: @font-size-postit-sm*@line-height-postit-sm*@lines-to-show-postit-sm + 1;
+        height: $font-size-postit-sm*$line-height-postit-sm*$lines-to-show-postit-sm + 1;
         padding-left: 5px;
         padding-right: 5px;
       }
@@ -542,14 +541,14 @@
 
 .list-group {
   .postit-container {
-    .postit:not(.add-task){
+    .postit:not(.add-task) {
       background: #fff;
     }
     &:nth-child(even) .postit:not(.task) {
       background: #fff;
     }
     &:nth-child(odd) .postit:not(.task) {
-      background: @table-bg-accent;
+      background: $table-bg-accent;
     }
     &.is-selected {
       .postit {
@@ -557,14 +556,14 @@
         border: none;
         border-left-width: 9px !important;
       }
-      border: 1px solid @brand-primary;
+      border: 1px solid $brand-primary;
       + .is-selected {
         border-top: none !important;
       }
     }
     .postit {
       position: relative;
-      border: 1px solid @table-border-color;
+      border: 1px solid $table-border-color;
       border-left: none;
       border-right: none;
       background-image: none !important; // Override gradient
@@ -642,14 +641,14 @@
                 padding: 1px 2px;
                 border-radius: 2px;
                 background: rgba(0, 0, 0, 0.2);
-                color: @invert-color;
+                color: $invert-color;
               }
 
               &:hover {
                 text-decoration: none;
                 .tag {
                   background: rgba(255, 255, 255, 0);
-                  color: @gray;
+                  color: $gray;
                 }
               }
             }
@@ -676,7 +675,7 @@
               width: 100%;
               height: 11px;
               padding: 0;
-              color: @gray;
+              color: $gray;
               margin-bottom: 0;
               position: absolute;
               border: none;
@@ -685,10 +684,10 @@
                 text-align: left;
                 background: rgba(0, 0, 0, 0.1);
                 &.bg-success {
-                  .bg-variant(darken(@state-success-bg, 20%))
+                  background-color: $state-success-bg !important
                 }
                 &.bg-danger {
-                  .bg-variant(darken(@state-danger-bg, 20%))
+                  background-color: $state-danger-bg !important
                 }
               }
               .status {
@@ -704,7 +703,7 @@
         }
         > .head > *, > .content h3, .footer > .actions {
           font-size: 16px !important;
-          color: @gray;
+          color: $gray;
         }
       }
       &.postit-type:after, &.task-blocked:after {
@@ -730,8 +729,8 @@
         position: absolute;
       }
       &.defect:after, &.task-blocked:after {
-        border-top-color: @brand-danger;
-        border-right-color: @brand-danger;
+        border-top-color: $brand-danger;
+        border-right-color: $brand-danger;
       }
       &.defect:before {
         content: "\f188";
@@ -741,25 +740,25 @@
         content: "\f12a";
       }
       &.technical:after {
-        border-top-color: @brand-info;
-        border-right-color: @brand-info;
+        border-top-color: $brand-info;
+        border-right-color: $brand-info;
       }
       &.technical:before {
         content: "\f085";
       }
       &.architectural:after {
-        border-top-color: @brand-success;
-        border-right-color: @brand-success;
+        border-top-color: $brand-success;
+        border-right-color: $brand-success;
       }
       &.architectural:before {
         content: "\f085";
       }
       &.invert {
         .description {
-          color: @gray;
+          color: $gray;
         }
         .state {
-          color: @gray;
+          color: $gray;
         }
       }
       &.add-task, &.hide-tasks {
@@ -771,7 +770,7 @@
           border: none;
         }
         > .btn, > .btn-group {
-          .horizontal-align;
+          @include horizontal-align;
         }
       }
       &.task > .footer {
@@ -782,13 +781,13 @@
       border-top: none;
     }
     &:nth-child(odd):not(:first-child) .postit {
-      border-top-color: @table-bg-accent;
+      border-top-color: $table-bg-accent;
     }
     &.is-selected:nth-child(even) + .is-selected .postit {
       border-top-color: #fff !important;
     }
     &.is-selected:nth-child(odd) + .is-selected .postit {
-      border-top-color: @table-bg-accent !important;
+      border-top-color: $table-bg-accent !important;
     }
   }
   &.force-size-xs {
@@ -800,7 +799,7 @@
   }
 }
 
-.panel-body > .list-group {
+.card-body > .list-group {
   margin-left: -4px;
   margin-right: -4px;
   margin-bottom: 0;
@@ -812,7 +811,7 @@
   padding: 0;
   font-size: 10px;
   border-radius: 0;
-  color: @gray;
+  color: $gray;
 }
 
 .postit {
@@ -822,9 +821,9 @@
       text-decoration: none;
     }
     i {
-      color: @gray;
+      color: $gray;
     }
-    font-family: @font-family-base;
+    font-family: $font-family-base;
     .action {
       &.comments {
         .fa-comment-o, &.active .fa-comment {
@@ -866,7 +865,7 @@
     }
   }
   .follow {
-    color: @gray;
+    color: $gray;
     text-decoration: none;
     .fa-star-o, &.active .fa-star {
       display: inline-block;
@@ -891,12 +890,12 @@
 }
 
 td.postits {
-  min-width: @postit-width + 10*2;
+  min-width: $postit-width + 10*2;
   &.size-sm {
-    min-width: @postit-width-sm + 10*2;
+    min-width: $postit-width-sm + 10*2;
   }
   &.size-xs {
-    min-width: @postit-width-xs + 10*2;
+    min-width: $postit-width-xs + 10*2;
   }
 }
 

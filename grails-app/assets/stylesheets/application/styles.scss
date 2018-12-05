@@ -20,21 +20,21 @@
 - Vincent Barrier (vbarrier@kagilum.com)
 - Nicolas Noullet (nnoullet@kagilum.com)
 **/
-@import (reference) "../vendors/todc/less/todc-bootstrap.less";
-@import (reference) "./variables.less";
-@import (reference) "./mixin.less";
-@import (reference) "./layout.less";
-@import (reference) "./postits.less";
-@import (reference) "./select2.less";
+@import "variables";
+@import "mixin";
+@import "layout";
+@import "postits";
+@import "select2";
+@import "shims";
 
 header {
   z-index: 100;
 }
 
-label:not(.btn):not(.checkbox-inline):not(.radio-inline):not(.control-label) {
+label:not(.btn):not(.control-label) {
   line-height: 1em;
   width: 100%;
-  .text-overflow();
+  @include text-overflow();
 }
 
 *[ng-click] {
@@ -61,10 +61,10 @@ table {
 }
 
 #pass-strength-result {
-  background-color: @light-bg;
+  background-color: $light-bg;
   border: 1px solid #ddd;
   text-align: center;
-  color: @text-color;
+  color: $text-color;
   &.bad {
     border-color: #ffc5c2;
     background-color: #ffe6e5;
@@ -106,19 +106,14 @@ table {
 }
 
 .as-sortable-placeholder {
-  border: 2px dashed @brand-primary;
-}
-
-.custom-list-header {
-  .list-group-header();
-  padding-bottom: 5px;
+  border: 2px dashed $brand-primary;
 }
 
 .atwho-preview {
   border: 1px solid rgb(217, 217, 217);
   border-top: 1px solid rgb(192, 192, 192);
   padding: 5px 8px;
-  background: @body-bg;
+  background: $body-bg;
   color: #555;
   &.placeholder {
     color: #999;
@@ -130,8 +125,8 @@ table {
     .markItUpContainer {
       textarea {
         overflow: auto;
-        min-height: @min-height-textarea;
-        max-height: @max-height-textarea;
+        min-height: $min-height-textarea;
+        max-height: $max-height-textarea;
       }
       > .btn-toolbar > .btn-group {
         margin-left: 5px;
@@ -151,10 +146,10 @@ table {
   + .markitup-preview {
     overflow: auto;
     &:not(.no-fixed-height) {
-      min-height: @min-height-textarea;
-      max-height: @max-height-textarea;
+      min-height: $min-height-textarea;
+      max-height: $max-height-textarea;
     }
-    background: @body-bg;
+    background: $body-bg;
     color: #555;
     border: 1px solid rgb(217, 217, 217);
     border-top-color: rgb(192, 192, 192);
@@ -167,15 +162,13 @@ table {
     }
     padding: 5px;
     > img, p > img {
-      .img-responsive();
+      @include img-fluid();
     }
   }
 }
 
-.form-control-static {
-  .placeholder {
-    color: #999;
-  }
+.form-control-static .placeholder {
+  color: #999;
 }
 
 .pretty-printed {
@@ -269,7 +262,7 @@ form .alert.alert-danger {
 
 /** popover error **/
 .form-control.error:focus, .form-control.error {
-  border-color: @brand-danger;
+  border-color: $brand-danger;
 }
 
 i.small-icon {
@@ -285,40 +278,20 @@ i.small-icon {
     .visible-on-hover {
       opacity: 1;
     }
-    .panel-light {
-      > .panel-heading, > div > .panel-heading  {
+    .card {
+      > .card-header, > div > .card-header  {
         .visible-on-hover {
           opacity: 0;
         }
       }
       &:hover {
-        > .panel-heading, > div > .panel-heading  {
+        > .card-header, > div > .card-header  {
           .visible-on-hover {
             opacity: 1;
           }
         }
       }
     }
-  }
-}
-
-// Accordion style
-.panel-group .panel {
-  border: 1px solid @gray-lighter; // Replace ugly dashed border by a nice one
-  .panel-heading {
-    border: 0 none;
-    padding: 0 5px; // Space it nicely
-    a {
-      &:before {
-        content: ""; // Remove TODC ugly plus/minus glyphicon
-      }
-      &:hover {
-        background: none; // Remove weird grey on a hover
-      }
-    }
-  }
-  .panel-collapse.collapsing.in {
-    border-top: 1px solid @gray-lighter;
   }
 }
 
@@ -362,16 +335,16 @@ i.small-icon {
 /** help modal & keys **/
 
 .help-keys {
-  .make-md-column(3);
+  @include make-md-column(3);
   padding: 1em;
   .help-key span {
-    background-color: @gray-lighter;
-    background-image: linear-gradient(@light-bg 0%, @gray-lighter 100%);
+    background-color: $gray-lighter;
+    background-image: linear-gradient($light-bg 0%, $gray-lighter 100%);
     background-repeat: repeat-x;
     border: 1px solid #CCCCCC;
     border-radius: 3px;
-    box-shadow: 0 1px 0 @body-bg inset, 0 1px 0 @light-bg;
-    color: @gray-darker;
+    box-shadow: 0 1px 0 $body-bg inset, 0 1px 0 $light-bg;
+    color: $gray-darker;
     display: inline-block;
     padding: 0 8px;
     text-align: center;
@@ -380,65 +353,37 @@ i.small-icon {
   }
 }
 
-.panel-title > small a.rss {
+.card-title > small a.rss {
   color: #FFA500;
 }
 
 .form-half {
-  .make-md-column(6);
-  .form-group;
+  @include make-md-column(6);
+  @extend .form-group;
 }
 
 .form-3-quarters {
-  .make-md-column(9);
-  .form-group;
+  @include make-md-column(9);
+  @extend .form-group;
 }
 
 .form-1-quarter {
-  .make-md-column(3);
-  .form-group;
+  @include make-md-column(3);
+  @extend .form-group;
 }
 
 .form-2-tiers {
-  .make-md-column(8);
-  .form-group;
+  @include make-md-column(8);
+  @extend .form-group;
 }
 
 .form-1-tier {
-  .make-md-column(4);
-  .form-group;
+  @include make-md-column(4);
+  @extend .form-group;
 }
-
-/**************** custom ****************/
 
 p.empty {
   font-style: italic;
-}
-
-/** on hover utility **/
-.panel .on-hover:not(td) {
-  display: none;
-}
-
-.table > tbody > tr > td.on-hover {
-  padding: 0;
-  vertical-align: middle;
-}
-
-td.on-hover span {
-  visibility: hidden;
-}
-
-tr:hover .on-hover span {
-  visibility: visible;
-  cursor: pointer;
-}
-
-.panel:hover .on-hover:not(td) {
-  display: block;
-  &.inline {
-    display: inline;
-  }
 }
 
 .clearfix.no-padding {
@@ -450,24 +395,24 @@ tr:hover .on-hover span {
   }
 }
 
-.panel-title > a > i.fa.fa-star {
+.card-title > a > i.fa.fa-star {
   color: gold;
 }
 
-.panel-heading {
-  .panel-title {
+.card-header {
+  .card-title {
     .left-title {
       float: left;
-      padding-left: (@grid-gutter-width / 2);
-      padding-right: (@grid-gutter-width / 2);
+      padding-left: ($grid-gutter-width / 2);
+      padding-right: ($grid-gutter-width / 2);
       .item-name {
         margin-left: 5px;
       }
     }
     .right-title {
       float: right;
-      padding-left: (@grid-gutter-width / 2);
-      padding-right: (@grid-gutter-width / 2);
+      padding-left: ($grid-gutter-width / 2);
+      padding-right: ($grid-gutter-width / 2);
       text-align: right;
       > span > img, > .btn, > .btn-group {
         margin-bottom: 5px;
@@ -476,15 +421,15 @@ tr:hover .on-hover span {
   }
 }
 
-.stories, .tasks, .panel-heading {
+.stories, .tasks, .card-header {
   .states {
-    .progress;
+    @extend .progress;
     height: 18px;
     border: none;
     margin-bottom: 0;
     .state {
       opacity: 0.1;
-      .transition(none);
+      @include transition(none);
       .state-name {
         display: none;
         font-size: 10px;
@@ -515,28 +460,28 @@ tr:hover .on-hover span {
 
 .progress.form-bar {
   border: 1px solid #fff;
-  background-color: @brand-primary;
+  background-color: $brand-primary;
   .progress-empty {
     text-align: center;
-    color: @progress-bar-color;
+    color: $progress-bar-color;
   }
   .progress-bar {
     &.progress-bar-invisible {
-      background-color: @brand-primary;
+      background-color: $brand-primary;
     }
     &.progress-bar-todo {
-      background-color: @state-todo-light;
-      color: @gray;
+      background-color: $state-todo-light;
+      color: $gray;
     }
     &.progress-bar-inProgress {
-      background-color: @state-inProgress-light;
-      color: @gray;
+      background-color: $state-inProgress-light;
+      color: $gray;
     }
     &.progress-bar-done {
-      background-color: @state-done-light;
-      color: @gray;
+      background-color: $state-done-light;
+      color: $gray;
     }
-    border-right: 3px solid @brand-primary;
+    border-right: 3px solid $brand-primary;
     &.last-bar {
       border: none;
     }
@@ -544,16 +489,7 @@ tr:hover .on-hover span {
   &::after {
     border-style: solid;
     border-width: 16px 0 16px 16px;
-    border-color: #ffffff transparent #ffffff @brand-primary;
-  }
-}
-
-.well {
-  .progress.form-bar {
-    border: 1px solid #f1f1f1;
-    &::after {
-      border-color: @well-bg transparent @well-bg @brand-primary;
-    }
+    border-color: #ffffff transparent #ffffff $brand-primary;
   }
 }
 
@@ -580,32 +516,32 @@ a[data-toggle="tab"] button {
 }
 
 .invert {
-  color: @invert-color;
+  color: $invert-color;
 }
 
 .split-modal {
-  .left-panel {
-    .make-sm-column(3);
-    .left-panel-bottom, .left-panel-header {
+  .left-card {
+    @include make-sm-column(3);
+    .left-card-bottom, .left-card-header {
       margin: 15px;
     }
-    .left-panel-body {
+    .left-card-body {
       height: 400px;
       overflow: auto;
     }
-    .left-panel-bottom {
+    .left-card-bottom {
       text-align: center;
     }
   }
-  .right-panel {
-    .make-sm-column(9);
+  .right-card {
+    @include make-sm-column(9);
   }
-  .hide-left-panel {
-    .left-panel {
+  .hide-left-card {
+    .left-card {
       display: none;
     }
-    .right-panel {
-      .make-sm-column(12);
+    .right-card {
+      @include make-sm-column(12);
     }
   }
 }
@@ -616,23 +552,23 @@ a[data-toggle="tab"] button {
     padding-top: 0;
     padding-bottom: 0;
   }
-  .steps, .right-panel {
+  .steps, .right-card {
     padding-bottom: 15px;
     padding-top: 15px;
-    .background-logo();
+    @include background-logo();
   }
   .step {
     padding-bottom: 50px;
     height: 100%;
   }
-  .steps-indicator, .left-panel {
-    background-color: @light-bg;
+  .steps-indicator, .left-card {
+    background-color: $light-bg;
     padding: 0;
     list-style: none;
     .pagination {
       margin: 0;
     }
-    ul.left-panel-body {
+    ul.left-card-body {
       > li {
         line-height: 40px;
         cursor: pointer;
@@ -640,7 +576,7 @@ a[data-toggle="tab"] button {
           pointer-events: none;
         }
         > a {
-          color: @gray-light;
+          color: $gray-light;
           padding: 3px 15px;
           > i.fa-check, i.icon-right {
             float: right;
@@ -648,28 +584,28 @@ a[data-toggle="tab"] button {
             margin-right: -6px;
           }
           &:hover {
-            color: @gray-darker;
+            color: $gray-darker;
             > i {
-              color: @gray-darker;
+              color: $gray-darker;
             }
           }
         }
         &.current, &.editing, &.current:hover, &.editing:hover {
           > a, > a:hover {
-            background-color: @brand-primary;
-            color: @body-bg;
+            background-color: $brand-primary;
+            color: $body-bg;
             > i {
-              color: @body-bg;
+              color: $body-bg;
             }
           }
         }
       }
     }
   }
-  .left-panel, .right-panel {
+  .left-card, .right-card {
     min-height: 460px;
   }
-  .right-panel {
+  .right-card {
     overflow: hidden;
   }
 }
@@ -681,7 +617,7 @@ a[data-toggle="tab"] button {
   left: 15px;
 }
 
-@media (max-width: @screen-xs-max) {
+@media (max-width: $screen-xs-max) {
   .wizard {
     .steps-indicator > li {
       display: inline-block;
@@ -698,24 +634,24 @@ a[data-toggle="tab"] button {
   }
 }
 
-@media (min-width: @screen-sm-min) {
+@media (min-width: $screen-sm-min) {
   .wizard {
     .steps {
     }
     .steps-indicator {
     }
     .modal-body div.wizard-row {
-      background: @light-bg;
+      background: $light-bg;
     }
   }
 }
 
 .atwho-view {
-  border-radius: 0px;
-  border-color: @brand-primary;
-  box-shadow: rgba(0, 0, 0, 0.14902) 0px 4px 5px 0px;
+  border-radius: 0;
+  border-color: $brand-primary;
+  box-shadow: rgba(0, 0, 0, 0.14902) 0 4px 5px 0;
   .cur {
-    background: @brand-primary;
+    background: $brand-primary;
   }
   strong {
     color: #000;
@@ -734,7 +670,7 @@ a[data-toggle="tab"] button {
   .filename {
     max-width: 275px;
     display: inline-block;
-    .text-overflow();
+    @include text-overflow();
   }
 }
 
@@ -745,7 +681,7 @@ a[data-toggle="tab"] button {
 .drop-enabled {
   .drop-zone {
     background-color: #fff;
-    color: @gray-darker;
+    color: $gray-darker;
     position: absolute;
     display: block;
     opacity: 0.9;
@@ -756,7 +692,7 @@ a[data-toggle="tab"] button {
     top: 0;
     h2 {
       text-align: center;
-      .vertical-align();
+      @include vertical-align();
       position: absolute;
       right: 0;
       left: 0;
@@ -788,7 +724,7 @@ a[data-toggle="tab"] button {
   }
   img.selected {
     padding: 0;
-    border: 3px solid @brand-primary;
+    border: 3px solid $brand-primary;
   }
 }
 
@@ -797,7 +733,7 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
 }
 
 .input-group {
-  .input-group-addon {
+  .input-group-text {
     & > i.fa-close {
       cursor: pointer;
     }
@@ -809,11 +745,10 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
 }
 
 .list-users {
-  .well;
   padding: 2px;
   margin-top: -6px;
   .user {
-    border: 1px solid @legend-border-color;
+    border: 1px solid $legend-border-color;
     background: #fff;
     padding: 2px 4px;
     margin: 2px;
@@ -833,14 +768,14 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
 .user-role {
   &.sm:not(.po) {
     background: #fff;
-    border: 2px solid @logo-color-bottom;
+    border: 2px solid $logo-color-bottom;
   }
   &.po {
     background: #fff;
-    border: 2px solid @logo-color-top;
+    border: 2px solid $logo-color-top;
     &.sm {
-      border-right-color: @logo-color-bottom;
-      border-bottom-color: @logo-color-bottom;
+      border-right-color: $logo-color-bottom;
+      border-bottom-color: $logo-color-bottom;
     }
   }
   &.img-rounded {
@@ -851,24 +786,24 @@ ul.dropdown-menu[uib-datepicker-popup-wrap] {
 .import {
   .changes {
     //TODO add make-row and remove row class in html
-    &:extend(.clearfix all);
+    //&:extend(.clearfix all); // TODO fix
     .erase {
-      .form-group;
-      .checkbox;
-      .make-xs-column(6);
+      @extend .form-group;
+      @extend .checkbox;
+      @include make-xs-column(6);
     }
     .changes-col-1 {
-      .form-group;
-      .make-xs-column(5);
+      @extend .form-group;
+      @include make-xs-column(5);
     }
     .changes-col-2 {
-      .form-group;
-      .make-xs-column(6);
+      @extend .form-group;
+      @include make-xs-column(6);
     }
     .changes-arrow {
       text-align: center;
       padding-top: 28px;
-      .make-xs-column(1);
+      @include make-xs-column(1);
     }
   }
 }
@@ -955,7 +890,7 @@ tbody.story-ghost {
 }
 
 .text-ellipsis {
-  .text-overflow();
+  @include text-overflow();
 }
 
 //quick and dirty
@@ -975,9 +910,6 @@ tbody.story-ghost {
 
 .native-sticky {
   position: -webkit-sticky;
-  position: -moz-sticky;
-  position: -ms-sticky;
-  position: -o-sticky;
   position: sticky;
 }
 
@@ -999,7 +931,7 @@ i.fa-pin {
 
 i.fa-pinned {
   &.fa-border {
-    border-color: @brand-primary;
+    border-color: $brand-primary;
   }
 }
 
@@ -1015,7 +947,7 @@ i.fa-pinned {
       > tr {
         > th,
         > td {
-          border-left: 1px dashed darken(@table-border-color, 15%);
+          border-left: 1px dashed darken($table-border-color, 15%);
         }
         th:first-of-type, td:first-of-type {
           border-left-width: 0;
@@ -1048,7 +980,7 @@ i.fa-pinned {
       }
       > td {
         padding: 0;
-        border: 1px solid darken(@table-border-color, 15%);
+        border: 1px solid darken($table-border-color, 15%);
         border-bottom: none;
         border-right: none;
         > h3 {
@@ -1096,79 +1028,79 @@ i.fa-pinned {
     }
     tr.is-selected {
       td {
-        border-bottom: 1px solid @brand-primary;
-        border-left-color: @brand-primary;
+        border-bottom: 1px solid $brand-primary;
+        border-left-color: $brand-primary;
       }
     }
   }
 }
 
 .color-state-frozen, .color-state--1 {
-  background-color: @state-frozen;
+  background-color: $state-frozen;
 }
 
 .color-state-suggested, .color-state-1 {
-  background-color: @state-suggested;
+  background-color: $state-suggested;
 }
 
 .color-state-todo {
-  background-color: @state-todo;
+  background-color: $state-todo;
 }
 
 .color-state-accepted, .color-state-2 {
-  background-color: @state-accepted;
+  background-color: $state-accepted;
 }
 
 .color-state-estimated, .color-state-3 {
-  background-color: @state-estimated;
+  background-color: $state-estimated;
 }
 
 .color-state-planned, .color-state-4 {
-  background-color: @state-planned;
+  background-color: $state-planned;
 }
 
 .color-state-inProgress, .color-state-5 {
-  background-color: @state-inProgress;
+  background-color: $state-inProgress;
 }
 
 .color-state-inReview, .color-state-6 {
-  background-color: @state-inReview;
+  background-color: $state-inReview;
 }
 
 .color-state-done, .color-state-7 {
-  background-color: @state-done;
+  background-color: $state-done;
 }
 
 .color-state-fill-frozen {
-  fill: @state-frozen;
+  fill: $state-frozen;
 }
 
 .color-state-fill-suggested {
-  fill: @state-suggested;
+  fill: $state-suggested;
 }
 
 .color-state-fill-accepted {
-  fill: @state-accepted;
+  fill: $state-accepted;
 }
 
 .color-state-fill-estimated {
-  fill: @state-estimated;
+  fill: $state-estimated;
 }
 
 .color-state-fill-planned {
-  fill: @state-planned;
+  fill: $state-planned;
 }
 
 .color-state-fill-inProgress {
-  fill: @state-inProgress;
+  fill: $state-inProgress;
 }
 
 .color-state-fill-inReview {
-  fill: @state-inReview;
+  fill: $state-inReview;
 }
 
 .color-state-fill-done {
-  fill: @state-done;
+  fill: $state-done;
 }
 
 .home-menuitem {
@@ -1199,10 +1131,10 @@ i.fa-pinned {
 a.link {
   color: #333333;
   &:hover, &:hover span, &:hover time {
-    color: @brand-primary;
+    color: $brand-primary;
     text-decoration: none;
     .fa-border {
-      border-color: @brand-primary;
+      border-color: $brand-primary;
     }
   }
 }
@@ -1236,13 +1168,13 @@ a.link {
 #slider-effort {
   div.slider-track-high {
     + div {
-      background: @effort-normal;
+      background: $effort-normal;
     }
     + div + div {
-      background: @effort-abitmuch;
+      background: $effort-abitmuch;
     }
     + div + div + div {
-      background: @effort-toomuch;
+      background: $effort-toomuch;
     }
   }
 }
@@ -1250,29 +1182,29 @@ a.link {
 .table .clickable {
   cursor: pointer;
   &:hover {
-    color: @brand-primary;
+    color: $brand-primary;
   }
 }
 
 .planning-menu {
   .active, .active > .text-muted {
-    color: @brand-primary;
+    color: $brand-primary;
   }
 }
 
 .rich-content {
   > img, p > img {
-    .img-responsive();
+    @include img-fluid();
   }
 }
 
 .app-logo {
   .featured::after {
-    border-color: @effort-abitmuch @effort-abitmuch transparent transparent;
+    border-color: $effort-abitmuch $effort-abitmuch transparent transparent;
   }
 
   .featured.enabled::after {
-    border-color: @brand-primary @brand-primary transparent transparent;
+    border-color: $brand-primary $brand-primary transparent transparent;
   }
 }
 
@@ -1288,7 +1220,7 @@ a.link {
 }
 
 .text-important {
-  color: @brand-primary;
+  color: $brand-primary;
 }
 
 #carousel-whats-new {
@@ -1324,38 +1256,6 @@ small a.link {
   font-family: "FontAwesome", "Arial", "Helvetica", "sans-serif";
 }
 
-li.text-primary > a {
-  .text-emphasis-variant(@brand-primary) !important;
-}
-
-li.text-success > a {
-  .text-emphasis-variant(@state-success-text) !important;
-}
-
-li.text-info > a {
-  .text-emphasis-variant(@state-info-text) !important;
-}
-
-li.text-warning > a {
-  .text-emphasis-variant(@state-warning-text) !important;
-}
-
-li.text-danger > a {
-  .text-emphasis-variant(@state-danger-text) !important;
-}
-
 .minus-plus-group {
   max-width: 150px;
 }
-
-/*.user-online:before {
-  font-family: FontAwesome;
-  content: "\f111";
-  color: #009900;
-  width: 12px;
-  height: 12px;
-  position: relative;
-  top: 10px;
-  left: 32px;
-  font-size: 6px
-}*/

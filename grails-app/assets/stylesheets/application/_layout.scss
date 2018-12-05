@@ -1,6 +1,7 @@
-@import (reference) "../vendors/todc/less/todc-bootstrap.less";
-@import (reference) "./variables.less";
-@import (reference) "./mixin.less";
+@import "variables";
+@import "mixin";
+@import "shims";
+@import "../vendors/bootstrap/scss/bootstrap";
 
 *[type="text/icescrum-template"] {
   display: none;
@@ -25,22 +26,22 @@ body {
     cursor: progress;
     &.splash-screen {
       > #application-loading {
-        .make-row();
+        @include make-row();
         display: block;
         margin: auto;
         position: absolute;
         top: 50%;
         left: 0;
         right: 0;
-        .translate(0, -50%);
+        @include translate(0, -50%);
         .logo {
           height: 250px;
           width: 250px;
           margin-left: 50%;
-          .translate(-50%; 0);
+          @include translate(-50%, 0);
         }
         .loading-circle {
-          stroke: @navbar-masthead-default-bg;
+          stroke: $navbar-masthead-default-bg;
           stroke-width: 10px;
           stroke-linecap: butt;
         }
@@ -76,8 +77,8 @@ body {
 }
 
 header {
-  background-color: @navbar-masthead-inverse-bg;
-  border-color: @navbar-masthead-inverse-border;
+  background-color: $navbar-masthead-inverse-bg;
+  border-color: $navbar-masthead-inverse-border;
   .navbar-toggle {
     margin-top: 8px;
     margin-bottom: 8px;
@@ -88,8 +89,8 @@ header {
     background: none;
     border: 0 transparent;
     &.navbar-offcanvas.offcanvas-transform.in {
-      background-color: @navbar-masthead-default-bg;
-      border: 1px @navbar-masthead-default-bg;
+      background-color: $navbar-masthead-default-bg;
+      border: 1px $navbar-masthead-default-bg;
     }
     > .container-fluid {
       padding-left: 0;
@@ -120,14 +121,14 @@ header {
   }
   .navbar-whatsNew {
     .fa {
-      color: @logo-color-top;
+      color: $logo-color-top;
     }
   }
 
   .navbar-notif {
     .fa {
       &:not(.empty) {
-        color: @logo-color-top;
+        color: $logo-color-top;
       }
       font-size: 25px;
       line-height: 25px;
@@ -136,7 +137,7 @@ header {
       }
     }
     .badge {
-      color: @logo-color-top;
+      color: $logo-color-top;
       position: absolute;
       top: 18px;
       left: 11px;
@@ -176,7 +177,7 @@ header {
               font-weight: bold;
               background: none;
             }
-            @media (min-width: @grid-float-breakpoint-max) {
+            @media (min-width: $grid-float-breakpoint-max) {
               &:after {
                 position: absolute;
                 bottom: -11px;
@@ -185,12 +186,12 @@ header {
                 margin-left: -8px;
                 content: '';
                 border-right: 8px solid transparent;
-                border-bottom: 8px solid @body-bg;
+                border-bottom: 8px solid $body-bg;
                 border-left: 8px solid transparent;
               }
 
               &#project:after {
-                border-bottom-color: @view-bg;
+                border-bottom-color: $view-bg;
               }
             }
           }
@@ -204,14 +205,14 @@ header {
     }
     .navbar-right {
       form.navbar-form {
-        @media (min-width: @grid-float-breakpoint) {
+        @media (min-width: $grid-float-breakpoint) {
           .form-control {
             max-width: 150px;
           }
         }
         .search {
           .context {
-            .text-overflow();
+            @include text-overflow();
             max-width: 100px;
             vertical-align: top;
             display: inline-block;
@@ -278,7 +279,7 @@ header {
     cursor: pointer;
   }
   .notifications {
-    .disable-text-selection;
+    @include disable-text-selection;
     width: 500px;
     max-height: 500px;
     overflow: auto;
@@ -310,7 +311,7 @@ header {
   .main-dropdown-menu {
     max-width: 250px;
     li.workspace a {
-      .text-overflow();
+      @include text-overflow();
       &.active {
         font-weight: bold;
       }
@@ -345,10 +346,9 @@ header {
   opacity: 1;
   width: 100%;
   padding: 0;
-  background: @view-bg;
+  background: $view-bg;
   -webkit-transition: opacity 0.5s ease-in-out;
   -moz-transition: opacity 0.5s ease-in-out;
-  -ms-transition: opacity 0.5s ease-in-out;
   -o-transition: opacity 0.5s ease-in-out;
   //view
   > .view {
@@ -372,9 +372,9 @@ header {
     }
     //col-md etc..
     > div {
-      .panel  {
+      .card  {
         position: relative;
-        > div.panel-heading {
+        > div.card-header {
           padding: 10px;
           > .btn-toolbar {
             margin-left: 0;
@@ -383,7 +383,7 @@ header {
             }
           }
         }
-        > div.panel-body {
+        > div.card-body {
           width: 100%;
           padding-top: 0;
           padding-bottom: 0;
@@ -411,7 +411,6 @@ header {
           > div:not(.loading-logo) {
             -webkit-transition: opacity 0.1s ease-in-out;
             -moz-transition: opacity 0.1s ease-in-out;
-            -ms-transition: opacity 0.1s ease-in-out;
             -o-transition: opacity 0.1s ease-in-out;
           }
           overflow-y: auto;
@@ -420,11 +419,11 @@ header {
       }
     }
     > .content {
-      .make-md-column(12);
+      @include make-md-column(12);
       padding: 0;
-      > .panel {
+      > .card {
         border: 0;
-        .panel-heading {
+        .card-header {
           > .btn-toolbar {
             margin-left: 0;
           }
@@ -432,26 +431,26 @@ header {
       }
       // TODO check or improve way to space columns in dashboard  home
       .widget-column {
-        .make-md-column(6);
-        div.panel-container:not(:last-child) {
-          margin-bottom: @grid-gutter-width / 2;
+        @include make-md-column(6);
+        div.card-container:not(:last-child) {
+          margin-bottom: $grid-gutter-width / 2;
         }
-        @media (max-width: @screen-xs-max), (max-width: @screen-sm-max) {
-          &:last-child div.panel-container:first-child {
-            margin-top: @grid-gutter-width / 2;
+        @media (max-width: $screen-xs-max), (max-width: $screen-sm-max) {
+          &:last-child div.card-container:first-child {
+            margin-top: $grid-gutter-width / 2;
           }
 
-          div.panel-container {
-            margin-bottom: @grid-gutter-width / 2;
+          div.card-container {
+            margin-bottom: $grid-gutter-width / 2;
           }
         }
-        @media (min-width: @screen-md-min) {
+        @media (min-width: $screen-md-min) {
           &:nth-child(1) {
-            padding-right: (@grid-gutter-width / 4);
+            padding-right: ($grid-gutter-width / 4);
           }
 
           &:nth-child(2) {
-            padding-left: (@grid-gutter-width / 4);
+            padding-left: ($grid-gutter-width / 4);
           }
         }
       }
@@ -461,54 +460,54 @@ header {
       display: none;
     }
     &.with-details {
-      @media (min-width: @screen-xs-min) and (max-width: @screen-xs-max) {
+      @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max) {
         .minimizable, .detachable, .expandable {
           display: none;
         }
       }
-      @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+      @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
         > .content {
-          .make-sm-column(12);
+          @include make-sm-column(12);
         }
 
         .detachable, .expandable {
           display: none;
         }
 
-        .detached();
+        @include detached();
       }
-      @media (min-width: @screen-md-min) {
+      @media (min-width: $screen-md-min) {
         .minimizable {
           display: none;
         }
 
         &.detached {
-          .detached();
+          @include detached();
           .minimizable {
             display: block;
           }
         }
 
         &.focused {
-          .focused()
+          @include focused();
         }
       }
-      @media (min-width: @screen-md-min) and (max-width: 1400px) {
+      @media (min-width: $screen-md-min) and (max-width: 1400px) {
         > .content {
-          .make-md-column(7);
+          @include make-md-column(7);
         }
 
         > [ui-view='details'] {
-          .make-md-column(5);
+          @include make-md-column(5);
         }
       }
       @media (min-width: 1401px) {
         > .content {
-          .make-md-column(8);
+          @include make-md-column(8);
         }
 
         > [ui-view='details'] {
-          .make-md-column(4);
+          @include make-md-column(4);
         }
       }
       > .content {
@@ -526,125 +525,20 @@ header {
   }
 }
 
-.detached() {
-  > .content {
-    .make-md-column(12);
-    padding: 0;
-  }
+.container-fluid.main > .view.with-details, .modal-details > .modal-body {
 
   > [ui-view='details'] {
-    z-index: 99;
-    bottom: 0;
-    right: 30px;
-    > .panel-light {
-      border-left-width: 0px !important;
-    }
-    @media (max-width: @screen-sm-max) {
-      width: 500px;
-    }
-    @media (min-width: @screen-md-min) {
-      width: 560px;
-    }
-    @media (max-height: 1199px) {
-      top: 145px;
-    }
-    @media (min-height: 1200px) {
-      height: 900px;
-    }
-    position: absolute;
-    border-top: 1px solid #ddd;
-    border-right: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-  }
-  &.minimized {
-    > [ui-view='details'] {
-      top: auto;
-      height: 55px;
-
-      .item-name {
-        display: inline-block;
-        .text-overflow();
-        max-width: 70px;
-      }
-      width: 660px;
-      .right-title {
-        max-width: none;
-        > div:first-of-type {
-          display: inline;
-        }
-        > div.btn-group {
-          float: left;
-          margin-right: 10px;
-          &.dropdown {
-            .dropdown-menu {
-              //dropup
-              top: auto;
-              bottom: 100%;
-              margin-bottom: 2px;
-            }
-          ;
-          }
-        }
-      }
-    }
-  }
-}
-
-.focused() {
-  > .content {
-    .make-md-column(12);
-    padding: 0;
-  }
-
-  .minimizable, .detachable {
-    display: none;
-  }
-
-  > [ui-view='details'] {
-    z-index: 100;
-    bottom: 15px;
-    left: 15px;
-    right: 15px;
-    overflow: hidden;
-    top: 15px !important;
-    width: inherit !important;
-    > .panel-light {
-      border-left-width: 0 !important;
-    }
-    position: absolute;
-    border: 1px solid #ddd;
-    .details-content-container {
-      display: flex;
-      flex-direction: row !important;
-      .details-content {
-        width: 33%;
-        display: flex !important;
-        flex: 1 1 auto !important;
-        > div[ui-view] {
-          border-right: 1px solid #e5e5e5;
-        }
-        > div[ui-view="details-tab-right"] {
-          border-right: none;
-        }
-      }
-    }
-  }
-}
-
-.container-fluid.main > .view&.with-details, .modal-details > .modal-body {
-
-  > [ui-view='details'] {
-    > .panel {
+    > .card {
       border-width: 0;
       border-left-width: 1px;
-      > .panel-heading {
+      > .card-header {
         padding: 0;
-        > .panel-title {
+        > .card-title {
           padding: 15px 15px 0;
         }
       }
     }
-    > .panel div[ui-view^='details-tab'] {
+    > .card div[ui-view^='details-tab'] {
       .chart {
         padding: 10px 10px 0;
         margin-bottom: 10px;
@@ -661,11 +555,8 @@ header {
         .markitup-preview {
           border-color: transparent;
         }
-        .input-group-btn {
+        .input-group .btn {
           visibility: hidden;
-        }
-        .input-group-addon {
-          border-right: 1px solid #d9d9d9;
         }
         .select2-container {
           box-shadow: none;
@@ -697,26 +588,21 @@ header {
           }
         }
       }
-      form.form-editable:hover {
-        .input-group-addon {
-          border-right: 0;
-        }
-      }
       form:not(.form-editable) {
-        .panel-footer {
-          .responsive-invisibility();
+        .card-footer {
+          @include responsive-invisibility();
         }
       }
       form {
         .markitup-preview, .atwho-preview, .form-control {
           &.important {
             &:not(:focus) {
-              background-color: @view-bg !important;
+              background-color: $view-bg !important;
             }
           }
         }
       }
-      .panel-footer {
+      .card-footer {
         padding: 0;
         > div:first-child {
           padding: 15px;
@@ -729,21 +615,21 @@ header {
   }
 }
 
-.container-fluid.main > .view&.with-details > [ui-view='details'] {
+.container-fluid.main > .view.with-details > [ui-view='details'] {
   form.form-editable {
-    .panel-footer {
-      .responsive-invisibility();
+    .card-footer {
+      @include responsive-invisibility();
     }
     &.form-editing {
-      .panel-footer {
-        .responsive-visibility();
+      .card-footer {
+        @include responsive-visibility();
       }
     }
   }
 }
 
-.modal-details > .modal-body > [ui-view='details'] > .panel {
-  .panel-footer {
+.modal-details > .modal-body > [ui-view='details'] > .card {
+  .card-footer {
     .btn-toolbar {
       .btn {
         float: right;
@@ -758,11 +644,11 @@ header {
   .form-group {
     margin-bottom: 0;
   }
-  .has-error .form-control, .has-error .input-group-addon {
+  .has-error .form-control {
     border: 1px solid #d9d9d9;
     color: #555555;
   }
-  .btn-toolbar .btn, .spaced-help-block, .hidden-not-expanded, .input-group-addon strong {
+  .btn-toolbar .btn, .spaced-form-text, .hidden-not-expanded {
     display: none;
   }
   textarea, .form-group-markItUp + .markitup-preview:not(.no-fixed-height) {
@@ -778,7 +664,7 @@ header {
   }
 }
 
-.panel-heading {
+.card-header {
   .states-container {
     &:after {
       clear: both;
@@ -793,9 +679,9 @@ header {
 }
 
 .modal-dialog [ui-view="details"] {
-  .panel-heading {
+  .card-header {
     padding: 0;
-    .panel-title {
+    .card-title {
       padding: 15px 15px 0;
     }
   }
@@ -809,13 +695,13 @@ header {
       &:hover .fa-border {
         border-color: #666;
       }
-      .text-overflow();
+      @include text-overflow();
     }
     & > li.active > a {
-      color: @brand-primary;
+      color: $brand-primary;
       font-weight: bold;
       &:hover .fa-border {
-        border-color: @brand-primary;
+        border-color: $brand-primary;
       }
     }
     &.disable-active-link li.active > a {
@@ -869,7 +755,7 @@ header {
 }
 
 .right-title {
-  .btn-default {
+  .btn-secondary {
     position: relative;
   }
   .badge {
@@ -881,15 +767,15 @@ header {
     background: none;
     text-align: right;
     font-weight: bold;
-    color: @gray-dark;
+    color: $gray-dark;
   }
   .btn-group.shortcut-menu > a {
-    .text-overflow();
+    @include text-overflow();
     display: inline-block;
   }
 }
 
-@media (max-width: @screen-xs-max) {
+@media (max-width: $screen-xs-max) {
   .left-title {
     max-width: 60%;
   }
@@ -899,7 +785,7 @@ header {
   }
 }
 
-@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
   .left-title {
     max-width: 50%;
   }
@@ -912,7 +798,7 @@ header {
   }
 }
 
-@media (min-width: @screen-md-min) {
+@media (min-width: $screen-md-min) {
   .left-title {
     max-width: 60%;
   }
@@ -925,7 +811,7 @@ header {
   }
 }
 
-@media (min-width: @screen-md-max) and (max-width: @screen-lg-min) {
+@media (min-width: $screen-md-max) and (max-width: $screen-lg-min) {
   .left-title {
     max-width: 60%;
   }
@@ -938,7 +824,7 @@ header {
   }
 }
 
-@media (min-width: @screen-lg-min) {
+@media (min-width: $screen-lg-min) {
   .left-title {
     max-width: 55%;
   }
@@ -951,30 +837,13 @@ header {
   }
 }
 
-.panel.panel-light {
-  margin-bottom: 0;
-  .panel-default;
-  border-radius: 0;
-  border-bottom-width: 1px;
-  > .panel-heading {
-    .panel-title {
-      font-size: 20px;
-      &.small-title {
-        font-size: 15px;
-        .sub-title {
-          margin-top: 3px;
-          font-size: 13px;
-        }
-      }
-    }
-    .panel-border {
-      margin-top: 8px;
-      margin-bottom: 6px;
-    }
-  }
-  > .panel-footer {
-    .panel-border {
-      border-top: 1px solid #eee;
+card .card-title {
+  font-size: 20px;
+  &.small-title {
+    font-size: 15px;
+    .sub-title {
+      margin-top: 3px;
+      font-size: 13px;
     }
   }
 }
@@ -1003,12 +872,12 @@ table {
   margin-top: 10px;
   overflow: auto;
   > table {
-    .table-bordered;
+    @include table-bordered;
     width: auto;
     > tbody {
       > tr {
         > td, th {
-          min-width: floor((@modal-md - 2*@modal-inner-padding) / 3);
+          //min-width: floor(($modal-md - 2*$modal-inner-padding) / 3); TODO
         }
         > td.title, th.title {
           min-width: 100px;
@@ -1028,7 +897,7 @@ table {
         > td:not(.title) {
           padding: 0;
           > table {
-            .table-bordered;
+            @include table-bordered;
             border: none;
             td {
               border-left: none !important;
@@ -1082,19 +951,13 @@ table {
   }
 }
 
-.well {
-  .well;
-  padding: 10px;
-  margin-bottom: 0;
-}
-
 // Allow placeholder when sortable container is empty
 .postits[as-sortable] {
   min-height: 60px;
 }
 
 .error-template {
-  background: @view-bg;
+  background: $view-bg;
   padding: 40px 15px;
   text-align: center;
   h1 {
@@ -1116,7 +979,7 @@ table {
 
 .simple-template {
   overflow: auto;
-  background: @view-bg;
+  background: $view-bg;
   padding-top: 50px;
   .logo {
     height: 80px;
@@ -1163,9 +1026,18 @@ table {
   }
 }
 
+.card-backlog {
+  > .card-body {
+    padding: 0 4px !important;
+  }
+  > .card-header > .card-title .title {
+    line-height: 30px;
+  }
+}
+
 .content {
   .backlogs-list {
-    background: @panel-bg;
+    background: white;
     flex: 0 0 auto;
     -webkit-flex: 0 0 auto;
     h4 {
@@ -1186,10 +1058,10 @@ table {
   }
   .backlogs-list-details {
     height: 1px;
-    .make-flex-container(row);
-    > .panel {
-      .make-flex-panel();
-      .panel-backlog();
+    @include make-flex-container(row);
+    > .card {
+      @include make-flex-card();
+      @extend .card-backlog;
       border: 0 #EEE;
       border-right: 1px solid #EEE;
       &:last-of-type {
@@ -1199,18 +1071,9 @@ table {
   }
 }
 
-.panel-backlog {
-  > .panel-body {
-    padding: 0 4px !important;
-  }
-  > .panel-heading > .panel-title .title {
-    line-height: 30px;
-  }
-}
-
 .content {
   .elements-list {
-    background: @panel-bg;
+    background: white;
     border-bottom: 1px solid #ddd;
     max-height: 52px; // Prevents tabs from being displayed on a second line
     .nav-tabs {
@@ -1240,10 +1103,10 @@ table {
 
 #view-taskBoard {
   > .content {
-    .panel-body {
+    .card-body {
       padding: 0;
     }
-    .panel-heading {
+    .card-header {
       z-index: 99;
     }
     table {
@@ -1271,8 +1134,8 @@ table {
           .btn {
             opacity: 0.5;
             margin-top: -15px;
-            .vertical-align;
-            .horizontal-align;
+            @include vertical-align;
+            @include horizontal-align;
           }
           &:hover {
             .btn {
@@ -1289,10 +1152,10 @@ table {
       }
       tbody:not(.story-done):not(.story-ghost):nth-child(odd) {
         > tr > td {
-          background: @table-bg-accent !important;
+          background: $table-bg-accent !important;
         }
         .list-group .postit-container .postit > div {
-          background: @table-bg-accent !important;
+          background: $table-bg-accent !important;
         }
       }
       tbody:not(.story-done):not(.story-ghost):nth-child(even) {
@@ -1305,12 +1168,12 @@ table {
       }
       tbody.story-ghost {
         > tr > td {
-          background: @state-danger-bg !important;
+          background: $state-danger-bg !important;
         }
         .list-group .postit-container .postit {
-          background: @state-danger-bg !important;
+          background: $state-danger-bg !important;
           > div {
-            background: @state-danger-bg !important;
+            background: $state-danger-bg !important;
           }
         }
       }
@@ -1324,12 +1187,12 @@ table {
     .sprint-state-1, .sprint-state-2 {
       tbody.story-done {
         > tr > td {
-          background: @state-done-light !important;
+          background: $state-done-light !important;
         }
         .list-group .postit-container .postit {
-          background: @state-done-light !important;
+          background: $state-done-light !important;
           > div {
-            background: @state-done-light !important;
+            background: $state-done-light !important;
           }
         }
       }
@@ -1344,14 +1207,14 @@ table {
 
 #view-home {
   .widget-tasks {
-    .panel-body > div {
+    .card-body > div {
       .list-group-header {
         background: #fff;
       }
     }
   }
   .widget-quickProjects {
-    .panel-body {
+    .card-body {
       text-align: center;
       hr {
         margin-top: 10px;
@@ -1363,10 +1226,10 @@ table {
     }
   }
   .widget-backlogChart {
-    .panel-heading {
+    .card-header {
       margin-top: 0;
     }
-    .panel-body {
+    .card-body {
       svg {
         margin-top: -18px
       }
@@ -1384,7 +1247,7 @@ table {
 .widget-dashboard {
   overflow-x: hidden;
   overflow-y: auto;
-  padding: @grid-gutter-width / 2 !important;
+  padding: $grid-gutter-width / 2 !important;
   width: 100%;
   .add-widget {
     position: fixed;
@@ -1401,10 +1264,10 @@ table {
   }
 }
 
-@panel-height: 250px;
-@panel-head-height: 43px;
-@panel-margin-bottom: 20px;
-@panel-border-height: 0px;
+$card-height: 250px;
+$card-head-height: 43px;
+$card-head-height: 20px;
+$card-head-height: 0px;
 
 .widgets {
   .widget {
@@ -1413,47 +1276,44 @@ table {
       right: 10px;
       position: absolute;
     }
-    .panel-heading {
+    .card-header {
       h3 {
-        .text-overflow();
+        @include text-overflow();
         > a {
           display: inline-block;
-          .text-overflow();
+          @include text-overflow();
         }
       }
     }
     &.widget-height-1 {
-      .panel-body {
-        height: @panel-height - (@panel-head-height + @panel-margin-bottom + @panel-border-height * 2);
+      .card-body {
+        height: $card-height - ($card-head-height + $card-head-height + $card-head-height * 2);
       }
     }
 
     &.widget-height-2 {
-      .panel-body {
-        height: (@panel-height*2) - (@panel-head-height + @panel-margin-bottom + @panel-border-height * 2);
+      .card-body {
+        height: ($card-height*2) - ($card-head-height + $card-head-height + $card-head-height * 2);
       }
     }
 
     &.widget-height-3 {
-      .panel-body {
-        height: (@panel-height*3) - (@panel-head-height + @panel-margin-bottom + @panel-border-height * 2);
+      .card-body {
+        height: ($card-height*3) - ($card-head-height + $card-head-height + $card-head-height * 2);
       }
     }
     &.widget-width-1 {
-      .make-md-column(2);
+      @include make-md-column(2);
     }
     &.widget-width-2 {
-      .make-md-column(4);
+      @include make-md-column(4);
     }
     &.widget-width-3 {
-      .make-md-column(6);
+      @include make-md-column(6);
     }
-    .panel-light {
-      margin-bottom: 20px;
-    }
-    > div.panel {
+    > div.card {
       position: relative;
-      .panel-body {
+      .card-body {
         padding-top: 0;
         overflow-y: auto;
       }
@@ -1469,7 +1329,7 @@ table {
   &.as-sortable-drag {
     .widget {
       width: 100% !important;
-      .panel-heading {
+      .card-header {
         padding: 10px;
       }
     }
@@ -1536,48 +1396,42 @@ table {
     }
     .selected {
       &.release-todo {
-        fill: @state-todo;
+        fill: $state-todo;
       }
       &.release-inProgress {
-        fill: @state-inProgress;
+        fill: $state-inProgress;
       }
       &.release-done {
-        fill: @state-done;
+        fill: $state-done;
       }
       &.sprint-todo {
-        fill: lighten(@state-todo, 5%);
+        fill: lighten($state-todo, 5%);
       }
       &.sprint-inProgress {
-        fill: lighten(@state-inProgress, 5%);
+        fill: lighten($state-inProgress, 5%);
       }
       &.sprint-done {
-        fill: lighten(@state-done, 5%);
+        fill: lighten($state-done, 5%);
       }
     }
     .release-todo {
-      fill: @state-todo-light;
+      fill: $state-todo-light;
     }
     .release-inProgress {
-      fill: @state-inProgress-light;
+      fill: $state-inProgress-light;
     }
     .release-done {
-      fill: @state-done-light;
+      fill: $state-done-light;
     }
     .sprint-todo {
-      fill: darken(@state-todo-light, 5%);
+      fill: darken($state-todo-light, 5%);
     }
     .sprint-inProgress {
-      fill: darken(@state-inProgress-light, 5%);
+      fill: darken($state-inProgress-light, 5%);
     }
     .sprint-done {
-      fill: darken(@state-done-light, 5%);
+      fill: darken($state-done-light, 5%);
     }
-  }
-}
-
-#view-project {
-  .panel-light .panel-body {
-    margin-bottom: 10px;
   }
 }
 
@@ -1660,10 +1514,10 @@ table {
     line-height: 15px;
   }
   .new-app {
-    background: @brand-warning;
+    background: $brand-warning;
   }
   .enabled-app {
-    background: @brand-primary;
+    background: $brand-primary;
   }
 }
 
@@ -1697,20 +1551,20 @@ body {
   > .main {
     height: 100%;
     overflow-y: auto;
-    .make-flex-container(column, 1, 1);
+    @include make-flex-container(column, 1, 1);
     > .view.flex {
-      .make-flex-container();
+      @include make-flex-container();
       > .content {
-        .make-flex-container(column, 1, 1);
-        > .panel {
-          .make-flex-panel();
-          > .panel-body {
+        @include make-flex-container(column, 1, 1);
+        > .card {
+          @include make-flex-card();
+          > .card-body {
             padding-top: 0;
           }
         }
-        > .panel.form-inside {
+        > .card.form-inside {
           > form {
-            .make-flex-panel();
+            @include make-flex-card();
           }
         }
       }
@@ -1718,20 +1572,20 @@ body {
         overflow: hidden;
         flex-direction: row;
         [ui-view="details"] {
-          .make-flex-container();
-          > .panel {
-            .make-flex-container();
+          @include make-flex-container();
+          > .card {
+            @include make-flex-container();
             > [ui-view="details-tab"], > [ui-view="details-tab"] > form, > .details-no-tab, > .details-no-tab > form {
-              .make-flex-panel();
+              @include make-flex-card();
               overflow: auto;
               height: 1px;
             }
             > .details-content-container {
-              .make-flex-container();
+              @include make-flex-container();
               > .details-content {
-                .make-flex-container();
+                @include make-flex-container();
                 > [ui-view], > [ui-view] > form, > .details-no-tab, > .details-no-tab > form {
-                  .make-flex-panel();
+                  @include make-flex-card();
                   overflow: auto;
                   height: 1px;
                 }
@@ -1765,41 +1619,28 @@ body {
   width: 750px;
 }
 
-.modal-content.modal-details {
-  .modal-body {
-    .panel.panel-light {
-      border: none;
-      margin-bottom: 0;
-      .nav-justified li > a {
-        border-radius: 0;
-      }
-    }
-    padding: 0;
-  }
-}
-
 .hover-container {
   .hover-visible {
-    .responsive-invisibility();
+    @include responsive-invisibility();
   }
   .hover-visible-inline {
     display: none;
   }
   .hover-hidden {
-    .responsive-visibility();
+    @include responsive-visibility();
   }
   .hover-hidden-inline {
     display: inline-block;
   }
   &:hover {
     .hover-visible {
-      .responsive-visibility();
+      @include responsive-visibility();
     }
     .hover-visible-inline {
       display: inline-block;
     }
     .hover-hidden {
-      .responsive-invisibility();
+      @include responsive-invisibility();
     }
     .hover-hidden-inline {
       display: none;
@@ -1811,18 +1652,13 @@ body {
   z-index: 9999; // Ensure that it's in front in modals
 }
 
-.help-block.spaced-help-block {
+.form-text.spaced-form-text {
   padding: 2px 5px;
 }
 
 .planning-dropdown {
   margin-right: 20px;
   float: left;
-  .fa-caret-down {
-    position: absolute;
-    right: -20px;
-    top: 7px;
-  }
   > ul.dropdown-menu {
     max-height: 400px;
     overflow-x: auto;
@@ -1874,17 +1710,17 @@ body {
 
 .mobile {
   .split-modal {
-    .left-panel {
+    .left-card {
       min-height: 0;
       background-color: #fff;
-      .left-panel-body {
+      .left-card-body {
         height: auto;
       }
     }
   }
   &.mobile-xs {
     .wizard {
-      .left-panel {
+      .left-card {
         min-height: 0;
         ul.nav-list {
           display: inline;
@@ -1967,29 +1803,17 @@ ul.dropdown-menu > li > a {
   }
 }
 
-form[name="formHolder.timeBoxNotesTemplateForm"] {
-  .panel-light {
-    border-bottom-width: 0;
-    .panel-heading {
-      opacity: 0.3;
-      &.open, &:hover {
-        opacity: 1.0;
-      }
-    }
-  }
-}
-
 .workspace-wizard {
   .workspace {
     margin-top: 30px;
     margin-bottom: 30px;
     padding: 0 30px;
     color: #555;
-    .btn {
-      margin: 20px 0;
+    .btn-primary {
+      margin: 20px;
     }
   }
-  .workspace:not(:first-of-type) {
+  .workspace:nth-child(2n) {
     border-left: 1px solid #e5e5e5;
   }
 }
@@ -2077,16 +1901,16 @@ header .navbar-masthead.invert:not(.in) .navbar-nav li.workspace-menu > a, heade
     margin-bottom: -5px;
   }
   .background-light-sprint-todo {
-    background: lighten(@state-todo, 10%);
+    background: lighten($state-todo, 10%);
   }
   .background-sprint-inProgress {
-    background: @state-inProgress;
+    background: $state-inProgress;
   }
   .background-light-sprint-inProgress {
-    background: lighten(@state-inProgress, 25%);
+    background: lighten($state-inProgress, 25%);
   }
   li a.link:not(:hover), li a.link:not(:hover) :not(.fa), li a.link:not(:hover) time {
-    color: @text-muted;
+    color: $text-muted;
   }
   li.stories i.fa {
     color: rgb(249, 241, 87);
@@ -2147,7 +1971,7 @@ tbody {
   &.as-sortable-drag {
     tr.task-for-story {
       padding: 4px;
-      border: 1px solid @brand-primary;
+      border: 1px solid $brand-primary;
       .states .state {
         margin-top: 2px;
         width: 100% !important;
@@ -2163,8 +1987,4 @@ tbody {
       }
     }
   }
-}
-
-.fa.fa-small {
-  font-size: 0.7em;
 }
