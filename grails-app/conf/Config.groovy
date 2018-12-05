@@ -122,37 +122,37 @@ icescrum {
     }
     portfolio.import.enable = false
 
-    workspaces {
-        project {
-            path = 'p'
-            icon = 'folder'
-            type = 'project'
-            objectClass = Project
-            config = { project -> [key: project.pkey, path: 'p'] }
-            params = { project -> [project: project.id] }
-            indexScrumOS = { projectWorkspace, User user, SecurityService securityService, SpringSecurityService springSecurityService ->
-                def project = projectWorkspace.object
-                if (project?.preferences?.hidden && !securityService.inProject(project, springSecurityService.authentication) && !securityService.stakeHolder(project, springSecurityService.authentication, false)) {
-                    return false
-                }
-                if (project && user && !user.admin && user.preferences.lastProjectOpened != project.pkey) {
-                    user.preferences.lastProjectOpened = project.pkey
-                    user.save()
-                }
-                return true
-            }
-            enabled = { application -> true }
-            hooks = [
-                    "feature.create", "feature.update", "feature.delete",
-                    "story.create", "story.update", "story.delete",
-                    "task.create", "task.update", "task.delete",
-                    "release.create", "release.update", "release.delete",
-                    "sprint.create", "sprint.update", "sprint.delete",
-                    "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete",
-                    "actor.create", "actor.update", "actor.delete"
+    workspaces = [
+            project: [
+                    path        : 'p',
+                    icon        : 'folder',
+                    type        : 'project',
+                    objectClass : Project,
+                    config      : { project -> [key: project.pkey, path: 'p'] },
+                    params      : { project -> [project: project.id] },
+                    indexScrumOS: { projectWorkspace, User user, SecurityService securityService, SpringSecurityService springSecurityService ->
+                        def project = projectWorkspace.object
+                        if (project?.preferences?.hidden && !securityService.inProject(project, springSecurityService.authentication) && !securityService.stakeHolder(project, springSecurityService.authentication, false)) {
+                            return false
+                        }
+                        if (project && user && !user.admin && user.preferences.lastProjectOpened != project.pkey) {
+                            user.preferences.lastProjectOpened = project.pkey
+                            user.save()
+                        }
+                        return true
+                    },
+                    enabled     : { application -> true },
+                    hooks       : [
+                            "feature.create", "feature.update", "feature.delete",
+                            "story.create", "story.update", "story.delete",
+                            "task.create", "task.update", "task.delete",
+                            "release.create", "release.update", "release.delete",
+                            "sprint.create", "sprint.update", "sprint.delete",
+                            "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete",
+                            "actor.create", "actor.update", "actor.delete"
+                    ]
             ]
-        }
-    }
+    ]
 
     hooks = [
             "user.create", "user.update", "user.delete",
