@@ -48,8 +48,8 @@ services.service("BacklogService", ['Backlog', '$q', 'CacheService', 'StoryServi
         var storyFilter = JSON.parse(backlog.filter).story;
         return StoryService.filterStories(stories, storyFilter);
     };
-    this.openChart = function(backlog, project, chart) {
-        return FormService.httpGet('p/' + project.id + '/backlog/' + backlog.id + '/' + 'chartByProperty', {params: {property: chart}}, true);
+    this.openChart = function(backlog, project, chartType, chartUnit) {
+        return FormService.httpGet('p/' + project.id + '/backlog/' + backlog.id + '/' + 'chartByProperty', {params: {chartType: chartType, chartUnit: chartUnit}}, true);
     };
     this.mergeBacklogs = function(backlogs) {
         _.each(backlogs, function(backlog) {

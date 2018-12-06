@@ -48,7 +48,6 @@
             task:${resourceBundles.taskTypes.keySet() as JSON},
             story:${resourceBundles.storyTypes.keySet() as JSON},
             feature:${resourceBundles.featureTypes.keySet() as JSON},
-            backlogChart:${resourceBundles.backlogChartTypes.keySet() as JSON},
             planningPoker:${resourceBundles.planningPokerGameSuites.keySet() as JSON}
         },
         states: {
@@ -56,6 +55,8 @@
             story: ${resourceBundles.storyStates.keySet() as JSON},
             acceptanceTest: ${resourceBundles.acceptanceTestStates.keySet() as JSON}
         },
+        backlogChartTypes:${resourceBundles.backlogChartTypes.keySet() as JSON},
+        backlogChartUnits:${resourceBundles.backlogChartUnits.keySet() as JSON},
         plugins: [],
         controllerHooks: {},
         showAppStore: ${flash.showAppStore?:false},

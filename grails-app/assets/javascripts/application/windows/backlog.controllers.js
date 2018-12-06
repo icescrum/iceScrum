@@ -40,8 +40,10 @@ extensibleController('backlogDetailsCtrl', ['$scope', 'StoryService', 'BacklogSe
 
 extensibleController('backlogChartCtrl', ['$scope', '$controller', '$element', function($scope, $controller, $element) {
     $controller('chartCtrl', {$scope: $scope, $element: $element});
-    $scope.$watchGroup(['backlog.chartType'], function(newValues) {
-        $scope.openChart('backlog', newValues[0], $scope.backlog);
+    $scope.$watchGroup(['backlog.chartType', 'backlog.chartUnit'], function(newValues) {
+        var unit = newValues[1];
+        var chartName = newValues[0] + (unit ? '-' + unit : ''); // Hack to preserve the chartLoaderInterface while using an additional parameter
+        $scope.openChart('backlog', chartName, $scope.backlog);
     }, true);
 }]);
 

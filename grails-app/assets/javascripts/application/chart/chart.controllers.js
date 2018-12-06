@@ -39,7 +39,10 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             return SprintService.openChart(sprint, $scope.project ? $scope.project : $scope.getProjectFromState(), chartName);
         },
         backlog: function(chartName, backlog) {
-            return BacklogService.openChart(backlog, backlog.project, chartName);
+            var chartNameParts = chartName.split('-'); // Hack to preserve the chartLoaderInterface while using an additional parameter
+            var chartType = chartNameParts[0];
+            var chartUnit = chartNameParts.length > 1 ? chartNameParts[1] : 'story';
+            return BacklogService.openChart(backlog, backlog.project, chartType, chartUnit);
         }
     };
     var addMargin = function(number) {

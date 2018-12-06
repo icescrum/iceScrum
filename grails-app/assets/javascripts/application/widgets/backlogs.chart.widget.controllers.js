@@ -26,7 +26,7 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
     $controller('chartWidgetCtrl', {$scope: $scope, $element: $element});
     var widget = $scope.widget; // $scope.widget is inherited
     $scope.widgetReady = function(widget) {
-        return !!(widget.settings && widget.settings.backlog && widget.settings.chartType);
+        return !!(widget.settings && widget.settings.backlog && widget.settings.chartType && widget.settings.chartUnit);
     };
     $scope.getTitle = function() {
         return $scope.holder.title;
@@ -93,7 +93,9 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
                     enable: false
                 }
             });
-            $scope.openChart('backlog', widget.settings.chartType, widget.settings.backlog, chartWidgetOptions).then(function(data) {
+            var unit = widget.settings.chartUnit;
+            var chartName = widget.settings.chartType + (unit ? '-' + unit : ''); // Hack to preserve the chartLoaderInterface while using an additional parameter
+            $scope.openChart('backlog', chartName, widget.settings.backlog, chartWidgetOptions).then(function(data) {
                 $scope.holder.title = data.options.title.text;
                 $scope.holder.caption = data.options.caption.text;
             });
@@ -104,6 +106,9 @@ controllers.controller('backlogChartWidgetCtrl', ['$scope', 'BacklogService', 'P
         widget.settings = {
             chartType: 'type'
         };
+    }
+    if (!widget.settings.chartUnit) {
+        widget.settings.chartUnit = 'story';
     }
     $scope.holder = {
         title: ''

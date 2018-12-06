@@ -143,25 +143,23 @@ icescrum {
                     },
                     enabled     : { application -> true },
                     hooks       : [
-                            events:
-                                    [
-                                            "feature.create", "feature.update", "feature.delete",
-                                            "story.create", "story.update", "story.delete",
-                                            "task.create", "task.update", "task.delete",
-                                            "release.create", "release.update", "release.delete",
-                                            "sprint.create", "sprint.update", "sprint.delete",
-                                            "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete",
-                                            "actor.create", "actor.update", "actor.delete"
-                                    ]
+                            events: [
+                                    "feature.create", "feature.update", "feature.delete",
+                                    "story.create", "story.update", "story.delete",
+                                    "task.create", "task.update", "task.delete",
+                                    "release.create", "release.update", "release.delete",
+                                    "sprint.create", "sprint.update", "sprint.delete",
+                                    "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete",
+                                    "actor.create", "actor.update", "actor.delete"
+                            ]
                     ]
             ]
     ]
 
     hooks = [
-            events:
-                    [
-                            "user.create", "user.update", "user.delete", "project.create", "project.update", "project.delete"
-                    ]
+            events: [
+                    "user.create", "user.update", "user.delete", "project.create", "project.update", "project.delete"
+            ]
     ]
 
     atmosphere {
@@ -320,6 +318,10 @@ icescrum {
                     'value'  : 'is.story.value',
                     'state'  : 'is.story.state',
                     'effort' : 'is.story.effort'
+            ],
+            backlogChartUnits      : [
+                    'story' : 'todo.is.ui.stories',
+                    'effort': 'is.story.effort'
             ]
     ]
 }
