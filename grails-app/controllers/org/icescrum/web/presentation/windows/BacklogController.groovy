@@ -31,6 +31,8 @@ import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
 
+import java.text.DecimalFormat
+
 @Secured(['stakeHolder() or inProject()'])
 class BacklogController implements ControllerErrorHandler {
 
@@ -96,7 +98,7 @@ class BacklogController implements ControllerErrorHandler {
             def title = message(code: "is.chart.backlogByProperty.caption", args: [message(code: chartUnit == 'effort' ? 'is.story.effort' : 'todo.is.ui.stories'), message(code: typei18n)])
             def options = [
                     chart  : [
-                            title: total
+                            title: (new DecimalFormat("0.##")).format(total) + (chartUnit == 'effort' ? ' pt' : '')
                     ],
                     title  : [
                             text: backlog.project.pkey + " - " + message(code: backlog.name)
