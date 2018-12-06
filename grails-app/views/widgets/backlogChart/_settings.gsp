@@ -22,7 +22,17 @@
 --}%
 <div class="col-md-12">
     <div class="form-group">
-        <label for="chartType">${message(code: 'is.ui.widget.chart.chart')}</label>
+        <label for="chartUnit">${message(code: 'is.ui.widget.chart.unit')}</label>
+        <ui-select class="form-control"
+                   name="chartUnit"
+                   append-to-body="true"
+                   ng-model="widget.settings.chartUnit">
+            <ui-select-match>{{ $select.selected | i18n:'BacklogChartUnits' }}</ui-select-match>
+            <ui-select-choices repeat="chartUnit in backlogChartUnits">{{ ::chartUnit | i18n:'BacklogChartUnits' }}</ui-select-choices>
+        </ui-select>
+    </div>
+    <div class="form-group">
+        <label for="chartType">${message(code: 'is.ui.widget.chart.type')}</label>
         <ui-select class="form-control"
                    name="chartType"
                    append-to-body="true"
