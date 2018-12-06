@@ -155,8 +155,7 @@ icescrum {
                                     ]
                     ]
             ]
-        }
-    }
+    ]
 
     hooks = [
             events:
