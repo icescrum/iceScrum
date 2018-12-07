@@ -354,8 +354,8 @@ angular.module('isCore', ['ui.router'])
                 name: 'details',
                 url: "/{taskId:int}",
                 resolve: {
-                    detailsTask: ['$stateParams', 'taskContext', 'TaskService', 'project', function($stateParams, taskContext, TaskService, project) {
-                        return TaskService.get($stateParams.taskId, taskContext, project.id);
+                    detailsTask: ['$stateParams', 'TaskService', 'project', function($stateParams, TaskService, project) {
+                        return TaskService.get($stateParams.taskId, project.id);
                     }]
                 },
                 views: {},
