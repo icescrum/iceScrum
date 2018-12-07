@@ -119,10 +119,12 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         }).$promise;
         return obj.tasks.length === 0 ? promise : $q.when(obj.tasks);
     };
-    this.get = function(id, taskContext, projectId) {
-        return self.list(taskContext, projectId).then(function(tasks) {
-            return _.find(tasks, {id: id});
-        });
+    this.get = function(id, projectId) {
+        var cacheTask = CacheService.get('task', id);
+        return cacheTask ? $q.when(cacheTask) : self.refresh(id, projectId);
+    };
+    this.refresh = function(id, projectId) {
+        return Task.get({id: id, projectId: projectId}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.authorizedTask = function(action, task) {
         switch (action) {
