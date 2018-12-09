@@ -145,11 +145,11 @@ icescrum {
                     hooks       : [
                             events: [
                                     "feature.create", "feature.update", "feature.delete",
-                                    "story.create", "story.update", "story.delete",
-                                    "task.create", "task.update", "task.delete",
-                                    "release.create", "release.update", "release.delete",
-                                    "sprint.create", "sprint.update", "sprint.delete",
-                                    "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete",
+                                    "story.create", "story.update", "story.delete", "story.state",
+                                    "task.create", "task.update", "task.delete", "task.state",
+                                    "release.create", "release.update", "release.delete", "release.state",
+                                    "sprint.create", "sprint.update", "sprint.delete", "sprint.state",
+                                    "acceptanceTest.create", "acceptanceTest.update", "acceptanceTest.delete", "acceptanceTest.state",
                                     "actor.create", "actor.update", "actor.delete"
                             ]
                     ]
