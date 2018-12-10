@@ -120,8 +120,8 @@ services.service("TaskService", ['$q', '$state', '$rootScope', 'Task', 'Session'
         return obj.tasks.length === 0 ? promise : $q.when(obj.tasks);
     };
     this.get = function(id, projectId) {
-        var cacheTask = CacheService.get('task', id);
-        return cacheTask ? $q.when(cacheTask) : self.refresh(id, projectId);
+        var cachedTask = CacheService.get('task', id);
+        return cachedTask ? $q.when(cachedTask) : self.refresh(id, projectId);
     };
     this.refresh = function(id, projectId) {
         return Task.get({id: id, projectId: projectId}, crudMethods[IceScrumEventType.CREATE]).$promise;
