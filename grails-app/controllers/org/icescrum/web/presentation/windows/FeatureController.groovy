@@ -42,7 +42,7 @@ class FeatureController implements ControllerErrorHandler {
     @Cacheable(value = 'featuresCache')
     def index(long project) {
         def options = [feature: [:]]
-        if(params.term){
+        if (params.term) {
             options.term = params.term
         }
         def features = Feature.search(project, options).sort { Feature feature -> feature.rank }
