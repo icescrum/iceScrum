@@ -25,15 +25,9 @@ databaseChangeLog = {
     changeSet(author: "vbarrier", id: "update_type_meta_value_longtext_is_meta") {
         preConditions(onFail: 'MARK_RAN') {
             not {
-                dbms(type: 'oracle')
+                dbms(type: 'oracle') // No solution on Oracle apparently :( see https://community.oracle.com/ideas/21411
             }
         }
         modifyDataType(tableName: 'is_metadata', columnName: 'meta_value', newDataType: 'longtext')
-    }
-    changeSet(author: "vbarrier", id: "update_type_meta_value_longtext_is_meta_oracle") {
-        preConditions(onFail: 'MARK_RAN') {
-            dbms(type: 'oracle')
-        }
-        modifyDataType(tableName: 'is_metadata', columnName: 'meta_value', newDataType: 'clob')
     }
 }
