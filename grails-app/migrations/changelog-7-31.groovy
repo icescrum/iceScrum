@@ -25,15 +25,11 @@ databaseChangeLog = {
     changeSet(author: "vbarrier", id: "update_type_meta_value_longtext_is_meta") {
         preConditions(onFail: 'MARK_RAN') {
             not {
+                // No solution on Oracle apparently :( see https://community.oracle.com/ideas/21411
+                // We cannot change it to a varchar with greater size either as it would work on existing DBs but not on new ones (CLOB -> varchar)
                 dbms(type: 'oracle')
             }
         }
         modifyDataType(tableName: 'is_metadata', columnName: 'meta_value', newDataType: 'longtext')
-    }
-    changeSet(author: "vbarrier", id: "update_type_meta_value_longtext_is_meta_oracle") {
-        preConditions(onFail: 'MARK_RAN') {
-            dbms(type: 'oracle')
-        }
-        modifyDataType(tableName: 'is_metadata', columnName: 'meta_value', newDataType: 'varchar2(4000)')
     }
 }
