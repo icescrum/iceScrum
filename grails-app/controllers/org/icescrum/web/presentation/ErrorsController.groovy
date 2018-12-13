@@ -134,6 +134,7 @@ class ErrorsController implements ControllerErrorHandler {
                                               message   : exception.message,
                                               appID     : grailsApplication.config.icescrum.appID,
                                               ip        : request.getHeader('X-Forwarded-For') ?: request.getRemoteAddr(),
+                                              method    : request.method,
                                               user      : user ? user.username + ' - ' + user.firstName + ' ' + user.lastName + ' - ' + user.email : 'Not logged in'],
                                     async  : false
                             ]);
