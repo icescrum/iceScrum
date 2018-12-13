@@ -50,7 +50,7 @@ extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'Sprin
     $scope.computeVisibleSprints = function() {
         $scope.visibleSprints = $scope.sprints.slice($scope.visibleSprintOffset, $scope.visibleSprintMax + $scope.visibleSprintOffset);
     };
-    var getNewStoryState = function(storyId, currentStateName) {
+    var getNewStoryState = function(storyId, currentStateName, keepTab) {
         var newStateName;
         var newStateParams = {storyId: storyId};
         if (_.startsWith(currentStateName, 'planning.release.sprint.multiple')) {
@@ -67,7 +67,7 @@ extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'Sprin
                 newStateParams.releaseId = $scope.selectedItems[0].id;
             }
         }
-        return {name: newStateName, params: newStateParams}
+        return {name: newStateName + ($state.params.storyTabId && keepTab ? '.tab' : ''), params: newStateParams}
     };
     $scope.openReleaseUrl = function(release) {
         var stateName = 'planning.release';
@@ -223,7 +223,7 @@ extensibleController('planningCtrl', ['$scope', '$state', 'StoryService', 'Sprin
             if (selectedIds.length == 0 && storyIndexInStateName != -1) {
                 $state.go(currentStateName.slice(0, storyIndexInStateName - 1));
             } else {
-                var newStoryState = getNewStoryState(selectedIds[0], currentStateName);
+                var newStoryState = getNewStoryState(selectedIds[0], currentStateName, true);
                 $state.go(newStoryState.name, newStoryState.params);
             }
         }

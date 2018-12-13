@@ -177,7 +177,10 @@ class ScrumOSController implements ControllerErrorHandler {
         response.outputStream << new BASE64Decoder().decodeBuffer(image)
     }
 
-    def version(boolean verbose) {
+    def version(boolean verbose, boolean refresh) {
+        if (refresh && springSecurityService.isLoggedIn()) {
+            ApplicationSupport.checkVersion()
+        }
         if (verbose) {
             def data = [version: g.meta([name: 'app.version'])]
             if (grailsApplication.config.icescrum.check.response?.up_to_date == false) {

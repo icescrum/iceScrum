@@ -41,7 +41,11 @@ class FeatureController implements ControllerErrorHandler {
 
     @Cacheable(value = 'featuresCache')
     def index(long project) {
-        def features = Feature.search(project, [feature: [:]]).sort { Feature feature -> feature.rank }
+        def options = [feature: [:]]
+        if (params.term) {
+            options.term = params.term
+        }
+        def features = Feature.search(project, options).sort { Feature feature -> feature.rank }
         render(status: 200, text: features as JSON, contentType: 'application/json')
     }
 
