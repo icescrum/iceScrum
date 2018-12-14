@@ -184,6 +184,7 @@ icescrum {
                                    asShort: ['state', 'effort', 'uid', 'name', 'rank', 'project']],
             comment             : [textile: ['body'], include: ['poster']],
             project             : [include: ['owner', 'productOwners', 'stakeHolders', 'invitedStakeHolders', 'invitedProductOwners', 'simpleProjectApps', 'team', 'storyStateNames'],
+                                   asShort: ['pkey'],
                                    exclude: ['cliches', 'teams', 'goal', 'metaDatas'],
                                    textile: ['description']],
             team                : [include: ['members', 'scrumMasters', 'invitedScrumMasters', 'invitedMembers', 'owner']],
