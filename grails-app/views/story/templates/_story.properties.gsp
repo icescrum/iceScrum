@@ -134,7 +134,7 @@
                     <span class="input-group-after" ng-if="editableStory.dependsOn.id">
                         <a ng-if="hasSameProject(editableStory, editableStory.dependsOn)"
                            ui-sref=".({storyId: editableStory.dependsOn.id})"
-                           class="btn btn-default">
+                           class="btn btn-secondary">
                             <i class="fa fa-info-circle"></i>
                         </a>
                         <a ng-if="!hasSameProject(editableStory, editableStory.dependsOn)"

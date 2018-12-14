@@ -71,7 +71,7 @@
                 type="submit">
             ${message(code: 'default.button.create.label')}
         </button>
-        <button class="btn btn-default pull-right"
+        <button class="btn btn-secondary pull-right"
                 ng-click="formHolder.formExpanded = false;"
                 type="button">
             ${message(code: 'is.button.cancel')}

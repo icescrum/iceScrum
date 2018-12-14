@@ -29,7 +29,7 @@
             <div class="workspace col-md-4 text-center">
                 <i class="fa fa-folder fa-7x"></i>
                 <div>${message(code: 'is.ui.workspace.description.sampleProject')}</div>
-                <button class="btn btn-default"
+                <button class="btn btn-secondary"
                         ng-disabled="application.submitting"
                         type="button"
                         tabindex="-1"

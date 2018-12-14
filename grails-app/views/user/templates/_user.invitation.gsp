@@ -44,7 +44,7 @@
                         type="button">
                     ${message(code: 'is.ui.user.invitation.accept')}
                 </button>
-                <button class="btn btn-default pull-right"
+                <button class="btn btn-secondary pull-right"
                         ng-disabled="application.submitting"
                         ng-click="$close()"
                         type="button">
@@ -64,7 +64,7 @@
                         type="button">
                     ${message(code: 'is.ui.user.invitation.create')}
                 </button>
-                <button class="btn btn-default pull-right"
+                <button class="btn btn-secondary pull-right"
                         ng-disabled="application.submitting"
                         ng-click="logIn()"
                         type="button">
