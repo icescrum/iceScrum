@@ -22,7 +22,7 @@
  *
  */
 services.factory('AcceptanceTest', ['Resource', function($resource) {
-    return $resource('/p/:projectId/acceptanceTest/:type/:storyId/:id');
+    return $resource('/p/:projectId/acceptanceTest/:type/:storyId/:id/:action');
 }]);
 
 services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesByName', 'Session', 'IceScrumEventType', 'PushService', 'CacheService', function($q, AcceptanceTest, StoryStatesByName, Session, IceScrumEventType, PushService, CacheService) {
@@ -59,6 +59,9 @@ services.service("AcceptanceTestService", ['$q', 'AcceptanceTest', 'StoryStatesB
             return story.acceptanceTests;
         });
         return _.isEmpty(story.acceptanceTests) ? promise : $q.when(story.acceptanceTests);
+    };
+    this.copy = function(acceptanceTest, story) {
+        return AcceptanceTest.update({projectId: story.backlog.id, id: acceptanceTest.id, action: 'copy'}, {}, crudMethods[IceScrumEventType.CREATE]).$promise;
     };
     this.authorizedAcceptanceTest = function(action, story) {
         switch (action) {

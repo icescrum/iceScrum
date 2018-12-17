@@ -39,17 +39,20 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         return $scope.acceptanceTest ? $scope.authorizedAcceptanceTest('delete', $scope.story) : false;
     };
     $scope.save = function(acceptanceTest, story) {
-        AcceptanceTestService.save(acceptanceTest, story)
-            .then(function() {
-                $scope.resetAcceptanceTestForm();
-                $scope.notifySuccess('todo.is.ui.acceptanceTest.saved');
-            });
+        AcceptanceTestService.save(acceptanceTest, story).then(function() {
+            $scope.resetAcceptanceTestForm();
+            $scope.notifySuccess('todo.is.ui.acceptanceTest.saved');
+        });
     };
     $scope['delete'] = function(acceptanceTest, story) {
-        AcceptanceTestService.delete(acceptanceTest, story)
-            .then(function() {
-                $scope.notifySuccess('todo.is.ui.deleted');
-            });
+        AcceptanceTestService.delete(acceptanceTest, story).then(function() {
+            $scope.notifySuccess('todo.is.ui.deleted');
+        });
+    };
+    $scope.copy = function(acceptanceTest, story) {
+        AcceptanceTestService.copy(acceptanceTest, story).then(function() {
+            $scope.notifySuccess('todo.is.ui.acceptanceTest.saved');
+        });
     };
     $scope.authorizedAcceptanceTest = AcceptanceTestService.authorizedAcceptanceTest;
     $scope.editForm = function(value) {
@@ -69,11 +72,10 @@ controllers.controller('acceptanceTestCtrl', ['$scope', 'AcceptanceTestService',
         if (!$scope.formHolder.acceptanceTestForm.$invalid) {
             $scope.editForm(false);
             if ($scope.formHolder.acceptanceTestForm.$dirty) {
-                return AcceptanceTestService.update(acceptanceTest, story)
-                    .then(function() {
-                        $scope.resetAcceptanceTestForm();
-                        $scope.notifySuccess('todo.is.ui.acceptanceTest.updated');
-                    });
+                return AcceptanceTestService.update(acceptanceTest, story).then(function() {
+                    $scope.resetAcceptanceTestForm();
+                    $scope.notifySuccess('todo.is.ui.acceptanceTest.updated');
+                });
             }
         }
     };
