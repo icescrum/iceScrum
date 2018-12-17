@@ -157,7 +157,7 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             action: function(story) { $scope.showStorySplitModal(story); }
         },
         {
-            name: 'is.ui.releasePlan.menu.story.clone',
+            name: 'is.ui.copy',
             visible: function(story) { return $scope.authorizedStory('copy', story) },
             action: function(story) { $scope.copy(story); }
         }, {
