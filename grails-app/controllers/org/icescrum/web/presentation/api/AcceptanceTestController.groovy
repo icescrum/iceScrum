@@ -144,4 +144,16 @@ class AcceptanceTestController implements ControllerErrorHandler {
             }
         }
     }
+
+    @Secured('inProject() and !archivedProject()')
+    def copy(long id, long project) {
+        AcceptanceTest acceptanceTest = AcceptanceTest.withAcceptanceTest(project, id)
+        Story story = acceptanceTest.parentStory
+        if (story.state >= Story.STATE_DONE) {
+            returnError(code: 'is.acceptanceTest.error.save.storyState', args: [message(code: ((Project) story.backlog).getStoryStateNames()[Story.STATE_DONE])])
+            return
+        }
+        def copiedAcceptanceTest = acceptanceTestService.copy(acceptanceTest, (User) springSecurityService.currentUser)
+        render(status: 200, contentType: 'application/json', text: copiedAcceptanceTest as JSON)
+    }
 }

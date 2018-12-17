@@ -121,7 +121,7 @@
                                     ng-if="authorizedStories('copy', stories)"
                                     class="btn btn-secondary"
                                     ng-click="copyMultiple()">
-                                ${message(code: 'is.ui.releasePlan.menu.story.clone')}
+                                ${message(code: 'is.ui.copy')}
                             </button>
                             <button type="button"
                                     ng-if="authorizedStories('returnToSandbox', stories)"

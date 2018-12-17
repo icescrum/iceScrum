@@ -143,7 +143,7 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             action: function(task) { $scope.release(task); }
         },
         {
-            name: 'is.ui.sprintPlan.menu.task.copy',
+            name: 'is.ui.copy',
             visible: function(task) { return $scope.authorizedTask('copy', task); },
             action: function(task) { $scope.copy(task); }
         },

@@ -76,6 +76,11 @@
                                 </button>
                                 <ul uib-dropdown-menu class="pull-right">
                                     <li>
+                                        <a href ng-click="copy(acceptanceTest, selected)">
+                                            ${message(code: 'is.ui.copy')}
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href ng-click="confirmDelete({ callback: delete, args: [acceptanceTest, selected] })">
                                             ${message(code: 'default.button.delete.label')}
                                         </a>
