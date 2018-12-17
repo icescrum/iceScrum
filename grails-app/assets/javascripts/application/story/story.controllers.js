@@ -597,7 +597,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         };
         $scope.searchDependenceEntries = function(story, $select) {
             if ($scope.formHolder.editing && $select.open) {
-                StoryService.getDependenceEntries(story, $select.search).then(function(dependenceEntries) {
+                $scope.getDependenceEntries(story, $select.search).then(function(dependenceEntries) {
                     $scope.dependenceEntries = dependenceEntries;
                 });
             }
@@ -650,6 +650,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
         $scope.hasSameProject = function(story1, story2) {
             return !story2 || !story2.project || (story1.project.id == story2.project.id)
         };
+        $scope.getDependenceEntries = StoryService.getDependenceEntries; // To be overriden
         // Init
         $controller('updateFormController', {$scope: $scope, item: detailsStory, type: 'story'});
         $scope.dependenceEntries = [];
