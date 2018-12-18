@@ -200,7 +200,7 @@ icescrum {
                                    withIds: ['stories'],
                                    textile: ['notes'],
                                    asShort: ['color', 'name']],
-            sprint              : [include: ['activable', 'reactivable', 'totalRemaining', 'duration', 'index', 'plannedVelocity'],
+            sprint              : [include: ['activable', 'reactivable', 'totalRemaining', 'duration', 'index', 'plannedVelocity', 'fullName'],
                                    exclude: ['cliches', 'metaDatas'],
                                    withIds: ['stories'],
                                    textile: ['retrospective', 'doneDefinition'],
