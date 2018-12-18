@@ -274,19 +274,19 @@ class TaskController implements ControllerErrorHandler {
         if (!tasks) {
             returnError(code: 'is.report.error.no.data')
         } else {
-            tasks.each {
+            tasks.each { _task ->
                 def task = [
-                        name       : it.name,
-                        id         : it.uid,
-                        state      : message(code: grailsApplication.config.icescrum.resourceBundles.taskStates[it.state]),
-                        description: it.description,
-                        notes      : ServicesUtils.textileToHtml(it.notes),
-                        sprint     : g.message(code: 'is.sprint') + " " + it.sprint.index,
-                        taskColor  : it.color,
-                        permalink  : createLink(absolute: true, uri: '/' + _project.pkey + '-T' + it.uid),
-                        story      : it.parentStory ? it.parentStory.name : null,
-                        estimation : it.estimation,
-                        type       : it.parentStory ? null : message(code: grailsApplication.config.icescrum.resourceBundles.taskTypes[it.type])
+                        name       : _task.name,
+                        id         : _task.uid,
+                        state      : message(code: grailsApplication.config.icescrum.resourceBundles.taskStates[_task.state]),
+                        description: _task.description,
+                        notes      : ServicesUtils.textileToHtml(_task.notes),
+                        sprint     : g.message(code: 'is.sprint') + " " + ((Sprint) _task.backlog).index,
+                        taskColor  : _task.color,
+                        permalink  : createLink(absolute: true, uri: '/' + _project.pkey + '-T' + _task.uid),
+                        story      : _task.parentStory ? _task.parentStory.name : null,
+                        estimation : _task.estimation,
+                        type       : _task.parentStory ? null : message(code: grailsApplication.config.icescrum.resourceBundles.taskTypes[_task.type])
                 ]
                 if (first == 0) {
                     tasks1 << task
