@@ -35,9 +35,10 @@ class TimeBoxNotesTemplateController implements ControllerErrorHandler {
     def timeBoxNotesTemplateService
 
     @Secured('inProject()')
-    def index(long project) {
+    def index(long project, String term) {
         Project _project = Project.withProject(project)
-        def timeBoxNotesTemplates = TimeBoxNotesTemplate.findAllByParentProjectAndNameIlike(_project, params.term ?: null)
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%'
+        def timeBoxNotesTemplates = TimeBoxNotesTemplate.findAllByParentProjectAndNameIlike(_project, searchTerm)
         render(status: 200, contentType: 'application/json', text: timeBoxNotesTemplates as JSON)
     }
 

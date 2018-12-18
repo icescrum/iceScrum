@@ -17,7 +17,7 @@ class TeamController implements ControllerErrorHandler {
 
     @Secured('isAuthenticated()')
     def index(String term, Boolean create) {
-        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%'
         def options = [sort: "name", order: "asc", cache: true]
         def teams = request.admin ? Team.findAllByNameIlike(searchTerm, options) : Team.findAllByOwner(springSecurityService.currentUser.username, options, searchTerm)
         if (create && !teams.any { it.name == term } && !Team.countByName(term)) {
@@ -124,7 +124,7 @@ class TeamController implements ControllerErrorHandler {
 
     @Secured('isAuthenticated()')
     def listByUser(String term, Integer offset) {
-        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%'
         def limit = 9
         def options = [offset: offset ?: 0, max: limit, sort: "name", order: "asc", cache: true]
         def user = springSecurityService.currentUser
@@ -134,7 +134,7 @@ class TeamController implements ControllerErrorHandler {
 
     @Secured('isAuthenticated()')
     def countByUser(String term) {
-        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%';
+        def searchTerm = term ? '%' + term.trim().toLowerCase() + '%' : '%%'
         def user = springSecurityService.currentUser
         def count = request.admin ? Team.countByNameIlike(searchTerm, [cache: true]) : Team.countByOwnerOrSM(user.username, [cache: true], searchTerm)
         def jsonCount = [count: count]
