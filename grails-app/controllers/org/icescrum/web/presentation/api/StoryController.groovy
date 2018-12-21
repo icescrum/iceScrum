@@ -528,7 +528,7 @@ class StoryController implements ControllerErrorHandler {
                     id            : it.uid,
                     effort        : it.effort,
                     state         : message(code: storyStateNames[it.state]),
-                    description   : is.storyDescription([story: it, displayBR: true]),
+                    description   : it.description ? it.description.replaceAll(/A\[.+?-(.*?)\]/) { matched, capture1 -> capture1 }.encodeAsHTML().encodeAsNL2BR() : '',
                     notes         : ServicesUtils.textileToHtml(it.notes),
                     type          : message(code: grailsApplication.config.icescrum.resourceBundles.storyTypes[it.type]),
                     suggestedDate : it.suggestedDate ? g.formatDate([formatName: 'is.date.format.short', timeZone: _project.preferences.timezone, date: it.suggestedDate]) : null,

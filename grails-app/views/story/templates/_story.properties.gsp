@@ -53,7 +53,10 @@
         </div>
         <div class="form-group">
             <label for="description">
-                <span class="text-muted small pull-right"><i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}</span>
+                <span class="text-muted small pull-right"
+                      ng-click="showProjectEditModal('actors')">
+                    <i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}
+                </span>
                 <div>${message(code: 'is.backlogelement.description')}</div>
             </label>
             <textarea class="form-control"
@@ -61,13 +64,13 @@
                       name="description"
                       ng-model="editableStory.description"
                       ng-show="showDescriptionTextarea"
-                      ng-blur="blurDescription('${is.generateStoryTemplate(newLine: '\\n')}')"
+                      ng-blur="blurDescription()"
                       at="atOptions"
                       autofocus
-                      placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
+                      placeholder="${message(code: 'is.ui.backlogeflement.nodescription')}"></textarea>
             <div class="atwho-preview form-control-static important"
                  ng-show="!showDescriptionTextarea"
-                 ng-click="clickDescriptionPreview($event, '${is.generateStoryTemplate(newLine: '\\n')}')"
+                 ng-click="clickDescriptionPreview($event)"
                  ng-focus="focusDescriptionPreview($event)"
                  ng-mousedown="$parent.descriptionPreviewMouseDown = true"
                  ng-mouseup="$parent.descriptionPreviewMouseDown = false"
