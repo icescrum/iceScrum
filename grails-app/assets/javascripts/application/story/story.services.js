@@ -312,18 +312,24 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         }
     };
     this.filterStories = function(stories, storyFilter) {
+        var normalize = _.flow(_.deburr, _.toLower);
         var getMatcher = function(key) {
             if (key == 'term') {
                 return function(value) {
                     if (isNaN(value)) {
                         return function(story) {
-                            var normalize = _.flow(_.deburr, _.toLower);
                             return _.some(['name', 'description', 'notes'], function(field) {
                                 return normalize(story[field]).indexOf(normalize(value)) != -1;
                             });
                         }
                     } else {
                         return _.matchesProperty('uid', _.toNumber(value));
+                    }
+                }
+            } else if (key == 'origin') {
+                return function(value) {
+                    return function(story) {
+                        return normalize(story.origin).indexOf(normalize(value)) != -1;
                     }
                 }
             } else if (_.includes(['creator', 'feature', 'dependsOn', 'parentSprint'], key)) {
