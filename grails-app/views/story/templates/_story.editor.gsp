@@ -51,13 +51,13 @@
                   name="description"
                   ng-model="editableStory.description"
                   ng-show="showDescriptionTextarea"
-                  ng-blur="blurDescription('${is.generateStoryTemplate(newLine: '\\n')}')"
+                  ng-blur="blurDescription()"
                   at="atOptions"
                   autofocus
                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
         <div class="atwho-preview form-control-static important"
              ng-show="!showDescriptionTextarea"
-             ng-click="clickDescriptionPreview($event, '${is.generateStoryTemplate(newLine: '\\n')}')"
+             ng-click="clickDescriptionPreview()"
              ng-focus="focusDescriptionPreview($event)"
              ng-mousedown="$parent.descriptionPreviewMouseDown = true"
              ng-mouseup="$parent.descriptionPreviewMouseDown = false"

@@ -407,6 +407,12 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
             resolve: {story: story}
         });
     };
+    $scope.getDescriptionTemplate = function(story) {
+        var template = $scope.message('is.story.template.as') + ' \n';
+        template += $scope.message('is.story.template.ican') + ' ' + (story.name ? _.lowerFirst(story.name) : '') + '\n';
+        template += $scope.message('is.story.template.to') + ' ';
+        return template;
+    };
     // Init
     $scope.storyStatesByName = StoryStatesByName;
     $scope.tags = [];
@@ -568,7 +574,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
                 $scope.notifySuccess('todo.is.ui.story.updated');
             });
         };
-        $scope.clickDescriptionPreview = function($event, template) {
+        $scope.clickDescriptionPreview = function($event) {
             if ($event.target.nodeName != 'A' && $scope.formEditable()) {
                 $scope.loadAtWhoActors();
                 $scope.showDescriptionTextarea = true;
@@ -576,7 +582,7 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
                 $el.prev().css('height', $el.outerHeight());
                 $scope.editForm(true);
                 if (!$scope.editableStory.description && $scope.editableStory.type == StoryTypesByName.USER_STORY) {
-                    ($scope.editableStory.description = template);
+                    ($scope.editableStory.description = $scope.getDescriptionTemplate($scope.editableStory));
                 }
             }
         };
@@ -587,10 +593,10 @@ extensibleController('storyDetailsCtrl', ['$scope', '$controller', '$state', '$t
                 });
             }
         };
-        $scope.blurDescription = function(template) {
+        $scope.blurDescription = function() {
             if (!$('.atwho-view:visible').length && $scope.formHolder.storyForm.description.$valid) { // ugly hack on atwho
                 $scope.showDescriptionTextarea = false;
-                if ($scope.editableStory.description == null || $scope.editableStory.description.trim() == template.trim()) {
+                if ($scope.editableStory.description == null || $scope.editableStory.description.trim() == $scope.getDescriptionTemplate($scope.editableStory).trim()) {
                     $scope.editableStory.description = '';
                 }
             }
@@ -905,11 +911,11 @@ extensibleController('featureStoryCtrl', ['$scope', '$controller', '$timeout', '
             $scope.notifySuccess('todo.is.ui.story.saved');
         });
     };
-    $scope.clickDescriptionPreview = function($event, template) {
+    $scope.clickDescriptionPreview = function() {
         $scope.loadAtWhoActors();
         $scope.showDescriptionTextarea = true;
         if (!$scope.editableStory.description) {
-            ($scope.editableStory.description = template);
+            ($scope.editableStory.description = $scope.getDescriptionTemplate($scope.editableStory));
         }
     };
     $scope.focusDescriptionPreview = function($event) {
@@ -919,10 +925,10 @@ extensibleController('featureStoryCtrl', ['$scope', '$controller', '$timeout', '
             });
         }
     };
-    $scope.blurDescription = function(template) {
+    $scope.blurDescription = function() {
         if (!$('.atwho-view:visible').length && $scope.formHolder.storyForm.description.$valid) { // ugly hack on atwho
             $scope.showDescriptionTextarea = false;
-            if ($scope.editableStory.description == null || $scope.editableStory.description.trim() == template.trim()) {
+            if ($scope.editableStory.description == null || $scope.editableStory.description.trim() == $scope.getDescriptionTemplate($scope.editableStory).trim()) {
                 $scope.editableStory.description = '';
             }
         }
