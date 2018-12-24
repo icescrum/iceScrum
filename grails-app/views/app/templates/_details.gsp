@@ -55,7 +55,7 @@
             </a>
         </div>
         <div>
-            <em>{{ appDefinition.baseline }}</em>
+            <p><em>{{ appDefinition.baseline }}</em></p>
             <p class="description" ng-bind-html="appDefinition.description"></p>
         </div>
     </div>
