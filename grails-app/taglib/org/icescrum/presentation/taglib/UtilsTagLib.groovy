@@ -80,7 +80,7 @@ class UtilsTagLib {
         if (attrs.entryPoint) {
             entry.hook(id: "${attrs.entryPoint}-exportFormats", model: [exportFormats: exportFormats])
         }
-        exportFormats
+        return exportFormats.sort { it.name }
     }
 
     def i18nBundle = {
