@@ -676,8 +676,12 @@ extensibleController('loginCtrl', ['$scope', '$state', '$rootScope', 'SERVER_ERR
             var lastOpenedUrl = data.url;
             var currentLocation = window.location.href.replace($rootScope.serverUrl, "");
             if ($state.params.redirectTo) {
+                var oldLocation = document.location.href;
                 document.location = $state.params.redirectTo;
-                document.location.reload(true);
+                // Force location change even in the case only query param changed
+                if ($state.params.redirectTo.split('?')[0] === oldLocation.split('?')[0]) {
+                    document.location.reload(true);
+                }
             } else if (['/', '/#', '/#/', '#/'].indexOf(currentLocation) !== -1 && lastOpenedUrl) {
                 document.location = lastOpenedUrl;
             } else {
