@@ -29,33 +29,33 @@
             <td>
                 <div class="col-sm-8 col-xs-8 hover-container">
                     <div class="filename" title="{{ attachment.filename }}">
-                        <i class="fa fa-{{ attachment.ext | fileicon }}"></i>
-                        <a target="{{ attachment.provider ? '_blank' : '' }}"
+                        <i ng-if=":: attachment.ext | fileicon" class="fa fa-{{:: attachment.ext | fileicon }}"></i>
+                        <a target="{{:: attachment.provider ? '_blank' : '' }}"
                            ng-show="!isPreviewable(attachment)"
-                           href="{{ getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a>
+                           href="{{:: getUrl(clazz, attachmentable, attachment) }}">{{ attachment.filename }}</a>
                         <a ng-show="isPreviewable(attachment)"
                            href
                            ng-click="showPreview(attachment, attachmentable, clazz)">{{ attachment.filename }}</a>
                     </div>
                     <a href
-                       ng-if="authorizedAttachment('update', attachment)"
+                       ng-if=":: authorizedAttachment('update', attachment)"
                        style="margin-top: 2px; vertical-align: top;"
                        class="hover-visible-inline small"
                        ng-click="showEditAttachmentName(attachment, attachmentable)">(${message(code: 'todo.is.ui.attachment.edit')})</a>
-                    <div><small ng-if="attachment.length > 0">{{ attachment.length | filesize }}</small> <small>{{ attachment.provider ? '('+attachment.provider+')' : '' }}</small></div>
+                    <div><small ng-if=":: attachment.length > 0">{{:: attachment.length | filesize }}</small> <small>{{ getAttachmentProviderName(attachment) }}</small></div>
                 </div>
                 <div class="col-sm-4 col-xs-4 text-right">
                     <div class="btn-group">
-                        <a ng-if="isAttachmentEditable(attachment)"
-                           ng-click="editAttachment(attachment, attachmentable, clazz)"
+                        <a ng-if=":: isAttachmentEditable(attachment)"
+                           ng-click=":: editAttachment(attachment, attachmentable, clazz)"
                            defer-tooltip="${message(code: 'is.button.update')}"
                            class="btn btn-secondary btn-sm"><i class="fa fa-pencil"></i></a>
-                        <a href="{{ getUrl(clazz, attachmentable, attachment) }}"
-                           ng-if="isAttachmentDownloadable(attachment)"
+                        <a href="{{:: getUrl(clazz, attachmentable, attachment) }}"
+                           ng-if=":: isAttachmentDownloadable(attachment)"
                            defer-tooltip="${message(code: 'todo.is.ui.attachment.download')}"
                            class="btn btn-secondary btn-sm"><i class="fa fa-download"></i></a>
-                        <a href="{{ getUrl(clazz, attachmentable, attachment) }}"
-                           ng-if="!isAttachmentDownloadable(attachment)"
+                        <a href="{{:: getUrl(clazz, attachmentable, attachment) }}"
+                           ng-if=":: !isAttachmentDownloadable(attachment)"
                            target="_blank"
                            defer-tooltip="${message(code: 'todo.is.ui.attachment.open')}"
                            class="btn btn-secondary btn-sm"><i class="fa fa-external-link"></i></a>
@@ -64,7 +64,7 @@
                                 defer-tooltip="${message(code: 'todo.is.ui.attachment.preview')}">
                             <i class="fa fa-search"></i>
                         </button>
-                        <button ng-if="authorizedAttachment('delete', attachment)"
+                        <button ng-if=":: authorizedAttachment('delete', attachment)"
                                 ng-click="confirmDelete({ callback: deleteAttachment, args: [attachment, attachmentable] })"
                                 defer-tooltip="${message(code: 'default.button.delete.label')}"
                                 type="button" class="btn btn-danger btn-sm">

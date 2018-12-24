@@ -163,8 +163,8 @@ windows = {
         ]
         exportFormats = {
             [
-                    [name: "${message(code: 'is.report.format.postits')} - ${message(code: 'todo.is.ui.stories')}", action: "printPostits", resource: 'story', params: ["project": params.project]],
-                    [name: "${message(code: 'is.report.format.postits')} - ${message(code: 'todo.is.ui.tasks')}", action: "printPostits", resource: 'task', params: ["project": params.project]]
+                    [name: "${message(code: 'todo.is.ui.stories')} - ${message(code: 'is.report.format.postits')}", action: "printPostits", resource: 'story', params: ["project": params.project]],
+                    [name: "${message(code: 'todo.is.ui.tasks')} - ${message(code: 'is.report.format.postits')}", action: "printPostits", resource: 'task', params: ["project": params.project]]
             ]
         }
     }

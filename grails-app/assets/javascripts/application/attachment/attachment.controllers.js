@@ -42,7 +42,9 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     };
     $scope.authorizedAttachment = AttachmentService.authorizedAttachment;
     $scope.getMethod = function(attachment, method) {
-        return $scope[method + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)];
+        var methodExt = $scope[method + _.capitalize(attachment.provider) + _.capitalize(attachment.ext)];
+        var methodWithoutExt = $scope[method + _.capitalize(attachment.provider)];
+        return methodExt ? methodExt : (methodWithoutExt ? methodWithoutExt : null);
     };
     $scope.getUrl = function(clazz, attachmentable, attachment) {
         if (attachment.provider && $scope.getMethod(attachment, 'getUrl')) {
@@ -51,11 +53,18 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
             return attachment.url ? attachment.url : $scope.attachmentBaseUrl + clazz + "/" + attachmentable.id + "/" + attachment.id;
         }
     };
+    $scope.getAttachmentProviderName = function(attachment) {
+        if (attachment.provider && $scope.getMethod(attachment, 'getAttachmentProviderName')) {
+            return $scope.getMethod(attachment, 'getAttachmentProviderName')(attachment)
+        } else {
+            return attachment.provider ? '(' + attachment.provider + ')' : '';
+        }
+    };
     $scope.isPreviewable = function(attachment) {
         var previewable;
         var ext = attachment.ext ? attachment.ext.toLowerCase() : '';
         if (attachment.provider) {
-            return $scope.getMethod(attachment, 'isPreviewable') ? $scope.getMethod(attachment, 'isPreviewable')() : false;
+            return $scope.getMethod(attachment, 'isPreviewable') ? $scope.getMethod(attachment, 'isPreviewable')(attachment) : false;
         }
         switch (ext) {
             case 'pdf':
@@ -75,14 +84,14 @@ extensibleController('attachmentCtrl', ['$scope', '$uibModal', 'AttachmentServic
     };
     $scope.isAttachmentEditable = function(attachment) {
         if (attachment.provider) {
-            return $scope.getMethod(attachment, 'isAttachmentEditable') ? $scope.getMethod(attachment, 'isAttachmentEditable')() : false;
+            return $scope.getMethod(attachment, 'isAttachmentEditable') ? $scope.getMethod(attachment, 'isAttachmentEditable')(attachment) : false;
         } else {
             return false;
         }
     };
     $scope.isAttachmentDownloadable = function(attachment) {
         if (attachment.provider) {
-            return $scope.getMethod(attachment, 'isAttachmentDownloadable') ? $scope.getMethod(attachment, 'isAttachmentDownloadable')() : false;
+            return $scope.getMethod(attachment, 'isAttachmentDownloadable') ? $scope.getMethod(attachment, 'isAttachmentDownloadable')(attachment) : false;
         } else {
             return true;
         }
