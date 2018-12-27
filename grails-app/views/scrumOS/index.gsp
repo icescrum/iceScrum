@@ -22,11 +22,11 @@
 <head>
     <meta name='layout' content='main'/>
     <g:if test="${project}">
-        <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[project: project.pkey, lang: lang]"/>
-        <title>${project.name}</title>
+        <feed:meta kind="rss" version="2.0" controller="project" action="feed" params="[project: project.pkey.encodeAsHTML(), lang: lang]"/>
+        <title>${project.name.encodeAsHTML()}</title>
     </g:if>
     <g:elseif test="${portfolio}">
-        <title>${message(code: 'is.portfolio')} - ${portfolio.name}</title>
+        <title>${message(code: 'is.portfolio')} - ${portfolio.name.encodeAsHTML()}</title>
     </g:elseif>
 </head>
 <body>
