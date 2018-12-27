@@ -54,15 +54,13 @@
             </svg>
             <div class="loading-text text-center">{{ application.loadingText }}</div>
         </div>
-        <g:if test="${!embed}">
-            <is:header/>
-        </g:if>
+        <is:header/>
         <div class="container-fluid main" ui-view>
             <g:layoutBody/>
         </div>
         <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <asset:javascript src="application.js"/>
         <g:render template="/scrumOS/templates"/>
-        <entry:point id="icescrum-footer" model="[workspace:workspace, user:user]"/>
+        <entry:point id="icescrum-footer" model="[workspace: workspace, user: user]"/>
     </body>
 </html>
