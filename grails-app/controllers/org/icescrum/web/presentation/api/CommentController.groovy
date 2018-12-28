@@ -39,12 +39,13 @@ class CommentController implements ControllerErrorHandler {
     @Secured('stakeHolder() or inProject()')
     def index() {
         def commentable = commentableObject
+        def comments
         if (commentable) {
-            def comments = commentable.comments.collect { Comment comment -> ApplicationSupport.getRenderableComment(comment, commentable) }
-            render(status: 200, contentType: 'application/json', text: comments as JSON)
+            comments = commentable.comments
         } else {
-            returnError(code: 'is.ui.backlogelement.comment.error')
+            comments = params.type == 'story' ? Story.recentComments : Task.recentComments
         }
+        render(status: 200, contentType: 'application/json', text: comments.collect { Comment comment -> ApplicationSupport.getRenderableComment(comment, commentable) } as JSON)
     }
 
     @Secured('stakeHolder() or inProject()')
