@@ -24,15 +24,12 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
-import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
-import org.grails.comments.CommentLink
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.event.IceScrumEventType
 import org.icescrum.core.support.ApplicationSupport
-import org.icescrum.core.utils.ServicesUtils
 
 class CommentController implements ControllerErrorHandler {
 
