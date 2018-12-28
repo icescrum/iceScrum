@@ -24,11 +24,14 @@ package org.icescrum.web.presentation.api
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import grails.util.GrailsNameUtils
 import org.grails.comments.Comment
+import org.grails.comments.CommentLink
 import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.event.IceScrumEventType
+import org.icescrum.core.utils.ServicesUtils
 
 class CommentController implements ControllerErrorHandler {
 
@@ -39,7 +42,8 @@ class CommentController implements ControllerErrorHandler {
     def index() {
         def commentable = commentableObject
         if (commentable) {
-            render(status: 200, contentType: 'application/json', text: commentable.comments as JSON)
+            def comments = commentable.comments.collect { Comment comment -> getRenderableComment(comment, commentable) }
+            render(status: 200, contentType: 'application/json', text: comments as JSON)
         } else {
             returnError(code: 'is.ui.backlogelement.comment.error')
         }
@@ -56,20 +60,19 @@ class CommentController implements ControllerErrorHandler {
             returnError(code: 'is.comment.error.not.exist')
             return
         }
-        render(status: 200, contentType: 'application/json', text: comment as JSON)
+        render(status: 200, contentType: 'application/json', text: getRenderableComment(comment) as JSON)
     }
 
     @Secured('((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()')
     def save() {
         def poster = springSecurityService.currentUser
         def commentable = commentableObject
-        Comment comment
         if (params['comment'] instanceof Map) {
             Comment.withTransaction {
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['addComment': null])
                 commentable.addComment(poster, params.comment.body)
                 activityService.addActivity(commentable, poster, 'comment', commentable.name);
-                comment = commentable.comments.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
+                Comment comment = commentable.comments.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
                 if (params.type == 'story') {
                     commentable.addToFollowers(poster)
                 }
@@ -77,9 +80,9 @@ class CommentController implements ControllerErrorHandler {
                     commentable.comments_count = commentable.getTotalComments()
                 }
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment': comment])
+                render(status: 201, contentType: 'application/json', text: getRenderableComment(comment, commentable) as JSON)
             }
         }
-        render(status: 201, contentType: 'application/json', text: comment as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProject()')
@@ -101,7 +104,7 @@ class CommentController implements ControllerErrorHandler {
         grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment': comment])
         comment.save()
         grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment': comment])
-        render(status: 200, contentType: 'application/json', text: comment as JSON)
+        render(status: 200, contentType: 'application/json', text: getRenderableComment(comment) as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProject()')
@@ -147,5 +150,22 @@ class CommentController implements ControllerErrorHandler {
                 commentable = null
         }
         commentable
+    }
+
+    private getRenderableComment(Comment comment, def commentable = null) {
+        def commentLink = commentable ? [commentRef: commentable.id, type: GrailsNameUtils.getPropertyName(commentable.class)] : CommentLink.findByComment(comment)
+        [
+                class      : GrailsNameUtils.getShortName(comment.class),
+                id         : comment.id,
+                body       : comment.body,
+                body_html  : ServicesUtils.textileToHtml(comment.body),
+                poster     : comment.poster,
+                dateCreated: comment.dateCreated,
+                lastUpdated: comment.lastUpdated,
+                commentable: [
+                        id  : commentLink.commentRef,
+                        type: commentLink.class
+                ]
+        ]
     }
 }
