@@ -31,6 +31,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.event.IceScrumEventType
+import org.icescrum.core.support.ApplicationSupport
 import org.icescrum.core.utils.ServicesUtils
 
 class CommentController implements ControllerErrorHandler {
@@ -42,7 +43,7 @@ class CommentController implements ControllerErrorHandler {
     def index() {
         def commentable = commentableObject
         if (commentable) {
-            def comments = commentable.comments.collect { Comment comment -> getRenderableComment(comment, commentable) }
+            def comments = commentable.comments.collect { Comment comment -> ApplicationSupport.getRenderableComment(comment, commentable) }
             render(status: 200, contentType: 'application/json', text: comments as JSON)
         } else {
             returnError(code: 'is.ui.backlogelement.comment.error')
@@ -60,7 +61,7 @@ class CommentController implements ControllerErrorHandler {
             returnError(code: 'is.comment.error.not.exist')
             return
         }
-        render(status: 200, contentType: 'application/json', text: getRenderableComment(comment) as JSON)
+        render(status: 200, contentType: 'application/json', text: ApplicationSupport.getRenderableComment(comment) as JSON)
     }
 
     @Secured('((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()')
@@ -80,7 +81,7 @@ class CommentController implements ControllerErrorHandler {
                     commentable.comments_count = commentable.getTotalComments()
                 }
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment': comment])
-                render(status: 201, contentType: 'application/json', text: getRenderableComment(comment, commentable) as JSON)
+                render(status: 201, contentType: 'application/json', text: ApplicationSupport.getRenderableComment(comment, commentable) as JSON)
             }
         }
     }
@@ -104,7 +105,7 @@ class CommentController implements ControllerErrorHandler {
         grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment': comment])
         comment.save()
         grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment': comment])
-        render(status: 200, contentType: 'application/json', text: getRenderableComment(comment) as JSON)
+        render(status: 200, contentType: 'application/json', text: ApplicationSupport.getRenderableComment(comment) as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProject()')
@@ -150,35 +151,5 @@ class CommentController implements ControllerErrorHandler {
                 commentable = null
         }
         commentable
-    }
-
-    private getRenderableComment(Comment comment, def commentable = null) {
-        def commentLinkClass = GrailsNameUtils.getShortName(comment.class)
-        def i = commentLinkClass.indexOf('_$$_javassist')
-        if (i > -1) {
-            commentLinkClass = commentLinkClass[0..i - 1]
-        }
-
-        def commentLink = commentable ? [commentRef: commentable.id, type: commentLinkClass.toLowerCase()] : CommentLink.findByComment(comment)
-
-        def commentClass = GrailsNameUtils.getShortName(comment.class)
-        i = commentClass.indexOf('_$$_javassist')
-        if (i > -1) {
-            commentClass = commentClass[0..i - 1]
-        }
-
-        [
-                class      : commentClass,
-                id         : comment.id,
-                body       : comment.body,
-                body_html  : ServicesUtils.textileToHtml(comment.body),
-                poster     : comment.poster,
-                dateCreated: comment.dateCreated,
-                lastUpdated: comment.lastUpdated,
-                commentable: [
-                        id  : commentLink.commentRef,
-                        type: commentLink.class
-                ]
-        ]
     }
 }
