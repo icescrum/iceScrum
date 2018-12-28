@@ -38,14 +38,16 @@ class CommentController implements ControllerErrorHandler {
 
     @Secured('stakeHolder() or inProject()')
     def index() {
-        def commentable = commentableObject
+        def commentable = params.commentable ? commentableObject : null
         def comments
         if (commentable) {
             comments = commentable.comments
         } else {
             comments = params.type == 'story' ? Story.recentComments : Task.recentComments
         }
-        render(status: 200, contentType: 'application/json', text: comments.collect { Comment comment -> ApplicationSupport.getRenderableComment(comment, commentable) } as JSON)
+        render(status: 200, contentType: 'application/json', text: comments.collect {
+            Comment comment -> ApplicationSupport.getRenderableComment(comment, commentable)
+        } as JSON)
     }
 
     @Secured('stakeHolder() or inProject()')
