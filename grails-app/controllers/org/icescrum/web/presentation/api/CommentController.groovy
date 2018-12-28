@@ -153,9 +153,22 @@ class CommentController implements ControllerErrorHandler {
     }
 
     private getRenderableComment(Comment comment, def commentable = null) {
-        def commentLink = commentable ? [commentRef: commentable.id, type: GrailsNameUtils.getPropertyName(commentable.class)] : CommentLink.findByComment(comment)
+        def commentLinkClass = GrailsNameUtils.getShortName(comment.class)
+        def i = commentLinkClass.indexOf('_$$_javassist')
+        if (i > -1) {
+            commentLinkClass = commentLinkClass[0..i - 1]
+        }
+
+        def commentLink = commentable ? [commentRef: commentable.id, type: commentLinkClass.toLowerCase()] : CommentLink.findByComment(comment)
+
+        def commentClass = GrailsNameUtils.getShortName(comment.class)
+        i = commentClass.indexOf('_$$_javassist')
+        if (i > -1) {
+            commentClass = commentClass[0..i - 1]
+        }
+
         [
-                class      : GrailsNameUtils.getShortName(comment.class),
+                class      : commentClass,
                 id         : comment.id,
                 body       : comment.body,
                 body_html  : ServicesUtils.textileToHtml(comment.body),
