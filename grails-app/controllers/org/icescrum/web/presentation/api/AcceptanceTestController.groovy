@@ -39,7 +39,14 @@ class AcceptanceTestController implements ControllerErrorHandler {
 
     @Secured('(stakeHolder() or inProject()) and !archivedProject()')
     def index(long project) {
-        def acceptanceTests = params.parentStory ? AcceptanceTest.getAllInStory(project, params.long('parentStory')) : AcceptanceTest.getAllInProject(project)
+        def acceptanceTests
+        if (params.parentStory) {
+            acceptanceTests = AcceptanceTest.getAllInStory(project, params.long('parentStory'), params.term ?: '', params.state ? [params.int('state')] : null)
+        } else if (params.parentSprint) {
+            acceptanceTests = AcceptanceTest.getAllInSprint(project, params.long('parentSprint'), params.term ?: '', params.state ? [params.int('state')] : null)
+        } else {
+            acceptanceTests = AcceptanceTest.getAllInProject(project, params.term ?: '', params.state ? [params.int('state')] : null)
+        }
         render(status: 200, contentType: 'application/json', text: acceptanceTests as JSON)
     }
 
