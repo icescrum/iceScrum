@@ -43,7 +43,7 @@ class CommentController implements ControllerErrorHandler {
         if (commentable) {
             comments = commentable.comments
         } else {
-            comments = params.type == 'story' ? Story.recentComments : Task.recentComments
+            comments = params.type == 'story' ? Story.recentCommentsInProject(params.project) : Task.recentCommentsInProject(params.project)
         }
         render(status: 200, contentType: 'application/json', text: comments.collect {
             Comment comment -> ApplicationSupport.getRenderableComment(comment, commentable)
