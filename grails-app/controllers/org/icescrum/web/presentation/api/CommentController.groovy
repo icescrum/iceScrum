@@ -104,7 +104,7 @@ class CommentController implements ControllerErrorHandler {
         }
         def commentable = commentableObject
         comment.body = params.comment.body
-        grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment': comment])
+        grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updatedComment': comment])
         comment.save()
         grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment': comment])
         render(status: 200, contentType: 'application/json', text: ApplicationSupport.getRenderableComment(comment) as JSON)
