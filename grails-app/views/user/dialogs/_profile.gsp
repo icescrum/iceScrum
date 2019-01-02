@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="form-half">
                         <label for="username">${message(code: 'is.user.username')}</label>
-                        <p class="form-control-static">${user.username.encodeAsHTML().encodeAsHTML()}</p>
+                        <p class="form-control-static">${user.username.encodeAsHTML()}</p>
                     </div>
                     <div class="form-half">
                         <label for="userAvatar">${message(code: 'is.user.avatar')}</label>
