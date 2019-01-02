@@ -580,8 +580,7 @@ var isApplication = angular.module('isApplication', [
                 var separator = uri.indexOf('?') !== -1 ? "&" : "?";
                 if (uri.match(re)) {
                     return uri.replace(re, '$1' + key + "=" + value + '$2');
-                }
-                else {
+                } else {
                     return uri + separator + key + "=" + value;
                 }
             };

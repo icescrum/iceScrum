@@ -123,8 +123,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
             action: function(release) {
                 if (release.sprints.length > 0) {
                     $scope.showAutoPlanModal({callback: $scope.autoPlan, args: [release]});
-                }
-                else {
+                } else {
                     $scope.notifyWarning('todo.is.ui.nosprint');
                 }
             }
@@ -135,8 +134,7 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
             action: function(release) {
                 if (release.sprints.length > 0) {
                     $scope.confirm({message: $scope.message('is.ui.releasePlan.toolbar.warning.dissociateAll'), callback: $scope.unPlan, args: [release]});
-                }
-                else {
+                } else {
                     $scope.notifyWarning('todo.is.ui.nosprint');
                 }
             }
