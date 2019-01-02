@@ -221,7 +221,7 @@ icescrum {
                                              'stakeHolderRestrictedViews', 'assignOnBeginTask', 'autoCreateTaskOnEmptyStory', 'timezone', 'estimatedSprintsDuration', 'hideWeekend']],
             attachment          : [include: ['filename']],
             acceptancetest      : [include: ['parentProject'],
-                                   exclude: ['metaDatas', 'parentProject'],
+                                   exclude: ['metaDatas'],
                                    textile: ['description'],
                                    asShort: ['state', 'parentProject']],
             template            : [asShort: ['name']],
