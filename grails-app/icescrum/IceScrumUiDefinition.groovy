@@ -62,10 +62,6 @@ windows = {
             defaultPosition 2
             defaultVisibility true
         }
-        embedded = [
-                view     : 'list',
-                viewTypes: ['postits', 'table']
-        ]
         exportFormats = {
             [
                     [name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]],
@@ -87,10 +83,6 @@ windows = {
             defaultPosition 5
             defaultVisibility true
         }
-        embedded = [
-                view     : 'list',
-                viewTypes: ['postits', 'table', 'projectParkingLotChart']
-        ]
         exportFormats = {
             [
                     [name: message(code: 'is.report.format.pdf'), params: [project: params.project]],
@@ -111,10 +103,6 @@ windows = {
             defaultPosition 1
             defaultVisibility true
         }
-        embedded = [
-                view     : 'projectCumulativeFlowChart',
-                viewTypes: ['projectCumulativeFlowChart', 'projectVelocityCapacityChart', 'projectBurnupChart', 'projectBurndownChart', 'projectVelocityChart', 'projectParkingLotChart'],
-        ]
     }
     'planning' {
         details true
@@ -127,17 +115,6 @@ windows = {
             defaultPosition 3
             defaultVisibility true
         }
-        embedded = [
-                view     : 'index',
-                viewTypes: ['postits', 'notes', 'releaseBurndownChart', 'releaseParkingLotChart'],
-                id       : { project ->
-                    def id = [label: message(code: 'is.release'), select: [[key: '', value: message(code: 'is.ui.releasePlan.id.empty')]]]
-                    project.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
-                        id.select << [key: it.id, value: "${it.name}"]
-                    }
-                    id
-                }
-        ]
     }
     'taskBoard' {
         details true
@@ -150,17 +127,6 @@ windows = {
             defaultPosition 4
             defaultVisibility true
         }
-        embedded = [
-                view     : 'index',
-                viewTypes: ['postits', 'table', 'notes', 'sprintBurndownRemainingChart', 'sprintBurnupTasksChart', 'sprintBurnupStoriesChart', 'sprintBurnupPointsChart'],
-                id       : { project ->
-                    def id = [label: message(code: 'is.sprint'), select: [[key: '', value: message(code: 'is.ui.sprintPlan.id.empty')]]]
-                    project.releases?.sort({ a, b -> a.orderNumber <=> b.orderNumber } as Comparator)?.each {
-                        it.sprints?.collect { v -> id.select << [key: v.id, value: "${it.name} - Sprint ${v.index}"] }
-                    }
-                    id
-                }
-        ]
         exportFormats = {
             [
                     [name: "${message(code: 'todo.is.ui.stories')} - ${message(code: 'is.report.format.postits')}", action: "printPostits", resource: 'story', params: ["project": params.project]],

@@ -54,7 +54,8 @@
             <g:layoutBody/>
         </div>
         <g:include controller="scrumOS" action="isSettings" params="${params}"/>
-        <g:render template="/scrumOS/templates"/>
         <asset:javascript src="application.js"/>
+        <g:render template="/scrumOS/templates"/>
+        <entry:point id="icescrum-footer-simple" model="[workspace: workspace, user: user]"/>
     </body>
 </html>
