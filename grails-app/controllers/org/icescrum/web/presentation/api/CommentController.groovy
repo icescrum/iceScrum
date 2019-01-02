@@ -45,8 +45,8 @@ class CommentController implements ControllerErrorHandler {
         } else {
             comments = params.type == 'story' ? Story.recentCommentsInProject(params.project) : Task.recentCommentsInProject(params.project)
         }
-        render(status: 200, contentType: 'application/json', text: comments.collect {
-            Comment comment -> ApplicationSupport.getRenderableComment(comment, commentable)
+        render(status: 200, contentType: 'application/json', text: comments.collect { Comment comment ->
+            ApplicationSupport.getRenderableComment(comment, commentable)
         } as JSON)
     }
 
@@ -83,6 +83,8 @@ class CommentController implements ControllerErrorHandler {
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment': comment])
                 render(status: 201, contentType: 'application/json', text: ApplicationSupport.getRenderableComment(comment, commentable) as JSON)
             }
+        } else {
+            render(status: 400)
         }
     }
 
