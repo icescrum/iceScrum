@@ -128,6 +128,14 @@ class RestUrlMappings {
             }
         }
         // Comments
+        "/ws/project/$project/comment/$type" {
+            controller = 'comment'
+            action = [GET: 'index']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                type(inList: ['story', 'task'])
+            }
+        }
         "/ws/project/$project/comment/$type/$commentable" {
             controller = 'comment'
             action = [GET: 'index', POST: 'save']

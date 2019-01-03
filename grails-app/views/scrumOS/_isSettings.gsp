@@ -62,7 +62,7 @@
         showAppStore: ${flash.showAppStore?:false},
         displayWhatsNew: ${g.meta(name: 'app.displayWhatsNew') && user?.preferences?.displayWhatsNew ?: false},
         version: "${g.meta(name: 'app.version')}",
-        serverUrl: "${serverURL}",
+        serverUrl: "${serverURL.encodeAsJavaScript()}",
         warning: ${ApplicationSupport.getLastWarning() as JSON},
         workerSrc: "${asset.assetPath(src:"vendors/vanilla/pdfjs/pdf.worker.js")}",
         enableEmojis: ${ApplicationSupport.isUTF8Database()}

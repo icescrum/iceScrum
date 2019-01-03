@@ -34,7 +34,7 @@
                 <g:if test="${request.admin}">
                     <tr>
                         <td>${message(code: 'is.dialog.about.version.configLocation')}</td>
-                        <td>${configLocation}</td>
+                        <td>${configLocation.encodeAsHTML()}</td>
                     </tr>
                     <tr>
                         <td>${message(code: 'is.ui.server.user.name')}</td>
@@ -133,7 +133,7 @@
                 </tr>
                 <tr>
                     <td>${message(code: 'config.icescrum.serverURL')}</td>
-                    <td>${serverUrl}</td>
+                    <td>${serverUrl.encodeAsHTML()}</td>
                 </tr>
             </tbody>
         </table>

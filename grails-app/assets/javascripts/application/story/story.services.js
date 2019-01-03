@@ -287,7 +287,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
         return Story.get({projectId: projectId, action: 'listByField', field: field}).$promise
     };
     this.getDependenceEntries = function(story, term) {
-        return FormService.httpGet('p/' + story.backlog.id + '/story/' + story.id + '/dependenceEntries', {params: {term: term} }, true);
+        return FormService.httpGet('p/' + story.backlog.id + '/story/' + story.id + '/dependenceEntries', {params: {term: term}}, true);
     };
     this.getParentSprintEntries = function(projectId) {
         return FormService.httpGet('p/' + projectId + '/story/sprintEntries', null, true);
@@ -359,8 +359,7 @@ services.service("StoryService", ['$timeout', '$q', '$http', '$rootScope', '$sta
                         return _.includes(ids, value);
                     }
                 };
-            }
-            else {
+            } else {
                 return function(value) {
                     return _.matchesProperty(key, value);
                 };

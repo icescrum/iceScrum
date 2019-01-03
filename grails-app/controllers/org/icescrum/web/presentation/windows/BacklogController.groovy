@@ -90,7 +90,7 @@ class BacklogController implements ControllerErrorHandler {
                         typei18n = 'is.story.' + chartType
                         break
                 }
-                def number = (chartUnit == 'effort' ?  it.value.collect { it.effort ?: 0 }.sum() : it.value.size()) ?: 0
+                def number = (chartUnit == 'effort' ? it.value.collect { it.effort ?: 0 }.sum() : it.value.size()) ?: 0
                 dataPoint << number
                 total += number
                 dataPoints << dataPoint

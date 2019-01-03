@@ -61,6 +61,6 @@
         <g:include controller="scrumOS" action="isSettings" params="${params}"/>
         <asset:javascript src="application.js"/>
         <g:render template="/scrumOS/templates"/>
-        <entry:point id="icescrum-footer"/>
+        <entry:point id="icescrum-footer" model="[workspace: workspace, user: user]"/>
     </body>
 </html>

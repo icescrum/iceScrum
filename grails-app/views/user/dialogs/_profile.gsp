@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="form-half">
                         <label for="username">${message(code: 'is.user.username')}</label>
-                        <p class="form-control-static">${user.username}</p>
+                        <p class="form-control-static">${user.username.encodeAsHTML()}</p>
                     </div>
                     <div class="form-half">
                         <label for="userAvatar">${message(code: 'is.user.avatar')}</label>
@@ -214,24 +214,24 @@
                     </tr>
                     <g:each var="project" in="${projects}">
                         <tr class="text-center">
-                            <td>${project.name}</td>
+                            <td>${project.name.encodeAsHTML()}</td>
                             <td style="vertical-align: middle;">
                                 <input type="checkbox"
                                        name="${project.id}-autoFollow"
                                        id="${project.id}-autoFollow"
-                                       ng-model="emailsSettings.autoFollow['${project.pkey}']">
+                                       ng-model="emailsSettings.autoFollow['${project.pkey.encodeAsHTML()}']">
                             </td>
                             <td style="vertical-align: middle;">
                                 <input type="checkbox"
                                        name="${project.id}-onStory"
                                        id="${project.id}-onStory"
-                                       ng-model="emailsSettings.onStory['${project.pkey}']">
+                                       ng-model="emailsSettings.onStory['${project.pkey.encodeAsHTML()}']">
                             </td>
                             <td style="vertical-align: middle;">
                                 <input type="checkbox"
                                        name="${project.id}-onUrgentTask"
                                        id="${project.id}-onUrgentTask"
-                                       ng-model="emailsSettings.onUrgentTask['${project.pkey}']">
+                                       ng-model="emailsSettings.onUrgentTask['${project.pkey.encodeAsHTML()}']">
                             </td>
                         </tr>
                     </g:each>

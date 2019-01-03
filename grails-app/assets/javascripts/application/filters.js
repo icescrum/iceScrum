@@ -133,8 +133,7 @@ filters
         return function(bg, invert) {
             if (bg && contrastColorCache[bg] != undefined) {
                 return invert ? (contrastColorCache[bg] == 'invert' ? '' : 'invert') : contrastColorCache[bg];
-            }
-            else if (bg && contrastColorCache[bg] == undefined) {
+            } else if (bg && contrastColorCache[bg] == undefined) {
                 //convert hex to rgb
                 var color;
                 if (bg.indexOf('#') == 0) {
@@ -418,7 +417,7 @@ filters
         if (story) {
             var label = after ? story.name + ' - ' + story.uid : story.uid + ' - ' + story.name;
             if (displayProject) {
-                label += ' (' +  story.project.name + ')';
+                label += ' (' + story.project.name + ')';
             }
             return label;
         }

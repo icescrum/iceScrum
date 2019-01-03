@@ -29,6 +29,7 @@ import org.icescrum.core.domain.Story
 import org.icescrum.core.domain.Task
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.event.IceScrumEventType
+import org.icescrum.core.support.ApplicationSupport
 
 class CommentController implements ControllerErrorHandler {
 
@@ -37,12 +38,16 @@ class CommentController implements ControllerErrorHandler {
 
     @Secured('stakeHolder() or inProject()')
     def index() {
-        def commentable = commentableObject
+        def commentable = params.commentable ? commentableObject : null
+        def comments
         if (commentable) {
-            render(status: 200, contentType: 'application/json', text: commentable.comments as JSON)
+            comments = commentable.comments
         } else {
-            returnError(code: 'is.ui.backlogelement.comment.error')
+            comments = params.type == 'story' ? Story.recentCommentsInProject(params.project) : Task.recentCommentsInProject(params.project)
         }
+        render(status: 200, contentType: 'application/json', text: comments.collect { Comment comment ->
+            ApplicationSupport.getRenderableComment(comment, commentable)
+        } as JSON)
     }
 
     @Secured('stakeHolder() or inProject()')
@@ -56,20 +61,19 @@ class CommentController implements ControllerErrorHandler {
             returnError(code: 'is.comment.error.not.exist')
             return
         }
-        render(status: 200, contentType: 'application/json', text: comment as JSON)
+        render(status: 200, contentType: 'application/json', text: ApplicationSupport.getRenderableComment(comment) as JSON)
     }
 
     @Secured('((isAuthenticated() and stakeHolder()) or inProject()) and !archivedProject()')
     def save() {
         def poster = springSecurityService.currentUser
         def commentable = commentableObject
-        Comment comment
         if (params['comment'] instanceof Map) {
             Comment.withTransaction {
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['addComment': null])
                 commentable.addComment(poster, params.comment.body)
                 activityService.addActivity(commentable, poster, 'comment', commentable.name);
-                comment = commentable.comments.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
+                Comment comment = commentable.comments.sort { it1, it2 -> it1.dateCreated <=> it2.dateCreated }?.last()
                 if (params.type == 'story') {
                     commentable.addToFollowers(poster)
                 }
@@ -77,9 +81,11 @@ class CommentController implements ControllerErrorHandler {
                     commentable.comments_count = commentable.getTotalComments()
                 }
                 grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['addedComment': comment])
+                render(status: 201, contentType: 'application/json', text: ApplicationSupport.getRenderableComment(comment, commentable) as JSON)
             }
+        } else {
+            render(status: 400)
         }
-        render(status: 201, contentType: 'application/json', text: comment as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProject()')
@@ -98,10 +104,10 @@ class CommentController implements ControllerErrorHandler {
         }
         def commentable = commentableObject
         comment.body = params.comment.body
-        grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updateComment': comment])
+        grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.BEFORE_UPDATE, commentable, ['updatedComment': comment])
         comment.save()
         grailsApplication.mainContext[params.type + 'Service'].publishSynchronousEvent(IceScrumEventType.UPDATE, commentable, ['updatedComment': comment])
-        render(status: 200, contentType: 'application/json', text: comment as JSON)
+        render(status: 200, contentType: 'application/json', text: ApplicationSupport.getRenderableComment(comment) as JSON)
     }
 
     @Secured('isAuthenticated() and !archivedProject()')
