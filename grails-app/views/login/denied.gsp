@@ -17,14 +17,15 @@
 -
 - Authors:
 -
- * Vincent Barrier (vbarrier@kagilum.com)
+- Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <head>
-    <meta name='layout' content='main'/>
-    <title><g:message code="is_denied_title"/></title>
+    <title>${message(code: 'is.denied')}</title>
+    <meta name='layout' content='error'/>
 </head>
 <body>
-    <div class='body'>
-        <div class='errors'><g:message code="is_denied_text"/></div>
+    <div class="error-details">
+        ${message(code: 'is.denied')}
     </div>
 </body>
