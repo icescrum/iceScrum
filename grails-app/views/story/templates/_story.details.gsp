@@ -116,7 +116,7 @@
                 <li role="presentation"
                     class="hidden-sm"
                     ng-if="!application.focusedDetailsView"
-                    defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
+                    uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                     ng-class="getAcceptanceTestClass(story)">
                     <a href="{{ tabUrl('tests') }}">
                         <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests.short')} {{ story.acceptanceTests_count | parens }}
@@ -137,7 +137,7 @@
                     <ul class="dropdown-menu dropdown-more dropdown-menu-right">
                         <li role="presentation"
                             class="visible-sm-block"
-                            defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
+                            uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                             ng-class="getAcceptanceTestClass(story)">
                             <a href="{{ tabUrl('tests') }}">
                                 <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
