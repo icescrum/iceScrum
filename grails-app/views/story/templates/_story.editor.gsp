@@ -25,7 +25,6 @@
 <form ng-submit="save(editableStory, selected)"
       name="formHolder.storyForm"
       ng-class="['form-editable form-editing', formHolder.formExpanded ? 'form-expanded' : 'form-not-expanded']"
-      show-validation
       novalidate>
     <div class="clearfix no-padding">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
