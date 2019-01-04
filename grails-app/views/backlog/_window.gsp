@@ -57,6 +57,7 @@
             <entry:point id="backlog-window-toolbar"/>
         </ul>
         <div id="elementslist-toolbar" class="btn-toolbar pull-right">
+            <entry:point id="backlog-window-toolbar-right"/>
             <div class="btn-group">
                 <button type="button"
                         class="btn btn-secondary hidden-xs hidden-sm"
@@ -69,18 +70,8 @@
                         ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                 </button>
             </div>
-            <div class="btn-group hidden-xs">
-                <button type="button"
-                        class="btn btn-secondary"
-                        ng-click="toggleSelectableMultiple()"
-                        defer-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
-                    <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
-                </button>
-            </div>
             <a ui-sref="backlog.backlog.story.new"
-               ng-class="{ 'pull-right': backlogContainers.length == 1 }"
                class="btn btn-primary"><span>${message(code: "todo.is.ui.story.new")}</span></a>
-            <entry:point id="backlog-window-toolbar-right"/>
         </div>
     </div>
     <div class="window-alert bg-warning" ng-if="selectableOptions.selectingMultiple">

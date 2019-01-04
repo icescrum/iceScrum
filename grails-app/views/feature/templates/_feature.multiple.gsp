@@ -25,7 +25,7 @@
     <div class="card-header">
         <h3 class="card-title">
             ${message(code: "is.ui.feature")} ({{ features.length }})
-            <a class="pull-right visible-on-hover btn btn-secondary"
+            <a class="pull-right btn btn-secondary"
                href="#/{{ ::viewName }}"
                defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>

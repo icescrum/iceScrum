@@ -85,7 +85,7 @@ extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'Featur
         selectionUpdated: function(selectedIds) {
             switch (selectedIds.length) {
                 case 0:
-                    if (!_.isUndefined($state.params.featureId) || !_.isUndefined($state.params.featureListId)) {
+                    if ($scope.selectableOptions.hasSelected()) {
                         $state.go($scope.viewName);
                     }
                     break;
@@ -96,6 +96,9 @@ extensibleController('featuresCtrl', ['$scope', '$state', '$controller', 'Featur
                     $state.go($scope.viewName + '.multiple', {featureListId: selectedIds.join(",")});
                     break;
             }
+        },
+        hasSelected: function() { // Required to disable bulk select automatically when nothing is selected
+            return !_.isUndefined($state.params.featureId) || !_.isUndefined($state.params.featureListId);
         }
     };
     $scope.orderBy = {

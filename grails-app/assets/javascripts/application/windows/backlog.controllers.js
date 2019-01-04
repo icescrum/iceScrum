@@ -276,8 +276,8 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
         allowMultiple: true,
         selectionUpdated: function(selectedIds) {
             var currentStateName = $state.current.name;
-            var storyIndexInStateName = currentStateName.indexOf('story');
             if (selectedIds.length === 0) {
+                var storyIndexInStateName = currentStateName.indexOf('story');
                 if (storyIndexInStateName != -1) {
                     $state.go(currentStateName.slice(0, storyIndexInStateName - 1));
                 }
@@ -298,6 +298,9 @@ extensibleController('backlogCtrl', ['$controller', '$scope', 'window', '$filter
                 }
                 $state.go(stateName, stateParams);
             }
+        },
+        hasSelected: function() { // Required to disable bulk select automatically when nothing is selected
+            return !_.isUndefined($state.params.storyId) || !_.isUndefined($state.params.storyListId);
         }
     };
     $scope.backlogContainers = [];
