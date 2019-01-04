@@ -91,14 +91,6 @@
                                     defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                             </button>
                         </div>
-                        <div class="btn-group hidden-xs">
-                            <button type="button"
-                                    class="btn btn-default"
-                                    ng-click="toggleSelectableMultiple()"
-                                    defer-tooltip="{{ selectableOptions.selectingMultiple ? '${message(code: /todo.is.ui.selectable.bulk.disable/)}' : '${message(code: /todo.is.ui.selectable.bulk.enable/)}' }}">
-                                <i class="fa fa-object-ungroup" ng-class="selectableOptions.selectingMultiple ? 'text-success' : 'text-danger'"></i>
-                            </button>
-                        </div>
                         <a ng-if="authorizedFeature('create')"
                            href="#/{{ ::viewName }}/new"
                            class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
