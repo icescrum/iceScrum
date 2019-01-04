@@ -647,7 +647,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             }
         }
     }
-}]).directive('selectable', ['$document', '$rootScope', function($document, $rootScope) {
+}]).directive('selectable', ['$document', function($document) {
     return {
         restrict: 'A',
         scope: {
@@ -688,6 +688,14 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             var selectedIdAttr = 'selectable-id';
             var selectedSelector = '[' + selectedIdAttr + '].' + selectedClass;
             var lastSelected;
+            // Disable bulk select automatically when nothing is selected
+            if (selectableOptions.hasSelected) {
+                scope.$watch(selectableOptions.hasSelected, function(newValue) {
+                    if (!newValue && !selectableOptions.forceMultiple && selectableOptions.selectingMultiple) {
+                        selectableOptions.selectingMultiple = false;
+                    }
+                });
+            }
             element.on('click', function(event) { // Listen only on the container element rather than on each element: allow deselecting and avoid the need to listen to new elements
                 var target = angular.element(event.target);
                 if (!selectableOptions.notSelectableSelector || target.closest(selectableOptions.notSelectableSelector).length == 0) {

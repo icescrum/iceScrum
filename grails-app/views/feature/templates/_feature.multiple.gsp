@@ -25,7 +25,7 @@
     <div class="panel-heading">
         <h3 class="panel-title">
             ${message(code: "is.ui.feature")} ({{ features.length }})
-            <a class="pull-right visible-on-hover btn btn-default"
+            <a class="pull-right btn btn-default"
                href="#/{{ ::viewName }}"
                defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
