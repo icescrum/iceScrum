@@ -75,7 +75,7 @@ extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session
     $scope.sortableId = 'story-tasks';
 }]);
 
-extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'TaskStatesByName', 'StoryStatesByName', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, TaskStatesByName, StoryStatesByName, postitSize, screenSize) {
+extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'FormService', 'TaskStatesByName', 'StoryStatesByName', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, FormService, TaskStatesByName, StoryStatesByName, postitSize, screenSize) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -155,7 +155,13 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
         {
             name: 'todo.is.ui.permalink.copy',
             visible: function(task) { return true; },
-            action: function(task) { $scope.showCopyModal($scope.message('is.permalink'), $filter('permalink')(task.uid, 'task')); }
+            action: function(task) {
+                FormService.copyToClipboard($filter('permalink')(task.uid, 'task')).then(function() {
+                    $scope.notifySuccess('is.ui.permalink.copy.success');
+                }, function(text) {
+                    $scope.notifyError('is.ui.permalink.copy.error' + ' ' + text);
+                });
+            }
         },
         {
             name: 'is.ui.sprintPlan.menu.task.delete',

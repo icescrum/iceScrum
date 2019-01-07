@@ -23,7 +23,7 @@
  *
  */
 
-extensibleController('featureCtrl', ['$scope', '$filter', 'TagService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $filter, TagService, FeatureService, postitSize, screenSize) {
+extensibleController('featureCtrl', ['$scope', '$filter', 'FormService', 'TagService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $filter, FormService, TagService, FeatureService, postitSize, screenSize) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -47,7 +47,13 @@ extensibleController('featureCtrl', ['$scope', '$filter', 'TagService', 'Feature
         {
             name: 'todo.is.ui.permalink.copy',
             visible: function(feature) { return true; },
-            action: function(feature) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(feature.uid, 'feature'))); }
+            action: function(feature) {
+                FormService.copyToClipboard($filter('permalink')(feature.uid, 'feature')).then(function() {
+                    $scope.notifySuccess('is.ui.permalink.copy.success');
+                }, function(text) {
+                    $scope.notifyError($scope.message('is.ui.permalink.copy.error') + ' ' + text);
+                });
+            }
         },
         {
             name: 'default.button.delete.label',

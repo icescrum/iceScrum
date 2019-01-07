@@ -128,12 +128,6 @@
     </a>
     </script>
 
-    <script type="text/ng-template" id="copy.html">
-    <is:modal title="{{ title }}">
-        <input type="text" autofocus select-on-focus class="form-control" value="{{ value }}"/>
-    </is:modal>
-    </script>
-
     <script type="text/ng-template" id="report.progress.html">
     <is:modal title="${message(code: 'is.dialog.report.generation')}">
         <p class="help-block">
