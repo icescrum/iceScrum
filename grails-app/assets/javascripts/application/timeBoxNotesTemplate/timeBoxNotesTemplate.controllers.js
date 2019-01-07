@@ -21,7 +21,7 @@
  *
  */
 
-controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotesTemplateService', function($scope, $uibModal, TimeBoxNotesTemplateService) {
+controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'FormService', 'TimeBoxNotesTemplateService', function($scope, $uibModal, FormService, TimeBoxNotesTemplateService) {
     var ctrl = this;
     // Functions
     $scope.computeTimeBoxNotes = function() {
@@ -73,6 +73,13 @@ controllers.controller('timeBoxNotesCtrl', ['$scope', '$uibModal', 'TimeBoxNotes
             delete ctrl.template;
             $scope.timeBoxNotes = "";
         }
+    };
+    $scope.copyToClipboard = function(text) {
+        FormService.copyToClipboard(text).then(function() {
+            $scope.notifySuccess('is.ui.copy.to.clipboard.success');
+        }, function() {
+            $scope.notifySuccess('is.ui.copy.to.clipboard.error');
+        });
     };
     // Init
     $scope.timeBoxClass = $scope.selected.class.toLowerCase();

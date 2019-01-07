@@ -198,7 +198,7 @@ services.service('Session', ['$timeout', '$http', '$rootScope', '$injector', 'Us
     };
 }]);
 
-services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', 'DomainConfigService', function($filter, $http, $rootScope, $timeout, DomainConfigService) {
+services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '$q', 'DomainConfigService', function($filter, $http, $rootScope, $timeout, $q, DomainConfigService) {
     var self = this;
     this.previous = function(itemList, item) {
         var itemIndex = _.findIndex(itemList, {id: item.id});
@@ -351,6 +351,38 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
             }
         });
     };
+    this.copyToClipboard = function(text) {
+        return $q(function(resolve, reject) { // No need to be asynchronous but more elegand with promise API for success / reject
+            if (!document.queryCommandSupported || !document.queryCommandSupported('copy')) {
+                console.error('Error - Copy to clipboard not supported on your browser');
+                reject(text);
+            }
+            var tempElement = document.createElement('textarea');
+            _.merge(tempElement.style, {
+                fontSize: '12pt',
+                border: '0',
+                padding: '0',
+                margin: '0',
+                position: 'absolute',
+                left: '-9999px',
+                top: (window.pageYOffset || document.documentElement.scrollTop) + 'px'
+            });
+            tempElement.setAttribute('readonly', '');
+            tempElement.value = text;
+            document.body.appendChild(tempElement);
+            try {
+                tempElement.select();
+                tempElement.setSelectionRange(0, tempElement.value.length);
+                document.execCommand('copy');
+                resolve(text);
+            } catch (exception) {
+                console.error('Error - Copy to clipboard value: ' + text + ' exception: ' + exception);
+                reject(text);
+            } finally {
+                document.body.removeChild(tempElement);
+            }
+        });
+    }
 }]);
 
 services.service('I18nService', [function() {

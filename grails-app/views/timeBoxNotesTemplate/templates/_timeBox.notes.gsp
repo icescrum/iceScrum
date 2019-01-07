@@ -48,19 +48,27 @@
                 </span>
             </div>
         </div>
-        <hr>
-        <div class="form-group">
+        <hr/>
+        <div class="form-group"
+             ng-if="ctrl.template.id">
             <div class="clearfix">
                 <div class="pull-left">
                     <label for="content">{{message('todo.is.ui.'+timeBoxClass+'.notes.content')}}</label>
                 </div>
-                <button class="btn btn-secondary btn-sm pull-right"
-                        ng-if="ctrl.template.id"
-                        type="button"
-                        name="edit"
-                        ng-click="showEditTemplateModal(ctrl.template)">
-                    <i class="fa fa-pencil"></i>
-                </button>
+                <div class="btn-toolbar pull-right">
+                    <button class="btn btn-secondary btn-sm"
+                            type="button"
+                            defer-tooltip="${message(code: 'is.ui.copy.to.clipboard')}"
+                            ng-click="copyToClipboard(timeBoxNotes)">
+                        <i class="fa fa-clipboard"></i>
+                    </button>
+                    <button class="btn btn-default btn-sm"
+                            type="button"
+                            name="edit"
+                            ng-click="showEditTemplateModal(ctrl.template)">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                </div>
             </div>
             <textarea class="form-control fixedRow"
                       select-on-focus

@@ -24,7 +24,7 @@
  */
 
 // Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We should think of a better way to systematically register the listeners
-extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 'TagService', 'StoryService', 'TaskService', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, $window, TagService, StoryService, TaskService, StoryStatesByName, AcceptanceTestStatesByName) {
+extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 'TagService', 'StoryService', 'TaskService', 'FormService', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $uibModal, $filter, $window, TagService, StoryService, TaskService, FormService, StoryStatesByName, AcceptanceTestStatesByName) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -163,7 +163,13 @@ extensibleController('storyCtrl', ['$scope', '$uibModal', '$filter', '$window', 
         }, {
             name: 'todo.is.ui.permalink.copy',
             visible: function(story) { return true },
-            action: function(story) { $scope.showCopyModal($scope.message('is.permalink'), ($filter('permalink')(story.uid, 'story'))); }
+            action: function(story) {
+                FormService.copyToClipboard($filter('permalink')(story.uid, 'story')).then(function() {
+                    $scope.notifySuccess('is.ui.permalink.copy.success');
+                }, function(text) {
+                    $scope.notifyError('is.ui.permalink.copy.error' + ' ' + text);
+                });
+            }
         },
         {
             name: 'is.ui.releasePlan.menu.story.dissociate',

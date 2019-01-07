@@ -733,16 +733,6 @@ var isApplication = angular.module('isApplication', [
             event.dest.sortableScope.removeItem(event.dest.index);
             event.source.itemScope.sortableScope.insertItem(event.source.index, event.source.itemScope.modelValue);
         };
-        $rootScope.showCopyModal = function(title, value) {
-            $uibModal.open({
-                templateUrl: 'copy.html',
-                size: 'sm',
-                controller: ["$scope", function($scope) {
-                    $scope.title = title;
-                    $scope.value = value;
-                }]
-            });
-        };
         $rootScope.showProjectEditModal = function(panelName) {
             var scope = $rootScope.$new();
             if (panelName) {
