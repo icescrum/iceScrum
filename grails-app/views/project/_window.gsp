@@ -177,8 +177,8 @@
                     <div class="panel-heading" ng-controller="projectChartCtrl">
                         <h3 class="panel-title">
                             <i class="fa fa-area-chart"></i> ${message(code: 'is.ui.project.chart.title')}
-                            <div class="btn-toolbar pull-right visible-on-hover"
-                                 uib-dropdown>
+                            <div class="btn-toolbar pull-right">
+                                <entry:point id="dashboard-chart-toolbar"/>
                                 <div class="btn-group">
                                     <button class="btn btn-default btn-sm"
                                             ng-click="openChartInModal(chartParams)"
@@ -191,23 +191,27 @@
                                         <i class="fa fa-floppy-o"></i>
                                     </button>
                                 </div>
-                                <button class="btn btn-default btn-sm"
-                                        type="button"
-                                        uib-dropdown-toggle>
-                                    <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i></span>
-                                </button>
-                                <ul uib-dropdown-menu>
-                                    <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>
-                                    <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
-                                    <li ng-if="release.id" class="divider"></li>
-                                    <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
-                                    <li ng-if="release.id" ng-repeat="chart in projectCharts.release"><a href ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
-                                    <li ng-if="currentOrLastSprint.id" class="divider"></li>
-                                    <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                                    <li ng-if="currentOrLastSprint.id" ng-repeat="chart in projectCharts.sprint"><a href
-                                                                                                                    ng-click="openChartAndSaveSetting('sprint', chart.id, currentOrLastSprint , project, 'project', 'chart')">{{ message(chart.name) }}</a>
-                                    </li>
-                                </ul>
+                                <div uib-dropdown
+                                     class="btn-group btn-group-sm">
+                                    <button class="btn btn-default btn-sm"
+                                            type="button"
+                                            uib-dropdown-toggle>
+                                        <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i> <i class="fa fa-caret-down"></i></span>
+                                    </button>
+                                    <ul uib-dropdown-menu
+                                        class="dropdown-menu-right">
+                                        <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>
+                                        <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
+                                        <li ng-if="release.id" class="divider"></li>
+                                        <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
+                                        <li ng-if="release.id" ng-repeat="chart in projectCharts.release"><a href ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
+                                        <li ng-if="currentOrLastSprint.id" class="divider"></li>
+                                        <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
+                                        <li ng-if="currentOrLastSprint.id" ng-repeat="chart in projectCharts.sprint"><a href
+                                                                                                                        ng-click="openChartAndSaveSetting('sprint', chart.id, currentOrLastSprint , project, 'project', 'chart')">{{ message(chart.name) }}</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </h3>
                     </div>
