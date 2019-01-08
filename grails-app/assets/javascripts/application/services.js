@@ -498,8 +498,8 @@ services.service('SyncService', ['$rootScope', '$injector', 'CacheService', 'pro
                     var cachedSprint = CacheService.get('sprint', oldSprintId);
                     if (cachedSprint) {
                         _.remove(cachedSprint.stories, {id: oldStory.id});
-                        cachedSprint.stories.sort(sortByRank);
                         if (_.isArray(cachedSprint.stories)) {
+                            cachedSprint.stories.sort(sortByRank);
                             cachedSprint.stories_count = cachedSprint.stories.length;
                         }
                     }
