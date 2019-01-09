@@ -843,6 +843,13 @@ var isApplication = angular.module('isApplication', [
                 scope: scope
             });
         };
+        $rootScope.copyToClipboard = function(text) {
+            FormService.copyToClipboard(text).then(function() {
+                $rootScope.notifySuccess('is.ui.copy.to.clipboard.success');
+            }, function() {
+                $rootScope.notifySuccess('is.ui.copy.to.clipboard.error');
+            });
+        };
         $rootScope.openWorkspaceUrl = function(object) {
             if (object.pkey) {
                 return $rootScope.serverUrl + '/p/' + object.pkey + '/';

@@ -91,14 +91,6 @@
                         <entry:point id="backlog-list-toolbar-left"/>
                         <div class="btn-group">
                             <entry:point id="backlog-list-toolbar-group-left"/>
-                            <button type="button"
-                                    ng-if="backlogContainer.sortable"
-                                    class="btn btn-secondary hidden-xs"
-                                    ng-click="enableSortable(backlogContainer)"
-                                    tooltip-placement="right"
-                                    defer-tooltip="{{ isSortingBacklog(backlogContainer) ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
-                                <i ng-class="isSortingBacklog(backlogContainer) ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
-                            </button>
                             <div class="btn-group"
                                  uib-dropdown
                                  defer-tooltip="${message(code: 'todo.is.ui.sort')}">
@@ -115,6 +107,13 @@
                                     ng-click="reverseBacklogOrder(backlogContainer)"
                                     defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
                                 <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
+                            </button>
+                            <button type="button"
+                                    ng-if="backlogContainer.sortable && !isSortingBacklog(backlogContainer)"
+                                    class="btn btn-secondary hidden-sm hidden-xs"
+                                    ng-click="enableSortable(backlogContainer)"
+                                    uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
+                                <i class="fa fa-hand-stop-o text-danger"></i>
                             </button>
                             <entry:point id="backlog-list-toolbar-group-right"/>
                         </div>
