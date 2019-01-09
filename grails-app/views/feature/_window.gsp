@@ -29,13 +29,6 @@
                     <span class="title pull-left"><i class="fa fa-puzzle-piece"></i> ${message(code: 'is.ui.feature')} ({{ features.length}})</span>
                     <div class="btn-toolbar pull-left">
                         <div class="btn-group">
-                            <button type="button"
-                                    ng-if="isSortableFeature()"
-                                    class="btn btn-default hidden-sm hidden-xs"
-                                    ng-click="enableSortable()"
-                                    defer-tooltip="{{ isSortingFeature() ? '${message(code: /todo.is.ui.sortable.enabled/)}' : '${message(code: /todo.is.ui.sortable.enable/)}' }}">
-                                <i ng-class="isSortingFeature() ? 'text-success' : 'text-danger forbidden-stack'" class="fa fa-hand-pointer-o"></i>
-                            </button>
                             <div class="btn-group"
                                  uib-dropdown
                                  defer-tooltip="${message(code: 'todo.is.ui.sort')}">
@@ -55,6 +48,13 @@
                                     ng-click="orderBy.reverse = !orderBy.reverse"
                                     defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
                                 <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
+                            </button>
+                            <button type="button"
+                                    ng-if="isSortableFeature() && !isSortingFeature()"
+                                    class="btn btn-default hidden-sm hidden-xs"
+                                    ng-click="enableSortable()"
+                                    uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
+                                <i class="fa fa-hand-pointer-o text-danger forbidden-stack"></i>
                             </button>
                         </div>
                         <div class="btn-group hidden-sm hidden-xs"
