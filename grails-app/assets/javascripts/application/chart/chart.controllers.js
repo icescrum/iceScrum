@@ -45,13 +45,15 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             return BacklogService.openChart(backlog, backlog.project, chartType, chartUnit);
         }
     };
-    var computeMax = function(data, index) {
-        var max = _.maxBy(data, function(line) {
-            return _.maxBy(line.values, function(dataPoint) {
-                return dataPoint[index];
-            });
-        });
-        return Math.ceil(max * 0.05) + max; // Add margin
+    var computeMax = function(index) {
+        return function(data) {
+            var max = _.max(_.map(data, function(line) {
+                return _.max(_.map(line.values, function(dataPoint) {
+                    return dataPoint[index];
+                }));
+            }));
+            return Math.ceil(max * 0.05) + max; // Add margin
+        };
     };
     $scope.chartOptions = {
         project: {
