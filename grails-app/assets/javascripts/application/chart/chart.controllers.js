@@ -45,8 +45,13 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             return BacklogService.openChart(backlog, backlog.project, chartType, chartUnit);
         }
     };
-    var addMargin = function(number) {
-        return Math.ceil(number * 0.05) + number;
+    var computeMax = function(data, index) {
+        var max = _.maxBy(data, function(line) {
+            return _.maxBy(line.values, function(dataPoint) {
+                return dataPoint[index];
+            });
+        });
+        return Math.ceil(max * 0.05) + max; // Add margin
     };
     $scope.chartOptions = {
         project: {
@@ -61,15 +66,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         }
                     }
                 },
-                computeMaxY: function(data) {
-                    var max = 0;
-                    _.each(data, function(line) {
-                        var values = _.map(line["values"], function(o) { return o[0]; });
-                        var tmpMax = _.max(values);
-                        max = tmpMax > max ? tmpMax : max;
-                    });
-                    return addMargin(max);
-                }
+                computeMaxY: computeMax(0)
             },
             flowCumulative: {
                 chart: {
@@ -128,15 +125,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         }
                     }
                 },
-                computeMaxY: function(data) {
-                    var max = 0;
-                    _.each(data, function(line) {
-                        var values = _.map(line["values"], function(o) { return o[0]; });
-                        var tmpMax = _.max(values);
-                        max = tmpMax > max ? tmpMax : max;
-                    });
-                    return addMargin(max);
-                }
+                computeMaxY: computeMax(0)
             },
             parkingLot: {
                 chart: {
@@ -153,20 +142,15 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         left: 125
                     },
                     showControls: false
-                }
+                },
+                computeMaxY: null
             },
             burndown: {
                 chart: {
                     type: 'multiBarChart',
-                    x: function(entry, index) { return index; },
-                    y: function(entry) { return entry[0]; },
-                    stacked: true,
-                    xAxis: {
-                        tickFormat: function(entry) {
-                            return $scope.labelsX[entry];
-                        }
-                    }
-                }
+                    stacked: true
+                },
+                computeMaxY: null
             },
             velocity: {
                 chart: {
@@ -188,15 +172,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         showMaxMin: false
                     }
                 },
-                computeMaxY: function(data) {
-                    var max = 0;
-                    _.each(data, function(line) {
-                        var values = _.map(line["values"], function(o) { return o[1]; });
-                        var tmpMax = _.max(values);
-                        max = tmpMax > max ? tmpMax : max;
-                    });
-                    return addMargin(max);
-                }
+                computeMaxY: computeMax(1)
             }
         },
         backlog: {
