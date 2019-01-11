@@ -158,8 +158,8 @@ class SprintController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
-    def burndownRemaining(long project, long id) {
-        Sprint sprint = Sprint.withSprint(project, id)
+    def burndownRemaining(long project, Long id) {
+        Sprint sprint = id ? Sprint.withSprint(project, id) : Sprint.findCurrentOrLastSprint(project).list()[0]
         def values = sprintService.sprintBurndownRemainingValues(sprint)
         def computedValues = [[key   : message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
                                values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime] },
@@ -179,8 +179,8 @@ class SprintController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
-    def burnupTasks(long project, long id) {
-        Sprint sprint = Sprint.withSprint(project, id)
+    def burnupTasks(long project, Long id) {
+        Sprint sprint = id ? Sprint.withSprint(project, id) : Sprint.findCurrentOrLastSprint(project).list()[0]
         def values = sprintService.sprintBurnupTasksValues(sprint)
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurnupTasksChart.serie.tasksDone.name"),
@@ -200,8 +200,8 @@ class SprintController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
-    def burndownPoints(long project, long id) {
-        Sprint sprint = Sprint.withSprint(project, id)
+    def burndownPoints(long project, Long id) {
+        Sprint sprint = id ? Sprint.withSprint(project, id) : Sprint.findCurrentOrLastSprint(project).list()[0]
         def values = sprintService.sprintStoriesValues(sprint)
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurndownPointsChart.serie.points.name"),
@@ -218,8 +218,8 @@ class SprintController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
-    def burnupPoints(long project, long id) {
-        Sprint sprint = Sprint.withSprint(project, id)
+    def burnupPoints(long project, Long id) {
+        Sprint sprint = id ? Sprint.withSprint(project, id) : Sprint.findCurrentOrLastSprint(project).list()[0]
         def values = sprintService.sprintStoriesValues(sprint)
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
@@ -239,8 +239,8 @@ class SprintController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
-    def burnupStories(long project, long id) {
-        Sprint sprint = Sprint.withSprint(project, id)
+    def burnupStories(long project, Long id) {
+        Sprint sprint = id ? Sprint.withSprint(project, id) : Sprint.findCurrentOrLastSprint(project).list()[0]
         def values = sprintService.sprintStoriesValues(sprint)
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),

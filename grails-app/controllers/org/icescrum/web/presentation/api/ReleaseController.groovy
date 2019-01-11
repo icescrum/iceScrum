@@ -140,8 +140,8 @@ class ReleaseController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
-    def burndown(long project, long id) {
-        Release release = Release.withRelease(project, id)
+    def burndown(long project, Long id) {
+        Release release = id ? Release.withRelease(project, id) : Release.findCurrentOrNextRelease(project).list()[0]
         def values = releaseService.releaseBurndownValues(release)
         def storyTypes = grailsApplication.config.icescrum.resourceBundles.storyTypes.keySet()
         def computedValues = storyTypes.collect { storyType ->
@@ -158,8 +158,8 @@ class ReleaseController implements ControllerErrorHandler {
     }
 
     @Secured(['stakeHolder() or inProject()'])
-    def parkingLot(long project, long id) {
-        Release release = Release.withRelease(project, id)
+    def parkingLot(long project, Long id) {
+        Release release = id ? Release.withRelease(project, id) : Release.findCurrentOrNextRelease(project).list()[0]
         def values = featureService.releaseParkingLotValues(release)
         def colors = values.collect { return it.color }
         def computedValues = [[key   : message(code: "is.chart.releaseParkingLot.serie.name"),
