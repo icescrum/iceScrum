@@ -82,6 +82,7 @@
                                         type="button"
                                         ng-style="{'background-color': feature.color}"
                                         colorpicker-position="left"
+                                        colorpicker-with-input="true"
                                         ng-click="refreshAvailableColors()"
                                         colors="availableColors"
                                         name="color"

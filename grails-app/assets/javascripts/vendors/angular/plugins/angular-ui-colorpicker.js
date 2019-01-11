@@ -299,7 +299,7 @@ angular.module('colorpicker.module', [])
                     fixedPosition = angular.isDefined(attrs.colorpickerFixedPosition) ? attrs.colorpickerFixedPosition : false,
                     target = angular.isDefined(attrs.colorpickerParent) ? elem.parent() : angular.element(document.body),
                     withInput = angular.isDefined(attrs.colorpickerWithInput) ? attrs.colorpickerWithInput : false,
-                    inputTemplate = withInput ? '<input type="text" name="colorpicker-input">' : '',
+                    inputTemplate = withInput ? '<input type="text" name="colorpicker-input" placeholder="#66a3b0">' : '',
                     closeButton = !inline ? '<button type="button" class="close close-colorpicker">&times;</button>' : '',
                     template =
                         '<div class="colorpicker dropdown">' +
