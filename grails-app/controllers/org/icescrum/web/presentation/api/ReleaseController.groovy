@@ -27,6 +27,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import org.icescrum.core.domain.Project
 import org.icescrum.core.domain.Release
 import org.icescrum.core.domain.Sprint
+import org.icescrum.core.domain.Story
 import org.icescrum.core.error.ControllerErrorHandler
 import org.icescrum.core.utils.DateUtils
 
@@ -169,5 +170,41 @@ class ReleaseController implements ControllerErrorHandler {
                                barColor: colors],
                        title: [text: message(code: "is.chart.releaseParkingLot.title")]]
         render(status: 200, contentType: 'application/json', text: [data: computedValues, options: options] as JSON)
+    }
+
+    @Secured(['stakeHolder() or inProject()'])
+    def velocityCapacity(long project, Long id) {
+        Release release = id ? Release.withRelease(project, id) : Release.findCurrentOrNextRelease(project).list()[0]
+        def values = releaseService.releaseVelocityCapacityValues(release)
+        def computedValues = [[key   : message(code: 'is.sprint.velocity'),
+                               values: values.collect { return [it.velocity] },
+                               color : '#009900'],
+                              [key   : message(code: 'is.sprint.plannedVelocity'),
+                               values: values.collect { return [it.capacity] },
+                               color : '#1C3660']]
+        def options = [chart: [yDomain: [0, values.collect { [it.velocity, it.capacity].max() }.max()],
+                               yAxis  : [axisLabel: message(code: 'is.chart.releaseVelocityCapacity.yaxis.label')],
+                               xAxis  : [axisLabel: message(code: 'is.chart.releaseVelocityCapacity.xaxis.label')]],
+                       title: [text: message(code: "is.chart.releaseVelocityCapacity.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
+    }
+
+    @Secured(['stakeHolder() or inProject()'])
+    def velocity(long project, Long id) {
+        Release release = id ? Release.withRelease(project, id) : Release.findCurrentOrNextRelease(project).list()[0]
+        def values = releaseService.releaseVelocityValues(release)
+        def computedValues = [[key   : message(code: 'is.chart.story.type.0'),
+                               values: values.collect { return [it.userstories] },
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_USER_STORY]],
+                              [key   : message(code: 'is.chart.story.type.3'),
+                               values: values.collect { return [it.technicalstories] },
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_TECHNICAL_STORY]],
+                              [key   : message(code: 'is.chart.story.type.2'),
+                               values: values.collect { return [it.defectstories] },
+                               color : grailsApplication.config.icescrum.resourceBundles.storyTypesColor[Story.TYPE_DEFECT]]]
+        def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.releaseVelocity.yaxis.label')],
+                               xAxis: [axisLabel: message(code: 'is.chart.releaseVelocity.xaxis.label')]],
+                       title: [text: message(code: "is.chart.releaseVelocity.title")]]
+        render(status: 200, contentType: 'application/json', text: [data: computedValues, labelsX: values.label, options: options] as JSON)
     }
 }

@@ -117,6 +117,27 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             }
         },
         release: {
+            default: {
+                chart: {
+                    type: 'lineChart',
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        tickFormat: function(entry) {
+                            return $scope.labelsX[entry];
+                        }
+                    }
+                },
+                computeMaxY: function(data) {
+                    var max = 0;
+                    _.each(data, function(line) {
+                        var values = _.map(line["values"], function(o) { return o[0]; });
+                        var tmpMax = _.max(values);
+                        max = tmpMax > max ? tmpMax : max;
+                    });
+                    return addMargin(max);
+                }
+            },
             parkingLot: {
                 chart: {
                     type: 'multiBarHorizontalChart',
@@ -146,6 +167,13 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         }
                     }
                 }
+            },
+            velocity: {
+                chart: {
+                    type: 'multiBarChart',
+                    stacked: true
+                },
+                computeMaxY: null
             }
         },
         sprint: {
