@@ -26,7 +26,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
     var self = this;
     self.push = {};
     self.logLevel = isSettings.push.pushLogLevel;
-    this.enabled = true;
+    this.enabled = true; // Temporary disable (unlike isSettings.push.enable which is permanent in the page)
     this.listeners = {};
     var _canLog = function(level) {
         if (level == 'debug') {
@@ -43,6 +43,10 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
     };
     this.atmosphereRequest = null;
     this.initPush = function(workspaceId, workspaceType) {
+        if (isSettings.push.enabled === false) {
+            console.log('Push is disabled');
+            return
+        }
         $rootScope.application.transport = isSettings.push.transport;
         var options = {
             url: $rootScope.serverUrl + '/stream/app' + (workspaceId ? '/' + workspaceType + '-' + workspaceId : ''),
