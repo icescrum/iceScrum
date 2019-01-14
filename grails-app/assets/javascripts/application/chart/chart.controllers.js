@@ -45,14 +45,14 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             return BacklogService.openChart(backlog, backlog.project, chartType, chartUnit);
         }
     };
-    var computeMax = function(index) {
+    var computeDomain = function(index) {
         return function(data) {
             var max = _.max(_.map(data, function(line) {
                 return _.max(_.map(line.values, function(dataPoint) {
                     return dataPoint[index];
                 }));
             }));
-            return Math.ceil(max * 0.05) + max; // Add margin
+            return [0, Math.ceil(max * 0.05) + max]; // Add margin
         };
     };
     $scope.chartOptions = {
@@ -68,21 +68,21 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         }
                     }
                 },
-                computeMaxY: computeMax(0)
+                computeYDomain: computeDomain(0)
             },
             flowCumulative: {
                 chart: {
                     type: 'stackedAreaChart',
                     margin: {right: 45}
                 },
-                computeMaxY: null
+                computeYDomain: null
             },
             burndown: {
                 chart: {
                     type: 'multiBarChart',
                     stacked: true
                 },
-                computeMaxY: null
+                computeYDomain: null
             },
             burnup: {
                 chart: {
@@ -94,7 +94,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     type: 'multiBarChart',
                     stacked: true
                 },
-                computeMaxY: null
+                computeYDomain: null
             },
             parkingLot: {
                 chart: {
@@ -112,7 +112,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     },
                     showControls: false
                 },
-                computeMaxY: null
+                computeYDomain: null
             }
         },
         release: {
@@ -127,7 +127,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         }
                     }
                 },
-                computeMaxY: computeMax(0)
+                computeYDomain: computeDomain(0)
             },
             parkingLot: {
                 chart: {
@@ -145,21 +145,21 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     },
                     showControls: false
                 },
-                computeMaxY: null
+                computeYDomain: null
             },
             burndown: {
                 chart: {
                     type: 'multiBarChart',
                     stacked: true
                 },
-                computeMaxY: null
+                computeYDomain: null
             },
             velocity: {
                 chart: {
                     type: 'multiBarChart',
                     stacked: true
                 },
-                computeMaxY: null
+                computeYDomain: null
             }
         },
         sprint: {
@@ -174,7 +174,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         showMaxMin: false
                     }
                 },
-                computeMaxY: computeMax(1)
+                computeYDomain: computeDomain(1)
             }
         },
         backlog: {
@@ -221,9 +221,8 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                 $scope.data = chart.data;
                 $scope.options = _.merge($scope.options, chart.options);
                 $scope.options = _.merge($scope.options, options);
-                if ($scope.options.computeMaxY) {
-                    var max = $scope.options.computeMaxY(chart.data);
-                    $scope.options.chart.yDomain = [0, max];
+                if ($scope.options.computeYDomain) {
+                    $scope.options.chart.yDomain = $scope.options.computeYDomain(chart.data);
                 }
                 $scope.options.title.enable = !_.isEmpty($scope.options.title) && $scope.options.title.enable !== false;
                 if (chart.labelsX) {
