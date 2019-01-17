@@ -45,8 +45,15 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
             return BacklogService.openChart(backlog, backlog.project, chartType, chartUnit);
         }
     };
-    var addMargin = function(number) {
-        return Math.ceil(number * 0.05) + number;
+    var computeDomain = function(index) {
+        return function(data) {
+            var max = _.max(_.map(data, function(line) {
+                return _.max(_.map(line.values, function(dataPoint) {
+                    return dataPoint[index];
+                }));
+            }));
+            return [0, Math.ceil(max * 0.05) + max]; // Add margin
+        };
     };
     $scope.chartOptions = {
         project: {
@@ -61,29 +68,21 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         }
                     }
                 },
-                computeMaxY: function(data) {
-                    var max = 0;
-                    _.each(data, function(line) {
-                        var values = _.map(line["values"], function(o) { return o[0]; });
-                        var tmpMax = _.max(values);
-                        max = tmpMax > max ? tmpMax : max;
-                    });
-                    return addMargin(max);
-                }
+                computeYDomain: computeDomain(0)
             },
             flowCumulative: {
                 chart: {
                     type: 'stackedAreaChart',
                     margin: {right: 45}
                 },
-                computeMaxY: null
+                computeYDomain: null
             },
             burndown: {
                 chart: {
                     type: 'multiBarChart',
                     stacked: true
                 },
-                computeMaxY: null
+                computeYDomain: null
             },
             burnup: {
                 chart: {
@@ -95,7 +94,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     type: 'multiBarChart',
                     stacked: true
                 },
-                computeMaxY: null
+                computeYDomain: null
             },
             parkingLot: {
                 chart: {
@@ -113,10 +112,23 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                     },
                     showControls: false
                 },
-                computeMaxY: null
+                computeYDomain: null
             }
         },
         release: {
+            default: {
+                chart: {
+                    type: 'lineChart',
+                    x: function(entry, index) { return index; },
+                    y: function(entry) { return entry[0]; },
+                    xAxis: {
+                        tickFormat: function(entry) {
+                            return $scope.labelsX[entry];
+                        }
+                    }
+                },
+                computeYDomain: computeDomain(0)
+            },
             parkingLot: {
                 chart: {
                     type: 'multiBarHorizontalChart',
@@ -132,20 +144,22 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         left: 125
                     },
                     showControls: false
-                }
+                },
+                computeYDomain: null
             },
             burndown: {
                 chart: {
                     type: 'multiBarChart',
-                    x: function(entry, index) { return index; },
-                    y: function(entry) { return entry[0]; },
-                    stacked: true,
-                    xAxis: {
-                        tickFormat: function(entry) {
-                            return $scope.labelsX[entry];
-                        }
-                    }
-                }
+                    stacked: true
+                },
+                computeYDomain: null
+            },
+            velocity: {
+                chart: {
+                    type: 'multiBarChart',
+                    stacked: true
+                },
+                computeYDomain: null
             }
         },
         sprint: {
@@ -160,15 +174,7 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                         showMaxMin: false
                     }
                 },
-                computeMaxY: function(data) {
-                    var max = 0;
-                    _.each(data, function(line) {
-                        var values = _.map(line["values"], function(o) { return o[1]; });
-                        var tmpMax = _.max(values);
-                        max = tmpMax > max ? tmpMax : max;
-                    });
-                    return addMargin(max);
-                }
+                computeYDomain: computeDomain(1)
             }
         },
         backlog: {
@@ -215,9 +221,8 @@ extensibleController('chartCtrl', ['$scope', '$element', '$filter', '$uibModal',
                 $scope.data = chart.data;
                 $scope.options = _.merge($scope.options, chart.options);
                 $scope.options = _.merge($scope.options, options);
-                if ($scope.options.computeMaxY) {
-                    var max = $scope.options.computeMaxY(chart.data);
-                    $scope.options.chart.yDomain = [0, max];
+                if ($scope.options.computeYDomain) {
+                    $scope.options.chart.yDomain = $scope.options.computeYDomain(chart.data);
                 }
                 $scope.options.title.enable = !_.isEmpty($scope.options.title) && $scope.options.title.enable !== false;
                 if (chart.labelsX) {

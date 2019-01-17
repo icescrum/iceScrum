@@ -74,6 +74,8 @@ angular.module('isCore', ['ui.router'])
                 ],
                 release: [
                     {id: 'burndown', name: 'is.chart.releaseBurndown', 'view': 'planning'},
+                    {id: 'velocity', name: 'is.chart.releaseVelocity', 'view': 'planning'},
+                    {id: 'velocityCapacity', name: 'is.chart.releaseVelocityCapacity', 'view': 'planning'},
                     {id: 'parkingLot', name: 'is.chart.releaseParkingLot', 'view': 'planning'}
                 ],
                 sprint: [

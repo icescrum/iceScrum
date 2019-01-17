@@ -31,6 +31,7 @@
         defaultView: "${defaultView}",
         workspace: ${workspace ? workspace as JSON : 'null'},
         push: {
+            enabled: true, // If == false, no atmosphere ressource is created
             transport: "${Holders.config.icescrum.push.transport ?: 'websocket'}",
             fallbackTransport: "${Holders.config.icescrum.push.fallbackTransport ?: 'streaming'}",
             fallbackToLastTransport: "${Holders.config.icescrum.fallbackToLastTransport ?: 'long-polling'}",
