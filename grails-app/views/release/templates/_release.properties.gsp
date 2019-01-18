@@ -61,6 +61,8 @@
                            ng-disabled="!authorizedRelease('updateDates', release)"
                            ng-model="editableRelease.startDate"
                            ng-model-options="{timezone: 'utc'}"
+                           custom-validate="validateStartDate"
+                           custom-validate-code="is.ui.timebox.warning.dates"
                            uib-datepicker-popup
                            datepicker-options="startDateOptions"
                            is-open="startDateOptions.opened"/>
@@ -86,6 +88,8 @@
                            ng-disabled="!authorizedRelease('updateDates', release)"
                            ng-model="editableRelease.endDate"
                            ng-model-options="{timezone: 'utc'}"
+                           custom-validate="validateEndDate"
+                           custom-validate-code="is.ui.timebox.warning.dates"
                            uib-datepicker-popup
                            datepicker-options="endDateOptions"
                            is-open="endDateOptions.opened"/>

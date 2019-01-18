@@ -37,6 +37,7 @@
             <div class="help-block">${message(code: 'is.ui.release.help')}</div>
             <form ng-submit="save(release, false)"
                   name='formHolder.releaseForm'
+                  show-validation
                   novalidate>
                 <div class="form-group">
                     <label for="name">${message(code: 'is.release.name')}</label>
@@ -65,6 +66,8 @@
                                    name="release.startDate"
                                    ng-model="release.startDate"
                                    ng-model-options="{timezone: 'utc'}"
+                                   custom-validate="validateStartDate"
+                                   custom-validate-code="is.ui.timebox.warning.dates"
                                    uib-datepicker-popup
                                    datepicker-options="startDateOptions"
                                    is-open="startDateOptions.opened"/>
@@ -79,6 +82,8 @@
                                    name="release.endDate"
                                    ng-model="release.endDate"
                                    ng-model-options="{timezone: 'utc'}"
+                                   custom-validate="validateEndDate"
+                                   custom-validate-code="is.ui.timebox.warning.dates"
                                    uib-datepicker-popup
                                    datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>

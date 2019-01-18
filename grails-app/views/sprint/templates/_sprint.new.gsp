@@ -37,6 +37,7 @@
             <div class="help-block">${message(code: 'is.ui.sprint.help')}</div>
             <form ng-submit="save(sprint, false)"
                   name='formHolder.sprintForm'
+                  show-validation
                   novalidate>
                 <div class="form-group" ng-class="{'has-error': releaseEndDateWarning}">
                     <label for="sprint.parentRelease">${message(code: 'is.release')}</label>
@@ -76,6 +77,8 @@
                                    name="sprint.startDate"
                                    ng-model="sprint.startDate"
                                    ng-model-options="{timezone: 'utc'}"
+                                   custom-validate="validateStartDate"
+                                   custom-validate-code="is.ui.timebox.warning.dates"
                                    uib-datepicker-popup
                                    datepicker-options="startDateOptions"
                                    is-open="startDateOptions.opened"/>
@@ -90,6 +93,8 @@
                                    name="sprint.endDate"
                                    ng-model="sprint.endDate"
                                    ng-model-options="{timezone: 'utc'}"
+                                   custom-validate="validateEndDate"
+                                   custom-validate-code="is.ui.timebox.warning.dates"
                                    uib-datepicker-popup
                                    datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>

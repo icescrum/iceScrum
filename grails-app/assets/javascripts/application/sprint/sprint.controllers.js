@@ -219,6 +219,24 @@ controllers.controller('sprintCtrl', ['$rootScope', '$scope', '$state', '$q', '$
             action: function(sprint) { $scope.confirmDelete({callback: $scope.delete, args: [sprint]}); }
         }
     ];
+    $scope.validateStartDate = function(startDate) {
+        if (startDate && $scope.startDateOptions.minDate && startDate < $scope.startDateOptions.minDate) {
+            return false;
+        }
+        if (startDate && $scope.startDateOptions.maxDate && startDate > $scope.startDateOptions.maxDate) {
+            return false;
+        }
+        return true;
+    };
+    $scope.validateEndDate = function(endDate) {
+        if (endDate && $scope.endDateOptions.minDate && endDate < $scope.startDateOptions.minDate) {
+            return false;
+        }
+        if (endDate && $scope.endDateOptions.maxDate && endDate > $scope.startDateOptions.maxDate) {
+            return false;
+        }
+        return true;
+    };
     // Init
     $scope.project = $scope.getProjectFromState();
     $scope.startDateOptions = {
