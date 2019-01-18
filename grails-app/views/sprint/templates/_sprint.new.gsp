@@ -40,13 +40,21 @@
                   novalidate>
                 <div class="form-group">
                     <label for="sprint.parentRelease">${message(code: 'is.release')}</label>
-                    <ui-select class="form-control"
-                               ng-model="sprint.parentRelease"
-                               on-select="selectRelease(sprint.parentRelease)"
-                               required>
-                        <ui-select-match>{{ $select.selected.name }}</ui-select-match>
-                        <ui-select-choices repeat="editableRelease in editableReleases">{{ editableRelease.name }}</ui-select-choices>
-                    </ui-select>
+                    <div class="input-group">
+                        <ui-select class="form-control"
+                                   ng-model="sprint.parentRelease"
+                                   on-select="selectRelease(sprint.parentRelease)"
+                                   required>
+                            <ui-select-match>{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="editableRelease in editableReleases">{{ editableRelease.name }}</ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <a ui-sref="planning.release.details({releaseId: sprint.parentRelease.id})"
+                               class="btn btn-default">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                        </span>
+                    </div>
                 </div>
                 <div class="clearfix no-padding">
                     <div class="form-half">
