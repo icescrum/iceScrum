@@ -64,7 +64,7 @@ extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session
         }
     };
     $scope.isTaskSortableByState = function(state) {
-        return state == TaskStatesByName.TODO && Session.sm();
+        return state == TaskStatesByName.TODO && Session.tmOrSm();
     };
     // Init
     $scope.$watch('selected.tasks', function(tasks) {

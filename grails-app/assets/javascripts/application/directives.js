@@ -182,16 +182,15 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
     return {
         require: 'ngModel',
         restrict: 'A',
-        scope: {
-            customValidate: '=',
-            customValidateItem: '='
-        },
         link: function(scope, element, attrs, modelCtrl) {
             modelCtrl.$validators.customValidate = function(modelValue) {
-                if (scope.customValidateItem) {
-                    return scope.customValidate(modelValue, scope.customValidateItem);
+                // Don't use isolated scope to avoid conflicts
+                var customValidateItem = scope.$eval(attrs.customValidateItem);
+                var customValidate = scope.$eval(attrs.customValidate);
+                if (customValidateItem) {
+                    return customValidate(modelValue, customValidateItem);
                 } else {
-                    return scope.customValidate(modelValue)
+                    return customValidate(modelValue)
                 }
             };
         }

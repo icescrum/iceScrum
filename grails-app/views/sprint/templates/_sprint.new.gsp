@@ -37,16 +37,28 @@
             <div class="form-text">${message(code: 'is.ui.sprint.help')}</div>
             <form ng-submit="save(sprint, false)"
                   name='formHolder.sprintForm'
+                  show-validation
                   novalidate>
-                <div class="form-group">
+                <div class="form-group" ng-class="{'has-error': releaseEndDateWarning}">
                     <label for="sprint.parentRelease">${message(code: 'is.release')}</label>
-                    <ui-select class="form-control"
-                               ng-model="sprint.parentRelease"
-                               on-select="selectRelease(sprint.parentRelease)"
-                               required>
-                        <ui-select-match>{{ $select.selected.name }}</ui-select-match>
-                        <ui-select-choices repeat="editableRelease in editableReleases">{{ editableRelease.name }}</ui-select-choices>
-                    </ui-select>
+                    <div class="input-group">
+                        <ui-select class="form-control"
+                                   ng-model="sprint.parentRelease"
+                                   on-select="selectRelease(sprint.parentRelease)"
+                                   required>
+                            <ui-select-match>{{ $select.selected.name }}</ui-select-match>
+                            <ui-select-choices repeat="editableRelease in editableReleases">{{ editableRelease.name }}</ui-select-choices>
+                        </ui-select>
+                        <span class="input-group-btn">
+                            <a ui-sref="planning.release.details({releaseId: sprint.parentRelease.id})"
+                               class="btn btn-default">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div ng-if="releaseEndDateWarning"
+                         class="help-block bg-danger spaced-help-block"
+                         ng-bind-html="releaseEndDateWarning"></div>
                 </div>
                 <div class="clearfix no-padding">
                     <div class="form-half">
@@ -65,6 +77,8 @@
                                    name="sprint.startDate"
                                    ng-model="sprint.startDate"
                                    ng-model-options="{timezone: 'utc'}"
+                                   custom-validate="validateStartDate"
+                                   custom-validate-code="is.ui.timebox.warning.dates"
                                    uib-datepicker-popup
                                    datepicker-options="startDateOptions"
                                    is-open="startDateOptions.opened"/>
@@ -79,6 +93,8 @@
                                    name="sprint.endDate"
                                    ng-model="sprint.endDate"
                                    ng-model-options="{timezone: 'utc'}"
+                                   custom-validate="validateEndDate"
+                                   custom-validate-code="is.ui.timebox.warning.dates"
                                    uib-datepicker-popup
                                    datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>

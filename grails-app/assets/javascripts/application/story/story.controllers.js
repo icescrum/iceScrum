@@ -509,9 +509,13 @@ extensibleController('storySplitCtrl', ['$scope', '$controller', '$q', 'StorySer
         return '/p/' + $scope.getProjectFromState().id + '/story' + (story.id ? ('/' + story.id) : '') + '/available';
     };
     $scope.validateStoryName = function(newName, story) {
-        return !newName || !story || _.find($scope.stories, function(otherStory) {
-            return story !== otherStory && newName.toLowerCase() === otherStory.name.toLowerCase();
-        }) == null;
+        if (!newName || !story) {
+            return true;
+        }
+        var sameNameStory = _.find($scope.stories, function(otherStory) {
+            return story !== otherStory && (console.log(otherStory.name) || true) && otherStory.name && newName.toLowerCase() === otherStory.name.toLowerCase();
+        });
+        return sameNameStory == null;
     };
     // Init
     $scope.storyReference = angular.copy(story);

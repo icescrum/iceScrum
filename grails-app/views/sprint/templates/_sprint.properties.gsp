@@ -38,6 +38,8 @@
                            ng-disabled="!authorizedSprint('updateStartDate', sprint)"
                            ng-model="editableSprint.startDate"
                            ng-model-options="{timezone: 'utc'}"
+                           custom-validate="validateStartDate"
+                           custom-validate-code="is.ui.timebox.warning.dates"
                            uib-datepicker-popup
                            datepicker-options="startDateOptions"
                            is-open="startDateOptions.opened"/>
@@ -63,6 +65,8 @@
                            ng-disabled="!authorizedSprint('updateEndDate', sprint)"
                            ng-model="editableSprint.endDate"
                            ng-model-options="{timezone: 'utc'}"
+                           custom-validate="validateEndDate"
+                           custom-validate-code="is.ui.timebox.warning.dates"
                            uib-datepicker-popup
                            datepicker-options="endDateOptions"
                            is-open="endDateOptions.opened"/>
