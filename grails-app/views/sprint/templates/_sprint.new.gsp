@@ -38,7 +38,7 @@
             <form ng-submit="save(sprint, false)"
                   name='formHolder.sprintForm'
                   novalidate>
-                <div class="form-group">
+                <div class="form-group" ng-class="{'has-error': releaseEndDateWarning}">
                     <label for="sprint.parentRelease">${message(code: 'is.release')}</label>
                     <div class="input-group">
                         <ui-select class="form-control"
@@ -55,6 +55,9 @@
                             </a>
                         </span>
                     </div>
+                    <div ng-if="releaseEndDateWarning"
+                         class="help-block bg-danger spaced-help-block"
+                         ng-bind-html="releaseEndDateWarning"></div>
                 </div>
                 <div class="clearfix no-padding">
                     <div class="form-half">

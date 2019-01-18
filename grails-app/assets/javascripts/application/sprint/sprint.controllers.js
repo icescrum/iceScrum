@@ -302,12 +302,16 @@ controllers.controller('sprintNewCtrl', ['$scope', '$controller', '$state', 'Dat
     };
     // Init
     var initSprintDates = function() {
+        $scope.releaseEndDateWarning = null;
         var sprints = $scope.release.sprints;
         if (!_.isUndefined(sprints)) {
             if (_.isEmpty(sprints)) {
                 $scope.startDateOptions.minDate = $scope.release.startDate;
             } else {
                 $scope.startDateOptions.minDate = DateService.immutableAddDaysToDate(_.max(_.map($scope.release.sprints, 'endDate')), 1);
+                if ($scope.startDateOptions.minDate >= $scope.release.endDate) {
+                    $scope.releaseEndDateWarning = $scope.message('is.ui.sprint.warning.release.end')
+                }
             }
             $scope.sprint.startDate = $scope.startDateOptions.minDate;
             var sprintDuration = $scope.project.preferences.estimatedSprintsDuration;
