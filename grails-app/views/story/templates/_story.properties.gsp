@@ -67,7 +67,7 @@
                       ng-blur="blurDescription()"
                       at="atOptions"
                       autofocus
-                      placeholder="${message(code: 'is.ui.backlogeflement.nodescription')}"></textarea>
+                      placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
             <div class="atwho-preview form-control-static important"
                  ng-show="!showDescriptionTextarea"
                  ng-click="clickDescriptionPreview($event)"

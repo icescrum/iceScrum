@@ -160,10 +160,10 @@ controllers.controller('releaseCtrl', ['$scope', '$state', '$rootScope', 'Sessio
         return true;
     };
     $scope.validateEndDate = function(endDate) {
-        if (endDate && $scope.endDateOptions.minDate && endDate < $scope.startDateOptions.minDate) {
+        if (endDate && $scope.endDateOptions.minDate && endDate < $scope.endDateOptions.minDate) {
             return false;
         }
-        if (endDate && $scope.endDateOptions.maxDate && endDate > $scope.startDateOptions.maxDate) {
+        if (endDate && $scope.endDateOptions.maxDate && endDate > $scope.endDateOptions.maxDate) {
             return false;
         }
         return true;
