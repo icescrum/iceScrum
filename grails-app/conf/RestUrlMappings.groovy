@@ -357,5 +357,14 @@ class RestUrlMappings {
                 portfolio(matches: /[0-9A-Z]*/)
             }
         }
+        // TMP
+        "/ws/project/$project/story/$id/quickDelete" {
+            controller = 'story'
+            action = [DELETE: 'quickDelete']
+            constraints {
+                project(matches: /[0-9A-Z]*/)
+                id(matches: /\d*/)
+            }
+        }
     }
 }
