@@ -36,7 +36,6 @@ class StoryController implements ControllerErrorHandler {
     def acceptanceTestService
     def springSecurityService
     def activityService
-    def pushService
 
     @Secured('stakeHolder() or inProject()')
     def index(long project, long typeId, String type) {
@@ -209,17 +208,6 @@ class StoryController implements ControllerErrorHandler {
                 render(status: 204)
             }
         }
-    }
-
-    @Secured(['isAuthenticated() && (stakeHolder() or inProject()) and !archivedProject()'])
-    def quickDelete() {
-        def stories = Story.withStories(params)
-        pushService.disablePushForThisThread()
-        stories.each { story ->
-            story.removeAllAttachments()
-            story.delete(flush: true)
-        }
-        render(status: 204)
     }
 
     @Secured('stakeHolder() or inProject()')
