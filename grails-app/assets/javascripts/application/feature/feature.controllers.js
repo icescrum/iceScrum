@@ -23,15 +23,9 @@
  *
  */
 
-extensibleController('featureCtrl', ['$scope', '$filter', 'FormService', 'TagService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $filter, FormService, TagService, FeatureService, postitSize, screenSize) {
+extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $controller, $filter, FormService, FeatureService, postitSize, screenSize) {
+    $controller('tagCtrl', {$scope: $scope});
     // Functions
-    $scope.retrieveTags = function() {
-        if (_.isEmpty($scope.tags)) {
-            TagService.getTags().then(function(tags) {
-                $scope.tags = tags;
-            });
-        }
-    };
     $scope.authorizedFeature = FeatureService.authorizedFeature;
     $scope['delete'] = function(feature) {
         FeatureService.delete(feature).then(function() {
@@ -62,7 +56,6 @@ extensibleController('featureCtrl', ['$scope', '$filter', 'FormService', 'TagSer
         }
     ];
     // Init
-    $scope.tags = [];
     var getPostitClass = function() {
         $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
     };

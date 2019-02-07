@@ -981,3 +981,16 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
         $(window).off("resize.elementsList");
     });
 }]);
+
+extensibleController('tagCtrl', ['$scope', 'TagService', function($scope, TagService) {
+    // Functions
+    $scope.retrieveTags = function() {
+        if (_.isEmpty($scope.tags)) {
+            TagService.getTags().then(function(tags) {
+                $scope.tags = tags;
+            });
+        }
+    };
+    // Init
+    $scope.tags = [];
+}]);

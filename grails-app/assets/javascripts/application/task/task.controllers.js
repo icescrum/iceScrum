@@ -262,7 +262,8 @@ extensibleController('taskNewCtrl', ['$scope', '$state', '$stateParams', '$contr
     });
 }]);
 
-extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'TagService', 'taskContext', 'detailsTask', 'project', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, TagService, taskContext, detailsTask, project) {
+extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$controller', 'Session', 'TaskStatesByName', 'TaskConstants', 'TaskService', 'FormService', 'taskContext', 'detailsTask', 'project', function($scope, $state, $filter, $controller, Session, TaskStatesByName, TaskConstants, TaskService, FormService, taskContext, detailsTask, project) {
+    $controller('tagCtrl', {$scope: $scope});
     $controller('taskCtrl', {$scope: $scope});
     $controller('attachmentCtrl', {$scope: $scope, attachmentable: detailsTask, clazz: 'task', project: project});
     // Functions
@@ -271,13 +272,6 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
             $scope.resetTaskForm();
             $scope.notifySuccess('todo.is.ui.task.updated');
         });
-    };
-    $scope.retrieveTags = function() {
-        if (_.isEmpty($scope.tags)) {
-            TagService.getTags().then(function(tags) {
-                $scope.tags = tags;
-            });
-        }
     };
     $scope.tabUrl = function(taskTabId) {
         var stateName = $state.params.taskTabId ? (taskTabId ? '.' : '^') : (taskTabId ? '.tab' : '.');
@@ -293,7 +287,6 @@ extensibleController('taskDetailsCtrl', ['$scope', '$state', '$filter', '$contro
     };
     // Init
     $controller('updateFormController', {$scope: $scope, item: detailsTask, type: 'task'});
-    $scope.tags = [];
     $scope.project = project;
     var sortedTasks = $filter('orderBy')(taskContext.tasks, TaskConstants.ORDER_BY);
     $scope.previousTask = FormService.previous(sortedTasks, $scope.task);
