@@ -24,7 +24,7 @@
  */
 
 extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $controller, $filter, FormService, FeatureService, postitSize, screenSize) {
-    $controller('tagCtrl', {$scope: $scope});
+    $controller('tagCtrl', {$scope: $scope, type: 'feature'});
     // Functions
     $scope.authorizedFeature = FeatureService.authorizedFeature;
     $scope['delete'] = function(feature) {

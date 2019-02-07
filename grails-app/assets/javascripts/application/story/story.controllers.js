@@ -25,7 +25,7 @@
 
 // Depends on TaskService to instantiate Task push listeners (necessary to maintain counts). We should think of a better way to systematically register the listeners
 extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filter', '$window', 'StoryService', 'TaskService', 'FormService', 'StoryStatesByName', 'AcceptanceTestStatesByName', function($scope, $controller, $uibModal, $filter, $window, StoryService, TaskService, FormService, StoryStatesByName, AcceptanceTestStatesByName) {
-    $controller('tagCtrl', {$scope: $scope});
+    $controller('tagCtrl', {$scope: $scope, type: 'story'});
     // Functions
     $scope.acceptToBacklog = function(story) {
         StoryService.updateState(story, 'accept').then(function() {

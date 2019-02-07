@@ -982,7 +982,7 @@ controllers.controller("elementsListMenuCtrl", ['$scope', '$element', '$timeout'
     });
 }]);
 
-extensibleController('tagCtrl', ['$scope', 'TagService', function($scope, TagService) {
+extensibleController('tagCtrl', ['$scope', 'TagService', 'type', function($scope, TagService, type) {
     // Functions
     $scope.retrieveTags = function() {
         if (_.isEmpty($scope.tags)) {
@@ -993,4 +993,5 @@ extensibleController('tagCtrl', ['$scope', 'TagService', function($scope, TagSer
     };
     // Init
     $scope.tags = [];
+    $scope.itemType = type;
 }]);
