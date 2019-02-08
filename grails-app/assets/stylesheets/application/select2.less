@@ -46,3 +46,26 @@
 .select2-container .select2-choice div {
   border-left: none;
 }
+
+// Below is new style of "Label"
+
+.select2-container-multi .select2-choices .select2-search-choice {
+  padding: 4px 18px 3px 5px;
+  &.invert {
+    color: white;
+  }
+}
+
+.select2-container-multi .select2-search-choice-close {
+  width: 10px;
+  height: 10px;
+  right: 4px;
+  left: auto;
+  top: 5px;
+  background: url('removetag-dark.png');
+  margin-top: 0px;
+}
+
+.select2-container-multi .select2-search-choice.invert .select2-search-choice-close {
+  background: url('removetag-light.png');
+}
