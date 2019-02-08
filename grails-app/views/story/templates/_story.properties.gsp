@@ -164,7 +164,7 @@
                 </span>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="showTags">
             <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
             <ui-select ng-click="retrieveTags(); editForm(true)"
                        ng-disabled="!formEditable()"
@@ -181,6 +181,7 @@
                 </ui-select-choices>
             </ui-select>
         </div>
+        <entry:point id="story-properties-after-tag"/>
         <div class="clearfix no-padding">
             <div class="form-1-quarter" ng-show="authorizedStory('updateEstimate', editableStory) || editableStory.state == storyStatesByName.DONE">
                 <label for="effort"><i class="fa fa-dollar"></i> ${message(code: 'is.story.effort')}</label>

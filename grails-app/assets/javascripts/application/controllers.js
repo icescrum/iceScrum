@@ -992,6 +992,7 @@ extensibleController('tagCtrl', ['$scope', 'TagService', 'type', function($scope
         }
     };
     // Init
+    $scope.showTags = true;
     $scope.tags = [];
     $scope.itemType = type;
 }]);
