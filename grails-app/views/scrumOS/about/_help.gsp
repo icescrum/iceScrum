@@ -60,6 +60,10 @@
                         <td>${message(code: 'config.icescrum.debug.enable')}</td>
                         <td>${grailsApplication.config.icescrum.debug.enable}</td>
                     </tr>
+                    <tr>
+                        <td>Server Timezone</td>
+                        <td>${grailsApplication.config.icescrum.timezone.default}</td>
+                    </tr>
                     <g:if test="${g.meta(name: 'build.date')}">
                         <tr>
                             <td>${message(code: 'is.dialog.about.version.buildDate')}</td>
