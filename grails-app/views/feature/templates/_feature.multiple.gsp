@@ -121,7 +121,7 @@
                         </ui-select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-if="showTags">
                     <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
                     <ui-select ng-click="retrieveTags()"
                                class="form-control"
@@ -137,6 +137,7 @@
                         </ui-select-choices>
                     </ui-select>
                 </div>
+                <entry:point id="feature-multiple-properties-after-tag"/>
                 <div class="btn-toolbar">
                     <button class="btn btn-primary pull-right"
                             type="submit"

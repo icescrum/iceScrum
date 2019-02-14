@@ -215,7 +215,7 @@
                         <ui-select-choices repeat="storyType in storyTypes | newStoryTypes">{{ storyType | i18n:'StoryTypes' }}</ui-select-choices>
                     </ui-select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-if="showTags">
                     <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
                     <ui-select ng-click="retrieveTags()"
                                class="form-control"
@@ -231,6 +231,7 @@
                         </ui-select-choices>
                     </ui-select>
                 </div>
+                <entry:point id="story-multiple-properties-after-tag"/>
                 <div class="clearfix no-padding">
                     <div class="form-group"
                          ng-class="{ 'form-half' : authorizedStories('updateEstimate', stories) }">

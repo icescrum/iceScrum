@@ -237,7 +237,7 @@ class StoryController implements ControllerErrorHandler {
                 url = "planning/$story.parentSprint.parentRelease.id/sprint/$story.parentSprint.id/story/$story.id"
                 break
             case Story.STATE_INPROGRESS:
-                url = "taskBoard/$story.parentSprint.id/story/$story.id"
+                url = springSecurityService.isLoggedIn() ? "taskBoard/$story.parentSprint.id/story/$story.id" : "planning/$story.parentSprint.parentRelease.id/sprint/$story.parentSprint.id/story/$story.id"
                 break
             default:
                 url = "backlog/all/story/$story.id"

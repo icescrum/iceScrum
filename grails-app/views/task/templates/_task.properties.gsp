@@ -74,7 +74,7 @@
                       ng-model="editableTask.description"></textarea>
         </div>
         <entry:point id="task-properties-middle"/>
-        <div class="form-group">
+        <div class="form-group" ng-if="showTags">
             <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
             <ui-select class="form-control"
                        ng-click="retrieveTags(); editForm(true)"
@@ -91,6 +91,7 @@
                 </ui-select-choices>
             </ui-select>
         </div>
+        <entry:point id="task-properties-after-tag"/>
         <div class="clearfix no-padding">
             <div class="form-half">
                 <label for="estimation">

@@ -90,7 +90,7 @@
                       name="description"
                       ng-model="editableFeature.description"></textarea>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="showTags">
             <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
             <ui-select class="form-control"
                        ng-click="retrieveTags(); editForm(true)"
@@ -106,6 +106,7 @@
                 </ui-select-choices>
             </ui-select>
         </div>
+        <entry:point id="feature-properties-after-tag"/>
         <div class="form-group">
             <label for="notes">${message(code: 'is.backlogelement.notes')}</label>
             <textarea at

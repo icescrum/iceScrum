@@ -51,6 +51,7 @@
 
 .select2-container-multi .select2-choices .select2-search-choice {
   padding: 4px 18px 3px 5px;
+
   &.invert {
     color: white;
   }
@@ -63,13 +64,24 @@
   left: auto;
   top: 5px;
   background: url('removetag-dark.png');
+  background-position: right top !important;
   margin-top: 0;
-}
-
-.select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close:hover {
-  background-position: right top;
 }
 
 .select2-container-multi .select2-search-choice.invert .select2-search-choice-close {
   background: url('removetag-light.png');
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 2dppx) {
+  .select2-container-multi {
+    .select2-search-choice-close {
+      background-image: url('removetag-darkx2.png') !important;
+      background-size: 10px 10px !important;
+    }
+
+    .select2-search-choice.invert .select2-search-choice-close {
+      background: url('removetag-lightx2.png') !important;
+      background-size: 10px 10px !important;
+    }
+  }
 }
