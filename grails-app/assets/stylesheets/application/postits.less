@@ -171,15 +171,6 @@
           }
         }
         .tags {
-          a:hover {
-            .tag {
-              background-color: rgba(0, 0, 0, 0);
-            }
-          }
-          .tag {
-            background: rgba(0, 0, 0, 0.2);
-            color: @invert-color;
-          }
           > .action {
             i {
               color: @invert-color;
@@ -187,6 +178,9 @@
             a .badge {
               color: @invert-color;
             }
+          }
+          .tag {
+            box-shadow: 0 1px 1px 0 #7b7b7b;
           }
         }
         .actions {
@@ -280,17 +274,18 @@
         text-align: right;
         a:hover {
           text-decoration: none;
-          .tag {
-            background-color: rgba(255, 255, 255, 1);
-          }
         }
         .tag {
-          color: @gray;
+          color: @gray-dark;
           margin-right: 4px;
-          background-color: rgba(255, 255, 255, .6);
+          background-color: white;
           font-size: 10px;
           padding: 1px 2px;
           border-radius: 2px;
+          box-shadow: 0 1px 1px 0 #e6e6e6;
+          &.invert {
+            color: white;
+          }
         }
         > .action i {
           color: @gray;
@@ -641,16 +636,15 @@
                 font-size: 10px;
                 padding: 1px 2px;
                 border-radius: 2px;
-                background: rgba(0, 0, 0, 0.2);
-                color: @invert-color;
+                color: @gray-dark;
+                background-color: white;
+                box-shadow: 0 1px 1px 0 #c7c7c7;
+                &.invert {
+                  color: white;
+                }
               }
-
               &:hover {
                 text-decoration: none;
-                .tag {
-                  background: rgba(255, 255, 255, 0);
-                  color: @gray;
-                }
               }
             }
             .action {
