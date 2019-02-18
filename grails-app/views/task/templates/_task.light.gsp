@@ -46,7 +46,10 @@
         </div>
         <div class="footer">
             <div class="tags">
-                <a ng-repeat="tag in ::task.tags" href><span class="tag">{{:: tag }}</span></a>
+                <a ng-repeat="tag in ::task.tags" href>
+                    <span class="tag {{ getTagColor(tag, 'task') | contrastColor }}"
+                          ng-style="{'background-color': getTagColor(tag, 'task') }">{{:: tag }}</span>
+                </a>
             </div>
             <div class="actions">
                 <span class="action" ng-class=":: {'active':task.attachments_count}">
