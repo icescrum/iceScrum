@@ -123,7 +123,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="showTags">
-                    <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
+                    <label for="tags">
+                        <entry:point id="item-properties-inside-tag"/>
+                        ${message(code: 'is.backlogelement.tags')}
+                    </label>
                     <ui-select ng-click="retrieveTags()"
                                class="form-control"
                                name="tags"

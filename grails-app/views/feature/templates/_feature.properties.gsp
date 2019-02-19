@@ -91,7 +91,10 @@
                       ng-model="editableFeature.description"></textarea>
         </div>
         <div class="form-group" ng-if="showTags">
-            <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
+            <label for="tags">
+                <entry:point id="item-properties-inside-tag"/>
+                ${message(code: 'is.backlogelement.tags')}
+            </label>
             <ui-select class="form-control"
                        ng-click="retrieveTags(); editForm(true)"
                        ng-disabled="!formEditable()"
