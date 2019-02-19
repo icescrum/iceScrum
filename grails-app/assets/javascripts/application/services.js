@@ -942,7 +942,7 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
         if (Session.workspaceType == 'project') {
             var project = Session.workspace;
             return $q.all([TagService.getTags(), FeatureService.list(project), ActorService.list(project.id)]).then(function(data) {
-                var tags = _.uniqBy(data[0], _.lowerCase);
+                var tags = data[0];
                 var features = data[1];
                 var actors = data[2];
                 var contexts = _.map(tags, function(tag) {
