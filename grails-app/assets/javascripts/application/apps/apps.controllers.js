@@ -39,7 +39,7 @@ controllers.controller('appsCtrl', ['$scope', 'AppService', 'Session', '$window'
                 $scope.notifySuccess('is.ui.apps.settings.refresh');
                 $timeout(function() {
                     $window.location.reload();
-                }, 800);
+                }, 600);
             }
         });
     };
