@@ -594,7 +594,7 @@ controllers.controller('contextCtrl', ['$scope', '$location', '$state', '$timeou
             if (cachedContext) {
                 setContextTermAndColor(cachedContext);
             } else {
-                // Hack around the context loading if the context is a feature in the cache, othwervise setting feature context from feature backlog doesn't work properly
+                // Hack around the context loading if the context is a feature in the cache, otherwise setting feature context from feature backlog doesn't work properly
                 var cachedFeature;
                 if ($scope.application.context.type == 'feature') {
                     cachedFeature = CacheService.get('feature', $scope.application.context.id);

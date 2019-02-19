@@ -924,7 +924,7 @@ services.service("DomainConfigService", [function() {
     this.config.portfoliod = this.config.portfolio;
 }]);
 
-services.service('ContextService', ['$location', '$q', '$injector', 'TagService', 'ActorService', 'FeatureService', function($location, $q, $injector, TagService, ActorService, FeatureService) {
+services.service('ContextService', ['$location', '$q', '$injector', 'TagService', 'ActorService', 'FeatureService', 'contextDecorators', function($location, $q, $injector, TagService, ActorService, FeatureService, contextDecorators) {
     var self = this;
     this.contextSeparator = '_';
     this.getContextFromUrl = function() {
@@ -954,8 +954,16 @@ services.service('ContextService', ['$location', '$q', '$injector', 'TagService'
                 contexts = contexts.concat(_.map(actors, function(actor) {
                     return {type: 'actor', id: actor.id.toString(), term: actor.name, color: '#94d4b6'};
                 }));
-                self.contexts = contexts;
-                return contexts;
+                var promise = $q.when();
+                _.each(contextDecorators, function(contextDecorator) {
+                    promise = promise.then(function() {
+                        return contextDecorator(contexts, project, $injector);
+                    });
+                });
+                return promise.then(function() {
+                    self.contexts = contexts;
+                    return contexts;
+                });
             });
         } else {
             return $q.when([])
