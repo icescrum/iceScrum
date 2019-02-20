@@ -37,7 +37,7 @@ class TagController implements ControllerErrorHandler {
     def projectTag(long project, String term) {
         Project _project = Project.withProject(project)
         def tags = Tag.executeQuery("""
-            SELECT DISTINCT tagLink.tag.name
+            SELECT tagLink.tag.name
             FROM org.grails.taggable.TagLink tagLink
             WHERE (
                 (
@@ -68,7 +68,7 @@ class TagController implements ControllerErrorHandler {
             AND tagLink.tag.name LIKE :term
             ORDER BY tagLink.tag.name
         """, [term: (term ?: '%') + '%', project: _project.id])
-        render(status: 200, contentType: 'application/json', text: tags as JSON)
+        render(status: 200, contentType: 'application/json', text: tags.unique() as JSON)
     }
 
     @Secured('businessOwner() or portfolioStakeHolder()')

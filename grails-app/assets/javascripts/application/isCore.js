@@ -112,6 +112,12 @@ angular.module('isCore', ['ui.router'])
             }
         };
     })
+    .provider('contextDecorators', function() {
+        this.$get = function() {
+            return this.contextDecorators;
+        };
+        this.contextDecorators = [];
+    })
     .provider('itemTabs', function() {
         this.$get = function() {
             return this.itemTabs;

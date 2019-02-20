@@ -289,7 +289,8 @@ angular.module('colorpicker.module', [])
             require: '?ngModel',
             restrict: 'A',
             scope: {
-                colors: '='
+                colors: '=',
+                parentModel: '='
             },
             link: function ($scope, elem, attrs, ngModel) {
                 var
@@ -559,7 +560,8 @@ angular.module('colorpicker.module', [])
                     if(ngModel) {
                         $scope.$emit(name, {
                             name: attrs.ngModel,
-                            value: ngModel.$modelValue
+                            value: ngModel.$modelValue,
+                            parentModel: $scope.parentModel
                         });
                     }
                 };

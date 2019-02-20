@@ -59,7 +59,8 @@
                                     <div class="tags">
                                         <a ng-repeat="tag in topFeature.tags"
                                            href="{{ tagContextUrl(tag) }}">
-                                            <span class="tag">{{ tag }}</span>
+                                            <span class="tag {{ getTagColor(tag, 'feature') | contrastColor }}"
+                                                  ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
                                         </a>
                                     </div>
                                     <div class="actions">
@@ -122,7 +123,10 @@
                     </div>
                 </div>
                 <div class="form-group" ng-if="showTags">
-                    <label for="tags">${message(code: 'is.backlogelement.tags')}</label>
+                    <label for="tags">
+                        <entry:point id="item-properties-inside-tag"/>
+                        ${message(code: 'is.backlogelement.tags')}
+                    </label>
                     <ui-select ng-click="retrieveTags()"
                                class="form-control"
                                name="tags"
