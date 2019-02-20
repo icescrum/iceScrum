@@ -51,7 +51,7 @@
                         </ui-select>
                         <span class="input-group-btn">
                             <a ui-sref="planning.release.details({releaseId: sprint.parentRelease.id})"
-                               class="btn btn-default">
+                               class="btn btn-secondary">
                                 <i class="fa fa-info-circle"></i>
                             </a>
                         </span>

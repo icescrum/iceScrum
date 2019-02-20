@@ -62,7 +62,7 @@
                             ng-click="copyToClipboard(timeBoxNotes)">
                         <i class="fa fa-clipboard"></i>
                     </button>
-                    <button class="btn btn-default btn-sm"
+                    <button class="btn btn-secondary btn-sm"
                             type="button"
                             name="edit"
                             ng-click="showEditTemplateModal(ctrl.template)">
