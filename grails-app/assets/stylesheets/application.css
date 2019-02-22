@@ -24,8 +24,6 @@
 /*
 *= encoding          UTF-8
 
-*= require           vendors/bootstrap/scss/bootstrap.scss
-
 *= require_full_tree vendors/jquery
 *= require_full_tree vendors/angular
 *= require_full_tree vendors/vanilla

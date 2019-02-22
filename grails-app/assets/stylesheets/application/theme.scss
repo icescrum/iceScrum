@@ -1,0 +1,142 @@
+////////////////////
+// Override variables
+////////////////////
+
+$primary: #0067e8;
+$secondary: #ffffff;
+
+$btn-padding-x: 1.7rem;
+$btn-padding-y: 0.625rem;
+$btn-padding-x-sm: 1.1rem;
+
+////////////////////
+// Import Bootstrap
+////////////////////
+
+@import "../vendors/bootstrap/scss/functions";
+@import "../vendors/bootstrap/scss/variables";
+@import "../vendors/bootstrap/scss/mixins";
+@import "../vendors/bootstrap/scss/root";
+@import "../vendors/bootstrap/scss/reboot";
+@import "../vendors/bootstrap/scss/type";
+@import "../vendors/bootstrap/scss/images";
+@import "../vendors/bootstrap/scss/code";
+@import "../vendors/bootstrap/scss/grid";
+@import "../vendors/bootstrap/scss/tables";
+@import "../vendors/bootstrap/scss/forms";
+@import "../vendors/bootstrap/scss/buttons";
+@import "../vendors/bootstrap/scss/transitions";
+@import "../vendors/bootstrap/scss/dropdown";
+@import "../vendors/bootstrap/scss/button-group";
+@import "../vendors/bootstrap/scss/input-group";
+@import "../vendors/bootstrap/scss/custom-forms";
+@import "../vendors/bootstrap/scss/nav";
+@import "../vendors/bootstrap/scss/navbar";
+@import "../vendors/bootstrap/scss/card";
+@import "../vendors/bootstrap/scss/breadcrumb";
+@import "../vendors/bootstrap/scss/pagination";
+@import "../vendors/bootstrap/scss/badge";
+@import "../vendors/bootstrap/scss/jumbotron";
+@import "../vendors/bootstrap/scss/alert";
+@import "../vendors/bootstrap/scss/progress";
+@import "../vendors/bootstrap/scss/media";
+@import "../vendors/bootstrap/scss/list-group";
+@import "../vendors/bootstrap/scss/close";
+@import "../vendors/bootstrap/scss/modal";
+@import "../vendors/bootstrap/scss/tooltip";
+@import "../vendors/bootstrap/scss/popover";
+@import "../vendors/bootstrap/scss/carousel";
+@import "../vendors/bootstrap/scss/utilities";
+@import "../vendors/bootstrap/scss/print";
+
+////////////////////
+// Override style
+////////////////////
+
+$is-text-color: #111111;
+$is-btn-secondary-start: #f5f5fa;
+$is-btn-shadow: rgba(156, 164, 171, 0.5);
+
+@font-face {
+  font-family: 'averta-regular';
+  src: url('./fonts/averta-regular.woff2') format('woff2')
+}
+
+@font-face {
+  font-family: 'averta-bold';
+  src: url('./fonts/averta-bold.woff2') format('woff2')
+}
+
+html, body {
+  font-family: averta-regular;
+}
+
+.btn {
+  font-size: 0.9375rem;
+  font-family: averta-bold;
+  border: none;
+}
+
+.btn-primary {
+  text-shadow: 0 0.125rem 0.25rem #054ca6;
+
+  &:hover {
+    background-color: $primary;
+    box-shadow: 0 0.5rem 1.75rem 0 rgba(0, 103, 232, 0.44);
+  }
+
+  &:not(:disabled):not(.disabled):active {
+    background-color: $primary;
+  }
+
+  &.btn-sm {
+    color: $primary;
+    text-shadow: none;
+    background-image: linear-gradient(to top, $is-btn-secondary-start, $secondary);
+    box-shadow: 0 0.0625rem 0.1875rem 0 rgba(156, 164, 171, 0.62);
+
+    &:hover {
+      background-image: linear-gradient(to top, $is-btn-secondary-start, $secondary);
+    }
+
+    &:not(:disabled):not(.disabled):active {
+      color: $primary;
+    }
+  }
+}
+
+.btn-secondary {
+  color: $is-text-color;
+  box-shadow: 0 0.125rem 0.5625rem 0 $is-btn-shadow;
+  background-image: linear-gradient(to top, $is-btn-secondary-start, $secondary);
+
+  &:hover {
+    background-color: $secondary;
+    box-shadow: 0 0.5rem 1.75rem 0 $is-btn-shadow;
+  }
+
+  &.btn-sm {
+    box-shadow: 0 0 0 0.0625rem #c8c8cc inset; // Simulate border
+    font-family: averta-regular;
+    text-shadow: none;
+    background-image: none;
+
+    &:not(:disabled):not(.disabled):active {
+      background-color: white;
+    }
+  }
+}
+
+.btn-sm {
+  font-size: 0.875rem;
+  line-height: 1.6;
+
+  &:hover {
+    box-shadow: 0 0.5rem 1.75rem 0 $is-btn-shadow;
+  }
+}
+
+//https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
+.dropdown.open .dropdown-menu {
+  display: block;
+}
