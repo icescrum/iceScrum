@@ -37,8 +37,8 @@
                    ng-model="project.name"
                    ng-change="nameChanged()"
                    ng-required="isCurrentStep(1, 'project')">
-            <span class="input-group-after">
-                <button class="btn btn-model"
+            <span class="input-group-append">
+                <button class="btn btn-model btn-sm"
                         type="button"
                         ng-disabled="!enableVisibilityChange()"
                         ng-model="project.preferences.hidden"

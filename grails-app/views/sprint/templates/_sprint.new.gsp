@@ -49,9 +49,9 @@
                             <ui-select-match>{{ $select.selected.name }}</ui-select-match>
                             <ui-select-choices repeat="editableRelease in editableReleases">{{ editableRelease.name }}</ui-select-choices>
                         </ui-select>
-                        <span class="input-group-btn">
+                        <span class="input-group-append">
                             <a ui-sref="planning.release.details({releaseId: sprint.parentRelease.id})"
-                               class="btn btn-secondary">
+                               class="btn btn-secondary btn-sm">
                                 <i class="fa fa-info-circle"></i>
                             </a>
                         </span>
@@ -64,9 +64,9 @@
                     <div class="form-half">
                         <label for="sprint.startDate">${message(code: 'is.sprint.startDate')}</label>
                         <div class="input-group">
-                            <span class="input-group-before">
+                            <span class="input-group-prepend">
                                 <button type="button"
-                                        class="btn btn-secondary"
+                                        class="btn btn-secondary btn-sm"
                                         ng-click="openDatepicker($event, startDateOptions)">
                                     <i class="fa fa-calendar"></i>
                                 </button>
@@ -98,9 +98,9 @@
                                    uib-datepicker-popup
                                    datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>
-                            <span class="input-group-after">
+                            <span class="input-group-append">
                                 <button type="button"
-                                        class="btn btn-secondary"
+                                        class="btn btn-secondary btn-sm"
                                         ng-click="openDatepicker($event, endDateOptions)">
                                     <i class="fa fa-calendar"></i>
                                 </button>

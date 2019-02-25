@@ -37,9 +37,9 @@
                        ng-model="editableFeature.name"
                        type="text"
                        class="form-control">
-                <span class="input-group-after" ng-if="formEditable()">
+                <span class="input-group-append" ng-if="formEditable()">
                     <button colorpicker
-                            class="btn {{ editableFeature.color | contrastColor }}"
+                            class="btn btn-sm {{ editableFeature.color | contrastColor }}"
                             type="button"
                             ng-style="{'background-color': editableFeature.color}"
                             colorpicker-position="left"

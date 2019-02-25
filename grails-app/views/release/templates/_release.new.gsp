@@ -53,9 +53,9 @@
                     <div class="form-half">
                         <label for="release.startDate">${message(code: 'is.release.startDate')}</label>
                         <div class="input-group">
-                            <span class="input-group-before">
+                            <span class="input-group-prepend">
                                 <button type="button"
-                                        class="btn btn-secondary"
+                                        class="btn btn-secondary btn-sm"
                                         ng-click="openDatepicker($event, startDateOptions)">
                                     <i class="fa fa-calendar"></i>
                                 </button>
@@ -87,9 +87,9 @@
                                    uib-datepicker-popup
                                    datepicker-options="endDateOptions"
                                    is-open="endDateOptions.opened"/>
-                            <span class="input-group-after">
+                            <span class="input-group-append">
                                 <button type="button"
-                                        class="btn btn-secondary"
+                                        class="btn btn-secondary btn-sm"
                                         ng-click="openDatepicker($event, endDateOptions)">
                                     <i class="fa fa-calendar"></i>
                                 </button>

@@ -39,9 +39,9 @@
                    ng-model-options="{debounce: 400}"
                    ng-change="filterStories()"
                    placeholder="${message(code: 'todo.is.ui.story.selector.filter.action')}">
-            <span class="input-group-after">
+            <span class="input-group-append">
                 <button type="button"
-                        class="btn btn-secondary"
+                        class="btn btn-secondary btn-sm"
                         ng-click="selectorOptions.filter.term = ''; filterStories()">
                     <i class="fa" ng-class="selectorOptions.filter.term ? 'fa-times' : 'fa-filter'"></i>
                 </button>

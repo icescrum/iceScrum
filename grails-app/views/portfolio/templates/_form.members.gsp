@@ -40,7 +40,7 @@
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'bo')"
                    typeahead-template-url="select.member.html">
-            <span class="input-group-after">
+            <span class="input-group-append">
                 <span class="input-group-text">
                     <i class="fa" ng-class="{ 'fa-search': !searchingBo, 'fa-refresh':searchingBo }"></i>
                 </span>
@@ -72,7 +72,7 @@
                    typeahead-wait-ms="250"
                    typeahead-on-select="addUser($item, 'sh')"
                    typeahead-template-url="select.member.html">
-            <span class="input-group-after">
+            <span class="input-group-append">
                 <span class="input-group-text">
                     <i class="fa" ng-class="{ 'fa-search': !searchingSh, 'fa-refresh':searchingSh }"></i>
                 </span>

@@ -38,8 +38,12 @@
                        ng-focus="formHolder.formExpanded = true;"
                        class="form-control"
                        placeholder="${message(code: 'is.ui.story.noname')}">
-                <span class="input-group-btn visible-hidden">
-                    <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
+                <span class="input-group-append visible-hidden">
+                    <button class="btn btn-primary btn-sm"
+                            type="button"
+                            ng-click="formHolder.formExpanded = true;">
+                        <i class="fa fa-plus"></i>
+                    </button>
                 </span>
             </div>
         </div>

@@ -198,8 +198,8 @@
     <g:if test="${project}">
         <form class="form-inline pull-left" role="search">
             <div class="input-group search">
-                <span class="input-group-btn" ng-if="application.context">
-                    <button class="btn btn-secondary"
+                <span class="input-group-prepend" ng-if="application.context">
+                    <button class="btn btn-secondary btn-sm"
                             type="button"
                             ng-click="setContext(null)">
                         <i class="fa" ng-class="application.context.type | contextIcon"></i>
@@ -217,8 +217,8 @@
                        uib-typeahead="context.term for context in searchContext($viewValue)"
                        typeahead-on-select="setContext($item)"
                        typeahead-template-url="search.context.html">
-                <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button" ng-click="application.search = null">
+                <span class="input-group-append">
+                    <button class="btn btn-secondary btn-sm" type="button" ng-click="application.search = null">
                         <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
                     </button>
                 </span>
@@ -235,8 +235,8 @@
                        ng-model="application.search"
                        placeholder="${message(code: 'todo.is.ui.search.action')}"
                        ng-model-options="{ debounce: 300 }">
-                <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="button" ng-click="application.search = null">
+                <span class="input-group-append">
+                    <button class="btn btn-secondary btn-sm" type="button" ng-click="application.search = null">
                         <i class="fa search-status" ng-class="application.search ? 'fa-times' : 'fa-search'"></i>
                     </button>
                 </span>

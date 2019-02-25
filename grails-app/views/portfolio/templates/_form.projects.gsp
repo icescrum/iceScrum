@@ -36,7 +36,7 @@
            typeahead-template-url="select.or.create.project.html"
            ng-model="formHolder.projectSelection"
            ng-disabled="portfolio.projects.length >= 10">
-    <span class="input-group-after">
+    <span class="input-group-append">
         <span class="input-group-text"><i class="fa fa-search"></i></span>
     </span>
 </div>

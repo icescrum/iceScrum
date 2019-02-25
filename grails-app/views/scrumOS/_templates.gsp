@@ -294,8 +294,8 @@
                                name="widget-definition-search-input"
                                class="form-control"
                                placeholder="${message(code: 'todo.is.ui.search.action')}">
-                        <span class="input-group-after">
-                            <button class="btn btn-secondary"
+                        <span class="input-group-append">
+                            <button class="btn btn-secondary btn-sm"
                                     type="button"
                                     ng-click="widgetDefinitionSearch = ''">
                                 <i class="fa" ng-class="widgetDefinitionSearch ? 'fa-times' : 'fa-search'"></i>

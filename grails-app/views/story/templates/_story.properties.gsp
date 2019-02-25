@@ -100,9 +100,9 @@
                             <i class="fa fa-puzzle-piece" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <span class="input-group-after" ng-if="editableStory.feature.id && !isModal">
+                    <span class="input-group-append" ng-if="editableStory.feature.id && !isModal">
                         <a href="{{ storyFeatureUrl(editableStory) }}"
-                           class="btn btn-secondary">
+                           class="btn btn-secondary btn-sm">
                             <i class="fa fa-info-circle"></i>
                         </a>
                     </span>
@@ -134,10 +134,10 @@
                             <span ng-bind-html="dependenceEntry | storyLabel : false : !hasSameProject(editableStory, dependenceEntry) | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <span class="input-group-after" ng-if="editableStory.dependsOn.id">
+                    <span class="input-group-append" ng-if="editableStory.dependsOn.id">
                         <a ng-if="hasSameProject(editableStory, editableStory.dependsOn)"
                            ui-sref=".({storyId: editableStory.dependsOn.id})"
-                           class="btn btn-secondary">
+                           class="btn btn-secondary btn-sm">
                             <i class="fa fa-info-circle"></i>
                         </a>
                         <a ng-if="!hasSameProject(editableStory, editableStory.dependsOn)"
@@ -209,8 +209,8 @@
                            name="effort"
                            min="0"
                            ng-model="editableStory.effort"/>
-                    <span class="input-group-after">
-                        <button class="btn btn-secondary"
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary btn-sm"
                                 type="button"
                                 name="edit-effort"
                                 ng-click="showEditEffortModal(story)"><i class="fa fa-pencil"></i></button>
@@ -250,8 +250,8 @@
                             <span ng-bind-html="'' + i | highlight: $select.search"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <span class="input-group-after" ng-if="authorizedStory('update', editableStory)">
-                        <button class="btn btn-secondary"
+                    <span class="input-group-append" ng-if="authorizedStory('update', editableStory)">
+                        <button class="btn btn-secondary btn-sm"
                                 type="button"
                                 name="edit-value"
                                 ng-click="showEditValueModal(story)"><i class="fa fa-pencil"></i></button>

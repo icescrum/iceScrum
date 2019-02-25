@@ -37,7 +37,7 @@
                     <div class="clearfix no-padding form-group">
                         <div class="col-sm-7">
                             <div class="input-group">
-                                <span class="input-group-before">
+                                <span class="input-group-prepend">
                                     <span class="input-group-text no-style">
                                     <i class="fa fa-drag-handle" ng-if="authorizedAcceptanceTest('rank', selected)" as-sortable-item-handle></i>
                                     <strong>{{:: editableAcceptanceTest.uid }}</strong>

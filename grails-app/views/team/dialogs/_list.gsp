@@ -34,8 +34,8 @@
                            ng-model-options="{debounce: 300}"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
-                    <span class="input-group-after">
-                        <button class="btn btn-secondary"
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary btn-sm"
                                 type="button"
                                 ng-click="teamSearch = null; searchTeams()">
                             <i class="fa" ng-class="teamSearch ? 'fa-times' : 'fa-search'"></i>
@@ -138,7 +138,7 @@
                                    typeahead-wait-ms="250"
                                    typeahead-on-select="addTeamMember($item, $model, $label)"
                                    typeahead-template-url="select.member.html">
-                            <span class="input-group-after">
+                            <span class="input-group-append">
                                 <span class="input-group-text">
                                     <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
                                 </span>

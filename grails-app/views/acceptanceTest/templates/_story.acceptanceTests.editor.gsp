@@ -29,7 +29,7 @@
     <div class="clearfix no-padding">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
             <div class="input-group">
-                <span class="input-group-before">
+                <span class="input-group-prepend">
                     <span class="input-group-text no-style"><strong>42</strong></span>
                 </span>
                 <input required
@@ -40,8 +40,12 @@
                        ng-focus="formHolder.formExpanded = true;"
                        class="form-control"
                        placeholder="${message(code: 'is.acceptanceTest')}">
-                <span class="input-group-after visible-hidden">
-                    <button class="btn btn-primary" type="button" ng-click="formHolder.formExpanded = true;"><i class="fa fa-plus"></i></button>
+                <span class="input-group-append visible-hidden">
+                    <button class="btn btn-primary btn-sm"
+                            type="button"
+                            ng-click="formHolder.formExpanded = true;">
+                        <i class="fa fa-plus"></i>
+                    </button>
                 </span>
             </div>
         </div>

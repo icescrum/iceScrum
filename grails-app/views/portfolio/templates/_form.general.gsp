@@ -37,8 +37,8 @@
                    ng-model="portfolio.name"
                    ng-change="nameChanged()"
                    ng-required="isCurrentStep(1, 'portfolio')">
-            <span class="input-group-after">
-                <button class="btn btn-hidden"
+            <span class="input-group-append">
+                <button class="btn btn-hidden btn-sm"
                         type="button"
                         disabled="disabled">
                     <i class="fa fa-eye-slash"></i>

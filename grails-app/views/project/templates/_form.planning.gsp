@@ -26,8 +26,12 @@
     <div class="form-half">
         <label for="project.startDate">${message(code: 'is.dialog.wizard.project.startDate')}</label>
         <div class="input-group">
-            <span class="input-group-before">
-                <button type="button" class="btn btn-secondary" ng-click="openDatepicker($event, startDateOptions)"><i class="fa fa-calendar"></i></button>
+            <span class="input-group-prepend">
+                <button type="button"
+                        class="btn btn-secondary btn-sm"
+                        ng-click="openDatepicker($event, startDateOptions)">
+                    <i class="fa fa-calendar"></i>
+                </button>
             </span>
             <input type="text"
                    class="form-control"
@@ -68,7 +72,7 @@
                    ng-required="isCurrentStep(4, 'project')"
                    ng-change="computePlanning()"
                    ng-model="project.preferences.estimatedSprintsDuration">
-            <div class="input-group-after">
+            <div class="input-group-append">
                 <div class="input-group-text">${message(code: 'is.dialog.wizard.project.days')}</div>
             </div>
         </div>
@@ -98,8 +102,12 @@
     <div class="form-half">
         <label for="project.firstSprint">${message(code: 'is.dialog.wizard.firstSprint')}</label>
         <div class="input-group">
-            <span class="input-group-before">
-                <button type="button" class="btn btn-secondary" ng-click="openDatepicker($event, firstSprintOptions)"><i class="fa fa-calendar"></i></button>
+            <span class="input-group-prepend">
+                <button type="button"
+                        class="btn btn-secondary btn-sm"
+                        ng-click="openDatepicker($event, firstSprintOptions)">
+                    <i class="fa fa-calendar"></i>
+                </button>
             </span>
             <input type="text"
                    class="form-control"
@@ -126,8 +134,12 @@
                    datepicker-options="endDateOptions"
                    ng-class="{current:step.selected}"
                    ng-required="isCurrentStep(4, 'project')"/>
-            <span class="input-group-after">
-                <button type="button" class="btn btn-secondary" ng-click="openDatepicker($event, endDateOptions)"><i class="fa fa-calendar"></i></button>
+            <span class="input-group-append">
+                <button type="button"
+                        class="btn btn-secondary btn-sm"
+                        ng-click="openDatepicker($event, endDateOptions)">
+                    <i class="fa fa-calendar"></i>
+                </button>
             </span>
         </div>
     </div>

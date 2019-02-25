@@ -35,8 +35,8 @@
                            ng-model-options="{debounce: 300}"
                            class="form-control"
                            placeholder="${message(code: 'todo.is.ui.search.action')}">
-                    <span class="input-group-after">
-                        <button class="btn btn-secondary"
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary btn-sm"
                                 type="button"
                                 ng-click="workspaceSearch = null; searchWorkspaces()">
                             <i class="fa" ng-class="workspaceSearch ? 'fa-times' : 'fa-search'"></i>

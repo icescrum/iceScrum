@@ -53,7 +53,7 @@
                    ng-readonly="team.selected"
                    ng-model="team.name"
                    ng-required="isCurrentStep(2, 'project')">
-            <span class="input-group-after" ng-if="teamRemovable(team)">
+            <span class="input-group-append" ng-if="teamRemovable(team)">
                 <span class="input-group-text">
                     <i class="fa"
                        ng-click="unSelectTeam()"
@@ -97,7 +97,7 @@
                        typeahead-wait-ms="250"
                        typeahead-on-select="addTeamMember($item, $model, $label)"
                        typeahead-template-url="select.member.html">
-                <span class="input-group-after">
+                <span class="input-group-append">
                     <span class="input-group-text">
                         <i class="fa" ng-class="{ 'fa-search': !searchingMember, 'fa-refresh':searchingMember, 'fa-close':member.name }"></i>
                     </span>

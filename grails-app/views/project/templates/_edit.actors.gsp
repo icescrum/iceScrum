@@ -40,22 +40,22 @@
                    class="form-control"
                    placeholder="{{ actor.id ? '' : message('is.ui.actor.noname') }}"
                    ng-model="actor.name"/>
-            <span class="input-group-after">
-                <button class="btn btn-secondary"
+            <span class="input-group-append">
+                <button class="btn btn-secondary btn-sm"
                         ng-if="!actor.id"
                         ng-disabled="formHolder.actorForm.$invalid || application.submitting"
                         type="submit"
                         ng-click="save(actor)">
                     ${message(code: 'default.button.create.label')}
                 </button>
-                <button class="btn btn-primary"
+                <button class="btn btn-primary btn-sm"
                         ng-if="actor.id"
                         ng-disabled="!formHolder.actorForm.$dirty || formHolder.actorForm.$invalid || application.submitting"
                         type="submit"
                         ng-click="update(actor)">
                     ${message(code: 'default.button.update.label')}
                 </button>
-                <button class="btn btn-secondary"
+                <button class="btn btn-secondary btn-sm"
                         ng-if="actor.id"
                         ng-disabled="!formHolder.actorForm.$dirty"
                         type="submit"

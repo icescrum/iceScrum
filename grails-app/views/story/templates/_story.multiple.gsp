@@ -199,9 +199,9 @@
                                 <i class="fa fa-sticky-note" ng-style="{color: feature.color}"></i> <span ng-bind-html="feature.name | highlight: $select.search"></span>
                             </ui-select-choices>
                         </ui-select>
-                        <span class="input-group-after" ng-if="storyPreview.feature.id">
+                        <span class="input-group-append" ng-if="storyPreview.feature.id">
                             <a ui-sref=".feature.details({featureId: storyPreview.feature.id})"
-                               class="btn btn-secondary">
+                               class="btn btn-secondary btn-sm">
                                 <i class="fa fa-info-circle"></i>
                             </a>
                         </span>

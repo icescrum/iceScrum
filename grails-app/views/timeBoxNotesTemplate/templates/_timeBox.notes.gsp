@@ -38,8 +38,8 @@
                         {{:: item.id }} - {{ item.name }}
                     </ui-select-choices>
                 </ui-select>
-                <span class="input-group-after">
-                    <button class="btn btn-secondary"
+                <span class="input-group-append">
+                    <button class="btn btn-secondary btn-sm"
                             type="button"
                             name="new"
                             ng-click="showNewTemplateModal()">

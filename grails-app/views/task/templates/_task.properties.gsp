@@ -38,9 +38,9 @@
                            ng-model="editableTask.name"
                            type="text"
                            class="form-control">
-                    <span class="input-group-after" ng-if="formEditable()">
+                    <span class="input-group-append" ng-if="formEditable()">
                         <button colorpicker
-                                class="btn {{ editableTask.color | contrastColor }}"
+                                class="btn btn-sm {{ editableTask.color | contrastColor }}"
                                 type="button"
                                 ng-style="{'background-color': editableTask.color}"
                                 colorpicker-position="left"
@@ -102,8 +102,8 @@
                 <entry:point id="task-estimation-after-label"/>
                 </label>
                 <div class="input-group">
-                    <span class="input-group-before">
-                        <button class="btn btn-secondary"
+                    <span class="input-group-prepend">
+                        <button class="btn btn-secondary btn-sm"
                                 type="button"
                                 ng-click="editForm(true); editableTask.estimation = minus(editableTask.estimation);">
                             <i class="fa fa-minus"></i>
@@ -116,8 +116,8 @@
                            ng-disabled="!formEditable()"
                            name="estimation"
                            ng-model="editableTask.estimation"/>
-                    <span class="input-group-after">
-                        <button class="btn btn-secondary"
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary btn-sm"
                                 type="button"
                                 ng-click="editForm(true); editableTask.estimation = plus(editableTask.estimation);">
                             <i class="fa fa-plus"></i>

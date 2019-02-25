@@ -171,8 +171,11 @@
                                class="form-control"
                                placeholder="${message(code: 'is.user.token.name.placeholder')}"
                                ng-model="editableUserToken.name">
-                        <span class="input-group-after">
-                            <button type="button" ng-click="save()" ng-disabled="!editableUserToken.name" class="btn btn-primary">
+                        <span class="input-group-append">
+                            <button type="button"
+                                    ng-click="save()"
+                                    ng-disabled="!editableUserToken.name"
+                                    class="btn btn-primary btn-sm">
                                 ${message(code: 'is.ui.token.generate')}
                             </button>
                         </span>

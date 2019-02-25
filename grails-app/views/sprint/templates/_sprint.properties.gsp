@@ -43,10 +43,10 @@
                            uib-datepicker-popup
                            datepicker-options="startDateOptions"
                            is-open="startDateOptions.opened"/>
-                    <span class="input-group-after"
+                    <span class="input-group-append"
                           ng-if="authorizedSprint('updateStartDate', sprint)">
                         <button type="button"
-                                class="btn btn-secondary"
+                                class="btn btn-secondary btn-sm"
                                 ng-focus="editForm(true)"
                                 ng-click="openDatepicker($event, startDateOptions)">
                             <i class="fa fa-calendar"></i>
@@ -70,10 +70,10 @@
                            uib-datepicker-popup
                            datepicker-options="endDateOptions"
                            is-open="endDateOptions.opened"/>
-                    <span class="input-group-after"
+                    <span class="input-group-append"
                           ng-if="authorizedSprint('updateEndDate', sprint)">
                         <button type="button"
-                                class="btn btn-secondary"
+                                class="btn btn-secondary btn-sm"
                                 ng-focus="editForm(true)"
                                 ng-click="openDatepicker($event, endDateOptions)">
                             <i class="fa fa-calendar"></i>
