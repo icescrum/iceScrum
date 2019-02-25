@@ -29,7 +29,9 @@
     <div class="clearfix no-padding">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'">
             <div class="input-group">
-                <span class="input-group-addon no-style"><strong>42</strong></span>
+                <span class="input-group-prepend no-style">
+                    <span class="input-group-text"><strong>42</strong></span>
+                </span>
                 <input required
                        type="text"
                        ng-maxlength="100"
