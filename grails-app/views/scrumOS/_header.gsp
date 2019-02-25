@@ -42,7 +42,8 @@
             ng-model="application.menus.visible">
             <li class="nav-item {{:: workspaceType }}"
                 uib-dropdown>
-                <a uib-dropdown-toggle>
+                <a uib-dropdown-toggle
+                   class="nav-link">
                     <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                         <g:render template="/scrumOS/logo"/>
                     </svg>&nbsp;<g:if test="${workspace}"><i tooltip-placement="bottom" defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
@@ -181,7 +182,7 @@
             </li>
             <li class="nav-item"
                 uib-dropdown is-open="more.isopen || menuDragging" ng-class="{ 'hidden': !menuDragging && application.menus.hidden.length == 0 }">
-                <a uib-dropdown-toggle href>${message(code: 'todo.is.ui.more')}</a>
+                <a uib-dropdown-toggle href class="nav-link">${message(code: 'todo.is.ui.more')}</a>
                 <ul uib-dropdown-menu
                     is-disabled="!currentUser.id || workspaceType != 'project'"
                     as-sortable="menuSortableOptions"

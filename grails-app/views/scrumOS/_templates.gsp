@@ -145,6 +145,7 @@
 
     <script type="text/ng-template" id="menuitem.item.html">
     <a hotkey="{ '{{ menu.shortcut }}' : hotkeyClick }"
+       class="nav-link"
        hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
        href="{{ getMenuUrl(menu) }}">
         <i class="fa fa-lg" ng-class="'fa-' + menu.icon" as-sortable-item-handle></i> <span defer-tooltip="{{ menu.title + ' (' + menu.shortcut + ')' }}"
