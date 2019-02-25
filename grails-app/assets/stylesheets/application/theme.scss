@@ -140,3 +140,12 @@ html, body {
 .dropdown.open .dropdown-menu {
   display: block;
 }
+
+////////////////////
+// iceScrum style
+////////////////////
+
+// TODO re-enable with correct loading images
+.logo, .loading-text, #application-loading, .loading-logo {
+  display: none;
+}
