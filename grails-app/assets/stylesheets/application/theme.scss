@@ -1,10 +1,20 @@
 ////////////////////
-// Override variables
+// iS variables
+////////////////////
+
+$is-text-color: #687583;
+$is-text-color-2: #111111;
+$is-btn-secondary-start: #f5f5fa;
+$is-btn-shadow: rgba(156, 164, 171, 0.5);
+
+////////////////////
+// Override bootstrap variables
 ////////////////////
 
 $primary: #0067e8;
 $secondary: #ffffff;
-
+$body-color: $is-text-color;
+$input-color: $is-text-color;
 $btn-padding-x: 1.7rem;
 $btn-padding-y: 0.625rem;
 $btn-padding-x-sm: 0.8rem;
@@ -54,9 +64,6 @@ $border-radius-sm: .25rem;
 // Override style
 ////////////////////
 
-$is-text-color: #111111;
-$is-btn-secondary-start: #f5f5fa;
-$is-btn-shadow: rgba(156, 164, 171, 0.5);
 
 @font-face {
   font-family: 'averta-regular';
@@ -70,6 +77,10 @@ $is-btn-shadow: rgba(156, 164, 171, 0.5);
 
 html, body {
   font-family: averta-regular;
+}
+
+strong {
+  font-family: averta-bold;
 }
 
 .btn {
@@ -107,7 +118,7 @@ html, body {
 }
 
 .btn-secondary {
-  color: $is-text-color;
+  color: $is-text-color-2;
   box-shadow: 0 0.125rem 0.5625rem 0 $is-btn-shadow;
   background-image: linear-gradient(to top, $is-btn-secondary-start, $secondary);
 
@@ -137,8 +148,13 @@ html, body {
   }
 }
 
-strong {
-  font-family: averta-bold;
+form label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.form-control {
+  font-size: 0.875rem;
 }
 
 //https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
@@ -148,11 +164,11 @@ strong {
 
 // Emulating bootstrap 3 toolbar (TODO check if good approach)
 .btn-toolbar {
-  margin-left: -10px; // Offset the first child's margin
+  margin-left: 0.625rem; // Offset the first child's margin
   > .btn,
   > .btn-group,
   > .input-group {
-    margin-left: 10px;
+    margin-left: 0.625rem;
   }
 }
 
@@ -182,6 +198,7 @@ strong {
     .card-header-title {
       font-size: 1.25rem;
       font-family: averta-bold;
+      color: $is-text-color-2;
     }
   }
 
