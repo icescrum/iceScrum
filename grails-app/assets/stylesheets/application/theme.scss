@@ -146,6 +146,16 @@ strong {
   display: block;
 }
 
+// Emulating bootstrap 3 toolbar (TODO check if good approach)
+.btn-toolbar {
+  margin-left: -10px; // Offset the first child's margin
+  > .btn,
+  > .btn-group,
+  > .input-group {
+    margin-left: 10px;
+  }
+}
+
 ////////////////////
 // iceScrum style
 ////////////////////

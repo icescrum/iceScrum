@@ -170,19 +170,34 @@
                                     uib-dropdown-toggle>
                                 <span defer-tooltip="${message(code: 'todo.is.ui.charts')}"><i class="fa fa-bar-chart"></i></span>
                             </button>
-                            <ul uib-dropdown-menu
-                                class="dropdown-menu-right">
-                                <li role="presentation" class="dropdown-header">${message(code: 'is.project')}</li>
-                                <li ng-repeat="chart in projectCharts.project"><a href ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
-                                <li ng-if="release.id" class="dropdown-divider"></li>
-                                <li ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</li>
-                                <li ng-if="release.id" ng-repeat="chart in projectCharts.release"><a href ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart')">{{ message(chart.name) }}</a></li>
-                                <li ng-if="currentOrLastSprint.id" class="dropdown-divider"></li>
-                                <li ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</li>
-                                <li ng-if="currentOrLastSprint.id" ng-repeat="chart in projectCharts.sprint"><a href
-                                                                                                                ng-click="openChartAndSaveSetting('sprint', chart.id, currentOrLastSprint , project, 'project', 'chart')">{{ message(chart.name) }}</a>
-                                </li>
-                            </ul>
+                            <div uib-dropdown-menu
+                                 class="dropdown-menu-right">
+                                <span role="presentation" class="dropdown-header">${message(code: 'is.project')}</span>
+                                <a class="dropdown-item"
+                                   ng-repeat="chart in projectCharts.project"
+                                   href
+                                   ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart')">
+                                    {{ message(chart.name) }}
+                                </a>
+                                <span ng-if="release.id" class="dropdown-divider"></span>
+                                <span ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</span>
+                                <a class="dropdown-item"
+                                   ng-if="release.id"
+                                   ng-repeat="chart in projectCharts.release"
+                                   href
+                                   ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart')">
+                                    {{ message(chart.name) }}
+                                </a>
+                                <span ng-if="currentOrLastSprint.id" class="dropdown-divider"></span>
+                                <span ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</span>
+                                <a class="dropdown-item"
+                                   ng-if="currentOrLastSprint.id"
+                                   ng-repeat="chart in projectCharts.sprint"
+                                   href
+                                   ng-click="openChartAndSaveSetting('sprint', chart.id, currentOrLastSprint , project, 'project', 'chart')">
+                                    {{ message(chart.name) }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
