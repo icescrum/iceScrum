@@ -56,77 +56,17 @@
                     <span class="text-ellipsis" title="{{ workspace.name }}"><strong>{{ workspace.name }}</strong></span></g:if>
                 </a>
                 <div uib-dropdown-menu>
-                    <span role="presentation" class="dropdown-header">
-                        ${message(code: 'is.ui.workspaces')}
-                    </span>
-                    <g:if test="${creationEnable}">
-                        <a class="dropdown-item"
-                           hotkey="{ 'shift+n': hotkeyClick}"
-                           hotkey-description="${message(code: 'todo.is.ui.project.createNew')}"
-                           ui-sref="new">
-                            <g:message code="is.ui.workspace.create"/> <small class="text-muted">(SHIFT+N)</small>
-                        </a>
-                    </g:if>
-                    <g:if test="${importEnable}">
-                        <a class="dropdown-item"
-                           hotkey="{ 'shift+m': import}"
-                           hotkey-description="${message(code: 'is.dialog.importProject.choose.title')}"
-                           href=""
-                           ng-click="import()">
-                            <g:message code="is.projectmenu.submenu.project.import"/> <small class="text-muted">(SHIFT+M)</small>
-                        </a>
-                    </g:if>
-                    <g:if test="${browsableWorkspacesExist}">
-                        <g:if test="${request.admin}">
-                            <a class="dropdown-item"
-                               hotkey="{ 'shift+a': hotkeyClick}"
-                               href
-                               ng-click="showWorkspaceListModal('all', 'project')"
-                               hotkey-description="${message(code: 'todo.is.ui.project.list.all')}">
-                                <g:message code="todo.is.ui.project.list.all"/>
-                                <small class="text-muted">(SHIFT+A)</small>
-                            </a>
-                            <g:if test="${portfolioEnabled}">
-                                <a class="dropdown-item"
-                                   hotkey="{ 'shift+z': hotkeyClick}"
-                                   href
-                                   ng-click="showWorkspaceListModal('all','portfolio')"
-                                   hotkey-description="${message(code: 'is.ui.portfolio.list.all')}">
-                                    <g:message code="is.ui.portfolio.list.all"/>
-                                    <small class="text-muted">(SHIFT+Z)</small>
-                                </a>
-                            </g:if>
-                        </g:if>
-                        <g:else>
-                            <a class="dropdown-item"
-                               hotkey="{ 'shift+a': hotkeyClick}"
-                               href
-                               ng-click="showWorkspaceListModal('public', 'project')"
-                               hotkey-description="${message(code: 'todo.is.ui.project.list.public')}">
-                                <g:message code="todo.is.ui.project.list.public"/>
-                                <small class="text-muted">(SHIFT+A)</small>
-                            </a>
-                        </g:else>
-                    </g:if>
                     <g:if test="${workspace?.object}">
-                        <div ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-divider"></div>
                         <span ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-header">
-                            ${message(code: 'is.ui.workspace.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="{{ workspace.name }}"
-                                                                                                     style="display:inline-block; max-width:70px"><b>{{ workspace.name }}</b></span>
+                            ${message(code: 'is.ui.workspace.' + workspace.name + '.current')}
                         </span>
                         <a class="dropdown-item"
                            ng-if=":: authorized${workspace.name.capitalize()}('edit')"
-                           hotkey="{ 'shift+e': hotkeyClick}"
+                           hotkey="{ 'shift+s': hotkeyClick}"
                            hotkey-description="${message(code: 'is.ui.apps.configure')}"
                            href
                            ng-click="show${workspace.name.capitalize()}EditModal()">
-                            <g:message code="is.ui.workspace.submenu.edit"/> <small class="text-muted">(SHIFT+E)</small>
-                        </a>
-                        <a class="dropdown-item"
-                           ng-if=":: authorizedApp('show')"
-                           href
-                           ng-click="showAppsModal()">
-                            <b class="text-important">${message(code: 'is.ui.apps')}</b>
+                            <g:message code="is.ui.workspace.submenu.edit"/> <small class="text-muted">Shift S</small>
                         </a>
                         <g:if test="${exportEnable}">
                             <a class="dropdown-item"
@@ -136,7 +76,61 @@
                                 ${message(code: 'is.ui.workspace.submenu.export')}
                             </a>
                         </g:if>
+                        <a class="dropdown-item"
+                           ng-if=":: authorizedApp('show')"
+                           href
+                           hotkey="{'shift+a': showAppsModal}"
+                           hotkey-description="${message(code: 'is.ui.apps')}"
+                           ng-click="showAppsModal()">
+                            <b class="text-important">${message(code: 'is.ui.apps')}</b> <small class="text-muted">Shift A</small>
+                        </a>
                         <entry:point id="header-menu-current-workspace"/>
+                        <div ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-divider"></div>
+                    </g:if>
+                    <span role="presentation" class="dropdown-header">
+                        ${message(code: 'is.ui.workspaces')}
+                    </span>
+                    <g:if test="${creationEnable}">
+                        <a class="dropdown-item"
+                           hotkey="{ 'shift+n': hotkeyClick}"
+                           hotkey-description="${message(code: 'todo.is.ui.project.createNew')}"
+                           ui-sref="new">
+                            <g:message code="is.ui.workspace.create"/> <small class="text-muted">Shift N</small>
+                        </a>
+                    </g:if>
+                    <g:if test="${importEnable}">
+                        <a class="dropdown-item"
+                           hotkey="{ 'shift+m': import}"
+                           hotkey-description="${message(code: 'is.dialog.importProject.choose.title')}"
+                           href=""
+                           ng-click="import()">
+                            <g:message code="is.projectmenu.submenu.project.import"/> <small class="text-muted">Shift M</small>
+                        </a>
+                    </g:if>
+                    <g:if test="${browsableWorkspacesExist}">
+                        <g:if test="${request.admin}">
+                            <a class="dropdown-item"
+                               href
+                               ng-click="showWorkspaceListModal('all', 'project')">
+                                <g:message code="todo.is.ui.project.list.all"/>
+                            </a>
+                            <g:if test="${portfolioEnabled}">
+                                <a class="dropdown-item"
+                                   href
+                                   ng-click="showWorkspaceListModal('all','portfolio')">
+                                    <g:message code="is.ui.portfolio.list.all"/>
+                                </a>
+                            </g:if>
+                        </g:if>
+                        <g:else>
+                            <a class="dropdown-item"
+                               hotkey="{ 'shift+p': hotkeyClick}"
+                               href
+                               ng-click="showWorkspaceListModal('public', 'project')"
+                               hotkey-description="${message(code: 'todo.is.ui.project.list.public')}">
+                                <g:message code="todo.is.ui.project.list.public"/> <small class="text-muted">Shift P</small>
+                            </a>
+                        </g:else>
                     </g:if>
                     <g:if test="${workspacesFilteredsList}">
                         <div role="presentation" class="dropdown-divider"></div>
@@ -170,9 +164,8 @@
                        href
                        hotkey="{'shift+i': showAbout}"
                        hotkey-description="${message(code: 'is.ui.about')}"
-                       defer-tooltip="(shift+i)"
                        ng-click="showAbout()">
-                        ${message(code: 'is.ui.about')}
+                        ${message(code: 'is.ui.about')} <small class="text-muted">Shift I</small>
                     </a>
                     <entry:point id="header-menu-icescrum"/>
                 </div>
