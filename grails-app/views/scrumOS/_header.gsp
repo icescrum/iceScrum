@@ -44,13 +44,16 @@
                 ng-class="workspaceType ? workspaceType : ''"
                 uib-dropdown>
                 <a uib-dropdown-toggle
+                   href
                    class="nav-link">
                     <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
                         <g:render template="/scrumOS/logo"/>
-                    </svg>&nbsp;<g:if test="${workspace}"><i tooltip-placement="bottom" defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
-                                                             ng-if="workspace.preferences && !workspace.preferences.hidden && authorized${workspace.name.capitalize()}('edit')"
-                                                             ng-click="show${workspace.name.capitalize()}EditModal(); $event.stopPropagation();" class="fa fa-eye">&nbsp;</i></g:if><g:if test="${workspace?.icon}"><i
-                        class="fa fa-${workspace.icon}"></i> <span class="text-ellipsis" title="{{ workspace.name }}">{{ workspace.name }}</span></g:if>
+                    </svg>
+                    <g:if test="${workspace}"><i tooltip-placement="bottom"
+                                                 defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
+                                                 ng-if="workspace.preferences && !workspace.preferences.hidden && authorized${workspace.name.capitalize()}('edit')"
+                                                 ng-click="show${workspace.name.capitalize()}EditModal(); $event.stopPropagation();" class="fa fa-eye">&nbsp;</i></g:if><g:if test="${workspace?.icon}"><i class="fa fa-${workspace.icon}"></i>
+                    <span class="text-ellipsis" title="{{ workspace.name }}"><strong>{{ workspace.name }}</strong></span></g:if>
                 </a>
                 <div uib-dropdown-menu>
                     <span role="presentation" class="dropdown-header">
