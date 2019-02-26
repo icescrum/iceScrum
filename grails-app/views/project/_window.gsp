@@ -26,12 +26,23 @@
             <div class="card">
                 <div class="card-header">
                     {{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
-                    <button class="btn btn-secondary btn-sm pull-right visible-on-hover"
-                            ng-if="authorizedProject('update', project)"
-                            ng-click="showProjectEditModal()"
-                            type="button">
-                        <i class="fa fa-pencil"></i>
-                    </button>
+                    <div class="btn-toolbar pull-right visible-on-hover">
+                        <button class="btn btn-secondary btn-sm"
+                                ng-if="authorizedProject('update', project)"
+                                ng-click="showProjectEditModal()"
+                                type="button">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <a ng-if="authorizedFeature('create')"
+                           href="#/feature/new"
+                           class="btn btn-secondary btn-sm">${message(code: "todo.is.ui.feature.new")}</a>
+                        <a ui-sref="backlog.backlog.story.new({elementId: 'sandbox'})"
+                           class="btn btn-secondary btn-sm">${message(code: "todo.is.ui.story.new")}</a>
+                        <a ng-if="currentOrNextSprint && authorizedTask('create', {sprint: currentOrNextSprint}) && !(session.po() && !session.sm())"
+                           ui-sref="taskBoard.task.new({sprintId: currentOrNextSprint.id})"
+                           class="btn btn-secondary btn-sm">${message(code: "todo.is.ui.task.new")}</a>
+                        <entry:point id="project-dashboard-buttons"/>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -64,24 +75,11 @@
                     <div ng-show="currentOrNextSprint.goal">
                         <p><strong>{{ message('todo.is.ui.sprint.goal.label', [currentOrNextSprint.index]) }}</strong> {{ currentOrNextSprint.goal }}</p>
                     </div>
-                    <div class="row">
-                        <div class="btn-toolbar">
-                            <a ng-if="authorizedFeature('create')"
-                               href="#/feature/new"
-                               class="btn btn-secondary">${message(code: "todo.is.ui.feature.new")}</a>
-                            <a ui-sref="backlog.backlog.story.new({elementId: 'sandbox'})"
-                               class="btn btn-secondary">${message(code: "todo.is.ui.story.new")}</a>
-                            <a ng-if="currentOrNextSprint && authorizedTask('create', {sprint: currentOrNextSprint}) && !(session.po() && !session.sm())"
-                               ui-sref="taskBoard.task.new({sprintId: currentOrNextSprint.id})"
-                               class="btn btn-secondary">${message(code: "todo.is.ui.task.new")}</a>
-                            <entry:point id="project-dashboard-buttons"/>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <g:message code="is.ui.project.vision.title"/>
+                    ${message(code: 'is.ui.project.vision.title')}
                     <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                        href="#/planning/{{ release.id }}/details"
                        ng-if="release.id && authorizedRelease('update', release)">
@@ -94,7 +92,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <g:message code="is.ui.project.doneDefinition.title"/>
+                    ${message(code: 'is.ui.project.doneDefinition.title')}
                     <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                        href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
                        ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
@@ -107,7 +105,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <g:message code="is.ui.project.retrospective.title"/>
+                    ${message(code: 'is.ui.project.retrospective.title')}
                     <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                        href="#/taskBoard/{{ lastSprint.id }}/details"
                        ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
@@ -127,7 +125,7 @@
                  flow-drag-leave="dropClass='card'"
                  ng-class="authorizedProject('upload', project) && dropClass">
                 <div class="card-header">
-                    <g:message code="is.ui.project.attachment.title"/>
+                    ${message(code: 'is.ui.project.attachment.title')}
                 </div>
                 <div class="card-body" style="padding-bottom:0">
                     <div ng-if="authorizedProject('upload', project)"
@@ -199,7 +197,7 @@
             <entry:point id="project-dashboard-top-right"/>
             <div class="card">
                 <div class="card-header">
-                    <g:message code="todo.is.ui.history"/>
+                    ${message(code: 'todo.is.ui.history')}
                     <small class="pull-right">
                         <a class="rss"
                            defer-tooltip="${message(code: 'todo.is.ui.feed')}"
