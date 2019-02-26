@@ -172,6 +172,17 @@ form label {
   }
 }
 
+.modal-title, .card-header-title {
+  font-size: 1.25rem;
+  font-family: averta-bold;
+  color: $is-text-color-2;
+}
+
+.modal-header {
+  padding-left: 26px;
+  padding-right: 26px;
+}
+
 ////////////////////
 // iceScrum style
 ////////////////////
@@ -195,11 +206,6 @@ form label {
     padding-right: 0;
     background: none;
     border: none;
-    .card-header-title {
-      font-size: 1.25rem;
-      font-family: averta-bold;
-      color: $is-text-color-2;
-    }
   }
 
   .card-body {
