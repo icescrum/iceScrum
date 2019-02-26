@@ -56,13 +56,11 @@ class UtilsTagLib {
         def workspaceConfig = Holders.grailsApplication.config.icescrum.workspaces[workspaceType]
         def isCurrent = attrs.currentWorkspace == workspace
         def name = workspace.name.encodeAsHTML()
-        out << """<li class="workspace ${workspaceType}">
-                        <a class="${isCurrent ? 'active' : ''}"
-                           href="${isCurrent ? '' : createLink(controller: "scrumOS", params: [(workspaceType): workspaceConfig.config(workspace).key]) + '/'}"
-                           title="${name}">
-                            <i class="fa fa-${workspaceConfig.icon}"></i> ${name}
-                        </a>
-                  </li>"""
+        out << """<a class="workspace ${workspaceType} dropdown-item ${isCurrent ? 'active' : ''}"
+                     href="${isCurrent ? '' : createLink(controller: "scrumOS", params: [(workspaceType): workspaceConfig.config(workspace).key]) + '/'}"
+                     title="${name}">
+                         <i class="fa fa-${workspaceConfig.icon}"></i> ${name}
+                  </a>"""
 
     }
 
