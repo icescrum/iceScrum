@@ -122,8 +122,8 @@ html, body {
     text-shadow: none;
     background: none;
 
-    &:not(:disabled):not(.disabled):active {
-      background-color: white;
+    &:hover, &:not(:disabled):not(.disabled):active {
+      background-color: $secondary;
     }
   }
 }
@@ -177,10 +177,12 @@ strong {
   .card-header {
     padding-left: 0;
     padding-right: 0;
-    font-size: 1.25rem;
-    font-family: averta-bold;
     background: none;
     border: none;
+    .card-header-title {
+      font-size: 1.25rem;
+      font-family: averta-bold;
+    }
   }
 
   .card-body {

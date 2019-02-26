@@ -109,7 +109,7 @@
                         </g:else>
                     </g:if>
                     <g:if test="${workspace?.object}">
-                        <span ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-divider"></span>
+                        <div ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-divider"></div>
                         <span ng-if=":: authorized${workspace.name.capitalize()}('edit')" role="presentation" class="dropdown-header">
                             ${message(code: 'is.ui.workspace.' + workspace.name + '.current')} <span class="current-workspace-name text-ellipsis" title="{{ workspace.name }}"
                                                                                                      style="display:inline-block; max-width:70px"><b>{{ workspace.name }}</b></span>
@@ -139,8 +139,8 @@
                         <entry:point id="header-menu-current-workspace"/>
                     </g:if>
                     <g:if test="${workspacesFilteredsList}">
-                        <span role="presentation" class="dropdown-divider" style='display:${workspacesFilteredsList ? 'block' : 'none'}'></span>
-                        <span role="presentation" class="dropdown-header" style='display:${workspacesFilteredsList ? 'block' : 'none'}'>
+                        <div role="presentation" class="dropdown-divider"></div>
+                        <span role="presentation" class="dropdown-header">
                             ${message(code: 'is.ui.workspace.my.title')}
                         </span>
                         <g:each var="workspaceFiltered" in="${workspacesFilteredsList}">
@@ -155,7 +155,7 @@
                         </a>
                     </g:if>
                     <g:if test="${request.authenticated}">
-                        <span role="presentation" class="dropdown-divider"></span>
+                        <div role="presentation" class="dropdown-divider"></div>
                         <span role="presentation" class="dropdown-header">${message(code: 'is.ui.team.menu')}</span>
                         <a class="dropdown-item"
                            href
@@ -163,7 +163,7 @@
                             ${message(code: 'is.ui.manage')}
                         </a>
                     </g:if>
-                    <span role="presentation" class="dropdown-divider"></span>
+                    <div role="presentation" class="dropdown-divider"></div>
                     <span role="presentation" class="dropdown-header">iceScrum</span>
                     <entry:point id="header-menu-icescrum-first"/>
                     <a class="dropdown-item"

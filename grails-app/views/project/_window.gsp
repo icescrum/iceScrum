@@ -25,7 +25,9 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    {{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
+                    <span class="card-header-title">
+                        {{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
+                    </span>
                     <div class="btn-toolbar pull-right visible-on-hover">
                         <button class="btn btn-secondary btn-sm"
                                 ng-if="authorizedProject('update', project)"
@@ -79,7 +81,9 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    ${message(code: 'is.ui.project.vision.title')}
+                    <span class="card-header-title">
+                        ${message(code: 'is.ui.project.vision.title')}
+                    </span>
                     <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                        href="#/planning/{{ release.id }}/details"
                        ng-if="release.id && authorizedRelease('update', release)">
@@ -92,7 +96,9 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    ${message(code: 'is.ui.project.doneDefinition.title')}
+                    <span class="card-header-title">
+                        ${message(code: 'is.ui.project.doneDefinition.title')}
+                    </span>
                     <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                        href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
                        ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
@@ -105,7 +111,9 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    ${message(code: 'is.ui.project.retrospective.title')}
+                    <span class="card-header-title">
+                        ${message(code: 'is.ui.project.retrospective.title')}
+                    </span>
                     <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
                        href="#/taskBoard/{{ lastSprint.id }}/details"
                        ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
@@ -125,7 +133,9 @@
                  flow-drag-leave="dropClass='card'"
                  ng-class="authorizedProject('upload', project) && dropClass">
                 <div class="card-header">
-                    ${message(code: 'is.ui.project.attachment.title')}
+                    <span class="card-header-title">
+                        ${message(code: 'is.ui.project.attachment.title')}
+                    </span>
                 </div>
                 <div class="card-body" style="padding-bottom:0">
                     <div ng-if="authorizedProject('upload', project)"
@@ -148,7 +158,9 @@
         <div class="col-md-6">
             <div class="card" ng-controller="chartCtrl">
                 <div class="card-header" ng-controller="projectChartCtrl">
-                    ${message(code: 'is.ui.project.chart.title')}
+                    <span class="card-header-title">
+                        ${message(code: 'is.ui.project.chart.title')}
+                    </span>
                     <div class="btn-toolbar pull-right">
                         <entry:point id="dashboard-chart-toolbar"/>
                         <div class="btn-group">
@@ -179,7 +191,7 @@
                                    ng-click="openChartAndSaveSetting('project', chart.id, project, project, 'project', 'chart')">
                                     {{ message(chart.name) }}
                                 </a>
-                                <span ng-if="release.id" class="dropdown-divider"></span>
+                                <div ng-if="release.id" class="dropdown-divider"></div>
                                 <span ng-if="release.id" role="presentation" class="dropdown-header">${message(code: 'is.release')}</span>
                                 <a class="dropdown-item"
                                    ng-if="release.id"
@@ -188,7 +200,7 @@
                                    ng-click="openChartAndSaveSetting('release', chart.id, release, project, 'project', 'chart')">
                                     {{ message(chart.name) }}
                                 </a>
-                                <span ng-if="currentOrLastSprint.id" class="dropdown-divider"></span>
+                                <div ng-if="currentOrLastSprint.id" class="dropdown-divider"></div>
                                 <span ng-if="currentOrLastSprint.id" role="presentation" class="dropdown-header">${message(code: 'is.sprint')}</span>
                                 <a class="dropdown-item"
                                    ng-if="currentOrLastSprint.id"
@@ -212,7 +224,9 @@
             <entry:point id="project-dashboard-top-right"/>
             <div class="card">
                 <div class="card-header">
-                    ${message(code: 'todo.is.ui.history')}
+                    <span class="card-header-title">
+                        ${message(code: 'todo.is.ui.history')}
+                    </span>
                     <small class="pull-right">
                         <a class="rss"
                            defer-tooltip="${message(code: 'todo.is.ui.feed')}"
