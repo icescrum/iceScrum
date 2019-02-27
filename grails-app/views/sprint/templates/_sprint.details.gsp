@@ -96,14 +96,21 @@
         <visual-states ng-model="sprint" model-states="sprintStatesByName"/>
     </div>
     <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link" ng-if="$state.current.data.displayTabs">
-        <li role="presentation" ng-class="{'active':!$state.params.sprintTabId}">
-            <a href="{{ tabUrl() }}">
-                <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
+        <li role="presentation"
+            class="nav-item">
+            <a href="{{ tabUrl() }}"
+               ng-class="{'active':!$state.params.sprintTabId}"
+               class="nav-link" >
+                ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
-        <li role="presentation" ng-if="authorizedTimeboxNotes()" ng-class="{'active':$state.params.sprintTabId == 'notes'}">
-            <a href="{{ tabUrl('notes') }}">
-                <i class="fa fa-lg fa-newspaper-o"></i> ${message(code: 'todo.is.ui.sprint.notes')}
+        <li role="presentation"
+            ng-if="authorizedTimeboxNotes()"
+            class="nav-item">
+            <a href="{{ tabUrl('notes') }}"
+               ng-class="{'active':$state.params.sprintTabId == 'notes'}"
+               class="nav-link" >
+                ${message(code: 'todo.is.ui.sprint.notes')}
             </a>
         </li>
         <entry:point id="sprint-details-tab-button"/>

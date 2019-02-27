@@ -102,55 +102,63 @@
     <div class="details-content-container">
         <div class="details-content details-content-left">
             <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
-                <li role="presentation" ng-class="{'active':!$state.params.storyTabId}">
-                    <a href="{{ tabUrl() }}">
-                        <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
-                    </a>
-                </li>
-                <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'comments'}">
-                    <a href="{{ tabUrl('comments') }}">
-                        <i class="fa fa-lg" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code: 'todo.is.ui.comments')} {{ story.comments_count | parens }}
+                <li role="presentation"
+                    class="nav-item">
+                    <a href="{{ tabUrl() }}"
+                       class="nav-link"
+                       ng-class="{'active':!$state.params.storyTabId}">
+                        ${message(code: 'todo.is.ui.details')}
                     </a>
                 </li>
                 <li role="presentation"
-                    class="hidden-sm"
-                    ng-if="!application.focusedDetailsView"
-                    uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
-                    ng-class="getAcceptanceTestClass(story)">
-                    <a href="{{ tabUrl('tests') }}">
-                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests.short')} {{ story.acceptanceTests_count | parens }}
+                    class="nav-item">
+                    <a href="{{ tabUrl('comments') }}"
+                       class="nav-link"
+                       ng-class="{'active':$state.params.storyTabId == 'comments'}">
+                        ${message(code: 'todo.is.ui.comments')} {{ story.comments_count | parens }}
                     </a>
                 </li>
                 <li role="presentation"
-                    class="hidden-sm hidden-md"
+                    class="nav-item hidden-sm"
                     ng-if="!application.focusedDetailsView"
-                    ng-class="{'active':$state.params.storyTabId == 'tasks'}">
-                    <a href="{{ tabUrl('tasks') }}">
-                        <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+                    uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                    <a href="{{ tabUrl('tests') }}"
+                       class="nav-link"
+                       ng-class="getAcceptanceTestClass(story)">
+                        ${message(code: 'todo.is.ui.acceptanceTests.short')} {{ story.acceptanceTests_count | parens }}
                     </a>
                 </li>
-                <li role="presentation" class="dropdown display-on-hover">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <li role="presentation"
+                    class="nav-item hidden-sm hidden-md"
+                    ng-if="!application.focusedDetailsView">
+                    <a href="{{ tabUrl('tasks') }}"
+                       class="nav-link"
+                       ng-class="{'active':$state.params.storyTabId == 'tasks'}">
+                        ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
                     </a>
+                </li>
+                <li role="presentation"
+                    class="nav-item dropdown display-on-hover">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"></a>
                     <ul class="dropdown-menu dropdown-more dropdown-menu-right">
                         <li role="presentation"
                             class="visible-sm-block"
                             uib-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                             ng-class="getAcceptanceTestClass(story)">
                             <a href="{{ tabUrl('tests') }}">
-                                <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
+                                ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
                             </a>
                         </li>
                         <li role="presentation"
                             class="visible-sm-block visible-md-block"
                             ng-class="{'active':$state.params.storyTabId == 'tasks'}">
                             <a href="{{ tabUrl('tasks') }}">
-                                <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+                                ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
                             </a>
                         </li>
                         <li role="presentation" ng-class="{'active':$state.params.storyTabId == 'activities'}">
                             <a href="{{ tabUrl('activities') }}">
-                                <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.history')}
+                                ${message(code: 'todo.is.ui.history')}
                             </a>
                         </li>
                         <entry:point id="story-details-tab-button"/>
@@ -164,9 +172,11 @@
         <div ng-if="application.focusedDetailsView" class="details-content details-content-center">
             <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
                 <li role="presentation"
-                    ng-class="getAcceptanceTestClass(story)">
-                    <a href>
-                        <i class="fa fa-lg" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i> ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
+                    class="nav-item">
+                    <a href
+                       class="nav-link"
+                       ng-class="getAcceptanceTestClass(story)">
+                        ${message(code: 'todo.is.ui.acceptanceTests')} {{ story.acceptanceTests_count | parens }}
                     </a>
                 </li>
             </ul>
@@ -175,9 +185,10 @@
         <div ng-if="application.focusedDetailsView" class="details-content details-content-right">
             <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
                 <li role="presentation"
-                    class="active">
-                    <a href>
-                        <i class="fa fa-lg fa-tasks"></i> ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
+                    class="nav-item">
+                    <a href
+                       class="nav-link">
+                        ${message(code: 'todo.is.ui.tasks')} {{ story.tasks_count | parens }}
                     </a>
                 </li>
             </ul>

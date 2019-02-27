@@ -96,14 +96,21 @@
         <visual-states ng-model="release" model-states="releaseStatesByName"/>
     </div>
     <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link" ng-if="$state.current.data.displayTabs">
-        <li role="presentation" ng-class="{'active':!$state.params.releaseTabId}">
-            <a href="{{ tabUrl() }}">
-                <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
+        <li role="presentation"
+            class="nav-item">
+            <a href="{{ tabUrl() }}"
+               class="nav-link"
+               ng-class="{'active':!$state.params.releaseTabId}">
+                ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
-        <li role="presentation" ng-if="authorizedTimeboxNotes()" ng-class="{'active':$state.params.releaseTabId == 'notes'}">
-            <a href="{{ tabUrl('notes') }}">
-                <i class="fa fa-lg fa-newspaper-o"></i> ${message(code: 'todo.is.ui.release.notes')}
+        <li role="presentation"
+            ng-if="authorizedTimeboxNotes()"
+            class="nav-item">
+            <a href="{{ tabUrl('notes') }}"
+               class="nav-link"
+               ng-class="{'active':$state.params.releaseTabId == 'notes'}">
+                ${message(code: 'todo.is.ui.release.notes')}
             </a>
         </li>
         <entry:point id="release-details-tab-button"/>

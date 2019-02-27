@@ -84,19 +84,28 @@
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="task" model-states="taskStatesByName"/></a>
     </div>
     <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
-        <li role="presentation" ng-class="{'active':!$state.params.taskTabId}">
-            <a href="{{ tabUrl() }}">
-                <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
+        <li role="presentation"
+            class="nav-item">
+            <a href="{{ tabUrl() }}"
+               class="nav-link"
+               ng-class="{'active':!$state.params.taskTabId}">
+                ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'comments'}">
-            <a href="{{ tabUrl('comments') }}">
-                <i class="fa fa-lg" ng-class="task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i> ${message(code: 'todo.is.ui.comments')} {{ task.comments_count | parens }}
+        <li role="presentation"
+            class="nav-item">
+            <a href="{{ tabUrl('comments') }}"
+               class="nav-link"
+               ng-class="{'active':$state.params.taskTabId == 'comments'}">
+                ${message(code: 'todo.is.ui.comments')} {{ task.comments_count | parens }}
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.taskTabId == 'activities'}">
-            <a href="{{ tabUrl('activities') }}">
-                <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.history')}
+        <li role="presentation"
+            class="nav-item">
+            <a href="{{ tabUrl('activities') }}"
+               class="nav-link"
+               ng-class="{'active':$state.params.taskTabId == 'activities'}">
+                ${message(code: 'todo.is.ui.history')}
             </a>
         </li>
         <entry:point id="task-details-tab-button"/>

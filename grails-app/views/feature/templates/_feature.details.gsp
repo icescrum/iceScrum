@@ -75,19 +75,28 @@
         <a href="{{ tabUrl('activities') }}"><visual-states ng-model="feature" model-states="featureStatesByName"/></a>
     </div>
     <ul class="nav nav-tabs nav-tabs-is nav-justified disable-active-link">
-        <li role="presentation" ng-class="{'active':!$state.params.featureTabId}">
-            <a href="{{ tabUrl() }}">
-                <i class="fa fa-lg fa-edit"></i> ${message(code: 'todo.is.ui.details')}
+        <li role="presentation"
+            class="nav-item">
+            <a href="{{ tabUrl() }}"
+               class="nav-link"
+               ng-class="{'active':!$state.params.featureTabId}">
+                ${message(code: 'todo.is.ui.details')}
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'stories'}">
-            <a href="{{ tabUrl('stories') }}">
-                <i class="fa fa-lg fa-sticky-note"></i> ${message(code: 'todo.is.ui.stories')} {{ feature.stories_ids.length | parens }}
+        <li role="presentation"
+            class="nav-item">
+            <a href="{{ tabUrl('stories') }}"
+               class="nav-link"
+               ng-class="{'active':$state.params.featureTabId == 'stories'}">
+                ${message(code: 'todo.is.ui.stories')} {{ feature.stories_ids.length | parens }}
             </a>
         </li>
-        <li role="presentation" ng-class="{'active':$state.params.featureTabId == 'activities'}">
-            <a href="{{ tabUrl('activities') }}">
-                <i class="fa fa-lg fa-clock-o"></i> ${message(code: 'todo.is.ui.history')}
+        <li role="presentation"
+            class="nav-item">
+            <a href="{{ tabUrl('activities') }}"
+               class="nav-link"
+               ng-class="{'active':$state.params.featureTabId == 'activities'}">
+                ${message(code: 'todo.is.ui.history')}
             </a>
         </li>
         <entry:point id="feature-details-tab-button"/>
