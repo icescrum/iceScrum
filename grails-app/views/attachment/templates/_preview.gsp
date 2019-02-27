@@ -28,7 +28,7 @@
             <button class="btn btn-secondary" ng-click="prevPage()"><i class="fa fa-angle-left"></i></button>
             <button class="btn btn-secondary" ng-click="nextPage()"><i class="fa fa-angle-right"></i></button>
         </div>
-        <span class="pull-right">{{ currentPage + '/' + totalPages }}</span>
+        <span class="float-right">{{ currentPage + '/' + totalPages }}</span>
     </div>
     <div class="pdf-viewer">
         <pdfviewer src="{{ pdfURL }}" on-page-load='pageLoaded(page,total)' id="viewer"></pdfviewer>
@@ -39,7 +39,7 @@
             <button class="btn btn-secondary" ng-click="prevPage()"><i class="fa fa-angle-left"></i></button>
             <button class="btn btn-secondary" ng-click="nextPage()"><i class="fa fa-angle-right"></i></button>
         </div>
-        <span class="pull-right">{{ currentPage + '/' + totalPages }}</span>
+        <span class="float-right">{{ currentPage + '/' + totalPages }}</span>
     </div>
 </is:modal>
 </script>

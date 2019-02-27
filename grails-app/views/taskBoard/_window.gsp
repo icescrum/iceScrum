@@ -27,7 +27,7 @@
         <div class="card-header">
             <h3 class="card-title small-title">
                 <div ng-controller="taskCtrl">
-                    <div class="planning-dropdown pull-left" uib-dropdown on-toggle="scrollToActiveSprint(open)">
+                    <div class="planning-dropdown float-left" uib-dropdown on-toggle="scrollToActiveSprint(open)">
                         <div class="active">
                             <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
                             <i ng-if="sprintEntries.length > 2" uib-dropdown-toggle></i>
@@ -63,7 +63,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="btn-toolbar pull-right">
+                    <div class="btn-toolbar float-right">
                         <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
                         <g:if test="${formats}">
                             <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
@@ -72,7 +72,7 @@
                                     <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
                                 </button>
                                 <ul uib-dropdown-menu
-                                    class="pull-right"
+                                    class="float-right"
                                     role="menu">
                                     <g:each in="${formats}" var="format">
                                         <li role="menuitem">
@@ -122,7 +122,7 @@
                             <div class="btn-group" uib-dropdown>
                                 <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                 </button>
-                                <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
+                                <ul uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                             </div>
                         </div>
                         <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">

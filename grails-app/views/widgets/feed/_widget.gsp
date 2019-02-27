@@ -26,7 +26,7 @@
         </div>
         <div ng-repeat="item in holder.feed.items">
             <div>
-                <div class="text-muted pull-right">
+                <div class="text-muted float-right">
                     <time timeago datetime="{{ item.pubDate | dateToIso }}">
                         {{ item.pubDate | dateTime }}
                     </time>

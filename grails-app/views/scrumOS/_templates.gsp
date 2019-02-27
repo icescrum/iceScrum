@@ -175,7 +175,7 @@
             </div>
         </div>
     </div>
-    <div class="btn-toolbar pull-right">
+    <div class="btn-toolbar float-right">
         <a href
            class="btn btn-secondary"
            hotkey="{'shift+u':showProfile}"
@@ -204,7 +204,7 @@
                      alt="{{activity.poster | userFullName}}"/>
             </div>
             <div class="media-body">
-                <div class="text-muted pull-right">
+                <div class="text-muted float-right">
                     <time timeago datetime="{{ activity.dateCreated }}">
                         {{ activity.dateCreated | dateTime }}
                     </time>
@@ -326,8 +326,8 @@
 
     <script type="text/ng-template" id="project.digest.html">
     <h4 class="col-md-12 clearfix">
-        <div class="pull-left"><a href="{{:: project.pkey | projectUrl }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
-        <div class="pull-right">
+        <div class="float-left"><a href="{{:: project.pkey | projectUrl }}" class="link">{{:: project.name }}</a> <small>owned by {{:: project.owner | userFullName }}</small></div>
+        <div class="float-right">
             <small><time timeago datetime="{{:: project.lastUpdated }}">{{ project.lastUpdated | dateTime }}</time> <i class="fa fa-clock-o"></i></small>
         </div>
     </h4>
@@ -340,7 +340,7 @@
         </div>
     </div>
     <div class="col-lg-3 col-xs-3">
-        <div class="backlogCharts chart pull-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
+        <div class="backlogCharts chart float-right" ng-controller="chartCtrl" ng-init="openChart('backlog', 'state', (project | retrieveBacklog:'all'), backlogChartOptions)">
             <nvd3 options="options" ng-if="data.length > 0" data="data" config="{refreshDataOnly: false}"></nvd3>
         </div>
         <div class="team-name text-ellipsis" title="{{:: project.team.name }}"><i class="fa fa-users"></i> {{:: project.team.name }}</div>

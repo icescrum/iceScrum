@@ -26,8 +26,8 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title small-title clearfix">
-                    <span class="title pull-left"><i class="fa fa-puzzle-piece"></i> ${message(code: 'is.ui.feature')} ({{ features.length}})</span>
-                    <div class="btn-toolbar pull-left">
+                    <span class="title float-left"><i class="fa fa-puzzle-piece"></i> ${message(code: 'is.ui.feature')} ({{ features.length}})</span>
+                    <div class="btn-toolbar float-left">
                         <div class="btn-group">
                             <div class="btn-group"
                                  uib-dropdown
@@ -77,7 +77,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="btn-toolbar pull-right">
+                    <div class="btn-toolbar float-right">
                         <div class="btn-group">
                             <button type="button"
                                     class="btn btn-secondary hidden-xs hidden-sm"
@@ -92,7 +92,7 @@
                         </div>
                         <a ng-if="authorizedFeature('create')"
                            href="#/{{ ::viewName }}/new"
-                           class="btn btn-primary pull-right">${message(code: "todo.is.ui.feature.new")}</a>
+                           class="btn btn-primary float-right">${message(code: "todo.is.ui.feature.new")}</a>
                     </div>
                 </h3>
                 <div class="clearfix"></div>

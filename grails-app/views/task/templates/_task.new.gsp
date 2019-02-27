@@ -94,7 +94,7 @@
                         </ui-select>
                     </div>
                 </div>
-                <div ng-if="authorizedTask('create')" class="btn-toolbar pull-right">
+                <div ng-if="authorizedTask('create')" class="btn-toolbar float-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.taskForm.$invalid || application.submitting"
                             defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"

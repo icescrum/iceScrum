@@ -23,7 +23,7 @@
 --}%
 <is:window windowDefinition="${windowDefinition}">
     <div class="backlogs-list elements-list" ng-controller="elementsListMenuCtrl" ng-init="initialize(availableBacklogs, 'backlog', 'code')">
-        <ul id="elementslist-list" ng-class="['nav nav-tabs nav-tabs-is clearfix pull-left', { 'hasElements': visibleElementsList.length > 0 }]" as-sortable="elementsListSortableOptions" ng-model="visibleElementsList">
+        <ul id="elementslist-list" ng-class="['nav nav-tabs nav-tabs-is clearfix float-left', { 'hasElements': visibleElementsList.length > 0 }]" as-sortable="elementsListSortableOptions" ng-model="visibleElementsList">
             <li as-sortable-item role="presentation" ng-repeat="elem in visibleElementsList" ng-class="{'active': isShown(elem)}">
                 <a href="{{ toggleElementUrl(elem) }}" ng-click="clickOnElementHref($event)">
                     <i as-sortable-item-handle
@@ -56,7 +56,7 @@
             </li>
             <entry:point id="backlog-window-toolbar"/>
         </ul>
-        <div id="elementslist-toolbar" class="btn-toolbar pull-right">
+        <div id="elementslist-toolbar" class="btn-toolbar float-right">
             <entry:point id="backlog-window-toolbar-right"/>
             <div class="btn-group">
                 <button type="button"
@@ -81,13 +81,13 @@
         <div class="card" ng-repeat="backlogContainer in backlogContainers">
             <div class="card-header">
                 <h3 class="card-title small-title clearfix">
-                    <span class="title pull-left">
+                    <span class="title float-left">
                         <a href="{{ openBacklogUrl(backlogContainer.backlog) }}"
                            class="link">
                             <i class="fa fa-inbox"></i> {{ (backlogContainer.backlog | i18nName) + ' (' + backlogContainer.backlog.count + ')' }}
                         </a>
                     </span>
-                    <div class="btn-toolbar pull-left">
+                    <div class="btn-toolbar float-left">
                         <entry:point id="backlog-list-toolbar-left"/>
                         <div class="btn-group">
                             <entry:point id="backlog-list-toolbar-group-left"/>
@@ -124,7 +124,7 @@
                                 <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
                             </button>
                             <ul uib-dropdown-menu
-                                class="pull-right"
+                                class="float-right"
                                 role="menu">
                                 <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                                     <li role="menuitem">
@@ -136,7 +136,7 @@
                             <entry:point id="backlog-list-toolbar-right-hidden-xs"/>
                         </div>
                     </div>
-                    <div class="btn-toolbar pull-right">
+                    <div class="btn-toolbar float-right">
                         <a class="btn btn-secondary"
                            ng-href="{{ openBacklogUrl(backlogContainer.backlog) }}">
                             <i class="fa fa-pencil"

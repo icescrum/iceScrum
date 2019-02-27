@@ -31,7 +31,7 @@
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.project")}" icon="fa fa-pencil">
                 <ng-include src="'form.general.project.html'"></ng-include>
                 <div class="footer-btn-toolbar">
-                    <div class="btn-toolbar pull-right">
+                    <div class="btn-toolbar float-right">
                         <button type="button"
                                 role="button"
                                 class="btn btn-secondary"
@@ -53,7 +53,7 @@
                                 ng-click="$close()">
                             ${message(code: 'is.button.cancel')}
                         </button>
-                        <div class="btn-toolbar pull-right">
+                        <div class="btn-toolbar float-right">
                             <button type="button"
                                     role="button"
                                     class="btn btn-secondary"
@@ -74,7 +74,7 @@
                             ng-click="$close()">
                         ${message(code: 'is.button.cancel')}
                     </button>
-                    <div class="btn-toolbar pull-right">
+                    <div class="btn-toolbar float-right">
                         <button type="button"
                                 role="button"
                                 class="btn btn-secondary"
@@ -94,7 +94,7 @@
                             ng-click="$close()">
                         ${message(code: 'is.button.cancel')}
                     </button>
-                    <div class="btn-toolbar pull-right">
+                    <div class="btn-toolbar float-right">
                         <button type="button"
                                 role="button"
                                 class="btn btn-secondary"

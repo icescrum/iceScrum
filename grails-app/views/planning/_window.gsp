@@ -23,12 +23,12 @@
 <is:window windowDefinition="${windowDefinition}">
     <div ng-if="releases.length > 0">
         <div class="clearfix backlogs-list">
-            <h4 class="pull-left">
+            <h4 class="float-left">
                 <a class="link" ng-href="{{ openReleaseUrl(release) }}">
                     <i class="fa fa-calendar"></i> {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }}</i>
                 </a>
             </h4>
-            <div class="btn-toolbar pull-right">
+            <div class="btn-toolbar float-right">
                 <div class="btn-group">
                     <button class="btn btn-secondary"
                             ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
@@ -59,7 +59,7 @@
                     <div class="btn-group" uib-dropdown>
                         <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                         </button>
-                        <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
+                        <ul uib-dropdown-menu class="float-right" ng-init="itemType = 'release'" template-url="item.menu.html"></ul>
                     </div>
                 </div>
                 <a class="btn btn-secondary" ng-href="{{ openReleaseUrl(release) }}">
@@ -77,7 +77,7 @@
              ng-controller="sprintBacklogCtrl">
             <div class="card-header">
                 <h3 class="card-title small-title">
-                    <div class="pull-left">
+                    <div class="float-left">
                         <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
                         <br/>
                         <span class="sub-title text-muted">
@@ -91,13 +91,13 @@
                             </span>
                         </span>
                     </div>
-                    <div class="pull-right">
+                    <div class="float-right">
                         <div class="btn-group" role="group">
                             <shortcut-menu ng-model="sprint" model-menus="menus" btn-primary="false"></shortcut-menu>
                             <div class="btn-group" uib-dropdown>
                                 <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                 </button>
-                                <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
+                                <ul uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                             </div>
                         </div>
                         <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">

@@ -72,7 +72,7 @@
                             <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></span>
                         </button>
                         <ul uib-dropdown-menu
-                            class="pull-right"
+                            class="float-right"
                             role="menu">
                             <g:each in="${formats}" var="format">
                                 <li role="menuitem">
@@ -88,7 +88,7 @@
                     <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
                         <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                         </button>
-                        <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
+                        <ul uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
                     </div>
                 </div>
             </div>

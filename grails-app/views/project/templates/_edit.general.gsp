@@ -29,7 +29,7 @@
       novalidate
       name="formHolder.editProjectForm">
     <ng-include src="'form.general.project.html'"></ng-include>
-    <div class="btn-toolbar pull-right">
+    <div class="btn-toolbar float-right">
         <button type="button"
                 role="button"
                 class="btn btn-secondary"

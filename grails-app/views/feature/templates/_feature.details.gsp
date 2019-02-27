@@ -67,7 +67,7 @@
                     <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
                         <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                         </button>
-                        <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'feature'" template-url="item.menu.html"></ul>
+                        <ul uib-dropdown-menu class="float-right" ng-init="itemType = 'feature'" template-url="item.menu.html"></ul>
                     </div>
                 </div>
             </div>

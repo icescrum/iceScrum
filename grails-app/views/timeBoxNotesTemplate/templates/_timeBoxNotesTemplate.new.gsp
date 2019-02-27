@@ -59,7 +59,7 @@
                         ${message(code: 'todo.is.ui.timeBoxNotesTemplate.section')} {{($index+1) + (config.header ? " - "+config.header : "")}}
                     </div>
                     <button type="button"
-                            class="btn btn-secondary btn-sm pull-right"
+                            class="btn btn-secondary btn-sm float-right"
                             name="expand"
                             ng-click="expandSection($index)">
                         <i class="fa fa-pencil"></i>
@@ -123,7 +123,7 @@
                                   ng-model="config.footer"
                                   class="form-control fixedRow"></textarea>
                     </div>
-                    <button class="btn btn-danger btn-sm pull-right"
+                    <button class="btn btn-danger btn-sm float-right"
                             type="button"
                             name="delete"
                             ng-click="confirmDelete({callback: deleteSection, args: [timeBoxNotesTemplate, config]});">

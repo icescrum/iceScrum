@@ -114,7 +114,7 @@
              ng-init="openChart('release', 'burndown', release)">
             <div uib-dropdown
                  ng-controller="projectChartCtrl"
-                 class="pull-right">
+                 class="float-right">
                 <div class="btn-group visible-on-hover">
                     <button class="btn btn-secondary btn-sm"
                             ng-click="openChartInModal(chartParams)"

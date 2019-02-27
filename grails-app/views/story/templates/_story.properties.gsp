@@ -53,7 +53,7 @@
         </div>
         <div class="form-group">
             <label for="description">
-                <span class="text-muted small pull-right"
+                <span class="text-muted small float-right"
                       ng-click="showProjectEditModal('actors')">
                     <i class="fa fa-question-circle"></i> ${message(code: 'is.actor.help.description')}
                 </span>
@@ -111,7 +111,7 @@
             <div class="form-half">
                 <label for="dependsOn">
                     ${message(code: 'is.story.dependsOn')}
-                    <span class="text-muted small pull-right" ng-if="project.portfolio.id"><i class="fa fa-question-circle"></i> ${message(code: 'is.ui.story.dependsOn.help')}</span>
+                    <span class="text-muted small float-right" ng-if="project.portfolio.id"><i class="fa fa-question-circle"></i> ${message(code: 'is.ui.story.dependsOn.help')}</span>
                 </label>
                 <div ng-class="{'input-group':editableStory.dependsOn.id}">
                     <ui-select input-group-fix-width="38"

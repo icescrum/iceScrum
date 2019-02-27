@@ -50,7 +50,7 @@
         </div>
         <div class="footer">
             <div class="tags">
-                <icon-badge class="pull-right" tooltip="${message(code: 'is.backlogelement.tags')}"
+                <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
                             href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
                             icon="fa-tags"
                             max="3"

@@ -52,10 +52,10 @@
         <div class="form-group"
              ng-if="ctrl.template.id">
             <div class="clearfix">
-                <div class="pull-left">
+                <div class="float-left">
                     <label for="content">{{message('todo.is.ui.'+timeBoxClass+'.notes.content')}}</label>
                 </div>
-                <div class="btn-toolbar pull-right">
+                <div class="btn-toolbar float-right">
                     <button class="btn btn-secondary btn-sm"
                             type="button"
                             defer-tooltip="${message(code: 'is.ui.copy.to.clipboard')}"

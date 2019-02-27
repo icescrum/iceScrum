@@ -55,7 +55,7 @@
              ng-bind-html="editableComment.body_html ? editableComment.body_html : '<p>${message(code: 'todo.is.ui.comment')}</p>'"></div>
     </div>
     <div class="btn-toolbar">
-        <button class="btn btn-primary pull-right"
+        <button class="btn btn-primary float-right"
                 ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid"
                 type="submit">
             ${message(code: 'default.button.create.label')}

@@ -25,7 +25,7 @@
     <div class="card-header">
         <h3 class="card-title">
             ${message(code: "is.ui.feature")} ({{ features.length }})
-            <a class="pull-right btn btn-secondary"
+            <a class="float-right btn btn-secondary"
                href="#/{{ ::viewName }}"
                defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
@@ -143,12 +143,12 @@
                 </div>
                 <entry:point id="feature-multiple-properties-after-tag"/>
                 <div class="btn-toolbar">
-                    <button class="btn btn-primary pull-right"
+                    <button class="btn btn-primary float-right"
                             type="submit"
                             ng-disabled="!featureForm.$dirty || featureForm.$invalid || application.submitting">
                         ${message(code: 'default.button.update.label')}
                     </button>
-                    <a class="btn btn-secondary pull-right"
+                    <a class="btn btn-secondary float-right"
                        href="#/{{ ::viewName }}">
                         ${message(code: 'is.button.cancel')}
                     </a>

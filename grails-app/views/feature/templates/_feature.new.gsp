@@ -92,7 +92,7 @@
                     </div>
                 </div>
                 <entry:point id="feature-new-form"/>
-                <div ng-if="authorizedFeature('create')" class="btn-toolbar pull-right">
+                <div ng-if="authorizedFeature('create')" class="btn-toolbar float-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.featureForm.$invalid || application.submitting"
                             defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"

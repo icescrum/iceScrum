@@ -30,7 +30,7 @@
     </button>
     {{ appDefinition.name }}
     <i ng-if="isEnabledApp(appDefinition)"
-       class="fa fa-check text-success pull-right"></i>
+       class="fa fa-check text-success float-right"></i>
 </h3>
 <div ng-if="appDefinition.availableForServer && !appDefinition.enabledForServer">
     <div class="alert alert-warning" role="alert">

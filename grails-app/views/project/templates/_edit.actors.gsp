@@ -86,12 +86,12 @@
                 </td>
                 <td class="btn-toolbar"
                     ng-if="authorizedActor('update') || authorizedActor('delete', actor)">
-                    <a class="btn btn-primary btn-sm pull-right"
+                    <a class="btn btn-primary btn-sm float-right"
                        ng-if="authorizedActor('update')"
                        ng-click="edit(actor)">
                         <i class="fa fa-pencil"></i>
                     </a>
-                    <a class="btn btn-danger btn-sm pull-right"
+                    <a class="btn btn-danger btn-sm float-right"
                        ng-if="authorizedActor('delete', actor)"
                        ng-click="confirmDelete({ callback: delete, args: [actor] })">
                         <i class="fa fa-close"></i>

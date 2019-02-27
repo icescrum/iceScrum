@@ -53,7 +53,7 @@
                                 <div class="btn-group btn-group-sm" uib-dropdown>
                                     <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                     </button>
-                                    <ul uib-dropdown-menu class="pull-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
+                                    <ul uib-dropdown-menu class="float-right" ng-init="itemType = 'task'" template-url="item.menu.html"></ul>
                                 </div>
                                 <visual-states ng-model="task" model-states="taskStatesByName"/>
                             </div>

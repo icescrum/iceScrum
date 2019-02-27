@@ -37,14 +37,14 @@
                 ${message(code: 'is.ui.user.invitation.loggedin')} (<em>{{ currentEmailAddress }}</em>)
             </p>
             <div class="btn-toolbar">
-                <button class="btn btn-primary pull-right"
+                <button class="btn btn-primary float-right"
                         ng-disabled="application.submitting"
                         ng-click="acceptInvitations()"
                         hotkey="{'return': hotkeyClick }"
                         type="button">
                     ${message(code: 'is.ui.user.invitation.accept')}
                 </button>
-                <button class="btn btn-secondary pull-right"
+                <button class="btn btn-secondary float-right"
                         ng-disabled="application.submitting"
                         ng-click="$close()"
                         type="button">
@@ -57,14 +57,14 @@
                 ${message(code: 'is.ui.user.invitation.notloggedin')}
             </p>
             <div class="btn-toolbar">
-                <button class="btn btn-primary pull-right"
+                <button class="btn btn-primary float-right"
                         ng-disabled="application.submitting"
                         ng-click="register()"
                         hotkey="{'return': hotkeyClick }"
                         type="button">
                     ${message(code: 'is.ui.user.invitation.create')}
                 </button>
-                <button class="btn btn-secondary pull-right"
+                <button class="btn btn-secondary float-right"
                         ng-disabled="application.submitting"
                         ng-click="logIn()"
                         type="button">

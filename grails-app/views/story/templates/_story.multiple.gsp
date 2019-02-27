@@ -25,7 +25,7 @@
     <div class="card-header">
         <h3 class="card-title">
             ${message(code: "todo.is.ui.stories")} ({{ stories.length }})
-            <a class="pull-right btn btn-secondary"
+            <a class="float-right btn btn-secondary"
                ui-sref="^.^"
                defer-tooltip="${message(code: 'is.ui.window.closeable')}">
                 <i class="fa fa-times"></i>
@@ -290,12 +290,12 @@
                     </ui-select>
                 </div>
                 <div class="btn-toolbar">
-                    <button class="btn btn-primary pull-right"
+                    <button class="btn btn-primary float-right"
                             type="submit"
                             ng-disabled="!storyForm.$dirty || storyForm.$invalid || application.submitting">
                         ${message(code: 'default.button.update.label')}
                     </button>
-                    <a class="btn btn-secondary pull-right"
+                    <a class="btn btn-secondary float-right"
                        ui-sref="^.^">
                         ${message(code: 'is.button.cancel')}
                     </a>

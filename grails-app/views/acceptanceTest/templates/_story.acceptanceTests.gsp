@@ -74,7 +74,7 @@
                                 <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
-                                <ul uib-dropdown-menu class="pull-right">
+                                <ul uib-dropdown-menu class="float-right">
                                     <li>
                                         <a href ng-click="copy(acceptanceTest, selected)">
                                             ${message(code: 'is.ui.copy')}
@@ -109,13 +109,13 @@
                     </div>
                     <div class="btn-toolbar"
                          ng-if="formHolder.editing">
-                        <button class="btn btn-primary pull-right"
+                        <button class="btn btn-primary float-right"
                                 ng-disabled="!formHolder.acceptanceTestForm.$dirty || formHolder.acceptanceTestForm.$invalid || application.submitting"
                                 ng-click="update(editableAcceptanceTest, selected)"
                                 type="submit">
                             ${message(code: 'default.button.update.label')}
                         </button>
-                        <button class="btn btn-secondary pull-right"
+                        <button class="btn btn-secondary float-right"
                                 ng-click="resetAcceptanceTestForm()"
                                 type="button">
                             ${message(code: 'is.button.cancel')}

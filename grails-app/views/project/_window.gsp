@@ -28,7 +28,7 @@
                     <span class="card-header-title">
                         {{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
                     </span>
-                    <div class="btn-toolbar pull-right visible-on-hover">
+                    <div class="btn-toolbar float-right visible-on-hover">
                         <button class="btn btn-secondary btn-sm"
                                 ng-if="authorizedProject('update', project)"
                                 ng-click="showProjectEditModal()"
@@ -84,7 +84,7 @@
                     <span class="card-header-title">
                         ${message(code: 'is.ui.project.vision.title')}
                     </span>
-                    <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
+                    <a class="btn btn-secondary btn-sm float-right visible-on-hover"
                        href="#/planning/{{ release.id }}/details"
                        ng-if="release.id && authorizedRelease('update', release)">
                         <i class="fa fa-pencil"></i>
@@ -99,7 +99,7 @@
                     <span class="card-header-title">
                         ${message(code: 'is.ui.project.doneDefinition.title')}
                     </span>
-                    <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
+                    <a class="btn btn-secondary btn-sm float-right visible-on-hover"
                        href="#/taskBoard/{{ currentOrNextSprint.id }}/details"
                        ng-if="currentOrNextSprint.id && authorizedSprint('update', currentOrNextSprint)">
                         <i class="fa fa-pencil"></i>
@@ -114,7 +114,7 @@
                     <span class="card-header-title">
                         ${message(code: 'is.ui.project.retrospective.title')}
                     </span>
-                    <a class="btn btn-secondary btn-sm pull-right visible-on-hover"
+                    <a class="btn btn-secondary btn-sm float-right visible-on-hover"
                        href="#/taskBoard/{{ lastSprint.id }}/details"
                        ng-if="lastSprint.id && authorizedSprint('update', lastSprint)">
                         <i class="fa fa-pencil"></i>
@@ -161,7 +161,7 @@
                     <span class="card-header-title">
                         ${message(code: 'is.ui.project.chart.title')}
                     </span>
-                    <div class="btn-toolbar pull-right">
+                    <div class="btn-toolbar float-right">
                         <entry:point id="dashboard-chart-toolbar"/>
                         <div class="btn-group">
                             <button class="btn btn-secondary btn-sm"
@@ -227,7 +227,7 @@
                     <span class="card-header-title">
                         ${message(code: 'todo.is.ui.history')}
                     </span>
-                    <small class="pull-right">
+                    <small class="float-right">
                         <a class="rss"
                            defer-tooltip="${message(code: 'todo.is.ui.feed')}"
                            href="{{ openWorkspaceUrl(project) + 'project/feed' }}">
@@ -244,7 +244,7 @@
                                      alt="{{activity.poster | userFullName}}"/>
                             </div>
                             <div class="media-body">
-                                <div class="text-muted pull-right">
+                                <div class="text-muted float-right">
                                     <time timeago datetime="{{ activity.dateCreated }}">
                                         {{ activity.dateCreated | dateTime }}
                                     </time>

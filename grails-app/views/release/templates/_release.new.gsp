@@ -97,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-toolbar pull-right">
+                <div class="btn-toolbar float-right">
                     <button class="btn btn-primary"
                             ng-disabled="formHolder.releaseForm.$invalid || application.submitting"
                             defer-tooltip="${message(code: 'todo.is.ui.create.and.continue')} (SHIFT+RETURN)"

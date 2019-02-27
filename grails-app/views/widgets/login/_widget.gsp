@@ -25,7 +25,7 @@
     <form novalidate role="form" ng-submit="login(credentials)" ng-controller="loginCtrl">
         <div class="form-group">
             <label for="credentials.j_username">
-                <small class="pull-right text-muted" ng-click="showRegisterModal()">${message(code: 'is.button.register')}</small>
+                <small class="float-right text-muted" ng-click="showRegisterModal()">${message(code: 'is.button.register')}</small>
                 <div>${message(code: 'is.dialog.login.username.or.email')}</div>
             </label>
             <input required
@@ -39,7 +39,7 @@
         </div>
         <div class="form-group">
             <label for="credentials.j_password">
-                <small class="pull-right text-muted" ng-click="showRetrieveModal()">${message(code: 'is.dialog.retrieve')}</small>
+                <small class="float-right text-muted" ng-click="showRetrieveModal()">${message(code: 'is.dialog.retrieve')}</small>
                 <div>${message(code: 'is.user.password')}</div>
             </label>
             <input required
@@ -60,7 +60,7 @@
             </label>
         </div>
         <div class="footer-btn-toolbar btn-toolbar">
-            <button class="btn btn-primary pull-right"
+            <button class="btn btn-primary float-right"
                     ng-disabled="application.submitting"
                     type="submit">
                 ${message(code: 'is.button.connect')}

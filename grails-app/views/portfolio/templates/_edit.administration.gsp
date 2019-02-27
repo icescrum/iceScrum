@@ -39,7 +39,7 @@
             ${message(code: 'is.ui.portfolio.delete')}
         </button>
     </div>
-    <div class="btn-toolbar pull-right">
+    <div class="btn-toolbar float-right">
         <button type="button"
                 role="button"
                 class="btn btn-secondary"

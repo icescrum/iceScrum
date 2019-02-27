@@ -80,8 +80,8 @@
                                type="text"
                                class="form-control">
                     </div>
-                    <div class="btn-toolbar pull-right">
-                        <button class="btn btn-primary pull-right"
+                    <div class="btn-toolbar float-right">
+                        <button class="btn btn-primary float-right"
                                 ng-disabled="!formHolder.newTeamForm.$dirty || formHolder.newTeamForm.$invalid || application.submitting"
                                 type="submit">
                             ${message(code: 'default.button.create.label')}
@@ -185,7 +185,7 @@
                     <div ng-if="team.members.length == 0">
                         ${message(code: 'todo.is.ui.team.no.members')}
                     </div>
-                    <div class="btn-toolbar pull-right">
+                    <div class="btn-toolbar float-right">
                         <button class="btn btn-secondary"
                                 type="button"
                                 ng-click="cancel()">

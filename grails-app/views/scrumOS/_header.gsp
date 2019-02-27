@@ -193,7 +193,7 @@
         </ul>
     </div>
     <g:if test="${project}">
-        <form class="form-inline pull-left" role="search">
+        <form class="form-inline float-left" role="search">
             <div class="input-group search">
                 <span class="input-group-prepend" ng-if="application.context">
                     <button class="btn btn-secondary btn-sm"
@@ -223,7 +223,7 @@
         </form>
     </g:if>
     <g:else>
-        <form class="form-inline pull-left" role="search">
+        <form class="form-inline float-left" role="search">
             <div class="input-group search">
                 <input autocomplete="off"
                        type="text"
@@ -241,20 +241,20 @@
         </form>
     </g:else>
     <g:if test="${g.meta(name: 'app.displayReleaseNotes')}">
-        <div class="pull-left" ng-if="currentUser.preferences ? currentUser.preferences.displayReleaseNotes : true">
+        <div class="float-left" ng-if="currentUser.preferences ? currentUser.preferences.displayReleaseNotes : true">
             <a href ng-click="showReleaseNotesModal()">
                 <i class="fa fa-gift fa-2x" id="ga-show-whats-new-event"></i>
             </a>
         </div>
     </g:if>
-    <div ng-if=":: currentUser.username" uib-dropdown class="pull-left" on-toggle="notificationToggle(open)">
+    <div ng-if=":: currentUser.username" uib-dropdown class="float-left" on-toggle="notificationToggle(open)">
         <div uib-dropdown-toggle>
             <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
             <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
         </div>
         <div uib-dropdown-menu class="notifications selection-disable" ng-include="'notifications.panel.html'"></div>
     </div>
-    <div class="pull-left">
+    <div class="float-left">
         <a hotkey="{ 'shift+h': goToHome}"
            hotkey-description="${message(code: 'todo.is.ui.open.view')} <g:message code="is.ui.home"/>"
            defer-tooltip="${message(code: 'is.ui.home')} (shift+h)"
@@ -263,8 +263,8 @@
             <i class="fa fa-home"></i>
         </a>
     </div>
-    <div ng-if=":: currentUser.username" uib-dropdown class="pull-left">
-        <div class="pull-left" uib-dropdown-toggle>
+    <div ng-if=":: currentUser.username" uib-dropdown class="float-left">
+        <div class="float-left" uib-dropdown-toggle>
             <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="32px" width="32px"/>
         </div>
         <div uib-dropdown-menu class="profile-panel" ng-include="'profile.panel.html'"></div>

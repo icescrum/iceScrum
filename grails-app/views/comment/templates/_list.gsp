@@ -50,7 +50,7 @@
                                 <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                     <i class="fa fa-ellipsis-h"></i>
                                 </button>
-                                <ul uib-dropdown-menu class="pull-right">
+                                <ul uib-dropdown-menu class="float-right">
                                     <li>
                                         <a href ng-click="confirmDelete({ callback: delete, args: [editableComment, selected] })">
                                             ${message(code: 'default.button.delete.label')}
@@ -80,13 +80,13 @@
                     </div>
                     <div class="btn-toolbar"
                          ng-if="formHolder.editing">
-                        <button class="btn btn-primary pull-right"
+                        <button class="btn btn-primary float-right"
                                 ng-disabled="!formHolder.commentForm.$dirty || formHolder.commentForm.$invalid || application.submitting"
                                 ng-click="update(editableComment, selected)"
                                 type="submit">
                             ${message(code: 'default.button.update.label')}
                         </button>
-                        <button class="btn btn-secondary pull-right"
+                        <button class="btn btn-secondary float-right"
                                 ng-click="resetCommentForm()"
                                 type="button">
                             ${message(code: 'is.button.cancel')}

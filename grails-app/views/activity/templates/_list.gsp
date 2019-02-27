@@ -27,7 +27,7 @@
                 <img ng-src="{{groupedActivity.poster | userAvatar}}" class="{{ groupedActivity.poster | userColorRoles }}" alt="{{groupedActivity.poster | userFullName}}"/>
             </div>
             <div class="media-body">
-                <div class="text-muted pull-right">
+                <div class="text-muted float-right">
                     <time timeago datetime="{{ groupedActivity.dateCreated }}">
                         {{ groupedActivity.dateCreated | dateTime }}
                     </time>

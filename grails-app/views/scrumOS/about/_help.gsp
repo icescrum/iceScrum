@@ -98,19 +98,19 @@
                     </tr>
                     <tr ng-if="atmosphere.liveConnections">
                         <td>${message(code: 'is.ui.server.connections.live')}</td>
-                        <td>{{ atmosphere.liveConnections }} <small class="muted pull-right">${message(code: 'is.ui.server.connections.refreshed')}</small></td>
+                        <td>{{ atmosphere.liveConnections }} <small class="muted float-right">${message(code: 'is.ui.server.connections.refreshed')}</small></td>
                     </tr>
                     <tr ng-if="atmosphere.maxConnections">
                         <td>${message(code: 'is.ui.server.connections.max')}</td>
-                        <td>{{ atmosphere.maxConnections }} <small class="muted pull-right">{{ atmosphere.maxConnectionsDate | dateTime}}</small></td>
+                        <td>{{ atmosphere.maxConnections }} <small class="muted float-right">{{ atmosphere.maxConnectionsDate | dateTime}}</small></td>
                     </tr>
                     <!--<tr ng-if="atmosphere">
                         <td>${message(code: 'is.ui.server.connections.users.live')}</td>
-                        <td>{{ atmosphere.liveUsers }} <small class="muted pull-right">({{ atmosphere.liveUsers.length }}) ${message(code: 'is.ui.server.connections.refreshed')}</small></td>
+                        <td>{{ atmosphere.liveUsers }} <small class="muted float-right">({{ atmosphere.liveUsers.length }}) ${message(code: 'is.ui.server.connections.refreshed')}</small></td>
                     </tr>
                     <tr ng-if="atmosphere">
                         <td>${message(code: 'is.ui.server.connections.users.max')}</td>
-                        <td>{{ atmosphere.maxUsers }} <small class="muted pull-right">({{ atmosphere.maxUsers.length }}) {{ atmosphere.maxUsersDate }}</small></td>
+                        <td>{{ atmosphere.maxUsers }} <small class="muted float-right">({{ atmosphere.maxUsers.length }}) {{ atmosphere.maxUsersDate }}</small></td>
                     </tr>-->
                     <g:if test="${System.getenv('JAVA_OPTS')}">
                         <tr>
