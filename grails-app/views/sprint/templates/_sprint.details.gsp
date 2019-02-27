@@ -69,7 +69,7 @@
                     <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
                         <button class="btn btn-secondary"
                                 uib-dropdown-toggle type="button">
-                            <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></span>
+                            <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
                         </button>
                         <ul uib-dropdown-menu
                             class="float-right"
