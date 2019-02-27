@@ -20,11 +20,16 @@ $is-btn-shadow: rgba(156, 164, 171, 0.5);
 $primary: #0067e8;
 $secondary: #ffffff;
 $body-color: $is-text-color;
-$input-color: $is-text-color;
+$border-radius-sm: .25rem;
+
 $btn-padding-x: 1.7rem;
 $btn-padding-y: 0.625rem;
 $btn-padding-x-sm: 0.8rem;
-$border-radius-sm: .25rem;
+
+$input-color: $is-text-color;
+$input-height: 1.875rem;
+$input-border-color: #c8c8cc;
+$input-padding-x: 0.5rem;
 
 ////////////////////
 // Import Bootstrap
@@ -196,6 +201,33 @@ form label {
 
     &:not(:disabled):not(.disabled):hover, &:not(:disabled):not(.disabled):focus {
       opacity: 1;
+    }
+  }
+}
+
+////////////////////
+// Select
+////////////////////
+
+.select2-container {
+  .select2-choice {
+    height: $input-height;
+    line-height: 1rem;
+    box-shadow: none;
+
+    .select2-chosen {
+      padding: $input-padding-y $input-padding-x;
+    }
+  }
+}
+
+.select2-container-multi {
+  .select2-choices {
+    box-shadow: none;
+
+    .select2-search-field input {
+      height: $input-height !important;
+      padding: $input-padding-y $input-padding-x;
     }
   }
 }
