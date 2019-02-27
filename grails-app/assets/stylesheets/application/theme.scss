@@ -179,8 +179,19 @@ form label {
 }
 
 .modal-header {
-  padding-left: 26px;
-  padding-right: 26px;
+  padding-left: 1.625rem;
+  padding-right: 1.625rem;
+  .close {
+    padding: 0;
+    margin: 5px 0 0 0;
+    opacity: 1;
+    width: 1.25rem;
+    height: 1.25rem;
+    @include img-retina('close.png', 'close@2x.png', 1.25rem, 1.25rem);
+    &:not(:disabled):not(.disabled):hover, &:not(:disabled):not(.disabled):focus {
+      opacity: 1;
+    }
+  }
 }
 
 ////////////////////
