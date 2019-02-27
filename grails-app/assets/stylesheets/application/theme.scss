@@ -7,6 +7,16 @@ $is-text-color-2: #111111;
 $is-btn-secondary-start: #f5f5fa;
 $is-btn-shadow: rgba(156, 164, 171, 0.5);
 
+$is-state-todo: #AAAAAA;
+$is-state-frozen: #AAAAAA;
+$is-state-suggested: #ffcc01;
+$is-state-accepted: #ff6b1c;
+$is-state-estimated: #ff3333;
+$is-state-planned: #c88cff;
+$is-state-inProgress: #00abfc;
+$is-state-inReview: #002ee8;
+$is-state-done: #27d285;
+
 %is-title {
   font-size: 1.25rem;
   font-family: averta-bold;
@@ -21,6 +31,7 @@ $primary: #0067e8;
 $secondary: #ffffff;
 $body-color: $is-text-color;
 $border-radius-sm: .25rem;
+$progress-border-radius: 0;
 
 $btn-padding-x: 1.7rem;
 $btn-padding-y: 0.625rem;
@@ -265,5 +276,59 @@ form label {
     border-radius: 0.375rem;
     box-shadow: 0 0.125rem 0.5625rem 0 rgba(62, 57, 107, 0.07);
     background-color: #ffffff;
+  }
+}
+
+.color-state-frozen {
+  background-color: $is-state-frozen;
+}
+
+.color-state-suggested {
+  background-color: $is-state-suggested;
+}
+
+.color-state-todo {
+  background-color: $is-state-todo;
+}
+
+.color-state-accepted {
+  background-color: $is-state-accepted;
+}
+
+.color-state-estimated {
+  background-color: $is-state-estimated;
+}
+
+.color-state-planned {
+  background-color: $is-state-planned;
+}
+
+.color-state-inProgress {
+  background-color: $is-state-inProgress;
+}
+
+.color-state-inReview {
+  background-color: $is-state-inReview;
+}
+
+.color-state-done {
+  background-color: $is-state-done;
+}
+
+.states {
+  height: 1rem;
+
+  .state {
+    opacity: 0.2;
+
+    .state-name {
+      opacity: 1.0;
+      font-size: 0.5625rem;
+      font-weight: 600;
+    }
+
+    &.state-completed, &.state-current {
+      opacity: 1.0;
+    }
   }
 }
