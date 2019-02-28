@@ -7,6 +7,9 @@ $is_text-color-dark: #111111;
 $is-btn-secondary-start: #f5f5fa;
 $is-shadow-color-1: rgba(156, 164, 171, 0.5);
 $is-shadow-color-2: rgba(156, 164, 171, 0.62);
+$is-bg-color: #f4f4f9;
+$is-outline-color: #c8c8cc;
+$is-font-size-sm: 0.875rem;
 
 $is-state-colors: (
         "todo": #AAAAAA,
@@ -36,14 +39,23 @@ $body-color: $is-text-color;
 $border-radius-sm: .25rem;
 $progress-border-radius: 0;
 
+$link-color: $is-text-color;
+$link-hover-color: $is-text-color;
+
 $btn-padding-x: 1.7rem;
 $btn-padding-y: 0.625rem;
 $btn-padding-x-sm: 0.8rem;
 
 $input-color: $is-text-color;
 $input-height: 1.875rem;
-$input-border-color: #c8c8cc;
+$input-border-color: $is-outline-color;
 $input-padding-x: 0.5rem;
+
+$nav-tabs-border-width: 0;
+$nav-tabs-link-active-color: $primary;
+$nav-tabs-border-radius: 0;
+
+$card-border-width: 0;
 
 ////////////////////
 // Import Bootstrap
@@ -152,7 +164,7 @@ strong {
   }
 
   &.btn-sm {
-    box-shadow: 0 0 0 0.0625rem #c8c8cc inset; // Simulate border
+    box-shadow: 0 0 0 0.0625rem $is-outline-color inset; // Simulate border
     font-family: averta-regular;
     text-shadow: none;
     background: none;
@@ -164,7 +176,7 @@ strong {
 }
 
 .btn-sm {
-  font-size: 0.875rem;
+  font-size: $is-font-size-sm;
   line-height: 1.6;
 
   &:hover {
@@ -173,12 +185,16 @@ strong {
 }
 
 form label {
-  font-size: 0.875rem;
+  font-size: $is-font-size-sm;
   font-weight: 600;
 }
 
-.form-control {
-  font-size: 0.875rem;
+.form-control, .nav-item {
+  font-size: $is-font-size-sm;
+}
+
+.nav-link.active {
+  font-family: averta-bold;
 }
 
 //https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
@@ -290,12 +306,12 @@ form label {
 .view.with-details {
   .content {
     float: left;
-    width: 66.66666666666666%;
+    width: 65%;
   }
 
   [ui-view='details'] {
     float: left;
-    width: 33.33333333333333%;
+    width: 35%;
   }
 }
 
@@ -314,14 +330,12 @@ form label {
 
 .widgets .card {
   margin-top: 1.25rem;
-  border: none;
   background: none;
 
   .card-header {
     padding-left: 0;
     padding-right: 0;
     background: none;
-    border: none;
 
     .card-header-title {
       @extend %is-title;
@@ -356,5 +370,17 @@ form label {
     &.state-completed, &.state-current {
       opacity: 1.0;
     }
+  }
+}
+
+[ui-view="details"] .card {
+  .card-header {
+    background-color: $is-bg-color;
+  }
+  .nav-item {
+    background-color: $is-bg-color;
+  }
+  .nav-link {
+    padding-bottom: 0.125rem;
   }
 }
