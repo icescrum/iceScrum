@@ -245,6 +245,22 @@ form label {
 }
 
 ////////////////////
+// Layout
+////////////////////
+
+.view.with-details {
+  .content {
+    float: left;
+    width: 66.66666666666666%;
+  }
+
+  [ui-view='details'] {
+    float: left;
+    width: 33.33333333333333%;
+  }
+}
+
+////////////////////
 // iceScrum style
 ////////////////////
 
