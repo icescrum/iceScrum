@@ -109,14 +109,14 @@
     </script>
 
     <script type="text/ng-template" id="item.menu.html">
-    <ul ng-controller="menuItemCtrl" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
-        <li ng-repeat="menuElement in menus | visibleMenuElement: getItem()">
-            <a ng-href="{{ menuElement.url(getItem()) }}"
-               ng-click="menuElement.action(getItem())">
-                {{:: menuElement | menuElementName }}
-            </a>
-        </li>
-    </ul>
+    <div ng-controller="menuItemCtrl" class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu">
+        <a class="dropdown-item"
+           ng-repeat="menuElement in menus | visibleMenuElement: getItem()"
+           ng-href="{{ menuElement.url(getItem()) }}"
+           ng-click="menuElement.action(getItem())">
+            {{:: menuElement | menuElementName }}
+        </a>
+    </div>
     </script>
 
     <script type="text/ng-template" id="select.member.html">

@@ -122,7 +122,7 @@
                             <div class="btn-group" uib-dropdown>
                                 <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                 </button>
-                                <ul uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></ul>
+                                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                             </div>
                         </div>
                         <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">
