@@ -7,15 +7,17 @@ $is-text-color-2: #111111;
 $is-btn-secondary-start: #f5f5fa;
 $is-btn-shadow: rgba(156, 164, 171, 0.5);
 
-$is-state-todo: #AAAAAA;
-$is-state-frozen: #AAAAAA;
-$is-state-suggested: #ffcc01;
-$is-state-accepted: #ff6b1c;
-$is-state-estimated: #ff3333;
-$is-state-planned: #c88cff;
-$is-state-inProgress: #00abfc;
-$is-state-inReview: #002ee8;
-$is-state-done: #27d285;
+$is-state-colors: (
+        "todo": #AAAAAA,
+        "frozen": #AAAAAA,
+        "suggested": #ffcc01,
+        "accepted": #ff6b1c,
+        "estimated": #ff3333,
+        "planned": #c88cff,
+        "inProgress": #00abfc,
+        "inReview": #002ee8,
+        "done": #27d285
+);
 
 %is-title {
   font-size: 1.25rem;
@@ -85,7 +87,6 @@ $input-padding-x: 0.5rem;
 ////////////////////
 // Override style
 ////////////////////
-
 
 @font-face {
   font-family: 'averta-regular';
@@ -279,40 +280,10 @@ form label {
   }
 }
 
-.color-state-frozen {
-  background-color: $is-state-frozen;
-}
-
-.color-state-suggested {
-  background-color: $is-state-suggested;
-}
-
-.color-state-todo {
-  background-color: $is-state-todo;
-}
-
-.color-state-accepted {
-  background-color: $is-state-accepted;
-}
-
-.color-state-estimated {
-  background-color: $is-state-estimated;
-}
-
-.color-state-planned {
-  background-color: $is-state-planned;
-}
-
-.color-state-inProgress {
-  background-color: $is-state-inProgress;
-}
-
-.color-state-inReview {
-  background-color: $is-state-inReview;
-}
-
-.color-state-done {
-  background-color: $is-state-done;
+@each $state, $color in $is-state-colors {
+  .color-state-#{$state} {
+    background-color: $color;
+  }
 }
 
 .states {
