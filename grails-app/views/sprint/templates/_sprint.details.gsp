@@ -84,7 +84,7 @@
                     </div>
                 </g:if>
                 <div class="btn-group shortcut-menu" role="group">
-                    <shortcut-menu ng-model="sprint" model-menus="menus" view-type="'details'"></shortcut-menu>
+                    <shortcut-menu ng-model="sprint" model-menus="menus" view-type="'details'" btn-sm="true"></shortcut-menu>
                     <div ng-class="['btn-group dropdown', {'dropup': application.minimizedDetailsView}]" uib-dropdown>
                         <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                         </button>

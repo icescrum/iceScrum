@@ -898,13 +898,13 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             ngModel: '=',
             viewType: '=',
             modelMenus: '=',
-            btnPrimary: '=?'
+            btnSecondary: '=?'
         },
         replace: true,
         templateUrl: 'button.shortcutMenu.html',
         link: function(scope) {
             scope.message = $rootScope.message;
-            scope.btnPrimary = angular.isDefined(scope.btnPrimary) ? scope.btnPrimary : (angular.isDefined(scope.btnSm) ? !scope.btnSm : true);
+            scope.btnSecondary = angular.isDefined(scope.btnSecondary) ? scope.btnSecondary : false;
             scope.$watch(function() { return scope.ngModel.lastUpdated; }, function() {
                 var i = scope.modelMenus.length;
                 scope.sortedMenus = $filter('orderBy')(scope.modelMenus, function(menuElement) {

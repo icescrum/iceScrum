@@ -101,7 +101,7 @@
     <a ng-show="menuElement.name"
        class="btn"
        title="{{ menuElement | menuElementName }}"
-       ng-class="{'btn-sm': btnSm, 'btn-primary': btnPrimary, 'btn-secondary': !btnPrimary}"
+       ng-class="{'btn-sm': btnSm, 'btn-primary': !btnSecondary, 'btn-secondary': btnSecondary}"
        ng-href="{{ menuElement.url(ngModel) }}"
        ng-click="menuElement.action(ngModel)">
         {{ menuElement | menuElementName }}

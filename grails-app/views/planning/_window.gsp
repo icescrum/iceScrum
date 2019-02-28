@@ -93,7 +93,7 @@
                     </div>
                     <div class="float-right">
                         <div class="btn-group" role="group">
-                            <shortcut-menu ng-model="sprint" model-menus="menus" btn-primary="false"></shortcut-menu>
+                            <shortcut-menu ng-model="sprint" model-menus="menus" btn-secondary="true"></shortcut-menu>
                             <div class="btn-group" uib-dropdown>
                                 <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                                 </button>
