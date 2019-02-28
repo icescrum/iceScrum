@@ -15,14 +15,14 @@ angular.module("step.html", []).run(["$templateCache", function($templateCache) 
 angular.module("wizard.html", []).run(["$templateCache", function($templateCache) {
     $templateCache.put("wizard.html",
         "<div>\n" +
-        "   <div class=\"col-xs-12 col-sm-3\">\n" +
+        "   <div class=\"col-xs-12 col-sm-3 modal-split-left\">\n" +
         "       <ul class=\"steps-indicator steps-{{getEnabledSteps().length}} nav nav-pills nav-fill\" ng-if=\"!hideIndicators\">\n" +
         "           <li class=\"nav-item\" ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
         "               <a ng-click=\"goTo(step)\" href class=\"nav-link\" ng-class=\"{active: step.selected, disabled: !step.completed && !step.selected}\"><i class=\"fa fa-check text-success\" ng-show=\"step.completed\"></i> {{step.title || step.wzTitle}}</a>\n" +
         "           </li>\n" +
         "       </ul>\n" +
         "   </div>\n" +
-        "   <div class=\"steps col-xs-12 col-sm-9\" ng-transclude></div>\n" +
+        "   <div class=\"steps col-xs-12 col-sm-9 modal-split-right\" ng-transclude></div>\n" +
         "</div>\n" +
         "");
 }]);

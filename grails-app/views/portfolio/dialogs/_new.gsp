@@ -23,12 +23,12 @@
 --}%
 
 
-<is:modal icon="briefcase" title="{{ (portfolio.name ? portfolio.name : '${message(code: /is.dialog.wizard.portfolio/)}') + (portfolio.fkey ? ' - ' + portfolio.fkey : '') }}" class="wizard" footer="${false}">
+<is:modal icon="briefcase" title="{{ (portfolio.name ? portfolio.name : '${message(code: /is.dialog.wizard.portfolio/)}') + (portfolio.fkey ? ' - ' + portfolio.fkey : '') }}" class="modal-split" footer="${false}">
     <form name="formHolder.portfolioForm"
           show-validation
           novalidate>
         <wizard class="row" name="portfolio">
-            <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio")}" icon="fa fa-pencil">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio")}">
                 <ng-include src="'form.general.portfolio.html'"></ng-include>
                 <div class="footer-btn-toolbar">
                     <div class="float-right btn-toolbar">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </wz-step>
-            <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio.projects")}" icon="fa fa-folder">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio.projects")}">
                 <ng-include src="'form.projects.portfolio.html'"></ng-include>
                 <div class="footer-btn-toolbar">
                     <button type="button"
@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </wz-step>
-            <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio.members")}" icon="fa fa-users">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio.members")}">
                 <ng-include src="'form.members.portfolio.html'"></ng-include>
                 <div class="footer-btn-toolbar">
                     <button type="button"

@@ -23,12 +23,12 @@
 --}%
 
 
-<is:modal icon="folder" title="{{ (project.name ? project.name : '${message(code: /is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="wizard" footer="${false}">
+<is:modal icon="folder" title="{{ (project.name ? project.name : '${message(code: /is.dialog.wizard/)}') + (project.pkey ? ' - ' + project.pkey : '') }}" class="modal-split" footer="${false}">
     <form name="formHolder.projectForm"
           show-validation
           novalidate>
         <wizard class="row" name="project">
-            <wz-step wz-title="${message(code: "is.dialog.wizard.section.project")}" icon="fa fa-pencil">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.project")}">
                 <ng-include src="'form.general.project.html'"></ng-include>
                 <div class="footer-btn-toolbar">
                     <div class="btn-toolbar float-right">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </wz-step>
-            <wz-step wz-title="${message(code: "is.dialog.wizard.section.team")}" icon="fa fa-users">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.team")}">
                 <div ng-controller="teamCtrl">
                     <ng-include src="'form.team.html'"></ng-include>
                     <ng-include src="'form.members.project.html'"></ng-include>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </wz-step>
-            <wz-step wz-title="${message(code: "is.dialog.wizard.section.options")}" icon="fa fa-sliders">
+            <wz-step wz-title="${message(code: "is.dialog.wizard.section.options")}">
                 <ng-include src="'form.practices.project.html'"></ng-include>
                 <div class="footer-btn-toolbar">
                     <button type="button"
@@ -85,7 +85,7 @@
                     </div>
                 </div>
             </wz-step>
-            <wz-step wz-title="${message(code: "todo.is.ui.project.planning")}" icon="fa fa-calendar">
+            <wz-step wz-title="${message(code: "todo.is.ui.project.planning")}">
                 <ng-include src="'form.planning.project.html'"></ng-include>
                 <div class="footer-btn-toolbar">
                     <button type="button"

@@ -82,6 +82,7 @@ $nav-tabs-link-active-bg: $is-bg-color;
 $card-border-width: 0;
 $card-bg: $is-bg-color;
 
+$modal-sm: 450px;
 $modal-content-border-width: 0;
 $modal-content-border-radius: 0;
 $modal-header-border-width: 1px;
@@ -436,5 +437,16 @@ form label {
 
   .nav-link {
     padding-bottom: 0.125rem;
+  }
+}
+
+.modal-split .modal-body {
+  padding: 0 ($grid-gutter-width / 2);
+  .modal-split-left, .modal-split-right {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .modal-split-left {
+    background-color: $is-bg-color-alt;
   }
 }
