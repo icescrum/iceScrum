@@ -22,24 +22,46 @@
 --}%
 
 <is:modal title="${message(code: 'is.ui.portfolio.edit')}" class="wizard split-modal" footer="${false}">
-    <div class="row wizard-row">
-        <div class="left-card col-xs-12 col-sm-3">
-            <ul class="left-card-body nav nav-list">
-                <li ng-if="authorizedPortfolio('update', currentPortfolio)" ng-class="{ current: isCurrentPanel('general') }">
-                    <a ng-click="setCurrentPanel('general')"><i class="fa fa-pencil"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.dialog.wizard.section.portfolio')}</span></a>
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            <ul class="nav nav-pills nav-fill">
+                <li class="nav-item"
+                    ng-if="authorizedPortfolio('update', currentPortfolio)">
+                    <a class="nav-link"
+                       href
+                       ng-click="setCurrentPanel('general')"
+                       ng-class="{ active: isCurrentPanel('general') }">
+                        <span class="hidden-xs hidden-sm">${message(code: 'is.dialog.wizard.section.portfolio')}</span>
+                    </a>
                 </li>
-                <li ng-class="{ current: isCurrentPanel('projects') }">
-                    <a ng-click="setCurrentPanel('projects')"><i class="fa fa-folder"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.dialog.wizard.section.portfolio.projects')}</span></a>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href
+                       ng-click="setCurrentPanel('projects')"
+                       ng-class="{ active: isCurrentPanel('projects') }">
+                        <span class="hidden-xs hidden-sm">${message(code: 'is.dialog.wizard.section.portfolio.projects')}</span>
+                    </a>
                 </li>
-                <li ng-class="{ current: isCurrentPanel('members') }">
-                    <a ng-click="setCurrentPanel('members')"><i class="fa fa-users"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.dialog.wizard.section.portfolio.members')}</span></a>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       href
+                       ng-click="setCurrentPanel('members')"
+                       ng-class="{ active: isCurrentPanel('members') }">
+                        <span class="hidden-xs hidden-sm">${message(code: 'is.dialog.wizard.section.portfolio.members')}</span>
+                    </a>
                 </li>
-                <li ng-if="authorizedPortfolio('update', currentPortfolio)" ng-class="{ current: isCurrentPanel('administration') }">
-                    <a ng-click="setCurrentPanel('administration')"><i class="fa fa-cogs"></i> <span class="hidden-xs hidden-sm">${message(code: 'is.ui.administration')}</span></a>
+                <li class="nav-item"
+                    ng-if="authorizedPortfolio('update', currentPortfolio)">
+                    <a class="nav-link"
+                       href
+                       ng-click="setCurrentPanel('administration')"
+                       ng-class="{ active: isCurrentPanel('administration') }">
+                        <span class="hidden-xs hidden-sm">${message(code: 'is.ui.administration')}</span>
+                    </a>
                 </li>
             </ul>
         </div>
-        <div class="right-card steps col-xs-12 col-sm-9" ng-switch="getCurrentPanel()">
+        <div class="col-xs-12 col-sm-9" ng-switch="getCurrentPanel()">
             <section ng-switch-when="general"
                      class="step current"
                      title="${message(code: 'is.dialog.wizard.section.portfolio')}">

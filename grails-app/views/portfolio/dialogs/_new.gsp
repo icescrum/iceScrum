@@ -27,7 +27,7 @@
     <form name="formHolder.portfolioForm"
           show-validation
           novalidate>
-        <wizard class="row wizard-row" name="portfolio">
+        <wizard class="row" name="portfolio">
             <wz-step wz-title="${message(code: "is.dialog.wizard.section.portfolio")}" icon="fa fa-pencil">
                 <ng-include src="'form.general.portfolio.html'"></ng-include>
                 <div class="footer-btn-toolbar">

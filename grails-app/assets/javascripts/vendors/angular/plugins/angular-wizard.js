@@ -1,5 +1,5 @@
 /**
- * Easy to use Wizard library for Angular JS
+ * BEEN CUSTOMISEDDDDD !!!Easy to use Wizard library for AngularJS
  * @version v1.1.1 - 2017-06-07 * @link https://github.com/mgonto/angular-wizard
  * @author Martin Gontovnikas <martin@gon.to>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -15,15 +15,14 @@ angular.module("step.html", []).run(["$templateCache", function($templateCache) 
 angular.module("wizard.html", []).run(["$templateCache", function($templateCache) {
     $templateCache.put("wizard.html",
         "<div>\n" +
-        "    <h2 ng-show=\"selectedStep.wzHeadingTitle != ''\">{{ selectedStep.wzHeadingTitle }}</h2>\n" +
-        "\n" +
-        "    <div class=\"steps\" ng-if=\"indicatorsPosition === 'bottom'\" ng-transclude></div>\n" +
-        "    <ul class=\"steps-indicator steps-{{getEnabledSteps().length}}\" ng-if=\"!hideIndicators\">\n" +
-        "      <li ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
-        "        <a ng-click=\"goTo(step)\">{{step.title || step.wzTitle}}</a>\n" +
-        "      </li>\n" +
-        "    </ul>\n" +
-        "    <div class=\"steps\" ng-if=\"indicatorsPosition === 'top'\" ng-transclude></div>\n" +
+        "   <div class=\"col-xs-12 col-sm-3\">\n" +
+        "       <ul class=\"steps-indicator steps-{{getEnabledSteps().length}} nav nav-pills nav-fill\" ng-if=\"!hideIndicators\">\n" +
+        "           <li class=\"nav-item\" ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
+        "               <a ng-click=\"goTo(step)\" href class=\"nav-link\" ng-class=\"{active: step.selected, disabled: !step.completed && !step.selected}\"><i class=\"fa fa-check text-success\" ng-show=\"step.completed\"></i> {{step.title || step.wzTitle}}</a>\n" +
+        "           </li>\n" +
+        "       </ul>\n" +
+        "   </div>\n" +
+        "   <div class=\"steps col-xs-12 col-sm-9\" ng-transclude></div>\n" +
         "</div>\n" +
         "");
 }]);
