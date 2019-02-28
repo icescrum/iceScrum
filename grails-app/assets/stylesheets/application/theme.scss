@@ -377,9 +377,20 @@ form label {
   .card-header {
     background-color: $is-bg-color;
   }
+
+  .card-footer {
+    background-color: white;
+    border-top: solid 1px #d3d8de;
+
+    .btn-toolbar {
+      justify-content: flex-end;
+    }
+  }
+
   .nav-item {
     background-color: $is-bg-color;
   }
+
   .nav-link {
     padding-bottom: 0.125rem;
   }

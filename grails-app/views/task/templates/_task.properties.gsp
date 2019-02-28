@@ -175,17 +175,11 @@
     </div>
     <div class="card-footer" ng-if="isModal || formHolder.editing">
         <div class="btn-toolbar" ng-class="[{ 'text-right' : isModal }]">
-            <button class="btn btn-primary"
-                    ng-if="formHolder.editing && (isLatest() || application.submitting)"
-                    ng-disabled="!isDirty() || formHolder.taskForm.$invalid || application.submitting"
-                    type="submit">
-                ${message(code: 'default.button.update.label')}
-            </button>
-            <button class="btn btn-danger"
-                    ng-if="formHolder.editing && !isLatest() && !application.submitting"
-                    ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
-                    type="submit">
-                ${message(code: 'default.button.override.label')}
+            <button class="btn btn-secondary"
+                    type="button"
+                    ng-if="isModal && !isDirty()"
+                    ng-click="$close()">
+                ${message(code: 'is.button.close')}
             </button>
             <button class="btn btn-secondary"
                     type="button"
@@ -199,11 +193,17 @@
                     ng-click="resetTaskForm()">
                 <i class="fa fa-warning"></i> ${message(code: 'default.button.refresh.label')}
             </button>
-            <button class="btn btn-secondary"
-                    type="button"
-                    ng-if="isModal && !isDirty()"
-                    ng-click="$close()">
-                ${message(code: 'is.button.close')}
+            <button class="btn btn-danger"
+                    ng-if="formHolder.editing && !isLatest() && !application.submitting"
+                    ng-disabled="!isDirty() || formHolder.taskForm.$invalid"
+                    type="submit">
+                ${message(code: 'default.button.override.label')}
+            </button>
+            <button class="btn btn-primary"
+                    ng-if="formHolder.editing && (isLatest() || application.submitting)"
+                    ng-disabled="!isDirty() || formHolder.taskForm.$invalid || application.submitting"
+                    type="submit">
+                ${message(code: 'default.button.update.label')}
             </button>
         </div>
     </div>
