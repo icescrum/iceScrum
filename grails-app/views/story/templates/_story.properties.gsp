@@ -37,7 +37,7 @@
                        name="name"
                        ng-model="editableStory.name"
                        type="text"
-                       class="form-control important">
+                       class="form-control">
             </div>
             <div class="form-1-tier">
                 <label for="type">${message(code: 'is.story.type')}</label>
@@ -68,7 +68,7 @@
                       at="atOptions"
                       autofocus
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-            <div class="atwho-preview form-control-static important"
+            <div class="atwho-preview form-control-static"
                  ng-show="!showDescriptionTextarea"
                  ng-click="clickDescriptionPreview($event)"
                  ng-focus="focusDescriptionPreview($event)"
@@ -308,7 +308,7 @@
                       ng-show="showNotesTextarea"
                       ng-blur="showNotesTextarea = false"
                       placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
-            <div class="markitup-preview important"
+            <div class="markitup-preview"
                  ng-disabled="!formEditable()"
                  ng-show="!showNotesTextarea"
                  ng-click="showNotesTextarea = formEditable()"

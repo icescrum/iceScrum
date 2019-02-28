@@ -138,7 +138,7 @@
                       ng-show="showRetrospectiveTextarea"
                       ng-blur="showRetrospectiveTextarea = false"
                       placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
-            <div class="markitup-preview important"
+            <div class="markitup-preview"
                  ng-disabled="!formEditable()"
                  ng-show="!showRetrospectiveTextarea"
                  ng-click="showRetrospectiveTextarea = formEditable()"
@@ -151,7 +151,7 @@
             <label for="goal">${message(code: 'is.sprint.goal')}</label>
             <textarea at
                       name="goal"
-                      class="form-control important"
+                      class="form-control"
                       ng-focus="editForm(true)"
                       ng-disabled="!formEditable()"
                       ng-maxlength="5000"
@@ -169,7 +169,7 @@
                       ng-show="showDoneDefinitionTextarea"
                       ng-blur="showDoneDefinitionTextarea = false"
                       placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
-            <div class="markitup-preview important"
+            <div class="markitup-preview"
                  ng-disabled="!formEditable()"
                  ng-show="!showDoneDefinitionTextarea"
                  ng-click="showDoneDefinitionTextarea = formEditable()"
