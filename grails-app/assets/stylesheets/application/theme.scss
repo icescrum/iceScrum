@@ -92,41 +92,7 @@ $modal-header-border-color: #e9e9e9;
 // Import Bootstrap
 ////////////////////
 
-@import "../vendors/bootstrap/scss/functions";
-@import "../vendors/bootstrap/scss/variables";
-@import "../vendors/bootstrap/scss/mixins";
-@import "../vendors/bootstrap/scss/root";
-@import "../vendors/bootstrap/scss/reboot";
-@import "../vendors/bootstrap/scss/type";
-@import "../vendors/bootstrap/scss/images";
-@import "../vendors/bootstrap/scss/code";
-@import "../vendors/bootstrap/scss/grid";
-@import "../vendors/bootstrap/scss/tables";
-@import "../vendors/bootstrap/scss/forms";
-@import "../vendors/bootstrap/scss/buttons";
-@import "../vendors/bootstrap/scss/transitions";
-@import "../vendors/bootstrap/scss/dropdown";
-@import "../vendors/bootstrap/scss/button-group";
-@import "../vendors/bootstrap/scss/input-group";
-@import "../vendors/bootstrap/scss/custom-forms";
-@import "../vendors/bootstrap/scss/nav";
-@import "../vendors/bootstrap/scss/navbar";
-@import "../vendors/bootstrap/scss/card";
-@import "../vendors/bootstrap/scss/breadcrumb";
-@import "../vendors/bootstrap/scss/pagination";
-@import "../vendors/bootstrap/scss/badge";
-@import "../vendors/bootstrap/scss/jumbotron";
-@import "../vendors/bootstrap/scss/alert";
-@import "../vendors/bootstrap/scss/progress";
-@import "../vendors/bootstrap/scss/media";
-@import "../vendors/bootstrap/scss/list-group";
-@import "../vendors/bootstrap/scss/close";
-@import "../vendors/bootstrap/scss/modal";
-@import "../vendors/bootstrap/scss/tooltip";
-@import "../vendors/bootstrap/scss/popover";
-@import "../vendors/bootstrap/scss/carousel";
-@import "../vendors/bootstrap/scss/utilities";
-@import "../vendors/bootstrap/scss/print";
+@import "../vendors/bootstrap/scss/bootstrap";
 
 ////////////////////
 // Override style
