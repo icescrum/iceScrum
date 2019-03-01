@@ -131,7 +131,7 @@ extensibleController('storyCtrl', ['$scope', '$controller', '$uibModal', '$filte
             action: function(story) { $scope.updateState(story, 'unDone', StoryStatesByName.IN_PROGRESS); }
         },
         {
-            name: 'is.ui.sprintPlan.menu.postit.shiftToNext',
+            name: 'is.ui.story.shiftToNext',
             visible: function(story) { return $scope.authorizedStory('shiftToNext', story)},
             action: function(story) { $scope.shiftToNext(story); }
         },
