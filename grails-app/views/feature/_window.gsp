@@ -140,7 +140,7 @@
                          selectable-id="{{ ::feature.id }}"
                          as-sortable-item
                          ng-repeat="feature in features | search | orderBy:orderBy.current.id:orderBy.reverse"
-                         class="postit-container">
+                         class="sticky-note-container">
                         <div ng-include="'feature.html'"></div>
                     </div>
                 </div>

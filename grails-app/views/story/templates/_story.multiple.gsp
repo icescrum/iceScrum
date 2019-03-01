@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="postits standalone">
-                        <div class="postit-container stack twisted">
+                        <div class="sticky-note-container stack twisted">
                             <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                                  class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                                 <div class="head">

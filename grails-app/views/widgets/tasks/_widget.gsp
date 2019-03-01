@@ -27,7 +27,7 @@
             <div class="postits clearfix {{ stickyNoteClass }}">
                 <div ng-repeat="task in entry.tasks"
                      is-watch="task"
-                     class="postit-container">
+                     class="sticky-note-container">
                     <div ng-include="'task.light.html'" ng-init="link = taskUrl(task, entry.project);"></div>
                 </div>
             </div>

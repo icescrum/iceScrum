@@ -27,7 +27,7 @@
      selectable-id="{{:: story.id }}"
      ng-repeat="story in backlogStories | search"
      as-sortable-item
-     class="postit-container">
+     class="sticky-note-container">
     <div ng-include="'story.html'"></div>
 </div>
 <div ng-if="application.search && backlog.stories.length != 0 && (backlog.stories | search).length == 0"

@@ -39,7 +39,7 @@
                 <documentation doc-url="features-stories-tasks#features"/>
             </div>
             <div class="postits standalone">
-                <div class="postit-container solo">
+                <div class="sticky-note-container solo">
                     <div ng-style="feature.color | createGradientBackground"
                          class="postit {{ feature.color | contrastColor }}">
                         <div class="head">
