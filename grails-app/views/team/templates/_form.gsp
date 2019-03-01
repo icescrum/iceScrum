@@ -68,7 +68,7 @@
                 <entry:point id="project-team-list-owner"/>
             </label>
             <div>
-                <img ng-src="{{ team.owner | userAvatar }}" height="24" width="24" class="img-rounded user-role" title="{{ team.owner.username }}">
+                <img ng-src="{{ team.owner | userAvatar }}" height="24" width="24" class="rounded-circle user-role" title="{{ team.owner.username }}">
                 {{ team.owner | userFullName }}
             </div>
         </div>

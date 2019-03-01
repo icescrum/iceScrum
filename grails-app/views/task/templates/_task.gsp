@@ -28,24 +28,22 @@
     <div as-sortable-item-handle="authorizedTask('rank', task)">
         <div class="head">
             <div class="head-left">
-                <span class="id">{{:: task.uid }}</span>
                 <img ng-src="{{:: task.responsible | userAvatar }}"
                      ng-if=":: task.responsible"
                      ng-class="::['responsible', (task.responsible | userColorRoles)]"
                      defer-tooltip="{{:: task.responsible | userFullName }}">
+                <span class="id">{{:: task.uid }}</span>
             </div>
             <div class="head-right">
                 <span class="remaining-time editable"
                       ng-if=":: task.estimation != 0"
-                      ng-click="showEditEstimationModal(task, $event)"
-                      defer-tooltip="${message(code: 'is.task.estimation')}">
-                    {{:: task.estimation != undefined ? task.estimation : '?' }} <i ng-class="::['fa', (task.state | taskStateIcon)]"></i>
+                      ng-click="showEditEstimationModal(task, $event)">
+                    ${message(code: 'is.task.estimation')} {{:: task.estimation != undefined ? task.estimation : '?' }}
                 </span>
             </div>
         </div>
-        <div ng-class=":: ['content', {'without-description':!task.description}]">
-            <h3 class="title">{{:: task.name }}</h3>
-            <h3 class="title title-sm">{{:: task.name | ellipsis:45 }}</h3>
+        <div class="content">
+            <h3 class="title">{{:: task.name | ellipsis:45 }}</h3>
             <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>
         <div class="footer">

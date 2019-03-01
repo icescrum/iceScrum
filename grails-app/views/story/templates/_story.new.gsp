@@ -40,7 +40,7 @@
                 <documentation doc-url="features-stories-tasks#stories"/>
             </div>
             <div class="sticky-notes standalone">
-                <div class="sticky-note-container solo">
+                <div class="sticky-note-container sticky-note-story solo">
                     <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                          class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
                         <div class="head">

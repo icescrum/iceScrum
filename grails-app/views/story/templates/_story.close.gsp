@@ -42,7 +42,7 @@
                     <th class="text-center">${message(code: 'is.story')}</th>
                     <th class="text-center">{{:: storyStatesByName.DONE | i18n: 'StoryStates' }}</th>
                 </tr>
-                <tr ng-repeat="story in backlogStories" class="sticky-note-container sticky-note-no-state">
+                <tr ng-repeat="story in backlogStories" class="sticky-note-container sticky-note-story sticky-note-no-state">
                     <td is-watch="story">
                         <div ng-include="'story.html'"></div>
                     </td>
