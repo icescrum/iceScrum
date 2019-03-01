@@ -22,16 +22,16 @@
 - Colin Bontemps (cbontemps@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div class="card sprint-state-{{ sprint.state }}"
+    <div class="card card-view sprint-state-{{ sprint.state }}"
          ng-if="sprint">
         <div class="card-header">
-            <h3 class="card-title small-title">
+            <div class="card-title">
                 <div ng-controller="taskCtrl">
                     <div class="planning-dropdown float-left" uib-dropdown on-toggle="scrollToActiveSprint(open)">
                         <div class="active">
                             <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
                             <i ng-if="sprintEntries.length > 2" uib-dropdown-toggle></i>
-                            <div class="sub-title text-muted" uib-dropdown-toggle>
+                            <span class="sub-title text-muted" uib-dropdown-toggle>
                                 <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i>
                                 <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
                                 <span class="sprint-numbers">
@@ -43,7 +43,7 @@
                                 <span class="sprint-remaining" defer-tooltip="${message(code: 'is.task.estimation')}">
                                     {{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
                                 </span>
-                            </div>
+                            </span>
                         </div>
                         <ul uib-dropdown-menu role="menu" class="planning-menu">
                             <li ng-repeat="sprintEntry in sprintEntries | orderBy: 'orderNumber'"
@@ -130,9 +130,8 @@
                                defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                         </a>
                     </div>
-                    <div class="clearfix"></div>
                 </div>
-            </h3>
+            </div>
         </div>
         <div class="card-body" id="tasks-board" ng-controller="taskCtrl">
             <div class="window-alert bg-warning"
@@ -168,7 +167,7 @@
                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
                             ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                             ng-init="taskType = taskTypesByName.URGENT"
-                            as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
+                            as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
                             is-disabled="!isSortableTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div is-watch="task"
@@ -219,7 +218,7 @@
                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
                             ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                             ng-init="taskType = taskTypesByName.RECURRENT"
-                            as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
+                            as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
                             is-disabled="!isSortableTaskBoard(sprint)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div is-watch="task"
@@ -285,11 +284,11 @@
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
                         </div>
                     </div>
-                    <div ng-class="{'is-selected': isSelected(story)}" ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                    <div ng-class="{'is-selected': isSelected(story)}">
                         <div class="sticky-notes {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"
-                            as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
+                            as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
                             is-disabled="!isSortableTaskBoard(sprint) || !isSortableStory(story)"
                             ng-repeat="taskState in sprintTaskStates">
                             <div is-watch="task"
@@ -333,7 +332,7 @@
                             <div ng-include="'story.light.html'" ng-init="disabledGradient = true"></div>
                         </div>
                     </div>
-                    <div ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                    <div>
                         <div class="sticky-notes {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, story, true), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"
