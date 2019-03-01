@@ -33,6 +33,6 @@
         <input name="stickyNoteSize"
                value="grid-group size-sm"
                type="radio"
-               ng-model="widget.settings.stickyNoteSize"/> ${message(code: 'todo.is.ui.postit')}
+               ng-model="widget.settings.stickyNoteSize"/> ${message(code: 'todo.is.ui.stickynote')}
     </label>
 </div>

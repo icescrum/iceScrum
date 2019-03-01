@@ -86,7 +86,7 @@
                         <div class="btn-group">
                             <button type="button"
                                     class="btn btn-secondary hidden-xs hidden-sm"
-                                    defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
+                                    defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
                                     ng-click="setStickyNoteSize(viewName)"><i class="fa" ng-class="iconCurrentStickyNoteSize(viewName)"></i>
                             </button>
                             <button type="button"

@@ -165,7 +165,7 @@ filters
                     B = (num & 255) + amt;
                 gradientBackgroundCache[color] = "linear-gradient(to top, rgba(" + ra + "," + ga + "," + ba + ",0.8) 0%, rgba(" + R + "," + G + "," + B + ",0.8) 100%)";
             }
-            // The background image gets overriden by css if table, border is overriden if post-it
+            // The background image gets overriden by css if table, border is overriden if sticky note
             return {'background-image': gradientBackgroundCache[color], 'border-left': "10px solid " + color};
         };
     })
