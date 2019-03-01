@@ -187,7 +187,7 @@
                                 {{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.URGENT][taskState].length]) }}
                             </button>
                             <div ng-if="tasksHidden(taskState, taskTypesByName.URGENT)" class="sticky-note-container">
-                                <div class="hide-tasks postit">
+                                <div class="hide-tasks sticky-note">
                                     <button type="button"
                                             class="btn btn-secondary"
                                             ng-click="showTasks(taskTypesByName.URGENT, false)">
@@ -196,7 +196,7 @@
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container">
-                                <div class="add-task postit">
+                                <div class="add-task sticky-note">
                                     <a class="btn btn-secondary"
                                        ng-click="openNewTaskByType(taskTypesByName.URGENT)"
                                        href>
@@ -238,7 +238,7 @@
                                 {{ message('todo.is.ui.task.showDoneTasks', [tasksByTypeByState[taskTypesByName.RECURRENT][taskState].length]) }}
                             </button>
                             <div ng-if="tasksHidden(taskState, taskTypesByName.RECURRENT)" class="sticky-note-container">
-                                <div class="hide-tasks postit">
+                                <div class="hide-tasks sticky-note">
                                     <button type="button"
                                             class="btn btn-secondary"
                                             ng-click="showTasks(taskTypesByName.RECURRENT, false)">
@@ -247,7 +247,7 @@
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container">
-                                <div class="add-task postit">
+                                <div class="add-task sticky-note">
                                     <div class="btn-group">
                                         <a class="btn btn-secondary"
                                            ng-click="openNewTaskByType(taskTypesByName.RECURRENT)"
@@ -307,7 +307,7 @@
                                     ng-click="showTasks(story, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
                             </button>
                             <div ng-if="tasksHidden(taskState, story)" class="sticky-note-container">
-                                <div class="hide-tasks postit">
+                                <div class="hide-tasks sticky-note">
                                     <button type="button"
                                             class="btn btn-secondary"
                                             ng-click="showTasks(story, false)">
@@ -316,7 +316,7 @@
                                 </div>
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="sticky-note-container">
-                                <div class="add-task postit">
+                                <div class="add-task sticky-note">
                                     <a class="btn btn-secondary"
                                        ng-click="openNewTaskByStory(story)"
                                        href>
@@ -355,7 +355,7 @@
                                     ng-click="showTasks(story, true)">{{ message('todo.is.ui.task.showDoneTasks', [tasksByStoryByState[story.id][taskState].length]) }}
                             </button>
                             <div ng-if="tasksHidden(taskState, story, true)" class="sticky-note-container">
-                                <div class="hide-tasks postit">
+                                <div class="hide-tasks sticky-note">
                                     <button type="button"
                                             class="btn btn-secondary"
                                             ng-click="showTasks(story, false)">

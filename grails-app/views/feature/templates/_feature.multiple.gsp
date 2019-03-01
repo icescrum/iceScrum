@@ -39,7 +39,7 @@
                     <div class="sticky-notes standalone">
                         <div class="sticky-note-container stack twisted">
                             <div ng-style="topFeature.color | createGradientBackground"
-                                 class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
+                                 class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                                 <div class="head">
                                     <div class="head-left">
                                         <span class="id">{{ topFeature.uid }}</span>

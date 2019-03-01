@@ -42,7 +42,7 @@
             <div class="sticky-notes standalone">
                 <div class="sticky-note-container solo">
                     <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
-                         class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
+                         class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
                         <div class="head">
                             <div class="head-left">
                                 <span class="id">42</span>

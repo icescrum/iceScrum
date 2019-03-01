@@ -23,7 +23,7 @@
 
 <script type="text/ng-template" id="story.light.html">
 <div ng-style="(story.feature ? story.feature.color : '#f9f157') | createGradientBackground"
-     class="postit story {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
+     class="sticky-note story {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div>
         <div class="head">
             <div class="head-left">

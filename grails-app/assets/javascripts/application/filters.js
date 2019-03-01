@@ -104,7 +104,7 @@ filters
         return function(type) {
             var cssClass = StoryTypesClasses[type];
             if (cssClass) {
-                cssClass += ' postit-type';
+                cssClass += ' sticky-note-type';
             }
             return cssClass;
         };
@@ -116,7 +116,7 @@ filters
     }])
     .filter('featureType', ['FeatureTypesByName', function(FeatureTypesByName) {
         return function(type) {
-            return type == FeatureTypesByName.ARCHITECTURAL ? 'architectural postit-type' : '';
+            return type == FeatureTypesByName.ARCHITECTURAL ? 'architectural sticky-note-type' : '';
         };
     }])
     .filter('featureTypeIcon', ['FeatureTypesByName', function(FeatureTypesByName) {

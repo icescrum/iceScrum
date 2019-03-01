@@ -41,7 +41,7 @@
             <div class="sticky-notes standalone">
                 <div class="sticky-note-container solo">
                     <div ng-style="feature.color | createGradientBackground"
-                         class="postit {{ feature.color | contrastColor }}">
+                         class="sticky-note {{ feature.color | contrastColor }}">
                         <div class="head">
                             <div class="head-left">
                                 <span class="id">42</span>

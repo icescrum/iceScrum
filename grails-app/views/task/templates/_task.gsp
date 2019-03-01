@@ -22,8 +22,8 @@
 --}%
 
 <script type="text/ng-template" id="task.html">
-<div postit-color="{{:: task.color }}"
-     class="postit"
+<div sticky-note-color="{{:: task.color }}"
+     class="sticky-note"
      ng-class=":: ['task', application.stickyNoteSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]">
     <div as-sortable-item-handle="authorizedTask('rank', task)">
         <div class="head">
@@ -87,9 +87,9 @@
                         <i class="fa fa-user-times"></i>
                     </a>
                 </span>
-                <span postit-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+                <span sticky-note-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
             </div>
-            <entry:point id="task-postit-bottom"/>
+            <entry:point id="task-sticky-note-bottom"/>
         </div>
     </div>
 </div>

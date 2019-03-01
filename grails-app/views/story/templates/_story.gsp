@@ -22,8 +22,8 @@
 --}%
 
 <script type="text/ng-template" id="story.html">
-<div class="postit story"
-     postit-color="{{:: story.feature.color }}"
+<div class="sticky-note story"
+     sticky-note-color="{{:: story.feature.color }}"
      ng-class=":: [((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
         <div class="head">
@@ -93,7 +93,7 @@
                             icon="fa-check-square"
                             icon-empty="fa-check-square-o"
                             count="{{:: story.acceptanceTests_count }}"/>
-                <span postit-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+                <span sticky-note-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
             </div>
             <div class="state-progress">
                 <div ng-if="::showStoryProgress(story)" class="progress">

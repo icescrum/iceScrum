@@ -137,7 +137,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     $scope.fullScreen = function() {
         $scope.application.isFullScreen = !$scope.application.isFullScreen;
     };
-    // Postit size
+    // Sticky note size
     $scope.currentStickyNoteSize = function(viewName, defaultSize) {
         return stickyNoteSize.currentStickyNoteSize(viewName, defaultSize);
     };

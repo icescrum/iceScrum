@@ -22,14 +22,13 @@
 --}%
 
 <script type="text/ng-template" id="feature.html">
-<div postit-color="{{:: feature.color }}"
-     class="postit feature"
+<div sticky-note-color="{{:: feature.color }}"
+     class="sticky-note feature"
      ng-class=":: [(feature.color | contrastColor), (feature.type | featureType)]">
     <div as-sortable-item-handle>
         <div class="head">
             <div class="head-left">
                 <span class="id">{{:: feature.uid }}</span>
-                <entry:point id="feature-postit-head-left"/>
             </div>
             <div class="head-right">
                 <span class="value"
@@ -68,7 +67,7 @@
                             href="{{:: openFeatureUrl(feature) }}/stories"
                             icon="fa-sticky-note"
                             count="{{:: feature.stories_ids.length }}"/>
-                <span postit-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+                <span sticky-note-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
             </div>
             <div class="state-progress">
                 <div class="progress">

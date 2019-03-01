@@ -75,7 +75,7 @@
 
                 boundingClient: function(element) {
                     if (!element._bounding) {
-                        if (sortableConfig.elementsBounding.length > 0 && element.className.indexOf("postit") >= 0 && sortableConfig.elementsBounding[0].className.indexOf("postit") >= 0) {
+                        if (sortableConfig.elementsBounding.length > 0 && element.className.indexOf("sticky-note") >= 0 && sortableConfig.elementsBounding[0].className.indexOf("sticky-note") >= 0) {
                             element._bounding = sortableConfig.elementsBounding[0]._bounding;
                         } else {
                             element._bounding = element.getBoundingClientRect();

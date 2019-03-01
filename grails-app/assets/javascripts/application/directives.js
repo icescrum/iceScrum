@@ -580,27 +580,27 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             });
         }
     }
-}]).directive('postitMenu', ['$compile', '$rootScope', function($compile, $rootScope) {
+}]).directive('stickyNoteMenu', ['$compile', '$rootScope', function($compile, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
             element.on('mouseover', function() {
                 if (!$rootScope.application.dragging) {
                     var newElement = element.clone();
-                    newElement.removeAttr('postit-menu');
+                    newElement.removeAttr('sticky-note-menu');
                     newElement.attr('uib-dropdown', '');
                     newElement.attr('dropdown-append-to-body', '');
-                    newElement.html('<a uib-dropdown-toggle><i class="fa fa-ellipsis-h"></i></a><ul uib-dropdown-menu class="dropdown-menu-right" template-url="' + attrs.postitMenu + '"></ul>');
+                    newElement.html('<a uib-dropdown-toggle><i class="fa fa-ellipsis-h"></i></a><ul uib-dropdown-menu class="dropdown-menu-right" template-url="' + attrs.stickyNoteMenu + '"></ul>');
                     element.replaceWith(angular.element($compile(newElement)(scope)));
                 }
             });
         }
     }
-}]).directive('postitColor', ['$filter', '$rootScope', function($filter, $rootScope) {
+}]).directive('stickyNoteColor', ['$filter', '$rootScope', function($filter, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            element.css($filter('createGradientBackground')(attrs.postitColor ? attrs.postitColor : '#f9f157'));
+            element.css($filter('createGradientBackground')(attrs.stickyNoteColor ? attrs.stickyNoteColor : '#f9f157'));
         }
     }
 }]).directive('deferTooltip', ['$compile', '$rootScope', function($compile, $rootScope) {
