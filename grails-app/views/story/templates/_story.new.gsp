@@ -39,7 +39,7 @@
                 ${message(code: 'is.ui.sandbox.help')}
                 <documentation doc-url="features-stories-tasks#stories"/>
             </div>
-            <div class="postits standalone">
+            <div class="sticky-notes standalone">
                 <div class="sticky-note-container solo">
                     <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                          class="postit {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">

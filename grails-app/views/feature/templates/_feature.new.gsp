@@ -38,7 +38,7 @@
                 ${message(code: 'is.ui.feature.help')}
                 <documentation doc-url="features-stories-tasks#features"/>
             </div>
-            <div class="postits standalone">
+            <div class="sticky-notes standalone">
                 <div class="sticky-note-container solo">
                     <div ng-style="feature.color | createGradientBackground"
                          class="postit {{ feature.color | contrastColor }}">

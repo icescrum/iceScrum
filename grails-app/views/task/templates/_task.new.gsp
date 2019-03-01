@@ -39,7 +39,7 @@
                 ${message(code: 'is.ui.task.help')}
                 <documentation doc-url="features-stories-tasks#tasks"/>
             </div>
-            <div class="postits standalone">
+            <div class="sticky-notes standalone">
                 <div class="sticky-note-container solo">
                     <div ng-style="'#f9f157' | createGradientBackground"
                          class="postit postit-sm {{ ('#f9f157' | contrastColor) }}">

@@ -36,7 +36,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="postits standalone">
+                    <div class="sticky-notes standalone">
                         <div class="sticky-note-container stack twisted">
                             <div ng-style="topFeature.color | createGradientBackground"
                                  class="postit {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">

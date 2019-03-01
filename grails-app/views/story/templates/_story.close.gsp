@@ -37,7 +37,7 @@
                  class="empty-view">
                 <div ng-include="'story.backlog.close.empty.html'"></div>
             </div>
-            <table class="table table-bordered table-striped table-story-close postits-disabled" ng-if="backlog.stories.length > 0">
+            <table class="table table-bordered table-striped table-story-close sticky-notes-disabled" ng-if="backlog.stories.length > 0">
                 <tr>
                     <th class="text-center">${message(code: 'is.story')}</th>
                     <th class="text-center">{{:: storyStatesByName.DONE | i18n: 'StoryStates' }}</th>
