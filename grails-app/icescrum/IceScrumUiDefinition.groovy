@@ -64,7 +64,7 @@ windows = {
         }
         exportFormats = {
             [
-                    [name: message(code: 'is.report.format.postits'), action: 'printPostits', params: [project: params.project]],
+                    [name: message(code: 'is.report.format.stickynotes'), action: 'printPostits', params: [project: params.project]],
                     [name: message(code: 'is.report.format.pdf'), params: [project: params.project]],
                     [name: message(code: 'is.report.format.rtf'), params: [project: params.project, format: 'RTF']],
                     [name: message(code: 'is.report.format.docx'), params: [project: params.project, format: 'DOCX']],
@@ -129,8 +129,8 @@ windows = {
         }
         exportFormats = {
             [
-                    [name: "${message(code: 'todo.is.ui.stories')} - ${message(code: 'is.report.format.postits')}", action: "printPostits", resource: 'story', params: ["project": params.project]],
-                    [name: "${message(code: 'todo.is.ui.tasks')} - ${message(code: 'is.report.format.postits')}", action: "printPostits", resource: 'task', params: ["project": params.project]]
+                    [name: "${message(code: 'todo.is.ui.stories')} - ${message(code: 'is.report.format.stickynotes')}", action: "printPostits", resource: 'story', params: ["project": params.project]],
+                    [name: "${message(code: 'todo.is.ui.tasks')} - ${message(code: 'is.report.format.stickynotes')}", action: "printPostits", resource: 'task', params: ["project": params.project]]
             ]
         }
     }
