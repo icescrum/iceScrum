@@ -87,7 +87,7 @@
                             <button type="button"
                                     class="btn btn-secondary hidden-xs hidden-sm"
                                     defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                                    ng-click="setPostitSize(viewName)"><i class="fa" ng-class="iconCurrentPostitSize(viewName)"></i>
+                                    ng-click="setStickyNoteSize(viewName)"><i class="fa" ng-class="iconCurrentStickyNoteSize(viewName)"></i>
                             </button>
                             <button type="button"
                                     class="btn btn-secondary hidden-xs"
@@ -164,7 +164,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="postits {{ postitClass }}"
+                        <td class="postits {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
                             ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                             ng-init="taskType = taskTypesByName.URGENT"
@@ -215,7 +215,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="postits {{ postitClass }}"
+                        <td class="postits {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
                             ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                             ng-init="taskType = taskTypesByName.RECURRENT"
@@ -286,7 +286,7 @@
                         </td>
                     </tr>
                     <tr ng-class="{'is-selected': isSelected(story)}" ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
-                        <td class="postits {{ postitClass }}"
+                        <td class="postits {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
@@ -334,7 +334,7 @@
                         </td>
                     </tr>
                     <tr ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
-                        <td class="postits {{ postitClass }}"
+                        <td class="postits {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, story, true), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable

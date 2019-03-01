@@ -753,7 +753,7 @@ extensibleController('storyMultipleCtrl', ['$scope', '$controller', '$filter', '
     refreshStories();
 }]);
 
-extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', 'postitSize', 'screenSize', 'project', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName, postitSize, screenSize, project) {
+extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controller', 'Session', 'StoryService', 'FeatureService', 'hotkeys', 'StoryStatesByName', 'stickyNoteSize', 'screenSize', 'project', function($scope, $state, $timeout, $controller, Session, StoryService, FeatureService, hotkeys, StoryStatesByName, stickyNoteSize, screenSize, project) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Functions
     $scope.resetStoryForm = function() {
@@ -806,15 +806,15 @@ extensibleController('storyNewCtrl', ['$scope', '$state', '$timeout', '$controll
         allowIn: ['INPUT'],
         callback: $scope.resetStoryForm
     });
-    var getStandalonePostitClass = function() {
-        $scope.postitClass = postitSize.standalonePostitClass($scope.viewName, 'grid-group size-sm');
+    var getStandaloneStickyNoteClass = function() {
+        $scope.stickyNoteClass = stickyNoteSize.standaloneStickyNoteClass($scope.viewName, 'grid-group size-sm');
     };
-    getStandalonePostitClass();
-    screenSize.on('xs, sm', getStandalonePostitClass, $scope);
-    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getStandalonePostitClass);
+    getStandaloneStickyNoteClass();
+    screenSize.on('xs, sm', getStandaloneStickyNoteClass, $scope);
+    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, getStandaloneStickyNoteClass);
 }]);
 
-controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 'postitSize', 'screenSize', function($controller, $scope, $filter, postitSize, screenSize) {
+controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 'stickyNoteSize', 'screenSize', function($controller, $scope, $filter, stickyNoteSize, screenSize) {
     $controller('storyCtrl', {$scope: $scope}); // inherit from storyCtrl
     // Don't use orderBy filter on ng-repeat because it triggers sort on every single digest on the page, which happens all the time...
     // We are only interested in story updates
@@ -823,12 +823,12 @@ controllers.controller('storyBacklogCtrl', ['$controller', '$scope', '$filter', 
     };
     $scope.$watch('backlog.stories', updateOrder, true);
     $scope.$watch('orderBy', updateOrder, true);
-    var getPostitClass = function() {
-        $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
+    var getStickyNoteClass = function() {
+        $scope.stickyNoteClass = stickyNoteSize.stickyNoteClass($scope.viewName, 'grid-group size-sm');
     };
-    getPostitClass();
-    screenSize.on('xs, sm', getPostitClass, $scope);
-    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
+    getStickyNoteClass();
+    screenSize.on('xs, sm', getStickyNoteClass, $scope);
+    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, getStickyNoteClass);
     // Hack to provide all the lists of stories to the current view
     // So it can look for previous / next story from a details view
     if ($scope.storyListGetters) {

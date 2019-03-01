@@ -51,7 +51,7 @@ var extensibleController = function(appControllerName, controllerArray) {
     controllers.controller(appControllerName, newControllerArray);
 };
 
-extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', 'Session', 'UserService', 'postitSize', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout, Session, UserService, postitSize) {
+extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$uibModal', 'SERVER_ERRORS', 'Fullscreen', 'notifications', '$http', '$window', '$timeout', 'Session', 'UserService', 'stickyNoteSize', function($controller, $scope, $state, $uibModal, SERVER_ERRORS, Fullscreen, notifications, $http, $window, $timeout, Session, UserService, stickyNoteSize) {
     $controller('headerCtrl', {$scope: $scope});
     // Functions
     $scope.displayDetailsView = function() {
@@ -138,14 +138,14 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
         $scope.application.isFullScreen = !$scope.application.isFullScreen;
     };
     // Postit size
-    $scope.currentPostitSize = function(viewName, defaultSize) {
-        return postitSize.currentPostitSize(viewName, defaultSize);
+    $scope.currentStickyNoteSize = function(viewName, defaultSize) {
+        return stickyNoteSize.currentStickyNoteSize(viewName, defaultSize);
     };
-    $scope.iconCurrentPostitSize = function(viewName) {
-        return postitSize.iconCurrentPostitSize(viewName);
+    $scope.iconCurrentStickyNoteSize = function(viewName) {
+        return stickyNoteSize.iconCurrentStickyNoteSize(viewName);
     };
-    $scope.setPostitSize = function(viewName) {
-        postitSize.setPostitSize(viewName);
+    $scope.setStickyNoteSize = function(viewName) {
+        stickyNoteSize.setStickyNoteSize(viewName);
     };
     $scope.goToHome = function() {
         window.location.href = $scope.serverUrl;

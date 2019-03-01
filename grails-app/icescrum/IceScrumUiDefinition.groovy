@@ -214,7 +214,7 @@ widgets = {
         secured 'isAuthenticated()'
         ngController 'taskWidgetCtrl'
         defaultSettings = [
-                postitSize: 'list-group'
+                stickyNoteSize: 'list-group'
         ]
     }
     'quickProjects' {

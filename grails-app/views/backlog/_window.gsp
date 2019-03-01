@@ -62,7 +62,7 @@
                 <button type="button"
                         class="btn btn-secondary hidden-xs hidden-sm"
                         defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                        ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
+                        ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
                 </button>
                 <button type="button"
                         class="btn btn-secondary hidden-xs"
@@ -154,7 +154,7 @@
             </div>
             <div class="card-body" ng-class="{'loading': !backlogContainer.storiesLoaded}">
                 <div class="loading-logo" ng-include="'loading.html'"></div>
-                <div class="postits {{ postitClass }}"
+                <div class="postits {{ stickyNoteClass }}"
                      ng-class="{'has-selected': hasSelected(), 'sortable-moving': application.sortableMoving}"
                      ng-controller="storyBacklogCtrl"
                      as-sortable="backlogSortableOptions | merge: sortableScrollOptions()"

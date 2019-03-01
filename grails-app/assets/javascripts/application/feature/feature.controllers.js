@@ -23,7 +23,7 @@
  *
  */
 
-extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', 'postitSize', 'screenSize', function($scope, $controller, $filter, FormService, FeatureService, postitSize, screenSize) {
+extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormService', 'FeatureService', 'stickyNoteSize', 'screenSize', function($scope, $controller, $filter, FormService, FeatureService, stickyNoteSize, screenSize) {
     $controller('tagCtrl', {$scope: $scope, type: 'feature'});
     // Functions
     $scope.authorizedFeature = FeatureService.authorizedFeature;
@@ -56,12 +56,12 @@ extensibleController('featureCtrl', ['$scope', '$controller', '$filter', 'FormSe
         }
     ];
     // Init
-    var getPostitClass = function() {
-        $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
+    var getStickyNoteClass = function() {
+        $scope.stickyNoteClass = stickyNoteSize.stickyNoteClass($scope.viewName, 'grid-group size-sm');
     };
-    getPostitClass();
-    screenSize.on('xs, sm', getPostitClass, $scope);
-    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
+    getStickyNoteClass();
+    screenSize.on('xs, sm', getStickyNoteClass, $scope);
+    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, getStickyNoteClass);
 }]);
 
 controllers.controller('featureDetailsCtrl', ['$scope', '$state', '$controller', 'FeatureStatesByName', 'FeatureService', 'FormService', 'detailsFeature', 'StoryStatesByName', 'features', 'project', function($scope, $state, $controller, FeatureStatesByName, FeatureService, FormService, detailsFeature, StoryStatesByName, features, project) {

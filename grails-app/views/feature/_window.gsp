@@ -82,7 +82,7 @@
                             <button type="button"
                                     class="btn btn-secondary hidden-xs hidden-sm"
                                     defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                                    ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
+                                    ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
                             </button>
                             <button type="button"
                                     class="btn btn-secondary hidden-xs"
@@ -129,7 +129,7 @@
                         ${message(code: 'todo.is.ui.feature.new')}
                     </a>
                 </div>
-                <div class="postits {{ postitClass }}"
+                <div class="postits {{ stickyNoteClass }}"
                      ng-class="{'has-selected': hasSelected() }"
                      ng-controller="featureCtrl"
                      as-sortable="featureSortableOptions | merge: sortableScrollOptions()"

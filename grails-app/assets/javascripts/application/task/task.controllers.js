@@ -75,7 +75,7 @@ extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session
     $scope.sortableId = 'story-tasks';
 }]);
 
-extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'FormService', 'TaskStatesByName', 'StoryStatesByName', 'postitSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, FormService, TaskStatesByName, StoryStatesByName, postitSize, screenSize) {
+extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'FormService', 'TaskStatesByName', 'StoryStatesByName', 'stickyNoteSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, FormService, TaskStatesByName, StoryStatesByName, stickyNoteSize, screenSize) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -196,12 +196,12 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             }
         }
     };
-    var getPostitClass = function() {
-        $scope.postitClass = postitSize.postitClass($scope.viewName, 'grid-group size-sm');
+    var getStickyNoteClass = function() {
+        $scope.stickyNoteClass = stickyNoteSize.stickyNoteClass($scope.viewName, 'grid-group size-sm');
     };
-    getPostitClass();
-    screenSize.on('xs, sm', getPostitClass, $scope);
-    $scope.$watch(function() { return postitSize.currentPostitSize($scope.viewName); }, getPostitClass);
+    getStickyNoteClass();
+    screenSize.on('xs, sm', getStickyNoteClass, $scope);
+    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, getStickyNoteClass);
     $scope.storyStatesByName = StoryStatesByName;
 }]);
 

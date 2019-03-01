@@ -980,32 +980,32 @@ services.service('TagService', ['FormService', function(FormService) {
     }
 }]);
 
-services.service('postitSize', ['screenSize', '$localStorage', function(screenSize, $localStorage) {
-    this.postitClass = function(viewName, defaultSize) {
-        return screenSize.is('xs, sm') ? 'list-group' : this.currentPostitSize(viewName, defaultSize);
+services.service('stickyNoteSize', ['screenSize', '$localStorage', function(screenSize, $localStorage) {
+    this.stickyNoteClass = function(viewName, defaultSize) {
+        return screenSize.is('xs, sm') ? 'list-group' : this.currentStickyNoteSize(viewName, defaultSize);
     };
-    this.standalonePostitClass = function(viewName, defaultSize) {
+    this.standaloneStickyNoteClass = function(viewName, defaultSize) {
         if (screenSize.is('xs, sm')) {
             return 'grid-group size-xs';
         } else {
-            var selectedSize = this.currentPostitSize(viewName, defaultSize);
+            var selectedSize = this.currentStickyNoteSize(viewName, defaultSize);
             return (selectedSize == 'list-group') ? 'grid-group size-l' : selectedSize;
         }
     };
-    this.currentPostitSize = function(viewName, defaultSize) {
+    this.currentStickyNoteSize = function(viewName, defaultSize) {
         var contextSizeName = viewName + 'PostitSize';
         if (defaultSize && !$localStorage[contextSizeName]) {
             $localStorage[contextSizeName] = defaultSize;
         }
         return screenSize.is('xs, sm') ? 'list-group' : $localStorage[contextSizeName];
     };
-    this.cleanPostitSize = function(viewName) {
+    this.cleanStickyNoteSize = function(viewName) {
         var contextSizeName = viewName + 'PostitSize';
         delete $localStorage[contextSizeName];
     };
-    this.iconCurrentPostitSize = function(viewName) {
+    this.iconCurrentStickyNoteSize = function(viewName) {
         var icon;
-        switch (this.currentPostitSize(viewName)) {
+        switch (this.currentStickyNoteSize(viewName)) {
             case 'grid-group size-l':
                 icon = 'fa-sticky-note fa-xl';
                 break;
@@ -1024,9 +1024,9 @@ services.service('postitSize', ['screenSize', '$localStorage', function(screenSi
         }
         return icon;
     };
-    this.setPostitSize = function(viewName) {
+    this.setStickyNoteSize = function(viewName) {
         var next;
-        switch (this.currentPostitSize(viewName)) {
+        switch (this.currentStickyNoteSize(viewName)) {
             case 'grid-group size-l':
                 next = 'grid-group size-sm';
                 break;

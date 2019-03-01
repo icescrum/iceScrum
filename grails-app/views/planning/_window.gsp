@@ -46,7 +46,7 @@
                     <button type="button"
                             class="btn btn-secondary hidden-xs hidden-sm"
                             defer-tooltip="${message(code: 'todo.is.ui.postit.size')}"
-                            ng-click="setPostitSize(viewName)"><i class="fa {{ iconCurrentPostitSize(viewName) }}"></i>
+                            ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
                     </button>
                     <button type="button"
                             class="btn btn-secondary hidden-xs"
@@ -108,7 +108,7 @@
                 </h3>
             </div>
             <div class="card-body">
-                <div class="postits {{ postitClass }}"
+                <div class="postits {{ stickyNoteClass }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"
                      as-sortable="sprintSortableOptions | merge: sortableScrollOptions()"

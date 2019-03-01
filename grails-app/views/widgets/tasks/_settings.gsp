@@ -22,17 +22,17 @@
 --}%
 <div class="radio">
     <label>
-        <input name="postitSize"
+        <input name="stickyNoteSize"
                value="list-group"
                type="radio"
-               ng-model="widget.settings.postitSize"/> ${message(code: 'todo.is.ui.list')}
+               ng-model="widget.settings.stickyNoteSize"/> ${message(code: 'todo.is.ui.list')}
     </label>
 </div>
 <div class="radio">
     <label>
-        <input name="postitSize"
+        <input name="stickyNoteSize"
                value="grid-group size-sm"
                type="radio"
-               ng-model="widget.settings.postitSize"/> ${message(code: 'todo.is.ui.postit')}
+               ng-model="widget.settings.stickyNoteSize"/> ${message(code: 'todo.is.ui.postit')}
     </label>
 </div>

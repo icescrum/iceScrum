@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="task.light.html">
 <div postit-color="{{:: task.color }}"
      class="postit"
-     ng-class=":: ['task', application.postitSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]"
+     ng-class=":: ['task', application.stickyNoteSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]"
      ng-controller="taskCtrl">
     <div>
         <div class="head">
