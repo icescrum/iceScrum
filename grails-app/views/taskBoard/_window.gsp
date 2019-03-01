@@ -142,29 +142,29 @@
                 {{ currentSprintFilter.name }}
                 (<strong><a href class="link" ng-click="changeSprintFilter(getDefaultFilter())">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
-            <table class="table" selectable="selectableOptions" sticky-list="#tasks-board">
-                <thead>
-                    <tr class="table-header sticky-header sticky-stack">
-                        <th ng-if="sprint.state != sprintStatesByName.DONE">
+            <div selectable="selectableOptions" sticky-list="#tasks-board">
+                <div>
+                    <div>
+                        <div ng-if="sprint.state != sprintStatesByName.DONE">
                             <span>${message(code: 'is.task.state.wait')} ({{ taskCountByState[taskStatesByName.TODO] | orElse:0 }})</span>
-                        </th>
-                        <th ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
+                        </div>
+                        <div ng-if="sprint.state == sprintStatesByName.IN_PROGRESS">
                             <span>${message(code: 'is.task.state.inprogress')} ({{ taskCountByState[taskStatesByName.IN_PROGRESS] | orElse:0 }})</span>
-                        </th>
-                        <th ng-if="sprint.state != sprintStatesByName.TODO">
+                        </div>
+                        <div ng-if="sprint.state != sprintStatesByName.TODO">
                             <span>${message(code: 'is.task.state.done')} ({{ taskCountByState[taskStatesByName.DONE] | orElse:0 }})</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="task-type"
+                        </div>
+                    </div>
+                </div>
+                <div class="task-type"
                        ng-if="authorizedTask('showUrgent')">
-                    <tr class="sticky-header">
-                        <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
+                    <div>
+                        <div colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                             <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')} ({{ taskCountByType[taskTypesByName.URGENT] | orElse:0 }})</h3>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="sticky-notes {{ stickyNoteClass }}"
+                        </div>
+                    </div>
+                    <div>
+                        <div class="sticky-notes {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
                             ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                             ng-init="taskType = taskTypesByName.URGENT"
@@ -204,18 +204,18 @@
                                     </a>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody class="task-type"
+                        </div>
+                    </div>
+                </div>
+                <div class="task-type"
                        ng-if="authorizedTask('showRecurrent')">
-                    <tr class="sticky-header">
-                        <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
+                    <div>
+                        <div colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                             <h3 class="title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] | orElse:0 }})</h3>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="sticky-notes {{ stickyNoteClass }}"
+                        </div>
+                    </div>
+                    <div>
+                        <div class="sticky-notes {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
                             ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                             ng-init="taskType = taskTypesByName.RECURRENT"
@@ -271,22 +271,22 @@
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody ng-repeat="story in sprint.stories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'rank'" ng-class="{'story-done': story.state == storyStatesByName.DONE }">
-                    <tr class="sticky-header list-group">
-                        <td colspan="3"
+                        </div>
+                    </div>
+                </div>
+                <div ng-repeat="story in sprint.stories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'rank'" ng-class="{'story-done': story.state == storyStatesByName.DONE }">
+                    <div class="list-group">
+                        <div colspan="3"
                             class="sticky-note-container sticky-note-story"
                             ng-controller="storyCtrl"
                             ng-click="selectStory($event, story.id)"
                             is-watch="story"
                             ng-class="{'is-selected': isSelected(story)}">
                             <div ng-include="'story.html'" ng-init="disabledGradient = true"></div>
-                        </td>
-                    </tr>
-                    <tr ng-class="{'is-selected': isSelected(story)}" ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
-                        <td class="sticky-notes {{ stickyNoteClass }}"
+                        </div>
+                    </div>
+                    <div ng-class="{'is-selected': isSelected(story)}" ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                        <div class="sticky-notes {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable="taskSortableOptions | merge: sortableScrollOptions('tbody')"
@@ -324,17 +324,17 @@
                                     </a>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody ng-repeat="story in ghostStories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'id'" class="story-ghost">
-                    <tr class="sticky-header list-group">
-                        <td colspan="3" class="sticky-note-container sticky-note-story" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
+                        </div>
+                    </div>
+                </div>
+                <div ng-repeat="story in ghostStories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'id'" class="story-ghost">
+                    <div class="list-group">
+                        <div colspan="3" class="sticky-note-container sticky-note-story" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
                             <div ng-include="'story.light.html'" ng-init="disabledGradient = true"></div>
-                        </td>
-                    </tr>
-                    <tr ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
-                        <td class="sticky-notes {{ stickyNoteClass }}"
+                        </div>
+                    </div>
+                    <div ng-style="{'border-left': '19px solid ' + (story.feature ? story.feature.color : '#f9f157')}">
+                        <div class="sticky-notes {{ stickyNoteClass }}"
                             ng-class="{'show-tasks':!tasksShown(taskState, story, true), 'has-selected' : hasSelected()}"
                             ng-model="tasksByStoryByState[story.id][taskState]"
                             as-sortable
@@ -363,11 +363,11 @@
                                     </button>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tr ng-if="sprint.stories.length == 0 && sprint.state < sprintStatesByName.DONE">
-                    <td colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="sprint.stories.length == 0 && sprint.state < sprintStatesByName.DONE">
+                    <div colspan="{{ sprint.state != sprintStatesByName.IN_PROGRESS ? 1 : 3 }}">
                         <div class="empty-view">
                             <p class="form-text">${message(code: 'todo.is.ui.story.empty.taskBoard')}</p>
                             <a class="btn btn-secondary"
@@ -375,9 +375,9 @@
                                 <i class="fa fa-inbox"></i> ${message(code: 'todo.is.ui.planning')}
                             </a>
                         </div>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div ng-if="!sprint"
