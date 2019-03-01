@@ -25,7 +25,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-header-title">
+                    <span class="card-title">
                         {{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
                     </span>
                     <div class="btn-toolbar float-right visible-on-hover">
@@ -81,7 +81,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <span class="card-header-title">
+                    <span class="card-title">
                         ${message(code: 'is.ui.project.vision.title')}
                     </span>
                     <a class="btn btn-secondary btn-sm float-right visible-on-hover"
@@ -96,7 +96,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <span class="card-header-title">
+                    <span class="card-title">
                         ${message(code: 'is.ui.project.doneDefinition.title')}
                     </span>
                     <a class="btn btn-secondary btn-sm float-right visible-on-hover"
@@ -111,7 +111,7 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <span class="card-header-title">
+                    <span class="card-title">
                         ${message(code: 'is.ui.project.retrospective.title')}
                     </span>
                     <a class="btn btn-secondary btn-sm float-right visible-on-hover"
@@ -133,7 +133,7 @@
                  flow-drag-leave="dropClass='card'"
                  ng-class="authorizedProject('upload', project) && dropClass">
                 <div class="card-header">
-                    <span class="card-header-title">
+                    <span class="card-title">
                         ${message(code: 'is.ui.project.attachment.title')}
                     </span>
                 </div>
@@ -158,7 +158,7 @@
         <div class="col-md-6">
             <div class="card" ng-controller="chartCtrl">
                 <div class="card-header" ng-controller="projectChartCtrl">
-                    <span class="card-header-title">
+                    <span class="card-title">
                         ${message(code: 'is.ui.project.chart.title')}
                     </span>
                     <div class="btn-toolbar float-right">
@@ -224,7 +224,7 @@
             <entry:point id="project-dashboard-top-right"/>
             <div class="card">
                 <div class="card-header">
-                    <span class="card-header-title">
+                    <span class="card-title">
                         ${message(code: 'todo.is.ui.history')}
                     </span>
                     <small class="float-right">

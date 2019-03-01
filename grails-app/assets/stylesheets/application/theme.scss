@@ -27,6 +27,8 @@ $is-shadow-color-2: rgba(156, 164, 171, 0.62);
 $is-primary-color: #0067e8;
 $is-outline-color: #c8c8cc;
 $is-font-size-sm: 0.875rem;
+$is-border-color: #d3d8de;
+$is-shadox-color-3: rgba(62, 57, 107, 0.07);
 
 $is-state-colors: (
         "todo": #AAAAAA,
@@ -325,6 +327,15 @@ form label {
   }
 }
 
+.view.flex { // TODO check that it is the right way
+  margin-left: -($grid-gutter-width/2);
+  margin-right: -($grid-gutter-width/2);
+}
+
+.backlogs-list-details {
+  display: flex;
+}
+
 ////////////////////
 // iceScrum style
 ////////////////////
@@ -346,15 +357,11 @@ form label {
     padding-left: 0;
     padding-right: 0;
     background: none;
-
-    .card-header-title {
-      @extend %is-title;
-    }
   }
 
   .card-body {
     border-radius: 0.375rem;
-    box-shadow: 0 0.125rem 0.5625rem 0 rgba(62, 57, 107, 0.07);
+    box-shadow: 0 0.125rem 0.5625rem 0 $is-shadox-color-3;
     background-color: $is-bg-color;
   }
 }
@@ -383,6 +390,20 @@ form label {
   }
 }
 
+.card-title {
+  @extend %is-title;
+}
+
+.card-view {
+  border-top: solid 1px $is-border-color;
+  background-color: transparent;
+
+  .card-header {
+    background-color: $is-bg-color;
+    box-shadow: 0 0.125rem 0.5625rem 0 $is-shadox-color-3;
+  }
+}
+
 [ui-view="details"] .card {
   .card-header {
     background-color: $is-bg-color-alt;
@@ -390,7 +411,7 @@ form label {
 
   .card-footer {
     background-color: $is-bg-color;
-    border-top: solid 1px #d3d8de;
+    border-top: solid 1px $is-border-color;
 
     .btn-toolbar {
       justify-content: flex-end;
@@ -408,10 +429,12 @@ form label {
 
 .modal-split .modal-body {
   padding: 0 ($grid-gutter-width / 2);
+
   .modal-split-left, .modal-split-right {
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
+
   .modal-split-left {
     background-color: $is-bg-color-alt;
   }

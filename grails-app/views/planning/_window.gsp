@@ -76,7 +76,7 @@
              ng-repeat="sprint in visibleSprints"
              ng-controller="sprintBacklogCtrl">
             <div class="card-header">
-                <h3 class="card-title small-title">
+                <div class="card-title">
                     <div class="float-left">
                         <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
                         <br/>
@@ -105,7 +105,7 @@
                                defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                         </a>
                     </div>
-                </h3>
+                </div>
             </div>
             <div class="card-body">
                 <div class="sticky-notes {{ stickyNoteClass }}"
