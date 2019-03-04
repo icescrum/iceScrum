@@ -1,0 +1,167 @@
+/**
+- Copyright (c) 2019 Kagilum SAS.
+-
+- This file is part of iceScrum.
+-
+- iceScrum is free software: you can redistribute it and/or modify
+- it under the terms of the GNU Affero General Public License as published by
+- the Free Software Foundation, either version 3 of the License.
+-
+- iceScrum is distributed in the hope that it will be useful,
+- but WITHOUT ANY WARRANTY; without even the implied warranty of
+- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Affero General Public License
+- along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+-
+- Authors:
+-
+- Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
+**/
+
+@font-face {
+  font-family: 'averta-regular';
+  src: url('./fonts/averta-regular.woff2') format('woff2')
+}
+
+@font-face {
+  font-family: 'averta-bold';
+  src: url('./fonts/averta-bold.woff2') format('woff2')
+}
+
+html, body {
+  font-family: averta-regular;
+}
+
+strong {
+  font-family: averta-bold;
+}
+
+.btn {
+  font-size: 0.9375rem;
+  font-family: averta-bold;
+  border: none;
+}
+
+.btn-primary {
+  text-shadow: 0 0.125rem 0.25rem #054ca6;
+
+  &:hover {
+    background-color: $primary;
+    box-shadow: 0 0.5rem 1.75rem 0 rgba(0, 103, 232, 0.44);
+  }
+
+  &:not(:disabled):not(.disabled):active {
+    background-color: $primary;
+  }
+
+  &.btn-sm {
+    color: $primary;
+    text-shadow: none;
+    background-image: linear-gradient(to top, $is-btn-secondary-start, $is-bg-color);
+    box-shadow: 0 1px 0.1875rem 0 $is-shadow-color-2;
+
+    &:hover {
+      background-image: linear-gradient(to top, $is-btn-secondary-start, $is-bg-color);
+    }
+
+    &:not(:disabled):not(.disabled):active {
+      color: $primary;
+    }
+  }
+}
+
+.btn-secondary {
+  color: $is_text-color-alt;
+  box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-1;
+  background-image: linear-gradient(to top, $is-btn-secondary-start, $is-bg-color);
+
+  &:hover {
+    background-color: $is-bg-color;
+    box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
+  }
+
+  &.btn-sm {
+    box-shadow: 0 0 0 1px $is-outline-color inset; // Simulate border
+    font-family: averta-regular;
+    text-shadow: none;
+    background: none;
+
+    &:hover, &:not(:disabled):not(.disabled):active {
+      background-color: $is-bg-color;
+    }
+  }
+}
+
+.btn-sm {
+  font-size: $is-font-size-sm;
+  line-height: 1.6;
+
+  &:hover {
+    box-shadow: 0 0.5rem 1.75rem 0 $is-shadow-color-1;
+  }
+}
+
+form label {
+  font-size: $is-font-size-sm;
+  font-weight: 600;
+}
+
+.form-control, .nav-item {
+  font-size: $is-font-size-sm;
+}
+
+.nav-link.active, .navbar-nav .active .nav-link {
+  font-family: averta-bold;
+}
+
+//https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
+.dropdown.open .dropdown-menu {
+  display: block;
+}
+
+// Emulating bootstrap 3 toolbar (TODO check if good approach)
+.btn-toolbar {
+  margin-left: 0.625rem; // Offset the first child's margin
+  > .btn,
+  > .btn-group,
+  > .input-group {
+    margin-left: 0.625rem;
+  }
+}
+
+.nav-fill .nav-item {
+  text-align: left;
+}
+
+.nav-link.disabled {
+  pointer-events: none;
+}
+
+.modal-content {
+  box-shadow: 0 2.625rem 3rem 0 rgba(8, 12, 29, 0.21);
+}
+
+.modal-title {
+  @extend %is-title;
+}
+
+.modal-header {
+  padding-left: 1.625rem;
+  padding-right: 1.625rem;
+
+  .close {
+    padding: 0;
+    margin: 0.3125rem 0 0 0;
+    opacity: 1;
+    width: 1.25rem;
+    height: 1.25rem;
+    @include img-retina('close.png', 'close@2x.png', 1.25rem, 1.25rem);
+
+    &:not(:disabled):not(.disabled):hover, &:not(:disabled):not(.disabled):focus {
+      opacity: 1;
+    }
+  }
+}
