@@ -41,17 +41,18 @@
                             <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                                  class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                                 <div class="head">
-                                    <span class="id">{{ topStory.uid }}</span>
                                     <a class="follow active"
                                        defer-tooltip="{{ topStory.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}">
                                         <i class="fa" ng-class="topStory | followedByUser:'fa-star':'fa-star-o'"></i>
                                     </a>
+                                    <span class="id">{{ topStory.uid }}</span>
                                 </div>
                                 <div class="content">
                                     <div class="item-values">
                                         <span ng-if="topStory.state > 1">@
                                             ${message(code: 'is.story.effort')} <strong>{{ topStory.effort != undefined ? topStory.effort : '?' }}</strong>
                                         </span>
+                                        <span ng-if="topStory.state > 1 && topStory.value"> | </span>
                                         <span ng-if="topStory.value">
                                             ${message(code: 'is.story.value')} <strong>{{ topStory.value }}</strong>
                                         </span>

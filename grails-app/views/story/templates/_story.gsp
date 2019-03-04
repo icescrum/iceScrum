@@ -27,7 +27,6 @@
      ng-class=":: [((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
         <div class="head">
-            <span class="id">{{:: story.uid }}</span>
             <a href
                class="follow {{:: story | followedByUser:'active' }}"
                defer-tooltip="{{:: story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
@@ -36,6 +35,7 @@
                 <i class="fa fa-star-o"></i>
             </a>
             <entry:point id="story-head"/>
+            <span class="id">{{:: story.uid }}</span>
         </div>
         <div class="content" ng-class="::{'has-description':!!story.description}">
             <div class="item-values">
@@ -43,6 +43,7 @@
                       ng-click="showEditEffortModal(story, $event)">
                     ${message(code: 'is.story.effort')} <strong>{{:: story.effort != undefined ? story.effort : '?' }}</strong>
                 </span>
+                <span ng-if=":: story.state > 1 && story.value"> | </span>
                 <span ng-click="showEditValueModal(story, $event)"
                       ng-if=":: story.value">
                     ${message(code: 'is.story.value')} <strong>{{:: story.value }}</strong>

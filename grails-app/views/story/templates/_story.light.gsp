@@ -26,12 +26,12 @@
      class="sticky-note story {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div>
         <div class="head">
-            <span class="id">{{ ::story.uid }}</span>
             <a href
                class="follow {{:: story | followedByUser:'active' }}"
                defer-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
                ng-click="follow(story)"><i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i></a>
             <entry:point id="story-head"/>
+            <span class="id">{{ ::story.uid }}</span>
         </div>
         <div class="content" ng-class="{'has-description':!!story.description}">
             <div class="head-right">

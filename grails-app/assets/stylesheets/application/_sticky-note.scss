@@ -75,7 +75,7 @@
     .content {
       margin-top: 10px;
       height: 49px;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .actions {
@@ -91,6 +91,28 @@
   .sticky-note {
     width: $is-story-width;
     height: $is-story-heigth;
+
+    .head {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .content {
+      height: 73px;
+      margin-bottom: 9px;
+
+      .item-values {
+        height: 15px;
+      }
+
+      .title {
+        height: 24px;
+      }
+
+      .description {
+        height: 42px;
+      }
+    }
 
     .follow {
       .fa-star-o, &.active .fa-star {
@@ -135,7 +157,7 @@
       padding-left: 1px;
       padding-right: 1px;
       height: 44px;
-      margin-bottom: 5px;
+      margin-bottom: 9px;
 
       .item-values {
         font-size: 0.625rem;
@@ -167,8 +189,10 @@
     .description {
       display: none;
     }
+  }
 
-    &:hover {
+  &:hover {
+    .content.has-description {
       .item-values {
         display: none;
       }
@@ -201,15 +225,12 @@
     }
   }
 
-  .title {
-    @extend %ellipsis;
-  }
-
-  .description {
-    @extend %ellipsis;
+  .title, .description {
+    overflow: hidden;
   }
 
   .state-progress {
+    height: 15px;
     position: absolute;
     bottom: 0;
     right: 0;
@@ -241,13 +262,28 @@
     }
   }
 
+  &:hover .actions {
+    > .action * {
+      visibility: visible;
+    }
+  }
+
   .actions {
     font-size: 0.8125rem;
-
     display: flex;
     justify-content: space-between;
 
     .action {
+      > * {
+        visibility: hidden;
+      }
+
+      &.active {
+        > * {
+          visibility: visible;
+        }
+      }
+
       &.comments {
         .fa-comment-o, &.active .fa-comment {
           display: inline-block;
@@ -284,7 +320,7 @@
   }
 
   .tags {
-    height: 31px;
+    height: 27px;
 
     .tag {
       font-size: 0.625rem;
@@ -292,6 +328,11 @@
       border-radius: 2px;
       padding: 2px 3px;
       box-shadow: 0 1px 3px 0 rgba(156, 164, 171, 0.62);
+      color: $is_text-color-alt;
+
+      &.invert {
+        color: white;
+      }
     }
 
     .badge {
