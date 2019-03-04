@@ -315,6 +315,20 @@ form label {
 // Layout
 ////////////////////
 
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+nav.navbar {
+  flex: 0 0 auto;
+}
+
+.main {
+  flex: 1 0 auto;
+}
+
 .view.with-details {
   .content {
     float: left;
