@@ -27,22 +27,20 @@
      ng-class=":: ['task', application.stickyNoteSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]">
     <div as-sortable-item-handle="authorizedTask('rank', task)">
         <div class="head">
-            <div class="head-left">
-                <img ng-src="{{:: task.responsible | userAvatar }}"
-                     ng-if=":: task.responsible"
-                     ng-class="::['responsible', (task.responsible | userColorRoles)]"
-                     defer-tooltip="{{:: task.responsible | userFullName }}">
-                <span class="id">{{:: task.uid }}</span>
-            </div>
-            <div class="head-right">
+            <img ng-src="{{:: task.responsible | userAvatar }}"
+                 ng-if=":: task.responsible"
+                 ng-class="::['responsible', (task.responsible | userColorRoles)]"
+                 defer-tooltip="{{:: task.responsible | userFullName }}">
+            <span class="id">{{:: task.uid }}</span>
+        </div>
+        <div class="content">
+            <div class="item-values">
                 <span class="remaining-time editable"
                       ng-if=":: task.estimation != 0"
                       ng-click="showEditEstimationModal(task, $event)">
                     ${message(code: 'is.task.estimation')} {{:: task.estimation != undefined ? task.estimation : '?' }}
                 </span>
             </div>
-        </div>
-        <div class="content">
             <div class="title">{{:: task.name }}</div>
             <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>

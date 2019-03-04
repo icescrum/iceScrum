@@ -41,14 +41,14 @@
                             <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                                  class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
                                 <div class="head">
-                                    <div class="head-left">
-                                        <span class="id">{{ topStory.uid }}</span>
-                                        <a class="follow active"
-                                           defer-tooltip="{{ topStory.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}">
-                                            <i class="fa" ng-class="topStory | followedByUser:'fa-star':'fa-star-o'"></i>
-                                        </a>
-                                    </div>
-                                    <div class="head-right">
+                                    <span class="id">{{ topStory.uid }}</span>
+                                    <a class="follow active"
+                                       defer-tooltip="{{ topStory.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}">
+                                        <i class="fa" ng-class="topStory | followedByUser:'fa-star':'fa-star-o'"></i>
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <div class="item-values">
                                         <span class="value" ng-if="topStory.value">{{ topStory.value }}
                                             <i class="fa fa-line-chart"></i>
                                         </span>
@@ -57,9 +57,7 @@
                                             <i class="fa fa-dollar"></i>
                                         </span>
                                     </div>
-                                </div>
-                                <div class="content">
-                                    <h3 class="title">{{ topStory.name }}</h3>
+                                    <div class="title">{{ topStory.name }}</div>
                                     <div class="description"
                                          ng-bind-html="topStory.description | lineReturns | actorTag"></div>
                                 </div>

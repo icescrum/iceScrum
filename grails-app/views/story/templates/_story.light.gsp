@@ -26,16 +26,15 @@
      class="sticky-note story {{ ((story.feature ? story.feature.color : '#f9f157') | contrastColor) + ' ' + (story.type | storyType) }}">
     <div>
         <div class="head">
-            <div class="head-left">
-                <span class="id">{{ ::story.uid }}</span>
-                <a href
-                   class="follow {{:: story | followedByUser:'active' }}"
-                   defer-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
-                   ng-click="follow(story)"><i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i></a>
-                <entry:point id="story-head-left"/>
-            </div>
+            <span class="id">{{ ::story.uid }}</span>
+            <a href
+               class="follow {{:: story | followedByUser:'active' }}"
+               defer-tooltip="{{ story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
+               ng-click="follow(story)"><i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i></a>
+            <entry:point id="story-head"/>
+        </div>
+        <div class="content" ng-class="{'without-description':!story.description}">
             <div class="head-right">
-                <entry:point id="story-head-right"/>
                 <span class="value editable"
                       ng-click="showEditValueModal(story, $event)"
                       ng-if="story.value">
@@ -47,10 +46,8 @@
                     {{ story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" defer-tooltip="${message(code: 'is.story.effort')}"></i>
                 </span>
             </div>
-        </div>
-        <div class="content" ng-class="{'without-description':!story.description}">
-            <h3 class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;" ng-if="link">{{ story.name }}</a></h3>
-            <h3 class="title" ng-if="!link">{{ story.name }}</h3>
+            <div class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;" ng-if="link">{{ story.name }}</a></div>
+            <div class="title" ng-if="!link">{{ story.name }}</div>
             <div class="description"
                  ng-bind-html="story.description | lineReturns | actorTag"></div>
         </div>

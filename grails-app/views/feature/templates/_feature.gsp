@@ -27,18 +27,16 @@
      ng-class=":: [(feature.color | contrastColor), (feature.type | featureType)]">
     <div as-sortable-item-handle>
         <div class="head">
-            <div class="head-left">
-                <span class="id">{{:: feature.uid }}</span>
-            </div>
-            <div class="head-right">
+            <span class="id">{{:: feature.uid }}</span>
+        </div>
+        <div ng-class="::['content',{'without-description':!feature.description}]">
+            <div class="item-values">
                 <span class="value"
                       defer-tooltip="${message(code: 'is.feature.value')}"
                       ng-if="::feature.value">
                     {{:: feature.value }} <i class="fa fa-line-chart"></i>
                 </span>
             </div>
-        </div>
-        <div ng-class="::['content',{'without-description':!feature.description}]">
             <div class="title">{{:: feature.name }}</div>
             <div class="description"
                  ng-bind-html="::feature.description | lineReturns"></div>

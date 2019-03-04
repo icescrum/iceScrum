@@ -44,12 +44,10 @@
                     <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                          class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
                         <div class="head">
-                            <div class="head-left">
-                                <span class="id">42</span>
-                            </div>
+                            <span class="id">42</span>
                         </div>
                         <div class="content">
-                            <h3 class="title">{{ story.name }}</h3>
+                            <div class="title">{{ story.name }}</div>
                             <div class="description-template"
                                  ng-bind-html="storyPreview.description"></div>
                         </div>

@@ -27,19 +27,18 @@
      ng-class=":: [((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
         <div class="head">
-            <div class="head-left">
-                <span class="id">{{:: story.uid }}</span>
-                <a href
-                   class="follow {{:: story | followedByUser:'active' }}"
-                   defer-tooltip="{{:: story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
-                   ng-click="follow(story)">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star-o"></i>
-                </a>
-                <entry:point id="story-head-left"/>
-            </div>
-            <div class="head-right">
-                <entry:point id="story-head-right"/>
+            <span class="id">{{:: story.uid }}</span>
+            <a href
+               class="follow {{:: story | followedByUser:'active' }}"
+               defer-tooltip="{{:: story.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}"
+               ng-click="follow(story)">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-o"></i>
+            </a>
+            <entry:point id="story-head"/>
+        </div>
+        <div class="content" ng-class="::{'without-description':!story.description}">
+            <div class="item-values">
                 <span class="value editable"
                       ng-click="showEditValueModal(story, $event)"
                       ng-if=":: story.value">
@@ -51,8 +50,6 @@
                     {{:: story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" defer-tooltip="${message(code: 'is.story.effort')}"></i>
                 </span>
             </div>
-        </div>
-        <div class="content" ng-class="::{'without-description':!story.description}">
             <div class="title">{{:: story.name }}</div>
             <div class="description"
                  ng-bind-html=":: story.description | lineReturns | actorTag"></div>

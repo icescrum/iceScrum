@@ -40,7 +40,7 @@
       font-family: averta-bold;
     }
 
-    .head-right {
+    .item-values {
       font-size: 0.625rem;
     }
 
@@ -92,53 +92,68 @@
   height: $is-task-height;
 
   .sticky-note {
-    padding: 7px;
+    padding: 6px;
     width: $is-task-width;
     height: $is-task-height;
     border-radius: 6px;
 
-    .title {
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
+    .head {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
 
-    .id {
-      font-size: 0.8125rem;
-      font-weight: 600;
+      .id {
+        padding-right: 2px;
+        line-height: 17px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+      }
+
+      .responsible {
+        height: 17px;
+      }
     }
 
     .content {
       height: 44px;
+      margin-bottom: 5px;
+
+      .item-values {
+        font-size: 0.625rem;
+      }
 
       .title {
         line-height: 1.17;
-        height: 44px;
+        height: 28px;
+        font-size: 0.75rem;
+        font-weight: 600;
       }
 
       .description {
         line-height: 1.1;
         font-size: 0.625rem;
         height: 44px;
-        display: none;
       }
     }
+  }
+}
 
-    .head-right {
-      font-size: 0.625rem;
+.sticky-note-feature, .sticky-note-task {
+  .description {
+    display: none;
+  }
+
+  &:hover {
+    .item-values {
+      display: none;
     }
 
-    .responsible {
-      height: 17px;
+    .title {
+      display: none;
     }
 
-    &:hover {
-      .title {
-        display: none;
-      }
-
-      .description {
-        display: inline-block;
-      }
+    .description {
+      display: inline-block;
     }
   }
 }
@@ -243,11 +258,10 @@
   }
 
   .tags {
+    height: 31px;
 
     .tag {
-      height: 13px;
       font-size: 0.625rem;
-      line-height: 1.28;
       background: white;
       border-radius: 2px;
       padding: 2px 3px;

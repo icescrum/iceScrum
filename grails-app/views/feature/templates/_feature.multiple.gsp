@@ -41,16 +41,14 @@
                             <div ng-style="topFeature.color | createGradientBackground"
                                  class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
                                 <div class="head">
-                                    <div class="head-left">
-                                        <span class="id">{{ topFeature.uid }}</span>
-                                    </div>
-                                    <div class="head-right">
+                                    <span class="id">{{ topFeature.uid }}</span>
+                                </div>
+                                <div class="content">
+                                    <div class="item-values">
                                         <span class="estimation">
                                             {{ topFeature.value ? topFeature.value : '' }} <i class="fa fa-line-chart"></i>
                                         </span>
                                     </div>
-                                </div>
-                                <div class="content">
                                     <h3 class="title">{{ topFeature.name }}</h3>
                                     <div class="description"
                                          ng-bind-html="topFeature.description | lineReturns"></div>

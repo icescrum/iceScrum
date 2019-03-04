@@ -43,9 +43,7 @@
                     <div ng-style="feature.color | createGradientBackground"
                          class="sticky-note {{ feature.color | contrastColor }}">
                         <div class="head">
-                            <div class="head-left">
-                                <span class="id">42</span>
-                            </div>
+                            <span class="id">42</span>
                         </div>
                         <div class="content">
                             <h3 class="title">{{ feature.name }}</h3>

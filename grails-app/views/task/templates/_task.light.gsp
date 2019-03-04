@@ -28,10 +28,10 @@
      ng-controller="taskCtrl">
     <div>
         <div class="head">
-            <div class="head-left">
-                <span class="id">{{:: task.uid }}</span>
-            </div>
-            <div class="head-right">
+            <span class="id">{{:: task.uid }}</span>
+        </div>
+        <div class="content">
+            <div class="item-values">
                 <span class="remaining-time editable"
                       ng-if=":: task.estimation != 0"
                       ng-click="showEditEstimationModal(task, $event)"
@@ -39,9 +39,8 @@
                     {{:: task.estimation != undefined ? task.estimation : '?' }} <i ng-class="::['fa', (task.state | taskStateIcon)]"></i>
                 </span>
             </div>
-        </div>
-        <div class="content">
             <div class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{:: task.name }}</a></div>
+            <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>
         <div class="footer">
             <div class="tags">

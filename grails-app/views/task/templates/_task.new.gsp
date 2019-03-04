@@ -44,12 +44,10 @@
                     <div ng-style="'#f9f157' | createGradientBackground"
                          class="sticky-note sticky-note-sm {{ ('#f9f157' | contrastColor) }}">
                         <div class="head">
-                            <div class="head-left">
-                                <span class="id">42</span>
-                            </div>
+                            <span class="id">42</span>
                         </div>
                         <div class="content">
-                            <h3 class="title">{{ task.name }}</h3>
+                            <div class="title">{{ task.name }}</div>
                         </div>
                         <div class="tags"></div>
                         <div class="actions">
