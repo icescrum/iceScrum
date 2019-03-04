@@ -33,7 +33,7 @@
                ng-click="follow(story)"><i class="fa" ng-class="story | followedByUser:'fa-star':'fa-star-o'"></i></a>
             <entry:point id="story-head"/>
         </div>
-        <div class="content" ng-class="{'without-description':!story.description}">
+        <div class="content" ng-class="{'has-description':!!story.description}">
             <div class="head-right">
                 <span class="value editable"
                       ng-click="showEditValueModal(story, $event)"

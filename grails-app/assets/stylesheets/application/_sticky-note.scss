@@ -61,9 +61,26 @@
   height: $is-feature-height;
 
   .sticky-note {
-    width: 178px;
-    height: 157px;
+    width: $is-feature-width;
+    height: $is-feature-height;
     border-radius: 6px;
+    overflow: hidden;
+
+    .head {
+      display: flex;
+      justify-content: space-between;
+      line-height: 1;
+    }
+
+    .content {
+      margin-top: 10px;
+      height: 49px;
+      margin-bottom: 10px;
+    }
+
+    .actions {
+      justify-content: space-evenly;
+    }
   }
 }
 
@@ -115,6 +132,8 @@
     }
 
     .content {
+      padding-left: 1px;
+      padding-right: 1px;
       height: 44px;
       margin-bottom: 5px;
 
@@ -135,25 +154,32 @@
         height: 44px;
       }
     }
+
+    .tags {
+      padding-left: 1px;
+      padding-right: 1px;
+    }
   }
 }
 
 .sticky-note-feature, .sticky-note-task {
-  .description {
-    display: none;
-  }
-
-  &:hover {
-    .item-values {
-      display: none;
-    }
-
-    .title {
-      display: none;
-    }
-
+  .content.has-description {
     .description {
-      display: inline-block;
+      display: none;
+    }
+
+    &:hover {
+      .item-values {
+        display: none;
+      }
+
+      .title {
+        display: none;
+      }
+
+      .description {
+        display: inline-block;
+      }
     }
   }
 }

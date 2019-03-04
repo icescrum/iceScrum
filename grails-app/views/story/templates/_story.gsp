@@ -37,17 +37,15 @@
             </a>
             <entry:point id="story-head"/>
         </div>
-        <div class="content" ng-class="::{'without-description':!story.description}">
+        <div class="content" ng-class="::{'has-description':!!story.description}">
             <div class="item-values">
-                <span class="value editable"
-                      ng-click="showEditValueModal(story, $event)"
-                      ng-if=":: story.value">
-                    {{:: story.value }} <i class="fa fa-line-chart" defer-tooltip="${message(code: 'is.story.value')}"></i>
-                </span>
-                <span class="estimation editable"
-                      ng-if=":: story.state > 1"
+                <span ng-if=":: story.state > 1"
                       ng-click="showEditEffortModal(story, $event)">
-                    {{:: story.effort != undefined ? story.effort : '?' }} <i class="fa fa-dollar" defer-tooltip="${message(code: 'is.story.effort')}"></i>
+                    ${message(code: 'is.story.effort')} <strong>{{:: story.effort != undefined ? story.effort : '?' }}</strong>
+                </span>
+                <span ng-click="showEditValueModal(story, $event)"
+                      ng-if=":: story.value">
+                    ${message(code: 'is.story.value')} <strong>{{:: story.value }}</strong>
                 </span>
             </div>
             <div class="title">{{:: story.name }}</div>

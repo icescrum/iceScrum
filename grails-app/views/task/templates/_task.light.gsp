@@ -30,13 +30,11 @@
         <div class="head">
             <span class="id">{{:: task.uid }}</span>
         </div>
-        <div class="content">
+        <div class="content" ng-class="::{'has-description':!!task.description}">
             <div class="item-values">
-                <span class="remaining-time editable"
-                      ng-if=":: task.estimation != 0"
-                      ng-click="showEditEstimationModal(task, $event)"
-                      defer-tooltip="${message(code: 'is.task.estimation')}">
-                    {{:: task.estimation != undefined ? task.estimation : '?' }} <i ng-class="::['fa', (task.state | taskStateIcon)]"></i>
+                <span ng-if=":: task.estimation != 0"
+                      ng-click="showEditEstimationModal(task, $event)">
+                    ${message(code: 'is.task.estimation')} <strong>{{:: task.estimation != undefined ? task.estimation : '?' }}</strong>
                 </span>
             </div>
             <div class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{:: task.name }}</a></div>

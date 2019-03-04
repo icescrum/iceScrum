@@ -43,10 +43,10 @@
                                 <div class="head">
                                     <span class="id">{{ topFeature.uid }}</span>
                                 </div>
-                                <div class="content">
+                                <div class="content" ng-class="::{'has-description':!!feature.description}">
                                     <div class="item-values">
-                                        <span class="estimation">
-                                            {{ topFeature.value ? topFeature.value : '' }} <i class="fa fa-line-chart"></i>
+                                        <span ng-if="topFeature.value">
+                                            ${message(code: 'is.feature.value')} <strong>{{  topFeature.value }}</strong>
                                         </span>
                                     </div>
                                     <h3 class="title">{{ topFeature.name }}</h3>

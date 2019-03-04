@@ -33,10 +33,9 @@
                  defer-tooltip="{{:: task.responsible | userFullName }}">
             <span class="id">{{:: task.uid }}</span>
         </div>
-        <div class="content">
+        <div class="content" ng-class="::{'has-description':!!task.description}">
             <div class="item-values">
-                <span class="remaining-time editable"
-                      ng-if=":: task.estimation != 0"
+                <span ng-if=":: task.estimation != 0"
                       ng-click="showEditEstimationModal(task, $event)">
                     ${message(code: 'is.task.estimation')} {{:: task.estimation != undefined ? task.estimation : '?' }}
                 </span>

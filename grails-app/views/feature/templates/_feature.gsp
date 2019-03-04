@@ -29,12 +29,10 @@
         <div class="head">
             <span class="id">{{:: feature.uid }}</span>
         </div>
-        <div ng-class="::['content',{'without-description':!feature.description}]">
+        <div class="content" ng-class="::{'has-description':!!feature.description}">
             <div class="item-values">
-                <span class="value"
-                      defer-tooltip="${message(code: 'is.feature.value')}"
-                      ng-if="::feature.value">
-                    {{:: feature.value }} <i class="fa fa-line-chart"></i>
+                <span ng-if="::feature.value">
+                    ${message(code: 'is.feature.value')} <strong>{{:: feature.value }}</strong>
                 </span>
             </div>
             <div class="title">{{:: feature.name }}</div>
