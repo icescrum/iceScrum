@@ -78,6 +78,11 @@ $is-state-colors: (
   color: $is_text-color-alt;
 }
 
+%ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 ////////////////////
 // Override bootstrap variables
 ////////////////////

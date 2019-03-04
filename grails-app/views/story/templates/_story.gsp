@@ -22,7 +22,7 @@
 --}%
 
 <script type="text/ng-template" id="story.html">
-<div class="sticky-note story"
+<div class="sticky-note"
      sticky-note-color="{{:: story.feature.color }}"
      ng-class=":: [((story.feature ? story.feature.color : '#f9f157') | contrastColor), (story.type | storyType)]">
     <div as-sortable-item-handle>
@@ -53,8 +53,7 @@
             </div>
         </div>
         <div class="content" ng-class="::{'without-description':!story.description}">
-            <h3 class="title">{{:: story.name }}</h3>
-            <h3 class="title title-sm">{{:: story.name | ellipsis:45 }}</h3>
+            <div class="title">{{:: story.name }}</div>
             <div class="description"
                  ng-bind-html=":: story.description | lineReturns | actorTag"></div>
         </div>

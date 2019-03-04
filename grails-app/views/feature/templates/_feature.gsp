@@ -23,7 +23,7 @@
 
 <script type="text/ng-template" id="feature.html">
 <div sticky-note-color="{{:: feature.color }}"
-     class="sticky-note feature"
+     class="sticky-note"
      ng-class=":: [(feature.color | contrastColor), (feature.type | featureType)]">
     <div as-sortable-item-handle>
         <div class="head">
@@ -39,8 +39,7 @@
             </div>
         </div>
         <div ng-class="::['content',{'without-description':!feature.description}]">
-            <h3 class="title">{{:: feature.name }}</h3>
-            <h3 class="title title-sm">{{:: feature.name | ellipsis:45 }}</h3>
+            <div class="title">{{:: feature.name }}</div>
             <div class="description"
                  ng-bind-html="::feature.description | lineReturns"></div>
         </div>

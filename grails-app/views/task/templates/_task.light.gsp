@@ -41,8 +41,7 @@
             </div>
         </div>
         <div class="content">
-            <h3 class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{:: task.name }}</a></h3>
-            <h3 class="title title-sm"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{:: task.name | ellipsis:45 }}</a></h3>
+            <div class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{:: task.name }}</a></div>
         </div>
         <div class="footer">
             <div class="tags">

@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="content">
-            <h3 class="title">{{:: task.name | ellipsis:45 }}</h3>
+            <div class="title">{{:: task.name }}</div>
             <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>
         <div class="footer">

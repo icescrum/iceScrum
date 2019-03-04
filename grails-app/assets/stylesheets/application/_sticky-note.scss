@@ -45,12 +45,13 @@
     }
 
     .id {
-      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: 600;
     }
 
     .description {
-      font-size: 12px;
+      font-size: 0.75rem;
+      line-height: 1.17;
     }
   }
 }
@@ -74,15 +75,7 @@
     width: $is-story-width;
     height: $is-story-heigth;
 
-    .description {
-      font-size: 12px;
-      max-height: 17px;
-      overflow: hidden;
-    }
-
     .follow {
-      text-decoration: none;
-
       .fa-star-o, &.active .fa-star {
         display: inline-block;
       }
@@ -105,20 +98,29 @@
     border-radius: 6px;
 
     .title {
-      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: 600;
     }
 
     .id {
-      font-size: 13px;
+      font-size: 0.8125rem;
       font-weight: 600;
     }
 
-    .description {
-      font-size: 0.625rem;
-      max-height: 44px;
-      overflow: hidden;
-      display: none;
+    .content {
+      height: 44px;
+
+      .title {
+        line-height: 1.17;
+        height: 44px;
+      }
+
+      .description {
+        line-height: 1.1;
+        font-size: 0.625rem;
+        height: 44px;
+        display: none;
+      }
     }
 
     .head-right {
@@ -141,30 +143,29 @@
   }
 }
 
-.sticky-note-container {
-
-  .sticky-note {
-
-    .title-sm {
-      display: none;
-    }
-  }
-}
-
 .sticky-note {
   color: $is_text-color-alt;
   position: relative;
-  overflow: hidden;
 
   a {
-    color: $is_text-color-alt
+    color: $is_text-color-alt;
+    text-decoration: none;
   }
 
   &.invert {
     color: white;
+
     a {
       color: white;
     }
+  }
+
+  .title {
+    @extend %ellipsis;
+  }
+
+  .description {
+    @extend %ellipsis;
   }
 
   .state-progress {
@@ -200,11 +201,10 @@
   }
 
   .actions {
-    font-size: 13px;
+    font-size: 0.8125rem;
 
-    a {
-      text-decoration: none;
-    }
+    display: flex;
+    justify-content: space-between;
 
     .action {
       &.comments {
@@ -230,6 +230,9 @@
   }
 
   .badge {
+    font-size: 0.75rem;
+    padding: 0;
+
     > .limited {
       display: none;
     }
@@ -240,6 +243,17 @@
   }
 
   .tags {
+
+    .tag {
+      height: 13px;
+      font-size: 0.625rem;
+      line-height: 1.28;
+      background: white;
+      border-radius: 2px;
+      padding: 2px 3px;
+      box-shadow: 0 1px 3px 0 rgba(156, 164, 171, 0.62);
+    }
+
     .badge {
       > .full {
         display: none;
