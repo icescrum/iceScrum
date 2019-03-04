@@ -1,0 +1,234 @@
+/**
+- Copyright (c) 2019 Kagilum SAS.
+-
+- This file is part of iceScrum.
+-
+- iceScrum is free software: you can redistribute it and/or modify
+- it under the terms of the GNU Affero General Public License as published by
+- the Free Software Foundation, either version 3 of the License.
+-
+- iceScrum is distributed in the hope that it will be useful,
+- but WITHOUT ANY WARRANTY; without even the implied warranty of
+- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- GNU General Public License for more details.
+-
+- You should have received a copy of the GNU Affero General Public License
+- along with iceScrum.  If not, see <http://www.gnu.org/licenses/>.
+-
+- Authors:
+-
+- Vincent Barrier (vbarrier@kagilum.com)
+- Nicolas Noullet (nnoullet@kagilum.com)
+**/
+
+.sticky-notes {
+  display: flex;
+  flex-wrap: wrap;
+
+  .sticky-note-container {
+    margin: 10px;
+  }
+}
+
+.sticky-note-feature, .sticky-note-story {
+
+  .sticky-note {
+    padding: 9px;
+
+    .title {
+      font-size: 1rem;
+      font-family: averta-bold;
+    }
+
+    .head-right {
+      font-size: 10px;
+    }
+
+    .id {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .description {
+      font-size: 12px;
+    }
+  }
+}
+
+.sticky-note-feature {
+  width: $is-feature-width;
+  height: $is-feature-height;
+
+  .sticky-note {
+    width: 178px;
+    height: 157px;
+    border-radius: 6px;
+  }
+}
+
+.sticky-note-story {
+  width: $is-story-width;
+  height: $is-story-heigth;
+
+  .sticky-note {
+    width: $is-story-width;
+    height: $is-story-heigth;
+
+    .description {
+      font-size: 12px;
+      max-height: 17px;
+      overflow: hidden;
+    }
+
+    .follow {
+      text-decoration: none;
+
+      .fa-star-o, &.active .fa-star {
+        display: inline-block;
+      }
+
+      .fa-star, &.active .fa-star-o {
+        display: none;
+      }
+    }
+  }
+}
+
+.sticky-note-task {
+  width: $is-task-width;
+  height: $is-task-height;
+
+  .sticky-note {
+    padding: 7px;
+    width: $is-task-width;
+    height: $is-task-height;
+    border-radius: 6px;
+
+    .title {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .id {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .description {
+      font-size: 10px;
+      max-height: 44px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .head-right {
+      font-size: 10px;
+    }
+
+    .responsible {
+      height: 17px;
+    }
+
+    &:hover {
+      .title {
+        display: none;
+      }
+
+      .description {
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.sticky-note-container {
+
+  .sticky-note {
+
+    .title-sm {
+      display: none;
+    }
+  }
+}
+
+.sticky-note {
+  color: $is_text-color-alt;
+  position: relative;
+
+
+  .state-progress {
+    position: absolute;
+    height: 13px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+
+    .state {
+      top: 0;
+      right: 5px;
+      font-size: 10px;
+      text-align: right;
+      font-weight: bold;
+      position: absolute;
+    }
+
+    .status {
+      top: 3px;
+      left: 5px;
+      position: absolute;
+      font-size: 10px;
+    }
+  }
+
+  .actions {
+    font-size: 13px;
+
+    a {
+      text-decoration: none;
+    }
+
+    .action {
+      &.comments {
+        .fa-comment-o, &.active .fa-comment {
+          display: inline-block;
+        }
+
+        .fa-comment, &.active .fa-comment-o {
+          display: none;
+        }
+      }
+
+      &.acceptances-tests {
+        .fa-check-square-o, &.active .fa-check-square {
+          display: inline-block;
+        }
+
+        .fa-check-square, &.active .fa-check-square-o {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .badge {
+    > .limited {
+      display: none;
+    }
+
+    > .full {
+      display: inline;
+    }
+  }
+
+  .tags {
+    .badge {
+      > .full {
+        display: none;
+      }
+
+      > .limited {
+        display: inline;
+      }
+    }
+  }
+}
