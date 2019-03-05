@@ -40,7 +40,7 @@ body {
 }
 
 .view.with-details {
-  .content {
+  > .content {
     float: left;
     width: 65%;
   }

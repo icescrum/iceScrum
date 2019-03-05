@@ -26,14 +26,14 @@
      class="sticky-note"
      ng-class=":: ['task', application.stickyNoteSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]">
     <div as-sortable-item-handle="authorizedTask('rank', task)">
-        <div class="head">
+        <div class="sticky-note-head">
             <img ng-src="{{:: task.responsible | userAvatar }}"
                  ng-if=":: task.responsible"
                  ng-class="::['responsible', (task.responsible | userColorRoles)]"
                  defer-tooltip="{{:: task.responsible | userFullName }}">
             <span class="id">{{:: task.uid }}</span>
         </div>
-        <div class="content" ng-class="::{'has-description':!!task.description}">
+        <div class="sticky-note-content" ng-class="::{'has-description':!!task.description}">
             <div class="item-values">
                 <span ng-if=":: task.estimation != 0"
                       ng-click="showEditEstimationModal(task, $event)">
@@ -43,7 +43,7 @@
             <div class="title">{{:: task.name }}</div>
             <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>
-        <div class="footer">
+        <div class="sticky-note-footer">
             <div class="tags">
                 <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
                             href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"

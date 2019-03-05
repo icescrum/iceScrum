@@ -26,10 +26,10 @@
      class="sticky-note"
      ng-class=":: [(feature.color | contrastColor), (feature.type | featureType)]">
     <div as-sortable-item-handle>
-        <div class="head">
+        <div class="sticky-note-head">
             <span class="id">{{:: feature.uid }}</span>
         </div>
-        <div class="content" ng-class="::{'has-description':!!feature.description}">
+        <div class="sticky-note-content" ng-class="::{'has-description':!!feature.description}">
             <div class="item-values">
                 <span ng-if="::feature.value">
                     ${message(code: 'is.feature.value')} <strong>{{:: feature.value }}</strong>
@@ -39,7 +39,7 @@
             <div class="description"
                  ng-bind-html="::feature.description | lineReturns"></div>
         </div>
-        <div class="footer">
+        <div class="sticky-note-footer">
             <div class="tags">
                 <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
                             href="{{:: openFeatureUrl(feature) }}"

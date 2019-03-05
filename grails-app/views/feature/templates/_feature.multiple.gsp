@@ -40,10 +40,10 @@
                         <div class="sticky-note-container sticky-note-feature stack twisted">
                             <div ng-style="topFeature.color | createGradientBackground"
                                  class="sticky-note {{ (topFeature.color | contrastColor) + ' ' + (featurePreview.type | featureType) }}">
-                                <div class="head">
+                                <div class="sticky-note-head">
                                     <span class="id">{{ topFeature.uid }}</span>
                                 </div>
-                                <div class="content" ng-class="::{'has-description':!!feature.description}">
+                                <div class="sticky-note-content" ng-class="::{'has-description':!!feature.description}">
                                     <div class="item-values">
                                         <span ng-if="topFeature.value">
                                             ${message(code: 'is.feature.value')} <strong>{{  topFeature.value }}</strong>
@@ -53,7 +53,7 @@
                                     <div class="description"
                                          ng-bind-html="topFeature.description | lineReturns"></div>
                                 </div>
-                                <div class="footer">
+                                <div class="sticky-note-footer">
                                     <div class="tags">
                                         <a ng-repeat="tag in topFeature.tags"
                                            href="{{ tagContextUrl(tag) }}">

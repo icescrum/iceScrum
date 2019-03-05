@@ -27,10 +27,10 @@
      ng-class=":: ['task', application.stickyNoteSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]"
      ng-controller="taskCtrl">
     <div>
-        <div class="head">
+        <div class="sticky-note-head">
             <span class="id">{{:: task.uid }}</span>
         </div>
-        <div class="content" ng-class="::{'has-description':!!task.description}">
+        <div class="sticky-note-content" ng-class="::{'has-description':!!task.description}">
             <div class="item-values">
                 <span ng-if=":: task.estimation != 0"
                       ng-click="showEditEstimationModal(task, $event)">
@@ -40,7 +40,7 @@
             <div class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{:: task.name }}</a></div>
             <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>
-        <div class="footer">
+        <div class="sticky-note-footer">
             <div class="tags">
                 <a ng-repeat="tag in ::task.tags" href>
                     <span class="tag {{ getTagColor(tag, 'task') | contrastColor }}"

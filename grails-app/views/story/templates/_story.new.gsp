@@ -43,15 +43,15 @@
                 <div class="sticky-note-container sticky-note-story solo">
                     <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                          class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType)}}">
-                        <div class="head">
+                        <div class="sticky-note-head">
                             <span class="id">42</span>
                         </div>
-                        <div class="content">
+                        <div class="sticky-note-content">
                             <div class="title">{{ story.name }}</div>
                             <div class="description-template"
                                  ng-bind-html="storyPreview.description"></div>
                         </div>
-                        <div class="footer">
+                        <div class="sticky-note-footer">
                             <div class="tags">
                                 <a ng-repeat="tag in storyPreview.tags"
                                    href="{{ tagContextUrl(tag) }}">

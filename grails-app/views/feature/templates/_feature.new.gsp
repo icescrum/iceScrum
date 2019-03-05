@@ -42,13 +42,13 @@
                 <div class="sticky-note-container sticky-note-feature solo">
                     <div ng-style="feature.color | createGradientBackground"
                          class="sticky-note {{ feature.color | contrastColor }}">
-                        <div class="head">
+                        <div class="sticky-note-head">
                             <span class="id">42</span>
                         </div>
-                        <div class="content">
+                        <div class="sticky-note-content">
                             <h3 class="title">{{ feature.name }}</h3>
                         </div>
-                        <div class="footer">
+                        <div class="sticky-note-footer">
                             <div class="tags"></div>
                             <div class="actions">
                                 <span class="action"><a><i class="fa fa-paperclip"></i></a></span>

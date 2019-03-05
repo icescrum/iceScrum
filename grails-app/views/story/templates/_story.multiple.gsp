@@ -40,14 +40,14 @@
                         <div class="sticky-note-container sticky-note-story stack twisted">
                             <div ng-style="(storyPreview.feature ? storyPreview.feature.color : '#f9f157') | createGradientBackground"
                                  class="sticky-note {{ ((storyPreview.feature ? storyPreview.feature.color : '#f9f157') | contrastColor) + ' ' + (storyPreview.type | storyType) }}">
-                                <div class="head">
+                                <div class="sticky-note-head">
                                     <a class="follow active"
                                        defer-tooltip="{{ topStory.followers_ids.length }} ${message(code: 'todo.is.ui.followers')}">
                                         <i class="fa" ng-class="topStory | followedByUser:'fa-star':'fa-star-o'"></i>
                                     </a>
                                     <span class="id">{{ topStory.uid }}</span>
                                 </div>
-                                <div class="content">
+                                <div class="sticky-note-content">
                                     <div class="item-values">
                                         <span ng-if="topStory.state > 1">@
                                             ${message(code: 'is.story.effort')} <strong>{{ topStory.effort != undefined ? topStory.effort : '?' }}</strong>
@@ -61,7 +61,7 @@
                                     <div class="description"
                                          ng-bind-html="topStory.description | lineReturns | actorTag"></div>
                                 </div>
-                                <div class="footer">
+                                <div class="sticky-note-footer">
                                     <div class="tags">
                                         <a ng-repeat="tag in topStory.tags"
                                            href="{{ tagContextUrl(tag) }}">

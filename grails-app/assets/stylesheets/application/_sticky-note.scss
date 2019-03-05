@@ -66,13 +66,13 @@
     border-radius: 6px;
     overflow: hidden;
 
-    .head {
+    .sticky-note-head {
       display: flex;
       justify-content: space-between;
       line-height: 1;
     }
 
-    .content {
+    .sticky-note-content {
       margin-top: 10px;
       height: 49px;
       margin-bottom: 14px;
@@ -92,12 +92,12 @@
     width: $is-story-width;
     height: $is-story-heigth;
 
-    .head {
+    .sticky-note-head {
       display: flex;
       justify-content: space-between;
     }
 
-    .content {
+    .sticky-note-content {
       height: 73px;
       margin-bottom: 9px;
 
@@ -136,7 +136,7 @@
     height: $is-task-height;
     border-radius: 6px;
 
-    .head {
+    .sticky-note-head {
       display: flex;
       justify-content: space-between;
       margin-bottom: 5px;
@@ -153,7 +153,7 @@
       }
     }
 
-    .content {
+    .sticky-note-content {
       padding-left: 1px;
       padding-right: 1px;
       height: 44px;
@@ -185,14 +185,14 @@
 }
 
 .sticky-note-feature, .sticky-note-task {
-  .content.has-description {
+  .sticky-note-content.has-description {
     .description {
       display: none;
     }
   }
 
   &:hover {
-    .content.has-description {
+    .sticky-note-content.has-description {
       .item-values {
         display: none;
       }

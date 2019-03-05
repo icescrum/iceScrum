@@ -42,18 +42,20 @@
             <div class="sticky-notes standalone">
                 <div class="sticky-note-container sticky-note-task solo">
                     <div ng-style="'#f9f157' | createGradientBackground"
-                         class="sticky-note sticky-note-sm {{ ('#f9f157' | contrastColor) }}">
-                        <div class="head">
+                         class="sticky-note {{ ('#f9f157' | contrastColor) }}">
+                        <div class="sticky-note-head">
                             <span class="id">42</span>
                         </div>
-                        <div class="content">
+                        <div class="sticky-note-content">
                             <div class="title">{{ task.name }}</div>
                         </div>
-                        <div class="tags"></div>
-                        <div class="actions">
-                            <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
-                            <span class="action"><a><i class="fa fa-comment"></i></a></span>
-                            <span class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+                        <div class="sticky-note-footer">
+                            <div class="tags"></div>
+                            <div class="actions">
+                                <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
+                                <span class="action"><a><i class="fa fa-comment"></i></a></span>
+                                <span class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+                            </div>
                         </div>
                     </div>
                 </div>
