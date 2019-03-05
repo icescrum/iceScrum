@@ -166,10 +166,19 @@ body {
 // Kanban
 ////////////////////
 
+.kanban-states {
+  display: flex;
+  justify-content: space-around;
+  font-family: averta-bold;
+  color: $is_text-color-alt;
+  padding-bottom: 5px;
+}
+
 .kanban-swimlane {
   border-radius: 0.375rem;
   border: solid 1px #c8c8cc;
   margin: 15px;
+  margin-top: 0;
   background-color: $is-bg-color;
   .swimlane-title {
     padding-left: 0.5rem;

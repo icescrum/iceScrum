@@ -142,7 +142,7 @@
                 (<strong><a href class="link" ng-click="changeSprintFilter(getDefaultFilter())">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
             <div selectable="selectableOptions" sticky-list="#tasks-board">
-                <div class="d-flex justify-content-around">
+                <div class="kanban-states">
                     <div ng-if="sprint.state != sprintStatesByName.DONE">
                         ${message(code: 'is.task.state.wait')} ({{ taskCountByState[taskStatesByName.TODO] | orElse:0 }})
                     </div>
