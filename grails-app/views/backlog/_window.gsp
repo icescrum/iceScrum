@@ -48,15 +48,19 @@
                        style="padding: 15px">
                         ${message(code: 'todo.is.ui.more')}
                     </a>
-                    <ul uib-dropdown-menu
-                        as-sortable="elementsListSortableOptions"
-                        ng-model="hiddenElementsList">
-                        <li as-sortable-item role="presentation" ng-repeat="elem in hiddenElementsList" ng-class="{'active': isShown(elem)}">
-                            <a href="{{ toggleElementUrl(elem) }}" ng-click="clickOnElementHref($event)">
-                                <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
-                            </a>
-                        </li>
-                    </ul>
+                    <div uib-dropdown-menu
+                         as-sortable="elementsListSortableOptions"
+                         ng-model="hiddenElementsList">
+                        <a href="{{ toggleElementUrl(elem) }}"
+                           class="dropdown-item"
+                           ng-class="{'active': isShown(elem)}"
+                           as-sortable-item
+                           role="presentation"
+                           ng-repeat="elem in hiddenElementsList"
+                           ng-click="clickOnElementHref($event)">
+                            <span as-sortable-item-handle>{{ (elem | i18nName) + ' (' + elem.count + ')' }}</span>
+                        </a>
+                    </div>
                 </li>
                 <entry:point id="backlog-window-toolbar"/>
             </ul>
@@ -98,11 +102,14 @@
                                 <button class="btn btn-secondary" uib-dropdown-toggle type="button">
                                     <span>{{ backlogContainer.orderBy.current.name }}</span>
                                 </button>
-                                <ul uib-dropdown-menu role="menu">
-                                    <li role="menuitem" ng-repeat="order in backlogContainer.orderBy.values">
-                                        <a ng-click="changeBacklogOrder(backlogContainer, order)" href>{{ order.name }}</a>
-                                    </li>
-                                </ul>
+                                <div uib-dropdown-menu role="menu">
+                                    <a role="menuitem"
+                                       class="dropdown-item"
+                                       ng-repeat="order in backlogContainer.orderBy.values"
+                                       ng-click="changeBacklogOrder(backlogContainer, order)"
+                                       href>
+                                        {{ order.name }}</a>
+                                </div>
                             </div>
                             <button type="button" class="btn btn-secondary"
                                     ng-click="reverseBacklogOrder(backlogContainer)"
@@ -124,16 +131,18 @@
                                     uib-dropdown-toggle type="button">
                                 <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
                             </button>
-                            <ul uib-dropdown-menu
-                                class="float-right"
-                                role="menu">
+                            <div uib-dropdown-menu
+                                 class="float-right"
+                                 role="menu">
                                 <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
-                                    <li role="menuitem">
-                                        <a href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/backlog/{{ ::backlogContainer.backlog.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                                           ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
-                                    </li>
+                                    <a role="menuitem"
+                                       class="dropdown-item"
+                                       href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/backlog/{{ ::backlogContainer.backlog.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                       ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">
+                                        ${format.name}
+                                    </a>
                                 </g:each>
-                            </ul>
+                            </div>
                             <entry:point id="backlog-list-toolbar-right-hidden-xs"/>
                         </div>
                     </div>

@@ -36,11 +36,15 @@
                                 uib-dropdown-toggle type="button">
                             <span>{{ orderBy.current.name }}</span>
                         </button>
-                        <ul uib-dropdown-menu role="menu">
-                            <li role="menuitem" ng-repeat="order in orderBy.values">
-                                <a ng-click="orderBy.current = order" href>{{ order.name }}</a>
-                            </li>
-                        </ul>
+                        <div uib-dropdown-menu role="menu">
+                            <a role="menuitem"
+                               class="dropdown-item"
+                               ng-repeat="order in orderBy.values"
+                               ng-click="orderBy.current = order"
+                               href>
+                                {{ order.name }}
+                            </a>
+                        </div>
                     </div>
                     <button type="button"
                             class="btn btn-secondary"
@@ -66,15 +70,15 @@
                             type="button">
                         <i class="fa fa-download"></i>
                     </button>
-                    <ul uib-dropdown-menu
-                        role="menu">
+                    <div uib-dropdown-menu
+                         role="menu">
                         <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
-                            <li role="menuitem">
-                                <a href="${format.onlyJsClick ? '' : (format.resource ?: 'feature') + '/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                                   ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
-                            </li>
+                            <a role="menuitem"
+                               class="dropdown-item"
+                               href="${format.onlyJsClick ? '' : (format.resource ?: 'feature') + '/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                               ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
                         </g:each>
-                    </ul>
+                    </div>
                 </div>
                 <div class="btn-group">
                     <button type="button"
