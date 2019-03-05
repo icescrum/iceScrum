@@ -170,6 +170,12 @@ body {
   border-radius: 0.375rem;
   border: solid 1px #c8c8cc;
   margin: 15px;
+  background-color: $is-bg-color;
+  .swimlane-title {
+    padding-left: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
 }
 
 .kanban-row {
@@ -177,8 +183,16 @@ body {
 }
 
 .kanban-column {
-  background-color: $is-bg-color;
+  padding: 0;
+  padding-bottom: 0.5rem;
+  &:nth-of-type(even) {
+    background-color: $is-bg-color-alt;
+  }
+}
 
+.kanban-column-header {
+  padding: 0;
+  padding-top: 0.375rem;
   &:nth-of-type(even) {
     background-color: $is-bg-color-alt;
   }

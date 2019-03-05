@@ -155,7 +155,13 @@
                 </div>
                 <div class="kanban-swimlane"
                      ng-if="authorizedTask('showUrgent')">
-                    <span>${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')} ({{ taskCountByType[taskTypesByName.URGENT] | orElse:0 }})</span>
+                    <div class="kanban-row">
+                        <div class="kanban-column-header col">
+                            <span class="swimlane-title">${message(code: 'is.ui.sprintPlan.kanban.urgentTasks')} ({{ taskCountByType[taskTypesByName.URGENT] | orElse:0 }})</span>
+                        </div>
+                        <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
+                        <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
+                    </div>
                     <div class="kanban-row">
                         <div class="kanban-column col sticky-notes {{ stickyNoteClass }}"
                              ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
@@ -198,7 +204,13 @@
                 </div>
                 <div class="kanban-swimlane"
                      ng-if="authorizedTask('showRecurrent')">
-                    <span>${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] | orElse:0 }})</span>
+                    <div class="kanban-row">
+                        <div class="kanban-column-header col">
+                            <span class="swimlane-title">${message(code: 'is.ui.sprintPlan.kanban.recurrentTasks')} ({{ taskCountByType[taskTypesByName.RECURRENT] | orElse:0 }})</span>
+                        </div>
+                        <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
+                        <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
+                    </div>
                     <div class="kanban-row">
                         <div class="kanban-column col sticky-notes {{ stickyNoteClass }}"
                              ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
