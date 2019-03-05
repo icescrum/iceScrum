@@ -21,14 +21,15 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <is:window windowDefinition="${windowDefinition}">
-    <div ng-if="releases.length > 0">
-        <div class="clearfix backlogs-list">
-            <h4 class="float-left">
+    <div ng-if="releases.length > 0"
+         class="card card-view">
+        <div class="card-header">
+            <h4>
                 <a class="link" ng-href="{{ openReleaseUrl(release) }}">
                     <i class="fa fa-calendar"></i> {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }}</i>
                 </a>
             </h4>
-            <div class="btn-toolbar float-right">
+            <div class="btn-toolbar>
                 <div class="btn-group">
                     <button class="btn btn-secondary"
                             ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
@@ -68,46 +69,39 @@
                 </a>
             </div>
         </div>
-    </div>
-    <div ng-if="releases.length > 0"
-         class="backlogs-list-details"
-         selectable="selectableOptions">
-        <div class="card"
-             ng-repeat="sprint in visibleSprints"
-             ng-controller="sprintBacklogCtrl">
-            <div class="card-header">
-                <div class="card-title">
-                    <div class="float-left">
-                        <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
-                        <br/>
-                        <span class="sub-title text-muted">
-                            <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span>
-                            <i class="fa fa-angle-right"></i>
-                            <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
-                            <span class="sprint-numbers">
-                                <span ng-if="sprint.state > sprintStatesByName.TODO"
-                                      defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
-                                <span defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }} <i class="small-icon fa fa-dollar"></i></span>
-                            </span>
+        <div class="card-body release-plan row"
+             selectable="selectableOptions">
+            <div class="sprint col"
+                 ng-repeat="sprint in visibleSprints"
+                 ng-controller="sprintBacklogCtrl">
+                <div>
+                    <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
+                    <br/>
+                    <span class="sub-title text-muted">
+                        <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span>
+                        <i class="fa fa-angle-right"></i>
+                        <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                        <span class="sprint-numbers">
+                            <span ng-if="sprint.state > sprintStatesByName.TODO"
+                                  defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
+                            <span defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }} <i class="small-icon fa fa-dollar"></i></span>
                         </span>
-                    </div>
-                    <div class="float-right">
-                        <div class="btn-group" role="group">
-                            <shortcut-menu ng-model="sprint" model-menus="menus" btn-secondary="true"></shortcut-menu>
-                            <div class="btn-group" uib-dropdown>
-                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                                </button>
-                                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
-                            </div>
-                        </div>
-                        <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">
-                            <i class="fa fa-pencil"
-                               defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
-                        </a>
-                    </div>
+                    </span>
                 </div>
-            </div>
-            <div class="card-body">
+                <div>
+                    <div class="btn-group" role="group">
+                        <shortcut-menu ng-model="sprint" model-menus="menus" btn-secondary="true"></shortcut-menu>
+                        <div class="btn-group" uib-dropdown>
+                            <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+                            </button>
+                            <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
+                        </div>
+                    </div>
+                    <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">
+                        <i class="fa fa-pencil"
+                           defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
+                    </a>
+                </div>
                 <div class="sticky-notes {{ stickyNoteClass }}"
                      ng-class="{'sortable-moving':application.sortableMoving, 'has-selected' : hasSelected()}"
                      ng-controller="storyBacklogCtrl"
@@ -118,26 +112,22 @@
                      ng-include="'story.backlog.html'">
                 </div>
             </div>
-        </div>
-        <div ng-if="!sprints || sprints.length == 0"
-             class="card text-center">
-            <div class="card-body">
+            <div ng-if="!sprints || sprints.length == 0"
+                 class="text-center">
                 <div class="empty-view">
                     <p class="form-text">${message(code: 'is.ui.sprint.help')}<p>
                 </div>
             </div>
         </div>
     </div>
-    <div ng-if="releases.length == 0" class="card">
-        <div class="card-body">
-            <div class="empty-view" ng-controller="releaseCtrl">
-                <p class="form-text">${message(code: 'is.ui.release.help')}<p>
-                <a class="btn btn-primary"
-                   ng-if="authorizedRelease('create')"
-                   href="#{{ ::viewName }}/new">
-                    ${message(code: 'todo.is.ui.release.new')}
-                </a>
-            </div>
+    <div ng-if="releases.length == 0">
+        <div class="empty-view" ng-controller="releaseCtrl">
+            <p class="form-text">${message(code: 'is.ui.release.help')}<p>
+            <a class="btn btn-primary"
+               ng-if="authorizedRelease('create')"
+               href="#{{ ::viewName }}/new">
+                ${message(code: 'todo.is.ui.release.new')}
+            </a>
         </div>
     </div>
     <div class="timeline" ng-show="releases.length" timeline="releases" on-select="timelineSelected" selected="selectedItems"></div>

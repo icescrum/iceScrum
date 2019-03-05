@@ -56,10 +56,6 @@ body {
   margin-right: -($grid-gutter-width/2);
 }
 
-.backlogs-list-details {
-  display: flex;
-}
-
 ////////////////////
 // iceScrum style
 ////////////////////
@@ -176,7 +172,7 @@ body {
 
 .kanban-swimlane {
   border-radius: 0.375rem;
-  border: solid 1px #c8c8cc;
+  border: solid 1px $is-outline-color;
   margin: 15px;
   margin-top: 0;
   background-color: $is-bg-color;
@@ -225,6 +221,45 @@ body {
   width: 1rem;
   height: 1rem;
   @include img-retina('plus.png', 'plus@2x.png', 1rem, 1rem);
+}
+
+////////////////////
+// Planning
+////////////////////
+
+.release-plan {
+  .sprint {
+    background: $is-bg-color;
+    border-radius: 6px;
+    border: solid 1px $is-outline-color;
+    margin: 0 12px;
+    padding: 15px
+  }
+}
+
+////////////////////
+// Backlog
+////////////////////
+
+.backlog-list {
+  .backlog .backlog-title {
+    display: none;
+  }
+
+  &.multiple-backlog {
+    .backlog {
+      &:not(:first-of-type) {
+        border-left: solid 1px $is-border-color;
+      }
+
+      .backlog-title {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        color: $is_text-color-alt;
+      }
+    }
+  }
 }
 
 ////////////////////
