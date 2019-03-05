@@ -35,7 +35,7 @@
             </tr>
             <tr ng-repeat="story in storyEntry.stories">
                 <td class="content">
-                    <div class="clearfix no-padding">
+                    <div class="row is-form-row">
                         <div class="col-sm-8">
                             <span class="name">
                                 <a ng-href="{{ openStoryUrl(story.id) }}" class="link"><strong>{{:: story.uid }}</strong>&nbsp;&nbsp;{{ story.name }}</a>

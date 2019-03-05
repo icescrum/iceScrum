@@ -92,7 +92,7 @@
                                   class="form-control fixedRow">
                         </textarea>
                     </div>
-                    <div class="clearfix no-padding">
+                    <div class="row is-form-row">
                         <div class="form-2-tiers">
                             <label for="configs-{($index}}-storyTags">${message(code: 'todo.is.ui.timeBoxNotesTemplate.storyTags')}</label>
                             <ui-select ng-click="retrieveTags()"

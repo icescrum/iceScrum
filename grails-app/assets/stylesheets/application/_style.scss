@@ -226,3 +226,32 @@ body {
   height: 1rem;
   @include img-retina('plus.png', 'plus@2x.png', 1rem, 1rem);
 }
+
+////////////////////
+// Form
+////////////////////
+
+.form-half {
+  @extend .form-group;
+  @extend .col-md-6;
+}
+
+.form-1-tier {
+  @extend .form-group;
+  @extend .col-md-4;
+}
+
+.form-2-tiers {
+  @extend .form-group;
+  @extend .col-md-8;
+}
+
+.form-1-quarter {
+  @extend .form-group;
+  @extend .col-md-3;
+}
+
+.form-3-quarters {
+  @extend .form-group;
+  @extend .col-md-9;
+}

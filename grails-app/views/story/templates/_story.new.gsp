@@ -94,7 +94,7 @@
                   ng-submit="save(story, false)"
                   name='formHolder.storyForm'
                   novalidate>
-                <div class="clearfix no-padding">
+                <div class="row is-form-row">
                     <div class="form-half">
                         <label for="name">${message(code: 'is.story.name')}</label>
                         <input required
@@ -112,7 +112,7 @@
                     </div>
                     <entry:point id="story-new-form"/>
                 </div>
-                <div class="clearfix no-padding">
+                <div class="row is-form-row">
                     <div ng-if="authorizedStory('createAccepted')"
                          class="form-half">
                         <label for="state">${message(code: 'is.story.state')}</label>

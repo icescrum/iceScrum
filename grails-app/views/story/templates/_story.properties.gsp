@@ -26,7 +26,7 @@
       show-validation
       novalidate>
     <div class="card-body">
-        <div class="clearfix no-padding">
+        <div class="row">
             <entry:point id="story-properties-before-properties"/>
             <div class="form-2-tiers">
                 <label for="name">${message(code: 'is.story.name')}</label>
@@ -78,7 +78,7 @@
                  tabindex="0"
                  ng-bind-html="editableStory.description ? (editableStory.description | lineReturns | actorTag: actors) : '${message(code: 'is.ui.backlogelement.nodescription')}'"></div>
         </div>
-        <div class="clearfix no-padding">
+        <div class="row">
             <div class="form-half">
                 <label for="feature">${message(code: 'is.feature')}</label>
                 <div ng-class="{'input-group': editableStory.feature.id && !isModal}">
@@ -185,7 +185,7 @@
             </ui-select>
         </div>
         <entry:point id="story-properties-after-tag"/>
-        <div class="clearfix no-padding">
+        <div class="row">
             <div class="form-1-quarter" ng-show="authorizedStory('updateEstimate', editableStory) || editableStory.state == storyStatesByName.DONE">
                 <label for="effort"><i class="fa fa-dollar"></i> ${message(code: 'is.story.effort')}</label>
                 <div class="input-group">
@@ -235,7 +235,7 @@
                 </ui-select>
             </div>
         </div>
-        <div class="clearfix no-padding">
+        <div class="row">
             <div class="form-1-quarter">
                 <label for="value"><i class="fa fa-line-chart"></i> ${message(code: 'is.story.value')}</label>
                 <div class="input-group">

@@ -60,7 +60,7 @@
             <form ng-submit="save(feature, false)"
                   name='formHolder.featureForm'
                   novalidate>
-                <div class="clearfix no-padding">
+                <div class="row is-form-row">
                     <div class="form-group">
                         <label for="name">${message(code: 'is.feature.name')}</label>
                         <div class="input-group">

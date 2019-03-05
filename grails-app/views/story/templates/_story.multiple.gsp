@@ -232,7 +232,7 @@
                     </ui-select>
                 </div>
                 <entry:point id="story-multiple-properties-after-tag"/>
-                <div class="clearfix no-padding">
+                <div class="row is-form-row">
                     <div class="form-group"
                          ng-class="{ 'form-half' : authorizedStories('updateEstimate', stories) }">
                         <label for="value">${message(code: 'is.story.value')}</label>

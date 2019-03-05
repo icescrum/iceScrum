@@ -26,7 +26,7 @@
       show-validation
       novalidate>
     <div class="card-body">
-        <div class="clearfix no-padding">
+        <div class="row is-form-row">
             <div class="form-2-tiers">
                 <label for="name">${message(code: 'is.task.name')}</label>
                 <div ng-class="{'input-group': formEditable()}">
@@ -95,7 +95,7 @@
             </ui-select>
         </div>
         <entry:point id="task-properties-after-tag"/>
-        <div class="clearfix no-padding">
+        <div class="row is-form-row">
             <div class="form-half">
                 <label for="estimation">
                     <i class="fa {{ task.state | taskStateIcon }}"></i> ${message(code: 'is.task.estimation')}

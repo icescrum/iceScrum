@@ -27,7 +27,7 @@
       ng-class="['form-editable form-editing', formHolder.formExpanded ? 'form-expanded' : 'form-not-expanded']"
       show-validation
       novalidate>
-    <div class="clearfix no-padding">
+    <div class="row is-form-row">
         <div class="form-group" ng-class="formHolder.formExpanded ? 'col-sm-8' : 'col-sm-12'" ng-click="formHolder.formExpanded = true;">
             <div ng-class="{'input-group': !formHolder.formExpanded}">
                 <input required

@@ -26,7 +26,7 @@
       show-validation
       novalidate>
     <div class="card-body">
-        <div class="clearfix no-padding">
+        <div class="row is-form-row">
             <div class="form-3-quarters">
                 <label for="name">${message(code: 'is.release.name')}</label>
                 <input required
@@ -49,7 +49,7 @@
                        class="form-control"/>
             </div>
         </div>
-        <div class="clearfix no-padding">
+        <div class="row is-form-row">
             <div class="form-half">
                 <label for="release.startDate">${message(code: 'is.release.startDate')}</label>
                 <div ng-class="{'input-group': authorizedRelease('updateDates', release)}">

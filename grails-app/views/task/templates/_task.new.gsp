@@ -61,7 +61,7 @@
             <form ng-submit="save(task, false)"
                   name='formHolder.taskForm'
                   novalidate>
-                <div class="clearfix no-padding">
+                <div class="row is-form-row">
                     <div class="form-half">
                         <label for="name">${message(code: 'is.task.name')}</label>
                         <input required

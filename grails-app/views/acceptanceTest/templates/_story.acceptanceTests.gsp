@@ -34,7 +34,7 @@
                       ng-submit="update(editableAcceptanceTest, selected)"
                       show-validation
                       novalidate>
-                    <div class="clearfix no-padding form-group">
+                    <div class="row is-form-row form-group">
                         <div class="col-sm-7">
                             <div class="input-group">
                                 <span class="input-group-prepend">

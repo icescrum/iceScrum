@@ -26,7 +26,7 @@
       show-validation
       novalidate>
     <div class="card-body">
-        <div class="clearfix no-padding">
+        <div class="row is-form-row">
             <div class="form-half">
                 <label for="sprint.startDate">${message(code: 'is.sprint.startDate')}</label>
                 <div ng-class="{'input-group': authorizedSprint('updateStartDate', sprint)}">

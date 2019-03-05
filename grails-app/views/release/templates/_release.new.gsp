@@ -49,7 +49,7 @@
                            class="form-control"
                            placeholder="${message(code: 'is.ui.release.noname')}"/>
                 </div>
-                <div class="clearfix no-padding">
+                <div class="row is-form-row">
                     <div class="form-half">
                         <label for="release.startDate">${message(code: 'is.release.startDate')}</label>
                         <div class="input-group">

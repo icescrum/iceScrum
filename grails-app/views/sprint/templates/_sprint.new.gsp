@@ -60,7 +60,7 @@
                          class="help-block bg-danger spaced-help-block"
                          ng-bind-html="releaseEndDateWarning"></div>
                 </div>
-                <div class="clearfix no-padding">
+                <div class="row is-form-row">
                     <div class="form-half">
                         <label for="sprint.startDate">${message(code: 'is.sprint.startDate')}</label>
                         <div class="input-group">

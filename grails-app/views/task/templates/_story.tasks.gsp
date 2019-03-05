@@ -38,7 +38,7 @@
                ng-model="tasks">
             <tr class="task-for-story" ng-repeat="task in tasks" as-sortable-item>
                 <td class="content">
-                    <div class="clearfix no-padding">
+                    <div class="row is-form-row">
                         <div class="col-sm-8">
                             <span class="name">
                                 <i class="fa fa-drag-handle" ng-if="isTaskSortableByState(taskState)" as-sortable-item-handle></i>
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="clearfix no-padding" ng-if="task.description">
+                    <div class="row is-form-row" ng-if="task.description">
                         <p class="description form-control-static" ng-bind-html="task.description | lineReturns"></p>
                     </div>
                     <hr ng-if="!$last"/>

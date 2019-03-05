@@ -30,7 +30,7 @@
                       ng-submit="update(editableComment, selected)"
                       show-validation
                       novalidate>
-                    <div class="clearfix no-padding">
+                    <div class="row is-form-row">
                         <div class="col-sm-1">
                             <img height="30px"
                                  class="{{ comment.poster | userColorRoles }}"

@@ -52,7 +52,7 @@
                 </span>
             </div>
         </div>
-        <div class="clearfix no-padding">
+        <div class="row is-form-row">
             <div class="form-half">
                 <label for="type">${message(code: 'is.feature.type')}</label>
                 <ui-select class="form-control"
