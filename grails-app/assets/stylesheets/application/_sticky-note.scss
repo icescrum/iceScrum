@@ -50,17 +50,13 @@
     }
 
     .state {
-      top: 0;
-      right: 8px;
+      position: absolute;
       font-size: 0.625rem;
       text-align: right;
       font-weight: bold;
-      position: absolute;
     }
 
     .status {
-      top: 0;
-      left: 8px;
       position: absolute;
       font-size: 0.625rem;
     }
@@ -172,21 +168,62 @@
   &.sticky-notes {
     .sticky-note-container {
       border-top: solid 1px $is-border-color-alt;
+      &:last-child {
+        border-bottom: solid 1px $is-border-color-alt;
+      }
     }
   }
 
   .sticky-note {
     background: none !important;
-    padding: 10px;
+    padding: 5px;
 
     > div {
       display: flex;
+      > div {
+        padding: 10px;
+        height: 49px;
+        &:not(:last-child):not(.sticky-note-content) {
+          border-right: solid 1px $is-border-color-alt;
+        }
+      }
     }
 
     .sticky-note-content {
+      flex: 1 0 auto;
+      .title {
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .item-values {
+        font-size: 0.875rem;
+        color: $is-text-color;
+      }
       .description {
         display: none;
       }
+    }
+
+    .sticky-note-state-progress {
+      position: relative;
+      width: 230px;
+      .progress, .progress-bar {
+        background-color: rgba(104, 117, 131, 0.2);
+      }
+      .state {
+        top: 10px;
+        right: 20px;
+      }
+
+      .status {
+        top: 10px;
+        left: 20px;
+      }
+    }
+
+    .sticky-note-actions {
+      width: 230px;
+      justify-content: space-around;
     }
   }
 }
@@ -222,6 +259,20 @@
       bottom: 0;
       right: 0;
       left: 0;
+
+      .state {
+        top: 0;
+        right: 8px;
+      }
+
+      .status {
+        top: 0;
+        left: 8px;
+      }
+    }
+
+    .item-values {
+      font-size: 0.625rem;
     }
   }
 
@@ -319,10 +370,6 @@
         height: 44px;
         margin-bottom: 9px;
 
-        .item-values {
-          font-size: 0.625rem;
-        }
-
         .title {
           line-height: 1.17;
           height: 28px;
@@ -352,10 +399,6 @@
       .title {
         font-size: 1rem;
         font-family: averta-bold;
-      }
-
-      .item-values {
-        font-size: 0.625rem;
       }
 
       .id {
