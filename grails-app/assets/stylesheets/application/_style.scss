@@ -215,4 +215,14 @@ body {
   height: $is-task-height;
   border: 1px solid $is-outline-color;
   border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.plus-icon {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  @include img-retina('plus.png', 'plus@2x.png', 1rem, 1rem);
 }

@@ -22,16 +22,9 @@
  * Colin Bontemps (cbontemps@kagilum.com)
  *
  */
-controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller', 'stickyNoteSize', 'screenSize', function($scope, TaskService, $controller, stickyNoteSize, screenSize) {
+controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller', function($scope, TaskService, $controller) {
     $controller('widgetCtrl', {$scope: $scope});
     // Functions
-    $scope.display = function(widget) {
-        $scope.stickyNoteClass = stickyNoteSize.stickyNoteClass($scope.viewName, widget.settings.stickyNoteSize);
-        if ($scope.stickyNoteClass != widget.settings.stickyNoteSize) {
-            stickyNoteSize.cleanStickyNoteSize($scope.viewName);
-            $scope.stickyNoteClass = stickyNoteSize.stickyNoteClass($scope.viewName, widget.settings.stickyNoteSize);
-        }
-    };
     $scope.taskUrl = function(task, project) {
         return "p/" + project.pkey + "/#/taskBoard/" + task.sprint.id + "/task/" + task.id;
     };
@@ -43,7 +36,4 @@ controllers.controller('taskWidgetCtrl', ['$scope', 'TaskService', '$controller'
     });
     widget.settings = widget.settings ? widget.settings : {stickyNoteSize: 'list-group'};
     $scope.viewName = 'taskWidget';
-    $scope.display(widget);
-    screenSize.on('xs, sm', function() {$scope.display(widget)}, $scope);
-    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, function() {$scope.display(widget)});
 }]);

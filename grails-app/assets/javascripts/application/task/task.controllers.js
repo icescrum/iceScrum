@@ -75,7 +75,7 @@ extensibleController('taskSortableStoryCtrl', ['$scope', 'TaskService', 'Session
     $scope.sortableId = 'story-tasks';
 }]);
 
-extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'FormService', 'TaskStatesByName', 'StoryStatesByName', 'stickyNoteSize', 'screenSize', function($scope, $timeout, $uibModal, $filter, $state, TaskService, FormService, TaskStatesByName, StoryStatesByName, stickyNoteSize, screenSize) {
+extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', '$state', 'TaskService', 'FormService', 'TaskStatesByName', 'StoryStatesByName', function($scope, $timeout, $uibModal, $filter, $state, TaskService, FormService, TaskStatesByName, StoryStatesByName) {
     // Functions
     $scope.take = function(task) {
         TaskService.take(task);
@@ -196,12 +196,6 @@ extensibleController('taskCtrl', ['$scope', '$timeout', '$uibModal', '$filter', 
             }
         }
     };
-    var getStickyNoteClass = function() {
-        $scope.stickyNoteClass = stickyNoteSize.stickyNoteClass($scope.viewName, 'grid-group size-sm');
-    };
-    getStickyNoteClass();
-    screenSize.on('xs, sm', getStickyNoteClass, $scope);
-    $scope.$watch(function() { return stickyNoteSize.currentStickyNoteSize($scope.viewName); }, getStickyNoteClass);
     $scope.storyStatesByName = StoryStatesByName;
 }]);
 

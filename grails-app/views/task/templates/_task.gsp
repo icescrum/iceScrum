@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="task.html">
 <div sticky-note-color="{{:: task.color }}"
      class="sticky-note"
-     ng-class=":: ['task', application.stickyNoteSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]">
+     ng-class=":: ['task', (task.color | contrastColor), { 'task-blocked': task.blocked }]">
     <div as-sortable-item-handle="authorizedTask('rank', task)">
         <div class="sticky-note-head">
             <img ng-src="{{:: task.responsible | userAvatar }}"

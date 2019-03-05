@@ -24,7 +24,7 @@
 <script type="text/ng-template" id="task.light.html">
 <div sticky-note-color="{{:: task.color }}"
      class="sticky-note"
-     ng-class=":: ['task', application.stickyNoteSize.task, (task.color | contrastColor), { 'task-blocked': task.blocked }]"
+     ng-class=":: ['task', (task.color | contrastColor), { 'task-blocked': task.blocked }]"
      ng-controller="taskCtrl">
     <div>
         <div class="sticky-note-head">

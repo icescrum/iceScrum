@@ -24,7 +24,7 @@
     <div sticky-list>
         <div ng-repeat="entry in tasksByProject track by $index">
             <div class="list-group-header sticky-header">{{ ::entry.project.name }}</div>
-            <div class="sticky-notes clearfix {{ stickyNoteClass }}">
+            <div class="sticky-notes clearfix grid-group">
                 <div ng-repeat="task in entry.tasks"
                      is-watch="task"
                      class="sticky-note-container sticky-note-task">

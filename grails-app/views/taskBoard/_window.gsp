@@ -85,11 +85,6 @@
                         </g:if>
                         <div class="btn-group">
                             <button type="button"
-                                    class="btn btn-secondary hidden-xs hidden-sm"
-                                    defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
-                                    ng-click="setStickyNoteSize(viewName)"><i class="fa" ng-class="iconCurrentStickyNoteSize(viewName)"></i>
-                            </button>
-                            <button type="button"
                                     class="btn btn-secondary hidden-xs"
                                     defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
                                     ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
@@ -163,7 +158,7 @@
                         <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
                     </div>
                     <div class="kanban-row">
-                        <div class="kanban-column col sticky-notes {{ stickyNoteClass }}"
+                        <div class="kanban-column col sticky-notes grid-group"
                              ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.URGENT), 'has-selected' : hasSelected()}"
                              ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.URGENT][taskState]"
                              ng-init="taskType = taskTypesByName.URGENT"
@@ -196,7 +191,7 @@
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container sticky-note-task">
                                 <div class="kanban-add-task">
-                                    <a ng-click="openNewTaskByType(taskTypesByName.URGENT)" href>+</a>
+                                    <a ng-click="openNewTaskByType(taskTypesByName.URGENT)" href class="plus-icon"></a>
                                 </div>
                             </div>
                         </div>
@@ -212,7 +207,7 @@
                         <div class="kanban-column-header col" ng-if="sprint.state == sprintStatesByName.IN_PROGRESS"></div>
                     </div>
                     <div class="kanban-row">
-                        <div class="kanban-column col sticky-notes {{ stickyNoteClass }}"
+                        <div class="kanban-column col sticky-notes grid-group"
                              ng-class="{'show-tasks':!tasksShown(taskState, taskTypesByName.RECURRENT), 'has-selected' : hasSelected()}"
                              ng-model="tasksByTypeByStateAndSearchFiltered[taskTypesByName.RECURRENT][taskState]"
                              ng-init="taskType = taskTypesByName.RECURRENT"
@@ -245,7 +240,7 @@
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {sprint: sprint})" class="sticky-note-container sticky-note-task">
                                 <div class="kanban-add-task">
-                                    <a ng-click="openNewTaskByType(taskTypesByName.RECURRENT)" href>+</a>
+                                    <a ng-click="openNewTaskByType(taskTypesByName.RECURRENT)" href class="plus-icon"></a>
                                     <a ng-click="copyRecurrentTasks(sprint)" href>${message(code: 'is.ui.sprintPlan.kanban.copyRecurrentTasks')}</a>
                                 </div>
                             </div>
@@ -266,7 +261,7 @@
                     </div>
                     <div class="kanban-row"
                          ng-class="{'is-selected': isSelected(story)}">
-                        <div class="kanban-column col sticky-notes {{ stickyNoteClass }}"
+                        <div class="kanban-column col sticky-notes grid-group"
                              ng-class="{'show-tasks':!tasksShown(taskState, story), 'has-selected' : hasSelected()}"
                              ng-model="tasksByStoryByState[story.id][taskState]"
                              as-sortable="taskSortableOptions | merge: sortableScrollOptions()"
@@ -297,7 +292,7 @@
                             </div>
                             <div ng-if="taskState == taskStatesByName.TODO && authorizedTask('create', {parentStory: story})" class="sticky-note-container sticky-note-task">
                                 <div class="kanban-add-task">
-                                    <a ng-click="openNewTaskByStory(story)" href>+</a>
+                                    <a ng-click="openNewTaskByStory(story)" href class="plus-icon"></a>
                                 </div>
                             </div>
                         </div>
@@ -311,7 +306,7 @@
                         </div>
                     </div>
                     <div class="kanban-row">
-                        <div class="kanban-column col sticky-notes {{ stickyNoteClass }}"
+                        <div class="kanban-column col sticky-notes grid-group"
                              ng-class="{'show-tasks':!tasksShown(taskState, story, true), 'has-selected' : hasSelected()}"
                              ng-model="tasksByStoryByState[story.id][taskState]"
                              as-sortable
