@@ -39,40 +39,38 @@
             <div class="description"
                  ng-bind-html="::feature.description | lineReturns"></div>
         </div>
-        <div class="sticky-note-footer">
-            <div class="tags">
-                <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
-                            href="{{:: openFeatureUrl(feature) }}"
-                            icon="fa-tags"
-                            max="3"
-                            hide="true"
-                            count="{{:: feature.tags.length }}"/>
-                <a ng-repeat="tag in ::feature.tags"
-                   href="{{ tagContextUrl(tag) }}">
-                    <span class="tag {{ getTagColor(tag, 'feature') | contrastColor }}"
-                          ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
-                </a>
-            </div>
-            <div class="actions">
-                <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
-                            href="{{:: openFeatureUrl(feature) }}"
-                            icon="fa-paperclip"
-                            count="{{:: feature.attachments_count }}"/>
-                <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
-                            href="{{:: openFeatureUrl(feature) }}/stories"
-                            icon="fa-sticky-note"
-                            count="{{:: feature.stories_ids.length }}"/>
-                <span sticky-note-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
-            </div>
-            <div class="state-progress">
-                <div class="progress">
-                    <span class="status">{{:: feature.countDoneStories + '/' + feature.stories_ids.length }}</span>
-                    <div class="progress-bar"
-                         ng-style="::{width: (feature.countDoneStories | percentProgress:feature.stories_ids.length) + '%'}">
-                    </div>
+        <div class="sticky-note-tags">
+            <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
+                        href="{{:: openFeatureUrl(feature) }}"
+                        icon="fa-tags"
+                        max="3"
+                        hide="true"
+                        count="{{:: feature.tags.length }}"/>
+            <a ng-repeat="tag in ::feature.tags"
+               href="{{ tagContextUrl(tag) }}">
+                <span class="tag {{ getTagColor(tag, 'feature') | contrastColor }}"
+                      ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+            </a>
+        </div>
+        <div class="sticky-note-actions">
+            <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
+                        href="{{:: openFeatureUrl(feature) }}"
+                        icon="fa-paperclip"
+                        count="{{:: feature.attachments_count }}"/>
+            <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
+                        href="{{:: openFeatureUrl(feature) }}/stories"
+                        icon="fa-sticky-note"
+                        count="{{:: feature.stories_ids.length }}"/>
+            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+        </div>
+        <div class="sticky-note-state-progress">
+            <div class="progress">
+                <span class="status">{{:: feature.countDoneStories + '/' + feature.stories_ids.length }}</span>
+                <div class="progress-bar"
+                     ng-style="::{width: (feature.countDoneStories | percentProgress:feature.stories_ids.length) + '%'}">
                 </div>
-                <div class="state hover-progress">{{:: feature.state | i18n:'FeatureStates' }}</div>
             </div>
+            <div class="state hover-progress">{{:: feature.state | i18n:'FeatureStates' }}</div>
         </div>
     </div>
 </div>

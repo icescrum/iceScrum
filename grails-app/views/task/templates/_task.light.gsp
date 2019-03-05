@@ -40,31 +40,29 @@
             <div class="title"><a href="{{ link }}" style="color: #555555; text-decoration:none;">{{:: task.name }}</a></div>
             <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>
-        <div class="sticky-note-footer">
-            <div class="tags">
-                <a ng-repeat="tag in ::task.tags" href>
-                    <span class="tag {{ getTagColor(tag, 'task') | contrastColor }}"
-                          ng-style="{'background-color': getTagColor(tag, 'task') }">{{:: tag }}</span>
-                </a>
-            </div>
-            <div class="actions">
-                <span class="action" ng-class=":: {'active':task.attachments_count}">
-                    <span defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                        <a href="{{:: link }}">
-                            <i class="fa fa-paperclip"></i>
-                            <span class="badge">{{ task.attachments_count || '' }}</span>
-                        </a>
-                    </span>
+        <div class="sticky-note-tags">
+            <a ng-repeat="tag in ::task.tags" href>
+                <span class="tag {{ getTagColor(tag, 'task') | contrastColor }}"
+                      ng-style="{'background-color': getTagColor(tag, 'task') }">{{:: tag }}</span>
+            </a>
+        </div>
+        <div class="sticky-note-actions">
+            <span class="action" ng-class=":: {'active':task.attachments_count}">
+                <span defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                    <a href="{{:: link }}">
+                        <i class="fa fa-paperclip"></i>
+                        <span class="badge">{{ task.attachments_count || '' }}</span>
+                    </a>
                 </span>
-                <span class="action" ng-class=":: {'active':task.comments_count}">
-                    <span defer-tooltip="${message(code: 'todo.is.ui.comments')}">
-                        <a href="{{:: link }}">
-                            <i class="fa" ng-class=":: task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
-                            <span class="badge">{{ task.comments_count || '' }}</span>
-                        </a>
-                    </span>
+            </span>
+            <span class="action" ng-class=":: {'active':task.comments_count}">
+                <span defer-tooltip="${message(code: 'todo.is.ui.comments')}">
+                    <a href="{{:: link }}">
+                        <i class="fa" ng-class=":: task.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                        <span class="badge">{{ task.comments_count || '' }}</span>
+                    </a>
                 </span>
-            </div>
+            </span>
         </div>
     </div>
 </div>

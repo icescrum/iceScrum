@@ -51,53 +51,51 @@
             <div class="description"
                  ng-bind-html="story.description | lineReturns | actorTag"></div>
         </div>
-        <div class="sticky-note-footer">
-            <div class="tags">
-                <a ng-repeat="tag in story.tags"
-                   href="{{ tagContextUrl(tag) }}">
-                    <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
-                          ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+        <div class="sticky-note-tags">
+            <a ng-repeat="tag in story.tags"
+               href="{{ tagContextUrl(tag) }}">
+                <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
+                      ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+            </a>
+        </div>
+        <div class="sticky-note-actions">
+            <span class="action" ng-class="{'active':story.attachments_count}">
+                <a href="{{ link ? link : openStoryUrl(story.id) }}">
+                    <i class="fa fa-paperclip" defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"></i>
+                    <span class="badge">{{ story.attachments_count || '' }}</span>
                 </a>
-            </div>
-            <div class="actions">
-                <span class="action" ng-class="{'active':story.attachments_count}">
-                    <a href="{{ link ? link : openStoryUrl(story.id) }}">
-                        <i class="fa fa-paperclip" defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"></i>
-                        <span class="badge">{{ story.attachments_count || '' }}</span>
-                    </a>
-                </span>
-                <span class="action" ng-class="{'active':story.comments_count}">
-                    <a href="{{ link ? link : openStoryUrl(story.id) }}/comments">
-                        <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'" defer-tooltip="${message(code: 'todo.is.ui.comments')}"></i>
-                        <span class="badge">{{ story.comments_count  || '' }}</span>
-                    </a>
-                </span>
-                <span class="action" ng-class="{'active':story.tasks_count}">
-                    <a href="{{ link ? link : openStoryUrl(story.id) }}/tasks">
-                        <i class="fa fa-tasks" defer-tooltip="${message(code: 'todo.is.ui.tasks')}"></i>
-                        <span class="badge">{{ story.tasks_count || '' }}</span>
-                    </a>
-                </span>
-                <span class="action" ng-class="{'active':story.acceptanceTests_count}">
-                    <a href="{{ link ? link : openStoryUrl(story.id) }}/tests">
-                        <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'" defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"></i>
-                        <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
-                    </a>
-                </span>
-            </div>
-            <div class="state-progress">
-                <div ng-if="showStoryProgress(story)" class="progress">
-                    <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
-                    <div class="progress-bar"
-                         ng-class="'bg-'+(story.testState | acceptanceTestColor)"
-                         ng-style="{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
-                    </div>
+            </span>
+            <span class="action" ng-class="{'active':story.comments_count}">
+                <a href="{{ link ? link : openStoryUrl(story.id) }}/comments">
+                    <i class="fa" ng-class="story.comments_count ? 'fa-comment' : 'fa-comment-o'" defer-tooltip="${message(code: 'todo.is.ui.comments')}"></i>
+                    <span class="badge">{{ story.comments_count  || '' }}</span>
+                </a>
+            </span>
+            <span class="action" ng-class="{'active':story.tasks_count}">
+                <a href="{{ link ? link : openStoryUrl(story.id) }}/tasks">
+                    <i class="fa fa-tasks" defer-tooltip="${message(code: 'todo.is.ui.tasks')}"></i>
+                    <span class="badge">{{ story.tasks_count || '' }}</span>
+                </a>
+            </span>
+            <span class="action" ng-class="{'active':story.acceptanceTests_count}">
+                <a href="{{ link ? link : openStoryUrl(story.id) }}/tests">
+                    <i class="fa" ng-class="story.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'" defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"></i>
+                    <span class="badge">{{ story.acceptanceTests_count  || '' }}</span>
+                </a>
+            </span>
+        </div>
+        <div class="sticky-note-state-progress">
+            <div ng-if="showStoryProgress(story)" class="progress">
+                <span class="status">{{ story.countDoneTasks + '/' + story.tasks_count }}</span>
+                <div class="progress-bar"
+                     ng-class="'bg-'+(story.testState | acceptanceTestColor)"
+                     ng-style="{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
                 </div>
-                <div class="state" ng-class="{'hover-progress':showStoryProgress(story)}">
-                    <!-- special case hide state if shifted and ghost story -->
-                    <span ng-if="!sprint || sprint.id == story.parentSprint.id">{{ story.state | i18n:'StoryStates' }}</span>
-                    <span ng-if="sprint && sprint.id != story.parentSprint.id">{{ message('todo.is.ui.story.shifted') }}</span>
-                </div>
+            </div>
+            <div class="state" ng-class="{'hover-progress':showStoryProgress(story)}">
+                <!-- special case hide state if shifted and ghost story -->
+                <span ng-if="!sprint || sprint.id == story.parentSprint.id">{{ story.state | i18n:'StoryStates' }}</span>
+                <span ng-if="sprint && sprint.id != story.parentSprint.id">{{ message('todo.is.ui.story.shifted') }}</span>
             </div>
         </div>
     </div>

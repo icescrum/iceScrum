@@ -51,43 +51,41 @@
                             <div class="description-template"
                                  ng-bind-html="storyPreview.description"></div>
                         </div>
-                        <div class="sticky-note-footer">
-                            <div class="tags">
-                                <a ng-repeat="tag in storyPreview.tags"
-                                   href="{{ tagContextUrl(tag) }}">
-                                    <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
-                                          ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                        <div class="sticky-note-tags">
+                            <a ng-repeat="tag in storyPreview.tags"
+                               href="{{ tagContextUrl(tag) }}">
+                                <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
+                                      ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                            </a>
+                        </div>
+                        <div class="sticky-note-actions">
+                            <span class="action">
+                                <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                    <i class="fa fa-paperclip"></i>
                                 </a>
-                            </div>
-                            <div class="actions">
-                                <span class="action">
-                                    <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                        <i class="fa fa-paperclip"></i>
-                                    </a>
-                                </span>
-                                <span class="action">
-                                    <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
-                                        <i class="fa fa-comment"></i>
-                                    </a>
-                                </span>
-                                <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                                    <a defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
-                                        <i class="fa fa-tasks"></i>
-                                        <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
-                                    </a>
-                                </span>
-                                <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                                    <a defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
-                                        <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
-                                        <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
-                                    </a>
-                                </span>
-                                <span class="action">
-                                    <a>
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </a>
-                                </span>
-                            </div>
+                            </span>
+                            <span class="action">
+                                <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
+                                    <i class="fa fa-comment"></i>
+                                </a>
+                            </span>
+                            <span class="action" ng-class="{'active':storyPreview.tasks_count}">
+                                <a defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                    <i class="fa fa-tasks"></i>
+                                    <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
+                                </a>
+                            </span>
+                            <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
+                                <a defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                                    <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                                    <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
+                                </a>
+                            </span>
+                            <span class="action">
+                                <a>
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </a>
+                            </span>
                         </div>
                     </div>
                 </div>

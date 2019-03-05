@@ -49,13 +49,11 @@
                         <div class="sticky-note-content">
                             <div class="title">{{ task.name }}</div>
                         </div>
-                        <div class="sticky-note-footer">
-                            <div class="tags"></div>
-                            <div class="actions">
-                                <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
-                                <span class="action"><a><i class="fa fa-comment"></i></a></span>
-                                <span class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
-                            </div>
+                        <div class="sticky-note-tags"></div>
+                        <div class="sticky-note-actions">
+                            <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
+                            <span class="action"><a><i class="fa fa-comment"></i></a></span>
+                            <span class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
                         </div>
                     </div>
                 </div>

@@ -43,49 +43,47 @@
             <div class="title">{{:: task.name }}</div>
             <div class="description" ng-bind-html=":: task.description | lineReturns"></div>
         </div>
-        <div class="sticky-note-footer">
-            <div class="tags">
-                <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
-                            href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
-                            icon="fa-tags"
-                            max="3"
-                            hide="true"
-                            count="{{:: task.tags.length }}"/>
-                <a ng-repeat="tag in ::task.tags"
-                   href="{{:: tagContextUrl(tag) }}">
-                    <span class="tag {{ getTagColor(tag, 'task') | contrastColor }}"
-                          ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
-                </a>
-            </div>
-            <div class="actions">
-                <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
-                            href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
-                            icon="fa-paperclip"
-                            count="{{:: task.attachments_count }}"/>
-                <icon-badge classes="comments"
-                            tooltip="${message(code: 'todo.is.ui.comments')}"
-                            href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}/comments"
-                            icon="fa-comment"
-                            icon-empty="fa-comment-o"
-                            count="{{:: task.comments_count }}"/>
-                <span class="action" ng-if="::authorizedTask('take', task)">
-                    <a href
-                       ng-click="take(task)"
-                       defer-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.take')}">
-                        <i class="fa fa-user-plus"></i>
-                    </a>
-                </span>
-                <span class="action" ng-if="::authorizedTask('release', task)">
-                    <a href
-                       ng-click="release(task)"
-                       defer-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.unassign')}">
-                        <i class="fa fa-user-times"></i>
-                    </a>
-                </span>
-                <span sticky-note-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
-            </div>
-            <entry:point id="task-sticky-note-bottom"/>
+        <div class="sticky-note-tags">
+            <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
+                        href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
+                        icon="fa-tags"
+                        max="3"
+                        hide="true"
+                        count="{{:: task.tags.length }}"/>
+            <a ng-repeat="tag in ::task.tags"
+               href="{{:: tagContextUrl(tag) }}">
+                <span class="tag {{ getTagColor(tag, 'task') | contrastColor }}"
+                      ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+            </a>
         </div>
+        <div class="sticky-note-actions">
+            <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
+                        href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
+                        icon="fa-paperclip"
+                        count="{{:: task.attachments_count }}"/>
+            <icon-badge classes="comments"
+                        tooltip="${message(code: 'todo.is.ui.comments')}"
+                        href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}/comments"
+                        icon="fa-comment"
+                        icon-empty="fa-comment-o"
+                        count="{{:: task.comments_count }}"/>
+            <span class="action" ng-if="::authorizedTask('take', task)">
+                <a href
+                   ng-click="take(task)"
+                   defer-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.take')}">
+                    <i class="fa fa-user-plus"></i>
+                </a>
+            </span>
+            <span class="action" ng-if="::authorizedTask('release', task)">
+                <a href
+                   ng-click="release(task)"
+                   defer-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.unassign')}">
+                    <i class="fa fa-user-times"></i>
+                </a>
+            </span>
+            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+        </div>
+        <entry:point id="task-sticky-note-bottom"/>
     </div>
 </div>
 </script>

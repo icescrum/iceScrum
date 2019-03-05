@@ -50,9 +50,9 @@
                                 <div class="sticky-note-content">
                                     <div class="item-values">
                                         <span ng-if="topStory.state > 1">@
-                                            ${message(code: 'is.story.effort')} <strong>{{ topStory.effort != undefined ? topStory.effort : '?' }}</strong>
+                                        ${message(code: 'is.story.effort')} <strong>{{ topStory.effort != undefined ? topStory.effort : '?' }}</strong>
                                         </span>
-                                        <span ng-if="topStory.state > 1 && topStory.value"> | </span>
+                                        <span ng-if="topStory.state > 1 && topStory.value">|</span>
                                         <span ng-if="topStory.value">
                                             ${message(code: 'is.story.value')} <strong>{{ topStory.value }}</strong>
                                         </span>
@@ -61,44 +61,42 @@
                                     <div class="description"
                                          ng-bind-html="topStory.description | lineReturns | actorTag"></div>
                                 </div>
-                                <div class="sticky-note-footer">
-                                    <div class="tags">
-                                        <a ng-repeat="tag in topStory.tags"
-                                           href="{{ tagContextUrl(tag) }}">
-                                            <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
-                                                  ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
-                                        </a>
-                                    </div>
-                                    <div class="actions">
-                                        <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
-                                        <span class="action" ng-class="{'active':topStory.attachments_count}">
-                                            <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                                <i class="fa fa-paperclip"></i>
-                                            </a>
-                                        </span>
-                                        <span class="action" ng-class="{'active':topStory.comments_count}">
-                                            <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
-                                                <i class="fa"
-                                                   ng-class="topStory.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
-                                                <span class="badge">{{ topStory.comments_count || '' }}</span>
-                                            </a>
-                                        </span>
-                                        <span class="action" ng-class="{'active':topStory.tasks_count}">
-                                            <a defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
-                                                <i class="fa fa-tasks"></i>
-                                                <span class="badge">{{ topStory.tasks_count || '' }}</span>
-                                            </a>
-                                        </span>
-                                        <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
-                                            <a defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
-                                                <i class="fa"
-                                                   ng-class="topStory.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
-                                                <span class="badge">{{ topStory.acceptanceTests_count || '' }}</span>
-                                            </a>
-                                        </span>
-                                    </div>
+                                <div class="sticky-note-tags">
+                                    <a ng-repeat="tag in topStory.tags"
+                                       href="{{ tagContextUrl(tag) }}">
+                                        <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
+                                              ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                                    </a>
                                 </div>
-                                <div class="state-progress">
+                                <div class="sticky-note-actions">
+                                    <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
+                                    <span class="action" ng-class="{'active':topStory.attachments_count}">
+                                        <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                            <i class="fa fa-paperclip"></i>
+                                        </a>
+                                    </span>
+                                    <span class="action" ng-class="{'active':topStory.comments_count}">
+                                        <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
+                                            <i class="fa"
+                                               ng-class="topStory.comments_count ? 'fa-comment' : 'fa-comment-o'"></i>
+                                            <span class="badge">{{ topStory.comments_count || '' }}</span>
+                                        </a>
+                                    </span>
+                                    <span class="action" ng-class="{'active':topStory.tasks_count}">
+                                        <a defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                            <i class="fa fa-tasks"></i>
+                                            <span class="badge">{{ topStory.tasks_count || '' }}</span>
+                                        </a>
+                                    </span>
+                                    <span class="action" ng-class="{'active':topStory.acceptanceTests_count}">
+                                        <a defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                                            <i class="fa"
+                                               ng-class="topStory.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                                            <span class="badge">{{ topStory.acceptanceTests_count || '' }}</span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="sticky-note-state-progress">
                                     <div class="state">
                                         {{ topStory.state | i18n:'StoryStates' }}
                                     </div>

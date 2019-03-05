@@ -43,7 +43,7 @@
                       ng-click="showEditEffortModal(story, $event)">
                     ${message(code: 'is.story.effort')} <strong>{{:: story.effort != undefined ? story.effort : '?' }}</strong>
                 </span>
-                <span ng-if=":: story.state > 1 && story.value"> | </span>
+                <span ng-if=":: story.state > 1 && story.value">|</span>
                 <span ng-click="showEditValueModal(story, $event)"
                       ng-if=":: story.value">
                     ${message(code: 'is.story.value')} <strong>{{:: story.value }}</strong>
@@ -53,54 +53,52 @@
             <div class="description"
                  ng-bind-html=":: story.description | lineReturns | actorTag"></div>
         </div>
-        <div class="sticky-note-footer">
-            <div class="tags">
-                <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
-                            href="{{:: openStoryUrl(story.id)}}"
-                            icon="fa-tags"
-                            max="3"
-                            hide="true"
-                            count="{{:: story.tags.length }}"/>
-                <a ng-repeat="tag in ::story.tags"
-                   href="{{:: tagContextUrl(tag) }}">
-                    <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
-                          ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
-                </a>
-            </div>
-            <div class="actions">
-                <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
-                            href="{{:: openStoryUrl(story.id)}}"
-                            icon="fa-paperclip"
-                            count="{{:: story.attachments_count }}"/>
-                <icon-badge classes="comments"
-                            tooltip="${message(code: 'todo.is.ui.comments')}"
-                            href="{{:: openStoryUrl(story.id) }}/comments"
-                            icon="fa-comment"
-                            icon-empty="fa-comment-o"
-                            count="{{:: story.comments_count }}"/>
-                <icon-badge tooltip="${message(code: 'todo.is.ui.tasks')}"
-                            href="{{:: openStoryUrl(story.id) }}/tasks"
-                            icon="fa-tasks"
-                            count="{{:: story.tasks_count }}"/>
-                <icon-badge classes="acceptances-tests"
-                            tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
-                            href="{{:: openStoryUrl(story.id) }}/tests"
-                            icon="fa-check-square"
-                            icon-empty="fa-check-square-o"
-                            count="{{:: story.acceptanceTests_count }}"/>
-                <span sticky-note-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
-            </div>
-            <div class="state-progress">
-                <div ng-if="::showStoryProgress(story)" class="progress">
-                    <span class="status">{{:: story.countDoneTasks + '/' + story.tasks_count }}</span>
-                    <div class="progress-bar"
-                         ng-class="::['bg-'+(story.testState | acceptanceTestColor)]"
-                         ng-style="::{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
-                    </div>
+        <div class="sticky-note-tags">
+            <icon-badge class="float-right" tooltip="${message(code: 'is.backlogelement.tags')}"
+                        href="{{:: openStoryUrl(story.id)}}"
+                        icon="fa-tags"
+                        max="3"
+                        hide="true"
+                        count="{{:: story.tags.length }}"/>
+            <a ng-repeat="tag in ::story.tags"
+               href="{{:: tagContextUrl(tag) }}">
+                <span class="tag {{ getTagColor(tag, 'story') | contrastColor }}"
+                      ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+            </a>
+        </div>
+        <div class="sticky-note-actions">
+            <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
+                        href="{{:: openStoryUrl(story.id)}}"
+                        icon="fa-paperclip"
+                        count="{{:: story.attachments_count }}"/>
+            <icon-badge classes="comments"
+                        tooltip="${message(code: 'todo.is.ui.comments')}"
+                        href="{{:: openStoryUrl(story.id) }}/comments"
+                        icon="fa-comment"
+                        icon-empty="fa-comment-o"
+                        count="{{:: story.comments_count }}"/>
+            <icon-badge tooltip="${message(code: 'todo.is.ui.tasks')}"
+                        href="{{:: openStoryUrl(story.id) }}/tasks"
+                        icon="fa-tasks"
+                        count="{{:: story.tasks_count }}"/>
+            <icon-badge classes="acceptances-tests"
+                        tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
+                        href="{{:: openStoryUrl(story.id) }}/tests"
+                        icon="fa-check-square"
+                        icon-empty="fa-check-square-o"
+                        count="{{:: story.acceptanceTests_count }}"/>
+            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+        </div>
+        <div class="sticky-note-state-progress">
+            <div ng-if="::showStoryProgress(story)" class="progress">
+                <span class="status">{{:: story.countDoneTasks + '/' + story.tasks_count }}</span>
+                <div class="progress-bar"
+                     ng-class="::['bg-'+(story.testState | acceptanceTestColor)]"
+                     ng-style="::{width: (story.countDoneTasks | percentProgress:story.tasks_count) + '%'}">
                 </div>
-                <div class="state"
-                     ng-class="::{'hover-progress':showStoryProgress(story)}">{{:: story.state | i18n:'StoryStates' }}
-                </div>
+            </div>
+            <div class="state"
+                 ng-class="::{'hover-progress':showStoryProgress(story)}">{{:: story.state | i18n:'StoryStates' }}
             </div>
         </div>
     </div>

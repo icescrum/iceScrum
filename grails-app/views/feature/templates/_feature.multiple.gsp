@@ -53,31 +53,29 @@
                                     <div class="description"
                                          ng-bind-html="topFeature.description | lineReturns"></div>
                                 </div>
-                                <div class="sticky-note-footer">
-                                    <div class="tags">
-                                        <a ng-repeat="tag in topFeature.tags"
-                                           href="{{ tagContextUrl(tag) }}">
-                                            <span class="tag {{ getTagColor(tag, 'feature') | contrastColor }}"
-                                                  ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                                <div class="sticky-note-tags">
+                                    <a ng-repeat="tag in topFeature.tags"
+                                       href="{{ tagContextUrl(tag) }}">
+                                        <span class="tag {{ getTagColor(tag, 'feature') | contrastColor }}"
+                                              ng-style="{'background-color': getTagColor(tag, 'story') }">{{:: tag }}</span>
+                                    </a>
+                                </div>
+                                <div class="sticky-note-actions">
+                                    <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
+                                    <span class="action" ng-class="{'active':topFeature.attachments_count}">
+                                        <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
+                                            <i class="fa fa-paperclip"></i>
                                         </a>
-                                    </div>
-                                    <div class="actions">
-                                        <span class="action"><a><i class="fa fa-cog"></i> <i class="fa fa-caret-down"></i></a></span>
-                                        <span class="action" ng-class="{'active':topFeature.attachments_count}">
-                                            <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                                <i class="fa fa-paperclip"></i>
-                                            </a>
-                                        </span>
-                                        <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
-                                            <a defer-tooltip="${message(code: 'todo.is.ui.stories')}">
-                                                <i class="fa fa-tasks"></i>
-                                                <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
-                                            </a>
-                                        </span>
-                                    </div>
-                                    <div class="state-progress">
-                                        <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
-                                    </div>
+                                    </span>
+                                    <span class="action" ng-class="{'active':topFeature.stories_ids.length}">
+                                        <a defer-tooltip="${message(code: 'todo.is.ui.stories')}">
+                                            <i class="fa fa-tasks"></i>
+                                            <span class="badge">{{ topFeature.stories_ids.length || ''}}</span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <div class="sticky-note-state-progress">
+                                    <div class="state">{{ topFeature.state | i18n:'FeatureStates' }}</div>
                                 </div>
                             </div>
                         </div>

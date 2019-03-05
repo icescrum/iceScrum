@@ -21,220 +21,24 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 **/
 
-.sticky-notes {
-  display: flex;
-  flex-wrap: wrap;
-
-  .sticky-note-container {
-    margin: 10px;
-  }
-}
-
-.sticky-note-feature, .sticky-note-story {
-
-  .sticky-note {
-    padding: 9px;
-
-    .title {
-      font-size: 1rem;
-      font-family: averta-bold;
-    }
-
-    .item-values {
-      font-size: 0.625rem;
-    }
-
-    .id {
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .description {
-      font-size: 0.75rem;
-      line-height: 1.17;
-    }
-  }
-}
-
-.sticky-note-feature {
-  width: $is-feature-width;
-  height: $is-feature-height;
-
-  .sticky-note {
-    width: $is-feature-width;
-    height: $is-feature-height;
-    border-radius: 6px;
-    overflow: hidden;
-
-    .sticky-note-head {
-      display: flex;
-      justify-content: space-between;
-      line-height: 1;
-    }
-
-    .sticky-note-content {
-      margin-top: 10px;
-      height: 49px;
-      margin-bottom: 14px;
-    }
-
-    .actions {
-      justify-content: space-evenly;
-    }
-  }
-}
-
-.sticky-note-story {
-  width: $is-story-width;
-  height: $is-story-heigth;
-
-  .sticky-note {
-    width: $is-story-width;
-    height: $is-story-heigth;
-
-    .sticky-note-head {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .sticky-note-content {
-      height: 73px;
-      margin-bottom: 9px;
-
-      .item-values {
-        height: 15px;
-      }
-
-      .title {
-        height: 24px;
-      }
-
-      .description {
-        height: 42px;
-      }
-    }
-
-    .follow {
-      .fa-star-o, &.active .fa-star {
-        display: inline-block;
-      }
-
-      .fa-star, &.active .fa-star-o {
-        display: none;
-      }
-    }
-  }
-}
-
-.sticky-note-task {
-  width: $is-task-width;
-  height: $is-task-height;
-
-  .sticky-note {
-    padding: 6px;
-    width: $is-task-width;
-    height: $is-task-height;
-    border-radius: 6px;
-
-    .sticky-note-head {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 5px;
-
-      .id {
-        padding-right: 2px;
-        line-height: 17px;
-        font-size: 0.8125rem;
-        font-weight: 600;
-      }
-
-      .responsible {
-        height: 17px;
-      }
-    }
-
-    .sticky-note-content {
-      padding-left: 1px;
-      padding-right: 1px;
-      height: 44px;
-      margin-bottom: 9px;
-
-      .item-values {
-        font-size: 0.625rem;
-      }
-
-      .title {
-        line-height: 1.17;
-        height: 28px;
-        font-size: 0.75rem;
-        font-weight: 600;
-      }
-
-      .description {
-        line-height: 1.1;
-        font-size: 0.625rem;
-        height: 44px;
-      }
-    }
-
-    .tags {
-      padding-left: 1px;
-      padding-right: 1px;
-    }
-  }
-}
-
-.sticky-note-feature, .sticky-note-task {
-  .sticky-note-content.has-description {
-    .description {
-      display: none;
-    }
-  }
-
-  &:hover {
-    .sticky-note-content.has-description {
-      .item-values {
-        display: none;
-      }
-
-      .title {
-        display: none;
-      }
-
-      .description {
-        display: inline-block;
-      }
-    }
-  }
-}
+////////////////////
+// General style
+////////////////////
 
 .sticky-note {
   color: $is_text-color-alt;
-  position: relative;
 
   a {
     color: $is_text-color-alt;
     text-decoration: none;
   }
 
-  &.invert {
-    color: white;
-
-    a {
-      color: white;
-    }
-  }
-
   .title, .description {
     overflow: hidden;
   }
 
-  .state-progress {
+  .sticky-note-state-progress {
     height: 15px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
 
     .progress {
       height: 15px;
@@ -262,13 +66,13 @@
     }
   }
 
-  &:hover .actions {
+  &:hover .sticky-note-actions {
     > .action * {
       visibility: visible;
     }
   }
 
-  .actions {
+  .sticky-note-actions {
     font-size: 0.8125rem;
     display: flex;
     justify-content: space-between;
@@ -319,7 +123,7 @@
     }
   }
 
-  .tags {
+  .sticky-note-tags {
     height: 27px;
 
     .tag {
@@ -342,6 +146,250 @@
 
       > .limited {
         display: inline;
+      }
+    }
+  }
+}
+
+.sticky-note-story {
+  .follow {
+    .fa-star-o, &.active .fa-star {
+      display: inline-block;
+    }
+
+    .fa-star, &.active .fa-star-o {
+      display: none;
+    }
+  }
+}
+
+////////////////////
+// List style
+////////////////////
+
+.list-group {
+
+  &.sticky-notes {
+    .sticky-note-container {
+      border-top: solid 1px $is-border-color-alt;
+    }
+  }
+
+  .sticky-note {
+    background: none !important;
+    padding: 10px;
+
+    > div {
+      display: flex;
+    }
+
+    .sticky-note-content {
+      .description {
+        display: none;
+      }
+    }
+  }
+}
+
+////////////////////
+// Grid  style
+////////////////////
+
+.grid-group {
+
+  &.sticky-notes {
+    display: flex;
+    flex-wrap: wrap;
+
+    .sticky-note-container {
+      margin: 10px;
+    }
+  }
+
+  .sticky-note {
+    position: relative;
+
+    &.invert {
+      color: white;
+
+      a {
+        color: white;
+      }
+    }
+
+    .sticky-note-state-progress {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+  }
+
+  .sticky-note-feature {
+    width: $is-feature-width;
+    height: $is-feature-height;
+
+    .sticky-note {
+      width: $is-feature-width;
+      height: $is-feature-height;
+      border-radius: 6px;
+      overflow: hidden;
+
+      .sticky-note-head {
+        display: flex;
+        justify-content: space-between;
+        line-height: 1;
+      }
+
+      .sticky-note-content {
+        margin-top: 10px;
+        height: 49px;
+        margin-bottom: 14px;
+      }
+
+      .sticky-note-actions {
+        justify-content: space-evenly;
+      }
+    }
+  }
+
+  .sticky-note-story {
+    width: $is-story-width;
+    height: $is-story-heigth;
+
+    .sticky-note {
+      width: $is-story-width;
+      height: $is-story-heigth;
+
+      .sticky-note-head {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .sticky-note-content {
+        height: 73px;
+        margin-bottom: 9px;
+
+        .item-values {
+          height: 15px;
+        }
+
+        .title {
+          height: 24px;
+        }
+
+        .description {
+          height: 42px;
+        }
+      }
+
+    }
+  }
+
+  .sticky-note-task {
+    width: $is-task-width;
+    height: $is-task-height;
+
+    .sticky-note {
+      padding: 6px;
+      width: $is-task-width;
+      height: $is-task-height;
+      border-radius: 6px;
+
+      .sticky-note-head {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+
+        .id {
+          padding-right: 2px;
+          line-height: 17px;
+          font-size: 0.8125rem;
+          font-weight: 600;
+        }
+
+        .responsible {
+          height: 17px;
+        }
+      }
+
+      .sticky-note-content {
+        padding-left: 1px;
+        padding-right: 1px;
+        height: 44px;
+        margin-bottom: 9px;
+
+        .item-values {
+          font-size: 0.625rem;
+        }
+
+        .title {
+          line-height: 1.17;
+          height: 28px;
+          font-size: 0.75rem;
+          font-weight: 600;
+        }
+
+        .description {
+          line-height: 1.1;
+          font-size: 0.625rem;
+          height: 44px;
+        }
+      }
+
+      .sticky-note-tags {
+        padding-left: 1px;
+        padding-right: 1px;
+      }
+    }
+  }
+
+  .sticky-note-feature, .sticky-note-story {
+
+    .sticky-note {
+      padding: 9px;
+
+      .title {
+        font-size: 1rem;
+        font-family: averta-bold;
+      }
+
+      .item-values {
+        font-size: 0.625rem;
+      }
+
+      .id {
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .description {
+        font-size: 0.75rem;
+        line-height: 1.17;
+      }
+    }
+  }
+
+  .sticky-note-feature, .sticky-note-task {
+    .sticky-note-content.has-description {
+      .description {
+        display: none;
+      }
+    }
+
+    &:hover {
+      .sticky-note-content.has-description {
+        .item-values {
+          display: none;
+        }
+
+        .title {
+          display: none;
+        }
+
+        .description {
+          display: inline-block;
+        }
       }
     }
   }
