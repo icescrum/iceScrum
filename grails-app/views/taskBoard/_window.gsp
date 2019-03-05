@@ -24,107 +24,107 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view sprint-state-{{ sprint.state }}"
          ng-if="sprint">
-        <div class="card-header">
-            <div class="card-title">
-                <div ng-controller="taskCtrl">
-                    <div class="planning-dropdown float-left" uib-dropdown on-toggle="scrollToActiveSprint(open)">
-                        <div class="active">
-                            <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
-                            <i ng-if="sprintEntries.length > 2" uib-dropdown-toggle></i>
-                            <span class="sub-title text-muted" uib-dropdown-toggle>
-                                <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i>
-                                <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
-                                <span class="sprint-numbers">
-                                    <span ng-if="sprint.state > sprintStatesByName.TODO"
-                                          defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
-                                    <span defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</span>
-                                    <i class="small-icon fa fa-dollar"></i>
-                                </span>
-                                <span class="sprint-remaining" defer-tooltip="${message(code: 'is.task.estimation')}">
-                                    {{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
-                                </span>
+        <div class="card-header" ng-controller="taskCtrl">
+            <div>
+                <div class="planning-dropdown" uib-dropdown on-toggle="scrollToActiveSprint(open)">
+                    <div class="active">
+                        <a href="{{ openSprintUrl(sprint) }}" class="card-title">{{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
+                        <i ng-if="sprintEntries.length > 2" uib-dropdown-toggle></i>
+                        <span uib-dropdown-toggle>
+                            <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span> <i class="fa fa-angle-right"></i>
+                            <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
+                            <span class="sprint-numbers">
+                                <span ng-if="sprint.state > sprintStatesByName.TODO"
+                                      defer-tooltip="${message(code: 'is.sprint.velocity')}">{{ sprint.velocity | roundNumber:2 }} /</span>
+                                <span defer-tooltip="${message(code: 'is.sprint.plannedVelocity')}">{{ sprint.capacity | roundNumber:2 }}</span>
+                                <i class="small-icon fa fa-dollar"></i>
                             </span>
-                        </div>
-                        <ul uib-dropdown-menu role="menu" class="planning-menu">
-                            <li ng-repeat="sprintEntry in sprintEntries | orderBy: 'orderNumber'"
-                                ng-switch="sprintEntry.type"
-                                ng-class="{'divider': 'dropdown-divider', 'release': 'dropdown-header'}[sprintEntry.type]">
-                                <a ng-switch-when="sprint"
-                                   ng-class="{'active': sprintEntry.item.id == sprint.id}"
-                                   href="{{ openSprintUrl(sprintEntry.item, true) }}">
-                                    <i class="fa fa-tasks"></i> {{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}
-                                    <div class="sub-title text-muted">
-                                        {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-angle-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
-                                    </div>
-                                </a>
-                                <span ng-switch-when="release">
-                                    {{ sprintEntry.item.name }}
+                            <span class="sprint-remaining" defer-tooltip="${message(code: 'is.task.estimation')}">
+                                {{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }} <i class="small-icon fa fa-hourglass-half"></i>
+                            </span>
+                        </span>
+                    </div>
+                    <ul uib-dropdown-menu role="menu" class="planning-menu">
+                        <li ng-repeat="sprintEntry in sprintEntries | orderBy: 'orderNumber'"
+                            ng-switch="sprintEntry.type"
+                            ng-class="{'divider': 'dropdown-divider', 'release': 'dropdown-header'}[sprintEntry.type]">
+                            <a ng-switch-when="sprint"
+                               ng-class="{'active': sprintEntry.item.id == sprint.id}"
+                               href="{{ openSprintUrl(sprintEntry.item, true) }}">
+                                <i class="fa fa-tasks"></i> {{ (sprintEntry.item | sprintName) + ' - ' + (sprintEntry.item.state | i18n: 'SprintStates') }}
+                                <span>
+                                    {{ sprintEntry.item.startDate | dayShorter }} <i class="fa fa-angle-right"></i> {{ sprintEntry.item.endDate | dayShorter }}
                                 </span>
+                            </a>
+                            <span ng-switch-when="release">
+                                {{ sprintEntry.item.name }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div class="btn-toolbar">
+                    <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
+                    <g:if test="${formats}">
+                        <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
+                            <button class="btn btn-secondary"
+                                    uib-dropdown-toggle type="button">
+                                <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
+                            </button>
+                            <ul uib-dropdown-menu
+                                class="float-right"
+                                role="menu">
+                                <g:each in="${formats}" var="format">
+                                    <li role="menuitem">
+                                        <a href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/sprint/{{ ::sprint.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
+                                           ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
+                                    </li>
+                                </g:each>
+                            </ul>
+                        </div>
+                    </g:if>
+                    <div class="btn-group">
+                        <button type="button"
+                                class="btn btn-secondary hidden-xs"
+                                defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
+                                ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group" uib-dropdown>
+                        <button class="btn btn-secondary"
+                                uib-dropdown-toggle
+                                type="button">
+                            <span defer-tooltip="${message(code: 'todo.is.ui.filters')}">
+                                <span>{{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}</span>
+                            </span>
+                        </button>
+                        <ul uib-dropdown-menu role="menu">
+                            <li role="menuitem"
+                                ng-repeat="sprintFilter in sprintFilters"
+                                ng-class="{'dropdown-header': sprintFilter.id == 'header', 'dropdown-divider': sprintFilter.id == 'divider'}">
+                                <a ng-if="sprintFilter.id != 'header' && sprintFilter.id != 'divider'"
+                                   ng-click="changeSprintFilter(sprintFilter)"
+                                   href>
+                                    {{ sprintFilter.name + ' (' + (sprintFilter.count | orElse: 0) + ')'}}
+                                </a>
+                                <span ng-if="sprintFilter.id == 'header'">{{ ::sprintFilter.name }}</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="btn-toolbar float-right">
-                        <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
-                        <g:if test="${formats}">
-                            <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
-                                <button class="btn btn-secondary"
-                                        uib-dropdown-toggle type="button">
-                                    <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
-                                </button>
-                                <ul uib-dropdown-menu
-                                    class="float-right"
-                                    role="menu">
-                                    <g:each in="${formats}" var="format">
-                                        <li role="menuitem">
-                                            <a href="${format.onlyJsClick ? '' : (format.resource ?: 'story') + '/sprint/{{ ::sprint.id }}/' + (format.action ?: 'print') + '/' + (format.params.format ?: '')}"
-                                               ng-click="${format.jsClick ? format.jsClick : 'print'}($event)">${format.name}</a>
-                                        </li>
-                                    </g:each>
-                                </ul>
-                            </div>
-                        </g:if>
-                        <div class="btn-group">
-                            <button type="button"
-                                    class="btn btn-secondary hidden-xs"
-                                    defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
-                                    ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
-                            </button>
-                        </div>
+                    <entry:point id="taskBoard-window-toolbar-right"/>
+                    <div class="btn-group" role="group" ng-controller="sprintCtrl">
+                        <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                         <div class="btn-group" uib-dropdown>
-                            <button class="btn btn-secondary"
-                                    uib-dropdown-toggle
-                                    type="button">
-                                <span defer-tooltip="${message(code: 'todo.is.ui.filters')}">
-                                    <span>{{ currentSprintFilter.name + ' (' + currentSprintFilter.count + ')'}}</span>
-                                </span>
+                            <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
                             </button>
-                            <ul uib-dropdown-menu role="menu">
-                                <li role="menuitem"
-                                    ng-repeat="sprintFilter in sprintFilters"
-                                    ng-class="{'dropdown-header': sprintFilter.id == 'header', 'dropdown-divider': sprintFilter.id == 'divider'}">
-                                    <a ng-if="sprintFilter.id != 'header' && sprintFilter.id != 'divider'"
-                                       ng-click="changeSprintFilter(sprintFilter)"
-                                       href>
-                                        {{ sprintFilter.name + ' (' + (sprintFilter.count | orElse: 0) + ')'}}
-                                    </a>
-                                    <span ng-if="sprintFilter.id == 'header'">{{ ::sprintFilter.name }}</span>
-                                </li>
-                            </ul>
+                            <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                         </div>
-                        <entry:point id="taskBoard-window-toolbar-right"/>
-                        <div class="btn-group" role="group" ng-controller="sprintCtrl">
-                            <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
-                            <div class="btn-group" uib-dropdown>
-                                <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
-                                </button>
-                                <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
-                            </div>
-                        </div>
-                        <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">
-                            <i class="fa fa-pencil"
-                               defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
-                        </a>
                     </div>
+                    <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">
+                        <i class="fa fa-pencil"
+                           defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
+                    </a>
                 </div>
             </div>
         </div>

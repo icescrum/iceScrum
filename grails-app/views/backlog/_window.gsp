@@ -125,7 +125,7 @@
                                 <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
                             </button>
                             <ul uib-dropdown-menu
-                                    class="float-right"
+                                class="float-right"
                                 role="menu">
                                 <g:each in="${is.exportFormats(windowDefinition: windowDefinition)}" var="format">
                                     <li role="menuitem">

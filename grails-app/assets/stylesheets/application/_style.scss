@@ -69,6 +69,30 @@ body {
   display: none;
 }
 
+.card-title {
+  @extend %is-title;
+}
+
+////////////////////
+// General view
+////////////////////
+
+.card-view {
+  border-top: solid 1px $is-border-color;
+  background-color: transparent;
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: $is-bg-color;
+    box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-3;
+  }
+}
+
+////////////////////
+// Widget
+////////////////////
+
 .widgets .card {
   margin-top: 1.25rem;
   background: none;
@@ -85,6 +109,10 @@ body {
     background-color: $is-bg-color;
   }
 }
+
+////////////////////
+// Details view
+////////////////////
 
 @each $state, $color in $is-state-colors {
   .color-state-#{$state} {
@@ -105,20 +133,6 @@ body {
     &.state-completed, &.state-current {
       opacity: 1.0;
     }
-  }
-}
-
-.card-title {
-  @extend %is-title;
-}
-
-.card-view {
-  border-top: solid 1px $is-border-color;
-  background-color: transparent;
-
-  .card-header {
-    background-color: $is-bg-color;
-    box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-3;
   }
 }
 
@@ -144,6 +158,10 @@ body {
     padding-bottom: 0.125rem;
   }
 }
+
+////////////////////
+// Wizard & Split modal
+////////////////////
 
 .modal-split .modal-body {
   padding: 0 ($grid-gutter-width / 2);

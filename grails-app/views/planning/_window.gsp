@@ -24,12 +24,12 @@
     <div ng-if="releases.length > 0"
          class="card card-view">
         <div class="card-header">
-            <h4>
-                <a class="link" ng-href="{{ openReleaseUrl(release) }}">
-                    <i class="fa fa-calendar"></i> {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }}</i>
+            <div>
+                <a class="card-title" ng-href="{{ openReleaseUrl(release) }}">
+                    {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }}</i>
                 </a>
-            </h4>
-            <div class="btn-toolbar>
+            </div>
+            <div class="btn-toolbar">
                 <div class="btn-group">
                     <button class="btn btn-secondary"
                             ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
@@ -42,7 +42,6 @@
                         <i class="fa fa-caret-right"></i>
                     </button>
                 </div>
-
                 <div class="btn-group">
                     <button type="button"
                             class="btn btn-secondary hidden-xs hidden-sm"
@@ -77,7 +76,7 @@
                 <div>
                     <a href="{{ openSprintUrl(sprint) }}" class="link"><i class="fa fa-tasks"></i> {{ (sprint | sprintName) + ' - ' + (sprint.state | i18n: 'SprintStates') }}</a>
                     <br/>
-                    <span class="sub-title text-muted">
+                    <span>
                         <span title="{{ sprint.startDate | dayShort }}">{{ sprint.startDate | dayShorter }}</span>
                         <i class="fa fa-angle-right"></i>
                         <span title="{{ sprint.endDate | dayShort }}">{{ sprint.endDate | dayShorter }}</span>
