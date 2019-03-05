@@ -127,7 +127,7 @@
                 {{ currentSprintFilter.name }}
                 (<strong><a href class="link" ng-click="changeSprintFilter(getDefaultFilter())">${message(code: 'todo.is.ui.disable')}</a></strong>)
             </div>
-            <div selectable="selectableOptions" sticky-list="#tasks-board">
+            <div selectable="selectableOptions">
                 <div class="kanban-states">
                     <div ng-if="sprint.state != sprintStatesByName.DONE">
                         ${message(code: 'is.task.state.wait')} ({{ taskCountByState[taskStatesByName.TODO] | orElse:0 }})
@@ -241,7 +241,7 @@
                 <div class="kanban-swimlane"
                      ng-repeat="story in sprint.stories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'rank'"
                      ng-class="{'story-done': story.state == storyStatesByName.DONE }">
-                    <div class="list-group">
+                    <div class="list-group list-group-small">
                         <div class="sticky-note-container sticky-note-story"
                              ng-controller="storyCtrl"
                              ng-click="selectStory($event, story.id)"
@@ -291,7 +291,7 @@
                 </div>
                 <div class="kanban-swimlane story-ghost"
                      ng-repeat="story in ghostStories | filter: storyFilter | taskBoardSearch: tasksByStoryByState | orderBy: 'id'">
-                    <div class="list-group">
+                    <div class="list-group list-group-small">
                         <div class="sticky-note-container sticky-note-story" ng-controller="storyCtrl" ng-click="selectStory($event, story.id)" ng-class="{'is-selected': isSelected(story)}">
                             <div ng-include="'story.light.html'" ng-init="disabledGradient = true"></div>
                         </div>

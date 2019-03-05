@@ -62,28 +62,12 @@
     }
   }
 
-  &:hover .sticky-note-actions {
-    > .action * {
-      visibility: visible;
-    }
-  }
-
   .sticky-note-actions {
     font-size: 0.8125rem;
     display: flex;
     justify-content: space-between;
 
     .action {
-      > * {
-        visibility: hidden;
-      }
-
-      &.active {
-        > * {
-          visibility: visible;
-        }
-      }
-
       &.comments {
         .fa-comment-o, &.active .fa-comment {
           display: inline-block;
@@ -168,6 +152,7 @@
   &.sticky-notes {
     .sticky-note-container {
       border-top: solid 1px $is-border-color-alt;
+
       &:last-child {
         border-bottom: solid 1px $is-border-color-alt;
       }
@@ -180,9 +165,11 @@
 
     > div {
       display: flex;
+
       > div {
         padding: 10px;
         height: 49px;
+
         &:not(:last-child):not(.sticky-note-content) {
           border-right: solid 1px $is-border-color-alt;
         }
@@ -191,14 +178,17 @@
 
     .sticky-note-content {
       flex: 1 0 auto;
+
       .title {
-        font-size: 18px;
+        font-size: 1.125rem;
         font-weight: 600;
       }
+
       .item-values {
         font-size: 0.875rem;
         color: $is-text-color;
       }
+
       .description {
         display: none;
       }
@@ -207,9 +197,11 @@
     .sticky-note-state-progress {
       position: relative;
       width: 230px;
+
       .progress, .progress-bar {
         background-color: rgba(104, 117, 131, 0.2);
       }
+
       .state {
         top: 10px;
         right: 20px;
@@ -224,6 +216,44 @@
     .sticky-note-actions {
       width: 230px;
       justify-content: space-around;
+    }
+  }
+}
+
+.list-group-small {
+  .sticky-note {
+    padding: 3px;
+    color: $is_text-color;
+
+    a {
+      color: $is_text-color;
+    }
+
+    .sticky-note-head {
+      font-size: 0.6875rem;
+    }
+
+    > div > div {
+      height: 26px;
+    }
+
+    .sticky-note-content {
+      display: flex;
+      align-items: center;
+
+      .item-values {
+        padding-right: 10px;
+      }
+
+      .title {
+        font-size: 1rem;
+        border-left: solid 1px $is-border-color-alt;
+        padding-left: 10px;
+      }
+
+      .item-values {
+        font-size: 0.75rem;
+      }
     }
   }
 }
@@ -273,6 +303,24 @@
 
     .item-values {
       font-size: 0.625rem;
+    }
+
+    &:hover .sticky-note-actions {
+      > .action * {
+        visibility: visible;
+      }
+    }
+
+    .sticky-note-actions .action {
+      > * {
+        visibility: hidden;
+      }
+
+      &.active {
+        > * {
+          visibility: visible;
+        }
+      }
     }
   }
 
