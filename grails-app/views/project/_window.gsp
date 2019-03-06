@@ -25,8 +25,8 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">
-                        {{ project.name + ' (' + project.pkey + ')' }}&nbsp;<entry:point id="window-project-name-right"/>
+                    <span class="card-title workspace-title">
+                        {{ project.name }}&nbsp;<entry:point id="window-project-name-right"/>
                     </span>
                     <div class="btn-toolbar float-right visible-on-hover">
                         <button class="btn btn-secondary btn-sm"

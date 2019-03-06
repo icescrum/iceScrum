@@ -77,12 +77,14 @@ nav.navbar {
   .nav-item.active .nav-link {
     border-style: solid;
     border-width: 0 0 3px 0;
-    border-image: linear-gradient(to right, #003aff, #a5c7ff) 1 100%;
+    border-image: linear-gradient(to right, #2611e7, #6db4d7);
     border-image-slice: 1;
     padding-bottom: 0.875rem;
   }
 
   .nav-link {
+    margin-left: 0.1875rem;
+    margin-right: 0.1875rem;
     padding-top: 1.0625rem;
     padding-bottom: 1.0625rem;
   }
@@ -101,27 +103,6 @@ nav.navbar {
     justify-content: space-between;
     background-color: $is-bg-color;
     box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-3;
-  }
-}
-
-////////////////////
-// Widget
-////////////////////
-
-.widgets .card {
-  margin-top: 1.25rem;
-  background: none;
-
-  .card-header {
-    padding-left: 0;
-    padding-right: 0;
-    background: none;
-  }
-
-  .card-body {
-    border-radius: 0.375rem;
-    box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-3;
-    background-color: $is-bg-color;
   }
 }
 
@@ -175,143 +156,6 @@ nav.navbar {
 }
 
 ////////////////////
-// Wizard & Split modal
-////////////////////
-
-.modal-split .modal-body {
-  padding: 0 ($grid-gutter-width / 2);
-
-  .modal-split-left, .modal-split-right {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  .modal-split-left {
-    background-color: $is-bg-color-alt;
-  }
-}
-
-////////////////////
-// Task board
-////////////////////
-
-.kanban-states {
-  display: flex;
-  justify-content: space-around;
-  font-family: averta-bold;
-  color: $is_text-color-alt;
-  padding-bottom: 5px;
-}
-
-.kanban-swimlane {
-  border-radius: 0.375rem;
-  border: solid 1px $is-outline-color;
-  margin: 15px;
-  margin-top: 0;
-  background-color: $is-bg-color;
-
-  .swimlane-title {
-    padding-left: 0.5rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-  }
-}
-
-.kanban-row {
-  display: flex;
-}
-
-.kanban-column {
-  padding: 0;
-  padding-bottom: 0.5rem;
-
-  &:nth-of-type(even) {
-    background-color: $is-bg-color-alt;
-  }
-}
-
-.kanban-column-header {
-  padding: 0;
-  padding-top: 0.375rem;
-
-  &:nth-of-type(even) {
-    background-color: $is-bg-color-alt;
-  }
-}
-
-.kanban-add-task {
-  width: $is-task-width;
-  height: $is-task-height;
-  border: 1px solid $is-outline-color;
-  border-radius: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.plus-icon {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  @include img-retina('plus.png', 'plus@2x.png', 1rem, 1rem);
-}
-
-.sprint-dates {
-  margin-left: 20px;
-  background: #f4f4f4;
-  font-size: 0.875rem;
-  padding: 10px 0.875rem;
-}
-
-.sprint-values {
-  font-size: 0.875rem;
-  padding: 10px 0.875rem;
-
-  > span {
-    padding-right: 10px;
-  }
-}
-
-////////////////////
-// Planning
-////////////////////
-
-.release-plan {
-  .sprint {
-    background: $is-bg-color;
-    border-radius: 6px;
-    border: solid 1px $is-outline-color;
-    margin: 0 12px;
-    padding: 15px
-  }
-}
-
-////////////////////
-// Backlog
-////////////////////
-
-.backlog-list {
-  .backlog .backlog-title {
-    display: none;
-  }
-
-  &.multiple-backlog {
-    .backlog {
-      &:not(:first-of-type) {
-        border-left: solid 1px $is-border-color;
-      }
-
-      .backlog-title {
-        display: inline-block;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: $is_text-color-alt;
-      }
-    }
-  }
-}
-
-////////////////////
 // Form
 ////////////////////
 
@@ -338,4 +182,21 @@ nav.navbar {
 .form-3-quarters {
   @extend .form-group;
   @extend .col-md-9;
+}
+
+////////////////////
+// Wizard & Split modal
+////////////////////
+
+.modal-split .modal-body {
+  padding: 0 ($grid-gutter-width / 2);
+
+  .modal-split-left, .modal-split-right {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .modal-split-left {
+    background-color: $is-bg-color-alt;
+  }
 }
