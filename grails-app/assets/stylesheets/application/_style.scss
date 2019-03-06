@@ -73,6 +73,21 @@ body {
   @extend %is-title;
 }
 
+nav.navbar {
+  .nav-item.active .nav-link {
+    border-style: solid;
+    border-width: 0 0 3px 0;
+    border-image: linear-gradient(to right, #003aff, #a5c7ff) 1 100%;
+    border-image-slice: 1;
+    padding-bottom: 0.875rem;
+  }
+
+  .nav-link {
+    padding-top: 1.0625rem;
+    padding-bottom: 1.0625rem;
+  }
+}
+
 ////////////////////
 // General view
 ////////////////////
