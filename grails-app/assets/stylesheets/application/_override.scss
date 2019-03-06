@@ -60,11 +60,11 @@ strong {
   &.btn-sm {
     color: $primary;
     text-shadow: none;
-    background-image: linear-gradient(to top, $is-btn-secondary-start, $is-bg-color);
+    background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
     box-shadow: 0 1px 0.1875rem 0 $is-shadow-color-2;
 
     &:hover {
-      background-image: linear-gradient(to top, $is-btn-secondary-start, $is-bg-color);
+      background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
     }
 
     &:not(:disabled):not(.disabled):active {
@@ -76,7 +76,7 @@ strong {
 .btn-secondary {
   color: $is_text-color-alt;
   box-shadow: 0 0.125rem 0.5625rem 0 $is-shadow-color-1;
-  background-image: linear-gradient(to top, $is-btn-secondary-start, $is-bg-color);
+  background-image: linear-gradient(to top, $is-btn-secondary-start, $is-btn-secondary-end);
 
   &:hover {
     background-color: $is-bg-color;
