@@ -37,7 +37,11 @@
         <asset:link rel="mask-icon" href="browser/safari-pinned-tab.svg" color="#FFCC04"/>
         <asset:link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
         <meta name="theme-color" content="#ffffff">
-        <asset:stylesheet href="application.css"/>
+        <g:if test="${darkMode}">
+            <asset:stylesheet href="application-dark.css"/>
+        </g:if><g:else>
+            <asset:stylesheet href="application.css"/>
+        </g:else>
         <g:layoutHead/>
     </head>
     <body ng-controller="applicationCtrl"
