@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20">
+    <defs>
+        <linearGradient id="a" x1="-50.76%" x2="257.296%" y1="150.788%" y2="0%">
+            <stop offset="0%" stop-color="#2611E7"/>
+            <stop offset="100%" stop-color="#6DB4D7"/>
+        </linearGradient>
+        <linearGradient id="b" x1="-65.856%" x2="216.072%" y1="204.741%" y2="-242.314%">
+            <stop offset="0%" stop-color="#1180E7"/>
+            <stop offset="100%" stop-color="#D1E6F0"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path fill-rule="nonzero" stroke="#FFF" stroke-width=".01" d="M.005.005h20.99v19.99H.005z"/>
+        <path fill="url(#a)" d="M.72 0h5.002a.72.72 0 0 1 .72.72v7.57a.72.72 0 0 1-.72.72H.72A.72.72 0 0 1 0 8.29V.72A.72.72 0 0 1 .72 0z" transform="translate(4 3)"/>
+        <path fill="url(#b)" d="M.72 10.08h5.002a.72.72 0 0 1 .72.72v2.87a.72.72 0 0 1-.72.72H.72a.72.72 0 0 1-.72-.72V10.8a.72.72 0 0 1 .72-.72z" transform="translate(4 3)"/>
+        <path fill="url(#a)" d="M7.878 5.39h5.002a.72.72 0 0 1 .72.72v7.57a.72.72 0 0 1-.72.72H7.878a.72.72 0 0 1-.72-.72V6.11a.72.72 0 0 1 .72-.72z" transform="matrix(1 0 0 -1 4 22.79)"/>
+        <path fill="url(#b)" d="M7.878.01h5.002a.72.72 0 0 1 .72.72V3.6a.72.72 0 0 1-.72.72H7.878a.72.72 0 0 1-.72-.72V.73a.72.72 0 0 1 .72-.72z" transform="matrix(1 0 0 -1 4 7.33)"/>
+    </g>
+</svg>

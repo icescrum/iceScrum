@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20">
+    <defs>
+        <linearGradient id="a" x1="-94.185%" y1="201.952%" y2="0%">
+            <stop offset="0%" stop-color="#2611E7"/>
+            <stop offset="100%" stop-color="#6DB4D7"/>
+        </linearGradient>
+        <linearGradient id="b" x1="0%" x2="514.789%" y1="46.276%" y2="2.237%">
+            <stop offset="0%" stop-color="#2611E7"/>
+            <stop offset="100%" stop-color="#6DB4D7"/>
+        </linearGradient>
+        <linearGradient id="c" x1="-11.586%" x2="103.136%" y1="110.85%" y2="0%">
+            <stop offset="0%" stop-color="#1180E7"/>
+            <stop offset="100%" stop-color="#D1E6F0"/>
+        </linearGradient>
+        <linearGradient id="d" x1="-42.216%" x2="71.787%" y1="131.953%" y2="40.298%">
+            <stop offset="0%" stop-color="#1180E7"/>
+            <stop offset="100%" stop-color="#D1E6F0"/>
+        </linearGradient>
+        <linearGradient id="e" x1="-24.349%" x2="166.892%" y1="100%" y2="25.321%">
+            <stop offset="0%" stop-color="#2611E7"/>
+            <stop offset="100%" stop-color="#6DB4D7"/>
+        </linearGradient>
+        <linearGradient id="f" x1="-35.941%" y1="125.178%" y2="0%">
+            <stop offset="0%" stop-color="#2611E7"/>
+            <stop offset="100%" stop-color="#6DB4D7"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path stroke="#FFF" stroke-width=".01" d="M.005.005h20.99v19.99H.005z"/>
+        <path fill="url(#a)" d="M0 2.6h14.884v14.2H0z" transform="translate(2.16 1)"/>
+        <path fill="url(#b)" d="M0 2.6h1.652v14.2H0z" transform="translate(2.16 1)"/>
+        <g opacity=".837">
+            <path fill="url(#c)" d="M1.95 12.121h11.283V0H0v10.145c0 1.091.873 1.976 1.95 1.976z" transform="translate(3.812 3.6)"/>
+            <path fill="url(#d)" d="M13.265 12.124c1.076 0 1.95-.885 1.95-1.976H3.9c0 1.105-.854 1.976-1.945 1.976h11.309z" transform="translate(3.812 3.6)"/>
+        </g>
+        <g transform="translate(12.427 1)">
+            <ellipse cx="1.434" cy="3.818" fill="url(#e)" rx="1" ry="1"/>
+            <path fill="#9AB5FF" fill-rule="nonzero" d="M.64 2.598H.046v-.746c0-.804.643-1.456 1.437-1.456s1.438.652 1.438 1.456v.864c0 .804-.644 1.456-1.438 1.456a.3.3 0 0 1-.297-.301.3.3 0 0 1 .297-.301.848.848 0 0 0 .843-.854v-.864a.848.848 0 0 0-.843-.854.848.848 0 0 0-.843.854v.746z" opacity=".827"/>
+        </g>
+        <g transform="translate(5.827 1)">
+            <ellipse cx="1.434" cy="3.818" fill="url(#e)" rx="1" ry="1"/>
+            <path fill="#9AB5FF" fill-rule="nonzero" d="M.64 2.598H.046v-.746c0-.804.643-1.456 1.437-1.456s1.438.652 1.438 1.456v.864c0 .804-.644 1.456-1.438 1.456a.3.3 0 0 1-.297-.301.3.3 0 0 1 .297-.301.848.848 0 0 0 .843-.854v-.864a.848.848 0 0 0-.843-.854.848.848 0 0 0-.843.854v.746z" opacity=".827"/>
+        </g>
+        <g transform="translate(5.827 6.113)">
+            <rect width="2.181" height="2.21" x=".504" y=".702" fill="#FFF" opacity=".6" rx=".194"/>
+            <rect width="2.181" height="2.21" x="3.544" y=".702" fill="#FFF" opacity=".6" rx=".194"/>
+            <rect width="2.181" height="2.21" x="6.584" y=".702" fill="url(#f)" opacity=".498" rx=".194"/>
+            <rect width="2.181" height="2.21" x=".504" y="4.118" fill="url(#f)" opacity=".498" rx=".194"/>
+            <rect width="2.181" height="2.21" x="3.544" y="4.118" fill="#FFF" opacity=".6" rx=".194"/>
+            <rect width="2.181" height="2.21" x="6.584" y="4.118" fill="#FFF" opacity=".6" rx=".194"/>
+        </g>
+    </g>
+</svg>

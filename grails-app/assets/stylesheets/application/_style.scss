@@ -87,6 +87,32 @@ nav.navbar {
     margin-right: 0.1875rem;
     padding-top: 1.0625rem;
     padding-bottom: 1.0625rem;
+    padding-left: 0.625rem !important;
+
+    .nav-link-icon {
+      display: inline-block;
+      float: left;
+      margin-right: 4px;
+      height: 20px;
+      width: 21px;
+    }
+
+    // TODO make a loop that can be extended from plugin
+    .nav-link-icon-project {
+      background: url("menu-project.svg") no-repeat;
+    }
+    .nav-link-icon-backlog {
+      background: url("menu-backlog.svg") no-repeat;
+    }
+    .nav-link-icon-planning {
+      background: url("menu-planning.svg") no-repeat;
+    }
+    .nav-link-icon-taskBoard {
+      background: url("menu-taskBoard.svg") no-repeat;
+    }
+    .nav-link-icon-feature {
+      background: url("menu-feature.svg") no-repeat;
+    }
   }
 }
 

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20">
+    <defs>
+        <linearGradient id="a" x1="-16.879%" y1="116.568%" y2="2.559%">
+            <stop offset="0%" stop-color="#2611E7"/>
+            <stop offset="100%" stop-color="#6DB4D7"/>
+        </linearGradient>
+        <linearGradient id="b" x1="4.83%" x2="102%" y1="4.782%" y2="101%">
+            <stop offset="0%" stop-color="#1180E7"/>
+            <stop offset="100%" stop-color="#D1E6F0"/>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path stroke="#FFF" stroke-width=".01" d="M.005.005h20.99v19.99H.005z"/>
+        <g transform="translate(.672 3)">
+            <rect width="19.32" height="14.167" x=".42" y=".417" fill="url(#a)" rx="1"/>
+            <g fill="#FFF" fill-rule="nonzero" opacity=".621">
+                <path d="M7 4.261c0-.366.297-.663.664-.663h8.883a.664.664 0 0 1 0 1.327H7.664A.664.664 0 0 1 7 4.26zM6.918 7.284c0-.367.297-.664.663-.664h8.883a.664.664 0 1 1 0 1.327H7.581a.664.664 0 0 1-.663-.663zM6.918 10.752c0-.366.297-.663.663-.663h8.883a.664.664 0 0 1 0 1.327H7.581a.664.664 0 0 1-.663-.664z"/>
+            </g>
+        </g>
+        <path stroke="url(#b)" stroke-linecap="round" stroke-linejoin="round" d="M5.902 3.014l-1.785 1.77-.757-.754M5.902 6.348l-1.785 1.77-.757-.754M5.902 9.948l-1.785 1.77-.757-.754" transform="translate(0 3)"/>
+    </g>
+</svg>
