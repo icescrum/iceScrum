@@ -54,7 +54,6 @@ windows = {
     'backlog' {
         details true
         workspace 'project'
-        icon 'inbox'
         help 'is.ui.backlog.help'
         secured 'stakeHolder() or inProject()'
         menu {
@@ -75,7 +74,6 @@ windows = {
     'feature' {
         details true
         workspace 'project'
-        icon 'puzzle-piece'
         help 'is.ui.feature.help'
         secured 'stakeHolder() or inProject()'
         menu {
@@ -95,7 +93,6 @@ windows = {
     'project' {
         workspace 'project'
         flex false
-        icon 'dashboard'
         help 'is.ui.project.help'
         secured 'stakeHolder() or inProject()'
         menu {
@@ -107,7 +104,6 @@ windows = {
     'planning' {
         details true
         workspace 'project'
-        icon 'calendar'
         help 'todo.is.ui.planning.help'
         secured 'stakeHolder() or inProject()'
         menu {
@@ -119,7 +115,6 @@ windows = {
     'taskBoard' {
         details true
         workspace 'project'
-        icon 'tasks'
         help 'todo.is.ui.taskBoard.help'
         secured 'inProject() or (isAuthenticated() and stakeHolder())'
         menu {
