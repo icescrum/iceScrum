@@ -59,7 +59,7 @@ class UtilsTagLib {
         out << """<a class="workspace ${workspaceType} dropdown-item ${isCurrent ? 'active' : ''}"
                      href="${isCurrent ? '' : createLink(controller: "scrumOS", params: [(workspaceType): workspaceConfig.config(workspace).key]) + '/'}"
                      title="${name}">
-                         <i class="fa fa-${workspaceConfig.icon}"></i> ${name}
+                         ${name}
                   </a>"""
 
     }

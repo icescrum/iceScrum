@@ -94,7 +94,37 @@ nav.navbar {
   .nav-item-main {
     margin-left: 9px;
     font-size: 1.125rem;
-    line-height: 1.2;
+    line-height: 1;
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+
+      .workspace-title {
+        font-family: averta-bold;
+        padding-top: 0.1875rem;
+      }
+
+      .is-icon {
+        width: 1.125rem;
+        height: 1rem;
+
+        &.icon-private {
+          background: url("icon-private.svg") no-repeat;
+          margin-right: 0.6875rem;
+        }
+
+        &.icon-public {
+          background: url("icon-public.svg") no-repeat;
+          margin-right: 0.6875rem;
+        }
+
+        &.icon-project {
+          background: url("icon-project.svg") no-repeat;
+          margin-right: 1rem;
+        }
+      }
+    }
   }
 
   .nav-item.active .nav-link {

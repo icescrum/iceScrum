@@ -125,7 +125,6 @@ icescrum {
     workspaces = [
             project: [
                     path        : 'p',
-                    icon        : 'folder',
                     type        : 'project',
                     objectClass : Project,
                     config      : { project -> [key: project.pkey, path: 'p'] },

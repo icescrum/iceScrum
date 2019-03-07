@@ -116,7 +116,6 @@ class ScrumOSController implements ControllerErrorHandler {
                     def menuPositions = ApplicationSupport.menuPositionFromUserPreferences(windowDefinition) ?: [visible: menu.defaultVisibility, pos: menu.defaultPosition]
                     menus << [title   : message(code: menu.title instanceof Closure ? menu.getTitle()(workspace?.object) : menu.title),
                               id      : windowDefinitionId,
-                              icon    : windowDefinition.icon,
                               position: menuPositions.pos.toInteger(),
                               visible : menuPositions.visible]
                     menus.sort { it.position }.eachWithIndex { menuEntry, index ->

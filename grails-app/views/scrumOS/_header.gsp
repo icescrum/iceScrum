@@ -50,12 +50,16 @@
                    href
                    class="nav-link">
                     <g:if test="${workspace}">
-                        <i tooltip-placement="bottom"
-                           defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
-                           ng-if="workspace.preferences && !workspace.preferences.hidden && authorized${workspace.name.capitalize()}('edit')"
-                           ng-click="show${workspace.name.capitalize()}EditModal(); $event.stopPropagation();" class="fa fa-eye"></i>
+                        <div class="is-icon"
+                             ng-class="'icon-' + (workspace.preferences.hidden ? 'private' : 'public')"
+                             ng-if="workspace.preferences"
+                             tooltip-placement="bottom"
+                             defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
+                             ng-click="authorized${workspace.name.capitalize()}('edit') && show${workspace.name.capitalize()}EditModal();">
+                        </div>
                         <g:if test="${workspace.name}">
-                            <span class="text-ellipsis" title="{{ workspace.name }}"><strong>{{ workspace.name }}</strong></span>
+                            <div class="is-icon icon-${workspace.name}"></div>
+                            <span class="workspace-title text-ellipsis">{{ workspace.name }}</span>
                         </g:if>
                     </g:if>
                 </a>

@@ -39,7 +39,6 @@
             </div>
             <g:each var="workspace" in="${Holders.grailsApplication.config.icescrum.workspaces}" status="i">
                 <div class="workspace col-md-4 text-center">
-                    <i class="fa fa-${workspace.value.icon} fa-7x"></i>
                     <div>${g.message(code: 'is.ui.workspace.description.' + workspace.key)}</div>
                     <button class="btn btn-primary" ${workspace.value.enabled(Holders.grailsApplication) ? '' : 'disabled="disabled"'}
                             type="button"
