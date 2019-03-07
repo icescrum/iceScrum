@@ -104,13 +104,13 @@
   }
 
   .sticky-note-tags {
-    height: 27px;
+    height: 1.6875rem;
 
     .tag {
       font-size: 0.625rem;
       background: white;
-      border-radius: 2px;
-      padding: 2px 3px;
+      border-radius: 0.125rem;
+      padding: 0.125rem 0.1875rem;
       box-shadow: 0 1px 3px 0 rgba(156, 164, 171, 0.62);
       color: $is_text-color-alt;
 
@@ -161,14 +161,14 @@
 
   .sticky-note {
     background: none !important;
-    padding: 5px;
+    padding: 0.3125rem;
 
     > div {
       display: flex;
 
       > div {
-        padding: 10px;
-        height: 49px;
+        padding: 0.625rem;
+        height: 3.0625rem;
 
         &:not(:last-child):not(.sticky-note-content) {
           border-right: solid 1px $is-border-color-alt;
@@ -203,13 +203,13 @@
       }
 
       .state {
-        top: 10px;
-        right: 20px;
+        top: 0.625rem;
+        right: 1.25rem;
       }
 
       .status {
-        top: 10px;
-        left: 20px;
+        top: 0.625rem;
+        left: 1.25rem;
       }
     }
 
@@ -222,7 +222,7 @@
 
 .list-group-small {
   .sticky-note {
-    padding: 3px;
+    padding: 0.1875rem;
     color: $is_text-color;
 
     a {
@@ -234,7 +234,7 @@
     }
 
     > div > div {
-      height: 26px;
+      height: 1.625rem;
     }
 
     .sticky-note-content {
@@ -242,13 +242,13 @@
       align-items: center;
 
       .item-values {
-        padding-right: 10px;
+        padding-right: 0.625rem;
       }
 
       .title {
         font-size: 1rem;
         border-left: solid 1px $is-border-color-alt;
-        padding-left: 10px;
+        padding-left: 0.625rem;
       }
 
       .item-values {
@@ -269,7 +269,7 @@
     flex-wrap: wrap;
 
     .sticky-note-container {
-      margin: 10px;
+      margin: 0.625rem;
     }
   }
 
@@ -292,12 +292,12 @@
 
       .state {
         top: 0;
-        right: 8px;
+        right: 0.5rem;
       }
 
       .status {
         top: 0;
-        left: 8px;
+        left: 0.5rem;
       }
     }
 
@@ -331,7 +331,7 @@
     .sticky-note {
       width: $is-feature-width;
       height: $is-feature-height;
-      border-radius: 6px;
+      border-radius: 0.375rem;
       overflow: hidden;
 
       .sticky-note-head {
@@ -341,7 +341,7 @@
       }
 
       .sticky-note-content {
-        margin-top: 10px;
+        margin-top: 0.625rem;
         height: 49px;
         margin-bottom: 14px;
       }
@@ -374,7 +374,7 @@
         }
 
         .title {
-          height: 24px;
+          height: 1.5rem;
         }
 
         .description {
@@ -390,10 +390,10 @@
     height: $is-task-height;
 
     .sticky-note {
-      padding: 6px;
+      padding: 0.375rem;
       width: $is-task-width;
       height: $is-task-height;
-      border-radius: 6px;
+      border-radius: 0.375rem;
 
       .sticky-note-head {
         display: flex;
@@ -402,13 +402,13 @@
 
         .id {
           padding-right: 2px;
-          line-height: 17px;
+          line-height: 1.0625rem;
           font-size: 0.8125rem;
           font-weight: 600;
         }
 
         .responsible {
-          height: 17px;
+          height: 1.0625rem;
         }
       }
 
@@ -416,7 +416,7 @@
         padding-left: 1px;
         padding-right: 1px;
         height: 44px;
-        margin-bottom: 9px;
+        margin-bottom: 0.5625rem;
 
         .title {
           line-height: 1.17;
@@ -436,13 +436,24 @@
         padding-left: 1px;
         padding-right: 1px;
       }
+
+      &.task-blocked:after {
+        content: "";
+        position: absolute;
+        top: -13px;
+        right: -12px;
+        display: block;
+        width: 1.5rem;
+        height: 1.5rem;
+        @include is-img-retina('badge-task-blocked', 1.5rem, 1.5rem);
+      }
     }
   }
 
   .sticky-note-feature, .sticky-note-story {
 
     .sticky-note {
-      padding: 9px;
+      padding: 0.5625rem;
 
       .title {
         font-size: 1rem;

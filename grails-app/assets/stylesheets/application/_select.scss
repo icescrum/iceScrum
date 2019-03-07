@@ -75,10 +75,10 @@
     top: 0.5625rem;
     margin-top: 0;
     background-position: right top !important;
-    @include img-retina('removetag-dark.png', 'removetag-dark@2x.png', 0.625rem, 0.625rem);
+    @include is-img-retina('removetag-dark', 0.625rem, 0.625rem);
   }
 
   .select2-search-choice.invert .select2-search-choice-close {
-    @include img-retina('removetag-light.png', 'removetag-light@2x.png', 0.625rem, 0.625rem);
+    @include is-img-retina('removetag-light', 0.625rem, 0.625rem);
   }
 }
