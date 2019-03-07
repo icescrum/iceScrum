@@ -149,7 +149,7 @@
        hotkey-description="${message(code: 'todo.is.ui.open.view')} {{ menu.title }}"
        href="{{ getMenuUrl(menu) }}">
         <span class="nav-link-icon" ng-class="'nav-link-icon-' + menu.id" as-sortable-item-handle></span>
-        <span defer-tooltip="{{:: menu.title + ' (' + menu.shortcut + ')' }}" tooltip-placement="bottom" class="title hidden-sm">{{:: menu.title }}</span>
+        <span defer-tooltip="{{:: menu.title + ' (' + menu.shortcut + ')' }}" tooltip-placement="bottom" class="nav-link-title">{{:: menu.title }}</span>
     </a>
     </script>
 

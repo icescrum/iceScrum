@@ -40,13 +40,12 @@ body {
 }
 
 .view.with-details {
+  display: flex;
   > .content {
-    float: left;
     width: 65%;
   }
 
   [ui-view='details'] {
-    float: left;
     width: 35%;
   }
 }
@@ -102,7 +101,7 @@ nav.navbar {
 
       .workspace-title {
         font-family: averta-bold;
-        padding-top: 0.1875rem;
+        padding-top: 0.125rem;
       }
 
       .is-icon {
@@ -145,10 +144,14 @@ nav.navbar {
     padding-top: 1.0625rem;
     padding-bottom: 1.0625rem;
     padding-left: 0.625rem !important;
+    display: flex;
+    align-items: center;
+
+    .nav-link-title {
+      line-height: 1.14;
+    }
 
     .nav-link-icon {
-      display: inline-block;
-      float: left;
       margin-right: 4px;
       height: 20px;
       width: 21px;
