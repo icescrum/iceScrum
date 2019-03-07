@@ -40,20 +40,24 @@
             is-disabled="!currentUser.id || workspaceType != 'project'"
             as-sortable="menuSortableOptions"
             ng-model="application.menus.visible">
-            <li class="nav-item"
+            <div class="nav-item nav-item-logo">
+                <div class="is-logo"></div>
+            </div>
+            <li class="nav-item nav-item-main"
                 ng-class="workspaceType ? workspaceType : ''"
                 uib-dropdown>
                 <a uib-dropdown-toggle
                    href
                    class="nav-link">
-                    <svg class="logo" ng-class="getPushState()" viewBox="0 0 150 150">
-                        <g:render template="/scrumOS/logo"/>
-                    </svg>
-                    <g:if test="${workspace}"><i tooltip-placement="bottom"
-                                                 defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
-                                                 ng-if="workspace.preferences && !workspace.preferences.hidden && authorized${workspace.name.capitalize()}('edit')"
-                                                 ng-click="show${workspace.name.capitalize()}EditModal(); $event.stopPropagation();" class="fa fa-eye">&nbsp;</i></g:if><g:if test="${workspace?.icon}"><i class="fa fa-${workspace.icon}"></i>
-                    <span class="text-ellipsis" title="{{ workspace.name }}"><strong>{{ workspace.name }}</strong></span></g:if>
+                    <g:if test="${workspace}">
+                        <i tooltip-placement="bottom"
+                           defer-tooltip="{{ message('is.ui.${workspace.name}.public') }}"
+                           ng-if="workspace.preferences && !workspace.preferences.hidden && authorized${workspace.name.capitalize()}('edit')"
+                           ng-click="show${workspace.name.capitalize()}EditModal(); $event.stopPropagation();" class="fa fa-eye"></i>
+                        <g:if test="${workspace.name}">
+                            <span class="text-ellipsis" title="{{ workspace.name }}"><strong>{{ workspace.name }}</strong></span>
+                        </g:if>
+                    </g:if>
                 </a>
                 <div uib-dropdown-menu>
                     <g:if test="${workspace?.object}">
@@ -193,7 +197,7 @@
         </ul>
     </div>
     <g:if test="${project}">
-        <form class="form-inline float-left" role="search">
+        <form class="form-inline float-left is-search" role="search">
             <div class="input-group search">
                 <span class="input-group-prepend" ng-if="application.context">
                     <button class="btn btn-secondary btn-sm"
@@ -223,7 +227,7 @@
         </form>
     </g:if>
     <g:else>
-        <form class="form-inline float-left" role="search">
+        <form class="form-inline float-left is-search" role="search">
             <div class="input-group search">
                 <input autocomplete="off"
                        type="text"
@@ -265,7 +269,7 @@
     </div>
     <div ng-if=":: currentUser.username" uib-dropdown class="float-left">
         <div class="float-left" uib-dropdown-toggle>
-            <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="32px" width="32px"/>
+            <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="37px" width="37px"/>
         </div>
         <div uib-dropdown-menu class="profile-panel" ng-include="'profile.panel.html'"></div>
     </div>

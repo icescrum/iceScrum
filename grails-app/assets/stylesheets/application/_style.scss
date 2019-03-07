@@ -74,12 +74,39 @@ body {
 }
 
 nav.navbar {
+
+  .nav-item-logo {
+    border-right: 1px solid rgba(200, 200, 204, 0.42);
+    display: flex;
+
+    // TODO animate with loading and push
+    .is-logo {
+      margin: auto;
+      margin-left: 0.875rem;
+      margin-right: 1.875rem;
+      width: 1.875rem;
+      height: 1.875rem;
+      background: url("logo.png") no-repeat;
+      background-size: 1.875rem 1.875rem;
+    }
+  }
+
+  .nav-item-main {
+    margin-left: 9px;
+    font-size: 1.125rem;
+    line-height: 1.2;
+  }
+
   .nav-item.active .nav-link {
     border-style: solid;
     border-width: 0 0 3px 0;
     border-image: linear-gradient(to right, #2611e7, #6db4d7);
     border-image-slice: 1;
     padding-bottom: 0.875rem;
+  }
+
+  .nav-item.hidden {
+    display: none;
   }
 
   .nav-link {
@@ -101,17 +128,28 @@ nav.navbar {
     .nav-link-icon-project {
       background: url("menu-project.svg") no-repeat;
     }
+
     .nav-link-icon-backlog {
       background: url("menu-backlog.svg") no-repeat;
     }
+
     .nav-link-icon-planning {
       background: url("menu-planning.svg") no-repeat;
     }
+
     .nav-link-icon-taskBoard {
       background: url("menu-taskBoard.svg") no-repeat;
     }
+
     .nav-link-icon-feature {
       background: url("menu-feature.svg") no-repeat;
+    }
+  }
+
+  .is-search {
+    input {
+      height: 35px;
+      box-shadow: 0 2px 9px 0 $is-shadow-color-3;
     }
   }
 }
