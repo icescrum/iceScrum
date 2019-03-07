@@ -31,12 +31,12 @@
             </div>
             <div class="btn-toolbar">
                 <div class="btn-group">
-                    <button class="btn btn-secondary"
+                    <button class="btn btn-secondary btn-sm"
                             ng-style="{'visibility': !hasPreviousVisibleSprints() ? 'hidden' : 'visible'}"
                             ng-click="visibleSprintsPrevious()">
                         <i class="fa fa-caret-left"></i>
                     </button>
-                    <button class="btn btn-secondary"
+                    <button class="btn btn-secondary btn-sm"
                             ng-style="{'visibility': !hasNextVisibleSprints() ? 'hidden' : 'visible'}"
                             ng-click="visibleSprintsNext()">
                         <i class="fa fa-caret-right"></i>
@@ -44,12 +44,12 @@
                 </div>
                 <div class="btn-group">
                     <button type="button"
-                            class="btn btn-secondary hidden-xs hidden-sm"
+                            class="btn btn-secondary btn-sm hidden-xs hidden-sm"
                             defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
                             ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
                     </button>
                     <button type="button"
-                            class="btn btn-secondary hidden-xs"
+                            class="btn btn-secondary btn-sm hidden-xs"
                             ng-click="fullScreen()"
                             defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
@@ -57,12 +57,12 @@
                 <div class="btn-group" role="group" ng-controller="releaseCtrl">
                     <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
                     <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+                        <button type="button" class="btn btn-secondary btn-sm" uib-dropdown-toggle>
                         </button>
                         <div uib-dropdown-menu class="float-right" ng-init="itemType = 'release'" template-url="item.menu.html"></div>
                     </div>
                 </div>
-                <a class="btn btn-secondary" ng-href="{{ openReleaseUrl(release) }}">
+                <a class="btn btn-secondary btn-sm" ng-href="{{ openReleaseUrl(release) }}">
                     <i class="fa fa-pencil"
                        defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                 </a>
@@ -91,12 +91,12 @@
                     <div class="btn-group" role="group">
                         <shortcut-menu ng-model="sprint" model-menus="menus" btn-secondary="true"></shortcut-menu>
                         <div class="btn-group" uib-dropdown>
-                            <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+                            <button type="button" class="btn btn-secondary btn-sm" uib-dropdown-toggle>
                             </button>
                             <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                         </div>
                     </div>
-                    <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">
+                    <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
                         <i class="fa fa-pencil"
                            defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                     </a>

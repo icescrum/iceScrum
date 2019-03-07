@@ -68,18 +68,18 @@
                 <entry:point id="backlog-window-toolbar-right"/>
                 <div class="btn-group">
                     <button type="button"
-                            class="btn btn-secondary hidden-xs hidden-sm"
+                            class="btn btn-secondary btn-sm hidden-xs hidden-sm"
                             defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
                             ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
                     </button>
                     <button type="button"
-                            class="btn btn-secondary hidden-xs"
+                            class="btn btn-secondary btn-sm hidden-xs"
                             defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
                             ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
                 <a ui-sref="backlog.backlog.story.new"
-                   class="btn btn-primary"><span>${message(code: "todo.is.ui.story.new")}</span></a>
+                   class="btn btn-primary btn-intermediate"><span>${message(code: "todo.is.ui.story.new")}</span></a>
             </div>
         </div>
         <div class="card-body backlog-list row" selectable="selectableOptions" ng-class="{'multiple-backlog': backlogContainers.length > 1}">
@@ -99,7 +99,7 @@
                             <div class="btn-group"
                                  uib-dropdown
                                  defer-tooltip="${message(code: 'todo.is.ui.sort')}">
-                                <button class="btn btn-secondary" uib-dropdown-toggle type="button">
+                                <button class="btn btn-secondary btn-sm" uib-dropdown-toggle type="button">
                                     <span>{{ backlogContainer.orderBy.current.name }}</span>
                                 </button>
                                 <div uib-dropdown-menu role="menu">
@@ -111,14 +111,14 @@
                                         {{ order.name }}</a>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-secondary btn-sm"
                                     ng-click="reverseBacklogOrder(backlogContainer)"
                                     defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
                                 <i class="fa fa-sort-amount{{ backlogContainer.orderBy.reverse ? '-desc' : '-asc'}}"></i>
                             </button>
                             <button type="button"
                                     ng-if="backlogContainer.sortable && !isSortingBacklog(backlogContainer)"
-                                    class="btn btn-secondary hidden-sm hidden-xs"
+                                    class="btn btn-secondary btn-sm hidden-sm hidden-xs"
                                     ng-click="enableSortable(backlogContainer)"
                                     uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
                                 <i class="fa fa-hand-stop-o text-danger"></i>
@@ -126,7 +126,7 @@
                             <entry:point id="backlog-list-toolbar-group-right"/>
                         </div>
                         <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
-                            <button class="btn btn-secondary"
+                            <button class="btn btn-secondary btn-sm"
                                     ng-disabled="!backlogContainer.backlog.stories.length"
                                     uib-dropdown-toggle type="button">
                                 <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
@@ -145,16 +145,14 @@
                             </div>
                             <entry:point id="backlog-list-toolbar-right-hidden-xs"/>
                         </div>
-                    </div>
-                    <div class="btn-toolbar">
-                        <a class="btn btn-secondary"
+                        <a class="btn btn-secondary btn-sm"
                            ng-href="{{ openBacklogUrl(backlogContainer.backlog) }}">
                             <i class="fa fa-pencil"
                                defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                         </a>
                         <entry:point id="backlog-list-toolbar-right"/>
                         <a ng-href="{{ closeBacklogUrl(backlogContainer.backlog) }}"
-                           class="btn btn-secondary"
+                           class="btn btn-secondary btn-sm"
                            ng-if="backlogContainers.length > 1">
                             <i class="fa fa-times"
                                defer-tooltip="${message(code: 'is.ui.window.closeable')}"></i>

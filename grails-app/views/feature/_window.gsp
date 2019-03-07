@@ -24,7 +24,7 @@
 <is:window windowDefinition="${windowDefinition}">
     <div class="card card-view">
         <div class="card-header">
-            <div class="card-title">
+            <div>
                 <span class="card-title">${message(code: 'is.ui.feature')} ({{ features.length}})</span>
             </div>
             <div class="btn-toolbar">
@@ -32,7 +32,7 @@
                     <div class="btn-group"
                          uib-dropdown
                          defer-tooltip="${message(code: 'todo.is.ui.sort')}">
-                        <button class="btn btn-secondary"
+                        <button class="btn btn-secondary btn-sm"
                                 uib-dropdown-toggle type="button">
                             <span>{{ orderBy.current.name }}</span>
                         </button>
@@ -47,14 +47,14 @@
                         </div>
                     </div>
                     <button type="button"
-                            class="btn btn-secondary"
+                            class="btn btn-secondary btn-sm"
                             ng-click="orderBy.reverse = !orderBy.reverse"
                             defer-tooltip="${message(code: 'todo.is.ui.sort.order')}">
                         <i class="fa fa-sort-amount{{ orderBy.reverse ? '-desc' : '-asc'}}"></i>
                     </button>
                     <button type="button"
                             ng-if="isSortableFeature() && !isSortingFeature()"
-                            class="btn btn-secondary hidden-sm hidden-xs"
+                            class="btn btn-secondary btn-sm hidden-sm hidden-xs"
                             ng-click="enableSortable()"
                             uib-tooltip="${message(code: 'todo.is.ui.sortable.enable')}">
                         <i class="fa fa-hand-pointer-o text-danger forbidden-stack"></i>
@@ -64,7 +64,7 @@
                      uib-dropdown
                      ng-if="authenticated()"
                      defer-tooltip="${message(code: 'todo.is.ui.export')}">
-                    <button class="btn btn-secondary"
+                    <button class="btn btn-secondary btn-sm"
                             uib-dropdown-toggle
                             ng-disabled="!features.length"
                             type="button">
@@ -82,19 +82,19 @@
                 </div>
                 <div class="btn-group">
                     <button type="button"
-                            class="btn btn-secondary hidden-xs hidden-sm"
+                            class="btn btn-secondary btn-sm hidden-xs hidden-sm"
                             defer-tooltip="${message(code: 'todo.is.ui.stickynote.size')}"
                             ng-click="setStickyNoteSize(viewName)"><i class="fa {{ iconCurrentStickyNoteSize(viewName) }}"></i>
                     </button>
                     <button type="button"
-                            class="btn btn-secondary hidden-xs"
+                            class="btn btn-secondary btn-sm hidden-xs"
                             ng-click="fullScreen()"
                             defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
                 <a ng-if="authorizedFeature('create')"
                    href="#/{{ ::viewName }}/new"
-                   class="btn btn-primary">${message(code: "todo.is.ui.feature.new")}</a>
+                   class="btn btn-primary btn-intermediate">${message(code: "todo.is.ui.feature.new")}</a>
             </div>
         </div>
         <div class="window-alert window-alert-margin-top bg-warning"
@@ -119,7 +119,7 @@
             <div ng-if="application.search && features.length != 0 && (features | search).length == 0"
                  class="empty-view">
                 <p class="form-text">${message(code: 'is.ui.feature.search.empty')} <strong>{{ application.search }}</strong></p>
-                <button class="btn btn-secondary"
+                <button class="btn btn-secondary btn-sm"
                         ng-click="application.search = null">
                     ${message(code: 'todo.is.ui.search.clear')}
                 </button>

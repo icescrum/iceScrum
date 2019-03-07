@@ -59,7 +59,7 @@
                     <g:set var="formats" value="${is.exportFormats(windowDefinition: 'taskBoard', entryPoint: 'sprintDetails')}"/>
                     <g:if test="${formats}">
                         <div class="btn-group hidden-xs" uib-dropdown ng-if="authenticated()">
-                            <button class="btn btn-secondary"
+                            <button class="btn btn-secondary btn-sm"
                                     uib-dropdown-toggle type="button">
                                 <span defer-tooltip="${message(code: 'todo.is.ui.export')}"><i class="fa fa-download"></i></span>
                             </button>
@@ -77,13 +77,13 @@
                     </g:if>
                     <div class="btn-group">
                         <button type="button"
-                                class="btn btn-secondary hidden-xs"
+                                class="btn btn-secondary btn-sm hidden-xs"
                                 defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"
                                 ng-click="fullScreen()"><i class="fa fa-arrows-alt"></i>
                         </button>
                     </div>
                     <div class="btn-group" uib-dropdown>
-                        <button class="btn btn-secondary"
+                        <button class="btn btn-secondary btn-sm"
                                 uib-dropdown-toggle
                                 type="button">
                             <span defer-tooltip="${message(code: 'todo.is.ui.filters')}">
@@ -107,12 +107,12 @@
                     <div class="btn-group" role="group" ng-controller="sprintCtrl">
                         <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
                         <div class="btn-group" uib-dropdown>
-                            <button type="button" class="btn btn-secondary" uib-dropdown-toggle>
+                            <button type="button" class="btn btn-secondary btn-sm" uib-dropdown-toggle>
                             </button>
                             <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                         </div>
                     </div>
-                    <a class="btn btn-secondary" href="{{ openSprintUrl(sprint) }}">
+                    <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
                         <i class="fa fa-pencil"
                            defer-tooltip="${message(code: 'todo.is.ui.details')}"></i>
                     </a>
