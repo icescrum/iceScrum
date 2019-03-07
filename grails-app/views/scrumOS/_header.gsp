@@ -256,7 +256,7 @@
         </div>
     </g:if>
     <div ng-if=":: currentUser.username" uib-dropdown class="float-left" on-toggle="notificationToggle(open)">
-        <div uib-dropdown-toggle>
+        <div uib-dropdown-toggle class="no-caret">
             <i class="fa fa-bolt" ng-class="{'empty':getUnreadActivities() == 0}"></i>
             <span class="badge" ng-show="getUnreadActivities()">{{ getUnreadActivities()}}</span>
         </div>
@@ -272,7 +272,7 @@
         </a>
     </div>
     <div ng-if=":: currentUser.username" uib-dropdown class="float-left">
-        <div class="float-left" uib-dropdown-toggle>
+        <div class="float-left no-caret" uib-dropdown-toggle>
             <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="37px" width="37px"/>
         </div>
         <div uib-dropdown-menu class="profile-panel" ng-include="'profile.panel.html'"></div>

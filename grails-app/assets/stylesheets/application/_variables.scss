@@ -89,6 +89,8 @@ $is-state-colors: (
 // Override bootstrap variables
 ////////////////////
 
+$enable-caret: false; // Overriden by our own caret style
+
 $body-bg: $is-bg-color;
 $primary: $is-primary-color;
 $secondary: $is-bg-color;

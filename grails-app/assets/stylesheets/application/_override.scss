@@ -165,3 +165,20 @@ form label {
     }
   }
 }
+
+.dropdown-toggle:not(.no-caret) {
+  &::after {
+    display: inline-block;
+    content: "";
+    margin-left: 0.4em;
+    vertical-align: 0.2em;
+    width: 6px;
+    height: 6px;
+    transform: rotate(45deg);
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+  }
+  &:empty::after {
+    margin-left: 0;
+  }
+}
