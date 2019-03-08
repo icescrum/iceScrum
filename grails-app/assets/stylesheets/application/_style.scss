@@ -209,6 +209,15 @@ nav.navbar {
   line-height: 1.29;
 }
 
+.btn-menu {
+  display: inline-flex;
+  align-items: center;
+  .dropdown-toggle {
+    padding-right: 0.625rem;
+    padding-left: 0.625rem;
+  }
+}
+
 ////////////////////
 // Details view
 ////////////////////

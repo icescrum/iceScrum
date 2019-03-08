@@ -54,13 +54,10 @@
                             defer-tooltip="${message(code: 'is.ui.window.fullscreen')}"><i class="fa fa-arrows-alt"></i>
                     </button>
                 </div>
-                <div class="btn-group" role="group" ng-controller="releaseCtrl">
+                <div class="btn-menu" ng-controller="releaseCtrl" uib-dropdown>
                     <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
-                    <div class="btn-group" uib-dropdown>
-                        <button type="button" class="btn btn-secondary btn-sm" uib-dropdown-toggle>
-                        </button>
-                        <div uib-dropdown-menu class="float-right" ng-init="itemType = 'release'" template-url="item.menu.html"></div>
-                    </div>
+                    <div uib-dropdown-toggle></div>
+                    <div uib-dropdown-menu class="float-right" ng-init="itemType = 'release'" template-url="item.menu.html"></div>
                 </div>
                 <a class="btn btn-secondary btn-sm" ng-href="{{ openReleaseUrl(release) }}">
                     <i class="fa fa-pencil"

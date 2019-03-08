@@ -104,13 +104,10 @@
                         </div>
                     </div>
                     <entry:point id="taskBoard-window-toolbar-right"/>
-                    <div class="btn-group" role="group" ng-controller="sprintCtrl">
+                    <div class="btn-menu" ng-controller="sprintCtrl" uib-dropdown>
                         <shortcut-menu ng-model="sprint" model-menus="menus" view-type="viewName"></shortcut-menu>
-                        <div class="btn-group" uib-dropdown>
-                            <button type="button" class="btn btn-secondary btn-sm" uib-dropdown-toggle>
-                            </button>
-                            <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
-                        </div>
+                        <div uib-dropdown-toggle></div>
+                        <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                     </div>
                     <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">
                         <i class="fa fa-pencil"
