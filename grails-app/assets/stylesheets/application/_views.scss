@@ -64,7 +64,7 @@
 
       .backlog-title {
         display: inline-block;
-        font-size: 0.875rem;
+        font-size: $is-font-size-sm;
         font-weight: 600;
         color: $is_text-color-alt;
       }
@@ -107,7 +107,7 @@
 
   .swimlane-title {
     padding-left: 0.5rem;
-    font-size: 0.875rem;
+    font-size: $is-font-size-sm;
     font-weight: 600;
   }
 }
@@ -154,12 +154,12 @@
 .sprint-dates {
   margin-left: 20px;
   background: #f4f4f4;
-  font-size: 0.875rem;
+  font-size: $is-font-size-sm;
   padding: 10px 0.875rem;
 }
 
 .sprint-values {
-  font-size: 0.875rem;
+  font-size: $is-font-size-sm;
   padding: 10px 0.875rem;
 
   > span {

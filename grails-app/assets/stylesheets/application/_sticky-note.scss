@@ -26,10 +26,10 @@
 ////////////////////
 
 .sticky-note {
-  color: $is_text-color-alt;
+  color: $is-sticky-note-text;
 
   a {
-    color: $is_text-color-alt;
+    color: $is-sticky-note-text;
     text-decoration: none;
   }
 
@@ -112,7 +112,7 @@
       border-radius: 0.125rem;
       padding: 0.125rem 0.1875rem;
       box-shadow: 0 1px 3px 0 rgba(156, 164, 171, 0.62);
-      color: $is_text-color-alt;
+      color: $is-sticky-note-text;
 
       &.invert {
         color: white;
@@ -185,7 +185,7 @@
       }
 
       .item-values {
-        font-size: 0.875rem;
+        font-size: $is-font-size-sm;
         color: $is-text-color;
       }
 
@@ -277,10 +277,10 @@
     position: relative;
 
     &.invert {
-      color: white;
+      color: $is-sticky-note-text-invert;
 
       a {
-        color: white;
+        color: $is-sticky-note-text-invert;
       }
     }
 
