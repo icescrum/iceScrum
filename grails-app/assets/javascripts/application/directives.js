@@ -967,7 +967,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
             if (scope.$eval(attrs.hide) && scope.count <= scope.max) {
                 return;
             }
-            scope.icon = scope.count === 0 && attrs.iconEmpty ? attrs.iconEmpty : attrs.icon;
+            scope.icon = attrs.icon;
             scope.href = attrs.href;
             scope.tooltip = scope.count + ' ' + attrs.tooltip;
             scope.classes = (attrs.classes ? attrs.classes : '') + (scope.count > 0 ? ' active' : '');

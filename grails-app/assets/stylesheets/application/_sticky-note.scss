@@ -66,28 +66,6 @@
     font-size: 0.8125rem;
     display: flex;
     justify-content: space-between;
-
-    .action {
-      &.comments {
-        .fa-comment-o, &.active .fa-comment {
-          display: inline-block;
-        }
-
-        .fa-comment, &.active .fa-comment-o {
-          display: none;
-        }
-      }
-
-      &.acceptances-tests {
-        .fa-check-square-o, &.active .fa-check-square {
-          display: inline-block;
-        }
-
-        .fa-check-square, &.active .fa-check-square-o {
-          display: none;
-        }
-      }
-    }
   }
 
   .badge {

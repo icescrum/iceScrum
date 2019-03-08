@@ -65,7 +65,6 @@
                         tooltip="${message(code: 'todo.is.ui.comments')}"
                         href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}/comments"
                         icon="fa-comment"
-                        icon-empty="fa-comment-o"
                         count="{{:: task.comments_count }}"/>
             <span class="action" ng-if="::authorizedTask('take', task)">
                 <a href

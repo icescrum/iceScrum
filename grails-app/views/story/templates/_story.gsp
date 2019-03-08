@@ -75,7 +75,6 @@
                         tooltip="${message(code: 'todo.is.ui.comments')}"
                         href="{{:: openStoryUrl(story.id) }}/comments"
                         icon="fa-comment"
-                        icon-empty="fa-comment-o"
                         count="{{:: story.comments_count }}"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.tasks')}"
                         href="{{:: openStoryUrl(story.id) }}/tasks"
@@ -85,7 +84,6 @@
                         tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                         href="{{:: openStoryUrl(story.id) }}/tests"
                         icon="fa-check-square"
-                        icon-empty="fa-check-square-o"
                         count="{{:: story.acceptanceTests_count }}"/>
             <span sticky-note-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
         </div>
