@@ -60,31 +60,27 @@
                         </div>
                         <div class="sticky-note-actions">
                             <span class="action">
-                                <a defer-tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}">
-                                    <i class="fa fa-paperclip"></i>
-                                </a>
+                                <a class="action-link"><span class="action-icon action-icon-attach"></span></a>
                             </span>
                             <span class="action">
-                                <a defer-tooltip="${message(code: 'todo.is.ui.comments')}">
-                                    <i class="fa fa-comment"></i>
-                                </a>
+                                <a class="action-link"><span class="action-icon action-icon-comment"></span></a>
                             </span>
                             <span class="action" ng-class="{'active':storyPreview.tasks_count}">
-                                <a defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
-                                    <i class="fa fa-tasks"></i>
+                                <a class="action-link"
+                                    defer-tooltip="${message(code: 'todo.is.ui.tasks')}">
+                                    <span class="action-icon action-icon-task"></span>
                                     <span class="badge">{{ storyPreview.tasks_count || '' }}</span>
                                 </a>
                             </span>
                             <span class="action" ng-class="{'active':storyPreview.acceptanceTests_count}">
-                                <a defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
-                                    <i class="fa" ng-class="storyPreview.acceptanceTests_count ? 'fa-check-square' : 'fa-check-square-o'"></i>
+                                <a class="action-link"
+                                   defer-tooltip="${message(code: 'todo.is.ui.acceptanceTests')}">
+                                    <span class="action-icon action-icon-test"></span>
                                     <span class="badge">{{ storyPreview.acceptanceTests_count || '' }}</span>
                                 </a>
                             </span>
                             <span class="action">
-                                <a>
-                                    <i class="fa fa-ellipsis-h"></i>
-                                </a>
+                                <a class="action-link"><span class="action-icon action-icon-menu"></span></a>
                             </span>
                         </div>
                     </div>

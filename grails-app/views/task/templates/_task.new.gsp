@@ -51,9 +51,9 @@
                         </div>
                         <div class="sticky-note-tags"></div>
                         <div class="sticky-note-actions">
-                            <span class="action"><a><i class="fa fa-paperclip"></i></a></span>
-                            <span class="action"><a><i class="fa fa-comment"></i></a></span>
-                            <span class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+                            <span class="action"><a class="action-link"><span class="action-icon action-icon-attach"></span></a></span>
+                            <span class="action"><a class="action-link"><span class="action-icon action-icon-comment"></span></a></span>
+                            <span class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
                         </div>
                     </div>
                 </div>

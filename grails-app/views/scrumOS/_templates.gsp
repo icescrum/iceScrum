@@ -269,8 +269,9 @@
     <script type="text/ng-template" id="icon.with.badge.html">
     <span class="action {{:: classes }}">
         <a href="{{:: href }}"
+           class="action-link"
            defer-tooltip="{{:: tooltip }}">
-            <i class="fa {{:: icon }}"></i>
+            <span class="action-icon action-icon-{{:: icon }}"></span>
             <span class="badge"><span class="limited">{{:: countString }}</span><span class="full">{{:: count }}</span></span>
         </a>
     </span>

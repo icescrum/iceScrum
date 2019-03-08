@@ -69,23 +69,23 @@
         <div class="sticky-note-actions">
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                         href="{{:: openStoryUrl(story.id)}}"
-                        icon="fa-paperclip"
+                        icon="attach"
                         count="{{:: story.attachments_count }}"/>
             <icon-badge classes="comments"
                         tooltip="${message(code: 'todo.is.ui.comments')}"
                         href="{{:: openStoryUrl(story.id) }}/comments"
-                        icon="fa-comment"
+                        icon="comment"
                         count="{{:: story.comments_count }}"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.tasks')}"
                         href="{{:: openStoryUrl(story.id) }}/tasks"
-                        icon="fa-tasks"
+                        icon="task"
                         count="{{:: story.tasks_count }}"/>
             <icon-badge classes="acceptances-tests"
                         tooltip="${message(code: 'todo.is.ui.acceptanceTests')}"
                         href="{{:: openStoryUrl(story.id) }}/tests"
-                        icon="fa-check-square"
+                        icon="test"
                         count="{{:: story.acceptanceTests_count }}"/>
-            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'story'" class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
         </div>
         <div class="sticky-note-state-progress">
             <div ng-if="::showStoryProgress(story)" class="progress">

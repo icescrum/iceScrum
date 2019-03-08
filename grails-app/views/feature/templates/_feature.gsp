@@ -55,13 +55,13 @@
         <div class="sticky-note-actions">
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                         href="{{:: openFeatureUrl(feature) }}"
-                        icon="fa-paperclip"
+                        icon="attach"
                         count="{{:: feature.attachments_count }}"/>
             <icon-badge tooltip="${message(code: 'todo.is.ui.stories')}"
                         href="{{:: openFeatureUrl(feature) }}/stories"
-                        icon="fa-sticky-note"
+                        icon="story"
                         count="{{:: feature.stories_ids.length }}"/>
-            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'feature'" class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
         </div>
         <div class="sticky-note-state-progress">
             <div class="progress">

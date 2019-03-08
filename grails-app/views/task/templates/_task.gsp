@@ -59,28 +59,30 @@
         <div class="sticky-note-actions">
             <icon-badge tooltip="${message(code: 'todo.is.ui.backlogelement.attachments')}"
                         href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}"
-                        icon="fa-paperclip"
+                        icon="attach"
                         count="{{:: task.attachments_count }}"/>
             <icon-badge classes="comments"
                         tooltip="${message(code: 'todo.is.ui.comments')}"
                         href="#/{{:: viewName }}/{{:: sprint.id }}/task/{{:: task.id }}/comments"
-                        icon="fa-comment"
+                        icon="comment"
                         count="{{:: task.comments_count }}"/>
             <span class="action" ng-if="::authorizedTask('take', task)">
                 <a href
+                   class="action-link"
                    ng-click="take(task)"
                    defer-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.take')}">
-                    <i class="fa fa-user-plus"></i>
+                    <span class="action-icon action-icon-take"></span>
                 </a>
             </span>
             <span class="action" ng-if="::authorizedTask('release', task)">
                 <a href
+                   class="action-link"
                    ng-click="release(task)"
                    defer-tooltip="${message(code: 'is.ui.sprintPlan.menu.task.unassign')}">
-                    <i class="fa fa-user-times"></i>
+                    <span class="action-icon action-icon-unassign"></span>
                 </a>
             </span>
-            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a><i class="fa fa-ellipsis-h"></i></a></span>
+            <span sticky-note-menu="item.menu.html" ng-init="itemType = 'task'" class="action"><a class="action-link"><span class="action-icon action-icon-menu"></span></a></span>
         </div>
         <entry:point id="task-sticky-note-bottom"/>
     </div>

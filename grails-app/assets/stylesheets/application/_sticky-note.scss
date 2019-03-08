@@ -25,6 +25,8 @@
 // General style
 ////////////////////
 
+$action-list: attach, comment, menu, story, take, task, test, unassign;
+
 .sticky-note {
   color: $is-sticky-note-text;
 
@@ -66,10 +68,23 @@
     font-size: 0.8125rem;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
+    .action-link {
+      display: flex;
+    }
+
+    .action-icon {
+      width: 0.75rem;
+      height: 0.75rem;
+      display: inline-block;
+      background-size: 0.75rem 0.75rem;
+    }
   }
 
   .badge {
     font-size: 0.75rem;
+    margin-left: 0.25rem;
     padding: 0;
 
     > .limited {
@@ -140,6 +155,11 @@
   .sticky-note {
     background: none !important;
     padding: 0.3125rem;
+    color: $is_text-color;
+
+    a {
+      color: $is_text-color;
+    }
 
     > div {
       display: flex;
@@ -158,6 +178,7 @@
       flex: 1 0 auto;
 
       .title {
+        color: $is_text-color-alt;
         font-size: 1.125rem;
         font-weight: 600;
       }
@@ -194,6 +215,14 @@
     .sticky-note-actions {
       width: 230px;
       justify-content: space-around;
+
+      .action {
+        @each $action in $action-list {
+          .action-icon-#{$action} {
+            background: url("action-#{$action}-grey.svg") no-repeat;
+          }
+        }
+      }
     }
   }
 }
@@ -254,14 +283,6 @@
   .sticky-note {
     position: relative;
 
-    &.invert {
-      color: $is-sticky-note-text-invert;
-
-      a {
-        color: $is-sticky-note-text-invert;
-      }
-    }
-
     .sticky-note-state-progress {
       position: absolute;
       bottom: 0;
@@ -297,6 +318,28 @@
       &.active {
         > * {
           visibility: visible;
+        }
+      }
+
+      @each $action in $action-list {
+        .action-icon-#{$action} {
+          background: url("action-#{$action}-black.svg") no-repeat;
+        }
+      }
+    }
+
+    &.invert {
+      color: $is-sticky-note-text-invert;
+
+      a {
+        color: $is-sticky-note-text-invert;
+      }
+
+      .sticky-note-actions .action {
+        @each $action in $action-list {
+          .action-icon-#{$action} {
+            background: url("action-#{$action}-white.svg") no-repeat;
+          }
         }
       }
     }
