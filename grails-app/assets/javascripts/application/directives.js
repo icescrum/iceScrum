@@ -590,7 +590,7 @@ directives.directive('isMarkitup', ['$http', '$rootScope', function($http, $root
                     newElement.removeAttr('sticky-note-menu');
                     newElement.attr('uib-dropdown', '');
                     newElement.attr('dropdown-append-to-body', '');
-                    newElement.html('<a uib-dropdown-toggle><i class="fa fa-ellipsis-h"></i></a><ul uib-dropdown-menu class="dropdown-menu-right" template-url="' + attrs.stickyNoteMenu + '"></ul>');
+                    newElement.html('<a uib-dropdown-toggle class="no-caret"><i class="fa fa-ellipsis-h"></i></a><ul uib-dropdown-menu class="dropdown-menu-right" template-url="' + attrs.stickyNoteMenu + '"></ul>');
                     element.replaceWith(angular.element($compile(newElement)(scope)));
                 }
             });
