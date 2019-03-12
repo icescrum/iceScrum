@@ -39,6 +39,10 @@ strong {
   font-family: averta-bold;
 }
 
+////////////////////
+// Button
+////////////////////
+
 .btn {
   font-size: 0.9375rem;
   font-family: averta-bold;
@@ -104,24 +108,6 @@ strong {
   }
 }
 
-form label {
-  font-size: $is-font-size-sm;
-  font-weight: 600;
-}
-
-.form-control, .nav-item {
-  font-size: $is-font-size-sm;
-}
-
-.nav-link.active, .navbar-nav .active .nav-link {
-  font-family: averta-bold;
-}
-
-//https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
-.dropdown.open .dropdown-menu {
-  display: block;
-}
-
 // Emulating bootstrap 3 toolbar (TODO check if good approach)
 .btn-toolbar {
   margin-left: 0.625rem; // Offset the first child's margin
@@ -133,13 +119,27 @@ form label {
   }
 }
 
-.nav-fill .nav-item {
-  text-align: left;
+////////////////////
+// Form
+////////////////////
+
+form label {
+  font-size: $is-font-size-sm;
+  font-weight: 600;
 }
 
-.nav-link.disabled {
-  pointer-events: none;
+.form-control, .nav-item {
+  font-size: $is-font-size-sm;
 }
+
+.form-control:not(:disabled):focus, .form-control:not(:disabled):hover {
+  box-shadow: 0 8px 28px 0 rgba(8, 12, 29, 0.15);
+  background: $is-bg-color;
+}
+
+////////////////////
+// Modal
+////////////////////
 
 .modal-content {
   box-shadow: 0 2.625rem 3rem 0 rgba(8, 12, 29, 0.21);
@@ -165,6 +165,28 @@ form label {
       opacity: 1;
     }
   }
+}
+
+////////////////////
+// Other
+////////////////////
+
+.nav-link.active, .navbar-nav .active .nav-link {
+  font-family: averta-bold;
+}
+
+
+.nav-fill .nav-item {
+  text-align: left;
+}
+
+.nav-link.disabled {
+  pointer-events: none;
+}
+
+//https://stackoverflow.com/questions/51010306/angularjs-ui-bootstrap-dropdown-button-with-bootstrap-4
+.dropdown.open .dropdown-menu {
+  display: block;
 }
 
 .dropdown-toggle:not(.no-caret) {

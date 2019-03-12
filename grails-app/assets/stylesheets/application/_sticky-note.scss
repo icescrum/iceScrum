@@ -35,7 +35,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
     text-decoration: none;
   }
 
-  .title, .description {
+  .title, .description, .sticky-note-content {
     overflow: hidden;
   }
 
@@ -253,6 +253,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       }
 
       .title {
+        color: $is-text-color;
         font-size: 1rem;
         border-left: solid 1px $is-border-color-alt;
         padding-left: 0.625rem;
@@ -304,9 +305,24 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       font-size: 0.625rem;
     }
 
-    &:hover .sticky-note-actions {
-      > .action * {
-        visibility: visible;
+    &:hover {
+      .sticky-note-actions {
+        > .action * {
+          visibility: visible;
+        }
+      }
+
+      .sticky-note-content.has-description .description {
+        display: inline-block;
+      }
+    }
+
+    .sticky-note-content {
+      &.has-description .description {
+        display: none;
+      }
+      .item-values {
+        height: 15px;
       }
     }
 
@@ -355,6 +371,10 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       border-radius: 0.375rem;
       overflow: hidden;
 
+      &:hover .sticky-note-content.has-description .item-values {
+        display: none;
+      }
+
       .sticky-note-head {
         display: flex;
         justify-content: space-between;
@@ -389,10 +409,6 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       .sticky-note-content {
         height: 73px;
         margin-bottom: 9px;
-
-        .item-values {
-          height: 15px;
-        }
 
         .title {
           height: 1.5rem;
@@ -436,7 +452,7 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
       .sticky-note-content {
         padding-left: 1px;
         padding-right: 1px;
-        height: 44px;
+        height: 49px;
         margin-bottom: 0.5625rem;
 
         .title {
@@ -494,26 +510,8 @@ $action-list: attach, comment, menu, story, take, task, test, unassign;
   }
 
   .sticky-note-feature, .sticky-note-task {
-    .sticky-note-content.has-description {
-      .description {
-        display: none;
-      }
-    }
-
-    &:hover {
-      .sticky-note-content.has-description {
-        .item-values {
-          display: none;
-        }
-
-        .title {
-          display: none;
-        }
-
-        .description {
-          display: inline-block;
-        }
-      }
+    &:hover .sticky-note-content.has-description .title {
+      display: none;
     }
   }
 }
