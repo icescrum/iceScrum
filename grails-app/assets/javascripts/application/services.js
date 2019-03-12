@@ -317,7 +317,7 @@ services.service('FormService', ['$filter', '$http', '$rootScope', '$timeout', '
                         dontSaveChangesCallback();
                     },
                     cancelChangesCallback: function() {
-                        $scope.application.loading = false;
+                        $scope.uiReady();
                         $scope.mustConfirmStateChange = true;
                     }
                 });

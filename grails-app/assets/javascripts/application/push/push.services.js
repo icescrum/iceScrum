@@ -110,7 +110,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
             }
         };
         options.onMessage = function(response) {
-            $rootScope.application.loading = true;
+            $rootScope.uiWorking("");
             _.each(response.responseBody.split('#-|-#'), function(text) {
                 try {
                     var jsonBody = atmosphere.util.parseJSON(text);
@@ -138,7 +138,7 @@ services.service("PushService", ['$rootScope', '$http', 'atmosphereService', 'Ic
                     console.error(e);
                 }
             });
-            $rootScope.application.loading = false;
+            $rootScope.uiReady();
         };
         options.onClose = function(response) {
             self.push.connected = false;

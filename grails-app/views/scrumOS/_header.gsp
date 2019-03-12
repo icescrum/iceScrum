@@ -34,15 +34,15 @@
        tooltip-placement="right"
        defer-tooltip="{{:: warning.title }}"><i class="fa fa-{{:: warning.icon }}"></i>
     </a>
+    <div class="nav-item nav-item-logo">
+        <div id="logo"></div>
+    </div>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul ng-controller="mainMenuCtrl"
             class="nav navbar-nav"
             is-disabled="!currentUser.id || workspaceType != 'project'"
             as-sortable="menuSortableOptions"
             ng-model="application.menus.visible">
-            <div class="nav-item nav-item-logo">
-                <div class="is-logo"></div>
-            </div>
             <li class="nav-item nav-item-main"
                 ng-class="workspaceType ? workspaceType : ''"
                 uib-dropdown>

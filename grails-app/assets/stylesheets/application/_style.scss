@@ -63,8 +63,13 @@ body {
   background-image: linear-gradient(to bottom, $is-bg-gradient-start, $is-bg-gradient-end);
 }
 
+#logo {
+  width: 33px;
+  margin: 11px 30px 11px 14px;
+}
+
 // TODO re-enable with correct loading images
-.logo, .loading-text, #application-loading, .loading-logo {
+#application-loading {
   display: none;
 }
 
@@ -77,17 +82,6 @@ nav.navbar {
   .nav-item-logo {
     border-right: 1px solid rgba(200, 200, 204, 0.42);
     display: flex;
-
-    // TODO animate with loading and push
-    .is-logo {
-      margin: auto;
-      margin-left: 0.875rem;
-      margin-right: 1.875rem;
-      width: 1.875rem;
-      height: 1.875rem;
-      background: url("logo.png") no-repeat;
-      background-size: 1.875rem 1.875rem;
-    }
   }
 
   .nav-item-main {
@@ -226,7 +220,7 @@ nav.navbar {
   .color-state-#{$state} {
     background-color: $color;
   }
-  .color-state-fill-#{$state}{
+  .color-state-fill-#{$state} {
     fill: $color;
   }
 }

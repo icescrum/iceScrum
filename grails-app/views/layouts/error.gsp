@@ -43,9 +43,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div>
-                        <svg class="logo" viewBox="0 0 150 150">
-                            <g:render template="/scrumOS/logo"/>
-                        </svg>
+                        <div class="logo-loading"></div>
                         <g:layoutBody/>
                     </div>
                 </div>

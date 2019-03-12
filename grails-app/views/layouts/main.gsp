@@ -50,13 +50,8 @@
           ng-class="{ 'mobile':application.mobile, 'mobile-xs':application.mobilexs, 'application-ready':application != null, 'loading': (application.loading || application.loadingText), 'splash-screen': (application.loadingPercent != 100 || application.loadingText)}"
           class="splash-screen loading ${workspace?.name ? 'workspace-' + workspace.name : ''}">
         <div id="application-loading">
-            <svg class="logo" viewBox="0 0 150 150">
-                <g:render template="/scrumOS/logo"/>
-                <circle fill="none" cx="80px" cy="80px" r="63" style="stroke: #eee; stroke-width: 10px;"></circle>
-                <path fill="none" transform="" circle-coords="80,80,63,0" circle="application.loadingPercent"
-                      class="loading-circle"></path>
-            </svg>
-            <div class="loading-text text-center">{{ application.loadingText }}</div>
+            <div class="logo-loading"></div>
+            <div class="loading-text text-center">{{ application.loadingPercent }} {{ application.loadingText }}</div>
         </div>
         <is:header/>
         <div class="container-fluid main" ui-view>

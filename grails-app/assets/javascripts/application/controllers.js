@@ -174,7 +174,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     };
     // Init loading
     $scope.$on('$viewContentLoading', function() {
-        $scope.application.loading = true;
+        $scope.uiWorking();
         if ($scope.application.loadingPercent < 90) {
             $scope.application.loadingPercent += 5;
         }
@@ -187,7 +187,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
             if ($scope.application.loadingPercent < 90) {
                 $scope.application.loadingPercent += 5;
             } else {
-                $scope.application.loading = false;
+                $scope.uiReady();
             }
             $timeout.cancel(resizeTimeout);
             resizeTimeout = $timeout(function() {
@@ -197,7 +197,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     });
     $scope.$on('$stateChangeStart', function(event) {
         if (!event.defaultPrevented) {
-            $scope.application.loading = true;
+            $scope.uiWorking();
             if ($scope.application.loadingPercent != 100) {
                 $scope.application.loadingPercent += 10;
             }
@@ -205,7 +205,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     });
     $scope.$on('$stateChangeSuccess', function(event) {
         if (!event.defaultPrevented) {
-            $scope.application.loading = false;
+            $scope.uiReady();
             if ($scope.application.loadingPercent != 100) {
                 $scope.application.loadingPercent = 100;
             }
@@ -214,7 +214,7 @@ extensibleController('applicationCtrl', ['$controller', '$scope', '$state', '$ui
     $scope.$watch(function() {
         return $http.pendingRequests.length;
     }, function(newVal) {
-        $scope.application.loading = newVal > 0 || $scope.application.loadingPercent < 100;
+        newVal > 0 || $scope.application.loadingPercent < 100 ? $scope.uiWorking() : $scope.uiReady();
         if ($scope.application.loadingPercent < 100) {
             if (newVal == 0) {
                 $scope.application.loadingPercent = 100;
@@ -293,8 +293,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
                     var data = !angular.isObject($message) ? JSON.parse($message) : $message;
                     if (data && data.class == 'Project') {
                         $scope.$close(true);
-                        $rootScope.application.loading = true;
-                        $rootScope.application.loadingText = " ";
+                        $rootScope.uiWorking(" ");
                         $timeout(function() {
                             document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
                         }, 2000);
@@ -327,8 +326,7 @@ extensibleController('mainMenuCtrl', ['$scope', '$location', 'ContextService', '
                             var data = response.data;
                             if (data && data.class == 'Project') {
                                 $scope.$close(true);
-                                $rootScope.application.loading = true;
-                                $rootScope.application.loadingText = " ";
+                                $rootScope.uiWorking(" ");
                                 $timeout(function() {
                                     document.location = $scope.serverUrl + '/p/' + data.pkey + '/';
                                 }, 2000);
