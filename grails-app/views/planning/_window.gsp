@@ -26,8 +26,9 @@
         <div class="card-header">
             <div>
                 <a class="card-title" ng-href="{{ openReleaseUrl(release) }}">
-                    {{ release.name + ' - ' + (release.state | i18n: 'ReleaseStates') }}</i>
+                    {{ release.name }}
                 </a>
+                <span class="state-dot" ng-class="'state-dot-' + release.state"></span>{{ (release.state | i18n: 'ReleaseStates') }}
             </div>
             <div class="btn-toolbar">
                 <div class="btn-group">

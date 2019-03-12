@@ -52,7 +52,7 @@
                     <span>${message(code: 'is.sprint.plannedVelocity')} {{ sprint.capacity | roundNumber:2 }}</span>
                     <span>${message(code: 'is.task.estimation')} {{ totalRemainingTime(sprint.tasks | filter: currentSprintFilter.filter) | roundNumber:2 }}</span>
                 </span>
-                <span>{{ (sprint.state | i18n: 'SprintStates') }}</span>
+                <span><span class="state-dot" ng-class="'state-dot-' + sprint.state"></span> {{ (sprint.state | i18n: 'SprintStates') }}</span>
             </div>
             <div>
                 <div class="btn-toolbar">
