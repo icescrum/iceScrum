@@ -222,15 +222,18 @@ nav.navbar {
   cursor: pointer;
 }
 
-////////////////////
-// Details view
-////////////////////
-
 @each $state, $color in $is-state-colors {
   .color-state-#{$state} {
     background-color: $color;
   }
+  .color-state-fill-#{$state}{
+    fill: $color;
+  }
 }
+
+////////////////////
+// Details view
+////////////////////
 
 .states {
   .state {

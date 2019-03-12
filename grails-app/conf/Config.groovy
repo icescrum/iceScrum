@@ -268,8 +268,8 @@ icescrum {
             ],
             storyTypesColor        : [
                     (Story.TYPE_USER_STORY)     : '#4cd1b0',
-                    (Story.TYPE_DEFECT)         : '#4a90e2',
-                    (Story.TYPE_TECHNICAL_STORY): '#d0021b'
+                    (Story.TYPE_DEFECT)         : '#d0021b',
+                    (Story.TYPE_TECHNICAL_STORY): '#4a90e2'
             ],
             storyTypesCliche       : [
                     (Story.TYPE_USER_STORY)     : Cliche.FUNCTIONAL_STORY_PROJECT_REMAINING_POINTS,
