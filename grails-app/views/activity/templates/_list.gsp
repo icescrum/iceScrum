@@ -22,10 +22,8 @@
 <script type="text/ng-template" id="activity.list.html">
 <div class="activities card-body" ng-controller="activityCtrl">
     <div ng-repeat="groupedActivity in groupedActivities">
-        <div class="activity">
-            <div class="media-left">
-                <img ng-src="{{groupedActivity.poster | userAvatar}}" class="{{ groupedActivity.poster | userColorRoles }}" alt="{{groupedActivity.poster | userFullName}}"/>
-            </div>
+        <div class="activity media">
+            <img ng-src="{{groupedActivity.poster | userAvatar}}" class="{{ groupedActivity.poster | userColorRoles }}" alt="{{groupedActivity.poster | userFullName}}"/>
             <div class="media-body">
                 <div class="text-muted float-right">
                     <time timeago datetime="{{ groupedActivity.dateCreated }}">

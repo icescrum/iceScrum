@@ -155,12 +155,10 @@
 
     <script type="text/ng-template" id="profile.panel.html">
     <div class="media">
-        <div class="media-left">
-            <img ng-src="{{ currentUser | userAvatar }}"
-                 alt="{{currentUser | userFullName}}"
-                 height="50px"
-                 width="50px"/>
-        </div>
+        <img ng-src="{{ currentUser | userAvatar }}"
+             alt="{{currentUser | userFullName}}"
+             height="50px"
+             width="50px"/>
         <div class="media-body">
             <div>
                 {{ (currentUser | userFullName) + ' (' + currentUser.username + ')' }}
@@ -197,12 +195,10 @@
     <div ng-repeat="groupedActivity in groupedUserActivities">
         <div><h4><a href="{{ serverUrl + '/p/' + groupedActivity.project.pkey + '/' }}">{{ groupedActivity.project.name }}</a></h4></div>
         <div class="media" ng-class="{ 'unread': activity.notRead }" ng-repeat="activity in groupedActivity.activities">
-            <div class="media-left">
-                <img height="36px"
-                     ng-src="{{activity.poster | userAvatar}}"
-                     class="{{ activity.poster | userColorRoles }}"
-                     alt="{{activity.poster | userFullName}}"/>
-            </div>
+            <img height="36px"
+                 ng-src="{{activity.poster | userAvatar}}"
+                 class="{{ activity.poster | userColorRoles }}"
+                 alt="{{activity.poster | userFullName}}"/>
             <div class="media-body">
                 <div class="text-muted float-right">
                     <time timeago datetime="{{ activity.dateCreated }}">

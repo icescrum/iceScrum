@@ -237,12 +237,12 @@
                 </div>
                 <div class="card-body activities">
                     <div ng-repeat="activity in activities" ng-show="$index < 5 || pref.showMore">
-                        <div class="activity">
-                            <div class="media-left">
-                                <img ng-src="{{activity.poster | userAvatar}}"
-                                     class="{{ activity.poster | userColorRoles }}"
-                                     alt="{{activity.poster | userFullName}}"/>
-                            </div>
+                        <div class="activity media">
+                            <img ng-src="{{activity.poster | userAvatar}}"
+                                 width="37px"
+                                 height="37px"
+                                 class="align-self-center mr-3 {{ activity.poster | userColorRoles }}"
+                                 alt="{{:: activity.poster | userFullName}}"/>
                             <div class="media-body">
                                 <div class="text-muted float-right">
                                     <time timeago datetime="{{ activity.dateCreated }}">
