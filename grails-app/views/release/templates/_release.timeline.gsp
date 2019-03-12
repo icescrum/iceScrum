@@ -21,7 +21,7 @@
 - Nicolas Noullet (nnoullet@kagilum.com)
 --}%
 <script type="text/ng-template" id="release.timeline.html">
-<uib-progress class="form-control-static form-bar"
+<uib-progress class="form-control-plaintext form-bar"
               uib-tooltip="{{ release.name }}"
               max="release.duration">
     <uib-bar ng-repeat="sprint in releaseParts"
@@ -37,7 +37,7 @@
 </uib-progress>
 </script>
 <script type="text/ng-template" id="release.timeline.href.html">
-<uib-progress class="form-control-static form-bar"
+<uib-progress class="form-control-plaintext form-bar"
               uib-tooltip="{{ release.name }}"
               max="release.duration">
     <a href="{{ sprint.id ? openSprintUrl(sprint) : '' }}"

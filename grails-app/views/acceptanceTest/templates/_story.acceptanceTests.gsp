@@ -99,7 +99,7 @@
                                   ng-show="showAcceptanceTestDescriptionTextarea"
                                   ng-blur="delayCall(blurAcceptanceTestDescription)"
                                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-                        <div class="markitup-preview no-fixed-height"
+                        <div class="markitup-preview form-control no-fixed-height"
                              ng-show="!showAcceptanceTestDescriptionTextarea"
                              ng-click="editAcceptanceTestDescription()"
                              ng-focus="editAcceptanceTestDescription()"

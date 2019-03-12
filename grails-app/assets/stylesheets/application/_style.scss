@@ -300,6 +300,20 @@ nav.navbar {
   @extend .col-md-9;
 }
 
+textarea:not(.fixedRow):not(.handsontableInput), .atwho-preview {
+  min-height: 150px;
+  height: 150px;
+  resize: vertical;
+  overflow: auto;
+}
+
+.markitup-preview:not(.no-fixed-height) {
+  min-height: 150px;
+  max-height: 250px;
+  height: auto;
+  overflow: auto;
+}
+
 ////////////////////
 // Wizard & Split modal
 ////////////////////

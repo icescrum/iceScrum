@@ -122,7 +122,7 @@
                       ng-show="showNotesTextarea"
                       ng-blur="showNotesTextarea = false"
                       placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
-            <div class="markitup-preview"
+            <div class="markitup-preview form-control"
                  ng-disabled="!formEditable()"
                  ng-show="!showNotesTextarea"
                  ng-click="showNotesTextarea = formEditable()"
@@ -142,7 +142,7 @@
                 </button>
                 <entry:point id="attachment-add-buttons"/>
             </div>
-            <div class="form-control-static" ng-include="'attachment.list.html'">
+            <div class="form-control-plaintext" ng-include="'attachment.list.html'">
             </div>
         </div>
     </div>

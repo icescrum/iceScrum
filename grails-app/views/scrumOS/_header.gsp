@@ -271,11 +271,11 @@
             <i class="fa fa-home"></i>
         </a>
     </div>
-    <div ng-if=":: currentUser.username" uib-dropdown class="float-left">
+    <div ng-if=":: currentUser.username" uib-dropdown>
         <div class="float-left no-caret" uib-dropdown-toggle>
             <img ng-src="{{ currentUser | userAvatar }}" class="{{ currentUser | userColorRoles }}" height="37px" width="37px"/>
         </div>
-        <div uib-dropdown-menu class="profile-panel" ng-include="'profile.panel.html'"></div>
+        <div uib-dropdown-menu class="dropdown-menu-right" ng-include="'profile.panel.html'"></div>
     </div>
     <button id="login"
             ng-show="!(currentUser.username)"

@@ -138,7 +138,7 @@
                       ng-show="showRetrospectiveTextarea"
                       ng-blur="showRetrospectiveTextarea = false"
                       placeholder="${message(code: 'todo.is.ui.sprint.noretrospective')}"></textarea>
-            <div class="markitup-preview"
+            <div class="markitup-preview form-control"
                  ng-disabled="!formEditable()"
                  ng-show="!showRetrospectiveTextarea"
                  ng-click="showRetrospectiveTextarea = formEditable()"
@@ -169,7 +169,7 @@
                       ng-show="showDoneDefinitionTextarea"
                       ng-blur="showDoneDefinitionTextarea = false"
                       placeholder="${message(code: 'todo.is.ui.sprint.nodonedefinition')}"></textarea>
-            <div class="markitup-preview"
+            <div class="markitup-preview form-control"
                  ng-disabled="!formEditable()"
                  ng-show="!showDoneDefinitionTextarea"
                  ng-click="showDoneDefinitionTextarea = formEditable()"
@@ -189,7 +189,7 @@
                 </button>
                 <entry:point id="attachment-add-buttons"/>
             </div>
-            <div class="form-control-static" ng-include="'attachment.list.html'">
+            <div class="form-control-plaintext" ng-include="'attachment.list.html'">
             </div>
         </div>
     </div>

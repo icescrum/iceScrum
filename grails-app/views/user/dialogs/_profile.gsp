@@ -39,11 +39,11 @@
                 <div class="row">
                     <div class="form-half">
                         <label for="username">${message(code: 'is.user.username')}</label>
-                        <p class="form-control-static">${user.username.encodeAsHTML()}</p>
+                        <p class="form-control-plaintext">${user.username.encodeAsHTML()}</p>
                     </div>
                     <div class="form-half">
                         <label for="userAvatar">${message(code: 'is.user.avatar')}</label>
-                        <div id="user-avatar" class="form-control-static">
+                        <div id="user-avatar" class="form-control-plaintext">
                             <div class="col-md-12">
                                 <g:if test="${ApplicationSupport.booleanValue(grailsApplication.config.icescrum.gravatar?.enable)}">
                                     <img ng-click="editableUser.avatar = 'gravatar'"

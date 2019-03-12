@@ -68,7 +68,7 @@
                       at="atOptions"
                       autofocus
                       placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-            <div class="atwho-preview form-control-static"
+            <div class="atwho-preview form-control"
                  ng-show="!showDescriptionTextarea"
                  ng-click="clickDescriptionPreview($event)"
                  ng-focus="focusDescriptionPreview($event)"
@@ -151,7 +151,7 @@
         </div>
         <div class="form-group" ng-if="editableStory.dependences.length">
             <label>${message(code: 'is.story.dependences')}</label>
-            <div class="form-control-static">
+            <div class="form-control-plaintext">
                 <span ng-repeat="dependence in editableStory.dependences track by dependence.id">
                     <a ng-if="hasSameProject(editableStory, dependence)"
                        ui-sref=".({storyId: dependence.id})"
@@ -308,7 +308,7 @@
                       ng-show="showNotesTextarea"
                       ng-blur="showNotesTextarea = false"
                       placeholder="${message(code: 'is.ui.backlogelement.nonotes')}"></textarea>
-            <div class="markitup-preview"
+            <div class="markitup-preview form-control"
                  ng-disabled="!formEditable()"
                  ng-show="!showNotesTextarea"
                  ng-click="showNotesTextarea = formEditable()"
@@ -327,7 +327,7 @@
                 </button>
                 <entry:point id="attachment-add-buttons"/>
             </div>
-            <div class="form-control-static" ng-include="'attachment.list.html'">
+            <div class="form-control-plaintext" ng-include="'attachment.list.html'">
             </div>
         </div>
     </div>

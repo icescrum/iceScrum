@@ -60,7 +60,7 @@
                         </div>
                     </div>
                     <div class="row is-form-row" ng-if="task.description">
-                        <p class="description form-control-static" ng-bind-html="task.description | lineReturns"></p>
+                        <p class="description form-control-plaintext" ng-bind-html="task.description | lineReturns"></p>
                     </div>
                     <hr ng-if="!$last"/>
                 </td>

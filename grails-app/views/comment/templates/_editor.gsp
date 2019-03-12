@@ -46,7 +46,7 @@
                   is-model-html="editableComment.body_html"
                   ng-show="showCommentBodyTextarea"
                   placeholder="${message(code: 'todo.is.ui.comment')}"></textarea>
-        <div class="markitup-preview"
+        <div class="markitup-preview form-control"
              ng-show="!showCommentBodyTextarea"
              tabindex="0"
              ng-click="showCommentBodyTextarea = true"

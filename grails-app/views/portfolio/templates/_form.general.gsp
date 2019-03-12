@@ -75,7 +75,7 @@
                   ng-show="showDescriptionTextarea"
                   ng-blur="delayCall(toggleDescription, [false])"
                   is-model-html="portfolio.description_html"></textarea>
-        <div class="markitup-preview"
+        <div class="markitup-preview form-control"
              tabindex="0"
              ng-show="!showDescriptionTextarea"
              ng-click="toggleDescription(true)"

@@ -38,7 +38,7 @@
                                  alt="{{comment.poster | userFullName}}"/>
                         </div>
                         <div class="form-half">
-                            <span class="poster form-control-static">{{comment.poster | userFullName}}</span>
+                            <span class="poster form-control-plaintext">{{comment.poster | userFullName}}</span>
                         </div>
                         <div class="col-sm-5 form-group text-right">
                             <span class="dateCreated text-muted">
@@ -71,7 +71,7 @@
                                   is-model-html="editableComment.body_html"
                                   ng-show="showCommentBodyTextarea"
                                   class="form-control"></textarea>
-                        <div class="markitup-preview no-fixed-height"
+                        <div class="markitup-preview form-control no-fixed-height"
                              ng-show="!showCommentBodyTextarea"
                              ng-click="editCommentBody()"
                              ng-focus="editCommentBody()"

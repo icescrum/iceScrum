@@ -144,7 +144,7 @@
         </div>
     </div>
     <div class="col-sm-12 form-group">
-        <uib-progress class="form-control-static form-bar" max="totalDuration">
+        <uib-progress class="form-control-plaintext form-bar" max="totalDuration">
             <uib-bar ng-repeat="sprint in sprints"
                      class="{{ $last ? 'last-bar' : '' }}"
                      uib-tooltip-template="'sprint.tooltip.html'"
@@ -165,7 +165,7 @@
                   ng-show="showVisionTextarea"
                   ng-blur="delayCall(toggleVision, [false])"
                   is-model-html="project.vision_html"></textarea>
-        <div class="markitup-preview"
+        <div class="markitup-preview form-control"
              tabindex="0"
              ng-show="!showVisionTextarea"
              ng-click="toggleVision(true)"

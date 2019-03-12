@@ -60,7 +60,7 @@
                   at="atOptions"
                   autofocus
                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-        <div class="atwho-preview form-control-static"
+        <div class="atwho-preview form-control"
              ng-show="!showDescriptionTextarea"
              ng-click="clickDescriptionPreview()"
              ng-focus="focusDescriptionPreview($event)"

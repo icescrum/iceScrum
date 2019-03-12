@@ -57,7 +57,7 @@
                 <div class="btn-menu" ng-controller="releaseCtrl" uib-dropdown>
                     <shortcut-menu ng-model="release" model-menus="menus"></shortcut-menu>
                     <div uib-dropdown-toggle></div>
-                    <div uib-dropdown-menu class="float-right" ng-init="itemType = 'release'" template-url="item.menu.html"></div>
+                    <div uib-dropdown-menu ng-init="itemType = 'release'" template-url="item.menu.html"></div>
                 </div>
                 <a class="btn btn-secondary btn-sm" ng-href="{{ openReleaseUrl(release) }}">
                     <i class="fa fa-pencil"
@@ -90,7 +90,7 @@
                         <div class="btn-group" uib-dropdown>
                             <button type="button" class="btn btn-secondary btn-sm" uib-dropdown-toggle>
                             </button>
-                            <div uib-dropdown-menu class="float-right" ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
+                            <div uib-dropdown-menu ng-init="itemType = 'sprint'" template-url="item.menu.html"></div>
                         </div>
                     </div>
                     <a class="btn btn-secondary btn-sm" href="{{ openSprintUrl(sprint) }}">

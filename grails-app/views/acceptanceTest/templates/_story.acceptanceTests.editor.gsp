@@ -73,7 +73,7 @@
                   is-model-html="editableAcceptanceTest.description_html"
                   ng-show="showAcceptanceTestDescriptionTextarea"
                   placeholder="${message(code: 'is.ui.backlogelement.nodescription')}"></textarea>
-        <div class="markitup-preview"
+        <div class="markitup-preview form-control"
              ng-show="!showAcceptanceTestDescriptionTextarea"
              ng-click="showAcceptanceTestDescriptionTextarea = true"
              ng-focus="focusAcceptanceTestDescription()"

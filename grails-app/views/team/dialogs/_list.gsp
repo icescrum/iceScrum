@@ -102,7 +102,7 @@
                             ${message(code: 'is.role.owner')}
                             <entry:point id="team-list-owner"/>
                         </label>
-                        <span class="form-control-static"
+                        <span class="form-control-plaintext"
                               ng-if="!authorizedTeam('changeOwner', team)">{{ team.owner | userFullName }}</span>
                         <ui-select class="form-control"
                                    name="owner"
@@ -147,7 +147,7 @@
                     </div>
                     <div class="col-sm-12 form-group">
                         <label>${message(code: 'is.ui.projects')}</label>
-                        <div class="form-control-static"
+                        <div class="form-control-plaintext"
                              ng-if="projects.length">
                             <span ng-repeat="project in projects">
                                 <a ng-if="isCurrentProject(project)"
