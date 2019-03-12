@@ -163,11 +163,11 @@ class SprintController implements ControllerErrorHandler {
         def values = sprintService.sprintBurndownRemainingValues(sprint)
         def computedValues = [[key   : message(code: "is.chart.sprintBurndownRemainingChart.serie.task.name"),
                                values: values.findAll { it.remainingTime != null }.collect { return [it.label, it.remainingTime] },
-                               color : '#1F77B4']]
+                               color : '#00abfc']]
         if (values && values.first().idealTime) {
             computedValues << [key   : message(code: "is.chart.sprintBurndownRemainingChart.serie.task.ideal"),
                                values: values.findAll { it.idealTime != null }.collect { return [it.label, it.idealTime] },
-                               color : '#009900']
+                               color : '#27d285']
         }
         def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.collect { [it.idealTime, it.remainingTime].max() }.max()],
@@ -185,10 +185,10 @@ class SprintController implements ControllerErrorHandler {
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurnupTasksChart.serie.tasksDone.name"),
                  values: values.findAll { it.tasksDone != null }.collect { return [it.label, it.tasksDone] },
-                 color : '#009900'],
+                 color : '#27d285'],
                 [key   : message(code: "is.chart.sprintBurnupTasksChart.serie.tasks.name"),
                  values: values.findAll { it.tasks != null }.collect { return [it.label, it.tasks] },
-                 color : '#1C3660']
+                 color : '#054ca6']
         ]
         def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.collect { [it.tasksDone, it.tasks].max() }.max()],
@@ -206,7 +206,7 @@ class SprintController implements ControllerErrorHandler {
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurndownPointsChart.serie.points.name"),
                  values: values.findAll { it.remainingPoints != null }.collect { return [it.label, it.remainingPoints] },
-                 color : '#1C3660']
+                 color : '#054ca6']
         ]
         def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.max { it.remainingPoints }],
@@ -224,10 +224,10 @@ class SprintController implements ControllerErrorHandler {
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurnupPointsChart.serie.points.name"),
                  values: values.findAll { it.totalPoints != null }.collect { return [it.label, it.totalPoints] },
-                 color : '#1C3660'],
+                 color : '#054ca6'],
                 [key   : message(code: "is.chart.sprintBurnupPointsChart.serie.pointsDone.name"),
                  values: values.findAll { it.pointsDone != null }.collect { return [it.label, it.pointsDone] },
-                 color : '#009900']
+                 color : '#27d285']
         ]
         def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.collect { [it.totalPoints, it.pointsDone].max() }.max()],
@@ -245,10 +245,10 @@ class SprintController implements ControllerErrorHandler {
         def computedValues = [
                 [key   : message(code: "is.chart.sprintBurnupStoriesChart.serie.stories.name"),
                  values: values.findAll { it.stories != null }.collect { return [it.label, it.stories] },
-                 color : '#1C3660'],
+                 color : '#054ca6'],
                 [key   : message(code: "is.chart.sprintBurnupStoriesChart.serie.storiesDone.name"),
                  values: values.findAll { it.storiesDone != null }.collect { return [it.label, it.storiesDone] },
-                 color : '#009900']
+                 color : '#27d285']
         ]
         def xDomain = ApplicationSupport.getSprintXDomain(sprint, values)
         def options = [chart: [yDomain: [0, values.collect { [it.stories, it.storiesDone].max() }.max()],

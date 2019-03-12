@@ -311,10 +311,10 @@ class ProjectController implements ControllerErrorHandler {
         def values = projectService.projectVelocityCapacityValues(_project)
         def computedValues = [[key   : message(code: 'is.sprint.velocity'),
                                values: values.collect { return [it.velocity] },
-                               color : '#009900'],
+                               color : '#27d285'],
                               [key   : message(code: 'is.sprint.plannedVelocity'),
                                values: values.collect { return [it.capacity] },
-                               color : '#1C3660']]
+                               color : '#054ca6']]
         def options = [chart: [yDomain: [0, values.collect { [it.velocity, it.capacity].max() }.max()],
                                yAxis  : [axisLabel: message(code: 'is.chart.projectVelocityCapacity.yaxis.label')],
                                xAxis  : [axisLabel: message(code: 'is.chart.projectVelocityCapacity.xaxis.label')]],
@@ -328,10 +328,10 @@ class ProjectController implements ControllerErrorHandler {
         def values = projectService.projectBurnupValues(_project)
         def computedValues = [[key   : message(code: "is.chart.projectBurnUp.serie.all.name"),
                                values: values.collect { return [it.all] },
-                               color : '#1C3660'],
+                               color : '#054ca6'],
                               [key   : message(code: "is.chart.projectBurnUp.serie.done.name"),
                                values: values.collect { return [it.done] },
-                               color : '#009900']]
+                               color : '#27d285']]
         def options = [chart: [yAxis: [axisLabel: message(code: 'is.chart.projectBurnUp.yaxis.label')],
                                xAxis: [axisLabel: message(code: 'is.chart.projectBurnUp.xaxis.label')]],
                        title: [text: message(code: "is.chart.projectBurnUp.title")]]

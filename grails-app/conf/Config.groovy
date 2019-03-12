@@ -252,14 +252,14 @@ icescrum {
                     (Story.STATE_DONE)      : 'is.story.state.done'
             ],
             storyStatesColor       : [
-                    (Story.STATE_FROZEN)    : '#AAAAAA',
-                    (Story.STATE_SUGGESTED) : '#FFCC04',
-                    (Story.STATE_ACCEPTED)  : '#FF9933',
-                    (Story.STATE_ESTIMATED) : '#CC3300',
-                    (Story.STATE_PLANNED)   : '#A46BFF',
-                    (Story.STATE_INPROGRESS): '#42A9E0',
-                    (Story.STATE_INREVIEW)  : '#005769',
-                    (Story.STATE_DONE)      : '#009900'
+                    (Story.STATE_FROZEN)    : '#aaaaaa',
+                    (Story.STATE_SUGGESTED) : '#ffcc01',
+                    (Story.STATE_ACCEPTED)  : '#ff6b1c',
+                    (Story.STATE_ESTIMATED) : '#ff3333',
+                    (Story.STATE_PLANNED)   : '#c88cff',
+                    (Story.STATE_INPROGRESS): '#00abfc',
+                    (Story.STATE_INREVIEW)  : '#002ee8',
+                    (Story.STATE_DONE)      : '#27d285'
             ],
             storyTypes             : [
                     (Story.TYPE_USER_STORY)     : 'is.story.type.story',
@@ -267,9 +267,9 @@ icescrum {
                     (Story.TYPE_TECHNICAL_STORY): 'is.story.type.technical'
             ],
             storyTypesColor        : [
-                    (Story.TYPE_USER_STORY)     : '#35aa47',
-                    (Story.TYPE_DEFECT)         : '#d84a38',
-                    (Story.TYPE_TECHNICAL_STORY): '#5bc0de'
+                    (Story.TYPE_USER_STORY)     : '#4cd1b0',
+                    (Story.TYPE_DEFECT)         : '#4a90e2',
+                    (Story.TYPE_TECHNICAL_STORY): '#d0021b'
             ],
             storyTypesCliche       : [
                     (Story.TYPE_USER_STORY)     : Cliche.FUNCTIONAL_STORY_PROJECT_REMAINING_POINTS,
